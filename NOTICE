@@ -1,0 +1,72 @@
+Aero CMS
+Copyright (c) 2025 Microbians
+
+This product includes software developed by Microbians (https://microbians.io).
+
+-----
+
+Aero CMS is a trademark of Microbians. All rights reserved.
+
+This NOTICE file is provided in compliance with the Apache License, Version 2.0.
+Redistributions of the software must retain the above copyright notice, this
+list of conditions, and the following disclaimers.
+
+-----
+
+This product includes software from the following third-party components:
+
+- ASP.NET Core (https://github.com/dotnet/aspnetcore)
+  Licensed under the Apache License, Version 2.0
+
+- Orleans (https://github.com/dotnet/orleans)
+  Licensed under the MIT License
+
+- MartenDB (https://github.com/JasperFx/marten)
+  Licensed under the MIT License
+
+- Wolverine (https://github.com/JasperFx/wolverine)
+  Licensed under the MIT License
+
+- Scriban (https://github.com/scriban/scriban)
+  Licensed under the BSD-2-Clause License
+
+- HTMX (https://github.com/bigskysoftware/htmx)
+  Licensed under the BSD 2-Clause License
+
+- Alpine.js (https://github.com/alpinejs/alpine)
+  Licensed under the MIT License
+
+- Preact (https://github.com/preactjs/preact)
+  Licensed under the MIT License
+
+- GSAP / GreenSock (https://github.com/greensock/GSAP)
+  Standard GreenSock License — all rights reserved
+  Subject to GreenSock's standard licensing terms
+
+- Swiper (https://github.com/nolimits4web/swiper)
+  Licensed under the MIT License
+
+- AnimXYZ (https://github.com/ingram-projects/animxyz)
+  Licensed under the MIT License
+
+- RxJS (https://github.com/ReactiveX/rxjs)
+  Licensed under the Apache License, Version 2.0
+
+- Simple Parallax JS (https://github.com/geosigno/simpleParallax)
+  Licensed under the MIT License
+
+- ReApptor / ts-linq (https://github.com/ReApptor/ReApptor.TypeScript.Linq)
+  Licensed under the MIT License
+
+- PostgreSQL (https://www.postgresql.org)
+  Licensed under the PostgreSQL License
+  Used in embedded mode via mysticmind-postgresembed (https://github.com/mysticmind/mysticmind-postgresembed) for testing
+
+- HTMX.NET (https://github.com/Encamina/HTMX.NET)
+  Licensed under the MIT License
+
+- Hydro (https://usehydro.dev)
+  (Upcoming dependency — license TBD)
+
+- Lit (https://lit.dev)
+  (Upcoming dependency — licensed under the BSD 3-Clause License)

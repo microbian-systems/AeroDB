@@ -1,0 +1,9 @@
+[submodule "surrealdb.net"]
+	path = surrealdb.net
+	url = git@github.com:surrealdb/surrealdb.net.git
+[submodule "marten"]
+	path = marten
+	url = git@github.com:JasperFx/marten.git
+[submodule "wolverine"]
+	path = wolverine
+	url = git@github.com:JasperFx/wolverine.git

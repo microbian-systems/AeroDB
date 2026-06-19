@@ -1,0 +1,9 @@
+### List OpenCode Models
+GET https://opencode.ai/zen/v1/models
+Accept: application/json
+
+
+### List OpenCode Go Models
+GET https://opencode.ai/zen/go/v1/models
+Accept: application/json
+
