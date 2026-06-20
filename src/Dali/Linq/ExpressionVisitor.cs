@@ -14,6 +14,14 @@ public class SurrealExpressionVisitor : ExpressionVisitor
 
     public SurrealQueryResult Translate(Expression expression)
     {
+        _sb.Clear();
+        _where.Clear();
+        _orderBy.Clear();
+        _limit = null;
+        _skip = null;
+        _projection = "*";
+        TableName = null;
+
         Visit(expression);
         return new SurrealQueryResult
         {
@@ -44,7 +52,7 @@ public class SurrealExpressionVisitor : ExpressionVisitor
                 Visit(node.Arguments[0]);
                 if (StripQuote(node.Arguments[1]) is LambdaExpression ascLambda
                     && ascLambda.Body is MemberExpression ascMember)
-                    _orderBy.Add($"{Snake(ascMember.Member.Name)} ASC");
+                    _orderBy.Add($"{ascMember.Member.Name} ASC");
                 break;
 
             case "OrderByDescending":
@@ -52,7 +60,7 @@ public class SurrealExpressionVisitor : ExpressionVisitor
                 Visit(node.Arguments[0]);
                 if (StripQuote(node.Arguments[1]) is LambdaExpression descLambda
                     && descLambda.Body is MemberExpression descMember)
-                    _orderBy.Add($"{Snake(descMember.Member.Name)} DESC");
+                    _orderBy.Add($"{descMember.Member.Name} DESC");
                 break;
 
             case "Take":
@@ -69,9 +77,35 @@ public class SurrealExpressionVisitor : ExpressionVisitor
 
             case "Select":
                 Visit(node.Arguments[0]);
-                if (StripQuote(node.Arguments[1]) is LambdaExpression selLambda
-                    && selLambda.Body is NewExpression newExpr)
-                    _projection = string.Join(", ", newExpr.Arguments.Select(ProjMember));
+                if (StripQuote(node.Arguments[1]) is LambdaExpression selLambda)
+                {
+                    if (selLambda.Body is NewExpression newExpr)
+                        _projection = string.Join(", ", newExpr.Arguments.Select(ProjMember));
+                    else if (selLambda.Body is MemberInitExpression init)
+                        _projection = string.Join(", ", init.Bindings
+                            .OfType<MemberAssignment>()
+                            .Select(b => $"{ProjMember(b.Expression)} AS {b.Member.Name}"));
+                }
+                break;
+
+            case "Sum":
+            case "Min":
+            case "Max":
+            case "Average":
+                Visit(node.Arguments[0]);
+                if (StripQuote(node.Arguments[1]) is LambdaExpression aggLambda
+                    && aggLambda.Body is MemberExpression aggMember)
+                {
+                    var fn = node.Method.Name switch
+                    {
+                        "Sum" => "math::sum",
+                        "Min" => "math::min",
+                        "Max" => "math::max",
+                        "Average" => "math::mean",
+                        _ => node.Method.Name
+                    };
+                    _projection = $"{fn}({aggMember.Member.Name})";
+                }
                 break;
 
             default:
@@ -96,7 +130,7 @@ public class SurrealExpressionVisitor : ExpressionVisitor
         MethodCallExpression m => TranslateMethod(m),
         UnaryExpression u when u.NodeType == ExpressionType.Not
             => $"NOT ({TranslateCondition(u.Operand)})",
-        MemberExpression m => Snake(m.Member.Name),
+        MemberExpression m => m.Member.Name,
         _ => ""
     };
 
@@ -116,6 +150,9 @@ public class SurrealExpressionVisitor : ExpressionVisitor
             ExpressionType.OrElse => "OR",
             ExpressionType.Add => "+",
             ExpressionType.Subtract => "-",
+            ExpressionType.Multiply => "*",
+            ExpressionType.Divide => "/",
+            ExpressionType.Modulo => "%",
             _ => throw new NotSupportedException($"Operator {b.NodeType}")
         };
 
@@ -161,16 +198,36 @@ public class SurrealExpressionVisitor : ExpressionVisitor
     private static string MemberPath(MemberExpression m)
     {
         if (m.Expression is ParameterExpression)
-            return Snake(m.Member.Name);
+            return m.Member.Name;
         if (m.Expression is MemberExpression inner)
-            return $"{MemberPath(inner)}.{Snake(m.Member.Name)}";
-        return Snake(m.Member.Name);
+        {
+            var innerPath = MemberPath(inner);
+            if (IsDateTimeMember(m))
+                return DateTimeFunc(m.Member.Name, innerPath);
+            return $"{innerPath}.{m.Member.Name}";
+        }
+        return m.Member.Name;
     }
+
+    private static bool IsDateTimeMember(MemberExpression m)
+        => m.Member.DeclaringType == typeof(DateTime) || m.Member.DeclaringType == typeof(DateTimeOffset);
+
+    private static string DateTimeFunc(string member, string operand) => member switch
+    {
+        "Year" => $"time::year({operand})",
+        "Month" => $"time::month({operand})",
+        "Day" => $"time::day({operand})",
+        "DayOfWeek" => $"time::wday({operand})",
+        "Hour" => $"time::hour({operand})",
+        "Minute" => $"time::minute({operand})",
+        "Second" => $"time::second({operand})",
+        _ => $"{operand}.{member}"
+    };
 
     private static string ProjMember(Expression expr)
     {
         if (expr is MemberExpression m)
-            return Snake(m.Member.Name);
+            return m.Member.Name;
         return "*";
     }
 
@@ -210,8 +267,9 @@ public class SurrealQueryResult
         var sb = new StringBuilder();
         sb.Append("SELECT ");
         sb.Append(Projection);
-        sb.Append(" FROM ");
+        sb.Append(" FROM `");
         sb.Append(TableName ?? "unknown");
+        sb.Append('`');
 
         if (Where.Count > 0)
         {

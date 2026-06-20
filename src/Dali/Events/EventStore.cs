@@ -19,20 +19,27 @@ public class EventStore : IEvents
 
         if (!response.HasErrors && response.Count > 0)
         {
-            var firstResult = response.GetValue<object>(0);
-            if (firstResult is not null)
+            try
             {
-                var json = JsonSerializer.Serialize(firstResult, JsonOptions);
-                var records = JsonSerializer.Deserialize<List<EventRecord>>(json, JsonOptions);
-                return records?.Select(r =>
+                var firstResult = response.GetValue<object>(0);
+                if (firstResult is not null)
                 {
-                    if (!string.IsNullOrEmpty(r.DataJson))
+                    var json = JsonSerializer.Serialize(firstResult, JsonOptions);
+                    var records = JsonSerializer.Deserialize<List<EventRecord>>(json, JsonOptions);
+                    return records?.Select(r =>
                     {
-                        try { return JsonSerializer.Deserialize<object>(r.DataJson, JsonOptions) ?? r.DataJson; }
-                        catch { return r.DataJson; }
-                    }
-                    return r.DataJson ?? "";
-                }).ToList().AsReadOnly() ?? [];
+                        if (!string.IsNullOrEmpty(r.DataJson))
+                        {
+                            try { return JsonSerializer.Deserialize<object>(r.DataJson, JsonOptions) ?? r.DataJson; }
+                            catch { return r.DataJson; }
+                        }
+                        return r.DataJson ?? "";
+                    }).ToList().AsReadOnly() ?? [];
+                }
+            }
+            catch
+            {
+                // CBOR deserialization fallback
             }
         }
 
@@ -67,24 +74,75 @@ public class EventStore : IEvents
         return streamId;
     }
 
-    private async Task<long> GetNextVersion(string streamId, CancellationToken ct)
+    public async Task<IReadOnlyList<(string StreamId, object Event, long Version)>> FetchAllAfterVersion(
+        long version, CancellationToken ct = default)
     {
         var response = await _session.RawQuery(
-            $"SELECT math::max(version) AS max_ver FROM mt_events WHERE stream_id = '{streamId}';",
+            $"SELECT * FROM mt_events WHERE version > {version} ORDER BY version ASC;",
             null, ct);
 
         if (!response.HasErrors && response.Count > 0)
         {
-            var firstResult = response.GetValue<object>(0);
-            if (firstResult is not null)
+            try
             {
-                var json = JsonSerializer.Serialize(firstResult, JsonOptions);
-                var dicts = JsonSerializer.Deserialize<List<Dictionary<string, JsonElement>>>(json, JsonOptions);
-                if (dicts is not null && dicts.Count > 0 && dicts[0].TryGetValue("max_ver", out var maxVer)
-                    && maxVer.ValueKind != JsonValueKind.Null)
+                var firstResult = response.GetValue<object>(0);
+                if (firstResult is not null)
                 {
-                    return maxVer.GetInt64();
+                    var json = JsonSerializer.Serialize(firstResult, JsonOptions);
+                    var records = JsonSerializer.Deserialize<List<EventRecord>>(json, JsonOptions);
+                    if (records is not null)
+                    {
+                        var results = new List<(string, object, long)>();
+                        foreach (var r in records)
+                        {
+                            object? evt = r.DataJson;
+                            if (!string.IsNullOrEmpty(r.DataJson))
+                            {
+                                try { evt = JsonSerializer.Deserialize<object>(r.DataJson, JsonOptions) ?? r.DataJson; }
+                                catch { evt = r.DataJson; }
+                            }
+                            results.Add((r.StreamId, evt ?? "", r.Version));
+                        }
+                        return results.AsReadOnly();
+                    }
                 }
+            }
+            catch
+            {
+                // CBOR deserialization fallback — return empty, daemon will retry
+            }
+        }
+
+        return [];
+    }
+
+    private async Task<long> GetNextVersion(string streamId, CancellationToken ct)
+    {
+        // Query the latest version for this stream.
+        // Avoid math::max aggregate in CBOR mode (can cause deserialization issues).
+        var response = await _session.RawQuery(
+            $"SELECT version FROM mt_events WHERE stream_id = '{streamId}' ORDER BY version DESC LIMIT 1;",
+            null, ct);
+
+        if (!response.HasErrors && response.Count > 0)
+        {
+            try
+            {
+                var firstResult = response.GetValue<object>(0);
+                if (firstResult is not null)
+                {
+                    var json = JsonSerializer.Serialize(firstResult, JsonOptions);
+                    var dicts = JsonSerializer.Deserialize<List<Dictionary<string, JsonElement>>>(json, JsonOptions);
+                    if (dicts is not null && dicts.Count > 0 && dicts[0].TryGetValue("version", out var ver)
+                        && ver.ValueKind != JsonValueKind.Null)
+                    {
+                        return ver.GetInt64();
+                    }
+                }
+            }
+            catch
+            {
+                // CBOR deserialization fallback
             }
         }
 

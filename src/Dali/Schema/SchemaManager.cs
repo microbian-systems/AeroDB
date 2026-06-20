@@ -4,6 +4,58 @@ namespace Dali;
 
 public class SchemaManager
 {
+    /// <summary>
+    /// Ensures a document table exists with SCHEMAFULL mode and defines fields for all
+    /// public readable/writable properties on T (except Id).
+    /// </summary>
+    public async Task EnsureDocumentSchemaAsync<T>(ISurrealDbSession session, CancellationToken ct = default)
+        where T : SurrealDb.Net.Models.Record
+    {
+        var tableName = Snake(typeof(T).Name);
+        await session.RawQuery($"DEFINE TABLE {tableName} SCHEMAFULL;", null, ct);
+
+        var type = typeof(T);
+        foreach (var prop in type.GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance))
+        {
+            if (prop.Name == "Id") continue;
+            if (!prop.CanRead || !prop.CanWrite) continue;
+
+            var fieldType = GetSurrealType(prop.PropertyType);
+            // CBOR serialization stores C# property names as-is (PascalCase), so field definitions
+            // must use PascalCase to match what the engine actually stores in SCHEMAFULL mode.
+            var fieldSurql = $"DEFINE FIELD {prop.Name} ON TABLE {tableName} TYPE {fieldType};";
+            await session.RawQuery(fieldSurql, null, ct);
+        }
+    }
+
+    /// <summary>
+    /// Ensures the mt_events table exists with the required schema for event sourcing.
+    /// </summary>
+    public async Task EnsureEventSchemaAsync(ISurrealDbSession session, CancellationToken ct = default)
+    {
+        await session.RawQuery("DEFINE TABLE mt_events SCHEMAFULL;", null, ct);
+        await session.RawQuery("DEFINE FIELD stream_id ON TABLE mt_events TYPE string;", null, ct);
+        await session.RawQuery("DEFINE FIELD version ON TABLE mt_events TYPE int;", null, ct);
+        await session.RawQuery("DEFINE FIELD event_type ON TABLE mt_events TYPE string;", null, ct);
+        await session.RawQuery("DEFINE FIELD data ON TABLE mt_events TYPE string;", null, ct);
+        await session.RawQuery("DEFINE FIELD created_at ON TABLE mt_events TYPE datetime;", null, ct);
+        await session.RawQuery("DEFINE INDEX mt_events_stream_version ON TABLE mt_events COLUMNS stream_id, version UNIQUE;", null, ct);
+    }
+
+    /// <summary>
+    /// Convenience overload: creates a temporary session, ensures event schema, then disposes.
+    /// </summary>
+    internal async Task EnsureEventSchemaAsync(ISurrealDbClient client, string ns, string db, CancellationToken ct = default)
+    {
+        await using var session = await client.CreateSession(ct);
+        await session.Use(ns, db, ct);
+        await EnsureEventSchemaAsync(session, ct);
+    }
+
+    /// <summary>
+    /// Legacy method: ensures a schema for the given type using explicit table name.
+    /// Kept for backward compatibility.
+    /// </summary>
     public async Task EnsureSchemaAsync<T>(ISurrealDbSession session, string tableName, CancellationToken ct = default)
     {
         await session.RawQuery($"DEFINE TABLE {tableName} SCHEMAFULL;", null, ct);
@@ -15,7 +67,7 @@ public class SchemaManager
             if (!prop.CanRead || !prop.CanWrite) continue;
 
             var fieldType = GetSurrealType(prop.PropertyType);
-            var fieldSurql = $"DEFINE FIELD {Snake(prop.Name)} ON TABLE {tableName} TYPE {fieldType};";
+            var fieldSurql = $"DEFINE FIELD {prop.Name} ON TABLE {tableName} TYPE {fieldType};";
             await session.RawQuery(fieldSurql, null, ct);
         }
     }

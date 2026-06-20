@@ -31,24 +31,32 @@ public class DocumentStore : IDocumentStore
             _client = Options.ClientFactory();
             await _client.Connect(ct);
             await _client.Use(ns, db, ct);
-            return;
+        }
+        else
+        {
+            var endpoint = Options.Endpoint;
+            var user = Options.Username ?? "root";
+            var pass = Options.Password ?? "root";
+
+            var surrealOptions = new SurrealDbOptionsBuilder()
+                .WithEndpoint(endpoint)
+                .WithNamespace(ns)
+                .WithDatabase(db)
+                .WithUsername(user)
+                .WithPassword(pass)
+                .Build();
+
+            _client = new SurrealDbClient(surrealOptions);
+            await _client.Connect(ct);
+            await _client.Use(ns, db, ct);
         }
 
-        var endpoint = Options.Endpoint;
-        var user = Options.Username ?? "root";
-        var pass = Options.Password ?? "root";
-
-        var surrealOptions = new SurrealDbOptionsBuilder()
-            .WithEndpoint(endpoint)
-            .WithNamespace(ns)
-            .WithDatabase(db)
-            .WithUsername(user)
-            .WithPassword(pass)
-            .Build();
-
-        _client = new SurrealDbClient(surrealOptions);
-        await _client.Connect(ct);
-        await _client.Use(ns, db, ct);
+        // Auto-create event schema if events are enabled
+        if (Options.Events.Enabled)
+        {
+            var schemaManager = new SchemaManager();
+            await schemaManager.EnsureEventSchemaAsync(_client, ns, db, ct);
+        }
     }
 
     public async Task<IQuerySession> QuerySessionAsync(CancellationToken ct = default)
@@ -56,7 +64,10 @@ public class DocumentStore : IDocumentStore
         await EnsureInitialized(ct);
         var session = await Client.CreateSession(ct);
         await session.Use(Options.Namespace ?? "test", Options.Database ?? "test", ct);
-        return new QuerySession(Client, session, Options);
+        var qs = new QuerySession(Client, session, Options);
+        if (Options.TenancyStyle == TenancyStyle.Conjoined && Options.DefaultTenantId is not null)
+            qs.TenantId = Options.DefaultTenantId;
+        return qs;
     }
 
     public async Task<IDocumentSession> LightweightSessionAsync(CancellationToken ct = default)
@@ -64,7 +75,10 @@ public class DocumentStore : IDocumentStore
         await EnsureInitialized(ct);
         var session = await Client.CreateSession(ct);
         await session.Use(Options.Namespace ?? "test", Options.Database ?? "test", ct);
-        return new DocumentSession(Client, session, Options, isDirtyTracking: false);
+        var ds = new DocumentSession(Client, session, Options, isDirtyTracking: false);
+        if (Options.TenancyStyle == TenancyStyle.Conjoined && Options.DefaultTenantId is not null)
+            ds.TenantId = Options.DefaultTenantId;
+        return ds;
     }
 
     public async Task<IDocumentSession> DocumentSessionAsync(CancellationToken ct = default)
@@ -72,7 +86,10 @@ public class DocumentStore : IDocumentStore
         await EnsureInitialized(ct);
         var session = await Client.CreateSession(ct);
         await session.Use(Options.Namespace ?? "test", Options.Database ?? "test", ct);
-        return new DocumentSession(Client, session, Options, isDirtyTracking: true);
+        var ds = new DocumentSession(Client, session, Options, isDirtyTracking: true);
+        if (Options.TenancyStyle == TenancyStyle.Conjoined && Options.DefaultTenantId is not null)
+            ds.TenantId = Options.DefaultTenantId;
+        return ds;
     }
 
     private async Task EnsureInitialized(CancellationToken ct)

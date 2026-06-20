@@ -3,15 +3,21 @@ using System.Linq.Expressions;
 
 namespace Dali;
 
-public interface ISurrealDbQueryable<T> : IQueryable<T>
+public interface ISurrealDbQueryable<T> : IOrderedQueryable<T>
 {
     Task<List<T>> ToListAsync(CancellationToken ct = default);
     Task<T?> FirstOrDefaultAsync(CancellationToken ct = default);
+    Task<T?> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate, CancellationToken ct = default);
+    Task<T?> SingleOrDefaultAsync(CancellationToken ct = default);
     Task<int> CountAsync(CancellationToken ct = default);
     Task<bool> AnyAsync(CancellationToken ct = default);
+    Task<decimal> SumAsync(Expression<Func<T, decimal>> selector, CancellationToken ct = default);
+    Task<decimal> MinAsync(Expression<Func<T, decimal>> selector, CancellationToken ct = default);
+    Task<decimal> MaxAsync(Expression<Func<T, decimal>> selector, CancellationToken ct = default);
+    Task<decimal> AverageAsync(Expression<Func<T, decimal>> selector, CancellationToken ct = default);
 }
 
-public class SurrealDbQueryable<T> : ISurrealDbQueryable<T>, IAsyncEnumerable<T>
+public class SurrealDbQueryable<T> : ISurrealDbQueryable<T>, IAsyncEnumerable<T>, IOrderedQueryable
 {
     private readonly SurrealQueryProvider _provider;
 
@@ -50,9 +56,51 @@ public class SurrealDbQueryable<T> : ISurrealDbQueryable<T>, IAsyncEnumerable<T>
     public Task<T?> FirstOrDefaultAsync(CancellationToken ct = default)
         => _provider.FirstOrDefaultAsync<T>(Expression, ct);
 
+    public Task<T?> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate, CancellationToken ct = default)
+    {
+        var whereExpr = Expression.Call(
+            typeof(Queryable), "Where", [typeof(T)],
+            Expression, Expression.Quote(predicate));
+        return _provider.FirstOrDefaultAsync<T>(whereExpr, ct);
+    }
+
+    public Task<T?> SingleOrDefaultAsync(CancellationToken ct = default)
+        => _provider.SingleOrDefaultAsync<T>(Expression, ct);
+
     public Task<int> CountAsync(CancellationToken ct = default)
         => _provider.CountAsync(Expression, ct);
 
     public Task<bool> AnyAsync(CancellationToken ct = default)
         => _provider.AnyAsync(Expression, ct);
+
+    public Task<decimal> SumAsync(Expression<Func<T, decimal>> selector, CancellationToken ct = default)
+    {
+        var fieldName = ExtractFieldName(selector);
+        return _provider.AggregateAsync<T>(Expression, fieldName, "math::sum", ct);
+    }
+
+    public Task<decimal> MinAsync(Expression<Func<T, decimal>> selector, CancellationToken ct = default)
+    {
+        var fieldName = ExtractFieldName(selector);
+        return _provider.AggregateAsync<T>(Expression, fieldName, "math::min", ct);
+    }
+
+    public Task<decimal> MaxAsync(Expression<Func<T, decimal>> selector, CancellationToken ct = default)
+    {
+        var fieldName = ExtractFieldName(selector);
+        return _provider.AggregateAsync<T>(Expression, fieldName, "math::max", ct);
+    }
+
+    public Task<decimal> AverageAsync(Expression<Func<T, decimal>> selector, CancellationToken ct = default)
+    {
+        var fieldName = ExtractFieldName(selector);
+        return _provider.AggregateAsync<T>(Expression, fieldName, "math::mean", ct);
+    }
+
+    private static string ExtractFieldName<TDelegate>(Expression<TDelegate> selector)
+    {
+        if (selector.Body is MemberExpression m)
+            return m.Member.Name;
+        throw new ArgumentException("Selector must be a simple member expression (e.g., p => p.Price)");
+    }
 }

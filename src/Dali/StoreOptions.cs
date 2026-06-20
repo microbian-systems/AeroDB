@@ -12,10 +12,16 @@ public class StoreOptions
     public string? Token { get; set; }
 
     public SchemaOptions Schema { get; } = new();
-    public MultiTenancyOptions MultiTenancy { get; } = new();
+    public TenancyStyle TenancyStyle { get; set; }
+    public string? DefaultTenantId { get; set; }
     public EventSourcingOptions Events { get; } = new();
 
     public Func<ISurrealDbClient>? ClientFactory { get; set; }
+
+    /// <summary>
+    /// Registered projections (inline and async).
+    /// </summary>
+    public List<IProjection> Projections { get; } = new();
 
     public StoreOptions Connection(string endpoint, string? ns = null, string? db = null,
         string? username = null, string? password = null, string? token = null)
@@ -35,9 +41,11 @@ public class SchemaOptions
     public bool AutoCreate { get; set; } = true;
 }
 
-public class MultiTenancyOptions
+public enum TenancyStyle
 {
-    public bool Enabled { get; set; }
+    None,
+    Conjoined,
+    DatabasePerTenant
 }
 
 public class EventSourcingOptions

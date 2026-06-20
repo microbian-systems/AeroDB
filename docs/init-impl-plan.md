@@ -1,159 +1,90 @@
-# Dali.SurrealDb.EfCore — Initial Implementation Plan
+# Dali — Implementation Plan
 
-> Council-verified (2026-06-19). See `docs/efcore-plan.md` for the full architectural blueprint.
+> MartenDB-style document database and event store on SurrealDB. Council-verified architecture (2026-06-19).
 
-## Architecture Decisions
+## Current State
 
-| Decision | Choice |
-|----------|--------|
-| Project count | **Single project** — everything in `Dali.SurrealDb.EfCore` |
-| ID strategy | **Consumer's choice** — no Snowflake/Dali.Common dependency |
-| SurrealDb.Net | **NuGet package v0.10.2** (submodule at `./surrealdb.net/` is for reference only) |
-| EF Core base | **Non-relational** — `Microsoft.EntityFrameworkCore` only, NOT `Relational` |
-| Package management | Central via `src/Directory.Packages.props` |
-| Target framework | `net10.0` |
+- **Namespace:** `Dali`
+- **Project:** `src/Dali/Dali.csproj` → `Dali.dll`
+- **Tests:** `tests/Dali.Tests/Dali.Tests.csproj` (TUnit + Shouldly, embedded SurrealDB)
+- **Dependency:** `SurrealDb.Net` 0.10.2 (NuGet)
 
-## NuGet Dependencies
+## Phase 1: Core Document Store ✅
 
-### Core (add to `Directory.Packages.props`)
+**Status:** Complete (8 tests passing)
 
-| Package | Version |
-|---------|---------|
-| `Microsoft.EntityFrameworkCore` | `10.0.8` |
-| `Microsoft.EntityFrameworkCore.Abstractions` | `10.0.8` |
-| `SurrealDb.Net` | `0.10.2` |
+| Layer | What's built |
+|-------|-------------|
+| Interfaces | `IDocumentStore`, `IQuerySession`, `IDocumentSession`, `IEvents` |
+| Sessions | `QuerySession` (read-only), `DocumentSession` (read-write + unit of work) |
+| LINQ | `SurrealExpressionVisitor` (Where, OrderBy, Skip, Take, Select, string methods, Tags), `SurrealQueryProvider` |
+| Storage | `DocumentStorage` (snake_case table naming), `UnitOfWork` (Added/Modified/Deleted) |
+| Events | `EventStore` (Append, StartStream, FetchStream on `mt_events`) |
+| Schema | `SchemaManager` (DEFINE TABLE/FIELD/INDEX) |
+| DI | `Documents.For()` factory, `StoreOptions.ClientFactory` for embedded clients |
 
-### Test
+**Tests (8):** Store/query/delete, Query all + Take, Event append/fetch empty
 
-| Package | Version | Notes |
-|---------|---------|-------|
-| `TUnit` | `1.39.0` | Already in Packages.props |
-| `Shouldly` | `4.3.0` | Already in Packages.props |
-| `Microsoft.EntityFrameworkCore.Specification.Tests` | `10.0.8` | TBD — verify package name exists |
+## Phase 2: More Test Coverage (Current)
 
-## Implementation Order (Council-Corrected)
+**Priority:** Highest — users ordered 3 first
 
-```
-  1. Project scaffolding + .csproj + Directory.Packages.props
-  2. SurrealDbOptionsExtension + UseSurrealDb()
-  3. SurrealDbDatabaseProvider (DI registration)
-  4. SurrealDbTypeMappingSource (must precede conventions)
-  5. Model conventions (RecordId PK, table naming, etc.)
-  6. SurrealDbModelCacheKeyFactory (CRITICAL — DI fails without it)
-  7. SurrealDbConnection (session lifecycle per DbContext)
-  8. RecordId ↔ CLR PK bridge (ValueConverter)
-  9. SurrealDbDatabaseCreator (DEFINE TABLE/FIELD)
- 10. Minimal query + materialization (SELECT *)
- 11. SaveChanges (Added→Create, Modified→Merge, Deleted→Delete)
- 12. Transaction support
- 13. WHERE clause + basic query translation
- 14. EF Core spec tests
- 15. Migrations (last — depends on everything above)
-```
+| Area | Tests to add |
+|------|-------------|
+| Query translation | OrderBy/OrderByDescending, Compound WHERE (AND/OR), FirstOrDefault, Select projection, Skip, Contains, Count |
+| Sessions | Store + Load by Id, Delete + verify deleted, Dirty tracking update, Identity map across multiple operations |
+| Unit of work | Mixed operations (add + modify + delete in one SaveChanges), Batch size validation, Error rollback |
+| Edge cases | Query empty set, Query null result, Duplicate key behavior, Large batch inserts |
+| Event store | Fetch after append with named types, Multiple streams isolation, Version ordering |
 
-## Classes to Create
+**Test models** must extend `SurrealDb.Net.Models.Record` for CBOR compatibility.
 
-### Layer 1: Provider Registration & DI
+## Phase 3: Projections
 
-| Class | Implements | File |
-|-------|-----------|------|
-| `SurrealDbOptionsExtension` | `IDbContextOptionsExtension` | `SurrealDbOptionsExtension.cs` |
-| `SurrealDbDatabaseProvider` | `IDatabaseProvider` | `SurrealDbDatabaseProvider.cs` |
-| `SurrealDbOptionsBuilderExtensions` | (static extensions) | `SurrealDbOptionsBuilderExtensions.cs` |
-| `ServiceCollectionExtensions` | (static extensions) | `ServiceCollectionExtensions.cs` |
+| Area | What to build |
+|------|--------------|
+| Inline projections | `IProjection` interface, `ProjectionLifecycle.Inline`, runs within SaveChanges |
+| Live projections | SurrealDB live queries via `LiveTable<T>()` |
+| Async daemon | `AsyncDaemon` class with high-water mark, `EventLoader`, shard coordination |
+| Projection storage | `IProjectionStorage` interface, `InlineProjection<TDoc>`, `AsyncProjection<TDoc>` |
+| Single-stream aggregate | `SingleStreamProjection<T>` base class |
+| Multi-stream aggregate | `MultiStreamProjection<T>` base class |
 
-### Layer 2: Model & Metadata
+## Phase 4: Multi-Tenancy + Schema
 
-| Class | Implements | File |
-|-------|-----------|------|
-| `SurrealDbTypeMappingSource` | `ITypeMappingSource` | `SurrealDbTypeMappingSource.cs` |
-| `SurrealDbTypeMapping` | `CoreTypeMapping` | `SurrealDbTypeMapping.cs` |
-| `SurrealDbModelValidator` | `IModelValidator` | `SurrealDbModelValidator.cs` |
-| `SurrealDbModelFinalizedConvention` | `IModelFinalizingConvention` | `SurrealDbModelFinalizedConvention.cs` |
-| `SurrealDbValueGeneratorSelector` | `IValueGeneratorSelector` | `SurrealDbValueGeneratorSelector.cs` |
-| `SurrealDbModelCacheKeyFactory` | `IModelCacheKeyFactory` | `SurrealDbModelCacheKeyFactory.cs` |
+| Area | What to build |
+|------|--------------|
+| Conjoined tenancy | `tenant_id` field on all documents, automatic WHERE filter |
+| Database-per-tenant | `ISurrealDbClient` per tenant, `TenantDatabaseSelector` |
+| Schema auto-create | `SchemaManager.EnsureDocumentSchemaAsync()` on store init |
+| Schema diff | `SchemaManager.HasPendingChanges()` — compare model vs DB |
 
-### Infrastructure
+## Phase 5: Query Translation Improvements
 
-| Class | Implements | File |
-|-------|-----------|------|
-| `SurrealDbConnection` | (session lifecycle) | `SurrealDbConnection.cs` |
+| Feature | LINQ → SurrealQL |
+|---------|-----------------|
+| Full OrderBy | OrderBy, ThenBy, OrderByDescending, ThenByDescending |
+| Compound conditions | AND (`&&`), OR (`\|\|`), NOT, nested parens |
+| Select projection | Anonymous types → named columns, MemberInit |
+| Aggregates | Sum, Min, Max, Average, Count |
+| String functions | Contains → `string::contains`, StartsWith, EndsWith |
+| Math functions | `math::*` translation for +, -, *, / |
+| Date functions | `time::*` translations |
+| Include/FETCH | Eager loading via FETCH clause |
+| First/Single | `LIMIT 1` / `LIMIT 2` with validation |
 
-### Layer 3: Query Pipeline
+## Phase 6: EF Core Bridge
 
-| Class | Implements | File |
-|-------|-----------|------|
-| `SurrealDbQueryCompiler` | `IQueryCompiler` | `SurrealDbQueryCompiler.cs` |
-| `SurrealDbQueryContextFactory` | `IQueryContextFactory` | `SurrealDbQueryContextFactory.cs` |
-| `SurrealDbShapedQueryCompilingExpressionVisitor` | `IShapedQueryCompilingExpressionVisitor` | `SurrealDbShapedQueryCompilingExpressionVisitor.cs` |
-| `SurrealDbQueryableMethodTranslatingExpressionVisitor` | (ExpressionVisitor) | `SurrealDbQueryableMethodTranslatingExpressionVisitor.cs` |
-| `SurrealDbBinaryExpressionTranslator` | (ExpressionVisitor) | `SurrealDbBinaryExpressionTranslator.cs` |
-| `SurrealDbMemberTranslator` | (ExpressionVisitor) | `SurrealDbMemberTranslator.cs` |
-| `SurrealDbQueryExpressionFactory` | (factory) | `SurrealDbQueryExpressionFactory.cs` |
+| Area | What to build |
+|------|--------------|
+| Transaction participant | `DbContextTransactionParticipant<TDbContext>` — bridges SurrealDB tx into EF Core DbContext |
+| Session adapter | `EfCoreOperations<TDbContext>` — simultaneous Dali + EF Core writes |
+| DI registration | `AddDaliWithEfCore()` extension |
 
-### Layer 4: Storage & Change Tracking
+## Known Issues
 
-| Class | Implements | File |
-|-------|-----------|------|
-| `SurrealDbDatabase` | `IDatabase`, `IDatabaseAsync` | `SurrealDbDatabase.cs` |
-| `SurrealDbTransactionManager` | `IDbContextTransactionManager` | `SurrealDbTransactionManager.cs` |
-| `SurrealDbTransaction` | `IDbContextTransaction` | `SurrealDbTransaction.cs` |
-| `SurrealDbExecutionStrategy` | `IExecutionStrategy` | `SurrealDbExecutionStrategy.cs` |
-| `SurrealDbDatabaseCreator` | `IDatabaseCreator` | `SurrealDbDatabaseCreator.cs` |
-| `SurrealDbCommandBatchPreparer` | (batch grouping) | `SurrealDbCommandBatchPreparer.cs` |
-
-### Layer 5: Migrations (Design-Time)
-
-| Class | Implements | File |
-|-------|-----------|------|
-| `SurrealDbMigrationSqlGenerator` | `IMigrationsSqlGenerator` | `SurrealDbMigrationSqlGenerator.cs` |
-| `SurrealDbDatabaseModelFactory` | `IDatabaseModelFactory` | `SurrealDbDatabaseModelFactory.cs` |
-| `SurrealDbHistoryRepository` | `IHistoryRepository` | `SurrealDbHistoryRepository.cs` |
-| `SurrealDbMigrationsAssembly` | `IMigrationsAssembly` | `SurrealDbMigrationsAssembly.cs` |
-| `SurrealDbDesignTimeServices` | (DI registration) | `SurrealDbDesignTimeServices.cs` |
-
-## Old Files to Remove
-
-| File | Action |
-|------|--------|
-| `SurrealModels.cs` | Delete |
-| `SurrealContext.cs` | Delete |
-| `QueryProvider.cs` | Delete |
-| `ExpressionVisitor.cs` | Delete |
-| `Extensions.cs` | Delete |
-| `Examples.cs` | Keep (excluded from build, reference material) |
-
-## Key Patterns
-
-### Session Lifecycle (per Council recommendation)
-
-```
-DbContext (scoped)
-  ├── ISurrealDbClient (from DI, singleton)
-  ├── SurrealDbConnection (scoped, creates ISurrealDbSession via client.CreateSession())
-  └── All CRUD → SurrealDbConnection.Session (not client directly)
-```
-
-### RecordId PK Bridge
-
-- CLR entity exposes `long Id` or `string Id` (consumer's choice)
-- Internal storage uses `RecordIdOf<long>` or `RecordIdOf<string>`
-- `ValueConverter` handles the dual representation transparently
-- `SurrealDbModelFinalizedConvention` applies the PK convention automatically
-
-### Non-Relational EF Core Pattern
-
-- Extends `Microsoft.EntityFrameworkCore` directly (like Cosmos DB provider)
-- Does NOT reference `Microsoft.EntityFrameworkCore.Relational`
-- `IQueryCompiler` is required for all `DbSet<T>` operations — even simple `ToListAsync()`
-
-## Risks & Mitigations
-
-| Risk | Mitigation |
-|------|-----------|
-| `IModelCacheKeyFactory` missing → runtime crash | Added to class list, implemented in Step 6 |
-| RecordId bridging underspecified | Dedicated ValueConverter design before coding |
-| Options extension caching bugs | Reference Cosmos DB provider source |
-| `IShapedQueryCompilingExpressionVisitor` complexity | Iterative approach; test materialization early |
-| SurrealDb.Net v0.10.2 API drift | Pin exact version; test against submodule |
-| Spec test package may not exist | Prepare to write own test suite if needed |
+| Issue | Workaround |
+|-------|-----------|
+| CBOR deserialization requires `Record` base class | Test models must extend `SurrealDb.Net.Models.Record` |
+| EventRecord CBOR fetch fails with embedded engine | Use RawQuery + JSON round-trip for non-Record types |
+| `Aero.Cms.SourceGenerators` project reference warning | Pre-existing repo issue, non-blocking |
