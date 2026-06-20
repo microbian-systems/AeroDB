@@ -40,21 +40,22 @@ public interface ISurrealDbQueryable<T> : IOrderedQueryable<T>
     ISurrealDbQueryable<T> Fetch(Expression<Func<T, object?>> property);
 
     /// <summary>
-    /// Eagerly loads related documents by matching on a property value.
+    /// Eagerly loads related documents using SurrealDB's LET variable for
+    /// <b>server-side batch loading in a single round trip</b>.
     ///
-    /// <para>After the main query executes, this method batch-loads all
-    /// referenced documents in a single additional round trip and invokes
-    /// the callback for each loaded document.</para>
+    /// <para>The generated SurrealQL uses a LET variable to cache the filtered
+    /// main query results, then includes are resolved via subqueries against
+    /// the in-memory LET variable — equivalent to PostgreSQL temp tables
+    /// but using SurrealDB's native variable system.</para>
     ///
-    /// <para><b>Important:</b> This adds one additional SurrealDB round trip
-    /// per Include call. For inline document expansion with no extra
-    /// round trips, use <see cref="Fetch"/> instead.</para>
+    /// <para><b>Performance:</b> One round trip regardless of how many Includes
+    /// are chained. The main WHERE filter is evaluated once by the LET statement.</para>
     ///
-    /// <para>Typical usage: load the main entity set and populate a side
-    /// collection with the referenced entities.</para>
-    ///
-    /// <para>Constraints: TProperty must be the key type (string, int, long, Guid).
-    /// The Include targets are loaded from their table via SELECT WHERE id IN (...).</para>
+    /// <para><b>SurrealQL pattern:</b>
+    /// <code>LET $main = (SELECT * FROM source WHERE ...);
+    /// SELECT * FROM $main;
+    /// SELECT * FROM target WHERE id IN (SELECT VALUE fk FROM $main);</code>
+    /// </para>
     /// </summary>
     /// <typeparam name="TProperty">The property type on T (e.g., Guid for an Id reference).</typeparam>
     /// <typeparam name="TInclude">The type of the included document.</typeparam>
@@ -72,12 +73,12 @@ public interface ISurrealDbQueryable<T> : IOrderedQueryable<T>
         where TInclude : class;
 
     /// <summary>
-    /// Eager loads related documents into a dictionary keyed by the property value.
+    /// Eagerly loads related documents into a dictionary keyed by the property value.
     ///
     /// <para>Like <see cref="Include{TProperty,TInclude}(Expression{Func{T,TProperty}}, Action{TInclude})"/>,
-    /// but populates an existing dictionary instead of invoking a callback.</para>
-    ///
-    /// <para>This adds one additional SurrealDB round trip per Include call.</para>
+    /// but populates an existing dictionary instead of invoking a callback.
+    /// Uses SurrealDB's LET variable for server-side batch loading in a
+    /// <b>single round trip</b> regardless of how many Includes are chained.</para>
     /// </summary>
     /// <typeparam name="TKey">The key type (must match TProperty).</typeparam>
     /// <typeparam name="TInclude">The type of the included document.</typeparam>
@@ -218,6 +219,7 @@ public class SurrealDbQueryable<T> : ISurrealDbQueryable<T>, IAsyncEnumerable<T>
 
     /// <summary>
     /// Eagerly loads related documents by matching on a property value (callback overload).
+    /// Uses SurrealDB's LET variable for server-side batch loading in a single round trip.
     /// </summary>
     public ISurrealDbQueryable<T> Include<TProperty, TInclude>(
         Expression<Func<T, TProperty>> property,
@@ -236,6 +238,7 @@ public class SurrealDbQueryable<T> : ISurrealDbQueryable<T>, IAsyncEnumerable<T>
 
     /// <summary>
     /// Eagerly loads related documents into a dictionary keyed by the property value.
+    /// Uses SurrealDB's LET variable for server-side batch loading in a single round trip.
     /// </summary>
     public ISurrealDbQueryable<T> Include<TKey, TInclude>(
         Expression<Func<T, TKey>> key,

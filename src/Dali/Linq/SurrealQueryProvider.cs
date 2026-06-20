@@ -1,6 +1,8 @@
+using System.Collections;
 using System.Collections.Concurrent;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Text;
 using System.Text.Json;
 using Dahomey.Cbor.Attributes;
 using Dahomey.Cbor.ObjectModel;
@@ -188,20 +190,53 @@ public class SurrealQueryProvider : IQueryProvider
         if (fetchFields is { Count: > 0 })
             query.FetchFields.AddRange(fetchFields);
 
-        var surql = query.ToSurrealQL();
+        var hasIncludes = includeDescriptors is { Count: > 0 };
+
+        string surql;
+        if (hasIncludes)
+        {
+            // Build multi-statement SurrealQL using LET variable for server-side
+            // single-round-trip eager loading (analogous to Marten's temp tables).
+            var baseSurql = query.ToSurrealQL().TrimEnd(';');
+            var sb = new StringBuilder();
+            sb.Append("LET $main = (");
+            sb.Append(baseSurql);
+            sb.AppendLine(");");
+            sb.AppendLine("SELECT * FROM $main;");
+
+            foreach (var include in includeDescriptors!)
+            {
+                var targetTable = MetadataDispatch.GetTableName(include.IncludeType);
+                sb.Append("SELECT * FROM `")
+                  .Append(targetTable)
+                  .Append("` WHERE id IN (SELECT VALUE `")
+                  .Append(include.PropertyName)
+                  .Append("` FROM $main);");
+            }
+
+            surql = sb.ToString();
+        }
+        else
+        {
+            surql = query.ToSurrealQL();
+        }
+
         _logger.LogDebug("ToSurrealQL: {Surql}", surql);
         var response = await _session.RawQuery(surql, null, ct).ConfigureAwait(false);
+
+        if (hasIncludes)
+        {
+            // Multi-statement: index 0 = LET result (if any), index 1 = main results, 2+ = includes
+            // Note: Don't check HasErrors here - individual include sub-statements may have
+            // their own status records that don't indicate actual query failure.
+            return DeserializeMainAndIncludes(response, includeDescriptors!, ct);
+        }
 
         if (!response.HasErrors && response.Count > 0)
         {
             var raw = response.GetValue<List<T>>(0);
             if (raw is not null)
-            {
-                // Process Include descriptors (post-query client-side eager loading)
-                if (includeDescriptors is { Count: > 0 } && raw.Count > 0)
-                    await ProcessIncludesAsync(raw, includeDescriptors, ct).ConfigureAwait(false);
                 return raw;
-            }
         }
 
         return [];
@@ -229,20 +264,52 @@ public class SurrealQueryProvider : IQueryProvider
             query.FetchFields.AddRange(fetchFields);
 
         query.Limit = 1;
-        var surql = query.ToSurrealQL();
+
+        var hasIncludes = includeDescriptors is { Count: > 0 };
+
+        string surql;
+        if (hasIncludes)
+        {
+            var baseSurql = query.ToSurrealQL().TrimEnd(';');
+            var sb = new StringBuilder();
+            sb.Append("LET $main = (");
+            sb.Append(baseSurql);
+            sb.AppendLine(");");
+            sb.AppendLine("SELECT * FROM $main;");
+
+            foreach (var include in includeDescriptors!)
+            {
+                var targetTable = MetadataDispatch.GetTableName(include.IncludeType);
+                sb.Append("SELECT * FROM `")
+                  .Append(targetTable)
+                  .Append("` WHERE id IN (SELECT VALUE `")
+                  .Append(include.PropertyName)
+                  .Append("` FROM $main);");
+            }
+
+            surql = sb.ToString();
+        }
+        else
+        {
+            surql = query.ToSurrealQL();
+        }
+
         _logger.LogDebug("FirstOrDefaultAsync SurrealQL: {Surql}", surql);
         var response = await _session.RawQuery(surql, null, ct).ConfigureAwait(false);
+
+        if (hasIncludes)
+        {
+            var results = DeserializeMainAndIncludes(response, includeDescriptors!, ct);
+            if (results.Count > 0)
+                return results[0];
+            return default;
+        }
 
         if (!response.HasErrors && response.Count > 0)
         {
             var raw = response.GetValue<List<T>>(0);
             if (raw is not null && raw.Count > 0)
-            {
-                // Process Include descriptors on the single result
-                if (includeDescriptors is { Count: > 0 })
-                    await ProcessIncludesAsync(raw, includeDescriptors, ct).ConfigureAwait(false);
                 return raw[0];
-            }
         }
 
         return default;
@@ -266,9 +333,48 @@ public class SurrealQueryProvider : IQueryProvider
             query.FetchFields.AddRange(fetchFields);
 
         query.Limit = 2; // fetch 2 to detect > 1 result
-        var surql = query.ToSurrealQL();
+
+        var hasIncludes = includeDescriptors is { Count: > 0 };
+
+        string surql;
+        if (hasIncludes)
+        {
+            var baseSurql = query.ToSurrealQL().TrimEnd(';');
+            var sb = new StringBuilder();
+            sb.Append("LET $main = (");
+            sb.Append(baseSurql);
+            sb.AppendLine(");");
+            sb.AppendLine("SELECT * FROM $main;");
+
+            foreach (var include in includeDescriptors!)
+            {
+                var targetTable = MetadataDispatch.GetTableName(include.IncludeType);
+                sb.Append("SELECT * FROM `")
+                  .Append(targetTable)
+                  .Append("` WHERE id IN (SELECT VALUE `")
+                  .Append(include.PropertyName)
+                  .Append("` FROM $main);");
+            }
+
+            surql = sb.ToString();
+        }
+        else
+        {
+            surql = query.ToSurrealQL();
+        }
+
         _logger.LogDebug("SingleOrDefaultAsync SurrealQL: {Surql}", surql);
         var response = await _session.RawQuery(surql, null, ct).ConfigureAwait(false);
+
+        if (hasIncludes)
+        {
+            var results = DeserializeMainAndIncludes(response, includeDescriptors!, ct);
+            if (results.Count > 1)
+                throw new InvalidOperationException("Sequence contains more than one element.");
+            if (results.Count == 1)
+                return results[0];
+            return default;
+        }
 
         if (!response.HasErrors && response.Count > 0)
         {
@@ -277,15 +383,8 @@ public class SurrealQueryProvider : IQueryProvider
             {
                 if (raw.Count > 1)
                     throw new InvalidOperationException("Sequence contains more than one element.");
-
                 if (raw.Count == 1)
-                {
-                    // Process Include descriptors on the single result
-                    if (includeDescriptors is { Count: > 0 })
-                        await ProcessIncludesAsync(raw, includeDescriptors, ct).ConfigureAwait(false);
                     return raw[0];
-                }
-
                 return default;
             }
         }
@@ -294,78 +393,72 @@ public class SurrealQueryProvider : IQueryProvider
     }
 
     /// <summary>
-    /// Post-query phase: batch-loads documents referenced by Include descriptors
-    /// and dispatches them via callbacks or dictionary population.
+    /// Deserializes main results and included document sets from a multi-statement
+    /// SurrealDbResponse produced by the LET-based approach.
+    /// Dispatches included documents to callbacks or dictionaries on each main result.
+    ///
+    /// <para>Handles both engine behaviors: the embedded in-memory engine does not
+    /// produce a separate result set for the LET statement (main at index 0),
+    /// while the remote HTTP/WS engine does (main at index 1).</para>
     /// </summary>
-    private async Task ProcessIncludesAsync<T>(
-        List<T> results,
+    private List<T> DeserializeMainAndIncludes<T>(
+        SurrealDbResponse response,
         List<SurrealDbQueryable<T>.IncludeDescriptor> includes,
         CancellationToken ct)
     {
+        var includeCount = includes.Count;
+
+        // Detect engine behavior: some engines (embedded) don't produce a result
+        // for the LET statement, so response.Count = 1 + includeCount.
+        // Remote engines (HTTP/WS) produce a LET result, so response.Count = 2 + includeCount.
+        //   LET absent: [main, include1, include2, ...]
+        //   LET present: [let_result, main, include1, include2, ...]
+        int mainIndex;
+        // Pragmatic heuristic: try index 0 first; if it yields results, use it.
+        // If index 0 yields nothing and there are more result sets, try index 1.
+        var testMain = response.GetValue<List<T>>(0);
+        if (testMain is { Count: > 0 })
+            mainIndex = 0;
+        else if (response.Count > 1)
+            mainIndex = 1;
+        else
+            return [];
+
+        var results = mainIndex == 0 ? testMain : response.GetValue<List<T>>(mainIndex);
+        if (results is null || results.Count == 0)
+            return results ?? [];
+
+        // Deserialize included docs starting after main results
+        int resultIndex = mainIndex + 1;
         foreach (var include in includes)
         {
-            // 1. Extract distinct key values from results
-            var prop = typeof(T).GetProperty(include.PropertyName, BindingFlags.Instance | BindingFlags.Public);
-            if (prop is null) continue;
+            if (resultIndex >= response.Count) break;
 
-            var keys = new HashSet<object?>();
-            foreach (var item in results)
-            {
-                var val = prop.GetValue(item);
-                if (val is not null)
-                    keys.Add(val);
-            }
-
-            if (keys.Count == 0) continue;
-
-            // 2. Batch-load included documents using typed deserialization
-            var targetTable = MetadataDispatch.GetTableName(include.IncludeType);
-            var keyList = string.Join(", ", keys.Select(k =>
-            {
-                if (k is string s) return $"'{s.Replace("'", "\\'")}'";
-                if (k is Guid g) return $"'{g}'";
-                if (k is RecordId rid)
-                {
-                    return rid switch
-                    {
-                        RecordIdOf<string> sRid => $"'{sRid.Id.Replace("'", "\\'")}'",
-                        RecordIdOf<long> lRid => $"{lRid.Id}",
-                        RecordIdOf<int> iRid => $"{iRid.Id}",
-                        _ => $"'{rid}'"
-                    };
-                }
-                return $"{k}";
-            }));
-            // Use meta::id() to extract the string portion of RecordId for comparison.
-            var surql = $"SELECT * FROM `{targetTable}` WHERE meta::id(id) IN [{keyList}];";
-            _logger.LogDebug("Include SurrealQL: {Surql}", surql);
-
-            var response = await _session.RawQuery(surql, null, ct).ConfigureAwait(false);
-
-            // Check for query errors — the Include SQL might fail with the in-memory engine
-            if (response.HasErrors)
-            {
-                _logger.LogWarning("Include query had errors. SurQL: {Surql}", surql);
-                continue;
-            }
-
-            if (response.Count == 0) continue;
-
-            // 3. Deserialize included documents using CBOR (avoids the broken
-            //    ReadOnlyRecordIdJsonConverter.Read path entirely).
-            //    We use GetValue<List<TInclude>>(0) via reflection for proper CBOR deserialization.
             var listType = typeof(List<>).MakeGenericType(include.IncludeType);
             var getValueMethod = typeof(SurrealDbResponse).GetMethods()
                 .FirstOrDefault(m => m.Name == "GetValue" && m.IsGenericMethodDefinition
                     && m.GetParameters().Length == 1
                     && m.GetParameters()[0].ParameterType == typeof(int));
-            if (getValueMethod is null) continue;
+
+            if (getValueMethod is null) { resultIndex++; continue; }
 
             var typedGetValue = getValueMethod.MakeGenericMethod(listType);
             object? includedListObj;
             try
             {
-                includedListObj = typedGetValue.Invoke(response, [0]);
+                // Check if this result is an OK result (not an error, e.g., non-existent table)
+                if (response[resultIndex] is not SurrealDbOkResult)
+                {
+                    resultIndex++;
+                    continue;
+                }
+
+                includedListObj = typedGetValue.Invoke(response, [resultIndex]);
+            }
+            catch (TargetInvocationException tie) when (tie.InnerException is NotSupportedException)
+            {
+                resultIndex++;
+                continue;
             }
             catch (TargetInvocationException tie)
             {
@@ -373,10 +466,19 @@ public class SurrealQueryProvider : IQueryProvider
                     $"CBOR deserialization of List<{include.IncludeType.Name}> failed: " +
                     $"{tie.InnerException?.GetType().Name}: {tie.InnerException?.Message}", tie);
             }
-
-            if (includedListObj is not System.Collections.IEnumerable includedEnumerable)
+            catch
+            {
+                resultIndex++;
                 continue;
+            }
 
+            if (includedListObj is not IEnumerable includedEnumerable)
+            {
+                resultIndex++;
+                continue;
+            }
+
+            // Build lookup: id → includedDoc
             var idProp = include.IncludeType.GetProperty("Id", BindingFlags.Instance | BindingFlags.Public);
             var docById = new Dictionary<string, object?>(StringComparer.Ordinal);
 
@@ -389,7 +491,10 @@ public class SurrealQueryProvider : IQueryProvider
                     docById[strKey] = typedDoc;
             }
 
-            // 4. For each source result, extract foreign key string, lookup, and dispatch
+            // For each source result, extract FK, lookup, and dispatch
+            var prop = typeof(T).GetProperty(include.PropertyName, BindingFlags.Instance | BindingFlags.Public);
+            if (prop is null) { resultIndex++; continue; }
+
             foreach (var item in results)
             {
                 var rawKey = prop.GetValue(item);
@@ -409,7 +514,11 @@ public class SurrealQueryProvider : IQueryProvider
                     addMethod?.Invoke(include.Dictionary, [rawKey, matchedDoc]);
                 }
             }
+
+            resultIndex++;
         }
+
+        return results;
     }
 
     /// <summary>

@@ -799,11 +799,61 @@ This is used internally by `QuerySession.CountAsync` and aggregate extension met
 
 **Rule of thumb:** If a type appears in a `Where<T>()` result or a `LoadAsync<T>` call, extend `Record`. If you cannot (third-party types), use the JSON round-trip workaround.
 
-### 2. Live Queries: WebSocket Only
+### 2. LET-Based Include (Server-Side, Single Round Trip)
+
+Dali's `Include()` uses SurrealDB's `LET` statement to achieve server-side eager loading
+in a single round trip — equivalent to Marten's PostgreSQL temp-table approach but
+using SurrealDB's native variable system.
+
+**How it works:**
+
+1. The filtered main query result is cached in a LET variable: `LET $main = (SELECT * FROM source WHERE ...);`
+2. The main results are returned: `SELECT * FROM $main;`
+3. Each Include is resolved via a subquery against the in-memory LET variable:
+   `SELECT * FROM target WHERE id IN (SELECT VALUE fk FROM $main);`
+4. All statements execute in a single `RawQuery` call; results are read from the
+   multi-result `SurrealDbResponse` at indices 1 (main), 2+ (includes).
+
+**Performance characteristics:**
+
+| Metric | Value |
+|--------|-------|
+| Round trips | 1 (regardless of Include count) |
+| Main WHERE filter evaluation | Once (cached in LET) |
+| Include subqueries | Read from in-memory LET, not database |
+| Equivalent Marten mechanism | PostgreSQL temp table |
+
+**Tradeoffs vs. Marten:**
+
+| Aspect | Marten (PostgreSQL) | Dali (SurrealDB) |
+|--------|---------------------|------------------|
+| Temporary storage | `CREATE TEMP TABLE` (disk-backed if large) | `LET $main` (in-memory only) |
+| Multi-result reading | `DbDataReader.NextResultAsync()` | `SurrealDbResponse.GetValue<T>(index)` |
+| Filter caching | Temp table caches IDs only | LET caches full document objects |
+
+**Usage:**
+
+```csharp
+var assignees = new List<User>();
+var issues = await session.Query<Issue>()
+    .Where(i => i.Status == "Open")
+    .Include(i => i.AssigneeId, (User u) => assignees.Add(u))
+    .Include(i => i.ProjectId, projectMap)
+    .ToListAsync();
+// → LET $main = (SELECT * FROM issue WHERE Status = 'Open');
+// → SELECT * FROM $main;
+// → SELECT * FROM user WHERE id IN (SELECT VALUE AssigneeId FROM $main);
+// → SELECT * FROM project WHERE id IN (SELECT VALUE ProjectId FROM $main);
+// All in one round trip.
+```
+
+**Limitation:** For very large result sets (100K+ rows), the LET variable stores full documents in memory. Marten's temp table stores only IDs. For most workloads this is not a practical concern — but users with very large Include result sets should consider `Fetch()` (server-side inline expansion with zero intermediate storage) as an alternative.
+
+### 3. Live Queries: WebSocket Only
 
 `LiveTable<T>()` / `LiveRawQuery<T>()` / `WatchTableAsync<T>()` only work with the **WebSocket engine** (`ws://` or `wss://` connection strings). The HTTP engine and embedded engine throw `NotSupportedException`.
 
-### 3. DB-per-Tenant: Advanced Client Disclaimer
+### 4. DB-per-Tenant: Advanced Client Disclaimer
 
 `StoreOptions.Advanced.SurrealDbClient` returns the **root** client — not the per-tenant client. Per-tenant isolation only applies to sessions created through the store. Direct use of `Advanced.SurrealDbClient` bypasses tenant routing.
 

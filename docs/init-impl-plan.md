@@ -56,7 +56,7 @@
 |-------|-------------|
 | Interfaces | `IDocumentStore`, `IQuerySession`, `IDocumentSession`, `IEvents` |
 | Sessions | `QuerySession` (read-only), `DocumentSession` (read-write + unit of work) |
-| LINQ | `SurrealExpressionVisitor` (Where, OrderBy, Skip, Take, Select, string methods), `SurrealQueryProvider` |
+| LINQ | `SurrealExpressionVisitor` (Where, OrderBy, Skip, Take, Select, string methods), `SurrealQueryProvider` — `Include()` uses LET variables for single-round-trip eager loading (like Marten's temp tables) |
 | Storage | `DocumentStorage` (snake_case table naming), `UnitOfWork` (Added/Modified/Deleted) |
 | Events | `EventStore` (Append, StartStream, FetchStream on `mt_events`) |
 | Schema | `SchemaManager` (DEFINE TABLE/FIELD/INDEX) |
@@ -1019,15 +1019,37 @@ internal sealed class SumResult : SurrealDb.Net.Models.Record
 }
 ```
 
-### 2. 🟡 Live Queries: WebSocket Only
+### 2. ✅ Include — Single Round Trip via LET Variables
+
+`Include()` now uses SurrealDB's `LET` statement for server-side eager loading in
+a **single round trip** — equivalent to Marten's PostgreSQL temp-table approach.
+
+The generated SurrealQL caches the filtered main query in `$main`, then resolves
+each Include via subqueries against the in-memory variable:
+
+```surql
+LET $main = (SELECT * FROM issue WHERE Status = 'Open');
+SELECT * FROM $main;
+SELECT * FROM user WHERE id IN (SELECT VALUE AssigneeId FROM $main);
+SELECT * FROM project WHERE id IN (SELECT VALUE ProjectId FROM $main);
+```
+
+All statements execute in a single `RawQuery()`. The `SurrealDbResponse` is read at
+indices 1 (main), 2+ (includes) — index 0 is the LET result.
+
+**Tradeoff:** The LET variable stores full documents in memory. Marten's temp table
+stores only IDs. For most workloads this is not a concern, but for 100K+ row
+included sets, prefer `Fetch()` (inline expansion, zero intermediate storage).
+
+### 3. 🟡 Live Queries: WebSocket Only
 
 `WatchTableAsync<T>()` / `LiveTable<T>()` require a `ws://` or `wss://` connection. HTTP and embedded engines throw `NotSupportedException`.
 
-### 3. 🟡 DB-per-Tenant: Advanced Client Bypass
+### 4. 🟡 DB-per-Tenant: Advanced Client Bypass
 
 `StoreOptions.Advanced.SurrealDbClient` returns the root client — tenant isolation only applies to store-created sessions.
 
-### 4. 🔵 Pre-existing Build Warnings
+### 5. 🔵 Pre-existing Build Warnings
 
 | Warning | Status |
 |---------|--------|
