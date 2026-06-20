@@ -24,6 +24,26 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
     private static readonly MethodInfo? GetValueMethod = typeof(SurrealDbResponse).GetMethods()
         .FirstOrDefault(m => m.Name == "GetValue" && m.IsGenericMethodDefinition);
 
+    /// <summary>
+    /// Cached <c>MethodInfo</c> for <see cref="ISurrealDbSession.Create{T}"/>,
+    /// used by <see cref="CreateEntityAsync"/> to avoid reflection lookup on every call.
+    /// </summary>
+    private static readonly MethodInfo? CreateMethod = typeof(ISurrealDbSession).GetMethods()
+        .FirstOrDefault(m => m.Name == nameof(ISurrealDbSession.Create)
+            && m.IsGenericMethodDefinition
+            && m.GetParameters().Length == 3
+            && m.GetParameters()[0].ParameterType == typeof(string)
+            && m.GetParameters()[2].ParameterType == typeof(CancellationToken));
+
+    /// <summary>
+    /// Cached <c>MethodInfo</c> for <see cref="ISurrealDbSharedMethods.Upsert{T, T}"/>,
+    /// used by <see cref="UpsertRecordAsync"/> to avoid reflection lookup on every call.
+    /// </summary>
+    private static readonly MethodInfo? UpsertMethod = typeof(ISurrealDbSharedMethods).GetMethods()
+        .First(m => m.Name == nameof(ISurrealDbSharedMethods.Upsert)
+            && m.GetParameters().Length == 3
+            && m.GetParameters()[0].ParameterType == typeof(RecordId));
+
     public DocumentSession(ISurrealDbClient client, ISurrealDbSession session, StoreOptions options, bool isDirtyTracking)
         : base(client, session, options)
     {
@@ -150,6 +170,26 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         _logger.LogInformation("SaveChangesAsync: committing {EntityCount} entities and {EventCount} events",
             count, _appendedEvents.Count);
 
+        // Cross-DB check: group operations by their database target.
+        // SurrealDB cannot span multiple databases in a single transaction,
+        // so we reject cross-database batches up front.
+        // This check must happen BEFORE the try/catch so the exception is not wrapped.
+        var dbGroups = _unitOfWork.Operations
+            .GroupBy(op => MetadataDispatch.GetSchemaTarget(op.EntityType, Options.Schema).Database)
+            .ToList();
+
+        if (dbGroups.Count > 1)
+        {
+            var dbNames = string.Join(", ",
+                dbGroups.Select(g => $"'{g.Key ?? Options.Database ?? "test"}'"));
+            throw new InvalidOperationException(
+                $"Cross-database transactions are not supported. " +
+                $"Unit of work spans multiple databases: {dbNames}");
+        }
+
+        // Resolve the target session for this database (null = default database)
+        var targetSchemaName = dbGroups.Count > 0 ? dbGroups[0].Key : null;
+
         try
         {
             // BeforeSaveChangesAsync hooks
@@ -159,201 +199,233 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                     await listener.BeforeSaveChangesAsync(this, ct).ConfigureAwait(false);
             }
 
-            // Phase 1: Optimistic concurrency checks (Modified entities only)
-            // Runs before any mutations so we fail-fast if a conflict exists.
-            if (Options.UseOptimisticConcurrency && count > 0)
-            {
-                foreach (var op in _unitOfWork.Operations)
-                {
-                    if (op.Type == OperationType.Modified)
-                        await CheckConcurrencyAsync(op, ct).ConfigureAwait(false);
-                }
-            }
+            var targetSession = await GetSessionForSchemaAsync(targetSchemaName, ct).ConfigureAwait(false);
 
-            // Phase 2: Increment version fields on all entities before persisting
-            if (Options.UseOptimisticConcurrency && count > 0)
-            {
-                foreach (var op in _unitOfWork.Operations)
-                {
-                    if (op.Type is OperationType.Added or OperationType.Modified)
-                        IncrementVersion(op.Entity);
-                }
-            }
+            // Begin SurrealDB transaction — all per-entity operations on this session
+            // participate because they share the underlying connection.
+            var tx = await targetSession.BeginTransaction(ct).ConfigureAwait(false);
 
-            // Phase 3: persist tracked entities (Added / Modified / Deleted)
-            if (count > 0)
+            try
             {
-                foreach (var op in _unitOfWork.Operations)
+                // Phase 1: Optimistic concurrency checks (Modified entities only)
+                // Runs before any mutations so we fail-fast if a conflict exists.
+                if (Options.UseOptimisticConcurrency && count > 0)
                 {
-                    var table = MetadataDispatch.GetTableName(op.EntityType);
-
-                    // Call before-store/before-delete listeners
-                    if (Options.Listeners.Count > 0)
+                    foreach (var op in _unitOfWork.Operations)
                     {
-                        foreach (var listener in Options.Listeners)
+                        if (op.Type == OperationType.Modified)
+                            await CheckConcurrencyAsync(op, targetSession, ct).ConfigureAwait(false);
+                    }
+                }
+
+                // Phase 2: Increment version fields on all entities before persisting
+                if (Options.UseOptimisticConcurrency && count > 0)
+                {
+                    foreach (var op in _unitOfWork.Operations)
+                    {
+                        if (op.Type is OperationType.Added or OperationType.Modified)
+                            IncrementVersion(op.Entity);
+                    }
+                }
+
+                // Phase 3: persist tracked entities (Added / Modified / Deleted)
+                if (count > 0)
+                {
+                    foreach (var op in _unitOfWork.Operations)
+                    {
+                        var table = MetadataDispatch.GetTableName(op.EntityType);
+
+                        // Call before-store/before-delete listeners
+                        if (Options.Listeners.Count > 0)
                         {
-                            if (op.Type is OperationType.Added or OperationType.Modified)
-                                listener.BeforeStore(this, op.Entity);
-                            else if (op.Type is OperationType.Deleted or OperationType.SoftDeleted)
-                                listener.BeforeDelete(this, op.Entity);
+                            foreach (var listener in Options.Listeners)
+                            {
+                                if (op.Type is OperationType.Added or OperationType.Modified)
+                                    listener.BeforeStore(this, op.Entity);
+                                else if (op.Type is OperationType.Deleted or OperationType.SoftDeleted)
+                                    listener.BeforeDelete(this, op.Entity);
+                            }
+                        }
+
+                        switch (op.Type)
+                        {
+                            case OperationType.Added:
+                                _logger.LogDebug("CREATE {Type} ({Table})", op.EntityType.Name, table);
+                                var createdResult = await CreateEntityAsync(op, table, targetSession, ct).ConfigureAwait(false);
+                                if (createdResult is not null)
+                                {
+                                    var idProp = op.EntityType.GetProperty("Id");
+                                    var createdId = createdResult.GetType().GetProperty("Id")?.GetValue(createdResult);
+                                    if (idProp is not null && createdId is not null)
+                                        idProp.SetValue(op.Entity, createdId);
+                                }
+                                break;
+
+                            case OperationType.Modified:
+                                _logger.LogDebug("UPDATE {Type} ({Table})", op.EntityType.Name, table);
+                                var modId = GetRecordId(op.Entity, table);
+                                if (modId is not null)
+                                {
+                                    if (op.Entity is IRecord record)
+                                    {
+                                        // Use Upsert (create-or-update) via the SDK's typed path,
+                                        // which avoids CBOR serialization issues with JsonElement values.
+                                        await UpsertRecordAsync(record, modId, targetSession, ct).ConfigureAwait(false);
+                                    }
+                                    else
+                                    {
+                                        // Fall back to Merge for non-Record types
+                                        var json = JsonSerializer.Serialize(op.Entity, new JsonSerializerOptions
+                                        {
+                                            PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower
+                                        });
+                                        var dict = JsonSerializer.Deserialize<Dictionary<string, object>>(json)!;
+                                        await targetSession.Merge<object>(modId, dict, ct).ConfigureAwait(false);
+                                    }
+                                }
+                                break;
+
+                            case OperationType.Deleted:
+                                _logger.LogDebug("DELETE {Type} ({Table})", op.EntityType.Name, table);
+                                var delId = GetRecordId(op.Entity, table);
+                                if (delId is not null)
+                                    await targetSession.Delete(delId, ct).ConfigureAwait(false);
+                                break;
+
+                            case OperationType.SoftDeleted:
+                                _logger.LogDebug("SOFT-DELETE {Type} ({Table})", op.EntityType.Name, table);
+                                if (op.Entity is ISoftDeleted sd)
+                                {
+                                    sd.Deleted = true;
+                                    sd.DeletedAt = DateTimeOffset.UtcNow;
+                                }
+                                var softDelId = GetRecordId(op.Entity, table);
+                                if (softDelId is not null)
+                                {
+                                    if (op.Entity is IRecord record)
+                                    {
+                                        await UpsertRecordAsync(record, softDelId, targetSession, ct).ConfigureAwait(false);
+                                    }
+                                    else
+                                    {
+                                        var json = JsonSerializer.Serialize(op.Entity, new JsonSerializerOptions
+                                        {
+                                            PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower
+                                        });
+                                        var dict = JsonSerializer.Deserialize<Dictionary<string, object>>(json)!;
+                                        await targetSession.Merge<object>(softDelId, dict, ct).ConfigureAwait(false);
+                                    }
+                                }
+                                break;
+                        }
+
+                        // Call after-store/after-delete listeners
+                        if (Options.Listeners.Count > 0)
+                        {
+                            foreach (var listener in Options.Listeners)
+                            {
+                                if (op.Type is OperationType.Added or OperationType.Modified)
+                                    listener.AfterStore(this, op.Entity);
+                                else if (op.Type is OperationType.Deleted or OperationType.SoftDeleted)
+                                    listener.AfterDelete(this, op.Entity);
+                            }
                         }
                     }
 
-                    switch (op.Type)
-                    {
-                        case OperationType.Added:
-                            _logger.LogDebug("CREATE {Type} ({Table})", op.EntityType.Name, table);
-                            var createdResult = await CreateEntityAsync(op, table, ct).ConfigureAwait(false);
-                            if (createdResult is not null)
-                            {
-                                var idProp = op.EntityType.GetProperty("Id");
-                                var createdId = createdResult.GetType().GetProperty("Id")?.GetValue(createdResult);
-                                if (idProp is not null && createdId is not null)
-                                    idProp.SetValue(op.Entity, createdId);
-                            }
-                            break;
+                    _unitOfWork.Clear();
+                }
 
-                        case OperationType.Modified:
-                            _logger.LogDebug("UPDATE {Type} ({Table})", op.EntityType.Name, table);
-                            var modId = GetRecordId(op.Entity, table);
-                            if (modId is not null)
+                // Phase 4: run inline projections on events appended during this session
+                if (_appendedEvents.Count > 0 && Options.Projections.Count > 0)
+                {
+                    var inlineProjections = Options.Projections
+                        .Where(p => p.Lifecycle == ProjectionLifecycle.Inline)
+                        .ToList();
+
+                    if (inlineProjections.Count > 0)
+                    {
+                        // Group appended events by stream
+                        var streamGroups = _appendedEvents
+                            .GroupBy(e => e.StreamId)
+                            .ToDictionary(g => g.Key, g => g.Select(e => e.Event).ToList());
+
+                        foreach (var projection in inlineProjections)
+                        {
+                            foreach (var (streamId, events) in streamGroups)
                             {
-                                if (op.Entity is IRecord record)
+                                var matchingEvents = events
+                                    .Where(e => projection.EventTypes.Contains(e.GetType()))
+                                    .ToList();
+
+                                if (matchingEvents.Count == 0)
+                                    continue;
+
+                                _logger.LogInformation("Inline projection {ProjectionType} applied on stream {StreamId}",
+                                    projection.GetType().Name, streamId);
+
+                                var context = new ProjectionContext(this, matchingEvents.AsReadOnly());
+                                await projection.ApplyAsync(context, ct).ConfigureAwait(false);
+                            }
+                        }
+
+                        // Phase 5: persist any projected documents added by inline projections
+                        if (_unitOfWork.Operations.Count > 0)
+                        {
+                            // Resolve the target session for inline projection operations
+                            // (assumes same schema as the main operations for simplicity)
+                            foreach (var op in _unitOfWork.Operations)
+                            {
+                                var table = MetadataDispatch.GetTableName(op.EntityType);
+                                var entityId = GetEntityId(op.Entity);
+
+                                if (!string.IsNullOrEmpty(entityId) && op.Entity is IRecord record)
                                 {
-                                    // Use Upsert (create-or-update) via the SDK's typed path,
-                                    // which avoids CBOR serialization issues with JsonElement values.
-                                    await UpsertRecordAsync(record, modId, ct).ConfigureAwait(false);
+                                    // Use SurrealDB's Upsert for create-or-update semantics.
+                                    // Calling via reflection because the generic type is runtime-only.
+                                    var rid = new RecordIdOf<string>(table, entityId);
+                                    await UpsertRecordAsync(record, rid, targetSession, ct).ConfigureAwait(false);
                                 }
                                 else
                                 {
-                                    // Fall back to Merge for non-Record types
-                                    var json = JsonSerializer.Serialize(op.Entity, new JsonSerializerOptions
-                                    {
-                                        PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower
-                                    });
-                                    var dict = JsonSerializer.Deserialize<Dictionary<string, object>>(json)!;
-                                    await Session.Merge<object>(modId, dict, ct).ConfigureAwait(false);
+                                    // No ID set: always create
+                                    await targetSession.Create(table, op.Entity, ct).ConfigureAwait(false);
                                 }
                             }
-                            break;
 
-                        case OperationType.Deleted:
-                            _logger.LogDebug("DELETE {Type} ({Table})", op.EntityType.Name, table);
-                            var delId = GetRecordId(op.Entity, table);
-                            if (delId is not null)
-                                await Session.Delete(delId, ct).ConfigureAwait(false);
-                            break;
-
-                        case OperationType.SoftDeleted:
-                            _logger.LogDebug("SOFT-DELETE {Type} ({Table})", op.EntityType.Name, table);
-                            if (op.Entity is ISoftDeleted sd)
-                            {
-                                sd.Deleted = true;
-                                sd.DeletedAt = DateTimeOffset.UtcNow;
-                            }
-                            var softDelId = GetRecordId(op.Entity, table);
-                            if (softDelId is not null)
-                            {
-                                if (op.Entity is IRecord record)
-                                {
-                                    await UpsertRecordAsync(record, softDelId, ct).ConfigureAwait(false);
-                                }
-                                else
-                                {
-                                    var json = JsonSerializer.Serialize(op.Entity, new JsonSerializerOptions
-                                    {
-                                        PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower
-                                    });
-                                    var dict = JsonSerializer.Deserialize<Dictionary<string, object>>(json)!;
-                                    await Session.Merge<object>(softDelId, dict, ct).ConfigureAwait(false);
-                                }
-                            }
-                            break;
-                    }
-
-                    // Call after-store/after-delete listeners
-                    if (Options.Listeners.Count > 0)
-                    {
-                        foreach (var listener in Options.Listeners)
-                        {
-                            if (op.Type is OperationType.Added or OperationType.Modified)
-                                listener.AfterStore(this, op.Entity);
-                            else if (op.Type is OperationType.Deleted or OperationType.SoftDeleted)
-                                listener.AfterDelete(this, op.Entity);
+                            _unitOfWork.Clear();
                         }
+
+                        _appendedEvents.Clear();
                     }
                 }
 
-                _unitOfWork.Clear();
-            }
-
-            // Phase 2: run inline projections on events appended during this session
-            if (_appendedEvents.Count > 0 && Options.Projections.Count > 0)
-            {
-                var inlineProjections = Options.Projections
-                    .Where(p => p.Lifecycle == ProjectionLifecycle.Inline)
-                    .ToList();
-
-                if (inlineProjections.Count > 0)
+                // AfterSaveChangesAsync hooks (inside transaction, before commit)
+                if (Options.Listeners.Count > 0)
                 {
-                    // Group appended events by stream
-                    var streamGroups = _appendedEvents
-                        .GroupBy(e => e.StreamId)
-                        .ToDictionary(g => g.Key, g => g.Select(e => e.Event).ToList());
-
-                    foreach (var projection in inlineProjections)
-                    {
-                        foreach (var (streamId, events) in streamGroups)
-                        {
-                            var matchingEvents = events
-                                .Where(e => projection.EventTypes.Contains(e.GetType()))
-                                .ToList();
-
-                            if (matchingEvents.Count == 0)
-                                continue;
-
-                            _logger.LogInformation("Inline projection {ProjectionType} applied on stream {StreamId}",
-                                projection.GetType().Name, streamId);
-
-                            var context = new ProjectionContext(this, matchingEvents.AsReadOnly());
-                            await projection.ApplyAsync(context, ct).ConfigureAwait(false);
-                        }
-                    }
-
-                    // Phase 3: persist any projected documents added by inline projections
-                    if (_unitOfWork.Operations.Count > 0)
-                    {
-                        foreach (var op in _unitOfWork.Operations)
-                        {
-                            var table = MetadataDispatch.GetTableName(op.EntityType);
-                            var entityId = GetEntityId(op.Entity);
-
-                            if (!string.IsNullOrEmpty(entityId) && op.Entity is IRecord record)
-                            {
-                                // Use SurrealDB's Upsert for create-or-update semantics.
-                                // Calling via reflection because the generic type is runtime-only.
-                                var rid = new RecordIdOf<string>(table, entityId);
-                                await UpsertRecordAsync(record, rid, ct).ConfigureAwait(false);
-                            }
-                            else
-                            {
-                                // No ID set: always create
-                                await Session.Create(table, op.Entity, ct).ConfigureAwait(false);
-                            }
-                        }
-
-                        _unitOfWork.Clear();
-                    }
-
-                    _appendedEvents.Clear();
+                    foreach (var listener in Options.Listeners)
+                        await listener.AfterSaveChangesAsync(this, ct).ConfigureAwait(false);
                 }
+
+                // BeforeCommitAsync hooks
+                if (Options.Listeners.Count > 0)
+                {
+                    foreach (var listener in Options.Listeners)
+                        await listener.BeforeCommitAsync(this, ct).ConfigureAwait(false);
+                }
+
+                await tx.Commit(ct).ConfigureAwait(false);
+            }
+            catch
+            {
+                await tx.Cancel(ct).ConfigureAwait(false);
+                throw;
             }
 
-            // AfterSaveChangesAsync hooks
+            // AfterCommitAsync hooks (called only after successful commit)
             if (Options.Listeners.Count > 0)
             {
                 foreach (var listener in Options.Listeners)
-                    await listener.AfterSaveChangesAsync(this, ct).ConfigureAwait(false);
+                    await listener.AfterCommitAsync(this, ct).ConfigureAwait(false);
             }
 
             var resultCount = count > 0 ? count : _appendedEvents.Count;
@@ -412,14 +484,11 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
     ///
     /// <para>
     /// <b>Note on atomicity:</b> The version check (SELECT) and the subsequent write (UPSERT)
-    /// are two separate SurrealDB operations — they are <em>not</em> wrapped in a single
-    /// transaction. SurrealDB's record-level locking reduces the practical window for races,
-    /// but concurrent conflicting writes are theoretically possible under extreme contention.
-    /// Applications that require strict serializable isolation should consider external
-    /// coordination mechanisms (e.g. distributed locks).
+    /// are performed within a SurrealDB transaction, so they are now atomic. Prior to the
+    /// transactional wrapping, these were two separate operations with a small race window.
     /// </para>
     /// </summary>
-    private async Task CheckConcurrencyAsync(Operation op, CancellationToken ct)
+    private async Task CheckConcurrencyAsync(Operation op, ISurrealDbSession session, CancellationToken ct)
     {
         var entity = op.Entity;
         var expectedVersion = GetTrackedVersion(entity);
@@ -440,7 +509,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         // Query the current version from the DB using a raw SurrealQL call
         // with typed GetValue<T> deserialization (same path as Query provider).
         var surql = $"SELECT * FROM {table}:{id};";
-        var response = await Session.RawQuery(surql, null, ct).ConfigureAwait(false);
+        var response = await session.RawQuery(surql, null, ct).ConfigureAwait(false);
 
         if (response.HasErrors)
         {
@@ -483,24 +552,16 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
     /// correct runtime type, ensuring all properties (including version fields)
     /// are serialized by the CBOR serializer.
     /// </summary>
-    private async Task<object?> CreateEntityAsync(Operation op, string table, CancellationToken ct)
+    private async Task<object?> CreateEntityAsync(Operation op, string table, ISurrealDbSession session, CancellationToken ct)
     {
-        // Find the generic Create<T>(string, T, CancellationToken) method
-        var createMethod = typeof(ISurrealDbSession).GetMethods()
-            .FirstOrDefault(m => m.Name == nameof(ISurrealDbSession.Create)
-                && m.IsGenericMethodDefinition
-                && m.GetParameters().Length == 3
-                && m.GetParameters()[0].ParameterType == typeof(string)
-                && m.GetParameters()[2].ParameterType == typeof(CancellationToken));
-
-        if (createMethod is null)
+        if (CreateMethod is null)
         {
             // Fallback to untyped Create
-            return await Session.Create(table, op.Entity, ct).ConfigureAwait(false);
+            return await session.Create(table, op.Entity, ct).ConfigureAwait(false);
         }
 
-        var genericCreate = createMethod.MakeGenericMethod(op.EntityType);
-        var task = (Task?)genericCreate.Invoke(Session, [table, op.Entity, ct]);
+        var genericCreate = CreateMethod.MakeGenericMethod(op.EntityType);
+        var task = (Task?)genericCreate.Invoke(session, [table, op.Entity, ct]);
         if (task is null) return null;
 
         await task.ConfigureAwait(false);
@@ -516,17 +577,13 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
     private static string? GetVersionFieldName(Type entityType)
         => MetadataDispatch.GetVersionFieldName(entityType);
 
-    private async Task UpsertRecordAsync(IRecord record, RecordId rid, CancellationToken ct)
+    private async Task UpsertRecordAsync(IRecord record, RecordId rid, ISurrealDbSession session, CancellationToken ct)
     {
         // Use the Upsert method via ISurrealDbSharedMethods interface.
         // We call the generic method with the record's runtime type.
         var entityType = record.GetType();
-        var upsertMethod = typeof(ISurrealDbSharedMethods).GetMethods()
-            .First(m => m.Name == nameof(ISurrealDbSharedMethods.Upsert)
-                        && m.GetParameters().Length == 3
-                        && m.GetParameters()[0].ParameterType == typeof(RecordId));
-        var generic = upsertMethod.MakeGenericMethod(entityType, entityType);
-        var task = (Task)generic.Invoke(Session, [rid, record, ct])!;
+        var generic = UpsertMethod!.MakeGenericMethod(entityType, entityType);
+        var task = (Task)generic.Invoke(session, [rid, record, ct])!;
         await task.ConfigureAwait(false);
     }
 

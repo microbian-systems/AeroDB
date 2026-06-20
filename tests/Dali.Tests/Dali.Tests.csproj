@@ -16,6 +16,8 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\Dali\Dali.csproj" />
     <ProjectReference Include="..\..\src\Dali.EntityFrameworkCore\Dali.EntityFrameworkCore.csproj" />
+    <ProjectReference Include="..\..\src\WolverineFx.Dali\WolverineFx.Dali.csproj" />
+    <ProjectReference Include="..\..\wolverine\src\Wolverine.RuntimeCompilation\Wolverine.RuntimeCompilation.csproj" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\Dali.SourceGenerators\Dali.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />

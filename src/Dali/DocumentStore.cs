@@ -25,6 +25,9 @@ public class DocumentStore : IDocumentStore
     public ISurrealDbClient Client => _client
         ?? throw new InvalidOperationException("Store not initialized. Call InitializeAsync first.");
 
+    private IDaliAdvanced? _advanced;
+    public IDaliAdvanced Advanced => _advanced ??= new DaliAdvanced(Client, Options);
+
     /// <summary>
     /// Sets the tenant ID for the next session created from this store (DatabasePerTenant mode).
     /// The tenant ID is consumed on the next call to <c>QuerySessionAsync</c>,
@@ -96,6 +99,15 @@ public class DocumentStore : IDocumentStore
             await _client.Use(ns, db, ct).ConfigureAwait(false);
         }
 
+        // Populate advanced SDK access
+        Options.Advanced.SurrealDbClient = _client;
+        Options.Advanced.CreateSessionAsync = async (ct) =>
+        {
+            if (_client is ISurrealDbSession session)
+                return await session.ForkSession(ct).ConfigureAwait(false);
+            return await _client.CreateSession(ct).ConfigureAwait(false);
+        };
+
         // Apply IConfigureDali modules
         foreach (var configurator in Options.Configurators)
             configurator.Configure(Options);
@@ -107,26 +119,69 @@ public class DocumentStore : IDocumentStore
         // Auto-create document schemas if configured (includes analyzers, tables, and indexes)
         if (Options.Schema.AutoCreate && Options.Schema.Mappings.Count > 0)
         {
-            await using var schemaSession = await _client.CreateSession(ct).ConfigureAwait(false);
-            await schemaSession.Use(ns, db, ct).ConfigureAwait(false);
-
-            // Ensure analyzers before indexes (analyzers must exist before indexes referencing them)
-            if (Options.Schema.Analyzers.Analyzers.Count > 0)
+            // ── Default database (null schema) ──
+            var defaultMappings = Options.Schema.Mappings.Values.Where(m => m.SchemaName is null).ToList();
+            if (defaultMappings.Count > 0)
             {
-                _logger.LogInformation("Applying {Count} analyzers", Options.Schema.Analyzers.Analyzers.Count);
-                await schemaManager.EnsureAnalyzersAsync(schemaSession, Options.Schema.Analyzers, ct).ConfigureAwait(false);
+                await using var schemaSession = await _client.CreateSession(ct).ConfigureAwait(false);
+                await schemaSession.Use(ns, db, ct).ConfigureAwait(false);
+
+                // Ensure analyzers before indexes (analyzers must exist before indexes referencing them)
+                if (Options.Schema.Analyzers.Analyzers.Count > 0)
+                {
+                    _logger.LogInformation("Applying {Count} analyzers", Options.Schema.Analyzers.Analyzers.Count);
+                    await schemaManager.EnsureAnalyzersAsync(schemaSession, Options.Schema.Analyzers, ct).ConfigureAwait(false);
+                }
+
+                foreach (var mapping in defaultMappings)
+                {
+                    // Ensure table schema (DEFINE TABLE + fields) with the configured schema mode
+                    await schemaManager.EnsureDocumentSchemaAsync(mapping.EntityType, schemaSession, mapping.SchemaModeType, ct).ConfigureAwait(false);
+
+                    // Ensure each configured index
+                    var tableName = SchemaManager.Snake(mapping.EntityType.Name);
+                    foreach (var index in mapping.Indices)
+                    {
+                        await schemaManager.EnsureIndexAsync(schemaSession, tableName, index, ct).ConfigureAwait(false);
+                    }
+                }
             }
 
-            foreach (var mapping in Options.Schema.Mappings.Values)
-            {
-                // Ensure table schema (DEFINE TABLE + fields) with the configured schema mode
-                await schemaManager.EnsureDocumentSchemaAsync(mapping.EntityType, schemaSession, mapping.SchemaModeType, ct).ConfigureAwait(false);
+            // ── Per-schema databases (non-null SchemaName) ──
+            var schemaNames = Options.Schema.Mappings.Values
+                .Select(m => m.SchemaName)
+                .Where(s => s is not null)
+                .Distinct(StringComparer.Ordinal)
+                .ToList();
 
-                // Ensure each configured index
-                var tableName = SchemaManager.Snake(mapping.EntityType.Name);
-                foreach (var index in mapping.Indices)
+            if (schemaNames.Count > 0)
+            {
+                foreach (var schemaName in schemaNames)
                 {
-                    await schemaManager.EnsureIndexAsync(schemaSession, tableName, index, ct).ConfigureAwait(false);
+                    await using var schemaSession = await _client.CreateSession(ct).ConfigureAwait(false);
+                    await schemaSession.Use(ns, db, ct).ConfigureAwait(false);
+
+                    // Optionally create the database if it doesn't exist
+                    if (Options.Schema.AutoCreateDatabases)
+                    {
+                        await schemaManager.EnsureDatabaseAsync(schemaSession, schemaName!, ct).ConfigureAwait(false);
+                    }
+
+                    // Switch to the schema database
+                    await schemaSession.Use(ns, schemaName!, ct).ConfigureAwait(false);
+
+                    // Process all mappings for this schema
+                    foreach (var kvp in Options.Schema.Mappings.Where(m => m.Value.SchemaName == schemaName))
+                    {
+                        var mapping = kvp.Value;
+                        await schemaManager.EnsureDocumentSchemaAsync(mapping.EntityType, schemaSession, mapping.SchemaModeType, ct).ConfigureAwait(false);
+
+                        var tableName = SchemaManager.Snake(mapping.EntityType.Name);
+                        foreach (var index in mapping.Indices)
+                        {
+                            await schemaManager.EnsureIndexAsync(schemaSession, tableName, index, ct).ConfigureAwait(false);
+                        }
+                    }
                 }
             }
         }

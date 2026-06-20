@@ -17,6 +17,16 @@ public class SchemaManager
     }
 
     /// <summary>
+    /// Ensures a SurrealDB database exists by executing <c>DEFINE DATABASE IF NOT EXISTS</c>.
+    /// The session must already be connected to the correct namespace.
+    /// </summary>
+    public async Task EnsureDatabaseAsync(ISurrealDbSession session, string databaseName, CancellationToken ct = default)
+    {
+        _logger.LogInformation("Ensuring database {Database}", databaseName);
+        await session.RawQuery($"DEFINE DATABASE IF NOT EXISTS `{databaseName}`;", null, ct).ConfigureAwait(false);
+    }
+
+    /// <summary>
     /// Ensures a document table exists with the configured schema mode and defines fields for all
     /// public readable/writable properties on T (except Id).
     /// </summary>
@@ -28,16 +38,9 @@ public class SchemaManager
         var schemaMode = typeof(T).IsSealed ? SchemaMode.Strict : SchemaMode.Flexible;
         await session.RawQuery($"DEFINE TABLE {tableName} {GetSchemaSurql(schemaMode)};", null, ct).ConfigureAwait(false);
 
-        var type = typeof(T);
-        foreach (var prop in type.GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance))
+        foreach (var (name, surrealType) in GetFieldSchemas(typeof(T)))
         {
-            if (prop.Name == "Id") continue;
-            if (!prop.CanRead || !prop.CanWrite) continue;
-
-            var fieldType = GetSurrealType(prop.PropertyType);
-            // CBOR serialization stores C# property names as-is (PascalCase), so field definitions
-            // must use PascalCase to match what the engine actually stores in strict mode.
-            var fieldSurql = $"DEFINE FIELD {prop.Name} ON TABLE {tableName} TYPE {fieldType};";
+            var fieldSurql = $"DEFINE FIELD {name} ON TABLE {tableName} TYPE {surrealType};";
             await session.RawQuery(fieldSurql, null, ct).ConfigureAwait(false);
         }
     }
@@ -52,20 +55,38 @@ public class SchemaManager
         _logger.LogDebug("Ensuring document schema for table {Table} with mode {Mode}", tableName, mode);
         await session.RawQuery($"DEFINE TABLE {tableName} {GetSchemaSurql(mode)};", null, ct).ConfigureAwait(false);
 
-        var type = typeof(T);
-        foreach (var prop in type.GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance))
+        foreach (var (name, surrealType) in GetFieldSchemas(typeof(T)))
         {
-            if (prop.Name == "Id") continue;
-            if (!prop.CanRead || !prop.CanWrite) continue;
-
-            var fieldType = GetSurrealType(prop.PropertyType);
-            var fieldSurql = $"DEFINE FIELD {prop.Name} ON TABLE {tableName} TYPE {fieldType};";
+            var fieldSurql = $"DEFINE FIELD {name} ON TABLE {tableName} TYPE {surrealType};";
             await session.RawQuery(fieldSurql, null, ct).ConfigureAwait(false);
         }
     }
 
     private static string GetSchemaSurql(SchemaMode mode)
         => mode == SchemaMode.Flexible ? "SCHEMALESS" : "SCHEMAFULL";
+
+    /// <summary>
+    /// Returns the list of field schemas for the given type, using generated metadata
+    /// when available, falling back to runtime reflection if not.
+    /// </summary>
+    private static IEnumerable<(string Name, string SurrealType)> GetFieldSchemas(Type type)
+    {
+        var meta = Metadata.MetadataRegistry.TryGet(type);
+        if (meta?.Fields is { Count: > 0 } fields)
+        {
+            foreach (var f in fields)
+                yield return (f.Name, f.SurrealType);
+            yield break;
+        }
+
+        // Fallback: runtime reflection (legacy path for non-generated types)
+        foreach (var prop in type.GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance))
+        {
+            if (prop.Name == "Id") continue;
+            if (!prop.CanRead || !prop.CanWrite) continue;
+            yield return (prop.Name, GetSurrealType(prop.PropertyType));
+        }
+    }
 
     /// <summary>
     /// Ensures the mt_events table exists with the required schema for event sourcing.
@@ -250,13 +271,9 @@ public class SchemaManager
         _logger.LogDebug("Ensuring document schema for type {Type} with table {Table} and mode {Mode}", entityType.Name, tableName, mode);
         await session.RawQuery($"DEFINE TABLE {tableName} {GetSchemaSurql(mode)};", null, ct).ConfigureAwait(false);
 
-        foreach (var prop in entityType.GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance))
+        foreach (var (name, surrealType) in GetFieldSchemas(entityType))
         {
-            if (prop.Name == "Id") continue;
-            if (!prop.CanRead || !prop.CanWrite) continue;
-
-            var fieldType = GetSurrealType(prop.PropertyType);
-            var fieldSurql = $"DEFINE FIELD {prop.Name} ON TABLE {tableName} TYPE {fieldType};";
+            var fieldSurql = $"DEFINE FIELD {name} ON TABLE {tableName} TYPE {surrealType};";
             await session.RawQuery(fieldSurql, null, ct).ConfigureAwait(false);
         }
     }
@@ -270,14 +287,9 @@ public class SchemaManager
         _logger.LogDebug("Ensuring schema for type {Type} with table {Table} and mode {Mode}", typeof(T).Name, tableName, mode);
         await session.RawQuery($"DEFINE TABLE {tableName} {GetSchemaSurql(mode)};", null, ct).ConfigureAwait(false);
 
-        var type = typeof(T);
-        foreach (var prop in type.GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance))
+        foreach (var (name, surrealType) in GetFieldSchemas(typeof(T)))
         {
-            if (prop.Name == "Id") continue;
-            if (!prop.CanRead || !prop.CanWrite) continue;
-
-            var fieldType = GetSurrealType(prop.PropertyType);
-            var fieldSurql = $"DEFINE FIELD {prop.Name} ON TABLE {tableName} TYPE {fieldType};";
+            var fieldSurql = $"DEFINE FIELD {name} ON TABLE {tableName} TYPE {surrealType};";
             await session.RawQuery(fieldSurql, null, ct).ConfigureAwait(false);
         }
     }

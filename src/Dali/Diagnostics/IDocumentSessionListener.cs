@@ -12,6 +12,12 @@ public interface IDocumentSessionListener
     /// <summary>Called after all entities have been persisted successfully.</summary>
     Task AfterSaveChangesAsync(IDocumentSession session, CancellationToken ct) => Task.CompletedTask;
 
+    /// <summary>Called after the SurrealDB transaction has committed successfully.</summary>
+    Task AfterCommitAsync(IDocumentSession session, CancellationToken ct) => Task.CompletedTask;
+
+    /// <summary>Called just before the SurrealDB transaction commits.</summary>
+    Task BeforeCommitAsync(IDocumentSession session, CancellationToken ct) => Task.CompletedTask;
+
     /// <summary>Called right before a single entity is stored (inserted or updated).</summary>
     void BeforeStore(IDocumentSession session, object entity) { }
 

@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using System.Reflection;
 using Dali.Metadata;
 using Microsoft.Extensions.Logging;
@@ -28,6 +29,13 @@ public abstract class InternalSessionBase : IAsyncDisposable
     /// </summary>
     public string? TenantId { get; set; }
 
+    /// <summary>
+    /// Caches forked sessions per schema (database) name so each schema
+    /// only creates one forked session per <c>InternalSessionBase</c> lifetime.
+    /// See <see cref="GetSessionForSchemaAsync"/>.
+    /// </summary>
+    private readonly ConcurrentDictionary<string, Lazy<Task<ISurrealDbSession>>> _forkedSessionCache = new();
+
     protected InternalSessionBase(ISurrealDbClient client, ISurrealDbSession session, StoreOptions options)
     {
         Client = client;
@@ -52,8 +60,33 @@ public abstract class InternalSessionBase : IAsyncDisposable
 
     public ISurrealDbQueryable<T> Query<T>() where T : class
     {
-        var provider = new SurrealQueryProvider(Session, Options, TenantId);
+        var provider = new SurrealQueryProvider(Session, this, Options, TenantId);
         return new SurrealDbQueryable<T>(provider);
+    }
+
+    /// <summary>
+    /// Returns a session scoped to the specified schema (database).
+    /// When <paramref name="schemaName"/> is null, returns the parent <see cref="Session"/>.
+    /// Otherwise, forks a new session via <see cref="ISurrealDbSession.ForkSession"/>,
+    /// calls <c>Use(ns, schemaName)</c>, and caches the result.
+    /// </summary>
+    internal protected async Task<ISurrealDbSession> GetSessionForSchemaAsync(string? schemaName, CancellationToken ct = default)
+    {
+        if (schemaName is null)
+            return Session;
+
+        var lazy = _forkedSessionCache.GetOrAdd(schemaName, _ => new Lazy<Task<ISurrealDbSession>>(
+            () => CreateForkedSessionAsync(schemaName, ct)));
+
+        return await lazy.Value.ConfigureAwait(false);
+    }
+
+    private async Task<ISurrealDbSession> CreateForkedSessionAsync(string schemaName, CancellationToken ct)
+    {
+        var ns = Options.Namespace ?? "test";
+        var forked = await Session.ForkSession(ct).ConfigureAwait(false);
+        await forked.Use(ns, schemaName, ct).ConfigureAwait(false);
+        return forked;
     }
 
     /// <summary>
@@ -76,10 +109,12 @@ public abstract class InternalSessionBase : IAsyncDisposable
     {
         var logger = CreateLogger<InternalSessionBase>();
         var table = MetadataDispatch.GetTableName(typeof(T));
+        var (schemaName, _) = MetadataDispatch.GetSchemaTarget(typeof(T), Options.Schema);
+        var loadSession = await GetSessionForSchemaAsync(schemaName, ct).ConfigureAwait(false);
         try
         {
             var rid = new RecordIdOf<string>(table, id);
-            var result = await Session.Select<T>(rid, ct).ConfigureAwait(false);
+            var result = await loadSession.Select<T>(rid, ct).ConfigureAwait(false);
 
             // Tenant isolation: if this session is tenant-scoped and the loaded entity
             // has a TenantId property, verify it matches. If not, treat as "not found".

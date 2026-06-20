@@ -13,6 +13,7 @@ public abstract class DocumentMapping
     internal abstract List<IndexDefinition> Indices { get; }
     internal abstract bool IsMultiTenanted { get; }
     internal abstract SchemaMode SchemaModeType { get; }
+    internal abstract string? SchemaName { get; }
 }
 
 public enum SchemaMode
@@ -41,6 +42,8 @@ public class DocumentMapping<T> : DocumentMapping
     internal override bool IsMultiTenanted => _isMultiTenanted;
     private SchemaMode _schemaModeType = SchemaMode.Strict;
     internal override SchemaMode SchemaModeType => _schemaModeType;
+    private string? _schemaName;
+    internal override string? SchemaName => _schemaName;
 
     /// <summary>
     /// Sets the schema mode for this document type (SCHEMAFULL vs SCHEMALESS).
@@ -49,6 +52,17 @@ public class DocumentMapping<T> : DocumentMapping
     public DocumentMapping<T> SetSchemaMode(Dali.SchemaMode mode)
     {
         _schemaModeType = mode;
+        return this;
+    }
+
+    /// <summary>
+    /// Maps this document type to a specific SurrealDB database (schema).
+    /// When null (default), the entity uses the default database from <c>StoreOptions.Database</c>.
+    /// </summary>
+    /// <param name="schemaName">The SurrealDB database name, or null for the default.</param>
+    public DocumentMapping<T> Schema(string? schemaName)
+    {
+        _schemaName = schemaName;
         return this;
     }
 

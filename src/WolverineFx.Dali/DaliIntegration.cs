@@ -1,0 +1,51 @@
+using Dali;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Wolverine;
+using Wolverine.Configuration;
+using Wolverine.Persistence;
+using Wolverine.Persistence.Sagas;
+using Wolverine.Runtime;
+using WolverineFx.Dali.Codegen;
+
+namespace WolverineFx.Dali;
+
+/// <summary>
+/// Wolverine extension that integrates Dali (SurrealDB) as the message persistence
+/// and saga storage provider. Registers codegen sources, persistence frame provider,
+/// and the Dali transport.
+/// </summary>
+public sealed class DaliIntegration : IWolverineExtension
+{
+    /// <summary>
+    /// Register Dali-specific code generation sources, persistence strategy,
+    /// and transport with the Wolverine options.
+    /// </summary>
+    public void Configure(WolverineOptions options)
+    {
+        options.CodeGeneration.Sources.Add(new DaliBackedPersistenceMarker());
+
+        options.ScopingFrameSources.Add(() => new PrimeScopedDocumentSessionFrame());
+
+        options.CodeGeneration.InsertFirstPersistenceStrategy<DaliPersistenceFrameProvider>();
+
+        options.CodeGeneration.Sources.Add(new DaliOutboxedSessionFactorySource());
+
+        var transport = options.Transports.GetOrCreate<DaliTransport>();
+
+        options.Services.AddSingleton<ISagaStoreDiagnostics>(sp =>
+            new DaliSagaStoreDiagnostics(
+                sp.GetRequiredService<IWolverineRuntime>(),
+                sp.GetRequiredService<IDocumentStore>()));
+
+        options.Services.AddScoped<ScopedDocumentSessionHolder>();
+
+        options.Services.TryAddEnumerable(
+            ServiceDescriptor.Singleton<IAncillaryStoreFrameProvider, DaliAncillaryStoreFrameProvider>());
+
+        options.Policies.Add(new DaliOpPolicy());
+
+        // Register DaliEventForwarding so it's available in the DI container for store configurators
+        options.Services.TryAddSingleton<DaliEventForwarding>();
+    }
+}

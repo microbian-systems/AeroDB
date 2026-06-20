@@ -2,6 +2,9 @@
   <Project Path="Dali\Dali.csproj" />
   <Project Path="Dali.EntityFrameworkCore\Dali.EntityFrameworkCore.csproj" />
   <Project Path="Dali.SourceGenerators\Dali.SourceGenerators.csproj" />
+  <Folder Name="/Tests/">
+    <Project Path="..\tests\Dali.Tests\Dali.Tests.csproj" />
+  </Folder>
   <Folder Name="/__Misc__/">
     <File Path="../.gitignore" />
     <File Path="../AGENTS.md" />
@@ -21,5 +24,4 @@
     <File Path="submod.cs" />
     <File Path="upgrade.cs" />
   </Folder>
-  <Project Path="..\tests\Dali.Tests\Dali.Tests.csproj" />
 </Solution>

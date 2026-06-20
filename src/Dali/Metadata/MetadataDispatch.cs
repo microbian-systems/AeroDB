@@ -59,6 +59,21 @@ internal static class MetadataDispatch
     }
 
     /// <summary>
+    /// Returns the schema target (database name and table name) for the given type.
+    /// The database is the mapped <c>DocumentMapping.SchemaName</c> if configured,
+    /// or null to indicate the default database (<c>StoreOptions.Database</c>).
+    /// </summary>
+    /// <param name="type">The entity type.</param>
+    /// <param name="schema">The schema options containing document mappings.</param>
+    public static (string? Database, string Table) GetSchemaTarget(Type type, SchemaOptions schema)
+    {
+        var table = GetTableName(type);
+        if (schema.Mappings.TryGetValue(type, out var mapping) && mapping.SchemaName is not null)
+            return (mapping.SchemaName, table);
+        return (null, table);
+    }
+
+    /// <summary>
     /// Pre-computed snake_case conversion (shared with generated metadata).
     /// </summary>
     internal static string ToSnakeCase(string name)

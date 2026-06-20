@@ -28,14 +28,8 @@ internal static class GraphQueryProvider
         if (session is InternalSessionBase internalBase)
             return internalBase.Session;
 
-        // Fallback: try reflection to find a Session property
-        var sessionProp = session.GetType().GetProperty("Session",
-            System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
-        if (sessionProp?.GetValue(session) is SurrealDb.Net.ISurrealDbSession raw)
-            return raw;
-
         throw new InvalidOperationException(
             $"Cannot resolve ISurrealDbSession from {session.GetType().Name}. " +
-            "Graph queries require a session that exposes the underlying SurrealDB session.");
+            "Graph queries require an InternalSessionBase-derived session.");
     }
 }

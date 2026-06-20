@@ -21,6 +21,9 @@ public interface IDocumentStore : IAsyncDisposable
 
     /// <summary>Start a graph traversal query. Opens an ephemeral session internally.</summary>
     IGraphQuery<T> Graph<T>() where T : class;
+
+    /// <summary>Advanced/low-level SDK access for scenarios Dali doesn't abstract.</summary>
+    IDaliAdvanced Advanced { get; }
 }
 
 public interface IQuerySession : IAsyncDisposable

@@ -120,12 +120,9 @@ RETURN search::rrf([$ft, $vs], {rrfK}, {rrfLimit});";
     private static async Task<List<T>> ExecuteSearchAsync<T>(
         ISurrealDbQueryable<T> source, string surql, CancellationToken ct) where T : class
     {
-        // Access the internal session via the query provider
-        var provider = source.Provider;
-        var sessionField = provider.GetType().GetField("_session", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-        if (sessionField?.GetValue(provider) is ISurrealDbSession session)
+        if (source.Provider is SurrealQueryProvider surrealProvider)
         {
-            var response = await session.RawQuery(surql, null, ct).ConfigureAwait(false);
+            var response = await surrealProvider.Session.RawQuery(surql, null, ct).ConfigureAwait(false);
             if (!response.HasErrors && response.Count > 0)
             {
                 var raw = response.GetValue<List<T>>(0);

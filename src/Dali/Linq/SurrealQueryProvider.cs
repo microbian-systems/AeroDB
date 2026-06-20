@@ -18,17 +18,52 @@ namespace Dali;
 public class SurrealQueryProvider : IQueryProvider
 {
     private readonly ISurrealDbSession _session;
+    private readonly InternalSessionBase? _sessionBase;
     private readonly StoreOptions _options;
     private readonly string? _tenantId;
     private readonly ILogger<SurrealQueryProvider> _logger;
 
+    /// <summary>
+    /// Creates a query provider bound to the given session and store options.
+    /// </summary>
     public SurrealQueryProvider(ISurrealDbSession session, StoreOptions options, string? tenantId = null)
+        : this(session, sessionBase: null, options, tenantId)
+    {
+    }
+
+    /// <summary>
+    /// Creates a query provider with optional <see cref="InternalSessionBase"/> for schema-based
+    /// session routing. When <paramref name="sessionBase"/> is provided, queries are routed
+    /// through the correct forked session based on the element type's schema mapping.
+    /// </summary>
+    public SurrealQueryProvider(ISurrealDbSession session, InternalSessionBase? sessionBase, StoreOptions options, string? tenantId = null)
     {
         _session = session;
+        _sessionBase = sessionBase;
         _options = options;
         _tenantId = tenantId;
         _logger = options.LoggerFactory?.CreateLogger<SurrealQueryProvider>()
             ?? NullLogger<SurrealQueryProvider>.Instance;
+    }
+
+    /// <summary>
+    /// The underlying SurrealDB session for raw query access.
+    /// Internal to allow SearchExtensions and GraphQueryProvider to bypass the LINQ provider.
+    /// </summary>
+    internal ISurrealDbSession Session => _session;
+
+    /// <summary>
+    /// Resolves the correct <see cref="ISurrealDbSession"/> for the given element type
+    /// based on its schema mapping (database). When no schema is configured or when
+    /// no <see cref="InternalSessionBase"/> is available, falls back to <see cref="_session"/>.
+    /// </summary>
+    private async Task<ISurrealDbSession> GetSessionForElementType(Type elementType, CancellationToken ct)
+    {
+        if (_sessionBase is null)
+            return _session;
+
+        var (schemaName, _) = MetadataDispatch.GetSchemaTarget(elementType, _options.Schema);
+        return await _sessionBase.GetSessionForSchemaAsync(schemaName, ct).ConfigureAwait(false);
     }
 
     private SurrealExpressionVisitor CreateVisitor() => new();
@@ -222,7 +257,8 @@ public class SurrealQueryProvider : IQueryProvider
         }
 
         _logger.LogDebug("ToSurrealQL: {Surql}", surql);
-        var response = await _session.RawQuery(surql, null, ct).ConfigureAwait(false);
+        var querySession = await GetSessionForElementType(typeof(T), ct).ConfigureAwait(false);
+        var response = await querySession.RawQuery(surql, null, ct).ConfigureAwait(false);
 
         if (hasIncludes)
         {
@@ -295,7 +331,8 @@ public class SurrealQueryProvider : IQueryProvider
         }
 
         _logger.LogDebug("FirstOrDefaultAsync SurrealQL: {Surql}", surql);
-        var response = await _session.RawQuery(surql, null, ct).ConfigureAwait(false);
+        var querySession = await GetSessionForElementType(typeof(T), ct).ConfigureAwait(false);
+        var response = await querySession.RawQuery(surql, null, ct).ConfigureAwait(false);
 
         if (hasIncludes)
         {
@@ -364,7 +401,8 @@ public class SurrealQueryProvider : IQueryProvider
         }
 
         _logger.LogDebug("SingleOrDefaultAsync SurrealQL: {Surql}", surql);
-        var response = await _session.RawQuery(surql, null, ct).ConfigureAwait(false);
+        var querySession = await GetSessionForElementType(typeof(T), ct).ConfigureAwait(false);
+        var response = await querySession.RawQuery(surql, null, ct).ConfigureAwait(false);
 
         if (hasIncludes)
         {
@@ -562,7 +600,8 @@ public class SurrealQueryProvider : IQueryProvider
         // (e.g., math::sum(Price)). Let it flow through to SurrealQL.
         var surql = query.ToSurrealQL();
         _logger.LogDebug("AggregateAsync ({Function}) SurrealQL: {Surql}", function, surql);
-        var response = await _session.RawQuery(surql, null, ct).ConfigureAwait(false);
+        var aggSession = await GetSessionForElementType(typeof(T), ct).ConfigureAwait(false);
+        var response = await aggSession.RawQuery(surql, null, ct).ConfigureAwait(false);
 
         if (!response.HasErrors && response.Count > 0)
         {
@@ -597,7 +636,8 @@ public class SurrealQueryProvider : IQueryProvider
 
         var surql = query.ToSurrealQL();
         _logger.LogDebug("CountAsync SurrealQL: {Surql}", surql);
-        var response = await _session.RawQuery(surql, null, ct).ConfigureAwait(false);
+        var countSession = await GetSessionForElementType(elementType ?? typeof(object), ct).ConfigureAwait(false);
+        var response = await countSession.RawQuery(surql, null, ct).ConfigureAwait(false);
 
         if (!response.HasErrors && response.Count > 0)
         {
@@ -625,7 +665,8 @@ public class SurrealQueryProvider : IQueryProvider
         query.Limit = 1;
         var surql = query.ToSurrealQL();
         _logger.LogDebug("AnyAsync SurrealQL: {Surql}", surql);
-        var response = await _session.RawQuery(surql, null, ct).ConfigureAwait(false);
+        var anySession = await GetSessionForElementType(elementType ?? typeof(object), ct).ConfigureAwait(false);
+        var response = await anySession.RawQuery(surql, null, ct).ConfigureAwait(false);
 
         if (!response.HasErrors && response.Count > 0)
         {

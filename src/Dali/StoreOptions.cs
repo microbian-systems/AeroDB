@@ -66,6 +66,11 @@ public class StoreOptions
     public bool SoftDeleteEnabled { get; set; } = true;
 
     /// <summary>
+    /// Advanced SDK access configuration.
+    /// </summary>
+    public AdvancedOptions Advanced { get; } = new();
+
+    /// <summary>
     /// Configuration modules applied during <see cref="DocumentStore.InitializeAsync"/>.
     /// Add instances directly or register via DI with <c>ConfigureDali&lt;T&gt;()</c>.
     /// </summary>
@@ -87,6 +92,14 @@ public class StoreOptions
 public class SchemaOptions
 {
     public bool AutoCreate { get; set; } = true;
+
+    /// <summary>
+    /// When true, Dali will call <c>DEFINE DATABASE IF NOT EXISTS</c> for each
+    /// configured schema (via <see cref="DocumentMapping{T}.Schema"/>) during
+    /// store initialization. Requires the connection user to have sufficient
+    /// privileges. Default is false.
+    /// </summary>
+    public bool AutoCreateDatabases { get; set; } = false;
 
     /// <summary>
     /// Configuration for SurrealDB analyzers (DEFINE ANALYZER).

@@ -5,8 +5,8 @@
 **Last modified:** 2026-06-20
 **Version:** 0.1.0
 **Build:** 0 errors (4 pre-existing stale warnings)
-**Tests:** 327 passing, 0 failing, 0 skipped
-**Projects:** `Dali`, `Dali.EntityFrameworkCore`, `Dali.Tests`, `WolverineFx.Dali` (planned)
+**Tests:** 444 passing, 0 failing, 0 skipped
+**Projects:** `Dali`, `Dali.EntityFrameworkCore`, `Dali.Tests`, `WolverineFx.Dali` (complete)
 
 ---
 
@@ -41,9 +41,10 @@
 | 15. Schema Modes, Events, RawQL & Functions | 144 | — | ✅ Done |
 | 16. Search & Vector Functions | 168 | APPROVED | ✅ Done |
 | 17. Graph API (RELATE, traversal, paths, FoF) | 327 | APPROVED | ✅ Done |
-| 18. Multi-Database / Schema Support | 327 | — | 📋 Planned |
-| 19. Advanced Low-Level SDK Access | 327 | APPROVED | 📋 Planned |
-| 20. WolverineFx.Dali Integration | 327 | APPROVED | 📋 Planned |
+| 18. Multi-Database / Schema Support | 444 | — | ✅ Done — `DocumentMapping.Schema()`, `ForkSession()` routing, 26 tests |
+| 19. Advanced Low-Level SDK Access | 444 | APPROVED | ✅ Done — `store.Advanced`, `IDaliAdvanced`, 8 tests |
+| 20. WolverineFx.Dali Integration | 444 | REVISED (council) | ✅ Done — 26+ src files, IDaliOp, event forwarding, scheduled jobs, 22 integration tests |
+| ✚ Cross-cutting: Transactional SaveChanges | 359 | — | ✅ Done |
 | ✚ Cross-cutting (logging, ConfigureAwait, ct) | 144 | — | ✅ Done |
 
 ---
@@ -853,9 +854,29 @@ Sessions from `Advanced.CreateSessionAsync()` are **not managed by Dali**. Calle
 - `AddDali(options, registerRawTypes: true)`: also registers `ISurrealDbClient` (singleton) and `ISurrealDbSession` (scoped factory)
 - Users can also call `services.AddSurreal()` separately for full control
 
+## ✚ Cross-Cutting: Transactional SaveChanges ✅
+
+**Tests:** 359
+
+**Summary:** `DocumentSession.SaveChangesAsync` now wraps all persistence operations in a SurrealDB transaction using the SDK's `BeginTransaction()`/`Commit()`/`Cancel()` API. The SurrealDB connection is shared — per-entity SDK calls automatically participate in the transaction. This gives full ACID semantics for document operations.
+
+**Changes:**
+- `DocumentSession.SaveChangesAsync` — BeginTransaction before persistence, Commit on success, Cancel on exception
+- `IDocumentSessionListener` — added `BeforeCommitAsync` + `AfterCommitAsync` hooks for Wolverine outbox integration
+- `CheckConcurrencyAsync`, `CreateEntityAsync`, `UpsertRecordAsync` — accept `ISurrealDbSession` parameter
+- 6 new integration tests in `DocumentSessionTransactionTests.cs`
+
+**Hook lifecycle:**
+```
+BeforeSaveChangesAsync → [BEGIN TX] → per-entity ops → events + projections
+  → AfterSaveChangesAsync → BeforeCommitAsync → [COMMIT] → AfterCommitAsync
+```
+
 ## Phase 20: WolverineFx.Dali Integration 📋
 
-**Council review:** APPROVED (deepseek-v4-pro, alpha only; comprehensive source-grounded analysis)
+**Council review:** REVISED (2026-06-20) — full review with Wolverine.Marten codebase exploration. Plan validated architecturally. Phase 20b (Transactional SaveChanges) ✅ completed — blocker removed. Ready for Phase 20a (DaliMessageStore + Transport).
+
+**Status:** Plan updated with council findings. Phase 20 now blocked on Dali core transactional batching (Phases 20a/20b).
 
 **Goal:** Create a `WolverineFx.Dali` NuGet package (within this repo at `src/WolverineFx.Dali/`) that provides full Wolverine persistence parity with `WolverineFx.Marten`: saga storage, transactional middleware, outbox, projection distribution, and message persistence + transport (inbox/outbox, durable queues).
 
@@ -865,19 +886,53 @@ Sessions from `Advanced.CreateSessionAsync()` are **not managed by Dali**. Calle
 
 ```
 WolverineFx.Dali
-├── DaliMessageStore : IMessageStore / IMessageInbox / IMessageOutbox / IDeadLetters
-│   └── ISurrealDbClient.RawQuery() (standalone, not MessageDatabase<T>)
-│       Tables: wolverine_incoming/outgoing/dead_letters/nodes
-│       Claim pattern: UPDATE ... RETURN BEFORE (atomic, single round-trip)
+├── DaliMessageStore : IMessageStore
+│   ├── IMessageInbox — incoming envelope CRUD, poll queries, claim, reassign
+│   ├── IMessageOutbox — outgoing envelope storage
+│   ├── IDeadLetters — dead letter queue
+│   ├── INodeAgentPersistence — durability agent leader election
+│   ├── IListenerStore — dynamic listener registration (NullListenerStore initially)
+│   ├── IMessageStoreAdmin — schema migration
+│   ├── IScheduledMessages — delayed message scheduling
+│   │   All operations use ISurrealDbClient.RawQuery() (standalone)
+│   │   Schema: self-owned via RawQuery DEFINE TABLE IF NOT EXISTS
+│   │   Tables: wolverine_incoming_envelopes, wolverine_outgoing_envelopes,
+│   │           wolverine_dead_letters, wolverine_nodes
+│   │   Claim pattern: UPDATE ... RETURN BEFORE (CAS-based, single round-trip)
+│   └── DaliEnvelope.cs — Envelope SurrealDB record type
+│
 ├── DaliTransport : ITransport (scheme: dali://)
-│   ├── DaliQueueListener — poll loop + atomic claim
-│   └── DaliQueueSender — INSERT into outgoing
+│   ├── DaliQueueListener — poll loop + atomic CAS claim
+│   ├── DaliQueueSender — INSERT into outgoing table
+│   └── DaliTransportOptions — poll interval, live query toggle
+│
+├── DaliIntegration : IWolverineExtension
+│   └── MVC-style registration: codegen sources, handler policies, transport
+│
 ├── Codegen Frames (mirrors WolverineFx.Marten)
 │   ├── OpenDaliSessionFrame
-│   ├── FlushOutgoingMessagesOnDaliCommit : IDocumentSessionListener
 │   ├── DaliSessionSaveChangesFrame
-│   └── FlushDaliOutgoingMessagesFrame
+│   ├── FlushDaliOutgoingMessagesFrame
+│   └── PrimeScopedDocumentSessionFrame
+│
+├── DaliPersistenceFrameProvider : IPersistenceFrameProvider
+│   ├── Transaction support: session + SaveChanges + FlushOutgoing
+│   └── Load/Insert/Update/Delete/Store frames for saga ops
+│
 ├── DaliSagaStorage : ISagaStorage — saga persistence via IDocumentSession
+│
+├── Outbox Enrollment
+│   ├── DaliOutboxedSessionFactory — creates enrolled sessions
+│   ├── DaliEnvelopeTransaction : IEnvelopeTransaction
+│   ├── FlushOutgoingMessagesOnDaliCommit : IDocumentSessionListener
+│   │   ├── BeforeSaveChangesAsync → marks inbox handled
+│   │   └── AfterCommitAsync → FlushOutgoingMessagesAsync()
+│   └── ScopedDocumentSessionHolder — DI scope priming
+│
+├── DaliBackedPersistenceMarker : IVariableSource
+│
+├── DaliSagaStoreDiagnostics : ISagaStoreDiagnostics
+│
 └── DaliProjectionCoordinator — projection distribution (future)
 ```
 
@@ -914,9 +969,60 @@ RETURN BEFORE
 | **Polling** | Configurable interval (default 5s) | ✅ Default |
 | **Live Query** | SurrealDB WebSocket `LIVE SELECT` push | ❌ Opt-in |
 
+### Envelope Coupling Strategy (Critical Dali Core Change)
+
+**Problem:** Dali's `SaveChangesAsync` currently sends per-entity SDK calls (no multi-statement batching, no `BEGIN`/`COMMIT`). Envelope writes (from `DaliEnvelopeTransaction`) would execute as separate round trips — no transactional atomicity with domain data changes.
+
+**Solution:** Refactor `SaveChangesAsync` to generate a single batched SurrealQL script wrapped in `BEGIN TRANSACTION`/`COMMIT TRANSACTION`:
+
+```surql
+BEGIN TRANSACTION;
+
+-- Domain operations (from tracked entities)
+CREATE person:⟨id⟩ CONTENT { name: "Alice", age: 30 };
+UPDATE person:⟨id2⟩ SET age = 31;
+DELETE product:⟨id3⟩;
+
+-- Envelope operations (queued via PendingEnvelopeOperations)
+CREATE wolverine_incoming_envelopes:⟨id⟩ CONTENT { ... };
+UPDATE wolverine_incoming_envelopes:⟨id2⟩ SET status = 'Handled';
+INSERT INTO wolverine_outgoing_envelopes { ... };
+
+COMMIT TRANSACTION;
+```
+
+**Dali core changes required (Phase 20b):**
+
+```csharp
+// DocumentSession gains:
+internal List<Func<StringBuilder, CancellationToken, Task>> PendingOperations { get; }
+
+// SaveChangesAsync refactored:
+protected override async Task SaveChangesAsync(CancellationToken ct)
+{
+    var sb = new StringBuilder();
+    sb.AppendLine("BEGIN TRANSACTION;");
+    
+    // Generate SurrealQL from entity operations
+    foreach (var op in entityOperations)
+        op.WriteSurrealQL(sb);
+    
+    // Flush envelope operations into the same script
+    foreach (var op in PendingOperations)
+        await op(sb, ct);
+    
+    sb.AppendLine("COMMIT TRANSACTION;");
+    await client.RawQuery(sb.ToString());
+    PendingOperations.Clear();
+}
+```
+
+This ensures domain data + envelope writes commit atomically in a single SurrealDB transaction.
+
 ### Registration
 
 ```csharp
+// Minimal: Dali core + Wolverine persistence
 builder.Services.AddDali(o => { /* ... */ });
 
 builder.Host.UseWolverine(opts =>
@@ -924,68 +1030,127 @@ builder.Host.UseWolverine(opts =>
     opts.PersistMessagesWithDali();
     opts.Policies.AutoApplyTransactions();
 });
+
+// Or chained syntax (Marten-style):
+builder.Services.AddDali(o => { /* ... */ })
+    .IntegrateWithWolverine();
 ```
 
-### Implementation Plan
+### Implementation Plan (4 Phases)
+
+#### Phase 1: Foundation — DaliMessageStore + Transport (~22 files, ~15 tests)
 
 | Step | File | Change |
 |------|------|--------|
 | 1 | `src/WolverineFx.Dali/WolverineFx.Dali.csproj` | New project: references `WolverineFx` + `Dali` |
-| 2 | `src/WolverineFx.Dali/DaliMessageStore.cs` | `IMessageStore` impl: schema init, envelope CRUD, poll queries |
-| 3 | `src/WolverineFx.Dali/DaliEnvelope.cs` | Envelope SurrealDB record type |
+| 2 | `src/WolverineFx.Dali/DaliMessageStore.cs` | `IMessageStore` + `IMessageInbox` + `IMessageOutbox` + `IDeadLetters` + `INodeAgentPersistence` + `IListenerStore` + `IMessageStoreAdmin` + `IScheduledMessages` + `DrainAsync()` + `ReassignIncomingAsync` |
+| 3 | `src/WolverineFx.Dali/DaliEnvelope.cs` | Envelope SurrealDB record type (id, status, owner_id, execution_time, attempts, body, message_type) |
 | 4 | `src/WolverineFx.Dali/DaliTransport.cs` | `ITransport` impl with `dali://` scheme |
-| 5 | `src/WolverineFx.Dali/DaliQueueListener.cs` | Poll loop with `UPDATE ... RETURN BEFORE` claim |
+| 5 | `src/WolverineFx.Dali/DaliQueueListener.cs` | Poll loop with `UPDATE ... RETURN BEFORE` CAS claim |
 | 6 | `src/WolverineFx.Dali/DaliQueueSender.cs` | INSERT into outgoing table |
-| 7 | `src/WolverineFx.Dali/DaliSagaStorage.cs` | `ISagaStorage` impl via `IDocumentSession` |
-| 8 | `src/WolverineFx.Dali/Codegen/OpenDaliSessionFrame.cs` | Codegen: opens `IDocumentSession` |
-| 9 | `src/WolverineFx.Dali/Codegen/DaliSessionSaveChangesFrame.cs` | Codegen: `await session.SaveChangesAsync(ct)` |
-| 10 | `src/WolverineFx.Dali/Codegen/FlushDaliOutgoingMessagesFrame.cs` | Codegen: flush post-SaveChanges |
-| 11 | `src/WolverineFx.Dali/FlushOutgoingMessagesOnDaliCommit.cs` | `IDocumentSessionListener` impl |
-| 12 | `src/WolverineFx.Dali/OutboxedDaliSessionFactory.cs` | Creates outbox-enrolled sessions |
-| 13 | `src/WolverineFx.Dali/WolverineOptionsDaliExtensions.cs` | `PersistMessagesWithDali()` + `IntegrateWithWolverine()` |
-| 14 | `src/WolverineFx.Dali/DaliTransportOptions.cs` | Polling interval, live query toggle |
-| 15 | `src/WolverineFx.Dali/DaliProjectionCoordinator.cs` | Projection distribution (future) |
-| 16 | `tests/WolverineFx.Dali.Tests/` | Integration test suite |
+| 7 | `src/WolverineFx.Dali/DaliTransportOptions.cs` | Polling interval, live query toggle |
+| 8 | `src/WolverineFx.Dali/DaliBackedPersistenceMarker.cs` | `IVariableSource` — tags handler chains with Dali persistence |
+| 9 | `src/WolverineFx.Dali/DaliNullListenerStore.cs` | Null implementation for `IListenerStore` (accepts all registrations as no-ops) |
+| 10 | `tests/WolverineFx.Dali.Tests/` | Tier 1 unit tests (in-memory engine) |
 
-### Test Plan (20+ tests)
+#### Phase 2: Core Change — Transactional Batching (2 files, ~8 tests)
 
-| # | Area | Test | What it verifies |
-|---|------|------|-----------------|
-| 1 | Store | `Initialize_creates_envelope_tables` | Schema init creates all `wolverine_*` tables |
-| 2 | Store | `StoreIncoming_roundtrips` | Envelope inserted and can be polled |
-| 3 | Store | `StoreOutgoing_roundtrips` | Outgoing envelope persisted |
-| 4 | Store | `Claim_atomic_no_duplicates` | Two concurrent claims don't duplicate |
-| 5 | Store | `MoveToDeadLetter_works` | Failed envelope moved to dead letter |
-| 6 | Store | `ScheduleExecution_works` | Execution time rescheduled |
-| 7 | Store | `ReassignIncoming_works` | Ownership reassigned for load balancing |
-| 8 | Transport | `Listener_polls_and_dispatches` | Queue listener delivers messages |
-| 9 | Transport | `Sender_delivers` | Outgoing envelope sent via transport |
-| 10 | Tx | `Transactional_middleware_commits` | Handler + SaveChangesAsync commits both |
-| 11 | Tx | `Transactional_middleware_rolls_back_on_error` | Exception rolls back changes |
-| 12 | Saga | `Saga_create_and_load` | Saga state created and loaded |
-| 13 | Saga | `Saga_update` | Saga state updated |
-| 14 | Saga | `Saga_complete_and_delete` | Saga completed and removed |
-| 15 | Saga | `Saga_concurrent_update_throws` | Optimistic concurrency on saga version |
-| 16 | Outbox | `Outbox_flushes_after_commit` | Outgoing messages flushed post-commit |
-| 17 | Outbox | `Outbox_no_flush_on_rollback` | No flush if SaveChangesAsync fails |
-| 18 | Integration | `Dali_plus_Wolverine_end_to_end` | Full handler → saga → outbox cycle |
-| 19 | Integration | `Multi_tenant_roundtrips` | Tenant isolation with Dali + Wolverine |
-| 20 | Integration | `Live_query_wakeup` | Live query triggers immediate poll |
+| Step | File | Change |
+|------|------|--------|
+| 11 | `src/Dali/DocumentSession.cs` | Refactor `SaveChangesAsync` to batch all pending operations into single SurrealQL script wrapped in `BEGIN`/`COMMIT`; add `PendingOperations` queue |
+| 12 | `src/Dali/SurrealQLBatchBuilder.cs` | Helper for building SurrealQL scripts from entity operations + envelope lambdas |
+| 13 | `tests/Dali.Tests/SaveChangesTransactionTests.cs` | Tests: batch atomicity, rollback on error, envelope+domain same tx |
+
+#### Phase 3: Outbox Integration (~7 files, ~8 tests)
+
+| Step | File | Change |
+|------|------|--------|
+| 14 | `src/WolverineFx.Dali/DaliEnvelopeTransaction.cs` | `IEnvelopeTransaction` impl — queues envelope writes on DocumentSession.PendingOperations |
+| 15 | `src/WolverineFx.Dali/FlushOutgoingMessagesOnDaliCommit.cs` | `IDocumentSessionListener` impl: BeforeSaveChangesAsync marks handled, AfterCommitAsync flushes |
+| 16 | `src/WolverineFx.Dali/DaliOutboxedSessionFactory.cs` | Creates outbox-enrolled sessions |
+| 17 | `src/WolverineFx.Dali/DaliIntegration.cs` | `IWolverineExtension` — registers codegen sources, policies, transport, saga config |
+| 18 | `src/WolverineFx.Dali/WolverineOptionsDaliExtensions.cs` | `PersistMessagesWithDali()` + `IntegrateWithWolverine()` extensions |
+| 19 | `src/WolverineFx.Dali/DaliSagaStorage.cs` | `ISagaStorage` impl via `IDocumentSession` |
+| 20 | `tests/WolverineFx.Dali.Tests/` | Tier 2 integration tests (WolverineHost) |
+
+#### Phase 4: Saga + Codegen + Hardening (~8 files, ~10 tests)
+
+| Step | File | Change |
+|------|------|--------|
+| 21 | `src/WolverineFx.Dali/DaliPersistenceFrameProvider.cs` | `IPersistenceFrameProvider` — transaction support, saga frames |
+| 22 | `src/WolverineFx.Dali/Codegen/OpenDaliSessionFrame.cs` | Codegen: opens outbox-enrolled `IDocumentSession` |
+| 23 | `src/WolverineFx.Dali/Codegen/DaliSessionSaveChangesFrame.cs` | Codegen: `await session.SaveChangesAsync(ct)` |
+| 24 | `src/WolverineFx.Dali/Codegen/FlushDaliOutgoingMessagesFrame.cs` | Codegen: `await ctx.FlushOutgoingMessagesAsync()` |
+| 25 | `src/WolverineFx.Dali/Codegen/PrimeScopedDocumentSessionFrame.cs` | GH-3001 scope priming |
+| 26 | `src/WolverineFx.Dali/ScopedDocumentSessionHolder.cs` | Holds enrolled session for DI resolution |
+| 27 | `src/WolverineFx.Dali/DaliSagaStoreDiagnostics.cs` | `ISagaStoreDiagnostics` — saga explorer UI |
+| 28 | `tests/WolverineFx.Dali.Tests/` | Tier 2–3 tests: saga lifecycle, codegen verification, multi-tenancy |
+
+### Test Plan (3 tiers, 30+ tests)
+
+#### Tier 1: DaliMessageStore Unit Tests (no Wolverine, in-memory SurrealDB)
+
+| # | Test | What it verifies |
+|---|------|-----------------|
+| 1 | `Initialize_creates_envelope_tables` | Schema init creates all `wolverine_*` tables |
+| 2 | `StoreIncoming_roundtrips` | Envelope inserted and can be polled |
+| 3 | `StoreOutgoing_roundtrips` | Outgoing envelope persisted |
+| 4 | `Claim_atomic_no_duplicates` | Two concurrent CAS claims don't duplicate |
+| 5 | `MoveToDeadLetter_works` | Failed envelope moved to dead letter |
+| 6 | `ScheduleExecution_works` | Execution time rescheduled |
+| 7 | `ReassignIncoming_works` | Ownership reassigned for load balancing |
+| 8 | `Binary_body_roundtrip` | `byte[]` body stored and retrieved correctly |
+| 9 | `Binary_body_fallback_base64` | Base64 fallback if SDK binary path fails |
+| 10 | `DrainAsync_completes_cleanly` | Graceful shutdown drains pending claims |
+| 11 | `Node_persistence_election` | INodeAgentPersistence stores node record |
+| 12 | `Listener_store_noop` | NullListenerStore accepts all registrations |
+| 13 | `Scheduled_messages_roundtrip` | Delayed message stored with execution time |
+
+#### Tier 2: Dali Core Transaction Batching Tests
+
+| # | Test | What it verifies |
+|---|------|-----------------|
+| 14 | `Batch_commit_multiple_entities` | Multiple Store/Update/Delete in single tx |
+| 15 | `Batch_rollback_on_error` | Error in one operation rolls back entire tx |
+| 16 | `Batch_envelope_and_domain_same_tx` | Envelope writes + domain ops in single BEGIN/COMMIT |
+| 17 | `Batch_preserves_operation_order` | Operations execute in session tracking order |
+
+#### Tier 3: Wolverine Integration Tests (WolverineHost)
+
+| # | Test | What it verifies |
+|---|------|-----------------|
+| 18 | `Transport_listener_polls_and_dispatches` | Queue listener delivers messages |
+| 19 | `Transport_sender_delivers` | Outgoing envelope sent |
+| 20 | `Tx_middleware_commits_both` | Handler + SaveChangesAsync commits both |
+| 21 | `Tx_middleware_rolls_back_on_error` | Exception rolls back changes |
+| 22 | `Outbox_flushes_after_commit` | Outgoing messages flushed post-commit |
+| 23 | `Outbox_no_flush_on_rollback` | No flush if SaveChangesAsync fails |
+| 24 | `Saga_create_and_load` | Saga state created and loaded |
+| 25 | `Saga_update` | Saga state updated |
+| 26 | `Saga_complete_and_delete` | Saga completed and removed |
+| 27 | `Saga_concurrent_update_throws` | Optimistic concurrency on saga version |
+| 28 | `End_to_end_handler_to_outbox` | Full handler → saga → outbox cycle |
+| 29 | `Multi_tenant_roundtrips` | Tenant isolation with Dali + Wolverine |
+| 30 | `Live_query_wakeup` | Live query triggers immediate poll |
+| 31 | `Codegen_frames_generate_correctly` | Codegen frames produce valid IL |
+
+### Risks (Updated per Council Review)
+
+| Risk | Severity | Mitigation |
+|------|----------|------------|
+| **Transactional SaveChanges** | ✅ Done | `SaveChangesAsync` uses `BeginTransaction()`/`Commit()`/`Cancel()`. Per-entity calls share transaction connection. |
+| **IMessageStore contract larger than planned** | 🟡 P1 | 8 extra files (INodeAgentPersistence, IListenerStore, etc.). Accept scope increase — necessary for Wolverine correctness. |
+| **CBOR binary serialization fails** | 🟡 P1 | Test byte[] round-trip before implementation. Fall back to Base64 in DaliMessageStore string body fields. |
+| **RETURN BEFORE claim: MVCC vs Postgres SKIP LOCKED** | 🟡 P1 | CAS-based claim is safe for single-node. Add UNIQUE index. For distributed ≥100 msg/s, add partition key. |
+| **No SQL-based migration infrastructure** | 🟢 P2 | SurrealDB has no `DbConnection`. `DaliMessageStore` self-owns schema via `DEFINE TABLE IF NOT EXISTS`. |
+| **SurrealDB .NET SDK version must match** | 🟢 P2 | Dali pins SurrealDb.Net version. WolverineFx.Dali references Dali — version flows transitively. |
+| **In-memory engine data loss on restart** | 🟢 P2 | Acceptable for testing. Production uses RocksDB or remote SurrealDB. |
 
 ### Bugs Fixed
 
 | Bug | File | Fix |
 |-----|------|-----|
 | `FILTERS` keyword prepended per filter in `EnsureAnalyzerAsync` | `src/Dali/Schema/SchemaManager.cs:157` | Moved `FILTERS` before the comma-separated list instead of per-filter. Caused `Parse error: Unexpected token 'FILTERS'` in embedded engine. |
-
-### Risks
-
-| Risk | Mitigation |
-|------|------------|
-| No multi-document atomicity | Accept eventual consistency; listener ensures domain data persists first. |
-| `RETURN BEFORE` behavior on older SurrealDB | Test ≥ 2.x. Fallback to two-step claim. |
-| RawQuery latency vs Npgsql direct | Batch envelope ops; single-statement claim minimizes round-trips. |
-| `MessageDatabase<T>` incompatible | Standalone `DaliMessageStore` — SurrealDB has no `DbConnection`/`DbCommand`. |
 
 ## ⚠️ Known Issues & Limitations
 

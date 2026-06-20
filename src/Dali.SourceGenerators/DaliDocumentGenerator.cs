@@ -192,6 +192,33 @@ public class DaliDocumentGenerator : IIncrementalGenerator
 
         sb.AppendLine($"    public Func<object, string?>? GetRecordIdAccessor => {EmitGetRecordIdAccessor(idProp, globalFullName)};");
 
+        // Emit FieldSchema list for compile-time schema generation
+        var fields = new List<string>();
+        foreach (var member in type.GetMembers().OfType<IPropertySymbol>())
+        {
+            if (member.Name == "Id") continue;
+            if (member.DeclaredAccessibility != Accessibility.Public) continue;
+            if (member.IsStatic) continue;
+            if (member.GetMethod is null || member.SetMethod is null) continue;
+
+            var surrealType = GetSurrealType(member.Type);
+            fields.Add($"            new global::Dali.Metadata.FieldSchema(\"{member.Name}\", \"{surrealType}\", true, true)");
+        }
+
+        if (fields.Count > 0)
+        {
+            sb.AppendLine($"    public System.Collections.Generic.IReadOnlyList<global::Dali.Metadata.FieldSchema>? Fields =>");
+            sb.AppendLine("        new global::Dali.Metadata.FieldSchema[]");
+            sb.AppendLine("        {");
+            sb.Append(string.Join(",\n", fields));
+            sb.AppendLine();
+            sb.AppendLine("        };");
+        }
+        else
+        {
+            sb.AppendLine("    public System.Collections.Generic.IReadOnlyList<global::Dali.Metadata.FieldSchema>? Fields => null;");
+        }
+
         sb.AppendLine("}");
 
         return sb.ToString();
@@ -276,6 +303,23 @@ public class DaliDocumentGenerator : IIncrementalGenerator
                "        if (id is RecordIdOf<int> intRid) return intRid.Id.ToString();\n" +
                "        return id.ToString();\n" +
                "    }";
+    }
+
+    private static string GetSurrealType(ITypeSymbol type)
+    {
+        var name = type.ToDisplayString();
+        return name switch
+        {
+            "string" or "System.Guid" => "string",
+            "long" or "int" or "short" or "byte" or "System.Int64" or "System.Int32" or "System.Int16" or "System.Byte" => "int",
+            "float" or "double" or "decimal" or "System.Single" or "System.Double" or "System.Decimal" => "float",
+            "bool" or "System.Boolean" => "bool",
+            "System.DateTime" or "System.DateTimeOffset" => "datetime",
+            "byte[]" or "System.Byte[]" => "bytes",
+            _ when type is IArrayTypeSymbol => "array",
+            _ when type.OriginalDefinition?.ToDisplayString() == "System.Collections.Generic.List<T>" => "array",
+            _ => "object"
+        };
     }
 
     internal static string ToSnakeCase(string name)
