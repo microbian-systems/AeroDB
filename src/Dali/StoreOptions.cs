@@ -18,6 +18,12 @@ public class StoreOptions
     public EventSourcingOptions Events { get; } = new();
 
     /// <summary>
+    /// Configuration for SurrealDB user-defined functions (DEFINE FUNCTION).
+    /// Functions are created during store initialization.
+    /// </summary>
+    public FunctionOptions Functions { get; } = new();
+
+    /// <summary>
     /// When true, documents with an <see cref="IVersioned"/> version field or
     /// a property decorated with <see cref="VersionAttribute"/> are protected
     /// against lost updates. Before saving a modified document, Dali checks that
@@ -108,4 +114,28 @@ public enum TenancyStyle
 public class EventSourcingOptions
 {
     public bool Enabled { get; set; }
+
+    /// <summary>
+    /// Configuration for SurrealDB native event triggers (DEFINE EVENT).
+    /// These are distinct from Dali's Marten-style event sourcing — they fire
+    /// at the database level on CREATE/UPDATE/DELETE operations.
+    /// </summary>
+    public EventTriggerOptions Triggers { get; } = new();
+}
+
+public class FunctionOptions
+{
+    internal List<SurrealFunction> Functions { get; } = new();
+    public bool AutoCreateFunctions { get; set; } = true;
+
+    public FunctionOptions Register(string name, string body, string? parameters = null)
+    {
+        Functions.Add(new SurrealFunction
+        {
+            Name = name,
+            Body = body,
+            Parameters = parameters
+        });
+        return this;
+    }
 }

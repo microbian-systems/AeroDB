@@ -1,4 +1,10 @@
-# Dali.SurrealDb.EfCore — Architectural Plan
+# [DEPRECATED] Dali.SurrealDb.EfCore — Architectural Plan
+
+> ⚠️ **DEPRECATED (2026-06-20)** — This plan has been superseded by the standalone Dali library (Marten-style document DB + event store on SurrealDB).
+>
+> See [architecture.md](architecture.md) and [init-impl-plan.md](init-impl-plan.md) for the current documentation.
+>
+> Kept as reference for future EF Core provider work.
 
 ## Overview
 

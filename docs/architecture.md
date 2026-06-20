@@ -111,6 +111,192 @@ await session.SaveChangesAsync();
 
 > **Note:** Field names use PascalCase (C# property names) to match SurrealDB's CBOR serialization. Table names use snake_case.
 
+### SurrealDB Search & Vector Functions
+
+SurrealDB provides a rich set of built-in search and vector functions for hybrid (full-text + vector) retrieval, as demonstrated in the SurrealDB docs search engine[^1]. These are mapped to LINQ or exposed as raw SurrealQL via `Session.RawQuery`:
+
+| Function | Purpose | LINQ / API | Notes |
+|----------|---------|-----------|-------|
+| `search::analyze(analyzer, text)` | Tokenize + stem text with a named analyzer | Raw SurrealQL | E.g. `search::analyze("simple", "The project lead frowned...")` |
+| `search::score(n)` | BM25 relevance score for `@n@` match operator | Raw SurrealQL (planned) | Used within `WHERE field @0@ $query` clauses |
+| `search::rrf(array, k, limit)` | Reciprocal Rank Fusion — combines ranked lists | Raw SurrealQL (planned) | `search::rrf([$ft, $vs], 60, 80)` fuses full-text + vector results |
+| `vector::distance::knn()` | KNN distance inside `<\|>\|` operator scope | Raw SurrealQL | `SELECT ..., vector::distance::knn() AS distance FROM page WHERE embedding <\|30,100\|> $qvec` |
+| `vector::similarity::cosine(a, b)` | Cosine similarity between two vectors | Raw SurrealQL | Brute-force; HNSW index preferred for scale[^1] |
+
+**Full-text search** requires a `FULLTEXT ANALYZER` index with BM25 configuration:
+```sql
+DEFINE ANALYZER simple TOKENIZERS blank, class, camel, punct FILTERS SNOWBALL(en);
+DEFINE INDEX ft ON page FIELDS title FULLTEXT ANALYZER simple BM25(1.2, 0.75);
+```
+
+**Vector search** uses an `HNSW` index for approximate nearest-neighbor:
+```sql
+DEFINE INDEX page_embedding_hnsw ON page FIELDS embedding HNSW DIMENSION 1536 DIST COSINE;
+```
+
+**Hybrid fusion** combines both with RRF:
+```sql
+LET $fused = search::rrf([$fulltext_results, $vector_results], 60, 80);
+```
+
+> See the backlog for planned LINQ integration of these functions. Currently accessible via `Session.RawQuery`.
+
+[^1]: Dave MacLeod, "New SurrealDB docs search using hybrid search and HNSW/BM25 reranking," SurrealDB Blog, Apr 2026. The doc search engine uses `search::rrf()` to fuse BM25 full-text scores with OpenAI embedding vector results, applying `search::score()` weighting per field. [`Source`](https://surrealdb.com/blog/a-real-world-example-of-hybrid-fusion-search-using-the-surrealdb-docs-search)
+
+## Schema Modes (SCHEMAFULL vs SCHEMALESS)
+
+SurrealDB supports two schema modes per table, configurable via `DocumentMapping<T>.SetSchemaMode()`:
+
+| Mode | SurrealQL | Behavior |
+|------|-----------|----------|
+| `SchemaMode.Strict` | `DEFINE TABLE ... SCHEMAFULL` | Only explicitly defined fields are permitted; extra fields are rejected (default). |
+| `SchemaMode.Flexible` | `DEFINE TABLE ... SCHEMALESS` | Fields are typed/validated if defined, but extra fields are allowed. |
+
+**Default is `SchemaMode.Strict`** (SCHEMAFULL), matching traditional SQL expectations. Switch to `Flexible` for schemas where document shapes may vary:
+
+```csharp
+var store = Documents.For(o =>
+{
+    o.Schema.For<Person>()
+        .SetSchemaMode(SchemaMode.Flexible)  // allow extra fields
+        .Index(p => p.Email);
+});
+```
+
+The schema mode is applied during `DocumentStore.InitializeAsync` via the `SchemaManager`.
+
+## Raw SQL / SurrealQL Queries
+
+Dali exposes `RawQueryAsync<T>()` and `ExecuteSqlAsync()` on all session types (`IQuerySession`, `IDocumentSession`) for direct SurrealQL execution:
+
+```csharp
+await using var session = store.QuerySession();
+
+// Raw query returning typed results
+var results = await session.RawQueryAsync<Person>(
+    "SELECT * FROM person WHERE age > $minAge",
+    new Dictionary<string, object?> { ["minAge"] = 18 });
+
+// Execute non-query statements (CREATE, UPDATE, DELETE, DEFINE)
+await session.ExecuteSqlAsync("CREATE person CONTENT { name: 'Alice', age: 30 }");
+```
+
+These methods delegate to the underlying `ISurrealDbSession.RawQuery()` from `surrealdb.net`. Parameters use named `$param` placeholders with a dictionary — safe from injection.
+
+## Native Event Triggers (DEFINE EVENT)
+
+SurrealDB provides server-side event triggers that fire automatically on `CREATE`, `UPDATE`, and `DELETE` operations. These are **distinct** from Dali's Marten-style event sourcing — they are database-level triggers defined with `DEFINE EVENT`.
+
+### SurrealQL Reference
+
+```surql
+-- Single event type
+DEFINE EVENT user_created ON TABLE user
+  WHEN $event = "CREATE"
+  THEN ( CREATE audit SET event = $event, table_name = "user", record_id = $after.id );
+
+-- Combined event types with before/after state
+DEFINE EVENT user_changes ON TABLE user
+  WHEN $event = "CREATE" OR $event = "UPDATE" OR $event = "DELETE"
+  THEN ( CREATE audit SET event = $event, before = $before, after = $after );
+
+-- Async execution with retries
+DEFINE EVENT slow_job ON TABLE publication
+  WHEN $event = "CREATE"
+  ASYNC RETRY 3 MAXDEPTH 5
+  THEN ( ... );
+```
+
+Special variables available in the `THEN` block:
+
+| Variable | Description |
+|----------|-------------|
+| `$event` | The operation type: `"CREATE"`, `"UPDATE"`, or `"DELETE"` |
+| `$before` | The record state before the change (null on CREATE) |
+| `$after` | The record state after the change (null on DELETE) |
+| `$this` | The current record |
+
+Events are visible via `INFO FOR TABLE {name} → events`.
+
+### C# Configuration
+
+```csharp
+var store = Documents.For(o =>
+{
+    o.Events.Triggers.AutoCreateTriggers = true;
+    o.Events.Triggers.AddTrigger(
+        name: "user_created",
+        table: "user",
+        action: "CREATE audit SET event = $event, table_name = 'user', record_id = $after.id",
+        whenCondition: "$event = 'CREATE'"
+    );
+    o.Events.Triggers.AddTrigger(
+        name: "user_changes",
+        table: "user",
+        action: "CREATE audit SET event = $event, before = $before, after = $after",
+        whenCondition: "$event = 'CREATE' OR $event = 'UPDATE' OR $event = 'DELETE'"
+    );
+});
+```
+
+Triggers are applied during `DocumentStore.InitializeAsync`. Use `EventTriggerManager` for runtime management:
+
+```csharp
+var triggerManager = new EventTriggerManager(loggerFactory);
+await triggerManager.EnsureTriggerAsync(session, triggerDef);
+await triggerManager.AlterTriggerAsync(session, triggerDef);
+await triggerManager.RemoveTriggerAsync(session, name, table);
+```
+
+## User-Defined Functions (DEFINE FUNCTION)
+
+SurrealDB supports user-defined functions written in SurrealQL, callable from any query. They are scoped to the database and visible via `INFO FOR DB → functions`.
+
+### SurrealQL Reference
+
+```surql
+-- Expression body
+DEFINE FUNCTION fn::greet($name: string) {
+    RETURN "Hello, " + $name;
+};
+
+-- Block body with logic
+DEFINE FUNCTION fn::math::double($n: int) {
+    RETURN $n * 2;
+};
+
+-- Usage
+RETURN fn::greet("World");   -- "Hello, World"
+RETURN fn::math::double(21); -- 42
+```
+
+### C# Configuration
+
+```csharp
+var store = Documents.For(o =>
+{
+    o.Functions.AutoCreateFunctions = true;
+    o.Functions.Register(
+        name: "fn::greet",
+        body: "RETURN 'Hello, ' + $name;",
+        parameters: "$name: string"
+    );
+    o.Functions.Register(
+        name: "fn::math::double",
+        body: "RETURN $n * 2;",
+        parameters: "$n: int"
+    );
+});
+```
+
+Functions are created during `DocumentStore.InitializeAsync`. Use `FunctionManager` for runtime management:
+
+```csharp
+var functionManager = new FunctionManager(loggerFactory);
+await functionManager.EnsureFunctionAsync(session, function);
+await functionManager.RemoveFunctionAsync(session, "fn::greet");
+```
+
 ## Event Sourcing
 
 ```csharp
@@ -190,6 +376,11 @@ src/
     Events/
       IEvents.cs                           # Event store interface
       EventStore.cs                        # Append, FetchStream, StartStream
+      EventTriggerDefinition.cs            # SurrealDB native event trigger model
+      EventTriggerManager.cs               # DEFINE EVENT / ALTER EVENT / REMOVE EVENT
+    Functions/
+      SurrealFunction.cs                   # User-defined function model
+      FunctionManager.cs                   # DEFINE FUNCTION / REMOVE FUNCTION
     Projections/
       IProjection.cs / IProjectionContext.cs
       InlineProjection.cs / SingleStreamProjection.cs / MultiStreamProjection.cs
@@ -240,6 +431,7 @@ All 14 implementation phases + metadata wiring audit fixes are complete. See [in
 | 12. Database-per-Tenant | 134 | ✅ |
 | 13. Server-Side Aggregates | 134 | ✅ |
 | 14. Source Generators | 144 | ✅ |
+| 15. Schema Modes, Events, RawQL & Functions | 144 | ✅ |
 | A+B+C+F. Metadata Wiring | 144 | ✅ |
 
 ## Source-Generated Metadata

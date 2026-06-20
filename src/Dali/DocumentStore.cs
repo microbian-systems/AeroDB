@@ -101,6 +101,8 @@ public class DocumentStore : IDocumentStore
             configurator.Configure(Options);
 
         var schemaManager = new SchemaManager(Options.LoggerFactory);
+        var triggerManager = new EventTriggerManager(Options.LoggerFactory);
+        var functionManager = new FunctionManager(Options.LoggerFactory);
 
         // Auto-create document schemas if configured
         if (Options.Schema.AutoCreate && Options.Schema.Mappings.Count > 0)
@@ -110,8 +112,8 @@ public class DocumentStore : IDocumentStore
 
             foreach (var mapping in Options.Schema.Mappings.Values)
             {
-                // Ensure table schema (DEFINE TABLE + fields)
-                await schemaManager.EnsureDocumentSchemaAsync(mapping.EntityType, schemaSession, ct).ConfigureAwait(false);
+                // Ensure table schema (DEFINE TABLE + fields) with the configured schema mode
+                await schemaManager.EnsureDocumentSchemaAsync(mapping.EntityType, schemaSession, mapping.SchemaModeType, ct).ConfigureAwait(false);
 
                 // Ensure each configured index
                 var tableName = SchemaManager.Snake(mapping.EntityType.Name);
@@ -126,6 +128,35 @@ public class DocumentStore : IDocumentStore
         if (Options.Events.Enabled)
         {
             await schemaManager.EnsureEventSchemaAsync(_client, ns, db, ct).ConfigureAwait(false);
+        }
+
+        // Auto-create SurrealDB native event triggers
+        if (Options.Events.Triggers.AutoCreateTriggers && Options.Events.Triggers.Triggers.Count > 0)
+        {
+            await using var triggerSession = await _client.CreateSession(ct).ConfigureAwait(false);
+            await triggerSession.Use(ns, db, ct).ConfigureAwait(false);
+
+            foreach (var trigger in Options.Events.Triggers.Triggers)
+            {
+                // Resolve table name via metadata if not hard-coded
+                if (string.IsNullOrEmpty(trigger.Table) && !string.IsNullOrEmpty(trigger.Name))
+                    _logger.LogWarning("Event trigger {Name} has no table specified — skipping", trigger.Name);
+                else
+                    await triggerManager.EnsureTriggerAsync(triggerSession, trigger, ct).ConfigureAwait(false);
+            }
+        }
+
+        // Auto-create user-defined functions
+        var functionOpts = Options.Functions;
+        if (functionOpts.AutoCreateFunctions && functionOpts.Functions.Count > 0)
+        {
+            await using var funcSession = await _client.CreateSession(ct).ConfigureAwait(false);
+            await funcSession.Use(ns, db, ct).ConfigureAwait(false);
+
+            foreach (var function in functionOpts.Functions)
+            {
+                await functionManager.EnsureFunctionAsync(funcSession, function, ct).ConfigureAwait(false);
+            }
         }
 
         // Inject logger factory into projections that support it

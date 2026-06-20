@@ -16,7 +16,7 @@ public class SchemaManager
     }
 
     /// <summary>
-    /// Ensures a document table exists with SCHEMAFULL mode and defines fields for all
+    /// Ensures a document table exists with the configured schema mode and defines fields for all
     /// public readable/writable properties on T (except Id).
     /// </summary>
     public async Task EnsureDocumentSchemaAsync<T>(ISurrealDbSession session, CancellationToken ct = default)
@@ -24,7 +24,8 @@ public class SchemaManager
     {
         var tableName = MetadataDispatch.GetTableName(typeof(T));
         _logger.LogDebug("Ensuring document schema for table {Table}", tableName);
-        await session.RawQuery($"DEFINE TABLE {tableName} SCHEMAFULL;", null, ct).ConfigureAwait(false);
+        var schemaMode = typeof(T).IsSealed ? SchemaMode.Strict : SchemaMode.Flexible;
+        await session.RawQuery($"DEFINE TABLE {tableName} {GetSchemaSurql(schemaMode)};", null, ct).ConfigureAwait(false);
 
         var type = typeof(T);
         foreach (var prop in type.GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance))
@@ -34,11 +35,36 @@ public class SchemaManager
 
             var fieldType = GetSurrealType(prop.PropertyType);
             // CBOR serialization stores C# property names as-is (PascalCase), so field definitions
-            // must use PascalCase to match what the engine actually stores in SCHEMAFULL mode.
+            // must use PascalCase to match what the engine actually stores in strict mode.
             var fieldSurql = $"DEFINE FIELD {prop.Name} ON TABLE {tableName} TYPE {fieldType};";
             await session.RawQuery(fieldSurql, null, ct).ConfigureAwait(false);
         }
     }
+
+    /// <summary>
+    /// Ensures a document table exists with the specified schema mode.
+    /// </summary>
+    public async Task EnsureDocumentSchemaAsync<T>(ISurrealDbSession session, SchemaMode mode, CancellationToken ct = default)
+        where T : SurrealDb.Net.Models.Record
+    {
+        var tableName = MetadataDispatch.GetTableName(typeof(T));
+        _logger.LogDebug("Ensuring document schema for table {Table} with mode {Mode}", tableName, mode);
+        await session.RawQuery($"DEFINE TABLE {tableName} {GetSchemaSurql(mode)};", null, ct).ConfigureAwait(false);
+
+        var type = typeof(T);
+        foreach (var prop in type.GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance))
+        {
+            if (prop.Name == "Id") continue;
+            if (!prop.CanRead || !prop.CanWrite) continue;
+
+            var fieldType = GetSurrealType(prop.PropertyType);
+            var fieldSurql = $"DEFINE FIELD {prop.Name} ON TABLE {tableName} TYPE {fieldType};";
+            await session.RawQuery(fieldSurql, null, ct).ConfigureAwait(false);
+        }
+    }
+
+    private static string GetSchemaSurql(SchemaMode mode)
+        => mode == SchemaMode.Flexible ? "SCHEMALESS" : "SCHEMAFULL";
 
     /// <summary>
     /// Ensures the mt_events table exists with the required schema for event sourcing.
@@ -81,11 +107,11 @@ public class SchemaManager
     /// Non-generic overload of <see cref="EnsureDocumentSchemaAsync{T}"/> for use without
     /// compile-time type knowledge (e.g. when iterating configured mappings).
     /// </summary>
-    internal async Task EnsureDocumentSchemaAsync(Type entityType, ISurrealDbSession session, CancellationToken ct = default)
+    internal async Task EnsureDocumentSchemaAsync(Type entityType, ISurrealDbSession session, SchemaMode mode = SchemaMode.Strict, CancellationToken ct = default)
     {
         var tableName = MetadataDispatch.GetTableName(entityType);
-        _logger.LogDebug("Ensuring document schema for type {Type} with table {Table}", entityType.Name, tableName);
-        await session.RawQuery($"DEFINE TABLE {tableName} SCHEMAFULL;", null, ct).ConfigureAwait(false);
+        _logger.LogDebug("Ensuring document schema for type {Type} with table {Table} and mode {Mode}", entityType.Name, tableName, mode);
+        await session.RawQuery($"DEFINE TABLE {tableName} {GetSchemaSurql(mode)};", null, ct).ConfigureAwait(false);
 
         foreach (var prop in entityType.GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance))
         {
@@ -102,10 +128,10 @@ public class SchemaManager
     /// Legacy method: ensures a schema for the given type using explicit table name.
     /// Kept for backward compatibility.
     /// </summary>
-    public async Task EnsureSchemaAsync<T>(ISurrealDbSession session, string tableName, CancellationToken ct = default)
+    public async Task EnsureSchemaAsync<T>(ISurrealDbSession session, string tableName, SchemaMode mode = SchemaMode.Strict, CancellationToken ct = default)
     {
-        _logger.LogDebug("Ensuring schema for type {Type} with table {Table}", typeof(T).Name, tableName);
-        await session.RawQuery($"DEFINE TABLE {tableName} SCHEMAFULL;", null, ct).ConfigureAwait(false);
+        _logger.LogDebug("Ensuring schema for type {Type} with table {Table} and mode {Mode}", typeof(T).Name, tableName, mode);
+        await session.RawQuery($"DEFINE TABLE {tableName} {GetSchemaSurql(mode)};", null, ct).ConfigureAwait(false);
 
         var type = typeof(T);
         foreach (var prop in type.GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance))

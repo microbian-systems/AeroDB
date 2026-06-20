@@ -25,6 +25,17 @@ public interface IQuerySession : IAsyncDisposable
     ISurrealDbQueryable<T> Query<T>() where T : class;
 
     /// <summary>
+    /// Executes a raw SurrealQL query and returns the deserialized results.
+    /// </summary>
+    Task<List<T>> RawQueryAsync<T>(string sql, IReadOnlyDictionary<string, object?>? parameters = null, CancellationToken ct = default);
+
+    /// <summary>
+    /// Executes a raw SurrealQL statement that does not return rows (e.g., CREATE, UPDATE, DELETE, DEFINE).
+    /// Returns the number of affected records or -1 if unknown.
+    /// </summary>
+    Task<int> ExecuteSqlAsync(string sql, IReadOnlyDictionary<string, object?>? parameters = null, CancellationToken ct = default);
+
+    /// <summary>
     /// The tenant ID for this session (null if no tenancy is configured).
     /// </summary>
     string? TenantId { get; }

@@ -16,7 +16,7 @@ EF Core's non-relational provider API requires internal types (`IUpdateEntry`, `
 | File | Content |
 |------|---------|
 | `architecture.md` | **Current** — Marten-style document DB + event store architecture |
-| `efcore-plan.md` | **Superseded** — kept for future EF Core provider reference |
+| `DEPRECATED-efcore-plan.md` | **Superseded** — kept for future EF Core provider reference |
 | `marten-llms-full.txt` | MartenDB reference docs (document storage, LINQ, projections, etc.) |
 | `wovlerine-llms-full.txt` | WolverineFx reference (event sourcing patterns) |
 

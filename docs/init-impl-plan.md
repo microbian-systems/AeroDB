@@ -38,6 +38,7 @@
 | 12. Database-per-Tenant | 134 | APPROVED | ✅ Done |
 | 13. Server-Side Aggregates | 134 | APPROVED | ✅ Done |
 | 14. Source Generators | 144 | APPROVED | ✅ Done |
+| 15. Schema Modes, Events, RawQL & Functions | 144 | — | ✅ Done |
 | ✚ Cross-cutting (logging, ConfigureAwait, ct) | 144 | — | ✅ Done |
 
 ---
@@ -120,6 +121,11 @@
 | String functions | `Contains` → `string::contains`, `StartsWith`, `EndsWith` |
 | Math operators | `+`, `-`, `*`, `/`, `%` |
 | Date functions | `time::year/month/day/wday/hour/minute/second` |
+| Search functions | `search::analyze`, `search::score`, `search::rrf` — planned (see backlog)[^1] |
+| Vector functions | `vector::distance::knn`, `vector::similarity::cosine` — planned (see backlog)[^1] |
+| Full-text match | `@@` operator with `FULLTEXT ANALYZER` + BM25 scoring — planned[^1] |
+| KNN operator | `<\|>\|` with `HNSW` index for approximate nearest-neighbor — planned[^1] |
+| Hybrid fusion | `search::rrf()` combining BM25 + vector results — planned[^1] |
 | First/Single | `FirstOrDefaultAsync` (with/without predicate), `SingleOrDefaultAsync` |
 | Table quoting | Backtick-quoted table names for keyword safety |
 
@@ -346,6 +352,60 @@ await using var sessionB = await store.WithTenant("tenant-b").QuerySessionAsync(
 
 ---
 
+## Phase 15: Schema Modes, Native Events, RawQL & Functions ✅
+
+**Tests:** 144
+
+| Component | Description |
+|-----------|-------------|
+| `SchemaMode` enum | `Strict` (SCHEMAFULL) / `Flexible` (SCHEMALESS) — configurable per document type |
+| `DocumentMapping<T>.SetSchemaMode()` | Fluent API to set schema mode for a type |
+| `SchemaManager.GetSchemaSurql()` | Emits `SCHEMAFULL` or `SCHEMALESS` based on mode |
+| `IQuerySession.RawQueryAsync<T>()` | Raw SurrealQL query returning typed results |
+| `IQuerySession.ExecuteSqlAsync()` | Execute non-query SurrealQL (CREATE, UPDATE, DEFINE, etc.) |
+| `EventTriggerDefinition` | Model for SurrealDB `DEFINE EVENT` triggers (`Name`, `Table`, `WhenCondition`, `Action`, `Async`, `Retry`, `MaxDepth`) |
+| `EventTriggerManager` | `EnsureTriggerAsync()`, `AlterTriggerAsync()`, `RemoveTriggerAsync()` |
+| `EventTriggerOptions` | Config in `StoreOptions.Events.Triggers` with `AddTrigger()` fluent API + `AutoCreateTriggers` |
+| `SurrealFunction` | Model for SurrealDB `DEFINE FUNCTION` |
+| `FunctionManager` | `EnsureFunctionAsync()`, `RemoveFunctionAsync()` |
+| `FunctionOptions` | Config in `StoreOptions.Functions` with `Register()` fluent API + `AutoCreateFunctions` |
+| `StoreOptions.Functions` | User-defined function config section |
+| `DocumentStore.InitializeAsync` | Auto-applies schema modes, event triggers, and user-defined functions during initialization |
+
+**Usage:**
+```csharp
+var store = Documents.For(o =>
+{
+    // Schema mode: per document type
+    o.Schema.For<Person>()
+        .SetSchemaMode(SchemaMode.Flexible)
+        .Index(p => p.Email);
+
+    // Native event triggers (separate from Marten-style event sourcing)
+    o.Events.Triggers.AddTrigger(
+        name: "user_created",
+        table: "user",
+        action: "CREATE audit SET event = $event, table_name = 'user'",
+        whenCondition: "$event = 'CREATE'"
+    );
+
+    // User-defined functions
+    o.Functions.Register("fn::greet",
+        body: "RETURN 'Hello, ' + $name;",
+        parameters: "$name: string"
+    );
+});
+
+// Raw SQL access on any session
+await using var session = store.QuerySession();
+var adults = await session.RawQueryAsync<Person>(
+    "SELECT * FROM person WHERE age > $minAge",
+    new Dictionary<string, object?> { ["minAge"] = 18 }
+);
+```
+
+---
+
 ## Backlog (Future)
 
 | Area | Description | Priority |
@@ -355,8 +415,11 @@ await using var sessionB = await store.WithTenant("tenant-b").QuerySessionAsync(
 | **Subscriptions** | Real-time event subscriptions via LIVE SELECT | Medium |
 | **IDocumentListener** | Marten-style hooks (`BeforeSave`, `AfterSave`, etc.) | Small |
 | **Batch operations** | Bulk insert/delete with chunked transactions | Small |
-| **Full-text search** | Wrap SurrealDB's `search::*` functions | Medium |
+| **Search & vector functions** | LINQ wrappers for `search::analyze`, `search::score`, `search::rrf`, `vector::distance::knn`, `vector::similarity::cosine`, `@@` match operator, and `<\|>\|` KNN operator — see SurrealDB's hybrid fusion pattern[^1] | Medium |
 | **CI/CD** | GitHub Actions: build, test, package, publish NuGet | Medium |
+| **Scoped event triggers** | Allow binding event triggers to specific document types (auto-resolve table name) | Small |
+| **Function argument validation** | Fluent API for typed function parameter definitions instead of raw strings | Small |
+| **Event trigger scaffolding** | `dotnet dali trigger add` CLI command for quick trigger creation | Small |
 
 ---
 
@@ -382,6 +445,19 @@ var store = Documents.For(o =>
 
     // Events
     o.Events.Enabled = true;
+
+    // Native event triggers (DEFINE EVENT — database-level triggers)
+    o.Events.Triggers.AddTrigger("user_created", "user",
+        action: "CREATE audit SET event = $event, table_name = 'user'",
+        whenCondition: "$event = 'CREATE'");
+
+    // User-defined functions (DEFINE FUNCTION)
+    o.Functions.Register("fn::greet",
+        body: "RETURN 'Hello, ' + $name;",
+        parameters: "$name: string");
+
+    // Schema mode (per document type)
+    o.Schema.For<Person>().SetSchemaMode(SchemaMode.Flexible);
 
     // Tenancy
     o.TenancyStyle = TenancyStyle.Conjoined;
@@ -425,3 +501,9 @@ After Phase 14 (Source Generators), a codebase-wide audit was conducted to verif
 | EventRecord CBOR fetch fails with embedded engine | Use RawQuery + JSON round-trip for non-Record types |
 | `Aero.Cms.SourceGenerators` project reference warning | Pre-existing repo issue, non-blocking |
 | `System.Threading.Channels` NU1510 pruning warning | Pre-existing, non-blocking |
+
+---
+
+## References
+
+[^1]: Dave MacLeod, "New SurrealDB docs search using hybrid search and HNSW/BM25 reranking," SurrealDB Blog, Apr 2026. The SurrealDB documentation search engine uses BM25 full-text indexes with a custom analyzer (`search::score`), OpenAI `text-embedding-3-small` vector embeddings with HNSW indexes, and fuses both result sets via `search::rrf()` (Reciprocal Rank Fusion). [`Source`](https://surrealdb.com/blog/a-real-world-example-of-hybrid-fusion-search-using-the-surrealdb-docs-search)

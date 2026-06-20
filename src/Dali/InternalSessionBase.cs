@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using SurrealDb.Net;
 using SurrealDb.Net.Models;
+using SurrealDb.Net.Models.Response;
 
 namespace Dali;
 
@@ -36,6 +37,18 @@ public abstract class InternalSessionBase : IAsyncDisposable
 
     protected ILogger<T> CreateLogger<T>() =>
         Options.LoggerFactory?.CreateLogger<T>() ?? NullLogger<T>.Instance;
+
+    public async Task<List<T>> RawQueryAsync<T>(string sql, IReadOnlyDictionary<string, object?>? parameters = null, CancellationToken ct = default)
+    {
+        var response = await Session.RawQuery(sql, parameters, ct).ConfigureAwait(false);
+        return response.GetValue<List<T>>(0) ?? [];
+    }
+
+    public async Task<int> ExecuteSqlAsync(string sql, IReadOnlyDictionary<string, object?>? parameters = null, CancellationToken ct = default)
+    {
+        var response = await Session.RawQuery(sql, parameters, ct).ConfigureAwait(false);
+        return response.FirstOk is not null ? 1 : 0;
+    }
 
     public ISurrealDbQueryable<T> Query<T>() where T : class
     {

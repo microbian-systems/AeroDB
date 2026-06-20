@@ -12,6 +12,20 @@ public abstract class DocumentMapping
     internal abstract Type EntityType { get; }
     internal abstract List<IndexDefinition> Indices { get; }
     internal abstract bool IsMultiTenanted { get; }
+    internal abstract SchemaMode SchemaModeType { get; }
+}
+
+public enum SchemaMode
+{
+    /// <summary>
+    /// SCHEMAFULL — only explicitly defined fields are permitted; extra fields are rejected.
+    /// </summary>
+    Strict,
+
+    /// <summary>
+    /// SCHEMALESS — fields are typed/validated if defined, but extra fields are allowed.
+    /// </summary>
+    Flexible
 }
 
 /// <summary>
@@ -25,6 +39,18 @@ public class DocumentMapping<T> : DocumentMapping
     internal override List<IndexDefinition> Indices { get; } = [];
     private bool _isMultiTenanted;
     internal override bool IsMultiTenanted => _isMultiTenanted;
+    private SchemaMode _schemaModeType = SchemaMode.Strict;
+    internal override SchemaMode SchemaModeType => _schemaModeType;
+
+    /// <summary>
+    /// Sets the schema mode for this document type (SCHEMAFULL vs SCHEMALESS).
+    /// Default is <see cref="Dali.SchemaMode.Strict"/> (SCHEMAFULL).
+    /// </summary>
+    public DocumentMapping<T> SetSchemaMode(Dali.SchemaMode mode)
+    {
+        _schemaModeType = mode;
+        return this;
+    }
 
     /// <summary>
     /// Defines a simple index on the specified property.
