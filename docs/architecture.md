@@ -5,7 +5,7 @@
 **Last modified:** 2026-06-20
 **Full plan:** [init-impl-plan.md](init-impl-plan.md)
 **Build:** 0 errors (4 pre-existing warnings)
-**Tests:** 301 passing (82 graph + 217 existing; 13 pre-existing search failures require live SurrealDB)
+**Tests:** 324 passing (all passing, 0 failures — includes Graph, Search, FoF integration tests)
 
 ---
 

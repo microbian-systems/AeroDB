@@ -5,8 +5,8 @@
 **Last modified:** 2026-06-20
 **Version:** 0.1.0
 **Build:** 0 errors (4 pre-existing stale warnings)
-**Tests:** 144 passing, 0 failing, 0 skipped
-**Projects:** `Dali`, `Dali.EntityFrameworkCore`, `Dali.Tests`
+**Tests:** 324 passing, 0 failing, 0 skipped
+**Projects:** `Dali`, `Dali.EntityFrameworkCore`, `Dali.Tests`, `WolverineFx.Dali` (planned)
 
 ---
 
@@ -39,10 +39,11 @@
 | 13. Server-Side Aggregates | 134 | APPROVED | ✅ Done |
 | 14. Source Generators | 144 | APPROVED | ✅ Done |
 | 15. Schema Modes, Events, RawQL & Functions | 144 | — | ✅ Done |
-| 16. Graph API (RELATE, traversal, paths) | 301 | 82 | ✅ Complete |
-| 17. Multi-Database / Schema Support | 144 | — | 📋 Planned |
-| 18. Advanced Low-Level SDK Access | 144 | APPROVED | 📋 Planned |
-| 19. WolverineFx.Dali Integration | 144 | APPROVED | 📋 Planned |
+| 16. Search & Vector Functions | 148 | APPROVED | ✅ Done |
+| 17. Graph API (RELATE, traversal, paths, FoF) | 324 | APPROVED | ✅ Done |
+| 18. Multi-Database / Schema Support | 324 | — | 📋 Planned |
+| 19. Advanced Low-Level SDK Access | 324 | APPROVED | 📋 Planned |
+| 20. WolverineFx.Dali Integration | 324 | APPROVED | 📋 Planned |
 | ✚ Cross-cutting (logging, ConfigureAwait, ct) | 144 | — | ✅ Done |
 
 ---
@@ -421,9 +422,9 @@ var adults = await session.RawQueryAsync<Person>(
 
 ---
 
-## Phase 16: Search & Vector Functions 🔄
+## Search & Vector Functions ✅
 
-**Tests:** TBD
+**Tests:** ~24 (cumulative: 168)
 
 | Component | Description |
 |-----------|-------------|
@@ -436,11 +437,11 @@ var adults = await session.RawQueryAsync<Person>(
 
 **References:** SurrealDB hybrid fusion blog post[^1]. The SurrealDB docs search engine uses `search::score()` with BM25 weighting, `vector::distance::knn()` via HNSW, and `search::rrf()` for ranked fusion.
 
-## Phase 16: Graph API (RELATE, Traversal, Paths) ✅ Complete
+## Phase 17: Graph API (RELATE, Traversal, Paths, FoF) ✅ Complete
 
 SurrealDB treats graph edges as first-class records with `RELATE`, enabling typed connections with metadata that can be traversed via directed path syntax (`->`, `<-`), recursive depth queries (`@.{n}`), and built-in shortest-path algorithms (`+shortest`). The Surrealist Graph view[^2] visualizes these relationships as interactive node-edge diagrams — see that post for rich examples of company org charts, rail networks, rock-paper-scissors cycles, and EU treaty memberships expressed as graph queries.
 
-**Tests:** 144 (planned: ~30 new)
+**Tests:** ~156 (cumulative: 324) — including 10 Friend-of-Friends integration tests with 1000-person Bogus social graph
 
 | Component | Description |
 |-----------|-------------|
@@ -565,9 +566,9 @@ var store = Documents.For(o =>
 
 ---
 
-## Phase 17: Multi-Database / Schema Support 📋 Planned
+## Phase 18: Multi-Database / Schema Support 📋 Planned
 
-**Tests:** 144 (planned: ~25 new)
+**Tests:** 324 (planned: ~25 new)
 
 SurrealDB's `NAMESPACE → DATABASE` hierarchy maps to PostgreSQL's `DATABASE → SCHEMA` model. Each SurrealDB `DATABASE` fully isolates its tables, fields, indexes, events, and functions. Dali lets you map document types to different databases via `DocumentMapping<T>.Schema()`.
 
@@ -787,7 +788,7 @@ After Phase 14 (Source Generators), a codebase-wide audit was conducted to verif
 | C: Version accessor | ✅ Done | MetadataRegistry (+untyped delegates), DaliDocumentGenerator, InternalSessionBase |
 | F: Typed methods | ✅ Auto-resolved by B+C | Side-effect |
 
-## Phase 18: Advanced Low-Level SDK Access 📋
+## Phase 19: Advanced Low-Level SDK Access 📋
 
 **Council review:** APPROVED (unanimous Q1-Q3, majority Q4, partial consensus Q5)
 
@@ -852,7 +853,7 @@ Sessions from `Advanced.CreateSessionAsync()` are **not managed by Dali**. Calle
 - `AddDali(options, registerRawTypes: true)`: also registers `ISurrealDbClient` (singleton) and `ISurrealDbSession` (scoped factory)
 - Users can also call `services.AddSurreal()` separately for full control
 
-## Phase 19: WolverineFx.Dali Integration 📋
+## Phase 20: WolverineFx.Dali Integration 📋
 
 **Council review:** APPROVED (deepseek-v4-pro, alpha only; comprehensive source-grounded analysis)
 
@@ -970,6 +971,12 @@ builder.Host.UseWolverine(opts =>
 | 18 | Integration | `Dali_plus_Wolverine_end_to_end` | Full handler → saga → outbox cycle |
 | 19 | Integration | `Multi_tenant_roundtrips` | Tenant isolation with Dali + Wolverine |
 | 20 | Integration | `Live_query_wakeup` | Live query triggers immediate poll |
+
+### Bugs Fixed
+
+| Bug | File | Fix |
+|-----|------|-----|
+| `FILTERS` keyword prepended per filter in `EnsureAnalyzerAsync` | `src/Dali/Schema/SchemaManager.cs:157` | Moved `FILTERS` before the comma-separated list instead of per-filter. Caused `Parse error: Unexpected token 'FILTERS'` in embedded engine. |
 
 ### Risks
 
