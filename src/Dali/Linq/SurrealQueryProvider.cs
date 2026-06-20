@@ -1,6 +1,8 @@
 using System.Collections.Concurrent;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Text.Json;
+using Dahomey.Cbor;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using SurrealDb.Net;
@@ -221,55 +223,25 @@ public class SurrealQueryProvider : IQueryProvider
         if (string.IsNullOrEmpty(query.TableName))
             ExtractTable(expression, query);
 
-        var elementType = ExtractElementType(expression);
-        ApplyTenantFilter(query, elementType);
-        ApplySoftDeleteFilter(query, elementType);
+        ApplyTenantFilter(query, typeof(T));
+        ApplySoftDeleteFilter(query, typeof(T));
 
         query.OrderBy.Clear();
         query.Limit = null;
         query.Skip = null;
 
-        // Fetch full records (select *) — CBOR deserializes known types reliably.
-        // Then extract field values via reflection and aggregate client-side.
-        query.Projection = "*";
-
+        // The visitor already generated the correct server-side projection
+        // (e.g., math::sum(Price)). Let it flow through to SurrealQL.
         var surql = query.ToSurrealQL();
         _logger.LogDebug("AggregateAsync ({Function}) SurrealQL: {Surql}", function, surql);
         var response = await _session.RawQuery(surql, null, ct).ConfigureAwait(false);
 
-        if (response.HasErrors || response.Count <= 0)
-            return 0m;
-
-        try
+        if (!response.HasErrors && response.Count > 0)
         {
-            // CBOR properly deserializes to known Record-derived types (like T)
-            var items = response.GetValue<List<T>>(0);
-            if (items is not null && items.Count > 0)
-            {
-                var prop = typeof(T).GetProperty(fieldName);
-                if (prop is not null)
-                {
-                    var values = items
-                        .Select(item => prop.GetValue(item))
-                        .Where(v => v is not null && v is IConvertible)
-                        .Select(v => Convert.ToDecimal(v))
-                        .ToList();
-
-                    if (values.Count > 0)
-                    {
-                        return function switch
-                        {
-                            "math::sum" => values.Sum(),
-                            "math::min" => values.Min(),
-                            "math::max" => values.Max(),
-                            "math::mean" => values.Average(),
-                            _ => values.First()
-                        };
-                    }
-                }
-            }
+            var result = TryExtractDecimal(response);
+            if (result.HasValue)
+                return result.Value;
         }
-        catch { }
 
         return 0m;
     }
@@ -292,7 +264,7 @@ public class SurrealQueryProvider : IQueryProvider
         query.OrderBy.Clear();
         query.Limit = null;
         query.Skip = null;
-        query.Projection = "*";
+        query.Projection = "count()";
 
         var surql = query.ToSurrealQL();
         _logger.LogDebug("CountAsync SurrealQL: {Surql}", surql);
@@ -300,10 +272,9 @@ public class SurrealQueryProvider : IQueryProvider
 
         if (!response.HasErrors && response.Count > 0)
         {
-            // GetValue<List<object>> works for Record-derived types but not for
-            // SELECT count() aggregates. Query all rows and count client-side.
-            var raw = response.GetValue<List<object>>(0);
-            return raw?.Count ?? 0;
+            var result = TryExtractLong(response);
+            if (result.HasValue)
+                return (int)result.Value;
         }
 
         return 0;
@@ -341,6 +312,125 @@ public class SurrealQueryProvider : IQueryProvider
         PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower,
         PropertyNameCaseInsensitive = true
     };
+
+    /// <summary>
+    /// Extracts a decimal value from a SurrealDB aggregate response.
+    /// Uses raw CBOR → JSON conversion for reliable deserialization
+    /// of server-side aggregate results like [{ "math::sum": 60.0 }].
+    /// </summary>
+    private static decimal? TryExtractDecimal(SurrealDbResponse response)
+    {
+        var json = ConvertResultToJson(response);
+        if (json is null)
+            return null;
+
+        try
+        {
+            using var doc = JsonDocument.Parse(json);
+            // Expect either an array [{key: value}] or a plain number
+            if (doc.RootElement.ValueKind == JsonValueKind.Array)
+            {
+                foreach (var element in doc.RootElement.EnumerateArray())
+                {
+                    if (element.ValueKind == JsonValueKind.Object)
+                    {
+                        foreach (var prop in element.EnumerateObject())
+                        {
+                            if (prop.Value.ValueKind == JsonValueKind.Number)
+                                return prop.Value.GetDecimal();
+                        }
+                    }
+                    else if (element.ValueKind == JsonValueKind.Number)
+                    {
+                        return element.GetDecimal();
+                    }
+                }
+            }
+            else if (doc.RootElement.ValueKind == JsonValueKind.Number)
+            {
+                return doc.RootElement.GetDecimal();
+            }
+        }
+        catch
+        {
+            // Fall through
+        }
+
+        return null;
+    }
+
+    /// <summary>
+    /// Extracts a long value from a SurrealDB count() response.
+    /// Uses raw CBOR → JSON conversion for reliable deserialization.
+    /// </summary>
+    private static long? TryExtractLong(SurrealDbResponse response)
+    {
+        var json = ConvertResultToJson(response);
+        if (json is null)
+            return null;
+
+        try
+        {
+            using var doc = JsonDocument.Parse(json);
+            if (doc.RootElement.ValueKind == JsonValueKind.Array)
+            {
+                foreach (var element in doc.RootElement.EnumerateArray())
+                {
+                    if (element.ValueKind == JsonValueKind.Object)
+                    {
+                        foreach (var prop in element.EnumerateObject())
+                        {
+                            if (prop.Value.ValueKind == JsonValueKind.Number)
+                                return (int)prop.Value.GetInt64();
+                        }
+                    }
+                    else if (element.ValueKind == JsonValueKind.Number)
+                    {
+                        return (int)element.GetInt64();
+                    }
+                }
+            }
+            else if (doc.RootElement.ValueKind == JsonValueKind.Number)
+            {
+                return (int)doc.RootElement.GetInt64();
+            }
+        }
+        catch
+        {
+            // Fall through
+        }
+
+        return null;
+    }
+
+    /// <summary>
+    /// Converts the first OK result of a SurrealDB response from CBOR to a JSON string,
+    /// using reflection to access the internal binary payload.
+    /// </summary>
+    private static string? ConvertResultToJson(SurrealDbResponse response)
+    {
+        try
+        {
+            var firstOk = response.FirstOk;
+            if (firstOk is null)
+                return null;
+
+            var binaryField = typeof(SurrealDbOkResult).GetField(
+                "_binaryResult",
+                BindingFlags.NonPublic | BindingFlags.Instance
+            );
+            if (binaryField?.GetValue(firstOk) is ReadOnlyMemory<byte> binary)
+            {
+                return Cbor.ToJson(binary.Span);
+            }
+        }
+        catch
+        {
+            // Reflection or conversion failed
+        }
+
+        return null;
+    }
 
     internal static string ToSnakeCase(string name)
     {

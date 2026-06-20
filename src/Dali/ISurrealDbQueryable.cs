@@ -76,25 +76,37 @@ public class SurrealDbQueryable<T> : ISurrealDbQueryable<T>, IAsyncEnumerable<T>
     public Task<decimal> SumAsync(Expression<Func<T, decimal>> selector, CancellationToken ct = default)
     {
         var fieldName = ExtractFieldName(selector);
-        return _provider.AggregateAsync<T>(Expression, fieldName, "math::sum", ct);
+        var sumExpr = Expression.Call(
+            typeof(Queryable), "Sum", [typeof(T)],
+            Expression, Expression.Quote(selector));
+        return _provider.AggregateAsync<T>(sumExpr, fieldName, "math::sum", ct);
     }
 
     public Task<decimal> MinAsync(Expression<Func<T, decimal>> selector, CancellationToken ct = default)
     {
         var fieldName = ExtractFieldName(selector);
-        return _provider.AggregateAsync<T>(Expression, fieldName, "math::min", ct);
+        var minExpr = Expression.Call(
+            typeof(Queryable), "Min", [typeof(T), typeof(decimal)],
+            Expression, Expression.Quote(selector));
+        return _provider.AggregateAsync<T>(minExpr, fieldName, "math::min", ct);
     }
 
     public Task<decimal> MaxAsync(Expression<Func<T, decimal>> selector, CancellationToken ct = default)
     {
         var fieldName = ExtractFieldName(selector);
-        return _provider.AggregateAsync<T>(Expression, fieldName, "math::max", ct);
+        var maxExpr = Expression.Call(
+            typeof(Queryable), "Max", [typeof(T), typeof(decimal)],
+            Expression, Expression.Quote(selector));
+        return _provider.AggregateAsync<T>(maxExpr, fieldName, "math::max", ct);
     }
 
     public Task<decimal> AverageAsync(Expression<Func<T, decimal>> selector, CancellationToken ct = default)
     {
         var fieldName = ExtractFieldName(selector);
-        return _provider.AggregateAsync<T>(Expression, fieldName, "math::mean", ct);
+        var avgExpr = Expression.Call(
+            typeof(Queryable), "Average", [typeof(T)],
+            Expression, Expression.Quote(selector));
+        return _provider.AggregateAsync<T>(avgExpr, fieldName, "math::mean", ct);
     }
 
     private static string ExtractFieldName<TDelegate>(Expression<TDelegate> selector)
