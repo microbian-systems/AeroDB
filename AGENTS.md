@@ -34,11 +34,10 @@
 ## Testing
 - **Unit Testing**: TUnit
 - **GUI Integration Testing**: Microsoft Playwright
-- **Integration Testing Resource**: Investigate using [mysticmind-postgresembed](https://github.com/mysticmind/mysticmind-postgresembed) for embedded Postgres in tests.
 - Use Alba for any asp.net core integration testing
 - Use nsubstitute, autofixture and fakeiteasy for mocking (mainly nsubstitute, fakeiteasy when beneficial)
-- Use TUnit for unit testing ()
 - Use nuget pkg bogus for fake data
+- **Assertions**: Use **Shouldly** for assertions. **Do NOT use FluentAssertions**.
 
 
 ## Git Submodules 
@@ -69,11 +68,18 @@
 - Do not introduce unnecessary abstractions.
 - Do not change unrelated logic.
 
+## MCP Servers
+
+- **SurrealDB MCP** — linked but requires agent session restart to activate. After reboot, use for SurrealDB schema exploration, SurrealQL syntax validation, and live query testing.
+- **mslearn (Microsoft Learn)** — use for .NET / C# / ASP.NET Core / EF Core guidance and code samples. Prefer this over web search for Microsoft technology questions.
+- **ctx7 (Context7)** — use for third-party library and framework documentation (SurrealDB, etc.). Resolves official docs and code snippets.
+
 ## Important Docs
 
 Agents should read relevant docs before generating code.
 
 - `docs/`
+- `docs/efcore-plan.md` — architectural plan for the SurrealDB EF Core provider
 
 
 ## Skills
