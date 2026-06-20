@@ -261,6 +261,7 @@ public class SurrealQueryResult
     public int? Limit { get; set; }
     public int? Skip { get; set; }
     public string Projection { get; set; } = "*";
+    public bool GroupAll { get; set; }
 
     public string ToSurrealQL()
     {
@@ -275,6 +276,11 @@ public class SurrealQueryResult
         {
             sb.Append(" WHERE ");
             sb.Append(string.Join(" AND ", Where));
+        }
+
+        if (GroupAll)
+        {
+            sb.Append(" GROUP ALL");
         }
 
         if (OrderBy.Count > 0)
@@ -312,7 +318,8 @@ public class SurrealQueryResult
             OrderBy = [..OrderBy],
             Limit = Limit,
             Skip = Skip,
-            Projection = Projection
+            Projection = Projection,
+            GroupAll = GroupAll
         };
     }
 }

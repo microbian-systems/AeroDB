@@ -1,5 +1,6 @@
 using System.Reflection;
 using System.Text.Json;
+using Dali.Metadata;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using SurrealDb.Net;
@@ -162,7 +163,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
             {
                 foreach (var op in _unitOfWork.Operations)
                 {
-                    var table = Snake(op.EntityType.Name);
+                    var table = MetadataDispatch.GetTableName(op.EntityType);
 
                     switch (op.Type)
                     {
@@ -278,7 +279,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                     {
                         foreach (var op in _unitOfWork.Operations)
                         {
-                            var table = Snake(op.EntityType.Name);
+                            var table = MetadataDispatch.GetTableName(op.EntityType);
                             var entityId = GetEntityId(op.Entity);
 
                             if (!string.IsNullOrEmpty(entityId) && op.Entity is IRecord record)
@@ -366,9 +367,9 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         if (expectedVersion < 0) return;
 
         // Determine the version property name for this entity type
-        if (GetVersionFieldName(op.EntityType) is null) return;
+        if (MetadataDispatch.GetVersionFieldName(op.EntityType) is null) return;
 
-        var table = Snake(op.EntityType.Name);
+        var table = MetadataDispatch.GetTableName(op.EntityType);
         var id = GetEntityId(entity);
         if (id is null)
         {
@@ -450,25 +451,11 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
 
     /// <summary>
     /// Resolves the expected version field name for the given entity type.
-    /// <see cref="VersionAttribute"/> takes precedence over <see cref="IVersioned"/>
-    /// when both are present on the same type.
-    /// Returns <c>null</c> if the type has no version field.
+    /// Delegates to <see cref="MetadataDispatch.GetVersionFieldName"/> which
+    /// uses generated metadata when available, with reflection fallback.
     /// </summary>
     private static string? GetVersionFieldName(Type entityType)
-    {
-        // [Version] attribute takes precedence over IVersioned
-        var prop = VersionPropertyCache.GetOrAdd(entityType, t =>
-            t.GetProperties(BindingFlags.Instance | BindingFlags.Public)
-             .FirstOrDefault(p => p.GetCustomAttribute<VersionAttribute>() is not null));
-
-        if (prop is not null)
-            return prop.Name;
-
-        if (typeof(IVersioned).IsAssignableFrom(entityType))
-            return "Version";
-
-        return null;
-    }
+        => MetadataDispatch.GetVersionFieldName(entityType);
 
     private async Task UpsertRecordAsync(IRecord record, RecordId rid, CancellationToken ct)
     {

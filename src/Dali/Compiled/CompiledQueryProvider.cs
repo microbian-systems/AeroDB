@@ -1,4 +1,4 @@
-using System.Collections.Concurrent;
+using Dali.Metadata;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using SurrealDb.Net;
@@ -96,15 +96,6 @@ public class CompiledQueryProvider<T> where T : class
         return result;
     }
 
-    /// <summary>
-    /// Cached check for whether a type has a TenantId string property.
-    /// </summary>
-    private static readonly ConcurrentDictionary<Type, bool> HasTenantCache = new();
-
     private static bool HasTenantProperty(Type type)
-        => HasTenantCache.GetOrAdd(type, static t =>
-        {
-            var prop = t.GetProperty("TenantId", typeof(string));
-            return prop is not null && prop.CanRead && prop.CanWrite;
-        });
+        => MetadataDispatch.HasTenantId(type);
 }

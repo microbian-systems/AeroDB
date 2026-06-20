@@ -1,6 +1,7 @@
 <Solution>
   <Project Path="Dali\Dali.csproj" />
   <Project Path="Dali.EntityFrameworkCore\Dali.EntityFrameworkCore.csproj" />
+  <Project Path="Dali.SourceGenerators\Dali.SourceGenerators.csproj" />
   <Folder Name="/__Misc__/">
     <File Path="../.gitignore" />
     <File Path="../AGENTS.md" />

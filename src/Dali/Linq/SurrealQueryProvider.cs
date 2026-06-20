@@ -1,8 +1,9 @@
 using System.Collections.Concurrent;
 using System.Linq.Expressions;
-using System.Reflection;
 using System.Text.Json;
-using Dahomey.Cbor;
+using Dahomey.Cbor.Attributes;
+using Dahomey.Cbor.ObjectModel;
+using Dali.Metadata;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using SurrealDb.Net;
@@ -38,16 +39,11 @@ public class SurrealQueryProvider : IQueryProvider
         => IsSoftDeletedCache.GetOrAdd(type, t => typeof(ISoftDeleted).IsAssignableFrom(t));
 
     /// <summary>
-    /// Cached check for whether a type has a TenantId string property.
+    /// Checks whether a type has a TenantId string property.
+    /// Uses generated metadata when available, falls back to reflection.
     /// </summary>
-    internal static readonly ConcurrentDictionary<Type, bool> HasTenantCache = new();
-
     internal static bool HasTenantProperty(Type type)
-        => HasTenantCache.GetOrAdd(type, static t =>
-        {
-            var prop = t.GetProperty("TenantId", typeof(string));
-            return prop is not null && prop.CanRead && prop.CanWrite;
-        });
+        => MetadataDispatch.HasTenantId(type);
 
     /// <summary>
     /// Extracts the table name from the expression and applies it to the query.
@@ -229,6 +225,7 @@ public class SurrealQueryProvider : IQueryProvider
         query.OrderBy.Clear();
         query.Limit = null;
         query.Skip = null;
+        query.GroupAll = true;
 
         // The visitor already generated the correct server-side projection
         // (e.g., math::sum(Price)). Let it flow through to SurrealQL.
@@ -238,7 +235,7 @@ public class SurrealQueryProvider : IQueryProvider
 
         if (!response.HasErrors && response.Count > 0)
         {
-            var result = TryExtractDecimal(response);
+            var result = TryExtractDecimal(response, function);
             if (result.HasValue)
                 return result.Value;
         }
@@ -265,6 +262,7 @@ public class SurrealQueryProvider : IQueryProvider
         query.Limit = null;
         query.Skip = null;
         query.Projection = "count()";
+        query.GroupAll = true;
 
         var surql = query.ToSurrealQL();
         _logger.LogDebug("CountAsync SurrealQL: {Surql}", surql);
@@ -272,9 +270,9 @@ public class SurrealQueryProvider : IQueryProvider
 
         if (!response.HasErrors && response.Count > 0)
         {
-            var result = TryExtractLong(response);
+            var result = TryExtractCount(response);
             if (result.HasValue)
-                return (int)result.Value;
+                return result.Value;
         }
 
         return 0;
@@ -315,35 +313,47 @@ public class SurrealQueryProvider : IQueryProvider
 
     /// <summary>
     /// Extracts a decimal value from a SurrealDB aggregate response.
-    /// Uses raw CBOR → JSON conversion for reliable deserialization
-    /// of server-side aggregate results like [{ "math::sum": 60.0 }].
+    /// Tries multiple deserialization strategies to handle different CBOR type mappings.
     /// </summary>
-    private static decimal? TryExtractDecimal(SurrealDbResponse response)
+    private static decimal? TryExtractDecimal(SurrealDbResponse response, string function)
     {
-        var json = ConvertResultToJson(response);
-        if (json is null)
+        // Try DTO approach first — this is the most reliable path
+        var dtoResult = TryExtractViaDto(response, function);
+        if (dtoResult.HasValue)
+            return dtoResult.Value;
+
+        // Fallback: generic JSON extraction
+        var raw = response.GetValue<List<object>>(0);
+        if (raw is null || raw.Count == 0)
             return null;
 
-        try
+        foreach (var item in raw)
         {
-            using var doc = JsonDocument.Parse(json);
-            // Expect either an array [{key: value}] or a plain number
-            if (doc.RootElement.ValueKind == JsonValueKind.Array)
+            if (item is CborValue cv)
             {
-                foreach (var element in doc.RootElement.EnumerateArray())
+                var r = ExtractNumericFromCborValue(cv);
+                if (r.HasValue) return r.Value;
+            }
+
+            if (item is System.Collections.IDictionary dict)
+            {
+                foreach (var key in dict.Keys)
                 {
-                    if (element.ValueKind == JsonValueKind.Object)
-                    {
-                        foreach (var prop in element.EnumerateObject())
-                        {
-                            if (prop.Value.ValueKind == JsonValueKind.Number)
-                                return prop.Value.GetDecimal();
-                        }
-                    }
-                    else if (element.ValueKind == JsonValueKind.Number)
-                    {
-                        return element.GetDecimal();
-                    }
+                    var val = dict[key];
+                    if (val is not null)
+                        return Convert.ToDecimal(val);
+                }
+            }
+
+            // Last resort: System.Text.Json serialization
+            var json = JsonSerializer.Serialize(item, JsonOptions);
+            using var doc = JsonDocument.Parse(json);
+            if (doc.RootElement.ValueKind == JsonValueKind.Object)
+            {
+                foreach (var prop in doc.RootElement.EnumerateObject())
+                {
+                    if (prop.Value.ValueKind == JsonValueKind.Number)
+                        return prop.Value.GetDecimal();
                 }
             }
             else if (doc.RootElement.ValueKind == JsonValueKind.Number)
@@ -351,43 +361,127 @@ public class SurrealQueryProvider : IQueryProvider
                 return doc.RootElement.GetDecimal();
             }
         }
-        catch
-        {
-            // Fall through
-        }
 
         return null;
     }
 
     /// <summary>
-    /// Extracts a long value from a SurrealDB count() response.
-    /// Uses raw CBOR → JSON conversion for reliable deserialization.
+    /// Extracts a count value from a SurrealDB count() response.
+    /// Deserializes via CountResultDto (mapped to lowercase "count" key via CborProperty).
     /// </summary>
-    private static long? TryExtractLong(SurrealDbResponse response)
+    private static int? TryExtractCount(SurrealDbResponse response)
     {
-        var json = ConvertResultToJson(response);
-        if (json is null)
-            return null;
-
         try
         {
-            using var doc = JsonDocument.Parse(json);
-            if (doc.RootElement.ValueKind == JsonValueKind.Array)
+            var raw = response.GetValue<List<CountResultDto>>(0);
+            if (raw is not null && raw.Count > 0)
+                return (int)raw[0].Count;
+        }
+        catch
+        {
+            // Fall through
+        }
+        return null;
+    }
+
+    /// <summary>
+    /// DTO for count() aggregate results: [{ "count": 3 }]
+    /// The CBOR key is lowercase "count" — not PascalCase — so we
+    /// need an explicit CborProperty override.
+    /// </summary>
+    private sealed class CountResultDto
+    {
+        [CborProperty("count")]
+        public long Count { get; set; }
+    }
+
+    /// <summary>
+    /// Tries to extract decimal via DTO specific to the aggregate function.
+    /// </summary>
+    private static decimal? TryExtractViaDto(SurrealDbResponse response, string function)
+    {
+        try
+        {
+            return function switch
             {
-                foreach (var element in doc.RootElement.EnumerateArray())
+                "math::sum" => response.GetValue<List<SumResultDto>>(0)?.FirstOrDefault()?.Sum,
+                "math::min" => response.GetValue<List<MinResultDto>>(0)?.FirstOrDefault()?.Min,
+                "math::max" => response.GetValue<List<MaxResultDto>>(0)?.FirstOrDefault()?.Max,
+                "math::mean" => response.GetValue<List<MeanResultDto>>(0)?.FirstOrDefault()?.Mean,
+                _ => null
+            };
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
+    private sealed class SumResultDto
+    {
+        [CborProperty("math::sum")]
+        public decimal Sum { get; set; }
+    }
+
+    private sealed class MinResultDto
+    {
+        [CborProperty("math::min")]
+        public decimal Min { get; set; }
+    }
+
+    private sealed class MaxResultDto
+    {
+        [CborProperty("math::max")]
+        public decimal Max { get; set; }
+    }
+
+    private sealed class MeanResultDto
+    {
+        [CborProperty("math::mean")]
+        public decimal Mean { get; set; }
+    }
+
+    /// <summary>
+    /// Extracts a decimal from a CborValue, handling all numeric subtypes.
+    /// </summary>
+    private static decimal? ExtractNumericFromCborValue(CborValue cv)
+    {
+        try
+        {
+            var json = cv.ToString();
+            using var doc = JsonDocument.Parse(json);
+            if (doc.RootElement.ValueKind == JsonValueKind.Object)
+            {
+                foreach (var prop in doc.RootElement.EnumerateObject())
                 {
-                    if (element.ValueKind == JsonValueKind.Object)
-                    {
-                        foreach (var prop in element.EnumerateObject())
-                        {
-                            if (prop.Value.ValueKind == JsonValueKind.Number)
-                                return (int)prop.Value.GetInt64();
-                        }
-                    }
-                    else if (element.ValueKind == JsonValueKind.Number)
-                    {
-                        return (int)element.GetInt64();
-                    }
+                    if (prop.Value.ValueKind == JsonValueKind.Number)
+                        return prop.Value.GetDecimal();
+                }
+            }
+            else if (doc.RootElement.ValueKind == JsonValueKind.Number)
+            {
+                return doc.RootElement.GetDecimal();
+            }
+        }
+        catch { }
+        return null;
+    }
+
+    /// <summary>
+    /// Extracts a long from a CborValue.
+    /// </summary>
+    private static long? ExtractLongFromCborValue(CborValue cv)
+    {
+        try
+        {
+            var json = cv.ToString();
+            using var doc = JsonDocument.Parse(json);
+            if (doc.RootElement.ValueKind == JsonValueKind.Object)
+            {
+                foreach (var prop in doc.RootElement.EnumerateObject())
+                {
+                    if (prop.Value.ValueKind == JsonValueKind.Number)
+                        return (int)prop.Value.GetInt64();
                 }
             }
             else if (doc.RootElement.ValueKind == JsonValueKind.Number)
@@ -395,40 +489,7 @@ public class SurrealQueryProvider : IQueryProvider
                 return (int)doc.RootElement.GetInt64();
             }
         }
-        catch
-        {
-            // Fall through
-        }
-
-        return null;
-    }
-
-    /// <summary>
-    /// Converts the first OK result of a SurrealDB response from CBOR to a JSON string,
-    /// using reflection to access the internal binary payload.
-    /// </summary>
-    private static string? ConvertResultToJson(SurrealDbResponse response)
-    {
-        try
-        {
-            var firstOk = response.FirstOk;
-            if (firstOk is null)
-                return null;
-
-            var binaryField = typeof(SurrealDbOkResult).GetField(
-                "_binaryResult",
-                BindingFlags.NonPublic | BindingFlags.Instance
-            );
-            if (binaryField?.GetValue(firstOk) is ReadOnlyMemory<byte> binary)
-            {
-                return Cbor.ToJson(binary.Span);
-            }
-        }
-        catch
-        {
-            // Reflection or conversion failed
-        }
-
+        catch { }
         return null;
     }
 

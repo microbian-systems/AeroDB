@@ -1,5 +1,5 @@
-using System.Collections.Concurrent;
 using System.Reflection;
+using Dali.Metadata;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using SurrealDb.Net;
@@ -21,11 +21,6 @@ public abstract class InternalSessionBase : IAsyncDisposable
     /// Key is entity instance (reference equality), value is the version at load/store time.
     /// </summary>
     private readonly Dictionary<object, long> _originalVersions = new();
-
-    /// <summary>
-    /// Caches <see cref="VersionAttribute"/>-decorated property info per type.
-    /// </summary>
-    internal static readonly ConcurrentDictionary<Type, PropertyInfo?> VersionPropertyCache = new();
 
     /// <summary>
     /// The tenant ID for this session (null if no tenancy is configured).
@@ -67,7 +62,7 @@ public abstract class InternalSessionBase : IAsyncDisposable
     public async Task<T?> LoadAsync<T>(string id, CancellationToken ct = default) where T : class
     {
         var logger = CreateLogger<InternalSessionBase>();
-        var table = Snake(typeof(T).Name);
+        var table = MetadataDispatch.GetTableName(typeof(T));
         try
         {
             var rid = new RecordIdOf<string>(table, id);
@@ -120,17 +115,26 @@ public abstract class InternalSessionBase : IAsyncDisposable
     /// Returns the current version value from the entity, or -1 if no version
     /// field is found. <see cref="VersionAttribute"/> takes precedence over
     /// <see cref="IVersioned"/> when both are present on the same type.
+    /// Uses <see cref="MetadataDispatch.GetVersionFieldName"/> for fast property name
+    /// resolution when generated metadata is available, with reflection fallback.
     /// </summary>
     protected long GetVersion(object entity)
     {
-        // [Version] attribute takes precedence over IVersioned
-        var prop = VersionPropertyCache.GetOrAdd(entity.GetType(), t =>
-            t.GetProperties(BindingFlags.Instance | BindingFlags.Public)
-             .FirstOrDefault(p => p.GetCustomAttribute<VersionAttribute>() is not null));
+        var entityType = entity.GetType();
 
-        if (prop is not null)
-            return (long)prop.GetValue(entity)!;
+        // Use metadata-aware dispatch to find the version field name
+        var versionFieldName = MetadataDispatch.GetVersionFieldName(entityType);
 
+        if (versionFieldName is not null)
+        {
+            var prop = entityType.GetProperty(versionFieldName, BindingFlags.Instance | BindingFlags.Public);
+            if (prop is not null)
+                return (long)prop.GetValue(entity)!;
+
+            // If the named property isn't found (e.g., interface mapping), fall through
+        }
+
+        // Check for IVersioned directly as final fallback
         if (entity is IVersioned versioned)
             return versioned.Version;
 
@@ -139,17 +143,24 @@ public abstract class InternalSessionBase : IAsyncDisposable
 
     /// <summary>
     /// Increments the version field on the entity (if it has one).
+    /// Uses <see cref="MetadataDispatch.GetVersionFieldName"/> for fast resolution
+    /// when generated metadata is available, with reflection fallback.
     /// </summary>
     protected void IncrementVersion(object entity)
     {
-        var prop = VersionPropertyCache.GetOrAdd(entity.GetType(), t =>
-            t.GetProperties(BindingFlags.Instance | BindingFlags.Public)
-             .FirstOrDefault(p => p.GetCustomAttribute<VersionAttribute>() is not null));
+        var entityType = entity.GetType();
 
-        if (prop is not null)
+        // Use metadata-aware dispatch to find the version field name
+        var versionFieldName = MetadataDispatch.GetVersionFieldName(entityType);
+
+        if (versionFieldName is not null)
         {
-            prop.SetValue(entity, (long)prop.GetValue(entity)! + 1);
-            return;
+            var prop = entityType.GetProperty(versionFieldName, BindingFlags.Instance | BindingFlags.Public);
+            if (prop is not null)
+            {
+                prop.SetValue(entity, (long)prop.GetValue(entity)! + 1);
+                return;
+            }
         }
 
         if (entity is IVersioned versioned)

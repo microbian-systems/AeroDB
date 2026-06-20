@@ -5,7 +5,7 @@
 **Last modified:** 2026-06-20
 **Version:** 0.1.0
 **Build:** 0 errors (4 pre-existing stale warnings)
-**Tests:** 134 passing, 0 failing, 0 skipped
+**Tests:** 144 passing, 0 failing, 0 skipped
 **Projects:** `Dali`, `Dali.EntityFrameworkCore`, `Dali.Tests`
 
 ---
@@ -36,7 +36,9 @@
 | 10. Optimistic Concurrency | 116 | APPROVED | ✅ Done |
 | 11. Soft Delete | 124 | APPROVED | ✅ Done |
 | 12. Database-per-Tenant | 134 | APPROVED | ✅ Done |
-| ✚ Cross-cutting (logging, ConfigureAwait, ct) | 134 | — | ✅ Done |
+| 13. Server-Side Aggregates | 134 | APPROVED | ✅ Done |
+| 14. Source Generators | 144 | APPROVED | ✅ Done |
+| ✚ Cross-cutting (logging, ConfigureAwait, ct) | 144 | — | ✅ Done |
 
 ---
 
@@ -310,11 +312,45 @@ await using var sessionB = await store.WithTenant("tenant-b").QuerySessionAsync(
 
 ---
 
+---
+
+## Phase 13: Server-Side Aggregates ✅
+
+**Tests:** 134
+
+| Component | Description |
+|-----------|-------------|
+| Root cause fix | Removed `query.Projection = "*"` override in `AggregateAsync` — visitor's `math::sum(field)` now flows to SurrealQL |
+| `GROUP ALL` | Added to `SurrealQueryResult` — proper SurrealQL aggregate clause |
+| `CountAsync` server-side | Uses `SELECT count() ... GROUP ALL` instead of `SELECT *` + client-side count |
+| `[CborProperty]` DTOs | SumResultDto, MinResultDto, MaxResultDto, MeanResultDto, CountResultDto for CBOR deserialization |
+| Expression tree building | `ISurrealDbQueryable` aggregate methods now build `Expression.Call` trees for visitor dispatch |
+
+---
+
+## Phase 14: Source Generators ✅
+
+**Tests:** 144 (10 new)
+**Generated types:** 9 Record subclasses
+
+| Component | Description |
+|-----------|-------------|
+| `DaliDocumentGenerator` | `IIncrementalGenerator` — scans `Record` subclasses, generates per-type `{Type}Metadata.g.cs` |
+| `DaliDocumentAttribute` | Opt-out: `[DaliDocument(SkipGeneration = true)]` |
+| `MetadataRegistry` | Static `ConcurrentDictionary` registry: generated types self-register via static constructor |
+| `MetadataDispatch` | Registry-first, reflection-fallback dispatch: `GetTableName()`, `HasTenantId()`, `GetVersionFieldName()` |
+| Generated per type | `TableName` constant, `HasTenantId`/`HasVersion` constants, `GetTenantId`/`GetVersion`/`SetVersion`/`GetRecordId` delegates |
+| Runtime retrofit | `SurrealQueryProvider.HasTenantProperty` → `MetadataDispatch.HasTenantId`, `InternalSessionBase.GetVersion` → dispatch, `DocumentSession.Snake` → `GetTableName` |
+
+**Project:** `src/Dali.SourceGenerators/` (netstandard2.0, Microsoft.CodeAnalysis.CSharp 4.11.0, analyzer reference in Dali.csproj)
+
+---
+
 ## Backlog (Future)
 
 | Area | Description | Priority |
 |------|-------------|----------|
-| **Source generators** | Roslyn generators for compiled queries, CBOR serializers, projection evolvers | High |
+| **CI/CD** | GitHub Actions: build, test, package, publish NuGet | Medium |
 | **Live projections** | SurrealDB `LIVE SELECT` → real-time projection updates | Medium |
 | **Subscriptions** | Real-time event subscriptions via LIVE SELECT | Medium |
 | **IDocumentListener** | Marten-style hooks (`BeforeSave`, `AfterSave`, etc.) | Small |
