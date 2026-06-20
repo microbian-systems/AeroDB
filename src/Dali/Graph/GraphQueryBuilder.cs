@@ -260,7 +260,7 @@ internal sealed class GraphQueryBuilder<TNode> : IGraphQuery<TNode> where TNode 
             if (member != null)
             {
                 var memberName = member.Member.Name;
-                var memberField = ToSnakeCase(memberName);
+                var memberField = memberName;
                 var arg = methodCall.Arguments.Count > 0
                     ? ExpressionValueToSurrealQL(methodCall.Arguments[0])
                     : "";
@@ -283,7 +283,7 @@ internal sealed class GraphQueryBuilder<TNode> : IGraphQuery<TNode> where TNode 
     {
         if (expr is MemberExpression member)
         {
-            return ToSnakeCase(member.Member.Name);
+            return member.Member.Name;
         }
 
         return expr.ToString();
@@ -322,17 +322,11 @@ internal sealed class GraphQueryBuilder<TNode> : IGraphQuery<TNode> where TNode 
             }
             catch
             {
-                return ToSnakeCase(member.Member.Name);
+            return member.Member.Name;
             }
         }
 
         return expr.ToString();
     }
 
-    private static string ToSnakeCase(string name)
-    {
-        if (string.IsNullOrEmpty(name)) return name;
-        return string.Concat(name.Select((c, i) =>
-            i > 0 && char.IsUpper(c) ? "_" + char.ToLowerInvariant(c) : char.ToLowerInvariant(c).ToString()));
-    }
 }

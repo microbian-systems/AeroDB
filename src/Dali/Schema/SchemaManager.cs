@@ -154,7 +154,7 @@ public class SchemaManager
     {
         var tokenizers = string.Join(", ", analyzer.Tokenizers);
         var filters = analyzer.Filters.Length > 0
-            ? " " + string.Join(", ", analyzer.Filters.Select(f => $"FILTERS {f}"))
+            ? " FILTERS " + string.Join(", ", analyzer.Filters.Select(f => $"{f}"))
             : "";
         var surql = $"DEFINE ANALYZER {analyzer.Name} TOKENIZERS {tokenizers}{filters};";
         _logger.LogDebug("Ensuring analyzer {Name}", analyzer.Name);

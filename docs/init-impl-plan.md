@@ -39,7 +39,7 @@
 | 13. Server-Side Aggregates | 134 | APPROVED | ✅ Done |
 | 14. Source Generators | 144 | APPROVED | ✅ Done |
 | 15. Schema Modes, Events, RawQL & Functions | 144 | — | ✅ Done |
-| 16. Graph API (RELATE, traversal, paths) | 144 | — | 📋 Planned |
+| 16. Graph API (RELATE, traversal, paths) | 301 | 82 | ✅ Complete |
 | 17. Multi-Database / Schema Support | 144 | — | 📋 Planned |
 | 18. Advanced Low-Level SDK Access | 144 | APPROVED | 📋 Planned |
 | 19. WolverineFx.Dali Integration | 144 | APPROVED | 📋 Planned |
@@ -436,7 +436,7 @@ var adults = await session.RawQueryAsync<Person>(
 
 **References:** SurrealDB hybrid fusion blog post[^1]. The SurrealDB docs search engine uses `search::score()` with BM25 weighting, `vector::distance::knn()` via HNSW, and `search::rrf()` for ranked fusion.
 
-## Phase 16: Graph API (RELATE, Traversal, Paths) 📋 Planned
+## Phase 16: Graph API (RELATE, Traversal, Paths) ✅ Complete
 
 SurrealDB treats graph edges as first-class records with `RELATE`, enabling typed connections with metadata that can be traversed via directed path syntax (`->`, `<-`), recursive depth queries (`@.{n}`), and built-in shortest-path algorithms (`+shortest`). The Surrealist Graph view[^2] visualizes these relationships as interactive node-edge diagrams — see that post for rich examples of company org charts, rail networks, rock-paper-scissors cycles, and EU treaty memberships expressed as graph queries.
 

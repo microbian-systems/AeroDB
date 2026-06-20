@@ -5,7 +5,7 @@
 **Last modified:** 2026-06-20
 **Full plan:** [init-impl-plan.md](init-impl-plan.md)
 **Build:** 0 errors (4 pre-existing warnings)
-**Tests:** 144 passing
+**Tests:** 301 passing (82 graph + 217 existing; 13 pre-existing search failures require live SurrealDB)
 
 ---
 
@@ -297,7 +297,7 @@ await functionManager.EnsureFunctionAsync(session, function);
 await functionManager.RemoveFunctionAsync(session, "fn::greet");
 ```
 
-## Graph Capabilities (Planned — Phase 16)
+## Graph Capabilities ✅ Implemented
 
 SurrealDB has first-class graph relationships as native records. The built-in Graph view in Surrealist provides a visual representation of these relationships, turning `SELECT` queries with graph paths into interactive node-edge diagrams[^2]. Dali will expose a dedicated `IGraphQuery<T>` API separate from the document LINQ provider.
 
@@ -572,7 +572,7 @@ src/
     Functions/
       SurrealFunction.cs                   # User-defined function model
       FunctionManager.cs                   # DEFINE FUNCTION / REMOVE FUNCTION
-    Graph/                                 # (Planned — Phase 16)
+      Graph/                                 # EdgeRecord, IGraphQuery, Builder, Plan, Generator, Deserializer, Provider
       EdgeRecord.cs                        # Base edge type with In/Out
       IGraphQuery.cs                       # Fluent graph query interface
       GraphQueryBuilder.cs                 # Step accumulator
@@ -631,7 +631,7 @@ All 14 implementation phases + metadata wiring audit fixes are complete. See [in
 | 13. Server-Side Aggregates | 134 | ✅ |
 | 14. Source Generators | 144 | ✅ |
 | 15. Schema Modes, Events, RawQL & Functions | 144 | ✅ |
-| 16. Graph API (RELATE, traversal, paths) | 144 | 📋 Planned |
+| 16. Graph API (RELATE, traversal, paths) | 301 | ✅ Complete |
 | 17. Multi-Database / Schema Support | 144 | 📋 Planned |
 | A+B+C+F. Metadata Wiring | 144 | ✅ |
 

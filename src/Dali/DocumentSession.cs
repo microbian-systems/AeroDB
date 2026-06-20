@@ -575,7 +575,14 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
     /// <summary>Remove a graph edge by its record ID.</summary>
     public async Task UnrelateAsync(RecordId edgeId, CancellationToken ct = default)
     {
-        await Session.RawQuery($"DELETE {edgeId};", null, ct).ConfigureAwait(false);
+        var ridStr = edgeId switch
+        {
+            RecordIdOf<string> s => $"{s.Table}:{s.Id}",
+            RecordIdOf<long> l => $"{l.Table}:{l.Id}",
+            RecordIdOf<int> i => $"{i.Table}:{i.Id}",
+            _ => throw new ArgumentException($"Unsupported RecordId type '{edgeId.GetType().Name}'. Expected RecordIdOf<string>, RecordIdOf<long>, or RecordIdOf<int>.", nameof(edgeId))
+        };
+        await Session.RawQuery($"DELETE {ridStr};", null, ct).ConfigureAwait(false);
     }
 
     /// <summary>
