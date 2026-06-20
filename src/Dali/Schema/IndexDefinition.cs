@@ -1,13 +1,60 @@
 namespace Dali;
 
 /// <summary>
-/// Defines a SurrealDB index (simple, unique, or composite).
+/// Defines a SurrealDB index (simple, unique, composite, full-text, or vector).
 /// </summary>
 public class IndexDefinition
 {
     public string Name { get; set; } = "";
     public string[] Columns { get; set; } = [];
     public bool IsUnique { get; set; }
+
+    // --- Search index properties ---
+    /// <summary>
+    /// The index type (Standard, FullText, or Vector).
+    /// </summary>
+    public IndexType Type { get; set; } = IndexType.Standard;
+
+    /// <summary>
+    /// Full-text analyzer name (e.g. "simple"). Only used when <see cref="Type"/> is <see cref="IndexType.FullText"/>.
+    /// </summary>
+    public string? Analyzer { get; set; }
+
+    /// <summary>
+    /// BM25 scoring parameters (k1, b). Only used when <see cref="Type"/> is <see cref="IndexType.FullText"/>.
+    /// </summary>
+    public (double K1, double B)? Bm25 { get; set; }
+
+    /// <summary>
+    /// HNSW vector dimension. Only used when <see cref="Type"/> is <see cref="IndexType.Vector"/>.
+    /// </summary>
+    public int? VectorDimension { get; set; }
+
+    /// <summary>
+    /// HNSW distance function (e.g. "COSINE", "EUCLIDEAN", "MANHATTAN"). Only used when <see cref="Type"/> is <see cref="IndexType.Vector"/>.
+    /// </summary>
+    public string? VectorDistance { get; set; }
+}
+
+/// <summary>
+/// The type of SurrealDB index to create.
+/// </summary>
+public enum IndexType
+{
+    /// <summary>
+    /// Standard index — DEFINE INDEX ... COLUMNS ...
+    /// </summary>
+    Standard,
+
+    /// <summary>
+    /// Full-text search index — DEFINE INDEX ... FIELDS ... FULLTEXT ANALYZER ...
+    /// </summary>
+    FullText,
+
+    /// <summary>
+    /// HNSW vector index — DEFINE INDEX ... FIELDS ... HNSW DIMENSION ... DIST ...
+    /// </summary>
+    Vector
 }
 
 /// <summary>

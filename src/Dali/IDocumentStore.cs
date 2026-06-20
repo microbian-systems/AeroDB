@@ -49,6 +49,24 @@ public interface IQuerySession : IAsyncDisposable
     /// Clears the tenant context from this session.
     /// </summary>
     void ClearTenant();
+
+    /// <summary>
+    /// Starts a live query monitoring a table for all changes (create/update/delete).
+    /// Only works with WebSocket connections (ws://, wss://).
+    /// </summary>
+    Task<ILiveQuery<T>> WatchTableAsync<T>(CancellationToken ct = default) where T : class;
+
+    /// <summary>
+    /// Starts a live query with a custom SurrealQL WHERE clause filter.
+    /// Only works with WebSocket connections (ws://, wss://).
+    /// </summary>
+    Task<ILiveQuery<T>> WatchQueryAsync<T>(string whereClause, CancellationToken ct = default) where T : class;
+
+    /// <summary>
+    /// Watches events for a specific stream ID (mt_events table).
+    /// Only works with WebSocket connections (ws://, wss://).
+    /// </summary>
+    Task<ILiveQuery<object>> WatchStreamAsync(string streamId, CancellationToken ct = default);
 }
 
 public interface IDocumentSession : IQuerySession

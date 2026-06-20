@@ -152,6 +152,13 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
 
         try
         {
+            // BeforeSaveChangesAsync hooks
+            if (Options.Listeners.Count > 0)
+            {
+                foreach (var listener in Options.Listeners)
+                    await listener.BeforeSaveChangesAsync(this, ct).ConfigureAwait(false);
+            }
+
             // Phase 1: Optimistic concurrency checks (Modified entities only)
             // Runs before any mutations so we fail-fast if a conflict exists.
             if (Options.UseOptimisticConcurrency && count > 0)
@@ -179,6 +186,18 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                 foreach (var op in _unitOfWork.Operations)
                 {
                     var table = MetadataDispatch.GetTableName(op.EntityType);
+
+                    // Call before-store/before-delete listeners
+                    if (Options.Listeners.Count > 0)
+                    {
+                        foreach (var listener in Options.Listeners)
+                        {
+                            if (op.Type is OperationType.Added or OperationType.Modified)
+                                listener.BeforeStore(this, op.Entity);
+                            else if (op.Type is OperationType.Deleted or OperationType.SoftDeleted)
+                                listener.BeforeDelete(this, op.Entity);
+                        }
+                    }
 
                     switch (op.Type)
                     {
@@ -251,6 +270,18 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                             }
                             break;
                     }
+
+                    // Call after-store/after-delete listeners
+                    if (Options.Listeners.Count > 0)
+                    {
+                        foreach (var listener in Options.Listeners)
+                        {
+                            if (op.Type is OperationType.Added or OperationType.Modified)
+                                listener.AfterStore(this, op.Entity);
+                            else if (op.Type is OperationType.Deleted or OperationType.SoftDeleted)
+                                listener.AfterDelete(this, op.Entity);
+                        }
+                    }
                 }
 
                 _unitOfWork.Clear();
@@ -316,6 +347,13 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
 
                     _appendedEvents.Clear();
                 }
+            }
+
+            // AfterSaveChangesAsync hooks
+            if (Options.Listeners.Count > 0)
+            {
+                foreach (var listener in Options.Listeners)
+                    await listener.AfterSaveChangesAsync(this, ct).ConfigureAwait(false);
             }
 
             var resultCount = count > 0 ? count : _appendedEvents.Count;
@@ -490,6 +528,31 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         var generic = upsertMethod.MakeGenericMethod(entityType, entityType);
         var task = (Task)generic.Invoke(Session, [rid, record, ct])!;
         await task.ConfigureAwait(false);
+    }
+
+    /// <summary>Starts a live query monitoring a table for changes.</summary>
+    public async Task<ILiveQuery<T>> WatchTableAsync<T>(CancellationToken ct = default) where T : class
+    {
+        var table = MetadataDispatch.GetTableName(typeof(T));
+        var live = await Session.LiveTable<T>(table, diff: false, ct).ConfigureAwait(false);
+        return new LiveQuery<T>(live);
+    }
+
+    /// <summary>Starts a live query with a custom where clause.</summary>
+    public async Task<ILiveQuery<T>> WatchQueryAsync<T>(string whereClause, CancellationToken ct = default) where T : class
+    {
+        var table = MetadataDispatch.GetTableName(typeof(T));
+        var surql = $"LIVE SELECT * FROM `{table}` WHERE {whereClause}";
+        var live = await Session.LiveRawQuery<T>(surql, null, ct).ConfigureAwait(false);
+        return new LiveQuery<T>(live);
+    }
+
+    /// <summary>Watches events for a specific stream ID.</summary>
+    public async Task<ILiveQuery<object>> WatchStreamAsync(string streamId, CancellationToken ct = default)
+    {
+        var surql = $"LIVE SELECT * FROM mt_events WHERE stream_id = '{streamId.Replace("'", "\\'")}'";
+        var live = await Session.LiveRawQuery<object>(surql, null, ct).ConfigureAwait(false);
+        return new LiveQuery<object>(live);
     }
 
     /// <summary>

@@ -115,6 +115,93 @@ public class DocumentMapping<T> : DocumentMapping
     }
 
     /// <summary>
+    /// Defines a full-text search index on the specified property.
+    /// Requires an analyzer to be defined via <c>SchemaOptions.DefineAnalyzer()</c> or pre-existing in the database.
+    /// </summary>
+    /// <param name="property">The property to index.</param>
+    /// <param name="analyzer">The SurrealDB analyzer name (e.g. "simple").</param>
+    /// <param name="bm25">Optional BM25 scoring parameters (k1, b).</param>
+    public DocumentMapping<T> FullTextIndex<TProp>(
+        Expression<Func<T, TProp>> property,
+        string analyzer,
+        (double K1, double B)? bm25 = null)
+    {
+        var member = ExtractMember(property);
+        Indices.Add(new IndexDefinition
+        {
+            Columns = [member.Name],
+            Name = $"ft_{Snake(typeof(T).Name)}_{Snake(member.Name)}",
+            Type = IndexType.FullText,
+            Analyzer = analyzer,
+            Bm25 = bm25
+        });
+        return this;
+    }
+
+    /// <summary>
+    /// Defines an HNSW vector search index on the specified property.
+    /// Uses approximate nearest-neighbor for fast vector similarity queries.
+    /// </summary>
+    /// <param name="property">The property storing the vector embedding.</param>
+    /// <param name="dimension">The dimensionality of the vector (e.g. 1536 for OpenAI ada-002).</param>
+    /// <param name="distance">The distance function: COSINE (default), EUCLIDEAN, or MANHATTAN.</param>
+    public DocumentMapping<T> VectorIndex<TProp>(
+        Expression<Func<T, TProp>> property,
+        int dimension,
+        string distance = Search.Distance.Cosine)
+    {
+        var member = ExtractMember(property);
+        Indices.Add(new IndexDefinition
+        {
+            Columns = [member.Name],
+            Name = $"hnsw_{Snake(typeof(T).Name)}_{Snake(member.Name)}",
+            Type = IndexType.Vector,
+            VectorDimension = dimension,
+            VectorDistance = distance
+        });
+        return this;
+    }
+
+    /// <summary>
+    /// Convenience: creates both full-text and HNSW indexes for hybrid search.
+    /// Sets up full-text indexes on each of the specified text fields.
+    /// </summary>
+    /// <param name="textFields">Pairs of (field name, weight) for full-text search fields.</param>
+    /// <param name="vectorField">The property storing the vector embedding.</param>
+    /// <param name="dimension">The dimensionality of the vector.</param>
+    /// <param name="analyzer">The SurrealDB analyzer name for full-text fields.</param>
+    /// <param name="distance">The distance function for HNSW.</param>
+    public DocumentMapping<T> HybridSearch(
+        IReadOnlyList<(string FieldName, double Weight)> textFields,
+        Expression<Func<T, object>> vectorField,
+        int dimension,
+        string analyzer,
+        string distance = Search.Distance.Cosine)
+    {
+        foreach (var (fieldName, _) in textFields)
+        {
+            Indices.Add(new IndexDefinition
+            {
+                Columns = [fieldName],
+                Name = $"ft_{Snake(typeof(T).Name)}_{Snake(fieldName)}",
+                Type = IndexType.FullText,
+                Analyzer = analyzer
+            });
+        }
+
+        var vecMember = ExtractMember(vectorField);
+        Indices.Add(new IndexDefinition
+        {
+            Columns = [vecMember.Name],
+            Name = $"hnsw_{Snake(typeof(T).Name)}_{Snake(vecMember.Name)}",
+            Type = IndexType.Vector,
+            VectorDimension = dimension,
+            VectorDistance = distance
+        });
+        return this;
+    }
+
+    /// <summary>
     /// Marks this document type as multi-tenanted (tenant_id filter applied).
     /// </summary>
     public DocumentMapping<T> MultiTenanted()

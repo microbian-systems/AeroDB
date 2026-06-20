@@ -39,6 +39,8 @@
 | 13. Server-Side Aggregates | 134 | APPROVED | ✅ Done |
 | 14. Source Generators | 144 | APPROVED | ✅ Done |
 | 15. Schema Modes, Events, RawQL & Functions | 144 | — | ✅ Done |
+| 16. Graph API (RELATE, traversal, paths) | 144 | — | 📋 Planned |
+| 17. Multi-Database / Schema Support | 144 | — | 📋 Planned |
 | ✚ Cross-cutting (logging, ConfigureAwait, ct) | 144 | — | ✅ Done |
 
 ---
@@ -406,6 +408,292 @@ var adults = await session.RawQueryAsync<Person>(
 
 ---
 
+## Small Backlog Items (complete) ✅
+
+| Item | Files |
+|------|-------|
+| Scoped event triggers | `EventTriggerOptions.AddTrigger<T>()` — auto-resolves table from `typeof(T)` |
+| Function arg validation | `SurrealFunctionParameter`, `SurrealFunction.ParametersTyped`, `FunctionOptions.Register()` overload |
+| IDocumentListener | `IDocumentSessionListener` interface + wiring in `SaveChangesAsync` |
+| Batch operations | `BulkOperations.BulkInsertAsync<T>()`, `.BulkDeleteAsync<T>()` |
+
+---
+
+## Phase 16: Search & Vector Functions 🔄
+
+**Tests:** TBD
+
+| Component | Description |
+|-----------|-------------|
+| `SurrealFunctions` | Static class: `Score(n)`, `VectorDistanceKnn()`, `VectorSimilarityCosine(a,b)` — expression-tree only |
+| Expression visitor | Translates `SurrealFunctions.*` → `search::score()`, `vector::distance::knn()`, `vector::similarity::cosine()` |
+| `SearchExtensions` | `MatchTextAsync<T>(fields, query, limit)` — full-text `@@` operator with weighted multi-field |
+| `SearchExtensions` | `MatchKnnAsync<T>(field, vector, limit, candidates)` — KNN `<\|>\|` operator |
+| `SearchExtensions` | `HybridSearchAsync<T>(config)` — RRF fusion of full-text + vector results |
+| `HybridSearchConfig` | Configuration model: Query, QueryVector, TextFields, VectorField, VectorCandidates, RrfK, RrfLimit |
+
+**References:** SurrealDB hybrid fusion blog post[^1]. The SurrealDB docs search engine uses `search::score()` with BM25 weighting, `vector::distance::knn()` via HNSW, and `search::rrf()` for ranked fusion.
+
+## Phase 16: Graph API (RELATE, Traversal, Paths) 📋 Planned
+
+SurrealDB treats graph edges as first-class records with `RELATE`, enabling typed connections with metadata that can be traversed via directed path syntax (`->`, `<-`), recursive depth queries (`@.{n}`), and built-in shortest-path algorithms (`+shortest`). The Surrealist Graph view[^2] visualizes these relationships as interactive node-edge diagrams — see that post for rich examples of company org charts, rail networks, rock-paper-scissors cycles, and EU treaty memberships expressed as graph queries.
+
+**Tests:** 144 (planned: ~30 new)
+
+| Component | Description |
+|-----------|-------------|
+| `EdgeRecord` | Abstract base for all edge types — extends `Record` with `In`/`Out` `RecordId` properties |
+| `GraphNode` / `GraphEdge` | Lightweight models for wildcard (`->?->?`) and path results |
+| `GraphPath` | Structured result with `Nodes` + `Edges` arrays for `+path` traversals |
+| `IGraphQuery<TNode>` | Fluent interface: `Out<T>()`, `In<T>()`, `Both<T>()`, `OutAny()`, `InAny()`, `AnyEdge()` |
+| `IGraphQuery<T>.Depth(n)` | Fixed-depth recursive traversal — maps to `@.{n}` |
+| `IGraphQuery<T>.Depth(min, max)` | Range-depth — maps to `@.{min..max}` |
+| `IGraphQuery<T>.ShortestPath(id)` | Shortest path algorithm — maps to `@.{..+shortest=id}` |
+| `IGraphQuery<T>.ReturnPath()` | Path collection — maps to `+path` |
+| `IGraphQuery<T>.CollectAll()` | Unique node collection — maps to `+collect` |
+| `IGraphQuery<T>.IncludeIntermediate()` | Include intermediate nodes — maps to `(+)` |
+| `IGraphQuery<T>.Fetch()` | Eager load relations — maps to `FETCH` clause |
+| `GraphQueryPlan` | Immutable intermediate representation of graph steps |
+| `GraphSurrealQLGenerator` | `GraphQueryPlan` → SurrealQL string |
+| `GraphResultDeserializer` | CBOR response → `List<T>` or `List<GraphPath>` |
+| `GraphQueryProvider` | Executes plan via `session.RawQuery` |
+| `IDocumentSession.RelateAsync<TEdge>()` | Create graph edge with typed metadata |
+| `IDocumentSession.UnrelateAsync()` | Remove a graph edge by ID |
+| `IQuerySession.Graph<T>()` | Entry point for graph traversal queries |
+| `EdgeMapping<TEdge, TIn, TOut>` | Fluent schema config for edge tables (`DEFINE TABLE ... TYPE RELATION IN ... OUT ...`) |
+| `SchemaOptions.Edge<TEdge, TIn, TOut>()` | Registration extension for edge schemas |
+
+### Architecture
+
+```
+IGraphQuery<TNode>                          # Public fluent interface
+       ↓
+GraphQueryBuilder                           # Mutable builder, accumulates steps
+       ↓
+GraphQueryPlan (immutable)                  # IR: List<GraphStep> + flags
+       ↓
+GraphSurrealQLGenerator                     # Plan → SurrealQL string
+       ↓
+GraphQueryProvider                          # Calls session.RawQuery
+       ↓
+GraphResultDeserializer                     # CBOR → List<T> / List<GraphPath>
+```
+
+### Planned Usage
+
+```csharp
+// ─── RELATE ───
+await session.RelateAsync<WorksIn, Person, Team>(
+    RecordId.Of<Person>("alice"),
+    RecordId.Of<Team>("alpha"),
+    new WorksIn { Role = "Lead", Since = DateTimeOffset.UtcNow });
+
+// ─── Single-hop traversal ───
+var team = await query.Graph<Person>()
+    .Out<Team>("works_in")
+    .FirstOrDefaultAsync();
+// → SELECT ->works_in->team.* FROM person LIMIT 1;
+
+// ─── Multi-hop ───
+var projects = await query.Graph<Person>()
+    .Out<Team>("works_in")
+    .Out<Project>("works_on")
+    .ToListAsync();
+// → SELECT ->works_in->team->works_on->project.* FROM person;
+
+// ─── Recursive depth ───
+var ancestors = await query.Graph<Person>()
+    .In<Person>("child_of")
+    .Depth(2, 5)
+    .ToListAsync();
+// → SELECT @.{2..5}<-child_of<-person.* FROM person;
+
+// ─── Shortest path ───
+var paths = await query.Graph<Person>()
+    .Out<Person>("knows")
+    .ShortestPath(RecordId.Of<Person>("charlie"))
+    .ReturnPath()
+    .ToPathListAsync();
+// → SELECT @.{..+shortest=person:charlie}->knows->person.+path FROM person;
+
+// ─── Edges with filter ───
+var leads = await query.Graph<Person>()
+    .Out<Team>("works_in")
+    .Where(t => t.Name == "Alpha Team")
+    .ToListAsync();
+// → SELECT ->works_in->team.* FROM person WHERE ->works_in->team.Name = 'Alpha Team';
+
+// ─── Fetch eager ───
+var personWithTeam = await query.Graph<Person>()
+    .Out<Team>("works_in")
+    .Fetch("works_in")
+    .FirstOrDefaultAsync();
+// → SELECT *, ->works_in AS works_in FROM person FETCH works_in LIMIT 1;
+```
+
+### Schema Integration
+
+```csharp
+var store = Documents.For(o =>
+{
+    o.Schema.Edge<WorksIn, Person, Team>(edge =>
+    {
+        edge.SchemaMode(SchemaMode.Strict);
+        edge.Index(e => e.Role);
+    });
+});
+// → DEFINE TABLE works_in TYPE RELATION IN person OUT team SCHEMAFULL;
+// → DEFINE FIELD role ON TABLE works_in TYPE string;
+// → DEFINE INDEX idx_works_in_role ON TABLE works_in COLUMNS role;
+```
+
+### Test Plan (~30 new tests)
+
+| Test Area | Count | What It Covers |
+|-----------|-------|----------------|
+| RELATE | 6 | Create edge with metadata, create edge without metadata, duplicate edge prevention, edge ID returned, type checking, null handling |
+| Single-hop traversal | 6 | `Out<T>()` returns correct type, `In<T>()` works backward, empty results, multiple edges of same type, chained after Where, null navigation |
+| Multi-hop traversal | 4 | 2-hop, 3-hop, wildcard `AnyEdge()`, mixed direction (out then in) |
+| Depth control | 4 | Fixed depth, range depth, open-ended, depth out of bounds |
+| Shortest path | 3 | Path exists, no path exists, with ReturnPath |
+| Path collection | 2 | `+path`, `+collect` |
+| Edge schema | 3 | EdgeMapping creates correct SurrealQL, schema mode respected, index on edge field |
+| FETCH / eager load | 2 | Fetch basic, fetch multiple relations |
+| Edge metadata access | 2 | Edge properties accessible, edge typed as correct subclass |
+
+---
+
+## Phase 17: Multi-Database / Schema Support 📋 Planned
+
+**Tests:** 144 (planned: ~25 new)
+
+SurrealDB's `NAMESPACE → DATABASE` hierarchy maps to PostgreSQL's `DATABASE → SCHEMA` model. Each SurrealDB `DATABASE` fully isolates its tables, fields, indexes, events, and functions. Dali lets you map document types to different databases via `DocumentMapping<T>.Schema()`.
+
+### Critical Design Decision: ForkSession, Not Inline `USE DB`
+
+The council discovered that SurrealDB's `USE` is an **RPC method**, not SurrealQL. The originally proposed `"USE DB sales; SELECT ..."` string-concatenation approach is **technically invalid**. Instead, Dali uses `ForkSession()` to clone the parent session, then calls `.Use(ns, db)` on the fork — mirroring the proven `DatabasePerTenantSelector` pattern.
+
+| Approach | Viable? | Reason |
+|----------|---------|--------|
+| Inline `"USE DB sales; SELECT ..."` | ❌ | `USE` is an RPC method, not SurrealQL — cannot appear in query strings |
+| `ForkSession() + Use(ns, db)` | ✅ | Proven pattern — same as `DatabasePerTenantSelector` |
+| Separate client pool per database | ⚠️ Overkill | Forked sessions share the same connection pool |
+
+### Constraints (Council-Approved)
+
+| Rule | Rationale |
+|------|-----------|
+| **Cross-DB queries rejected at translation** | SurrealDB has no cross-database queries. LINQ expressions spanning types from different schemas throw `InvalidOperationException`. |
+| **Multi-DB transactions rejected** | `SaveChangesAsync` groups operations by database; throws if >1 group. Users needing cross-DB consistency must orchestrate compensating sagas. |
+| **Schema auto-creation is opt-in** (`AutoCreateDatabases = false`) | `DEFINE DATABASE` is a high-privilege operation. Production credentials often cannot create databases. |
+| **Fluent API: `.Schema("sales")` not `.Database("sales")`** | Avoids naming collision with `StoreOptions.Database` (the default connection database). Aligns with PostgreSQL/Marten terminology. |
+| **Default schema = implicit null → uses `StoreOptions.Database`** | Unconfigured document types continue to use the default database. Passing `.Schema(null)` explicitly resets to default. |
+
+### Components
+
+| Component | Description |
+|-----------|-------------|
+| `DocumentMapping.SchemaName` | `string?` — `null` means "use default database" |
+| `DocumentMapping<T>.Schema(string?)` | Fluent API for per-type schema routing |
+| `SchemaManager.EnsureDatabaseAsync()` | `DEFINE DATABASE {name}` for each unique schema |
+| `SchemaOptions.AutoCreateDatabases` | Opt-in toggle (default: false) |
+| `SchemaTarget` | Internal record struct `(string Database, string Table)` — threaded through all query/persistence call sites |
+| `InternalSessionBase.GetSessionForSchemaAsync(string?)` | `ForkSession() + Use(ns, db)` — caches forked sessions in `ConcurrentDictionary` |
+| `SurrealQueryProvider` | Routes queries to correct forked session based on `SchemaTarget` |
+| `DocumentSession.SaveChangesAsync` | Groups `UnitOfWork` operations by target database; rejects multi-DB groups |
+| `SchemaManager.EnsureDocumentSchemaAsync` | Groups document mappings by schema during initialization; creates on correct session |
+
+### Architecture
+
+```
+DocumentStore.InitializeAsync
+  └→ SchemaManager
+       └→ EnsureDatabaseAsync(session, "sales")    only if AutoCreateDatabases
+       └→ EnsureDatabaseAsync(session, "hr")
+       └→ EnsureDocumentSchemaAsync<Invoice>(session, "sales")
+       └→ EnsureDocumentSchemaAsync<Employee>(session, "hr")
+
+IQuerySession / IDocumentSession
+  ├→ GetSessionForSchema("sales")    ForkSession() + Use(ns, "sales")
+  ├→ GetSessionForSchema("hr")       ForkSession() + Use(ns, "hr")
+  └→ GetSessionForSchema(null)       parent session (default db)
+
+Query execution:
+  └→ SurrealQueryProvider:
+       ├→ Resolves SchemaTarget(database, table) from DocumentMapping
+       ├→ Routes to correct forked session
+       └→ Executes on isolated session
+
+SaveChangesAsync:
+  └→ Groups UnitOfWork.Operations by target database
+     ├→ if groups.Count > 1 → throw InvalidOperationException
+     └→ else → execute on correct forked session
+```
+
+### Planned Usage
+
+```csharp
+var store = Documents.For(o =>
+{
+    o.Schema.For<Invoice>()
+        .Schema("sales")
+        .Index(i => i.Total);
+
+    o.Schema.For<Employee>()
+        .Schema("hr");
+
+    o.Schema.For<Product>();        // implicit → uses StoreOptions.Database
+
+    // Opt-in database auto-creation (high privilege)
+    // o.Schema.AutoCreateDatabases = true;
+});
+
+await using var session = store.QuerySession();
+
+// Automatically routes to DB "sales" via forked session
+var invoices = await session.Query<Invoice>()
+    .Where(i => i.Total > 100)
+    .ToListAsync();
+
+// Automatically routes to DB "hr" via another forked session
+var engineers = await session.Query<Employee>()
+    .Where(e => e.Department == "Engineering")
+    .ToListAsync();
+
+// Cross-DB LINQ query → throws InvalidOperationException at translation
+// var result = from i in session.Query<Invoice>()
+//              join e in session.Query<Employee>() on ...
+//              → throws: "Cross-database LINQ queries are not supported."
+```
+
+### Call Sites Requiring SchemaTarget Threading (~15-20 sites)
+
+| File | Change |
+|------|--------|
+| `DocumentMapping.cs` | Add `SchemaName` property + `.Schema()` fluent method |
+| `DocumentMapping` (abstract) | Add `internal abstract string? SchemaName { get; }` |
+| `MetadataDispatch.cs` | Add `GetSchemaTarget(Type)` — returns `(database, table)` |
+| `SurrealQueryProvider.cs` | Resolve `SchemaTarget`, route to correct forked session |
+| `DocumentSession.cs` | `SaveChangesAsync`: group ops by schema, reject cross-DB |
+| `DocumentSession.cs` | `CheckConcurrencyAsync`: use correct schema session |
+| `InternalSessionBase.cs` | `GetSessionForSchemaAsync()`, `_schemaSessions` cache |
+| `SchemaManager.cs` | `EnsureDocumentSchemaAsync`: accept schema param, group by schema |
+| `DocumentStore.cs` | `InitializeAsync`: group mappings by schema, create per-schema |
+
+### Test Plan (~25 new tests)
+
+| Test Area | Count | What It Covers |
+|-----------|-------|----------------|
+| Schema config | 4 | `.Schema("name")` set/clear, null default, multiple types different schemas |
+| ForkSession isolation | 4 | Operations on one schema don't leak to another, session caching |
+| Query routing | 4 | Query executes on correct forked session, correct DB targeted |
+| Cross-DB query rejection | 3 | LINQ join across schemas throws, single-type query in non-default schema works, mixed expression tree |
+| SaveChanges grouping | 4 | Single-DB save works, multi-DB save throws, mixed operations grouped correctly |
+| Schema auto-creation | 3 | `AutoCreateDatabases = true` creates DBs, `false` skips, `DEFINE DATABASE` error handling |
+| SchemaManager EnsureDocument | 3 | Schema param passed correctly, index creation in correct DB, multiple schemas in one init |
+
+---
+
 ## Backlog (Future)
 
 | Area | Description | Priority |
@@ -420,6 +708,10 @@ var adults = await session.RawQueryAsync<Person>(
 | **Scoped event triggers** | Allow binding event triggers to specific document types (auto-resolve table name) | Small |
 | **Function argument validation** | Fluent API for typed function parameter definitions instead of raw strings | Small |
 | **Event trigger scaffolding** | `dotnet dali trigger add` CLI command for quick trigger creation | Small |
+| **Edge metadata in traversal** | Include edge properties in traversal results (`SELECT *, ->edge AS _edge, ->edge->target.*`) | Medium |
+| **Graph projection** | `Select()` on graph queries to shape output beyond node-only results | Medium |
+| **Graph query composition** | Reusable partial graph query definitions (like compiled queries for graph) | Small |
+| **Performance benchmarks** | Benchmark graph traversal vs RawQuery baseline | Medium |
 
 ---
 
@@ -507,3 +799,5 @@ After Phase 14 (Source Generators), a codebase-wide audit was conducted to verif
 ## References
 
 [^1]: Dave MacLeod, "New SurrealDB docs search using hybrid search and HNSW/BM25 reranking," SurrealDB Blog, Apr 2026. The SurrealDB documentation search engine uses BM25 full-text indexes with a custom analyzer (`search::score`), OpenAI `text-embedding-3-small` vector embeddings with HNSW indexes, and fuses both result sets via `search::rrf()` (Reciprocal Rank Fusion). [`Source`](https://surrealdb.com/blog/a-real-world-example-of-hybrid-fusion-search-using-the-surrealdb-docs-search)
+
+[^2]: Dave MacLeod, "Visualising your data with Surrealist's Graph view," SurrealDB Blog, Mar 2025. Demonstrates graph relationships with RELATE, multi-hop traversals, recursive shortest-path queries, and the interactive Graph view in Surrealist. [`Source`](https://surrealdb.com/blog/visualising-your-data-with-surrealists-graph-view)

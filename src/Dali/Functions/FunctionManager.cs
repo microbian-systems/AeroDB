@@ -29,7 +29,21 @@ public class FunctionManager
 
     private static string BuildDefineFunctionSurql(SurrealFunction function)
     {
-        var paramPart = function.Parameters is not null ? $"({function.Parameters})" : "()";
+        string paramPart;
+        if (function.ParametersTyped.Count > 0)
+        {
+            var parts = function.ParametersTyped.Select(p =>
+                $"${p.Name}: {p.Type}");
+            paramPart = $"({string.Join(", ", parts)})";
+        }
+        else if (function.Parameters is not null)
+        {
+            paramPart = $"({function.Parameters})";
+        }
+        else
+        {
+            paramPart = "()";
+        }
         return $"DEFINE FUNCTION {function.Name}{paramPart} {{ {function.Body} }};";
     }
 }

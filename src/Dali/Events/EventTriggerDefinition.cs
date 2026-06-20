@@ -1,3 +1,5 @@
+using Dali.Metadata;
+
 namespace Dali;
 
 public sealed class EventTriggerDefinition
@@ -19,6 +21,23 @@ public class EventTriggerOptions
     public EventTriggerOptions AddTrigger(string name, string table, string action,
         string? whenCondition = null, bool async = false, int? retry = null, int? maxDepth = null)
     {
+        Triggers.Add(new EventTriggerDefinition
+        {
+            Name = name,
+            Table = table,
+            Action = action,
+            WhenCondition = whenCondition,
+            Async = async,
+            Retry = retry,
+            MaxDepth = maxDepth
+        });
+        return this;
+    }
+
+    public EventTriggerOptions AddTrigger<T>(string name, string action,
+        string? whenCondition = null, bool async = false, int? retry = null, int? maxDepth = null)
+    {
+        var table = MetadataDispatch.GetTableName(typeof(T));
         Triggers.Add(new EventTriggerDefinition
         {
             Name = name,

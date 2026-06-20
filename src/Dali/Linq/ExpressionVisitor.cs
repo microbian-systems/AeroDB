@@ -185,6 +185,18 @@ public class SurrealExpressionVisitor : ExpressionVisitor
             return $"{col} CONTAINS {item}";
         }
 
+        // SurrealFunctions translation
+        if (m.Method.DeclaringType == typeof(SurrealFunctions))
+        {
+            return m.Method.Name switch
+            {
+                "Score" => $"search::score({Operand(m.Arguments[0])})",
+                "VectorDistanceKnn" => "vector::distance::knn()",
+                "VectorSimilarityCosine" => $"vector::similarity::cosine({Operand(m.Arguments[0])}, {Operand(m.Arguments[1])})",
+                _ => throw new NotSupportedException($"SurrealFunctions.{m.Method.Name}")
+            };
+        }
+
         throw new NotSupportedException($"Method {m.Method.Name}");
     }
 

@@ -297,6 +297,197 @@ await functionManager.EnsureFunctionAsync(session, function);
 await functionManager.RemoveFunctionAsync(session, "fn::greet");
 ```
 
+## Graph Capabilities (Planned — Phase 16)
+
+SurrealDB has first-class graph relationships as native records. The built-in Graph view in Surrealist provides a visual representation of these relationships, turning `SELECT` queries with graph paths into interactive node-edge diagrams[^2]. Dali will expose a dedicated `IGraphQuery<T>` API separate from the document LINQ provider.
+
+### Type Model
+
+```csharp
+// Base for all edge types — SurrealDB edges ARE records with in/out
+public abstract class EdgeRecord : Record
+{
+    public RecordId? In { get; set; }
+    public RecordId? Out { get; set; }
+}
+
+// User-defined edge with metadata
+public class WorksIn : EdgeRecord
+{
+    public string Role { get; set; } = "";
+    public DateTimeOffset Since { get; set; }
+}
+```
+
+### SurrealQL Reference
+
+```surql
+-- Create edges with RELATE
+RELATE person:alice->works_in->team:alpha CONTENT { role: "Lead", since: "2024-01-01" };
+
+-- Single-hop traversal
+SELECT ->works_in->team.name AS team_name FROM person:alice;
+SELECT <-manages<-person.name AS manager FROM person:bob;
+
+-- Multi-hop traversal
+SELECT ->works_in->team->works_on->project.* FROM person:alice;
+
+-- Wildcard edges (any type)
+SELECT id, ->?->? FROM person;
+
+-- Recursive / bounded depth
+SELECT @.{2}->child_of->person AS grandparents FROM ONLY person:1;
+SELECT @.{1..4}->has->(+) FROM planet:earth;
+SELECT @.{..}->has->(+) FROM planet:earth;
+
+-- Shortest path algorithm
+SELECT @.{..2+shortest=person:star}->knows->person FROM person:you;
+
+-- Path collection (all paths, all unique nodes)
+SELECT @.{..+path}->knows->person FROM person:you;
+SELECT @.{..+collect}->knows->person FROM person:you;
+
+-- Edge metadata is first-class — edges have in, out, and custom properties
+SELECT *, ->works_in AS membership, ->works_in->team.* FROM person FETCH membership;
+```
+
+### Planned C# API
+
+```csharp
+// Edge creation on IDocumentSession
+await session.RelateAsync<WorksIn, Person, Team>(
+    RecordId.Of<Person>("alice"),
+    RecordId.Of<Team>("alpha"),
+    new { Role = "Lead", Since = DateTimeOffset.UtcNow });
+
+// Single-hop traversal
+var team = await query.Graph<Person>()
+    .Out<Team>("works_in")
+    .FirstOrDefaultAsync();
+
+// Multi-hop
+var projects = await query.Graph<Person>()
+    .Out<Team>("works_in")
+    .Out<Project>("works_on")
+    .ToListAsync();
+
+// Recursive depth with intermediate nodes
+var ancestors = await query.Graph<Person>()
+    .In<Person>("child_of")
+    .Depth(2, 5)
+    .ToListAsync();
+
+// Shortest path
+var paths = await query.Graph<Person>()
+    .Out<Person>("knows")
+    .ShortestPath(RecordId.Of<Person>("charlie"))
+    .ReturnPath()
+    .ToPathListAsync();
+```
+
+### Schema Integration
+
+```csharp
+o.Schema.Edge<WorksIn, Person, Team>(edge =>
+{
+    edge.SchemaMode(SchemaMode.Strict);
+    edge.Index(e => e.Role);
+});
+// → DEFINE TABLE works_in TYPE RELATION IN person OUT team SCHEMAFULL;
+// → DEFINE FIELD role ON TABLE works_in TYPE string;
+// → DEFINE INDEX idx_works_in_role ON TABLE works_in COLUMNS role;
+```
+
+## Multi-Database / Schema Support (Planned — Phase 17)
+
+SurrealDB's `NAMESPACE → DATABASE` hierarchy maps directly to PostgreSQL's `DATABASE → SCHEMA` model. Each SurrealDB `DATABASE` is fully isolated — tables, fields, indexes, events, and functions in one are invisible to others.
+
+| PostgreSQL | SurrealDB |
+|------------|-----------|
+| `CREATE DATABASE myorg` | `DEFINE NAMESPACE myorg` |
+| `CREATE SCHEMA accounting` | `DEFINE DATABASE accounting` |
+| `CREATE TABLE accounting.ledger` | `USE DB accounting; DEFINE TABLE ledger` |
+
+Dali lets you map document types to different SurrealDB databases via `DocumentMapping<T>.Schema()`. The library uses `ForkSession()` to create isolated sub-sessions per database, avoiding the need for separate client pools.
+
+### Critical Design Decisions (from Council Review)
+
+| Decision | Rationale |
+|----------|-----------|
+| **ForkSession per DB, not inline `USE DB`** | SurrealDB's `USE` is an RPC method, not SurrealQL — it cannot be concatenated into a query string. `ForkSession()` creates a cloned session, then `.Use(ns, db)` switches context safely. |
+| **`.Schema("sales")` not `.Database("sales")`** | Avoids naming collision with `StoreOptions.Database` (the default connection database). `Schema` aligns with PostgreSQL and Marten terminology. |
+| **Cross-DB queries rejected at translation** | SurrealDB has no cross-database queries. A single LINQ expression spanning types from different databases throws `InvalidOperationException`. |
+| **Multi-DB transactions rejected** | `SaveChangesAsync` throws if operations span multiple databases. Users needing cross-DB consistency must orchestrate compensating sagas manually. |
+| **Schema auto-creation is opt-in** | `DEFINE DATABASE` is a high-privilege operation. `AutoCreateDatabases` defaults to `false`. |
+
+### SurrealQL Reference
+
+```surql
+-- Create schemas (databases)
+DEFINE DATABASE accounting;
+DEFINE DATABASE hr;
+DEFINE DATABASE sales;
+
+-- Tables are isolated per database
+USE DB accounting;
+DEFINE TABLE ledger SCHEMAFULL;
+DEFINE FIELD amount ON ledger TYPE float;
+
+USE DB hr;
+DEFINE TABLE employee SCHEMAFULL;
+DEFINE FIELD name ON employee TYPE string;
+
+USE DB sales;
+DEFINE TABLE invoice SCHEMAFULL;
+DEFINE FIELD total ON invoice TYPE float;
+```
+
+### Planned C# API
+
+```csharp
+// Config — per-type schema routing
+var store = Documents.For(o =>
+{
+    o.Schema.For<Invoice>()
+        .Schema("sales")                   // → USE DB sales; SELECT * FROM invoice
+        .Index(i => i.Total);
+
+    o.Schema.For<Employee>()
+        .Schema("hr")                      // → USE DB hr; SELECT * FROM employee
+
+    o.Schema.For<Product>()
+        .Schema(null);                     // explicit reset → uses StoreOptions.Database
+
+    // Schema auto-creation is opt-in (high privilege operation)
+    // o.Schema.AutoCreateDatabases = true;
+});
+```
+
+### Architecture
+
+```
+DocumentStore.InitializeAsync
+  └→ SchemaManager
+       └→ DEFINE DATABASE {name}          (only if AutoCreateDatabases = true)
+       └→ DEFINE TABLE {table} {mode}
+       └→ DEFINE FIELD ... ON TABLE ...
+
+IQuerySession / IDocumentSession
+  ├→ GetSessionForSchema("sales")         ForkSession() + Use(ns, "sales")
+  ├→ GetSessionForSchema("hr")            ForkSession() + Use(ns, "hr")
+  └→ GetSessionForSchema(null)            parent session (default database)
+
+Query execution:
+  ├→ SurrealQueryProvider resolves SchemaTarget(database, table)
+  ├→ Routes to correct forked session
+  └→ Executes on isolated session
+
+SaveChangesAsync:
+  ├→ Groups UnitOfWork operations by target database
+  ├→ Rejects multi-DB groups with InvalidOperationException
+  └→ Executes each group on its forked session
+```
+
 ## Event Sourcing
 
 ```csharp
@@ -381,6 +572,14 @@ src/
     Functions/
       SurrealFunction.cs                   # User-defined function model
       FunctionManager.cs                   # DEFINE FUNCTION / REMOVE FUNCTION
+    Graph/                                 # (Planned — Phase 16)
+      EdgeRecord.cs                        # Base edge type with In/Out
+      IGraphQuery.cs                       # Fluent graph query interface
+      GraphQueryBuilder.cs                 # Step accumulator
+      GraphQueryPlan.cs                    # Intermediate representation
+      GraphSurrealQLGenerator.cs           # Plan → SurrealQL
+      GraphResultDeserializer.cs           # CBOR response → results
+      GraphQueryProvider.cs                # Wires session + deserialization
     Projections/
       IProjection.cs / IProjectionContext.cs
       InlineProjection.cs / SingleStreamProjection.cs / MultiStreamProjection.cs
@@ -432,6 +631,8 @@ All 14 implementation phases + metadata wiring audit fixes are complete. See [in
 | 13. Server-Side Aggregates | 134 | ✅ |
 | 14. Source Generators | 144 | ✅ |
 | 15. Schema Modes, Events, RawQL & Functions | 144 | ✅ |
+| 16. Graph API (RELATE, traversal, paths) | 144 | 📋 Planned |
+| 17. Multi-Database / Schema Support | 144 | 📋 Planned |
 | A+B+C+F. Metadata Wiring | 144 | ✅ |
 
 ## Source-Generated Metadata
@@ -500,3 +701,5 @@ internal sealed class PersonMetadata : ITypeMetadata<Person>
 - MartenDB source: `./marten/`
 - WolverineFx source: `./wolverine/`
 - SurrealDb.Net source: `./surrealdb.net/`
+
+[^2]: Dave MacLeod, "Visualising your data with Surrealist's Graph view," SurrealDB Blog, Mar 2025. Demonstrates graph relationships with RELATE, multi-hop traversals, recursive shortest-path queries, and the interactive Graph view in Surrealist. [`Source`](https://surrealdb.com/blog/visualising-your-data-with-surrealists-graph-view)

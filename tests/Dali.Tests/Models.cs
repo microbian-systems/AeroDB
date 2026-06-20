@@ -53,3 +53,13 @@ public class AttributedPerson : Person
     [Version]
     public long DocumentVersion { get; set; }
 }
+
+/// <summary>
+/// Model for search index tests (full-text + vector).
+/// </summary>
+public class SearchablePage : Record
+{
+    public string Title { get; set; } = "";
+    public string Content { get; set; } = "";
+    public float[] Embedding { get; set; } = [];
+}

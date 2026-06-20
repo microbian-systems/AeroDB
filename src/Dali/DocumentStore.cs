@@ -104,11 +104,18 @@ public class DocumentStore : IDocumentStore
         var triggerManager = new EventTriggerManager(Options.LoggerFactory);
         var functionManager = new FunctionManager(Options.LoggerFactory);
 
-        // Auto-create document schemas if configured
+        // Auto-create document schemas if configured (includes analyzers, tables, and indexes)
         if (Options.Schema.AutoCreate && Options.Schema.Mappings.Count > 0)
         {
             await using var schemaSession = await _client.CreateSession(ct).ConfigureAwait(false);
             await schemaSession.Use(ns, db, ct).ConfigureAwait(false);
+
+            // Ensure analyzers before indexes (analyzers must exist before indexes referencing them)
+            if (Options.Schema.Analyzers.Analyzers.Count > 0)
+            {
+                _logger.LogInformation("Applying {Count} analyzers", Options.Schema.Analyzers.Analyzers.Count);
+                await schemaManager.EnsureAnalyzersAsync(schemaSession, Options.Schema.Analyzers, ct).ConfigureAwait(false);
+            }
 
             foreach (var mapping in Options.Schema.Mappings.Values)
             {

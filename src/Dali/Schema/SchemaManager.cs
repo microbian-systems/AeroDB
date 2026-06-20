@@ -1,3 +1,4 @@
+using System.Text;
 using Dali.Metadata;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -96,10 +97,67 @@ public class SchemaManager
     /// </summary>
     public async Task EnsureIndexAsync(ISurrealDbSession session, string tableName, IndexDefinition index, CancellationToken ct = default)
     {
+        string surql = index.Type switch
+        {
+            IndexType.FullText => BuildFullTextIndex(tableName, index),
+            IndexType.Vector => BuildVectorIndex(tableName, index),
+            _ => BuildStandardIndex(tableName, index)
+        };
+
+        _logger.LogDebug("Ensuring index {IndexName} on table {Table} (type: {Type})",
+            index.Name, tableName, index.Type);
+        await session.RawQuery(surql, null, ct).ConfigureAwait(false);
+    }
+
+    private static string BuildStandardIndex(string tableName, IndexDefinition index)
+    {
         var unique = index.IsUnique ? " UNIQUE" : "";
         var columns = string.Join(", ", index.Columns);
-        var surql = $"DEFINE INDEX {index.Name} ON TABLE {tableName} COLUMNS {columns}{unique};";
-        _logger.LogDebug("Ensuring index {IndexName} on table {Table}", index.Name, tableName);
+        return $"DEFINE INDEX {index.Name} ON TABLE {tableName} COLUMNS {columns}{unique};";
+    }
+
+    private static string BuildFullTextIndex(string tableName, IndexDefinition index)
+    {
+        var columns = string.Join(", ", index.Columns);
+        var analyzer = index.Analyzer ?? "simple";
+        var sb = new StringBuilder();
+        sb.Append($"DEFINE INDEX {index.Name} ON TABLE {tableName} FIELDS {columns} FULLTEXT ANALYZER {analyzer}");
+        if (index.Bm25.HasValue)
+            sb.Append($" BM25({index.Bm25.Value.K1}, {index.Bm25.Value.B})");
+        sb.Append(';');
+        return sb.ToString();
+    }
+
+    private static string BuildVectorIndex(string tableName, IndexDefinition index)
+    {
+        var columns = string.Join(", ", index.Columns);
+        var dim = index.VectorDimension ?? 1536;
+        var dist = index.VectorDistance ?? Search.Distance.Cosine;
+        return $"DEFINE INDEX {index.Name} ON TABLE {tableName} FIELDS {columns} HNSW DIMENSION {dim} DIST {dist};";
+    }
+
+    /// <summary>
+    /// Ensures all configured analyzers exist in the database.
+    /// </summary>
+    public async Task EnsureAnalyzersAsync(ISurrealDbSession session, AnalyzerOptions options, CancellationToken ct = default)
+    {
+        foreach (var analyzer in options.Analyzers)
+        {
+            await EnsureAnalyzerAsync(session, analyzer, ct).ConfigureAwait(false);
+        }
+    }
+
+    /// <summary>
+    /// Ensures a single analyzer exists in the database.
+    /// </summary>
+    public async Task EnsureAnalyzerAsync(ISurrealDbSession session, AnalyzerDefinition analyzer, CancellationToken ct = default)
+    {
+        var tokenizers = string.Join(", ", analyzer.Tokenizers);
+        var filters = analyzer.Filters.Length > 0
+            ? " " + string.Join(", ", analyzer.Filters.Select(f => $"FILTERS {f}"))
+            : "";
+        var surql = $"DEFINE ANALYZER {analyzer.Name} TOKENIZERS {tokenizers}{filters};";
+        _logger.LogDebug("Ensuring analyzer {Name}", analyzer.Name);
         await session.RawQuery(surql, null, ct).ConfigureAwait(false);
     }
 

@@ -24,6 +24,11 @@ public class StoreOptions
     public FunctionOptions Functions { get; } = new();
 
     /// <summary>
+    /// Registered document session listeners. Called in order during SaveChangesAsync.
+    /// </summary>
+    public List<IDocumentSessionListener> Listeners { get; } = new();
+
+    /// <summary>
     /// When true, documents with an <see cref="IVersioned"/> version field or
     /// a property decorated with <see cref="VersionAttribute"/> are protected
     /// against lost updates. Before saving a modified document, Dali checks that
@@ -84,6 +89,12 @@ public class SchemaOptions
     public bool AutoCreate { get; set; } = true;
 
     /// <summary>
+    /// Configuration for SurrealDB analyzers (DEFINE ANALYZER).
+    /// Analyzers are created during store initialization, before indexes that reference them.
+    /// </summary>
+    public AnalyzerOptions Analyzers { get; } = new();
+
+    /// <summary>
     /// Cached document mappings, keyed by entity type.
     /// </summary>
     internal Dictionary<Type, DocumentMapping> Mappings { get; } = new();
@@ -135,6 +146,17 @@ public class FunctionOptions
             Name = name,
             Body = body,
             Parameters = parameters
+        });
+        return this;
+    }
+
+    public FunctionOptions Register(string name, string body, params SurrealFunctionParameter[] parameters)
+    {
+        Functions.Add(new SurrealFunction
+        {
+            Name = name,
+            Body = body,
+            ParametersTyped = parameters.ToList()
         });
         return this;
     }
