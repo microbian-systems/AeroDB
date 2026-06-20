@@ -298,4 +298,21 @@ public class SurrealQueryResult
         sb.Append(';');
         return sb.ToString();
     }
+
+    /// <summary>
+    /// Creates a deep clone of this query result, including copies of all mutable collections.
+    /// Thread-safe for concurrent execution of compiled queries.
+    /// </summary>
+    public SurrealQueryResult Clone()
+    {
+        return new SurrealQueryResult
+        {
+            TableName = TableName,
+            Where = [..Where],
+            OrderBy = [..OrderBy],
+            Limit = Limit,
+            Skip = Skip,
+            Projection = Projection
+        };
+    }
 }

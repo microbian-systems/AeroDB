@@ -10,6 +10,13 @@ public interface IDocumentStore : IAsyncDisposable
     StoreOptions Options { get; }
     ISurrealDbClient Client { get; }
     Task InitializeAsync(CancellationToken ct = default);
+
+    /// <summary>
+    /// Sets the tenant ID for the next session created from this store (DatabasePerTenant mode).
+    /// The tenant ID is consumed on the next call to <c>QuerySessionAsync</c>,
+    /// <c>LightweightSessionAsync</c>, or <c>DocumentSessionAsync</c>.
+    /// </summary>
+    IDocumentStore WithTenant(string tenantId);
 }
 
 public interface IQuerySession : IAsyncDisposable

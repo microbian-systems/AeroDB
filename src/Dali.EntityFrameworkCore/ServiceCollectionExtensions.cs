@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace Dali;
 
@@ -29,8 +30,14 @@ public static class DaliEfCoreServiceCollectionExtensions
         services.AddScoped(sp =>
         {
             var docStore = sp.GetRequiredService<IDocumentStore>();
+            var loggerFactory = sp.GetService<ILoggerFactory>();
+
+            // Pass loggerFactory into StoreOptions so sessions get it
+            if (loggerFactory is not null)
+                docStore.Options.LoggerFactory = loggerFactory;
+
             return Task.Run(async () =>
-                await docStore.LightweightSessionAsync()).GetAwaiter().GetResult();
+                await docStore.LightweightSessionAsync().ConfigureAwait(false)).GetAwaiter().GetResult();
         });
 
         return services;

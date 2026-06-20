@@ -1,3 +1,5 @@
+using Microsoft.Extensions.Logging;
+
 namespace Dali;
 
 /// <summary>
@@ -19,4 +21,13 @@ public interface IProjection
     /// Apply the projection logic to the given events.
     /// </summary>
     Task ApplyAsync(IProjectionContext context, CancellationToken ct);
+}
+
+/// <summary>
+/// Internal interface for projections that support logger injection.
+/// Implemented by <see cref="InlineProjection{T}"/>.
+/// </summary>
+internal interface ILoggableProjection
+{
+    void SetLoggerFactory(ILoggerFactory? loggerFactory);
 }

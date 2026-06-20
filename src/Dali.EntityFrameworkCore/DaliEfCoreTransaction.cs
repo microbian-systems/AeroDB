@@ -1,4 +1,6 @@
 using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace Dali;
 
@@ -9,11 +11,14 @@ namespace Dali;
 public class DaliEfCoreTransaction : IDbContextTransaction
 {
     private readonly IDocumentSession _daliSession;
+    private readonly ILogger<DaliEfCoreTransaction> _logger;
     private bool _disposed;
 
-    public DaliEfCoreTransaction(IDocumentSession daliSession)
+    public DaliEfCoreTransaction(IDocumentSession daliSession, ILoggerFactory? loggerFactory = null)
     {
         _daliSession = daliSession;
+        _logger = loggerFactory?.CreateLogger<DaliEfCoreTransaction>()
+            ?? NullLogger<DaliEfCoreTransaction>.Instance;
     }
 
     public Guid TransactionId { get; } = Guid.NewGuid();
@@ -22,15 +27,16 @@ public class DaliEfCoreTransaction : IDbContextTransaction
 
     public void Commit()
     {
-        Task.Run(async () => await _daliSession.SaveChangesAsync()).GetAwaiter().GetResult();
+        Task.Run(async () => await _daliSession.SaveChangesAsync().ConfigureAwait(false)).GetAwaiter().GetResult();
         OwnedTransaction?.Commit();
     }
 
     public async Task CommitAsync(CancellationToken ct = default)
     {
-        await _daliSession.SaveChangesAsync(ct);
+        _logger.LogInformation("Committing Dali EF Core transaction {TransactionId}", TransactionId);
+        await _daliSession.SaveChangesAsync(ct).ConfigureAwait(false);
         if (OwnedTransaction is not null)
-            await OwnedTransaction.CommitAsync(ct);
+            await OwnedTransaction.CommitAsync(ct).ConfigureAwait(false);
     }
 
     public void Rollback()

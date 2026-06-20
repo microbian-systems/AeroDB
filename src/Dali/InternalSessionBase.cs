@@ -1,3 +1,7 @@
+using System.Collections.Concurrent;
+using System.Reflection;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using SurrealDb.Net;
 using SurrealDb.Net.Models;
 
@@ -8,8 +12,20 @@ public abstract class InternalSessionBase : IAsyncDisposable
     protected readonly ISurrealDbClient Client;
     public ISurrealDbSession Session { get; }
     protected readonly StoreOptions Options;
+    internal StoreOptions StoreOptions => Options;
     protected readonly Dictionary<Type, Dictionary<string, object>> IdentityMap = new();
     protected bool Disposed;
+
+    /// <summary>
+    /// Tracks the original version of each entity for optimistic concurrency checks.
+    /// Key is entity instance (reference equality), value is the version at load/store time.
+    /// </summary>
+    private readonly Dictionary<object, long> _originalVersions = new();
+
+    /// <summary>
+    /// Caches <see cref="VersionAttribute"/>-decorated property info per type.
+    /// </summary>
+    internal static readonly ConcurrentDictionary<Type, PropertyInfo?> VersionPropertyCache = new();
 
     /// <summary>
     /// The tenant ID for this session (null if no tenancy is configured).
@@ -23,9 +39,12 @@ public abstract class InternalSessionBase : IAsyncDisposable
         Options = options;
     }
 
+    protected ILogger<T> CreateLogger<T>() =>
+        Options.LoggerFactory?.CreateLogger<T>() ?? NullLogger<T>.Instance;
+
     public ISurrealDbQueryable<T> Query<T>() where T : class
     {
-        var provider = new SurrealQueryProvider(Session, TenantId);
+        var provider = new SurrealQueryProvider(Session, Options, TenantId);
         return new SurrealDbQueryable<T>(provider);
     }
 
@@ -47,25 +66,36 @@ public abstract class InternalSessionBase : IAsyncDisposable
 
     public async Task<T?> LoadAsync<T>(string id, CancellationToken ct = default) where T : class
     {
+        var logger = CreateLogger<InternalSessionBase>();
         var table = Snake(typeof(T).Name);
         try
         {
             var rid = new RecordIdOf<string>(table, id);
-            var result = await Session.Select<T>(rid, ct);
+            var result = await Session.Select<T>(rid, ct).ConfigureAwait(false);
 
             // Tenant isolation: if this session is tenant-scoped and the loaded entity
             // has a TenantId property, verify it matches. If not, treat as "not found".
-            if (result is not null && !string.IsNullOrEmpty(TenantId))
+            // DatabasePerTenant isolates at the database level — no entity-level check needed.
+            if (result is not null && !string.IsNullOrEmpty(TenantId) && Options.TenancyStyle == TenancyStyle.Conjoined)
             {
                 var tenantProp = typeof(T).GetProperty("TenantId", typeof(string));
                 if (tenantProp is not null && tenantProp.CanRead)
                 {
                     var entityTenant = tenantProp.GetValue(result) as string;
                     if (!string.Equals(entityTenant, TenantId, StringComparison.Ordinal))
+                    {
+                        logger.LogDebug("Tenant filter applied for LoadAsync<{Type}>: entity tenant '{EntityTenant}' != session tenant '{SessionTenant}'",
+                            typeof(T).Name, entityTenant, TenantId);
                         return default;
+                    }
                 }
             }
 
+            // Track original version for optimistic concurrency
+            if (result is not null && Options.UseOptimisticConcurrency)
+                TrackOriginalVersion(result);
+
+            logger.LogDebug("Loaded {Type} with id={Id}", typeof(T).Name, id);
             return result;
         }
         catch
@@ -74,7 +104,75 @@ public abstract class InternalSessionBase : IAsyncDisposable
         }
     }
 
-    protected string Snake(string name)
+    /// <summary>
+    /// Captures the entity's current version so it can be checked later during
+    /// <c>SaveChangesAsync</c>. Only tracks entities that have a version field
+    /// (via <see cref="IVersioned"/> or <see cref="VersionAttribute"/>).
+    /// </summary>
+    protected void TrackOriginalVersion(object entity)
+    {
+        var version = GetVersion(entity);
+        if (version >= 0)
+            _originalVersions[entity] = version;
+    }
+
+    /// <summary>
+    /// Returns the current version value from the entity, or -1 if no version
+    /// field is found. <see cref="VersionAttribute"/> takes precedence over
+    /// <see cref="IVersioned"/> when both are present on the same type.
+    /// </summary>
+    protected long GetVersion(object entity)
+    {
+        // [Version] attribute takes precedence over IVersioned
+        var prop = VersionPropertyCache.GetOrAdd(entity.GetType(), t =>
+            t.GetProperties(BindingFlags.Instance | BindingFlags.Public)
+             .FirstOrDefault(p => p.GetCustomAttribute<VersionAttribute>() is not null));
+
+        if (prop is not null)
+            return (long)prop.GetValue(entity)!;
+
+        if (entity is IVersioned versioned)
+            return versioned.Version;
+
+        return -1;
+    }
+
+    /// <summary>
+    /// Increments the version field on the entity (if it has one).
+    /// </summary>
+    protected void IncrementVersion(object entity)
+    {
+        var prop = VersionPropertyCache.GetOrAdd(entity.GetType(), t =>
+            t.GetProperties(BindingFlags.Instance | BindingFlags.Public)
+             .FirstOrDefault(p => p.GetCustomAttribute<VersionAttribute>() is not null));
+
+        if (prop is not null)
+        {
+            prop.SetValue(entity, (long)prop.GetValue(entity)! + 1);
+            return;
+        }
+
+        if (entity is IVersioned versioned)
+            versioned.Version++;
+    }
+
+    /// <summary>
+    /// Removes the version tracking entry for the given entity.
+    /// </summary>
+    protected void RemoveOriginalVersion(object entity)
+    {
+        _originalVersions.Remove(entity);
+    }
+
+    /// <summary>
+    /// Gets the tracked original version for an entity, or 0 if not tracked.
+    /// </summary>
+    protected long GetTrackedVersion(object entity)
+    {
+        return _originalVersions.GetValueOrDefault(entity, 0);
+    }
+
+    internal string Snake(string name)
     {
         if (string.IsNullOrEmpty(name)) return name;
         return string.Concat(name.Select((c, i) =>
@@ -85,9 +183,9 @@ public abstract class InternalSessionBase : IAsyncDisposable
     {
         if (Disposed) return;
         Disposed = true;
-        await Session.CloseSession(DefaultCt);
+        await Session.CloseSession(DefaultCt).ConfigureAwait(false);
         if (Session is IAsyncDisposable d)
-            await d.DisposeAsync();
+            await d.DisposeAsync().ConfigureAwait(false);
     }
 
     protected static CancellationToken DefaultCt => CancellationToken.None;

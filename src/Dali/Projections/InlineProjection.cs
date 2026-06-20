@@ -1,3 +1,5 @@
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using SurrealDb.Net.Models;
 
 namespace Dali;
@@ -7,8 +9,30 @@ namespace Dali;
 /// Subclasses define which event types trigger them and how to build the projected document.
 /// </summary>
 /// <typeparam name="T">The projected document type (must extend <see cref="Record"/>).</typeparam>
-public abstract class InlineProjection<T> : IProjection where T : Record
+public abstract class InlineProjection<T> : IProjection, ILoggableProjection where T : Record
 {
+    private ILogger _logger;
+
+    /// <summary>
+    /// Logger for this projection. Uses <c>NullLogger{T}</c> by default
+    /// unless a logger factory is provided via <c>SetLoggerFactory</c>.
+    /// </summary>
+    protected ILogger Logger => _logger;
+
+    protected InlineProjection()
+    {
+        _logger = NullLogger<InlineProjection<T>>.Instance;
+    }
+
+    /// <summary>
+    /// Injects a logger factory. Called by <see cref="DocumentStore"/> during initialization.
+    /// </summary>
+    void ILoggableProjection.SetLoggerFactory(ILoggerFactory? loggerFactory)
+    {
+        _logger = loggerFactory?.CreateLogger<InlineProjection<T>>()
+            ?? NullLogger<InlineProjection<T>>.Instance;
+    }
+
     public virtual ProjectionLifecycle Lifecycle => ProjectionLifecycle.Inline;
 
     /// <summary>
@@ -35,13 +59,16 @@ public abstract class InlineProjection<T> : IProjection where T : Record
         var docId = GetDocumentId(events);
         var tableName = Snake(typeof(T).Name);
 
+        _logger.LogInformation("Applying inline projection {ProjectionType} for table {Table}",
+            GetType().Name, tableName);
+
         // Try to load existing projected document
         T? aggregate = null;
         try
         {
             if (docId is string id && !string.IsNullOrEmpty(id))
             {
-                aggregate = await context.Session.LoadAsync<T>(id, ct);
+                aggregate = await context.Session.LoadAsync<T>(id, ct).ConfigureAwait(false);
             }
         }
         catch
@@ -64,11 +91,14 @@ public abstract class InlineProjection<T> : IProjection where T : Record
             }
 
             context.Session.Store(result);
+            _logger.LogDebug("Inline projection stored result for {Type} with id={Id}",
+                typeof(T).Name, result.Id);
         }
         else if (aggregate is not null)
         {
             // Projection returned null for an existing document — delete it.
             context.Session.Delete(aggregate);
+            _logger.LogDebug("Inline projection deleted existing document for {Type}", typeof(T).Name);
         }
     }
 

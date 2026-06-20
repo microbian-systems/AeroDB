@@ -1,0 +1,116 @@
+using System.Linq.Expressions;
+using System.Reflection;
+
+namespace Dali;
+
+/// <summary>
+/// Non-generic base for storing document mappings in <see cref="SchemaOptions.Mappings"/>.
+/// Public because <see cref="DocumentMapping{T}"/> inherits from it.
+/// </summary>
+public abstract class DocumentMapping
+{
+    internal abstract Type EntityType { get; }
+    internal abstract List<IndexDefinition> Indices { get; }
+    internal abstract bool IsMultiTenanted { get; }
+}
+
+/// <summary>
+/// Fluent API for document-level schema configuration (indices, tenancy policy, etc.).
+/// Accessed via <c>StoreOptions.Schema.For&lt;T&gt;()</c>.
+/// </summary>
+public class DocumentMapping<T> : DocumentMapping
+    where T : SurrealDb.Net.Models.Record
+{
+    internal override Type EntityType => typeof(T);
+    internal override List<IndexDefinition> Indices { get; } = [];
+    private bool _isMultiTenanted;
+    internal override bool IsMultiTenanted => _isMultiTenanted;
+
+    /// <summary>
+    /// Defines a simple index on the specified property.
+    /// </summary>
+    public DocumentMapping<T> Index<TProp>(Expression<Func<T, TProp>> property, Action<IndexOptions>? configure = null)
+    {
+        var member = ExtractMember(property);
+        var idx = new IndexDefinition
+        {
+            Columns = [member.Name],
+            Name = $"idx_{Snake(typeof(T).Name)}_{Snake(member.Name)}",
+            IsUnique = false
+        };
+        configure?.Invoke(new IndexOptions(idx));
+        Indices.Add(idx);
+        return this;
+    }
+
+    /// <summary>
+    /// Defines a unique index on the specified property.
+    /// </summary>
+    public DocumentMapping<T> UniqueIndex<TProp>(Expression<Func<T, TProp>> property)
+    {
+        var member = ExtractMember(property);
+        Indices.Add(new IndexDefinition
+        {
+            Columns = [member.Name],
+            Name = $"uidx_{Snake(typeof(T).Name)}_{Snake(member.Name)}",
+            IsUnique = true
+        });
+        return this;
+    }
+
+    /// <summary>
+    /// Defines a composite index on the specified properties.
+    /// </summary>
+    public DocumentMapping<T> CompositeIndex(params Expression<Func<T, object>>[] properties)
+    {
+        var columns = properties.Select(p => ExtractMember(p).Name).ToArray();
+        Indices.Add(new IndexDefinition
+        {
+            Columns = columns,
+            Name = $"idx_{Snake(typeof(T).Name)}_{string.Join("_", columns.Select(c => Snake(c)))}",
+            IsUnique = false
+        });
+        return this;
+    }
+
+    /// <summary>
+    /// Defines a composite unique index.
+    /// </summary>
+    public DocumentMapping<T> UniqueCompositeIndex(params Expression<Func<T, object>>[] properties)
+    {
+        var columns = properties.Select(p => ExtractMember(p).Name).ToArray();
+        Indices.Add(new IndexDefinition
+        {
+            Columns = columns,
+            Name = $"uidx_{Snake(typeof(T).Name)}_{string.Join("_", columns.Select(c => Snake(c)))}",
+            IsUnique = true
+        });
+        return this;
+    }
+
+    /// <summary>
+    /// Marks this document type as multi-tenanted (tenant_id filter applied).
+    /// </summary>
+    public DocumentMapping<T> MultiTenanted()
+    {
+        _isMultiTenanted = true;
+        return this;
+    }
+
+    private static MemberInfo ExtractMember<TProp>(Expression<Func<T, TProp>> expression)
+    {
+        return expression.Body switch
+        {
+            MemberExpression me => me.Member,
+            UnaryExpression { NodeType: ExpressionType.Convert or ExpressionType.ConvertChecked, Operand: MemberExpression me } => me.Member,
+            _ => throw new ArgumentException("Expression must refer to a property or field.")
+        };
+    }
+
+    private static string Snake(string name)
+    {
+        if (string.IsNullOrEmpty(name)) return name;
+        return string.Concat(name.Select((c, i) =>
+            i > 0 && char.IsUpper(c) ? "_" + char.ToLowerInvariant(c) : char.ToLowerInvariant(c).ToString()));
+    }
+}

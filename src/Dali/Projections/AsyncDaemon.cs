@@ -1,3 +1,6 @@
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
+
 namespace Dali;
 
 /// <summary>
@@ -8,15 +11,18 @@ public class AsyncDaemon : IAsyncDisposable
 {
     private readonly IDocumentStore _store;
     private readonly IReadOnlyList<IProjection> _projections;
+    private readonly ILogger<AsyncDaemon> _logger;
     private readonly object _lock = new();
     private Task? _runTask;
     private volatile bool _stopped;
     private long _highWaterMark;
 
-    public AsyncDaemon(IDocumentStore store, IReadOnlyList<IProjection> projections)
+    public AsyncDaemon(IDocumentStore store, IReadOnlyList<IProjection> projections, ILoggerFactory? loggerFactory = null)
     {
         _store = store ?? throw new ArgumentNullException(nameof(store));
         _projections = projections ?? throw new ArgumentNullException(nameof(projections));
+        _logger = loggerFactory?.CreateLogger<AsyncDaemon>()
+            ?? NullLogger<AsyncDaemon>.Instance;
     }
 
     /// <summary>
@@ -32,6 +38,7 @@ public class AsyncDaemon : IAsyncDisposable
 
             _stopped = false;
             _runTask = RunAsync(pollInterval);
+            _logger.LogInformation("AsyncDaemon started with poll interval {PollInterval}", pollInterval);
         }
     }
 
@@ -53,7 +60,7 @@ public class AsyncDaemon : IAsyncDisposable
 
         try
         {
-            await runTask;
+            await runTask.ConfigureAwait(false);
         }
         catch (OperationCanceledException)
         {
@@ -68,15 +75,18 @@ public class AsyncDaemon : IAsyncDisposable
         {
             _runTask = null;
         }
+
+        _logger.LogInformation("AsyncDaemon stopped");
     }
 
     private async Task RunAsync(TimeSpan pollInterval)
     {
+        _logger.LogInformation("AsyncDaemon background loop started");
         while (!_stopped)
         {
             try
             {
-                await Task.Delay(pollInterval);
+                await Task.Delay(pollInterval).ConfigureAwait(false);
                 if (_stopped) break;
 
                 var asyncProjections = _projections
@@ -86,14 +96,17 @@ public class AsyncDaemon : IAsyncDisposable
                 if (asyncProjections.Count == 0)
                     continue;
 
-                await using var session = await _store.LightweightSessionAsync();
+                await using var session = await _store.LightweightSessionAsync().ConfigureAwait(false);
                 if (_stopped) break;
 
                 // Fetch new events after the high-water mark
-                var newEvents = await session.Events.FetchAllAfterVersion(_highWaterMark);
+                var newEvents = await session.Events.FetchAllAfterVersion(_highWaterMark).ConfigureAwait(false);
 
                 if (newEvents.Count == 0)
                     continue;
+
+                _logger.LogDebug("AsyncDaemon: fetched {Count} new events after version {Version}",
+                    newEvents.Count, _highWaterMark);
 
                 // Group events by stream for per-stream processing
                 var streamGroups = newEvents
@@ -111,8 +124,11 @@ public class AsyncDaemon : IAsyncDisposable
                         if (matchingEvents.Count == 0)
                             continue;
 
+                        _logger.LogInformation("Async projection {ProjectionType} applied on stream {StreamId}",
+                            projection.GetType().Name, streamId);
+
                         var context = new ProjectionContext(session, matchingEvents.AsReadOnly());
-                        await projection.ApplyAsync(context, CancellationToken.None);
+                        await projection.ApplyAsync(context, CancellationToken.None).ConfigureAwait(false);
                     }
                 }
 
@@ -122,22 +138,23 @@ public class AsyncDaemon : IAsyncDisposable
                     _highWaterMark = maxVersion;
 
                 // Save any projected documents added by the projections
-                await session.SaveChangesAsync();
+                await session.SaveChangesAsync().ConfigureAwait(false);
             }
             catch (OperationCanceledException)
             {
                 break;
             }
-            catch
+            catch (Exception ex)
             {
-                // Log and continue (logging TBD)
+                _logger.LogWarning(ex, "AsyncDaemon cycle failed; will retry on next poll");
             }
         }
+        _logger.LogInformation("AsyncDaemon background loop stopped");
     }
 
     public async ValueTask DisposeAsync()
     {
-        await StopAsync();
+        await StopAsync().ConfigureAwait(false);
         GC.SuppressFinalize(this);
     }
 }

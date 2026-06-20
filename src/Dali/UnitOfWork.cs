@@ -6,7 +6,8 @@ public enum OperationType
 {
     Added,
     Modified,
-    Deleted
+    Deleted,
+    SoftDeleted
 }
 
 public class UnitOfWork

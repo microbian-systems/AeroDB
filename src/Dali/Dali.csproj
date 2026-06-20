@@ -4,6 +4,9 @@
     <PackageTags>surrealdb documentdb eventstore nosql</PackageTags>
   </PropertyGroup>
   <ItemGroup>
+    <InternalsVisibleTo Include="Dali.Tests" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="SurrealDb.Net" VersionOverride="0.10.2" />
     <PackageReference Include="SurrealDb.Reactive" VersionOverride="0.10.2" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" VersionOverride="10.0.8" />

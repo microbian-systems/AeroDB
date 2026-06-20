@@ -1,36 +1,81 @@
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using SurrealDb.Net;
 
 namespace Dali;
 
 public class DocumentStore : IDocumentStore
 {
+    private readonly ILogger<DocumentStore> _logger;
     private ISurrealDbClient? _client;
+    private DatabasePerTenantSelector? _tenantSelector;
+    private string? _currentTenantId;
     private bool _initialized;
     private bool _disposed;
 
     public DocumentStore(StoreOptions options)
     {
         Options = options;
+        _logger = options.LoggerFactory?.CreateLogger<DocumentStore>()
+            ?? NullLogger<DocumentStore>.Instance;
     }
 
     public StoreOptions Options { get; }
     public ISurrealDbClient Client => _client
         ?? throw new InvalidOperationException("Store not initialized. Call InitializeAsync first.");
 
+    /// <summary>
+    /// Sets the tenant ID for the next session created from this store (DatabasePerTenant mode).
+    /// The tenant ID is consumed on the next call to <c>QuerySessionAsync</c>,
+    /// <c>LightweightSessionAsync</c>, or <c>DocumentSessionAsync</c>.
+    /// </summary>
+    public IDocumentStore WithTenant(string tenantId)
+    {
+        _currentTenantId = tenantId ?? throw new ArgumentNullException(nameof(tenantId));
+        return this;
+    }
+
     public async Task InitializeAsync(CancellationToken ct = default)
     {
         if (_initialized) return;
         _initialized = true;
 
+        // DatabasePerTenant: skip connecting to a default database;
+        // each tenant gets its own database on first session creation.
+        if (Options.TenancyStyle == TenancyStyle.DatabasePerTenant)
+        {
+            _tenantSelector = new DatabasePerTenantSelector(Options);
+
+            // Apply IConfigureDali modules
+            foreach (var configurator in Options.Configurators)
+                configurator.Configure(Options);
+
+            // Inject logger factory into projections that support it
+            if (Options.LoggerFactory is not null)
+            {
+                foreach (var projection in Options.Projections)
+                {
+                    if (projection is ILoggableProjection loggable)
+                        loggable.SetLoggerFactory(Options.LoggerFactory);
+                }
+            }
+
+            _logger.LogInformation("Dali store initialized (DatabasePerTenant mode)");
+            return;
+        }
+
         var ns = Options.Namespace ?? "test";
         var db = Options.Database ?? "test";
+
+        _logger.LogInformation("Initializing Dali store: Endpoint={Endpoint}, ns={Namespace}, db={Database}",
+            Options.Endpoint, ns, db);
 
         if (Options.ClientFactory is not null)
         {
             _client = Options.ClientFactory();
-            await _client.Connect(ct);
-            await _client.Use(ns, db, ct);
+            await _client.Connect(ct).ConfigureAwait(false);
+            await _client.Use(ns, db, ct).ConfigureAwait(false);
         }
         else
         {
@@ -47,55 +92,144 @@ public class DocumentStore : IDocumentStore
                 .Build();
 
             _client = new SurrealDbClient(surrealOptions);
-            await _client.Connect(ct);
-            await _client.Use(ns, db, ct);
+            await _client.Connect(ct).ConfigureAwait(false);
+            await _client.Use(ns, db, ct).ConfigureAwait(false);
+        }
+
+        // Apply IConfigureDali modules
+        foreach (var configurator in Options.Configurators)
+            configurator.Configure(Options);
+
+        var schemaManager = new SchemaManager(Options.LoggerFactory);
+
+        // Auto-create document schemas if configured
+        if (Options.Schema.AutoCreate && Options.Schema.Mappings.Count > 0)
+        {
+            await using var schemaSession = await _client.CreateSession(ct).ConfigureAwait(false);
+            await schemaSession.Use(ns, db, ct).ConfigureAwait(false);
+
+            foreach (var mapping in Options.Schema.Mappings.Values)
+            {
+                // Ensure table schema (DEFINE TABLE + fields)
+                await schemaManager.EnsureDocumentSchemaAsync(mapping.EntityType, schemaSession, ct).ConfigureAwait(false);
+
+                // Ensure each configured index
+                var tableName = SchemaManager.Snake(mapping.EntityType.Name);
+                foreach (var index in mapping.Indices)
+                {
+                    await schemaManager.EnsureIndexAsync(schemaSession, tableName, index, ct).ConfigureAwait(false);
+                }
+            }
         }
 
         // Auto-create event schema if events are enabled
         if (Options.Events.Enabled)
         {
-            var schemaManager = new SchemaManager();
-            await schemaManager.EnsureEventSchemaAsync(_client, ns, db, ct);
+            await schemaManager.EnsureEventSchemaAsync(_client, ns, db, ct).ConfigureAwait(false);
         }
+
+        // Inject logger factory into projections that support it
+        if (Options.LoggerFactory is not null)
+        {
+            foreach (var projection in Options.Projections)
+            {
+                if (projection is ILoggableProjection loggable)
+                    loggable.SetLoggerFactory(Options.LoggerFactory);
+            }
+        }
+
+        _logger.LogInformation("Dali store initialized successfully: ns={Namespace}, db={Database}", ns, db);
     }
 
     public async Task<IQuerySession> QuerySessionAsync(CancellationToken ct = default)
     {
-        await EnsureInitialized(ct);
-        var session = await Client.CreateSession(ct);
-        await session.Use(Options.Namespace ?? "test", Options.Database ?? "test", ct);
-        var qs = new QuerySession(Client, session, Options);
+        await EnsureInitialized(ct).ConfigureAwait(false);
+
+        if (Options.TenancyStyle == TenancyStyle.DatabasePerTenant)
+        {
+            var tenantId = ResolveTenantId();
+            var tenantClient = await _tenantSelector!.GetOrCreateClientAsync(tenantId, ct).ConfigureAwait(false);
+            var session = await tenantClient.CreateSession(ct).ConfigureAwait(false);
+            var dbName = $"{Options.Namespace ?? "test"}_{tenantId}";
+            await session.Use(Options.Namespace ?? "test", dbName, ct).ConfigureAwait(false);
+            var qs = new QuerySession(tenantClient, session, Options) { TenantId = tenantId };
+            _logger.LogInformation("Created QuerySession for tenant {TenantId}", tenantId);
+            return qs;
+        }
+
+        var defaultSession = await Client.CreateSession(ct).ConfigureAwait(false);
+        await defaultSession.Use(Options.Namespace ?? "test", Options.Database ?? "test", ct).ConfigureAwait(false);
+        var qs2 = new QuerySession(Client, defaultSession, Options);
         if (Options.TenancyStyle == TenancyStyle.Conjoined && Options.DefaultTenantId is not null)
-            qs.TenantId = Options.DefaultTenantId;
-        return qs;
+            qs2.TenantId = Options.DefaultTenantId;
+        _logger.LogInformation("Created QuerySession");
+        return qs2;
     }
 
     public async Task<IDocumentSession> LightweightSessionAsync(CancellationToken ct = default)
     {
-        await EnsureInitialized(ct);
-        var session = await Client.CreateSession(ct);
-        await session.Use(Options.Namespace ?? "test", Options.Database ?? "test", ct);
-        var ds = new DocumentSession(Client, session, Options, isDirtyTracking: false);
+        await EnsureInitialized(ct).ConfigureAwait(false);
+
+        if (Options.TenancyStyle == TenancyStyle.DatabasePerTenant)
+        {
+            var tenantId = ResolveTenantId();
+            var tenantClient = await _tenantSelector!.GetOrCreateClientAsync(tenantId, ct).ConfigureAwait(false);
+            var session = await tenantClient.CreateSession(ct).ConfigureAwait(false);
+            var dbName = $"{Options.Namespace ?? "test"}_{tenantId}";
+            await session.Use(Options.Namespace ?? "test", dbName, ct).ConfigureAwait(false);
+            var ds = new DocumentSession(tenantClient, session, Options, isDirtyTracking: false) { TenantId = tenantId };
+            _logger.LogInformation("Created LightweightSession (no tracking) for tenant {TenantId}", tenantId);
+            return ds;
+        }
+
+        var defaultSession = await Client.CreateSession(ct).ConfigureAwait(false);
+        await defaultSession.Use(Options.Namespace ?? "test", Options.Database ?? "test", ct).ConfigureAwait(false);
+        var ds2 = new DocumentSession(Client, defaultSession, Options, isDirtyTracking: false);
         if (Options.TenancyStyle == TenancyStyle.Conjoined && Options.DefaultTenantId is not null)
-            ds.TenantId = Options.DefaultTenantId;
-        return ds;
+            ds2.TenantId = Options.DefaultTenantId;
+        _logger.LogInformation("Created LightweightSession (no tracking)");
+        return ds2;
     }
 
     public async Task<IDocumentSession> DocumentSessionAsync(CancellationToken ct = default)
     {
-        await EnsureInitialized(ct);
-        var session = await Client.CreateSession(ct);
-        await session.Use(Options.Namespace ?? "test", Options.Database ?? "test", ct);
-        var ds = new DocumentSession(Client, session, Options, isDirtyTracking: true);
+        await EnsureInitialized(ct).ConfigureAwait(false);
+
+        if (Options.TenancyStyle == TenancyStyle.DatabasePerTenant)
+        {
+            var tenantId = ResolveTenantId();
+            var tenantClient = await _tenantSelector!.GetOrCreateClientAsync(tenantId, ct).ConfigureAwait(false);
+            var session = await tenantClient.CreateSession(ct).ConfigureAwait(false);
+            var dbName = $"{Options.Namespace ?? "test"}_{tenantId}";
+            await session.Use(Options.Namespace ?? "test", dbName, ct).ConfigureAwait(false);
+            var ds = new DocumentSession(tenantClient, session, Options, isDirtyTracking: true) { TenantId = tenantId };
+            _logger.LogInformation("Created DocumentSession (dirty tracking) for tenant {TenantId}", tenantId);
+            return ds;
+        }
+
+        var defaultSession = await Client.CreateSession(ct).ConfigureAwait(false);
+        await defaultSession.Use(Options.Namespace ?? "test", Options.Database ?? "test", ct).ConfigureAwait(false);
+        var ds2 = new DocumentSession(Client, defaultSession, Options, isDirtyTracking: true);
         if (Options.TenancyStyle == TenancyStyle.Conjoined && Options.DefaultTenantId is not null)
-            ds.TenantId = Options.DefaultTenantId;
-        return ds;
+            ds2.TenantId = Options.DefaultTenantId;
+        _logger.LogInformation("Created DocumentSession (dirty tracking)");
+        return ds2;
+    }
+
+    private string ResolveTenantId()
+    {
+        var tenantId = _currentTenantId ?? Options.DefaultTenantId;
+        _currentTenantId = null; // consume and reset
+        if (string.IsNullOrEmpty(tenantId))
+            throw new InvalidOperationException(
+                "DatabasePerTenant requires a TenantId. Call WithTenant() or set DefaultTenantId.");
+        return tenantId!;
     }
 
     private async Task EnsureInitialized(CancellationToken ct)
     {
         if (!_initialized)
-            await InitializeAsync(ct);
+            await InitializeAsync(ct).ConfigureAwait(false);
     }
 
     public async ValueTask DisposeAsync()
@@ -103,7 +237,9 @@ public class DocumentStore : IDocumentStore
         if (_disposed) return;
         _disposed = true;
         if (_client is not null)
-            await _client.DisposeAsync();
+            await _client.DisposeAsync().ConfigureAwait(false);
+        if (_tenantSelector is not null)
+            await _tenantSelector.DisposeAsync().ConfigureAwait(false);
     }
 }
 

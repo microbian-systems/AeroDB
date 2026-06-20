@@ -1,85 +1,359 @@
 # Dali — Implementation Plan
 
-> MartenDB-style document database and event store on SurrealDB. Council-verified architecture (2026-06-19).
+> MartenDB-style document database and event store on SurrealDB.
 
-## Current State
+**Last modified:** 2026-06-20
+**Version:** 0.1.0
+**Build:** 0 errors (4 pre-existing stale warnings)
+**Tests:** 134 passing, 0 failing, 0 skipped
+**Projects:** `Dali`, `Dali.EntityFrameworkCore`, `Dali.Tests`
 
-- **Namespace:** `Dali`
-- **Project:** `src/Dali/Dali.csproj` → `Dali.dll`
-- **Tests:** `tests/Dali.Tests/Dali.Tests.csproj` (TUnit + Shouldly, embedded SurrealDB)
-- **Dependency:** `SurrealDb.Net` 0.10.2 (NuGet)
+---
+
+## Legend
+
+| Icon | Meaning |
+|------|---------|
+| ✅ Done | Implemented, reviewed, approved |
+| 🔄 In Progress | Active implementation |
+| 📋 Planned | Spec'd but not started |
+
+---
+
+## Overall Progress
+
+| Phase | Tests | Review | Status |
+|-------|-------|--------|--------|
+| 1. Core Document Store | 8 | — | ✅ Done |
+| 2. Test Coverage | 30 | APPROVED | ✅ Done |
+| 3. Projections | 37 | APPROVED | ✅ Done |
+| 4. Multi-Tenancy + Schema | 49 | APPROVED | ✅ Done |
+| 5. Query Translation | 64 | APPROVED | ✅ Done |
+| 6. EF Core Bridge | 81 | APPROVED | ✅ Done |
+| 7. Modular Config (IConfigureDali + Schema.For) | 91 | APPROVED | ✅ Done |
+| 8. Compiled Queries | 104 | APPROVED | ✅ Done |
+| 9. Patch/Partial Updates | 110 | APPROVED | ✅ Done |
+| 10. Optimistic Concurrency | 116 | APPROVED | ✅ Done |
+| 11. Soft Delete | 124 | APPROVED | ✅ Done |
+| 12. Database-per-Tenant | 134 | APPROVED | ✅ Done |
+| ✚ Cross-cutting (logging, ConfigureAwait, ct) | 134 | — | ✅ Done |
+
+---
 
 ## Phase 1: Core Document Store ✅
 
-**Status:** Complete (8 tests passing)
+**Tests:** 8
 
 | Layer | What's built |
 |-------|-------------|
 | Interfaces | `IDocumentStore`, `IQuerySession`, `IDocumentSession`, `IEvents` |
 | Sessions | `QuerySession` (read-only), `DocumentSession` (read-write + unit of work) |
-| LINQ | `SurrealExpressionVisitor` (Where, OrderBy, Skip, Take, Select, string methods, Tags), `SurrealQueryProvider` |
+| LINQ | `SurrealExpressionVisitor` (Where, OrderBy, Skip, Take, Select, string methods), `SurrealQueryProvider` |
 | Storage | `DocumentStorage` (snake_case table naming), `UnitOfWork` (Added/Modified/Deleted) |
 | Events | `EventStore` (Append, StartStream, FetchStream on `mt_events`) |
 | Schema | `SchemaManager` (DEFINE TABLE/FIELD/INDEX) |
 | DI | `Documents.For()` factory, `StoreOptions.ClientFactory` for embedded clients |
 
-**Tests (8):** Store/query/delete, Query all + Take, Event append/fetch empty
+**Key decisions:** Single project, no Dali.Common, no Snowflake — consumer chooses ID strategy. Models extend `SurrealDb.Net.Models.Record` for CBOR compatibility.
 
-## Phase 2: More Test Coverage (Current)
+---
 
-**Priority:** Highest — users ordered 3 first
+## Phase 2: Test Coverage ✅
 
-| Area | Tests to add |
-|------|-------------|
-| Query translation | OrderBy/OrderByDescending, Compound WHERE (AND/OR), FirstOrDefault, Select projection, Skip, Contains, Count |
-| Sessions | Store + Load by Id, Delete + verify deleted, Dirty tracking update, Identity map across multiple operations |
-| Unit of work | Mixed operations (add + modify + delete in one SaveChanges), Batch size validation, Error rollback |
-| Edge cases | Query empty set, Query null result, Duplicate key behavior, Large batch inserts |
-| Event store | Fetch after append with named types, Multiple streams isolation, Version ordering |
+**Tests:** 30 (22 new)
 
-**Test models** must extend `SurrealDb.Net.Models.Record` for CBOR compatibility.
+| Area | Tests added |
+|------|------------|
+| Query translation | OrderBy/OrderByDescending, Where (AND/OR/NOT), FirstOrDefault, Skip, Contains, Count, Any |
+| Sessions | Store + load by id, Dirty tracking update, Store multiple, Delete + verify, Session isolation |
+| Unit of work | Mixed operations, Batch size, Clear between saves |
+| Edge cases | Empty query, Null store exception, Duplicate store |
 
-## Phase 3: Projections
+**Key fixes discovered:** Field name casing bug (visitor used snake_case but CBOR stores PascalCase), Thread safety (shared visitor), CountAsync CBOR deserialization.
 
-| Area | What to build |
-|------|--------------|
-| Inline projections | `IProjection` interface, `ProjectionLifecycle.Inline`, runs within SaveChanges |
-| Live projections | SurrealDB live queries via `LiveTable<T>()` |
-| Async daemon | `AsyncDaemon` class with high-water mark, `EventLoader`, shard coordination |
-| Projection storage | `IProjectionStorage` interface, `InlineProjection<TDoc>`, `AsyncProjection<TDoc>` |
-| Single-stream aggregate | `SingleStreamProjection<T>` base class |
-| Multi-stream aggregate | `MultiStreamProjection<T>` base class |
+---
 
-## Phase 4: Multi-Tenancy + Schema
+## Phase 3: Projections ✅
 
-| Area | What to build |
-|------|--------------|
-| Conjoined tenancy | `tenant_id` field on all documents, automatic WHERE filter |
-| Database-per-tenant | `ISurrealDbClient` per tenant, `TenantDatabaseSelector` |
-| Schema auto-create | `SchemaManager.EnsureDocumentSchemaAsync()` on store init |
-| Schema diff | `SchemaManager.HasPendingChanges()` — compare model vs DB |
+**Tests:** 37 (7 new)
 
-## Phase 5: Query Translation Improvements
+| Component | Description |
+|-----------|-------------|
+| `IProjection` / `IProjectionContext` | Core projection interfaces |
+| `ProjectionLifecycle` | Inline / Async enum |
+| `InlineProjection<T>` | Abstract base for inline projections |
+| `SingleStreamProjection<T>` | Doc ID derived from event StreamId |
+| `MultiStreamProjection<T>` | Cross-stream doc identity |
+| `AsyncDaemon` | Background polling worker with high-water mark |
+| `DocumentSession` | Wires inline projections into SaveChangesAsync |
+
+---
+
+## Phase 4: Multi-Tenancy + Schema ✅
+
+**Tests:** 49 (12 new)
+
+| Component | Description |
+|-----------|-------------|
+| `TenancyStyle` | None / Conjoined / DatabasePerTenant |
+| Session-level tenant tracking | `SetTenant()`, `ClearTenant()`, `TenantId` property |
+| Conjoined filter | Auto-appends `WHERE TenantId = '{tenant}'` in queries |
+| Store auto-set | Auto-sets `TenantId` on entities with `TenantId` property |
+| Delete validation | Validates entity tenant matches session tenant |
+| Schema auto-create | `EnsureDocumentSchemaAsync<T>()`, `EnsureEventSchemaAsync()` |
+| SCHEMAFULL tables | Fields use PascalCase (matching CBOR storage) |
+
+---
+
+## Phase 5: Query Translation ✅
+
+**Tests:** 64 (15 new)
 
 | Feature | LINQ → SurrealQL |
 |---------|-----------------|
-| Full OrderBy | OrderBy, ThenBy, OrderByDescending, ThenByDescending |
-| Compound conditions | AND (`&&`), OR (`\|\|`), NOT, nested parens |
-| Select projection | Anonymous types → named columns, MemberInit |
-| Aggregates | Sum, Min, Max, Average, Count |
-| String functions | Contains → `string::contains`, StartsWith, EndsWith |
-| Math functions | `math::*` translation for +, -, *, / |
-| Date functions | `time::*` translations |
-| Include/FETCH | Eager loading via FETCH clause |
-| First/Single | `LIMIT 1` / `LIMIT 2` with validation |
+| OrderBy | ThenBy, ThenByDescending |
+| Compound conditions | AND (`&&`), OR (`\|\|`), NOT |
+| Select | Anonymous types + MemberInit (`new Dto { X = p.X }`) |
+| Aggregates | `Sum` → `math::sum`, `Min` → `math::min`, `Max` → `math::max`, `Average` → `math::mean` |
+| String functions | `Contains` → `string::contains`, `StartsWith`, `EndsWith` |
+| Math operators | `+`, `-`, `*`, `/`, `%` |
+| Date functions | `time::year/month/day/wday/hour/minute/second` |
+| First/Single | `FirstOrDefaultAsync` (with/without predicate), `SingleOrDefaultAsync` |
+| Table quoting | Backtick-quoted table names for keyword safety |
 
-## Phase 6: EF Core Bridge
+---
 
-| Area | What to build |
-|------|--------------|
-| Transaction participant | `DbContextTransactionParticipant<TDbContext>` — bridges SurrealDB tx into EF Core DbContext |
-| Session adapter | `EfCoreOperations<TDbContext>` — simultaneous Dali + EF Core writes |
-| DI registration | `AddDaliWithEfCore()` extension |
+## Phase 6: EF Core Bridge ✅
+
+**Tests:** 81 (17 new)
+
+| Component | Description |
+|-----------|-------------|
+| `DaliEfCoreTransaction` | Wraps `IDocumentSession` as `IDbContextTransaction` |
+| `DaliEfCoreTransactionManager<TDbContext>` | Implements `IDbContextTransactionManager` via `ReplaceService<>()` |
+| `ServiceCollectionExtensions` | `AddDaliWithEfCore<TDbContext>()` DI registration |
+| Rollback | Clears Dali unit of work (SurrealDB has no native rollback) |
+
+**Project:** `src/Dali.EntityFrameworkCore/Dali.EntityFrameworkCore.csproj` (references `Dali` + `Microsoft.EntityFrameworkCore` 10.0.8)
+
+---
+
+## Cross-Cutting Concerns ✅
+
+| Concern | Implementation |
+|---------|---------------|
+| `ILogger<T>` everywhere | 14 files, `NullLogger<T>` fallback when no `ILoggerFactory` |
+| Log levels | Information (init, commit, projection cycle); Debug (SurrealQL, operations) |
+| `ConfigureAwait(false)` | Every `SurrealDb.Net` async call |
+| Cancellation tokens | All async methods accept and forward `CancellationToken ct` |
+| `StoreOptions.LoggerFactory` | Plumbed through constructor chain to all classes |
+
+---
+
+## Phase 7: Modular Configuration (IConfigureDali + Schema.For) ✅
+
+**Tests:** 91 (10 new)
+
+| Component | Description |
+|-----------|-------------|
+| `IConfigureDali` | Marker interface — consumers implement, registered in DI, `Configure(StoreOptions)` called during init |
+| `SchemaOptions.For<T>()` | Fluent document-level configuration (returns `DocumentMapping<T>`) |
+| `DocumentMapping<T>.Index(p => p.Field)` | Simple index on a single field |
+| `DocumentMapping<T>.UniqueIndex(p => p.Field)` | Unique index |
+| `DocumentMapping<T>.CompositeIndex(p => p.F1, p => p.F2)` | Multi-column composite index |
+| `DocumentMapping<T>.UniqueCompositeIndex(p => p.F1, p => p.F2)` | Multi-column unique composite index |
+| `DocumentMapping<T>.MultiTenanted()` | Marks document as multi-tenanted |
+| `IndexOptions` | `IsUnique()`, `WithName()` overrides on index definition |
+| `SchemaManager.EnsureIndexAsync()` | `DEFINE INDEX idx ON TABLE table COLUMNS ... UNIQUE` |
+| Auto-apply | All mappings + indices applied during `DocumentStore.InitializeAsync` |
+| `ConfigureDali<T>()` | DI extension: `services.ConfigureDali<MyConfig>()` |
+
+**Usage:**
+```csharp
+// Fluent schema config
+var store = Documents.For(o =>
+{
+    o.Schema.For<Person>()
+        .Index(p => p.Email)
+        .UniqueIndex(p => p.Ssn)
+        .CompositeIndex(p => p.FirstName, p => p.LastName);
+});
+
+// Modular DI config
+services.ConfigureDali<UserSchemaConfiguration>();
+```
+
+---
+
+## Phase 8: Compiled Queries ✅
+
+**Tests:** 104 (13 new)
+
+| Component | Description |
+|-----------|-------------|
+| `CompiledQuery<T>` | Wrapper holding cached `SurrealQueryResult` from one-time expression translation |
+| `CompileQuery<T>(q => q.Where(...))` | Extension on `IDocumentStore` — walks expression tree once |
+| `QueryAsync(compiled)` | Extension on `IQuerySession` — executes using cached SurrealQL |
+| `QueryFirstOrDefaultAsync(compiled)` | Executes with LIMIT 1 using cached result |
+| `CompiledQueryProvider<T>` | Internal execution engine — clones cached result, applies tenant filter, generates SurrealQL |
+| `SurrealQueryResult.Clone()` | Deep copy for thread-safe mutation on each execution |
+
+**Usage:**
+```csharp
+var compiled = store.CompileQuery<Person>(q => q
+    .Where(p => p.Age > 25)
+    .OrderBy(p => p.Name));
+
+var results = await session.QueryAsync(compiled);
+```
+
+---
+
+## Phase 9: Patch/Partial Updates ✅
+
+**Tests:** 110 (6 new)
+
+| Component | Description |
+|-----------|-------------|
+| `PatchExpression<T>` | Fluent builder: `Set()`, `Increment()`, `Append()`, `Delete()` |
+| `SetOperation` | Internal model with PascalCase SurrealQL formatting |
+| `session.Patch<Person>(id).Set(p => p.Age, 30).ApplyAsync()` | Extension method on `IDocumentSession` |
+
+**Usage:**
+```csharp
+session.Patch<Product>(id)
+    .Set(p => p.Price, 19.99m)
+    .Increment(p => p.Quantity, 5)
+    .ApplyAsync();
+```
+
+---
+
+## Phase 10: Optimistic Concurrency ✅
+
+**Tests:** 116 (6 new)
+
+| Component | Description |
+|-----------|-------------|
+| `IVersioned` | Interface with `long Version { get; set; }` |
+| `[Version]` attribute | Marks any `long` property as version field |
+| `ConcurrencyException` | Thrown on version mismatch with Expected/Actual/DocumentType/DocumentId |
+| `StoreOptions.UseOptimisticConcurrency` | Enable/disable (default: false) |
+| Version tracking | `_originalVersions` dictionary, cached `PropertyInfo`, `GetVersion()`/`IncrementVersion()` |
+| Three-phase save | Check → Increment → Persist |
+
+**Usage:**
+```csharp
+var store = Documents.For(o => { o.UseOptimisticConcurrency = true; });
+
+public class Customer : Record, IVersioned
+{
+    public string Name { get; set; } = "";
+    public long Version { get; set; }
+}
+```
+
+---
+
+## Phase 11: Soft Delete ✅
+
+**Tests:** 124 (8 new)
+
+| Component | Description |
+|-----------|-------------|
+| `ISoftDeleted` | Interface: `DateTimeOffset? DeletedAt`, `bool Deleted` |
+| `OperationType.SoftDeleted` | Unit of work flag for soft-delete operations |
+| `DocumentSession.Delete<T>()` | Auto-detects `ISoftDeleted`, queues `SoftDeleted` instead of `Deleted` |
+| `SurrealQueryProvider.ApplySoftDeleteFilter()` | Appends `WHERE Deleted = false` on all queries for `ISoftDeleted` types |
+| `StoreOptions.SoftDeleteEnabled` | Toggle query auto-filter (default: true) |
+| `SoftDeleteAsync<T>(session, id)` | Extension for direct soft-delete by record ID |
+
+**Usage:**
+```csharp
+var session = store.LightweightSession();
+session.Delete(softDeletePerson);  // sets Deleted=true, DeletedAt=now instead of removing
+await session.SaveChangesAsync();
+
+// Queries automatically exclude soft-deleted documents
+var active = await session.Query<SoftDeletePerson>().ToListAsync(); // WHERE Deleted = false
+```
+
+---
+
+## Phase 12: Database-per-Tenant ✅
+
+**Tests:** 134 (10 new)
+
+| Component | Description |
+|-----------|-------------|
+| `DatabasePerTenantSelector` | Per-tenant `ISurrealDbClient` cache; database = `{namespace}_{tenantId}` |
+| `DocumentStore.WithTenant()` | Specifies tenant for next session creation |
+| `DocumentStore.InitializeAsync` | Creates selector, skips default database connection |
+| Session creation | Resolves tenant (WithTenant > DefaultTenantId), uses tenant-scoped client |
+| `InternalSessionBase.LoadAsync` | Skips entity-level tenant check (database isolation is sufficient) |
+| `DocumentSession.Store/Delete` | Skips TenantId auto-set and tenant check |
+| `SurrealQueryProvider` | Skips WHERE TenantId filter (database-level isolation) |
+| Client disposal | `IAsyncDisposable` on selector, called in `DocumentStore.DisposeAsync` |
+
+**Usage:**
+```csharp
+var store = Documents.For(o =>
+{
+    o.TenancyStyle = TenancyStyle.DatabasePerTenant;
+    o.Namespace = "myapp";
+});
+
+// Each tenant gets its own database: myapp_tenant-a, myapp_tenant-b
+await using var sessionA = await store.WithTenant("tenant-a").LightweightSessionAsync();
+await using var sessionB = await store.WithTenant("tenant-b").QuerySessionAsync();
+```
+
+---
+
+## Backlog (Future)
+
+| Area | Description | Priority |
+|------|-------------|----------|
+| **Source generators** | Roslyn generators for compiled queries, CBOR serializers, projection evolvers | High |
+| **Live projections** | SurrealDB `LIVE SELECT` → real-time projection updates | Medium |
+| **Subscriptions** | Real-time event subscriptions via LIVE SELECT | Medium |
+| **IDocumentListener** | Marten-style hooks (`BeforeSave`, `AfterSave`, etc.) | Small |
+| **Batch operations** | Bulk insert/delete with chunked transactions | Small |
+| **Full-text search** | Wrap SurrealDB's `search::*` functions | Medium |
+| **CI/CD** | GitHub Actions: build, test, package, publish NuGet | Medium |
+
+---
+
+## Configuration
+
+```csharp
+var store = Documents.For(o =>
+{
+    // Remote connection
+    o.Endpoint = "http://localhost:8000";
+    o.Namespace = "myapp";
+    o.Database = "mydb";
+
+    // Or embedded (for testing)
+    // o.ClientFactory = () => new SurrealDbMemoryClient();
+
+    // Logging (optional — null = no-op)
+    o.LoggerFactory = loggerFactory;
+    o.MinimumLogLevel = LogLevel.Debug;
+
+    // Schema
+    o.Schema.AutoCreate = true;        // auto-create document schemas on init
+
+    // Events
+    o.Events.Enabled = true;
+
+    // Tenancy
+    o.TenancyStyle = TenancyStyle.Conjoined;
+    o.DefaultTenantId = "default";
+});
+```
+
+---
 
 ## Known Issues
 
@@ -88,3 +362,4 @@
 | CBOR deserialization requires `Record` base class | Test models must extend `SurrealDb.Net.Models.Record` |
 | EventRecord CBOR fetch fails with embedded engine | Use RawQuery + JSON round-trip for non-Record types |
 | `Aero.Cms.SourceGenerators` project reference warning | Pre-existing repo issue, non-blocking |
+| `System.Threading.Channels` NU1510 pruning warning | Pre-existing, non-blocking |

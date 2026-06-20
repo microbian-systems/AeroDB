@@ -1,7 +1,10 @@
 using System.Collections.Concurrent;
 using System.Linq.Expressions;
 using System.Text.Json;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using SurrealDb.Net;
+using SurrealDb.Net.Models;
 using SurrealDb.Net.Models.Response;
 
 namespace Dali;
@@ -9,23 +12,36 @@ namespace Dali;
 public class SurrealQueryProvider : IQueryProvider
 {
     private readonly ISurrealDbSession _session;
+    private readonly StoreOptions _options;
     private readonly string? _tenantId;
+    private readonly ILogger<SurrealQueryProvider> _logger;
 
-    public SurrealQueryProvider(ISurrealDbSession session, string? tenantId = null)
+    public SurrealQueryProvider(ISurrealDbSession session, StoreOptions options, string? tenantId = null)
     {
         _session = session;
+        _options = options;
         _tenantId = tenantId;
+        _logger = options.LoggerFactory?.CreateLogger<SurrealQueryProvider>()
+            ?? NullLogger<SurrealQueryProvider>.Instance;
     }
 
     private SurrealExpressionVisitor CreateVisitor() => new();
 
     /// <summary>
+    /// Cached check for whether a type implements <see cref="ISoftDeleted"/>.
+    /// </summary>
+    private static readonly ConcurrentDictionary<Type, bool> IsSoftDeletedCache = new();
+
+    private static bool IsSoftDeletedType(Type type)
+        => IsSoftDeletedCache.GetOrAdd(type, t => typeof(ISoftDeleted).IsAssignableFrom(t));
+
+    /// <summary>
     /// Cached check for whether a type has a TenantId string property.
     /// </summary>
-    private static readonly ConcurrentDictionary<Type, bool> _hasTenantCache = new();
+    internal static readonly ConcurrentDictionary<Type, bool> HasTenantCache = new();
 
-    private static bool HasTenantProperty(Type type)
-        => _hasTenantCache.GetOrAdd(type, static t =>
+    internal static bool HasTenantProperty(Type type)
+        => HasTenantCache.GetOrAdd(type, static t =>
         {
             var prop = t.GetProperty("TenantId", typeof(string));
             return prop is not null && prop.CanRead && prop.CanWrite;
@@ -56,14 +72,40 @@ public class SurrealQueryProvider : IQueryProvider
 
     /// <summary>
     /// Applies a tenant filter to the query if tenancy is active and the target type supports it.
+    /// DatabasePerTenant isolates at the database level — no WHERE filter needed.
     /// </summary>
     private void ApplyTenantFilter(SurrealQueryResult query, Type? elementType)
     {
         if (string.IsNullOrEmpty(_tenantId) || elementType is null)
             return;
 
+        if (_options.TenancyStyle == TenancyStyle.DatabasePerTenant)
+            return;
+
         if (HasTenantProperty(elementType))
+        {
             query.Where.Add($"TenantId = '{_tenantId?.Replace("'", "\\'")}'");
+            _logger.LogDebug("Tenant filter applied: {TenantId}", _tenantId);
+        }
+    }
+
+    /// <summary>
+    /// Applies a soft-delete filter to the query, excluding documents where <c>Deleted = true</c>
+    /// if the element type implements <see cref="ISoftDeleted"/> and soft-delete filtering is enabled.
+    /// </summary>
+    private void ApplySoftDeleteFilter(SurrealQueryResult query, Type? elementType)
+    {
+        if (elementType is null)
+            return;
+
+        if (!_options.SoftDeleteEnabled)
+            return;
+
+        if (IsSoftDeletedType(elementType))
+        {
+            query.Where.Add("Deleted = false");
+            _logger.LogDebug("Soft-delete filter applied to {Type}", elementType.Name);
+        }
     }
 
     public IQueryable CreateQuery(Expression expression)
@@ -101,9 +143,11 @@ public class SurrealQueryProvider : IQueryProvider
         }
 
         ApplyTenantFilter(query, typeof(T));
+        ApplySoftDeleteFilter(query, typeof(T));
 
         var surql = query.ToSurrealQL();
-        var response = await _session.RawQuery(surql, null, ct);
+        _logger.LogDebug("ToSurrealQL: {Surql}", surql);
+        var response = await _session.RawQuery(surql, null, ct).ConfigureAwait(false);
 
         if (!response.HasErrors && response.Count > 0)
         {
@@ -126,9 +170,11 @@ public class SurrealQueryProvider : IQueryProvider
         }
 
         ApplyTenantFilter(query, typeof(T));
+        ApplySoftDeleteFilter(query, typeof(T));
         query.Limit = 1;
         var surql = query.ToSurrealQL();
-        var response = await _session.RawQuery(surql, null, ct);
+        _logger.LogDebug("FirstOrDefaultAsync SurrealQL: {Surql}", surql);
+        var response = await _session.RawQuery(surql, null, ct).ConfigureAwait(false);
 
         if (!response.HasErrors && response.Count > 0)
         {
@@ -147,10 +193,12 @@ public class SurrealQueryProvider : IQueryProvider
         ExtractTable(expression, query);
 
         ApplyTenantFilter(query, typeof(T));
+        ApplySoftDeleteFilter(query, typeof(T));
 
         query.Limit = 2; // fetch 2 to detect > 1 result
         var surql = query.ToSurrealQL();
-        var response = await _session.RawQuery(surql, null, ct);
+        _logger.LogDebug("SingleOrDefaultAsync SurrealQL: {Surql}", surql);
+        var response = await _session.RawQuery(surql, null, ct).ConfigureAwait(false);
 
         if (!response.HasErrors && response.Count > 0)
         {
@@ -175,6 +223,7 @@ public class SurrealQueryProvider : IQueryProvider
 
         var elementType = ExtractElementType(expression);
         ApplyTenantFilter(query, elementType);
+        ApplySoftDeleteFilter(query, elementType);
 
         query.OrderBy.Clear();
         query.Limit = null;
@@ -185,7 +234,8 @@ public class SurrealQueryProvider : IQueryProvider
         query.Projection = "*";
 
         var surql = query.ToSurrealQL();
-        var response = await _session.RawQuery(surql, null, ct);
+        _logger.LogDebug("AggregateAsync ({Function}) SurrealQL: {Surql}", function, surql);
+        var response = await _session.RawQuery(surql, null, ct).ConfigureAwait(false);
 
         if (response.HasErrors || response.Count <= 0)
             return 0m;
@@ -236,6 +286,7 @@ public class SurrealQueryProvider : IQueryProvider
 
         var elementType = ExtractElementType(expression);
         ApplyTenantFilter(query, elementType);
+        ApplySoftDeleteFilter(query, elementType);
 
         // Strip ordering and limit — they don't affect count
         query.OrderBy.Clear();
@@ -244,7 +295,8 @@ public class SurrealQueryProvider : IQueryProvider
         query.Projection = "*";
 
         var surql = query.ToSurrealQL();
-        var response = await _session.RawQuery(surql, null, ct);
+        _logger.LogDebug("CountAsync SurrealQL: {Surql}", surql);
+        var response = await _session.RawQuery(surql, null, ct).ConfigureAwait(false);
 
         if (!response.HasErrors && response.Count > 0)
         {
@@ -269,9 +321,11 @@ public class SurrealQueryProvider : IQueryProvider
 
         var elementType = ExtractElementType(expression);
         ApplyTenantFilter(query, elementType);
+        ApplySoftDeleteFilter(query, elementType);
         query.Limit = 1;
         var surql = query.ToSurrealQL();
-        var response = await _session.RawQuery(surql, null, ct);
+        _logger.LogDebug("AnyAsync SurrealQL: {Surql}", surql);
+        var response = await _session.RawQuery(surql, null, ct).ConfigureAwait(false);
 
         if (!response.HasErrors && response.Count > 0)
         {

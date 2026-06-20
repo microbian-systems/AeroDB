@@ -7,6 +7,7 @@ public class Person : Record
     public string Name { get; set; } = "";
     public int Age { get; set; }
     public string Email { get; set; } = "";
+    public List<string> Tags { get; set; } = new();
 }
 
 public class Product : Record
@@ -34,4 +35,21 @@ public class TenantPerson : Record
     public string Name { get; set; } = "";
     public int Age { get; set; }
     public string TenantId { get; set; } = "";
+}
+
+/// <summary>
+/// Model implementing <see cref="IVersioned"/> for optimistic concurrency tests.
+/// </summary>
+public class VersionedPerson : Person, IVersioned
+{
+    public long Version { get; set; }
+}
+
+/// <summary>
+/// Model with a <see cref="VersionAttribute"/>-decorated property for optimistic concurrency tests.
+/// </summary>
+public class AttributedPerson : Person
+{
+    [Version]
+    public long DocumentVersion { get; set; }
 }

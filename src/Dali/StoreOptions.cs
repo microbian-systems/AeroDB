@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using SurrealDb.Net;
 
 namespace Dali;
@@ -16,12 +17,48 @@ public class StoreOptions
     public string? DefaultTenantId { get; set; }
     public EventSourcingOptions Events { get; } = new();
 
+    /// <summary>
+    /// When true, documents with an <see cref="IVersioned"/> version field or
+    /// a property decorated with <see cref="VersionAttribute"/> are protected
+    /// against lost updates. Before saving a modified document, Dali checks that
+    /// the current database version matches the version captured when the document
+    /// was loaded or stored. If the versions differ, a <see cref="ConcurrencyException"/>
+    /// is thrown.
+    /// </summary>
+    public bool UseOptimisticConcurrency { get; set; }
+
     public Func<ISurrealDbClient>? ClientFactory { get; set; }
+
+    /// <summary>
+    /// Logger factory for creating typed loggers throughout the Dali stack.
+    /// If null, <c>NullLogger{T}</c> is used everywhere (no-op).
+    /// </summary>
+    public ILoggerFactory? LoggerFactory { get; set; }
+
+    /// <summary>
+    /// Minimum log level for Dali library log messages.
+    /// </summary>
+    public LogLevel MinimumLogLevel { get; set; } = LogLevel.Information;
 
     /// <summary>
     /// Registered projections (inline and async).
     /// </summary>
     public List<IProjection> Projections { get; } = new();
+
+    /// <summary>
+    /// When true (default), queries automatically filter out soft-deleted documents
+    /// (those where <c>Deleted = true</c>). Set to false for admin views that need
+    /// to include soft-deleted records.
+    /// Soft-delete behavior always applies to entities implementing <see cref="ISoftDeleted"/>
+    /// regardless of this setting — only the query auto-filter is affected.
+    /// </summary>
+    public bool SoftDeleteEnabled { get; set; } = true;
+
+    /// <summary>
+    /// Configuration modules applied during <see cref="DocumentStore.InitializeAsync"/>.
+    /// Add instances directly or register via DI with <c>ConfigureDali&lt;T&gt;()</c>.
+    /// </summary>
+    public List<IConfigureDali> Configurators { get; } = new();
 
     public StoreOptions Connection(string endpoint, string? ns = null, string? db = null,
         string? username = null, string? password = null, string? token = null)
@@ -39,6 +76,26 @@ public class StoreOptions
 public class SchemaOptions
 {
     public bool AutoCreate { get; set; } = true;
+
+    /// <summary>
+    /// Cached document mappings, keyed by entity type.
+    /// </summary>
+    internal Dictionary<Type, DocumentMapping> Mappings { get; } = new();
+
+    /// <summary>
+    /// Fluent API for document-level schema configuration (indices, tenancy policy, etc.).
+    /// Creates or returns a cached <see cref="DocumentMapping{T}"/> for the specified type.
+    /// </summary>
+    public DocumentMapping<T> For<T>() where T : SurrealDb.Net.Models.Record
+    {
+        if (!Mappings.TryGetValue(typeof(T), out var existing))
+        {
+            var mapping = new DocumentMapping<T>();
+            Mappings[typeof(T)] = mapping;
+            return mapping;
+        }
+        return (DocumentMapping<T>)existing;
+    }
 }
 
 public enum TenancyStyle

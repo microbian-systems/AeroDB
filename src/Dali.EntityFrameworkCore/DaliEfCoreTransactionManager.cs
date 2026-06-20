@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace Dali;
 
@@ -13,21 +15,25 @@ public class DaliEfCoreTransactionManager<TDbContext> : IDbContextTransactionMan
 {
     private readonly TDbContext _dbContext;
     private readonly IDocumentSession _daliSession;
+    private readonly ILogger<DaliEfCoreTransactionManager<TDbContext>> _logger;
 
-    public DaliEfCoreTransactionManager(TDbContext dbContext, IDocumentSession daliSession)
+    public DaliEfCoreTransactionManager(TDbContext dbContext, IDocumentSession daliSession, ILoggerFactory? loggerFactory = null)
     {
         _dbContext = dbContext;
         _daliSession = daliSession;
+        _logger = loggerFactory?.CreateLogger<DaliEfCoreTransactionManager<TDbContext>>()
+            ?? NullLogger<DaliEfCoreTransactionManager<TDbContext>>.Instance;
     }
 
     public IDbContextTransaction? CurrentTransaction { get; private set; }
 
     public IDbContextTransaction BeginTransaction()
-        => Task.Run(async () => await BeginTransactionAsync()).GetAwaiter().GetResult();
+        => Task.Run(async () => await BeginTransactionAsync().ConfigureAwait(false)).GetAwaiter().GetResult();
 
     public async Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken ct = default)
     {
-        var efTransaction = await _dbContext.Database.BeginTransactionAsync(ct);
+        _logger.LogInformation("Beginning Dali EF Core transaction");
+        var efTransaction = await _dbContext.Database.BeginTransactionAsync(ct).ConfigureAwait(false);
         var daliTransaction = new DaliEfCoreTransaction(_daliSession)
         {
             OwnedTransaction = efTransaction
@@ -49,7 +55,7 @@ public class DaliEfCoreTransactionManager<TDbContext> : IDbContextTransactionMan
     {
         if (CurrentTransaction is not null)
         {
-            await CurrentTransaction.CommitAsync(ct);
+            await CurrentTransaction.CommitAsync(ct).ConfigureAwait(false);
             CurrentTransaction = null;
         }
     }
@@ -67,7 +73,7 @@ public class DaliEfCoreTransactionManager<TDbContext> : IDbContextTransactionMan
     {
         if (CurrentTransaction is not null)
         {
-            await CurrentTransaction.RollbackAsync(ct);
+            await CurrentTransaction.RollbackAsync(ct).ConfigureAwait(false);
             CurrentTransaction = null;
         }
     }

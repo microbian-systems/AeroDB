@@ -1,4 +1,6 @@
 using System.Text.Json;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using SurrealDb.Net;
 using SurrealDb.Net.Models.Response;
 
@@ -7,15 +9,20 @@ namespace Dali;
 public class EventStore : IEvents
 {
     private readonly ISurrealDbSession _session;
+    private readonly ILogger<EventStore> _logger;
 
-    public EventStore(ISurrealDbSession session)
-        => _session = session;
+    public EventStore(ISurrealDbSession session, StoreOptions? options = null)
+    {
+        _session = session;
+        _logger = options?.LoggerFactory?.CreateLogger<EventStore>()
+            ?? NullLogger<EventStore>.Instance;
+    }
 
     public async Task<IReadOnlyList<object>> FetchStream(string streamId, CancellationToken ct = default)
     {
         var response = await _session.RawQuery(
             $"SELECT * FROM mt_events WHERE stream_id = '{streamId}' ORDER BY version ASC;",
-            null, ct);
+            null, ct).ConfigureAwait(false);
 
         if (!response.HasErrors && response.Count > 0)
         {
@@ -48,7 +55,7 @@ public class EventStore : IEvents
 
     public async Task Append(string streamId, IEnumerable<object> events, CancellationToken ct = default)
     {
-        var version = await GetNextVersion(streamId, ct);
+        var version = await GetNextVersion(streamId, ct).ConfigureAwait(false);
 
         foreach (var evt in events)
         {
@@ -64,13 +71,15 @@ public class EventStore : IEvents
             };
 
             var recordJson = JsonSerializer.Serialize(record, JsonOptions);
-            await _session.RawQuery($"CREATE mt_events CONTENT {recordJson};", null, ct);
+            _logger.LogDebug("Appending event {EventType} to stream {StreamId} (version {Version})",
+                evt.GetType().Name, streamId, version);
+            await _session.RawQuery($"CREATE mt_events CONTENT {recordJson};", null, ct).ConfigureAwait(false);
         }
     }
 
     public async Task<string> StartStream(string streamId, IEnumerable<object> events, CancellationToken ct = default)
     {
-        await Append(streamId, events, ct);
+        await Append(streamId, events, ct).ConfigureAwait(false);
         return streamId;
     }
 
@@ -79,7 +88,7 @@ public class EventStore : IEvents
     {
         var response = await _session.RawQuery(
             $"SELECT * FROM mt_events WHERE version > {version} ORDER BY version ASC;",
-            null, ct);
+            null, ct).ConfigureAwait(false);
 
         if (!response.HasErrors && response.Count > 0)
         {
@@ -103,6 +112,7 @@ public class EventStore : IEvents
                             }
                             results.Add((r.StreamId, evt ?? "", r.Version));
                         }
+                        _logger.LogDebug("Fetched {Count} events after version {Version}", results.Count, version);
                         return results.AsReadOnly();
                     }
                 }
@@ -122,7 +132,7 @@ public class EventStore : IEvents
         // Avoid math::max aggregate in CBOR mode (can cause deserialization issues).
         var response = await _session.RawQuery(
             $"SELECT version FROM mt_events WHERE stream_id = '{streamId}' ORDER BY version DESC LIMIT 1;",
-            null, ct);
+            null, ct).ConfigureAwait(false);
 
         if (!response.HasErrors && response.Count > 0)
         {

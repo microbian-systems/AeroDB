@@ -15,11 +15,12 @@ public static class TestHarness
         return store;
     }
 
-    public static async Task<IDocumentStore> CreateStoreAsync()
+    public static async Task<IDocumentStore> CreateStoreAsync(Action<StoreOptions>? configure = null)
     {
         var store = Documents.For(o =>
         {
             o.ClientFactory = () => new SurrealDbMemoryClient();
+            configure?.Invoke(o);
         });
 
         await store.InitializeAsync();

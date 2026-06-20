@@ -1,9 +1,19 @@
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using SurrealDb.Net;
 
 namespace Dali;
 
 public class SchemaManager
 {
+    private readonly ILogger<SchemaManager> _logger;
+
+    public SchemaManager(ILoggerFactory? loggerFactory = null)
+    {
+        _logger = loggerFactory?.CreateLogger<SchemaManager>()
+            ?? NullLogger<SchemaManager>.Instance;
+    }
+
     /// <summary>
     /// Ensures a document table exists with SCHEMAFULL mode and defines fields for all
     /// public readable/writable properties on T (except Id).
@@ -12,7 +22,8 @@ public class SchemaManager
         where T : SurrealDb.Net.Models.Record
     {
         var tableName = Snake(typeof(T).Name);
-        await session.RawQuery($"DEFINE TABLE {tableName} SCHEMAFULL;", null, ct);
+        _logger.LogDebug("Ensuring document schema for table {Table}", tableName);
+        await session.RawQuery($"DEFINE TABLE {tableName} SCHEMAFULL;", null, ct).ConfigureAwait(false);
 
         var type = typeof(T);
         foreach (var prop in type.GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance))
@@ -24,7 +35,7 @@ public class SchemaManager
             // CBOR serialization stores C# property names as-is (PascalCase), so field definitions
             // must use PascalCase to match what the engine actually stores in SCHEMAFULL mode.
             var fieldSurql = $"DEFINE FIELD {prop.Name} ON TABLE {tableName} TYPE {fieldType};";
-            await session.RawQuery(fieldSurql, null, ct);
+            await session.RawQuery(fieldSurql, null, ct).ConfigureAwait(false);
         }
     }
 
@@ -33,13 +44,14 @@ public class SchemaManager
     /// </summary>
     public async Task EnsureEventSchemaAsync(ISurrealDbSession session, CancellationToken ct = default)
     {
-        await session.RawQuery("DEFINE TABLE mt_events SCHEMAFULL;", null, ct);
-        await session.RawQuery("DEFINE FIELD stream_id ON TABLE mt_events TYPE string;", null, ct);
-        await session.RawQuery("DEFINE FIELD version ON TABLE mt_events TYPE int;", null, ct);
-        await session.RawQuery("DEFINE FIELD event_type ON TABLE mt_events TYPE string;", null, ct);
-        await session.RawQuery("DEFINE FIELD data ON TABLE mt_events TYPE string;", null, ct);
-        await session.RawQuery("DEFINE FIELD created_at ON TABLE mt_events TYPE datetime;", null, ct);
-        await session.RawQuery("DEFINE INDEX mt_events_stream_version ON TABLE mt_events COLUMNS stream_id, version UNIQUE;", null, ct);
+        _logger.LogInformation("Ensuring event schema (table mt_events)");
+        await session.RawQuery("DEFINE TABLE mt_events SCHEMAFULL;", null, ct).ConfigureAwait(false);
+        await session.RawQuery("DEFINE FIELD stream_id ON TABLE mt_events TYPE string;", null, ct).ConfigureAwait(false);
+        await session.RawQuery("DEFINE FIELD version ON TABLE mt_events TYPE int;", null, ct).ConfigureAwait(false);
+        await session.RawQuery("DEFINE FIELD event_type ON TABLE mt_events TYPE string;", null, ct).ConfigureAwait(false);
+        await session.RawQuery("DEFINE FIELD data ON TABLE mt_events TYPE string;", null, ct).ConfigureAwait(false);
+        await session.RawQuery("DEFINE FIELD created_at ON TABLE mt_events TYPE datetime;", null, ct).ConfigureAwait(false);
+        await session.RawQuery("DEFINE INDEX mt_events_stream_version ON TABLE mt_events COLUMNS stream_id, version UNIQUE;", null, ct).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -47,9 +59,42 @@ public class SchemaManager
     /// </summary>
     internal async Task EnsureEventSchemaAsync(ISurrealDbClient client, string ns, string db, CancellationToken ct = default)
     {
-        await using var session = await client.CreateSession(ct);
-        await session.Use(ns, db, ct);
-        await EnsureEventSchemaAsync(session, ct);
+        await using var session = await client.CreateSession(ct).ConfigureAwait(false);
+        await session.Use(ns, db, ct).ConfigureAwait(false);
+        await EnsureEventSchemaAsync(session, ct).ConfigureAwait(false);
+    }
+
+    /// <summary>
+    /// Ensures the specified index exists on the given table.
+    /// </summary>
+    public async Task EnsureIndexAsync(ISurrealDbSession session, string tableName, IndexDefinition index, CancellationToken ct = default)
+    {
+        var unique = index.IsUnique ? " UNIQUE" : "";
+        var columns = string.Join(", ", index.Columns);
+        var surql = $"DEFINE INDEX {index.Name} ON TABLE {tableName} COLUMNS {columns}{unique};";
+        _logger.LogDebug("Ensuring index {IndexName} on table {Table}", index.Name, tableName);
+        await session.RawQuery(surql, null, ct).ConfigureAwait(false);
+    }
+
+    /// <summary>
+    /// Non-generic overload of <see cref="EnsureDocumentSchemaAsync{T}"/> for use without
+    /// compile-time type knowledge (e.g. when iterating configured mappings).
+    /// </summary>
+    internal async Task EnsureDocumentSchemaAsync(Type entityType, ISurrealDbSession session, CancellationToken ct = default)
+    {
+        var tableName = Snake(entityType.Name);
+        _logger.LogDebug("Ensuring document schema for type {Type} with table {Table}", entityType.Name, tableName);
+        await session.RawQuery($"DEFINE TABLE {tableName} SCHEMAFULL;", null, ct).ConfigureAwait(false);
+
+        foreach (var prop in entityType.GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance))
+        {
+            if (prop.Name == "Id") continue;
+            if (!prop.CanRead || !prop.CanWrite) continue;
+
+            var fieldType = GetSurrealType(prop.PropertyType);
+            var fieldSurql = $"DEFINE FIELD {prop.Name} ON TABLE {tableName} TYPE {fieldType};";
+            await session.RawQuery(fieldSurql, null, ct).ConfigureAwait(false);
+        }
     }
 
     /// <summary>
@@ -58,7 +103,8 @@ public class SchemaManager
     /// </summary>
     public async Task EnsureSchemaAsync<T>(ISurrealDbSession session, string tableName, CancellationToken ct = default)
     {
-        await session.RawQuery($"DEFINE TABLE {tableName} SCHEMAFULL;", null, ct);
+        _logger.LogDebug("Ensuring schema for type {Type} with table {Table}", typeof(T).Name, tableName);
+        await session.RawQuery($"DEFINE TABLE {tableName} SCHEMAFULL;", null, ct).ConfigureAwait(false);
 
         var type = typeof(T);
         foreach (var prop in type.GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance))
@@ -68,13 +114,14 @@ public class SchemaManager
 
             var fieldType = GetSurrealType(prop.PropertyType);
             var fieldSurql = $"DEFINE FIELD {prop.Name} ON TABLE {tableName} TYPE {fieldType};";
-            await session.RawQuery(fieldSurql, null, ct);
+            await session.RawQuery(fieldSurql, null, ct).ConfigureAwait(false);
         }
     }
 
     public async Task DropTableAsync(ISurrealDbSession session, string tableName, CancellationToken ct = default)
     {
-        await session.RawQuery($"REMOVE TABLE {tableName};", null, ct);
+        _logger.LogDebug("Dropping table {Table}", tableName);
+        await session.RawQuery($"REMOVE TABLE {tableName};", null, ct).ConfigureAwait(false);
     }
 
     private static string GetSurrealType(Type type)
@@ -90,7 +137,7 @@ public class SchemaManager
         return "object";
     }
 
-    private static string Snake(string name)
+    internal static string Snake(string name)
     {
         if (string.IsNullOrEmpty(name)) return name;
         return string.Concat(name.Select((c, i) =>
