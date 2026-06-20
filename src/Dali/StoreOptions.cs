@@ -100,6 +100,11 @@ public class SchemaOptions
     internal Dictionary<Type, DocumentMapping> Mappings { get; } = new();
 
     /// <summary>
+    /// Edge table mappings, used to generate RELATION table schemas during initialization.
+    /// </summary>
+    internal List<object> EdgeMappings { get; } = new();
+
+    /// <summary>
     /// Fluent API for document-level schema configuration (indices, tenancy policy, etc.).
     /// Creates or returns a cached <see cref="DocumentMapping{T}"/> for the specified type.
     /// </summary>
@@ -112,6 +117,29 @@ public class SchemaOptions
             return mapping;
         }
         return (DocumentMapping<T>)existing;
+    }
+
+    /// <summary>
+    /// Fluent API for edge table schema configuration.
+    /// Configures a SurrealDB RELATION table with IN/OUT type constraints.
+    /// </summary>
+    /// <typeparam name="TEdge">The edge record type (extends <see cref="EdgeRecord"/>).</typeparam>
+    /// <typeparam name="TIn">The source/from node record type.</typeparam>
+    /// <typeparam name="TOut">The target/to node record type.</typeparam>
+    public SchemaOptions Edge<TEdge, TIn, TOut>(Action<EdgeMapping<TEdge>> configure)
+        where TEdge : EdgeRecord
+        where TIn : SurrealDb.Net.Models.Record
+        where TOut : SurrealDb.Net.Models.Record
+    {
+        var mapping = new EdgeMapping<TEdge>
+        {
+            TableName = Metadata.MetadataDispatch.GetTableName(typeof(TEdge)),
+            FromTable = Metadata.MetadataDispatch.GetTableName(typeof(TIn)),
+            ToTable = Metadata.MetadataDispatch.GetTableName(typeof(TOut))
+        };
+        configure(mapping);
+        EdgeMappings.Add(mapping);
+        return this;
     }
 }
 

@@ -63,3 +63,28 @@ public class SearchablePage : Record
     public string Content { get; set; } = "";
     public float[] Embedding { get; set; } = [];
 }
+
+// ──────────────────────────────────────────────
+// Graph test edges
+// ──────────────────────────────────────────────
+
+public class Knows : EdgeRecord
+{
+    public int Since { get; set; }
+    public string? Kind { get; set; }
+}
+
+public class WorksIn : EdgeRecord
+{
+    public string Role { get; set; } = "";
+    public DateTimeOffset StartedAt { get; set; }
+}
+
+public class ChildOf : EdgeRecord
+{
+}
+
+public class Created : EdgeRecord
+{
+    public DateTimeOffset CreatedAt { get; set; }
+}

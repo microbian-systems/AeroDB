@@ -131,6 +131,16 @@ public class DocumentStore : IDocumentStore
             }
         }
 
+        // Auto-create edge (relation) table schemas if configured
+        if (Options.Schema.AutoCreate && Options.Schema.EdgeMappings.Count > 0)
+        {
+            await using var edgeSession = await _client.CreateSession(ct).ConfigureAwait(false);
+            await edgeSession.Use(ns, db, ct).ConfigureAwait(false);
+
+            foreach (var edgeMapping in Options.Schema.EdgeMappings)
+                await schemaManager.EnsureEdgeSchemaAsync(edgeSession, edgeMapping, ct).ConfigureAwait(false);
+        }
+
         // Auto-create event schema if events are enabled
         if (Options.Events.Enabled)
         {
@@ -269,6 +279,20 @@ public class DocumentStore : IDocumentStore
         if (!_initialized)
             await InitializeAsync(ct).ConfigureAwait(false);
     }
+
+    /// <summary>Start a graph traversal query. Creates an ephemeral session internally.</summary>
+    public IGraphQuery<T> Graph<T>() where T : class
+    {
+        if (!_initialized)
+            throw new InvalidOperationException("Store not initialized. Call InitializeAsync first.");
+
+        var surrealSession = Client.CreateSession(DefaultCt).GetAwaiter().GetResult();
+        surrealSession.Use(Options.Namespace ?? "test", Options.Database ?? "test", CancellationToken.None).GetAwaiter().GetResult();
+        var querySession = new QuerySession(Client, surrealSession, Options);
+        return GraphQueryProvider.Graph<T>(querySession);
+    }
+
+    private static readonly CancellationToken DefaultCt = CancellationToken.None;
 
     public async ValueTask DisposeAsync()
     {

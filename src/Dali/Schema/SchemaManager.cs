@@ -162,6 +162,85 @@ public class SchemaManager
     }
 
     /// <summary>
+    /// Builds a DEFINE TABLE SurrealQL statement for an edge (relation) table.
+    /// </summary>
+    internal static string BuildDefineEdgeTable<TEdge>(EdgeMapping<TEdge> mapping) where TEdge : EdgeRecord
+    {
+        var sb = new StringBuilder();
+        sb.Append("DEFINE TABLE `").Append(mapping.TableName).Append("` ");
+
+        if (mapping.SchemaMode == SchemaMode.Strict)
+            sb.Append("SCHEMAFULL ");
+        else
+            sb.Append("SCHEMALESS ");
+
+        sb.Append("TYPE RELATION IN `").Append(mapping.FromTable)
+          .Append("` OUT `").Append(mapping.ToTable).Append("`;");
+
+        return sb.ToString();
+    }
+
+    /// <summary>
+    /// Builds DEFINE INDEX SurrealQL statements for edge fields.
+    /// </summary>
+    internal static IEnumerable<string> BuildEdgeIndexStatements<TEdge>(EdgeMapping<TEdge> mapping) where TEdge : EdgeRecord
+    {
+        foreach (var field in mapping.Indexes)
+        {
+            yield return $"DEFINE INDEX idx_{mapping.TableName}_{field} ON TABLE `{mapping.TableName}` COLUMNS {field};";
+        }
+    }
+
+    /// <summary>
+    /// Ensures an edge (relation) table schema exists in the database.
+    /// </summary>
+    public async Task EnsureEdgeSchemaAsync<TEdge>(ISurrealDbSession session, EdgeMapping<TEdge> mapping, CancellationToken ct = default)
+        where TEdge : EdgeRecord
+    {
+        var tableSql = BuildDefineEdgeTable(mapping);
+        _logger.LogDebug("Ensuring edge schema for table {Table}", mapping.TableName);
+        await session.RawQuery(tableSql, null, ct).ConfigureAwait(false);
+
+        foreach (var indexSql in BuildEdgeIndexStatements(mapping))
+        {
+            _logger.LogDebug("Ensuring edge index on {Table}.{Field}", mapping.TableName, indexSql);
+            await session.RawQuery(indexSql, null, ct).ConfigureAwait(false);
+        }
+    }
+
+    /// <summary>
+    /// Non-generic overload of <see cref="EnsureEdgeSchemaAsync{TEdge}"/> for use without
+    /// compile-time type knowledge (e.g. when iterating configured edge mappings).
+    /// </summary>
+    internal async Task EnsureEdgeSchemaAsync(ISurrealDbSession session, object mapping, CancellationToken ct = default)
+    {
+        var mappingType = mapping.GetType();
+        if (!mappingType.IsGenericType || mappingType.GetGenericTypeDefinition() != typeof(EdgeMapping<>))
+        {
+            _logger.LogWarning("Skipping unknown edge mapping type: {Type}", mappingType.Name);
+            return;
+        }
+
+        var edgeType = mappingType.GetGenericArguments()[0];
+        var tableName = (string)mappingType.GetProperty("TableName")!.GetValue(mapping)!;
+        var fromTable = (string)mappingType.GetProperty("FromTable")!.GetValue(mapping)!;
+        var toTable = (string)mappingType.GetProperty("ToTable")!.GetValue(mapping)!;
+        var schemaMode = (SchemaMode)mappingType.GetProperty("SchemaMode")!.GetValue(mapping)!;
+        var indexes = (IReadOnlyList<string>)mappingType.GetProperty("Indexes")!.GetValue(mapping)!;
+
+        var schemaSurql = schemaMode == SchemaMode.Strict ? "SCHEMAFULL" : "SCHEMALESS";
+        var sql = $"DEFINE TABLE `{tableName}` {schemaSurql} TYPE RELATION IN `{fromTable}` OUT `{toTable}`;";
+        _logger.LogDebug("Ensuring edge schema for table {Table}", tableName);
+        await session.RawQuery(sql, null, ct).ConfigureAwait(false);
+
+        foreach (var field in indexes)
+        {
+            var indexSql = $"DEFINE INDEX idx_{tableName}_{field} ON TABLE `{tableName}` COLUMNS {field};";
+            await session.RawQuery(indexSql, null, ct).ConfigureAwait(false);
+        }
+    }
+
+    /// <summary>
     /// Non-generic overload of <see cref="EnsureDocumentSchemaAsync{T}"/> for use without
     /// compile-time type knowledge (e.g. when iterating configured mappings).
     /// </summary>

@@ -687,6 +687,265 @@ internal sealed class PersonMetadata : ITypeMetadata<Person>
 | RecordId extraction | `GetProperty("Id")` ✗ | `GetRecordIdAccessor` ✅ |
 | Non-generated types | Reflection fallback | Reflection fallback (unchanged) |
 
+## Low-Level SDK Access (`Advanced` API)
+
+Dali exposes the underlying `SurrealDb.Net` client and session objects for advanced scenarios the library does not yet abstract — raw queries, multi-database access, administrative operations, live query subscriptions, schema migrations, etc.
+
+### Lifetime Compatibility
+
+Per the SurrealDb.Net SDK documentation:
+
+| Class | Singleton | Scoped | Transient |
+|---|---|---|---|
+| `SurrealDbClient` | ✅ | ❌ | ❌ |
+| `SurrealDbSession` | ❌ | ✅ | ✅ |
+
+`SurrealDbClient` is a thread-safe connection pool manager (singleton). `SurrealDbSession` is a lightweight, scoped-per-request session that auto-opens/closes connections.
+
+### API Shape
+
+```csharp
+// Flat convenience (existing) — kept for backward compatibility
+store.Client                        // ISurrealDbClient
+
+// Structured escape hatch (recommended for new code)
+store.Advanced.SurrealDbClient      // ISurrealDbClient — the underlying singleton
+store.Advanced.CreateSessionAsync() // Task<ISurrealDbSession> — factory, not a property
+store.Advanced.CreateSessionAsync("ns", "db") // pre-configured session
+```
+
+### Design Decisions
+
+| Decision | Choice | Rationale |
+|---|---|---|
+| Flat `store.Client` | **Kept**, soft `[Obsolete]` pointing to `Advanced` | Backward compat; guides users to canonical path |
+| Namespace | **`.Advanced`** — matches Marten convention | Dali targets Marten users; learn-once pattern |
+| Session access pattern | **Factory method**, not property | `ISurrealDbSession` is scoped — a property implies cheap get. Factory makes allocation + disposal explicit. |
+| Async primacy | **`CreateSessionAsync()`** as canonical | `ISurrealDbClient.CreateSession()` returns `Task<ISurrealDbSession>` internally; sync wrapper risks deadlock |
+| DI auto-registration | **Opt-in only** (`registerRawTypes: true`) | Avoids dual-registration conflicts with `AddSurreal()` |
+
+### Session Ownership
+
+Sessions obtained from `Advanced.CreateSessionAsync()` are **not managed by Dali**. The caller must dispose them:
+
+```csharp
+await using var session = await store.Advanced.CreateSessionAsync(ct);
+var results = await session.RawQuery("SELECT * FROM person WHERE age > $age",
+    new Dictionary<string, object> { ["age"] = 30 }, ct);
+```
+
+### DI Integration
+
+- **Default:** `services.AddDali(...)` registers Dali types only. Raw `ISurrealDbClient`/`ISurrealDbSession` are not in DI.
+- **Opt-in:** `services.AddDali(options => { ... }, registerRawTypes: true)` also registers raw SDK types.
+- **Manual:** Users can call `services.AddSurreal()` separately for full control.
+
+### Implementation
+
+```csharp
+public interface IDaliAdvanced
+{
+    ISurrealDbClient SurrealDbClient { get; }
+    Task<ISurrealDbSession> CreateSessionAsync(CancellationToken ct = default);
+    Task<ISurrealDbSession> CreateSessionAsync(string ns, string db, CancellationToken ct = default);
+}
+
+public interface IDocumentStore : IAsyncDisposable
+{
+    ISurrealDbClient Client { get; }           // kept for backward compat
+    IDaliAdvanced Advanced { get; }            // new
+    // ...
+}
+```
+
+### Risks
+
+| Risk | Mitigation |
+|---|---|
+| Session disposal leaks | XML docs + `<b>` emphasis on caller responsibility |
+| `store.Client` deprecation fatigue | `[Obsolete]` without `error: true`; upgrade in 2.0 |
+| Tenant confusion (DatabasePerTenant) | `Advanced.SurrealDbClient` returns root client; document this |
+| DI dual-registration | `TryAdd*` semantics in opt-in overload |
+
+## ⚠️ Known Limitations
+
+### 1. CBOR Deserialization: Non-`Record` Types
+
+**Problem:** SurrealDB's embedded engine (`SurrealDbEmbeddedEngine`) uses [Dahomey.Cbor](https://github.com/dahomey-technologies/Dahomey.Cbor) for response deserialization. `SurrealDbResponse.GetValue<T>(0)` invokes Dahomey.Cbor directly — if `T` is a plain POCO that doesn't extend `SurrealDb.Net.Models.Record`, deserialization **fails** with a CborException.
+
+The remote (WebSocket/HTTP) engine does not share this problem — it uses JSON internally.
+
+**Impact:** Any test or embedded scenario using plain POCOs breaks on deserialization. This affects `LoadAsync<T>`, raw queries, aggregate results (e.g. `math::sum`), and any generic mapper.
+
+**Workaround:** Use `GetValue<List<object>>(0)` to receive raw CBOR boxes, then JSON-serialize and deserialize:
+
+```csharp
+var raw = response.GetValue<List<object>>(0);
+var json = JsonSerializer.Serialize(raw);
+var result = JsonSerializer.Deserialize<T>(json);
+```
+
+For aggregate queries, define a `Record`-derived DTO with `[CborProperty("math::sum")]` attributes:
+
+```csharp
+internal sealed class SumResult : SurrealDb.Net.Models.Record
+{
+    [CborProperty("math::sum")]
+    public decimal Value { get; set; }
+}
+```
+
+This is used internally by `QuerySession.CountAsync` and aggregate extension methods.
+
+**Rule of thumb:** If a type appears in a `Where<T>()` result or a `LoadAsync<T>` call, extend `Record`. If you cannot (third-party types), use the JSON round-trip workaround.
+
+### 2. Live Queries: WebSocket Only
+
+`LiveTable<T>()` / `LiveRawQuery<T>()` / `WatchTableAsync<T>()` only work with the **WebSocket engine** (`ws://` or `wss://` connection strings). The HTTP engine and embedded engine throw `NotSupportedException`.
+
+### 3. DB-per-Tenant: Advanced Client Disclaimer
+
+`StoreOptions.Advanced.SurrealDbClient` returns the **root** client — not the per-tenant client. Per-tenant isolation only applies to sessions created through the store. Direct use of `Advanced.SurrealDbClient` bypasses tenant routing.
+
+## Wolverine Integration (`WolverineFx.Dali`)
+
+Dali provides a Wolverine persistence/transport package (`WolverineFx.Dali`) analogous to `WolverineFx.Marten`. It delivers full parity: saga storage, transactional middleware, outbox, projection distribution, and message persistence + transport (inbox/outbox, durable queues).
+
+This is a **separate NuGet package** (`WolverineFx.Dali`) within the Dali repo (`src/WolverineFx.Dali/`), referencing both `WolverineFx` and `Dali`.
+
+> **Note:** The Saga pattern itself is built into Wolverine core — it has a `Saga` base class with state lifecycle, handler dispatch, and completion semantics. Store packages only provide the persistence backend. `WolverineFx.Dali` implements `ISagaStorage` — it does not reinvent the saga framework.
+
+### Architecture
+
+```
+WolverineFx.Dali
+├── DaliMessageStore : IMessageStore / IMessageInbox / IMessageOutbox / IDeadLetters
+│   └── Direct ISurrealDbClient.RawQuery() (standalone, not MessageDatabase<T>)
+│       Tables: wolverine_incoming_envelopes, wolverine_outgoing_envelopes,
+│               wolverine_dead_letters, wolverine_nodes
+│       Claim pattern: UPDATE ... RETURN BEFORE (atomic, single round-trip)
+│
+├── DaliTransport : ITransport (scheme: dali://)
+│   ├── DaliQueueListener — poll loop + atomic claim
+│   └── DaliQueueSender — INSERT into outgoing table
+│
+├── Codegen Frames (mirrors WolverineFx.Marten exactly)
+│   ├── OpenDaliSessionFrame — opens IDocumentSession
+│   ├── FlushOutgoingMessagesOnDaliCommit : IDocumentSessionListener
+│   │   ├── BeforeSaveChangesAsync → marks handled
+│   │   └── AfterCommitAsync → FlushOutgoingMessagesAsync()
+│   ├── DaliSessionSaveChangesFrame — session.SaveChangesAsync()
+│   └── FlushDaliOutgoingMessagesFrame — context.FlushOutgoingMessagesAsync()
+│
+├── DaliSagaStorage : ISagaStorage
+│   └── Saga persistence via IDocumentSession (Load/Store/Update/Delete)
+│
+├── OutboxedDaliSessionFactory
+│   └── Creates IDocumentSession pre-enrolled in Wolverine's outbox
+│
+└── DaliProjectionCoordinator
+    └── Wolverine-managed projection distribution (future)
+
+         All operations ↓
+    SurrealDB (same namespace/database)
+    ├── Domain tables (person, order, event, etc.)
+    └── Wolverine envelope tables (wolverine_*)
+```
+
+### Envelope Storage Schema
+
+SurrealDB tables for message persistence:
+
+```surql
+DEFINE TABLE wolverine_incoming_envelopes SCHEMAFULL;
+DEFINE FIELD id ON wolverine_incoming_envelopes TYPE string;
+DEFINE FIELD status ON wolverine_incoming_envelopes TYPE string;
+DEFINE FIELD owner_id ON wolverine_incoming_envelopes TYPE int;
+DEFINE FIELD execution_time ON wolverine_incoming_envelopes TYPE datetime;
+DEFINE FIELD attempts ON wolverine_incoming_envelopes TYPE int;
+DEFINE FIELD body ON wolverine_incoming_envelopes TYPE bytes;
+DEFINE FIELD message_type ON wolverine_incoming_envelopes TYPE string;
+DEFINE INDEX idx_incoming_status ON wolverine_incoming_envelopes FIELDS status;
+```
+
+### Durable Queue Claim Pattern
+
+SurrealDB's closest analog to PostgreSQL `SELECT ... FOR UPDATE SKIP LOCKED`:
+
+```surql
+UPDATE wolverine_incoming_envelopes
+SET owner_id = $nodeId, status = 'Incoming'
+WHERE status = 'Scheduled'
+  AND execution_time <= time::now()
+ORDER BY execution_time ASC LIMIT $batchSize
+RETURN BEFORE
+```
+
+Single atomic statement — one round-trip, zero TOCTOU races.
+
+### Transport Wake-up
+
+| Mode | Mechanism | Default |
+|------|-----------|---------|
+| **Polling** | Configurable interval (default 5s) | ✅ Default |
+| **Live Query** | SurrealDB WebSocket `LIVE SELECT` push | ❌ Opt-in |
+
+Hybrid pattern mirrors Wolverine's PostgreSQL `LISTEN`/`NOTIFY` + polling fallback.
+
+### Transactional Middleware
+
+Mirrors `WolverineFx.Marten` exactly via codegen frames:
+
+| Order | Frame | Action |
+|-------|-------|--------|
+| 1 | `OpenDaliSessionFrame` | `var session = factory.OpenSession(ctx)` |
+| 2 | *(handler runs)* | Uses `IDocumentSession` |
+| 3 | `DaliSessionSaveChangesFrame` | `await session.SaveChangesAsync(ct)` |
+| 4 | `FlushDaliOutgoingMessagesFrame` | `await ctx.FlushOutgoingMessagesAsync()` |
+
+`FlushOutgoingMessagesOnDaliCommit` (`IDocumentSessionListener`) ensures correct ordering:
+1. `BeforeSaveChangesAsync` — marks envelopes as handled
+2. `SaveChangesAsync` — atomically persists domain data + envelope status
+3. `AfterCommitAsync` — dispatches outgoing messages
+
+### Registration
+
+```csharp
+builder.Services.AddDali(o => { /* ... */ });
+
+// Connect Wolverine to Dali
+builder.Host.UseWolverine(opts =>
+{
+    opts.PersistMessagesWithDali();
+    opts.Policies.AutoApplyTransactions();
+});
+```
+
+Or the Marten-style chained syntax:
+
+```csharp
+builder.Services.AddDali(o => { /* ... */ })
+    .IntegrateWithWolverine();
+```
+
+### Key Risks
+
+| Risk | Mitigation |
+|------|------------|
+| No multi-document atomicity | Accept eventual consistency; domain data persists first via listener pattern. Long-term: batch into `BEGIN TRAN`/`COMMIT TRAN`. |
+| `RETURN BEFORE` behavior on older SurrealDB | Test against SurrealDB ≥ 2.x. Fallback to two-step claim (SELECT + versioned UPDATE). |
+| RawQuery latency vs Npgsql direct | Batch envelope ops into multi-statement scripts. Single-statement claim+return minimizes round-trips. |
+| `MessageDatabase<T>` base class incompatible | Build `DaliMessageStore` as standalone class — SurrealDB has no `DbConnection`/`DbCommand` abstraction. |
+
+### Implementation Phases
+
+| Phase | Scope | Key Classes |
+|-------|-------|-------------|
+| 1. Core Message Store | Schema init, envelope CRUD, durability agent timers | `DaliMessageStore`, `DaliEnvelope` |
+| 2. Transport | Queue listener/sender, poll loop, options | `DaliTransport`, `DaliQueueListener`, `DaliQueueSender` |
+| 3. Middleware + Sagas | Session factory, codegen frames, saga storage | `OutboxedDaliSessionFactory`, `DaliSagaStorage`, 6 codegen frames |
+| 4. Projections | Projection distribution, multi-tenancy, compliance tests | `DaliProjectionCoordinator` |
+
 ## Constraints & Conventions
 
 - **Serialization:** SurrealDb CBOR via `Record` base class. Use `GetValue<List<T>>(0)` for Record types, `GetValue<List<object>>(0)` + JSON round-trip for non-Record types.

@@ -38,4 +38,10 @@ public class QuerySession : InternalSessionBase, IQuerySession
         var live = await Session.LiveRawQuery<object>(surql, null, ct).ConfigureAwait(false);
         return new LiveQuery<object>(live);
     }
+
+    /// <summary>Start a graph traversal query.</summary>
+    public IGraphQuery<T> Graph<T>() where T : class
+    {
+        return GraphQueryProvider.Graph<T>(this);
+    }
 }

@@ -555,6 +555,29 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         return new LiveQuery<object>(live);
     }
 
+    /// <summary>Start a graph traversal query.</summary>
+    public IGraphQuery<T> Graph<T>() where T : class
+    {
+        return GraphQueryProvider.Graph<T>(this);
+    }
+
+    /// <summary>Create a graph edge between two records using SurrealDB RELATE.</summary>
+    public async Task RelateAsync<TEdge>(
+        RecordId from,
+        RecordId to,
+        TEdge? data = default,
+        CancellationToken ct = default) where TEdge : class
+    {
+        var table = MetadataDispatch.GetTableName(typeof(TEdge));
+        await Client.Relate<TEdge, TEdge?>(table, from, to, data, ct).ConfigureAwait(false);
+    }
+
+    /// <summary>Remove a graph edge by its record ID.</summary>
+    public async Task UnrelateAsync(RecordId edgeId, CancellationToken ct = default)
+    {
+        await Session.RawQuery($"DELETE {edgeId};", null, ct).ConfigureAwait(false);
+    }
+
     /// <summary>
     /// Wraps EventStore to track appended events for inline projections.
     /// </summary>

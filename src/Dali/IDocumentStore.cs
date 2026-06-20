@@ -1,4 +1,5 @@
 using SurrealDb.Net;
+using SurrealDb.Net.Models;
 
 namespace Dali;
 
@@ -17,6 +18,9 @@ public interface IDocumentStore : IAsyncDisposable
     /// <c>LightweightSessionAsync</c>, or <c>DocumentSessionAsync</c>.
     /// </summary>
     IDocumentStore WithTenant(string tenantId);
+
+    /// <summary>Start a graph traversal query. Opens an ephemeral session internally.</summary>
+    IGraphQuery<T> Graph<T>() where T : class;
 }
 
 public interface IQuerySession : IAsyncDisposable
@@ -67,6 +71,9 @@ public interface IQuerySession : IAsyncDisposable
     /// Only works with WebSocket connections (ws://, wss://).
     /// </summary>
     Task<ILiveQuery<object>> WatchStreamAsync(string streamId, CancellationToken ct = default);
+
+    /// <summary>Start a graph traversal query. Uses SurrealDB's graph arrow syntax for edges and paths.</summary>
+    IGraphQuery<T> Graph<T>() where T : class;
 }
 
 public interface IDocumentSession : IQuerySession
@@ -76,4 +83,14 @@ public interface IDocumentSession : IQuerySession
     Task<int> SaveChangesAsync(CancellationToken ct = default);
     void ClearChanges();
     IEvents Events { get; }
+
+    /// <summary>Create a graph edge between two records using SurrealDB RELATE.</summary>
+    Task RelateAsync<TEdge>(
+        RecordId from,
+        RecordId to,
+        TEdge? data = default,
+        CancellationToken ct = default) where TEdge : class;
+
+    /// <summary>Remove a graph edge by its record ID.</summary>
+    Task UnrelateAsync(RecordId edgeId, CancellationToken ct = default);
 }
