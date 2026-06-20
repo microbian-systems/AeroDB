@@ -44,8 +44,14 @@
     <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="10.0.8" />
     <PackageVersion Include="Microsoft.AspNetCore.Components.WebView.Maui" Version="10.0.60" />
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="5.3.0" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="10.0.8" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Abstractions" Version="10.0.8" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.8" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Relational" Version="10.0.8" />
+    <PackageVersion Include="SurrealDb.Embedded.InMemory" Version="0.10.2" />
+    <PackageVersion Include="SurrealDb.Embedded.SurrealKv" Version="0.10.2" />
+    <PackageVersion Include="SurrealDb.Net" Version="0.10.2" />
+    <PackageVersion Include="SurrealDb.Reactive" Version="0.10.2" />
     <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.1" />
     <PackageVersion Include="Microsoft.Extensions.Caching.Abstractions" Version="10.0.8" />
     <PackageVersion Include="Microsoft.Extensions.Configuration" Version="10.0.5" />

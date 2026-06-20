@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="Dali\Dali.csproj" />
+  <Project Path="..\tests\Dali.Tests\Dali.Tests.csproj" />
+</Solution>

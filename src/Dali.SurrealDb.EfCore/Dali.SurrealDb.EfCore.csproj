@@ -1,8 +1,0 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-  <ItemGroup>
-    <Compile Remove="Examples.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Examples.cs" />
-  </ItemGroup>
-</Project>

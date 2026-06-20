@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Description>.NET Transactional Document DB and Event Store on SurrealDB</Description>
+    <PackageTags>surrealdb documentdb eventstore nosql</PackageTags>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="SurrealDb.Net" VersionOverride="0.10.2" />
+    <PackageReference Include="SurrealDb.Reactive" VersionOverride="0.10.2" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" VersionOverride="10.0.8" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" VersionOverride="10.0.8" />
+    <PackageReference Include="System.Threading.Channels" VersionOverride="10.0.3" />
+  </ItemGroup>
+</Project>
