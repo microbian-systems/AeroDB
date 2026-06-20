@@ -51,7 +51,7 @@ public class SurrealQueryProvider : IQueryProvider
     private static void ExtractTable(Expression expression, SurrealQueryResult query)
     {
         if (expression is ConstantExpression c && c.Value is IQueryable q)
-            query.TableName = ToSnakeCase(q.ElementType.Name);
+            query.TableName = MetadataDispatch.GetTableName(q.ElementType);
     }
 
     /// <summary>
@@ -137,7 +137,7 @@ public class SurrealQueryProvider : IQueryProvider
         if (string.IsNullOrEmpty(query.TableName))
         {
             if (expression is ConstantExpression c && c.Value is IQueryable q)
-                query.TableName = ToSnakeCase(q.ElementType.Name);
+                query.TableName = MetadataDispatch.GetTableName(q.ElementType);
         }
 
         ApplyTenantFilter(query, typeof(T));
@@ -164,7 +164,7 @@ public class SurrealQueryProvider : IQueryProvider
         if (string.IsNullOrEmpty(query.TableName))
         {
             if (expression is ConstantExpression c && c.Value is IQueryable q)
-                query.TableName = ToSnakeCase(q.ElementType.Name);
+                query.TableName = MetadataDispatch.GetTableName(q.ElementType);
         }
 
         ApplyTenantFilter(query, typeof(T));
@@ -250,7 +250,7 @@ public class SurrealQueryProvider : IQueryProvider
         if (string.IsNullOrEmpty(query.TableName))
         {
             if (expression is ConstantExpression c && c.Value is IQueryable q)
-                query.TableName = ToSnakeCase(q.ElementType.Name);
+                query.TableName = MetadataDispatch.GetTableName(q.ElementType);
         }
 
         var elementType = ExtractElementType(expression);
@@ -285,7 +285,7 @@ public class SurrealQueryProvider : IQueryProvider
         if (string.IsNullOrEmpty(query.TableName))
         {
             if (expression is ConstantExpression c && c.Value is IQueryable q)
-                query.TableName = ToSnakeCase(q.ElementType.Name);
+                query.TableName = MetadataDispatch.GetTableName(q.ElementType);
         }
 
         var elementType = ExtractElementType(expression);

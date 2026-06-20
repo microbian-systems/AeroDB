@@ -1,5 +1,6 @@
 using System.Linq.Expressions;
 using System.Reflection;
+using Dali.Metadata;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 
@@ -131,7 +132,7 @@ public class PatchExpression<T> where T : class
     {
         if (_operations.Count == 0) return;
 
-        var table = Snake(typeof(T).Name);
+        var table = MetadataDispatch.GetTableName(typeof(T));
         var sets = _operations.Select(o => o.ToSurrealQL()).ToList();
         var surql = $"UPDATE {table}:{_recordId} SET {string.Join(", ", sets)};";
 

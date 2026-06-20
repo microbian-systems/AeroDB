@@ -1,3 +1,4 @@
+using Dali.Metadata;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using SurrealDb.Net;
@@ -21,7 +22,7 @@ public class SchemaManager
     public async Task EnsureDocumentSchemaAsync<T>(ISurrealDbSession session, CancellationToken ct = default)
         where T : SurrealDb.Net.Models.Record
     {
-        var tableName = Snake(typeof(T).Name);
+        var tableName = MetadataDispatch.GetTableName(typeof(T));
         _logger.LogDebug("Ensuring document schema for table {Table}", tableName);
         await session.RawQuery($"DEFINE TABLE {tableName} SCHEMAFULL;", null, ct).ConfigureAwait(false);
 
@@ -82,7 +83,7 @@ public class SchemaManager
     /// </summary>
     internal async Task EnsureDocumentSchemaAsync(Type entityType, ISurrealDbSession session, CancellationToken ct = default)
     {
-        var tableName = Snake(entityType.Name);
+        var tableName = MetadataDispatch.GetTableName(entityType);
         _logger.LogDebug("Ensuring document schema for type {Type} with table {Table}", entityType.Name, tableName);
         await session.RawQuery($"DEFINE TABLE {tableName} SCHEMAFULL;", null, ct).ConfigureAwait(false);
 

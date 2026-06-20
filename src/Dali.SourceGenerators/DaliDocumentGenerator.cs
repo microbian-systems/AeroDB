@@ -143,16 +143,20 @@ public class DaliDocumentGenerator : IIncrementalGenerator
         sb.AppendLine($"    public bool HasTenantId => {hasTenantId.ToString().ToLowerInvariant()};");
         sb.AppendLine($"    public bool HasVersion => {hasVersion.ToString().ToLowerInvariant()};");
         sb.AppendLine($"    public string? VersionFieldName => {EmitVersionFieldName(versionProp)};");
+        sb.AppendLine($"    public Func<object, long>? GetVersionAccessor => {EmitGetVersionAccessor(versionProp, globalFullName)};");
+        sb.AppendLine($"    public Action<object, long>? SetVersionAccessor => {EmitSetVersionAccessor(versionProp, globalFullName)};");
         sb.AppendLine();
 
         // GetTenantId
         if (hasTenantId)
         {
             sb.AppendLine($"    public string? GetTenantId({globalFullName} entity) => entity.{tenantIdProp!.Name};");
+            sb.AppendLine($"    public void SetTenantId({globalFullName} entity, string? tenantId) => entity.{tenantIdProp!.Name} = tenantId;");
         }
         else
         {
             sb.AppendLine($"    public string? GetTenantId({globalFullName} entity) => null;");
+            sb.AppendLine($"    public void SetTenantId({globalFullName} entity, string? tenantId) {{ }}");
         }
 
         // GetVersion / SetVersion
@@ -185,6 +189,8 @@ public class DaliDocumentGenerator : IIncrementalGenerator
             sb.AppendLine("        return null;");
         }
         sb.AppendLine("    }");
+
+        sb.AppendLine($"    public Func<object, string?>? GetRecordIdAccessor => {EmitGetRecordIdAccessor(idProp, globalFullName)};");
 
         sb.AppendLine("}");
 
@@ -242,6 +248,34 @@ public class DaliDocumentGenerator : IIncrementalGenerator
         if (versionProp is not null)
             return $"\"{versionProp.Name}\"";
         return "null";
+    }
+
+    private static string EmitGetVersionAccessor(IPropertySymbol? versionProp, string globalFullName)
+    {
+        if (versionProp is not null)
+            return $"obj => (({globalFullName})obj).{versionProp.Name}";
+        return "null";
+    }
+
+    private static string EmitSetVersionAccessor(IPropertySymbol? versionProp, string globalFullName)
+    {
+        if (versionProp is not null)
+            return $"(obj, v) => (({globalFullName})obj).{versionProp.Name} = v";
+        return "null";
+    }
+
+    private static string EmitGetRecordIdAccessor(IPropertySymbol? idProp, string globalFullName)
+    {
+        if (idProp is null) return "null";
+        return "obj =>\n    {\n" +
+               $"        var entity = ({globalFullName})obj;\n" +
+               "        var id = entity.Id;\n" +
+               "        if (id is null) return null;\n" +
+               "        if (id is RecordIdOf<string> strRid) return strRid.Id;\n" +
+               "        if (id is RecordIdOf<long> longRid) return longRid.Id.ToString();\n" +
+               "        if (id is RecordIdOf<int> intRid) return intRid.Id.ToString();\n" +
+               "        return id.ToString();\n" +
+               "    }";
     }
 
     internal static string ToSnakeCase(string name)

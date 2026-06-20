@@ -73,16 +73,23 @@ public abstract class InternalSessionBase : IAsyncDisposable
             // DatabasePerTenant isolates at the database level — no entity-level check needed.
             if (result is not null && !string.IsNullOrEmpty(TenantId) && Options.TenancyStyle == TenancyStyle.Conjoined)
             {
-                var tenantProp = typeof(T).GetProperty("TenantId", typeof(string));
-                if (tenantProp is not null && tenantProp.CanRead)
+                string? entityTenant;
+                var meta = MetadataRegistry.TryGet<T>();
+                if (meta is not null)
                 {
-                    var entityTenant = tenantProp.GetValue(result) as string;
-                    if (!string.Equals(entityTenant, TenantId, StringComparison.Ordinal))
-                    {
-                        logger.LogDebug("Tenant filter applied for LoadAsync<{Type}>: entity tenant '{EntityTenant}' != session tenant '{SessionTenant}'",
-                            typeof(T).Name, entityTenant, TenantId);
-                        return default;
-                    }
+                    entityTenant = meta.GetTenantId(result);
+                }
+                else
+                {
+                    var tenantProp = typeof(T).GetProperty("TenantId", typeof(string));
+                    entityTenant = tenantProp?.GetValue(result) as string;
+                }
+                
+                if (!string.Equals(entityTenant, TenantId, StringComparison.Ordinal))
+                {
+                    logger.LogDebug("Tenant filter applied for LoadAsync<{Type}>: entity tenant '{EntityTenant}' != session tenant '{SessionTenant}'",
+                        typeof(T).Name, entityTenant, TenantId);
+                    return default;
                 }
             }
 
@@ -122,7 +129,11 @@ public abstract class InternalSessionBase : IAsyncDisposable
     {
         var entityType = entity.GetType();
 
-        // Use metadata-aware dispatch to find the version field name
+        // Use generated metadata accessor when available — zero reflection
+        if (MetadataRegistry.TryGet(entityType) is ITypeMetadata meta && meta.GetVersionAccessor is not null)
+            return meta.GetVersionAccessor(entity);
+
+        // Fallback: use metadata dispatch for field name, then reflection
         var versionFieldName = MetadataDispatch.GetVersionFieldName(entityType);
 
         if (versionFieldName is not null)
@@ -150,7 +161,15 @@ public abstract class InternalSessionBase : IAsyncDisposable
     {
         var entityType = entity.GetType();
 
-        // Use metadata-aware dispatch to find the version field name
+        // Use generated metadata accessor when available — zero reflection
+        if (MetadataRegistry.TryGet(entityType) is ITypeMetadata meta && meta.SetVersionAccessor is not null)
+        {
+            var current = meta.GetVersionAccessor?.Invoke(entity) ?? -1;
+            meta.SetVersionAccessor(entity, current + 1);
+            return;
+        }
+
+        // Fallback: use metadata dispatch for field name, then reflection
         var versionFieldName = MetadataDispatch.GetVersionFieldName(entityType);
 
         if (versionFieldName is not null)

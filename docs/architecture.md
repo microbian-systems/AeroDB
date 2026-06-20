@@ -5,7 +5,7 @@
 **Last modified:** 2026-06-20
 **Full plan:** [init-impl-plan.md](init-impl-plan.md)
 **Build:** 0 errors (4 pre-existing warnings)
-**Tests:** 81 passing
+**Tests:** 144 passing
 
 ---
 
@@ -184,6 +184,9 @@ src/
     Linq/
       ExpressionVisitor.cs                 # LINQ → SurrealQL visitor
       SurrealQueryProvider.cs              # IQueryProvider implementation
+    Compiled/                              # Compiled queries
+      ICompiledQuery.cs                    # Compiled query interface
+      CompiledQueryProvider.cs             # Runtime compiled query execution
     Events/
       IEvents.cs                           # Event store interface
       EventStore.cs                        # Append, FetchStream, StartStream
@@ -193,7 +196,17 @@ src/
       AsyncDaemon.cs                       # Background polling daemon
     Schema/
       SchemaManager.cs                     # DEFINE TABLE/FIELD/INDEX
+      DocumentMapping.cs                   # Fluent index API
+    Metadata/                              # Source-generated metadata
+      MetadataRegistry.cs                  # ITypeMetadata, ITypeMetadata<T>, ConcurrentDictionary registry
+      MetadataDispatch.cs                  # Registry-first dispatch with reflection fallback
     MultiTenancy/                          # Tenancy support (conjoined, per-db)
+    Patching/                              # Partial update expressions
+    SoftDelete/                            # Soft delete support
+    Concurrency/                           # Optimistic concurrency (IVersioned, ConcurrencyException)
+
+  Dali.SourceGenerators/                   # Roslyn source generator (netstandard2.0)
+    DaliDocumentGenerator.cs               # IIncrementalGenerator: scans Record subclasses
 
   Dali.EntityFrameworkCore/                # EF Core bridge (optional)
     Dali.EntityFrameworkCore.csproj
@@ -209,7 +222,7 @@ tests/
 
 ## Progress
 
-All 6 implementation phases are complete. See [init-impl-plan.md](init-impl-plan.md) for the full plan, test counts, and backlog.
+All 14 implementation phases + metadata wiring audit fixes are complete. See [init-impl-plan.md](init-impl-plan.md) for the full plan, test counts, and backlog.
 
 | Phase | Tests | Status |
 |-------|-------|--------|
@@ -219,6 +232,67 @@ All 6 implementation phases are complete. See [init-impl-plan.md](init-impl-plan
 | 4. Multi-Tenancy + Schema | 49 | ✅ |
 | 5. Query Translation | 64 | ✅ |
 | 6. EF Core Bridge | 81 | ✅ |
+| 7. Modular Config | 91 | ✅ |
+| 8. Compiled Queries | 104 | ✅ |
+| 9. Patch/Partial Updates | 110 | ✅ |
+| 10. Optimistic Concurrency | 116 | ✅ |
+| 11. Soft Delete | 124 | ✅ |
+| 12. Database-per-Tenant | 134 | ✅ |
+| 13. Server-Side Aggregates | 134 | ✅ |
+| 14. Source Generators | 144 | ✅ |
+| A+B+C+F. Metadata Wiring | 144 | ✅ |
+
+## Source-Generated Metadata
+
+Dali uses a Roslyn `IIncrementalGenerator` (`DaliDocumentGenerator`) to eliminate runtime reflection for document metadata. The generator scans all `Record` subclasses at compile time and emits per-type `{Type}Metadata.g.cs` classes that implement `ITypeMetadata<T>`.
+
+### What Gets Generated
+
+For each `Record` subclass (e.g. `Person`), the generator emits:
+
+```csharp
+internal sealed class PersonMetadata : ITypeMetadata<Person>
+{
+    public static readonly PersonMetadata Instance = new();
+    static PersonMetadata() => MetadataRegistry.Register<Person>(Instance);
+
+    // Properties — compile-time constants
+    public string TableName => "person";
+    public bool HasTenantId => true;
+    public bool HasVersion => true;
+    public string? VersionFieldName => "Version";
+
+    // Typed accessors — no reflection
+    public string? GetTenantId(Person entity) => entity.TenantId;
+    public void SetTenantId(Person entity, string? tenantId) => entity.TenantId = tenantId;
+    public long GetVersion(Person entity) => entity.Version;
+    public void SetVersion(Person entity, long version) => entity.Version = version;
+    public string? GetRecordId(Person entity) { /* extract from entity.Id RecordId */ }
+
+    // Untyped delegates — bridge the object-typed hot paths
+    public Func<object, long>? GetVersionAccessor => obj => ((Person)obj).Version;
+    public Action<object, long>? SetVersionAccessor => (obj, v) => ((Person)obj).Version = v;
+    public Func<object, string?>? GetRecordIdAccessor => obj => { /* cast + extract */ };
+}
+```
+
+### Registration Flow
+
+1. **Compile time:** Generator emits `{Type}Metadata` with static constructor calling `MetadataRegistry.Register<T>(instance)`
+2. **Assembly load:** Static constructors run, populating the `ConcurrentDictionary` registry
+3. **Runtime:** `MetadataDispatch` checks registry first — if present, uses generated code (zero reflection). Falls through to reflection for non-generated types.
+
+### Wiring Status
+
+| Runtime path | Before audit | After audit |
+|-------------|--------------|-------------|
+| Table name (persistence) | `MetadataDispatch` ✅ | ✅ |
+| Table name (queries) | `Snake()` direct ✗ | `MetadataDispatch` ✅ |
+| Tenant set (Store) | `GetProperty("TenantId")` ✗ | `ITypeMetadata<T>.SetTenantId` ✅ |
+| Tenant get (Delete/Load) | `GetProperty("TenantId")` ✗ | `ITypeMetadata<T>.GetTenantId` ✅ |
+| Version read/write | `GetProperty(name).GetValue/SetValue` ✗ | `GetVersionAccessor`/`SetVersionAccessor` ✅ |
+| RecordId extraction | `GetProperty("Id")` ✗ | `GetRecordIdAccessor` ✅ |
+| Non-generated types | Reflection fallback | Reflection fallback (unchanged) |
 
 ## Constraints & Conventions
 

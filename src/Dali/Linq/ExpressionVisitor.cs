@@ -1,5 +1,6 @@
 using System.Linq.Expressions;
 using System.Text;
+using Dali.Metadata;
 
 namespace Dali;
 
@@ -120,7 +121,7 @@ public class SurrealExpressionVisitor : ExpressionVisitor
     protected override Expression VisitConstant(ConstantExpression node)
     {
         if (node.Value is IQueryable q)
-            TableName = Snake(q.ElementType.Name);
+            TableName = MetadataDispatch.GetTableName(q.ElementType);
         return node;
     }
 

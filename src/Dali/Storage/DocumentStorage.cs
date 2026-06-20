@@ -1,3 +1,4 @@
+using Dali.Metadata;
 using SurrealDb.Net.Models;
 
 namespace Dali;
@@ -5,7 +6,7 @@ namespace Dali;
 public class DocumentStorage
 {
     public static string GetTableName<T>()
-        => Snake(typeof(T).Name);
+        => MetadataDispatch.GetTableName(typeof(T));
 
     public static RecordIdOf<TId> CreateRecordId<TId>(string table, TId id)
         where TId : notnull

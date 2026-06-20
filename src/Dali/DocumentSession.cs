@@ -52,9 +52,17 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         // DatabasePerTenant isolates at the database level — no entity-level tenant ID needed.
         if (!string.IsNullOrEmpty(TenantId) && Options.TenancyStyle == TenancyStyle.Conjoined)
         {
-            var tenantProp = typeof(T).GetProperty("TenantId", typeof(string));
-            if (tenantProp is not null && tenantProp.CanWrite)
-                tenantProp.SetValue(entity, TenantId);
+            var meta = MetadataRegistry.TryGet<T>();
+            if (meta is not null)
+            {
+                meta.SetTenantId(entity, TenantId);
+            }
+            else
+            {
+                var tenantProp = typeof(T).GetProperty("TenantId", typeof(string));
+                if (tenantProp is not null && tenantProp.CanWrite)
+                    tenantProp.SetValue(entity, TenantId);
+            }
         }
 
         // Track original version for optimistic concurrency
@@ -95,16 +103,23 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         // DatabasePerTenant isolates at the database level — no entity-level tenant check needed.
         if (!string.IsNullOrEmpty(TenantId) && Options.TenancyStyle == TenancyStyle.Conjoined)
         {
-            var tenantProp = typeof(T).GetProperty("TenantId", typeof(string));
-            if (tenantProp is not null && tenantProp.CanRead)
+            string? entityTenant;
+            var meta = MetadataRegistry.TryGet<T>();
+            if (meta is not null)
             {
-                var entityTenant = tenantProp.GetValue(entity) as string;
-                if (!string.Equals(entityTenant, TenantId, StringComparison.Ordinal))
-                {
-                    throw new InvalidOperationException(
-                        $"Cannot delete entity belonging to tenant '{entityTenant}' " +
-                        $"from a session scoped to tenant '{TenantId}'.");
-                }
+                entityTenant = meta.GetTenantId(entity);
+            }
+            else
+            {
+                var tenantProp = typeof(T).GetProperty("TenantId", typeof(string));
+                entityTenant = tenantProp?.GetValue(entity) as string;
+            }
+            
+            if (!string.Equals(entityTenant, TenantId, StringComparison.Ordinal))
+            {
+                throw new InvalidOperationException(
+                    $"Cannot delete entity belonging to tenant '{entityTenant}' " +
+                    $"from a session scoped to tenant '{TenantId}'.");
             }
         }
 
@@ -322,7 +337,13 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
 
     private static string? GetEntityId(object entity)
     {
-        var prop = entity.GetType().GetProperty("Id");
+        var entityType = entity.GetType();
+        var meta = MetadataRegistry.TryGet(entityType);
+        if (meta is not null && meta.GetRecordIdAccessor is not null)
+            return meta.GetRecordIdAccessor(entity);
+
+        // Fallback for non-generated types
+        var prop = entityType.GetProperty("Id");
         if (prop is null) return null;
 
         var idValue = prop.GetValue(entity);

@@ -27,6 +27,15 @@ public interface ITypeMetadata
     /// Generated metadata provides this directly from compile-time analysis, avoiding reflection.
     /// </summary>
     string? VersionFieldName { get; }
+
+    /// <summary>Untyped version accessor delegate for generated types. Null if no version field.</summary>
+    Func<object, long>? GetVersionAccessor { get; }
+
+    /// <summary>Untyped version setter delegate for generated types. Null if no version field.</summary>
+    Action<object, long>? SetVersionAccessor { get; }
+
+    /// <summary>Untyped record ID accessor delegate for generated types. Null if no Id property.</summary>
+    Func<object, string?>? GetRecordIdAccessor { get; }
 }
 
 /// <summary>
@@ -55,6 +64,9 @@ public interface ITypeMetadata<T> : ITypeMetadata
     /// Handles <see cref="SurrealDb.Net.Models.RecordIdOf{T}"/> types.
     /// </summary>
     string? GetRecordId(T entity);
+
+    /// <summary>Sets the tenant ID on the entity, or no-op if not tenant-aware.</summary>
+    void SetTenantId(T entity, string? tenantId);
 }
 
 /// <summary>

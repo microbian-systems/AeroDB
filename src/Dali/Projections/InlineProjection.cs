@@ -1,3 +1,4 @@
+using Dali.Metadata;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using SurrealDb.Net.Models;
@@ -57,7 +58,7 @@ public abstract class InlineProjection<T> : IProjection, ILoggableProjection whe
         if (events.Count == 0) return;
 
         var docId = GetDocumentId(events);
-        var tableName = Snake(typeof(T).Name);
+        var tableName = MetadataDispatch.GetTableName(typeof(T));
 
         _logger.LogInformation("Applying inline projection {ProjectionType} for table {Table}",
             GetType().Name, tableName);

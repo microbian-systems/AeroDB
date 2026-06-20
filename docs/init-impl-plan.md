@@ -391,6 +391,32 @@ var store = Documents.For(o =>
 
 ---
 
+---
+
+## Council Audit (Phase 14-15) — Metadata Wiring Audit
+
+After Phase 14 (Source Generators), a codebase-wide audit was conducted to verify that generated metadata is consumed everywhere it could eliminate reflection. Finding below.
+
+### Audit Results
+
+| Issue | Severity | Finding | Fix |
+|-------|----------|---------|-----|
+| **A** | Low | 14/18 table name call sites bypass `MetadataDispatch` — call `Snake()` directly | Route through `MetadataDispatch.GetTableName()` |
+| **B** | Medium | 3/5 tenant call sites use raw `GetProperty("TenantId")` | Add `SetTenantId` to `ITypeMetadata<T>`, consume in Store/Delete/Load |
+| **C** | Medium | Version read/write uses `GetProperty(name).GetValue/SetValue` even after resolving name from metadata | Add untyped accessor delegates to `ITypeMetadata` |
+| **D** | N/A | Closed — not a finding (CompiledQuery tenants/soft-delete cannot be pre-computed) | — |
+| **E** | N/A | Closed — not a finding (Dali's `ApplyEvents()` avoids Marten's convention dispatch) | — |
+| **F** | Medium | Generated typed methods (`GetTenantId`, `GetVersion`, `SetVersion`, `GetRecordId`) never consumed | Side-effect of fixing B+C |
+
+### Fix Progress
+
+| Fix | Status | File Changes |
+|-----|--------|-------------|
+| A: Table name routing | ✅ Done | ExpressionVisitor, SurrealQueryProvider, SchemaManager, PatchExpression, SoftDeleteExtensions, InlineProjection, DocumentStorage |
+| B: Tenant reflection | ✅ Done | MetadataRegistry (+SetTenantId), DaliDocumentGenerator, DocumentSession, InternalSessionBase |
+| C: Version accessor | ✅ Done | MetadataRegistry (+untyped delegates), DaliDocumentGenerator, InternalSessionBase |
+| F: Typed methods | ✅ Auto-resolved by B+C | Side-effect |
+
 ## Known Issues
 
 | Issue | Workaround |
