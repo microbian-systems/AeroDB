@@ -8,11 +8,20 @@ public interface IGraphQuery<TNode> where TNode : class
     /// <summary>Forward traversal: SELECT ->edge->target FROM ...</summary>
     IGraphQuery<TTarget> Out<TTarget>(string edgeType) where TTarget : class;
 
+    /// <summary>Forward traversal using the edge table name inferred from TEdge.</summary>
+    IGraphQuery<TTarget> Out<TTarget, TEdge>() where TTarget : class where TEdge : EdgeRecord;
+
     /// <summary>Backward traversal: SELECT <-edge<-target FROM ...</summary>
     IGraphQuery<TTarget> In<TTarget>(string edgeType) where TTarget : class;
 
+    /// <summary>Backward traversal using the edge table name inferred from TEdge.</summary>
+    IGraphQuery<TTarget> In<TTarget, TEdge>() where TTarget : class where TEdge : EdgeRecord;
+
     /// <summary>Bidirectional traversal: SELECT <->edge<->target FROM ...</summary>
     IGraphQuery<TTarget> Both<TTarget>(string edgeType) where TTarget : class;
+
+    /// <summary>Bidirectional traversal using the edge table name inferred from TEdge.</summary>
+    IGraphQuery<TTarget> Both<TTarget, TEdge>() where TTarget : class where TEdge : EdgeRecord;
 
     /// <summary>Wildcard outgoing: SELECT ->?->... FROM ...</summary>
     IGraphQuery<GraphNode> OutAny();

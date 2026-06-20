@@ -5,7 +5,7 @@
 **Last modified:** 2026-06-20
 **Version:** 0.1.0
 **Build:** 0 errors (4 pre-existing stale warnings)
-**Tests:** 324 passing, 0 failing, 0 skipped
+**Tests:** 327 passing, 0 failing, 0 skipped
 **Projects:** `Dali`, `Dali.EntityFrameworkCore`, `Dali.Tests`, `WolverineFx.Dali` (planned)
 
 ---
@@ -39,11 +39,11 @@
 | 13. Server-Side Aggregates | 134 | APPROVED | ✅ Done |
 | 14. Source Generators | 144 | APPROVED | ✅ Done |
 | 15. Schema Modes, Events, RawQL & Functions | 144 | — | ✅ Done |
-| 16. Search & Vector Functions | 148 | APPROVED | ✅ Done |
-| 17. Graph API (RELATE, traversal, paths, FoF) | 324 | APPROVED | ✅ Done |
-| 18. Multi-Database / Schema Support | 324 | — | 📋 Planned |
-| 19. Advanced Low-Level SDK Access | 324 | APPROVED | 📋 Planned |
-| 20. WolverineFx.Dali Integration | 324 | APPROVED | 📋 Planned |
+| 16. Search & Vector Functions | 168 | APPROVED | ✅ Done |
+| 17. Graph API (RELATE, traversal, paths, FoF) | 327 | APPROVED | ✅ Done |
+| 18. Multi-Database / Schema Support | 327 | — | 📋 Planned |
+| 19. Advanced Low-Level SDK Access | 327 | APPROVED | 📋 Planned |
+| 20. WolverineFx.Dali Integration | 327 | APPROVED | 📋 Planned |
 | ✚ Cross-cutting (logging, ConfigureAwait, ct) | 144 | — | ✅ Done |
 
 ---

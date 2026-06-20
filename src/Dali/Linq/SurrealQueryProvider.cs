@@ -1,5 +1,6 @@
 using System.Collections.Concurrent;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Text.Json;
 using Dahomey.Cbor.Attributes;
 using Dahomey.Cbor.ObjectModel;
@@ -130,7 +131,47 @@ public class SurrealQueryProvider : IQueryProvider
         return task.GetAwaiter().GetResult().FirstOrDefault()!;
     }
 
+    // --- Public entry points (expression-only, for IQueryProvider backward compat) ---
+
     public async Task<List<T>> ToListAsync<T>(Expression expression, CancellationToken ct = default)
+        => await ToListAsyncInternal<T>(expression, null, null, ct);
+
+    public async Task<T?> FirstOrDefaultAsync<T>(Expression expression, CancellationToken ct = default)
+        => await FirstOrDefaultAsyncInternal<T>(expression, null, null, ct);
+
+    public async Task<T?> SingleOrDefaultAsync<T>(Expression expression, CancellationToken ct = default)
+        => await SingleOrDefaultAsyncInternal<T>(expression, null, null, ct);
+
+    // --- Internal entry points (accept fetch/include from SurrealDbQueryable) ---
+
+    internal async Task<List<T>> ToListAsync<T>(
+        Expression expression,
+        List<string> fetchFields,
+        List<SurrealDbQueryable<T>.IncludeDescriptor> includeDescriptors,
+        CancellationToken ct = default)
+        => await ToListAsyncInternal<T>(expression, fetchFields, includeDescriptors, ct);
+
+    internal async Task<T?> FirstOrDefaultAsync<T>(
+        Expression expression,
+        List<string> fetchFields,
+        List<SurrealDbQueryable<T>.IncludeDescriptor> includeDescriptors,
+        CancellationToken ct = default)
+        => await FirstOrDefaultAsyncInternal<T>(expression, fetchFields, includeDescriptors, ct);
+
+    internal async Task<T?> SingleOrDefaultAsync<T>(
+        Expression expression,
+        List<string> fetchFields,
+        List<SurrealDbQueryable<T>.IncludeDescriptor> includeDescriptors,
+        CancellationToken ct = default)
+        => await SingleOrDefaultAsyncInternal<T>(expression, fetchFields, includeDescriptors, ct);
+
+    // --- Core implementation (shared between public and internal entry points) ---
+
+    private async Task<List<T>> ToListAsyncInternal<T>(
+        Expression expression,
+        List<string>? fetchFields,
+        List<SurrealDbQueryable<T>.IncludeDescriptor>? includeDescriptors,
+        CancellationToken ct)
     {
         var visitor = CreateVisitor();
         var query = visitor.Translate(expression);
@@ -142,6 +183,10 @@ public class SurrealQueryProvider : IQueryProvider
 
         ApplyTenantFilter(query, typeof(T));
         ApplySoftDeleteFilter(query, typeof(T));
+
+        // Propagate Fetch fields
+        if (fetchFields is { Count: > 0 })
+            query.FetchFields.AddRange(fetchFields);
 
         var surql = query.ToSurrealQL();
         _logger.LogDebug("ToSurrealQL: {Surql}", surql);
@@ -151,13 +196,22 @@ public class SurrealQueryProvider : IQueryProvider
         {
             var raw = response.GetValue<List<T>>(0);
             if (raw is not null)
+            {
+                // Process Include descriptors (post-query client-side eager loading)
+                if (includeDescriptors is { Count: > 0 } && raw.Count > 0)
+                    await ProcessIncludesAsync(raw, includeDescriptors, ct).ConfigureAwait(false);
                 return raw;
+            }
         }
 
         return [];
     }
 
-    public async Task<T?> FirstOrDefaultAsync<T>(Expression expression, CancellationToken ct = default)
+    private async Task<T?> FirstOrDefaultAsyncInternal<T>(
+        Expression expression,
+        List<string>? fetchFields,
+        List<SurrealDbQueryable<T>.IncludeDescriptor>? includeDescriptors,
+        CancellationToken ct)
     {
         var visitor = CreateVisitor();
         var query = visitor.Translate(expression);
@@ -169,6 +223,11 @@ public class SurrealQueryProvider : IQueryProvider
 
         ApplyTenantFilter(query, typeof(T));
         ApplySoftDeleteFilter(query, typeof(T));
+
+        // Propagate Fetch fields
+        if (fetchFields is { Count: > 0 })
+            query.FetchFields.AddRange(fetchFields);
+
         query.Limit = 1;
         var surql = query.ToSurrealQL();
         _logger.LogDebug("FirstOrDefaultAsync SurrealQL: {Surql}", surql);
@@ -178,13 +237,22 @@ public class SurrealQueryProvider : IQueryProvider
         {
             var raw = response.GetValue<List<T>>(0);
             if (raw is not null && raw.Count > 0)
+            {
+                // Process Include descriptors on the single result
+                if (includeDescriptors is { Count: > 0 })
+                    await ProcessIncludesAsync(raw, includeDescriptors, ct).ConfigureAwait(false);
                 return raw[0];
+            }
         }
 
         return default;
     }
 
-    public async Task<T?> SingleOrDefaultAsync<T>(Expression expression, CancellationToken ct = default)
+    private async Task<T?> SingleOrDefaultAsyncInternal<T>(
+        Expression expression,
+        List<string>? fetchFields,
+        List<SurrealDbQueryable<T>.IncludeDescriptor>? includeDescriptors,
+        CancellationToken ct)
     {
         var visitor = CreateVisitor();
         var query = visitor.Translate(expression);
@@ -192,6 +260,10 @@ public class SurrealQueryProvider : IQueryProvider
 
         ApplyTenantFilter(query, typeof(T));
         ApplySoftDeleteFilter(query, typeof(T));
+
+        // Propagate Fetch fields
+        if (fetchFields is { Count: > 0 })
+            query.FetchFields.AddRange(fetchFields);
 
         query.Limit = 2; // fetch 2 to detect > 1 result
         var surql = query.ToSurrealQL();
@@ -205,11 +277,161 @@ public class SurrealQueryProvider : IQueryProvider
             {
                 if (raw.Count > 1)
                     throw new InvalidOperationException("Sequence contains more than one element.");
-                return raw.Count == 1 ? raw[0] : default;
+
+                if (raw.Count == 1)
+                {
+                    // Process Include descriptors on the single result
+                    if (includeDescriptors is { Count: > 0 })
+                        await ProcessIncludesAsync(raw, includeDescriptors, ct).ConfigureAwait(false);
+                    return raw[0];
+                }
+
+                return default;
             }
         }
 
         return default;
+    }
+
+    /// <summary>
+    /// Post-query phase: batch-loads documents referenced by Include descriptors
+    /// and dispatches them via callbacks or dictionary population.
+    /// </summary>
+    private async Task ProcessIncludesAsync<T>(
+        List<T> results,
+        List<SurrealDbQueryable<T>.IncludeDescriptor> includes,
+        CancellationToken ct)
+    {
+        foreach (var include in includes)
+        {
+            // 1. Extract distinct key values from results
+            var prop = typeof(T).GetProperty(include.PropertyName, BindingFlags.Instance | BindingFlags.Public);
+            if (prop is null) continue;
+
+            var keys = new HashSet<object?>();
+            foreach (var item in results)
+            {
+                var val = prop.GetValue(item);
+                if (val is not null)
+                    keys.Add(val);
+            }
+
+            if (keys.Count == 0) continue;
+
+            // 2. Batch-load included documents using typed deserialization
+            var targetTable = MetadataDispatch.GetTableName(include.IncludeType);
+            var keyList = string.Join(", ", keys.Select(k =>
+            {
+                if (k is string s) return $"'{s.Replace("'", "\\'")}'";
+                if (k is Guid g) return $"'{g}'";
+                if (k is RecordId rid)
+                {
+                    return rid switch
+                    {
+                        RecordIdOf<string> sRid => $"'{sRid.Id.Replace("'", "\\'")}'",
+                        RecordIdOf<long> lRid => $"{lRid.Id}",
+                        RecordIdOf<int> iRid => $"{iRid.Id}",
+                        _ => $"'{rid}'"
+                    };
+                }
+                return $"{k}";
+            }));
+            // Use meta::id() to extract the string portion of RecordId for comparison.
+            var surql = $"SELECT * FROM `{targetTable}` WHERE meta::id(id) IN [{keyList}];";
+            _logger.LogDebug("Include SurrealQL: {Surql}", surql);
+
+            var response = await _session.RawQuery(surql, null, ct).ConfigureAwait(false);
+
+            // Check for query errors — the Include SQL might fail with the in-memory engine
+            if (response.HasErrors)
+            {
+                _logger.LogWarning("Include query had errors. SurQL: {Surql}", surql);
+                continue;
+            }
+
+            if (response.Count == 0) continue;
+
+            // 3. Deserialize included documents using CBOR (avoids the broken
+            //    ReadOnlyRecordIdJsonConverter.Read path entirely).
+            //    We use GetValue<List<TInclude>>(0) via reflection for proper CBOR deserialization.
+            var listType = typeof(List<>).MakeGenericType(include.IncludeType);
+            var getValueMethod = typeof(SurrealDbResponse).GetMethods()
+                .FirstOrDefault(m => m.Name == "GetValue" && m.IsGenericMethodDefinition
+                    && m.GetParameters().Length == 1
+                    && m.GetParameters()[0].ParameterType == typeof(int));
+            if (getValueMethod is null) continue;
+
+            var typedGetValue = getValueMethod.MakeGenericMethod(listType);
+            object? includedListObj;
+            try
+            {
+                includedListObj = typedGetValue.Invoke(response, [0]);
+            }
+            catch (TargetInvocationException tie)
+            {
+                throw new InvalidOperationException(
+                    $"CBOR deserialization of List<{include.IncludeType.Name}> failed: " +
+                    $"{tie.InnerException?.GetType().Name}: {tie.InnerException?.Message}", tie);
+            }
+
+            if (includedListObj is not System.Collections.IEnumerable includedEnumerable)
+                continue;
+
+            var idProp = include.IncludeType.GetProperty("Id", BindingFlags.Instance | BindingFlags.Public);
+            var docById = new Dictionary<string, object?>(StringComparer.Ordinal);
+
+            foreach (var typedDoc in includedEnumerable)
+            {
+                if (typedDoc is null) continue;
+                var docId = idProp?.GetValue(typedDoc);
+                var strKey = ExtractKeyString(docId);
+                if (strKey is not null && !docById.ContainsKey(strKey))
+                    docById[strKey] = typedDoc;
+            }
+
+            // 4. For each source result, extract foreign key string, lookup, and dispatch
+            foreach (var item in results)
+            {
+                var rawKey = prop.GetValue(item);
+                var strKey = ExtractKeyString(rawKey);
+                if (strKey is null || !docById.TryGetValue(strKey, out var matchedDoc))
+                    continue;
+
+                if (include.Callback is not null)
+                {
+                    include.Callback.DynamicInvoke(matchedDoc);
+                }
+                else if (include.Dictionary is not null)
+                {
+                    // Pass the original (non-stringified) key to preserve the dictionary key type
+                    var dictType = include.Dictionary.GetType();
+                    var addMethod = dictType.GetMethod("Add", BindingFlags.Instance | BindingFlags.Public);
+                    addMethod?.Invoke(include.Dictionary, [rawKey, matchedDoc]);
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// Extracts a string key from a value for dictionary-based Include matching.
+    /// Handles RecordId, string, Guid, and primitive types.
+    /// </summary>
+    private static string? ExtractKeyString(object? value)
+    {
+        if (value is null) return null;
+        if (value is string s) return s;
+        if (value is Guid g) return g.ToString();
+        if (value is RecordIdOf<string> sRid) return sRid.Id;
+        if (value is RecordIdOf<long> lRid) return lRid.Id.ToString();
+        if (value is RecordIdOf<int> iRid) return iRid.Id.ToString();
+        if (value is RecordId rid)
+        {
+            try { return rid.DeserializeId<string>(); } catch { }
+            try { return rid.DeserializeId<long>().ToString(); } catch { }
+            try { return rid.DeserializeId<int>().ToString(); } catch { }
+            return rid.Table;
+        }
+        return value.ToString();
     }
 
     public async Task<decimal> AggregateAsync<T>(Expression expression, string fieldName, string function, CancellationToken ct = default)

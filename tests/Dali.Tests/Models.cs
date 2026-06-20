@@ -88,3 +88,48 @@ public class Created : EdgeRecord
 {
     public DateTimeOffset CreatedAt { get; set; }
 }
+
+// ──────────────────────────────────────────────
+// Fetch / Include test models
+// ──────────────────────────────────────────────
+
+/// <summary>
+/// Model for Fetch (FETCH clause) tests.
+/// RelatedId is a RecordId? field that SurrealDB can expand inline.
+/// </summary>
+public class FetchableRecord : Record
+{
+    public RecordId? RelatedId { get; set; }
+    public string Data { get; set; } = "";
+}
+
+/// <summary>
+/// Model for Include tests: the "source" entity with foreign keys.
+/// Foreign keys are RecordId? to match the target's Id type for
+/// the Include mechanism's dictionary lookup.
+/// </summary>
+public class Issue : Record
+{
+    public string Title { get; set; } = "";
+    public string Status { get; set; } = "";
+    public RecordId? AssigneeId { get; set; }
+    public RecordId? ProjectId { get; set; }
+}
+
+/// <summary>
+/// Model for Include tests: the "target" entity.
+/// Inherits RecordId? Id from Record.
+/// </summary>
+public class User : Record
+{
+    public string Name { get; set; } = "";
+    public string Email { get; set; } = "";
+}
+
+/// <summary>
+/// Model for Include tests: a second target entity type.
+/// </summary>
+public class ProjectRef : Record
+{
+    public string Name { get; set; } = "";
+}

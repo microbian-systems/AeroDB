@@ -95,26 +95,26 @@ public sealed class GraphFriendOfFriendsTests
         }
 
         // ── Verify graph traversal API doesn't throw ──
-        var outResults = await session.Graph<Person>().Out<Person>("knows").ToListAsync();
+        var outResults = await session.Graph<Person>().Out<Person, Knows>().ToListAsync();
         outResults.ShouldNotBeNull();
         outResults.Count.ShouldBeGreaterThanOrEqualTo(0);
 
-        var inResults = await session.Graph<Person>().In<Person>("knows").ToListAsync();
+        var inResults = await session.Graph<Person>().In<Person, Knows>().ToListAsync();
         inResults.ShouldNotBeNull();
         inResults.Count.ShouldBeGreaterThanOrEqualTo(0);
 
-        var bothResults = await session.Graph<Person>().Both<Person>("knows").ToListAsync();
+        var bothResults = await session.Graph<Person>().Both<Person, Knows>().ToListAsync();
         bothResults.ShouldNotBeNull();
         bothResults.Count.ShouldBeGreaterThanOrEqualTo(0);
 
         // ── CountAsync variants ──
-        var outCount = await session.Graph<Person>().Out<Person>("knows").CountAsync();
+        var outCount = await session.Graph<Person>().Out<Person, Knows>().CountAsync();
         outCount.ShouldBeGreaterThanOrEqualTo(0);
 
-        var inCount = await session.Graph<Person>().In<Person>("knows").CountAsync();
+        var inCount = await session.Graph<Person>().In<Person, Knows>().CountAsync();
         inCount.ShouldBeGreaterThanOrEqualTo(0);
 
-        var bothCount = await session.Graph<Person>().Both<Person>("knows").CountAsync();
+        var bothCount = await session.Graph<Person>().Both<Person, Knows>().CountAsync();
         bothCount.ShouldBeGreaterThanOrEqualTo(0);
 
         // ── Verify edges are queryable with correct count ──
@@ -156,21 +156,21 @@ public sealed class GraphFriendOfFriendsTests
 
         // ── ToListAsync does not throw ──
         var results = await session.Graph<Person>()
-            .Out<Person>("knows")
+            .Out<Person, Knows>()
             .ToListAsync();
         results.ShouldNotBeNull();
         results.Count.ShouldBeGreaterThanOrEqualTo(0);
 
         // ── CountAsync does not throw ──
         var count = await session.Graph<Person>()
-            .Out<Person>("knows")
+            .Out<Person, Knows>()
             .CountAsync();
         count.ShouldBeGreaterThanOrEqualTo(0);
 
         // ── ToListAsync with .Where() does not throw ──
         var filtered = await session.Graph<Person>()
             .Where(p => p.Age > 25)
-            .Out<Person>("knows")
+            .Out<Person, Knows>()
             .ToListAsync();
         filtered.ShouldNotBeNull();
 
@@ -206,29 +206,29 @@ public sealed class GraphFriendOfFriendsTests
             await session.RelateAsync<Knows>(idMap["P4"], idMap[$"P{i}"], new Knows { Kind = "family", Since = 2022 });
 
         // ── Depth 1 (no depth modifier) ──
-        var d1 = await session.Graph<Person>().Out<Person>("knows").ToListAsync();
+        var d1 = await session.Graph<Person>().Out<Person, Knows>().ToListAsync();
         d1.ShouldNotBeNull();
 
         // ── Depth(2) exact ──
-        var d2 = await session.Graph<Person>().Out<Person>("knows").Depth(2).ToListAsync();
+        var d2 = await session.Graph<Person>().Out<Person, Knows>().Depth(2).ToListAsync();
         d2.ShouldNotBeNull();
 
         // ── Depth(1, 2) range ──
-        var range = await session.Graph<Person>().Out<Person>("knows").Depth(1, 2).ToListAsync();
+        var range = await session.Graph<Person>().Out<Person, Knows>().Depth(1, 2).ToListAsync();
         range.ShouldNotBeNull();
 
         // ── Depth with Where ──
         var filtered = await session.Graph<Person>()
             .Where(p => p.Name != null)
-            .Out<Person>("knows")
+            .Out<Person, Knows>()
             .Depth(2)
             .ToListAsync();
         filtered.ShouldNotBeNull();
 
         // ── CountAsync ──
-        var c1 = await session.Graph<Person>().Out<Person>("knows").CountAsync();
+        var c1 = await session.Graph<Person>().Out<Person, Knows>().CountAsync();
         c1.ShouldBeGreaterThanOrEqualTo(0);
-        var c2 = await session.Graph<Person>().Out<Person>("knows").Depth(2).CountAsync();
+        var c2 = await session.Graph<Person>().Out<Person, Knows>().Depth(2).CountAsync();
         c2.ShouldBeGreaterThanOrEqualTo(0);
 
         // ── Edge count ──
@@ -262,27 +262,27 @@ public sealed class GraphFriendOfFriendsTests
         await session.RelateAsync<Knows>(idMap["P5"], idMap["P6"], new Knows { Kind = "family", Since = 2022 });
 
         // ── All depth variants execute without error ──
-        var depth0 = await session.Graph<Person>().Out<Person>("knows").ToListAsync();
+        var depth0 = await session.Graph<Person>().Out<Person, Knows>().ToListAsync();
         depth0.ShouldNotBeNull();
 
-        var depth1 = await session.Graph<Person>().Out<Person>("knows").Depth(1).ToListAsync();
+        var depth1 = await session.Graph<Person>().Out<Person, Knows>().Depth(1).ToListAsync();
         depth1.ShouldNotBeNull();
 
-        var depth2 = await session.Graph<Person>().Out<Person>("knows").Depth(2).ToListAsync();
+        var depth2 = await session.Graph<Person>().Out<Person, Knows>().Depth(2).ToListAsync();
         depth2.ShouldNotBeNull();
 
-        var depth3 = await session.Graph<Person>().Out<Person>("knows").Depth(3).ToListAsync();
+        var depth3 = await session.Graph<Person>().Out<Person, Knows>().Depth(3).ToListAsync();
         depth3.ShouldNotBeNull();
 
-        var depthRange = await session.Graph<Person>().Out<Person>("knows").Depth(1, 3).ToListAsync();
+        var depthRange = await session.Graph<Person>().Out<Person, Knows>().Depth(1, 3).ToListAsync();
         depthRange.ShouldNotBeNull();
 
         // ── CountAsync variants ──
-        var c0 = await session.Graph<Person>().Out<Person>("knows").CountAsync();
+        var c0 = await session.Graph<Person>().Out<Person, Knows>().CountAsync();
         c0.ShouldBeGreaterThanOrEqualTo(0);
-        var c2 = await session.Graph<Person>().Out<Person>("knows").Depth(2).CountAsync();
+        var c2 = await session.Graph<Person>().Out<Person, Knows>().Depth(2).CountAsync();
         c2.ShouldBeGreaterThanOrEqualTo(0);
-        var c3 = await session.Graph<Person>().Out<Person>("knows").Depth(3).CountAsync();
+        var c3 = await session.Graph<Person>().Out<Person, Knows>().Depth(3).CountAsync();
         c3.ShouldBeGreaterThanOrEqualTo(0);
 
         // ── Edge count verification ──
@@ -327,35 +327,35 @@ public sealed class GraphFriendOfFriendsTests
         // (used by ToPathListAsync). Use ToListAsync for the traversal instead.
         var shortestResults = await session.Graph<Person>()
             .ShortestPath(targetId)
-            .Out<Person>("knows")
+            .Out<Person, Knows>()
             .ToListAsync();
         shortestResults.ShouldNotBeNull();
         shortestResults.Count.ShouldBeGreaterThanOrEqualTo(0);
 
         // ── ToPathListAsync (unbounded traversal, no ShortestPath) ──
         var paths = await session.Graph<Person>()
-            .Out<Person>("knows")
+            .Out<Person, Knows>()
             .Depth()
             .ToPathListAsync();
         paths.ShouldNotBeNull();
 
         // ── Unbounded Depth() + CollectAll ──
         var allNodes = await session.Graph<Person>()
-            .Out<Person>("knows")
+            .Out<Person, Knows>()
             .Depth()
             .CollectAll()
             .ToListAsync();
         allNodes.ShouldNotBeNull();
 
         var collected = await session.Graph<Person>()
-            .Out<Person>("knows")
+            .Out<Person, Knows>()
             .CollectAll()
             .ToListAsync();
         collected.ShouldNotBeNull();
 
         // ── FirstOrDefaultAsync ──
         var first = await session.Graph<Person>()
-            .Out<Person>("knows")
+            .Out<Person, Knows>()
             .FirstOrDefaultAsync();
         first.ShouldNotBeNull();
 
@@ -386,32 +386,32 @@ public sealed class GraphFriendOfFriendsTests
 
         // ── Both traversal ──
         var bothResults = await session.Graph<Person>()
-            .Both<Person>("knows")
+            .Both<Person, Knows>()
             .ToListAsync();
         bothResults.ShouldNotBeNull();
         bothResults.Count.ShouldBeGreaterThanOrEqualTo(0);
 
         // ── Both + Depth(2) ──
         var bothDepth2 = await session.Graph<Person>()
-            .Both<Person>("knows")
+            .Both<Person, Knows>()
             .Depth(2)
             .ToListAsync();
         bothDepth2.ShouldNotBeNull();
 
         // ── In traversal ──
         var inResults = await session.Graph<Person>()
-            .In<Person>("knows")
+            .In<Person, Knows>()
             .ToListAsync();
         inResults.ShouldNotBeNull();
 
         // ── CountAsync ──
         var bothCount = await session.Graph<Person>()
-            .Both<Person>("knows")
+            .Both<Person, Knows>()
             .CountAsync();
         bothCount.ShouldBeGreaterThanOrEqualTo(0);
 
         var inCount = await session.Graph<Person>()
-            .In<Person>("knows")
+            .In<Person, Knows>()
             .CountAsync();
         inCount.ShouldBeGreaterThanOrEqualTo(0);
 
@@ -445,7 +445,7 @@ public sealed class GraphFriendOfFriendsTests
 
         // ── Without CollectAll ──
         var withoutCollectAll = await session.Graph<Person>()
-            .Out<Person>("knows")
+            .Out<Person, Knows>()
             .Depth(2)
             .ToListAsync();
         withoutCollectAll.ShouldNotBeNull();
@@ -453,7 +453,7 @@ public sealed class GraphFriendOfFriendsTests
 
         // ── With CollectAll ──
         var withCollectAll = await session.Graph<Person>()
-            .Out<Person>("knows")
+            .Out<Person, Knows>()
             .Depth(2)
             .CollectAll()
             .ToListAsync();
@@ -462,7 +462,7 @@ public sealed class GraphFriendOfFriendsTests
 
         // ── FirstOrDefaultAsync ──
         var first = await session.Graph<Person>()
-            .Out<Person>("knows")
+            .Out<Person, Knows>()
             .FirstOrDefaultAsync();
         first.ShouldNotBeNull();
 
@@ -570,7 +570,7 @@ public sealed class GraphFriendOfFriendsTests
 
         // ── Depth() unbounded ──
         var unbounded = await session.Graph<Person>()
-            .Out<Person>("knows")
+            .Out<Person, Knows>()
             .Depth()
             .ToListAsync();
         unbounded.ShouldNotBeNull();
@@ -578,7 +578,7 @@ public sealed class GraphFriendOfFriendsTests
 
         // ── Unbounded + CollectAll ──
         var collected = await session.Graph<Person>()
-            .Out<Person>("knows")
+            .Out<Person, Knows>()
             .Depth()
             .CollectAll()
             .ToListAsync();
@@ -587,7 +587,7 @@ public sealed class GraphFriendOfFriendsTests
 
         // ── CollectAll without depth modifier ──
         var collectedD1 = await session.Graph<Person>()
-            .Out<Person>("knows")
+            .Out<Person, Knows>()
             .CollectAll()
             .ToListAsync();
         collectedD1.ShouldNotBeNull();
@@ -595,7 +595,7 @@ public sealed class GraphFriendOfFriendsTests
 
         // ── CountAsync ──
         var count = await session.Graph<Person>()
-            .Out<Person>("knows")
+            .Out<Person, Knows>()
             .Depth()
             .CountAsync();
         count.ShouldBeGreaterThanOrEqualTo(0);
@@ -646,7 +646,7 @@ public sealed class GraphFriendOfFriendsTests
 
         // ── Graph traversal still works ──
         var results = await session.Graph<Person>()
-            .Out<Person>("knows")
+            .Out<Person, Knows>()
             .ToListAsync();
         results.ShouldNotBeNull();
         results.Count.ShouldBeGreaterThanOrEqualTo(0);
@@ -660,7 +660,7 @@ public sealed class GraphFriendOfFriendsTests
 
         // ── Traversal still works with no edges ──
         var emptyResults = await session.Graph<Person>()
-            .Out<Person>("knows")
+            .Out<Person, Knows>()
             .ToListAsync();
         emptyResults.ShouldNotBeNull();
         emptyResults.Count.ShouldBeGreaterThanOrEqualTo(0);

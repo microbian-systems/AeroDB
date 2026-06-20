@@ -5,7 +5,7 @@
 **Last modified:** 2026-06-20
 **Full plan:** [init-impl-plan.md](init-impl-plan.md)
 **Build:** 0 errors (4 pre-existing warnings)
-**Tests:** 324 passing (all passing, 0 failures — includes Graph, Search, FoF integration tests)
+**Tests:** 327 passing (all passing, 0 failures)
 
 ---
 

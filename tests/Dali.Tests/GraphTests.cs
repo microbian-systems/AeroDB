@@ -56,11 +56,11 @@ public class GraphReflectionTests
     public async Task IGraphQuery_HasOutMethod()
     {
         var type = typeof(IGraphQuery<object>);
-        // Two overloads: Out<TTarget>(string) and Out<TTarget>(string[])
+        // Three overloads: Out<TTarget>(string), Out<TTarget>(string[]), and Out<TTarget, TEdge>()
         var methods = type.GetMethods()
             .Where(m => m.Name == "Out" && m.IsGenericMethod)
             .ToList();
-        methods.Count.ShouldBe(2);
+        methods.Count.ShouldBe(3);
         methods.All(m => m.ReturnType.IsGenericType).ShouldBeTrue();
     }
 
@@ -144,6 +144,30 @@ public class GraphReflectionTests
     public async Task IGraphQuery_HasToPathListAsyncMethod()
     {
         typeof(IGraphQuery<object>).GetMethod("ToPathListAsync").ShouldNotBeNull();
+    }
+
+    [Test]
+    public async Task IGraphQuery_HasGenericOutMethod()
+    {
+        var method = typeof(IGraphQuery<object>).GetMethods()
+            .FirstOrDefault(m => m.Name == "Out" && m.IsGenericMethod && m.GetGenericArguments().Length == 2);
+        method.ShouldNotBeNull();
+    }
+
+    [Test]
+    public async Task IGraphQuery_HasGenericInMethod()
+    {
+        var method = typeof(IGraphQuery<object>).GetMethods()
+            .FirstOrDefault(m => m.Name == "In" && m.IsGenericMethod && m.GetGenericArguments().Length == 2);
+        method.ShouldNotBeNull();
+    }
+
+    [Test]
+    public async Task IGraphQuery_HasGenericBothMethod()
+    {
+        var method = typeof(IGraphQuery<object>).GetMethods()
+            .FirstOrDefault(m => m.Name == "Both" && m.IsGenericMethod && m.GetGenericArguments().Length == 2);
+        method.ShouldNotBeNull();
     }
 
     [Test]
@@ -320,7 +344,7 @@ public class GraphIntegrationTests
 
         // Verify Out traversal doesn't throw (results may be 0 due to in-memory engine limitations)
         var results = await session.Graph<Person>()
-            .Out<Person>("knows")
+            .Out<Person, Knows>()
             .ToListAsync();
 
         results.ShouldNotBeNull();
@@ -335,7 +359,7 @@ public class GraphIntegrationTests
         await SetupSocialGraphAsync(session);
 
         var results = await session.Graph<Person>()
-            .In<Person>("knows")
+            .In<Person, Knows>()
             .ToListAsync();
 
         results.ShouldNotBeNull();
@@ -350,7 +374,7 @@ public class GraphIntegrationTests
         await SetupSocialGraphAsync(session);
 
         var results = await session.Graph<Person>()
-            .Both<Person>("knows")
+            .Both<Person, Knows>()
             .ToListAsync();
 
         results.ShouldNotBeNull();
@@ -366,7 +390,7 @@ public class GraphIntegrationTests
 
         var results = await session.Graph<Person>()
             .Depth(2)
-            .Out<Person>("knows")
+            .Out<Person, Knows>()
             .ToListAsync();
 
         results.ShouldNotBeNull();

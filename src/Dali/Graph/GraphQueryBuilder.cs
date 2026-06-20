@@ -1,5 +1,6 @@
 using System.Linq.Expressions;
 using System.Text;
+using Dali.Metadata;
 using SurrealDb.Net;
 using SurrealDb.Net.Models.Response;
 
@@ -32,11 +33,29 @@ internal sealed class GraphQueryBuilder<TNode> : IGraphQuery<TNode> where TNode 
     public IGraphQuery<TTarget> Out<TTarget>(string edgeType) where TTarget : class
         => AddStep<TTarget>(GraphDirection.Out, edgeType);
 
+    public IGraphQuery<TTarget> Out<TTarget, TEdge>() where TTarget : class where TEdge : EdgeRecord
+    {
+        var edgeName = MetadataDispatch.GetTableName(typeof(TEdge));
+        return AddStep<TTarget>(GraphDirection.Out, edgeName);
+    }
+
     public IGraphQuery<TTarget> In<TTarget>(string edgeType) where TTarget : class
         => AddStep<TTarget>(GraphDirection.In, edgeType);
 
+    public IGraphQuery<TTarget> In<TTarget, TEdge>() where TTarget : class where TEdge : EdgeRecord
+    {
+        var edgeName = MetadataDispatch.GetTableName(typeof(TEdge));
+        return AddStep<TTarget>(GraphDirection.In, edgeName);
+    }
+
     public IGraphQuery<TTarget> Both<TTarget>(string edgeType) where TTarget : class
         => AddStep<TTarget>(GraphDirection.Both, edgeType);
+
+    public IGraphQuery<TTarget> Both<TTarget, TEdge>() where TTarget : class where TEdge : EdgeRecord
+    {
+        var edgeName = MetadataDispatch.GetTableName(typeof(TEdge));
+        return AddStep<TTarget>(GraphDirection.Both, edgeName);
+    }
 
     public IGraphQuery<GraphNode> OutAny()
         => AddStep<GraphNode>(GraphDirection.Out, null, targetKind: GraphTargetKind.Any);

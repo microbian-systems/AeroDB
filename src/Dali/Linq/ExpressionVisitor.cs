@@ -276,6 +276,9 @@ public class SurrealQueryResult
     public string Projection { get; set; } = "*";
     public bool GroupAll { get; set; }
 
+    /// <summary>Fields to eager-load via SurrealQL FETCH clause.</summary>
+    public List<string> FetchFields { get; set; } = [];
+
     public string ToSurrealQL()
     {
         var sb = new StringBuilder();
@@ -314,6 +317,12 @@ public class SurrealQueryResult
             sb.Append(Skip.Value);
         }
 
+        if (FetchFields.Count > 0)
+        {
+            sb.Append(" FETCH ");
+            sb.Append(string.Join(", ", FetchFields.Select(f => $"`{f}`")));
+        }
+
         sb.Append(';');
         return sb.ToString();
     }
@@ -332,7 +341,8 @@ public class SurrealQueryResult
             Limit = Limit,
             Skip = Skip,
             Projection = Projection,
-            GroupAll = GroupAll
+            GroupAll = GroupAll,
+            FetchFields = [..FetchFields]
         };
     }
 }
