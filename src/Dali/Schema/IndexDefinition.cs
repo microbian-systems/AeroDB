@@ -26,12 +26,12 @@ public class IndexDefinition
     public (double K1, double B)? Bm25 { get; set; }
 
     /// <summary>
-    /// HNSW vector dimension. Only used when <see cref="Type"/> is <see cref="IndexType.Vector"/>.
+    /// Vector dimension. Only used when <see cref="Type"/> is <see cref="IndexType.Hnsw"/> or <see cref="IndexType.Mtree"/>.
     /// </summary>
     public int? VectorDimension { get; set; }
 
     /// <summary>
-    /// HNSW distance function (e.g. "COSINE", "EUCLIDEAN", "MANHATTAN"). Only used when <see cref="Type"/> is <see cref="IndexType.Vector"/>.
+    /// Distance function (e.g. "COSINE", "EUCLIDEAN", "MANHATTAN"). Only used when <see cref="Type"/> is <see cref="IndexType.Hnsw"/> or <see cref="IndexType.Mtree"/>.
     /// </summary>
     public string? VectorDistance { get; set; }
 }
@@ -42,7 +42,7 @@ public class IndexDefinition
 public enum IndexType
 {
     /// <summary>
-    /// Standard index — DEFINE INDEX ... COLUMNS ...
+    /// Standard btree index — DEFINE INDEX ... COLUMNS ...
     /// </summary>
     Standard,
 
@@ -53,8 +53,18 @@ public enum IndexType
 
     /// <summary>
     /// HNSW vector index — DEFINE INDEX ... FIELDS ... HNSW DIMENSION ... DIST ...
+    /// Approximate nearest-neighbor search using hierarchical navigable small world graphs.
+    /// Best for large datasets where speed matters more than exact results.
     /// </summary>
-    Vector
+    Hnsw,
+
+    /// <summary>
+    /// MTREE vector index — DEFINE INDEX ... FIELDS ... MTREE DIMENSION ... DIST ...
+    /// Supports exact and approximate nearest-neighbor search.
+    /// Best for smaller datasets or when exact results are required.
+    /// Supports distance functions beyond cosine (Minkowski, Hamming, Jaccard).
+    /// </summary>
+    Mtree
 }
 
 /// <summary>

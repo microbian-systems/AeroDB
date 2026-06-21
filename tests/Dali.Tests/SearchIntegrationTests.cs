@@ -283,7 +283,7 @@ public class SearchIntegrationTests
             o.Namespace = "test";
             o.Database = "test";
             // 3-dimensional vectors for testing
-            o.Schema.For<SearchablePage>().VectorIndex(p => p.Embedding, 3, Search.Distance.Cosine);
+            o.Schema.For<SearchablePage>().HnswIndex(p => p.Embedding, 3, Search.Distance.Cosine);
         });
 
         await using var session = await store.LightweightSessionAsync();

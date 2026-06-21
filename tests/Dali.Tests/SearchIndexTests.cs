@@ -28,7 +28,7 @@ public class SearchIndexTests
         {
             Name = "hnsw_page_embedding",
             Columns = ["Embedding"],
-            Type = IndexType.Vector,
+            Type = IndexType.Hnsw,
             VectorDimension = 1536,
             VectorDistance = Search.Distance.Cosine
         };
@@ -90,7 +90,7 @@ public class SearchIndexTests
         {
             Name = "hnsw_embedding",
             Columns = ["Embedding"],
-            Type = IndexType.Vector,
+            Type = IndexType.Hnsw,
             VectorDimension = null // uses default 1536
         };
 
@@ -120,14 +120,14 @@ public class SearchIndexTests
     public async Task FluentApi_VectorIndex_CreatesDefinition()
     {
         var options = new StoreOptions();
-        options.Schema.For<SearchablePage>().VectorIndex(p => p.Embedding, 1536, Search.Distance.Cosine);
+        options.Schema.For<SearchablePage>().HnswIndex(p => p.Embedding, 1536, Search.Distance.Cosine);
 
         var mapping = options.Schema.Mappings[typeof(SearchablePage)];
         mapping.Indices.Count.ShouldBe(1);
 
         var idx = mapping.Indices[0];
         idx.Name.ShouldBe("hnsw_searchable_page_embedding");
-        idx.Type.ShouldBe(IndexType.Vector);
+        idx.Type.ShouldBe(IndexType.Hnsw);
         idx.VectorDimension.ShouldBe(1536);
         idx.VectorDistance.ShouldBe("COSINE");
     }
@@ -155,7 +155,7 @@ public class SearchIndexTests
 
         // Vector index
         mapping.Indices[2].Name.ShouldBe("hnsw_searchable_page_embedding");
-        mapping.Indices[2].Type.ShouldBe(IndexType.Vector);
+        mapping.Indices[2].Type.ShouldBe(IndexType.Hnsw);
         mapping.Indices[2].VectorDimension.ShouldBe(1536);
     }
 

@@ -45,6 +45,11 @@ public sealed class DaliIntegration : IWolverineExtension
 
         options.Policies.Add(new DaliOpPolicy());
 
+        // WolverineEnvelopeSchemas can be registered as an IConfigureDali by users
+        // in their AddDali(options => opts.Configurators.Add(new WolverineEnvelopeSchemas()))
+        // callback. DaliMessageStore handles its own schema creation internally via
+        // SchemaManager in InitializeSchemaAsync().
+
         // Register DaliEventForwarding so it's available in the DI container for store configurators
         options.Services.TryAddSingleton<DaliEventForwarding>();
     }

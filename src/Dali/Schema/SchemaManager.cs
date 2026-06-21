@@ -31,7 +31,7 @@ public class SchemaManager
     /// public readable/writable properties on T (except Id).
     /// </summary>
     public async Task EnsureDocumentSchemaAsync<T>(ISurrealDbSession session, CancellationToken ct = default)
-        where T : SurrealDb.Net.Models.Record
+        where T : SurrealDb.Net.Models.IRecord
     {
         var tableName = MetadataDispatch.GetTableName(typeof(T));
         _logger.LogDebug("Ensuring document schema for table {Table}", tableName);
@@ -49,7 +49,7 @@ public class SchemaManager
     /// Ensures a document table exists with the specified schema mode.
     /// </summary>
     public async Task EnsureDocumentSchemaAsync<T>(ISurrealDbSession session, SchemaMode mode, CancellationToken ct = default)
-        where T : SurrealDb.Net.Models.Record
+        where T : SurrealDb.Net.Models.IRecord
     {
         var tableName = MetadataDispatch.GetTableName(typeof(T));
         _logger.LogDebug("Ensuring document schema for table {Table} with mode {Mode}", tableName, mode);
@@ -121,7 +121,8 @@ public class SchemaManager
         string surql = index.Type switch
         {
             IndexType.FullText => BuildFullTextIndex(tableName, index),
-            IndexType.Vector => BuildVectorIndex(tableName, index),
+            IndexType.Hnsw => BuildHnswIndex(tableName, index),
+            IndexType.Mtree => BuildMtreeIndex(tableName, index),
             _ => BuildStandardIndex(tableName, index)
         };
 
@@ -149,12 +150,20 @@ public class SchemaManager
         return sb.ToString();
     }
 
-    private static string BuildVectorIndex(string tableName, IndexDefinition index)
+    private static string BuildHnswIndex(string tableName, IndexDefinition index)
     {
         var columns = string.Join(", ", index.Columns);
         var dim = index.VectorDimension ?? 1536;
         var dist = index.VectorDistance ?? Search.Distance.Cosine;
         return $"DEFINE INDEX {index.Name} ON TABLE {tableName} FIELDS {columns} HNSW DIMENSION {dim} DIST {dist};";
+    }
+
+    private static string BuildMtreeIndex(string tableName, IndexDefinition index)
+    {
+        var columns = string.Join(", ", index.Columns);
+        var dim = index.VectorDimension ?? 1536;
+        var dist = index.VectorDistance ?? Search.Distance.Cosine;
+        return $"DEFINE INDEX {index.Name} ON TABLE {tableName} FIELDS {columns} MTREE DIMENSION {dim} DIST {dist};";
     }
 
     /// <summary>

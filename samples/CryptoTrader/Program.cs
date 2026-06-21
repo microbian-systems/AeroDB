@@ -30,7 +30,7 @@ using WolverineFx.Dali;
 Console.OutputEncoding = System.Text.Encoding.UTF8;
 Console.ForegroundColor = ConsoleColor.Cyan;
 Console.WriteLine("╔══════════════════════════════════════════════════╗");
-Console.WriteLine("║    CryptoTrader — Dali + Wolverine Sample       ║");
+Console.WriteLine("║    CryptoTrader — Dali + Wolverine Sample        ║");
 Console.WriteLine("╚══════════════════════════════════════════════════╝");
 Console.ResetColor();
 Console.WriteLine();

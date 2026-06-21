@@ -34,7 +34,7 @@ public enum SchemaMode
 /// Accessed via <c>StoreOptions.Schema.For&lt;T&gt;()</c>.
 /// </summary>
 public class DocumentMapping<T> : DocumentMapping
-    where T : SurrealDb.Net.Models.Record
+    where T : SurrealDb.Net.Models.IRecord
 {
     internal override Type EntityType => typeof(T);
     internal override List<IndexDefinition> Indices { get; } = [];
@@ -56,6 +56,19 @@ public class DocumentMapping<T> : DocumentMapping
     }
 
     /// <summary>
+    /// Designates the primary key property explicitly for documentation purposes.
+    /// For <see cref="SurrealDb.Net.Models.IRecord"/> types, the Id property
+    /// (<see cref="SurrealDb.Net.Models.RecordId"/>) is always the primary key.
+    /// This method is present for API consistency and future extensibility.
+    /// </summary>
+    public DocumentMapping<T> Identity<TProp>(Expression<Func<T, TProp>> property)
+    {
+        // Primary key designation is implicit for IRecord types.
+        // This method serves as explicit documentation and a forward-compatibility hook.
+        return this;
+    }
+
+    /// <summary>
     /// Maps this document type to a specific SurrealDB database (schema).
     /// When null (default), the entity uses the default database from <c>StoreOptions.Database</c>.
     /// </summary>
@@ -68,6 +81,7 @@ public class DocumentMapping<T> : DocumentMapping
 
     /// <summary>
     /// Defines a simple index on the specified property.
+    /// SurrealDB's default index type is btree, so this is equivalent to <see cref="BTreeIndex{TProp}"/>.
     /// </summary>
     public DocumentMapping<T> Index<TProp>(Expression<Func<T, TProp>> property, Action<IndexOptions>? configure = null)
     {
@@ -82,6 +96,14 @@ public class DocumentMapping<T> : DocumentMapping
         Indices.Add(idx);
         return this;
     }
+
+    /// <summary>
+    /// Defines a btree index on the specified property.
+    /// Equivalent to <c>Index()</c> — SurrealDB's default index type is btree.
+    /// This explicit alias exists for clarity when SurrealDB-native naming is preferred.
+    /// </summary>
+    public DocumentMapping<T> BTreeIndex<TProp>(Expression<Func<T, TProp>> property, Action<IndexOptions>? configure = null)
+        => Index(property, configure);
 
     /// <summary>
     /// Defines a unique index on the specified property.
@@ -153,13 +175,38 @@ public class DocumentMapping<T> : DocumentMapping
     }
 
     /// <summary>
-    /// Defines an HNSW vector search index on the specified property.
-    /// Uses approximate nearest-neighbor for fast vector similarity queries.
+    /// Defines a multi-field full-text search index on the specified properties.
+    /// SurrealDB indexes all specified columns together in a single FTS index
+    /// using <c>DEFINE INDEX ... FIELDS col1, col2, ... FULLTEXT ANALYZER ...</c>.
+    /// </summary>
+    /// <param name="analyzer">The SurrealDB analyzer name (e.g. "english").</param>
+    /// <param name="property1">First property to include in the FTS index.</param>
+    /// <param name="property2">Second property to include in the FTS index.</param>
+    /// <param name="additionalProperties">Additional properties to include.</param>
+    public DocumentMapping<T> FullTextIndex(
+        string analyzer,
+        Expression<Func<T, object>> property1,
+        Expression<Func<T, object>> property2,
+        params Expression<Func<T, object>>[] additionalProperties)
+    {
+        var columns = new List<string> { ExtractMember(property1).Name, ExtractMember(property2).Name };
+        columns.AddRange(additionalProperties.Select(p => ExtractMember(p).Name));
+        Indices.Add(new IndexDefinition
+        {
+            Columns = columns.ToArray(),
+            Name = $"ft_{Snake(typeof(T).Name)}_{string.Join("_", columns.Select(Snake))}",
+            Type = IndexType.FullText,
+            Analyzer = analyzer
+        });
+        return this;
+    }
+    /// Uses the HNSW algorithm for fast approximate vector similarity queries.
+    /// Best for large datasets where speed matters more than exact results.
     /// </summary>
     /// <param name="property">The property storing the vector embedding.</param>
     /// <param name="dimension">The dimensionality of the vector (e.g. 1536 for OpenAI ada-002).</param>
     /// <param name="distance">The distance function: COSINE (default), EUCLIDEAN, or MANHATTAN.</param>
-    public DocumentMapping<T> VectorIndex<TProp>(
+    public DocumentMapping<T> HnswIndex<TProp>(
         Expression<Func<T, TProp>> property,
         int dimension,
         string distance = Search.Distance.Cosine)
@@ -169,7 +216,33 @@ public class DocumentMapping<T> : DocumentMapping
         {
             Columns = [member.Name],
             Name = $"hnsw_{Snake(typeof(T).Name)}_{Snake(member.Name)}",
-            Type = IndexType.Vector,
+            Type = IndexType.Hnsw,
+            VectorDimension = dimension,
+            VectorDistance = distance
+        });
+        return this;
+    }
+
+    /// <summary>
+    /// Defines an MTREE vector index on the specified property.
+    /// MTREE supports both exact and approximate nearest-neighbor search.
+    /// Supports distance functions beyond cosine (Minkowski, Hamming, Jaccard).
+    /// Best for smaller datasets or when exact results are required.
+    /// </summary>
+    /// <param name="property">The property storing the vector embedding.</param>
+    /// <param name="dimension">The dimensionality of the vector.</param>
+    /// <param name="distance">The distance function: COSINE (default), EUCLIDEAN, MANHATTAN, MINKOWSKI, HAMMING, or JACCARD.</param>
+    public DocumentMapping<T> MtreeIndex<TProp>(
+        Expression<Func<T, TProp>> property,
+        int dimension,
+        string distance = Search.Distance.Cosine)
+    {
+        var member = ExtractMember(property);
+        Indices.Add(new IndexDefinition
+        {
+            Columns = [member.Name],
+            Name = $"mtree_{Snake(typeof(T).Name)}_{Snake(member.Name)}",
+            Type = IndexType.Mtree,
             VectorDimension = dimension,
             VectorDistance = distance
         });
@@ -208,7 +281,7 @@ public class DocumentMapping<T> : DocumentMapping
         {
             Columns = [vecMember.Name],
             Name = $"hnsw_{Snake(typeof(T).Name)}_{Snake(vecMember.Name)}",
-            Type = IndexType.Vector,
+            Type = IndexType.Hnsw,
             VectorDimension = dimension,
             VectorDistance = distance
         });

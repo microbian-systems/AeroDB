@@ -24,8 +24,9 @@ public static class WolverineOptionsDaliExtensions
         var client = serviceProvider.GetRequiredService<ISurrealDbClient>();
         var logger = serviceProvider.GetRequiredService<ILogger<DaliMessageStore>>();
         var store = serviceProvider.GetRequiredService<IDocumentStore>();
+        var loggerFactory = serviceProvider.GetService<ILoggerFactory>();
 
-        var messageStore = new DaliMessageStore(client, logger);
+        var messageStore = new DaliMessageStore(client, logger, loggerFactory);
 
         options.Services.AddSingleton<IMessageStore>(messageStore);
         options.Services.AddSingleton(messageStore);

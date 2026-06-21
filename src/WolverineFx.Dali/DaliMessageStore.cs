@@ -1,8 +1,10 @@
 using System.Text;
 using System.Text.Json;
+using Dali;
 using JasperFx.Core;
 using JasperFx.Descriptors;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using SurrealDb.Net;
 using Wolverine;
 using Wolverine.Logging;
@@ -18,6 +20,10 @@ namespace WolverineFx.Dali;
 /// SurrealDB (Dali) backed implementation of Wolverine's IMessageStore and all sub-interfaces.
 /// All operations use SurrealQL RawQuery with parameterized queries.
 /// Envelope bodies are stored as Base64 strings for reliable CBOR round-tripping.
+/// 
+/// Schema initialization now delegates to the Dali <see cref="SchemaManager"/> pipeline
+/// via typed POCOs (<see cref="WolverineIncomingEnvelopes"/>, etc.) instead of
+/// a hardcoded SurrealQL string.
 /// </summary>
 public sealed class DaliMessageStore : IMessageStore,
     IMessageInbox, IMessageOutbox, IDeadLetters,
@@ -25,6 +31,7 @@ public sealed class DaliMessageStore : IMessageStore,
 {
     internal readonly ISurrealDbClient Client;
     private readonly ILogger<DaliMessageStore> _logger;
+    private readonly SchemaManager _schemaManager;
     private int _ownerId;
     private bool _hasDisposed;
     private Guid _nodeId = Guid.NewGuid();
@@ -38,102 +45,11 @@ public sealed class DaliMessageStore : IMessageStore,
     private const string AgentRestrictionsTable = "wolverine_agent_restrictions";
     private const string NodeRecordsTable = "wolverine_node_records";
 
-    // Schema initialization SurrealQL
-    private const string SchemaScript = """
-        DEFINE TABLE IF NOT EXISTS wolverine_incoming_envelopes SCHEMAFULL;
-        DEFINE FIELD id ON TABLE wolverine_incoming_envelopes TYPE string;
-        DEFINE FIELD status ON TABLE wolverine_incoming_envelopes TYPE string;
-        DEFINE FIELD owner_id ON TABLE wolverine_incoming_envelopes TYPE int DEFAULT 0;
-        DEFINE FIELD execution_time ON TABLE wolverine_incoming_envelopes TYPE datetime;
-        DEFINE FIELD attempts ON TABLE wolverine_incoming_envelopes TYPE int DEFAULT 0;
-        DEFINE FIELD body ON TABLE wolverine_incoming_envelopes TYPE string;
-        DEFINE FIELD message_type ON TABLE wolverine_incoming_envelopes TYPE string;
-        DEFINE FIELD destination ON TABLE wolverine_incoming_envelopes TYPE option<string>;
-        DEFINE FIELD deliver_by ON TABLE wolverine_incoming_envelopes TYPE option<datetime>;
-        DEFINE FIELD correlation_id ON TABLE wolverine_incoming_envelopes TYPE option<string>;
-        DEFINE FIELD source ON TABLE wolverine_incoming_envelopes TYPE option<string>;
-        DEFINE FIELD tenant_id ON TABLE wolverine_incoming_envelopes TYPE option<string>;
-        DEFINE FIELD keep_until ON TABLE wolverine_incoming_envelopes TYPE option<datetime>;
-        DEFINE FIELD content_type ON TABLE wolverine_incoming_envelopes TYPE option<string>;
-        DEFINE FIELD reply_uri ON TABLE wolverine_incoming_envelopes TYPE option<string>;
-        DEFINE FIELD saga_id ON TABLE wolverine_incoming_envelopes TYPE option<string>;
-        DEFINE FIELD conversation_id ON TABLE wolverine_incoming_envelopes TYPE option<string>;
-        DEFINE FIELD received_at ON TABLE wolverine_incoming_envelopes TYPE option<string>;
-        DEFINE INDEX idx_incoming_status ON TABLE wolverine_incoming_envelopes COLUMNS status;
-        DEFINE INDEX idx_incoming_exec ON TABLE wolverine_incoming_envelopes COLUMNS execution_time;
-        DEFINE INDEX idx_incoming_owner ON TABLE wolverine_incoming_envelopes COLUMNS owner_id;
-
-        DEFINE TABLE IF NOT EXISTS wolverine_outgoing_envelopes SCHEMAFULL;
-        DEFINE FIELD id ON TABLE wolverine_outgoing_envelopes TYPE string;
-        DEFINE FIELD owner_id ON TABLE wolverine_outgoing_envelopes TYPE int DEFAULT 0;
-        DEFINE FIELD body ON TABLE wolverine_outgoing_envelopes TYPE string;
-        DEFINE FIELD message_type ON TABLE wolverine_outgoing_envelopes TYPE string;
-        DEFINE FIELD destination ON TABLE wolverine_outgoing_envelopes TYPE option<string>;
-        DEFINE FIELD deliver_by ON TABLE wolverine_outgoing_envelopes TYPE option<datetime>;
-        DEFINE FIELD attempts ON TABLE wolverine_outgoing_envelopes TYPE int DEFAULT 0;
-        DEFINE FIELD execution_time ON TABLE wolverine_outgoing_envelopes TYPE datetime;
-        DEFINE FIELD correlation_id ON TABLE wolverine_outgoing_envelopes TYPE option<string>;
-        DEFINE FIELD source ON TABLE wolverine_outgoing_envelopes TYPE option<string>;
-        DEFINE FIELD tenant_id ON TABLE wolverine_outgoing_envelopes TYPE option<string>;
-        DEFINE FIELD keep_until ON TABLE wolverine_outgoing_envelopes TYPE option<datetime>;
-        DEFINE FIELD content_type ON TABLE wolverine_outgoing_envelopes TYPE option<string>;
-        DEFINE FIELD reply_uri ON TABLE wolverine_outgoing_envelopes TYPE option<string>;
-        DEFINE FIELD saga_id ON TABLE wolverine_outgoing_envelopes TYPE option<string>;
-        DEFINE FIELD conversation_id ON TABLE wolverine_outgoing_envelopes TYPE option<string>;
-        DEFINE INDEX idx_outgoing_dest ON TABLE wolverine_outgoing_envelopes COLUMNS destination;
-
-        DEFINE TABLE IF NOT EXISTS wolverine_dead_letters SCHEMAFULL;
-        DEFINE FIELD id ON TABLE wolverine_dead_letters TYPE string;
-        DEFINE FIELD status ON TABLE wolverine_dead_letters TYPE string;
-        DEFINE FIELD body ON TABLE wolverine_dead_letters TYPE string;
-        DEFINE FIELD message_type ON TABLE wolverine_dead_letters TYPE string;
-        DEFINE FIELD source ON TABLE wolverine_dead_letters TYPE option<string>;
-        DEFINE FIELD exception_type ON TABLE wolverine_dead_letters TYPE option<string>;
-        DEFINE FIELD exception_message ON TABLE wolverine_dead_letters TYPE option<string>;
-        DEFINE FIELD tenant_id ON TABLE wolverine_dead_letters TYPE option<string>;
-        DEFINE FIELD sent_at ON TABLE wolverine_dead_letters TYPE datetime;
-        DEFINE FIELD destination ON TABLE wolverine_dead_letters TYPE option<string>;
-        DEFINE FIELD execution_time ON TABLE wolverine_dead_letters TYPE option<datetime>;
-        DEFINE FIELD deliver_by ON TABLE wolverine_dead_letters TYPE option<datetime>;
-        DEFINE FIELD correlation_id ON TABLE wolverine_dead_letters TYPE option<string>;
-        DEFINE FIELD content_type ON TABLE wolverine_dead_letters TYPE option<string>;
-        DEFINE FIELD saga_id ON TABLE wolverine_dead_letters TYPE option<string>;
-        DEFINE FIELD conversation_id ON TABLE wolverine_dead_letters TYPE option<string>;
-        DEFINE FIELD replayable ON TABLE wolverine_dead_letters TYPE bool DEFAULT true;
-        DEFINE INDEX idx_dl_status ON TABLE wolverine_dead_letters COLUMNS status;
-
-        DEFINE TABLE IF NOT EXISTS wolverine_nodes SCHEMAFULL;
-        DEFINE FIELD id ON TABLE wolverine_nodes TYPE string;
-        DEFINE FIELD node_number ON TABLE wolverine_nodes TYPE int;
-        DEFINE FIELD description ON TABLE wolverine_nodes TYPE string;
-        DEFINE FIELD assigned_agents ON TABLE wolverine_nodes TYPE option<array>;
-        DEFINE FIELD capabilities ON TABLE wolverine_nodes TYPE option<array>;
-        DEFINE FIELD health_check_time ON TABLE wolverine_nodes TYPE option<datetime>;
-        DEFINE FIELD started ON TABLE wolverine_nodes TYPE option<datetime>;
-        DEFINE FIELD control_uri ON TABLE wolverine_nodes TYPE option<string>;
-        DEFINE FIELD version ON TABLE wolverine_nodes TYPE option<string>;
-        DEFINE INDEX idx_nodes_id ON TABLE wolverine_nodes COLUMNS id UNIQUE;
-
-        DEFINE TABLE IF NOT EXISTS wolverine_agent_restrictions SCHEMAFULL;
-        DEFINE FIELD id ON TABLE wolverine_agent_restrictions TYPE string;
-        DEFINE FIELD agent_uri ON TABLE wolverine_agent_restrictions TYPE string;
-        DEFINE FIELD type ON TABLE wolverine_agent_restrictions TYPE string;
-        DEFINE FIELD node_number ON TABLE wolverine_agent_restrictions TYPE int DEFAULT 0;
-
-        DEFINE TABLE IF NOT EXISTS wolverine_node_records SCHEMAFULL;
-        DEFINE FIELD id ON TABLE wolverine_node_records TYPE string;
-        DEFINE FIELD node_number ON TABLE wolverine_node_records TYPE int;
-        DEFINE FIELD record_type ON TABLE wolverine_node_records TYPE string;
-        DEFINE FIELD timestamp ON TABLE wolverine_node_records TYPE datetime;
-        DEFINE FIELD description ON TABLE wolverine_node_records TYPE string;
-        DEFINE FIELD service_name ON TABLE wolverine_node_records TYPE string;
-        DEFINE FIELD agent_uri ON TABLE wolverine_node_records TYPE option<string>;
-        """;
-
-    public DaliMessageStore(ISurrealDbClient client, ILogger<DaliMessageStore> logger)
+    public DaliMessageStore(ISurrealDbClient client, ILogger<DaliMessageStore> logger, ILoggerFactory? loggerFactory = null)
     {
         Client = client ?? throw new ArgumentNullException(nameof(client));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        _schemaManager = new SchemaManager(loggerFactory);
     }
 
     // ─── IMessageStore Members ───
@@ -851,7 +767,7 @@ public sealed class DaliMessageStore : IMessageStore,
     public async Task RebuildAsync()
     {
         await ClearAllAsync();
-        await Client.RawQuery(SchemaScript);
+        await InitializeSchemaAsync();
     }
 
     public async Task<PersistedCounts> FetchCountsAsync()
@@ -934,15 +850,14 @@ public sealed class DaliMessageStore : IMessageStore,
 
     public async Task AssertStorageExistsAsync(CancellationToken token)
     {
-        // Verify the incoming table exists by querying it
-        var response = await Client.RawQuery(
-            "SELECT * FROM wolverine_incoming_envelopes LIMIT 1");
+        // Verify incoming table exists by querying with a simple SELECT 1 pattern
+        await Client.RawQuery($"SELECT count() FROM {IncomingTable} LIMIT 1 GROUP ALL");
         // If we get here without exception, storage exists
     }
 
     public async Task MigrateAsync()
     {
-        await Client.RawQuery(SchemaScript);
+        await InitializeSchemaAsync();
     }
 
     // ─── IScheduledMessages ───
@@ -1065,13 +980,54 @@ public sealed class DaliMessageStore : IMessageStore,
     // ─── Schema Initialization ───
 
     /// <summary>
-    /// Initialize the SurrealDB schema for all wolverine tables.
-    /// Called during store initialization.
+    /// Initialize the SurrealDB schema for all wolverine tables using the Dali schema pipeline.
+    /// Creates tables, fields, and indexes via <see cref="SchemaManager"/>.
+    /// Called during store initialization. Idempotent — uses IF NOT EXISTS variants.
     /// </summary>
     public async Task InitializeSchemaAsync()
     {
-        await Client.RawQuery(SchemaScript);
-        _logger.LogInformation("DaliMessageStore schema initialized");
+        await using var session = await Client.CreateSession().ConfigureAwait(false);
+
+        await _schemaManager.EnsureDocumentSchemaAsync<WolverineIncomingEnvelopes>(session, SchemaMode.Strict).ConfigureAwait(false);
+        await _schemaManager.EnsureDocumentSchemaAsync<WolverineOutgoingEnvelopes>(session, SchemaMode.Strict).ConfigureAwait(false);
+        await _schemaManager.EnsureDocumentSchemaAsync<WolverineDeadLetters>(session, SchemaMode.Strict).ConfigureAwait(false);
+        await _schemaManager.EnsureDocumentSchemaAsync<WolverineNodes>(session, SchemaMode.Strict).ConfigureAwait(false);
+        await _schemaManager.EnsureDocumentSchemaAsync<WolverineAgentRestrictions>(session, SchemaMode.Strict).ConfigureAwait(false);
+        await _schemaManager.EnsureDocumentSchemaAsync<WolverineNodeRecords>(session, SchemaMode.Strict).ConfigureAwait(false);
+
+        // Indexes for wolverine_incoming_envelopes
+        await _schemaManager.EnsureIndexAsync(session, IncomingTable, new IndexDefinition
+        {
+            Name = "idx_incoming_status", Columns = ["status"], Type = IndexType.Standard
+        }).ConfigureAwait(false);
+        await _schemaManager.EnsureIndexAsync(session, IncomingTable, new IndexDefinition
+        {
+            Name = "idx_incoming_exec", Columns = ["execution_time"], Type = IndexType.Standard
+        }).ConfigureAwait(false);
+        await _schemaManager.EnsureIndexAsync(session, IncomingTable, new IndexDefinition
+        {
+            Name = "idx_incoming_owner", Columns = ["owner_id"], Type = IndexType.Standard
+        }).ConfigureAwait(false);
+
+        // Index for wolverine_outgoing_envelopes
+        await _schemaManager.EnsureIndexAsync(session, OutgoingTable, new IndexDefinition
+        {
+            Name = "idx_outgoing_dest", Columns = ["destination"], Type = IndexType.Standard
+        }).ConfigureAwait(false);
+
+        // Index for wolverine_dead_letters
+        await _schemaManager.EnsureIndexAsync(session, DeadLetterTable, new IndexDefinition
+        {
+            Name = "idx_dl_status", Columns = ["status"], Type = IndexType.Standard
+        }).ConfigureAwait(false);
+
+        // Unique index for wolverine_nodes
+        await _schemaManager.EnsureIndexAsync(session, NodesTable, new IndexDefinition
+        {
+            Name = "idx_nodes_id", Columns = ["id"], IsUnique = true, Type = IndexType.Standard
+        }).ConfigureAwait(false);
+
+        _logger.LogInformation("DaliMessageStore schema initialized (via SchemaManager pipeline)");
     }
 
     // ─── Helpers ───
