@@ -14,6 +14,7 @@
   <ItemGroup>
     <PackageReference Include="SurrealDb.Net" VersionOverride="0.10.2" />
     <PackageReference Include="SurrealDb.Reactive" VersionOverride="0.10.2" />
+    <PackageReference Include="JasperFx.Events" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" VersionOverride="10.0.8" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" VersionOverride="10.0.8" />
     <PackageReference Include="System.Threading.Channels" VersionOverride="10.0.3" />

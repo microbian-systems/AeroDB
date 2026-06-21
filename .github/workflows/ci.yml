@@ -50,5 +50,8 @@ jobs:
       - name: Pack Dali.EntityFrameworkCore
         run: dotnet pack src/Dali.EntityFrameworkCore/Dali.EntityFrameworkCore.csproj --configuration Release --output ./artifacts
 
+      - name: Pack WolverineFx.Dali
+        run: dotnet pack src/WolverineFx.Dali/WolverineFx.Dali.csproj --configuration Release --output ./artifacts
+
       - name: Publish to NuGet
         run: dotnet nuget push ./artifacts/*.nupkg --api-key ${{secrets.NUGET_API_KEY}} --source https://api.nuget.org/v3/index.json --skip-duplicate

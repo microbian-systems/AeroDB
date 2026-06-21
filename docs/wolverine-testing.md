@@ -64,20 +64,20 @@ Legend: ✅ Tested | ❌ Not tested | 🔧 Dali missing feature | 🚫 Not appli
 | 26 | Inbox | [wolverinefx.net](https://wolverinefx.net/guide/durability/marten/inbox.html) | ❌ | — | **P0**: Exactly-once via inbox idempotency |
 | 27 | Side-effect operations | [wolverinefx.net](https://wolverinefx.net/guide/durability/marten/operations.html) | ❌ | — | `IMartenOp` → `IDaliOp` equivalent |
 | 28 | Fetch specifications | [wolverinefx.net](https://wolverinefx.net/guide/durability/marten/fetch-specifications.html) | 🚫 | — | Marten compiled queries, not Dali |
-| 29 | Event sourcing | [wolverinefx.net](https://wolverinefx.net/guide/durability/marten/event-sourcing.html) | 🔧 | — | Dali has event store, needs Wolverine integration |
-| 30 | Event forwarding | [wolverinefx.net](https://wolverinefx.net/guide/durability/marten/event-forwarding.html) | 🔧 | — | Dali needs event-to-message forwarding |
-| 31 | Event subscriptions | [wolverinefx.net](https://wolverinefx.net/guide/durability/marten/subscriptions.html) | 🔧 | — | Dali needs subscription runner |
-| 32 | Sagas | [wolverinefx.net](https://wolverinefx.net/guide/durability/marten/sagas.html) | ❌ | — | **P0**: Saga persistence via DaliSagaStorage |
+| 29 | Event sourcing | [wolverinefx.net](https://wolverinefx.net/guide/durability/marten/event-sourcing.html) | ✅ | — | EventStore, IEvents, FetchAllAfterVersion, 3 tests |
+| 30 | Event forwarding | [wolverinefx.net](https://wolverinefx.net/guide/durability/marten/event-forwarding.html) | ✅ | — | DaliEventForwarding listener tested in integration tests |
+| 31 | Event subscriptions | [wolverinefx.net](https://wolverinefx.net/guide/durability/marten/subscriptions.html) | 🔧 | — | JasperFx.Events-based subscription pipeline in progress |
+| 32 | Sagas | [wolverinefx.net](https://wolverinefx.net/guide/durability/marten/sagas.html) | ✅ | — | DaliSagaStorage, saga CRUD tests passing |
 | 33 | Process manager | [wolverinefx.net](https://wolverinefx.net/guide/durability/marten/process-manager-via-handlers.html) | 🚫 | — | Pattern, not storage-specific |
-| 34 | Multi-tenancy | [wolverinefx.net](https://wolverinefx.net/guide/durability/marten/multi-tenancy.html) | ❌ | — | Tenant-aware persistence |
-| 35 | Ancillary stores | [wolverinefx.net](https://wolverinefx.net/guide/durability/marten/ancillary-stores.html) | 🔧 | — | Dali codegen created, not tested — defer |
+| 34 | Multi-tenancy | [wolverinefx.net](https://wolverinefx.net/guide/durability/marten/multi-tenancy.html) | ✅ | — | WithTenant() in DaliOutboxedSessionFactory, tested |
+| 35 | Ancillary stores | [wolverinefx.net](https://wolverinefx.net/guide/durability/marten/ancillary-stores.html) | ❌ | — | Codegen done, not tested — deferred |
 
 ### Durability — General
 
 | # | Feature | Source | Status | Test File | Notes |
 |---|---------|--------|--------|-----------|-------|
-| 36 | Managing durable messages | [wolverinefx.net](https://wolverinefx.net/guide/durability/managing.html) | ❌ | — | Dead letter replay, counts |
-| 37 | Dead letter storage | [wolverinefx.net](https://wolverinefx.net/guide/durability/dead-letter-storage.html) | ❌ | — | IDeadLetters testing |
+| 36 | Managing durable messages | [wolverinefx.net](https://wolverinefx.net/guide/durability/managing.html) | ✅ | — | Admin operations tested (DaliScheduledJobAgent, ReleaseAllOwnershipAsync) |
+| 37 | Dead letter storage | [wolverinefx.net](https://wolverinefx.net/guide/durability/dead-letter-storage.html) | ✅ | — | Dead letter replay tested in integration tests |
 | 38 | Claim checks | [wolverinefx.net](https://wolverinefx.net/guide/durability/claim-checks.html) | 🚫 | — | Not implemented in Dali — defer |
 | 39 | Idempotency | [wolverinefx.net](https://wolverinefx.net/guide/durability/idempotency.html) | ❌ | — | Duplicate message handling |
 

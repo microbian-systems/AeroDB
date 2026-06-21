@@ -1,6 +1,7 @@
 using Dali;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using SurrealDb.Net;
 using Wolverine;
@@ -43,6 +44,8 @@ public static class WolverineOptionsDaliExtensions
         PreferScopedSession<IQuerySession>(options.Services);
 
         options.Services.AddSingleton<IWolverineExtension>(new DaliIntegration());
+
+        WolverineOptionsSubscriptionExtensions.EnsureSubscriptionHostedService(options.Services);
     }
 
     /// <summary>

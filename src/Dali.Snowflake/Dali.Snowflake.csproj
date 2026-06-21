@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>Snowflake ID generator for Dali — wraps Aero.Core's Snowflake.NewId() for unique, time-sortable long primary keys.</Description>
+    <PackageTags>surrealdb dali snowflake idgen</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Dali\Dali.csproj" />
+    <PackageReference Include="Aero.Core" />
+  </ItemGroup>
+
+</Project>

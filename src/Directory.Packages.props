@@ -13,6 +13,7 @@
     <PackageVersion Include="TUnit" Version="1.39.0" />
     <PackageVersion Include="AngleSharp" Version="1.4.0" />
     <PackageVersion Include="AngleSharp.Css" Version="0.17.0" />
+    <PackageVersion Include="Aero.Core" Version="0.0.5-alpha" />
     <PackageVersion Include="Blazor.Radzen.Theming" Version="10.2.3" />
     <PackageVersion Include="Bogus" Version="35.6.5" />
     <PackageVersion Include="Boxed.AspNetCore" Version="9.0.1" />
@@ -33,6 +34,7 @@
     <PackageVersion Include="Markdig" Version="1.2.0" />
     <PackageVersion Include="Marten" Version="8.37.1" />
     <PackageVersion Include="Marten.AspNetCore" Version="8.37.1" />
+    <PackageVersion Include="JasperFx.Events" Version="2.13.0" />
     <PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.8" />
     <PackageVersion Include="Microsoft.AspNetCore.Html.Abstractions" Version="2.3.10" />
     <PackageVersion Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.9" />
