@@ -129,6 +129,7 @@ These features are needed for full Wolverine parity but not yet implemented in D
 | 2026-06-20 | Multi-tenancy + ancillary stores | 398 | ✅ 398/398; 3 new tests; `WithTenant()` wired into DaliOutboxedSessionFactory |
 | 2026-06-20 | Phase 18 (Multi-DB/Schema) + Phase 19 (Advanced SDK) | 444 | ✅ 444/444; `DocumentMapping.Schema()`, `store.Advanced`, 34 new tests |
 | 2026-06-20 | Wolverine: IDaliOp, event forwarding, scheduled jobs, admin | 444 | ✅ 444/444; 8 new tests; all remaining features implemented |
+| 2026-06-20 | CryptoTrader sample app | 444 | ✅ Build passes; 15 source files; demonstrates sagas, graph, outbox, events, batch |
 
 ## Key Wolverine Testing Patterns Learned
 

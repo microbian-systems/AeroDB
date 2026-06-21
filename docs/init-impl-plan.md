@@ -7,6 +7,7 @@
 **Build:** 0 errors (4 pre-existing stale warnings)
 **Tests:** 444 passing, 0 failing, 0 skipped
 **Projects:** `Dali`, `Dali.EntityFrameworkCore`, `Dali.Tests`, `WolverineFx.Dali` (complete)
+**Samples:** `CryptoTrader` — Dali + Wolverine crypto trading simulation
 
 ---
 
