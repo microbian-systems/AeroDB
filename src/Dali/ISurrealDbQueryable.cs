@@ -102,6 +102,13 @@ public class SurrealDbQueryable<T> : ISurrealDbQueryable<T>, IAsyncEnumerable<T>
     internal List<IncludeDescriptor> IncludeDescriptors = new();
 
     /// <summary>
+    /// Optional override for the table/view name used in generated SurrealQL.
+    /// When set, replaces the type-inferred table name (e.g., for querying
+    /// pre-computed views defined with <c>DEFINE TABLE ... AS SELECT ...</c>).
+    /// </summary>
+    internal string? ViewName { get; set; }
+
+    /// <summary>
     /// Describes a single Include operation — which property to match,
     /// what type to load, and where to dispatch the loaded documents.
     /// </summary>

@@ -2,10 +2,10 @@
 
 > .NET Transactional Document DB and Event Store on SurrealDB. Built directly on `SurrealDb.Net` — not an EF Core provider.
 
-**Last modified:** 2026-06-20
+**Last modified:** 2026-06-22
 **Full plan:** [init-impl-plan.md](init-impl-plan.md)
 **Build:** 0 errors (4 pre-existing warnings)
-**Tests:** 444 passing (all passing, 0 failures — 22 Wolverine+Dali integration tests, 26 schema routing tests, 8 Advanced SDK tests)
+**Tests:** 505 passing (all passing, 0 failures)
 
 ---
 
@@ -603,6 +603,92 @@ o.MinimumLogLevel = LogLevel.Debug;
 
 If `LoggerFactory` is null, `NullLogger<T>` is used everywhere (no-op).
 
+## Pre-Computed Views (`DEFINE TABLE ... AS SELECT`) ✅ Implemented
+
+SurrealDB defines views as **materialized, incrementally-updating tables** backed by a `SELECT` query. They are NOT standard SQL "bookmarked" views — results are stored and updated incrementally via event triggers.
+
+```surql
+DEFINE TABLE IF NOT EXISTS avg_product_review AS
+SELECT count() AS number_of_reviews, math::mean(<float> rating) AS avg_review,
+       ->product.id AS product_id
+FROM review
+GROUP BY product_id;
+```
+
+### Architecture
+
+```
+StoreOptions.Views.For<T>(name) → ViewDefinition<T> fluent builder
+  ├─ .From<TFrom>() / .From(string)   — source table
+  ├─ .Where(predicate)                 — filter (uses ExpressionVisitor inlining)
+  ├─ .GroupBy(keySelector)             — GROUP BY columns
+  ├─ .WithSelect(string columns)       — custom SELECT columns (aggregates, graph traversal)
+  ├─ .Schema(string schemaName)        — per-schema database routing
+  └─ .Drop()                           — DROP table definition
+
+DocumentStore.InitializeAsync
+  └→ SchemaManager.EnsureViewAsync<T>(session, view)
+       └→ DEFINE TABLE IF NOT EXISTS {view} AS {select};
+```
+
+### C# Configuration
+
+```csharp
+var store = Documents.For(o =>
+{
+    // Simple filter view
+    o.Views.For<ActiveUser>("active_users")
+        .From<User>()
+        .Where(u => u.Active);
+
+    // Aggregate view with GROUP BY
+    o.Views.For<AvgReview>("avg_review")
+        .From<Review>()
+        .WithSelect("count() AS num, math::mean(rating) AS avg, product_id")
+        .GroupBy(r => r.ProductId);
+
+    // Drop table (event-processed, auto-deleted)
+    o.Views.For<LogEntry>("api_logs")
+        .From<RawLog>()
+        .Drop();
+
+    // Per-schema view (routes to different database)
+    o.Views.For<SalesReport>("monthly_sales")
+        .From<Order>()
+        .WithSelect("count() AS total_orders, math::sum(total) AS revenue")
+        .Schema("analytics");
+});
+```
+
+### Querying Views
+
+Views are queried like any other table:
+
+```csharp
+await using var session = store.QuerySession();
+var active = await session.Query<ActiveUser>()
+    .Where(u => u.Role == "admin")
+    .ToListAsync();
+```
+
+### Key Properties
+
+| Property | Description |
+|----------|-------------|
+| **Materialized** | First run computes and persists the result set |
+| **Incrementally updating** | Subsequent changes apply deltas, not full recompute |
+| **Event-based** | Change to source table triggers automatic refresh |
+| **Graph traversal in SELECT** | `->product.id` syntax works inside view projections |
+| **Per-schema routing** | Views can be created in different databases via `.Schema()` |
+
+### Limitations
+
+- Trigger only fires on the `FROM` table, not on referenced tables (e.g., `->product.id` changes won't trigger view refresh)
+- `DatabasePerTenant` mode does not yet create views per-tenant (deferred)
+- Source tables must exist before view initialization
+
+See [view-support-spec.md](view-support-spec.md) for the full specification.
+
 ## Project Structure
 
 ```
@@ -645,8 +731,9 @@ src/
       InlineProjection.cs / SingleStreamProjection.cs / MultiStreamProjection.cs
       AsyncDaemon.cs                       # Background polling daemon
     Schema/
-      SchemaManager.cs                     # DEFINE TABLE/FIELD/INDEX
+      SchemaManager.cs                     # DEFINE TABLE/FIELD/INDEX + DEFINE TABLE ... AS SELECT (views)
       DocumentMapping.cs                   # Fluent index API
+      ViewDefinition.cs                    # View fluent builder (From, Where, GroupBy, WithSelect, Drop, Schema)
     Metadata/                              # Source-generated metadata
       MetadataRegistry.cs                  # ITypeMetadata, ITypeMetadata<T>, ConcurrentDictionary registry
       MetadataDispatch.cs                  # Registry-first dispatch with reflection fallback

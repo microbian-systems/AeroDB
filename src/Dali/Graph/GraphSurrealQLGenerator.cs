@@ -159,4 +159,67 @@ internal static class GraphSurrealQLGenerator
             sb.Append(arrow).Append('?');
         }
     }
+
+    /// <summary>
+    /// Generates a graph traversal path expression for use within a SELECT column.
+    /// Produces SurrealQL path expressions like "-&gt;product.id" or "&lt;-wrote-post.author.Name".
+    /// For simple single-hop traversal with field access.
+    /// </summary>
+    /// <param name="edgeType">The edge table name (e.g., "wrote_post"). Null for wildcard.</param>
+    /// <param name="direction">"out" for forward traversal (-&gt;), "in" for backward traversal (&lt;-).</param>
+    /// <param name="targetTable">The target table name (e.g., "product"). Null for wildcard.</param>
+    /// <param name="targetField">The field to project from the target (e.g., "id", "name").</param>
+    /// <returns>SurrealQL path expression, e.g. "-&gt;product.id" or "&lt;-wrote_post.author.Name".</returns>
+    public static string GenerateColumnExpression(
+        string? edgeType,
+        string direction,
+        string? targetTable,
+        string targetField)
+    {
+        var sb = new StringBuilder();
+        var arrow = direction switch
+        {
+            "in" => "<-",
+            "out" => "->",
+            _ => "->"
+        };
+
+        // Edge: ->edgeType or ->?
+        if (edgeType is not null)
+            sb.Append(arrow).Append(edgeType);
+        else
+            sb.Append(arrow).Append('?');
+
+        // Target table: ->targetTable or ->?
+        if (targetTable is not null)
+            sb.Append(arrow).Append(targetTable);
+        else
+            sb.Append(arrow).Append('?');
+
+        // Field: .fieldName
+        sb.Append('.').Append(targetField);
+
+        return sb.ToString();
+    }
+
+    /// <summary>
+    /// Generates a graph traversal column expression from a <see cref="GraphQueryPlan"/>.
+    /// Extracts the final step's edge, direction, target, and appends the specified field.
+    /// </summary>
+    /// <param name="plan">The graph query plan with traversal steps.</param>
+    /// <param name="fieldName">The target field to project.</param>
+    /// <returns>SurrealQL path expression for use in a SELECT column.</returns>
+    public static string GenerateColumnExpression(GraphQueryPlan plan, string fieldName)
+    {
+        if (plan.Steps.Count == 0)
+            throw new ArgumentException("Plan must have at least one traversal step.", nameof(plan));
+
+        var pathExpr = BuildPathExpression(plan);
+        // BuildPathExpression appends .* for non-wrapped queries; we replace that with .fieldName
+        if (pathExpr.EndsWith(".*"))
+            pathExpr = pathExpr[..^2]; // remove trailing .*
+
+        // Path expression already includes arrows and table names, just append field
+        return $"{pathExpr}.{fieldName}";
+    }
 }

@@ -288,6 +288,36 @@ public class SchemaManager
     }
 
     /// <summary>
+    /// Ensures a SurrealDB pre-computed/aggregate view exists by executing
+    /// <c>DEFINE TABLE IF NOT EXISTS view_name AS SELECT ...</c>.
+    /// </summary>
+    /// <typeparam name="T">The entity type representing the view's result shape.</typeparam>
+    /// <param name="session">The SurrealDB session to execute against.</param>
+    /// <param name="view">The view definition to ensure.</param>
+    /// <param name="ct">Cancellation token.</param>
+    public async Task EnsureViewAsync<T>(
+        ISurrealDbSession session,
+        ViewDefinition<T> view,
+        CancellationToken ct = default) where T : class
+    {
+        var viewName = view.ViewName;
+        _logger.LogInformation("Ensuring view {View}", viewName);
+
+        if (view.IsDrop)
+        {
+            var dropSurql = $"DEFINE TABLE IF NOT EXISTS {viewName} DROP;";
+            _logger.LogDebug("View (DROP) SurrealQL: {Surql}", dropSurql);
+            await session.RawQuery(dropSurql, null, ct).ConfigureAwait(false);
+            return;
+        }
+
+        var selectSurql = view.BuildSelectSurql();
+        var surql = $"DEFINE TABLE IF NOT EXISTS {viewName} AS {selectSurql};";
+        _logger.LogDebug("View SurrealQL: {Surql}", surql);
+        await session.RawQuery(surql, null, ct).ConfigureAwait(false);
+    }
+
+    /// <summary>
     /// Legacy method: ensures a schema for the given type using explicit table name.
     /// Kept for backward compatibility.
     /// </summary>

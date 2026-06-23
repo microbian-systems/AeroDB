@@ -231,6 +231,63 @@ public class DocumentStore : IDocumentStore
             }
         }
 
+        // Auto-create pre-computed/aggregate views (DEFINE TABLE ... AS SELECT ...)
+        if (Options.Views.Configurations.Count > 0)
+        {
+            // ── Default database views (null SchemaName) ──
+            var defaultViewRegs = Options.Views.Configurations
+                .Where(r => r.Definition.SchemaName is null)
+                .ToList();
+
+            if (defaultViewRegs.Count > 0)
+            {
+                await using var viewSession = await _client.CreateSession(ct).ConfigureAwait(false);
+                await viewSession.Use(ns, db, ct).ConfigureAwait(false);
+
+                _logger.LogInformation("Applying {Count} views to default database",
+                    defaultViewRegs.Count);
+                foreach (var reg in defaultViewRegs)
+                {
+                    await reg.ExecuteAsync(viewSession, schemaManager, ct).ConfigureAwait(false);
+                }
+            }
+
+            // ── Per-schema database views (non-null SchemaName) ──
+            var viewSchemaNames = Options.Views.Configurations
+                .Select(r => r.Definition.SchemaName)
+                .Where(s => s is not null)
+                .Distinct(StringComparer.Ordinal)
+                .ToList();
+
+            if (viewSchemaNames.Count > 0)
+            {
+                foreach (var schemaName in viewSchemaNames)
+                {
+                    await using var schemaViewSession = await _client.CreateSession(ct).ConfigureAwait(false);
+                    await schemaViewSession.Use(ns, db, ct).ConfigureAwait(false);
+
+                    // Optionally create the database if it doesn't exist
+                    if (Options.Schema.AutoCreateDatabases)
+                    {
+                        await schemaManager.EnsureDatabaseAsync(schemaViewSession, schemaName!, ct).ConfigureAwait(false);
+                    }
+
+                    // Switch to the schema database
+                    await schemaViewSession.Use(ns, schemaName!, ct).ConfigureAwait(false);
+
+                    var schemaViewRegs = Options.Views.Configurations
+                        .Where(r => r.Definition.SchemaName == schemaName)
+                        .ToList();
+                    _logger.LogInformation("Applying {Count} views to schema {Schema}",
+                        schemaViewRegs.Count, schemaName);
+                    foreach (var reg in schemaViewRegs)
+                    {
+                        await reg.ExecuteAsync(schemaViewSession, schemaManager, ct).ConfigureAwait(false);
+                    }
+                }
+            }
+        }
+
         // Inject logger factory into projections that support it
         if (Options.LoggerFactory is not null)
         {

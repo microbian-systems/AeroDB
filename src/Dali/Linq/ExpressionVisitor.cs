@@ -9,6 +9,7 @@ public class SurrealExpressionVisitor : ExpressionVisitor
     private readonly StringBuilder _sb = new();
     private readonly List<string> _where = new();
     private readonly List<string> _orderBy = new();
+    private readonly List<string> _groupByColumns = new();
     private int? _limit;
     private int? _skip;
     private string _projection = "*";
@@ -19,6 +20,7 @@ public class SurrealExpressionVisitor : ExpressionVisitor
         _sb.Clear();
         _where.Clear();
         _orderBy.Clear();
+        _groupByColumns.Clear();
         _limit = null;
         _skip = null;
         _projection = "*";
@@ -31,6 +33,7 @@ public class SurrealExpressionVisitor : ExpressionVisitor
             TableName = TableName,
             Where = _where,
             OrderBy = _orderBy,
+            GroupBy = [.._groupByColumns],
             Limit = _limit,
             Skip = _skip,
             Projection = _projection,
@@ -39,6 +42,13 @@ public class SurrealExpressionVisitor : ExpressionVisitor
     }
 
     public string? TableName { get; private set; }
+
+    /// <summary>
+    /// Optional view name override. When set, replaces the type-inferred table name
+    /// in the generated SurrealQL. Used by <see cref="ViewQueryExtensions.View{T}"/>
+    /// to query pre-computed views.
+    /// </summary>
+    public string? ViewName { get; set; }
 
     protected override Expression VisitMethodCall(MethodCallExpression node)
     {
@@ -92,6 +102,19 @@ public class SurrealExpressionVisitor : ExpressionVisitor
                 }
                 break;
 
+            case "GroupBy":
+                Visit(node.Arguments[0]);
+                if (StripQuote(node.Arguments[1]) is LambdaExpression gbLambda)
+                {
+                    if (gbLambda.Body is MemberExpression gbMember)
+                        _groupByColumns.Add(gbMember.Member.Name);
+                    else if (gbLambda.Body is NewExpression gbNew)
+                        foreach (var arg in gbNew.Arguments)
+                            if (arg is MemberExpression m)
+                                _groupByColumns.Add(m.Member.Name);
+                }
+                break;
+
             case "Sum":
             case "Min":
             case "Max":
@@ -124,7 +147,7 @@ public class SurrealExpressionVisitor : ExpressionVisitor
     protected override Expression VisitConstant(ConstantExpression node)
     {
         if (node.Value is IQueryable q)
-            TableName = MetadataDispatch.GetTableName(q.ElementType);
+            TableName = ViewName ?? MetadataDispatch.GetTableName(q.ElementType);
         return node;
     }
 
@@ -356,6 +379,19 @@ public class SurrealExpressionVisitor : ExpressionVisitor
 
     private static Expression StripQuote(Expression e)
         => e.NodeType == ExpressionType.Quote ? ((UnaryExpression)e).Operand : e;
+
+    /// <summary>
+    /// Extracts GROUP BY column names from a key selector expression.
+    /// Supports single property (x => x.Category) and anonymous type (x => new { x.Category, x.Region }) selectors.
+    /// </summary>
+    internal static string[] ExtractGroupByColumns<T, TKey>(Expression<Func<T, TKey>> keySelector)
+    {
+        if (keySelector.Body is MemberExpression m)
+            return [m.Member.Name];
+        if (keySelector.Body is NewExpression n)
+            return n.Arguments.OfType<MemberExpression>().Select(x => x.Member.Name).ToArray();
+        return [];
+    }
 }
 
 public class SurrealQueryResult
@@ -367,6 +403,9 @@ public class SurrealQueryResult
     public int? Skip { get; set; }
     public string Projection { get; set; } = "*";
     public bool GroupAll { get; set; }
+
+    /// <summary>GROUP BY column names for aggregate views.</summary>
+    public List<string> GroupBy { get; set; } = [];
 
     /// <summary>Fields to eager-load via SurrealQL FETCH clause.</summary>
     public List<string> FetchFields { get; set; } = [];
@@ -393,6 +432,12 @@ public class SurrealQueryResult
         if (GroupAll)
         {
             sb.Append(" GROUP ALL");
+        }
+
+        if (GroupBy.Count > 0)
+        {
+            sb.Append(" GROUP BY ");
+            sb.Append(string.Join(", ", GroupBy));
         }
 
         if (OrderBy.Count > 0)
@@ -438,6 +483,7 @@ public class SurrealQueryResult
             Skip = Skip,
             Projection = Projection,
             GroupAll = GroupAll,
+            GroupBy = [..GroupBy],
             FetchFields = [..FetchFields],
             Parameters = new Dictionary<string, object?>(Parameters)
         };

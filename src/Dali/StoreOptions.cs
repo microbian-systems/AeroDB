@@ -71,6 +71,12 @@ public class StoreOptions
     public AdvancedOptions Advanced { get; } = new();
 
     /// <summary>
+    /// Configuration for SurrealDB pre-computed/aggregate views (DEFINE TABLE ... AS SELECT ...).
+    /// Views are materialized, incrementally-updating tables created during store initialization.
+    /// </summary>
+    public ViewOptions Views { get; } = new();
+
+    /// <summary>
     /// Configuration modules applied during <see cref="DocumentStore.InitializeAsync"/>.
     /// Add instances directly or register via DI with <c>ConfigureDali&lt;T&gt;()</c>.
     /// </summary>

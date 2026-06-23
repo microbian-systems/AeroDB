@@ -107,10 +107,33 @@ public class SurrealQueryProvider : IQueryProvider
     }
 
     /// <summary>
+    /// Extracts the <see cref="SurrealDbQueryable{T}.ViewName"/> from the source
+    /// queryable in the expression tree, if set.
+    /// </summary>
+    internal static string? ExtractViewName(Expression expression)
+    {
+        if (expression is ConstantExpression c && c.Value is IQueryable q)
+        {
+            var qType = q.GetType();
+            if (qType.IsGenericType && qType.GetGenericTypeDefinition() == typeof(SurrealDbQueryable<>))
+            {
+                var viewNameProp = qType.GetProperty("ViewName",
+                    System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
+                return viewNameProp?.GetValue(q) as string;
+            }
+        }
+        if (expression is MethodCallExpression m && m.Arguments.Count > 0)
+            return ExtractViewName(m.Arguments[0]);
+        if (expression is UnaryExpression u)
+            return ExtractViewName(u.Operand);
+        return null;
+    }
+
+    /// <summary>
     /// Applies a tenant filter to the query if tenancy is active and the target type supports it.
     /// DatabasePerTenant isolates at the database level — no WHERE filter needed.
     /// </summary>
-    private void ApplyTenantFilter(SurrealQueryResult query, Type? elementType)
+    internal void ApplyTenantFilter(SurrealQueryResult query, Type? elementType)
     {
         if (string.IsNullOrEmpty(_tenantId) || elementType is null)
             return;
@@ -129,7 +152,7 @@ public class SurrealQueryProvider : IQueryProvider
     /// Applies a soft-delete filter to the query, excluding documents where <c>Deleted = true</c>
     /// if the element type implements <see cref="ISoftDeleted"/> and soft-delete filtering is enabled.
     /// </summary>
-    private void ApplySoftDeleteFilter(SurrealQueryResult query, Type? elementType)
+    internal void ApplySoftDeleteFilter(SurrealQueryResult query, Type? elementType)
     {
         if (elementType is null)
             return;
@@ -218,6 +241,11 @@ public class SurrealQueryProvider : IQueryProvider
                 query.TableName = MetadataDispatch.GetTableName(q.ElementType);
         }
 
+        // Apply ViewName override if the source queryable has one
+        var viewName = ExtractViewName(expression);
+        if (viewName is not null)
+            query.TableName = viewName;
+
         ApplyTenantFilter(query, typeof(T));
         ApplySoftDeleteFilter(query, typeof(T));
 
@@ -292,6 +320,11 @@ public class SurrealQueryProvider : IQueryProvider
                 query.TableName = MetadataDispatch.GetTableName(q.ElementType);
         }
 
+        // Apply ViewName override if the source queryable has one
+        var viewName = ExtractViewName(expression);
+        if (viewName is not null)
+            query.TableName = viewName;
+
         ApplyTenantFilter(query, typeof(T));
         ApplySoftDeleteFilter(query, typeof(T));
 
@@ -361,6 +394,11 @@ public class SurrealQueryProvider : IQueryProvider
         var visitor = CreateVisitor();
         var query = visitor.Translate(expression);
         ExtractTable(expression, query);
+
+        // Apply ViewName override if the source queryable has one
+        var viewName = ExtractViewName(expression);
+        if (viewName is not null)
+            query.TableName = viewName;
 
         ApplyTenantFilter(query, typeof(T));
         ApplySoftDeleteFilter(query, typeof(T));
@@ -584,9 +622,13 @@ public class SurrealQueryProvider : IQueryProvider
     public async Task<decimal> AggregateAsync<T>(Expression expression, string fieldName, string function, CancellationToken ct = default)
     {
         var visitor = CreateVisitor();
+        var viewName = ExtractViewName(expression);
+        visitor.ViewName = viewName;
         var query = visitor.Translate(expression);
         if (string.IsNullOrEmpty(query.TableName))
             ExtractTable(expression, query);
+        if (viewName is not null)
+            query.TableName = viewName;
 
         ApplyTenantFilter(query, typeof(T));
         ApplySoftDeleteFilter(query, typeof(T));
@@ -616,12 +658,16 @@ public class SurrealQueryProvider : IQueryProvider
     public async Task<int> CountAsync(Expression expression, CancellationToken ct = default)
     {
         var visitor = CreateVisitor();
+        var viewName = ExtractViewName(expression);
+        visitor.ViewName = viewName;
         var query = visitor.Translate(expression);
         if (string.IsNullOrEmpty(query.TableName))
         {
             if (expression is ConstantExpression c && c.Value is IQueryable q)
                 query.TableName = MetadataDispatch.GetTableName(q.ElementType);
         }
+        if (viewName is not null)
+            query.TableName = viewName;
 
         var elementType = ExtractElementType(expression);
         ApplyTenantFilter(query, elementType);
@@ -649,15 +695,60 @@ public class SurrealQueryProvider : IQueryProvider
         return 0;
     }
 
+    /// <summary>
+    /// Executes an ad-hoc aggregate query, applying tenant filters, soft-delete filters,
+    /// schema session routing, and ViewName overrides.
+    /// </summary>
+    internal async Task<List<TResult>> ExecuteAggregateAsync<T, TResult>(
+        AggregateQueryBuilder<T> builder,
+        Expression sourceExpression,
+        CancellationToken ct) where T : class
+    {
+        var visitor = new SurrealExpressionVisitor();
+        var viewName = ExtractViewName(sourceExpression);
+        visitor.ViewName = viewName;
+        var result = visitor.Translate(sourceExpression);
+        if (string.IsNullOrEmpty(result.TableName))
+        {
+            if (sourceExpression is ConstantExpression c && c.Value is IQueryable q)
+                result.TableName = MetadataDispatch.GetTableName(q.ElementType);
+        }
+        if (viewName is not null)
+            result.TableName = viewName;
+
+        ApplyTenantFilter(result, typeof(T));
+        ApplySoftDeleteFilter(result, typeof(T));
+
+        // Override SELECT + GROUP BY with aggregate builder's values
+        result.Projection = builder.BuildSelect();
+        if (builder.GroupByClause is not null)
+            result.GroupBy = builder.GroupByClause.Split(", ").ToList();
+
+        var surql = result.ToSurrealQL();
+        var querySession = await GetSessionForElementType(typeof(T), ct).ConfigureAwait(false);
+        var response = await querySession.RawQuery(surql, result.Parameters, ct).ConfigureAwait(false);
+
+        if (!response.HasErrors && response.Count > 0)
+        {
+            var raw = response.GetValue<List<TResult>>(0);
+            if (raw is not null) return raw;
+        }
+        return [];
+    }
+
     public async Task<bool> AnyAsync(Expression expression, CancellationToken ct = default)
     {
         var visitor = CreateVisitor();
+        var viewName = ExtractViewName(expression);
+        visitor.ViewName = viewName;
         var query = visitor.Translate(expression);
         if (string.IsNullOrEmpty(query.TableName))
         {
             if (expression is ConstantExpression c && c.Value is IQueryable q)
                 query.TableName = MetadataDispatch.GetTableName(q.ElementType);
         }
+        if (viewName is not null)
+            query.TableName = viewName;
 
         var elementType = ExtractElementType(expression);
         ApplyTenantFilter(query, elementType);
