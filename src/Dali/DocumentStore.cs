@@ -29,6 +29,13 @@ public class DocumentStore : IDocumentStore
     public IDaliAdvanced Advanced => _advanced ??= new DaliAdvanced(Client, Options);
 
     /// <summary>
+    /// Async daemon for background projection processing, if events are enabled
+    /// and an <see cref="AsyncDaemon"/> has been started. Set by external code
+    /// when the daemon is created and started.
+    /// </summary>
+    public AsyncDaemon? Daemon { get; set; }
+
+    /// <summary>
     /// Sets the tenant ID for the next session created from this store (DatabasePerTenant mode).
     /// The tenant ID is consumed on the next call to <c>QuerySessionAsync</c>,
     /// <c>LightweightSessionAsync</c>, or <c>DocumentSessionAsync</c>.

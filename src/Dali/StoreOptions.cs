@@ -184,6 +184,11 @@ public class EventSourcingOptions
     public bool Enabled { get; set; }
 
     /// <summary>
+    /// Serialization mode for event data. Default is JSON.
+    /// </summary>
+    public EventSerializationMode SerializationMode { get; set; } = EventSerializationMode.Json;
+
+    /// <summary>
     /// Configuration for SurrealDB native event triggers (DEFINE EVENT).
     /// These are distinct from Dali's Marten-style event sourcing — they fire
     /// at the database level on CREATE/UPDATE/DELETE operations.

@@ -11,10 +11,12 @@ public class EventStore : IEvents
 {
     private readonly ISurrealDbSession _session;
     private readonly ILogger<EventStore> _logger;
+    private readonly StoreOptions? _options;
 
     public EventStore(ISurrealDbSession session, StoreOptions? options = null)
     {
         _session = session;
+        _options = options;
         _logger = options?.LoggerFactory?.CreateLogger<EventStore>()
             ?? NullLogger<EventStore>.Instance;
     }
@@ -51,11 +53,13 @@ public class EventStore : IEvents
         var streamKey = await GetOrCreateStreamKey(streamId, ct).ConfigureAwait(false);
         var wrapped = new List<IEvent>();
 
+        var serializationMode = _options?.Events.SerializationMode ?? EventSerializationMode.Json;
+
         foreach (var evt in events)
         {
             version++;
             sequence++;
-            var dataJson = JsonSerializer.Serialize(evt, JsonOptions);
+
             var record = new EventRecord
             {
                 StreamId = streamId,
@@ -63,9 +67,19 @@ public class EventStore : IEvents
                 Sequence = sequence,
                 StreamKey = streamKey.ToString(),
                 EventType = evt.GetType().Name,
-                DataJson = dataJson,
                 CreatedAt = DateTimeOffset.UtcNow
             };
+
+            if (serializationMode == EventSerializationMode.Binary)
+            {
+                record.DataBinary = JsonSerializer.SerializeToUtf8Bytes(evt, JsonOptions);
+                record.DataJson = null;
+            }
+            else
+            {
+                record.DataJson = JsonSerializer.Serialize(evt, JsonOptions);
+                record.DataBinary = null;
+            }
 
             _logger.LogDebug("Appending event {EventType} to stream {StreamId} (version {Version}, seq {Sequence})",
                 evt.GetType().Name, streamId, version, sequence);
@@ -155,7 +169,12 @@ public class EventStore : IEvents
         // Resolve the concrete event type from the stored name
         object? data;
         var eventTypeName = r.EventType;
-        if (!string.IsNullOrEmpty(eventTypeName) && !string.IsNullOrEmpty(r.DataJson))
+
+        // Determine if we have binary or JSON data
+        var hasBinaryData = r.DataBinary is { Length: > 0 };
+        var hasJsonData = !string.IsNullOrEmpty(r.DataJson);
+
+        if (!string.IsNullOrEmpty(eventTypeName) && (hasBinaryData || hasJsonData))
         {
             Type? type = null;
             try { type = Type.GetType(eventTypeName, throwOnError: false); }
@@ -169,20 +188,36 @@ public class EventStore : IEvents
                     .FirstOrDefault(t => t.Name == eventTypeName);
             }
 
-            if (type != null)
+            if (hasBinaryData)
             {
-                try { data = JsonSerializer.Deserialize(r.DataJson, type, JsonOptions); }
-                catch { data = r.DataJson; }
+                if (type != null)
+                {
+                    try { data = JsonSerializer.Deserialize(r.DataBinary, type, JsonOptions); }
+                    catch { data = r.DataBinary; }
+                }
+                else
+                {
+                    try { data = JsonSerializer.Deserialize<object>(r.DataBinary, JsonOptions) ?? (object)r.DataBinary; }
+                    catch { data = r.DataBinary; }
+                }
             }
             else
             {
-                try { data = JsonSerializer.Deserialize<object>(r.DataJson, JsonOptions) ?? r.DataJson; }
-                catch { data = r.DataJson; }
+                if (type != null)
+                {
+                    try { data = JsonSerializer.Deserialize(r.DataJson, type, JsonOptions); }
+                    catch { data = r.DataJson; }
+                }
+                else
+                {
+                    try { data = JsonSerializer.Deserialize<object>(r.DataJson, JsonOptions) ?? r.DataJson; }
+                    catch { data = r.DataJson; }
+                }
             }
         }
         else
         {
-            data = r.DataJson;
+            data = r.DataJson ?? (object?)r.DataBinary;
         }
 
         var streamKey = string.IsNullOrEmpty(r.StreamKey)
@@ -279,6 +314,8 @@ internal class EventRecord
     public string EventType { get; set; } = "";
     [Column("data_json")]
     public string? DataJson { get; set; }
+    [Column("data_binary")]
+    public byte[]? DataBinary { get; set; }
     [Column("created_at")]
     public DateTimeOffset CreatedAt { get; set; }
 }

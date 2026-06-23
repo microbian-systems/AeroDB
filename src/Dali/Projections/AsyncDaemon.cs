@@ -17,6 +17,11 @@ public class AsyncDaemon : IAsyncDisposable
     private volatile bool _stopped;
     private long _highWaterSequence;
 
+    /// <summary>
+    /// Current health state of the daemon. Updated on each poll cycle.
+    /// </summary>
+    public DaemonHealthState Health { get; private set; } = new(false, null, null, 0, 0, null);
+
     public AsyncDaemon(IDocumentStore store, IReadOnlyList<IProjection> projections, ILoggerFactory? loggerFactory = null)
     {
         _store = store ?? throw new ArgumentNullException(nameof(store));
@@ -37,6 +42,7 @@ public class AsyncDaemon : IAsyncDisposable
                 throw new InvalidOperationException("AsyncDaemon is already running.");
 
             _stopped = false;
+            Health = Health with { IsRunning = true };
             _runTask = RunAsync(pollInterval);
             _logger.LogInformation("AsyncDaemon started with poll interval {PollInterval}", pollInterval);
         }
@@ -56,7 +62,10 @@ public class AsyncDaemon : IAsyncDisposable
         }
 
         if (runTask is null)
+        {
+            Health = Health with { IsRunning = false };
             return;
+        }
 
         try
         {
@@ -76,6 +85,7 @@ public class AsyncDaemon : IAsyncDisposable
             _runTask = null;
         }
 
+        Health = Health with { IsRunning = false };
         _logger.LogInformation("AsyncDaemon stopped");
     }
 
@@ -88,6 +98,8 @@ public class AsyncDaemon : IAsyncDisposable
             {
                 await Task.Delay(pollInterval).ConfigureAwait(false);
                 if (_stopped) break;
+
+                Health = Health with { IsRunning = true };
 
                 var asyncProjections = _projections
                     .Where(p => p.Lifecycle == ProjectionLifecycle.Async)
@@ -139,6 +151,13 @@ public class AsyncDaemon : IAsyncDisposable
 
                 // Save any projected documents added by the projections
                 await session.SaveChangesAsync().ConfigureAwait(false);
+
+                Health = Health with
+                {
+                    LastSuccess = DateTimeOffset.UtcNow,
+                    HighWaterSequence = _highWaterSequence,
+                    LagCount = 0
+                };
             }
             catch (OperationCanceledException)
             {
@@ -147,6 +166,11 @@ public class AsyncDaemon : IAsyncDisposable
             catch (Exception ex)
             {
                 _logger.LogWarning(ex, "AsyncDaemon cycle failed; will retry on next poll");
+                Health = Health with
+                {
+                    LastError = DateTimeOffset.UtcNow,
+                    LastException = ex.Message
+                };
             }
         }
         _logger.LogInformation("AsyncDaemon background loop stopped");

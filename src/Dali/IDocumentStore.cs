@@ -24,6 +24,12 @@ public interface IDocumentStore : IAsyncDisposable
 
     /// <summary>Advanced/low-level SDK access for scenarios Dali doesn't abstract.</summary>
     IDaliAdvanced Advanced { get; }
+
+    /// <summary>
+    /// Async daemon for background projection processing, if events are enabled
+    /// and an <see cref="AsyncDaemon"/> has been started.
+    /// </summary>
+    AsyncDaemon? Daemon { get; }
 }
 
 public interface IQuerySession : IAsyncDisposable
