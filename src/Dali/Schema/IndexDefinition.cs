@@ -26,14 +26,34 @@ public class IndexDefinition
     public (double K1, double B)? Bm25 { get; set; }
 
     /// <summary>
-    /// Vector dimension. Only used when <see cref="Type"/> is <see cref="IndexType.Hnsw"/> or <see cref="IndexType.Mtree"/>.
+    /// Vector dimension. Only used when <see cref="Type"/> is <see cref="IndexType.Hnsw"/> or <see cref="IndexType.Mtree"/> or <see cref="IndexType.Diskann"/>.
     /// </summary>
     public int? VectorDimension { get; set; }
 
     /// <summary>
-    /// Distance function (e.g. "COSINE", "EUCLIDEAN", "MANHATTAN"). Only used when <see cref="Type"/> is <see cref="IndexType.Hnsw"/> or <see cref="IndexType.Mtree"/>.
+    /// Distance function (e.g. "COSINE", "EUCLIDEAN", "MANHATTAN").
+    /// Only used when <see cref="Type"/> is <see cref="IndexType.Hnsw"/>, <see cref="IndexType.Mtree"/>, or <see cref="IndexType.Diskann"/>.
     /// </summary>
     public string? VectorDistance { get; set; }
+
+    /// <summary>
+    /// Element type encoding for vector elements. Used by DISKANN index.
+    /// Valid values: F32 (default), F16, I8, U8.
+    /// HNSW uses F64 by default and accepts F64, F32, I64, I32, I16.
+    /// </summary>
+    public string? VectorElementType { get; set; }
+
+    /// <summary>DiskANN target maximum graph degree (default 64).</summary>
+    public int? DiskannDegree { get; set; }
+
+    /// <summary>DiskANN construction search-list size (default 100).</summary>
+    public int? DiskannLBuild { get; set; }
+
+    /// <summary>DiskANN pruning parameter (default 1.2).</summary>
+    public double? DiskannAlpha { get; set; }
+
+    /// <summary>Whether to use hash-stabilised vector–document keys for DiskANN.</summary>
+    public bool HasHashedVector { get; set; }
 }
 
 /// <summary>
@@ -65,6 +85,14 @@ public enum IndexType
     /// Supports distance functions beyond cosine (Minkowski, Hamming, Jaccard).
     /// </summary>
     Mtree,
+
+    /// <summary>
+    /// DISKANN vector index — DEFINE INDEX ... FIELDS ... DISKANN DIMENSION ... TYPE ... DIST ...
+    /// Disk-based approximate nearest-neighbour search for very large embedding sets.
+    /// Uses the same &lt;|K, EF|&gt; query operator as HNSW. Available since SurrealDB 3.1.
+    /// Best when the working set exceeds available RAM (vs HNSW for in-memory).
+    /// </summary>
+    Diskann,
 
     /// <summary>
     /// Geo-spatial marker index. Uses a standard btree under the hood

@@ -5,7 +5,7 @@
 **Last modified:** 2026-06-23
 **Full plan:** [init-impl-plan.md](init-impl-plan.md)
 **Build:** 0 errors (4 pre-existing warnings)
-**Tests:** 705 passing (all passing, 0 failures)
+**Tests:** 765 passing (all passing, 0 failures)
 
 ---
 

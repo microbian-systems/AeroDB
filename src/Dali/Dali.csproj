@@ -5,6 +5,7 @@
   </PropertyGroup>
   <ItemGroup>
     <InternalsVisibleTo Include="Dali.Tests" />
+    <InternalsVisibleTo Include="Dali.ML" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dali.SourceGenerators\Dali.SourceGenerators.csproj"

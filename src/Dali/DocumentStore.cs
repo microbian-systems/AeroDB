@@ -298,6 +298,32 @@ public class DocumentStore : IDocumentStore
             }
         }
 
+        // Ensure projection progress state table if configured
+        if (Options.ProjectionBuild.EnsureStateTable)
+        {
+            await using var stateSession = await _client.CreateSession(ct).ConfigureAwait(false);
+            await stateSession.Use(ns, db, ct).ConfigureAwait(false);
+            await schemaManager.EnsureProjectionStateTableAsync(stateSession, ct).ConfigureAwait(false);
+        }
+
+        // Rebuild projections on startup if configured
+        if (Options.ProjectionBuild.RebuildOnStartup)
+        {
+            foreach (var projection in Options.Projections)
+            {
+                var name = projection.GetType().Name;
+                var names = Options.ProjectionBuild.RebuildProjectionNames;
+                if (names.Length == 0 || names.Contains(name))
+                {
+                    _logger.LogInformation("Rebuilding projection {ProjectionName}...", name);
+                    await using var rebuildSession = await LightweightSessionAsync(ct).ConfigureAwait(false);
+                    await projection.RebuildAsync(rebuildSession, ct).ConfigureAwait(false);
+                    await rebuildSession.SaveChangesAsync(ct).ConfigureAwait(false);
+                    _logger.LogInformation("Projection {ProjectionName} rebuilt successfully.", name);
+                }
+            }
+        }
+
         _logger.LogInformation("Dali store initialized successfully: ns={Namespace}, db={Database}", ns, db);
     }
 

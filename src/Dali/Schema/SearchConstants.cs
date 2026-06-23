@@ -41,7 +41,7 @@ public static class Search
         public const string Chinese = "chinese";
     }
 
-    /// <summary>Distance functions for HNSW vector indexes.</summary>
+    /// <summary>Distance functions for vector indexes (HNSW, MTREE, DISKANN).</summary>
     public static class Distance
     {
         public const string Cosine = "COSINE";
@@ -50,5 +50,9 @@ public static class Search
         public const string Minkowski = "MINKOWSKI";
         public const string Hamming = "HAMMING";
         public const string Jaccard = "JACCARD";
+        /// <summary>Inner product distance. Supported by DISKANN and HNSW.</summary>
+        public const string InnerProduct = "INNER_PRODUCT";
+        /// <summary>Cosine distance on L2-normalised vectors. Supported by DISKANN.</summary>
+        public const string CosineNormalized = "COSINE_NORMALIZED";
     }
 }

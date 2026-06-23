@@ -114,6 +114,19 @@ public class SchemaManager
     }
 
     /// <summary>
+    /// Ensures the mt_projection_progress table exists for tracking projection rebuild state.
+    /// </summary>
+    public async Task EnsureProjectionStateTableAsync(ISurrealDbSession session, CancellationToken ct = default)
+    {
+        _logger.LogInformation("Ensuring projection progress state table (mt_projection_progress)");
+        await session.RawQuery("DEFINE TABLE mt_projection_progress SCHEMALESS;", null, ct).ConfigureAwait(false);
+        await session.RawQuery("DEFINE FIELD projection_name ON TABLE mt_projection_progress TYPE string;", null, ct).ConfigureAwait(false);
+        await session.RawQuery("DEFINE FIELD last_version ON TABLE mt_projection_progress TYPE int;", null, ct).ConfigureAwait(false);
+        await session.RawQuery("DEFINE FIELD last_updated ON TABLE mt_projection_progress TYPE datetime;", null, ct).ConfigureAwait(false);
+        await session.RawQuery("DEFINE INDEX idx_projection_progress_name ON TABLE mt_projection_progress COLUMNS projection_name UNIQUE;", null, ct).ConfigureAwait(false);
+    }
+
+    /// <summary>
     /// Ensures the specified index exists on the given table.
     /// </summary>
     public async Task EnsureIndexAsync(ISurrealDbSession session, string tableName, IndexDefinition index, CancellationToken ct = default)
@@ -123,6 +136,7 @@ public class SchemaManager
             IndexType.FullText => BuildFullTextIndex(tableName, index),
             IndexType.Hnsw => BuildHnswIndex(tableName, index),
             IndexType.Mtree => BuildMtreeIndex(tableName, index),
+            IndexType.Diskann => BuildDiskannIndex(tableName, index),
             IndexType.Geo => BuildStandardIndex(tableName, index),
             _ => BuildStandardIndex(tableName, index)
         };
@@ -165,6 +179,29 @@ public class SchemaManager
         var dim = index.VectorDimension ?? 1536;
         var dist = index.VectorDistance ?? Search.Distance.Cosine;
         return $"DEFINE INDEX {index.Name} ON TABLE {tableName} FIELDS {columns} MTREE DIMENSION {dim} DIST {dist};";
+    }
+
+    private static string BuildDiskannIndex(string tableName, IndexDefinition index)
+    {
+        var columns = string.Join(", ", index.Columns);
+        var dim = index.VectorDimension ?? 768;
+        var dist = index.VectorDistance ?? Search.Distance.Cosine;
+        var type = index.VectorElementType ?? "F32";
+
+        var sb = new StringBuilder();
+        sb.Append($"DEFINE INDEX {index.Name} ON TABLE {tableName} FIELDS {columns} DISKANN DIMENSION {dim} DIST {dist} TYPE {type}");
+
+        if (index.DiskannDegree.HasValue)
+            sb.Append($" DEGREE {index.DiskannDegree.Value}");
+        if (index.DiskannLBuild.HasValue)
+            sb.Append($" L_BUILD {index.DiskannLBuild.Value}");
+        if (index.DiskannAlpha.HasValue && Math.Abs(index.DiskannAlpha.Value - 1.2) > 0.001)
+            sb.Append($" ALPHA {index.DiskannAlpha.Value.ToString(System.Globalization.CultureInfo.InvariantCulture)}");
+        if (index.HasHashedVector)
+            sb.Append(" HASHED_VECTOR");
+
+        sb.Append(';');
+        return sb.ToString();
     }
 
     /// <summary>

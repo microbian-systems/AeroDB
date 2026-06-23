@@ -21,6 +21,14 @@ public interface IProjection
     /// Apply the projection logic to the given events.
     /// </summary>
     Task ApplyAsync(IProjectionContext context, CancellationToken ct);
+
+    /// <summary>
+    /// Rebuild the projection by replaying ALL events from the event store.
+    /// Used for initial projection creation or recovery after data loss.
+    /// The projection is responsible for handling idempotency — calling
+    /// this twice should produce the same result.
+    /// </summary>
+    Task RebuildAsync(IDocumentSession session, CancellationToken ct);
 }
 
 /// <summary>

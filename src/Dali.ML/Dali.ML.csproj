@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>Dali</RootNamespace>
+    <Description>Experimental ML support for Dali — SurrealML model inference via SurrealQL ml:: functions. Requires SurrealDB compiled with the 'ml' feature.</Description>
+    <IsPackable>true</IsPackable>
+    <PackageId>Dali.ML</PackageId>
+  </PropertyGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="Dali.Tests" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Dali\Dali.csproj" />
+  </ItemGroup>
+</Project>

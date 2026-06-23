@@ -254,14 +254,26 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                         switch (op.Type)
                         {
                             case OperationType.Added:
-                                _logger.LogDebug("CREATE {Type} ({Table})", op.EntityType.Name, table);
-                                var createdResult = await CreateEntityAsync(op, table, targetSession, ct).ConfigureAwait(false);
-                                if (createdResult is not null)
+                                _logger.LogDebug("CREATE/UPSERT {Type} ({Table})", op.EntityType.Name, table);
+                                var entityId = GetEntityId(op.Entity);
+                                if (!string.IsNullOrEmpty(entityId) && op.Entity is IRecord rec)
                                 {
-                                    var idProp = op.EntityType.GetProperty("Id");
-                                    var createdId = createdResult.GetType().GetProperty("Id")?.GetValue(createdResult);
-                                    if (idProp is not null && createdId is not null)
-                                        idProp.SetValue(op.Entity, createdId);
+                                    // Use Upsert (create-or-update) for entities with explicit IDs.
+                                    // This avoids failure when the record already exists (e.g. from
+                                    // inline projections run in a prior session, or RebuildAsync).
+                                    var rid = new RecordIdOf<string>(table, entityId);
+                                    await UpsertRecordAsync(rec, rid, targetSession, ct).ConfigureAwait(false);
+                                }
+                                else
+                                {
+                                    var createdResult = await CreateEntityAsync(op, table, targetSession, ct).ConfigureAwait(false);
+                                    if (createdResult is not null)
+                                    {
+                                        var idProp = op.EntityType.GetProperty("Id");
+                                        var createdId = createdResult.GetType().GetProperty("Id")?.GetValue(createdResult);
+                                        if (idProp is not null && createdId is not null)
+                                            idProp.SetValue(op.Entity, createdId);
+                                    }
                                 }
                                 break;
 

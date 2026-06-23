@@ -252,6 +252,47 @@ public class DocumentMapping<T> : DocumentMapping
     }
 
     /// <summary>
+    /// Defines a DISKANN vector index on the specified property.
+    /// DiskANN is a disk-based approximate nearest-neighbour index for very large
+    /// embedding sets. Uses the same &lt;|K, EF|&gt; query operator as HNSW.
+    /// Available since SurrealDB 3.1. Best when the working set exceeds available RAM.
+    /// </summary>
+    /// <param name="property">The property storing the vector embedding.</param>
+    /// <param name="dimension">The dimensionality of the vector.</param>
+    /// <param name="vectorType">Element type: F32 (default), F16, I8, or U8.</param>
+    /// <param name="distance">The distance function: COSINE (default), EUCLIDEAN, INNER_PRODUCT, or COSINE_NORMALIZED.</param>
+    /// <param name="degree">DiskANN graph degree (default 64). Higher values improve accuracy at cost of memory.</param>
+    /// <param name="lBuild">Construction search-list size (default 100).</param>
+    /// <param name="alpha">DiskANN pruning parameter (default 1.2).</param>
+    /// <param name="hashedVector">Whether to use hash-stabilized vector keys.</param>
+    public DocumentMapping<T> DiskannIndex<TProp>(
+        Expression<Func<T, TProp>> property,
+        int dimension,
+        string vectorType = "F32",
+        string distance = Search.Distance.Cosine,
+        int? degree = null,
+        int? lBuild = null,
+        double? alpha = null,
+        bool hashedVector = false)
+    {
+        var member = ExtractMember(property);
+        Indices.Add(new IndexDefinition
+        {
+            Columns = [member.Name],
+            Name = $"diskann_{Snake(typeof(T).Name)}_{Snake(member.Name)}",
+            Type = IndexType.Diskann,
+            VectorDimension = dimension,
+            VectorDistance = distance,
+            VectorElementType = vectorType,
+            DiskannDegree = degree,
+            DiskannLBuild = lBuild,
+            DiskannAlpha = alpha,
+            HasHashedVector = hashedVector
+        });
+        return this;
+    }
+
+    /// <summary>
     /// Defines a geo-spatial index marker on the specified geometry property.
     /// SurrealDB uses a standard btree under the hood; spatial queries use
     /// bounding-box pre-filters and geo::DISTANCE post-filters.

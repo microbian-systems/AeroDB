@@ -71,6 +71,16 @@ public class StoreOptions
     public AdvancedOptions Advanced { get; } = new();
 
     /// <summary>
+    /// Experimental feature flags. Currently includes SurrealML support.
+    /// </summary>
+    public ExperimentalOptions Experimental { get; } = new();
+
+    /// <summary>
+    /// Projection rebuild and lifecycle configuration.
+    /// </summary>
+    public ProjectionOptions ProjectionBuild { get; } = new();
+
+    /// <summary>
     /// Configuration for SurrealDB pre-computed/aggregate views (DEFINE TABLE ... AS SELECT ...).
     /// Views are materialized, incrementally-updating tables created during store initialization.
     /// </summary>
@@ -179,6 +189,30 @@ public class EventSourcingOptions
     /// at the database level on CREATE/UPDATE/DELETE operations.
     /// </summary>
     public EventTriggerOptions Triggers { get; } = new();
+}
+
+public class ProjectionOptions
+{
+    /// <summary>
+    /// Whether to rebuild all projections during DocumentStore initialization.
+    /// When true, each registered projection's RebuildAsync is called on startup.
+    /// Useful for development or recovering from projection data loss.
+    /// </summary>
+    public bool RebuildOnStartup { get; set; }
+
+    /// <summary>
+    /// Array of projection names to rebuild on startup.
+    /// When empty (default), all projections are rebuilt if <see cref="RebuildOnStartup"/> is true.
+    /// When specified, only the named projections are rebuilt.
+    /// Names should match IProjection EventTypes or a user-defined projection name.
+    /// </summary>
+    public string[] RebuildProjectionNames { get; set; } = [];
+
+    /// <summary>
+    /// Whether to ensure the projection progress state table exists.
+    /// Creates mt_projection_progress if not present.
+    /// </summary>
+    public bool EnsureStateTable { get; set; } = true;
 }
 
 public class FunctionOptions

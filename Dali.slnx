@@ -2,12 +2,11 @@
     <Folder Name="/src/">
         <Project Path="src/Dali/Dali.csproj" />
         <Project Path="src/Dali.EntityFrameworkCore/Dali.EntityFrameworkCore.csproj" />
+        <Project Path="src/Dali.ML/Dali.ML.csproj" />
         <Project Path="src/Dali.SourceGenerators/Dali.SourceGenerators.csproj" />
         <Project Path="src/WolverineFx.Dali/WolverineFx.Dali.csproj" />
     </Folder>
-    <Folder Name="/tests/">
-        <Project Path="tests/Dali.Tests/Dali.Tests.csproj" />
-    </Folder>
+    <Folder Name="/tests/" />
     <Folder Name="/samples/">
         <Project Path="samples/CryptoTrader/CryptoTrader.csproj" />
     </Folder>

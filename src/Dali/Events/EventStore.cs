@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -28,12 +29,10 @@ public class EventStore : IEvents
         {
             try
             {
-                var firstResult = response.GetValue<object>(0);
-                if (firstResult is not null)
+                var records = response.GetValue<List<EventRecord>>(0);
+                if (records is { Count: > 0 })
                 {
-                    var json = JsonSerializer.Serialize(firstResult, JsonOptions);
-                    var records = JsonSerializer.Deserialize<List<EventRecord>>(json, JsonOptions);
-                    return records?.Select(r =>
+                    return records.Select(r =>
                     {
                         if (!string.IsNullOrEmpty(r.DataJson))
                         {
@@ -41,7 +40,7 @@ public class EventStore : IEvents
                             catch { return r.DataJson; }
                         }
                         return r.DataJson ?? "";
-                    }).ToList().AsReadOnly() ?? [];
+                    }).ToList().AsReadOnly();
                 }
             }
             catch
@@ -70,10 +69,13 @@ public class EventStore : IEvents
                 CreatedAt = DateTimeOffset.UtcNow
             };
 
-            var recordJson = JsonSerializer.Serialize(record, JsonOptions);
             _logger.LogDebug("Appending event {EventType} to stream {StreamId} (version {Version})",
                 evt.GetType().Name, streamId, version);
-            await _session.RawQuery($"CREATE mt_events CONTENT {recordJson};", null, ct).ConfigureAwait(false);
+
+            // Use the SDK's typed Create method with CBOR serialization instead of raw SurrealQL.
+            // The [Column] attributes on EventRecord ensure CBOR uses snake_case field names
+            // matching the mt_events schema.
+            await _session.Create("mt_events", record, ct).ConfigureAwait(false);
         }
     }
 
@@ -94,27 +96,22 @@ public class EventStore : IEvents
         {
             try
             {
-                var firstResult = response.GetValue<object>(0);
-                if (firstResult is not null)
+                var records = response.GetValue<List<EventRecord>>(0);
+                if (records is { Count: > 0 })
                 {
-                    var json = JsonSerializer.Serialize(firstResult, JsonOptions);
-                    var records = JsonSerializer.Deserialize<List<EventRecord>>(json, JsonOptions);
-                    if (records is not null)
+                    var results = new List<(string, object, long)>();
+                    foreach (var r in records)
                     {
-                        var results = new List<(string, object, long)>();
-                        foreach (var r in records)
+                        object? evt = r.DataJson;
+                        if (!string.IsNullOrEmpty(r.DataJson))
                         {
-                            object? evt = r.DataJson;
-                            if (!string.IsNullOrEmpty(r.DataJson))
-                            {
-                                try { evt = JsonSerializer.Deserialize<object>(r.DataJson, JsonOptions) ?? r.DataJson; }
-                                catch { evt = r.DataJson; }
-                            }
-                            results.Add((r.StreamId, evt ?? "", r.Version));
+                            try { evt = JsonSerializer.Deserialize<object>(r.DataJson, JsonOptions) ?? r.DataJson; }
+                            catch { evt = r.DataJson; }
                         }
-                        _logger.LogDebug("Fetched {Count} events after version {Version}", results.Count, version);
-                        return results.AsReadOnly();
+                        results.Add((r.StreamId, evt ?? "", r.Version));
                     }
+                    _logger.LogDebug("Fetched {Count} events after version {Version}", results.Count, version);
+                    return results.AsReadOnly();
                 }
             }
             catch
@@ -138,17 +135,9 @@ public class EventStore : IEvents
         {
             try
             {
-                var firstResult = response.GetValue<object>(0);
-                if (firstResult is not null)
-                {
-                    var json = JsonSerializer.Serialize(firstResult, JsonOptions);
-                    var dicts = JsonSerializer.Deserialize<List<Dictionary<string, JsonElement>>>(json, JsonOptions);
-                    if (dicts is not null && dicts.Count > 0 && dicts[0].TryGetValue("version", out var ver)
-                        && ver.ValueKind != JsonValueKind.Null)
-                    {
-                        return ver.GetInt64();
-                    }
-                }
+                var records = response.GetValue<List<EventRecord>>(0);
+                if (records is { Count: > 0 })
+                    return records[0].Version;
             }
             catch
             {
@@ -168,9 +157,14 @@ public class EventStore : IEvents
 
 internal class EventRecord
 {
+    [Column("stream_id")]
     public string StreamId { get; set; } = "";
+    [Column("version")]
     public long Version { get; set; }
+    [Column("event_type")]
     public string EventType { get; set; } = "";
+    [Column("data_json")]
     public string? DataJson { get; set; }
+    [Column("created_at")]
     public DateTimeOffset CreatedAt { get; set; }
 }
