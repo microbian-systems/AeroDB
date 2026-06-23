@@ -50,4 +50,18 @@ public class EventTriggerOptions
         });
         return this;
     }
+
+    /// <summary>
+    /// Adds a trigger with the action built from a <see cref="TriggerActionBuilder"/>.
+    /// Provides compile-time-safe field references for CREATE/UPDATE/DELETE/INSERT/RELATE statements.
+    /// </summary>
+    public EventTriggerOptions AddTrigger<T>(string name,
+        Func<TriggerActionBuilder, TriggerActionBuilder> actionBuilder,
+        string? whenCondition = null, bool async = false, int? retry = null, int? maxDepth = null)
+    {
+        var builder = new TriggerActionBuilder();
+        actionBuilder(builder);
+        var action = builder.Build();
+        return AddTrigger<T>(name, action, whenCondition, async, retry, maxDepth);
+    }
 }

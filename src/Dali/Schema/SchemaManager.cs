@@ -123,6 +123,7 @@ public class SchemaManager
             IndexType.FullText => BuildFullTextIndex(tableName, index),
             IndexType.Hnsw => BuildHnswIndex(tableName, index),
             IndexType.Mtree => BuildMtreeIndex(tableName, index),
+            IndexType.Geo => BuildStandardIndex(tableName, index),
             _ => BuildStandardIndex(tableName, index)
         };
 
@@ -341,6 +342,10 @@ public class SchemaManager
 
     private static string GetSurrealType(Type type)
     {
+        // Check for geometry types first
+        if (type == typeof(GeometryPoint) || type == typeof(GeometryPolygon))
+            return "geometry";
+
         if (type == typeof(string) || type == typeof(Guid)) return "string";
         if (type == typeof(long) || type == typeof(int) || type == typeof(short) || type == typeof(byte)) return "int";
         if (type == typeof(float) || type == typeof(double) || type == typeof(decimal)) return "float";

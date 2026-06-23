@@ -80,13 +80,13 @@ internal sealed class FlushOutgoingMessagesOnDaliCommit : IDocumentSessionListen
     /// <summary>
     /// Called after the SurrealDB transaction has committed successfully.
     /// </summary>
-    public async Task AfterCommitAsync(IDocumentSession session, CancellationToken ct)
+    public async Task AfterCommitAsync(IDocumentSession session, IChangeSet changes, CancellationToken ct)
     {
         await _context.FlushOutgoingMessagesAsync();
     }
 
-    public void BeforeStore(IDocumentSession session, object entity) { }
-    public void AfterStore(IDocumentSession session, object entity) { }
-    public void BeforeDelete(IDocumentSession session, object entity) { }
-    public void AfterDelete(IDocumentSession session, object entity) { }
+    public Task BeforeStoreAsync(IDocumentSession session, object entity, CancellationToken ct) => Task.CompletedTask;
+    public Task AfterStoreAsync(IDocumentSession session, object entity, CancellationToken ct) => Task.CompletedTask;
+    public Task BeforeDeleteAsync(IDocumentSession session, object entity, CancellationToken ct) => Task.CompletedTask;
+    public Task AfterDeleteAsync(IDocumentSession session, object entity, CancellationToken ct) => Task.CompletedTask;
 }

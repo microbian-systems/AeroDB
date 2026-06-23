@@ -150,7 +150,7 @@ internal sealed class TestListener : IDocumentSessionListener
         return Task.CompletedTask;
     }
 
-    public Task AfterCommitAsync(IDocumentSession session, CancellationToken ct)
+    public Task AfterCommitAsync(IDocumentSession session, IChangeSet changes, CancellationToken ct)
     {
         _order.Add("AfterCommit");
         return Task.CompletedTask;
@@ -164,7 +164,7 @@ internal sealed class ThrowingListener : IDocumentSessionListener
     public Task BeforeCommitAsync(IDocumentSession session, CancellationToken ct)
         => throw new InvalidOperationException("Simulated commit failure");
 
-    public Task AfterCommitAsync(IDocumentSession session, CancellationToken ct)
+    public Task AfterCommitAsync(IDocumentSession session, IChangeSet changes, CancellationToken ct)
     {
         AfterCommitCalled = true;
         return Task.CompletedTask;
@@ -182,7 +182,7 @@ internal sealed class CommitTrackingListener : IDocumentSessionListener
         return Task.CompletedTask;
     }
 
-    public Task AfterCommitAsync(IDocumentSession session, CancellationToken ct)
+    public Task AfterCommitAsync(IDocumentSession session, IChangeSet changes, CancellationToken ct)
     {
         AfterCommitCalled = true;
         return Task.CompletedTask;

@@ -133,3 +133,22 @@ public class ProjectRef : Record
 {
     public string Name { get; set; } = "";
 }
+
+// ──────────────────────────────────────────────
+// Geo-spatial and time-series test models
+// ──────────────────────────────────────────────
+
+public class Store : Record
+{
+    public string Name { get; set; } = "";
+    public string Category { get; set; } = "";
+    public GeometryPoint Location { get; set; } = new();
+    public GeometryPolygon? DeliveryZone { get; set; }
+}
+
+public class SensorReading : Record
+{
+    public DateTime Timestamp { get; set; }
+    public double Value { get; set; }
+    public string SensorId { get; set; } = "";
+}

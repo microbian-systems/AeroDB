@@ -261,6 +261,24 @@ public class SurrealExpressionVisitor : ExpressionVisitor
             };
         }
 
+        // Geo function dispatch
+        if (m.Method.DeclaringType?.Name == "Geo")
+        {
+            var args = m.Arguments.Select(a => Operand(a, builder)).ToArray();
+            var geoResult = GeoExpressionHandler.TranslateGeoFunc(m.Method.Name, args);
+            if (geoResult is not null)
+                return geoResult;
+        }
+
+        // Time function dispatch
+        if (m.Method.DeclaringType?.Name == "TimeSeries")
+        {
+            var args = m.Arguments.Select(a => Operand(a, builder)).ToArray();
+            var timeResult = TimeExpressionHandler.TranslateTimeFunc(m.Method.Name, args);
+            if (timeResult is not null)
+                return timeResult;
+        }
+
         throw new NotSupportedException($"Method {m.Method.Name}");
     }
 
@@ -295,6 +313,24 @@ public class SurrealExpressionVisitor : ExpressionVisitor
                 "VectorSimilarityCosine" => $"vector::similarity::cosine({Operand(m.Arguments[0])}, {Operand(m.Arguments[1])})",
                 _ => throw new NotSupportedException($"SurrealFunctions.{m.Method.Name}")
             };
+        }
+
+        // Geo function dispatch
+        if (m.Method.DeclaringType?.Name == "Geo")
+        {
+            var args = m.Arguments.Select(a => Operand(a)).ToArray();
+            var geoResult = GeoExpressionHandler.TranslateGeoFunc(m.Method.Name, args);
+            if (geoResult is not null)
+                return geoResult;
+        }
+
+        // Time function dispatch
+        if (m.Method.DeclaringType?.Name == "TimeSeries")
+        {
+            var args = m.Arguments.Select(a => Operand(a)).ToArray();
+            var timeResult = TimeExpressionHandler.TranslateTimeFunc(m.Method.Name, args);
+            if (timeResult is not null)
+                return timeResult;
         }
 
         throw new NotSupportedException($"Method {m.Method.Name}");

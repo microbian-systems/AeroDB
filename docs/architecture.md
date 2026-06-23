@@ -2,10 +2,10 @@
 
 > .NET Transactional Document DB and Event Store on SurrealDB. Built directly on `SurrealDb.Net` — not an EF Core provider.
 
-**Last modified:** 2026-06-22
+**Last modified:** 2026-06-23
 **Full plan:** [init-impl-plan.md](init-impl-plan.md)
 **Build:** 0 errors (4 pre-existing warnings)
-**Tests:** 505 passing (all passing, 0 failures)
+**Tests:** 705 passing (all passing, 0 failures)
 
 ---
 
@@ -242,6 +242,91 @@ await session.ExecuteSqlAsync("CREATE person CONTENT { name: 'Alice', age: 30 }"
 ```
 
 These methods delegate to the underlying `ISurrealDbSession.RawQuery()` from `surrealdb.net`. Parameters use named `$param` placeholders with a dictionary — safe from injection.
+
+## Lifecycle Hooks (`IDocumentSessionListener`) ✅ Enhanced
+
+Dali provides a comprehensive lifecycle hook system through `IDocumentSessionListener`, registered via `StoreOptions.Listeners`. Hooks are called in a defined order during `SaveChangesAsync`:
+
+```
+BeforeSaveChangesAsync → BeforeStoreAsync (per entity) → AfterStoreAsync (per entity)
+→ BeforeDeleteAsync (per entity) → AfterDeleteAsync (per entity)
+→ AfterSaveChangesAsync → BeforeCommitAsync → (tx.Commit) → AfterCommitAsync(IChangeSet)
+```
+
+### Interface
+
+```csharp
+public interface IDocumentSessionListener
+{
+    Task BeforeSaveChangesAsync(IDocumentSession session, CancellationToken ct);
+    Task BeforeStoreAsync(IDocumentSession session, object entity, CancellationToken ct);
+    Task AfterStoreAsync(IDocumentSession session, object entity, CancellationToken ct);
+    Task BeforeDeleteAsync(IDocumentSession session, object entity, CancellationToken ct);
+    Task AfterDeleteAsync(IDocumentSession session, object entity, CancellationToken ct);
+    Task AfterSaveChangesAsync(IDocumentSession session, CancellationToken ct);
+    Task BeforeCommitAsync(IDocumentSession session, CancellationToken ct);
+    Task AfterCommitAsync(IDocumentSession session, IChangeSet changes, CancellationToken ct);
+}
+```
+
+### IChangeSet
+
+```csharp
+public interface IChangeSet
+{
+    IReadOnlyList<Operation> Operations { get; }
+    IReadOnlyList<(string StreamId, object Event)> AppendedEvents { get; }
+    bool HasChanges { get; }
+}
+```
+
+### Base Class (typed overrides with pattern matching)
+
+```csharp
+public abstract class DocumentSessionListenerBase : IDocumentSessionListener
+{
+    // All 8 hooks have virtual default implementations
+    // Override only the hooks you need
+}
+
+// Usage: pattern-match entity types in overrides
+public class OrderAuditListener : DocumentSessionListenerBase
+{
+    public override async Task AfterStoreAsync(IDocumentSession session, object entity, CancellationToken ct)
+    {
+        if (entity is Order order)
+            await LogAsync($"Order {order.Id} stored");
+    }
+}
+```
+
+## Typed Trigger Actions ✅ New
+
+Dali provides a fluent builder for SurrealDB trigger action bodies with compile-time-safe field references:
+
+```csharp
+o.Events.Triggers.AddTrigger<Order>("order_created", trigger => trigger
+    .OnCreate()
+    .Async(retry: 3)
+    .Action(a => a
+        .Create<AuditLog>(log => {
+            log.Set(x => x.Event, "$event");
+            log.Set(x => x.RecordId, "$after.id");
+        })
+    )
+);
+```
+
+### Builder methods
+
+| Method | SurrealQL |
+|--------|-----------|
+| `.Create<T>().Set(field, value)` | `CREATE t SET field = value` |
+| `.Update<T>().Set(field, value).Where(predicate)` | `UPDATE t SET field = value WHERE predicate` |
+| `.Delete<T>().Where(predicate)` | `DELETE t WHERE predicate` |
+| `.Insert<T>(object data)` | `INSERT INTO t CONTENT { ... }` |
+| `.Relate<TFrom,TEdge,TTo>(fromId, toId).Content(data)` | `RELATE a:t1->e:edge->b:t2 CONTENT { ... }` |
+| `.Raw(string)` | verbatim SurrealQL |
 
 ## Native Event Triggers (DEFINE EVENT)
 
@@ -688,6 +773,147 @@ var active = await session.Query<ActiveUser>()
 - Source tables must exist before view initialization
 
 See [view-support-spec.md](view-support-spec.md) for the full specification.
+
+## Geo-Spatial Queries ✅ Planned
+
+Dali provides a fluent spatial query builder for SurrealDB's native `geometry` type and geo functions. Geometry data is stored as SurrealDB `geometry` (GeoJSON-compatible) and queried via `session.Spatial<T>()`.
+
+### SurrealDB Capabilities
+
+| Feature | SurrealQL | Notes |
+|---------|-----------|-------|
+| Point literal | `(lon, lat)` | Auto-detected as `Geometry(Point)` |
+| Polygon literal | `{type:"Polygon", coordinates:[[[lon,lat],...]]}` | Standard GeoJSON |
+| Distance | `geo::DISTANCE(p1, p2)` | Returns meters |
+| Bearing | `geo::BEARING(p1, p2)` | Returns degrees |
+| Area | `geo::AREA(polygon)` | Square degrees |
+| Containment | `polygon CONTAINS point` / `point INSIDE polygon` | |
+| MTREE spatial index | ❌ Vector-only | Bbox pre-filter compensates |
+
+### API Design
+
+```csharp
+// Geometry POCO
+public class GeometryPoint
+{
+    public double Lng { get; set; }
+    public double Lat { get; set; }
+}
+
+// Define spatial index on store configuration
+o.Schema.For<Store>().SpatialIndex(x => x.Location);
+
+// Nearby query with bounding-box pre-filter
+var nearby = await session.Spatial<Store>()
+    .NearBy(x => x.Location, latitude: 52.52, longitude: 13.405, maxDistanceMeters: 5000)
+    .Take(10)
+    .ToListAsync();
+
+// Polygon containment
+var within = await session.Spatial<Store>()
+    .Within(x => x.Location, polygon: new[] { (0,0), (0,5), (5,5), (5,0), (0,0) })
+    .ToListAsync();
+
+// Proximity sorting
+session.Spatial<Store>()
+    .OrderByDistance(x => x.Location, 52.52, 13.405)
+    .Take(20);
+```
+
+### Bounding-Box Pre-Filtering
+
+`NearBy` queries auto-compute a polygon bbox to filter before the expensive `geo::DISTANCE()` call:
+
+```surql
+SELECT *, geo::DISTANCE(location, (13.405, 52.52)) AS _distance
+FROM store
+WHERE location INSIDE {
+  type: 'Polygon',
+  coordinates: [[[13.344,52.478],[13.466,52.478],[13.466,52.562],[13.344,52.562],[13.344,52.478]]]
+}
+  AND geo::DISTANCE(location, (13.405, 52.52)) <= 5000
+ORDER BY _distance ASC LIMIT 10
+```
+
+Bbox is computed from `maxDistanceMeters` using approximate lat/lng→meters conversions (1° lat ≈ 111 km, 1° lon ≈ 111 km × cos(lat)).
+
+### Geometry Types
+
+| Dali Type | SurrealDB Type | Wire Format |
+|-----------|---------------|-------------|
+| `GeometryPoint` | `geometry` | `(Lng, Lat)` tuple |
+| `GeometryPolygon` | `geometry` | `{type:"Polygon", coordinates:[...]}` |
+
+### Limitations
+- No native spatial index: distance queries are scan-based (bbox pre-filter reduces scan area)
+- Geometry values must be inlined in SurrealQL (cannot use `$param` binding)
+- `geo::DISTANCE` returns meters — implement `GeoUnits.Km`/`.Mi` for UX
+
+## Time Series Queries ✅ Planned
+
+Dali provides a fluent time-series query builder for SurrealDB's temporal bucketing and aggregation. Access via `session.TimeSeries<T>()`.
+
+### SurrealDB Capabilities
+
+| Feature | SurrealQL | Notes |
+|---------|-----------|-------|
+| Floor bucket | `time::floor(dt, 1d)` | Truncate to bucket boundary |
+| Ceil bucket | `time::ceil(dt, 1d)` | Round up to bucket |
+| Round bucket | `time::round(dt, 1d)` | Nearest bucket |
+| Group by bucket | `time::group(dt, "month")` | Calendar-aligned |
+| Component extract | `time::year()`, `month()`, `day()`, `hour()`, `week()` | |
+| Format | `time::format(dt, "%Y-%m-%d")` | String output |
+
+### API Design
+
+```csharp
+// time::floor() based — flexible durations
+var hourly = await session.TimeSeries<SensorReading>()
+    .BucketByFloor(x => x.Timestamp, 1, TimeUnit.Hour)
+    .Select(a => a.Count().As("cnt").Avg(x => x.Value).As("avg_temp"))
+    .Where(x => x.Timestamp >= start && x.Timestamp <= end)
+    .ToListAsync();
+
+// time::group() based — calendar-aligned buckets
+var monthly = await session.TimeSeries<SensorReading>()
+    .BucketByGroup(x => x.Timestamp, TimeBucket.Month)
+    .Select(a => a.Count().As("cnt").Avg(x => x.Value).As("avg_temp"))
+    .ToListAsync();
+
+// Downsampling: auto-compute bucket width for target bucket count
+session.TimeSeries<SensorReading>()
+    .Downsample(x => x.Timestamp, targetBucketCount: 50)
+    .Select(a => a.Min(x => x.Value).As("min").Max(x => x.Value).As("max"));
+```
+
+### Architecture
+
+`TimeSeriesQueryBuilder<T>` delegates to `AggregateQueryBuilder<T>` internally:
+
+```
+TimeSeriesQueryBuilder<T>
+  ├── BucketByFloor()  → time::floor(field, n, unit)
+  ├── BucketByGroup()  → time::group(field, bucket)
+  ├── Downsample()     → auto-compute optimal n and unit
+  ├── Select()         → delegates to AggregateQueryBuilder<T>
+  └── Where()          → time range + extra filters
+```
+
+### Time Buckets
+
+| `TimeBucket` | `time::floor()` equiv | `time::group()` equiv |
+|-------------|----------------------|----------------------|
+| `Hour` | `1h` | — |
+| `Day` | `1d` | — |
+| `Week` | `1w` | `"week"` |
+| `Month` | — | `"month"` |
+| `Quarter` | — | `"quarter"` |
+| `Year` | — | `"year"` |
+
+### Limitations
+- No window functions (moving averages, lag/lead) — compute in-app
+- No `BETWEEN` operator — use `>=` / `<=`
+- Downsampling requires computing bucket width from full time range
 
 ## Project Structure
 

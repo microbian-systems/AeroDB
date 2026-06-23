@@ -170,6 +170,10 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         _logger.LogInformation("SaveChangesAsync: committing {EntityCount} entities and {EventCount} events",
             count, _appendedEvents.Count);
 
+        // Snapshots for IChangeSet in AfterCommitAsync
+        var committedOperations = _unitOfWork.Operations.ToArray();
+        (string StreamId, object Event)[] appendedEventSnapshot = [];
+
         // Cross-DB check: group operations by their database target.
         // SurrealDB cannot span multiple databases in a single transaction,
         // so we reject cross-database batches up front.
@@ -241,9 +245,9 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                             foreach (var listener in Options.Listeners)
                             {
                                 if (op.Type is OperationType.Added or OperationType.Modified)
-                                    listener.BeforeStore(this, op.Entity);
+                                    await listener.BeforeStoreAsync(this, op.Entity, ct).ConfigureAwait(false);
                                 else if (op.Type is OperationType.Deleted or OperationType.SoftDeleted)
-                                    listener.BeforeDelete(this, op.Entity);
+                                    await listener.BeforeDeleteAsync(this, op.Entity, ct).ConfigureAwait(false);
                             }
                         }
 
@@ -325,9 +329,9 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                             foreach (var listener in Options.Listeners)
                             {
                                 if (op.Type is OperationType.Added or OperationType.Modified)
-                                    listener.AfterStore(this, op.Entity);
+                                    await listener.AfterStoreAsync(this, op.Entity, ct).ConfigureAwait(false);
                                 else if (op.Type is OperationType.Deleted or OperationType.SoftDeleted)
-                                    listener.AfterDelete(this, op.Entity);
+                                    await listener.AfterDeleteAsync(this, op.Entity, ct).ConfigureAwait(false);
                             }
                         }
                     }
@@ -392,9 +396,14 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                                 }
                             }
 
+                            // Capture projection-generated operations for IChangeSet
+                            committedOperations = committedOperations.Concat(_unitOfWork.Operations).ToArray();
+
                             _unitOfWork.Clear();
                         }
 
+                        // Snapshot appended events for IChangeSet before clearing
+                        appendedEventSnapshot = _appendedEvents.ToArray();
                         _appendedEvents.Clear();
                     }
                 }
@@ -424,8 +433,13 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
             // AfterCommitAsync hooks (called only after successful commit)
             if (Options.Listeners.Count > 0)
             {
+                var changes = new ChangeSet
+                {
+                    Operations = committedOperations,
+                    AppendedEvents = appendedEventSnapshot ?? []
+                };
                 foreach (var listener in Options.Listeners)
-                    await listener.AfterCommitAsync(this, ct).ConfigureAwait(false);
+                    await listener.AfterCommitAsync(this, changes, ct).ConfigureAwait(false);
             }
 
             var resultCount = count > 0 ? count : _appendedEvents.Count;

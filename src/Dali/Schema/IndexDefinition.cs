@@ -64,7 +64,14 @@ public enum IndexType
     /// Best for smaller datasets or when exact results are required.
     /// Supports distance functions beyond cosine (Minkowski, Hamming, Jaccard).
     /// </summary>
-    Mtree
+    Mtree,
+
+    /// <summary>
+    /// Geo-spatial marker index. Uses a standard btree under the hood
+    /// (SurrealDB has no native spatial index). The marker enables informational
+    /// logging during index creation to document intent.
+    /// </summary>
+    Geo
 }
 
 /// <summary>

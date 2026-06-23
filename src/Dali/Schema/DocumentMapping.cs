@@ -252,6 +252,25 @@ public class DocumentMapping<T> : DocumentMapping
     }
 
     /// <summary>
+    /// Defines a geo-spatial index marker on the specified geometry property.
+    /// SurrealDB uses a standard btree under the hood; spatial queries use
+    /// bounding-box pre-filters and geo::DISTANCE post-filters.
+    /// </summary>
+    /// <param name="property">The property storing the geometry (GeometryPoint or GeometryPolygon).</param>
+    public DocumentMapping<T> SpatialIndex<TProp>(
+        Expression<Func<T, TProp>> property)
+    {
+        var member = ExtractMember(property);
+        Indices.Add(new IndexDefinition
+        {
+            Columns = [member.Name],
+            Name = $"geo_{Snake(typeof(T).Name)}_{Snake(member.Name)}",
+            Type = IndexType.Geo
+        });
+        return this;
+    }
+
+    /// <summary>
     /// Convenience: creates both full-text and HNSW indexes for hybrid search.
     /// Sets up full-text indexes on each of the specified text fields.
     /// </summary>
