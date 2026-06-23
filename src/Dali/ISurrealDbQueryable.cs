@@ -20,6 +20,12 @@ public interface ISurrealDbQueryable<T> : IOrderedQueryable<T>
     Task<decimal> AverageAsync(Expression<Func<T, decimal>> selector, CancellationToken ct = default);
 
     /// <summary>
+    /// Returns the generated SurrealQL for this query without executing it.
+    /// Useful for debugging and logging.
+    /// </summary>
+    string ToCommand();
+
+    /// <summary>
     /// Adds a SurrealQL FETCH clause to eagerly expand a record-typed field.
     ///
     /// <para>SurrealDB's FETCH expands record references inline — the full
@@ -151,6 +157,8 @@ public class SurrealDbQueryable<T> : ISurrealDbQueryable<T>, IAsyncEnumerable<T>
     public Type ElementType { get; }
     public Expression Expression { get; }
     public IQueryProvider Provider => _provider;
+
+    public string ToCommand() => _provider.ToCommand(Expression);
 
     public IEnumerator<T> GetEnumerator()
         => _provider.ToListAsync<T>(Expression, FetchFields, IncludeDescriptors, IncludeSpecs, FilterIncludeSpecs).GetAwaiter().GetResult().GetEnumerator();
@@ -310,6 +318,32 @@ public static class SurrealDbQueryableExtensions
             Expression.Quote(selector));
 
         return (ISurrealDbQueryable<TResult>)source.Provider.CreateQuery<TResult>(expr);
+    }
+
+    /// <summary>
+    /// Filters a sequence of values based on a predicate, preserving the
+    /// <see cref="ISurrealDbQueryable{T}"/> type for further chaining (e.g., Fetch, Include, ToCommand).
+    /// </summary>
+    /// <typeparam name="T">The entity type.</typeparam>
+    /// <param name="source">The queryable source.</param>
+    /// <param name="predicate">A function to test each element for a condition.</param>
+    /// <returns>An <see cref="ISurrealDbQueryable{T}"/> for further chaining.</returns>
+    public static ISurrealDbQueryable<T> Where<T>(
+        this ISurrealDbQueryable<T> source,
+        Expression<Func<T, bool>> predicate)
+        where T : class
+    {
+        if (source is null) throw new ArgumentNullException(nameof(source));
+        if (predicate is null) throw new ArgumentNullException(nameof(predicate));
+
+        var expr = Expression.Call(
+            typeof(Queryable),
+            "Where",
+            [typeof(T)],
+            source.Expression,
+            Expression.Quote(predicate));
+
+        return (ISurrealDbQueryable<T>)source.Provider.CreateQuery<T>(expr);
     }
 
     /// <summary>

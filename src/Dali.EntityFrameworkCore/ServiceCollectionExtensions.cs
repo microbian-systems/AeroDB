@@ -60,4 +60,20 @@ public static class DaliEfCoreServiceCollectionExtensions
         optionsBuilder.ReplaceService<IDbContextTransactionManager, DaliEfCoreTransactionManager<TDbContext>>();
         return optionsBuilder;
     }
+
+    /// <summary>
+    /// Register an EF Core event projection.
+    /// </summary>
+    public static void AddEfCoreProjection<TDbContext, TProjection>(
+        this IServiceCollection services)
+        where TDbContext : DbContext
+        where TProjection : EfCoreEventProjection<TDbContext>, new()
+    {
+        services.AddScoped<TProjection>(sp =>
+        {
+            var projection = new TProjection();
+            projection.SetDbContextFactory(() => sp.GetRequiredService<TDbContext>());
+            return projection;
+        });
+    }
 }

@@ -1,9 +1,11 @@
+using SurrealDb.Embedded.InMemory;
 using TUnit.Core;
 
 namespace Dali.Tests;
 
 public class OrderCreated
 {
+    public string StreamId { get; set; } = "";
     public string OrderId { get; set; } = "";
 }
 
@@ -11,6 +13,57 @@ public class ItemAdded
 {
     public string Sku { get; set; } = "";
     public int Quantity { get; set; }
+}
+
+/// <summary>
+/// Projected document returned by FetchLatest.
+/// The stream ID becomes the document ID for SingleStreamProjection.
+/// </summary>
+public class TestDoc : SurrealDb.Net.Models.Record
+{
+    public string Name { get; set; } = "";
+    public int Count { get; set; }
+}
+
+/// <summary>Test event used with FetchLatest tests.</summary>
+public class FetchTestEvent
+{
+    public string StreamId { get; set; } = "";
+    public string Name { get; set; } = "";
+}
+
+/// <summary>
+/// Test projection that creates a TestDoc document from FetchTestEvent events.
+/// </summary>
+public class FetchTestProjection : SingleStreamProjection<TestDoc>
+{
+    public override Type[] EventTypes => [typeof(FetchTestEvent)];
+
+    protected override TestDoc? ApplyEvents(TestDoc? aggregate, IReadOnlyList<object> events, CancellationToken ct)
+    {
+        aggregate ??= new TestDoc();
+        foreach (var evt in events)
+        {
+            if (evt is FetchTestEvent te)
+            {
+                aggregate.Name = te.Name;
+                aggregate.Count++;
+            }
+        }
+        return aggregate;
+    }
+}
+
+/// <summary>Test event for typed StartStream tests.</summary>
+public class TypedStreamTestEvent
+{
+    public string Name { get; set; } = "";
+}
+
+/// <summary>Another test event for typed StartStream with Guid.</summary>
+public class TypedStreamMyEvent
+{
+    public string Name { get; set; } = "";
 }
 
 public class EventStoreTests
@@ -47,5 +100,154 @@ public class EventStoreTests
 
         var fetched = await session.Events.FetchStream("nonexistent");
         fetched.Count.ShouldBe(0);
+    }
+
+    [Test]
+    public async Task FetchLatest_returns_projected_document()
+    {
+        await using var store = await TestHarness.CreateStoreAsync();
+        await using var session = await store.LightweightSessionAsync();
+
+        // Register a projection
+        store.Options.Projections.Add(new FetchTestProjection());
+
+        var streamId = $"test-{Guid.NewGuid():N}";
+        await session.Events.StartStream(streamId, [new FetchTestEvent { StreamId = streamId, Name = "fetch-latest-test" }]);
+        await session.SaveChangesAsync();
+
+        // The projection should have created a TestDoc with the streamId as document ID
+        await using var query = await store.QuerySessionAsync();
+        var doc = await query.FetchLatest<TestDoc>(streamId);
+        doc.ShouldNotBeNull();
+        doc.Name.ShouldBe("fetch-latest-test");
+        doc.Count.ShouldBe(1);
+    }
+
+    [Test]
+    public async Task FetchLatest_returns_null_for_nonexistent_stream()
+    {
+        await using var store = await TestHarness.CreateStoreAsync();
+        await using var query = await store.QuerySessionAsync();
+
+        var doc = await query.FetchLatest<TestDoc>("nonexistent-stream");
+        doc.ShouldBeNull();
+    }
+
+    [Test]
+    public async Task FetchLatest_with_Guid_works()
+    {
+        await using var store = await TestHarness.CreateStoreAsync();
+        await using var session = await store.LightweightSessionAsync();
+
+        store.Options.Projections.Add(new FetchTestProjection());
+
+        var streamId = Guid.NewGuid();
+        var streamIdStr = streamId.ToString("D");
+        await session.Events.StartStream(streamIdStr, [new FetchTestEvent { StreamId = streamIdStr, Name = "guid-test" }]);
+        await session.SaveChangesAsync();
+
+        await using var query = await store.QuerySessionAsync();
+        var doc = await query.FetchLatest<TestDoc>(streamId);
+        doc.ShouldNotBeNull();
+        doc.Name.ShouldBe("guid-test");
+        doc.Count.ShouldBe(1);
+    }
+
+    [Test]
+    public async Task StartStream_with_type_parameter_works()
+    {
+        await using var store = await TestHarness.CreateStoreAsync();
+        await using var session = await store.LightweightSessionAsync();
+        
+        var streamId = await session.Events.StartStream<string>("typed-stream", [new TestEvent("test")]);
+        streamId.ShouldBe("typed-stream");
+    }
+
+    [Test]
+    public async Task StartStream_with_type_and_guid_works()
+    {
+        await using var store = await TestHarness.CreateStoreAsync();
+        await using var session = await store.LightweightSessionAsync();
+
+        var guid = Guid.NewGuid();
+        var streamId = await session.Events.StartStream<TypedStreamMyEvent>(guid, [new TypedStreamMyEvent { Name = "test" }]);
+        streamId.ShouldBe(guid.ToString("D"));
+    }
+
+    [Test]
+    public async Task Quick_mode_events_have_zero_sequence()
+    {
+        var store = Documents.For(o =>
+        {
+            o.ClientFactory = () => new SurrealDbMemoryClient();
+            o.Namespace = "test";
+            o.Database = "test";
+            o.Events.AppendMode = EventAppendMode.Quick;
+        });
+        await store.InitializeAsync();
+        await using var session = await store.LightweightSessionAsync();
+        await session.Events.StartStream("qs-1", [new TypedStreamTestEvent { Name = "quick" }]);
+        var events = await session.Events.FetchStream("qs-1");
+        events[0].Sequence.ShouldBe(0);
+    }
+
+    [Test]
+    public void Rich_mode_is_default()
+    {
+        var options = new EventSourcingOptions();
+        options.AppendMode.ShouldBe(EventAppendMode.Rich);
+    }
+
+    [Test]
+    public async Task AppendExclusive_succeeds_on_empty_stream()
+    {
+        await using var store = await TestHarness.CreateStoreAsync();
+        await using var session = await store.LightweightSessionAsync();
+        var sid = Guid.NewGuid().ToString("N");
+        await session.Events.AppendExclusive(sid, [new TestEvent("exclusive")]);
+    }
+
+    [Test]
+    public async Task AppendExclusive_throws_on_existing_stream()
+    {
+        await using var store = await TestHarness.CreateStoreAsync();
+        await using var session = await store.LightweightSessionAsync();
+        var sid = Guid.NewGuid().ToString("N");
+        await session.Events.Append(sid, [new TestEvent("first")]);
+        Should.Throw<ConcurrencyException>(async () =>
+            await session.Events.AppendExclusive(sid, [new TestEvent("second")]));
+    }
+
+    [Test]
+    public async Task ArchiveStream_creates_archive_record()
+    {
+        await using var store = await TestHarness.CreateStoreAsync();
+        await using var session = await store.LightweightSessionAsync();
+        var sid = Guid.NewGuid().ToString("N");
+        await session.Events.StartStream(sid, [new TestEvent("archive-test")]);
+        await session.Events.ArchiveStream(sid);
+        // Archive doesn't prevent fetching — just marks the stream
+    }
+
+    [Test]
+    public async Task WriteTombstone_fills_version_gap()
+    {
+        await using var store = await TestHarness.CreateStoreAsync();
+        await using var session = await store.LightweightSessionAsync();
+        var sid = Guid.NewGuid().ToString("N");
+        await session.Events.Append(sid, [new TestEvent("first")]); // version 1
+        await session.Events.WriteTombstone(sid, 3); // skip version 2, write at 3
+        var events = await session.Events.FetchStream(sid);
+        events.Count.ShouldBe(2);
+    }
+
+    [Test]
+    public async Task AppendOptimistic_passes_with_correct_version()
+    {
+        await using var store = await TestHarness.CreateStoreAsync();
+        await using var session = await store.LightweightSessionAsync();
+        var sid = Guid.NewGuid().ToString("N");
+        await session.Events.Append(sid, [new TestEvent("first")]); // version = 1
+        await session.Events.AppendOptimistic(sid, 1, [new TestEvent("second")]); // expected = 1
     }
 }

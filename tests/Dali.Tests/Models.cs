@@ -1,3 +1,4 @@
+using Dali.Metadata;
 using SurrealDb.Net.Models;
 
 namespace Dali.Tests;
@@ -52,6 +53,17 @@ public class AttributedPerson : Person
 {
     [Version]
     public long DocumentVersion { get; set; }
+}
+
+/// <summary>
+/// Model implementing <see cref="IDocumentMetadata"/> for document metadata audit tests.
+/// </summary>
+public class TimestampedDoc : Record, IDocumentMetadata
+{
+    public string Name { get; set; } = "";
+    public DateTimeOffset CreatedAt { get; set; }
+    public DateTimeOffset? LastModified { get; set; }
+    public string? LastModifiedBy { get; set; }
 }
 
 /// <summary>

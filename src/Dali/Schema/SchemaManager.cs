@@ -104,6 +104,10 @@ public class SchemaManager
         await session.RawQuery("DEFINE FIELD data_binary ON TABLE mt_events TYPE option<bytes>;", null, ct).ConfigureAwait(false);
         await session.RawQuery("DEFINE FIELD created_at ON TABLE mt_events TYPE datetime;", null, ct).ConfigureAwait(false);
         await session.RawQuery("DEFINE INDEX mt_events_stream_version ON TABLE mt_events COLUMNS stream_id, version UNIQUE;", null, ct).ConfigureAwait(false);
+        await session.RawQuery("DEFINE TABLE mt_archived_streams SCHEMAFULL;", null, ct).ConfigureAwait(false);
+        await session.RawQuery("DEFINE FIELD stream_id ON TABLE mt_archived_streams TYPE string;", null, ct).ConfigureAwait(false);
+        await session.RawQuery("DEFINE FIELD archived_at ON TABLE mt_archived_streams TYPE datetime;", null, ct).ConfigureAwait(false);
+        await session.RawQuery("DEFINE INDEX mt_archived_streams_id ON TABLE mt_archived_streams COLUMNS stream_id UNIQUE;", null, ct).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -325,6 +329,13 @@ public class SchemaManager
         {
             var fieldSurql = $"DEFINE FIELD {name} ON TABLE {tableName} TYPE {surrealType};";
             await session.RawQuery(fieldSurql, null, ct).ConfigureAwait(false);
+        }
+
+        // Ensure document metadata fields for types implementing IDocumentMetadata
+        if (typeof(Metadata.IDocumentMetadata).IsAssignableFrom(entityType))
+        {
+            await session.RawQuery(
+                $"DEFINE FIELD last_modified_by ON TABLE {tableName} TYPE option<string>;", null, ct).ConfigureAwait(false);
         }
     }
 

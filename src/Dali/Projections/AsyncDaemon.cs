@@ -13,6 +13,7 @@ public class AsyncDaemon : IAsyncDisposable
     private readonly IReadOnlyList<IProjection> _projections;
     private readonly ILogger<AsyncDaemon> _logger;
     private readonly object _lock = new();
+    private readonly AggregateCache _cache = new(1000);
     private Task? _runTask;
     private volatile bool _stopped;
     private long _highWaterSequence;
@@ -21,6 +22,11 @@ public class AsyncDaemon : IAsyncDisposable
     /// Current health state of the daemon. Updated on each poll cycle.
     /// </summary>
     public DaemonHealthState Health { get; private set; } = new(false, null, null, 0, 0, null);
+
+    /// <summary>
+    /// Exposed cache instance for health checks and diagnostics.
+    /// </summary>
+    public AggregateCache? Cache => _cache;
 
     public AsyncDaemon(IDocumentStore store, IReadOnlyList<IProjection> projections, ILoggerFactory? loggerFactory = null)
     {
@@ -136,11 +142,28 @@ public class AsyncDaemon : IAsyncDisposable
                         if (matchingEvents.Count == 0)
                             continue;
 
+                        // Try cache for aggregate — if found, we can skip loading from store
+                        if (_cache.TryGetValue(streamId, out var cached))
+                        {
+                            _logger.LogDebug(
+                                "AsyncDaemon: cache hit for stream {StreamId} on projection {ProjectionType}",
+                                streamId, projection.GetType().Name);
+                        }
+
                         _logger.LogInformation("Async projection {ProjectionType} applied on stream {StreamId}",
                             projection.GetType().Name, streamId);
 
+                        // Enrichment hook: allow projections to pre-load reference data
+                        if (projection is IEnrichProjection enricher)
+                        {
+                            await enricher.EnrichAsync(session, matchingEvents.AsReadOnly(), CancellationToken.None).ConfigureAwait(false);
+                        }
+
                         var context = new ProjectionContext(session, matchingEvents.AsReadOnly());
                         await projection.ApplyAsync(context, CancellationToken.None).ConfigureAwait(false);
+
+                        // Update cache with the projected aggregate result
+                        _cache.Set(streamId, matchingEvents);
                     }
                 }
 

@@ -18,6 +18,25 @@ public class StoreOptions
     public EventSourcingOptions Events { get; } = new();
 
     /// <summary>
+    /// Document hierarchy mappings for polymorphic queries.
+    /// Maps a base document type to its registered subclasses.
+    /// </summary>
+    internal Dictionary<Type, DocumentHierarchy> Hierarchies { get; } = new();
+
+    /// <summary>
+    /// Register a base type for polymorphic document queries.
+    /// <see cref="DocumentHierarchy.AddSubClass{T}"/> to register derived types.
+    /// </summary>
+    public DocumentHierarchy HierarchyFor<TBase>() where TBase : SurrealDb.Net.Models.Record
+    {
+        if (Hierarchies.TryGetValue(typeof(TBase), out var existing))
+            return existing;
+        var hierarchy = new DocumentHierarchy(typeof(TBase));
+        Hierarchies[typeof(TBase)] = hierarchy;
+        return hierarchy;
+    }
+
+    /// <summary>
     /// Configuration for SurrealDB user-defined functions (DEFINE FUNCTION).
     /// Functions are created during store initialization.
     /// </summary>
@@ -57,6 +76,11 @@ public class StoreOptions
     public List<IProjection> Projections { get; } = new();
 
     /// <summary>
+    /// EF Core projections that write through a DbContext.
+    /// </summary>
+    public List<IProjection> EfCoreProjections { get; } = new();
+
+    /// <summary>
     /// When true (default), queries automatically filter out soft-deleted documents
     /// (those where <c>Deleted = true</c>). Set to false for admin views that need
     /// to include soft-deleted records.
@@ -87,10 +111,39 @@ public class StoreOptions
     public ViewOptions Views { get; } = new();
 
     /// <summary>
+    /// Initial data seeders. Called during <see cref="DocumentStore.InitializeAsync"/>
+    /// after schema creation, projections, and views are set up.
+    /// Add implementations to populate seed data on first run.
+    /// </summary>
+    public List<IInitialData> InitialData { get; } = new();
+
+    /// <summary>
     /// Configuration modules applied during <see cref="DocumentStore.InitializeAsync"/>.
     /// Add instances directly or register via DI with <c>ConfigureDali&lt;T&gt;()</c>.
     /// </summary>
     public List<IConfigureDali> Configurators { get; } = new();
+
+    /// <summary>
+    /// Multiple database endpoints for multi-host / read-replica scenarios.
+    /// When configured, sessions route to appropriate endpoints based on <see cref="ReadPreference"/>.
+    /// </summary>
+    public List<DatabaseEndpoint> DatabaseEndpoints { get; } = new();
+
+    /// <summary>
+    /// Read preference for query sessions. Default is <see cref="ReadPreference.Primary"/>.
+    /// </summary>
+    public ReadPreference ReadPreference { get; set; } = ReadPreference.Primary;
+
+    /// <summary>
+    /// Add a database endpoint to the multi-host configuration.
+    /// </summary>
+    public StoreOptions AddDatabaseEndpoint(string endpoint, Action<DatabaseEndpoint>? configure = null)
+    {
+        var ep = new DatabaseEndpoint { Endpoint = endpoint };
+        configure?.Invoke(ep);
+        DatabaseEndpoints.Add(ep);
+        return this;
+    }
 
     public StoreOptions Connection(string endpoint, string? ns = null, string? db = null,
         string? username = null, string? password = null, string? token = null)
@@ -170,6 +223,32 @@ public class SchemaOptions
         EdgeMappings.Add(mapping);
         return this;
     }
+
+    /// <summary>
+    /// Exposes the mt_events table name for raw query scenarios.
+    /// </summary>
+    public string EventsTableName => "mt_events";
+
+    /// <summary>
+    /// Exposes the mt_projection_progress table name for raw query scenarios.
+    /// </summary>
+    public string ProjectionProgressTableName => "mt_projection_progress";
+
+    /// <summary>
+    /// Returns the event store table name for the given stream type.
+    /// All streams share mt_events.
+    /// </summary>
+    public string ForStreams<TStream>() => "mt_events";
+
+    /// <summary>
+    /// Returns the event store table name.
+    /// </summary>
+    public string ForEvents() => "mt_events";
+
+    /// <summary>
+    /// Returns the projection progress table name.
+    /// </summary>
+    public string ForEventProgression() => "mt_projection_progress";
 }
 
 public enum TenancyStyle
@@ -189,11 +268,44 @@ public class EventSourcingOptions
     public EventSerializationMode SerializationMode { get; set; } = EventSerializationMode.Json;
 
     /// <summary>
+    /// Append mode for event store operations. Default is <see cref="EventAppendMode.Rich"/>.
+    /// </summary>
+    public EventAppendMode AppendMode { get; set; } = EventAppendMode.Rich;
+
+    /// <summary>
+    /// Custom database/schema name for event store tables.
+    /// Default is null (uses the main database).
+    /// </summary>
+    public string? DatabaseSchemaName { get; set; }
+
+    /// <summary>
+    /// Custom name for the event store database/schema.
+    /// Default is null (same as DatabaseSchemaName).
+    /// </summary>
+    public string? EventsSchemaName { get; set; }
+
+    /// <summary>
     /// Configuration for SurrealDB native event triggers (DEFINE EVENT).
     /// These are distinct from Dali's Marten-style event sourcing — they fire
     /// at the database level on CREATE/UPDATE/DELETE operations.
     /// </summary>
     public EventTriggerOptions Triggers { get; } = new();
+
+    /// <summary>
+    /// Event upcasters for migrating old event types to new types during deserialization.
+    /// </summary>
+    public List<IEventUpcaster> Upcasters { get; } = new();
+
+    /// <summary>
+    /// Register an event upcaster for type migration.
+    /// When events with <paramref name="oldEventType"/> are deserialized, the
+    /// <paramref name="upcast"/> function transforms them into the new event type.
+    /// </summary>
+    public EventSourcingOptions Upcast<T>(string oldEventType, Func<object, T> upcast) where T : class
+    {
+        Upcasters.Add(new LambdaUpcaster<T>(oldEventType, upcast));
+        return this;
+    }
 }
 
 public class ProjectionOptions

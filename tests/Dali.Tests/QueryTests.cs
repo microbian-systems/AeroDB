@@ -451,6 +451,37 @@ public class QueryTests
         results[0].Name.ShouldBe("Gadget");
     }
 
+    // ─── ToCommand / SQL inspection ─────────────────────────────────
+
+    [Test]
+    public async Task ToCommand_returns_surrealql()
+    {
+        await using var store = await TestHarness.CreateStoreAsync();
+        await using var session = await store.LightweightSessionAsync();
+
+        var sql = session.Query<Person>()
+            .Where(p => p.Age > 25)
+            .ToCommand();
+
+        sql.ShouldNotBeNullOrEmpty();
+        sql.ShouldContain("person");
+        sql.ShouldContain("Age");
+    }
+
+    [Test]
+    public async Task ToCommand_with_select_returns_aliased_sql()
+    {
+        await using var store = await TestHarness.CreateStoreAsync();
+        await using var session = await store.LightweightSessionAsync();
+
+        var sql = session.Query<Person>()
+            .Select(p => new { p.Name })
+            .ToCommand();
+
+        sql.ShouldNotBeNullOrEmpty();
+        sql.ShouldContain("SELECT");
+    }
+
     // ─── PersonDto for MemberInit test ──────────────────────────────
 
     public class PersonDto

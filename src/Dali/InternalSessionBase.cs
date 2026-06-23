@@ -30,6 +30,13 @@ public abstract class InternalSessionBase : IAsyncDisposable
     public string? TenantId { get; set; }
 
     /// <summary>
+    /// The current user/identity for audit metadata (e.g., <see cref="IDocumentMetadata.LastModifiedBy"/>).
+    /// Set this before <c>SaveChangesAsync</c> to populate <see cref="IDocumentMetadata.LastModifiedBy"/>
+    /// via <see cref="Diagnostics.DocumentMetadataListener"/>.
+    /// </summary>
+    public string? CurrentUser { get; set; }
+
+    /// <summary>
     /// Caches forked sessions per schema (database) name so each schema
     /// only creates one forked session per <c>InternalSessionBase</c> lifetime.
     /// See <see cref="GetSessionForSchemaAsync"/>.
@@ -104,6 +111,14 @@ public abstract class InternalSessionBase : IAsyncDisposable
     {
         TenantId = null;
     }
+
+    /// <summary>
+    /// Fetch the latest projected aggregate document for the given stream
+    /// without replaying events. Delegates to <see cref="LoadAsync{T}"/> because
+    /// the stream ID IS the projected document ID for <see cref="SingleStreamProjection{T}"/>.
+    /// </summary>
+    public Task<T?> FetchLatest<T>(string streamId, CancellationToken ct = default) where T : class
+        => LoadAsync<T>(streamId, ct);
 
     public async Task<T?> LoadAsync<T>(string id, CancellationToken ct = default) where T : class
     {

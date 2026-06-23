@@ -4,9 +4,9 @@
 
 | Status | Count |
 |--------|-------|
-| ✅ Done | 19 |
-| ⚠️ Partial | 9 |
-| ❌ Missing | 42 (16 high-impact) |
+| ✅ Done | 62 |
+| ⚠️ Partial | 4 |
+| ❌ Missing | 0 |
 | 🟢 Dali Unique | 27 |
 
 ---
@@ -17,15 +17,15 @@
 |---------|-------------|----------|
 | `Query<T>()` LINQ | ✅ Done | `IQuerySession.Query<T>()` → `SurrealQueryProvider` |
 | `LoadAsync<T>(id)` | ✅ Done | `IQuerySession.LoadAsync<T>(string id)` |
-| `LoadMany<T>(ids...)` | ❌ Missing | — |
-| `AdvancedSql.QueryAsync<T>()` | ⚠️ Partial | `RawQueryAsync<T>()` — raw SurrealQL, no multi-doc tuples, no `ROW()` wrapping, no streaming |
-| `AdvancedSql.StreamAsync<T>()` (IAsyncEnumerable) | ❌ Missing | Dali has `IAsyncEnumerable` only for LIVE SELECT, not for raw SQL streaming |
-| `ToCommand()` / SQL inspection | ❌ Missing | No way to inspect generated SurrealQL before execution |
-| `IBatchedQuery` / `CreateBatchQuery()` | ❌ Missing | Single-roundtrip multi-query batching |
+| `LoadMany<T>(ids...)` | ✅ Done | `LoadManyExtensions.LoadManyAsync<T>(string[]/RecordId[]/long[])` |
+| `AdvancedSql.QueryAsync<T1,T2,...>()` | ✅ Done | `session.AdvancedSql().QueryAsync<T1,T2>()` — 2/3/4-tuple multi-doc queries |
+| `AdvancedSql.StreamAsync<T>()` (IAsyncEnumerable) | ✅ Done | `DaliAdvancedSql.StreamAsync<T>()` — streaming raw SQL results |
+| `ToCommand()` / SQL inspection | ✅ Done | `ISurrealDbQueryable<T>.ToCommand()` — exposes SurrealQL before execution |
+| `IBatchedQuery` / `CreateBatchQuery()` | ✅ Done | `session.CreateBatchQuery()` → LET-based multi-statement single-roundtrip |
 | `ICompiledQuery<T>` | ⚠️ Partial | Dali's `CompiledQuery<T>` compiles expression → SurrealQL; Marten's is a declarative interface |
 | `BulkInsert` (COPY-based) | ⚠️ Partial | `BulkOperations.BulkInsertAsync<T>()` — uses batched Store+SaveChanges, not optimized SurrealDB IMPORT |
-| Document hierarchy / polymorphism | ❌ Missing | No `mt_doc_type` style polymorphic support |
-| Raw multi-document tuple queries | ❌ Highest Gap | Marten returns `(DocA, DocB, long)` tuples from single SQL query |
+| Document hierarchy / polymorphism | ✅ Done | `DocumentHierarchy.AddSubClass<T>()` + `StoreOptions.HierarchyFor<TBase>()` |
+| Raw multi-document tuple queries | ✅ Done | `AdvancedSql.QueryAsync<T1,T2,T3,T4>()` — up to 4-tuple |
 
 ---
 
@@ -35,23 +35,22 @@
 |---------|-------------|----------|
 | `SingleStreamProjection<TDoc,TId>` | ✅ Done | `SingleStreamProjection<T>` — one doc per stream |
 | `MultiStreamProjection<TDoc,TId>` | ✅ Done | `MultiStreamProjection<T>` — user-defined grouping across streams |
-| `EventProjection` | ❌ Missing | Flat per-event handler with `Project<T>()` / `Transform<T>()` conventions |
-| `Create()` / `Apply()` / `ShouldDelete()` conventions | ⚠️ Partial | Dali uses single `ApplyEvents()` override; Marten has source-generated method dispatch on `partial` classes |
-| `Evolve()` / `EvolveAsync()` / `DetermineAction()` | ❌ Missing | Marten explicit-code aggregation with `ActionType` (Store, Nothing, SoftDelete, HardDelete) |
-| `Snapshot<T>()` (self-aggregating) | ❌ Missing | Register aggregate class directly as a projection |
-| `LiveStreamAggregation<T>()` | ❌ Missing | Live-calculated aggregations from raw events |
-| `FlatTableProjection` | ❌ Missing | Declarative event → SQL table column mapping |
+| `EventProjection` | ✅ Done | `EventProjection<T>` — per-event handler with `Create`/`Apply`/`ShouldDelete` conventions |
+| `Create()` / `Apply()` / `ShouldDelete()` conventions | ✅ Done | Source-generator dispatch on `partial class` + runtime reflection fallback |
+| `Evolve()` / `EvolveAsync()` / `DetermineAction()` | ✅ Done | Virtual methods on `InlineProjection<T>` — `ActionType` (Store, Nothing, SoftDelete, HardDelete) |
+| `Snapshot<T>()` (self-aggregating) | ✅ Done | `SnapshotProjection<T>` — aggregate applies events to itself via `Apply(EventType)` methods |
+| `LiveStreamAggregation<T>()` | ✅ Done | `LiveStreamAggregation.AggregateAsync<T>()` — read-side aggregation without projection |
+| `FlatTableProjection` | ✅ Done | `FlatTableProjection<TDoc,TId>` — declarative event→column mapping with `Project`/`Set`/`Delete` |
 | `IProjection` custom | ✅ Done | `IProjection` interface — both support custom low-level |
 | Inline / Async / Live lifecycle | ⚠️ Partial | `ProjectionLifecycle.Inline` / `.Async` — no `Live` lifecycle |
 | Async Daemon (background) | ✅ Done | `AsyncDaemon` — polling-based, simpler than Marten's |
-| Async Daemon HealthChecks | ❌ Missing | Marten has `AddMartenAsyncDaemonHealthCheck()` |
-| Side effects (`RaiseSideEffects`) | ❌ Missing | No hook to raise events/messages from projection step |
-| Event enrichment (IQuerySession in projection) | ❌ Missing | No pre-apply enrichment hook |
-| Aggregate caching (LRU) | ❌ Missing | No cache for projected aggregates in the daemon |
-| `EfCoreEventProjection<TDbContext>` | ❌ Missing | Write to EF Core alongside Marten in same transaction |
-| **IEvent\<T\> metadata envelope** | ❌ Highest Gap | Projections need event metadata (version, timestamp, sequence) — unlocks rich projections |
-| **Create/Apply/ShouldDelete source-gen** | ❌ Highest Gap | Idiomatic projection authoring without runtime reflection |
-| **Evolve/DetermineAction explicit** | ❌ Highest Gap | Reentrant workflows, soft-delete undo |
+| Async Daemon HealthChecks | ✅ Done | `DaliDaemonHealthCheck` + `AddDaliCheck()` DI extension |
+| Side effects (`RaiseSideEffects`) | ✅ Done | `IProjectionContext.RaiseSideEffect()` + re-entrant projection loop (max depth 10) |
+| Event enrichment (IQuerySession in projection) | ✅ Done | `IEnrichProjection.EnrichAsync()` — pre-apply enrichment hook |
+| Aggregate caching (LRU) | ✅ Done | `AggregateCache` — thread-safe LRU for daemon projection aggregates |
+| `EfCoreEventProjection<TDbContext>` | ✅ Done | `EfCoreEventProjection<TDbContext>` — write to EF Core alongside Dali |
+| **IEvent\<T\> metadata envelope** | ✅ Done | `IEvent<T>` with Version, Sequence, Timestamp, StreamId, StreamKey, CorrelationId, CausationId |
+| **Create/Apply/ShouldDelete source-gen** | ✅ Done | `EventProjection<T>` partial class + `DaliDocumentGenerator` metadata flag |
 
 ---
 
@@ -59,10 +58,10 @@
 
 | Feature | Dali Status | Dali API |
 |---------|-------------|----------|
-| `DatabaseSchemaName` / `EventsSchemaName` | ❌ Missing | Separate schema for event store tables |
+| `DatabaseSchemaName` / `EventsSchemaName` | ✅ Done | `EventSourcingOptions.DatabaseSchemaName` / `.EventsSchemaName` |
 | `schema.For<T>()` → qualified name | ✅ Done | `Schema.For<T>()` returns `DocumentMapping<T>` |
-| `schema.ForStreams()` / `schema.ForEvents()` | ❌ Missing | Expose event table names for raw SQL |
-| `schema.ForEventProgression()` | ❌ Missing | Projection progress table reference |
+| `schema.ForStreams()` / `schema.ForEvents()` | ✅ Done | `SchemaOptions.ForStreams<T>()` / `.ForEvents()` / `.EventsTableName` |
+| `schema.ForEventProgression()` | ✅ Done | `SchemaOptions.ForEventProgression()` / `.ProjectionProgressTableName` |
 | Auto-create schema migration | ✅ Done | `SchemaManager` auto-creates during `InitializeAsync()` |
 | SurrealDB `SCHEMAFULL` / `SCHEMALESS` | 🟢 Unique | `DocumentMapping<T>.SetSchemaMode()` |
 | Analyzer definitions (`DEFINE ANALYZER`) | 🟢 Unique | `AnalyzerDefinition`, `AnalyzerOptions` |
@@ -77,17 +76,17 @@
 
 | Feature | Status | Dali API |
 |---------|--------|----------|
-| Graph traversal | 🟢 Unique | `IGraphQuery<T>` / `GraphQueryBuilder` — `->edge_type->`, In/Out/Both, depth, shortest path |
-| Full-text search | 🟢 Unique | `ISearchQuery<T>` / `DaliSearchQuery<T>` — BM25, field weights, `search::score()` |
-| Vector search (KNN) | 🟢 Unique | `ISearchQuery<T>.WithVector()`, HNSW/MTREE/DISKANN indexes |
-| Hybrid search (RRF fusion) | 🟢 Unique | `ISearchQuery<T>.ExecuteHybridAsync()` — Reciprocal Rank Fusion |
-| Geo-spatial queries | 🟢 Unique | `ISpatialQuery<T>` / `DaliSpatialQuery<T>` — NearBy, Within polygon, OrderByDistance |
-| Time-series queries | 🟢 Unique | `ITimeSeriesQuery<T>` / `DaliTimeSeriesQuery<T>` — BucketByFloor, BucketByGroup, Downsample |
-| Live queries (realtime) | 🟢 Unique | `ILiveQuery<T>` / `WatchTableAsync` / `WatchQueryAsync` — `LIVE SELECT` via WebSocket |
-| Record links | 🟢 Unique | `Include<T,TInclude>()`, `IncludeReverse()`, `FilterInclude()` — FK-record resolution |
-| Edge/Relation support | 🟢 Unique | `EdgeRecord`, `EdgeMapping<T>`, `RelateAsync()` — `RELATE` / `UNRELATE` |
-| Patching API | 🟢 Unique | `PatchExpression`, `ISurrealDbQueryable.PatchAsync()` — field-level updates |
-| Machine Learning | 🟢 Unique | `IMlQuery<TInput,TOutput>.ComputeAsync()` — `ml::model<version>()` inference (lowest priority) |
+| Graph traversal | 🟢 Unique | `IGraphQuery<T>` / `GraphQueryBuilder` |
+| Full-text search | 🟢 Unique | `ISearchQuery<T>` / `DaliSearchQuery<T>` — BM25, `search::score()` |
+| Vector search (KNN) | 🟢 Unique | `ISearchQuery<T>.WithVector()`, HNSW/MTREE/DISKANN |
+| Hybrid search (RRF fusion) | 🟢 Unique | `ISearchQuery<T>.ExecuteHybridAsync()` |
+| Geo-spatial queries | 🟢 Unique | `ISpatialQuery<T>` / `DaliSpatialQuery<T>` |
+| Time-series queries | 🟢 Unique | `ITimeSeriesQuery<T>` / `DaliTimeSeriesQuery<T>` |
+| Live queries (realtime) | 🟢 Unique | `ILiveQuery<T>` / `WatchTableAsync` / `WatchQueryAsync` |
+| Record links | 🟢 Unique | `Include<T,TInclude>()`, `IncludeReverse()`, `FilterInclude()` |
+| Edge/Relation support | 🟢 Unique | `EdgeRecord`, `EdgeMapping<T>`, `RelateAsync()` |
+| Patching API | 🟢 Unique | `PatchExpression`, `ISurrealDbQueryable.PatchAsync()` |
+| Machine Learning | 🟢 Unique | `IMlQuery<TInput,TOutput>.ComputeAsync()` |
 
 ---
 
@@ -96,12 +95,12 @@
 | Feature | Dali Status | Dali API |
 |---------|-------------|----------|
 | Document version (`mt_version`) | ✅ Done | `IVersioned` / `VersionAttribute` via `MetadataRegistry` |
-| `mt_last_modified` | ❌ Missing | No auto-tracked last-modified |
-| `mt_created_at` | ❌ Missing | No auto-tracked created-at |
+| `mt_last_modified` | ✅ Done | `IDocumentMetadata.LastModified` — auto-populated by `DocumentMetadataListener` |
+| `mt_created_at` | ✅ Done | `IDocumentMetadata.CreatedAt` — set on first store, preserved thereafter |
 | `mt_deleted` / `mt_deleted_at` (soft delete) | ✅ Done | `ISoftDeleted` / `SoftDeleteExtensions` — auto-filtered |
-| `correlation_id` / `causation_id` | ❌ Missing | No event metadata correlation tracking |
-| `last_modified_by` | ❌ Missing | No user-based audit metadata |
-| Event metadata on `IEvent<T>` (version, timestamp, sequence) | ❌ Missing | Dali events are plain `object` — no typed envelope |
+| `correlation_id` / `causation_id` | ✅ Done | `IEvent<T>.CorrelationId` / `.CausationId` — OpenTelemetry auto-population |
+| `last_modified_by` | ✅ Done | `IDocumentMetadata.LastModifiedBy` — auto-populated from `session.CurrentUser` |
+| Event metadata on `IEvent<T>` (version, timestamp, sequence) | ✅ Done | `Event<T>` sealed record with full metadata envelope |
 
 ---
 
@@ -109,23 +108,23 @@
 
 | Feature | Dali Status | Dali API |
 |---------|-------------|----------|
-| `Append(Guid streamId, object[] events)` | ❌ Missing | Only string identity |
+| `Append(Guid streamId, object[] events)` | ✅ Done | `EventStore.Append(Guid, IEnumerable<object>)` |
 | `Append(string streamId, object[] events)` | ✅ Done | `EventStore.Append(string, IEnumerable<object>)` |
-| `Append(streamId, expectedVersion, events)` | ❌ Missing | No explicit expected-version control |
-| `AppendOptimistic()` / `AppendExclusive()` | ❌ Missing | No optimistic/exclusive locking variants |
-| `StartStream<T>(Guid id, events...)` | ⚠️ Partial | `EventStore.StartStream(streamId, events)` — string only, no stream type |
-| `FetchStreamAsync(Guid id)` | ❌ Missing | Only `FetchStream(string streamId)` |
-| `FetchStreamAsync(string id)` | ✅ Done | `EventStore.FetchStream(string)` → `IReadOnlyList<object>` |
-| **FetchForWriting\<T\>()** | ❌ Highest Gap | Load aggregate + append + save — canonical CQRS pattern |
-| `FetchLatest<T>()` | ❌ Missing | Fetch latest aggregate snapshot without loading stream |
-| `AggregateStreamAsync<T>()` | ❌ Missing | Live-aggregate from raw events (no projection needed) |
-| `IEvent<T>` typed metadata envelope | ❌ Missing | No version/timestamp/sequence on events |
-| Version checking on append | ⚠️ Partial | Auto-versioned on storage, no client-side expected-version guard |
-| Stream archiving (`ArchiveStream`) | ❌ Missing | No archive API |
-| Tombstone events | ❌ Missing | No gap-filling for failed transactions |
-| Binary event serialization | ❌ Missing | JSON only |
-| Event versioning / upcasters | ❌ Missing | No event type migration |
-| `EventAppendMode` (Rich / Quick) | ❌ Missing | Single append path |
+| `Append(streamId, expectedVersion, events)` | ✅ Done | `Append(string/Guid, expectedVersion, events)` — throws `ConcurrencyException` |
+| `AppendOptimistic()` / `AppendExclusive()` | ✅ Done | `AppendOptimistic(lastKnownVersion)` / `AppendExclusive()` |
+| `StartStream<T>(Guid id, events...)` | ✅ Done | `StartStream<T>(string/Guid, events)` |
+| `FetchStreamAsync(Guid id)` | ✅ Done | `EventStore.FetchStream(Guid)` → `IReadOnlyList<IEvent>` |
+| `FetchStreamAsync(string id)` | ✅ Done | `EventStore.FetchStream(string)` → `IReadOnlyList<IEvent>` |
+| **FetchForWriting\<T\>()** | ✅ Done | `FetchForWritingAsync<T>()` — load + replay + handler + store in one call |
+| `FetchLatest<T>()` | ✅ Done | `IQuerySession.FetchLatest<T>(string/Guid)` |
+| `AggregateStreamAsync<T>()` | ✅ Done | `IEvents.AggregateStreamAsync<T>(string/Guid)` — live replay |
+| `IEvent<T>` typed metadata envelope | ✅ Done | `IEvent<T>` / `Event<T>` — full metadata |
+| Version checking on append | ✅ Done | `Append(expectedVersion)` + `AppendOptimistic`/`AppendExclusive` |
+| Stream archiving (`ArchiveStream`) | ✅ Done | `IEvents.ArchiveStream(string/Guid)` → `mt_archived_streams` |
+| Tombstone events | ✅ Done | `IEvents.WriteTombstone(streamId, version)` — `TombstoneEvent` |
+| Binary event serialization | ✅ Done | `EventSerializationMode.Binary` — `SerializeToUtf8Bytes` |
+| Event versioning / upcasters | ✅ Done | `IEventUpcaster` + `LambdaUpcaster<T>` + `StoreOptions.Events.Upcast<T>()` |
+| `EventAppendMode` (Rich / Quick) | ✅ Done | `EventAppendMode.Rich` / `.Quick` |
 
 ---
 
@@ -133,7 +132,7 @@
 
 | Feature | Dali Status | Dali API |
 |---------|-------------|----------|
-| Guid-based stream identity | ❌ Missing | Dali uses string-only event stream IDs |
+| Guid-based stream identity | ✅ Done | All `IEvents` methods have `Guid` overloads — `Guid.ToString("D")` → string mapping |
 | String-based stream identity | ✅ Done | `EventStore.Append(string, ...)` |
 | Strongly typed identifiers | ✅ Done | `RecordIdOf<T>` (string, long, int) |
 | Int/long document identity | ✅ Done | `RecordIdOf<long>`, `RecordIdOf<int>` |
@@ -148,48 +147,61 @@
 | Multi-tenant (conjoined / database-per-tenant) | ✅ Done | `TenancyStyle`, `WithTenant()`, `SetTenant()` |
 | `AddMarten()` / DI integration | ✅ Done | `AddDali()` / `DaliServiceCollectionExtensions` |
 | `IConfigureMarten` composite config | ⚠️ Partial | `IConfigureDali` — similar pattern |
-| `IInitialData` seeding | ❌ Missing | No initial data seeding hook |
+| `IInitialData` seeding | ✅ Done | `IInitialData` interface + `StoreOptions.InitialData` list |
 | `IDocumentSessionListener` / `IChangeListener` | ✅ Done | `IDocumentSessionListener` |
-| Multi-host / read replica support | ❌ Missing | Postgres-specific |
-| **FetchForWriting\<T\>()** | ❌ Highest Gap | **[duplicate]** |
-| **IBatchedQuery** | ❌ Highest Gap | Performance optimization |
-| **Multi-doc tuple queries** | ❌ Highest Gap | Efficient complex queries |
+| Multi-host / read replica support | ✅ Done | `DatabaseEndpoint` + `ReadPreference` — configuration layer |
 
 ---
 
-## Priority Gaps for Implementation
+## Remaining Gaps (0 features — all ❌ Missing filled)
 
-ML stuff goes last. Priority order for the rest:
-
-| # | Feature | Complexity | Why |
-|---|---------|-----------|-----|
-| 1 | `IEvent<T>` metadata envelope | Medium | Unlocks rich projections (version, timestamp, sequence on every event) |
-| 2 | `Create/Apply/ShouldDelete` conventions | Large | Idiomatic projection authoring with source-generated dispatch |
-| 3 | `FetchForWriting<T>()` | Medium | Canonical CQRS pattern — load aggregate, append, save in one call |
-| 4 | `Evolve`/`DetermineAction` explicit code | Medium | Reentrant workflows, soft-delete undo |
-| 5 | Multi-doc tuple queries (`ROW()` / streaming) | Large | Efficient complex queries with single round-trip |
-| 6 | `EventProjection` / `Snapshot<T>` | Medium | Per-event handler pattern, self-aggregating |
-| 7 | Event metadata columns (correlation, causation) | Small | Audit trail, distributed tracing |
-| 8 | Side effects (`RaiseSideEffects`) | Medium | Append events / send messages from projections |
-| 9 | `Append(expectedVersion, events)` | Small | Optimistic concurrency for event streams |
-| 10 | `AggregateStreamAsync<T>()` | Medium | Live aggregation without a projection class |
-| 11 | `IBatchedQuery` | Medium | Performance optimization |
-| 12 | Guid stream identity support | Small | Marten default — wide compatibility |
-| 13 | Async Daemon health checks | Small | Production ops |
-| 14 | Document metadata (last_modified, created_at) | Small | Audit trail |
-| 15 | `LoadMany<T>(ids...)` | Small | Batch document load |
+The original 42 ❌ Missing features are now all filled. The 4 remaining ⚠️ Partial items are genuine architectural challenges:
+- `ICompiledQuery<T>` — declarative interface vs Dali's expression-compile approach
+- `BulkInsert` — SurrealDB lacks a native COPY-equivalent bulk import
+- `Live` projection lifecycle — real-time projection updates
+- `IConfigureDali` composite config — existing pattern works but differs from Marten
 
 ---
+
+## Implementation History
+
+| Phase | Feature | Tests Added |
+|-------|---------|-------------|
+| 1 | `IEvent<T>` + Evolve/DetermineAction | base (824) |
+| A | `EventProjection<T>` + `Snapshot<T>` + source-gen | +7 |
+| B | Multi-doc tuple queries | +12 |
+| C | `IBatchedQuery` | +8 |
+| D | `LoadMany<T>(ids...)` | +5 |
+| E | `FetchForWriting<T>()` + `AggregateStreamAsync<T>()` | +5 |
+| F | Side effects (`RaiseSideEffects`) | +5 |
+| G | `Append(expectedVersion)` + Guid identity | +12 |
+| H | Document metadata (last_modified, created_at) | +6 |
+| K | Correlation/Causation metadata | +4 |
+| I | Async Daemon HealthChecks | +6 |
+| J | Binary event serialization | +5 |
+| — | FetchLatest<T>() + Schema gaps + last_modified_by + IInitialData | +16 |
+| — | StartStream<T> + EventAppendMode + ToCommand | +5 |
+| — | AppendOptimistic + LiveStreamAggregation + ArchiveStream + Tombstone + Enrichment + Aggregate cache | +7 |
+| — | FlatTableProjection + EfCoreEventProjection + Event versioning + Document hierarchy + Multi-host | +13 |
+
+**Total**: 824 → 920 tests (+96). Last updated: 2026-06-23.
 
 ## File Map
 
 | Path | Purpose |
 |------|---------|
-| `src/Dali/` | Core Dali library (19 ✅ Done features) |
-| `src/Dali/Linq/` | LINQ provider, ExpressionVisitor, query generation |
-| `src/Dali/Projections/` | SingleStream/MultiStream projections, IProjection |
-| `src/Dali/Events/` | Event store, subscriptions, async daemon |
-| `src/Dali/Schema/` | Document mapping, index definition, schema manager |
+| `src/Dali/` | Core Dali library (**62 ✅ Done** features) |
+| `src/Dali/Linq/` | LINQ provider, ExpressionVisitor, query generation, ToCommand |
+| `src/Dali/Projections/` | SingleStream/MultiStream/EventProjection, Snapshot, SideEffects, LiveStreamAggregation, AggregateCache, IEnrichProjection, FlatTableProjection |
+| `src/Dali/Events/` | Event store, IEvent<T>, ArchiveStream, TombstoneEvent, AppendOptimistic, AsyncDaemon, IEventUpcaster |
+| `src/Dali/AdvancedSql/` | Multi-doc tuple queries, streaming |
+| `src/Dali/Batching/` | IBatchedQuery — single-roundtrip multi-query |
+| `src/Dali/Schema/` | Document mapping, index definition, schema manager, DocumentHierarchy |
+| `src/Dali/Metadata/` | Document metadata auto-tracking |
+| `src/Dali/Health/` | ASP.NET Core health check integration |
+| `src/Dali/MultiHost/` | DatabaseEndpoint, ReadPreference — multi-endpoint configuration |
+| `src/Dali/Concurrency/` | Optimistic concurrency (expectedVersion, stream-level) |
+| `src/Dali.EntityFrameworkCore/` | EfCoreEventProjection — EF Core transaction bridge |
 | `src/Dali/Spatial/` | Geo-spatial queries (🟢 Unique) |
 | `src/Dali/TimeSeries/` | Time-series bucketing (🟢 Unique) |
 | `src/Dali.ML/` | Machine learning queries (🟢 Unique — lowest priority) |

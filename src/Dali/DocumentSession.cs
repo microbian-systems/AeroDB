@@ -387,6 +387,12 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                                     _logger.LogInformation("Inline projection {ProjectionType} applied on stream {StreamId} (depth {Depth})",
                                         projection.GetType().Name, streamId, depth);
 
+                                    // Enrichment hook: allow projections to pre-load reference data
+                                    if (projection is IEnrichProjection enricher)
+                                    {
+                                        await enricher.EnrichAsync(this, matchingEvents.AsReadOnly(), ct).ConfigureAwait(false);
+                                    }
+
                                     var context = new ProjectionContext(this, matchingEvents.AsReadOnly());
                                     await projection.ApplyAsync(context, ct).ConfigureAwait(false);
 
@@ -743,6 +749,46 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
             return result;
         }
 
+        public async Task<IReadOnlyList<IEvent>> Append(string streamId, long expectedVersion, IEnumerable<object> events, CancellationToken ct = default)
+        {
+            var result = await _inner.Append(streamId, expectedVersion, events, ct).ConfigureAwait(false);
+            foreach (var evt in result)
+                _owner._appendedEvents.Add(evt);
+            return result;
+        }
+
+        public async Task<IReadOnlyList<IEvent>> AppendOptimistic(string streamId, long lastKnownVersion, IEnumerable<object> events, CancellationToken ct = default)
+        {
+            var result = await _inner.AppendOptimistic(streamId, lastKnownVersion, events, ct).ConfigureAwait(false);
+            foreach (var evt in result)
+                _owner._appendedEvents.Add(evt);
+            return result;
+        }
+
+        public async Task<IReadOnlyList<IEvent>> AppendExclusive(string streamId, IEnumerable<object> events, CancellationToken ct = default)
+        {
+            var result = await _inner.AppendExclusive(streamId, events, ct).ConfigureAwait(false);
+            foreach (var evt in result)
+                _owner._appendedEvents.Add(evt);
+            return result;
+        }
+
+        public async Task<IReadOnlyList<IEvent>> AppendOptimistic(Guid streamId, long lastKnownVersion, IEnumerable<object> events, CancellationToken ct = default)
+        {
+            var result = await _inner.AppendOptimistic(streamId, lastKnownVersion, events, ct).ConfigureAwait(false);
+            foreach (var evt in result)
+                _owner._appendedEvents.Add(evt);
+            return result;
+        }
+
+        public async Task<IReadOnlyList<IEvent>> AppendExclusive(Guid streamId, IEnumerable<object> events, CancellationToken ct = default)
+        {
+            var result = await _inner.AppendExclusive(streamId, events, ct).ConfigureAwait(false);
+            foreach (var evt in result)
+                _owner._appendedEvents.Add(evt);
+            return result;
+        }
+
         public async Task<string> StartStream(string streamId, IEnumerable<object> events, CancellationToken ct = default)
         {
             // Use Append directly to capture the wrapped IEvent objects
@@ -752,11 +798,30 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
             return streamId;
         }
 
+        public Task<string> StartStream<T>(string streamId, IEnumerable<object> events, CancellationToken ct = default)
+            => _inner.StartStream<T>(streamId, events, ct);
+
+        public Task<string> StartStream<T>(Guid streamId, IEnumerable<object> events, CancellationToken ct = default)
+            => _inner.StartStream<T>(streamId, events, ct);
+
         public Task<IReadOnlyList<IEvent>> FetchStream(string streamId, CancellationToken ct = default)
             => _inner.FetchStream(streamId, ct);
 
         public Task<IReadOnlyList<IEvent>> FetchAllAfterSequence(
             long sequence, CancellationToken ct = default)
             => _inner.FetchAllAfterSequence(sequence, ct);
+
+        public Task ArchiveStream(string streamId, CancellationToken ct = default)
+            => _inner.ArchiveStream(streamId, ct);
+
+        public Task ArchiveStream(Guid streamId, CancellationToken ct = default)
+            => _inner.ArchiveStream(streamId, ct);
+
+        public async Task<IReadOnlyList<IEvent>> WriteTombstone(string streamId, long version, CancellationToken ct = default)
+        {
+            var result = await _inner.WriteTombstone(streamId, version, ct).ConfigureAwait(false);
+            foreach (var evt in result) _owner._appendedEvents.Add(evt);
+            return result;
+        }
     }
 }

@@ -35,6 +35,14 @@ public interface IDocumentStore : IAsyncDisposable
 public interface IQuerySession : IAsyncDisposable
 {
     Task<T?> LoadAsync<T>(string id, CancellationToken ct = default) where T : class;
+
+    /// <summary>
+    /// Fetch the latest projected aggregate document for the given stream
+    /// without replaying events. Returns null if no projected document exists.
+    /// The stream ID must match the projected document ID (as used by
+    /// <see cref="SingleStreamProjection{T}"/>).
+    /// </summary>
+    Task<T?> FetchLatest<T>(string streamId, CancellationToken ct = default) where T : class;
     ISurrealDbQueryable<T> Query<T>() where T : class;
 
     /// <summary>
@@ -62,6 +70,13 @@ public interface IQuerySession : IAsyncDisposable
     /// Clears the tenant context from this session.
     /// </summary>
     void ClearTenant();
+
+    /// <summary>
+    /// The current user/identity for audit metadata (e.g., <see cref="IDocumentMetadata.LastModifiedBy"/>).
+    /// Set this before <c>SaveChangesAsync</c> to populate <see cref="IDocumentMetadata.LastModifiedBy"/>
+    /// via <see cref="Diagnostics.DocumentMetadataListener"/>.
+    /// </summary>
+    string? CurrentUser { get; set; }
 
     /// <summary>
     /// Starts a live query monitoring a table for all changes (create/update/delete).

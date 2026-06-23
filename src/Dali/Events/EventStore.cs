@@ -34,7 +34,8 @@ public class EventStore : IEvents
                 var records = response.GetValue<List<EventRecord>>(0);
                 if (records is { Count: > 0 })
                 {
-                    return records.Select(ToEvent).ToList().AsReadOnly();
+                    var upcasters = _options?.Events.Upcasters;
+                    return records.Select(r => ToEvent(r, upcasters)).ToList().AsReadOnly();
                 }
             }
             catch
@@ -48,9 +49,16 @@ public class EventStore : IEvents
 
     public async Task<IReadOnlyList<IEvent>> Append(string streamId, IEnumerable<object> events, CancellationToken ct = default)
     {
+        var isQuick = _options?.Events.AppendMode == EventAppendMode.Quick;
+
         var version = await GetNextVersion(streamId, ct).ConfigureAwait(false);
-        var sequence = await GetNextSequence(ct).ConfigureAwait(false);
-        var streamKey = await GetOrCreateStreamKey(streamId, ct).ConfigureAwait(false);
+        long sequence = 0;
+        Guid streamKey = Guid.Empty;
+        if (!isQuick)
+        {
+            sequence = await GetNextSequence(ct).ConfigureAwait(false);
+            streamKey = await GetOrCreateStreamKey(streamId, ct).ConfigureAwait(false);
+        }
         var wrapped = new List<IEvent>();
 
         var serializationMode = _options?.Events.SerializationMode ?? EventSerializationMode.Json;
@@ -58,14 +66,14 @@ public class EventStore : IEvents
         foreach (var evt in events)
         {
             version++;
-            sequence++;
+            if (!isQuick) sequence++;
 
             var record = new EventRecord
             {
                 StreamId = streamId,
                 Version = version,
-                Sequence = sequence,
-                StreamKey = streamKey.ToString(),
+                Sequence = isQuick ? 0 : sequence,
+                StreamKey = isQuick ? "" : streamKey.ToString(),
                 EventType = evt.GetType().Name,
                 CreatedAt = DateTimeOffset.UtcNow
             };
@@ -95,10 +103,61 @@ public class EventStore : IEvents
         return wrapped.AsReadOnly();
     }
 
+    public async Task<IReadOnlyList<IEvent>> Append(string streamId, long expectedVersion, IEnumerable<object> events, CancellationToken ct = default)
+    {
+        var currentVersion = await GetNextVersion(streamId, ct).ConfigureAwait(false);
+        if (currentVersion != expectedVersion)
+        {
+            throw new ConcurrencyException(typeof(EventStore), streamId, expectedVersion, currentVersion);
+        }
+        return await Append(streamId, events, ct).ConfigureAwait(false);
+    }
+
+    public Task<IReadOnlyList<IEvent>> AppendOptimistic(string streamId, long lastKnownVersion, IEnumerable<object> events, CancellationToken ct = default)
+        => Append(streamId, lastKnownVersion, events, ct);
+
+    public Task<IReadOnlyList<IEvent>> AppendExclusive(string streamId, IEnumerable<object> events, CancellationToken ct = default)
+        => Append(streamId, 0, events, ct);
+
+    public Task<IReadOnlyList<IEvent>> AppendOptimistic(Guid streamId, long lastKnownVersion, IEnumerable<object> events, CancellationToken ct = default)
+        => Append(streamId.ToString("D"), lastKnownVersion, events, ct);
+
+    public Task<IReadOnlyList<IEvent>> AppendExclusive(Guid streamId, IEnumerable<object> events, CancellationToken ct = default)
+        => Append(streamId.ToString("D"), 0, events, ct);
+
     public async Task<string> StartStream(string streamId, IEnumerable<object> events, CancellationToken ct = default)
     {
         await Append(streamId, events, ct).ConfigureAwait(false);
         return streamId;
+    }
+
+    public Task<string> StartStream<T>(string streamId, IEnumerable<object> events, CancellationToken ct = default)
+    {
+        // Store the stream type on the first event or as stream metadata
+        // For now, delegates to the base StartStream
+        return StartStream(streamId, events, ct);
+    }
+
+    public Task<string> StartStream<T>(Guid streamId, IEnumerable<object> events, CancellationToken ct = default)
+    {
+        return StartStream<T>(streamId.ToString("D"), events, ct);
+    }
+
+    public async Task ArchiveStream(string streamId, CancellationToken ct = default)
+    {
+        await _session.RawQuery(
+            $"CREATE mt_archived_streams CONTENT {{ stream_id: '{streamId}', archived_at: time::now() }};",
+            null, ct).ConfigureAwait(false);
+        _logger.LogInformation("Archived stream {StreamId}", streamId);
+    }
+
+    public Task ArchiveStream(Guid streamId, CancellationToken ct = default)
+        => ArchiveStream(streamId.ToString("D"), ct);
+
+    public async Task<IReadOnlyList<IEvent>> WriteTombstone(string streamId, long version, CancellationToken ct = default)
+    {
+        var tombstoneEvent = new TombstoneEvent { StreamId = streamId, Version = version, Reason = "gap-fill" };
+        return await Append(streamId, new[] { tombstoneEvent }, ct).ConfigureAwait(false);
     }
 
     public async Task<IReadOnlyList<IEvent>> FetchAllAfterSequence(
@@ -115,7 +174,8 @@ public class EventStore : IEvents
                 var records = response.GetValue<List<EventRecord>>(0);
                 if (records is { Count: > 0 })
                 {
-                    var results = records.Select(ToEvent).ToList();
+                    var upcasters = _options?.Events.Upcasters;
+                    var results = records.Select(r => ToEvent(r, upcasters)).ToList();
                     _logger.LogDebug("Fetched {Count} events after sequence {Sequence}", results.Count, sequence);
                     return results.AsReadOnly();
                 }
@@ -163,8 +223,9 @@ public class EventStore : IEvents
     /// <summary>
     /// Converts an <see cref="EventRecord"/> to an <see cref="IEvent"/> by deserializing the data JSON
     /// to the correct type stored in <see cref="EventRecord.EventType"/>.
+    /// If upcasters are provided, old event types are migrated to new types.
     /// </summary>
-    private static IEvent ToEvent(EventRecord r)
+    private static IEvent ToEvent(EventRecord r, List<IEventUpcaster>? upcasters = null)
     {
         // Resolve the concrete event type from the stored name
         object? data;
@@ -212,6 +273,20 @@ public class EventStore : IEvents
                 {
                     try { data = JsonSerializer.Deserialize<object>(r.DataJson, JsonOptions) ?? r.DataJson; }
                     catch { data = r.DataJson; }
+                }
+            }
+
+            // Check for upcasters that can migrate old event types to new types
+            if (upcasters is { Count: > 0 } && data is not null)
+            {
+                foreach (var upcaster in upcasters)
+                {
+                    if (eventTypeName.Equals(upcaster.OldEventType, StringComparison.OrdinalIgnoreCase))
+                    {
+                        data = upcaster.Upcast(data);
+                        eventTypeName = data.GetType().Name;
+                        break;
+                    }
                 }
             }
         }

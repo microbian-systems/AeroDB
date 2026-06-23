@@ -130,6 +130,33 @@ public class SurrealQueryProvider : IQueryProvider
     }
 
     /// <summary>
+    /// Extracts <see cref="SurrealDbQueryable{T}.FetchFields"/> from the source queryable
+    /// embedded in the expression tree. Used to recover Fetch fields that were set on the
+    /// original <see cref="SurrealDbQueryable{T}"/> before a LINQ operator (e.g.
+    /// <c>.Where()</c>) created a new queryable via <c>CreateQuery</c>.
+    /// </summary>
+    internal static List<string>? ExtractFetchFields(Expression expression)
+    {
+        if (expression is ConstantExpression c && c.Value is IQueryable q)
+        {
+            var qType = q.GetType();
+            if (qType.IsGenericType && qType.GetGenericTypeDefinition() == typeof(SurrealDbQueryable<>))
+            {
+                var fetchFieldsField = qType.GetField("FetchFields",
+                    System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
+                var fields = fetchFieldsField?.GetValue(q) as List<string>;
+                if (fields is { Count: > 0 })
+                    return fields;
+            }
+        }
+        if (expression is MethodCallExpression m && m.Arguments.Count > 0)
+            return ExtractFetchFields(m.Arguments[0]);
+        if (expression is UnaryExpression u)
+            return ExtractFetchFields(u.Operand);
+        return null;
+    }
+
+    /// <summary>
     /// Extracts <see cref="IncludeSpec"/> entries from the source queryable embedded
     /// in the expression tree. Used to recover IncludeSpecs that were set on the
     /// original <see cref="SurrealDbQueryable{T}"/> before a LINQ operator (e.g.
@@ -1318,6 +1345,38 @@ public class SurrealQueryProvider : IQueryProvider
         }
 
         return false;
+    }
+
+    /// <summary>
+    /// Returns the generated SurrealQL for the given expression without executing it.
+    /// Applies the same translation, tenant filtering, soft-delete filtering, view name
+    /// overrides, and Fetch field propagation that would happen during execution.
+    /// Useful for debugging and logging.
+    /// </summary>
+    public string ToCommand(Expression expression)
+    {
+        var visitor = CreateVisitor();
+        var query = visitor.Translate(expression);
+        if (string.IsNullOrEmpty(query.TableName))
+        {
+            if (expression is ConstantExpression c && c.Value is IQueryable q)
+                query.TableName = MetadataDispatch.GetTableName(q.ElementType);
+        }
+
+        var viewName = ExtractViewName(expression);
+        if (viewName is not null)
+            query.TableName = viewName;
+
+        var elementType = ExtractElementType(expression);
+        ApplyTenantFilter(query, elementType);
+        ApplySoftDeleteFilter(query, elementType);
+
+        // Recover FetchFields from the expression tree
+        var fetchFields = ExtractFetchFields(expression);
+        if (fetchFields is { Count: > 0 })
+            query.FetchFields.AddRange(fetchFields);
+
+        return query.ToSurrealQL();
     }
 
     private static readonly JsonSerializerOptions JsonOptions = new()

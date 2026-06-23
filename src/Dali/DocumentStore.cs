@@ -331,6 +331,22 @@ public class DocumentStore : IDocumentStore
             }
         }
 
+        // Run initial data seeders
+        if (Options.InitialData.Count > 0)
+        {
+            _logger.LogInformation("Running {Count} initial data seeders", Options.InitialData.Count);
+            await using var seedSession = await LightweightSessionAsync(ct).ConfigureAwait(false);
+
+            foreach (var seeder in Options.InitialData)
+            {
+                _logger.LogDebug("Running initial data seeder: {Type}", seeder.GetType().Name);
+                await seeder.PopulateAsync(seedSession, ct).ConfigureAwait(false);
+            }
+
+            await seedSession.SaveChangesAsync(ct).ConfigureAwait(false);
+            _logger.LogInformation("Initial data seeding complete");
+        }
+
         _logger.LogInformation("Dali store initialized successfully: ns={Namespace}, db={Database}", ns, db);
     }
 
