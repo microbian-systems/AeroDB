@@ -46,7 +46,7 @@ public class CompiledQueryProvider<T> where T : class
         var surql = result.ToSurrealQL();
         _logger.LogDebug("Compiled ToListAsync executing: {SurrealQL}", surql);
 
-        var response = await _surrealSession.RawQuery(surql, null, ct).ConfigureAwait(false);
+        var response = await _surrealSession.RawQuery(surql, result.Parameters, ct).ConfigureAwait(false);
 
         if (!response.HasErrors && response.Count > 0)
         {
@@ -67,7 +67,7 @@ public class CompiledQueryProvider<T> where T : class
         var surql = result.ToSurrealQL();
         _logger.LogDebug("Compiled FirstOrDefaultAsync executing: {SurrealQL}", surql);
 
-        var response = await _surrealSession.RawQuery(surql, null, ct).ConfigureAwait(false);
+        var response = await _surrealSession.RawQuery(surql, result.Parameters, ct).ConfigureAwait(false);
 
         if (!response.HasErrors && response.Count > 0)
         {

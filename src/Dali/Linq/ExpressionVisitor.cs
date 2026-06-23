@@ -12,6 +12,7 @@ public class SurrealExpressionVisitor : ExpressionVisitor
     private int? _limit;
     private int? _skip;
     private string _projection = "*";
+    private SurrealCommandBuilder _cmdBuilder = new();
 
     public SurrealQueryResult Translate(Expression expression)
     {
@@ -22,6 +23,7 @@ public class SurrealExpressionVisitor : ExpressionVisitor
         _skip = null;
         _projection = "*";
         TableName = null;
+        _cmdBuilder = new SurrealCommandBuilder();
 
         Visit(expression);
         return new SurrealQueryResult
@@ -31,7 +33,8 @@ public class SurrealExpressionVisitor : ExpressionVisitor
             OrderBy = _orderBy,
             Limit = _limit,
             Skip = _skip,
-            Projection = _projection
+            Projection = _projection,
+            Parameters = _cmdBuilder.Parameters
         };
     }
 
@@ -45,7 +48,7 @@ public class SurrealExpressionVisitor : ExpressionVisitor
                 Visit(node.Arguments[0]);
                 var lambda = StripQuote(node.Arguments[1]) as LambdaExpression;
                 if (lambda?.Body is not null)
-                    _where.Add(TranslateCondition(lambda.Body));
+                    _where.Add(TranslateCondition(lambda.Body, _cmdBuilder));
                 break;
 
             case "OrderBy":
@@ -125,6 +128,16 @@ public class SurrealExpressionVisitor : ExpressionVisitor
         return node;
     }
 
+    internal static string TranslateCondition(Expression expr, SurrealCommandBuilder builder) => expr switch
+    {
+        BinaryExpression b => TranslateBinary(b, builder),
+        MethodCallExpression m => TranslateMethod(m, builder),
+        UnaryExpression u when u.NodeType == ExpressionType.Not
+            => $"NOT ({TranslateCondition(u.Operand, builder)})",
+        MemberExpression m => m.Member.Name,
+        _ => ""
+    };
+
     internal static string TranslateCondition(Expression expr) => expr switch
     {
         BinaryExpression b => TranslateBinary(b),
@@ -134,6 +147,34 @@ public class SurrealExpressionVisitor : ExpressionVisitor
         MemberExpression m => m.Member.Name,
         _ => ""
     };
+
+    private static string TranslateBinary(BinaryExpression b, SurrealCommandBuilder builder)
+    {
+        var left = Operand(b.Left, builder);
+        var right = Operand(b.Right, builder);
+        var op = b.NodeType switch
+        {
+            ExpressionType.Equal => "=",
+            ExpressionType.NotEqual => "!=",
+            ExpressionType.GreaterThan => ">",
+            ExpressionType.GreaterThanOrEqual => ">=",
+            ExpressionType.LessThan => "<",
+            ExpressionType.LessThanOrEqual => "<=",
+            ExpressionType.AndAlso => "AND",
+            ExpressionType.OrElse => "OR",
+            ExpressionType.Add => "+",
+            ExpressionType.Subtract => "-",
+            ExpressionType.Multiply => "*",
+            ExpressionType.Divide => "/",
+            ExpressionType.Modulo => "%",
+            _ => throw new NotSupportedException($"Operator {b.NodeType}")
+        };
+
+        if (b.NodeType is ExpressionType.AndAlso or ExpressionType.OrElse)
+            return $"({left}) {op} ({right})";
+
+        return $"{left} {op} {right}";
+    }
 
     private static string TranslateBinary(BinaryExpression b)
     {
@@ -163,6 +204,43 @@ public class SurrealExpressionVisitor : ExpressionVisitor
         return $"{left} {op} {right}";
     }
 
+    private static string TranslateMethod(MethodCallExpression m, SurrealCommandBuilder builder)
+    {
+        if (m.Method.DeclaringType == typeof(string))
+        {
+            var obj = Operand(m.Object!, builder);
+            var arg = Operand(m.Arguments[0], builder);
+            return m.Method.Name switch
+            {
+                "Contains" => $"string::contains({obj}, {arg})",
+                "StartsWith" => $"string::startsWith({obj}, {arg})",
+                "EndsWith" => $"string::endsWith({obj}, {arg})",
+                _ => throw new NotSupportedException($"String.{m.Method.Name}")
+            };
+        }
+
+        if (m.Method.Name == "Contains" && m.Arguments.Count == 1)
+        {
+            var col = Operand(m.Object!, builder);
+            var item = Operand(m.Arguments[0], builder);
+            return $"{col} CONTAINS {item}";
+        }
+
+        // SurrealFunctions translation
+        if (m.Method.DeclaringType == typeof(SurrealFunctions))
+        {
+            return m.Method.Name switch
+            {
+                "Score" => $"search::score({Operand(m.Arguments[0], builder)})",
+                "VectorDistanceKnn" => "vector::distance::knn()",
+                "VectorSimilarityCosine" => $"vector::similarity::cosine({Operand(m.Arguments[0], builder)}, {Operand(m.Arguments[1], builder)})",
+                _ => throw new NotSupportedException($"SurrealFunctions.{m.Method.Name}")
+            };
+        }
+
+        throw new NotSupportedException($"Method {m.Method.Name}");
+    }
+
     private static string TranslateMethod(MethodCallExpression m)
     {
         if (m.Method.DeclaringType == typeof(string))
@@ -185,7 +263,6 @@ public class SurrealExpressionVisitor : ExpressionVisitor
             return $"{col} CONTAINS {item}";
         }
 
-        // SurrealFunctions translation
         if (m.Method.DeclaringType == typeof(SurrealFunctions))
         {
             return m.Method.Name switch
@@ -199,6 +276,14 @@ public class SurrealExpressionVisitor : ExpressionVisitor
 
         throw new NotSupportedException($"Method {m.Method.Name}");
     }
+
+    private static string Operand(Expression expr, SurrealCommandBuilder builder) => expr switch
+    {
+        ConstantExpression c => FormatValue(c.Value, builder),
+        MemberExpression m => MemberPath(m),
+        UnaryExpression u when u.NodeType == ExpressionType.Convert => Operand(u.Operand, builder),
+        _ => TranslateCondition(expr, builder)
+    };
 
     private static string Operand(Expression expr) => expr switch
     {
@@ -255,6 +340,13 @@ public class SurrealExpressionVisitor : ExpressionVisitor
         _ => val.ToString()!
     };
 
+    private static string FormatValue(object? val, SurrealCommandBuilder builder) => val switch
+    {
+        null => "NONE",
+        bool b => b ? "true" : "false",
+        _ => builder.Parameter(val)
+    };
+
     private static string Snake(string name)
     {
         if (string.IsNullOrEmpty(name)) return name;
@@ -278,6 +370,10 @@ public class SurrealQueryResult
 
     /// <summary>Fields to eager-load via SurrealQL FETCH clause.</summary>
     public List<string> FetchFields { get; set; } = [];
+
+    /// <summary>Parameter dictionary for safe, parameterized SurrealQL queries.</summary>
+    public IReadOnlyDictionary<string, object?> Parameters { get; set; }
+        = new Dictionary<string, object?>();
 
     public string ToSurrealQL()
     {
@@ -342,7 +438,8 @@ public class SurrealQueryResult
             Skip = Skip,
             Projection = Projection,
             GroupAll = GroupAll,
-            FetchFields = [..FetchFields]
+            FetchFields = [..FetchFields],
+            Parameters = new Dictionary<string, object?>(Parameters)
         };
     }
 }

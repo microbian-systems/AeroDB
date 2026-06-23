@@ -258,7 +258,7 @@ public class SurrealQueryProvider : IQueryProvider
 
         _logger.LogDebug("ToSurrealQL: {Surql}", surql);
         var querySession = await GetSessionForElementType(typeof(T), ct).ConfigureAwait(false);
-        var response = await querySession.RawQuery(surql, null, ct).ConfigureAwait(false);
+        var response = await querySession.RawQuery(surql, query.Parameters, ct).ConfigureAwait(false);
 
         if (hasIncludes)
         {
@@ -332,7 +332,7 @@ public class SurrealQueryProvider : IQueryProvider
 
         _logger.LogDebug("FirstOrDefaultAsync SurrealQL: {Surql}", surql);
         var querySession = await GetSessionForElementType(typeof(T), ct).ConfigureAwait(false);
-        var response = await querySession.RawQuery(surql, null, ct).ConfigureAwait(false);
+        var response = await querySession.RawQuery(surql, query.Parameters, ct).ConfigureAwait(false);
 
         if (hasIncludes)
         {
@@ -402,7 +402,7 @@ public class SurrealQueryProvider : IQueryProvider
 
         _logger.LogDebug("SingleOrDefaultAsync SurrealQL: {Surql}", surql);
         var querySession = await GetSessionForElementType(typeof(T), ct).ConfigureAwait(false);
-        var response = await querySession.RawQuery(surql, null, ct).ConfigureAwait(false);
+        var response = await querySession.RawQuery(surql, query.Parameters, ct).ConfigureAwait(false);
 
         if (hasIncludes)
         {
@@ -601,7 +601,7 @@ public class SurrealQueryProvider : IQueryProvider
         var surql = query.ToSurrealQL();
         _logger.LogDebug("AggregateAsync ({Function}) SurrealQL: {Surql}", function, surql);
         var aggSession = await GetSessionForElementType(typeof(T), ct).ConfigureAwait(false);
-        var response = await aggSession.RawQuery(surql, null, ct).ConfigureAwait(false);
+        var response = await aggSession.RawQuery(surql, query.Parameters, ct).ConfigureAwait(false);
 
         if (!response.HasErrors && response.Count > 0)
         {
@@ -637,7 +637,7 @@ public class SurrealQueryProvider : IQueryProvider
         var surql = query.ToSurrealQL();
         _logger.LogDebug("CountAsync SurrealQL: {Surql}", surql);
         var countSession = await GetSessionForElementType(elementType ?? typeof(object), ct).ConfigureAwait(false);
-        var response = await countSession.RawQuery(surql, null, ct).ConfigureAwait(false);
+        var response = await countSession.RawQuery(surql, query.Parameters, ct).ConfigureAwait(false);
 
         if (!response.HasErrors && response.Count > 0)
         {
@@ -666,7 +666,7 @@ public class SurrealQueryProvider : IQueryProvider
         var surql = query.ToSurrealQL();
         _logger.LogDebug("AnyAsync SurrealQL: {Surql}", surql);
         var anySession = await GetSessionForElementType(elementType ?? typeof(object), ct).ConfigureAwait(false);
-        var response = await anySession.RawQuery(surql, null, ct).ConfigureAwait(false);
+        var response = await anySession.RawQuery(surql, query.Parameters, ct).ConfigureAwait(false);
 
         if (!response.HasErrors && response.Count > 0)
         {

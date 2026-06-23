@@ -165,6 +165,66 @@ var store = Documents.For(o =>
 
 The schema mode is applied during `DocumentStore.InitializeAsync` via the `SchemaManager`.
 
+## Parameterized Queries & `SurrealCommandBuilder` (ADR-001)
+
+Dali now uses parameterized SurrealQL for all LINQ-generated queries. Values are sent as a separate `IReadOnlyDictionary<string, object?>` alongside the SurrealQL string — **never inlined**. This provides:
+
+| Benefit | Mechanism |
+|---------|-----------|
+| **SQL injection safety** | Values go through `$pN` placeholders, never touch the SQL string |
+| **Query plan caching** | Same SQL template reused regardless of parameter values |
+| **Type safety** | Parameter values retain their .NET types (string, int, DateTime, etc.) |
+
+### Architecture
+
+```
+ExpressionVisitor (LINQ walk)
+  ├─ Operand(ConstantExpression c) → builder.Parameter(value) → "$p0"
+  ├─ TranslateBinary / TranslateMethod → return strings with $pN placeholders
+  └─ SurrealQueryResult ← { Where: ["Age > $p0"], Parameters: {"p0": 25} }
+
+SurrealQueryProvider / CompiledQueryProvider
+  └─ query.ToSurrealQL() → "SELECT * FROM person WHERE Age > $p0"
+  └─ query.Parameters → { "p0": 25 }
+  └─ session.RawQuery(surql, parameters, ct)
+      └─ SurrealDB SDK serializes parameters with correct types
+```
+
+### Compared to Marten
+
+Marten uses `ICommandBuilder` (from Weasel.Postgresql) which accumulates SQL text AND typed `NpgsqlParameter` objects simultaneously — `AppendParameter(value)` appends `?` to SQL AND adds a typed parameter to the `NpgsqlCommand`. Dali's approach is equivalent: `SurrealCommandBuilder.Parameter(value)` returns a `$pN` placeholder AND records the value in a dictionary, which is then passed to `RawQuery(sql, dictionary)`.
+
+| Aspect | Marten | Dali |
+|--------|--------|------|
+| Placeholder syntax | `$1`, `$2` (positional) | `$p0`, `$p1` (named) |
+| Parameter storage | `NpgsqlParameter` on `DbCommand` | `Dictionary<string, object?>` passed to SDK |
+| SQL structure | Built via `ICommandBuilder.Append()` | Built via `SurrealQueryResult.ToSurrealQL()` |
+| Compiled queries | Source-gen: SQL template constant, runtime binds params only | Runtime: caches `SurrealQueryResult` (SQL + param dict), clones before each execution |
+
+### What Gets Parameterized
+
+| Value type | Strategy | Example |
+|-----------|----------|---------|
+| `null` | `NONE` (inlined — SurrealQL literal) | `WHERE field = NONE` |
+| `bool` | `true`/`false` (inlined — safe, no injection) | `WHERE active = true` |
+| `string` | `$pN` placeholder | `WHERE name = $p0` |
+| `int`, `long`, `float`, `double`, `decimal` | `$pN` placeholder | `WHERE age > $p0` |
+| `DateTime` / `DateTimeOffset` | `$pN` placeholder (SDK serializes) | `WHERE created > $p0` |
+| Other reference types | `$pN` placeholder | `WHERE status = $p0` |
+
+### SurrealCommandBuilder API
+
+```csharp
+public class SurrealCommandBuilder
+{
+    public string Parameter(object? value);              // returns "$p0", records value
+    public IReadOnlyDictionary<string, object?> Parameters { get; }
+    public bool HasParameters { get; }
+}
+```
+
+Used internally by `SurrealExpressionVisitor` during LINQ translation. Not exposed publicly — users writing raw SurrealQL use `RawQueryAsync<T>(sql, parameters)` directly.
+
 ## Raw SQL / SurrealQL Queries
 
 Dali exposes `RawQueryAsync<T>()` and `ExecuteSqlAsync()` on all session types (`IQuerySession`, `IDocumentSession`) for direct SurrealQL execution:

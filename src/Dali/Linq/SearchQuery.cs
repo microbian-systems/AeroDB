@@ -107,6 +107,8 @@ public sealed class DaliSearchQuery<T> : ISearchQuery<T> where T : class
     private string? _orderByClause;
     private int _skip;
 
+    private readonly SurrealCommandBuilder _paramBuilder = new();
+
     internal DaliSearchQuery(SurrealQueryProvider provider)
     {
         _provider = provider;
@@ -137,9 +139,25 @@ public sealed class DaliSearchQuery<T> : ISearchQuery<T> where T : class
     public ISearchQuery<T> MatchText(Expression<Func<T, object>> fieldSelector, string query)
         => MatchText(fieldSelector, 1.0, query);
 
+    /// <summary>Internal: registers a text field by string name (for SearchExtensions).</summary>
+    internal ISearchQuery<T> MatchTextField(string fieldName, double weight, string query)
+    {
+        _textFields.Add((fieldName, weight, _textFields.Count));
+        _textQuery = query;
+        return this;
+    }
+
     public ISearchQuery<T> WithVector(Expression<Func<T, float[]>> fieldSelector, float[] queryVector)
     {
         _vectorField = GetMemberName(fieldSelector);
+        _queryVector = queryVector;
+        return this;
+    }
+
+    /// <summary>Internal: sets the vector field by string name (for SearchExtensions).</summary>
+    internal ISearchQuery<T> WithVectorField(string fieldName, float[] queryVector)
+    {
+        _vectorField = fieldName;
         _queryVector = queryVector;
         return this;
     }
@@ -159,7 +177,7 @@ public sealed class DaliSearchQuery<T> : ISearchQuery<T> where T : class
     public ISearchQuery<T> Where(Expression<Func<T, bool>> predicate)
     {
         _wherePredicate = predicate;
-        _whereClause = SurrealExpressionVisitor.TranslateCondition(predicate.Body);
+        _whereClause = SurrealExpressionVisitor.TranslateCondition(predicate.Body, _paramBuilder);
         return this;
     }
 
@@ -309,7 +327,7 @@ LET $vs = (
             var orderBy = _orderByClause ?? "_distance ASC";
             var startAt = _skip > 0 ? $" START AT {_skip}" : "";
 
-            var surql = $"SELECT * FROM ({subSurql}) AS knn_sub{wherePart} ORDER BY {orderBy} LIMIT {_limit}{startAt};";
+            var surql = $"SELECT * FROM ({subSurql}){wherePart} ORDER BY {orderBy} LIMIT {_limit}{startAt};";
             return await ExecuteRawSearchAsync(surql, ct).ConfigureAwait(false);
         }
 
@@ -319,7 +337,7 @@ LET $vs = (
 
     private async Task<List<T>> ExecuteRawSearchAsync(string surql, CancellationToken ct)
     {
-        var response = await _provider.Session.RawQuery(surql, null, ct).ConfigureAwait(false);
+        var response = await _provider.Session.RawQuery(surql, _paramBuilder.Parameters, ct).ConfigureAwait(false);
 
         if (!response.HasErrors && response.Count > 0)
         {

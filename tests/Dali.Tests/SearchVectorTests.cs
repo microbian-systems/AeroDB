@@ -34,7 +34,7 @@ public class SearchVectorTests
         // Verify the expression visitor translates Score(n) correctly
         var surql = GetTranslatedSurql<Person>(_session, q =>
             q.Where(p => SurrealFunctions.Score(0) > 0.5));
-        surql.ShouldContain("search::score(0)");
+        surql.ShouldContain("search::score($p0)");
     }
 
     [Test]

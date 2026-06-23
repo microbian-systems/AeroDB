@@ -1,7 +1,5 @@
 using System.Linq.Expressions;
-using Dali.Metadata;
 using SurrealDb.Net;
-using SurrealDb.Net.Models.Response;
 
 namespace Dali;
 
@@ -77,62 +75,23 @@ public static class SearchExtensions
         HybridSearchConfig config,
         CancellationToken ct = default) where T : class
     {
-        var table = MetadataDispatch.GetTableName(typeof(T));
-        var rrfK = config.RrfK > 0 ? config.RrfK : 60;
-        var rrfLimit = config.RrfLimit > 0 ? config.RrfLimit : 80;
+        if (source.Provider is not SurrealQueryProvider provider)
+            return [];
 
-        // Build full-text match part
-        var ftWhereParts = new List<string>();
-        var ftScoreParts = new List<string>();
-        for (int i = 0; i < config.TextFields.Count; i++)
-        {
-            var (fieldName, weight) = config.TextFields[i];
-            ftWhereParts.Add($"{fieldName} @{i}@ '{config.Query.Replace("'", "\\'")}'");
-            ftScoreParts.Add($"(search::score({i}) * {weight})");
-        }
+        if (config.TextFields.Count == 0 || config.QueryVector.Length == 0)
+            return [];
 
-        var ftWhere = string.Join(" OR ", ftWhereParts);
-        var ftScoreExpr = ftScoreParts.Count == 1 ? $"search::score(0)" : string.Join(" + ", ftScoreParts);
+        var query = new DaliSearchQuery<T>(provider);
 
-        // Build vector search part
-        var vecStr = "[" + string.Join(", ", config.QueryVector.Select(v => v.ToString(System.Globalization.CultureInfo.InvariantCulture))) + "]";
+        foreach (var (fieldName, weight) in config.TextFields)
+            query.MatchTextField(fieldName, weight, config.Query);
 
-        // Combined SurrealQL with LET variables and RRF
-        var surql = $@"
-LET $ft = (
-    SELECT *, {ftScoreExpr} AS _ft_score
-    FROM `{table}`
-    WHERE {ftWhere}
-    ORDER BY _ft_score DESC
-    LIMIT {rrfLimit}
-);
-LET $vs = (
-    SELECT *, vector::distance::knn() AS _distance
-    FROM `{table}`
-    WHERE {config.VectorField} <|{rrfLimit},{config.VectorCandidates}|> {vecStr}
-    ORDER BY _distance ASC
-    LIMIT {rrfLimit}
-);
-RETURN search::rrf([$ft, $vs], {rrfK}, {rrfLimit});";
-
-        return await ExecuteSearchAsync<T>(source, surql, ct).ConfigureAwait(false);
+        return await query
+            .WithVectorField(config.VectorField, config.QueryVector)
+            .Candidates(config.VectorCandidates)
+            .FuseAsync(config.RrfK, config.RrfLimit, ct)
+            .ConfigureAwait(false);
     }
-
-    private static async Task<List<T>> ExecuteSearchAsync<T>(
-        ISurrealDbQueryable<T> source, string surql, CancellationToken ct) where T : class
-    {
-        if (source.Provider is SurrealQueryProvider surrealProvider)
-        {
-            var response = await surrealProvider.Session.RawQuery(surql, null, ct).ConfigureAwait(false);
-            if (!response.HasErrors && response.Count > 0)
-            {
-                var raw = response.GetValue<List<T>>(0);
-                if (raw is not null) return raw;
-            }
-        }
-        return [];
-    }
-
 
 }
 
