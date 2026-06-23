@@ -6,6 +6,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
+// Resolve ambiguity: JasperFx.Events.IEvent is the primary IEvent used in this file
+using IEvent = JasperFx.Events.IEvent;
 
 namespace WolverineFx.Dali;
 
@@ -82,17 +84,17 @@ internal class DaliSubscriptionHostedService : IHostedService, IAsyncDisposable
                 var store = _services.GetRequiredService<IDocumentStore>();
                 await using var pollSession = await store.LightweightSessionAsync(ct);
 
-                // Fetch all new events since the highest known version across all subscriptions
+                // Fetch all new events since the highest known sequence across all subscriptions
                 var maxWatermark = _states.Count > 0
-                    ? _states.Max(s => s.HighWaterMark)
+                    ? _states.Max(s => s.HighWaterSequence)
                     : 0;
 
-                var rawEvents = await pollSession.Events.FetchAllAfterVersion(maxWatermark, ct);
+                var rawEvents = await pollSession.Events.FetchAllAfterSequence(maxWatermark, ct);
 
                 if (rawEvents.Count == 0)
                     continue;
 
-                _logger.LogDebug("Subscription daemon: fetched {Count} new events after v{Version}",
+                _logger.LogDebug("Subscription daemon: fetched {Count} new events after seq {Sequence}",
                     rawEvents.Count, maxWatermark);
 
                 // Build an EventRange from the raw events
@@ -108,7 +110,9 @@ internal class DaliSubscriptionHostedService : IHostedService, IAsyncDisposable
                         var controller = new DaliSubscriptionController(_logger);
                         await using var session = await store.LightweightSessionAsync(ct);
                         await state.Runner.ProcessBatchAsync(range, controller, session, ct);
-                        state.HighWaterMark = Math.Max(state.HighWaterMark, range.SequenceCeiling);
+                        // Track global sequence (not version) for polling semantics
+                        state.HighWaterSequence = Math.Max(state.HighWaterSequence,
+                            rawEvents.Max(e => e.Sequence));
                     }
                     catch (Exception ex)
                     {
@@ -130,11 +134,11 @@ internal class DaliSubscriptionHostedService : IHostedService, IAsyncDisposable
     }
 
     private static EventRange BuildEventRange(
-        IReadOnlyList<(string StreamId, object Event, long Version)> rawEvents,
+        IReadOnlyList<global::Dali.IEvent> rawEvents,
         long baseVersion)
     {
         var events = rawEvents
-            .Select(e => new DaliEnvelopeEvent(e.Event, e.StreamId, e.Version) as IEvent)
+            .Select(e => new DaliEnvelopeEvent(e.Data, e.StreamId, e.Version) as IEvent)
             .ToList();
 
         var minVersion = rawEvents.Count > 0 ? rawEvents.Min(e => e.Version) : baseVersion + 1;
@@ -163,7 +167,7 @@ internal class DaliSubscriptionHostedService : IHostedService, IAsyncDisposable
     {
         public DaliSubscriptionRunner Runner { get; }
         public AsyncOptions Options { get; }
-        public long HighWaterMark { get; set; }
+        public long HighWaterSequence { get; set; }
 
         public SubscriptionState(DaliSubscriptionRunner runner, AsyncOptions options)
         {

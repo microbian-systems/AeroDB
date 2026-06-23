@@ -67,10 +67,10 @@ public abstract class InlineProjection<T> : IProjection, ILoggableProjection whe
 
     public async Task ApplyAsync(IProjectionContext context, CancellationToken ct)
     {
-        var events = context.Events;
+        var events = context.TypedEvents;
         if (events.Count == 0) return;
 
-        var docId = GetDocumentId(events);
+        var docId = GetDocumentId(events.Select(e => e.Data).ToList().AsReadOnly());
         var tableName = MetadataDispatch.GetTableName(typeof(T));
 
         _logger.LogInformation("Applying inline projection {ProjectionType} for table {Table}",
@@ -90,7 +90,30 @@ public abstract class InlineProjection<T> : IProjection, ILoggableProjection whe
             // First time — document doesn't exist yet
         }
 
-        var result = ApplyEvents(aggregate, events, ct);
+        // Determine action (override for soft-delete, hard-delete, or no-op)
+        var action = DetermineAction(aggregate, events);
+        if (action == ActionType.Nothing) return;
+
+        // Try to evolve using typed events (new path)
+        var result = Evolve(aggregate, events, ct);
+
+        // Fall back to old ApplyEvents if Evolve not overridden (returns same aggregate reference)
+        if (ReferenceEquals(result, aggregate) && !IsEvolveOverridden())
+            result = ApplyEvents(aggregate, events.Select(e => e.Data).ToList().AsReadOnly(), ct);
+
+        if (action == ActionType.HardDelete)
+        {
+            if (aggregate is not null) context.Session.Delete(aggregate);
+            return;
+        }
+
+        if (action == ActionType.SoftDelete && aggregate is ISoftDeleted soft)
+        {
+            soft.Deleted = true;
+            soft.DeletedAt = DateTimeOffset.UtcNow;
+            context.Session.Store(aggregate);
+            return;
+        }
 
         if (result is not null)
         {
@@ -114,6 +137,38 @@ public abstract class InlineProjection<T> : IProjection, ILoggableProjection whe
             context.Session.Delete(aggregate);
             _logger.LogDebug("Inline projection deleted existing document for {Type}", typeof(T).Name);
         }
+    }
+
+    /// <summary>
+    /// Determines what action to take after processing events.
+    /// Override to control soft-delete, hard-delete, or no-op behavior.
+    /// Default is <see cref="ActionType.Store"/>.
+    /// </summary>
+    protected virtual ActionType DetermineAction(T? aggregate, IReadOnlyList<IEvent> events) => ActionType.Store;
+
+    /// <summary>
+    /// Evolve the aggregate using typed events.
+    /// Override to process events with full metadata (version, timestamp, etc.).
+    /// Default implementation returns <paramref name="aggregate"/> unchanged,
+    /// causing the pipeline to fall through to <see cref="ApplyEvents"/>.
+    /// </summary>
+    protected virtual T? Evolve(T? aggregate, IReadOnlyList<IEvent> events, CancellationToken ct) => aggregate;
+
+    private bool? _evolveOverridden;
+
+    /// <summary>Checks whether the concrete subclass directly overrode <see cref="Evolve"/>.</summary>
+    private bool IsEvolveOverridden()
+    {
+        if (_evolveOverridden.HasValue) return _evolveOverridden.Value;
+
+        var baseMethod = typeof(InlineProjection<T>).GetMethod(nameof(Evolve),
+            System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
+        var thisMethod = GetType().GetMethod(nameof(Evolve),
+            System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
+
+        _evolveOverridden = baseMethod != null && thisMethod != null
+            && thisMethod.DeclaringType == GetType();
+        return _evolveOverridden.Value;
     }
 
     /// <summary>

@@ -13,7 +13,14 @@ public interface IProjectionContext
     IDocumentSession Session { get; }
 
     /// <summary>
-    /// The events that triggered this projection invocation.
+    /// Events as bare objects. Deprecated — use <see cref="TypedEvents"/> for typed
+    /// event metadata access.
     /// </summary>
+    [Obsolete("Use TypedEvents for typed event metadata access.")]
     IReadOnlyList<object> Events { get; }
+
+    /// <summary>
+    /// Events with full metadata (version, timestamp, sequence, stream identity).
+    /// </summary>
+    IReadOnlyList<IEvent> TypedEvents { get; }
 }

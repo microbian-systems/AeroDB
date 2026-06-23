@@ -1,6 +1,8 @@
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Text;
 using Dali.Metadata;
+using SurrealDb.Net.Models;
 
 namespace Dali;
 
@@ -10,6 +12,7 @@ public class SurrealExpressionVisitor : ExpressionVisitor
     private readonly List<string> _where = new();
     private readonly List<string> _orderBy = new();
     private readonly List<string> _groupByColumns = new();
+    private readonly List<string> _autoFetchFields = new();
     private int? _limit;
     private int? _skip;
     private string _projection = "*";
@@ -21,6 +24,7 @@ public class SurrealExpressionVisitor : ExpressionVisitor
         _where.Clear();
         _orderBy.Clear();
         _groupByColumns.Clear();
+        _autoFetchFields.Clear();
         _limit = null;
         _skip = null;
         _projection = "*";
@@ -37,6 +41,7 @@ public class SurrealExpressionVisitor : ExpressionVisitor
             Limit = _limit,
             Skip = _skip,
             Projection = _projection,
+            FetchFields = [.._autoFetchFields],
             Parameters = _cmdBuilder.Parameters
         };
     }
@@ -96,9 +101,50 @@ public class SurrealExpressionVisitor : ExpressionVisitor
                     if (selLambda.Body is NewExpression newExpr)
                         _projection = string.Join(", ", newExpr.Arguments.Select(ProjMember));
                     else if (selLambda.Body is MemberInitExpression init)
-                        _projection = string.Join(", ", init.Bindings
-                            .OfType<MemberAssignment>()
-                            .Select(b => $"{ProjMember(b.Expression)} AS {b.Member.Name}"));
+                    {
+                        var parts = new List<string>();
+                        foreach (var binding in init.Bindings.OfType<MemberAssignment>())
+                        {
+                            var expr = binding.Expression;
+                            var memberName = binding.Member.Name;
+
+                            // Check if this expression refers to a Record-subclass property
+                            bool isRecordProperty = false;
+                            if (expr is MemberExpression me)
+                            {
+                                var propType = me.Member is PropertyInfo pi ? pi.PropertyType : null;
+                                var underlyingType = Nullable.GetUnderlyingType(propType!) ?? propType;
+                                if (underlyingType is not null && typeof(IRecord).IsAssignableFrom(underlyingType))
+                                    isRecordProperty = true;
+                            }
+
+                            if (isRecordProperty)
+                            {
+                                // Use snake_case field name WITHOUT alias (aliases break FETCH).
+                                // Compare the snake_case field name against the DTO member name
+                                // (case-insensitive) to detect renamed properties.
+                                var fieldName = Snake(ProjMember(expr));
+                                if (string.Equals(fieldName, memberName, StringComparison.OrdinalIgnoreCase))
+                                {
+                                    // Same name: skip alias (FETCH works), auto-fetch
+                                    parts.Add(fieldName);
+                                    if (!_autoFetchFields.Contains(fieldName))
+                                        _autoFetchFields.Add(fieldName);
+                                }
+                                else
+                                {
+                                    // Renamed: use PascalCase alias for CBOR mapping, NO auto-fetch
+                                    parts.Add($"{ProjMember(expr)} AS {memberName}");
+                                }
+                            }
+                            else
+                            {
+                                // Normal behavior: PascalCase ProjMember AS PascalCase memberName
+                                parts.Add($"{ProjMember(expr)} AS {memberName}");
+                            }
+                        }
+                        _projection = string.Join(", ", parts);
+                    }
                 }
                 break;
 
@@ -236,8 +282,8 @@ public class SurrealExpressionVisitor : ExpressionVisitor
             return m.Method.Name switch
             {
                 "Contains" => $"string::contains({obj}, {arg})",
-                "StartsWith" => $"string::startsWith({obj}, {arg})",
-                "EndsWith" => $"string::endsWith({obj}, {arg})",
+                "StartsWith" => $"string::starts_with({obj}, {arg})",
+                "EndsWith" => $"string::ends_with({obj}, {arg})",
                 _ => throw new NotSupportedException($"String.{m.Method.Name}")
             };
         }
@@ -291,8 +337,8 @@ public class SurrealExpressionVisitor : ExpressionVisitor
             return m.Method.Name switch
             {
                 "Contains" => $"string::contains({obj}, {arg})",
-                "StartsWith" => $"string::startsWith({obj}, {arg})",
-                "EndsWith" => $"string::endsWith({obj}, {arg})",
+                "StartsWith" => $"string::starts_with({obj}, {arg})",
+                "EndsWith" => $"string::ends_with({obj}, {arg})",
                 _ => throw new NotSupportedException($"String.{m.Method.Name}")
             };
         }
@@ -383,9 +429,41 @@ public class SurrealExpressionVisitor : ExpressionVisitor
 
     private static string ProjMember(Expression expr)
     {
-        if (expr is MemberExpression m)
-            return m.Member.Name;
-        return "*";
+        if (expr is not MemberExpression m)
+            return "*";
+
+        // Check for chained member access (inner expression is also a MemberExpression)
+        // Examples: o.Customer.Name → parts = [Name, Customer], reversed → "Customer.Name"
+        //           o.Customer.Address.City → parts = [City, Address, Customer], reversed → "Customer.Address.City"
+        // Uses PascalCase to match SurrealDB field naming (consistent with MemberPath).
+        if (StripConvert(m.Expression) is MemberExpression)
+        {
+            var parts = new List<string>();
+            Expression? current = expr;
+            while (current is MemberExpression me)
+            {
+                parts.Add(me.Member.Name);
+                current = StripConvert(me.Expression);
+                if (current is ParameterExpression)
+                    break;
+            }
+            parts.Reverse(); // leaf-to-root → root-to-leaf
+            return string.Join(".", parts);
+        }
+
+        // Single level — unchanged behavior (o.Customer → "Customer")
+        return m.Member.Name;
+    }
+
+    /// <summary>
+    /// Strips Convert/ConvertChecked UnaryExpression wrappers that LINQ sometimes
+    /// inserts (e.g. for lifted-to-nullable conversions). Returns null if expr is null.
+    /// </summary>
+    private static Expression? StripConvert(Expression? expr)
+    {
+        while (expr is UnaryExpression { NodeType: ExpressionType.Convert or ExpressionType.ConvertChecked } ue)
+            expr = ue.Operand;
+        return expr;
     }
 
     private static string FormatValue(object? val) => val switch
@@ -445,6 +523,11 @@ public class SurrealQueryResult
 
     /// <summary>Fields to eager-load via SurrealQL FETCH clause.</summary>
     public List<string> FetchFields { get; set; } = [];
+
+    /// <summary>Inline subquery specifications for forward includes.
+    /// These are handled at the provider level using LET-based multi-statement
+    /// queries (not emitted by ToSurrealQL).</summary>
+    internal List<IncludeSpec>? IncludeSpecs { get; set; }
 
     /// <summary>Parameter dictionary for safe, parameterized SurrealQL queries.</summary>
     public IReadOnlyDictionary<string, object?> Parameters { get; set; }
@@ -521,6 +604,7 @@ public class SurrealQueryResult
             GroupAll = GroupAll,
             GroupBy = [..GroupBy],
             FetchFields = [..FetchFields],
+            IncludeSpecs = IncludeSpecs is not null ? [..IncludeSpecs] : null,
             Parameters = new Dictionary<string, object?>(Parameters)
         };
     }

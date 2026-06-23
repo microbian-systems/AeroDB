@@ -15,7 +15,7 @@ public class AsyncDaemon : IAsyncDisposable
     private readonly object _lock = new();
     private Task? _runTask;
     private volatile bool _stopped;
-    private long _highWaterMark;
+    private long _highWaterSequence;
 
     public AsyncDaemon(IDocumentStore store, IReadOnlyList<IProjection> projections, ILoggerFactory? loggerFactory = null)
     {
@@ -99,26 +99,26 @@ public class AsyncDaemon : IAsyncDisposable
                 await using var session = await _store.LightweightSessionAsync().ConfigureAwait(false);
                 if (_stopped) break;
 
-                // Fetch new events after the high-water mark
-                var newEvents = await session.Events.FetchAllAfterVersion(_highWaterMark).ConfigureAwait(false);
+                // Fetch new events after the high-water sequence (global ordering)
+                var newEvents = await session.Events.FetchAllAfterSequence(_highWaterSequence).ConfigureAwait(false);
 
                 if (newEvents.Count == 0)
                     continue;
 
-                _logger.LogDebug("AsyncDaemon: fetched {Count} new events after version {Version}",
-                    newEvents.Count, _highWaterMark);
+                _logger.LogDebug("AsyncDaemon: fetched {Count} new events after sequence {Sequence}",
+                    newEvents.Count, _highWaterSequence);
 
                 // Group events by stream for per-stream processing
                 var streamGroups = newEvents
                     .GroupBy(e => e.StreamId)
-                    .ToDictionary(g => g.Key, g => g.Select(e => e.Event).ToList());
+                    .ToDictionary(g => g.Key, g => g.ToList());
 
                 foreach (var projection in asyncProjections)
                 {
                     foreach (var (streamId, events) in streamGroups)
                     {
                         var matchingEvents = events
-                            .Where(e => projection.EventTypes.Contains(e.GetType()))
+                            .Where(e => e.Data is not null && projection.EventTypes.Contains(e.Data.GetType()))
                             .ToList();
 
                         if (matchingEvents.Count == 0)
@@ -132,10 +132,10 @@ public class AsyncDaemon : IAsyncDisposable
                     }
                 }
 
-                // Track highest version seen
-                var maxVersion = newEvents.Max(e => e.Version);
-                if (maxVersion > _highWaterMark)
-                    _highWaterMark = maxVersion;
+                // Track highest sequence seen (global ordering)
+                var maxSequence = newEvents.Max(e => e.Sequence);
+                if (maxSequence > _highWaterSequence)
+                    _highWaterSequence = maxSequence;
 
                 // Save any projected documents added by the projections
                 await session.SaveChangesAsync().ConfigureAwait(false);

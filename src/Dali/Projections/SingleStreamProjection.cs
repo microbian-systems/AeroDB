@@ -11,13 +11,19 @@ public abstract class SingleStreamProjection<T> : InlineProjection<T> where T : 
 {
     /// <summary>
     /// Derives the projected document identity from the stream ID of the first event.
-    /// Events are expected to have a <c>StreamId</c> property (string).
+    /// Uses <see cref="IEvent.StreamId"/> directly when available (Phase 1+),
+    /// otherwise falls back to reflection on a <c>StreamId</c> property (legacy).
     /// </summary>
     protected override object GetDocumentId(IReadOnlyList<object> events)
     {
         if (events.Count == 0)
             throw new InvalidOperationException("Cannot derive document ID from empty events.");
 
+        // Try IEvent first (Phase 1+)
+        if (events[0] is IEvent ievt)
+            return ievt.StreamId ?? throw new InvalidOperationException("StreamId is null on the first event.");
+
+        // Fallback: reflection on event StreamId property (legacy)
         var evt = events[0];
         var streamProp = evt.GetType().GetProperty("StreamId");
         if (streamProp is null)

@@ -138,7 +138,7 @@ public class FilteredOrderSubscription : DaliSubscriptionBase
 
 public class TestController : ISubscriptionController
 {
-    public List<(IEvent Event, Exception Error)> DeadLetters { get; } = [];
+    public List<(JasperFx.Events.IEvent Event, Exception Error)> DeadLetters { get; } = [];
     public List<Exception> CriticalFailures { get; } = [];
     public ErrorHandlingOptions ErrorOptions { get; set; } = new();
     public ShardName Name { get; } = new("test-controller");
@@ -146,7 +146,7 @@ public class TestController : ISubscriptionController
     public AsyncOptions Options { get; } = new();
 
     public ValueTask MarkSuccessAsync(long sequence) => ValueTask.CompletedTask;
-    public Task RecordDeadLetterEventAsync(IEvent evt, Exception ex) { DeadLetters.Add((evt, ex)); return Task.CompletedTask; }
+    public Task RecordDeadLetterEventAsync(JasperFx.Events.IEvent evt, Exception ex) { DeadLetters.Add((evt, ex)); return Task.CompletedTask; }
     public Task ReportCriticalFailureAsync(Exception ex) { CriticalFailures.Add(ex); return Task.CompletedTask; }
     public Task ReportCriticalFailureAsync(Exception ex, long position) { CriticalFailures.Add(ex); return Task.CompletedTask; }
 }
@@ -162,7 +162,7 @@ public class TestEventFilterable : IEventFilterable
     public void FilterIncomingEventsOnStreamType(Type streamType) => StreamType = streamType;
 }
 
-public class SubTestEvent(string typeName) : IEvent
+public class SubTestEvent(string typeName) : JasperFx.Events.IEvent
 {
     public Guid Id { get; set; } = Guid.NewGuid();
     public long Version { get; set; }
@@ -183,10 +183,10 @@ public class SubTestEvent(string typeName) : IEvent
     public string? UserName { get; set; }
     public bool IsSkipped { get; set; }
 
-    void IEvent.AddTag<T>(T tag) { }
+    void JasperFx.Events.IEvent.AddTag<T>(T tag) { }
     public void AddTag(EventTag tag) { }
     public void SetHeader(string key, object value) { }
     public object? GetHeader(string key) => null;
-    IReadOnlyList<EventTag>? IEvent.Tags => null;
-    public Func<IEvent, T> CreateAggregateIdentitySource<T>() => throw new NotSupportedException();
+    IReadOnlyList<EventTag>? JasperFx.Events.IEvent.Tags => null;
+    public Func<JasperFx.Events.IEvent, T> CreateAggregateIdentitySource<T>() => throw new NotSupportedException();
 }

@@ -15,7 +15,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
     private readonly bool _isDirtyTracking;
     private readonly UnitOfWork _unitOfWork = new();
     private IEvents? _events;
-    internal readonly List<(string StreamId, object Event)> _appendedEvents = new();
+    internal readonly List<IEvent> _appendedEvents = new();
 
     /// <summary>
     /// Cached <c>MethodInfo</c> for <see cref="SurrealDbResponse.GetValue{T}"/>,
@@ -360,17 +360,17 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
 
                     if (inlineProjections.Count > 0)
                     {
-                        // Group appended events by stream
+                        // Group appended events by stream (typed IEvent wrappers)
                         var streamGroups = _appendedEvents
                             .GroupBy(e => e.StreamId)
-                            .ToDictionary(g => g.Key, g => g.Select(e => e.Event).ToList());
+                            .ToDictionary(g => g.Key, g => g.ToList());
 
                         foreach (var projection in inlineProjections)
                         {
                             foreach (var (streamId, events) in streamGroups)
                             {
                                 var matchingEvents = events
-                                    .Where(e => projection.EventTypes.Contains(e.GetType()))
+                                    .Where(e => e.Data is not null && projection.EventTypes.Contains(e.Data.GetType()))
                                     .ToList();
 
                                 if (matchingEvents.Count == 0)
@@ -414,8 +414,10 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                             _unitOfWork.Clear();
                         }
 
-                        // Snapshot appended events for IChangeSet before clearing
-                        appendedEventSnapshot = _appendedEvents.ToArray();
+                        // Snapshot appended events for IChangeSet before clearing (preserve tuple format)
+                        appendedEventSnapshot = _appendedEvents
+                            .Select(e => ((string StreamId, object Event))(e.StreamId, e.Data))
+                            .ToArray();
                         _appendedEvents.Clear();
                     }
                 }
@@ -682,28 +684,28 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
             _owner = owner;
         }
 
-        public async Task Append(string streamId, IEnumerable<object> events, CancellationToken ct = default)
+        public async Task<IReadOnlyList<IEvent>> Append(string streamId, IEnumerable<object> events, CancellationToken ct = default)
         {
-            var list = events.ToList();
-            await _inner.Append(streamId, list, ct).ConfigureAwait(false);
-            foreach (var evt in list)
-                _owner._appendedEvents.Add((streamId, evt));
+            var result = await _inner.Append(streamId, events, ct).ConfigureAwait(false);
+            foreach (var evt in result)
+                _owner._appendedEvents.Add(evt);
+            return result;
         }
 
         public async Task<string> StartStream(string streamId, IEnumerable<object> events, CancellationToken ct = default)
         {
-            var list = events.ToList();
-            var result = await _inner.StartStream(streamId, list, ct).ConfigureAwait(false);
-            foreach (var evt in list)
-                _owner._appendedEvents.Add((streamId, evt));
-            return result;
+            // Use Append directly to capture the wrapped IEvent objects
+            var result = await _inner.Append(streamId, events, ct).ConfigureAwait(false);
+            foreach (var evt in result)
+                _owner._appendedEvents.Add(evt);
+            return streamId;
         }
 
-        public Task<IReadOnlyList<object>> FetchStream(string streamId, CancellationToken ct = default)
+        public Task<IReadOnlyList<IEvent>> FetchStream(string streamId, CancellationToken ct = default)
             => _inner.FetchStream(streamId, ct);
 
-        public async Task<IReadOnlyList<(string StreamId, object Event, long Version)>> FetchAllAfterVersion(
-            long version, CancellationToken ct = default)
-            => await _inner.FetchAllAfterVersion(version, ct).ConfigureAwait(false);
+        public Task<IReadOnlyList<IEvent>> FetchAllAfterSequence(
+            long sequence, CancellationToken ct = default)
+            => _inner.FetchAllAfterSequence(sequence, ct);
     }
 }

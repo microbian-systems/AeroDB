@@ -4,6 +4,8 @@ using SurrealDb.Net.Models;
 
 namespace Dali;
 
+using Dali.Metadata;
+
 public interface ISurrealDbQueryable<T> : IOrderedQueryable<T>
 {
     Task<List<T>> ToListAsync(CancellationToken ct = default);
@@ -67,7 +69,7 @@ public interface ISurrealDbQueryable<T> : IOrderedQueryable<T>
     ///   Invoked once for each loaded TInclude document. Use to populate side collections.
     /// </param>
     /// <returns>The queryable for chaining.</returns>
-    ISurrealDbQueryable<T> Include<TProperty, TInclude>(
+    ISurrealDbQueryable<T> IncludeBatch<TProperty, TInclude>(
         Expression<Func<T, TProperty>> property,
         Action<TInclude> callback)
         where TInclude : class;
@@ -75,7 +77,7 @@ public interface ISurrealDbQueryable<T> : IOrderedQueryable<T>
     /// <summary>
     /// Eagerly loads related documents into a dictionary keyed by the property value.
     ///
-    /// <para>Like <see cref="Include{TProperty,TInclude}(Expression{Func{T,TProperty}}, Action{TInclude})"/>,
+    /// <para>Like <see cref="IncludeBatch{TProperty,TInclude}(Expression{Func{T,TProperty}}, Action{TInclude})"/>,
     /// but populates an existing dictionary instead of invoking a callback.
     /// Uses SurrealDB's LET variable for server-side batch loading in a
     /// <b>single round trip</b> regardless of how many Includes are chained.</para>
@@ -85,7 +87,7 @@ public interface ISurrealDbQueryable<T> : IOrderedQueryable<T>
     /// <param name="key">Member expression selecting the key property.</param>
     /// <param name="dictionary">Dictionary to populate with [key → document] entries.</param>
     /// <returns>The queryable for chaining.</returns>
-    ISurrealDbQueryable<T> Include<TKey, TInclude>(
+    ISurrealDbQueryable<T> IncludeBatch<TKey, TInclude>(
         Expression<Func<T, TKey>> key,
         IDictionary<TKey, TInclude> dictionary)
         where TInclude : class;
@@ -100,6 +102,12 @@ public class SurrealDbQueryable<T> : ISurrealDbQueryable<T>, IAsyncEnumerable<T>
 
     /// <summary>Descriptors for post-query client-side eager loading.</summary>
     internal List<IncludeDescriptor> IncludeDescriptors = new();
+
+    /// <summary>Specifications for inline subquery-based forward includes.</summary>
+    internal List<IncludeSpec> IncludeSpecs = new();
+
+    /// <summary>Filter predicates applied in-memory after includes are loaded.</summary>
+    internal List<FilterIncludeSpec> FilterIncludeSpecs = new();
 
     /// <summary>
     /// Optional override for the table/view name used in generated SurrealQL.
@@ -145,32 +153,32 @@ public class SurrealDbQueryable<T> : ISurrealDbQueryable<T>, IAsyncEnumerable<T>
     public IQueryProvider Provider => _provider;
 
     public IEnumerator<T> GetEnumerator()
-        => _provider.ToListAsync<T>(Expression, FetchFields, IncludeDescriptors).GetAwaiter().GetResult().GetEnumerator();
+        => _provider.ToListAsync<T>(Expression, FetchFields, IncludeDescriptors, IncludeSpecs, FilterIncludeSpecs).GetAwaiter().GetResult().GetEnumerator();
 
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
     public async IAsyncEnumerator<T> GetAsyncEnumerator(CancellationToken ct = default)
     {
-        foreach (var item in await _provider.ToListAsync<T>(Expression, FetchFields, IncludeDescriptors, ct))
+        foreach (var item in await _provider.ToListAsync<T>(Expression, FetchFields, IncludeDescriptors, IncludeSpecs, FilterIncludeSpecs, ct))
             yield return item;
     }
 
     public Task<List<T>> ToListAsync(CancellationToken ct = default)
-        => _provider.ToListAsync<T>(Expression, FetchFields, IncludeDescriptors, ct);
+        => _provider.ToListAsync<T>(Expression, FetchFields, IncludeDescriptors, IncludeSpecs, FilterIncludeSpecs, ct);
 
     public Task<T?> FirstOrDefaultAsync(CancellationToken ct = default)
-        => _provider.FirstOrDefaultAsync<T>(Expression, FetchFields, IncludeDescriptors, ct);
+        => _provider.FirstOrDefaultAsync<T>(Expression, FetchFields, IncludeDescriptors, IncludeSpecs, FilterIncludeSpecs, ct);
 
     public Task<T?> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate, CancellationToken ct = default)
     {
         var whereExpr = Expression.Call(
             typeof(Queryable), "Where", [typeof(T)],
             Expression, Expression.Quote(predicate));
-        return _provider.FirstOrDefaultAsync<T>(whereExpr, FetchFields, IncludeDescriptors, ct);
+        return _provider.FirstOrDefaultAsync<T>(whereExpr, FetchFields, IncludeDescriptors, IncludeSpecs, FilterIncludeSpecs, ct);
     }
 
     public Task<T?> SingleOrDefaultAsync(CancellationToken ct = default)
-        => _provider.SingleOrDefaultAsync<T>(Expression, FetchFields, IncludeDescriptors, ct);
+        => _provider.SingleOrDefaultAsync<T>(Expression, FetchFields, IncludeDescriptors, IncludeSpecs, FilterIncludeSpecs, ct);
 
     public Task<int> CountAsync(CancellationToken ct = default)
         => _provider.CountAsync(Expression, ct);
@@ -228,7 +236,7 @@ public class SurrealDbQueryable<T> : ISurrealDbQueryable<T>, IAsyncEnumerable<T>
     /// Eagerly loads related documents by matching on a property value (callback overload).
     /// Uses SurrealDB's LET variable for server-side batch loading in a single round trip.
     /// </summary>
-    public ISurrealDbQueryable<T> Include<TProperty, TInclude>(
+    public ISurrealDbQueryable<T> IncludeBatch<TProperty, TInclude>(
         Expression<Func<T, TProperty>> property,
         Action<TInclude> callback) where TInclude : class
     {
@@ -247,7 +255,7 @@ public class SurrealDbQueryable<T> : ISurrealDbQueryable<T>, IAsyncEnumerable<T>
     /// Eagerly loads related documents into a dictionary keyed by the property value.
     /// Uses SurrealDB's LET variable for server-side batch loading in a single round trip.
     /// </summary>
-    public ISurrealDbQueryable<T> Include<TKey, TInclude>(
+    public ISurrealDbQueryable<T> IncludeBatch<TKey, TInclude>(
         Expression<Func<T, TKey>> key,
         IDictionary<TKey, TInclude> dictionary) where TInclude : class
     {
@@ -271,5 +279,189 @@ public class SurrealDbQueryable<T> : ISurrealDbQueryable<T>, IAsyncEnumerable<T>
         if (body is MemberExpression m)
             return m.Member.Name;
         throw new ArgumentException("Selector must be a simple member expression (e.g., p => p.Price)");
+    }
+}
+
+// ── Extension methods ────────────────────────────────────────────────
+
+public static class SurrealDbQueryableExtensions
+{
+    /// <summary>
+    /// Projects each element of a sequence into a new form, preserving the
+    /// <see cref="ISurrealDbQueryable{T}"/> type for further chaining (e.g., Fetch, Include).
+    /// </summary>
+    /// <typeparam name="T">The source entity type.</typeparam>
+    /// <typeparam name="TResult">The result element type of the projection.</typeparam>
+    /// <param name="source">The queryable source.</param>
+    /// <param name="selector">A projection function to apply to each element.</param>
+    /// <returns>An <see cref="ISurrealDbQueryable{TResult}"/> for further chaining.</returns>
+    public static ISurrealDbQueryable<TResult> Select<T, TResult>(
+        this ISurrealDbQueryable<T> source,
+        Expression<Func<T, TResult>> selector)
+    {
+        if (source is null) throw new ArgumentNullException(nameof(source));
+        if (selector is null) throw new ArgumentNullException(nameof(selector));
+
+        var expr = Expression.Call(
+            typeof(Queryable),
+            "Select",
+            [typeof(T), typeof(TResult)],
+            source.Expression,
+            Expression.Quote(selector));
+
+        return (ISurrealDbQueryable<TResult>)source.Provider.CreateQuery<TResult>(expr);
+    }
+
+    /// <summary>
+    /// Eagerly loads a typed <c>record&lt;T&gt;</c> property via an inline subquery.
+    /// The subquery is embedded in the SELECT clause, using <c>$parent</c> to reference
+    /// the parent row's foreign key field.
+    ///
+    /// <para>Generated SurrealQL pattern:
+    /// <c>SELECT *, (SELECT * FROM `target` WHERE id = $parent.fk LIMIT 1)[0] AS Property FROM `source`</c>
+    /// </para>
+    ///
+    /// <para>This is a single-round-trip operation — no separate queries are executed.
+    /// Unlike <c>Fetch()</c>, this does not require the SurrealDB server to support
+    /// the FETCH clause and works with typed <c>record&lt;T&gt;</c> properties.</para>
+    /// </summary>
+    /// <typeparam name="T">The source entity type.</typeparam>
+    /// <typeparam name="TInclude">The included document type (must inherit from <c>Record</c>).</typeparam>
+    /// <param name="source">The queryable source.</param>
+    /// <param name="property">
+    ///   A member expression selecting the typed record property to include.
+    ///   Example: <c>o => o.Customer</c>
+    /// </param>
+    /// <returns>The queryable for chaining.</returns>
+    public static ISurrealDbQueryable<T> Include<T, TInclude>(
+        this ISurrealDbQueryable<T> source,
+        Expression<Func<T, TInclude?>> property)
+        where T : class
+        where TInclude : class
+    {
+        if (source is not SurrealDbQueryable<T> queryable)
+            throw new InvalidOperationException("Include is only supported on SurrealDbQueryable<T>.");
+
+        if (property.Body is not MemberExpression memberExpr)
+            throw new ArgumentException("Expression must be a member access (e.g., o => o.Customer).");
+
+        var propName = memberExpr.Member.Name;
+        var fkField = propName.ToLowerInvariant();
+        var targetTable = Dali.Metadata.MetadataDispatch.GetTableName(typeof(TInclude));
+
+        queryable.IncludeSpecs.Add(new IncludeSpec
+        {
+            PropertyName = propName,
+            TargetTable = targetTable,
+            ForeignKeyField = fkField,
+            IncludeType = typeof(TInclude),
+            IsSingle = true
+        });
+
+        return queryable;
+    }
+
+    /// <summary>
+    /// Eagerly loads a collection of child records where the child has a foreign key
+    /// pointing back to the parent <c>T</c>. Uses SurrealDB's LET variable for
+    /// <b>server-side batch loading in a single round trip</b>.
+    ///
+    /// <para>Generated SurrealQL pattern:
+    /// <c>LET $main = (SELECT * FROM source WHERE ...);
+    /// SELECT * FROM $main;
+    /// SELECT * FROM `child` WHERE `fkField` IN (SELECT VALUE id FROM $main);</c>
+    /// </para>
+    ///
+    /// <para>Unlike <see cref="Include{T,TInclude}(ISurrealDbQueryable{T}, Expression{Func{T,TInclude?}})"/>,
+    /// which is forward (FK on parent), this is reverse (FK on child). The child records
+    /// are collected into a <c>List&lt;TChild&gt;</c> and set on the collection property.</para>
+    /// </summary>
+    /// <typeparam name="T">The source entity type (must implement <c>IRecord</c> to have an Id).</typeparam>
+    /// <typeparam name="TChild">The child record type.</typeparam>
+    /// <param name="source">The queryable source.</param>
+    /// <param name="property">
+    ///   A member expression selecting the collection property on T.
+    ///   Example: <c>o => o.Items</c>
+    /// </param>
+    /// <param name="foreignKey">
+    ///   The foreign key field on the child table (e.g., <c>"order"</c>).
+    ///   Both the C# property name and SurrealQL field name.
+    /// </param>
+    /// <returns>The queryable for chaining.</returns>
+    public static ISurrealDbQueryable<T> IncludeReverse<T, TChild>(
+        this ISurrealDbQueryable<T> source,
+        Expression<Func<T, IEnumerable<TChild>?>> property,
+        string foreignKey)
+        where T : IRecord
+        where TChild : class
+    {
+        if (source is not SurrealDbQueryable<T> queryable)
+            throw new InvalidOperationException("IncludeReverse is only supported on SurrealDbQueryable<T>.");
+
+        if (property.Body is not MemberExpression memberExpr)
+            throw new ArgumentException("Expression must be a member access (e.g., o => o.Items).");
+
+        var propName = memberExpr.Member.Name;
+        var targetTable = MetadataDispatch.GetTableName(typeof(TChild));
+
+        queryable.IncludeSpecs.Add(new IncludeSpec
+        {
+            PropertyName = propName,
+            TargetTable = targetTable,
+            ForeignKeyField = foreignKey,  // FK field on the child table
+            IncludeType = typeof(TChild),
+            IsSingle = false,   // collection
+            IsForward = false   // reverse
+        });
+
+        return queryable;
+    }
+
+    /// <summary>
+    /// Filters parent documents based on a predicate applied to their included
+    /// child collection <b>in-memory</b>, after includes are fully loaded.
+    ///
+    /// <para>Only parent documents whose child collection satisfies the predicate
+    /// are returned. Unlike a WHERE clause, this filter runs on the client side
+    /// and can use any LINQ expression on the child collection (e.g.,
+    /// <c>.Any()</c>, <c>.All()</c>, <c>.Count()</c>).</para>
+    ///
+    /// <para>Must be used after <see cref="IncludeReverse{T,TChild}"/> on the same
+    /// property to have effect. The filter does not affect which children are
+    /// loaded — it only controls which parent documents are included in results.</para>
+    /// </summary>
+    /// <typeparam name="T">The source entity type (must implement <c>IRecord</c>).</typeparam>
+    /// <typeparam name="TChild">The child record type.</typeparam>
+    /// <param name="source">The queryable source.</param>
+    /// <param name="property">
+    ///   A member expression selecting the collection property on T.
+    ///   Example: <c>o => o.Items</c>
+    /// </param>
+    /// <param name="filter">
+    ///   A predicate applied to the child collection. Returning <c>true</c> keeps
+    ///   the parent in the result set.
+    ///   Example: <c>items => items.Any(i => i.Price > 50)</c>
+    /// </param>
+    /// <returns>The queryable for chaining.</returns>
+    public static ISurrealDbQueryable<T> FilterInclude<T, TChild>(
+        this ISurrealDbQueryable<T> source,
+        Expression<Func<T, IEnumerable<TChild>>> property,
+        Expression<Func<IEnumerable<TChild>, bool>> filter)
+        where T : IRecord
+        where TChild : class
+    {
+        if (source is not SurrealDbQueryable<T> queryable)
+            throw new InvalidOperationException("FilterInclude is only supported on SurrealDbQueryable<T>.");
+
+        if (property.Body is not MemberExpression memberExpr)
+            throw new ArgumentException("Expression must be a member access (e.g., o => o.Items).");
+
+        queryable.FilterIncludeSpecs.Add(new FilterIncludeSpec
+        {
+            PropertyName = memberExpr.Member.Name,
+            Filter = filter
+        });
+
+        return queryable;
     }
 }

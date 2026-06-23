@@ -19,7 +19,7 @@ public class EventStore : IEvents
             ?? NullLogger<EventStore>.Instance;
     }
 
-    public async Task<IReadOnlyList<object>> FetchStream(string streamId, CancellationToken ct = default)
+    public async Task<IReadOnlyList<IEvent>> FetchStream(string streamId, CancellationToken ct = default)
     {
         var response = await _session.RawQuery(
             $"SELECT * FROM mt_events WHERE stream_id = '{streamId}' ORDER BY version ASC;",
@@ -32,15 +32,7 @@ public class EventStore : IEvents
                 var records = response.GetValue<List<EventRecord>>(0);
                 if (records is { Count: > 0 })
                 {
-                    return records.Select(r =>
-                    {
-                        if (!string.IsNullOrEmpty(r.DataJson))
-                        {
-                            try { return JsonSerializer.Deserialize<object>(r.DataJson, JsonOptions) ?? r.DataJson; }
-                            catch { return r.DataJson; }
-                        }
-                        return r.DataJson ?? "";
-                    }).ToList().AsReadOnly();
+                    return records.Select(ToEvent).ToList().AsReadOnly();
                 }
             }
             catch
@@ -52,31 +44,41 @@ public class EventStore : IEvents
         return [];
     }
 
-    public async Task Append(string streamId, IEnumerable<object> events, CancellationToken ct = default)
+    public async Task<IReadOnlyList<IEvent>> Append(string streamId, IEnumerable<object> events, CancellationToken ct = default)
     {
         var version = await GetNextVersion(streamId, ct).ConfigureAwait(false);
+        var sequence = await GetNextSequence(ct).ConfigureAwait(false);
+        var streamKey = await GetOrCreateStreamKey(streamId, ct).ConfigureAwait(false);
+        var wrapped = new List<IEvent>();
 
         foreach (var evt in events)
         {
             version++;
+            sequence++;
             var dataJson = JsonSerializer.Serialize(evt, JsonOptions);
             var record = new EventRecord
             {
                 StreamId = streamId,
                 Version = version,
+                Sequence = sequence,
+                StreamKey = streamKey.ToString(),
                 EventType = evt.GetType().Name,
                 DataJson = dataJson,
                 CreatedAt = DateTimeOffset.UtcNow
             };
 
-            _logger.LogDebug("Appending event {EventType} to stream {StreamId} (version {Version})",
-                evt.GetType().Name, streamId, version);
+            _logger.LogDebug("Appending event {EventType} to stream {StreamId} (version {Version}, seq {Sequence})",
+                evt.GetType().Name, streamId, version, sequence);
 
             // Use the SDK's typed Create method with CBOR serialization instead of raw SurrealQL.
             // The [Column] attributes on EventRecord ensure CBOR uses snake_case field names
             // matching the mt_events schema.
             await _session.Create("mt_events", record, ct).ConfigureAwait(false);
+
+            wrapped.Add(WrapEvent(evt, record));
         }
+
+        return wrapped.AsReadOnly();
     }
 
     public async Task<string> StartStream(string streamId, IEnumerable<object> events, CancellationToken ct = default)
@@ -85,11 +87,11 @@ public class EventStore : IEvents
         return streamId;
     }
 
-    public async Task<IReadOnlyList<(string StreamId, object Event, long Version)>> FetchAllAfterVersion(
-        long version, CancellationToken ct = default)
+    public async Task<IReadOnlyList<IEvent>> FetchAllAfterSequence(
+        long sequence, CancellationToken ct = default)
     {
         var response = await _session.RawQuery(
-            $"SELECT * FROM mt_events WHERE version > {version} ORDER BY version ASC;",
+            $"SELECT * FROM mt_events WHERE sequence > {sequence} ORDER BY sequence ASC;",
             null, ct).ConfigureAwait(false);
 
         if (!response.HasErrors && response.Count > 0)
@@ -99,18 +101,8 @@ public class EventStore : IEvents
                 var records = response.GetValue<List<EventRecord>>(0);
                 if (records is { Count: > 0 })
                 {
-                    var results = new List<(string, object, long)>();
-                    foreach (var r in records)
-                    {
-                        object? evt = r.DataJson;
-                        if (!string.IsNullOrEmpty(r.DataJson))
-                        {
-                            try { evt = JsonSerializer.Deserialize<object>(r.DataJson, JsonOptions) ?? r.DataJson; }
-                            catch { evt = r.DataJson; }
-                        }
-                        results.Add((r.StreamId, evt ?? "", r.Version));
-                    }
-                    _logger.LogDebug("Fetched {Count} events after version {Version}", results.Count, version);
+                    var results = records.Select(ToEvent).ToList();
+                    _logger.LogDebug("Fetched {Count} events after sequence {Sequence}", results.Count, sequence);
                     return results.AsReadOnly();
                 }
             }
@@ -153,6 +145,124 @@ public class EventStore : IEvents
         PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower,
         PropertyNameCaseInsensitive = true
     };
+
+    /// <summary>
+    /// Converts an <see cref="EventRecord"/> to an <see cref="IEvent"/> by deserializing the data JSON
+    /// to the correct type stored in <see cref="EventRecord.EventType"/>.
+    /// </summary>
+    private static IEvent ToEvent(EventRecord r)
+    {
+        // Resolve the concrete event type from the stored name
+        object? data;
+        var eventTypeName = r.EventType;
+        if (!string.IsNullOrEmpty(eventTypeName) && !string.IsNullOrEmpty(r.DataJson))
+        {
+            Type? type = null;
+            try { type = Type.GetType(eventTypeName, throwOnError: false); }
+            catch { }
+
+            // Backward compat: old events with simple type names only
+            if (type == null && !eventTypeName.Contains('.'))
+            {
+                type = AppDomain.CurrentDomain.GetAssemblies()
+                    .SelectMany(a => { try { return a.GetTypes(); } catch { return Type.EmptyTypes; } })
+                    .FirstOrDefault(t => t.Name == eventTypeName);
+            }
+
+            if (type != null)
+            {
+                try { data = JsonSerializer.Deserialize(r.DataJson, type, JsonOptions); }
+                catch { data = r.DataJson; }
+            }
+            else
+            {
+                try { data = JsonSerializer.Deserialize<object>(r.DataJson, JsonOptions) ?? r.DataJson; }
+                catch { data = r.DataJson; }
+            }
+        }
+        else
+        {
+            data = r.DataJson;
+        }
+
+        var streamKey = string.IsNullOrEmpty(r.StreamKey)
+            ? Guid.Empty
+            : Guid.TryParse(r.StreamKey, out var g) ? g : Guid.Empty;
+
+        return new Event<object>(
+            data ?? "",
+            r.Version,
+            r.Sequence,
+            r.CreatedAt,
+            r.StreamId,
+            streamKey);
+    }
+
+    /// <summary>
+    /// Wraps a raw event object and its stored <see cref="EventRecord"/> into an <see cref="IEvent"/>.
+    /// </summary>
+    private static IEvent WrapEvent(object evt, EventRecord record)
+    {
+        var streamKey = string.IsNullOrEmpty(record.StreamKey)
+            ? Guid.Empty
+            : Guid.TryParse(record.StreamKey, out var g) ? g : Guid.Empty;
+
+        return (IEvent)Activator.CreateInstance(
+            typeof(Event<>).MakeGenericType(evt.GetType()),
+            evt,
+            record.Version,
+            record.Sequence,
+            record.CreatedAt,
+            record.StreamId,
+            streamKey)!;
+    }
+
+    private async Task<long> GetNextSequence(CancellationToken ct)
+    {
+        // Sequence is used for ordering, not uniqueness. Minor duplicates under
+        // extreme concurrent writes are acceptable (TOCTOU race between count
+        // read and the subsequent INSERT is non-critical).
+        try
+        {
+            var response = await _session.RawQuery(
+                "SELECT count() FROM mt_events GROUP ALL;", null, ct).ConfigureAwait(false);
+            if (!response.HasErrors && response.Count > 0)
+            {
+                // count() returns [{ count: N }] — extract from the dictionary
+                var result = response.GetValue<List<Dictionary<string, object>>>(0);
+                if (result is { Count: > 0 } && result[0].TryGetValue("count", out var countVal))
+                    return Convert.ToInt64(countVal) + 1;
+            }
+        }
+        catch
+        {
+            // Ignore and fall through to ticks fallback
+        }
+        // Fallback: use ticks for ordering (not guaranteed unique)
+        return DateTimeOffset.UtcNow.Ticks;
+    }
+
+    private async Task<Guid> GetOrCreateStreamKey(string streamId, CancellationToken ct)
+    {
+        // Try to get existing stream key
+        var response = await _session.RawQuery(
+            $"SELECT stream_key FROM mt_events WHERE stream_id = '{streamId}' LIMIT 1;",
+            null, ct).ConfigureAwait(false);
+        if (!response.HasErrors && response.Count > 0)
+        {
+            try
+            {
+                var records = response.GetValue<List<EventRecord>>(0);
+                if (records is { Count: > 0 } && !string.IsNullOrEmpty(records[0].StreamKey))
+                    return Guid.Parse(records[0].StreamKey);
+            }
+            catch
+            {
+                // Fallback
+            }
+        }
+        return Guid.NewGuid();
+    }
 }
 
 internal class EventRecord
@@ -161,6 +271,10 @@ internal class EventRecord
     public string StreamId { get; set; } = "";
     [Column("version")]
     public long Version { get; set; }
+    [Column("sequence")]
+    public long Sequence { get; set; }
+    [Column("stream_key")]
+    public string StreamKey { get; set; } = "";
     [Column("event_type")]
     public string EventType { get; set; } = "";
     [Column("data_json")]

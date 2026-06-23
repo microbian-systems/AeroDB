@@ -130,6 +130,60 @@ public class SurrealQueryProvider : IQueryProvider
     }
 
     /// <summary>
+    /// Extracts <see cref="IncludeSpec"/> entries from the source queryable embedded
+    /// in the expression tree. Used to recover IncludeSpecs that were set on the
+    /// original <see cref="SurrealDbQueryable{T}"/> before a LINQ operator (e.g.
+    /// <c>.Where()</c>) created a new queryable via <c>CreateQuery</c>.
+    /// </summary>
+    internal static List<IncludeSpec>? ExtractIncludeSpecs(Expression expression)
+    {
+        if (expression is ConstantExpression c && c.Value is IQueryable q)
+        {
+            var qType = q.GetType();
+            if (qType.IsGenericType && qType.GetGenericTypeDefinition() == typeof(SurrealDbQueryable<>))
+            {
+                var includeSpecsField = qType.GetField("IncludeSpecs",
+                    System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
+                var specs = includeSpecsField?.GetValue(q) as List<IncludeSpec>;
+                if (specs is { Count: > 0 })
+                    return specs;
+            }
+        }
+        if (expression is MethodCallExpression m && m.Arguments.Count > 0)
+            return ExtractIncludeSpecs(m.Arguments[0]);
+        if (expression is UnaryExpression u)
+            return ExtractIncludeSpecs(u.Operand);
+        return null;
+    }
+
+    /// <summary>
+    /// Extracts <see cref="FilterIncludeSpec"/> entries from the source queryable embedded
+    /// in the expression tree. Used to recover FilterIncludeSpecs that were set on the
+    /// original <see cref="SurrealDbQueryable{T}"/> before a LINQ operator (e.g.
+    /// <c>.Where()</c>, <c>.OrderBy()</c>) created a new queryable via <c>CreateQuery</c>.
+    /// </summary>
+    internal static List<FilterIncludeSpec>? ExtractFilterIncludeSpecs(Expression expression)
+    {
+        if (expression is ConstantExpression c && c.Value is IQueryable q)
+        {
+            var qType = q.GetType();
+            if (qType.IsGenericType && qType.GetGenericTypeDefinition() == typeof(SurrealDbQueryable<>))
+            {
+                var filterSpecsField = qType.GetField("FilterIncludeSpecs",
+                    System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
+                var specs = filterSpecsField?.GetValue(q) as List<FilterIncludeSpec>;
+                if (specs is { Count: > 0 })
+                    return specs;
+            }
+        }
+        if (expression is MethodCallExpression m && m.Arguments.Count > 0)
+            return ExtractFilterIncludeSpecs(m.Arguments[0]);
+        if (expression is UnaryExpression u)
+            return ExtractFilterIncludeSpecs(u.Operand);
+        return null;
+    }
+
+    /// <summary>
     /// Applies a tenant filter to the query if tenancy is active and the target type supports it.
     /// DatabasePerTenant isolates at the database level — no WHERE filter needed.
     /// </summary>
@@ -194,13 +248,13 @@ public class SurrealQueryProvider : IQueryProvider
     // --- Public entry points (expression-only, for IQueryProvider backward compat) ---
 
     public async Task<List<T>> ToListAsync<T>(Expression expression, CancellationToken ct = default)
-        => await ToListAsyncInternal<T>(expression, null, null, ct);
+        => await ToListAsyncInternal<T>(expression, null, null, null, null, ct);
 
     public async Task<T?> FirstOrDefaultAsync<T>(Expression expression, CancellationToken ct = default)
-        => await FirstOrDefaultAsyncInternal<T>(expression, null, null, ct);
+        => await FirstOrDefaultAsyncInternal<T>(expression, null, null, null, null, ct);
 
     public async Task<T?> SingleOrDefaultAsync<T>(Expression expression, CancellationToken ct = default)
-        => await SingleOrDefaultAsyncInternal<T>(expression, null, null, ct);
+        => await SingleOrDefaultAsyncInternal<T>(expression, null, null, null, null, ct);
 
     // --- Internal entry points (accept fetch/include from SurrealDbQueryable) ---
 
@@ -208,22 +262,28 @@ public class SurrealQueryProvider : IQueryProvider
         Expression expression,
         List<string> fetchFields,
         List<SurrealDbQueryable<T>.IncludeDescriptor> includeDescriptors,
+        List<IncludeSpec>? includeSpecs,
+        List<FilterIncludeSpec>? filterIncludeSpecs,
         CancellationToken ct = default)
-        => await ToListAsyncInternal<T>(expression, fetchFields, includeDescriptors, ct);
+        => await ToListAsyncInternal<T>(expression, fetchFields, includeDescriptors, includeSpecs, filterIncludeSpecs, ct);
 
     internal async Task<T?> FirstOrDefaultAsync<T>(
         Expression expression,
         List<string> fetchFields,
         List<SurrealDbQueryable<T>.IncludeDescriptor> includeDescriptors,
+        List<IncludeSpec>? includeSpecs,
+        List<FilterIncludeSpec>? filterIncludeSpecs,
         CancellationToken ct = default)
-        => await FirstOrDefaultAsyncInternal<T>(expression, fetchFields, includeDescriptors, ct);
+        => await FirstOrDefaultAsyncInternal<T>(expression, fetchFields, includeDescriptors, includeSpecs, filterIncludeSpecs, ct);
 
     internal async Task<T?> SingleOrDefaultAsync<T>(
         Expression expression,
         List<string> fetchFields,
         List<SurrealDbQueryable<T>.IncludeDescriptor> includeDescriptors,
+        List<IncludeSpec>? includeSpecs,
+        List<FilterIncludeSpec>? filterIncludeSpecs,
         CancellationToken ct = default)
-        => await SingleOrDefaultAsyncInternal<T>(expression, fetchFields, includeDescriptors, ct);
+        => await SingleOrDefaultAsyncInternal<T>(expression, fetchFields, includeDescriptors, includeSpecs, filterIncludeSpecs, ct);
 
     // --- Core implementation (shared between public and internal entry points) ---
 
@@ -231,6 +291,8 @@ public class SurrealQueryProvider : IQueryProvider
         Expression expression,
         List<string>? fetchFields,
         List<SurrealDbQueryable<T>.IncludeDescriptor>? includeDescriptors,
+        List<IncludeSpec>? includeSpecs,
+        List<FilterIncludeSpec>? filterIncludeSpecs,
         CancellationToken ct)
     {
         var visitor = CreateVisitor();
@@ -246,17 +308,42 @@ public class SurrealQueryProvider : IQueryProvider
         if (viewName is not null)
             query.TableName = viewName;
 
-        ApplyTenantFilter(query, typeof(T));
-        ApplySoftDeleteFilter(query, typeof(T));
+        var sourceType = ExtractElementType(expression) ?? typeof(T);
+        ApplyTenantFilter(query, sourceType);
+        ApplySoftDeleteFilter(query, sourceType);
 
         // Propagate Fetch fields
         if (fetchFields is { Count: > 0 })
             query.FetchFields.AddRange(fetchFields);
 
+        // Propagate IncludeSpecs (inline subquery includes).
+        // Also try to recover them from the expression tree (e.g. when created by .Where()).
+        if (includeSpecs is { Count: > 0 })
+            query.IncludeSpecs = includeSpecs;
+        else
+        {
+            var extracted = ExtractIncludeSpecs(expression);
+            if (extracted is { Count: > 0 })
+            {
+                query.IncludeSpecs = extracted;
+                includeSpecs = extracted;
+            }
+        }
+
+        // Recover FilterIncludeSpecs from the expression tree — they are lost when
+        // a standard LINQ operator (e.g. Where, OrderBy) creates a new SurrealDbQueryable.
+        if (filterIncludeSpecs is not { Count: > 0 })
+        {
+            var extracted = ExtractFilterIncludeSpecs(expression);
+            if (extracted is { Count: > 0 })
+                filterIncludeSpecs = extracted;
+        }
+
         var hasIncludes = includeDescriptors is { Count: > 0 };
+        var hasIncludeSpecs = includeSpecs is { Count: > 0 };
 
         string surql;
-        if (hasIncludes)
+        if (hasIncludes || hasIncludeSpecs)
         {
             // Build multi-statement SurrealQL using LET variable for server-side
             // single-round-trip eager loading (analogous to Marten's temp tables).
@@ -267,14 +354,38 @@ public class SurrealQueryProvider : IQueryProvider
             sb.AppendLine(");");
             sb.AppendLine("SELECT * FROM $main;");
 
-            foreach (var include in includeDescriptors!)
+            // IncludeBatch descriptors (foreign key → callback/dictionary)
+            if (hasIncludes)
             {
-                var targetTable = MetadataDispatch.GetTableName(include.IncludeType);
-                sb.Append("SELECT * FROM `")
-                  .Append(targetTable)
-                  .Append("` WHERE id IN (SELECT VALUE `")
-                  .Append(include.PropertyName)
-                  .Append("` FROM $main);");
+                foreach (var include in includeDescriptors!)
+                {
+                    var targetTable = MetadataDispatch.GetTableName(include.IncludeType);
+                    sb.Append("SELECT * FROM `")
+                      .Append(targetTable)
+                      .Append("` WHERE id IN (SELECT VALUE `")
+                      .Append(include.PropertyName)
+                      .Append("` FROM $main);");
+                }
+            }
+
+            // IncludeSpec forward/reverse includes (typed record<T> or collection)
+            if (hasIncludeSpecs)
+            {
+                foreach (var spec in includeSpecs!)
+                {
+                    sb.Append("SELECT * FROM `").Append(spec.TargetTable).Append("` WHERE ");
+                    if (spec.IsForward)
+                    {
+                        // Forward: FK on parent. WHERE id IN (SELECT VALUE {parentFk} FROM $main)
+                        sb.Append("id IN (SELECT VALUE `").Append(spec.ForeignKeyField).Append("`");
+                    }
+                    else
+                    {
+                        // Reverse: FK on child. WHERE {childFk} IN (SELECT VALUE id FROM $main)
+                        sb.Append("`").Append(spec.ForeignKeyField).Append("` IN (SELECT VALUE id");
+                    }
+                    sb.Append(" FROM $main);");
+                }
             }
 
             surql = sb.ToString();
@@ -285,15 +396,105 @@ public class SurrealQueryProvider : IQueryProvider
         }
 
         _logger.LogDebug("ToSurrealQL: {Surql}", surql);
-        var querySession = await GetSessionForElementType(typeof(T), ct).ConfigureAwait(false);
+        var querySession = await GetSessionForElementType(sourceType, ct).ConfigureAwait(false);
         var response = await querySession.RawQuery(surql, query.Parameters, ct).ConfigureAwait(false);
 
-        if (hasIncludes)
+        if (hasIncludes || hasIncludeSpecs)
         {
-            // Multi-statement: index 0 = LET result (if any), index 1 = main results, 2+ = includes
-            // Note: Don't check HasErrors here - individual include sub-statements may have
-            // their own status records that don't indicate actual query failure.
-            return DeserializeMainAndIncludes(response, includeDescriptors!, ct);
+            // Determine main result index once (shared between descriptor and spec processing).
+            int mainIndex = 0;
+            List<T>? testMain = null;
+            if (response.Count > 0 && response[0] is SurrealDbOkResult)
+            {
+                try { testMain = response.GetValue<List<T>>(0); }
+                catch { /* ignore type mismatch */ }
+            }
+
+            if (testMain is { Count: > 0 })
+                mainIndex = 0;
+            else if (response.Count > 1 && response[1] is SurrealDbOkResult)
+                mainIndex = 1;
+            else
+                return [];
+
+            var results = mainIndex == 0 ? testMain : response.GetValue<List<T>>(mainIndex);
+            if (results is null || results.Count == 0)
+                return [];
+
+            int ri = mainIndex + 1;
+
+            if (hasIncludes)
+            {
+                foreach (var include in includeDescriptors!)
+                {
+                    if (ri >= response.Count) break;
+
+                    var listType = typeof(List<>).MakeGenericType(include.IncludeType);
+                    var getValueMethod = typeof(SurrealDbResponse).GetMethods()
+                        .FirstOrDefault(m => m.Name == "GetValue" && m.IsGenericMethodDefinition
+                            && m.GetParameters().Length == 1
+                            && m.GetParameters()[0].ParameterType == typeof(int));
+
+                    if (getValueMethod is null) { ri++; continue; }
+
+                    var typedGetValue = getValueMethod.MakeGenericMethod(listType);
+                    object? includedListObj;
+                    try
+                    {
+                        if (response[ri] is not SurrealDbOkResult) { ri++; continue; }
+                        includedListObj = typedGetValue.Invoke(response, [ri]);
+                    }
+                    catch { ri++; continue; }
+
+                    if (includedListObj is not IEnumerable includedEnumerable) { ri++; continue; }
+
+                    var idProp = include.IncludeType.GetProperty("Id", BindingFlags.Instance | BindingFlags.Public);
+                    var docById = new Dictionary<string, object?>(StringComparer.Ordinal);
+                    foreach (var typedDoc in includedEnumerable)
+                    {
+                        if (typedDoc is null) continue;
+                        var docId = idProp?.GetValue(typedDoc);
+                        var strKey = ExtractKeyString(docId);
+                        if (strKey is not null && !docById.ContainsKey(strKey))
+                            docById[strKey] = typedDoc;
+                    }
+
+                    var fkProp = typeof(T).GetProperty(include.PropertyName, BindingFlags.Instance | BindingFlags.Public);
+                    if (fkProp is null) { ri++; continue; }
+
+                    foreach (var item in results)
+                    {
+                        var rawKey = fkProp.GetValue(item);
+                        var strKey = ExtractKeyString(rawKey);
+                        if (strKey is null || !docById.TryGetValue(strKey, out var matchedDoc))
+                            continue;
+
+                        if (include.Callback is not null)
+                            include.Callback.DynamicInvoke(matchedDoc);
+                        else if (include.Dictionary is not null)
+                        {
+                            var addMethod = include.Dictionary.GetType()
+                                .GetMethod("Add", BindingFlags.Instance | BindingFlags.Public);
+                            addMethod?.Invoke(include.Dictionary, [rawKey, matchedDoc]);
+                        }
+                    }
+
+                    ri++;
+                }
+            }
+
+            if (hasIncludeSpecs)
+            {
+                // Pass explicit offset (after any IncludeDescriptors result sets)
+                var specOffset = hasIncludes ? ri : (int?)null;
+                ApplyIncludeSpecsToResults(response, results, includeSpecs!, specOffset);
+            }
+
+            // Apply FilterInclude predicates (in-memory filter after includes are loaded)
+            if (filterIncludeSpecs is { Count: > 0 } && results is { Count: > 0 })
+                results = ApplyFilterIncludePredicates(results, filterIncludeSpecs);
+
+            return results;
         }
 
         if (!response.HasErrors && response.Count > 0)
@@ -310,6 +511,8 @@ public class SurrealQueryProvider : IQueryProvider
         Expression expression,
         List<string>? fetchFields,
         List<SurrealDbQueryable<T>.IncludeDescriptor>? includeDescriptors,
+        List<IncludeSpec>? includeSpecs,
+        List<FilterIncludeSpec>? filterIncludeSpecs,
         CancellationToken ct)
     {
         var visitor = CreateVisitor();
@@ -325,19 +528,42 @@ public class SurrealQueryProvider : IQueryProvider
         if (viewName is not null)
             query.TableName = viewName;
 
-        ApplyTenantFilter(query, typeof(T));
-        ApplySoftDeleteFilter(query, typeof(T));
+        var sourceType = ExtractElementType(expression) ?? typeof(T);
+        ApplyTenantFilter(query, sourceType);
+        ApplySoftDeleteFilter(query, sourceType);
 
         // Propagate Fetch fields
         if (fetchFields is { Count: > 0 })
             query.FetchFields.AddRange(fetchFields);
 
+        // Propagate IncludeSpecs (inline subquery includes).
+        if (includeSpecs is { Count: > 0 })
+            query.IncludeSpecs = includeSpecs;
+        else
+        {
+            var extracted = ExtractIncludeSpecs(expression);
+            if (extracted is { Count: > 0 })
+            {
+                query.IncludeSpecs = extracted;
+                includeSpecs = extracted;
+            }
+        }
+
+        // Recover FilterIncludeSpecs from the expression tree
+        if (filterIncludeSpecs is not { Count: > 0 })
+        {
+            var extracted = ExtractFilterIncludeSpecs(expression);
+            if (extracted is { Count: > 0 })
+                filterIncludeSpecs = extracted;
+        }
+
         query.Limit = 1;
 
         var hasIncludes = includeDescriptors is { Count: > 0 };
+        var hasIncludeSpecs = includeSpecs is { Count: > 0 };
 
         string surql;
-        if (hasIncludes)
+        if (hasIncludes || hasIncludeSpecs)
         {
             var baseSurql = query.ToSurrealQL().TrimEnd(';');
             var sb = new StringBuilder();
@@ -346,14 +572,34 @@ public class SurrealQueryProvider : IQueryProvider
             sb.AppendLine(");");
             sb.AppendLine("SELECT * FROM $main;");
 
-            foreach (var include in includeDescriptors!)
+            if (hasIncludes)
             {
-                var targetTable = MetadataDispatch.GetTableName(include.IncludeType);
-                sb.Append("SELECT * FROM `")
-                  .Append(targetTable)
-                  .Append("` WHERE id IN (SELECT VALUE `")
-                  .Append(include.PropertyName)
-                  .Append("` FROM $main);");
+                foreach (var include in includeDescriptors!)
+                {
+                    var targetTable = MetadataDispatch.GetTableName(include.IncludeType);
+                    sb.Append("SELECT * FROM `")
+                      .Append(targetTable)
+                      .Append("` WHERE id IN (SELECT VALUE `")
+                      .Append(include.PropertyName)
+                      .Append("` FROM $main);");
+                }
+            }
+
+            if (hasIncludeSpecs)
+            {
+                foreach (var spec in includeSpecs!)
+                {
+                    sb.Append("SELECT * FROM `").Append(spec.TargetTable).Append("` WHERE ");
+                    if (spec.IsForward)
+                    {
+                        sb.Append("id IN (SELECT VALUE `").Append(spec.ForeignKeyField).Append("`");
+                    }
+                    else
+                    {
+                        sb.Append("`").Append(spec.ForeignKeyField).Append("` IN (SELECT VALUE id");
+                    }
+                    sb.Append(" FROM $main);");
+                }
             }
 
             surql = sb.ToString();
@@ -364,14 +610,32 @@ public class SurrealQueryProvider : IQueryProvider
         }
 
         _logger.LogDebug("FirstOrDefaultAsync SurrealQL: {Surql}", surql);
-        var querySession = await GetSessionForElementType(typeof(T), ct).ConfigureAwait(false);
+        var querySession = await GetSessionForElementType(sourceType, ct).ConfigureAwait(false);
         var response = await querySession.RawQuery(surql, query.Parameters, ct).ConfigureAwait(false);
 
         if (hasIncludes)
         {
             var results = DeserializeMainAndIncludes(response, includeDescriptors!, ct);
+            if (hasIncludeSpecs)
+                ApplyIncludeSpecsToResults(response, results, includeSpecs!);
+            if (filterIncludeSpecs is { Count: > 0 } && results is { Count: > 0 })
+                results = ApplyFilterIncludePredicates(results, filterIncludeSpecs);
             if (results.Count > 0)
                 return results[0];
+            return default;
+        }
+
+        if (hasIncludeSpecs)
+        {
+            var results = DeserializeMainResults<T>(response);
+            if (results.Count > 0)
+            {
+                ApplyIncludeSpecsToResults(response, results, includeSpecs!);
+                if (filterIncludeSpecs is { Count: > 0 })
+                    results = ApplyFilterIncludePredicates(results, filterIncludeSpecs);
+                if (results.Count > 0)
+                    return results[0];
+            }
             return default;
         }
 
@@ -389,6 +653,8 @@ public class SurrealQueryProvider : IQueryProvider
         Expression expression,
         List<string>? fetchFields,
         List<SurrealDbQueryable<T>.IncludeDescriptor>? includeDescriptors,
+        List<IncludeSpec>? includeSpecs,
+        List<FilterIncludeSpec>? filterIncludeSpecs,
         CancellationToken ct)
     {
         var visitor = CreateVisitor();
@@ -400,19 +666,42 @@ public class SurrealQueryProvider : IQueryProvider
         if (viewName is not null)
             query.TableName = viewName;
 
-        ApplyTenantFilter(query, typeof(T));
-        ApplySoftDeleteFilter(query, typeof(T));
+        var sourceType = ExtractElementType(expression) ?? typeof(T);
+        ApplyTenantFilter(query, sourceType);
+        ApplySoftDeleteFilter(query, sourceType);
 
         // Propagate Fetch fields
         if (fetchFields is { Count: > 0 })
             query.FetchFields.AddRange(fetchFields);
 
+        // Propagate IncludeSpecs (inline subquery includes).
+        if (includeSpecs is { Count: > 0 })
+            query.IncludeSpecs = includeSpecs;
+        else
+        {
+            var extracted = ExtractIncludeSpecs(expression);
+            if (extracted is { Count: > 0 })
+            {
+                query.IncludeSpecs = extracted;
+                includeSpecs = extracted;
+            }
+        }
+
+        // Recover FilterIncludeSpecs from the expression tree
+        if (filterIncludeSpecs is not { Count: > 0 })
+        {
+            var extracted = ExtractFilterIncludeSpecs(expression);
+            if (extracted is { Count: > 0 })
+                filterIncludeSpecs = extracted;
+        }
+
         query.Limit = 2; // fetch 2 to detect > 1 result
 
         var hasIncludes = includeDescriptors is { Count: > 0 };
+        var hasIncludeSpecs = includeSpecs is { Count: > 0 };
 
         string surql;
-        if (hasIncludes)
+        if (hasIncludes || hasIncludeSpecs)
         {
             var baseSurql = query.ToSurrealQL().TrimEnd(';');
             var sb = new StringBuilder();
@@ -421,14 +710,34 @@ public class SurrealQueryProvider : IQueryProvider
             sb.AppendLine(");");
             sb.AppendLine("SELECT * FROM $main;");
 
-            foreach (var include in includeDescriptors!)
+            if (hasIncludes)
             {
-                var targetTable = MetadataDispatch.GetTableName(include.IncludeType);
-                sb.Append("SELECT * FROM `")
-                  .Append(targetTable)
-                  .Append("` WHERE id IN (SELECT VALUE `")
-                  .Append(include.PropertyName)
-                  .Append("` FROM $main);");
+                foreach (var include in includeDescriptors!)
+                {
+                    var targetTable = MetadataDispatch.GetTableName(include.IncludeType);
+                    sb.Append("SELECT * FROM `")
+                      .Append(targetTable)
+                      .Append("` WHERE id IN (SELECT VALUE `")
+                      .Append(include.PropertyName)
+                      .Append("` FROM $main);");
+                }
+            }
+
+            if (hasIncludeSpecs)
+            {
+                foreach (var spec in includeSpecs!)
+                {
+                    sb.Append("SELECT * FROM `").Append(spec.TargetTable).Append("` WHERE ");
+                    if (spec.IsForward)
+                    {
+                        sb.Append("id IN (SELECT VALUE `").Append(spec.ForeignKeyField).Append("`");
+                    }
+                    else
+                    {
+                        sb.Append("`").Append(spec.ForeignKeyField).Append("` IN (SELECT VALUE id");
+                    }
+                    sb.Append(" FROM $main);");
+                }
             }
 
             surql = sb.ToString();
@@ -439,16 +748,36 @@ public class SurrealQueryProvider : IQueryProvider
         }
 
         _logger.LogDebug("SingleOrDefaultAsync SurrealQL: {Surql}", surql);
-        var querySession = await GetSessionForElementType(typeof(T), ct).ConfigureAwait(false);
+        var querySession = await GetSessionForElementType(sourceType, ct).ConfigureAwait(false);
         var response = await querySession.RawQuery(surql, query.Parameters, ct).ConfigureAwait(false);
 
         if (hasIncludes)
         {
             var results = DeserializeMainAndIncludes(response, includeDescriptors!, ct);
+            if (hasIncludeSpecs)
+                ApplyIncludeSpecsToResults(response, results, includeSpecs!);
+            if (filterIncludeSpecs is { Count: > 0 } && results is { Count: > 0 })
+                results = ApplyFilterIncludePredicates(results, filterIncludeSpecs);
             if (results.Count > 1)
                 throw new InvalidOperationException("Sequence contains more than one element.");
             if (results.Count == 1)
                 return results[0];
+            return default;
+        }
+
+        if (hasIncludeSpecs)
+        {
+            var results = DeserializeMainResults<T>(response);
+            if (results.Count > 0)
+            {
+                ApplyIncludeSpecsToResults(response, results, includeSpecs!);
+                if (filterIncludeSpecs is { Count: > 0 })
+                    results = ApplyFilterIncludePredicates(results, filterIncludeSpecs);
+                if (results.Count > 1)
+                    throw new InvalidOperationException("Sequence contains more than one element.");
+                if (results.Count == 1)
+                    return results[0];
+            }
             return default;
         }
 
@@ -598,6 +927,227 @@ public class SurrealQueryProvider : IQueryProvider
     }
 
     /// <summary>
+    /// Deserializes main results from a multi-statement SurrealDbResponse,
+    /// handling both engine behaviors (LET result present or absent).
+    /// Used by IncludeSpec (forward include) post-processing.
+    /// </summary>
+    private static List<T> DeserializeMainResults<T>(SurrealDbResponse response)
+    {
+        var testMain = response.GetValue<List<T>>(0);
+        if (testMain is { Count: > 0 })
+            return testMain;
+
+        if (response.Count > 1)
+        {
+            var altMain = response.GetValue<List<T>>(1);
+            if (altMain is { Count: > 0 })
+                return altMain;
+        }
+
+        return [];
+    }
+
+    /// <summary>
+    /// Applies IncludeSpec results to main results by matching the FK RecordId
+    /// on each main result with the loaded include document's Id.
+    /// Sets the typed property directly on each main result.
+    /// </summary>
+    /// <param name="response">The SurrealDB response containing main + include result sets.</param>
+    /// <param name="results">Already-deserialized main results.</param>
+    /// <param name="includeSpecs">The include specifications to apply.</param>
+    /// <param name="resultOffset">
+    /// Optional offset into the response for the first include result set.
+    /// Defaults to <c>mainIndex + 1</c> (no prior include descriptor sets).
+    /// </param>
+    private static void ApplyIncludeSpecsToResults<T>(
+        SurrealDbResponse response,
+        List<T> results,
+        List<IncludeSpec> includeSpecs,
+        int? resultOffset = null)
+    {
+        int resultIndex;
+        if (resultOffset.HasValue)
+        {
+            resultIndex = resultOffset.Value;
+        }
+        else
+        {
+            // Determine main result index
+            int mainIndex;
+            var testMain = response.GetValue<List<T>>(0);
+            if (testMain is { Count: > 0 })
+                mainIndex = 0;
+            else if (response.Count > 1)
+                mainIndex = 1;
+            else
+                return;
+            resultIndex = mainIndex + 1;
+        }
+        foreach (var spec in includeSpecs)
+        {
+            if (resultIndex >= response.Count) break;
+
+            if (response[resultIndex] is not SurrealDbOkResult)
+            {
+                resultIndex++;
+                continue;
+            }
+
+            // Deserialize include results via reflection
+            var listType = typeof(List<>).MakeGenericType(spec.IncludeType);
+            var getValueMethod = typeof(SurrealDbResponse).GetMethods()
+                .FirstOrDefault(m => m.Name == "GetValue" && m.IsGenericMethodDefinition
+                    && m.GetParameters().Length == 1
+                    && m.GetParameters()[0].ParameterType == typeof(int));
+
+            if (getValueMethod is null) { resultIndex++; continue; }
+
+            var typedGetValue = getValueMethod.MakeGenericMethod(listType);
+            object? includedListObj;
+            try
+            {
+                includedListObj = typedGetValue.Invoke(response, [resultIndex]);
+            }
+            catch
+            {
+                resultIndex++;
+                continue;
+            }
+
+            if (includedListObj is not IEnumerable includedEnumerable)
+            {
+                resultIndex++;
+                continue;
+            }
+
+            if (!spec.IsForward)
+            {
+                // ── Reverse include: group by FK field on child ────────
+                var fkProp = spec.IncludeType.GetProperty(spec.ForeignKeyField,
+                    BindingFlags.Instance | BindingFlags.Public);
+
+                if (fkProp is null) { resultIndex++; continue; }
+
+                var groups = new Dictionary<string, List<object>>(StringComparer.Ordinal);
+                foreach (var typedDoc in includedEnumerable)
+                {
+                    if (typedDoc is null) continue;
+                    var fkValue = ExtractKeyString(fkProp.GetValue(typedDoc));
+                    if (fkValue is null) continue;
+                    if (!groups.ContainsKey(fkValue))
+                        groups[fkValue] = new List<object>();
+                    groups[fkValue].Add(typedDoc);
+                }
+
+                // Assign grouped results to each main result
+                var idProp = spec.IncludeType.GetProperty("Id", BindingFlags.Instance | BindingFlags.Public);
+                var includeProp = typeof(T).GetProperty(spec.PropertyName, BindingFlags.Instance | BindingFlags.Public);
+                if (includeProp is null) { resultIndex++; continue; }
+
+                foreach (var item in results)
+                {
+                    if (item is null) continue;
+                    var parentId = ExtractKeyString(idProp?.GetValue(item));
+                    if (parentId is null) continue;
+
+                    if (groups.TryGetValue(parentId, out var children))
+                    {
+                        // Create typed list and set on property
+                        var childListType = typeof(List<>).MakeGenericType(spec.IncludeType);
+                        var typedList = (IList)Activator.CreateInstance(childListType)!;
+                        foreach (var child in children)
+                            typedList.Add(child);
+
+                        includeProp.SetValue(item, typedList);
+                    }
+                }
+
+                resultIndex++;
+                continue;
+            }
+
+            // ── Forward include: build lookup by Id ───────────────────
+            var idPropFwd = spec.IncludeType.GetProperty("Id", BindingFlags.Instance | BindingFlags.Public);
+            var docById = new Dictionary<string, object?>(StringComparer.Ordinal);
+            foreach (var typedDoc in includedEnumerable)
+            {
+                if (typedDoc is null) continue;
+                var docId = idPropFwd?.GetValue(typedDoc);
+                var strKey = ExtractKeyString(docId);
+                if (strKey is not null && !docById.ContainsKey(strKey))
+                    docById[strKey] = typedDoc;
+            }
+
+            if (docById.Count == 0)
+            {
+                resultIndex++;
+                continue;
+            }
+
+            // For each source result, extract the FK from its typed record property,
+            // look up the matching include document, and set the property.
+            var includePropFwd = typeof(T).GetProperty(spec.PropertyName, BindingFlags.Instance | BindingFlags.Public);
+            if (includePropFwd is null) { resultIndex++; continue; }
+
+            foreach (var item in results)
+            {
+                if (item is null) continue;
+
+                // The property holds a Record reference (e.g., Customer?) which was
+                // deserialized with just the Id populated (from the stored RecordId).
+                var propValue = includePropFwd.GetValue(item);
+                if (propValue is null) continue;
+
+                // Get the Id from the record reference
+                var recordId = idPropFwd?.GetValue(propValue);
+                var strKey = ExtractKeyString(recordId);
+                if (strKey is null || !docById.TryGetValue(strKey, out var matchedDoc))
+                    continue;
+
+                // Set the full included document on the property
+                includePropFwd.SetValue(item, matchedDoc);
+            }
+
+            resultIndex++;
+        }
+    }
+
+    /// <summary>
+    /// Applies FilterInclude predicates in-memory after all includes are loaded.
+    /// For each filter spec, evaluates the predicate against the child collection
+    /// and removes parent documents that don't match.
+    /// </summary>
+    private static List<T> ApplyFilterIncludePredicates<T>(
+        List<T> results,
+        List<FilterIncludeSpec> filterIncludeSpecs)
+    {
+        foreach (var spec in filterIncludeSpecs)
+        {
+            var compiledFilter = spec.Filter.Compile();
+            results = results.Where(item =>
+            {
+                var prop = typeof(T).GetProperty(spec.PropertyName,
+                    BindingFlags.Instance | BindingFlags.Public);
+                if (prop is null) return false;
+
+                var collection = prop.GetValue(item);
+                if (collection is null) return false;
+
+                try
+                {
+                    return (bool)compiledFilter.DynamicInvoke(collection)!;
+                }
+                catch
+                {
+                    return false;
+                }
+            }).ToList();
+        }
+
+        return results;
+    }
+
+    /// <summary>
     /// Extracts a string key from a value for dictionary-based Include matching.
     /// Handles RecordId, string, Guid, and primitive types.
     /// </summary>
@@ -630,8 +1180,9 @@ public class SurrealQueryProvider : IQueryProvider
         if (viewName is not null)
             query.TableName = viewName;
 
-        ApplyTenantFilter(query, typeof(T));
-        ApplySoftDeleteFilter(query, typeof(T));
+        var elementType = ExtractElementType(expression) ?? typeof(T);
+        ApplyTenantFilter(query, elementType);
+        ApplySoftDeleteFilter(query, elementType);
 
         query.OrderBy.Clear();
         query.Limit = null;
@@ -642,7 +1193,7 @@ public class SurrealQueryProvider : IQueryProvider
         // (e.g., math::sum(Price)). Let it flow through to SurrealQL.
         var surql = query.ToSurrealQL();
         _logger.LogDebug("AggregateAsync ({Function}) SurrealQL: {Surql}", function, surql);
-        var aggSession = await GetSessionForElementType(typeof(T), ct).ConfigureAwait(false);
+        var aggSession = await GetSessionForElementType(elementType, ct).ConfigureAwait(false);
         var response = await aggSession.RawQuery(surql, query.Parameters, ct).ConfigureAwait(false);
 
         if (!response.HasErrors && response.Count > 0)
@@ -716,8 +1267,9 @@ public class SurrealQueryProvider : IQueryProvider
         if (viewName is not null)
             result.TableName = viewName;
 
-        ApplyTenantFilter(result, typeof(T));
-        ApplySoftDeleteFilter(result, typeof(T));
+        var elementType = ExtractElementType(sourceExpression) ?? typeof(T);
+        ApplyTenantFilter(result, elementType);
+        ApplySoftDeleteFilter(result, elementType);
 
         // Override SELECT + GROUP BY with aggregate builder's values
         result.Projection = builder.BuildSelect();
@@ -725,7 +1277,7 @@ public class SurrealQueryProvider : IQueryProvider
             result.GroupBy = builder.GroupByClause.Split(", ").ToList();
 
         var surql = result.ToSurrealQL();
-        var querySession = await GetSessionForElementType(typeof(T), ct).ConfigureAwait(false);
+        var querySession = await GetSessionForElementType(elementType, ct).ConfigureAwait(false);
         var response = await querySession.RawQuery(surql, result.Parameters, ct).ConfigureAwait(false);
 
         if (!response.HasErrors && response.Count > 0)

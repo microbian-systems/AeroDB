@@ -97,8 +97,10 @@ public class SchemaManager
         await session.RawQuery("DEFINE TABLE mt_events SCHEMAFULL;", null, ct).ConfigureAwait(false);
         await session.RawQuery("DEFINE FIELD stream_id ON TABLE mt_events TYPE string;", null, ct).ConfigureAwait(false);
         await session.RawQuery("DEFINE FIELD version ON TABLE mt_events TYPE int;", null, ct).ConfigureAwait(false);
+        await session.RawQuery("DEFINE FIELD sequence ON TABLE mt_events TYPE int;", null, ct).ConfigureAwait(false);
+        await session.RawQuery("DEFINE FIELD stream_key ON TABLE mt_events TYPE string;", null, ct).ConfigureAwait(false);
         await session.RawQuery("DEFINE FIELD event_type ON TABLE mt_events TYPE string;", null, ct).ConfigureAwait(false);
-        await session.RawQuery("DEFINE FIELD data ON TABLE mt_events TYPE string;", null, ct).ConfigureAwait(false);
+        await session.RawQuery("DEFINE FIELD data_json ON TABLE mt_events TYPE string;", null, ct).ConfigureAwait(false);
         await session.RawQuery("DEFINE FIELD created_at ON TABLE mt_events TYPE datetime;", null, ct).ConfigureAwait(false);
         await session.RawQuery("DEFINE INDEX mt_events_stream_version ON TABLE mt_events COLUMNS stream_id, version UNIQUE;", null, ct).ConfigureAwait(false);
     }
