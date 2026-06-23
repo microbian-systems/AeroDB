@@ -22,7 +22,7 @@ namespace WolverineFx.Dali;
 /// Envelope bodies are stored as Base64 strings for reliable CBOR round-tripping.
 /// 
 /// Schema initialization now delegates to the Dali <see cref="SchemaManager"/> pipeline
-/// via typed POCOs (<see cref="WolverineIncomingEnvelopes"/>, etc.) instead of
+/// via typed POCOs (<see cref="WolverineIncomingEnvelope"/>, etc.) instead of
 /// a hardcoded SurrealQL string.
 /// </summary>
 public sealed class DaliMessageStore : IMessageStore,
@@ -35,7 +35,7 @@ public sealed class DaliMessageStore : IMessageStore,
     private int _ownerId;
     private bool _hasDisposed;
     private Guid _nodeId = Guid.NewGuid();
-    private WolverineNode? _currentNode;
+    private Wolverine.Runtime.Agents.WolverineNode? _currentNode;
     private bool _hasLeadershipLock;
 
     private const string IncomingTable = "wolverine_incoming_envelopes";
@@ -516,7 +516,7 @@ public sealed class DaliMessageStore : IMessageStore,
             $"DELETE FROM {NodesTable}; DELETE FROM {AgentRestrictionsTable}; DELETE FROM {NodeRecordsTable};");
     }
 
-    public async Task<int> PersistAsync(WolverineNode node, CancellationToken cancellationToken)
+    public async Task<int> PersistAsync(Wolverine.Runtime.Agents.WolverineNode node, CancellationToken cancellationToken)
     {
         _currentNode = node;
         var json = JsonSerializer.Serialize(new
@@ -541,7 +541,7 @@ public sealed class DaliMessageStore : IMessageStore,
         await Client.RawQuery($"DELETE FROM {NodesTable}:`{EscapeId(nodeId.ToString())}`");
     }
 
-    public async Task<IReadOnlyList<WolverineNode>> LoadAllNodesAsync(CancellationToken cancellationToken)
+    public async Task<IReadOnlyList<Wolverine.Runtime.Agents.WolverineNode>> LoadAllNodesAsync(CancellationToken cancellationToken)
     {
         var response = await Client.RawQuery($"SELECT * FROM {NodesTable} ORDER BY node_number ASC");
         return DeserializeNodeList(response);
@@ -632,7 +632,7 @@ public sealed class DaliMessageStore : IMessageStore,
             $"UPDATE {NodesTable}:`{EscapeId(nodeId.ToString())}` SET assigned_agents = {agentsJson}");
     }
 
-    public async Task<WolverineNode?> LoadNodeAsync(Guid nodeId, CancellationToken cancellationToken)
+    public async Task<Wolverine.Runtime.Agents.WolverineNode?> LoadNodeAsync(Guid nodeId, CancellationToken cancellationToken)
     {
         var response = await Client.RawQuery(
             $"SELECT * FROM {NodesTable}:`{EscapeId(nodeId.ToString())}`");
@@ -640,7 +640,7 @@ public sealed class DaliMessageStore : IMessageStore,
         return nodes.FirstOrDefault();
     }
 
-    public async Task MarkHealthCheckAsync(WolverineNode node, CancellationToken cancellationToken)
+    public async Task MarkHealthCheckAsync(Wolverine.Runtime.Agents.WolverineNode node, CancellationToken cancellationToken)
     {
         node.LastHealthCheck = DateTimeOffset.UtcNow;
         await Client.RawQuery(
@@ -988,10 +988,10 @@ public sealed class DaliMessageStore : IMessageStore,
     {
         await using var session = await Client.CreateSession().ConfigureAwait(false);
 
-        await _schemaManager.EnsureDocumentSchemaAsync<WolverineIncomingEnvelopes>(session, SchemaMode.Strict).ConfigureAwait(false);
-        await _schemaManager.EnsureDocumentSchemaAsync<WolverineOutgoingEnvelopes>(session, SchemaMode.Strict).ConfigureAwait(false);
-        await _schemaManager.EnsureDocumentSchemaAsync<WolverineDeadLetters>(session, SchemaMode.Strict).ConfigureAwait(false);
-        await _schemaManager.EnsureDocumentSchemaAsync<WolverineNodes>(session, SchemaMode.Strict).ConfigureAwait(false);
+        await _schemaManager.EnsureDocumentSchemaAsync<WolverineIncomingEnvelope>(session, SchemaMode.Strict).ConfigureAwait(false);
+        await _schemaManager.EnsureDocumentSchemaAsync<WolverineOutgoingEnvelope>(session, SchemaMode.Strict).ConfigureAwait(false);
+        await _schemaManager.EnsureDocumentSchemaAsync<WolverineDeadLetterEnvelope>(session, SchemaMode.Strict).ConfigureAwait(false);
+        await _schemaManager.EnsureDocumentSchemaAsync<WolverineFx.Dali.WolverineNode>(session, SchemaMode.Strict).ConfigureAwait(false);
         await _schemaManager.EnsureDocumentSchemaAsync<WolverineAgentRestrictions>(session, SchemaMode.Strict).ConfigureAwait(false);
         await _schemaManager.EnsureDocumentSchemaAsync<WolverineNodeRecords>(session, SchemaMode.Strict).ConfigureAwait(false);
 
@@ -1064,9 +1064,9 @@ public sealed class DaliMessageStore : IMessageStore,
         return value.Replace("'", "''");
     }
 
-    private List<WolverineNode> DeserializeNodeList(SurrealDb.Net.Models.Response.SurrealDbResponse response)
+    private List<Wolverine.Runtime.Agents.WolverineNode> DeserializeNodeList(SurrealDb.Net.Models.Response.SurrealDbResponse response)
     {
-        var nodes = new List<WolverineNode>();
+        var nodes = new List<Wolverine.Runtime.Agents.WolverineNode>();
         try
         {
             var raw = DeserializeResponse<List<Dictionary<string, object>>>(response, 0);
@@ -1076,7 +1076,7 @@ public sealed class DaliMessageStore : IMessageStore,
                 {
                     try
                     {
-                        var node = new WolverineNode
+                        var node = new Wolverine.Runtime.Agents.WolverineNode
                         {
                             NodeId = Guid.Parse(r.GetValueOrDefault("id")?.ToString()?.Split(':').Last() ?? Guid.NewGuid().ToString()),
                             AssignedNodeNumber = Convert.ToInt32(r.GetValueOrDefault("node_number") ?? 1),

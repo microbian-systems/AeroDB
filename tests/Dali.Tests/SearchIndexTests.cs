@@ -33,7 +33,7 @@ public class SearchIndexTests
             VectorDistance = Search.Distance.Cosine
         };
 
-        var surql = BuildBuilderMethod("BuildVectorIndex", idx, "page");
+        var surql = BuildBuilderMethod("BuildHnswIndex", idx, "page");
         surql.ShouldBe("DEFINE INDEX hnsw_page_embedding ON TABLE page FIELDS Embedding HNSW DIMENSION 1536 DIST COSINE;");
     }
 
@@ -94,7 +94,7 @@ public class SearchIndexTests
             VectorDimension = null // uses default 1536
         };
 
-        var surql = BuildBuilderMethod("BuildVectorIndex", idx, "doc");
+        var surql = BuildBuilderMethod("BuildHnswIndex", idx, "doc");
         surql.ShouldContain("DIMENSION 1536");
         surql.ShouldContain("DIST COSINE");
     }

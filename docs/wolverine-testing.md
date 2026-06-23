@@ -66,7 +66,7 @@ Legend: ✅ Tested | ❌ Not tested | 🔧 Dali missing feature | 🚫 Not appli
 | 28 | Fetch specifications | [wolverinefx.net](https://wolverinefx.net/guide/durability/marten/fetch-specifications.html) | 🚫 | — | Marten compiled queries, not Dali |
 | 29 | Event sourcing | [wolverinefx.net](https://wolverinefx.net/guide/durability/marten/event-sourcing.html) | ✅ | — | EventStore, IEvents, FetchAllAfterVersion, 3 tests |
 | 30 | Event forwarding | [wolverinefx.net](https://wolverinefx.net/guide/durability/marten/event-forwarding.html) | ✅ | — | DaliEventForwarding listener tested in integration tests |
-| 31 | Event subscriptions | [wolverinefx.net](https://wolverinefx.net/guide/durability/marten/subscriptions.html) | 🔧 | — | JasperFx.Events-based subscription pipeline in progress |
+| 31 | Event subscriptions | [wolverinefx.net](https://wolverinefx.net/guide/durability/marten/subscriptions.html) | ✅ | — | JasperFx.Events-based subscription pipeline: IDaliSubscription, DaliSubscriptionRunner, IHostedService daemon |
 | 32 | Sagas | [wolverinefx.net](https://wolverinefx.net/guide/durability/marten/sagas.html) | ✅ | — | DaliSagaStorage, saga CRUD tests passing |
 | 33 | Process manager | [wolverinefx.net](https://wolverinefx.net/guide/durability/marten/process-manager-via-handlers.html) | 🚫 | — | Pattern, not storage-specific |
 | 34 | Multi-tenancy | [wolverinefx.net](https://wolverinefx.net/guide/durability/marten/multi-tenancy.html) | ✅ | — | WithTenant() in DaliOutboxedSessionFactory, tested |

@@ -125,7 +125,7 @@ public class SurrealExpressionVisitor : ExpressionVisitor
         return node;
     }
 
-    private static string TranslateCondition(Expression expr) => expr switch
+    internal static string TranslateCondition(Expression expr) => expr switch
     {
         BinaryExpression b => TranslateBinary(b),
         MethodCallExpression m => TranslateMethod(m),

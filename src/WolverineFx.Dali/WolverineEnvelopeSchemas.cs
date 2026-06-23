@@ -17,24 +17,24 @@ public sealed class WolverineEnvelopeSchemas : IConfigureDali
     public void Configure(StoreOptions options)
     {
         // Wolverine incoming envelopes
-        options.Schema.For<WolverineIncomingEnvelopes>()
+        options.Schema.For<WolverineIncomingEnvelope>()
             .SetSchemaMode(SchemaMode.Strict)
             .Index(x => x.Status)
             .Index(x => x.ExecutionTime)
             .Index(x => x.OwnerId);
 
         // Wolverine outgoing envelopes
-        options.Schema.For<WolverineOutgoingEnvelopes>()
+        options.Schema.For<WolverineOutgoingEnvelope>()
             .SetSchemaMode(SchemaMode.Strict)
             .Index(x => x.Destination);
 
         // Wolverine dead letters
-        options.Schema.For<WolverineDeadLetters>()
+        options.Schema.For<WolverineDeadLetterEnvelope>()
             .SetSchemaMode(SchemaMode.Strict)
             .Index(x => x.Status);
 
         // Wolverine nodes
-        options.Schema.For<WolverineNodes>()
+        options.Schema.For<WolverineNode>()
             .SetSchemaMode(SchemaMode.Strict)
             .UniqueIndex(x => x.Id);
 

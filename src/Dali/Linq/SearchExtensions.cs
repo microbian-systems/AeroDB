@@ -18,23 +18,22 @@ public static class SearchExtensions
         int limit = 30,
         CancellationToken ct = default) where T : class
     {
+        if (source.Provider is not SurrealQueryProvider provider)
+            return [];
+
         if (fields.Count == 0) return [];
-        var table = MetadataDispatch.GetTableName(typeof(T));
-        var fieldNames = fields.Select(f => GetMemberName(f.FieldSelector)).ToList();
 
-        var whereParts = new List<string>();
-        var scoreParts = new List<string>();
-        for (int i = 0; i < fieldNames.Count; i++)
-        {
-            whereParts.Add($"{fieldNames[i]} @{i}@ '{query.Replace("'", "\\'")}'");
-            scoreParts.Add($"(search::score({i}) * {fields[i].Weight})");
-        }
+        // Convert Expression<Func<T,string>> to Expression<Func<T,object>>
+        var converted = fields.Select(f =>
+            ((Expression<Func<T, object>>)Expression.Lambda(
+                Expression.Convert(f.FieldSelector.Body, typeof(object)),
+                f.FieldSelector.Parameters),
+             f.Weight)).ToArray();
 
-        var where = string.Join(" OR ", whereParts);
-        var scoreExpr = scoreParts.Count == 1 ? $"search::score(0)" : string.Join(" + ", scoreParts);
-
-        var surql = $"SELECT *, {scoreExpr} AS _score FROM `{table}` WHERE {where} ORDER BY _score DESC LIMIT {limit};";
-        return await ExecuteSearchAsync<T>(source, surql, ct).ConfigureAwait(false);
+        return await new DaliSearchQuery<T>(provider)
+            .MatchText(converted, query)
+            .Take(limit)
+            .ToListAsync(ct).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -59,12 +58,14 @@ public static class SearchExtensions
         int candidates = 100,
         CancellationToken ct = default) where T : class
     {
-        var fieldName = GetMemberName(fieldSelector);
-        var table = MetadataDispatch.GetTableName(typeof(T));
-        var vecStr = "[" + string.Join(", ", queryVector.Select(v => v.ToString(System.Globalization.CultureInfo.InvariantCulture))) + "]";
+        if (source.Provider is not SurrealQueryProvider provider)
+            return [];
 
-        var surql = $"SELECT *, vector::distance::knn() AS _distance FROM `{table}` WHERE {fieldName} <|{limit},{candidates}|> {vecStr} ORDER BY _distance ASC LIMIT {limit};";
-        return await ExecuteSearchAsync<T>(source, surql, ct).ConfigureAwait(false);
+        return await new DaliSearchQuery<T>(provider)
+            .WithVector(fieldSelector, queryVector)
+            .Take(limit)
+            .Candidates(candidates)
+            .ToListAsync(ct).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -132,12 +133,7 @@ RETURN search::rrf([$ft, $vs], {rrfK}, {rrfLimit});";
         return [];
     }
 
-    private static string GetMemberName<T, TProp>(Expression<Func<T, TProp>> selector)
-    {
-        if (selector.Body is MemberExpression m)
-            return m.Member.Name;
-        throw new ArgumentException("Selector must be a simple member expression");
-    }
+
 }
 
 /// <summary>

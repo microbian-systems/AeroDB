@@ -55,6 +55,8 @@ public class DocumentMapping<T> : DocumentMapping
         return this;
     }
 
+    internal string? IdentityProperty { get; private set; }
+
     /// <summary>
     /// Designates the primary key property explicitly for documentation purposes.
     /// For <see cref="SurrealDb.Net.Models.IRecord"/> types, the Id property
@@ -63,8 +65,8 @@ public class DocumentMapping<T> : DocumentMapping
     /// </summary>
     public DocumentMapping<T> Identity<TProp>(Expression<Func<T, TProp>> property)
     {
-        // Primary key designation is implicit for IRecord types.
-        // This method serves as explicit documentation and a forward-compatibility hook.
+        var member = ExtractMember(property);
+        IdentityProperty = member.Name;
         return this;
     }
 

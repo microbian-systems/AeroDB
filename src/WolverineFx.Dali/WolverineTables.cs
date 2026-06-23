@@ -1,23 +1,33 @@
+using System.Text.Json.Serialization;
+using Dahomey.Cbor.Attributes;
+using SurrealDb.Net.Json;
 using SurrealDb.Net.Models;
 
 namespace WolverineFx.Dali;
 
-/// <summary>
-/// Typed SurrealDB record for wolverine_incoming_envelopes.
-/// Replaces the raw SurrealQL SchemaScript with Dali's Schema.For{T}() pipeline.
-/// Extends <see cref="Record"/> for IRecord compatibility.
-/// The Id property shadows Record.RecordId? Id to avoid CBOR serialization issues
-/// with string-based Wolvernine envelope IDs.
-/// </summary>
-public sealed class WolverineIncomingEnvelopes : Record
+internal static class WolverineTableNames
 {
-    public new string Id { get; set; } = string.Empty;
-    public string Status { get; set; } = string.Empty;
+    public const string Incoming = "wolverine_incoming_envelopes";
+    public const string Outgoing = "wolverine_outgoing_envelopes";
+    public const string DeadLetter = "wolverine_dead_letters";
+    public const string Nodes = "wolverine_nodes";
+    public const string AgentRestrictions = "wolverine_agent_restrictions";
+    public const string NodeRecords = "wolverine_node_records";
+}
+
+internal sealed class WolverineIncomingEnvelope : IRecord
+{
+    [JsonConverter(typeof(ReadOnlyRecordIdJsonConverter))]
+    [CborProperty("id")]
+    [CborIgnoreIfDefault]
+    public RecordId? Id { get; set; }
+
+    public string? Status { get; set; }
     public int OwnerId { get; set; }
-    public DateTimeOffset ExecutionTime { get; set; }
     public int Attempts { get; set; }
-    public string Body { get; set; } = string.Empty;
-    public string MessageType { get; set; } = string.Empty;
+    public DateTimeOffset ExecutionTime { get; set; }
+    public string? Body { get; set; }
+    public string? MessageType { get; set; }
     public string? Destination { get; set; }
     public DateTimeOffset? DeliverBy { get; set; }
     public string? CorrelationId { get; set; }
@@ -31,15 +41,16 @@ public sealed class WolverineIncomingEnvelopes : Record
     public string? ReceivedAt { get; set; }
 }
 
-/// <summary>
-/// Typed SurrealDB record for wolverine_outgoing_envelopes.
-/// </summary>
-public sealed class WolverineOutgoingEnvelopes : Record
+internal sealed class WolverineOutgoingEnvelope : IRecord
 {
-    public new string Id { get; set; } = string.Empty;
+    [JsonConverter(typeof(ReadOnlyRecordIdJsonConverter))]
+    [CborProperty("id")]
+    [CborIgnoreIfDefault]
+    public RecordId? Id { get; set; }
+
     public int OwnerId { get; set; }
-    public string Body { get; set; } = string.Empty;
-    public string MessageType { get; set; } = string.Empty;
+    public string? Body { get; set; }
+    public string? MessageType { get; set; }
     public string? Destination { get; set; }
     public DateTimeOffset? DeliverBy { get; set; }
     public int Attempts { get; set; }
@@ -54,15 +65,16 @@ public sealed class WolverineOutgoingEnvelopes : Record
     public string? ConversationId { get; set; }
 }
 
-/// <summary>
-/// Typed SurrealDB record for wolverine_dead_letters.
-/// </summary>
-public sealed class WolverineDeadLetters : Record
+internal sealed class WolverineDeadLetterEnvelope : IRecord
 {
-    public new string Id { get; set; } = string.Empty;
-    public string Status { get; set; } = string.Empty;
-    public string Body { get; set; } = string.Empty;
-    public string MessageType { get; set; } = string.Empty;
+    [JsonConverter(typeof(ReadOnlyRecordIdJsonConverter))]
+    [CborProperty("id")]
+    [CborIgnoreIfDefault]
+    public RecordId? Id { get; set; }
+
+    public string? Status { get; set; }
+    public string? Body { get; set; }
+    public string? MessageType { get; set; }
     public string? Source { get; set; }
     public string? ExceptionType { get; set; }
     public string? ExceptionMessage { get; set; }
@@ -78,43 +90,46 @@ public sealed class WolverineDeadLetters : Record
     public bool Replayable { get; set; } = true;
 }
 
-/// <summary>
-/// Typed SurrealDB record for wolverine_nodes.
-/// </summary>
-public sealed class WolverineNodes : Record
+internal sealed class WolverineNode : IRecord
 {
-    public new string Id { get; set; } = string.Empty;
+    [JsonConverter(typeof(ReadOnlyRecordIdJsonConverter))]
+    [CborProperty("id")]
+    [CborIgnoreIfDefault]
+    public RecordId? Id { get; set; }
+
     public int NodeNumber { get; set; }
-    public string Description { get; set; } = string.Empty;
-    public string[]? AssignedAgents { get; set; }
-    public string[]? Capabilities { get; set; }
+    public string? Description { get; set; }
+    public List<string>? AssignedAgents { get; set; }
+    public List<string>? Capabilities { get; set; }
     public DateTimeOffset? HealthCheckTime { get; set; }
     public DateTimeOffset? Started { get; set; }
     public string? ControlUri { get; set; }
     public string? Version { get; set; }
 }
 
-/// <summary>
-/// Typed SurrealDB record for wolverine_agent_restrictions.
-/// </summary>
-public sealed class WolverineAgentRestrictions : Record
+internal sealed class WolverineAgentRestrictions : IRecord
 {
-    public new string Id { get; set; } = string.Empty;
-    public string AgentUri { get; set; } = string.Empty;
-    public string Type { get; set; } = string.Empty;
+    [JsonConverter(typeof(ReadOnlyRecordIdJsonConverter))]
+    [CborProperty("id")]
+    [CborIgnoreIfDefault]
+    public RecordId? Id { get; set; }
+
+    public string? AgentUri { get; set; }
+    public string? Type { get; set; }
     public int NodeNumber { get; set; }
 }
 
-/// <summary>
-/// Typed SurrealDB record for wolverine_node_records.
-/// </summary>
-public sealed class WolverineNodeRecords : Record
+internal sealed class WolverineNodeRecords : IRecord
 {
-    public new string Id { get; set; } = string.Empty;
+    [JsonConverter(typeof(ReadOnlyRecordIdJsonConverter))]
+    [CborProperty("id")]
+    [CborIgnoreIfDefault]
+    public RecordId? Id { get; set; }
+
     public int NodeNumber { get; set; }
-    public string RecordType { get; set; } = string.Empty;
+    public string? RecordType { get; set; }
     public DateTimeOffset Timestamp { get; set; }
-    public string Description { get; set; } = string.Empty;
-    public string ServiceName { get; set; } = string.Empty;
+    public string? Description { get; set; }
+    public string? ServiceName { get; set; }
     public string? AgentUri { get; set; }
 }
