@@ -65,7 +65,7 @@ public abstract class InlineProjection<T> : IProjection, ILoggableProjection whe
     /// </summary>
     protected abstract object GetDocumentId(IReadOnlyList<object> events);
 
-    public async Task ApplyAsync(IProjectionContext context, CancellationToken ct)
+    public virtual async Task ApplyAsync(IProjectionContext context, CancellationToken ct)
     {
         var events = context.TypedEvents;
         if (events.Count == 0) return;

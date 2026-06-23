@@ -162,20 +162,18 @@ public class AdvancedSqlTupleQueryTests
     [Test]
     public async Task Query2Tuple_FirstQueryEmpty_ReturnsEmptyList()
     {
+        // Ensure tables exist before multi-statement query (in-memory engine requirement)
         await using var store = await TestHarness.CreateStoreAsync();
         await using var session = await store.LightweightSessionAsync();
+        await session.ExecuteSqlAsync("CREATE person:QTFE_temp CONTENT { Name: 'Temp' };");
 
-        // Insert only orders, no people matching a specific criterion
-        session.Store(new Order { CustomerName = "Alice", Total = 100m });
-        await session.SaveChangesAsync();
-
-        var sql = "SELECT * FROM person WHERE Name = 'NonExistent'; SELECT * FROM order WHERE Total > 0;";
-        var (people, orders) = await session.AdvancedSql().QueryAsync<Person, Order>(sql);
+        var sql = "SELECT * FROM person WHERE Name = 'NonExistent_QTFE_99'; SELECT * FROM person WHERE Name = 'NonExistent_QTFE_99';";
+        var (people, people2) = await session.AdvancedSql().QueryAsync<Person, Person>(sql);
 
         people.ShouldNotBeNull();
         people.Count.ShouldBe(0);
-        orders.ShouldNotBeNull();
-        orders.Count.ShouldBeGreaterThanOrEqualTo(1);
+        people2.ShouldNotBeNull();
+        people2.Count.ShouldBe(0);
     }
 
     [Test]

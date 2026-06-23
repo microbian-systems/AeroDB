@@ -29,6 +29,19 @@ public interface ITypeMetadata
     bool HasVersion { get; }
 
     /// <summary>
+    /// Whether this document type implements <see cref="IDocumentMetadata"/> for auto-tracked
+    /// audit timestamps (CreatedAt, LastModified).
+    /// </summary>
+    bool HasDocumentMetadata { get; }
+
+    /// <summary>
+    /// Whether this document type has an associated <see cref="EventProjection{T}"/> dispatch.
+    /// When true, the source generator has emitted (or can emit) a type-switch ApplyEvents override
+    /// for the projection class, avoiding runtime reflection.
+    /// </summary>
+    bool HasEventProjectionDispatch { get; }
+
+    /// <summary>
     /// The name of the version property, or null if this type has no version field.
     /// Generated metadata provides this directly from compile-time analysis, avoiding reflection.
     /// </summary>

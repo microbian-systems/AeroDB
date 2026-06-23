@@ -23,4 +23,10 @@ public interface IProjectionContext
     /// Events with full metadata (version, timestamp, sequence, stream identity).
     /// </summary>
     IReadOnlyList<IEvent> TypedEvents { get; }
+
+    /// <summary>
+    /// Queue a side effect to be processed after all projections in the current batch complete.
+    /// Side effects can append events or publish messages.
+    /// </summary>
+    void RaiseSideEffect(IProjectionSideEffect sideEffect);
 }

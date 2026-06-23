@@ -120,6 +120,8 @@ public class DaliDocumentGenerator : IIncrementalGenerator
 
         var hasTenantId = tenantIdProp is not null;
         var hasVersion = versionProp is not null;
+        var hasDocumentMetadata = type.AllInterfaces.Any(i => i.Name == "IDocumentMetadata");
+        var hasEventProjectionDispatch = false; // Detected by EventProjection subclass analysis (deferred)
 
         // Check if Dali.Metadata namespace exists in compilation (for ITypeMetadata)
         // Since MetadataRegistry/ITypeMetadata is defined in Dali library, we reference via global::
@@ -142,6 +144,8 @@ public class DaliDocumentGenerator : IIncrementalGenerator
         sb.AppendLine($"    public string TableName => \"{tableName}\";");
         sb.AppendLine($"    public bool HasTenantId => {hasTenantId.ToString().ToLowerInvariant()};");
         sb.AppendLine($"    public bool HasVersion => {hasVersion.ToString().ToLowerInvariant()};");
+        sb.AppendLine($"    public bool HasDocumentMetadata => {hasDocumentMetadata.ToString().ToLowerInvariant()};");
+        sb.AppendLine($"    public bool HasEventProjectionDispatch => {hasEventProjectionDispatch.ToString().ToLowerInvariant()};");
         sb.AppendLine($"    public string? VersionFieldName => {EmitVersionFieldName(versionProp)};");
         sb.AppendLine($"    public Func<object, long>? GetVersionAccessor => {EmitGetVersionAccessor(versionProp, globalFullName)};");
         sb.AppendLine($"    public Action<object, long>? SetVersionAccessor => {EmitSetVersionAccessor(versionProp, globalFullName)};");

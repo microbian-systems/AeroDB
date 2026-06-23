@@ -25,9 +25,8 @@ public static class LoadManyExtensions
 
         var tableName = MetadataDispatch.GetTableName(typeof(T));
 
-        // Build parameterized IN clause
-        // SurrealDB supports: SELECT * FROM table WHERE id IN ['id1', 'id2', ...]
-        var inClause = string.Join(", ", idList.Select(id => $"'{id}'"));
+        // Build IN clause with full record IDs (table:id format)
+        var inClause = string.Join(", ", idList.Select(id => $"'{tableName}:{id}'"));
         var sql = $"SELECT * FROM {tableName} WHERE id IN [{inClause}];";
 
         try

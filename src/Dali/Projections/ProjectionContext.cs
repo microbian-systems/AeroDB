@@ -5,6 +5,8 @@ namespace Dali;
 /// </summary>
 public class ProjectionContext : IProjectionContext
 {
+    internal List<IProjectionSideEffect> SideEffects { get; } = new();
+
     public ProjectionContext(IDocumentSession session, IReadOnlyList<IEvent> typedEvents)
     {
         Session = session ?? throw new ArgumentNullException(nameof(session));
@@ -15,4 +17,10 @@ public class ProjectionContext : IProjectionContext
     public IDocumentSession Session { get; }
     public IReadOnlyList<object> Events { get; }
     public IReadOnlyList<IEvent> TypedEvents { get; }
+
+    public void RaiseSideEffect(IProjectionSideEffect sideEffect)
+    {
+        if (sideEffect is null) throw new ArgumentNullException(nameof(sideEffect));
+        SideEffects.Add(sideEffect);
+    }
 }

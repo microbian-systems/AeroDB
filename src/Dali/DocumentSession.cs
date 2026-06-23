@@ -365,54 +365,105 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                             .GroupBy(e => e.StreamId)
                             .ToDictionary(g => g.Key, g => g.ToList());
 
-                        foreach (var projection in inlineProjections)
+                        const int MaxReentrancyDepth = 10;
+                        int depth = 0;
+                        int totalEventsProcessedAtStart = _appendedEvents.Count;
+
+                        do
                         {
-                            foreach (var (streamId, events) in streamGroups)
+                            bool hadSideEffects = false;
+
+                            foreach (var projection in inlineProjections)
                             {
-                                var matchingEvents = events
-                                    .Where(e => e.Data is not null && projection.EventTypes.Contains(e.Data.GetType()))
-                                    .ToList();
+                                foreach (var (streamId, events) in streamGroups)
+                                {
+                                    var matchingEvents = events
+                                        .Where(e => e.Data is not null && projection.EventTypes.Contains(e.Data.GetType()))
+                                        .ToList();
 
-                                if (matchingEvents.Count == 0)
-                                    continue;
+                                    if (matchingEvents.Count == 0)
+                                        continue;
 
-                                _logger.LogInformation("Inline projection {ProjectionType} applied on stream {StreamId}",
-                                    projection.GetType().Name, streamId);
+                                    _logger.LogInformation("Inline projection {ProjectionType} applied on stream {StreamId} (depth {Depth})",
+                                        projection.GetType().Name, streamId, depth);
 
-                                var context = new ProjectionContext(this, matchingEvents.AsReadOnly());
-                                await projection.ApplyAsync(context, ct).ConfigureAwait(false);
+                                    var context = new ProjectionContext(this, matchingEvents.AsReadOnly());
+                                    await projection.ApplyAsync(context, ct).ConfigureAwait(false);
+
+                                    // Collect side effects from this projection context
+                                    if (context.SideEffects.Count > 0)
+                                    {
+                                        hadSideEffects = true;
+                                        _logger.LogDebug("Projection {ProjectionType} raised {Count} side effects",
+                                            projection.GetType().Name, context.SideEffects.Count);
+
+                                        foreach (var se in context.SideEffects)
+                                        {
+                                            if (se is AppendEventSideEffect append)
+                                            {
+                                                await Events.Append(append.StreamId, new[] { append.Event }, ct).ConfigureAwait(false);
+                                                _logger.LogDebug("Side effect: appended {EventType} to stream {StreamId}",
+                                                    append.Event.GetType().Name, append.StreamId);
+                                            }
+                                            // Future: PublishMessageSideEffect, etc.
+                                        }
+                                    }
+                                }
                             }
-                        }
 
-                        // Phase 5: persist any projected documents added by inline projections
-                        if (_unitOfWork.Operations.Count > 0)
-                        {
-                            // Resolve the target session for inline projection operations
-                            // (assumes same schema as the main operations for simplicity)
-                            foreach (var op in _unitOfWork.Operations)
+                            // Phase 5 (inner): persist projected documents from this round
+                            if (_unitOfWork.Operations.Count > 0)
                             {
-                                var table = MetadataDispatch.GetTableName(op.EntityType);
-                                var entityId = GetEntityId(op.Entity);
+                                foreach (var op in _unitOfWork.Operations)
+                                {
+                                    var table = MetadataDispatch.GetTableName(op.EntityType);
 
-                                if (!string.IsNullOrEmpty(entityId) && op.Entity is IRecord record)
-                                {
-                                    // Use SurrealDB's Upsert for create-or-update semantics.
-                                    // Calling via reflection because the generic type is runtime-only.
-                                    var rid = new RecordIdOf<string>(table, entityId);
-                                    await UpsertRecordAsync(record, rid, targetSession, ct).ConfigureAwait(false);
+                                    if (op.Type == OperationType.Deleted)
+                                    {
+                                        var delId = GetRecordId(op.Entity, table);
+                                        if (delId is not null)
+                                            await targetSession.Delete(delId, ct).ConfigureAwait(false);
+                                    }
+                                    else
+                                    {
+                                        var entityId = GetEntityId(op.Entity);
+
+                                        if (!string.IsNullOrEmpty(entityId) && op.Entity is IRecord record)
+                                        {
+                                            var rid = new RecordIdOf<string>(table, entityId);
+                                            await UpsertRecordAsync(record, rid, targetSession, ct).ConfigureAwait(false);
+                                        }
+                                        else
+                                        {
+                                            await targetSession.Create(table, op.Entity, ct).ConfigureAwait(false);
+                                        }
+                                    }
                                 }
-                                else
-                                {
-                                    // No ID set: always create
-                                    await targetSession.Create(table, op.Entity, ct).ConfigureAwait(false);
-                                }
+
+                                // Capture projection-generated operations for IChangeSet
+                                committedOperations = committedOperations.Concat(_unitOfWork.Operations).ToArray();
+                                _unitOfWork.Clear();
                             }
 
-                            // Capture projection-generated operations for IChangeSet
-                            committedOperations = committedOperations.Concat(_unitOfWork.Operations).ToArray();
+                            if (!hadSideEffects) break;
 
-                            _unitOfWork.Clear();
-                        }
+                            // Only include newly appended events from side effects (skip already-processed events)
+                            var newEventCount = _appendedEvents.Count - totalEventsProcessedAtStart;
+                            if (newEventCount <= 0) break;
+
+                            streamGroups = _appendedEvents
+                                .Skip(totalEventsProcessedAtStart)
+                                .GroupBy(e => e.StreamId)
+                                .ToDictionary(g => g.Key, g => g.ToList());
+                            totalEventsProcessedAtStart = _appendedEvents.Count;
+
+                            depth++;
+                            if (depth >= MaxReentrancyDepth)
+                            {
+                                var latestStream = streamGroups.Keys.FirstOrDefault() ?? "unknown";
+                                throw new ProjectionReentrancyException(latestStream, depth);
+                            }
+                        } while (true);
 
                         // Snapshot appended events for IChangeSet before clearing (preserve tuple format)
                         appendedEventSnapshot = _appendedEvents
