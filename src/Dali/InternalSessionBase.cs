@@ -117,7 +117,7 @@ public abstract class InternalSessionBase : IAsyncDisposable
     /// without replaying events. Delegates to <see cref="LoadAsync{T}"/> because
     /// the stream ID IS the projected document ID for <see cref="SingleStreamProjection{T}"/>.
     /// </summary>
-    public Task<T?> FetchLatest<T>(string streamId, CancellationToken ct = default) where T : class
+    public virtual Task<T?> FetchLatest<T>(string streamId, CancellationToken ct = default) where T : class
         => LoadAsync<T>(streamId, ct);
 
     public async Task<T?> LoadAsync<T>(string id, CancellationToken ct = default) where T : class
@@ -282,4 +282,18 @@ public abstract class InternalSessionBase : IAsyncDisposable
     }
 
     protected static CancellationToken DefaultCt => CancellationToken.None;
+
+    /// <summary>
+    /// Executes a Marten-compatible interface-based compiled query.
+    /// Delegates to <see cref="CompiledQueryPlanner.QueryAsync{TDoc,TOut}"/>.
+    /// </summary>
+    public Task<TOut> QueryAsync<TDoc, TOut>(ICompiledQuery<TDoc, TOut> compiledQuery, CancellationToken ct = default)
+        where TDoc : class
+        => CompiledQueryPlanner.QueryAsync<TDoc, TOut>(this, compiledQuery, ct);
+
+    /// <summary>
+    /// Creates a batch query that can execute multiple compiled queries
+    /// in a single SurrealDB multi-statement round trip.
+    /// </summary>
+    public IBatchedQuery CreateBatchQuery() => new BatchedQuery(this);
 }

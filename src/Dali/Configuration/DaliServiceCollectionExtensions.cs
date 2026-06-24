@@ -22,6 +22,7 @@ public static class DaliServiceCollectionExtensions
         // Register IDocumentStore as a singleton, initialized immediately
         services.AddSingleton<IDocumentStore>(sp =>
         {
+            options.ServiceProvider = sp;
             var store = new DocumentStore(options);
             store.InitializeAsync().GetAwaiter().GetResult();
             return store;

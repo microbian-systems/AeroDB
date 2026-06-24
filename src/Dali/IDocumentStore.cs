@@ -98,6 +98,24 @@ public interface IQuerySession : IAsyncDisposable
 
     /// <summary>Start a graph traversal query. Uses SurrealDB's graph arrow syntax for edges and paths.</summary>
     IGraphQuery<T> Graph<T>() where T : class;
+
+    /// <summary>
+    /// Creates a batch query that can execute multiple compiled queries
+    /// in a single SurrealDB multi-statement round trip.
+    /// </summary>
+    IBatchedQuery CreateBatchQuery();
+
+    /// <summary>
+    /// Executes a Marten-compatible interface-based compiled query.
+    /// The query type implements <see cref="ICompiledQuery{TDoc,TOut}"/> and defines
+    /// its parameterization via <see cref="ICompiledQuery{TDoc,TOut}.QueryIs"/>.
+    /// </summary>
+    /// <param name="compiledQuery">The compiled query instance with parameter values.</param>
+    /// <param name="ct">Cancellation token.</param>
+    /// <typeparam name="TDoc">The document type being queried.</typeparam>
+    /// <typeparam name="TOut">The result type.</typeparam>
+    Task<TOut> QueryAsync<TDoc, TOut>(ICompiledQuery<TDoc, TOut> compiledQuery, CancellationToken ct = default)
+        where TDoc : class;
 }
 
 public interface IDocumentSession : IQuerySession

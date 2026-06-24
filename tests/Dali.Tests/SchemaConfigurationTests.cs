@@ -1,3 +1,5 @@
+using Microsoft.Extensions.DependencyInjection;
+using System.Threading;
 using TUnit.Core;
 
 namespace Dali.Tests;
@@ -177,6 +179,201 @@ public class SchemaConfigurationTests
         // Same call returns cached instance
         var mapping2 = options.Schema.For<Person>();
         ReferenceEquals(mapping, mapping2).ShouldBeTrue();
+    }
+
+    [Test]
+    public async Task DI_auto_discovery_resolves_and_applies_configurators()
+    {
+        var executed = false;
+        var services = new ServiceCollection();
+        services.AddLogging();
+        var cfg = new TestConfigurator(() => executed = true);
+        services.AddSingleton<IConfigureDali>(cfg);
+        
+        services.AddDali(options =>
+        {
+            options.ClientFactory = () => new SurrealDb.Embedded.InMemory.SurrealDbMemoryClient();
+            options.Namespace = "test";
+            options.Database = "test";
+        });
+        
+        var sp = services.BuildServiceProvider();
+        var store = sp.GetRequiredService<IDocumentStore>();
+        
+        executed.ShouldBeTrue();
+        // Cleanup
+        await store.DisposeAsync();
+    }
+
+    [Test]
+    public async Task DI_auto_discovery_avoids_double_applying_manual_configurators()
+    {
+        var callCount = 0;
+        var cfg = new TestConfigurator(() => { callCount++; });
+        // Register in DI
+        var services = new ServiceCollection();
+        services.AddLogging();
+        services.AddSingleton<IConfigureDali>(cfg);
+        
+        services.AddDali(options =>
+        {
+            options.ClientFactory = () => new SurrealDb.Embedded.InMemory.SurrealDbMemoryClient();
+            options.Namespace = "test";
+            options.Database = "test";
+            // ALSO add to manual Configurators list (same instance)
+            options.Configurators.Add(cfg);
+        });
+        
+        var sp = services.BuildServiceProvider();
+        var store = sp.GetRequiredService<IDocumentStore>();
+        
+        callCount.ShouldBe(1); // Should only run once, not twice
+        await store.DisposeAsync();
+    }
+
+    [Test]
+    public async Task Marten_style_modular_config_with_multiple_contributions()
+    {
+        var configuratorsRun = new List<string>();
+        
+        var schemaA = new TestConfigurator(opts =>
+        {
+            opts.Schema.For<Person>().Index(p => p.Name);
+            configuratorsRun.Add("SchemaA");
+        });
+        
+        var schemaB = new TestConfigurator(opts =>
+        {
+            opts.Schema.For<Person>().UniqueIndex(p => p.Email);
+            configuratorsRun.Add("SchemaB");
+        });
+        
+        var services = new ServiceCollection();
+        services.AddLogging();
+        services.AddSingleton<IConfigureDali>(schemaA);
+        services.AddSingleton<IConfigureDali>(schemaB);
+        
+        services.AddDali(options =>
+        {
+            options.ClientFactory = () => new SurrealDb.Embedded.InMemory.SurrealDbMemoryClient();
+            options.Namespace = "test";
+            options.Database = "test";
+        });
+        
+        var sp = services.BuildServiceProvider();
+        var store = sp.GetRequiredService<IDocumentStore>();
+        
+        // Both should have been applied (in DI registration order)
+        configuratorsRun.Count.ShouldBe(2);
+        
+        // Verify the indexes exist
+        var querySession = (InternalSessionBase)await store.LightweightSessionAsync();
+        var infoResponse = await querySession.Session.RawQuery("INFO FOR TABLE person;");
+        infoResponse.HasErrors.ShouldBeFalse();
+        
+        await store.DisposeAsync();
+    }
+
+    [Test]
+    public async Task DI_auto_discovery_uses_IServiceProvider_overload()
+    {
+        var gotServiceProvider = false;
+        
+        // A configurator that overrides the two-parameter overload
+        var cfg = new TwoParamConfigurator(sp => { gotServiceProvider = sp is not null; });
+        
+        var services = new ServiceCollection();
+        services.AddLogging();
+        services.AddSingleton<IConfigureDali>(cfg);
+        
+        services.AddDali(options =>
+        {
+            options.ClientFactory = () => new SurrealDb.Embedded.InMemory.SurrealDbMemoryClient();
+            options.Namespace = "test";
+            options.Database = "test";
+        });
+        
+        var sp = services.BuildServiceProvider();
+        var store = sp.GetRequiredService<IDocumentStore>();
+        
+        gotServiceProvider.ShouldBeTrue();
+        await store.DisposeAsync();
+    }
+
+    [Test]
+    public async Task DI_auto_discovery_not_active_with_Documents_For()
+    {
+        var executed = false;
+        var cfg = new TestConfigurator(() => executed = true);
+        
+        // Register in a separate DI container (not visible to Documents.For)
+        var services = new ServiceCollection();
+        services.AddSingleton<IConfigureDali>(cfg);
+        var sp = services.BuildServiceProvider();
+        
+        // Documents.For does NOT set ServiceProvider, so configurators from DI are NOT auto-discovered
+        await using var store = Documents.For(o =>
+        {
+            o.ClientFactory = () => new SurrealDb.Embedded.InMemory.SurrealDbMemoryClient();
+            o.Namespace = "test";
+            o.Database = "test";
+            // Configurator NOT added to Configurators list
+        });
+        await store.InitializeAsync();
+        
+        // Should NOT be executed since not in Configurators list and no ServiceProvider
+        executed.ShouldBeFalse();
+    }
+
+    [Test]
+    public async Task DI_auto_discovery_applies_async_configurators()
+    {
+        var executed = false;
+        var cfg = new AsyncTestConfigurator(() => executed = true);
+        
+        var services = new ServiceCollection();
+        services.AddLogging();
+        services.AddSingleton<IAsyncConfigureDali>(cfg);
+        
+        services.AddDali(options =>
+        {
+            options.ClientFactory = () => new SurrealDb.Embedded.InMemory.SurrealDbMemoryClient();
+            options.Namespace = "test";
+            options.Database = "test";
+        });
+        
+        var sp = services.BuildServiceProvider();
+        var store = sp.GetRequiredService<IDocumentStore>();
+        
+        executed.ShouldBeTrue();
+        await store.DisposeAsync();
+    }
+
+    private sealed class AsyncTestConfigurator : IAsyncConfigureDali
+    {
+        private readonly Action _onConfigure;
+        public AsyncTestConfigurator(Action onConfigure) => _onConfigure = onConfigure;
+        
+        public Task ConfigureAsync(StoreOptions options, CancellationToken ct = default)
+        {
+            _onConfigure();
+            return Task.CompletedTask;
+        }
+    }
+
+    private sealed class TwoParamConfigurator : IConfigureDali
+    {
+        private readonly Action<IServiceProvider?> _onConfigure;
+        public TwoParamConfigurator(Action<IServiceProvider?> onConfigure) => _onConfigure = onConfigure;
+        
+        // Override the TWO-parameter overload (not the one-param one)
+        void IConfigureDali.Configure(IServiceProvider? services, StoreOptions options)
+        {
+            _onConfigure(services);
+        }
+        
+        // Must also implement the one-param one (required by interface)
+        public void Configure(StoreOptions options) { }
     }
 
     private sealed class TestConfigurator : IConfigureDali

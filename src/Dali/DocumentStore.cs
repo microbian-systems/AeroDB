@@ -57,9 +57,16 @@ public class DocumentStore : IDocumentStore
         {
             _tenantSelector = new DatabasePerTenantSelector(Options);
 
-            // Apply IConfigureDali modules
+            // Apply IConfigureDali modules (manual Configurators list)
             foreach (var configurator in Options.Configurators)
-                configurator.Configure(Options);
+                configurator.Configure(Options.ServiceProvider, Options);
+
+            // Auto-discover and apply IConfigureDali from DI (if ServiceProvider is set)
+            await ApplyDiscoveredConfigurators(Options, ct).ConfigureAwait(false);
+
+            // Apply IAsyncConfigureDali modules
+            foreach (var asyncConfigurator in Options.AsyncConfigurators)
+                await asyncConfigurator.ConfigureAsync(Options, ct).ConfigureAwait(false);
 
             // Inject logger factory into projections that support it
             if (Options.LoggerFactory is not null)
@@ -115,9 +122,16 @@ public class DocumentStore : IDocumentStore
             return await _client.CreateSession(ct).ConfigureAwait(false);
         };
 
-        // Apply IConfigureDali modules
+        // Apply IConfigureDali modules (manual Configurators list)
         foreach (var configurator in Options.Configurators)
-            configurator.Configure(Options);
+            configurator.Configure(Options.ServiceProvider, Options);
+
+        // Auto-discover and apply IConfigureDali from DI (if ServiceProvider is set)
+        await ApplyDiscoveredConfigurators(Options, ct).ConfigureAwait(false);
+
+        // Apply IAsyncConfigureDali modules (async config, e.g. satellite assemblies)
+        foreach (var asyncConfigurator in Options.AsyncConfigurators)
+            await asyncConfigurator.ConfigureAsync(Options, ct).ConfigureAwait(false);
 
         var schemaManager = new SchemaManager(Options.LoggerFactory);
         var triggerManager = new EventTriggerManager(Options.LoggerFactory);
@@ -451,6 +465,50 @@ public class DocumentStore : IDocumentStore
         surrealSession.Use(Options.Namespace ?? "test", Options.Database ?? "test", CancellationToken.None).GetAwaiter().GetResult();
         var querySession = new QuerySession(Client, surrealSession, Options);
         return GraphQueryProvider.Graph<T>(querySession);
+    }
+
+    private static async Task ApplyDiscoveredConfigurators(StoreOptions options, CancellationToken ct)
+    {
+        if (options.ServiceProvider is null) return;
+
+        // Build a set of configurator types already in the manual Configurators list.
+        // When the same type is registered via DI, we skip it to avoid double-application
+        // even if it's a different instance. However, multiple DI registrations of the same
+        // type with different instances (e.g. modular configurators) are all applied.
+        var manualConfiguratorTypes = new HashSet<Type>();
+        foreach (var c in options.Configurators)
+            manualConfiguratorTypes.Add(c.GetType());
+
+        var manualAsyncConfiguratorTypes = new HashSet<Type>();
+        foreach (var c in options.AsyncConfigurators)
+            manualAsyncConfiguratorTypes.Add(c.GetType());
+
+        // Resolve IConfigureDali implementations from DI and apply them,
+        // skipping types already in the manual Configurators list.
+        var diConfigurators = options.ServiceProvider.GetService(typeof(IEnumerable<IConfigureDali>))
+            as IEnumerable<IConfigureDali>;
+        if (diConfigurators is not null)
+        {
+            foreach (var configurator in diConfigurators)
+            {
+                if (manualConfiguratorTypes.Contains(configurator.GetType()))
+                    continue;
+                configurator.Configure(options.ServiceProvider, options);
+            }
+        }
+
+        // Same for IAsyncConfigureDali
+        var diAsyncConfigurators = options.ServiceProvider.GetService(typeof(IEnumerable<IAsyncConfigureDali>))
+            as IEnumerable<IAsyncConfigureDali>;
+        if (diAsyncConfigurators is not null)
+        {
+            foreach (var asyncCfg in diAsyncConfigurators)
+            {
+                if (manualAsyncConfiguratorTypes.Contains(asyncCfg.GetType()))
+                    continue;
+                await asyncCfg.ConfigureAsync(options, ct).ConfigureAwait(false);
+            }
+        }
     }
 
     private static readonly CancellationToken DefaultCt = CancellationToken.None;

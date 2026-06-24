@@ -124,6 +124,21 @@ public class StoreOptions
     public List<IConfigureDali> Configurators { get; } = new();
 
     /// <summary>
+    /// Async configuration modules applied during <see cref="DocumentStore.InitializeAsync"/>
+    /// after sync <see cref="Configurators"/>. Add instances directly or register via DI
+    /// with <c>ConfigureDaliAsync&lt;T&gt;()</c>.
+    /// </summary>
+    public List<IAsyncConfigureDali> AsyncConfigurators { get; } = new();
+
+    /// <summary>
+    /// Optional <see cref="IServiceProvider"/> for DI auto-discovery of configurators.
+    /// When set before <see cref="DocumentStore.InitializeAsync"/>, the store resolves
+    /// <see cref="IConfigureDali"/> and <see cref="IAsyncConfigureDali"/> implementations
+    /// from DI and applies them automatically (in addition to <see cref="Configurators"/>).
+    /// </summary>
+    public IServiceProvider? ServiceProvider { get; set; }
+
+    /// <summary>
     /// Multiple database endpoints for multi-host / read-replica scenarios.
     /// When configured, sessions route to appropriate endpoints based on <see cref="ReadPreference"/>.
     /// </summary>

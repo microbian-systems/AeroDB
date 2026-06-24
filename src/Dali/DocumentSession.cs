@@ -64,6 +64,31 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         }
     }
 
+    /// <summary>
+    /// Routes <see cref="ProjectionLifecycle.Live"/> projections through event replay
+    /// instead of document storage lookup.
+    /// </summary>
+    public override async Task<T?> FetchLatest<T>(string streamId, CancellationToken ct = default) where T : class
+    {
+        foreach (var projection in Options.Projections)
+        {
+            if (projection.Lifecycle != ProjectionLifecycle.Live)
+                continue;
+
+            var projType = projection.GetType();
+            while (projType is not null)
+            {
+                if (projType.IsGenericType && projType.GetGenericArguments().FirstOrDefault() == typeof(T))
+                {
+                    return await Events.AggregateAsync<T>(streamId, ct).ConfigureAwait(false);
+                }
+                projType = projType.BaseType;
+            }
+        }
+
+        return await base.FetchLatest<T>(streamId, ct).ConfigureAwait(false);
+    }
+
     public void Store<T>(T entity) where T : class
     {
         ArgumentNullException.ThrowIfNull(entity);

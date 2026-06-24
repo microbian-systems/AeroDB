@@ -18,4 +18,16 @@ public static class DaliConfigurationServiceCollectionExtensions
         services.AddSingleton<IConfigureDali, TConfigurator>();
         return services;
     }
+
+    /// <summary>
+    /// Registers an <see cref="IAsyncConfigureDali"/> implementation as a singleton.
+    /// Async configurators are applied during <c>DocumentStore.InitializeAsync</c>
+    /// after sync <see cref="IConfigureDali"/> configurators.
+    /// </summary>
+    public static IServiceCollection ConfigureDaliAsync<TConfigurator>(this IServiceCollection services)
+        where TConfigurator : class, IAsyncConfigureDali
+    {
+        services.AddSingleton<IAsyncConfigureDali, TConfigurator>();
+        return services;
+    }
 }

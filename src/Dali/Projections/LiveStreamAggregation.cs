@@ -8,16 +8,12 @@ namespace Dali;
 /// </summary>
 public static class LiveStreamAggregation
 {
-    /// <summary>
-    /// Replay events from a stream and aggregate them into <typeparamref name="T"/>.
-    /// The aggregate type must have public <c>Apply(EventType)</c> or <c>When(EventType)</c> methods.
-    /// </summary>
     public static async Task<T?> AggregateAsync<T>(
         this IEvents events, string streamId, CancellationToken ct = default)
-        where T : class, new()
+        where T : class
     {
         var streamEvents = await events.FetchStream(streamId, ct).ConfigureAwait(false);
-        if (streamEvents.Count == 0) return new T();
+        if (streamEvents.Count == 0) return Activator.CreateInstance<T>();
 
         return AggregateEvents<T>(streamEvents);
     }
@@ -25,14 +21,14 @@ public static class LiveStreamAggregation
     /// <summary>Guid variant.</summary>
     public static async Task<T?> AggregateAsync<T>(
         this IEvents events, Guid streamId, CancellationToken ct = default)
-        where T : class, new()
+        where T : class
     {
         return await AggregateAsync<T>(events, streamId.ToString("D"), ct).ConfigureAwait(false);
     }
 
-    internal static T AggregateEvents<T>(IReadOnlyList<IEvent> events) where T : class, new()
+    internal static T AggregateEvents<T>(IReadOnlyList<IEvent> events) where T : class
     {
-        var aggregate = new T();
+        var aggregate = Activator.CreateInstance<T>();
         var aggregateType = typeof(T);
 
         foreach (var e in events)
