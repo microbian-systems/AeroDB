@@ -1,0 +1,37 @@
+name: Publish to NuGet (Preview)
+
+on:
+  workflow_dispatch:
+    inputs:
+      versionSuffix:
+        description: 'Version suffix (alpha, rc.1, preview, beta, etc.)'
+        required: false
+        default: 'alpha'
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  pack-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Pack preview packages
+        run: pwsh build/nuget-pack.ps1 -VersionSuffix "${{ inputs.versionSuffix }}"
+
+      - name: NuGet login (OIDC)
+        uses: NuGet/login@v1
+        id: login
+        with:
+          user: ${{ vars.NUGET_USER }}
+
+      - name: Push to NuGet
+        run: pwsh build/nuget-publish.ps1 -ApiKey "${{ steps.login.outputs.NUGET_API_KEY }}"

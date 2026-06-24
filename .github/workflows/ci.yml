@@ -1,21 +1,23 @@
-name: CI/CD
+name: CI (Build & Test)
 
 on:
   push:
-    branches: [main, master]
+    branches: [ main, develop ]
   pull_request:
-    branches: [main, master]
+    branches: [ main, develop ]
   workflow_dispatch:
 
 env:
   DOTNET_VERSION: '10.0.x'
 
 jobs:
-  build:
+  build-and-test:
     name: Build & Test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          submodules: recursive
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
@@ -30,28 +32,3 @@ jobs:
 
       - name: Test
         run: dotnet run --project tests/Dali.Tests/Dali.Tests.csproj --configuration Release -- --reflection --no-progress --fail-fast
-
-  pack:
-    name: Package NuGet
-    needs: build
-    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
-
-      - name: Pack Dali
-        run: dotnet pack src/Dali/Dali.csproj --configuration Release --output ./artifacts
-
-      - name: Pack Dali.EntityFrameworkCore
-        run: dotnet pack src/Dali.EntityFrameworkCore/Dali.EntityFrameworkCore.csproj --configuration Release --output ./artifacts
-
-      - name: Pack WolverineFx.Dali
-        run: dotnet pack src/WolverineFx.Dali/WolverineFx.Dali.csproj --configuration Release --output ./artifacts
-
-      - name: Publish to NuGet
-        run: dotnet nuget push ./artifacts/*.nupkg --api-key ${{secrets.NUGET_API_KEY}} --source https://api.nuget.org/v3/index.json --skip-duplicate
