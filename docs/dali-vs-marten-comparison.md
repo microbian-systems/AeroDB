@@ -4,7 +4,7 @@
 
 | Status | Count |
 |--------|-------|
-| ✅ Done | 66 |
+| ✅ Done | 66+ |
 | ⚠️ Partial | 0 |
 | ❌ Missing | 0 |
 | 🟢 Dali Unique | 27 |
@@ -146,10 +146,18 @@
 |---------|-------------|----------|
 | Multi-tenant (conjoined / database-per-tenant) | ✅ Done | `TenancyStyle`, `WithTenant()`, `SetTenant()` |
 | `AddMarten()` / DI integration | ✅ Done | `AddDali()` / `DaliServiceCollectionExtensions` |
-| `IConfigureMarten` composite config | ✅ Done | `IConfigureDali` / `IAsyncConfigureDali` / `ConfigureDali<T>()` / `ConfigureDaliAsync<T>()` |
+| `IConfigureMarten` composite config | ✅ Done | `IConfigureDali` (with `IServiceProvider` overload) / `IAsyncConfigureDali` / `ConfigureDali<T>()` / `ConfigureDaliAsync<T>()` + DI auto-discovery via `DocumentStore.ApplyDiscoveredConfigurators()` |
+| `IConfigureMarten` DI auto-discovery | ✅ Done | `StoreOptions.ServiceProvider` + `ApplyDiscoveredConfigurators()` in `InitializeAsync` — resolves `IConfigureDali`/`IAsyncConfigureDali` from DI |
+| `IConfigureMarten` source-generator registration | ✅ Done | `DaliConfiguratorGenerator` (incremental SG) — discovers all implementations, generates `DaliConfiguratorRegistrar.AddDiscoveredDaliConfigurators()` |
+| `IConfigureMarten<T>` typed variant | ✅ Done | `IConfigureDali<TStore> where TStore : IDocumentStore` — marker for store-specific config |
+| `IGlobalConfigureMarten` | ✅ Done | `IGlobalConfigureDali : IConfigureDali` — marker for cross-store config |
+| Thread-safe store initialization | ✅ Done | `Interlocked.Exchange` guard on `InitializeAsync` |
 | `IInitialData` seeding | ✅ Done | `IInitialData` interface + `StoreOptions.InitialData` list |
 | `IDocumentSessionListener` / `IChangeListener` | ✅ Done | `IDocumentSessionListener` |
 | Multi-host / read replica support | ✅ Done | `DatabaseEndpoint` + `ReadPreference` — configuration layer |
+| `ITransport.BuildHealthCheck()` | ✅ Done | `DaliTransport.BuildHealthCheck()` → `DaliHealthCheck` — SurrealDB connectivity heartbeat |
+| Event forwarding deduplication | ✅ Done | `DaliSessionEventAccessor` — shared reflection helper for pending appended events |
+| Wolverine scheduled-job time-window | ✅ Done | Fixed dead code with identical `<=`/`>=` bounds in UPDATE query |
 
 ---
 
@@ -159,11 +167,11 @@ All 7 implementation steps are complete. Dali is at full feature parity with Mar
 
 | Metric | Value |
 |--------|-------|
-| ✅ Done | 66 |
+| ✅ Done | 66+ |
 | ⚠️ Partial | 0 |
 | ❌ Missing | 0 |
 | 🟢 Dali Unique | 27 |
-| Tests | 934 |
+| Tests | 954 |
 
 ### Gaps Resolved by Steps 1-7
 - Live projection lifecycle — `ProjectionLifecycle.Live` enum + routing through `LiveStreamAggregation`
@@ -171,6 +179,8 @@ All 7 implementation steps are complete. Dali is at full feature parity with Mar
 - ICompiledQuery<T> interface — Marten-compatible `ICompiledQuery<TDoc, TOut>` + `CompiledQueryPlanner`
 - IBatchedQuery — `session.CreateBatchQuery()` with compiled query futures
 - BulkInsert — SurrealDB `INSERT INTO table [...]` batch syntax
+- DI auto-discovery — `StoreOptions.ServiceProvider` + `ApplyDiscoveredConfigurators()` resolves configurators from DI during `InitializeAsync`
+- Source-generator registration — `DaliConfiguratorGenerator` discovers `IConfigureDali`/`IAsyncConfigureDali` implementations and generates `AddDiscoveredDaliConfigurators()`
 - No remaining feature gaps
 
 ---
@@ -199,8 +209,15 @@ All 7 implementation steps are complete. Dali is at full feature parity with Mar
 | 4 | IBatchedQuery + CreateBatchQuery | +6 |
 | 5 | BulkInsert batch INSERT optimization | — |
 | 6 | Real SurrealDB test suite (4 integration tests) | +4 |
+| — | DI auto-discovery for IConfigureDali (ServiceProvider + type-based dedup + async safe) | — |
+| — | DaliConfiguratorGenerator (incremental SG — discovers implementations, generates registrar) | — |
+| — | DI auto-discovery tests (sync/async/sp/gate/modular/x6) | +6 |
+| — | Source generator verification tests (5 in-process Roslyn CSharpGeneratorDriver tests) | +5 |
+| — | IConfigureDali<TStore> + IGlobalConfigureDali + thread-safety (Interlocked.Exchange) | — |
+| — | Dali.WolverineFx: time-window fix, BuildHealthCheck, Uri, event forwarding dedup | — |
+| — | Full-suite performance benchmark project (7 files, 8 benchmarks) | — |
 
-**Total**: 824 → 934 tests (+110). Last updated: 2026-06-23. Full Marten parity achieved.
+**Total**: 824 → 954 tests (+130). Last updated: 2026-06-24. Full Marten parity achieved.
 
 ## File Map
 
@@ -213,6 +230,8 @@ All 7 implementation steps are complete. Dali is at full feature parity with Mar
 | `src/Dali/AdvancedSql/` | Multi-doc tuple queries, streaming |
 | `src/Dali/Batching/` | IBatchedQuery — single-roundtrip multi-query + compiled query integration |
 | `src/Dali/Compiled/` | ICompiledQuery interfaces + CompiledQueryPlanner runtime planner |
+| `src/Dali/Configuration/` | IConfigureDali/IAsyncConfigureDali + ServiceCollectionExtensions + DI auto-discovery |
+| `src/Dali.SourceGenerators/` | DaliDocumentGenerator (metadata) + DaliConfiguratorGenerator (configurator auto-discovery) |
 | `src/Dali/Schema/` | Document mapping, index definition, schema manager, DocumentHierarchy |
 | `src/Dali/Metadata/` | Document metadata auto-tracking |
 | `src/Dali/Health/` | ASP.NET Core health check integration |
@@ -222,4 +241,7 @@ All 7 implementation steps are complete. Dali is at full feature parity with Mar
 | `src/Dali/Spatial/` | Geo-spatial queries (🟢 Unique) |
 | `src/Dali/TimeSeries/` | Time-series bucketing (🟢 Unique) |
 | `src/Dali.ML/` | Machine learning queries (🟢 Unique — lowest priority) |
+| `src/Dali.WolverineFx/` | Wolverine-Dali persistence bridge (ITransport, IMessageStore, saga, subscriptions) |
+| `src/Dali.WolverineFx/Internal/` | DaliSessionEventAccessor — shared appended-events reflection helper |
+| `benchmarks/Dali.Benchmarks/` | Full-suite BenchmarkDotNet project — Document CRUD + Event sourcing + Throughput |
 | `docs/dali-vs-marten-comparison.md` | This file |

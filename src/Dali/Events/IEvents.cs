@@ -1,5 +1,6 @@
 namespace Dali;
 
+/// <summary>The event sourcing API surface. Provides methods for appending events, starting streams, fetching streams, applying optimistic concurrency, archiving streams, and writing tombstone events.</summary>
 public interface IEvents
 {
     /// <summary>

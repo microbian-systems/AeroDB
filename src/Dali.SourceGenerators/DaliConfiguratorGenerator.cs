@@ -30,12 +30,14 @@ public class DaliConfiguratorGenerator : IIncrementalGenerator
             // Look for the configurator interfaces in the compilation.
             // If neither exists, there's nothing to generate.
             var configureDaliType = compilation.GetTypeByMetadataName("Dali.IConfigureDali");
+            var globalConfigureDaliType = compilation.GetTypeByMetadataName("Dali.IGlobalConfigureDali");
             var asyncConfigureDaliType = compilation.GetTypeByMetadataName("Dali.IAsyncConfigureDali");
 
             if (configureDaliType is null && asyncConfigureDaliType is null)
                 return;
 
             var syncConfigurators = new List<INamedTypeSymbol>();
+            var globalConfigurators = new List<INamedTypeSymbol>();
             var asyncConfigurators = new List<INamedTypeSymbol>();
 
             foreach (var type in types)
@@ -56,11 +58,47 @@ public class DaliConfiguratorGenerator : IIncrementalGenerator
                     type.DeclaredAccessibility != Accessibility.Internal)
                     continue;
 
-                // Check if this type implements IConfigureDali
-                if (configureDaliType is not null &&
-                    type.AllInterfaces.Any(i => SymbolEqualityComparer.Default.Equals(i, configureDaliType)))
+                // Check if this type implements IGlobalConfigureDali (applies to all stores).
+                // Must be checked before IConfigureDali since IGlobalConfigureDali inherits from it.
+                bool isGlobal = globalConfigureDaliType is not null &&
+                    type.AllInterfaces.Any(i => SymbolEqualityComparer.Default.Equals(i, globalConfigureDaliType));
+
+                // Check if this type implements IConfigureDali (primary store only).
+                // Exclude types that already registered as global — they get IGlobalConfigureDali registration instead.
+                bool isConfigureDali = !isGlobal &&
+                    configureDaliType is not null &&
+                    type.AllInterfaces.Any(i => SymbolEqualityComparer.Default.Equals(i, configureDaliType));
+
+                if (isConfigureDali)
                 {
                     syncConfigurators.Add(type);
+                }
+
+                if (isGlobal)
+                {
+                    globalConfigurators.Add(type);
+                }
+
+                // Check for IConfigureDali<TStore> (generic typed variant).
+                // Only add if not already registered as a plain IConfigureDali or IGlobalConfigureDali implementor.
+                if (!isGlobal && !isConfigureDali && configureDaliType is not null)
+                {
+                    var typedConfigureDali = compilation.GetTypeByMetadataName("Dali.IConfigureDali`1");
+                    if (typedConfigureDali is not null)
+                    {
+                        foreach (var iface in type.AllInterfaces)
+                        {
+                            if (iface.IsGenericType)
+                            {
+                                var genericDef = iface.OriginalDefinition;
+                                if (SymbolEqualityComparer.Default.Equals(genericDef, typedConfigureDali))
+                                {
+                                    syncConfigurators.Add(type);
+                                    break;
+                                }
+                            }
+                        }
+                    }
                 }
 
                 // Check if this type implements IAsyncConfigureDali
@@ -71,7 +109,7 @@ public class DaliConfiguratorGenerator : IIncrementalGenerator
                 }
             }
 
-            var sourceText = GenerateRegistrar(syncConfigurators, asyncConfigurators);
+            var sourceText = GenerateRegistrar(syncConfigurators, globalConfigurators, asyncConfigurators);
             ctx.AddSource("DaliConfiguratorRegistrar.g.cs", sourceText);
         });
     }
@@ -88,11 +126,13 @@ public class DaliConfiguratorGenerator : IIncrementalGenerator
 
     /// <summary>
     /// Generates the <c>DaliConfiguratorRegistrar</c> class with an extension method
-    /// that registers all discovered <see cref="global::Dali.IConfigureDali"/> and
+    /// that registers all discovered <see cref="global::Dali.IConfigureDali"/>,
+    /// <see cref="global::Dali.IGlobalConfigureDali"/>, and
     /// <see cref="global::Dali.IAsyncConfigureDali"/> implementations.
     /// </summary>
     private static string GenerateRegistrar(
         List<INamedTypeSymbol> syncConfigurators,
+        List<INamedTypeSymbol> globalConfigurators,
         List<INamedTypeSymbol> asyncConfigurators)
     {
         var sb = new StringBuilder();
@@ -104,22 +144,29 @@ public class DaliConfiguratorGenerator : IIncrementalGenerator
         sb.AppendLine("namespace Dali.Generated;");
         sb.AppendLine();
         sb.AppendLine("/// <summary>");
-        sb.AppendLine("/// Source-generated registration helper for discovered IConfigureDali / IAsyncConfigureDali implementations.");
+        sb.AppendLine("/// Source-generated registration helper for discovered IConfigureDali / IGlobalConfigureDali / IAsyncConfigureDali implementations.");
         sb.AppendLine("/// </summary>");
         sb.AppendLine("public static class DaliConfiguratorRegistrar");
         sb.AppendLine("{");
         sb.AppendLine("    /// <summary>");
-        sb.AppendLine("    /// Registers all discovered IConfigureDali and IAsyncConfigureDali implementations as singletons.");
+        sb.AppendLine("    /// Registers all discovered IConfigureDali, IGlobalConfigureDali, and IAsyncConfigureDali implementations as singletons.");
         sb.AppendLine("    /// Call before AddDali() to enable DI auto-discovery.");
         sb.AppendLine("    /// </summary>");
         sb.AppendLine("    public static IServiceCollection AddDiscoveredDaliConfigurators(this IServiceCollection services)");
         sb.AppendLine("    {");
 
-        // Sync configurators
+        // Sync configurators (primary store only)
         foreach (var type in syncConfigurators)
         {
             var fqn = type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
             sb.AppendLine($"        services.AddSingleton<global::Dali.IConfigureDali, {fqn}>();");
+        }
+
+        // Global configurators (all store types)
+        foreach (var type in globalConfigurators)
+        {
+            var fqn = type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
+            sb.AppendLine($"        services.AddSingleton<global::Dali.IGlobalConfigureDali, {fqn}>();");
         }
 
         // Async configurators

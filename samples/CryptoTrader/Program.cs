@@ -11,7 +11,7 @@ using SurrealDb.Embedded.InMemory;
 using SurrealDb.Net;
 using Wolverine;
 using Wolverine.Persistence.Durability;
-using WolverineFx.Dali;
+using Dali.WolverineFx;
 
 // ══════════════════════════════════════════════════════════
 // CryptoTrader — Dali + Wolverine Sample Application

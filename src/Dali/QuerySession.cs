@@ -4,6 +4,7 @@ using SurrealDb.Net;
 
 namespace Dali;
 
+/// <summary>The concrete query session implementing <see cref="IQuerySession"/>. Provides read-only access to SurrealDB via LINQ, raw SQL, compiled queries, live notifications, and graph traversal.</summary>
 public class QuerySession : InternalSessionBase, IQuerySession
 {
     private readonly ILogger<QuerySession> _logger;

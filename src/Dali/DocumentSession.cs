@@ -9,6 +9,7 @@ using SurrealDb.Net.Models.Response;
 
 namespace Dali;
 
+/// <summary>The concrete document session implementing <see cref="IDocumentSession"/>. Manages a unit-of-work with automatic change tracking, identity map, event appending, and transactional save via SurrealDB.</summary>
 public class DocumentSession : InternalSessionBase, IDocumentSession
 {
     private readonly ILogger<DocumentSession> _logger;

@@ -3,6 +3,7 @@ using SurrealDb.Net;
 
 namespace Dali;
 
+/// <summary>The main configuration object for a Dali document store. Configures database connection settings, schema generation mode, projections, event sourcing, multi-tenancy, and all other store behaviors.</summary>
 public class StoreOptions
 {
     public string Endpoint { get; set; } = "http://localhost:8000";
@@ -173,6 +174,7 @@ public class StoreOptions
     }
 }
 
+/// <summary>Configuration for SurrealDB schema management. Controls auto-create behavior, schema mode (<c>SCHEMAFULL</c>/<c>SCHEMALESS</c>), analyzers, views, and per-type document mappings.</summary>
 public class SchemaOptions
 {
     public bool AutoCreate { get; set; } = true;
@@ -266,6 +268,7 @@ public class SchemaOptions
     public string ForEventProgression() => "mt_projection_progress";
 }
 
+/// <summary>Defines the multi-tenancy strategy. <c>Conjoined</c> uses a <c>tenant_id</c> field within a single database; <c>DatabasePerTenant</c> routes each tenant to a separate database.</summary>
 public enum TenancyStyle
 {
     None,
@@ -273,6 +276,7 @@ public enum TenancyStyle
     DatabasePerTenant
 }
 
+/// <summary>Configuration for Dali's event sourcing subsystem. Controls event storage tables, append mode (Rich/Quick), serialization mode (JSON/Binary), and event upcasting.</summary>
 public class EventSourcingOptions
 {
     public bool Enabled { get; set; }
@@ -323,6 +327,7 @@ public class EventSourcingOptions
     }
 }
 
+/// <summary>Configuration for event projections. Controls which projections are registered, rebuild options (<c>RebuildOnStartup</c>/<c>RebuildProjectionNames</c>), and projection lifecycle strategies.</summary>
 public class ProjectionOptions
 {
     /// <summary>
@@ -347,6 +352,7 @@ public class ProjectionOptions
     public bool EnsureStateTable { get; set; } = true;
 }
 
+/// <summary>Configuration for SurrealDB custom functions (<c>DEFINE FUNCTION</c>). Registers functions that run at the database level.</summary>
 public class FunctionOptions
 {
     internal List<SurrealFunction> Functions { get; } = new();

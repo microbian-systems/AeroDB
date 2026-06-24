@@ -1,11 +1,9 @@
 <Solution>
+  <Project Path="Dali.WolverineFx/Dali.WolverineFx.csproj" />
   <Project Path="Dali\Dali.csproj" />
+  <Project Path="../tests/Dali.Tests/Dali.Tests.csproj" />
   <Project Path="Dali.EntityFrameworkCore\Dali.EntityFrameworkCore.csproj" />
   <Project Path="Dali.SourceGenerators\Dali.SourceGenerators.csproj" />
-  <Project Path="..\src\WolverineFx.Dali\WolverineFx.Dali.csproj" />
-  <Folder Name="/Tests/">
-    <Project Path="..\tests\Dali.Tests\Dali.Tests.csproj" />
-  </Folder>
   <Folder Name="/Samples/">
     <Project Path="..\samples\CryptoTrader\CryptoTrader.csproj" />
   </Folder>

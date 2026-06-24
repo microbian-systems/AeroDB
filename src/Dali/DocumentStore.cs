@@ -2,16 +2,18 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using SurrealDb.Net;
+using System.Threading;
 
 namespace Dali;
 
+/// <summary>The concrete implementation of <see cref="IDocumentStore"/>. Manages a SurrealDB connection, schema initialization, projection lifecycle, and session factory. Created via <see cref="Documents.For"/> or the <c>AddDali()</c> DI extension.</summary>
 public class DocumentStore : IDocumentStore
 {
     private readonly ILogger<DocumentStore> _logger;
     private ISurrealDbClient? _client;
     private DatabasePerTenantSelector? _tenantSelector;
     private string? _currentTenantId;
-    private bool _initialized;
+    private int _initialized; // 0 = false, 1 = true (Interlocked-atomic)
     private bool _disposed;
 
     public DocumentStore(StoreOptions options)
@@ -48,8 +50,7 @@ public class DocumentStore : IDocumentStore
 
     public async Task InitializeAsync(CancellationToken ct = default)
     {
-        if (_initialized) return;
-        _initialized = true;
+        if (Interlocked.Exchange(ref _initialized, 1) == 1) return;
 
         // DatabasePerTenant: skip connecting to a default database;
         // each tenant gets its own database on first session creation.
@@ -451,14 +452,14 @@ public class DocumentStore : IDocumentStore
 
     private async Task EnsureInitialized(CancellationToken ct)
     {
-        if (!_initialized)
+        if (_initialized == 0)
             await InitializeAsync(ct).ConfigureAwait(false);
     }
 
     /// <summary>Start a graph traversal query. Creates an ephemeral session internally.</summary>
     public IGraphQuery<T> Graph<T>() where T : class
     {
-        if (!_initialized)
+        if (_initialized == 0)
             throw new InvalidOperationException("Store not initialized. Call InitializeAsync first.");
 
         var surrealSession = Client.CreateSession(DefaultCt).GetAwaiter().GetResult();
@@ -524,6 +525,7 @@ public class DocumentStore : IDocumentStore
     }
 }
 
+/// <summary>Static factory class for creating document stores. Use <c>Documents.For(configure)</c> for programmatic setup, or <c>services.AddDali(configure)</c> for dependency injection integration.</summary>
 public static class Documents
 {
     public static IDocumentStore For(Action<StoreOptions> configure)

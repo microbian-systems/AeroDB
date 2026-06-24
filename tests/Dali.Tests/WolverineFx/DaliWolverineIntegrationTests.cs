@@ -1,7 +1,7 @@
 namespace Dali.Tests;
 
 using global::Dali;
-using global::WolverineFx.Dali;
+using global::Dali.WolverineFx;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;

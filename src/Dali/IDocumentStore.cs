@@ -3,6 +3,7 @@ using SurrealDb.Net.Models;
 
 namespace Dali;
 
+/// <summary>The primary entry point for the Dali document store. Provides access to query sessions, document sessions, event store, background daemon, and advanced SDK features.</summary>
 public interface IDocumentStore : IAsyncDisposable
 {
     Task<IQuerySession> QuerySessionAsync(CancellationToken ct = default);
@@ -32,6 +33,7 @@ public interface IDocumentStore : IAsyncDisposable
     AsyncDaemon? Daemon { get; }
 }
 
+/// <summary>A read-only session for querying documents. Supports LINQ queries, raw SurrealQL, load-by-ID, compiled queries, batch queries, live notifications, and graph traversal.</summary>
 public interface IQuerySession : IAsyncDisposable
 {
     Task<T?> LoadAsync<T>(string id, CancellationToken ct = default) where T : class;
@@ -118,6 +120,7 @@ public interface IQuerySession : IAsyncDisposable
         where TDoc : class;
 }
 
+/// <summary>A read/write session that extends <see cref="IQuerySession"/> with document storage (<c>Store</c>/<c>Delete</c>/<c>BulkInsert</c>), event sourcing (<c>Append</c>/<c>StartStream</c>), and unit-of-work change tracking.</summary>
 public interface IDocumentSession : IQuerySession
 {
     void Store<T>(T entity) where T : class;

@@ -2,6 +2,7 @@ using SurrealDb.Net;
 
 namespace Dali;
 
+/// <summary>Describes the type of change tracked in a document session's unit of work (<c>Added</c>, <c>Modified</c>, <c>Deleted</c>, <c>SoftDeleted</c>).</summary>
 public enum OperationType
 {
     Added,

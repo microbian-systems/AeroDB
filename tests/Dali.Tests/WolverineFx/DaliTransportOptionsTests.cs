@@ -2,7 +2,7 @@ namespace Dali.Tests;
 
 using Shouldly;
 using TUnit.Core;
-using WolverineFx.Dali;
+using WolverineFx;
 
 public class DaliTransportOptionsTests
 {

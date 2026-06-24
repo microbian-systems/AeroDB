@@ -433,3 +433,5 @@ FodyWeavers.xsd
 *.msp
 
 .fake
+
+build/nupkgs/

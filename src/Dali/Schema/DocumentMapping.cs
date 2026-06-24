@@ -16,6 +16,7 @@ public abstract class DocumentMapping
     internal abstract string? SchemaName { get; }
 }
 
+/// <summary>Controls the SurrealDB table schema mode. <c>Schemaless</c> (Flexible) allows any fields; <c>Schemafull</c> (Strict) enforces a strict field definition.</summary>
 public enum SchemaMode
 {
     /// <summary>

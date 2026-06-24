@@ -5,7 +5,7 @@ using Shouldly;
 using SurrealDb.Embedded.SurrealKv;
 using TUnit.Core;
 using Wolverine;
-using WolverineFx.Dali;
+using WolverineFx;
 
 [NotInParallel]
 public class DaliMessageStoreTests

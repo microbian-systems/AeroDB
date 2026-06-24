@@ -3,7 +3,7 @@ namespace Dali.Tests;
 using Shouldly;
 using TUnit.Core;
 using Wolverine;
-using WolverineFx.Dali;
+using WolverineFx;
 
 public class DaliEnvelopeTests
 {

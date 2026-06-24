@@ -15,7 +15,8 @@
 	</PropertyGroup>
 
 	<PropertyGroup Label="Package information">
-		<Version>0.0.5-alpha</Version>
+		<VersionPrefix>0.0.6</VersionPrefix>
+		<VersionSuffix>alpha</VersionSuffix>
 		<Authors>Aero Cms</Authors>
 		<Company>Microbian Systems</Company>
 		<Copyright>Copyright (c) 2025 Microbians</Copyright>

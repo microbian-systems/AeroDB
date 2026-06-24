@@ -4,7 +4,6 @@
         <Project Path="src/Dali.EntityFrameworkCore/Dali.EntityFrameworkCore.csproj" />
         <Project Path="src/Dali.ML/Dali.ML.csproj" />
         <Project Path="src/Dali.SourceGenerators/Dali.SourceGenerators.csproj" />
-        <Project Path="src/WolverineFx.Dali/WolverineFx.Dali.csproj" />
     </Folder>
     <Folder Name="/tests/" />
     <Folder Name="/samples/">
