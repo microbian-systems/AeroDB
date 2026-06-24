@@ -17,14 +17,15 @@
 	<PropertyGroup Label="Package information">
 		<VersionPrefix>0.0.6</VersionPrefix>
 		<VersionSuffix>alpha</VersionSuffix>
-		<Authors>Aero Cms</Authors>
+		<Authors>Microbians</Authors>
 		<Company>Microbian Systems</Company>
 		<Copyright>Copyright (c) 2025 Microbians</Copyright>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
-		<PackageTags>cms mvc razorpages aspnetcore</PackageTags>
-		<PackageIcon>../Aero.png</PackageIcon>
-		<PackageProjectUrl>https://github.com/microbian-systems/Aero.core</PackageProjectUrl>
-		<RepositoryUrl>https://github.com/microbian-systems/Aero.core</RepositoryUrl>
+		<PackageTags>surrealdb document-database event-sourcing orm efcore</PackageTags>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageIcon>logo.png</PackageIcon>
+		<PackageProjectUrl>https://github.com/microbian-systems/Dali</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/microbian-systems/Dali</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
 		<PublishRepositoryUrl>true</PublishRepositoryUrl>
 		<IncludeSymbols>true</IncludeSymbols>
@@ -51,5 +52,11 @@
 		<ProjectReference Include="$(MSBuildThisFileDirectory)Aero.Cms.SourceGenerators\Aero.Cms.SourceGenerators.csproj"
 			OutputItemType="Analyzer"
 			ReferenceOutputAssembly="false" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<!-- Package icon and README: included explicitly so dotnet pack finds them -->
+		<None Include="../../assets/logo.png" Pack="true" PackagePath="/" Visible="false" />
+		<None Include="../../README.md" Pack="true" PackagePath="/" Visible="false" />
 	</ItemGroup>
 </Project>
