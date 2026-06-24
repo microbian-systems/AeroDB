@@ -1,0 +1,19 @@
+using SurrealDb.Net.Models;
+
+namespace Dali;
+
+internal sealed class IncludeSpec
+{
+    /// <summary>C# property name (e.g. "Customer")</summary>
+    public string PropertyName { get; set; } = "";
+    /// <summary>SurrealDB target table name (e.g. "customer")</summary>
+    public string TargetTable { get; set; } = "";
+    /// <summary>Foreign key field on parent (e.g. "customer") — lowercase property name</summary>
+    public string ForeignKeyField { get; set; } = "";
+    /// <summary>The included document type.</summary>
+    public Type IncludeType { get; set; } = null!;
+    /// <summary>True for forward include (single record&lt;T&gt;), false for reverse (collection)</summary>
+    public bool IsSingle { get; set; }
+    /// <summary>True for forward include (FK on parent), false for reverse (FK on child). Default: true.</summary>
+    public bool IsForward { get; set; } = true;
+}

@@ -10,6 +10,10 @@
 *.userosscache
 *.sln.docstates
 *.env
+.vs/
+.vscode/
+.idea/
+.frolic*.json
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
@@ -427,3 +431,7 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+.fake
+
+build/nupkgs/

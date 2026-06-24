@@ -1,0 +1,62 @@
+<Project>
+	<PropertyGroup>
+		<!--
+      Skip TargetFramework for MAUI projects — they self-define multi-targeted
+      TargetFrameworks (net10.0-android, net10.0-ios, net10.0-maccatalyst, etc.)
+      and setting this would clobber that.
+    -->
+		<TargetFramework
+			Condition="'$(UseMaui)' != 'true' AND
+                 '$(ManageTargetFrameworkIndependently)' != 'true' AND
+                 '$(TargetFrameworks)' == ''">net10.0</TargetFramework>
+
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<PropertyGroup Label="Package information">
+		<VersionPrefix>0.0.6</VersionPrefix>
+		<VersionSuffix>alpha</VersionSuffix>
+		<Authors>Microbians</Authors>
+		<Company>Microbian Systems</Company>
+		<Copyright>Copyright (c) 2025 Microbians</Copyright>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageTags>surrealdb document-database event-sourcing orm efcore</PackageTags>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageIcon>logo.png</PackageIcon>
+		<PackageProjectUrl>https://github.com/microbian-systems/Dali</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/microbian-systems/Dali</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<EmbedUntrackedSources>true</EmbedUntrackedSources>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+	</PropertyGroup>
+
+	<ItemGroup Condition="'$(MSBuildProjectName)' != 'Aero.Cms.Web.Core' AND '$(MSBuildProjectName)' != 'Aero.Cms.Core' AND '$(MSBuildProjectName)' != 'Aero.Cms.Modules.Modules' AND ($(MSBuildProjectName.StartsWith('Aero.Cms.Modules')) OR $(MSBuildProjectName.StartsWith('Aero.Cms.Banners')) OR $(MSBuildProjectName.StartsWith('Aero.Cms.CookiePolicy')))">
+		<ProjectReference Include="$(MSBuildThisFileDirectory)Aero.Cms.Web.Core\Aero.Cms.Web.Core.csproj" />
+	</ItemGroup>
+
+
+	<!--
+    Source Generator & Analyzer: Wire Aero.Cms.SourceGenerators to every project
+    in src/ so ModuleManifestGenerator, WolverineHandlerGenerator, and AERO002 analyzer
+    run where needed. Each generator activates only when its conditions are met:
+    - ModuleManifestGenerator: activates when [Module] attribute is found
+    - WolverineHandlerGenerator: activates when [WolverineHandler] attribute is found
+    - HostModuleCatalogGenerator: activates when ModuleManifestProviderAttribute assembly
+      attributes are detected on referenced assemblies (naturally only in Aero.Cms.Web)
+  -->
+	<ItemGroup Condition="'$(MSBuildProjectName)' != 'Aero.Cms.SourceGenerators'">
+		<ProjectReference Include="$(MSBuildThisFileDirectory)Aero.Cms.SourceGenerators\Aero.Cms.SourceGenerators.csproj"
+			OutputItemType="Analyzer"
+			ReferenceOutputAssembly="false" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<!-- Package icon and README: included explicitly so dotnet pack finds them -->
+		<None Include="../../assets/logo.png" Pack="true" PackagePath="/" Visible="false" />
+		<None Include="../../README.md" Pack="true" PackagePath="/" Visible="false" />
+	</ItemGroup>
+</Project>
