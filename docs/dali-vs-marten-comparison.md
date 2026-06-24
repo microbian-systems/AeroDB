@@ -5,8 +5,8 @@
 | Status | Count |
 |--------|-------|
 | ✅ Done | 62 |
-| ⚠️ Partial | 4 |
-| ❌ Missing | 0 |
+| ⚠️ Partial | 2 |
+| ❌ Missing | 2 |
 | 🟢 Dali Unique | 27 |
 
 ---
@@ -21,9 +21,9 @@
 | `AdvancedSql.QueryAsync<T1,T2,...>()` | ✅ Done | `session.AdvancedSql().QueryAsync<T1,T2>()` — 2/3/4-tuple multi-doc queries |
 | `AdvancedSql.StreamAsync<T>()` (IAsyncEnumerable) | ✅ Done | `DaliAdvancedSql.StreamAsync<T>()` — streaming raw SQL results |
 | `ToCommand()` / SQL inspection | ✅ Done | `ISurrealDbQueryable<T>.ToCommand()` — exposes SurrealQL before execution |
-| `IBatchedQuery` / `CreateBatchQuery()` | ✅ Done | `session.CreateBatchQuery()` → LET-based multi-statement single-roundtrip |
-| `ICompiledQuery<T>` | ⚠️ Partial | Dali's `CompiledQuery<T>` compiles expression → SurrealQL; Marten's is a declarative interface |
-| `BulkInsert` (COPY-based) | ⚠️ Partial | `BulkOperations.BulkInsertAsync<T>()` — uses batched Store+SaveChanges, not optimized SurrealDB IMPORT |
+| `IBatchedQuery` / `CreateBatchQuery()` | ❌ Missing | Planned — Marten interface + compiled query integration with SurrealDB multi-statement |
+| `ICompiledQuery<T>` | ❌ Missing | Planned — Marten's `ICompiledQuery<TDoc, TOut>` interface pattern + source generator |
+| `BulkInsert` (COPY-based) | ⚠️ Partial | `BulkOperations.BulkInsertAsync<T>()` — needs SurrealDB batch INSERT optimization |
 | Document hierarchy / polymorphism | ✅ Done | `DocumentHierarchy.AddSubClass<T>()` + `StoreOptions.HierarchyFor<TBase>()` |
 | Raw multi-document tuple queries | ✅ Done | `AdvancedSql.QueryAsync<T1,T2,T3,T4>()` — up to 4-tuple |
 
@@ -146,20 +146,35 @@
 |---------|-------------|----------|
 | Multi-tenant (conjoined / database-per-tenant) | ✅ Done | `TenancyStyle`, `WithTenant()`, `SetTenant()` |
 | `AddMarten()` / DI integration | ✅ Done | `AddDali()` / `DaliServiceCollectionExtensions` |
-| `IConfigureMarten` composite config | ⚠️ Partial | `IConfigureDali` — similar pattern |
+| `IConfigureMarten` composite config | ✅ Done | `IConfigureDali` / `ConfigureDali<T>()` DI extension — sync + async configurators |
 | `IInitialData` seeding | ✅ Done | `IInitialData` interface + `StoreOptions.InitialData` list |
 | `IDocumentSessionListener` / `IChangeListener` | ✅ Done | `IDocumentSessionListener` |
 | Multi-host / read replica support | ✅ Done | `DatabaseEndpoint` + `ReadPreference` — configuration layer |
 
 ---
 
-## Remaining Gaps (0 features — all ❌ Missing filled)
+## Remaining Gaps (2 ❌ Missing, 2 ⚠️ Partial)
 
-The original 42 ❌ Missing features are now all filled. The 4 remaining ⚠️ Partial items are genuine architectural challenges:
-- `ICompiledQuery<T>` — declarative interface vs Dali's expression-compile approach
-- `BulkInsert` — SurrealDB lacks a native COPY-equivalent bulk import
-- `Live` projection lifecycle — real-time projection updates
-- `IConfigureDali` composite config — existing pattern works but differs from Marten
+The original 42 ❌ Missing features are all filled. Two items were discovered to not exist in source (IBatchedQuery, ICompiledQuery). Two ⚠️ Partial items remain:
+
+| Feature | Status | Plan |
+|---------|--------|------|
+| `ICompiledQuery<TDoc, TOut>` interface pattern | ❌ Missing | Marten-compatible interface + reflection planner + Roslyn source generator (Step 3) |
+| `IBatchedQuery` / `CreateBatchQuery()` | ❌ Missing | Batch query with futures pattern + compiled query integration (Step 4) |
+| `Live` projection lifecycle | ⚠️ Partial | Add `Live` to `ProjectionLifecycle` enum, wire through `LiveStreamAggregation` (Step 1) |
+| `BulkInsert` optimization | ⚠️ Partial | Use SurrealDB batch INSERT INTO syntax instead of per-row Store+SaveChanges (Step 5) |
+
+### Next Implementation Steps
+
+| Step | Feature | Est. Effort |
+|------|---------|-------------|
+| 1 | Live projection lifecycle — add `Live` to enum, route through `LiveStreamAggregation` | ~2 hrs |
+| 2 | Composite configuration — add `IAsyncConfigureDali`, ensure DI auto-resolution | ~1 hr |
+| 3 | Compiled queries — interface hierarchy + runtime planner + Roslyn source generator | ~2.5 days |
+| 4 | Batch queries — `IBatchedQuery` + `CreateBatchQuery()` with compiled query integration | ~1 day |
+| 5 | BulkInsert optimization — SurrealDB batch INSERT syntax | ~1 day |
+| 6 | Real SurrealDB integration test suite — `TestHarnessRemote.cs`, Docker compose | ~2 days |
+| 7 | Release readiness — XML docs, NuGet metadata, CI config | ~1 day |
 
 ---
 
@@ -170,7 +185,7 @@ The original 42 ❌ Missing features are now all filled. The 4 remaining ⚠️ 
 | 1 | `IEvent<T>` + Evolve/DetermineAction | base (824) |
 | A | `EventProjection<T>` + `Snapshot<T>` + source-gen | +7 |
 | B | Multi-doc tuple queries | +12 |
-| C | `IBatchedQuery` | +8 |
+| C | `AdvancedSql` tuple queries | +8 |
 | D | `LoadMany<T>(ids...)` | +5 |
 | E | `FetchForWriting<T>()` + `AggregateStreamAsync<T>()` | +5 |
 | F | Side effects (`RaiseSideEffects`) | +5 |
@@ -184,18 +199,19 @@ The original 42 ❌ Missing features are now all filled. The 4 remaining ⚠️ 
 | — | AppendOptimistic + LiveStreamAggregation + ArchiveStream + Tombstone + Enrichment + Aggregate cache | +7 |
 | — | FlatTableProjection + EfCoreEventProjection + Event versioning + Document hierarchy + Multi-host | +13 |
 
-**Total**: 824 → 920 tests (+96). Last updated: 2026-06-23.
+**Total**: 824 → 920 tests (+96). Last updated: 2026-06-23. Next steps: Steps 1-7 (see above).
 
 ## File Map
 
 | Path | Purpose |
 |------|---------|
-| `src/Dali/` | Core Dali library (**62 ✅ Done** features) |
+| `src/Dali/` | Core Dali library (**62 ✅ Done** features — 2 ❌ Missing planned) |
 | `src/Dali/Linq/` | LINQ provider, ExpressionVisitor, query generation, ToCommand |
 | `src/Dali/Projections/` | SingleStream/MultiStream/EventProjection, Snapshot, SideEffects, LiveStreamAggregation, AggregateCache, IEnrichProjection, FlatTableProjection |
 | `src/Dali/Events/` | Event store, IEvent<T>, ArchiveStream, TombstoneEvent, AppendOptimistic, AsyncDaemon, IEventUpcaster |
 | `src/Dali/AdvancedSql/` | Multi-doc tuple queries, streaming |
-| `src/Dali/Batching/` | IBatchedQuery — single-roundtrip multi-query |
+| `src/Dali/Batching/` | *(planned)* IBatchedQuery — single-roundtrip multi-query |
+| `src/Dali/Compiled/` | *(planned)* ICompiledQuery interfaces + runtime planner + source generator |
 | `src/Dali/Schema/` | Document mapping, index definition, schema manager, DocumentHierarchy |
 | `src/Dali/Metadata/` | Document metadata auto-tracking |
 | `src/Dali/Health/` | ASP.NET Core health check integration |
