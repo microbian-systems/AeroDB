@@ -5,14 +5,14 @@
 .DESCRIPTION
     Pushes packages to the NuGet.org gallery. Requires a NuGet API key.
     The key can be provided via the -ApiKey parameter, or via the
-    NUGET_API_KEY environment variable (for local publishing).
+    GITHUB_API_KEY_DALI or NUGET_API_KEY environment variable (for local publishing).
 .PARAMETER ApiKey
     NuGet API key to use for publishing.
-    If not provided, falls back to the NUGET_API_KEY environment variable.
+    If not provided, falls back to GITHUB_API_KEY_DALI, then NUGET_API_KEY.
 .PARAMETER SkipSnupkg
     Skip pushing symbol packages (.snupkg). Default: false.
 .EXAMPLE
-    # Local: uses $env:NUGET_API_KEY
+    # Local: uses $env:GITHUB_API_KEY_DALI or $env:NUGET_API_KEY
     ./build/nuget-publish.ps1
 
     # CI (Trusted Publishing): pass OIDC temp key
@@ -29,11 +29,14 @@ $RepoRoot = Resolve-Path "$PSScriptRoot/.."
 # --- Resolve API key: explicit param takes priority, then env var ---
 if ($ApiKey) {
     Write-Host "Using provided -ApiKey parameter." -ForegroundColor Gray
+} elseif (-not [string]::IsNullOrWhiteSpace($env:GITHUB_API_KEY_DALI)) {
+    $ApiKey = $env:GITHUB_API_KEY_DALI
+    Write-Host "Using GITHUB_API_KEY_DALI environment variable." -ForegroundColor Gray
 } elseif (-not [string]::IsNullOrWhiteSpace($env:NUGET_API_KEY)) {
     $ApiKey = $env:NUGET_API_KEY
     Write-Host "Using NUGET_API_KEY environment variable." -ForegroundColor Gray
 } else {
-    Write-Host "No API key provided. Set NUGET_API_KEY or pass -ApiKey." -ForegroundColor Red
+    Write-Host "No API key provided. Set GITHUB_API_KEY_DALI or NUGET_API_KEY, or pass -ApiKey." -ForegroundColor Red
     exit 1
 }
 
