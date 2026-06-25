@@ -2,6 +2,7 @@
   <Project Path="Dali.WolverineFx/Dali.WolverineFx.csproj" />
   <Project Path="Dali\Dali.csproj" />
   <Project Path="../tests/Dali.Tests/Dali.Tests.csproj" />
+  <Project Path="Dali.AspNetIdentity/Dali.AspNetIdentity.csproj" />
   <Project Path="Dali.EntityFrameworkCore\Dali.EntityFrameworkCore.csproj" />
   <Project Path="Dali.SourceGenerators\Dali.SourceGenerators.csproj" />
   <Folder Name="/Samples/">

@@ -71,6 +71,7 @@ New-Item -ItemType Directory -Force -Path $OutputDir | Out-Null
 
 $libProjects = @(
     "$RepoRoot/src/Dali"
+    "$RepoRoot/src/Dali.AspNetIdentity"
     "$RepoRoot/src/Dali.EntityFrameworkCore"
     "$RepoRoot/src/Dali.ML"
     "$RepoRoot/src/Dali.Orleans"
