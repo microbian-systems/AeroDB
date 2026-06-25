@@ -343,4 +343,63 @@ public class IEntityTests
         rFound.ShouldNotBeNull();
         rFound!.Age.ShouldBe(30);
     }
+
+    // ─── LoadAsync, BulkInsert, empty-table regression ─────
+
+    [Test]
+    public async Task EntityLong_LoadAsync_by_id()
+    {
+        await using var store = await TestHarness.CreateStoreAsync();
+        await using var session = await store.LightweightSessionAsync();
+
+        var product = new EntityProduct
+        {
+            Name = "LoadedProduct",
+            Price = 49.99m,
+            Stock = 100
+        };
+        session.Store(product);
+        await session.SaveChangesAsync();
+
+        // Load by the snowflake Id (converted to string for LoadAsync)
+        var loaded = await session.LoadAsync<EntityProduct>(product.Id.ToString());
+
+        loaded.ShouldNotBeNull();
+        loaded.Name.ShouldBe("LoadedProduct");
+        loaded.Price.ShouldBe(49.99m);
+        loaded.Stock.ShouldBe(100);
+        loaded.Id.ShouldBe(product.Id);
+    }
+
+    [Test]
+    public async Task EntityLong_BulkInsertAsync()
+    {
+        await using var store = await TestHarness.CreateStoreAsync();
+        await using var session = await store.LightweightSessionAsync();
+
+        var products = new[]
+        {
+            new EntityProduct { Name = "BulkProduct_1", Price = 10m, Stock = 10 },
+            new EntityProduct { Name = "BulkProduct_2", Price = 20m, Stock = 20 },
+            new EntityProduct { Name = "BulkProduct_3", Price = 30m, Stock = 30 },
+        };
+
+        // BulkInsertAsync writes via raw SurrealQL INSERT.
+        // The count indicates SurrealDB accepted all rows.
+        var inserted = await session.BulkInsertAsync(products);
+        inserted.ShouldBe(3);
+    }
+
+    [Test]
+    public async Task EntityLong_query_empty_table_no_crash()
+    {
+        await using var store = await TestHarness.CreateStoreAsync();
+        await using var session = await store.QuerySessionAsync();
+
+        // Query an entity type that has never had data stored — should not crash
+        var results = await session.Query<EntityProduct>().ToListAsync();
+
+        results.ShouldNotBeNull();
+        results.Count.ShouldBe(0);
+    }
 }

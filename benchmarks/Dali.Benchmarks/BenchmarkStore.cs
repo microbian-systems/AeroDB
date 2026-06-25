@@ -27,16 +27,9 @@ public static class BenchmarkStore
 
     public static async Task CleanEntityDocsAsync()
     {
-        try
-        {
-            await using var session = await Store.LightweightSessionAsync();
-            await session.RawQueryAsync<object>("DELETE entity_doc;");
-        }
-        catch (Exception)
-        {
-            // Table may not exist yet. Entity types create tables implicitly
-            // on first UPSERT, so there's no data to clean.
-        }
+        await using var session = await Store.LightweightSessionAsync();
+        await session.RawQueryAsync<object>("DEFINE TABLE IF NOT EXISTS entity_doc SCHEMALESS;");
+        await session.RawQueryAsync<object>("DELETE entity_doc;");
     }
 
     public static async Task CleanEventsAsync()
