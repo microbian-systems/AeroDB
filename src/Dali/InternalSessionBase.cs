@@ -129,7 +129,18 @@ public abstract class InternalSessionBase : IAsyncDisposable
         try
         {
             var rid = new RecordIdOf<string>(table, id);
-            var result = await loadSession.Select<T>(rid, ct).ConfigureAwait(false);
+
+            // Try shim-based deserialization for IEntity<TId> types
+            T? result;
+            var shimType = MetadataRegistry.GetShimType(typeof(T));
+            if (shimType is not null)
+            {
+                result = await DeserializeViaShimAsync<T>(loadSession, shimType, rid, ct).ConfigureAwait(false);
+            }
+            else
+            {
+                result = await loadSession.Select<T>(rid, ct).ConfigureAwait(false);
+            }
 
             // Tenant isolation: if this session is tenant-scoped and the loaded entity
             // has a TenantId property, verify it matches. If not, treat as "not found".
@@ -167,6 +178,35 @@ public abstract class InternalSessionBase : IAsyncDisposable
         {
             return null;
         }
+    }
+
+    /// <summary>
+    /// Deserializes a SurrealDB response via the source-generated shim type,
+    /// then materializes to the entity via <c>ToEntity()</c>.
+    /// </summary>
+    private async Task<T?> DeserializeViaShimAsync<T>(
+        ISurrealDbSession session, Type shimType, RecordId rid, CancellationToken ct) where T : class
+    {
+        // Cache the MethodInfo for Select<TShim> — reflection once per T
+        var selectMethod = typeof(ISurrealDbSession)
+            .GetMethod(nameof(ISurrealDbSession.Select), 1, [typeof(RecordId), typeof(CancellationToken)])!
+            .MakeGenericMethod(shimType);
+
+        var task = selectMethod.Invoke(session, [rid, ct]) as Task;
+        if (task is null) return null;
+
+        await task.ConfigureAwait(false);
+
+        // Extract Result property via reflection
+        var resultProp = task.GetType().GetProperty("Result");
+        var shim = resultProp?.GetValue(task);
+        if (shim is null) return null;
+
+        // Call ToEntity()
+        var toEntityMethod = shimType.GetMethod("ToEntity", Type.EmptyTypes);
+        if (toEntityMethod is null) return null;
+
+        return (T?)toEntityMethod.Invoke(shim, null);
     }
 
     /// <summary>

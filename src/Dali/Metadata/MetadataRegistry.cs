@@ -132,4 +132,25 @@ public static class MetadataRegistry
             return typed;
         return null;
     }
+
+    // Shim type lookup for IEntity<TId> CBOR deserialization
+    private static readonly ConcurrentDictionary<Type, Type> _shimTypes = new();
+
+    /// <summary>
+    /// Registers a shim type for an IEntity{TId} type.
+    /// Called by generated shim static constructors.
+    /// </summary>
+    public static void RegisterShimType<TEntity>(Type shimType)
+    {
+        _shimTypes[typeof(TEntity)] = shimType;
+    }
+
+    /// <summary>
+    /// Gets the registered shim type for the given entity type, or null if none.
+    /// </summary>
+    public static Type? GetShimType(Type entityType)
+    {
+        _shimTypes.TryGetValue(entityType, out var shimType);
+        return shimType;
+    }
 }

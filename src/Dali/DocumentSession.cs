@@ -284,13 +284,24 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                             case OperationType.Added:
                                 _logger.LogDebug("CREATE/UPSERT {Type} ({Table})", op.EntityType.Name, table);
                                 var entityId = GetEntityId(op.Entity);
-                                if (!string.IsNullOrEmpty(entityId) && op.Entity is IRecord rec)
+                                if (!string.IsNullOrEmpty(entityId))
                                 {
                                     // Use Upsert (create-or-update) for entities with explicit IDs.
                                     // This avoids failure when the record already exists (e.g. from
                                     // inline projections run in a prior session, or RebuildAsync).
                                     var rid = new RecordIdOf<string>(table, entityId);
-                                    await UpsertRecordAsync(rec, rid, targetSession, ct).ConfigureAwait(false);
+                                    if (op.Entity is IRecord rec)
+                                    {
+                                        await UpsertRecordAsync(rec, rid, targetSession, ct).ConfigureAwait(false);
+                                    }
+                                    else
+                                    {
+                                        // Non-IRecord (Entity<TId>) types with explicit IDs — use SurrealQL to avoid CBOR serialization issues
+                                        await targetSession.RawQuery(
+                                            $"UPSERT {table}:`{entityId}` MERGE $data",
+                                            new Dictionary<string, object?> { ["data"] = op.Entity },
+                                            ct).ConfigureAwait(false);
+                                    }
                                 }
                                 else
                                 {
@@ -318,13 +329,15 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                                     }
                                     else
                                     {
-                                        // Fall back to Merge for non-Record types
-                                        var json = JsonSerializer.Serialize(op.Entity, new JsonSerializerOptions
+                                        // Fall back to SurrealQL for non-Record types
+                                        var modEntityId = GetEntityId(op.Entity);
+                                        if (modEntityId is not null)
                                         {
-                                            PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower
-                                        });
-                                        var dict = JsonSerializer.Deserialize<Dictionary<string, object>>(json)!;
-                                        await targetSession.Merge<object>(modId, dict, ct).ConfigureAwait(false);
+                                            await targetSession.RawQuery(
+                                                $"UPSERT {table}:`{modEntityId}` MERGE $data",
+                                                new Dictionary<string, object?> { ["data"] = op.Entity },
+                                                ct).ConfigureAwait(false);
+                                        }
                                     }
                                 }
                                 break;
@@ -352,12 +365,14 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                                     }
                                     else
                                     {
-                                        var json = JsonSerializer.Serialize(op.Entity, new JsonSerializerOptions
+                                        var softDelEntityId = GetEntityId(op.Entity);
+                                        if (softDelEntityId is not null)
                                         {
-                                            PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower
-                                        });
-                                        var dict = JsonSerializer.Deserialize<Dictionary<string, object>>(json)!;
-                                        await targetSession.Merge<object>(softDelId, dict, ct).ConfigureAwait(false);
+                                            await targetSession.RawQuery(
+                                                $"UPSERT {table}:`{softDelEntityId}` MERGE $data",
+                                                new Dictionary<string, object?> { ["data"] = op.Entity },
+                                                ct).ConfigureAwait(false);
+                                        }
                                     }
                                 }
                                 break;

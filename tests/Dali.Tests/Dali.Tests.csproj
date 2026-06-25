@@ -7,6 +7,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Bogus" Version="35.6.3" />
+    <PackageReference Include="FlakeId" Version="1.3.2" />
     <PackageReference Include="TUnit" VersionOverride="1.39.0" />
     <PackageReference Include="Shouldly" VersionOverride="4.3.0" />
     <PackageReference Include="SurrealDb.Embedded.InMemory" VersionOverride="0.10.2" />
@@ -15,6 +16,7 @@
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" VersionOverride="5.0.0" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Dali.AspNetIdentity\Dali.AspNetIdentity.csproj" />
     <ProjectReference Include="..\..\src\Dali\Dali.csproj" />
     <ProjectReference Include="..\..\src\Dali.EntityFrameworkCore\Dali.EntityFrameworkCore.csproj" />
     <ProjectReference Include="..\..\src\Dali.ML\Dali.ML.csproj" />

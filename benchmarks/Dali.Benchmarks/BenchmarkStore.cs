@@ -25,6 +25,20 @@ public static class BenchmarkStore
         await session.RawQueryAsync<object>("DELETE bench_doc;");
     }
 
+    public static async Task CleanEntityDocsAsync()
+    {
+        try
+        {
+            await using var session = await Store.LightweightSessionAsync();
+            await session.RawQueryAsync<object>("DELETE entity_doc;");
+        }
+        catch (Exception)
+        {
+            // Table may not exist yet. Entity types create tables implicitly
+            // on first UPSERT, so there's no data to clean.
+        }
+    }
+
     public static async Task CleanEventsAsync()
     {
         await using var session = await Store.LightweightSessionAsync();

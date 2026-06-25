@@ -275,11 +275,42 @@ public class ClientOrder : Record
 }
 
 /// <summary>
-/// DTO for full graph projection tests.
+/// DTO for testing full graph projection tests.
 /// </summary>
 public class ClientOrderDto
 {
     public string CustomerName { get; set; } = "";
     public string Description { get; set; } = "";
     public decimal Total { get; set; }
+}
+
+// ──────────────────────────────────────────────
+// Entity<TId> test models (non-Record, typed Ids)
+// ──────────────────────────────────────────────
+
+public class EntityProduct : EntitySnowlake
+{
+    public string Name { get; set; } = "";
+    public decimal Price { get; set; }
+    public int Stock { get; set; }
+}
+
+public class EntityCustomer : EntityString
+{
+    public string Name { get; set; } = "";
+    public string Email { get; set; } = "";
+}
+
+public class EntityOrder : EntityInt
+{
+    public string Description { get; set; } = "";
+    public int Quantity { get; set; }
+    public decimal Amount { get; set; }
+}
+
+public class EntitySession : EntityGuid
+{
+    public string Token { get; set; } = "";
+    public string UserName { get; set; } = "";
+    public DateTimeOffset CreatedAt { get; set; }
 }

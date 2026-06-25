@@ -470,7 +470,7 @@ public class SurrealQueryProvider : IQueryProvider
             List<T>? testMain = null;
             if (response.Count > 0 && response[0] is SurrealDbOkResult)
             {
-                try { testMain = response.GetValue<List<T>>(0); }
+                try { testMain = DeserializeQueryResults<T>(response, 0); }
                 catch { /* ignore type mismatch */ }
             }
 
@@ -481,7 +481,7 @@ public class SurrealQueryProvider : IQueryProvider
             else
                 return [];
 
-            var results = mainIndex == 0 ? testMain : response.GetValue<List<T>>(mainIndex);
+            var results = mainIndex == 0 ? testMain : DeserializeQueryResults<T>(response, mainIndex);
             if (results is null || results.Count == 0)
                 return [];
 
@@ -563,9 +563,7 @@ public class SurrealQueryProvider : IQueryProvider
 
         if (!response.HasErrors && response.Count > 0)
         {
-            var raw = response.GetValue<List<T>>(0);
-            if (raw is not null)
-                return raw;
+            return DeserializeQueryResults<T>(response, 0);
         }
 
         return [];
@@ -705,8 +703,8 @@ public class SurrealQueryProvider : IQueryProvider
 
         if (!response.HasErrors && response.Count > 0)
         {
-            var raw = response.GetValue<List<T>>(0);
-            if (raw is not null && raw.Count > 0)
+            var raw = DeserializeQueryResults<T>(response, 0);
+            if (raw is { Count: > 0 })
                 return raw[0];
         }
 
@@ -847,8 +845,8 @@ public class SurrealQueryProvider : IQueryProvider
 
         if (!response.HasErrors && response.Count > 0)
         {
-            var raw = response.GetValue<List<T>>(0);
-            if (raw is not null)
+            var raw = DeserializeQueryResults<T>(response, 0);
+            if (raw is { Count: > 0 })
             {
                 if (raw.Count > 1)
                     throw new InvalidOperationException("Sequence contains more than one element.");
@@ -885,7 +883,7 @@ public class SurrealQueryProvider : IQueryProvider
         int mainIndex;
         // Pragmatic heuristic: try index 0 first; if it yields results, use it.
         // If index 0 yields nothing and there are more result sets, try index 1.
-        var testMain = response.GetValue<List<T>>(0);
+        var testMain = DeserializeQueryResults<T>(response, 0);
         if (testMain is { Count: > 0 })
             mainIndex = 0;
         else if (response.Count > 1)
@@ -893,7 +891,7 @@ public class SurrealQueryProvider : IQueryProvider
         else
             return [];
 
-        var results = mainIndex == 0 ? testMain : response.GetValue<List<T>>(mainIndex);
+        var results = mainIndex == 0 ? testMain : DeserializeQueryResults<T>(response, mainIndex);
         if (results is null || results.Count == 0)
             return results ?? [];
 
@@ -997,18 +995,56 @@ public class SurrealQueryProvider : IQueryProvider
     /// </summary>
     private static List<T> DeserializeMainResults<T>(SurrealDbResponse response)
     {
-        var testMain = response.GetValue<List<T>>(0);
+        var testMain = DeserializeQueryResults<T>(response, 0);
         if (testMain is { Count: > 0 })
             return testMain;
 
         if (response.Count > 1)
         {
-            var altMain = response.GetValue<List<T>>(1);
+            var altMain = DeserializeQueryResults<T>(response, 1);
             if (altMain is { Count: > 0 })
                 return altMain;
         }
 
         return [];
+    }
+
+    /// <summary>
+    /// Deserializes query results via source-generated shim types for IEntity{TId} entities,
+    /// or directly for Record subclasses.
+    /// </summary>
+    private static List<T> DeserializeQueryResults<T>(SurrealDbResponse response, int index)
+    {
+        var shimType = MetadataRegistry.GetShimType(typeof(T));
+        if (shimType is not null)
+        {
+            var listType = typeof(List<>).MakeGenericType(shimType);
+            var getValueMethod = typeof(SurrealDbResponse)
+                .GetMethod(nameof(SurrealDbResponse.GetValue), 1, [typeof(int)])!
+                .MakeGenericMethod(listType);
+
+            var shimList = getValueMethod.Invoke(response, [index]);
+            if (shimList is not IEnumerable enumerable)
+                return [];
+
+            // Materialize each shim to entity via ToEntity()
+            var toEntityMethod = shimType.GetMethod("ToEntity", Type.EmptyTypes);
+            if (toEntityMethod is null) return [];
+
+            var results = new List<T>();
+            foreach (var shim in enumerable)
+            {
+                if (shim is null) continue;
+                var entity = toEntityMethod.Invoke(shim, null);
+                if (entity is T t)
+                    results.Add(t);
+            }
+            return results;
+        }
+
+        // Direct deserialization for Record subclasses (existing path)
+        var raw = response.GetValue<List<T>>(index);
+        return raw ?? [];
     }
 
     /// <summary>
@@ -1038,7 +1074,7 @@ public class SurrealQueryProvider : IQueryProvider
         {
             // Determine main result index
             int mainIndex;
-            var testMain = response.GetValue<List<T>>(0);
+            var testMain = DeserializeQueryResults<T>(response, 0);
             if (testMain is { Count: > 0 })
                 mainIndex = 0;
             else if (response.Count > 1)
