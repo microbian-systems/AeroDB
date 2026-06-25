@@ -4,10 +4,10 @@
 
 | Status | Count |
 |--------|-------|
-| ✅ Done | 66+ |
+| ✅ Done | 69 |
 | ⚠️ Partial | 0 |
 | ❌ Missing | 0 |
-| 🟢 Dali Unique | 27 |
+| 🟢 Dali Unique | 26 |
 
 ---
 
@@ -21,6 +21,8 @@
 | `AdvancedSql.QueryAsync<T1,T2,...>()` | ✅ Done | `session.AdvancedSql().QueryAsync<T1,T2>()` — 2/3/4-tuple multi-doc queries |
 | `AdvancedSql.StreamAsync<T>()` (IAsyncEnumerable) | ✅ Done | `DaliAdvancedSql.StreamAsync<T>()` — streaming raw SQL results |
 | `ToCommand()` / SQL inspection | ✅ Done | `ISurrealDbQueryable<T>.ToCommand()` — exposes SurrealQL before execution |
+| `Stats()` / query statistics | ✅ Done | `IQueryable<T>.Stats(out QueryStatistics)` — single-row-trip count via batched SurrealQL |
+| `ToPagedListAsync()` / pagination | ✅ Done | `ISurrealDbQueryable<T>.ToPagedListAsync(page, size)` — `IPagedList<T>` with total count |
 | `IBatchedQuery` / `CreateBatchQuery()` | ✅ Done | `session.CreateBatchQuery()` — multi-statement SurrealDB single-roundtrip + compiled query integration |
 | `ICompiledQuery<T>` | ✅ Done | Marten-compatible `ICompiledQuery<TDoc, TOut>` interface pattern + `CompiledQueryPlanner` runtime planner |
 | `BulkInsert` (COPY-based) | ✅ Done | `BulkOperations.BulkInsertAsync<T>()` — SurrealDB `INSERT INTO table [{...}, {...}]` batch syntax |
@@ -85,7 +87,7 @@
 | Live queries (realtime) | 🟢 Unique | `ILiveQuery<T>` / `WatchTableAsync` / `WatchQueryAsync` |
 | Record links | 🟢 Unique | `Include<T,TInclude>()`, `IncludeReverse()`, `FilterInclude()` |
 | Edge/Relation support | 🟢 Unique | `EdgeRecord`, `EdgeMapping<T>`, `RelateAsync()` |
-| Patching API | 🟢 Unique | `PatchExpression`, `ISurrealDbQueryable.PatchAsync()` |
+| Patching API | ✅ Done | `IPatchExpression<T>` — `Set`, `Increment`, `Append`, `AppendIfNotExists`, `Insert`, `InsertIfNotExists`, `Remove`, `Duplicate`, `Rename`, `Delete`; `Patch<T>(string/int/long/Guid/filter)` overloads |
 | Machine Learning | 🟢 Unique | `IMlQuery<TInput,TOutput>.ComputeAsync()` |
 
 ---
@@ -167,10 +169,10 @@ All 7 implementation steps are complete. Dali is at full feature parity with Mar
 
 | Metric | Value |
 |--------|-------|
-| ✅ Done | 66+ |
+| ✅ Done | 69 |
 | ⚠️ Partial | 0 |
 | ❌ Missing | 0 |
-| 🟢 Dali Unique | 27 |
+| 🟢 Dali Unique | 26 |
 | Tests | 954 |
 
 ### Gaps Resolved by Steps 1-7

@@ -73,6 +73,7 @@ $libProjects = @(
     "$RepoRoot/src/Dali"
     "$RepoRoot/src/Dali.EntityFrameworkCore"
     "$RepoRoot/src/Dali.ML"
+    "$RepoRoot/src/Dali.Orleans"
     "$RepoRoot/src/Dali.SourceGenerators"
     "$RepoRoot/src/Dali.WolverineFx"
 )

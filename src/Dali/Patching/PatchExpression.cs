@@ -12,7 +12,7 @@ namespace Dali;
 /// UPDATE statement when <see cref="ApplyAsync"/> is called.
 /// </summary>
 /// <typeparam name="T">The document type (must extend <c>Record</c> from SurrealDb.Net.Models).</typeparam>
-public class PatchExpression<T> where T : class
+public class PatchExpression<T> : IPatchExpression<T>, IDeferredPatch where T : class
 {
     private readonly IDocumentSession _session;
     private readonly string _recordId;
@@ -26,122 +26,174 @@ public class PatchExpression<T> where T : class
         _logger = ((InternalSessionBase)session).StoreOptions.LoggerFactory
             ?.CreateLogger<PatchExpression<T>>()
             ?? NullLogger<PatchExpression<T>>.Instance;
+
+        // Auto-register on the session for execution during SaveChangesAsync
+        if (session is DocumentSession ds)
+            ds._queuedPatches.Add(this);
     }
 
-    /// <summary>
-    /// Sets a field to the specified value.
-    /// </summary>
-    /// <param name="property">Expression selecting the property to set.</param>
-    /// <param name="value">The new value.</param>
-    public PatchExpression<T> Set<TValue>(Expression<Func<T, TValue>> property, TValue value)
+    // ── Set ────────────────────────────────────────────────────────────
+
+    public IPatchExpression<T> Set<TValue>(Expression<Func<T, TValue>> property, TValue value)
     {
         var member = GetMember(property);
         _operations.Add(new SetOperation(member.Name, value, OperationKind.Set));
         return this;
     }
 
-    /// <summary>
-    /// Increments a numeric field by the given amount.
-    /// </summary>
-    /// <param name="property">Expression selecting the numeric property.</param>
-    /// <param name="amount">The amount to add.</param>
-    public PatchExpression<T> Increment(Expression<Func<T, int>> property, int amount)
+    // ── Increment ──────────────────────────────────────────────────────
+
+    public IPatchExpression<T> Increment(Expression<Func<T, int>> property, int amount = 1)
     {
         var member = GetMember(property);
         _operations.Add(new SetOperation(member.Name, amount, OperationKind.Increment));
         return this;
     }
 
-    /// <summary>
-    /// Increments a numeric field by the given amount.
-    /// </summary>
-    /// <param name="property">Expression selecting the numeric property.</param>
-    /// <param name="amount">The amount to add.</param>
-    public PatchExpression<T> Increment(Expression<Func<T, long>> property, long amount)
+    public IPatchExpression<T> Increment(Expression<Func<T, long>> property, long amount = 1)
     {
         var member = GetMember(property);
         _operations.Add(new SetOperation(member.Name, amount, OperationKind.Increment));
         return this;
     }
 
-    /// <summary>
-    /// Increments a numeric field by the given amount.
-    /// </summary>
-    /// <param name="property">Expression selecting the numeric property.</param>
-    /// <param name="amount">The amount to add.</param>
-    public PatchExpression<T> Increment(Expression<Func<T, decimal>> property, decimal amount)
+    public IPatchExpression<T> Increment(Expression<Func<T, double>> property, double amount = 1)
     {
         var member = GetMember(property);
         _operations.Add(new SetOperation(member.Name, amount, OperationKind.Increment));
         return this;
     }
 
-    /// <summary>
-    /// Increments a numeric field by the given amount.
-    /// </summary>
-    /// <param name="property">Expression selecting the numeric property.</param>
-    /// <param name="amount">The amount to add.</param>
-    public PatchExpression<T> Increment(Expression<Func<T, float>> property, float amount)
+    public IPatchExpression<T> Increment(Expression<Func<T, float>> property, float amount = 1)
     {
         var member = GetMember(property);
         _operations.Add(new SetOperation(member.Name, amount, OperationKind.Increment));
         return this;
     }
 
-    /// <summary>
-    /// Increments a numeric field by the given amount.
-    /// </summary>
-    /// <param name="property">Expression selecting the numeric property.</param>
-    /// <param name="amount">The amount to add.</param>
-    public PatchExpression<T> Increment(Expression<Func<T, double>> property, double amount)
+    public IPatchExpression<T> Increment(Expression<Func<T, decimal>> property, decimal amount = 1)
     {
         var member = GetMember(property);
         _operations.Add(new SetOperation(member.Name, amount, OperationKind.Increment));
         return this;
     }
 
-    /// <summary>
-    /// Appends a value to an array field.
-    /// </summary>
-    /// <param name="property">Expression selecting the array property.</param>
-    /// <param name="item">The item to append.</param>
-    public PatchExpression<T> Append<TValue>(Expression<Func<T, IEnumerable<TValue>>> property, TValue item)
+    // ── Append ─────────────────────────────────────────────────────────
+
+    public IPatchExpression<T> Append<TElement>(Expression<Func<T, IEnumerable<TElement>>> property, TElement element)
     {
         var member = GetMember(property);
-        _operations.Add(new SetOperation(member.Name, item, OperationKind.Append));
+        _operations.Add(new SetOperation(member.Name, element, OperationKind.Append));
         return this;
     }
 
-    /// <summary>
-    /// Deletes a field (sets to NONE in SurrealDB).
-    /// </summary>
-    /// <param name="property">Expression selecting the property to delete.</param>
-    public PatchExpression<T> Delete<TValue>(Expression<Func<T, TValue>> property)
+    public IPatchExpression<T> AppendIfNotExists<TElement>(Expression<Func<T, IEnumerable<TElement>>> property, TElement element)
+    {
+        var member = GetMember(property);
+        _operations.Add(new SetOperation(member.Name, element, OperationKind.AppendIfNotExists));
+        return this;
+    }
+
+    // ── Insert ─────────────────────────────────────────────────────────
+
+    public IPatchExpression<T> Insert<TElement>(Expression<Func<T, IEnumerable<TElement>>> property, TElement element, int? index = null)
+    {
+        var member = GetMember(property);
+        _operations.Add(new SetOperation(member.Name, element, OperationKind.Insert, insertIndex: index));
+        return this;
+    }
+
+    public IPatchExpression<T> InsertIfNotExists<TElement>(Expression<Func<T, IEnumerable<TElement>>> property, TElement element, int? index = null)
+    {
+        var member = GetMember(property);
+        _operations.Add(new SetOperation(member.Name, element, OperationKind.InsertIfNotExists, insertIndex: index));
+        return this;
+    }
+
+    // ── Remove ─────────────────────────────────────────────────────────
+
+    public IPatchExpression<T> Remove<TElement>(Expression<Func<T, IEnumerable<TElement>>> property, TElement element)
+    {
+        var member = GetMember(property);
+        _operations.Add(new SetOperation(member.Name, element, OperationKind.Remove));
+        return this;
+    }
+
+    // ── Duplicate ──────────────────────────────────────────────────────
+
+    public IPatchExpression<T> Duplicate<TElement>(Expression<Func<T, TElement>> source, params Expression<Func<T, TElement>>[] destinations)
+    {
+        var sourceMember = GetMember(source);
+        foreach (var dest in destinations)
+        {
+            var destMember = GetMember(dest);
+            _operations.Add(new SetOperation(destMember.Name, null, OperationKind.Duplicate, targetField: sourceMember.Name));
+        }
+        return this;
+    }
+
+    // ── Rename ─────────────────────────────────────────────────────────
+
+    public IPatchExpression<T> Rename(string oldName, Expression<Func<T, object?>> target)
+    {
+        var member = GetMember(target);
+        _operations.Add(new SetOperation(member.Name, null, OperationKind.Rename, oldName: oldName));
+        return this;
+    }
+
+    // ── Delete ─────────────────────────────────────────────────────────
+
+    public IPatchExpression<T> Delete<TValue>(Expression<Func<T, TValue>> property)
     {
         var member = GetMember(property);
         _operations.Add(new SetOperation(member.Name, null, OperationKind.Delete));
         return this;
     }
 
+    // ── Execute (IDeferredPatch) ──────────────────────────────────────
+
     /// <summary>
-    /// Applies all queued patch operations by executing a SurrealQL UPDATE statement.
-    /// After successful execution, the operation queue is cleared.
+    /// Executes all queued patch operations by running a SurrealQL UPDATE statement.
+    /// Called by the session during <see cref="IDocumentSession.SaveChangesAsync"/>.
     /// </summary>
-    /// <param name="ct">Cancellation token.</param>
-    public async Task ApplyAsync(CancellationToken ct = default)
+    async Task IDeferredPatch.ExecuteAsync(IDocumentSession session, CancellationToken ct)
     {
         if (_operations.Count == 0) return;
 
+        // Separate Rename operations (these need ALTER TABLE, not UPDATE SET)
+        var renameOps = _operations.Where(o => o.Kind == OperationKind.Rename).ToList();
+        var updateOps = _operations.Where(o => o.Kind != OperationKind.Rename).ToList();
+
         var table = MetadataDispatch.GetTableName(typeof(T));
-        var sets = _operations.Select(o => o.ToSurrealQL()).ToList();
-        var surql = $"UPDATE {table}:{_recordId} SET {string.Join(", ", sets)};";
+        var surrealdbSession = ((InternalSessionBase)session).Session;
 
-        _logger.LogDebug("Applying patch: {SurrealQL}", surql);
+        // Execute UPDATE SET for all non-rename operations
+        if (updateOps.Count > 0)
+        {
+            var sets = updateOps.Select(o => o.ToSurrealQL()).ToList();
+            var surql = $"UPDATE {table}:{_recordId} SET {string.Join(", ", sets)};";
+            _logger.LogDebug("Applying patch: {SurrealQL}", surql);
+            await surrealdbSession.RawQuery(surql, null, ct).ConfigureAwait(false);
+        }
 
-        var surrealdbSession = ((InternalSessionBase)_session).Session;
-        await surrealdbSession.RawQuery(surql, null, ct).ConfigureAwait(false);
+        // Execute ALTER TABLE RENAME COLUMN for rename operations
+        foreach (var op in renameOps)
+        {
+            var surql = $"ALTER TABLE {table} RENAME COLUMN `{op.OldName}` TO `{op.FieldName}`;";
+            _logger.LogDebug("Applying rename: {SurrealQL}", surql);
+            await surrealdbSession.RawQuery(surql, null, ct).ConfigureAwait(false);
+        }
 
         _operations.Clear();
+    }
+
+    /// <summary>
+    /// Backward-compatible public method that immediately applies the patch.
+    /// Delegates to the deferred execution path.
+    /// </summary>
+    public async Task ApplyAsync(CancellationToken ct = default)
+    {
+        await ((IDeferredPatch)this).ExecuteAsync(_session, ct).ConfigureAwait(false);
     }
 
     private static MemberInfo GetMember<TValue>(Expression<Func<T, TValue>> property)
@@ -152,12 +204,5 @@ public class PatchExpression<T> where T : class
             UnaryExpression { NodeType: ExpressionType.Convert or ExpressionType.ConvertChecked, Operand: MemberExpression me } => me.Member,
             _ => throw new ArgumentException("Expression must be a property access expression.", nameof(property))
         };
-    }
-
-    private static string Snake(string name)
-    {
-        if (string.IsNullOrEmpty(name)) return name;
-        return string.Concat(name.Select((c, i) =>
-            i > 0 && char.IsUpper(c) ? "_" + char.ToLower(c) : char.ToLower(c).ToString()));
     }
 }

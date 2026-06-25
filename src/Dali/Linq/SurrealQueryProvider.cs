@@ -211,6 +211,31 @@ public class SurrealQueryProvider : IQueryProvider
     }
 
     /// <summary>
+    /// Extracts <see cref="SurrealDbQueryable{T}.QueryStats"/> from the source queryable embedded
+    /// in the expression tree. Used to recover the QueryStatistics reference set via
+    /// <see cref="StatsExtensions.Stats{T}"/> when a LINQ operator (e.g. <c>.Where()</c>)
+    /// created a new queryable via <c>CreateQuery</c>.
+    /// </summary>
+    internal static QueryStatistics? ExtractQueryStats(Expression expression)
+    {
+        if (expression is ConstantExpression c && c.Value is IQueryable q)
+        {
+            var qType = q.GetType();
+            if (qType.IsGenericType && qType.GetGenericTypeDefinition() == typeof(SurrealDbQueryable<>))
+            {
+                var statsProp = qType.GetProperty("QueryStats",
+                    System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
+                return statsProp?.GetValue(q) as QueryStatistics;
+            }
+        }
+        if (expression is MethodCallExpression m && m.Arguments.Count > 0)
+            return ExtractQueryStats(m.Arguments[0]);
+        if (expression is UnaryExpression u)
+            return ExtractQueryStats(u.Operand);
+        return null;
+    }
+
+    /// <summary>
     /// Applies a tenant filter to the query if tenancy is active and the target type supports it.
     /// DatabasePerTenant isolates at the database level — no WHERE filter needed.
     /// </summary>
@@ -275,7 +300,7 @@ public class SurrealQueryProvider : IQueryProvider
     // --- Public entry points (expression-only, for IQueryProvider backward compat) ---
 
     public async Task<List<T>> ToListAsync<T>(Expression expression, CancellationToken ct = default)
-        => await ToListAsyncInternal<T>(expression, null, null, null, null, ct);
+        => await ToListAsyncInternal<T>(expression, null, null, null, null, null, ct);
 
     public async Task<T?> FirstOrDefaultAsync<T>(Expression expression, CancellationToken ct = default)
         => await FirstOrDefaultAsyncInternal<T>(expression, null, null, null, null, ct);
@@ -291,8 +316,9 @@ public class SurrealQueryProvider : IQueryProvider
         List<SurrealDbQueryable<T>.IncludeDescriptor> includeDescriptors,
         List<IncludeSpec>? includeSpecs,
         List<FilterIncludeSpec>? filterIncludeSpecs,
+        QueryStatistics? queryStats,
         CancellationToken ct = default)
-        => await ToListAsyncInternal<T>(expression, fetchFields, includeDescriptors, includeSpecs, filterIncludeSpecs, ct);
+        => await ToListAsyncInternal<T>(expression, fetchFields, includeDescriptors, includeSpecs, filterIncludeSpecs, queryStats, ct);
 
     internal async Task<T?> FirstOrDefaultAsync<T>(
         Expression expression,
@@ -320,6 +346,7 @@ public class SurrealQueryProvider : IQueryProvider
         List<SurrealDbQueryable<T>.IncludeDescriptor>? includeDescriptors,
         List<IncludeSpec>? includeSpecs,
         List<FilterIncludeSpec>? filterIncludeSpecs,
+        QueryStatistics? queryStats,
         CancellationToken ct)
     {
         var visitor = CreateVisitor();
@@ -368,6 +395,16 @@ public class SurrealQueryProvider : IQueryProvider
 
         var hasIncludes = includeDescriptors is { Count: > 0 };
         var hasIncludeSpecs = includeSpecs is { Count: > 0 };
+
+        // Run count query first when Stats is requested (separate round trip)
+        if (queryStats is not null)
+        {
+            try
+            {
+                queryStats.TotalResults = await CountAsync(expression, ct).ConfigureAwait(false);
+            }
+            catch { /* ignore count failures */ }
+        }
 
         string surql;
         if (hasIncludes || hasIncludeSpecs)

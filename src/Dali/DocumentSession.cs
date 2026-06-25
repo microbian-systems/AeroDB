@@ -17,6 +17,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
     private readonly UnitOfWork _unitOfWork = new();
     private IEvents? _events;
     internal readonly List<IEvent> _appendedEvents = new();
+    internal readonly List<IDeferredPatch> _queuedPatches = new();
 
     /// <summary>
     /// Cached <c>MethodInfo</c> for <see cref="SurrealDbResponse.GetValue{T}"/>,
@@ -186,12 +187,13 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
     {
         _unitOfWork.Clear();
         _appendedEvents.Clear();
+        _queuedPatches.Clear();
     }
 
     public async Task<int> SaveChangesAsync(CancellationToken ct = default)
     {
         var count = _unitOfWork.Operations.Count;
-        if (count == 0 && _appendedEvents.Count == 0) return 0;
+        if (count == 0 && _appendedEvents.Count == 0 && _queuedPatches.Count == 0) return 0;
 
         _logger.LogInformation("SaveChangesAsync: committing {EntityCount} entities and {EventCount} events",
             count, _appendedEvents.Count);
@@ -503,6 +505,16 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                             .ToArray();
                         _appendedEvents.Clear();
                     }
+                }
+
+                // Phase 5: Execute queued patches (inside transaction, after entity operations and inline projections)
+                if (_queuedPatches.Count > 0)
+                {
+                    foreach (var patch in _queuedPatches)
+                    {
+                        await patch.ExecuteAsync(this, ct).ConfigureAwait(false);
+                    }
+                    _queuedPatches.Clear();
                 }
 
                 // AfterSaveChangesAsync hooks (inside transaction, before commit)

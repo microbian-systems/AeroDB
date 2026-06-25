@@ -18,9 +18,9 @@ public class PatchTests
         var alice = all.First(p => p.Name == "Alice");
         var id = alice.Id is RecordIdOf<string> sid ? sid.Id : alice.Id!.ToString()!;
 
-        await session.Patch<Person>(id)
-            .Set(p => p.Age, 35)
-            .ApplyAsync();
+        session.Patch<Person>(id)
+            .Set(p => p.Age, 35);
+        await session.SaveChangesAsync();
 
         var reloaded = await session.LoadAsync<Person>(id);
         reloaded.ShouldNotBeNull();
@@ -41,10 +41,10 @@ public class PatchTests
         var bob = all.First(p => p.Name == "Bob");
         var id = bob.Id is RecordIdOf<string> sid ? sid.Id : bob.Id!.ToString()!;
 
-        await session.Patch<Person>(id)
+        session.Patch<Person>(id)
             .Set(p => p.Age, 40)
-            .Set(p => p.Name, "Robert")
-            .ApplyAsync();
+            .Set(p => p.Name, "Robert");
+        await session.SaveChangesAsync();
 
         var reloaded = await session.LoadAsync<Person>(id);
         reloaded.ShouldNotBeNull();
@@ -66,9 +66,9 @@ public class PatchTests
         var widget = all.First(p => p.Name == "Widget");
         var id = widget.Id is RecordIdOf<string> sid ? sid.Id : widget.Id!.ToString()!;
 
-        await session.Patch<Product>(id)
-            .Increment(p => p.Quantity, 5)
-            .ApplyAsync();
+        session.Patch<Product>(id)
+            .Increment(p => p.Quantity, 5);
+        await session.SaveChangesAsync();
 
         var reloaded = await session.LoadAsync<Product>(id);
         reloaded.ShouldNotBeNull();
@@ -89,9 +89,9 @@ public class PatchTests
         var charlie = all.First(p => p.Name == "Charlie");
         var id = charlie.Id is RecordIdOf<string> sid ? sid.Id : charlie.Id!.ToString()!;
 
-        await session.Patch<Person>(id)
-            .Append(p => p.Tags, "b")
-            .ApplyAsync();
+        session.Patch<Person>(id)
+            .Append(p => p.Tags, "b");
+        await session.SaveChangesAsync();
 
         var reloaded = await session.LoadAsync<Person>(id);
         reloaded.ShouldNotBeNull();
@@ -113,9 +113,9 @@ public class PatchTests
         var prod = all.First(p => p.Name == "DeletePrice");
         var id = prod.Id is RecordIdOf<string> sid ? sid.Id : prod.Id!.ToString()!;
 
-        await session.Patch<Product>(id)
-            .Delete(p => p.Price)
-            .ApplyAsync();
+        session.Patch<Product>(id)
+            .Delete(p => p.Price);
+        await session.SaveChangesAsync();
 
         var reloaded = await session.LoadAsync<Product>(id);
         reloaded.ShouldNotBeNull();
@@ -130,9 +130,9 @@ public class PatchTests
         await using var session = await store.LightweightSessionAsync();
 
         // Patching a record that doesn't exist should not throw
-        await session.Patch<Person>("nonexistent-id")
-            .Set(p => p.Age, 99)
-            .ApplyAsync();
+        session.Patch<Person>("nonexistent-id")
+            .Set(p => p.Age, 99);
+        await session.SaveChangesAsync();
 
         // No exception thrown - success
         true.ShouldBeTrue();

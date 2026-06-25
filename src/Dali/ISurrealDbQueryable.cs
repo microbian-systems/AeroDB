@@ -123,6 +123,12 @@ public class SurrealDbQueryable<T> : ISurrealDbQueryable<T>, IAsyncEnumerable<T>
     internal string? ViewName { get; set; }
 
     /// <summary>
+    /// When set, the query will also return total row count in a single round trip.
+    /// Populated after <see cref="ToListAsync"/> completes.
+    /// </summary>
+    internal QueryStatistics? QueryStats { get; set; }
+
+    /// <summary>
     /// Describes a single Include operation — which property to match,
     /// what type to load, and where to dispatch the loaded documents.
     /// </summary>
@@ -161,18 +167,19 @@ public class SurrealDbQueryable<T> : ISurrealDbQueryable<T>, IAsyncEnumerable<T>
     public string ToCommand() => _provider.ToCommand(Expression);
 
     public IEnumerator<T> GetEnumerator()
-        => _provider.ToListAsync<T>(Expression, FetchFields, IncludeDescriptors, IncludeSpecs, FilterIncludeSpecs).GetAwaiter().GetResult().GetEnumerator();
+        => _provider.ToListAsync<T>(Expression, FetchFields, IncludeDescriptors, IncludeSpecs, FilterIncludeSpecs, null, default).GetAwaiter().GetResult().GetEnumerator();
 
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
     public async IAsyncEnumerator<T> GetAsyncEnumerator(CancellationToken ct = default)
     {
-        foreach (var item in await _provider.ToListAsync<T>(Expression, FetchFields, IncludeDescriptors, IncludeSpecs, FilterIncludeSpecs, ct))
+        foreach (var item in await _provider.ToListAsync<T>(Expression, FetchFields, IncludeDescriptors, IncludeSpecs, FilterIncludeSpecs, null, ct))
             yield return item;
     }
 
     public Task<List<T>> ToListAsync(CancellationToken ct = default)
-        => _provider.ToListAsync<T>(Expression, FetchFields, IncludeDescriptors, IncludeSpecs, FilterIncludeSpecs, ct);
+        => _provider.ToListAsync<T>(Expression, FetchFields, IncludeDescriptors, IncludeSpecs, FilterIncludeSpecs,
+            QueryStats ?? SurrealQueryProvider.ExtractQueryStats(Expression), ct);
 
     public Task<T?> FirstOrDefaultAsync(CancellationToken ct = default)
         => _provider.FirstOrDefaultAsync<T>(Expression, FetchFields, IncludeDescriptors, IncludeSpecs, FilterIncludeSpecs, ct);
