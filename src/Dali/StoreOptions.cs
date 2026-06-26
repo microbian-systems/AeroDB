@@ -207,7 +207,7 @@ public class SchemaOptions
     /// Fluent API for document-level schema configuration (indices, tenancy policy, etc.).
     /// Creates or returns a cached <see cref="DocumentMapping{T}"/> for the specified type.
     /// </summary>
-    public DocumentMapping<T> For<T>() where T : class
+    public DocumentMapping<T> For<T>()
     {
         if (!Mappings.TryGetValue(typeof(T), out var existing))
         {

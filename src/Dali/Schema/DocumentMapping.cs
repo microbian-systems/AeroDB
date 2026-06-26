@@ -1,5 +1,6 @@
 using System.Linq.Expressions;
 using System.Reflection;
+using SurrealDb.Net.Models;
 
 namespace Dali;
 
@@ -35,7 +36,6 @@ public enum SchemaMode
 /// Accessed via <c>StoreOptions.Schema.For&lt;T&gt;()</c>.
 /// </summary>
 public class DocumentMapping<T> : DocumentMapping
-    where T : class
 {
     internal override Type EntityType => typeof(T);
     internal override List<IndexDefinition> Indices { get; } = [];
@@ -45,6 +45,32 @@ public class DocumentMapping<T> : DocumentMapping
     internal override SchemaMode SchemaModeType => _schemaModeType;
     private string? _schemaName;
     internal override string? SchemaName => _schemaName;
+
+    internal DocumentMapping()
+    {
+        ValidateDocumentType<T>();
+    }
+
+    internal static void ValidateDocumentType<TDocument>()
+    {
+        var type = typeof(T);
+
+        // Reject abstract types — they cannot be instantiated as documents
+        if (type.IsAbstract)
+            throw new ArgumentException(
+                $"Type '{type.FullName ?? type.Name}' is abstract and cannot be used as a document type. " +
+                $"Document types must inherit from {nameof(Record)} or {typeof(Entity<>).Name}.");
+
+        // Allow IRecord and IEntity<TId> types
+        if (typeof(IRecord).IsAssignableFrom(type))
+            return;
+        if (type.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IEntity<>)))
+            return;
+
+        throw new ArgumentException(
+            $"Type '{type.FullName ?? type.Name}' is not a valid document type. " +
+            $"Document types must inherit from {nameof(Record)} or {typeof(Entity<>).Name}.");
+    }
 
     /// <summary>
     /// Sets the schema mode for this document type (SCHEMAFULL vs SCHEMALESS).

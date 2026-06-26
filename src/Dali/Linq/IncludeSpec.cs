@@ -16,4 +16,9 @@ internal sealed class IncludeSpec
     public bool IsSingle { get; set; }
     /// <summary>True for forward include (FK on parent), false for reverse (FK on child). Default: true.</summary>
     public bool IsForward { get; set; } = true;
+    /// <summary>
+    /// The SurrealDB field name for the parent's ID in the reverse-include subquery.
+    /// "id" for Record types (RecordId), "Id" for Entity types (typed Id property).
+    /// </summary>
+    public string ParentIdField { get; set; } = "id";
 }

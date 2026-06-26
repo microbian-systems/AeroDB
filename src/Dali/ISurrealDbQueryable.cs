@@ -410,7 +410,7 @@ public static class SurrealDbQueryableExtensions
     /// <para>Generated SurrealQL pattern:
     /// <c>LET $main = (SELECT * FROM source WHERE ...);
     /// SELECT * FROM $main;
-    /// SELECT * FROM `child` WHERE `fkField` IN (SELECT VALUE id FROM $main);</c>
+    /// SELECT * FROM `child` WHERE `fkField` IN (SELECT VALUE [id|Id] FROM $main);</c>
     /// </para>
     ///
     /// <para>Unlike <see cref="Include{T,TInclude}(ISurrealDbQueryable{T}, Expression{Func{T,TInclude?}})"/>,
@@ -433,7 +433,7 @@ public static class SurrealDbQueryableExtensions
         this ISurrealDbQueryable<T> source,
         Expression<Func<T, IEnumerable<TChild>?>> property,
         string foreignKey)
-        where T : IRecord
+        where T : class
         where TChild : class
     {
         if (source is not SurrealDbQueryable<T> queryable)
@@ -445,7 +445,7 @@ public static class SurrealDbQueryableExtensions
         var propName = memberExpr.Member.Name;
         var targetTable = MetadataDispatch.GetTableName(typeof(TChild));
 
-        queryable.IncludeSpecs.Add(new IncludeSpec
+        var spec = new IncludeSpec
         {
             PropertyName = propName,
             TargetTable = targetTable,
@@ -453,7 +453,14 @@ public static class SurrealDbQueryableExtensions
             IncludeType = typeof(TChild),
             IsSingle = false,   // collection
             IsForward = false   // reverse
-        });
+        };
+
+        // Pre-compute the parent ID field name for SurrealQL generation.
+        // Record types use "id" (RecordId), Entity types use "Id" (typed property).
+        var parentIsRecord = typeof(IRecord).IsAssignableFrom(typeof(T));
+        spec.ParentIdField = parentIsRecord ? "id" : "Id";
+
+        queryable.IncludeSpecs.Add(spec);
 
         return queryable;
     }
@@ -488,7 +495,7 @@ public static class SurrealDbQueryableExtensions
         this ISurrealDbQueryable<T> source,
         Expression<Func<T, IEnumerable<TChild>>> property,
         Expression<Func<IEnumerable<TChild>, bool>> filter)
-        where T : IRecord
+        where T : class
         where TChild : class
     {
         if (source is not SurrealDbQueryable<T> queryable)

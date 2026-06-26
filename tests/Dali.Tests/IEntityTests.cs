@@ -372,6 +372,60 @@ public class IEntityTests
     }
 
     [Test]
+    public async Task EntityString_LoadAsync_by_id()
+    {
+        await using var store = await TestHarness.CreateStoreAsync();
+        await using var session = await store.LightweightSessionAsync();
+
+        var customer = new EntityCustomer { Name = "LoadCustomer", Email = "load@test.com" };
+        session.Store(customer);
+        await session.SaveChangesAsync();
+
+        var loaded = await session.LoadAsync<EntityCustomer>(customer.Id);
+
+        loaded.ShouldNotBeNull();
+        loaded.Name.ShouldBe("LoadCustomer");
+        loaded.Email.ShouldBe("load@test.com");
+        loaded.Id.ShouldBe(customer.Id);
+    }
+
+    [Test]
+    public async Task EntityInt_LoadAsync_by_id()
+    {
+        await using var store = await TestHarness.CreateStoreAsync();
+        await using var session = await store.LightweightSessionAsync();
+
+        var order = new EntityOrder { Description = "LoadOrder", Quantity = 3, Amount = 50m };
+        session.Store(order);
+        await session.SaveChangesAsync();
+
+        var loaded = await session.LoadAsync<EntityOrder>(order.Id.ToString());
+
+        loaded.ShouldNotBeNull();
+        loaded.Description.ShouldBe("LoadOrder");
+        loaded.Quantity.ShouldBe(3);
+        loaded.Id.ShouldBe(order.Id);
+    }
+
+    [Test]
+    public async Task EntityGuid_LoadAsync_by_id()
+    {
+        await using var store = await TestHarness.CreateStoreAsync();
+        await using var session = await store.LightweightSessionAsync();
+
+        var sess = new EntitySession { Token = "load_token", UserName = "load_user" };
+        session.Store(sess);
+        await session.SaveChangesAsync();
+
+        var loaded = await session.LoadAsync<EntitySession>(sess.Id.ToString());
+
+        loaded.ShouldNotBeNull();
+        loaded.Token.ShouldBe("load_token");
+        loaded.UserName.ShouldBe("load_user");
+        loaded.Id.ShouldBe(sess.Id);
+    }
+
+    [Test]
     public async Task EntityLong_BulkInsertAsync()
     {
         await using var store = await TestHarness.CreateStoreAsync();

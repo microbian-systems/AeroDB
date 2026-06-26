@@ -7,6 +7,7 @@ namespace Dali.Benchmarks;
 public class EntityDocumentActions
 {
     public static EntityDoc[] Docs = EntityDoc.Generate(100).ToArray();
+    private EntityDoc[] _bulkDocs = Array.Empty<EntityDoc>();
 
     [GlobalSetup]
     public async Task Setup() => await BenchmarkStore.CleanEntityDocsAsync();
@@ -16,6 +17,7 @@ public class EntityDocumentActions
     {
         // Regenerate docs each iteration so insert IDs are fresh
         Docs = EntityDoc.Generate(100).ToArray();
+        _bulkDocs = EntityDoc.Generate(1000).ToArray();
     }
 
     [Benchmark]
@@ -55,8 +57,7 @@ public class EntityDocumentActions
     [Benchmark]
     public async Task Entity_Bulk_Insert_1000()
     {
-        var docs = EntityDoc.Generate(1000);
         await using var session = await BenchmarkStore.Store.LightweightSessionAsync();
-        await session.BulkInsertAsync(docs);
+        await session.BulkInsertAsync(_bulkDocs);
     }
 }

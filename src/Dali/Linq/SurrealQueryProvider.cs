@@ -445,8 +445,10 @@ public class SurrealQueryProvider : IQueryProvider
                     }
                     else
                     {
-                        // Reverse: FK on child. WHERE {childFk} IN (SELECT VALUE id FROM $main)
-                        sb.Append("`").Append(spec.ForeignKeyField).Append("` IN (SELECT VALUE id");
+                        // Reverse: FK on child. WHERE {childFk} IN (SELECT VALUE {parentIdField} FROM $main)
+                        // Use `Id` for Entity types (long FK), `id` for Record types (RecordId FK)
+                        var idField = GetIdFieldForReverseInclude(spec);
+                        sb.Append("`").Append(spec.ForeignKeyField).Append("` IN (SELECT VALUE ").Append(idField);
                     }
                     sb.Append(" FROM $main);");
                 }
@@ -658,7 +660,8 @@ public class SurrealQueryProvider : IQueryProvider
                     }
                     else
                     {
-                        sb.Append("`").Append(spec.ForeignKeyField).Append("` IN (SELECT VALUE id");
+                        var idField = GetIdFieldForReverseInclude(spec);
+                        sb.Append("`").Append(spec.ForeignKeyField).Append("` IN (SELECT VALUE ").Append(idField);
                     }
                     sb.Append(" FROM $main);");
                 }
@@ -796,7 +799,8 @@ public class SurrealQueryProvider : IQueryProvider
                     }
                     else
                     {
-                        sb.Append("`").Append(spec.ForeignKeyField).Append("` IN (SELECT VALUE id");
+                        var idField = GetIdFieldForReverseInclude(spec);
+                        sb.Append("`").Append(spec.ForeignKeyField).Append("` IN (SELECT VALUE ").Append(idField);
                     }
                     sb.Append(" FROM $main);");
                 }
@@ -1251,6 +1255,27 @@ public class SurrealQueryProvider : IQueryProvider
     /// Extracts a string key from a value for dictionary-based Include matching.
     /// Handles RecordId, string, Guid, and primitive types.
     /// </summary>
+    /// <summary>
+    /// Returns the SurrealDB field name for the parent's ID in a reverse-include subquery.
+    /// Uses the pre-computed value from <see cref="IncludeSpec.ParentIdField"/>.
+    /// </summary>
+    private static string GetIdFieldForReverseInclude(IncludeSpec spec)
+    {
+        // Validate FK field exists on child type
+        var fkProp = spec.IncludeType.GetProperty(
+            spec.ForeignKeyField,
+            BindingFlags.Public | BindingFlags.Instance);
+
+        if (fkProp is null && !string.IsNullOrWhiteSpace(spec.ForeignKeyField))
+        {
+            System.Diagnostics.Debug.WriteLine(
+                $"[Dali] IncludeReverse: FK field '{spec.ForeignKeyField}' not found on type '{spec.IncludeType.Name}'. " +
+                "Reverse include results may be incorrect.");
+        }
+
+        return spec.ParentIdField;
+    }
+
     private static string? ExtractKeyString(object? value)
     {
         if (value is null) return null;

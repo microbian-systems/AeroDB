@@ -8,6 +8,7 @@ namespace Dali.Benchmarks;
 public class DocumentActions
 {
     public static BenchDoc[] Docs = BenchDoc.Generate(100).ToArray();
+    private BenchDoc[] _bulkDocs = Array.Empty<BenchDoc>();
 
     [GlobalSetup]
     public async Task Setup() => await BenchmarkStore.CleanAsync();
@@ -17,6 +18,7 @@ public class DocumentActions
     {
         // Regenerate docs each iteration so insert IDs are fresh
         Docs = BenchDoc.Generate(100).ToArray();
+        _bulkDocs = BenchDoc.Generate(1000).ToArray();
     }
 
     [Benchmark]
@@ -56,8 +58,7 @@ public class DocumentActions
     [Benchmark]
     public async Task Record_Bulk_Insert_1000()
     {
-        var docs = BenchDoc.Generate(1000);
         await using var session = await BenchmarkStore.Store.LightweightSessionAsync();
-        await session.BulkInsertAsync(docs);
+        await session.BulkInsertAsync(_bulkDocs);
     }
 }
