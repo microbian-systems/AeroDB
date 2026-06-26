@@ -35,7 +35,7 @@ public enum SchemaMode
 /// Accessed via <c>StoreOptions.Schema.For&lt;T&gt;()</c>.
 /// </summary>
 public class DocumentMapping<T> : DocumentMapping
-    where T : SurrealDb.Net.Models.IRecord
+    where T : class
 {
     internal override Type EntityType => typeof(T);
     internal override List<IndexDefinition> Indices { get; } = [];

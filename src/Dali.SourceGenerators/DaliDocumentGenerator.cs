@@ -27,9 +27,10 @@ public class DaliDocumentGenerator : IIncrementalGenerator
         {
             var (compilation, types) = source;
 
-            // Find the Record type in SurrealDb.Net
+            // Find the Record type in SurrealDb.Net and the Entity<TId> type in Dali
             var recordType = compilation.GetTypeByMetadataName("SurrealDb.Net.Models.Record");
-            if (recordType is null)
+            var entityGenericType = compilation.GetTypeByMetadataName("Dali.Entity`1");
+            if (recordType is null && entityGenericType is null)
                 return;
 
             // Optionally find the DaliDocumentAttribute — if it's not available
@@ -42,7 +43,11 @@ public class DaliDocumentGenerator : IIncrementalGenerator
             foreach (var type in types)
             {
                 if (type is null) continue;
-                if (!IsRecordSubclass(type, recordType)) continue;
+                if (type.IsAbstract) continue;
+
+                bool isRecord = recordType is not null && IsRecordSubclass(type, recordType);
+                bool isEntity = entityGenericType is not null && IsEntitySubclass(type, entityGenericType);
+                if (!isRecord && !isEntity) continue;
 
                 // Check for [DaliDocument(SkipGeneration = true)] — opt-out
                 if (daliDocAttrType is not null)
@@ -65,7 +70,8 @@ public class DaliDocumentGenerator : IIncrementalGenerator
             // Generate per-type metadata files
             foreach (var type in validTypes)
             {
-                var sourceText = GenerateMetadataClass(type, compilation);
+                bool isEntity = entityGenericType is not null && IsEntitySubclass(type, entityGenericType);
+                var sourceText = GenerateMetadataClass(type, compilation, isEntity);
                 var hintName = $"{type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat.WithGlobalNamespaceStyle(SymbolDisplayGlobalNamespaceStyle.Omitted)).Replace("global::", "").Replace(".", "_")}.Metadata.g.cs";
                 ctx.AddSource(hintName, sourceText);
             }
@@ -103,9 +109,25 @@ public class DaliDocumentGenerator : IIncrementalGenerator
     }
 
     /// <summary>
+    /// Checks if <paramref name="type"/> is a subclass of <see cref="Entity{TId}"/>.
+    /// </summary>
+    private static bool IsEntitySubclass(INamedTypeSymbol type, INamedTypeSymbol entityGenericType)
+    {
+        var current = type.BaseType;
+        while (current is not null)
+        {
+            if (current.IsGenericType &&
+                SymbolEqualityComparer.Default.Equals(current.ConstructedFrom, entityGenericType))
+                return true;
+            current = current.BaseType;
+        }
+        return false;
+    }
+
+    /// <summary>
     /// Generates the per-type metadata class implementing <see cref="global::Dali.Metadata.ITypeMetadata{T}"/>.
     /// </summary>
-    private static string GenerateMetadataClass(INamedTypeSymbol type, Compilation compilation)
+    private static string GenerateMetadataClass(INamedTypeSymbol type, Compilation compilation, bool isEntity)
     {
         var typeName = type.Name;
         var fullName = type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
@@ -131,7 +153,8 @@ public class DaliDocumentGenerator : IIncrementalGenerator
         sb.AppendLine("#pragma warning disable CS8669, CS8618");
         sb.AppendLine();
         sb.AppendLine("using global::Dali.Metadata;");
-        sb.AppendLine("using global::SurrealDb.Net.Models;");
+        if (!isEntity)
+            sb.AppendLine("using global::SurrealDb.Net.Models;");
         sb.AppendLine();
         sb.AppendLine($"namespace Dali.Metadata;");
         sb.AppendLine();
@@ -176,25 +199,42 @@ public class DaliDocumentGenerator : IIncrementalGenerator
             sb.AppendLine($"    public void SetVersion({globalFullName} entity, long version) {{ }}");
         }
 
-        // GetRecordId — extract the string Id from the RecordId
-        sb.AppendLine($"    public string? GetRecordId({globalFullName} entity)");
-        sb.AppendLine("    {");
-        if (idProp is not null)
+        // GetRecordId — extract the string Id from the RecordId or entity typed Id
+        if (isEntity)
         {
+            if (idProp is not null && idProp.Type.IsValueType)
+                sb.AppendLine($"    public string? GetRecordId({globalFullName} entity) => entity.Id.ToString();");
+            else
+                sb.AppendLine($"    public string? GetRecordId({globalFullName} entity) => entity.Id?.ToString();");
+        }
+        else if (idProp is not null)
+        {
+            sb.AppendLine($"    public string? GetRecordId({globalFullName} entity)");
+            sb.AppendLine("    {");
             sb.AppendLine("        var id = entity.Id;");
             sb.AppendLine("        if (id is null) return null;");
             sb.AppendLine("        if (id is RecordIdOf<string> strRid) return strRid.Id;");
             sb.AppendLine("        if (id is RecordIdOf<long> longRid) return longRid.Id.ToString();");
             sb.AppendLine("        if (id is RecordIdOf<int> intRid) return intRid.Id.ToString();");
             sb.AppendLine("        return id.ToString();");
+            sb.AppendLine("    }");
         }
         else
         {
-            sb.AppendLine("        return null;");
+            sb.AppendLine($"    public string? GetRecordId({globalFullName} entity) => null;");
         }
-        sb.AppendLine("    }");
 
-        sb.AppendLine($"    public Func<object, string?>? GetRecordIdAccessor => {EmitGetRecordIdAccessor(idProp, globalFullName)};");
+        if (isEntity)
+        {
+            if (idProp is not null && idProp.Type.IsValueType)
+                sb.AppendLine($"    public Func<object, string?>? GetRecordIdAccessor => obj => (({globalFullName})obj).Id.ToString();");
+            else
+                sb.AppendLine($"    public Func<object, string?>? GetRecordIdAccessor => obj => (({globalFullName})obj).Id?.ToString();");
+        }
+        else if (idProp is not null)
+            sb.AppendLine($"    public Func<object, string?>? GetRecordIdAccessor => {EmitGetRecordIdAccessor(idProp, globalFullName)};");
+        else
+            sb.AppendLine("    public Func<object, string?>? GetRecordIdAccessor => null;");
 
         // Emit FieldSchema list for compile-time schema generation
         var fields = new List<string>();

@@ -31,7 +31,7 @@ public class SchemaManager
     /// public readable/writable properties on T (except Id).
     /// </summary>
     public async Task EnsureDocumentSchemaAsync<T>(ISurrealDbSession session, CancellationToken ct = default)
-        where T : SurrealDb.Net.Models.IRecord
+        where T : class
     {
         var tableName = MetadataDispatch.GetTableName(typeof(T));
         _logger.LogDebug("Ensuring document schema for table {Table}", tableName);
@@ -49,7 +49,7 @@ public class SchemaManager
     /// Ensures a document table exists with the specified schema mode.
     /// </summary>
     public async Task EnsureDocumentSchemaAsync<T>(ISurrealDbSession session, SchemaMode mode, CancellationToken ct = default)
-        where T : SurrealDb.Net.Models.IRecord
+        where T : class
     {
         var tableName = MetadataDispatch.GetTableName(typeof(T));
         _logger.LogDebug("Ensuring document schema for table {Table} with mode {Mode}", tableName, mode);
