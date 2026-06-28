@@ -69,8 +69,10 @@ opts.Schema.For<T>()
     .SpatialIndex(x => x.Location)                             // geo-spatial marker
     .MultiTenanted()                                           // tenant-id filtered
     .SetSchemaMode(SchemaMode.Strict)                          // SCHEMAFULL / Flexible
-    .Schema("db_name");                                        // route to specific database
+    .Schema("analytics_db");                                   // route to a SurrealDB database
 ```
+
+> **Schema vs Database**: Dali's `.Schema("name")` is named for Marten API parity, where it maps to a PostgreSQL schema. In SurrealDB, the hierarchy is **Namespace → Database → Table** (no RDBMS schemas). Under the hood, `.Schema("name")` switches to a different SurrealDB **database** within the same namespace via `USE NS x DB name`. This lets you logically partition tables (e.g., separate `sales` and `analytics` databases in a single store).
 
 ### LINQ Querying
 
