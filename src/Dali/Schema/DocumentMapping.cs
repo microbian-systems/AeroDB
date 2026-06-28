@@ -114,14 +114,49 @@ public class DocumentMapping<T> : DocumentMapping
     /// </summary>
     public DocumentMapping<T> Index<TProp>(Expression<Func<T, TProp>> property, Action<IndexOptions>? configure = null)
     {
-        var member = ExtractMember(property);
-        var idx = new IndexDefinition
+        // Delegate to the non-generic overload — wraps if value types need boxing
+        var body = (Expression)property.Body;
+        if (body.Type != typeof(object))
+            body = Expression.Convert(body, typeof(object));
+        var wrapped = Expression.Lambda<Func<T, object>>(body, property.Parameters);
+        return Index(wrapped, configure);
+    }
+
+    /// <summary>
+    /// Defines a computed index. Supports single-property and multi-property
+    /// anonymous-type expressions (<c>x => new { x.FirstName, x.LastName }</c>).
+    /// For strongly-typed single-property access, prefer <see cref="Index{TProp}"/>.
+    /// </summary>
+    public DocumentMapping<T> Index(Expression<Func<T, object>> expression, Action<IndexOptions>? configure = null)
+    {
+        // Strip outer Convert/ConvertChecked — the generic Index<TProp> overload
+        // introduces it for reference types whose type != typeof(object) (including
+        // anonymous types which are reference types but not object).
+        var body = expression.Body;
+        while (body is UnaryExpression { NodeType: ExpressionType.Convert or ExpressionType.ConvertChecked } ue)
+            body = ue.Operand;
+
+        var columns = body switch
         {
-            Columns = [member.Name],
-            Name = $"idx_{Snake(typeof(T).Name)}_{Snake(member.Name)}",
-            IsUnique = false
+            NewExpression ne when IsAnonymousType(ne.Type) =>
+                ne.Arguments.Select(ExtractMemberFromArgument).Select(m => m.Name).ToArray(),
+
+            NewExpression =>
+                throw new ArgumentException(
+                    $"Multi-column index requires an anonymous type (new {{ ... }}). " +
+                    $"Use Index<TProp>() for single columns, or CompositeIndex() with explicit property lambdas.", nameof(expression)),
+
+            _ => [ExtractMemberFromBody(body).Name]
         };
+
+        var idx = new IndexDefinition { Columns = columns, IsUnique = false, Type = IndexType.Standard };
         configure?.Invoke(new IndexOptions(idx));
+        if (string.IsNullOrEmpty(idx.Name))
+        {
+            var prefix = idx.IsUnique ? "uidx" : "idx";
+            idx.Name = $"{prefix}_{Snake(typeof(T).Name)}_{string.Join("_", columns.Select(Snake))}";
+        }
+
         Indices.Add(idx);
         return this;
     }
@@ -138,44 +173,66 @@ public class DocumentMapping<T> : DocumentMapping
     /// Defines a unique index on the specified property.
     /// </summary>
     public DocumentMapping<T> UniqueIndex<TProp>(Expression<Func<T, TProp>> property)
-    {
-        var member = ExtractMember(property);
-        Indices.Add(new IndexDefinition
-        {
-            Columns = [member.Name],
-            Name = $"uidx_{Snake(typeof(T).Name)}_{Snake(member.Name)}",
-            IsUnique = true
-        });
-        return this;
-    }
+        => Index(property, c => c.IsUnique());
 
     /// <summary>
     /// Defines a composite index on the specified properties.
+    /// Prefer <see cref="Index(Expression{Func{T, object}}, Action{IndexOptions}?)"/> with an anonymous type expression.
     /// </summary>
+    [Obsolete("Use Index(x => new { x.Prop1, x.Prop2 }, configure) instead.")]
     public DocumentMapping<T> CompositeIndex(params Expression<Func<T, object>>[] properties)
     {
+#pragma warning disable CS0618
+        return CompositeIndex(null, properties);
+#pragma warning restore CS0618
+    }
+
+    /// <summary>
+    /// Defines a composite index on the specified properties with configuration.
+    /// Prefer <see cref="Index(Expression{Func{T, object}}, Action{IndexOptions}?)"/> with an anonymous type expression.
+    /// </summary>
+    [Obsolete("Use Index(x => new { x.Prop1, x.Prop2 }, configure) instead.")]
+    public DocumentMapping<T> CompositeIndex(Action<IndexOptions>? configure, params Expression<Func<T, object>>[] properties)
+    {
         var columns = properties.Select(p => ExtractMember(p).Name).ToArray();
-        Indices.Add(new IndexDefinition
+        var idx = new IndexDefinition { Columns = columns, IsUnique = false };
+        configure?.Invoke(new IndexOptions(idx));
+        if (string.IsNullOrEmpty(idx.Name))
         {
-            Columns = columns,
-            Name = $"idx_{Snake(typeof(T).Name)}_{string.Join("_", columns.Select(c => Snake(c)))}",
-            IsUnique = false
-        });
+            var prefix = idx.IsUnique ? "uidx" : "idx";
+            idx.Name = $"{prefix}_{Snake(typeof(T).Name)}_{string.Join("_", columns.Select(Snake))}";
+        }
+        Indices.Add(idx);
         return this;
     }
 
     /// <summary>
     /// Defines a composite unique index.
+    /// Prefer <see cref="Index(Expression{Func{T, object}}, Action{IndexOptions}?)"/> with <c>configure => configure.IsUnique()</c>.
     /// </summary>
+    [Obsolete("Use Index(x => new { x.Prop1, x.Prop2 }, c => c.IsUnique()) instead.")]
     public DocumentMapping<T> UniqueCompositeIndex(params Expression<Func<T, object>>[] properties)
     {
+#pragma warning disable CS0618
+        return UniqueCompositeIndex(null, properties);
+#pragma warning restore CS0618
+    }
+
+    /// <summary>
+    /// Defines a composite unique index with configuration.
+    /// Prefer <see cref="Index(Expression{Func{T, object}}, Action{IndexOptions}?)"/> with <c>configure => configure.IsUnique()</c>.
+    /// </summary>
+    [Obsolete("Use Index(x => new { x.Prop1, x.Prop2 }, c => c.IsUnique()) instead.")]
+    public DocumentMapping<T> UniqueCompositeIndex(Action<IndexOptions>? configure, params Expression<Func<T, object>>[] properties)
+    {
         var columns = properties.Select(p => ExtractMember(p).Name).ToArray();
-        Indices.Add(new IndexDefinition
+        var idx = new IndexDefinition { Columns = columns, IsUnique = true };
+        configure?.Invoke(new IndexOptions(idx));
+        if (string.IsNullOrEmpty(idx.Name))
         {
-            Columns = columns,
-            Name = $"uidx_{Snake(typeof(T).Name)}_{string.Join("_", columns.Select(c => Snake(c)))}",
-            IsUnique = true
-        });
+            idx.Name = $"uidx_{Snake(typeof(T).Name)}_{string.Join("_", columns.Select(Snake))}";
+        }
+        Indices.Add(idx);
         return this;
     }
 
@@ -229,6 +286,7 @@ public class DocumentMapping<T> : DocumentMapping
         });
         return this;
     }
+    /// <summary>
     /// Uses the HNSW algorithm for fast approximate vector similarity queries.
     /// Best for large datasets where speed matters more than exact results.
     /// </summary>
@@ -386,15 +444,35 @@ public class DocumentMapping<T> : DocumentMapping
         return this;
     }
 
-    private static MemberInfo ExtractMember<TProp>(Expression<Func<T, TProp>> expression)
+    /// <summary>
+    /// No-op. Exists only for Marten portability — SurrealDB does not need duplicated fields.
+    /// </summary>
+    public DocumentMapping<T> Duplicate(
+        Expression<Func<T, object?>> expression,
+        string? pgType = null,
+        object? dbType = null,
+        Action<DocumentIndex>? configure = null,
+        bool notNull = false)
     {
-        return expression.Body switch
-        {
-            MemberExpression me => me.Member,
-            UnaryExpression { NodeType: ExpressionType.Convert or ExpressionType.ConvertChecked, Operand: MemberExpression me } => me.Member,
-            _ => throw new ArgumentException("Expression must refer to a property or field.")
-        };
+        return this;
     }
+
+    /// <summary>
+    /// No-op. Exists only for Marten portability — SurrealDB does not need duplicated fields.
+    /// </summary>
+    public DocumentMapping<T> Duplicate<TSub>(
+        Expression<Func<TSub, object?>> expression,
+        string? pgType = null,
+        object? dbType = null,
+        Action<DocumentIndex>? configure = null,
+        bool notNull = false)
+        where TSub : T
+    {
+        return this;
+    }
+
+    private static MemberInfo ExtractMember<TProp>(Expression<Func<T, TProp>> expression)
+        => ExtractMemberFromBody(expression.Body);
 
     private static string Snake(string name)
     {
@@ -402,4 +480,30 @@ public class DocumentMapping<T> : DocumentMapping
         return string.Concat(name.Select((c, i) =>
             i > 0 && char.IsUpper(c) ? "_" + char.ToLowerInvariant(c) : char.ToLowerInvariant(c).ToString()));
     }
+
+    private static MemberInfo ExtractMemberFromBody(Expression expr) => expr switch
+    {
+        MemberExpression me => me.Member,
+        UnaryExpression { NodeType: ExpressionType.Convert or ExpressionType.ConvertChecked, Operand: MemberExpression me } => me.Member,
+        _ => throw new ArgumentException($"Expression must refer to a property or field, not '{expr.NodeType}'.")
+    };
+
+    private static MemberInfo ExtractMemberFromArgument(Expression expr)
+    {
+        try
+        {
+            return ExtractMemberFromBody(expr);
+        }
+        catch (ArgumentException)
+        {
+            throw new ArgumentException(
+                $"Each argument in a multi-column index anonymous type must be a property access (e.g. x => x.Prop). " +
+                $"Constants and method calls are not allowed.");
+        }
+    }
+
+    private static bool IsAnonymousType(Type type) =>
+        type.Namespace == null
+        && type.IsDefined(typeof(System.Runtime.CompilerServices.CompilerGeneratedAttribute), false)
+        && type.Name.Contains("<>");
 }

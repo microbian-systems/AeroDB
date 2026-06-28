@@ -64,6 +64,7 @@
 | `schema.For<T>()` → qualified name | ✅ Done | `Schema.For<T>()` returns `DocumentMapping<T>` |
 | `schema.ForStreams()` / `schema.ForEvents()` | ✅ Done | `SchemaOptions.ForStreams<T>()` / `.ForEvents()` / `.EventsTableName` |
 | `schema.ForEventProgression()` | ✅ Done | `SchemaOptions.ForEventProgression()` / `.ProjectionProgressTableName` |
+| `Duplicate()` field for faster querying | 🟢 Unique | `DocumentMapping<T>.Duplicate()` — no-op stub for Marten portability |
 | Auto-create schema migration | ✅ Done | `SchemaManager` auto-creates during `InitializeAsync()` |
 | SurrealDB `SCHEMAFULL` / `SCHEMALESS` | 🟢 Unique | `DocumentMapping<T>.SetSchemaMode()` |
 | Analyzer definitions (`DEFINE ANALYZER`) | 🟢 Unique | `AnalyzerDefinition`, `AnalyzerOptions` |

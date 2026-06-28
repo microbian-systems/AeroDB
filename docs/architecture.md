@@ -958,7 +958,8 @@ src/
       AsyncDaemon.cs                       # Background polling daemon
     Schema/
       SchemaManager.cs                     # DEFINE TABLE/FIELD/INDEX + DEFINE TABLE ... AS SELECT (views)
-      DocumentMapping.cs                   # Fluent index API
+      DocumentMapping.cs                   # Fluent index API + Marten portability stubs
+      DocumentIndex.cs                    # No-op stub for Marten Duplicate() portability
       ViewDefinition.cs                    # View fluent builder (From, Where, GroupBy, WithSelect, Drop, Schema)
     Metadata/                              # Source-generated metadata
       MetadataRegistry.cs                  # ITypeMetadata, ITypeMetadata<T>, ConcurrentDictionary registry
