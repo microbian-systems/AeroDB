@@ -15,8 +15,8 @@ namespace Dali.Tests;
 /// partial or default-valued results. Tests verify that:
 ///   1. The API surface methods all execute without exceptions
 ///   2. Graph data (nodes + edges) is correctly persisted and queryable
-///   3. Edge properties (Kind, Since) survive the round-trip through RelateAsync
-///   4. UnrelateAsync correctly removes edges
+///   3. Edge properties (Kind, Since) survive the round-trip through Relate
+///   4. Unrelate correctly removes edges
 ///   5. CountAsync, ToListAsync, FirstOrDefaultAsync, and ToPathListAsync
 ///      terminal operations produce sensible output
 /// </summary>
@@ -82,7 +82,7 @@ public sealed class GraphFriendOfFriendsTests
 
             foreach (var toId in candidates)
             {
-                await session.RelateAsync<Knows>(
+                session.Relate<Knows>(
                     fromId,
                     toId,
                     new Knows
@@ -93,6 +93,8 @@ public sealed class GraphFriendOfFriendsTests
                 totalEdges++;
             }
         }
+
+        await session.SaveChangesAsync();
 
         // ── Verify graph traversal API doesn't throw ──
         var outResults = await session.Graph<Person>().Out<Person, Knows>().ToListAsync();
@@ -150,9 +152,10 @@ public sealed class GraphFriendOfFriendsTests
 
         // person[0] knows 10 others; no other edges exist
         for (var i = 1; i <= 10; i++)
-            await session.RelateAsync<Knows>(
+            session.Relate<Knows>(
                 idMap["Person_0"], idMap[$"Person_{i}"],
                 new Knows { Kind = "friend", Since = 2024 });
+        await session.SaveChangesAsync();
 
         // ── ToListAsync does not throw ──
         var results = await session.Graph<Person>()
@@ -199,11 +202,12 @@ public sealed class GraphFriendOfFriendsTests
 
         // Build topology: P0→P1,P2,P3; P1,P2,P3→P4; P4→P5..P14
         foreach (var target in new[] { "P1", "P2", "P3" })
-            await session.RelateAsync<Knows>(idMap["P0"], idMap[target], new Knows { Kind = "friend", Since = 2024 });
+            session.Relate<Knows>(idMap["P0"], idMap[target], new Knows { Kind = "friend", Since = 2024 });
         foreach (var source in new[] { "P1", "P2", "P3" })
-            await session.RelateAsync<Knows>(idMap[source], idMap["P4"], new Knows { Kind = "colleague", Since = 2023 });
+            session.Relate<Knows>(idMap[source], idMap["P4"], new Knows { Kind = "colleague", Since = 2023 });
         for (var i = 5; i <= 14; i++)
-            await session.RelateAsync<Knows>(idMap["P4"], idMap[$"P{i}"], new Knows { Kind = "family", Since = 2022 });
+            session.Relate<Knows>(idMap["P4"], idMap[$"P{i}"], new Knows { Kind = "family", Since = 2022 });
+        await session.SaveChangesAsync();
 
         // ── Depth 1 (no depth modifier) ──
         var d1 = await session.Graph<Person>().Out<Person, Knows>().ToListAsync();
@@ -254,12 +258,13 @@ public sealed class GraphFriendOfFriendsTests
         var idMap = stored.ToDictionary(p => p.Name, p => p.Id!);
 
         // P0→P1,P2; P1→P3,P4; P2→P5; P5→P6
-        await session.RelateAsync<Knows>(idMap["P0"], idMap["P1"], new Knows { Kind = "friend", Since = 2024 });
-        await session.RelateAsync<Knows>(idMap["P0"], idMap["P2"], new Knows { Kind = "friend", Since = 2024 });
-        await session.RelateAsync<Knows>(idMap["P1"], idMap["P3"], new Knows { Kind = "friend", Since = 2024 });
-        await session.RelateAsync<Knows>(idMap["P1"], idMap["P4"], new Knows { Kind = "friend", Since = 2024 });
-        await session.RelateAsync<Knows>(idMap["P2"], idMap["P5"], new Knows { Kind = "colleague", Since = 2023 });
-        await session.RelateAsync<Knows>(idMap["P5"], idMap["P6"], new Knows { Kind = "family", Since = 2022 });
+        session.Relate<Knows>(idMap["P0"], idMap["P1"], new Knows { Kind = "friend", Since = 2024 });
+        session.Relate<Knows>(idMap["P0"], idMap["P2"], new Knows { Kind = "friend", Since = 2024 });
+        session.Relate<Knows>(idMap["P1"], idMap["P3"], new Knows { Kind = "friend", Since = 2024 });
+        session.Relate<Knows>(idMap["P1"], idMap["P4"], new Knows { Kind = "friend", Since = 2024 });
+        session.Relate<Knows>(idMap["P2"], idMap["P5"], new Knows { Kind = "colleague", Since = 2023 });
+        session.Relate<Knows>(idMap["P5"], idMap["P6"], new Knows { Kind = "family", Since = 2022 });
+        await session.SaveChangesAsync();
 
         // ── All depth variants execute without error ──
         var depth0 = await session.Graph<Person>().Out<Person, Knows>().ToListAsync();
@@ -318,9 +323,10 @@ public sealed class GraphFriendOfFriendsTests
 
         // Build chain: P0→P1→...→P49
         for (var i = 0; i < chainLength - 1; i++)
-            await session.RelateAsync<Knows>(
+            session.Relate<Knows>(
                 idMap[$"P{i}"], idMap[$"P{i + 1}"],
                 new Knows { Kind = "chain", Since = 2020 + i });
+        await session.SaveChangesAsync();
 
         // ── ShortestPath ──
         // Note: in-memory engine doesn't support +shortest combined with +path
@@ -381,8 +387,9 @@ public sealed class GraphFriendOfFriendsTests
         var stored = await session.Query<Person>().ToListAsync();
         var idMap = stored.ToDictionary(p => p.Name, p => p.Id!);
 
-        await session.RelateAsync<Knows>(idMap["Alice"], idMap["Bob"], new Knows { Kind = "friend", Since = 2020 });
-        await session.RelateAsync<Knows>(idMap["Bob"], idMap["Charlie"], new Knows { Kind = "colleague", Since = 2021 });
+        session.Relate<Knows>(idMap["Alice"], idMap["Bob"], new Knows { Kind = "friend", Since = 2020 });
+        session.Relate<Knows>(idMap["Bob"], idMap["Charlie"], new Knows { Kind = "colleague", Since = 2021 });
+        await session.SaveChangesAsync();
 
         // ── Both traversal ──
         var bothResults = await session.Graph<Person>()
@@ -438,10 +445,11 @@ public sealed class GraphFriendOfFriendsTests
         var idMap = stored.ToDictionary(p => p.Name, p => p.Id!);
 
         // Diamond: A→B, A→C, B→D, C→D
-        await session.RelateAsync<Knows>(idMap["Alice"], idMap["Bob"], new Knows { Kind = "friend", Since = 2024 });
-        await session.RelateAsync<Knows>(idMap["Alice"], idMap["Charlie"], new Knows { Kind = "friend", Since = 2024 });
-        await session.RelateAsync<Knows>(idMap["Bob"], idMap["Diana"], new Knows { Kind = "colleague", Since = 2023 });
-        await session.RelateAsync<Knows>(idMap["Charlie"], idMap["Diana"], new Knows { Kind = "colleague", Since = 2023 });
+        session.Relate<Knows>(idMap["Alice"], idMap["Bob"], new Knows { Kind = "friend", Since = 2024 });
+        session.Relate<Knows>(idMap["Alice"], idMap["Charlie"], new Knows { Kind = "friend", Since = 2024 });
+        session.Relate<Knows>(idMap["Bob"], idMap["Diana"], new Knows { Kind = "colleague", Since = 2023 });
+        session.Relate<Knows>(idMap["Charlie"], idMap["Diana"], new Knows { Kind = "colleague", Since = 2023 });
+        await session.SaveChangesAsync();
 
         // ── Without CollectAll ──
         var withoutCollectAll = await session.Graph<Person>()
@@ -488,17 +496,18 @@ public sealed class GraphFriendOfFriendsTests
         var stored = await session.Query<Person>().ToListAsync();
         var idMap = stored.ToDictionary(p => p.Name, p => p.Id!);
 
-        await session.RelateAsync<Knows>(
+        session.Relate<Knows>(
             idMap["Alice"], idMap["Bob"],
             new Knows { Kind = "friend", Since = 2020 });
 
-        await session.RelateAsync<Knows>(
+        session.Relate<Knows>(
             idMap["Alice"], idMap["Charlie"],
             new Knows { Kind = "colleague", Since = 2021 });
 
-        await session.RelateAsync<Knows>(
+        session.Relate<Knows>(
             idMap["Bob"], idMap["Diana"],
             new Knows { Kind = "family", Since = 2022 });
+        await session.SaveChangesAsync();
 
         // ── Query edges by their record id string ──
         var edges = await session.Query<Knows>().ToListAsync();
@@ -561,12 +570,13 @@ public sealed class GraphFriendOfFriendsTests
         var idMap = stored.ToDictionary(p => p.Name, p => p.Id!);
 
         // A→B,C; B→D,E; C→F,G
-        await session.RelateAsync<Knows>(idMap["A"], idMap["B"], new Knows { Kind = "friend" });
-        await session.RelateAsync<Knows>(idMap["A"], idMap["C"], new Knows { Kind = "friend" });
-        await session.RelateAsync<Knows>(idMap["B"], idMap["D"], new Knows { Kind = "colleague" });
-        await session.RelateAsync<Knows>(idMap["B"], idMap["E"], new Knows { Kind = "colleague" });
-        await session.RelateAsync<Knows>(idMap["C"], idMap["F"], new Knows { Kind = "family" });
-        await session.RelateAsync<Knows>(idMap["C"], idMap["G"], new Knows { Kind = "family" });
+        session.Relate<Knows>(idMap["A"], idMap["B"], new Knows { Kind = "friend" });
+        session.Relate<Knows>(idMap["A"], idMap["C"], new Knows { Kind = "friend" });
+        session.Relate<Knows>(idMap["B"], idMap["D"], new Knows { Kind = "colleague" });
+        session.Relate<Knows>(idMap["B"], idMap["E"], new Knows { Kind = "colleague" });
+        session.Relate<Knows>(idMap["C"], idMap["F"], new Knows { Kind = "family" });
+        session.Relate<Knows>(idMap["C"], idMap["G"], new Knows { Kind = "family" });
+        await session.SaveChangesAsync();
 
         // ── Depth() unbounded ──
         var unbounded = await session.Graph<Person>()
@@ -623,8 +633,9 @@ public sealed class GraphFriendOfFriendsTests
         var stored = await session.Query<Person>().ToListAsync();
         var idMap = stored.ToDictionary(p => p.Name, p => p.Id!);
 
-        await session.RelateAsync<Knows>(idMap["Alice"], idMap["Bob"], new Knows { Kind = "friend", Since = 2024 });
-        await session.RelateAsync<Knows>(idMap["Bob"], idMap["Charlie"], new Knows { Kind = "colleague", Since = 2023 });
+        session.Relate<Knows>(idMap["Alice"], idMap["Bob"], new Knows { Kind = "friend", Since = 2024 });
+        session.Relate<Knows>(idMap["Bob"], idMap["Charlie"], new Knows { Kind = "colleague", Since = 2023 });
+        await session.SaveChangesAsync();
 
         // ── Two edges exist ──
         var edgesBefore = await session.Query<Knows>().ToListAsync();
@@ -636,7 +647,8 @@ public sealed class GraphFriendOfFriendsTests
         var charlieId = idMap["Charlie"];
         var edgeToRemove = allEdges.First(e =>
             e.In!.Equals(bobId) && e.Out!.Equals(charlieId));
-        await session.UnrelateAsync(edgeToRemove.Id!);
+        session.Unrelate(edgeToRemove.Id!);
+        await session.SaveChangesAsync();
 
         // ── One edge remains: Alice→Bob (friend, 2024) ──
         var edgesAfter = await session.Query<Knows>().ToListAsync();
@@ -653,7 +665,8 @@ public sealed class GraphFriendOfFriendsTests
 
         // ── Remove remaining edge ──
         var remainingEdge = (await session.Query<Knows>().ToListAsync())[0];
-        await session.UnrelateAsync(remainingEdge.Id!);
+        session.Unrelate(remainingEdge.Id!);
+        await session.SaveChangesAsync();
 
         var edgesFinal = await session.Query<Knows>().ToListAsync();
         edgesFinal.Count.ShouldBe(0);

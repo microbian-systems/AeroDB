@@ -1,5 +1,4 @@
 using System.Reflection;
-using System.Text.Json;
 using Dali.Metadata;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -18,6 +17,8 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
     private IEvents? _events;
     internal readonly List<IEvent> _appendedEvents = new();
     internal readonly List<IDeferredPatch> _queuedPatches = new();
+    internal readonly List<QueuedRelation> _queuedRelations = new();
+    internal readonly List<RecordId> _queuedUnrelations = new();
 
     /// <summary>
     /// Cached <c>MethodInfo</c> for <see cref="SurrealDbResponse.GetValue{T}"/>,
@@ -45,6 +46,16 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         .First(m => m.Name == nameof(ISurrealDbSharedMethods.Upsert)
             && m.GetParameters().Length == 3
             && m.GetParameters()[0].ParameterType == typeof(RecordId));
+
+    private static readonly MethodInfo? RelateMethod = typeof(ISurrealDbSharedMethods).GetMethods()
+        .First(m => m.Name == nameof(ISurrealDbSharedMethods.Relate)
+            && m.IsGenericMethodDefinition
+            && m.GetGenericArguments().Length == 2
+            && m.GetParameters().Length == 5
+            && m.GetParameters()[0].ParameterType == typeof(string)
+            && m.GetParameters()[1].ParameterType == typeof(RecordId)
+            && m.GetParameters()[2].ParameterType == typeof(RecordId)
+            && m.GetParameters()[4].ParameterType == typeof(CancellationToken));
 
     public DocumentSession(ISurrealDbClient client, ISurrealDbSession session, StoreOptions options, bool isDirtyTracking)
         : base(client, session, options)
@@ -188,12 +199,15 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         _unitOfWork.Clear();
         _appendedEvents.Clear();
         _queuedPatches.Clear();
+        _queuedRelations.Clear();
+        _queuedUnrelations.Clear();
     }
 
     public async Task<int> SaveChangesAsync(CancellationToken ct = default)
     {
         var count = _unitOfWork.Operations.Count;
-        if (count == 0 && _appendedEvents.Count == 0 && _queuedPatches.Count == 0) return 0;
+        if (count == 0 && _appendedEvents.Count == 0 && _queuedPatches.Count == 0
+            && _queuedRelations.Count == 0 && _queuedUnrelations.Count == 0) return 0;
 
         _logger.LogInformation("SaveChangesAsync: committing {EntityCount} entities and {EventCount} events",
             count, _appendedEvents.Count);
@@ -201,6 +215,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         // Snapshots for IChangeSet in AfterCommitAsync
         var committedOperations = _unitOfWork.Operations.ToArray();
         (string StreamId, object Event)[] appendedEventSnapshot = [];
+        int graphOpCount = 0;
 
         // Cross-DB check: group operations by their database target.
         // SurrealDB cannot span multiple databases in a single transaction,
@@ -221,6 +236,31 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
 
         // Resolve the target session for this database (null = default database)
         var targetSchemaName = dbGroups.Count > 0 ? dbGroups[0].Key : null;
+
+        // Unrelation validation: RecordId table names embed their own database routing,
+        // so cross-DB unrelation is verified at the SurrealDB level. We do not
+        // resolve RecordId tables to schemas here to avoid meta-recursion.
+
+        // Validate queued relation databases against the unit-of-work target
+        if (_queuedRelations.Count > 0)
+        {
+            var relTargets = _queuedRelations
+                .Select(r => MetadataDispatch.GetSchemaTarget(r.EdgeType, Options.Schema).Database)
+                .Distinct()
+                .ToList();
+            if (relTargets.Count > 1)
+            {
+                var relDbNames = string.Join(", ", relTargets.Select(d => $"'{d ?? Options.Database ?? "test"}'"));
+                throw new InvalidOperationException(
+                    $"Cross-database graph operations are not supported. Queued relations span multiple databases: {relDbNames}");
+            }
+            var relTarget = relTargets[0];
+            if (relTarget != targetSchemaName)
+            {
+                throw new InvalidOperationException(
+                    $"Cross-database operations are not supported. Documents target '{targetSchemaName}', but queued relations target '{relTarget}'.");
+            }
+        }
 
         try
         {
@@ -532,6 +572,35 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                     _queuedPatches.Clear();
                 }
 
+                // Phase 5b: Execute queued graph operations (inside transaction)
+                graphOpCount = _queuedRelations.Count + _queuedUnrelations.Count;
+                if (_queuedRelations.Count > 0 || _queuedUnrelations.Count > 0)
+                {
+                    foreach (var rel in _queuedRelations)
+                    {
+                        var table = MetadataDispatch.GetTableName(rel.EdgeType);
+                        var genericRelate = RelateMethod.MakeGenericMethod(rel.EdgeType, rel.EdgeType);
+                        var task = (Task)genericRelate.Invoke(targetSession, [table, rel.From, rel.To, rel.Data, ct])!;
+                        await task.ConfigureAwait(false);
+                    }
+                    _queuedRelations.Clear();
+
+                    foreach (var edgeId in _queuedUnrelations)
+                    {
+                        var ridStr = edgeId switch
+                        {
+                            RecordIdOf<string> s => $"{s.Table}:{s.Id}",
+                            RecordIdOf<long> l => $"{l.Table}:{l.Id}",
+                            RecordIdOf<int> i => $"{i.Table}:{i.Id}",
+                            _ => throw new ArgumentException(
+                                $"Unsupported RecordId type '{edgeId.GetType().Name}'. Expected RecordIdOf<string>, RecordIdOf<long>, or RecordIdOf<int>.",
+                                nameof(edgeId))
+                        };
+                        await targetSession.RawQuery($"DELETE {ridStr};", null, ct).ConfigureAwait(false);
+                    }
+                    _queuedUnrelations.Clear();
+                }
+
                 // AfterSaveChangesAsync hooks (inside transaction, before commit)
                 if (Options.Listeners.Count > 0)
                 {
@@ -560,13 +629,13 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                 var changes = new ChangeSet
                 {
                     Operations = committedOperations,
-                    AppendedEvents = appendedEventSnapshot ?? []
+                    AppendedEvents = appendedEventSnapshot
                 };
                 foreach (var listener in Options.Listeners)
                     await listener.AfterCommitAsync(this, changes, ct).ConfigureAwait(false);
             }
 
-            var resultCount = count > 0 ? count : _appendedEvents.Count;
+            var resultCount = count > 0 ? count : appendedEventSnapshot.Length + graphOpCount;
             _logger.LogInformation("SaveChangesAsync: committed {Count} changes", resultCount);
             return resultCount;
         }
@@ -756,28 +825,19 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         return GraphQueryProvider.Graph<T>(this);
     }
 
-    /// <summary>Create a graph edge between two records using SurrealDB RELATE.</summary>
-    public async Task RelateAsync<TEdge>(
+    /// <summary>Queue a graph edge for creation during <see cref="SaveChangesAsync"/>.</summary>
+    public void Relate<TEdge>(
         RecordId from,
         RecordId to,
-        TEdge? data = default,
-        CancellationToken ct = default) where TEdge : class
+        TEdge? data = default) where TEdge : class
     {
-        var table = MetadataDispatch.GetTableName(typeof(TEdge));
-        await Client.Relate<TEdge, TEdge?>(table, from, to, data, ct).ConfigureAwait(false);
+        _queuedRelations.Add(new QueuedRelation(from, to, typeof(TEdge), data));
     }
 
-    /// <summary>Remove a graph edge by its record ID.</summary>
-    public async Task UnrelateAsync(RecordId edgeId, CancellationToken ct = default)
+    /// <summary>Queue a graph edge for deletion during <see cref="SaveChangesAsync"/>.</summary>
+    public void Unrelate(RecordId edgeId)
     {
-        var ridStr = edgeId switch
-        {
-            RecordIdOf<string> s => $"{s.Table}:{s.Id}",
-            RecordIdOf<long> l => $"{l.Table}:{l.Id}",
-            RecordIdOf<int> i => $"{i.Table}:{i.Id}",
-            _ => throw new ArgumentException($"Unsupported RecordId type '{edgeId.GetType().Name}'. Expected RecordIdOf<string>, RecordIdOf<long>, or RecordIdOf<int>.", nameof(edgeId))
-        };
-        await Session.RawQuery($"DELETE {ridStr};", null, ct).ConfigureAwait(false);
+        _queuedUnrelations.Add(edgeId);
     }
 
     /// <summary>
@@ -878,3 +938,9 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         }
     }
 }
+
+internal readonly record struct QueuedRelation(
+    RecordId From,
+    RecordId To,
+    Type EdgeType,
+    object? Data);

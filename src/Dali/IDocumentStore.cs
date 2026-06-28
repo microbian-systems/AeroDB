@@ -129,13 +129,12 @@ public interface IDocumentSession : IQuerySession
     void ClearChanges();
     IEvents Events { get; }
 
-    /// <summary>Create a graph edge between two records using SurrealDB RELATE.</summary>
-    Task RelateAsync<TEdge>(
+    /// <summary>Queue a graph edge for creation during <see cref="SaveChangesAsync"/>. Executes inside the transaction.</summary>
+    void Relate<TEdge>(
         RecordId from,
         RecordId to,
-        TEdge? data = default,
-        CancellationToken ct = default) where TEdge : class;
+        TEdge? data = default) where TEdge : class;
 
-    /// <summary>Remove a graph edge by its record ID.</summary>
-    Task UnrelateAsync(RecordId edgeId, CancellationToken ct = default);
+    /// <summary>Queue a graph edge for deletion during <see cref="SaveChangesAsync"/>. Executes inside the transaction.</summary>
+    void Unrelate(RecordId edgeId);
 }

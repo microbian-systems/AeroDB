@@ -171,24 +171,6 @@ public class GraphReflectionTests
     }
 
     [Test]
-    public async Task IDocumentSession_HasRelateAsync()
-    {
-        var type = typeof(IDocumentSession);
-        var method = type.GetMethod("RelateAsync");
-        method.ShouldNotBeNull();
-        method!.IsGenericMethod.ShouldBeTrue();
-        var pars = method.GetParameters();
-        pars.ShouldContain(p => p.Name == "from");
-        pars.ShouldContain(p => p.Name == "to");
-    }
-
-    [Test]
-    public async Task IDocumentSession_HasUnrelateAsync()
-    {
-        typeof(IDocumentSession).GetMethod("UnrelateAsync").ShouldNotBeNull();
-    }
-
-    [Test]
     public async Task IQuerySession_HasGraphMethod()
     {
         var method = typeof(IQuerySession).GetMethod("Graph");
@@ -310,8 +292,9 @@ public class GraphIntegrationTests
         var bobId = people.First(p => p.Name == "Bob").Id;
         var charlieId = people.First(p => p.Name == "Charlie").Id;
 
-        await session.RelateAsync<Knows>(aliceId!, bobId!, new Knows { Kind = "friend", Since = 2020 }, CancellationToken.None);
-        await session.RelateAsync<Knows>(bobId!, charlieId!, new Knows { Kind = "colleague", Since = 2021 }, CancellationToken.None);
+        session.Relate<Knows>(aliceId!, bobId!, new Knows { Kind = "friend", Since = 2020 });
+        session.Relate<Knows>(bobId!, charlieId!, new Knows { Kind = "colleague", Since = 2021 });
+        await session.SaveChangesAsync();
 
         return (aliceId!, bobId!, charlieId!);
     }
@@ -429,7 +412,7 @@ public class GraphIntegrationTests
     // ── Relate / Unrelate ──
 
     [Test]
-    public async Task RelateAsync_CreatesEdgeRecord()
+    public async Task Relate_CreatesEdgeRecord()
     {
         await using var store = await TestHarness.CreateStoreAsync();
         await using var session = await store.LightweightSessionAsync();
@@ -444,7 +427,8 @@ public class GraphIntegrationTests
         var aliceId = people.First(p => p.Name == "Alice").Id;
         var bobId = people.First(p => p.Name == "Bob").Id;
 
-        await session.RelateAsync<Knows>(aliceId!, bobId!, new Knows { Kind = "friend", Since = 2020 });
+        session.Relate<Knows>(aliceId!, bobId!, new Knows { Kind = "friend", Since = 2020 });
+        await session.SaveChangesAsync();
 
         // Verify the edge record exists in the database
         var edges = await session.Query<Knows>().ToListAsync();
@@ -454,7 +438,7 @@ public class GraphIntegrationTests
     }
 
     [Test]
-    public async Task RelateAsync_WithData_StoresEdgeProperties()
+    public async Task Relate_WithData_StoresEdgeProperties()
     {
         await using var store = await TestHarness.CreateStoreAsync();
         await using var session = await store.LightweightSessionAsync();
@@ -464,8 +448,9 @@ public class GraphIntegrationTests
         await session.SaveChangesAsync();
 
         var people = await session.Query<Person>().ToListAsync();
-        await session.RelateAsync<WorksIn>(people[0].Id!, people[1].Id!,
+        session.Relate<WorksIn>(people[0].Id!, people[1].Id!,
             new WorksIn { Role = "Developer", StartedAt = new DateTimeOffset(2024, 1, 1, 0, 0, 0, TimeSpan.Zero) });
+        await session.SaveChangesAsync();
 
         var edges = await session.Query<WorksIn>().ToListAsync();
         edges.Count.ShouldBe(1);
@@ -483,7 +468,8 @@ public class GraphIntegrationTests
         await session.SaveChangesAsync();
 
         var people = await session.Query<Person>().ToListAsync();
-        await session.RelateAsync<ChildOf>(people[0].Id!, people[1].Id!, new ChildOf());
+        session.Relate<ChildOf>(people[0].Id!, people[1].Id!, new ChildOf());
+        await session.SaveChangesAsync();
 
         var edges = await session.Query<ChildOf>().ToListAsync();
         edges.Count.ShouldBe(1);
@@ -500,8 +486,9 @@ public class GraphIntegrationTests
         await session.SaveChangesAsync();
 
         var people = await session.Query<Person>().ToListAsync();
-        await session.RelateAsync<Created>(people[0].Id!, people[1].Id!,
+        session.Relate<Created>(people[0].Id!, people[1].Id!,
             new Created { CreatedAt = DateTimeOffset.UtcNow });
+        await session.SaveChangesAsync();
 
         var edges = await session.Query<Created>().ToListAsync();
         edges.Count.ShouldBe(1);
