@@ -48,6 +48,7 @@ namespace Dali;
         {
             ["Geo"]        = GeoExpressionHandler.TranslateGeoFunc,
             ["TimeSeries"] = TimeExpressionHandler.TranslateTimeFunc,
+            ["SurrealSeriesFunctions"] = SeriesExpressionHandler.TranslateSeriesFunc,
         };
 
     public SurrealQueryResult Translate(Expression expression)

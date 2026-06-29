@@ -86,4 +86,13 @@ public interface IEvents
     /// Use this for idempotent retry scenarios.
     /// </summary>
     Task<IReadOnlyList<IEvent>> WriteTombstone(string streamId, long version, CancellationToken ct = default);
+
+    /// <summary>
+    /// Bulk-inserts events across multiple streams in batches for performance.
+    /// All events in a batch are inserted atomically via a single SurrealQL statement.
+    /// </summary>
+    Task<int> BulkInsertEventsAsync(
+        IEnumerable<(string StreamId, IEnumerable<object> Events)> streams,
+        int batchSize = 100,
+        CancellationToken ct = default);
 }

@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 using System.Text.Json;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -50,6 +51,7 @@ public class EventStore : IEvents
     public async Task<IReadOnlyList<IEvent>> Append(string streamId, IEnumerable<object> events, Dictionary<string, string>? headers = null, CancellationToken ct = default)
     {
         var isQuick = _options?.Events.AppendMode == EventAppendMode.Quick;
+        var dataMasking = _options?.Events.DataMaskingPredicate;
 
         var version = await GetNextVersion(streamId, ct).ConfigureAwait(false);
         long sequence = 0;
@@ -62,6 +64,8 @@ public class EventStore : IEvents
         var wrapped = new List<IEvent>();
 
         var serializationMode = _options?.Events.SerializationMode ?? EventSerializationMode.Json;
+        var streamKeyValue = isQuick ? "" : streamKey.ToString();
+        var streamKeyGuid = isQuick ? Guid.Empty : streamKey;
 
         foreach (var evt in events)
         {
@@ -73,18 +77,36 @@ public class EventStore : IEvents
             if (headers is { Count: > 0 })
                 headersJson = System.Text.Json.JsonSerializer.Serialize(headers, JsonOptions);
 
+            // Check data masking predicate BEFORE serialization (GDPR compliance)
+            bool isMasked = false;
+            if (dataMasking is not null)
+            {
+                var tempEvent = (IEvent)Activator.CreateInstance(
+                    typeof(Event<>).MakeGenericType(evt.GetType()),
+                    [evt, version, isQuick ? 0 : sequence, DateTimeOffset.UtcNow, streamId, streamKeyGuid, null])!;
+                isMasked = dataMasking(tempEvent);
+            }
+
             var record = new EventRecord
             {
                 StreamId = streamId,
                 Version = version,
                 Sequence = isQuick ? 0 : sequence,
-                StreamKey = isQuick ? "" : streamKey.ToString(),
+                StreamKey = streamKeyValue,
                 EventType = evt.GetType().Name,
                 CreatedAt = DateTimeOffset.UtcNow,
                 HeadersJson = headersJson
             };
 
-            if (serializationMode == EventSerializationMode.Binary)
+            if (isMasked)
+            {
+                // GDPR/redaction: store event metadata only, null out the event data
+                record.DataJson = null;
+                record.DataBinary = null;
+                _logger.LogInformation("Data masked for event {EventType} in stream {StreamId}",
+                    evt.GetType().Name, streamId);
+            }
+            else if (serializationMode == EventSerializationMode.Binary)
             {
                 record.DataBinary = JsonSerializer.SerializeToUtf8Bytes(evt, JsonOptions);
                 record.DataJson = null;
@@ -347,6 +369,42 @@ public class EventStore : IEvents
             r.StreamId,
             streamKey,
             headers);
+    }
+
+    public async Task<int> BulkInsertEventsAsync(
+        IEnumerable<(string StreamId, IEnumerable<object> Events)> streams,
+        int batchSize = 100,
+        CancellationToken ct = default)
+    {
+        var jsonOptions = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower };
+        int totalInserted = 0;
+
+        foreach (var chunk in streams.Chunk(batchSize))
+        {
+            var statements = new List<string>();
+            foreach (var (streamId, events) in chunk)
+            {
+                foreach (var evt in events)
+                {
+                    var json = JsonSerializer.Serialize(evt, jsonOptions);
+                    var eventType = evt.GetType().Name;
+                    var streamIdEscaped = streamId.Replace("'", "\\'");
+                    var escapedJson = json.Replace("'", "\\'");
+                    statements.Add(
+                        $"INSERT INTO mt_events {{ stream_id: '{streamIdEscaped}', event_type: '{eventType}', data_json: '{escapedJson}', created_at: time::now() }}");
+                }
+            }
+
+            if (statements.Count > 0)
+            {
+                var surql = string.Join("; ", statements) + ";";
+                var response = await _session.RawQuery(surql, null, ct).ConfigureAwait(false);
+                if (!response.HasErrors)
+                    totalInserted += statements.Count;
+            }
+        }
+
+        return totalInserted;
     }
 
     /// <summary>

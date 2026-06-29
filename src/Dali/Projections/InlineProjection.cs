@@ -50,6 +50,12 @@ public abstract class InlineProjection<T> : IProjection, ILoggableProjection whe
     public virtual ProjectionLifecycle Lifecycle => ProjectionLifecycle.Inline;
 
     /// <summary>
+    /// Projection name for identification in logs and progress tracking.
+    /// Defaults to the class name.
+    /// </summary>
+    public virtual string Name => GetType().Name;
+
+    /// <summary>
     /// Declares which event types trigger this projection.
     /// </summary>
     public abstract Type[] EventTypes { get; }

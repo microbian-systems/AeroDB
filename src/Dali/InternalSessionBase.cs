@@ -16,8 +16,21 @@ public abstract class InternalSessionBase : IAsyncDisposable
     protected readonly StoreOptions Options;
     internal StoreOptions StoreOptions => Options;
     protected readonly ConcurrentDictionary<Type, ConcurrentDictionary<string, object>> IdentityMap = new();
+
+    /// <summary>
+    /// JSON snapshots of entities at the time they were loaded/stored, used by
+    /// dirty-tracking to detect modifications on SaveChangesAsync.
+    /// </summary>
+    private readonly ConcurrentDictionary<Type, ConcurrentDictionary<string, string>> _identityMapSnapshots = new();
+
     protected DocumentTracking Tracking { get; }
     protected bool Disposed;
+
+    /// <summary>Total number of entities currently tracked in the identity map.</summary>
+    public int IdentityMapCount => IdentityMap.Values.Sum(m => m.Count);
+
+    /// <summary>Per-type breakdown of tracked entities for diagnostics.</summary>
+    public IReadOnlyDictionary<Type, int> IdentityMapKeys => IdentityMap.ToDictionary(k => k.Key, v => v.Value.Count);
 
     /// <summary>
     /// Tracks the original version of each entity for optimistic concurrency checks.
@@ -29,6 +42,13 @@ public abstract class InternalSessionBase : IAsyncDisposable
     /// The tenant ID for this session (null if no tenancy is configured).
     /// </summary>
     public string? TenantId { get; set; }
+
+    /// <summary>
+    /// Whether this session uses dirty-tracking mode. When true, the identity map tracks
+    /// loaded documents and detects modifications on SaveChangesAsync.
+    /// Current implementation: flag is wired for future use; full dirty-tracking Phase 15+.
+    /// </summary>
+    internal bool IsDirtyTracking => Options?.Tracking == DocumentTracking.DirtyTracking;
 
     /// <summary>
     /// The current user/identity for audit metadata (e.g., <see cref="IDocumentMetadata.LastModifiedBy"/>).
@@ -52,17 +72,31 @@ public abstract class InternalSessionBase : IAsyncDisposable
         Tracking = tracking;
     }
 
+    /// <summary>
+    /// Number of database requests made during this session's lifetime.
+    /// Incremented on every LoadAsync, Query, Store, Delete, SaveChangesAsync, ExecuteSqlAsync.
+    /// </summary>
+    public long RequestCount { get; protected set; }
+
+    /// <summary>
+    /// Combined listener pipeline: store-level + session-level listeners.
+    /// Populated by <see cref="DocumentSession"/> constructor.
+    /// </summary>
+    internal List<IDocumentSessionListener> SessionListeners { get; } = new();
+
     protected ILogger<T> CreateLogger<T>() =>
         Options.LoggerFactory?.CreateLogger<T>() ?? NullLogger<T>.Instance;
 
     public async Task<List<T>> RawQueryAsync<T>(string sql, IReadOnlyDictionary<string, object?>? parameters = null, CancellationToken ct = default)
     {
+        RequestCount++;
         var response = await Session.RawQuery(sql, parameters, ct).ConfigureAwait(false);
         return response.GetValue<List<T>>(0) ?? [];
     }
 
     public async Task<int> ExecuteSqlAsync(string sql, IReadOnlyDictionary<string, object?>? parameters = null, CancellationToken ct = default)
     {
+        RequestCount++;
         var response = await Session.RawQuery(sql, parameters, ct).ConfigureAwait(false);
         return response.FirstOk is not null ? 1 : 0;
     }
@@ -124,6 +158,7 @@ public abstract class InternalSessionBase : IAsyncDisposable
 
     public async Task<T?> LoadAsync<T>(string id, CancellationToken ct = default) where T : class
     {
+        RequestCount++;
         var logger = CreateLogger<InternalSessionBase>();
         var table = MetadataDispatch.GetTableName(typeof(T));
         var (schemaName, _) = MetadataDispatch.GetSchemaTarget(typeof(T), Options.Schema);
@@ -342,6 +377,34 @@ public abstract class InternalSessionBase : IAsyncDisposable
     {
         IdentityMap.Clear();
     }
+
+    /// <summary>Captures a JSON snapshot of an entity for dirty-tracking comparison.</summary>
+    internal void CaptureSnapshot(Type type, string id, object entity)
+    {
+        var jsonOptions = Options.SerializerOptions ?? new System.Text.Json.JsonSerializerOptions
+        {
+            PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase
+        };
+        var snapshots = _identityMapSnapshots.GetOrAdd(type, _ => new ConcurrentDictionary<string, string>(StringComparer.Ordinal));
+        snapshots[id] = System.Text.Json.JsonSerializer.Serialize(entity, jsonOptions);
+    }
+
+    /// <summary>Checks if an entity has changed since its last snapshot.</summary>
+    internal bool HasChanged(Type type, string id, object entity)
+    {
+        if (!_identityMapSnapshots.TryGetValue(type, out var snapshots) || !snapshots.TryGetValue(id, out var snapshot))
+            return true; // No snapshot = assume changed
+
+        var jsonOptions = Options.SerializerOptions ?? new System.Text.Json.JsonSerializerOptions
+        {
+            PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase
+        };
+        var current = System.Text.Json.JsonSerializer.Serialize(entity, jsonOptions);
+        return current != snapshot;
+    }
+
+    /// <summary>Clears all entity snapshots used for dirty-tracking comparison.</summary>
+    internal void ClearSnapshots() => _identityMapSnapshots.Clear();
 
     internal string Snake(string name)
     {

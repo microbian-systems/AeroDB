@@ -23,6 +23,9 @@ public interface IDocumentOperations
     /// <summary>Register a document for deletion during the next SaveChangesAsync.</summary>
     void Delete<T>(T document) where T : class;
 
+    /// <summary>Bulk-insert documents. More efficient than individual Store calls for large batches.</summary>
+    Task<int> BulkInsertAsync<T>(IEnumerable<T> documents, int batchSize = 100, CancellationToken ct = default) where T : class;
+
     /// <summary>Delete all documents of type T matching the predicate. Executes immediately.</summary>
     Task<long> DeleteWhere<T>(Expression<Func<T, bool>> predicate, CancellationToken ct = default) where T : class;
 }

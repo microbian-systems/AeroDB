@@ -48,6 +48,8 @@ internal static class GeoExpressionHandler
                 $"{args[0]} CONTAINS {args[1]}",
             "Inside" when args.Length == 2 =>
                 $"{args[1]} INSIDE {args[0]}",
+            "Intersects" when args.Length == 2 =>
+                $"{args[0]} INTERSECTS {args[1]}",
             _ => null
         };
     }

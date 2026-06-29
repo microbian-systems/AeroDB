@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using System.Reflection;
 using Dali.Metadata;
 using Microsoft.Extensions.Logging;
@@ -11,8 +12,19 @@ namespace Dali;
 /// <summary>The concrete document session implementing <see cref="IDocumentSession"/>. Manages a unit-of-work with automatic change tracking, identity map, event appending, and transactional save via SurrealDB.</summary>
 public class DocumentSession : InternalSessionBase, IDocumentSession
 {
-    private readonly ILogger<DocumentSession> _logger;
+    private ILogger<DocumentSession> _baseLogger;
+    private Microsoft.Extensions.Logging.ILogger? _loggerOverride;
     private readonly UnitOfWork _unitOfWork = new();
+
+    private ILogger ResolvedLogger => _loggerOverride ?? _baseLogger;
+
+    /// <inheritdoc />
+    public Microsoft.Extensions.Logging.ILogger? Logger
+    {
+        get => _loggerOverride;
+        set => _loggerOverride = value;
+    }
+    private readonly SessionOptions? _sessionOptions;
     private IEvents? _events;
     internal readonly List<IEvent> _appendedEvents = new();
     internal readonly List<IDeferredPatch> _queuedPatches = new();
@@ -60,7 +72,34 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
     public DocumentSession(ISurrealDbClient client, ISurrealDbSession session, StoreOptions options, DocumentTracking tracking)
         : base(client, session, options, tracking)
     {
-        _logger = CreateLogger<DocumentSession>();
+        _baseLogger = CreateLogger<DocumentSession>();
+    }
+
+    /// <summary>
+    /// Creates a session with full <see cref="SessionOptions"/>, wiring session-level
+    /// listeners and policies on top of store-level configuration.
+    /// </summary>
+    internal DocumentSession(ISurrealDbClient client, ISurrealDbSession session, StoreOptions options, SessionOptions sessionOptions)
+        : base(client, session, options, sessionOptions.Tracking)
+    {
+        _baseLogger = CreateLogger<DocumentSession>();
+        _sessionOptions = sessionOptions;
+
+        // Wire session-level listeners (added after store-level listeners)
+        if (sessionOptions.Listeners is { Count: > 0 })
+        {
+            SessionListeners.AddRange(sessionOptions.Listeners);
+        }
+
+        // Apply session-level document policies on top of store-level policies
+        if (sessionOptions.Policies is { Count: > 0 })
+        {
+            foreach (var mapping in Options.Schema.Mappings.Values)
+            {
+                foreach (var policy in sessionOptions.Policies)
+                    policy.Apply(mapping);
+            }
+        }
     }
 
     public IEvents Events
@@ -104,6 +143,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
     public void Store<T>(T entity) where T : class
     {
         ArgumentNullException.ThrowIfNull(entity);
+        RequestCount++;
 
         // If conjoined tenancy is active and the entity has a TenantId property, set it
         // DatabasePerTenant isolates at the database level — no entity-level tenant ID needed.
@@ -126,8 +166,20 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         if (Options.UseOptimisticConcurrency)
             TrackOriginalVersion(entity);
 
+        // Populate identity map when dirty tracking is enabled
+        if (IsDirtyTracking)
+        {
+            var id = GetEntityId(entity);
+            if (id is not null)
+            {
+                var typeMap = IdentityMap.GetOrAdd(typeof(T), _ => new ConcurrentDictionary<string, object>(StringComparer.Ordinal));
+                typeMap[id] = entity;
+                CaptureSnapshot(typeof(T), id, entity);
+            }
+        }
+
         _unitOfWork.Add(entity, OperationType.Added);
-        _logger.LogDebug("Stored {Type} for {Operation}", typeof(T).Name, OperationType.Added);
+        ResolvedLogger.LogDebug("Stored {Type} for {Operation}", typeof(T).Name, OperationType.Added);
     }
 
     /// <summary>
@@ -155,6 +207,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
     public void Delete<T>(T entity) where T : class
     {
         ArgumentNullException.ThrowIfNull(entity);
+        RequestCount++;
 
         // If conjoined tenancy is active, validate tenant ownership
         // DatabasePerTenant isolates at the database level — no entity-level tenant check needed.
@@ -184,12 +237,12 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         if (entity is ISoftDeleted)
         {
             _unitOfWork.Add(entity, OperationType.SoftDeleted);
-            _logger.LogDebug("Queued {Type} for soft-deletion", typeof(T).Name);
+            ResolvedLogger.LogDebug("Queued {Type} for soft-deletion", typeof(T).Name);
         }
         else
         {
             _unitOfWork.Add(entity, OperationType.Deleted);
-            _logger.LogDebug("Queued {Type} for deletion", typeof(T).Name);
+            ResolvedLogger.LogDebug("Queued {Type} for deletion", typeof(T).Name);
         }
     }
 
@@ -251,6 +304,12 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         return "true";
     }
 
+    public Task<int> BulkInsertAsync<T>(IEnumerable<T> documents, int batchSize = 100, CancellationToken ct = default) where T : class
+    {
+        var list = documents as IReadOnlyList<T> ?? documents.ToList();
+        return BulkOperations.BulkInsertAsync(this, list, batchSize, ct);
+    }
+
     public void ClearChanges()
     {
         _unitOfWork.Clear();
@@ -258,16 +317,18 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         _queuedPatches.Clear();
         _queuedRelations.Clear();
         _queuedUnrelations.Clear();
+        ClearSnapshots();
         EjectAll();
     }
 
     public async Task<int> SaveChangesAsync(CancellationToken ct = default)
     {
+        RequestCount++;
         var count = _unitOfWork.Operations.Count;
         if (count == 0 && _appendedEvents.Count == 0 && _queuedPatches.Count == 0
             && _queuedRelations.Count == 0 && _queuedUnrelations.Count == 0) return 0;
 
-        _logger.LogInformation("SaveChangesAsync: committing {EntityCount} entities and {EventCount} events",
+        ResolvedLogger.LogInformation("SaveChangesAsync: committing {EntityCount} entities and {EventCount} events",
             count, _appendedEvents.Count);
 
         // Snapshots for IChangeSet in AfterCommitAsync
@@ -348,12 +409,35 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                     }
                 }
 
-                // Phase 2: Increment version fields on all entities before persisting
+                // Phase 1.5: Pre-compute clean ops for dirty-tracking.
+                // Must run BEFORE Phase 2 (version increment) so skipped entities
+                // don't get an in-memory version bump.
+                HashSet<Operation>? cleanOps = null;
+                if (IsDirtyTracking && count > 0)
+                {
+                    cleanOps = new HashSet<Operation>();
+                    foreach (var op in _unitOfWork.Operations)
+                    {
+                        if (op.Type == OperationType.Modified)
+                        {
+                            var opId = GetEntityId(op.Entity);
+                            if (opId is not null && !HasChanged(op.EntityType, opId, op.Entity))
+                            {
+                                cleanOps.Add(op);
+                                ResolvedLogger.LogDebug("Skipping {Type} {Id}: no changes detected (dirty tracking)", op.EntityType.Name, opId);
+                            }
+                        }
+                    }
+                }
+
+                // Phase 2: Increment version fields on all entities before persisting.
+                // Skip clean dirty-tracked ops (handled in Phase 1.5).
                 if (Options.UseOptimisticConcurrency && count > 0)
                 {
                     foreach (var op in _unitOfWork.Operations)
                     {
-                        if (op.Type is OperationType.Added or OperationType.Modified)
+                        if (op.Type is OperationType.Added or OperationType.Modified
+                            && (cleanOps is null || !cleanOps.Contains(op)))
                             IncrementVersion(op.Entity);
                     }
                 }
@@ -363,9 +447,13 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                 {
                     foreach (var op in _unitOfWork.Operations)
                     {
+                        // Dirty-tracking: skip clean modified entities (pre-computed in Phase 1.5)
+                        if (cleanOps?.Contains(op) == true)
+                            continue;
+
                         var table = MetadataDispatch.GetTableName(op.EntityType);
 
-                        // Call before-store/before-delete listeners
+                        // Call before-store/before-delete listeners (after dirty-tracking skip)
                         if (Options.Listeners.Count > 0)
                         {
                             foreach (var listener in Options.Listeners)
@@ -380,7 +468,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                         switch (op.Type)
                         {
                             case OperationType.Added:
-                                _logger.LogDebug("CREATE/UPSERT {Type} ({Table})", op.EntityType.Name, table);
+                                ResolvedLogger.LogDebug("CREATE/UPSERT {Type} ({Table})", op.EntityType.Name, table);
                                 var entityId = GetEntityId(op.Entity);
                                 if (!string.IsNullOrEmpty(entityId))
                                 {
@@ -415,7 +503,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                                 break;
 
                             case OperationType.Modified:
-                                _logger.LogDebug("UPDATE {Type} ({Table})", op.EntityType.Name, table);
+                                ResolvedLogger.LogDebug("UPDATE {Type} ({Table})", op.EntityType.Name, table);
                                 var modId = GetRecordId(op.Entity, table);
                                 if (modId is not null)
                                 {
@@ -441,14 +529,14 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                                 break;
 
                             case OperationType.Deleted:
-                                _logger.LogDebug("DELETE {Type} ({Table})", op.EntityType.Name, table);
+                                ResolvedLogger.LogDebug("DELETE {Type} ({Table})", op.EntityType.Name, table);
                                 var delId = GetRecordId(op.Entity, table);
                                 if (delId is not null)
                                     await targetSession.Delete(delId, ct).ConfigureAwait(false);
                                 break;
 
                             case OperationType.SoftDeleted:
-                                _logger.LogDebug("SOFT-DELETE {Type} ({Table})", op.EntityType.Name, table);
+                                ResolvedLogger.LogDebug("SOFT-DELETE {Type} ({Table})", op.EntityType.Name, table);
                                 if (op.Entity is ISoftDeleted sd)
                                 {
                                     sd.Deleted = true;
@@ -525,7 +613,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                                     if (matchingEvents.Count == 0)
                                         continue;
 
-                                    _logger.LogInformation("Inline projection {ProjectionType} applied on stream {StreamId} (depth {Depth})",
+                                    ResolvedLogger.LogInformation("Inline projection {ProjectionType} applied on stream {StreamId} (depth {Depth})",
                                         projection.GetType().Name, streamId, depth);
 
                                     // Enrichment hook: allow projections to pre-load reference data
@@ -541,7 +629,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                                     if (context.SideEffects.Count > 0)
                                     {
                                         hadSideEffects = true;
-                                        _logger.LogDebug("Projection {ProjectionType} raised {Count} side effects",
+                                        ResolvedLogger.LogDebug("Projection {ProjectionType} raised {Count} side effects",
                                             projection.GetType().Name, context.SideEffects.Count);
 
                                         foreach (var se in context.SideEffects)
@@ -549,7 +637,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                                             if (se is AppendEventSideEffect append)
                                             {
                                                 await Events.Append(append.StreamId, new[] { append.Event }, headers: null, ct).ConfigureAwait(false);
-                                                _logger.LogDebug("Side effect: appended {EventType} to stream {StreamId}",
+                                                ResolvedLogger.LogDebug("Side effect: appended {EventType} to stream {StreamId}",
                                                     append.Event.GetType().Name, append.StreamId);
                                             }
                                             // Future: PublishMessageSideEffect, etc.
@@ -707,12 +795,21 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
             }
 
             var resultCount = count > 0 ? count : appendedEventSnapshot.Length + graphOpCount;
-            _logger.LogInformation("SaveChangesAsync: committed {Count} changes", resultCount);
+
+            // Clear identity map and snapshots after successful save
+            if (IsDirtyTracking)
+            {
+                foreach (var typeMap in IdentityMap.Values)
+                    typeMap.Clear();
+                ClearSnapshots();
+            }
+
+            ResolvedLogger.LogInformation("SaveChangesAsync: committed {Count} changes", resultCount);
             return resultCount;
         }
         catch (Exception ex) when (ex is not ConcurrencyException)
         {
-            _logger.LogError(ex, "SaveChangesAsync failed");
+            ResolvedLogger.LogError(ex, "SaveChangesAsync failed");
             throw new InvalidOperationException("Failed to save changes.", ex);
         }
         catch (ConcurrencyException)
@@ -779,7 +876,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         var id = GetEntityId(entity);
         if (id is null)
         {
-            _logger.LogWarning("Skipping concurrency check for {Type}: unable to resolve entity ID",
+            ResolvedLogger.LogWarning("Skipping concurrency check for {Type}: unable to resolve entity ID",
                 op.EntityType.Name);
             return;
         }
@@ -791,7 +888,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
 
         if (response.HasErrors)
         {
-            _logger.LogWarning("Skipping concurrency check for {Type}/{Id}: RawQuery returned errors",
+            ResolvedLogger.LogWarning("Skipping concurrency check for {Type}/{Id}: RawQuery returned errors",
                 op.EntityType.Name, id);
             return;
         }
@@ -814,14 +911,14 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
 
         if (expectedVersion != dbVersion)
         {
-            _logger.LogWarning(
+            ResolvedLogger.LogWarning(
                 "Concurrency conflict on {Type} (id={Id}): expected version {Expected}, found {Actual}",
                 op.EntityType.Name, id, expectedVersion, dbVersion);
 
             throw new ConcurrencyException(op.EntityType, id, expectedVersion, dbVersion);
         }
 
-        _logger.LogDebug("Concurrency check passed for {Type} (id={Id}): version {Version}",
+        ResolvedLogger.LogDebug("Concurrency check passed for {Type} (id={Id}): version {Version}",
             op.EntityType.Name, id, dbVersion);
     }
 
@@ -1016,6 +1113,15 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
             var result = await _inner.WriteTombstone(streamId, version, ct).ConfigureAwait(false);
             foreach (var evt in result) _owner._appendedEvents.Add(evt);
             return result;
+        }
+
+        public async Task<int> BulkInsertEventsAsync(
+            IEnumerable<(string StreamId, IEnumerable<object> Events)> streams,
+            int batchSize = 100,
+            CancellationToken ct = default)
+        {
+            // Bulk insert doesn't add to _appendedEvents since it bypasses per-stream tracking
+            return await _inner.BulkInsertEventsAsync(streams, batchSize, ct).ConfigureAwait(false);
         }
     }
 }

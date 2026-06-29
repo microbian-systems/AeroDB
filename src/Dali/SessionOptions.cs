@@ -14,4 +14,10 @@ public class SessionOptions
 
     /// <summary>Overrides the tenant ID for this session.</summary>
     public string? TenantId { get; set; }
+
+    /// <summary>Per-session document policies applied on top of store-level policies.</summary>
+    public List<IDocumentPolicy> Policies { get; set; } = new();
+
+    /// <summary>Per-session change subscribers notified on SaveChangesAsync.</summary>
+    public List<object> Subscribers { get; set; } = new();
 }

@@ -27,6 +27,12 @@ public interface IBatchedQuery
         where TDoc : class;
 
     /// <summary>
+    /// Execute a raw SurrealQL query and return results as a list of raw JSON strings.
+    /// Useful for diagnostic queries or when the result shape is dynamic.
+    /// </summary>
+    Task<IReadOnlyList<string>> QueryRawAsync(string surql, CancellationToken ct = default);
+
+    /// <summary>
     /// Executes all batched queries in a single round trip.
     /// Results are set on each future returned by <see cref="Query{TDoc,TOut}"/>.
     /// May be called multiple times — items accumulate additively.

@@ -59,6 +59,11 @@ public class StoreOptions
     public List<IDocumentSessionListener> Listeners { get; } = new();
 
     /// <summary>
+    /// Daemon-level change listeners invoked before/after projection commits.
+    /// </summary>
+    public List<IChangeListener> ChangeListeners { get; } = new();
+
+    /// <summary>
     /// When true, documents with an <see cref="IVersioned"/> version field or
     /// a property decorated with <see cref="VersionAttribute"/> are protected
     /// against lost updates. Before saving a modified document, Dali checks that
@@ -102,6 +107,25 @@ public class StoreOptions
     /// regardless of this setting — only the query auto-filter is affected.
     /// </summary>
     public bool SoftDeleteEnabled { get; set; } = true;
+
+    /// <summary>
+    /// Gets or sets the <see cref="System.Text.Json.JsonSerializerOptions"/> used for
+    /// entity serialization. If not set, defaults are used with camelCase naming.
+    /// </summary>
+    public System.Text.Json.JsonSerializerOptions? SerializerOptions { get; set; }
+
+    /// <summary>
+    /// Convenience method to configure custom serializer options.
+    /// </summary>
+    public void ConfigureSerializer(Action<System.Text.Json.JsonSerializerOptions> configure)
+    {
+        var options = new System.Text.Json.JsonSerializerOptions
+        {
+            PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase
+        };
+        configure(options);
+        SerializerOptions = options;
+    }
 
     /// <summary>
     /// Advanced SDK access configuration.
@@ -349,6 +373,13 @@ public class EventSourcingOptions
     public List<IEventUpcaster> Upcasters { get; } = new();
 
     /// <summary>
+    /// Optional predicate to mask event data for GDPR/redaction purposes.
+    /// When set, events matching the predicate will have their data replaced
+    /// with null before storage in the database.
+    /// </summary>
+    public Func<IEvent, bool>? DataMaskingPredicate { get; set; }
+
+    /// <summary>
     /// Register an event upcaster for type migration.
     /// When events with <paramref name="oldEventType"/> are deserialized, the
     /// <paramref name="upcast"/> function transforms them into the new event type.
@@ -383,6 +414,22 @@ public class ProjectionOptions
     /// Creates mt_projection_progress if not present.
     /// </summary>
     public bool EnsureStateTable { get; set; } = true;
+
+    /// <summary>
+    /// Composite projections registered via <see cref="CompositeProjectionFor"/>.
+    /// </summary>
+    internal List<CompositeProjection> CompositeProjections { get; } = new();
+
+    /// <summary>
+    /// Register a composite projection that chains multiple sub-projections.
+    /// </summary>
+    public CompositeProjection CompositeProjectionFor(string name, Action<CompositeProjection> configure)
+    {
+        var composite = new CompositeProjection(name);
+        configure(composite);
+        CompositeProjections.Add(composite);
+        return composite;
+    }
 }
 
 /// <summary>Configuration for SurrealDB custom functions (<c>DEFINE FUNCTION</c>). Registers functions that run at the database level.</summary>

@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Dali;
 
 /// <summary>
@@ -34,4 +36,18 @@ public static class SurrealArrayFunctions
     public static object[] Flatten<T>(T[][] arr) => throw new NotSupportedException("SurrealArrayFunctions.Flatten can only be used inside a LINQ expression.");
     /// <summary>Returns the length of an array. Maps to <c>array::len(arr)</c>.</summary>
     public static int Len<T>(T[] arr) => throw new NotSupportedException("SurrealArrayFunctions.Len can only be used inside a LINQ expression.");
+
+    // ── Phase 16: CONTAINSALL / CONTAINSANY / CONTAINSNONE / INTERSECTS ──
+
+    /// <summary>CONTAINSALL — true if the array contains all specified values. Maps to <c>array::contains_all(arr, values)</c>.</summary>
+    public static bool ContainsAll<T>(IEnumerable<T>? array, IReadOnlyList<T> values) => throw new NotSupportedException("SurrealArrayFunctions.ContainsAll can only be used inside a LINQ expression.");
+
+    /// <summary>CONTAINSANY — true if the array contains any of the specified values. Maps to <c>array::contains_any(arr, values)</c>.</summary>
+    public static bool ContainsAny<T>(IEnumerable<T>? array, IReadOnlyList<T> values) => throw new NotSupportedException("SurrealArrayFunctions.ContainsAny can only be used inside a LINQ expression.");
+
+    /// <summary>CONTAINSNONE — true if the array contains none of the specified values. Maps to <c>array::contains_none(arr, values)</c>.</summary>
+    public static bool ContainsNone<T>(IEnumerable<T>? array, IReadOnlyList<T> values) => throw new NotSupportedException("SurrealArrayFunctions.ContainsNone can only be used inside a LINQ expression.");
+
+    /// <summary>INTERSECTS — true if the array intersects with the specified values. Maps to <c>array::intersect(arr, values)</c>.</summary>
+    public static bool Intersects<T>(IEnumerable<T>? array, IReadOnlyList<T> values) => throw new NotSupportedException("SurrealArrayFunctions.Intersects can only be used inside a LINQ expression.");
 }

@@ -338,6 +338,10 @@ public class DocumentStore : IDocumentStore
             await schemaManager.EnsureScopesAsync(authSession, Options.Schema.Scopes, ct).ConfigureAwait(false);
         }
 
+        // Register composite projections (sub-projections are dispatched by the composite)
+        foreach (var comp in Options.ProjectionBuild.CompositeProjections)
+            Options.Projections.Add(comp);
+
         // Inject logger factory into projections that support it
         if (Options.LoggerFactory is not null)
         {
@@ -422,6 +426,13 @@ public class DocumentStore : IDocumentStore
         return qs2;
     }
 
+    public async Task<TOut> QueryAsync<TDoc, TOut>(ICompiledQuery<TDoc, TOut> query, CancellationToken ct = default)
+        where TDoc : class
+    {
+        await using var session = await OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }, ct).ConfigureAwait(false);
+        return await session.QueryAsync(query, ct).ConfigureAwait(false);
+    }
+
     public async Task<IDocumentSession> OpenSessionAsync(SessionOptions options, CancellationToken ct = default)
     {
         ArgumentNullException.ThrowIfNull(options);
@@ -434,14 +445,14 @@ public class DocumentStore : IDocumentStore
             var session = await tenantClient.CreateSession(ct).ConfigureAwait(false);
             var dbName = $"{Options.Namespace ?? "test"}_{tenantId}";
             await session.Use(Options.Namespace ?? "test", dbName, ct).ConfigureAwait(false);
-            var ds = new DocumentSession(tenantClient, session, Options, options.Tracking) { TenantId = tenantId };
+            var ds = new DocumentSession(tenantClient, session, Options, options) { TenantId = tenantId };
             _logger.LogInformation("Opened session (tracking={Tracking}) for tenant {TenantId}", options.Tracking, tenantId);
             return ds;
         }
 
         var defaultSession = await Client.CreateSession(ct).ConfigureAwait(false);
         await defaultSession.Use(Options.Namespace ?? "test", Options.Database ?? "test", ct).ConfigureAwait(false);
-        var ds2 = new DocumentSession(Client, defaultSession, Options, options.Tracking);
+        var ds2 = new DocumentSession(Client, defaultSession, Options, options);
 
         if (options.TenantId is not null)
             ds2.TenantId = options.TenantId;
@@ -586,6 +597,34 @@ public class DocumentStore : IDocumentStore
     }
 
     private static readonly CancellationToken DefaultCt = CancellationToken.None;
+
+    public async Task<long> CleanDeletedDocumentsAsync(TimeSpan olderThan, CancellationToken ct = default)
+    {
+        var internalSession = await OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }, ct).ConfigureAwait(false);
+        var cutoff = DateTimeOffset.UtcNow - olderThan;
+        long totalDeleted = 0;
+
+        foreach (var kvp in Options.Schema.Mappings)
+        {
+            var mapping = kvp.Value;
+
+            // Only clean tables that implement ISoftDeleted
+            if (!typeof(ISoftDeleted).IsAssignableFrom(mapping.DocumentType))
+                continue;
+
+            var tableName = Metadata.MetadataDispatch.GetTableName(mapping.DocumentType);
+            if (string.IsNullOrEmpty(tableName))
+                continue;
+
+            // Use PascalCase field names matching the C# properties (per CBOR convention):
+            // Deleted = true AND DeletedAt < cutoff
+            var surql = $"DELETE FROM `{tableName}` WHERE Deleted = true AND DeletedAt < d'{cutoff:yyyy-MM-ddTHH:mm:ssZ}';";
+            await internalSession.ExecuteSqlAsync(surql, null, ct).ConfigureAwait(false);
+            totalDeleted++;
+        }
+
+        return totalDeleted;
+    }
 
     public async ValueTask DisposeAsync()
     {

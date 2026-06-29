@@ -74,6 +74,23 @@ internal class BatchedQuery : IBatchedQuery
     }
 
     /// <inheritdoc />
+    public async Task<IReadOnlyList<string>> QueryRawAsync(string surql, CancellationToken ct = default)
+    {
+        var response = await _session.Session.RawQuery(surql, null, ct).ConfigureAwait(false);
+        var results = new List<string>();
+        for (var i = 0; i < response.Count; i++)
+        {
+            var raw = response.GetValue<List<object>>(i);
+            if (raw is { Count: > 0 })
+            {
+                foreach (var item in raw)
+                    results.Add(item?.ToString() ?? "");
+            }
+        }
+        return results.AsReadOnly();
+    }
+
+    /// <inheritdoc />
     public async Task Execute(CancellationToken ct = default)
     {
         if (_items.Count == 0)

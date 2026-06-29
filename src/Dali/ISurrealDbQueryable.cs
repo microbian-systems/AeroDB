@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Linq.Expressions;
+using SurrealDb.Net;
 using SurrealDb.Net.Models;
 
 namespace Dali;
@@ -114,6 +115,9 @@ public class SurrealDbQueryable<T> : ISurrealDbQueryable<T>, IAsyncEnumerable<T>
 
     /// <summary>Filter predicates applied in-memory after includes are loaded.</summary>
     internal List<FilterIncludeSpec> FilterIncludeSpecs = new();
+
+    /// <summary>Returns the underlying SurrealDB session for raw query execution.</summary>
+    internal ISurrealDbSession GetSession() => ((SurrealQueryProvider)Provider).Session;
 
     /// <summary>
     /// Optional override for the table/view name used in generated SurrealQL.

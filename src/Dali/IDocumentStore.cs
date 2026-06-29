@@ -38,6 +38,12 @@ public interface IDocumentStore : IAsyncDisposable
     /// and an <see cref="AsyncDaemon"/> has been started.
     /// </summary>
     AsyncDaemon? Daemon { get; }
+
+    /// <summary>Execute a compiled query against a lightweight session.</summary>
+    Task<TOut> QueryAsync<TDoc, TOut>(ICompiledQuery<TDoc, TOut> query, CancellationToken ct = default) where TDoc : class;
+
+    /// <summary>Permanently deletes soft-deleted documents older than the specified age.</summary>
+    Task<long> CleanDeletedDocumentsAsync(TimeSpan olderThan, CancellationToken ct = default);
 }
 
 /// <summary>A read-only session for querying documents. Supports LINQ queries, raw SurrealQL, load-by-ID, compiled queries, batch queries, live notifications, and graph traversal.</summary>
@@ -134,6 +140,9 @@ public interface IDocumentSession : IDocumentOperations, IQuerySession
     void ClearChanges();
     IEvents Events { get; }
 
+    /// <summary>Total number of entities currently tracked in the identity map.</summary>
+    int IdentityMapCount { get; }
+
     /// <summary>Remove a document from the identity map by ID. Does NOT delete from the database.</summary>
     void Eject<T>(string id) where T : class;
 
@@ -143,6 +152,9 @@ public interface IDocumentSession : IDocumentOperations, IQuerySession
     /// <summary>Remove ALL documents from the identity map.</summary>
     void EjectAll();
 
+    /// <summary>Bulk-insert documents. More efficient than individual Store calls for large batches.</summary>
+    Task<int> BulkInsertAsync<T>(IEnumerable<T> documents, int batchSize = 100, CancellationToken ct = default) where T : class;
+
     /// <summary>Queue a graph edge for creation during <see cref="SaveChangesAsync"/>. Executes inside the transaction.</summary>
     void Relate<TEdge>(
         RecordId from,
@@ -151,4 +163,10 @@ public interface IDocumentSession : IDocumentOperations, IQuerySession
 
     /// <summary>Queue a graph edge for deletion during <see cref="SaveChangesAsync"/>. Executes inside the transaction.</summary>
     void Unrelate(RecordId edgeId);
+
+    /// <summary>
+    /// Swappable per-session logger for diagnostics and recording.
+    /// When set, all session operations log to this logger instead of the global factory.
+    /// </summary>
+    Microsoft.Extensions.Logging.ILogger? Logger { get; set; }
 }
