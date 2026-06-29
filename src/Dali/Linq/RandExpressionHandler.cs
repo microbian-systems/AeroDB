@@ -1,9 +1,9 @@
 namespace Dali;
 
 /// <summary>
-/// Transforms geo-spatial method calls into SurrealQL function expressions.
+/// Transforms <see cref="SurrealRandFunctions"/> marker class method calls into SurrealQL rand:: function expressions.
 /// Invoked from <see cref="SurrealExpressionVisitor.TranslateCondition(System.Linq.Expressions.Expression, SurrealCommandBuilder)"/>
-/// via <c>m.Method.DeclaringType?.Name == "Geo"</c> dispatch.
+/// via <c>m.Method.DeclaringType == typeof(SurrealRandFunctions)</c> dispatch.
 /// </summary>
 /// <remarks>
 /// <b>Canonical handler class pattern for SurrealDB built-in function translation.</b>
@@ -18,7 +18,7 @@ namespace Dali;
 /// The visitor chains handlers: if one returns <c>null</c>, the next handler is tried.
 /// This allows adding new categories without modifying existing handlers.
 ///
-/// <b>Registration:</b> Add a <c>if (m.Method.DeclaringType?.Name == "YourCategory")</c> branch
+/// <b>Registration:</b> Add a <c>if (m.Method.DeclaringType == typeof(SurrealRandFunctions))</c> branch
 /// in <see cref="SurrealExpressionVisitor.TranslateMethod"/>.
 ///
 /// <b>Design rationale:</b> Marten uses <c>IMethodCallParser</c> (interface + registration list + caching)
@@ -26,28 +26,27 @@ namespace Dali;
 /// <c>MethodCallExpression → string</c>. Handler classes scale well to ~300 functions.
 /// Convert to a <c>List{ISurrealExpressionHandler}</c> registry only when handler count exceeds ~20.
 /// </remarks>
-internal static class GeoExpressionHandler
+internal static class RandExpressionHandler
 {
     /// <summary>
-    /// Translates a static geo method call. Returns the SurrealQL expression, or null if unrecognized.
+    /// Translates a <see cref="SurrealRandFunctions"/> marker method call. Returns the SurrealQL expression, or null if unrecognized.
     /// </summary>
-    /// <param name="methodName">The method name (e.g., "Distance", "Bearing", "Area").</param>
+    /// <param name="methodName">The method name (e.g., "UuidV4", "UuidV7", "Ulid", "Int", "Float", "String", "Bool", "Guid", "Enum").</param>
     /// <param name="args">Pre-translated argument strings.</param>
     /// <returns>SurrealQL expression string, or null.</returns>
-    public static string? TranslateGeoFunc(string methodName, string[] args)
+    public static string? TranslateRandFunc(string methodName, string[] args)
     {
         return methodName switch
         {
-            "Distance" when args.Length == 3 =>
-                $"geo::DISTANCE({args[0]}, ({args[1]}, {args[2]}))",
-            "Bearing" when args.Length == 3 =>
-                $"geo::BEARING({args[0]}, ({args[1]}, {args[2]}))",
-            "Area" when args.Length == 1 =>
-                $"geo::AREA({args[0]})",
-            "Contains" when args.Length == 2 =>
-                $"{args[0]} CONTAINS {args[1]}",
-            "Inside" when args.Length == 2 =>
-                $"{args[1]} INSIDE {args[0]}",
+            "UuidV4" when args.Length == 0 => "rand::uuid::v4()",
+            "UuidV7" when args.Length == 0 => "rand::uuid::v7()",
+            "Ulid" when args.Length == 0 => "rand::ulid()",
+            "Int" when args.Length == 2 => $"rand::int({args[0]}, {args[1]})",
+            "Float" when args.Length == 2 => $"rand::float({args[0]}, {args[1]})",
+            "String" when args.Length == 1 => $"rand::string({args[0]})",
+            "Bool" when args.Length == 0 => "rand::bool()",
+            "Guid" when args.Length == 0 => "rand::guid()",
+            "Enum" when args.Length >= 1 => $"rand::enum({string.Join(", ", args)})",
             _ => null
         };
     }

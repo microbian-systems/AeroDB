@@ -6,17 +6,49 @@ using SurrealDb.Net.Models;
 
 namespace Dali;
 
-public class SurrealExpressionVisitor : ExpressionVisitor
-{
-    private readonly StringBuilder _sb = new();
-    private readonly List<string> _where = new();
-    private readonly List<string> _orderBy = new();
-    private readonly List<string> _groupByColumns = new();
-    private readonly List<string> _autoFetchFields = new();
-    private int? _limit;
-    private int? _skip;
-    private string _projection = "*";
-    private SurrealCommandBuilder _cmdBuilder = new();
+    public class SurrealExpressionVisitor : ExpressionVisitor
+    {
+        private readonly StringBuilder _sb = new();
+        private readonly List<string> _where = new();
+        private readonly List<string> _orderBy = new();
+        private readonly List<string> _groupByColumns = new();
+        private readonly List<string> _autoFetchFields = new();
+        private int? _limit;
+        private int? _skip;
+        private string _projection = "*";
+        private SurrealCommandBuilder _cmdBuilder = new();
+
+        /// <summary>
+        /// Dictionary dispatch for marker-class handler lookup.
+        /// Maps declaring Type → handler function (methodName, args[] → SurrealQL string or null).
+        /// Only used for types known at compile time.
+        /// </summary>
+        private static readonly Dictionary<Type, Func<string, string[], string?>> _handlerDispatch = new()
+        {
+            [typeof(SurrealFunctions)]       = SearchExpressionHandler.TranslateSearchFunc,
+            [typeof(Math)]                   = MathExpressionHandler.TranslateMathFunc,
+            [typeof(SurrealStringFunctions)] = StringExpressionHandler.TranslateStringFunc,
+            [typeof(SurrealTypeFunctions)]   = TypeExpressionHandler.TranslateTypeFunc,
+            [typeof(SurrealCryptoFunctions)] = CryptoExpressionHandler.TranslateCryptoFunc,
+            [typeof(SurrealRandFunctions)]  = RandExpressionHandler.TranslateRandFunc,
+            [typeof(SurrealArrayFunctions)]  = ArrayExpressionHandler.TranslateArrayFunc,
+            [typeof(SurrealSessionFunctions)] = SessionExpressionHandler.TranslateSessionFunc,
+            [typeof(SurrealMetaFunctions)]    = MetaExpressionHandler.TranslateMetaFunc,
+            [typeof(SurrealObjectFunctions)]  = ObjectExpressionHandler.TranslateObjectFunc,
+            [typeof(SurrealHttpFunctions)]    = HttpExpressionHandler.TranslateHttpFunc,
+            [typeof(SurrealBytesFunctions)]   = BytesExpressionHandler.TranslateBytesFunc,
+            [typeof(SurrealDurationFunctions)] = DurationExpressionHandler.TranslateDurationFunc,
+        };
+
+        /// <summary>
+        /// Name-based dispatch for handlers whose types come from separate assemblies
+        /// and cannot be referenced by typeof() at compile time (Geo, TimeSeries).
+        /// </summary>
+        private static readonly Dictionary<string, Func<string, string[], string?>> _handlerByName = new()
+        {
+            ["Geo"]        = GeoExpressionHandler.TranslateGeoFunc,
+            ["TimeSeries"] = TimeExpressionHandler.TranslateTimeFunc,
+        };
 
     public SurrealQueryResult Translate(Expression expression)
     {
@@ -69,17 +101,25 @@ public class SurrealExpressionVisitor : ExpressionVisitor
             case "OrderBy":
             case "ThenBy":
                 Visit(node.Arguments[0]);
-                if (StripQuote(node.Arguments[1]) is LambdaExpression ascLambda
-                    && ascLambda.Body is MemberExpression ascMember)
-                    _orderBy.Add($"{ascMember.Member.Name} ASC");
+                if (StripQuote(node.Arguments[1]) is LambdaExpression ascLambda)
+                {
+                    if (ascLambda.Body is MemberExpression ascMember)
+                        _orderBy.Add($"{MemberPath(ascMember)} ASC");
+                    else if (ascLambda.Body is MethodCallExpression ascMethod)
+                        _orderBy.Add($"{TranslateMethodInternal(ascMethod, _cmdBuilder)} ASC");
+                }
                 break;
 
             case "OrderByDescending":
             case "ThenByDescending":
                 Visit(node.Arguments[0]);
-                if (StripQuote(node.Arguments[1]) is LambdaExpression descLambda
-                    && descLambda.Body is MemberExpression descMember)
-                    _orderBy.Add($"{descMember.Member.Name} DESC");
+                if (StripQuote(node.Arguments[1]) is LambdaExpression descLambda)
+                {
+                    if (descLambda.Body is MemberExpression descMember)
+                        _orderBy.Add($"{MemberPath(descMember)} DESC");
+                    else if (descLambda.Body is MethodCallExpression descMethod)
+                        _orderBy.Add($"{TranslateMethodInternal(descMethod, _cmdBuilder)} DESC");
+                }
                 break;
 
             case "Take":
@@ -154,10 +194,16 @@ public class SurrealExpressionVisitor : ExpressionVisitor
                 {
                     if (gbLambda.Body is MemberExpression gbMember)
                         _groupByColumns.Add(gbMember.Member.Name);
+                    else if (gbLambda.Body is MethodCallExpression gbMethod)
+                        _groupByColumns.Add(TranslateMethodInternal(gbMethod, _cmdBuilder));
                     else if (gbLambda.Body is NewExpression gbNew)
                         foreach (var arg in gbNew.Arguments)
+                        {
                             if (arg is MemberExpression m)
                                 _groupByColumns.Add(m.Member.Name);
+                            else if (arg is MethodCallExpression gbNewMethod)
+                                _groupByColumns.Add(TranslateMethodInternal(gbNewMethod, _cmdBuilder));
+                        }
                 }
                 break;
 
@@ -166,8 +212,7 @@ public class SurrealExpressionVisitor : ExpressionVisitor
             case "Max":
             case "Average":
                 Visit(node.Arguments[0]);
-                if (StripQuote(node.Arguments[1]) is LambdaExpression aggLambda
-                    && aggLambda.Body is MemberExpression aggMember)
+                if (StripQuote(node.Arguments[1]) is LambdaExpression aggLambda)
                 {
                     var fn = node.Method.Name switch
                     {
@@ -177,7 +222,21 @@ public class SurrealExpressionVisitor : ExpressionVisitor
                         "Average" => "math::mean",
                         _ => node.Method.Name
                     };
-                    _projection = $"{fn}({aggMember.Member.Name})";
+
+                    if (aggLambda.Body is MemberExpression aggMember)
+                        _projection = $"{fn}({aggMember.Member.Name})";
+                    else if (aggLambda.Body is MethodCallExpression aggMethod)
+                    {
+                        try
+                        {
+                            var translated = TranslateMethodInternal(aggMethod, _cmdBuilder);
+                            _projection = $"{fn}({translated})";
+                        }
+                        catch (NotSupportedException)
+                        {
+                            _projection = $"{fn}(*)";
+                        }
+                    }
                 }
                 break;
 
@@ -273,110 +332,102 @@ public class SurrealExpressionVisitor : ExpressionVisitor
         return $"{left} {op} {right}";
     }
 
+    /// <summary>
+    /// Translates a method call inside a WHERE/ORDER BY/projection expression into a SurrealQL fragment.
+    /// </summary>
+    /// <remarks>
+    /// <b>Extension point for SurrealDB built-in functions (string::, math::, crypto::, array::, etc.):</b>
+    ///
+    /// Two strategies for exposing functions to C# LINQ expressions:
+    ///
+    /// <b>1. Intercept existing .NET methods</b> — when a .NET method maps naturally to a SurrealQL function.
+    ///    Example: <c>s.Contains("x")</c> → <c>string::contains(s, 'x')</c>, <c>Math.Abs(x)</c> → <c>math::abs(x)</c>.
+    ///    Add a branch checking <c>m.Method.DeclaringType</c> for <c>typeof(string)</c>, <c>typeof(Math)</c>, etc.
+    ///
+    /// <b>2. Marker static class</b> — when no .NET equivalent exists.
+    ///    Define a static class with methods that throw <c>NotSupportedException</c> (used only for expression-tree identity).
+    ///    Example: <c>SurrealTypes.IsString(x)</c> → <c>type::is::string(x)</c>.
+    ///    Add a branch checking <c>m.Method.DeclaringType == typeof(SurrealTypes)</c>.
+    ///
+    /// <b>Handler class pattern</b> (preferred for 5+ functions in a category):
+    ///    Create a <c>static string? Translate(string methodName, string[] args)</c> handler.
+    ///    The visitor dispatches by <c>DeclaringType?.Name</c>; the handler returns null for unrecognized methods.
+    ///    See <see cref="GeoExpressionHandler"/> and <see cref="TimeExpressionHandler"/> for canonical examples.
+    ///
+    /// <b>Scaling note:</b> Marten uses <c>IMethodCallParser</c> (interface + registration + caching) for 30+ parser types.
+    /// Dali's functions (130+) are simpler: <c>MethodCallExpression → string</c>. A type-based
+    /// <c>Dictionary&lt;Type, Func&lt;string, string[], string?&gt;&gt;</c> (<see cref="_handlerDispatch"/>, 9 entries)
+    /// plus a name-based fallback (<see cref="_handlerByName"/>, 2 entries for separate-assembly handlers)
+    /// provide O(1) stateless dispatch that scales to any number of handlers.
+    /// </remarks>
     private static string TranslateMethod(MethodCallExpression m, SurrealCommandBuilder builder)
-    {
-        if (m.Method.DeclaringType == typeof(string))
-        {
-            var obj = Operand(m.Object!, builder);
-            var arg = Operand(m.Arguments[0], builder);
-            return m.Method.Name switch
-            {
-                "Contains" => $"string::contains({obj}, {arg})",
-                "StartsWith" => $"string::starts_with({obj}, {arg})",
-                "EndsWith" => $"string::ends_with({obj}, {arg})",
-                _ => throw new NotSupportedException($"String.{m.Method.Name}")
-            };
-        }
-
-        if (m.Method.Name == "Contains" && m.Arguments.Count == 1)
-        {
-            var col = Operand(m.Object!, builder);
-            var item = Operand(m.Arguments[0], builder);
-            return $"{col} CONTAINS {item}";
-        }
-
-        // SurrealFunctions translation
-        if (m.Method.DeclaringType == typeof(SurrealFunctions))
-        {
-            return m.Method.Name switch
-            {
-                "Score" => $"search::score({Operand(m.Arguments[0], builder)})",
-                "VectorDistanceKnn" => "vector::distance::knn()",
-                "VectorSimilarityCosine" => $"vector::similarity::cosine({Operand(m.Arguments[0], builder)}, {Operand(m.Arguments[1], builder)})",
-                _ => throw new NotSupportedException($"SurrealFunctions.{m.Method.Name}")
-            };
-        }
-
-        // Geo function dispatch
-        if (m.Method.DeclaringType?.Name == "Geo")
-        {
-            var args = m.Arguments.Select(a => Operand(a, builder)).ToArray();
-            var geoResult = GeoExpressionHandler.TranslateGeoFunc(m.Method.Name, args);
-            if (geoResult is not null)
-                return geoResult;
-        }
-
-        // Time function dispatch
-        if (m.Method.DeclaringType?.Name == "TimeSeries")
-        {
-            var args = m.Arguments.Select(a => Operand(a, builder)).ToArray();
-            var timeResult = TimeExpressionHandler.TranslateTimeFunc(m.Method.Name, args);
-            if (timeResult is not null)
-                return timeResult;
-        }
-
-        throw new NotSupportedException($"Method {m.Method.Name}");
-    }
+        => TranslateMethodInternal(m, builder);
 
     private static string TranslateMethod(MethodCallExpression m)
+        => TranslateMethodInternal(m, null);
+
+    private static string TranslateMethodInternal(MethodCallExpression m, SurrealCommandBuilder? builder)
     {
+        Func<Expression, string> op = builder is null
+            ? Operand
+            : e => Operand(e, builder);
+
+        // ── String interceptions (standard .NET) ──
         if (m.Method.DeclaringType == typeof(string))
         {
-            var obj = Operand(m.Object!);
-            var arg = Operand(m.Arguments[0]);
+            // Static string methods (m.Object is null, e.g. string.Concat)
+            if (m.Object is null)
+            {
+                return m.Method.Name switch
+                {
+                    "Concat" when m.Arguments.Count >= 2
+                        => $"string::concat({string.Join(", ", m.Arguments.Select(a => op(a)))})",
+                    _ => throw new NotSupportedException($"String.{m.Method.Name}")
+                };
+            }
+
+            var obj = op(m.Object!);
+            var arg = m.Arguments.Count > 0 ? op(m.Arguments[0]) : null;
             return m.Method.Name switch
             {
                 "Contains" => $"string::contains({obj}, {arg})",
                 "StartsWith" => $"string::starts_with({obj}, {arg})",
                 "EndsWith" => $"string::ends_with({obj}, {arg})",
+                "Trim" when m.Arguments.Count == 0 => $"string::trim({obj})",
+                "ToUpper" or "ToUpperInvariant" when m.Arguments.Count == 0 => $"string::uppercase({obj})",
+                "ToLower" or "ToLowerInvariant" when m.Arguments.Count == 0 => $"string::lowercase({obj})",
+                "TrimStart" when m.Arguments.Count == 0 => $"string::trim({obj})",
+                "Replace" when m.Arguments.Count == 2 => $"string::replace({obj}, {op(m.Arguments[0])}, {op(m.Arguments[1])})",
+                "Substring" when m.Arguments.Count == 1 => $"string::slice({obj}, {op(m.Arguments[0])})",
+                "Substring" when m.Arguments.Count == 2 => $"string::slice({obj}, {op(m.Arguments[0])}, {op(m.Arguments[1])})",
                 _ => throw new NotSupportedException($"String.{m.Method.Name}")
             };
         }
 
+        // ── Collection containment ──
         if (m.Method.Name == "Contains" && m.Arguments.Count == 1)
         {
-            var col = Operand(m.Object!);
-            var item = Operand(m.Arguments[0]);
+            var col = op(m.Object!);
+            var item = op(m.Arguments[0]);
             return $"{col} CONTAINS {item}";
         }
 
-        if (m.Method.DeclaringType == typeof(SurrealFunctions))
+        // ── Type-based handler dispatch ──
+        if (m.Method.DeclaringType is { } dt && _handlerDispatch.TryGetValue(dt, out var handler))
         {
-            return m.Method.Name switch
-            {
-                "Score" => $"search::score({Operand(m.Arguments[0])})",
-                "VectorDistanceKnn" => "vector::distance::knn()",
-                "VectorSimilarityCosine" => $"vector::similarity::cosine({Operand(m.Arguments[0])}, {Operand(m.Arguments[1])})",
-                _ => throw new NotSupportedException($"SurrealFunctions.{m.Method.Name}")
-            };
+            var args = m.Arguments.Select(a => op(a)).ToArray();
+            var result = handler(m.Method.Name, args);
+            if (result is not null)
+                return result;
         }
 
-        // Geo function dispatch
-        if (m.Method.DeclaringType?.Name == "Geo")
+        // ── Name-based handler dispatch (for types in separate assemblies) ──
+        if (m.Method.DeclaringType?.Name is { } name && _handlerByName.TryGetValue(name, out var nameHandler))
         {
-            var args = m.Arguments.Select(a => Operand(a)).ToArray();
-            var geoResult = GeoExpressionHandler.TranslateGeoFunc(m.Method.Name, args);
-            if (geoResult is not null)
-                return geoResult;
-        }
-
-        // Time function dispatch
-        if (m.Method.DeclaringType?.Name == "TimeSeries")
-        {
-            var args = m.Arguments.Select(a => Operand(a)).ToArray();
-            var timeResult = TimeExpressionHandler.TranslateTimeFunc(m.Method.Name, args);
-            if (timeResult is not null)
-                return timeResult;
+            var args = m.Arguments.Select(a => op(a)).ToArray();
+            var result = nameHandler(m.Method.Name, args);
+            if (result is not null)
+                return result;
         }
 
         throw new NotSupportedException($"Method {m.Method.Name}");
@@ -386,6 +437,7 @@ public class SurrealExpressionVisitor : ExpressionVisitor
     {
         ConstantExpression c => FormatValue(c.Value, builder),
         MemberExpression m => MemberPath(m),
+        NewArrayExpression na => string.Join(", ", na.Expressions.Select(e => Operand(e, builder))),
         UnaryExpression u when u.NodeType == ExpressionType.Convert => Operand(u.Operand, builder),
         _ => TranslateCondition(expr, builder)
     };
@@ -394,12 +446,25 @@ public class SurrealExpressionVisitor : ExpressionVisitor
     {
         ConstantExpression c => FormatValue(c.Value),
         MemberExpression m => MemberPath(m),
+        NewArrayExpression na => string.Join(", ", na.Expressions.Select(Operand)),
         UnaryExpression u when u.NodeType == ExpressionType.Convert => Operand(u.Operand),
         _ => TranslateCondition(expr)
     };
 
     private static string MemberPath(MemberExpression m)
     {
+        // Handle string.Length property → string::length(expr)
+        if (m.Member.DeclaringType == typeof(string) && m.Member.Name == "Length")
+        {
+            var target = m.Expression switch
+            {
+                MemberExpression me => MemberPath(me),
+                ParameterExpression pe => pe.Name!,
+                _ => ""
+            };
+            return $"string::length({target})";
+        }
+
         if (m.Expression is ParameterExpression)
             return m.Member.Name;
         if (m.Expression is MemberExpression inner)
@@ -427,8 +492,25 @@ public class SurrealExpressionVisitor : ExpressionVisitor
         _ => $"{operand}.{member}"
     };
 
-    private static string ProjMember(Expression expr)
+    private string ProjMember(Expression expr)
     {
+        // Strip ALL Convert wrappers (nullable lifting, boxing, numeric widening)
+        expr = StripConvert(expr) ?? expr;
+
+        // Handle method calls in projections (e.g., Math.Abs(x.Value), x.Name.Trim())
+        if (expr is MethodCallExpression mce)
+        {
+            try
+            {
+                return TranslateMethodInternal(mce, _cmdBuilder);
+            }
+            catch (NotSupportedException)
+            {
+                // TODO: Log warning when method translation silently falls back to *
+                return "*";
+            }
+        }
+
         if (expr is not MemberExpression m)
             return "*";
 

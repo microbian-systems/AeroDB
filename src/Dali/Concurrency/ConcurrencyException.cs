@@ -21,4 +21,18 @@ public class ConcurrencyException : InvalidOperationException
         ExpectedVersion = expectedVersion;
         ActualVersion = actualVersion;
     }
+
+    /// <summary>
+    /// Stream-based constructor for event sourcing concurrency conflicts.
+    /// </summary>
+    public ConcurrencyException(string streamId, long expectedVersion, long actualVersion)
+        : base(
+            $"Concurrency conflict on stream '{streamId}': " +
+            $"expected version {expectedVersion}, but found version {actualVersion}.")
+    {
+        DocumentType = typeof(string);
+        DocumentId = streamId;
+        ExpectedVersion = expectedVersion;
+        ActualVersion = actualVersion;
+    }
 }

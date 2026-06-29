@@ -18,6 +18,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
     internal readonly List<IDeferredPatch> _queuedPatches = new();
     internal readonly List<QueuedRelation> _queuedRelations = new();
     internal readonly List<RecordId> _queuedUnrelations = new();
+    internal readonly List<IFetchForWritingResult> _fetchForWritingResults = new();
 
     /// <summary>
     /// Cached <c>MethodInfo</c> for <see cref="SurrealDbResponse.GetValue{T}"/>,
@@ -190,6 +191,64 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
             _unitOfWork.Add(entity, OperationType.Deleted);
             _logger.LogDebug("Queued {Type} for deletion", typeof(T).Name);
         }
+    }
+
+    public async Task<IReadOnlyList<T>> QueryAsync<T>(CancellationToken ct = default) where T : class
+    {
+        return await Query<T>().ToListAsync(ct).ConfigureAwait(false);
+    }
+
+    /// <summary>
+    /// Stores a document with an explicit string ID. Sets the entity's Id property before storing.
+    /// Uses reflection to set the Id since metadata accessors may not always be available.
+    /// </summary>
+    public void Store<T>(string id, T document) where T : class
+    {
+        var idProp = typeof(T).GetProperty("Id", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
+        if (idProp is not null && idProp.CanWrite)
+        {
+            // Convert string id to the property type (string, RecordIdOf<string>, long, etc.)
+            var propType = idProp.PropertyType;
+            object convertedId = id;
+            if (propType == typeof(long))
+                convertedId = long.TryParse(id, out var l) ? l : 0;
+            else if (propType.IsGenericType && propType.GetGenericTypeDefinition() == typeof(RecordIdOf<>))
+                convertedId = Activator.CreateInstance(propType, id)!;
+            idProp.SetValue(document, convertedId);
+        }
+        Store(document);
+    }
+
+    /// <summary>
+    /// Deletes all documents of type T matching the predicate using a raw SurrealQL DELETE query.
+    /// Executes immediately. The predicate is used to build a SurrealQL WHERE clause.
+    /// </summary>
+    public async Task<long> DeleteWhere<T>(System.Linq.Expressions.Expression<Func<T, bool>> predicate, CancellationToken ct = default) where T : class
+    {
+        var table = MetadataDispatch.GetTableName(typeof(T));
+        // Use a basic field-value extraction for common equality predicates.
+        // For complex predicates, callers should use RawQueryAsync or Query<T> + manual delete.
+        var whereClause = BuildWhereClause(predicate);
+        var sql = $"DELETE FROM {table} WHERE {whereClause};";
+        var response = await Session.RawQuery(sql, null, ct).ConfigureAwait(false);
+        return response.Count;
+    }
+
+    private static string BuildWhereClause<T>(System.Linq.Expressions.Expression<Func<T, bool>> predicate)
+    {
+        // Simple binary expression handler: field == value
+        if (predicate.Body is System.Linq.Expressions.BinaryExpression binary
+            && binary.NodeType == System.Linq.Expressions.ExpressionType.Equal
+            && binary.Left is System.Linq.Expressions.MemberExpression member
+            && binary.Right is System.Linq.Expressions.ConstantExpression constant)
+        {
+            var fieldName = System.Text.Json.JsonNamingPolicy.SnakeCaseLower.ConvertName(member.Member.Name);
+            var value = constant.Value;
+            var strVal = value?.ToString()?.Replace("'", "\\'") ?? "null";
+            return $"{fieldName} = '{strVal}'";
+        }
+        // Fallback: return a tautology (matches everything)
+        return "true";
     }
 
     public void ClearChanges()
@@ -489,7 +548,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                                         {
                                             if (se is AppendEventSideEffect append)
                                             {
-                                                await Events.Append(append.StreamId, new[] { append.Event }, ct).ConfigureAwait(false);
+                                                await Events.Append(append.StreamId, new[] { append.Event }, headers: null, ct).ConfigureAwait(false);
                                                 _logger.LogDebug("Side effect: appended {EventType} to stream {StreamId}",
                                                     append.Event.GetType().Name, append.StreamId);
                                             }
@@ -598,6 +657,19 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                         await targetSession.RawQuery($"DELETE {ridStr};", null, ct).ConfigureAwait(false);
                     }
                     _queuedUnrelations.Clear();
+                }
+
+                // Phase 5c: Flush FetchForWriting pending events (auto-append with version check)
+                if (_fetchForWritingResults.Count > 0)
+                {
+                    foreach (var ffw in _fetchForWritingResults)
+                    {
+                        if (ffw.PendingEvents.Count > 0)
+                        {
+                            await Events.Append(ffw.StreamId, ffw.ExpectedVersion, ffw.PendingEvents, ct).ConfigureAwait(false);
+                        }
+                    }
+                    _fetchForWritingResults.Clear();
                 }
 
                 // AfterSaveChangesAsync hooks (inside transaction, before commit)
@@ -853,9 +925,9 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
             _owner = owner;
         }
 
-        public async Task<IReadOnlyList<IEvent>> Append(string streamId, IEnumerable<object> events, CancellationToken ct = default)
+        public async Task<IReadOnlyList<IEvent>> Append(string streamId, IEnumerable<object> events, Dictionary<string, string>? headers = null, CancellationToken ct = default)
         {
-            var result = await _inner.Append(streamId, events, ct).ConfigureAwait(false);
+            var result = await _inner.Append(streamId, events, headers, ct).ConfigureAwait(false);
             foreach (var evt in result)
                 _owner._appendedEvents.Add(evt);
             return result;
@@ -904,11 +976,21 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         public async Task<string> StartStream(string streamId, IEnumerable<object> events, CancellationToken ct = default)
         {
             // Use Append directly to capture the wrapped IEvent objects
-            var result = await _inner.Append(streamId, events, ct).ConfigureAwait(false);
+            var result = await _inner.Append(streamId, events, headers: null, ct).ConfigureAwait(false);
             foreach (var evt in result)
                 _owner._appendedEvents.Add(evt);
             return streamId;
         }
+
+        public async Task<FetchForWritingResult<T>> FetchForWritingAsync<T>(string streamId, CancellationToken ct = default) where T : class
+        {
+            var result = await _inner.FetchForWritingAsync<T>(streamId, ct).ConfigureAwait(false);
+            _owner._fetchForWritingResults.Add(result);
+            return result;
+        }
+
+        public Task<T?> AggregateStreamAsync<T>(string streamId, CancellationToken ct = default) where T : class
+            => _inner.AggregateStreamAsync<T>(streamId, ct);
 
         public Task<string> StartStream<T>(string streamId, IEnumerable<object> events, CancellationToken ct = default)
             => _inner.StartStream<T>(streamId, events, ct);

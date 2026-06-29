@@ -250,4 +250,59 @@ public class EventStoreTests
         await session.Events.Append(sid, [new TestEvent("first")]); // version = 1
         await session.Events.AppendOptimistic(sid, 1, [new TestEvent("second")]); // expected = 1
     }
+
+    // ── AggregateStreamAsync tests ─────────────────────────────────
+
+    [Test]
+    public async Task AggregateStreamAsync_ReturnsAggregatedResult()
+    {
+        await using var store = await TestHarness.CreateStoreAsync();
+        await using var session = await store.LightweightSessionAsync();
+        var streamId = $"agg-{Guid.NewGuid():N}";
+
+        // Append events that WriteModel.Apply handles
+        await session.Events.Append(streamId, [
+            new OrderEvent { StreamId = streamId, OrderId = "AGG-1", Amount = 100m }
+        ]);
+
+        var result = await session.Events.AggregateStreamAsync<WriteModel>(streamId);
+        result.ShouldNotBeNull();
+        result.Count.ShouldBe(1);
+    }
+
+    [Test]
+    public async Task AggregateStreamAsync_EmptyStream_ReturnsDefault()
+    {
+        await using var store = await TestHarness.CreateStoreAsync();
+        await using var session = await store.LightweightSessionAsync();
+
+        var result = await session.Events.AggregateStreamAsync<WriteModel>("nonexistent-stream");
+        result.ShouldBeNull();
+    }
+
+    // ── Headers tests ──────────────────────────────────────────────
+
+    [Test]
+    public async Task Append_WithHeaders_StoresHeaders()
+    {
+        await using var store = await TestHarness.CreateStoreAsync();
+        await using var session = await store.LightweightSessionAsync();
+        var streamId = $"headers-{Guid.NewGuid():N}";
+
+        var headers = new Dictionary<string, string>
+        {
+            ["causation_id"] = "cause-123",
+            ["correlation_id"] = "corr-456"
+        };
+
+        await session.Events.Append(streamId, [
+            new OrderEvent { StreamId = streamId, OrderId = "HEADERS-1", Amount = 100m }
+        ], headers);
+
+        var events = await session.Events.FetchStream(streamId);
+        events.Count.ShouldBe(1);
+        events[0].Headers.ShouldNotBeNull();
+        events[0].Headers!["causation_id"].ShouldBe("cause-123");
+        events[0].Headers["correlation_id"].ShouldBe("corr-456");
+    }
 }

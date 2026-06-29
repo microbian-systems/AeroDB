@@ -164,7 +164,8 @@ public class DocumentStore : IDocumentStore
                 foreach (var mapping in defaultMappings)
                 {
                     // Ensure table schema (DEFINE TABLE + fields) with the configured schema mode
-                    await schemaManager.EnsureDocumentSchemaAsync(mapping.EntityType, schemaSession, mapping.SchemaModeType, ct).ConfigureAwait(false);
+                    var fds = mapping.GetFieldDefinitions();
+                    await schemaManager.EnsureDocumentSchemaAsync(mapping.EntityType, schemaSession, mode: mapping.SchemaModeType, fieldDefinitions: fds, ct: ct).ConfigureAwait(false);
 
                     // Ensure each configured index
                     var tableName = SchemaManager.Snake(mapping.EntityType.Name);
@@ -202,7 +203,8 @@ public class DocumentStore : IDocumentStore
                     foreach (var kvp in Options.Schema.Mappings.Where(m => m.Value.SchemaName == schemaName))
                     {
                         var mapping = kvp.Value;
-                        await schemaManager.EnsureDocumentSchemaAsync(mapping.EntityType, schemaSession, mapping.SchemaModeType, ct).ConfigureAwait(false);
+                        var fieldDefs = mapping.GetFieldDefinitions();
+                        await schemaManager.EnsureDocumentSchemaAsync(mapping.EntityType, schemaSession, mode: mapping.SchemaModeType, fieldDefinitions: fieldDefs, ct: ct).ConfigureAwait(false);
 
                         var tableName = SchemaManager.Snake(mapping.EntityType.Name);
                         foreach (var index in mapping.Indices)
@@ -314,6 +316,26 @@ public class DocumentStore : IDocumentStore
                     }
                 }
             }
+        }
+
+        // ── Auth schema: DEFINE ACCESS / TOKEN / SCOPE ──────────
+        await using var authSession = await _client.CreateSession(ct).ConfigureAwait(false);
+        await authSession.Use(ns, db, ct).ConfigureAwait(false);
+
+        if (Options.Schema.Accesses.Count > 0)
+        {
+            _logger.LogInformation("Ensuring {Count} access definitions", Options.Schema.Accesses.Count);
+            await schemaManager.EnsureAccessesAsync(authSession, Options.Schema.Accesses, ct).ConfigureAwait(false);
+        }
+        if (Options.Schema.Tokens.Count > 0)
+        {
+            _logger.LogInformation("Ensuring {Count} token definitions", Options.Schema.Tokens.Count);
+            await schemaManager.EnsureTokensAsync(authSession, Options.Schema.Tokens, ct).ConfigureAwait(false);
+        }
+        if (Options.Schema.Scopes.Count > 0)
+        {
+            _logger.LogInformation("Ensuring {Count} scope definitions", Options.Schema.Scopes.Count);
+            await schemaManager.EnsureScopesAsync(authSession, Options.Schema.Scopes, ct).ConfigureAwait(false);
         }
 
         // Inject logger factory into projections that support it

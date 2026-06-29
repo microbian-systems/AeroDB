@@ -217,6 +217,21 @@ public class SchemaOptions
     internal List<object> EdgeMappings { get; } = new();
 
     /// <summary>
+    /// Auth — DEFINE ACCESS configurations (SurrealDB v3+ replaces DEFINE LOGIN).
+    /// </summary>
+    public List<AccessDefinition> Accesses { get; } = new();
+
+    /// <summary>
+    /// Auth — DEFINE TOKEN configurations for JWT/HS* verification.
+    /// </summary>
+    public List<TokenDefinition> Tokens { get; } = new();
+
+    /// <summary>
+    /// Auth — DEFINE SCOPE configurations for user signup/signin flows.
+    /// </summary>
+    public List<ScopeDefinition> Scopes { get; } = new();
+
+    /// <summary>
     /// Fluent API for document-level schema configuration (indices, tenancy policy, etc.).
     /// Creates or returns a cached <see cref="DocumentMapping{T}"/> for the specified type.
     /// </summary>
@@ -324,6 +339,11 @@ public class EventSourcingOptions
     public EventTriggerOptions Triggers { get; } = new();
 
     /// <summary>
+    /// Configuration for event metadata columns (CorrelationId, CausationId, Headers).
+    /// </summary>
+    public MetadataConfig MetadataConfig { get; } = new();
+
+    /// <summary>
     /// Event upcasters for migrating old event types to new types during deserialization.
     /// </summary>
     public List<IEventUpcaster> Upcasters { get; } = new();
@@ -392,4 +412,58 @@ public class FunctionOptions
         });
         return this;
     }
+}
+
+/// <summary>
+/// SurrealDB DEFINE ACCESS configuration (replaces DEFINE LOGIN in v3+).
+/// </summary>
+public class AccessDefinition
+{
+    /// <summary>Access method name.</summary>
+    public string Name { get; set; } = "";
+
+    /// <summary>Access type: RECORD (default), JWT, or TOKEN.</summary>
+    public string Type { get; set; } = "RECORD";
+
+    /// <summary>Optional SIGNUP SurrealQL block.</summary>
+    public string? SignupQuery { get; set; }
+
+    /// <summary>Optional SIGNIN SurrealQL block.</summary>
+    public string? SigninQuery { get; set; }
+
+    /// <summary>Token duration (e.g., "24h", "7d").</summary>
+    public string? Duration { get; set; } = "24h";
+}
+
+/// <summary>
+/// SurrealDB DEFINE TOKEN configuration for JWT/HS* token verification.
+/// </summary>
+public class TokenDefinition
+{
+    /// <summary>Token name.</summary>
+    public string Name { get; set; } = "";
+
+    /// <summary>Algorithm type: HS256 (default), HS512, RS256, ES256, etc.</summary>
+    public string Type { get; set; } = "HS256";
+
+    /// <summary>Secret or public key value.</summary>
+    public string Value { get; set; } = "";
+}
+
+/// <summary>
+/// SurrealDB DEFINE SCOPE configuration for user signup/signin flows.
+/// </summary>
+public class ScopeDefinition
+{
+    /// <summary>Scope name.</summary>
+    public string Name { get; set; } = "";
+
+    /// <summary>Session duration (e.g., "24h").</summary>
+    public string SessionDuration { get; set; } = "24h";
+
+    /// <summary>Optional SIGNUP SurrealQL block.</summary>
+    public string? SignupQuery { get; set; }
+
+    /// <summary>Optional SIGNIN SurrealQL block.</summary>
+    public string? SigninQuery { get; set; }
 }

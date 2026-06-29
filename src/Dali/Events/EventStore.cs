@@ -47,7 +47,7 @@ public class EventStore : IEvents
         return [];
     }
 
-    public async Task<IReadOnlyList<IEvent>> Append(string streamId, IEnumerable<object> events, CancellationToken ct = default)
+    public async Task<IReadOnlyList<IEvent>> Append(string streamId, IEnumerable<object> events, Dictionary<string, string>? headers = null, CancellationToken ct = default)
     {
         var isQuick = _options?.Events.AppendMode == EventAppendMode.Quick;
 
@@ -68,6 +68,11 @@ public class EventStore : IEvents
             version++;
             if (!isQuick) sequence++;
 
+            // Serialize headers if provided
+            string? headersJson = null;
+            if (headers is { Count: > 0 })
+                headersJson = System.Text.Json.JsonSerializer.Serialize(headers, JsonOptions);
+
             var record = new EventRecord
             {
                 StreamId = streamId,
@@ -75,7 +80,8 @@ public class EventStore : IEvents
                 Sequence = isQuick ? 0 : sequence,
                 StreamKey = isQuick ? "" : streamKey.ToString(),
                 EventType = evt.GetType().Name,
-                CreatedAt = DateTimeOffset.UtcNow
+                CreatedAt = DateTimeOffset.UtcNow,
+                HeadersJson = headersJson
             };
 
             if (serializationMode == EventSerializationMode.Binary)
@@ -110,7 +116,7 @@ public class EventStore : IEvents
         {
             throw new ConcurrencyException(typeof(EventStore), streamId, expectedVersion, currentVersion);
         }
-        return await Append(streamId, events, ct).ConfigureAwait(false);
+        return await Append(streamId, events, headers: null, ct).ConfigureAwait(false);
     }
 
     public Task<IReadOnlyList<IEvent>> AppendOptimistic(string streamId, long lastKnownVersion, IEnumerable<object> events, CancellationToken ct = default)
@@ -127,7 +133,7 @@ public class EventStore : IEvents
 
     public async Task<string> StartStream(string streamId, IEnumerable<object> events, CancellationToken ct = default)
     {
-        await Append(streamId, events, ct).ConfigureAwait(false);
+        await Append(streamId, events, headers: null, ct).ConfigureAwait(false);
         return streamId;
     }
 
@@ -157,7 +163,33 @@ public class EventStore : IEvents
     public async Task<IReadOnlyList<IEvent>> WriteTombstone(string streamId, long version, CancellationToken ct = default)
     {
         var tombstoneEvent = new TombstoneEvent { StreamId = streamId, Version = version, Reason = "gap-fill" };
-        return await Append(streamId, new[] { tombstoneEvent }, ct).ConfigureAwait(false);
+        return await Append(streamId, new[] { tombstoneEvent }, headers: null, ct).ConfigureAwait(false);
+    }
+
+    public async Task<FetchForWritingResult<T>> FetchForWritingAsync<T>(string streamId, CancellationToken ct = default) where T : class
+    {
+        var events = await FetchStream(streamId, ct).ConfigureAwait(false);
+
+        T? aggregate = null;
+        long expectedVersion = 0;
+
+        if (events.Count > 0)
+        {
+            // Use LiveStreamAggregation to build the aggregate from events
+            aggregate = LiveStreamAggregation.AggregateEvents<T>(events);
+            expectedVersion = events[^1].Version;
+        }
+
+        return new FetchForWritingResult<T>(aggregate, expectedVersion, streamId);
+    }
+
+    public async Task<T?> AggregateStreamAsync<T>(string streamId, CancellationToken ct = default) where T : class
+    {
+        var events = await FetchStream(streamId, ct).ConfigureAwait(false);
+        if (events.Count == 0)
+            return default;
+
+        return LiveStreamAggregation.AggregateEvents<T>(events);
     }
 
     public async Task<IReadOnlyList<IEvent>> FetchAllAfterSequence(
@@ -299,13 +331,22 @@ public class EventStore : IEvents
             ? Guid.Empty
             : Guid.TryParse(r.StreamKey, out var g) ? g : Guid.Empty;
 
+        // Deserialize headers if present
+        Dictionary<string, string>? headers = null;
+        if (!string.IsNullOrEmpty(r.HeadersJson))
+        {
+            try { headers = JsonSerializer.Deserialize<Dictionary<string, string>>(r.HeadersJson, JsonOptions); }
+            catch { /* ignore malformed headers */ }
+        }
+
         return new Event<object>(
             data ?? "",
             r.Version,
             r.Sequence,
             r.CreatedAt,
             r.StreamId,
-            streamKey);
+            streamKey,
+            headers);
     }
 
     /// <summary>
@@ -317,14 +358,17 @@ public class EventStore : IEvents
             ? Guid.Empty
             : Guid.TryParse(record.StreamKey, out var g) ? g : Guid.Empty;
 
+        // Deserialize headers if present
+        Dictionary<string, string>? headers = null;
+        if (!string.IsNullOrEmpty(record.HeadersJson))
+        {
+            try { headers = JsonSerializer.Deserialize<Dictionary<string, string>>(record.HeadersJson, JsonOptions); }
+            catch { /* ignore malformed headers */ }
+        }
+
         return (IEvent)Activator.CreateInstance(
             typeof(Event<>).MakeGenericType(evt.GetType()),
-            evt,
-            record.Version,
-            record.Sequence,
-            record.CreatedAt,
-            record.StreamId,
-            streamKey)!;
+            [evt, record.Version, record.Sequence, record.CreatedAt, record.StreamId, streamKey, headers])!;
     }
 
     private async Task<long> GetNextSequence(CancellationToken ct)
@@ -393,4 +437,6 @@ internal class EventRecord
     public byte[]? DataBinary { get; set; }
     [Column("created_at")]
     public DateTimeOffset CreatedAt { get; set; }
+    [Column("headers_json")]
+    public string? HeadersJson { get; set; }
 }

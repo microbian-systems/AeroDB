@@ -54,6 +54,35 @@ public class IndexDefinition
 
     /// <summary>Whether to use hash-stabilised vector–document keys for DiskANN.</summary>
     public bool HasHashedVector { get; set; }
+
+    /// <summary>Options for computed/expression-based indexes.</summary>
+    public ComputedIndexOptions? ComputedOptions { get; set; }
+}
+
+/// <summary>
+/// Options for computed/expression-based indexes. Controls index method,
+/// casing, sort order, and optional predicate filtering.
+/// </summary>
+public class ComputedIndexOptions
+{
+    public enum IndexMethod { BTree, Unique, Search }
+    public enum IndexCasing { Default, Lower, Upper }
+    public enum SortOrder { Asc, Desc }
+
+    /// <summary>Index method. Default is BTree.</summary>
+    public IndexMethod Method { get; set; } = IndexMethod.BTree;
+
+    /// <summary>Field casing. Default is platform-default.</summary>
+    public IndexCasing Casing { get; set; } = IndexCasing.Default;
+
+    /// <summary>Sort order. Default is Ascending.</summary>
+    public SortOrder? Order { get; set; }
+
+    /// <summary>
+    /// Optional predicate for partial indexes (e.g., "WHERE published = true").
+    /// Only applied when the target database supports it.
+    /// </summary>
+    public string? Predicate { get; set; }
 }
 
 /// <summary>

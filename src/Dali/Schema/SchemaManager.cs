@@ -319,7 +319,7 @@ public class SchemaManager
     /// Non-generic overload of <see cref="EnsureDocumentSchemaAsync{T}"/> for use without
     /// compile-time type knowledge (e.g. when iterating configured mappings).
     /// </summary>
-    internal async Task EnsureDocumentSchemaAsync(Type entityType, ISurrealDbSession session, SchemaMode mode = SchemaMode.Strict, CancellationToken ct = default)
+    internal async Task EnsureDocumentSchemaAsync(Type entityType, ISurrealDbSession session, SchemaMode mode = SchemaMode.Strict, IReadOnlyList<FieldDefinition>? fieldDefinitions = null, CancellationToken ct = default)
     {
         var tableName = MetadataDispatch.GetTableName(entityType);
         _logger.LogDebug("Ensuring document schema for type {Type} with table {Table} and mode {Mode}", entityType.Name, tableName, mode);
@@ -336,6 +336,12 @@ public class SchemaManager
         {
             await session.RawQuery(
                 $"DEFINE FIELD last_modified_by ON TABLE {tableName} TYPE option<string>;", null, ct).ConfigureAwait(false);
+        }
+
+        // Emit custom field definitions (assertions, defaults, permissions)
+        if (fieldDefinitions is { Count: > 0 })
+        {
+            await EnsureFieldDefinitionsAsync(session, tableName, fieldDefinitions, ct).ConfigureAwait(false);
         }
     }
 
@@ -382,6 +388,87 @@ public class SchemaManager
         {
             var fieldSurql = $"DEFINE FIELD {name} ON TABLE {tableName} TYPE {surrealType};";
             await session.RawQuery(fieldSurql, null, ct).ConfigureAwait(false);
+        }
+    }
+
+    /// <summary>
+    /// Issues DEFINE ACCESS for configured access definitions (SurrealDB v3+).
+    /// </summary>
+    public async Task EnsureAccessesAsync(ISurrealDbSession session, List<AccessDefinition> accesses, CancellationToken ct = default)
+    {
+        foreach (var access in accesses)
+        {
+            var sb = new StringBuilder();
+            sb.Append("DEFINE ACCESS ").Append(access.Name);
+            sb.Append(" ON DATABASE TYPE ").Append(access.Type);
+            if (access.SignupQuery is not null)
+                sb.Append(" SIGNUP ( ").Append(access.SignupQuery).Append(" )");
+            if (access.SigninQuery is not null)
+                sb.Append(" SIGNIN ( ").Append(access.SigninQuery).Append(" )");
+            if (access.Duration is not null)
+                sb.Append(" DURATION FOR TOKEN ").Append(access.Duration);
+            sb.Append(';');
+            _logger.LogDebug("Ensuring access {Name}", access.Name);
+            await session.RawQuery(sb.ToString(), null, ct).ConfigureAwait(false);
+        }
+    }
+
+    /// <summary>
+    /// Issues DEFINE TOKEN for configured JWT/HMAC token definitions.
+    /// </summary>
+    public async Task EnsureTokensAsync(ISurrealDbSession session, List<TokenDefinition> tokens, CancellationToken ct = default)
+    {
+        foreach (var token in tokens)
+        {
+            var surql = $"DEFINE TOKEN {token.Name} ON DATABASE TYPE {token.Type} VALUE \"{token.Value}\";";
+            _logger.LogDebug("Ensuring token {Name} (type: {Type})", token.Name, token.Type);
+            await session.RawQuery(surql, null, ct).ConfigureAwait(false);
+        }
+    }
+
+    /// <summary>
+    /// Issues DEFINE SCOPE for configured scope definitions (user signup/signin).
+    /// </summary>
+    public async Task EnsureScopesAsync(ISurrealDbSession session, List<ScopeDefinition> scopes, CancellationToken ct = default)
+    {
+        foreach (var scope in scopes)
+        {
+            var sb = new StringBuilder();
+            sb.Append("DEFINE SCOPE ").Append(scope.Name);
+            sb.Append(" SESSION ").Append(scope.SessionDuration);
+            if (scope.SignupQuery is not null)
+                sb.Append(" SIGNUP ( ").Append(scope.SignupQuery).Append(" )");
+            if (scope.SigninQuery is not null)
+                sb.Append(" SIGNIN ( ").Append(scope.SigninQuery).Append(" )");
+            sb.Append(';');
+            _logger.LogDebug("Ensuring scope {Name}", scope.Name);
+            await session.RawQuery(sb.ToString(), null, ct).ConfigureAwait(false);
+        }
+    }
+
+    /// <summary>
+    /// Issues DEFINE FIELD for custom field definitions (assertions, defaults, permissions).
+    /// Called after the base field definitions from <see cref="EnsureDocumentSchemaAsync"/>.
+    /// </summary>
+    public async Task EnsureFieldDefinitionsAsync(
+        ISurrealDbSession session, string tableName, IReadOnlyList<FieldDefinition> fields, CancellationToken ct = default)
+    {
+        foreach (var field in fields)
+        {
+            var sb = new StringBuilder();
+            sb.Append("DEFINE FIELD ").Append(field.FieldName);
+            sb.Append(" ON TABLE ").Append(tableName);
+            if (field.FieldType is not null)
+                sb.Append(" TYPE ").Append(field.FieldType);
+            if (field.DefaultValue is not null)
+                sb.Append(" DEFAULT ").Append(field.DefaultValue);
+            if (field.AssertExpression is not null)
+                sb.Append(" ASSERT ").Append(field.AssertExpression);
+            if (field.Permissions is not null)
+                sb.Append(" PERMISSIONS FOR ").Append(field.Permissions);
+            sb.Append(';');
+            _logger.LogDebug("Ensuring field definition {Field} on table {Table}", field.FieldName, tableName);
+            await session.RawQuery(sb.ToString(), null, ct).ConfigureAwait(false);
         }
     }
 

@@ -2,6 +2,19 @@ using TUnit.Core;
 
 namespace Dali.Tests;
 
+public class WriteModel
+{
+    public string Name { get; set; } = "";
+    public int Count { get; set; }
+
+    public void Apply(OrderEvent e)
+    {
+        Count++;
+    }
+}
+
+
+
 public class ConcurrencyTests
 {
     /// <summary>
@@ -196,6 +209,67 @@ public class ConcurrencyTests
         loaded.DocumentVersion.ShouldBe(2);
     }
 
+    // ── FetchForWriting tests ─────────────────────────────────────
+
+    [Test]
+    public async Task FetchForWriting_AppendOne_SavesSuccessfully()
+    {
+        await using var store = await TestHarness.CreateStoreAsync();
+        store.Options.Projections.Add(new AsyncRebuildableProjection());
+        await using var session = await store.LightweightSessionAsync();
+
+        // Start a stream
+        var streamId = $"ffw-{Guid.NewGuid():N}";
+        await session.Events.Append(streamId, [
+            new OrderEvent { StreamId = streamId, OrderId = "FFW-1", Amount = 100m }
+        ]);
+
+        // Fetch for writing
+        var result = await session.Events.FetchForWritingAsync<WriteModel>(streamId);
+        result.ShouldNotBeNull();
+        result.Aggregate.ShouldNotBeNull();
+        result.ExpectedVersion.ShouldBe(1);
+
+        // Append another event
+        result.AppendOne(new OrderEvent { StreamId = streamId, OrderId = "FFW-2", Amount = 50m });
+    }
+
+    [Test]
+    public async Task FetchForWriting_ConcurrencyConflict_Throws()
+    {
+        await using var store = await TestHarness.CreateStoreAsync();
+        await using var session = await store.LightweightSessionAsync();
+
+        var streamId = $"conflict-{Guid.NewGuid():N}";
+
+        // Start stream with first event (version 1)
+        await session.Events.Append(streamId, [
+            new OrderEvent { StreamId = streamId, OrderId = "CONF-1", Amount = 100m }
+        ]);
+
+        // Fetch for writing — expected version is 1
+        var result = await session.Events.FetchForWritingAsync<WriteModel>(streamId);
+        result.ExpectedVersion.ShouldBe(1);
+        result.Aggregate.ShouldNotBeNull();
+
+        // Another session appends to the stream (making it version 2)
+        await using var session2 = await store.LightweightSessionAsync();
+        await session2.Events.Append(streamId, [
+            new OrderEvent { StreamId = streamId, OrderId = "CONF-2", Amount = 50m }
+        ]);
+
+        // Now try to append using the stale fetch (expected version 1, but actual is 2)
+        result.AppendOne(new OrderEvent { StreamId = streamId, OrderId = "CONF-3", Amount = 25m });
+
+        // Appending with expectedVersion 1 should throw since version is now 2
+        var ex = await Should.ThrowAsync<ConcurrencyException>(async () =>
+        {
+            await session.Events.Append(streamId, result.ExpectedVersion, result.PendingEvents);
+        });
+        ex.ExpectedVersion.ShouldBe(1);
+        ex.ActualVersion.ShouldBe(2);
+    }
+
     /// <summary>
     /// Entities without any version tracking (plain <see cref="Person"/>)
     /// should not be affected by optimistic concurrency even when enabled.
@@ -227,5 +301,35 @@ public class ConcurrencyTests
 
         // Should succeed without exception (no version field to check)
         await session2.SaveChangesAsync();
+    }
+
+    // ── FetchForWriting auto-flush ───────────────────────────────
+
+    [Test]
+    public async Task FetchForWriting_AutoFlush_TracksResults()
+    {
+        await using var store = await TestHarness.CreateStoreAsync();
+        await using var session = await store.LightweightSessionAsync();
+
+        var streamId = $"autoffw-{Guid.NewGuid():N}";
+
+        // Start a stream
+        await session.Events.Append(streamId, [
+            new OrderEvent { StreamId = streamId, OrderId = "AUTO-1", Amount = 100m }
+        ]);
+
+        // Fetch for writing
+        var result = await session.Events.FetchForWritingAsync<WriteModel>(streamId);
+        result.ExpectedVersion.ShouldBe(1);
+
+        // Append a pending event
+        result.AppendOne(new OrderEvent { StreamId = streamId, OrderId = "AUTO-2", Amount = 50m });
+
+        // Verify the result is tracked for auto-flush
+        var docSession = (DocumentSession)session;
+        docSession._fetchForWritingResults.Count.ShouldBe(1);
+        docSession._fetchForWritingResults[0].StreamId.ShouldBe(streamId);
+        docSession._fetchForWritingResults[0].ExpectedVersion.ShouldBe(1);
+        docSession._fetchForWritingResults[0].PendingEvents.Count.ShouldBe(1);
     }
 }

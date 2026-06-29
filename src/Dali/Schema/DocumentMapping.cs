@@ -21,6 +21,9 @@ public abstract class DocumentMapping
     internal abstract bool IsMultiTenanted { get; }
     internal abstract SchemaMode SchemaModeType { get; }
     internal abstract string? SchemaName { get; }
+
+    /// <summary>Custom field definitions for this document type. Overridden in generic subclass.</summary>
+    internal virtual IReadOnlyList<FieldDefinition> GetFieldDefinitions() => [];
 }
 
 /// <summary>Controls the SurrealDB table schema mode. <c>Schemaless</c> (Flexible) allows any fields; <c>Schemafull</c> (Strict) enforces a strict field definition.</summary>
@@ -52,9 +55,99 @@ public class DocumentMapping<T> : DocumentMapping
     private string? _schemaName;
     internal override string? SchemaName => _schemaName;
 
+    private readonly List<Type> _subClasses = [];
+    private readonly HashSet<string> _ignoredIndexes = [];
+    private readonly List<ForeignKeyDefinition> _foreignKeys = [];
+    private readonly List<FieldDefinition> _fieldDefinitions = [];
+
     internal DocumentMapping()
     {
         ValidateDocumentType<T>();
+    }
+
+    /// <summary>Register a derived type for polymorphic querying.</summary>
+    public DocumentMapping<T> AddSubClass<TDerived>() where TDerived : T
+    {
+        _subClasses.Add(typeof(TDerived));
+        return this;
+    }
+
+    /// <summary>Registered derived types for this document type.</summary>
+    public IReadOnlyList<Type> SubClasses => _subClasses;
+
+    /// <summary>Prevent the schema manager from creating a specific index.</summary>
+    public DocumentMapping<T> IgnoreIndex(string indexName)
+    {
+        _ignoredIndexes.Add(indexName);
+        return this;
+    }
+
+    /// <summary>Index names that should not be created by EnsureSchema.</summary>
+    public IReadOnlyCollection<string> IgnoredIndexes => _ignoredIndexes;
+
+    /// <summary>
+    /// Declare a foreign key relationship for informational/validation purposes.
+    /// In SurrealDB, graph edges replace FK cascades — this metadata is stored
+    /// for tooling and documentation only.
+    /// </summary>
+    public DocumentMapping<T> ForeignKey<TChild>(Expression<Func<T, object>> property, Action<ForeignKeyDefinition>? configure = null)
+    {
+        var member = ExtractMemberFromBody(property.Body);
+        var fk = new ForeignKeyDefinition(member.Name, typeof(TChild));
+        configure?.Invoke(fk);
+        _foreignKeys.Add(fk);
+        return this;
+    }
+
+    /// <summary>Registered foreign key definitions.</summary>
+    public IReadOnlyList<ForeignKeyDefinition> ForeignKeys => _foreignKeys;
+
+    /// <summary>
+    /// Define a field with optional type, default, assertion, and permissions.
+    /// These are emitted as additional DEFINE FIELD statements by the schema manager.
+    /// </summary>
+    public DocumentMapping<T> Field(string fieldName, Action<FieldDefinition>? configure = null)
+    {
+        var def = new FieldDefinition { FieldName = fieldName };
+        configure?.Invoke(def);
+        _fieldDefinitions.Add(def);
+        return this;
+    }
+
+    /// <summary>Custom field definitions for this document type.</summary>
+    public IReadOnlyList<FieldDefinition> FieldDefinitions => _fieldDefinitions;
+    internal override IReadOnlyList<FieldDefinition> GetFieldDefinitions() => _fieldDefinitions;
+
+    /// <summary>
+    /// Defines a computed/expression-based index with configurable options
+    /// (index method, casing, sort order, predicate).
+    /// </summary>
+    public DocumentMapping<T> ComputedIndex(Expression<Func<T, object>> expression, Action<ComputedIndexOptions> configure)
+    {
+        var opts = new ComputedIndexOptions();
+        configure(opts);
+
+        var body = expression.Body;
+        while (body is UnaryExpression { NodeType: ExpressionType.Convert or ExpressionType.ConvertChecked } ue)
+            body = ue.Operand;
+
+        var columns = body switch
+        {
+            NewExpression ne when IsAnonymousType(ne.Type) =>
+                ne.Arguments.Select(ExtractMemberFromArgument).Select(m => m.Name).ToArray(),
+            _ => [ExtractMemberFromBody(body).Name]
+        };
+
+        var idxName = $"cidx_{Snake(typeof(T).Name)}_{string.Join("_", columns.Select(Snake))}";
+        var idx = new IndexDefinition
+        {
+            Columns = columns,
+            Name = idxName,
+            Type = IndexType.Standard,
+            ComputedOptions = opts
+        };
+        Indices.Add(idx);
+        return this;
     }
 
     internal static void ValidateDocumentType<TDocument>()
@@ -512,4 +605,26 @@ public class DocumentMapping<T> : DocumentMapping
         type.Namespace == null
         && type.IsDefined(typeof(System.Runtime.CompilerServices.CompilerGeneratedAttribute), false)
         && type.Name.Contains("<>");
+}
+
+/// <summary>
+/// Defines a SurrealDB field with optional type, default, assertion, and permissions.
+/// Emitted as DEFINE FIELD statements by the schema manager.
+/// </summary>
+public class FieldDefinition
+{
+    /// <summary>Field name in the SurrealDB table.</summary>
+    public string FieldName { get; set; } = "";
+
+    /// <summary>SurrealDB type (e.g., "string", "int", "datetime", "option&lt;string&gt;").</summary>
+    public string? FieldType { get; set; }
+
+    /// <summary>Default value expression (e.g., "0", "'default'", "time::now()").</summary>
+    public string? DefaultValue { get; set; }
+
+    /// <summary>Assert expression for validation (e.g., "string::is::email($value)").</summary>
+    public string? AssertExpression { get; set; }
+
+    /// <summary>Permissions clause (e.g., "WHERE $auth.role = 'admin'").</summary>
+    public string? Permissions { get; set; }
 }

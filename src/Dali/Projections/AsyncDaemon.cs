@@ -5,18 +5,26 @@ namespace Dali;
 
 /// <summary>
 /// Background worker that polls for new events and applies async projections.
-/// Tracks a high-water mark to avoid re-processing events.
+/// Tracks per-projection high-water marks to avoid re-processing events and
+/// persist progress to the mt_projection_progress table for restart resilience.
 /// </summary>
 public class AsyncDaemon : IAsyncDisposable
 {
     private readonly IDocumentStore _store;
     private readonly IReadOnlyList<IProjection> _projections;
     private readonly ILogger<AsyncDaemon> _logger;
+    private static readonly System.Text.Json.JsonSerializerOptions _snakeOptions = new()
+    {
+        PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.SnakeCaseLower,
+        PropertyNameCaseInsensitive = true
+    };
+
     private readonly object _lock = new();
     private readonly AggregateCache _cache = new(1000);
     private Task? _runTask;
     private volatile bool _stopped;
     private long _highWaterSequence;
+    private readonly Dictionary<string, long> _projectionWatermarks = new();
 
     /// <summary>
     /// Current health state of the daemon. Updated on each poll cycle.
@@ -98,6 +106,54 @@ public class AsyncDaemon : IAsyncDisposable
     private async Task RunAsync(TimeSpan pollInterval)
     {
         _logger.LogInformation("AsyncDaemon background loop started");
+
+        // Load per-projection watermarks so each projection resumes from its own position
+        if (_store.Options.ProjectionBuild.EnsureStateTable)
+        {
+            try
+            {
+                await using var initSession = await _store.LightweightSessionAsync().ConfigureAwait(false);
+                var internalSession = (InternalSessionBase)initSession;
+                var response = await internalSession.Session.RawQuery(
+                    "SELECT * FROM mt_projection_progress",
+                    null,
+                    CancellationToken.None).ConfigureAwait(false);
+
+                if (!response.HasErrors && response.Count > 0)
+                {
+                    var raw = response.GetValue<List<object>>(0);
+                    if (raw is { Count: > 0 })
+                    {
+                        var json = System.Text.Json.JsonSerializer.Serialize(raw);
+                        var allProgress = System.Text.Json.JsonSerializer
+                            .Deserialize<List<ProjectionProgress>>(json, _snakeOptions);
+                        if (allProgress is { Count: > 0 })
+                        {
+                            foreach (var p in allProgress)
+                            {
+                                if (p.LastVersion > 0)
+                                {
+                                    _projectionWatermarks[p.ProjectionName] = p.LastVersion;
+                                }
+                            }
+
+                            // Global high-water = minimum across all projections
+                            if (_projectionWatermarks.Count > 0)
+                                _highWaterSequence = _projectionWatermarks.Values.Min();
+
+                            _logger.LogInformation(
+                                "AsyncDaemon: loaded {Count} per-projection watermarks, global high-water = {Sequence}",
+                                _projectionWatermarks.Count, _highWaterSequence);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogDebug(ex, "AsyncDaemon: could not load projection progress (table may not exist yet)");
+            }
+        }
+
         while (!_stopped)
         {
             try
@@ -114,17 +170,24 @@ public class AsyncDaemon : IAsyncDisposable
                 if (asyncProjections.Count == 0)
                     continue;
 
+                _logger.LogDebug("AsyncDaemon: per-projection watermark tracking active for {Count} projections",
+                    asyncProjections.Count);
+
                 await using var session = await _store.LightweightSessionAsync().ConfigureAwait(false);
                 if (_stopped) break;
 
-                // Fetch new events after the high-water sequence (global ordering)
-                var newEvents = await session.Events.FetchAllAfterSequence(_highWaterSequence).ConfigureAwait(false);
+                // Use the global high-water (minimum across projections) to avoid missing events
+                var fetchAfterSequence = _projectionWatermarks.Count > 0
+                    ? _projectionWatermarks.Values.Min()
+                    : _highWaterSequence;
+
+                var newEvents = await session.Events.FetchAllAfterSequence(fetchAfterSequence).ConfigureAwait(false);
 
                 if (newEvents.Count == 0)
                     continue;
 
                 _logger.LogDebug("AsyncDaemon: fetched {Count} new events after sequence {Sequence}",
-                    newEvents.Count, _highWaterSequence);
+                    newEvents.Count, fetchAfterSequence);
 
                 // Group events by stream for per-stream processing
                 var streamGroups = newEvents
@@ -133,6 +196,9 @@ public class AsyncDaemon : IAsyncDisposable
 
                 foreach (var projection in asyncProjections)
                 {
+                    var projectionName = projection.GetType().Name;
+                    var projectionWatermark = _projectionWatermarks.GetValueOrDefault(projectionName);
+
                     foreach (var (streamId, events) in streamGroups)
                     {
                         var matchingEvents = events
@@ -165,15 +231,36 @@ public class AsyncDaemon : IAsyncDisposable
                         // Update cache with the projected aggregate result
                         _cache.Set(streamId, matchingEvents);
                     }
+
+                    // Track per-projection high-water based on events this projection actually consumed
+                    var consumedSequences = newEvents
+                        .Where(e => projection.EventTypes.Contains(e.Data?.GetType() ?? typeof(object)))
+                        .Select(e => e.Sequence);
+                    if (consumedSequences.Any())
+                    {
+                        var projectionMax = consumedSequences.Max();
+                        if (projectionMax > projectionWatermark)
+                            _projectionWatermarks[projectionName] = projectionMax;
+                    }
                 }
 
-                // Track highest sequence seen (global ordering)
+                // Track global highest sequence seen
                 var maxSequence = newEvents.Max(e => e.Sequence);
                 if (maxSequence > _highWaterSequence)
                     _highWaterSequence = maxSequence;
 
                 // Save any projected documents added by the projections
                 await session.SaveChangesAsync().ConfigureAwait(false);
+
+                // Persist per-projection watermarks so restarts resume at correct positions
+                if (_store.Options.ProjectionBuild.EnsureStateTable)
+                {
+                    foreach (var kvp in _projectionWatermarks)
+                    {
+                        var sql = $"UPSERT mt_projection_progress:`{kvp.Key}` CONTENT {{ projection_name: '{kvp.Key}', last_version: {kvp.Value}, last_updated: time::now() }}";
+                        await session.ExecuteSqlAsync(sql, null, CancellationToken.None).ConfigureAwait(false);
+                    }
+                }
 
                 Health = Health with
                 {

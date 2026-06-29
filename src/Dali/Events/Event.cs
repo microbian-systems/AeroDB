@@ -10,7 +10,8 @@ public sealed record Event<T>(
     long Sequence,
     DateTimeOffset Timestamp,
     string StreamId,
-    Guid StreamKey
+    Guid StreamKey,
+    Dictionary<string, string>? Headers = null
 ) : IEvent<T>, IEvent
 {
     /// <summary>

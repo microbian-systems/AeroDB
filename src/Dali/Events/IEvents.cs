@@ -12,8 +12,9 @@ public interface IEvents
     /// <summary>
     /// Appends events to a stream and returns the wrapped <see cref="IEvent"/> envelopes
     /// with assigned version, sequence, and stream key metadata.
+    /// Optional <paramref name="headers"/> are persisted as event metadata for tracing causality chains.
     /// </summary>
-    Task<IReadOnlyList<IEvent>> Append(string streamId, IEnumerable<object> events, CancellationToken ct = default);
+    Task<IReadOnlyList<IEvent>> Append(string streamId, IEnumerable<object> events, Dictionary<string, string>? headers = null, CancellationToken ct = default);
 
     /// <summary>
     /// Appends events to a stream with optimistic concurrency. Throws <see cref="ConcurrencyException"/>
@@ -69,6 +70,16 @@ public interface IEvents
 
     /// <summary>Guid variant.</summary>
     Task ArchiveStream(Guid streamId, CancellationToken ct = default);
+
+    /// <summary>
+    /// Fetches an aggregate for write-model operations. The returned result tracks
+    /// the expected stream version; SaveChangesAsync will throw ConcurrencyException
+    /// if another process has appended to the stream since this fetch.
+    /// </summary>
+    Task<FetchForWritingResult<T>> FetchForWritingAsync<T>(string streamId, CancellationToken ct = default) where T : class;
+
+    /// <summary>Fetches and aggregates a stream into type T. Returns default(T) if stream is empty.</summary>
+    Task<T?> AggregateStreamAsync<T>(string streamId, CancellationToken ct = default) where T : class;
 
     /// <summary>
     /// Write a tombstone event to fill a gap caused by a failed transaction.

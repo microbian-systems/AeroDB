@@ -12,6 +12,9 @@ public interface IEvent<out T>
     DateTimeOffset Timestamp { get; }
     string StreamId { get; }
     Guid StreamKey { get; }
+
+    /// <summary>Opaque headers dictionary for event metadata (causation, correlation, etc.).</summary>
+    Dictionary<string, string>? Headers { get; }
 }
 
 /// <summary>
@@ -32,4 +35,7 @@ public interface IEvent
     DateTimeOffset Timestamp { get; }
     string StreamId { get; }
     Guid StreamKey { get; }
+
+    /// <summary>Opaque headers dictionary for event metadata (causation, correlation, etc.).</summary>
+    Dictionary<string, string>? Headers { get; }
 }

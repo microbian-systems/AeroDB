@@ -127,11 +127,9 @@ public interface IQuerySession : IAsyncDisposable
         where TDoc : class;
 }
 
-/// <summary>A read/write session that extends <see cref="IQuerySession"/> with document storage (<c>Store</c>/<c>Delete</c>/<c>BulkInsert</c>), event sourcing (<c>Append</c>/<c>StartStream</c>), and unit-of-work change tracking.</summary>
-public interface IDocumentSession : IQuerySession
+/// <summary>A read/write session that extends <see cref="IDocumentOperations"/> and <see cref="IQuerySession"/> with document storage (<c>Store</c>/<c>Delete</c>/<c>BulkInsert</c>), event sourcing (<c>Append</c>/<c>StartStream</c>), and unit-of-work change tracking.</summary>
+public interface IDocumentSession : IDocumentOperations, IQuerySession
 {
-    void Store<T>(T entity) where T : class;
-    void Delete<T>(T entity) where T : class;
     Task<int> SaveChangesAsync(CancellationToken ct = default);
     void ClearChanges();
     IEvents Events { get; }
