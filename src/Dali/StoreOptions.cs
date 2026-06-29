@@ -14,6 +14,16 @@ public class StoreOptions
     public string? Token { get; set; }
 
     public SchemaOptions Schema { get; } = new();
+
+    private DocumentPolicies? _policies;
+
+    /// <summary>
+    /// Global policy system for configuring all document mappings.
+    /// Use <c>Policies.ForAllDocuments()</c> to apply conventions across all mappings,
+    /// or <c>Policies.ForDocumentsOfType&lt;T&gt;()</c> for type-specific policies.
+    /// </summary>
+    public DocumentPolicies Policies => _policies ??= new DocumentPolicies(this);
+
     public TenancyStyle TenancyStyle { get; set; }
     public string? DefaultTenantId { get; set; }
     public EventSourcingOptions Events { get; } = new();
@@ -56,6 +66,9 @@ public class StoreOptions
     /// was loaded or stored. If the versions differ, a <see cref="ConcurrencyException"/>
     /// is thrown.
     /// </summary>
+    /// <summary>Gets or sets the default document tracking mode for sessions. Defaults to <see cref="DocumentTracking.None"/>.</summary>
+    public DocumentTracking Tracking { get; set; } = DocumentTracking.None;
+
     public bool UseOptimisticConcurrency { get; set; }
 
     public Func<ISurrealDbClient>? ClientFactory { get; set; }

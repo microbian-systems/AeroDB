@@ -7,7 +7,14 @@ namespace Dali;
 public interface IDocumentStore : IAsyncDisposable
 {
     Task<IQuerySession> QuerySessionAsync(CancellationToken ct = default);
+
+    /// <summary>Open a session with full configuration control.</summary>
+    Task<IDocumentSession> OpenSessionAsync(SessionOptions options, CancellationToken ct = default);
+
+    [Obsolete("Use OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }) instead.")]
     Task<IDocumentSession> LightweightSessionAsync(CancellationToken ct = default);
+
+    [Obsolete("Use OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.IdentityOnly }) instead.")]
     Task<IDocumentSession> DocumentSessionAsync(CancellationToken ct = default);
     StoreOptions Options { get; }
     ISurrealDbClient Client { get; }
@@ -128,6 +135,15 @@ public interface IDocumentSession : IQuerySession
     Task<int> SaveChangesAsync(CancellationToken ct = default);
     void ClearChanges();
     IEvents Events { get; }
+
+    /// <summary>Remove a document from the identity map by ID. Does NOT delete from the database.</summary>
+    void Eject<T>(string id) where T : class;
+
+    /// <summary>Remove all documents of a given type from the identity map.</summary>
+    void EjectAll<T>() where T : class;
+
+    /// <summary>Remove ALL documents from the identity map.</summary>
+    void EjectAll();
 
     /// <summary>Queue a graph edge for creation during <see cref="SaveChangesAsync"/>. Executes inside the transaction.</summary>
     void Relate<TEdge>(

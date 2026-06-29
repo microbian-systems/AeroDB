@@ -56,9 +56,29 @@ Audit of Marten's API surface (from `docs/marten-llms-full.txt`) against Dali's 
 
 ---
 
+### 6. `IDocumentStore.Advanced` API severely limited
+
+**Marten**: `store.Advanced` exposes ~20+ admin methods: `Clean.CompletelyRemoveAsync()`, `Clean.DeleteAllDocumentsAsync()`, `Clean.DeleteAllEventDataAsync()`, `Clean.DeleteDocumentsByTypeAsync()`, `Clean.DeleteDocumentsExceptAsync()`, `CleanDeletedDocumentsAsync()`, `AllProjectionProgress()`, `FetchEventStoreStatistics()`, `ProjectionProgressFor(ShardName)`, `ResetAllData()`, `AddMartenManagedTenantsAsync()`, `DeleteAllTenantDataAsync()`, `RemoveMartenManagedTenantsAsync()`, `AddTenantToShardAsync()`, `AddDatabaseToPoolAsync()`, `MarkDatabaseFullAsync()`, `ApplyEventDataMasking()`.
+
+**Dali**: `IDaliAdvanced` (at `store.Advanced`) has only 2 members: `Client` (ISurrealDbClient) and `CreateSessionAsync()`. No Clean API, no diagnostics, no tenant management, no event masking, no DB pool management. 18+ methods missing.
+
+**Files affected**: `src/Dali/IDocumentStore.cs`, `src/Dali/DocumentStore.cs`
+
+---
+
+### 7. `IDocumentStore.Diagnostics` / query diagnostics
+
+**Marten**: `store.Diagnostics.PreviewCommand(compiledQuery)`, `store.Diagnostics.ExplainPlan(compiledQuery)`, `store.Diagnostics.GetPostgresVersion()`. Also `queryable.ToCommand(FetchType)` and `queryable.ExplainAsync()` on queryables.
+
+**Dali**: No way to preview generated SurrealQL or get explain plans. `ToCommand()` exists on `ISurrealDbQueryable<T>` but there's no store-level diagnostics API.
+
+**Files affected**: `src/Dali/IDocumentStore.cs`, `src/Dali/Linq/SurrealQueryProvider.cs`
+
+---
+
 ## 🟡 Major Gaps
 
-### 6. Event causation (CorrelationId / CausationId / Headers)
+### 8. Event causation (CorrelationId / CausationId / Headers)
 
 **Marten**: Every `IEvent` carries `CorrelationId`, `CausationId`, and `Headers` (dictionary) for tracing event chains across streams. CausationId references the event that triggered this one; Headers carry arbitrary metadata.
 
@@ -68,7 +88,7 @@ Audit of Marten's API surface (from `docs/marten-llms-full.txt`) against Dali's 
 
 ---
 
-### 7. `IChangeSet` before/after values
+### 9. `IChangeSet` before/after values
 
 **Marten**: `IChangeSet.Changes()` returns `IChange<T>` where each change has `.Before` and `.After` snapshots of the document, enabling precise change tracking and audit logging.
 
@@ -78,7 +98,7 @@ Audit of Marten's API surface (from `docs/marten-llms-full.txt`) against Dali's 
 
 ---
 
-### 8. `ForeignKey` constraints
+### 10. `ForeignKey` constraints
 
 **Marten**: `Schema.For<T>().ForeignKey<TRef>(x => x.RefId)` generates a foreign key constraint in PostgreSQL.
 
@@ -88,7 +108,7 @@ Audit of Marten's API surface (from `docs/marten-llms-full.txt`) against Dali's 
 
 ---
 
-### 9. `ComputedIndex` with custom SQL / index options
+### 11. `ComputedIndex` with custom SQL / index options
 
 **Marten**: `Index(x => x.Number, c => { c.Method = IndexMethod.brin; c.Casing = Casings.Lower; c.SortOrder = SortOrder.Desc; c.Predicate = "(data ->> 'Number')::int > 10"; })` — full control over index method, casing, sort order, and partial index predicates.
 
@@ -98,7 +118,7 @@ Audit of Marten's API surface (from `docs/marten-llms-full.txt`) against Dali's 
 
 ---
 
-### 10. `CleanDeletedDocumentsAsync()`
+### 12. `CleanDeletedDocumentsAsync()`
 
 **Marten**: `IDocumentStore.Advanced.CleanDeletedDocumentsAsync()` bulk-purges all soft-deleted records.
 
@@ -108,7 +128,7 @@ Audit of Marten's API surface (from `docs/marten-llms-full.txt`) against Dali's 
 
 ---
 
-### 11. `DeletedBefore()` query extension
+### 13. `DeletedBefore()` query extension
 
 **Marten**: `session.Query<T>().Where(x => x.DeletedBefore(datetime))` — temporal filter on deletion timestamp in LINQ queries.
 
@@ -118,7 +138,7 @@ Audit of Marten's API surface (from `docs/marten-llms-full.txt`) against Dali's 
 
 ---
 
-### 12. AsyncDaemon persisted watermark
+### 14. AsyncDaemon persisted watermark
 
 **Marten**: The async daemon persists per-shard sequence numbers to `mt_projection_progress` table, allowing resume-after-restart without full replay.
 
@@ -128,7 +148,7 @@ Audit of Marten's API surface (from `docs/marten-llms-full.txt`) against Dali's 
 
 ---
 
-### 13. `Transform` / JavaScript transformations (PLV8)
+### 15. `Transform` / JavaScript transformations (PLV8)
 
 **Marten**: Supports event transformations via `Transform` and PLV8 (JavaScript within PostgreSQL).
 
@@ -138,7 +158,7 @@ Audit of Marten's API surface (from `docs/marten-llms-full.txt`) against Dali's 
 
 ---
 
-### 14. `SchemaDiff` / `SchemaPatch` (migration API)
+### 16. `SchemaDiff` / `SchemaPatch` (migration API)
 
 **Marten**: `IDocumentStore.Schema` exposes schema diffing and patch generation for database migrations.
 
@@ -148,7 +168,17 @@ Audit of Marten's API surface (from `docs/marten-llms-full.txt`) against Dali's 
 
 ---
 
-### 15. `SubClass` / type hierarchy on `Schema.For<T>()`
+### 17. Session types / identity map / dirty tracking
+
+**Marten**: Three session types: `LightweightSession` (no tracking), `DirtyTrackedSession` (identity map + auto-diff on save), `QuerySession` (read-only). `SessionOptions` class configures `DocumentTracking` mode (None / IdentityOnly / DirtyTracking), isolation level, and listeners per session. `OpenSession(SessionOptions)` is the unified factory.
+
+**Dali**: Three factory methods exist (`LightweightSessionAsync`, `DocumentSessionAsync`, `QuerySessionAsync`) but `DocumentSessionAsync` is identical to `LightweightSessionAsync` — the `_isDirtyTracking` field is never read (dead code). `IdentityMap` dictionary exists on `InternalSessionBase` but is never populated by `LoadAsync<T>`. No `SessionOptions` class, no `DocumentTracking` enum, no auto-dirty-detection on `SaveChangesAsync`. `OpenSessionAsync(opts)` factory missing.
+
+**Files affected**: `src/Dali/IDocumentStore.cs`, `src/Dali/DocumentSession.cs`, `src/Dali/InternalSessionBase.cs`, `src/Dali/StoreOptions.cs`
+
+---
+
+### 18. `SubClass` / type hierarchy on `Schema.For<T>()`
 
 **Marten**: `Schema.For<T>().AddSubClass<TDerived>()` — declarative hierarchy setup per document mapping.
 
@@ -158,21 +188,117 @@ Audit of Marten's API surface (from `docs/marten-llms-full.txt`) against Dali's 
 
 ---
 
+### 19. `Policies` system / `IDocumentPolicy`
+
+**Marten**: `StoreOptions.Policies.ForAllDocuments(Action<DocumentMapping>)`, `Policies.ForDocumentsOfType<T>(Action<DocumentMapping>)`, `Policies.UseOptimisticConcurrency()`, `Policies.SetAllProperties()`, custom `IDocumentPolicy` plugin interface.
+
+**Dali**: Only `StoreOptions.UseOptimisticConcurrency` as a `bool`. No `IDocumentPolicy`, no `ForAllDocuments()`, no `SetAllProperties()`, no plugin system.
+
+**Files affected**: `src/Dali/StoreOptions.cs`, `src/Dali/Schema/DocumentMapping.cs`
+
+---
+
+### 20. Session-level listeners
+
+**Marten**: `SessionOptions.Listeners` — listeners attached per-session via `store.OpenSession(new SessionOptions { Listeners = { new MyListener() } })`.
+
+**Dali**: Only global `StoreOptions.Listeners`. No per-session listener injection.
+
+**Files affected**: `src/Dali/IDocumentStore.cs`, `src/Dali/DocumentStore.cs`, `src/Dali/StoreOptions.cs`
+
+---
+
+### 21. `IBatchedQuery` raw SQL
+
+**Marten**: `batch.Query<T>(sql, parameters)` — batch executes raw SQL strings alongside compiled queries.
+
+**Dali**: `IBatchedQuery` only supports `Query<TDoc, TOut>(ICompiledQuery)`. No raw SQL overload.
+
+**Files affected**: `src/Dali/IBatchedQuery.cs`, `src/Dali/BatchedQuery.cs`
+
+---
+
+### 22. `IDocumentOperations` interface
+
+**Marten**: `IDocumentOperations` is the write-side parent of `IDocumentSession`, used as the parameter type in projection methods `ApplyAsync(IDocumentOperations, IEvent, CancellationToken)` and `Project(event, IDocumentOperations)`.
+
+**Dali**: `IProjection.ApplyAsync(IProjectionContext ctx)` gives `IDocumentSession Session` but no `IDocumentOperations` interface exists. Projection API is incompatible with Marten conventions.
+
+**Files affected**: `src/Dali/IDocumentStore.cs`, `src/Dali/Projections/`
+
+---
+
+### 23. Projection sharding
+
+**Marten**: Async daemon partitions work per-projection across multiple shards (`IProjectionSource`, `IProjectionShard`, `ShardName`). Each shard has independent progress tracking.
+
+**Dali**: Async daemon is single-threaded — no sharding, no `IProjectionSource`, no `IProjectionShard`, no `ShardName`.
+
+**Files affected**: `src/Dali/Projections/AsyncDaemon.cs`
+
+---
+
+### 24. `CustomGrouping` / `IAggregateGrouper<TId>`
+
+**Marten**: `MultiStreamProjection.CustomGrouping(IAggregateGrouper<TId>)`, `CustomGrouping(Func<IQuerySession, IReadOnlyList<IEvent>, IEventGrouping<TId>, Task>)`, and `IEventSlicer` for custom event-to-aggregate grouping.
+
+**Dali**: `MultiStreamProjection<T>` only has `GetDocumentId(IReadOnlyList<object>)`. No custom grouping, grouper, or slicer.
+
+**Files affected**: `src/Dali/Projections/MultiStreamProjection.cs`
+
+---
+
+### 25. Composite projections
+
+**Marten**: `opts.Projections.CompositeProjectionFor("Name", x => x.Add<A>().Add<B>().Add<C>())` — one projection that composites multiple sub-projections.
+
+**Dali**: Not implemented. No composite projection support.
+
+**Files affected**: `src/Dali/StoreOptions.cs`, `src/Dali/Projections/`
+
+---
+
+### 26. `SessionOptions` class
+
+**Marten**: Rich `SessionOptions` with `Tracking` (DocumentTracking), `Timeout`, `Listeners[]`, `IsolationLevel`, `TenantId`, `Connection`, and static factory methods: `ForConnectionString()`, `ForTransaction()`, `ForCurrentTransaction()`.
+
+**Dali**: No `SessionOptions` class. Session factory methods take only `CancellationToken`.
+
+**Files affected**: `src/Dali/IDocumentStore.cs`, `src/Dali/DocumentStore.cs`
+
+---
+
+### 27. `IDocumentStore.BulkInsertAsync` + `BulkInsertMode`
+
+**Marten**: `store.BulkInsertAsync<T>(entities, mode)` at store level. `BulkInsertMode` enum: `InsertsOnly`, `IgnoreDuplicates`, `OverwriteExisting`, `OverwriteIfVersionMatches`. Tenant-aware overload.
+
+**Dali**: Only `BulkInsertAsync<T>()` as static extension method on `IDocumentSession`. No `BulkInsertMode` enum, no store-level API, no tenant overload.
+
+**Files affected**: `src/Dali/BulkOperations.cs`, `src/Dali/IDocumentStore.cs`
+
+---
+
 ## 🟢 Minor Gaps
 
 | # | Gap | Marten | Dali |
 |---|-----|--------|------|
-| 16 | **`ISubscriber` / `IChangeListener`** | External event bus subscription model | Not present — uses Wolverine integration or `IDaliSubscription` instead |
-| 17 | **`StoreOptions.Serializer()`** | Custom serializer configuration (JSON.NET, STJ) | Hardcoded `System.Text.Json` with snake_case; no user-facing config |
-| 18 | **`BulkInsert` on `IDocumentSession`** | `session.BulkInsert<T>(entities)` as interface method | `BulkInsertAsync` is a **static extension** method in `BulkOperations`, not on the interface |
-| 19 | **Hard-delete from query** | `session.Query<T>().Where(...).Delete()` | Only entity-based `Delete<T>(entity)` — no query-delete |
-| 20 | **Soft-delete field naming** | Shadow columns `mt_deleted`, `mt_deleted_at` | Entity properties via `ISoftDeleted.Deleted` / `DeletedAt` directly |
-| 21 | **`IdentityMap` diagnostics** | `IDocumentSession.Database` / `DocumentTracking` tracking modes | `_identityMap` exists on `InternalSessionBase` but no diagnostic/exposure API |
-| 22 | **`ICompiledQuery` on `IDocumentStore`** | `store.QueryAsync<TDoc, TOut>(compiled)` | Only on `IQuerySession`, not on `IDocumentStore` |
-| 23 | **Projection rebuild progress** | `RebuildAsync` with progress reporting | `RebuildAsync` runs as blocking operation with no progress callback |
-| 24 | **Custom projection names** | User-assignable name on `IProjection` | Projections identified by `GetType().Name` only |
-| 25 | **Live projection lifecycle** | Async daemon processes all lifecycles | Daemon explicitly filters `Where(p => p.Lifecycle == Async)` — Live projections never processed |
-| 26 | **`FlatTableProjection.RebuildAsync`** | Full rebuild support | Returns `Task.CompletedTask` — **stub**, not implemented |
+| 28 | **`ISubscriber` / `IChangeListener`** | External event bus subscription model | Not present — uses Wolverine integration or `IDaliSubscription` instead |
+| 29 | **`StoreOptions.Serializer()`** | Custom serializer configuration (JSON.NET, STJ) | Hardcoded `System.Text.Json` with snake_case; no user-facing config |
+| 30 | **`BulkInsert` on `IDocumentSession`** | `session.BulkInsert<T>(entities)` as interface method | `BulkInsertAsync` is a **static extension** method in `BulkOperations`, not on the interface |
+| 31 | **Hard-delete from query** | `session.Query<T>().Where(...).Delete()` | Only entity-based `Delete<T>(entity)` — no query-delete |
+| 32 | **Soft-delete field naming** | Shadow columns `mt_deleted`, `mt_deleted_at` | Entity properties via `ISoftDeleted.Deleted` / `DeletedAt` directly |
+| 33 | **`IdentityMap` diagnostics** | `IDocumentSession.Database` / `DocumentTracking` tracking modes | `_identityMap` exists on `InternalSessionBase` but no diagnostic/exposure API |
+| 34 | **`ICompiledQuery` on `IDocumentStore`** | `store.QueryAsync<TDoc, TOut>(compiled)` | Only on `IQuerySession`, not on `IDocumentStore` |
+| 35 | **Projection rebuild progress** | `RebuildAsync` with progress reporting | `RebuildAsync` runs as blocking operation with no progress callback |
+| 36 | **Custom projection names** | User-assignable name on `IProjection` | Projections identified by `GetType().Name` only |
+| 37 | **Live projection lifecycle** | Async daemon processes all lifecycles | Daemon explicitly filters `Where(p => p.Lifecycle == Async)` — Live projections never processed |
+| 38 | **`FlatTableProjection.RebuildAsync`** | Full rebuild support | Returns `Task.CompletedTask` — **stub**, not implemented |
+| 39 | **`BulkInsertEventsAsync`** | `store.BulkInsertEventsAsync(streams, batchSize)` — bulk-insert entire event streams at store level | Events appended one stream at a time |
+| 40 | **Per-session logger swap** | `IMartenSessionLogger` swappable per-session; `session.Logger = new RecordingLogger()` | Only `ILoggerFactory` on `StoreOptions` (global) |
+| 41 | **`RequestCount` on sessions** | `session.RequestCount` — number of DB commands issued by that session | Not implemented |
+| 42 | **Event data masking (GDPR)** | `store.Advanced.ApplyEventDataMasking(Func<IEvent, bool>)` with per-event-type redaction | Not implemented |
+| 43 | **`IChangeListener`** | Async daemon pipeline listener with `BeforeCommitAsync`/`AfterCommitAsync` | Only `IDocumentSessionListener` |
+| 44 | **`IEventSlice<T>` / enrichment** | `IEventSlice<T>` with `Aggregate`, `Id`, `Events`; `IProjectionEnrichment` hooks | Only `IProjectionContext` with `Events` + `Session` |
 
 ---
 
@@ -274,6 +400,6 @@ The following areas lack robust tests and need dedicated test suites:
 | **Created** | 2026-06-28 |
 | **Audit scope** | Marten docs (`docs/marten-llms-full.txt`) vs Dali source (`src/Dali/`) |
 | **Audit version** | Dali main branch, commit HEAD |
-| **Total gaps identified** | 26 (5 Critical, 10 Major, 11 Minor) |
+| **Total gaps identified** | 44 (7 Critical, 20 Major, 17 Minor) |
 | **At parity** | 24 areas confirmed implemented |
 | **Next review** | TBD — after gaps marked completed |

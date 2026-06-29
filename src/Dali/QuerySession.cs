@@ -9,8 +9,8 @@ public class QuerySession : InternalSessionBase, IQuerySession
 {
     private readonly ILogger<QuerySession> _logger;
 
-    public QuerySession(ISurrealDbClient client, ISurrealDbSession session, StoreOptions options)
-        : base(client, session, options)
+    public QuerySession(ISurrealDbClient client, ISurrealDbSession session, StoreOptions options, DocumentTracking tracking)
+        : base(client, session, options, tracking)
     {
         _logger = CreateLogger<QuerySession>();
     }

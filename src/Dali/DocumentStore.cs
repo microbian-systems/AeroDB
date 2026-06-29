@@ -79,6 +79,9 @@ public class DocumentStore : IDocumentStore
                 }
             }
 
+            // Apply global document policies to all registered mappings
+            ApplyPolicies();
+
             _logger.LogInformation("Dali store initialized (DatabasePerTenant mode)");
             return;
         }
@@ -133,6 +136,9 @@ public class DocumentStore : IDocumentStore
         // Apply IAsyncConfigureDali modules (async config, e.g. satellite assemblies)
         foreach (var asyncConfigurator in Options.AsyncConfigurators)
             await asyncConfigurator.ConfigureAsync(Options, ct).ConfigureAwait(false);
+
+        // Apply global document policies to all registered mappings
+        ApplyPolicies();
 
         var schemaManager = new SchemaManager(Options.LoggerFactory);
         var triggerManager = new EventTriggerManager(Options.LoggerFactory);
@@ -338,7 +344,9 @@ public class DocumentStore : IDocumentStore
                 if (names.Length == 0 || names.Contains(name))
                 {
                     _logger.LogInformation("Rebuilding projection {ProjectionName}...", name);
+#pragma warning disable CS0618
                     await using var rebuildSession = await LightweightSessionAsync(ct).ConfigureAwait(false);
+#pragma warning restore CS0618
                     await projection.RebuildAsync(rebuildSession, ct).ConfigureAwait(false);
                     await rebuildSession.SaveChangesAsync(ct).ConfigureAwait(false);
                     _logger.LogInformation("Projection {ProjectionName} rebuilt successfully.", name);
@@ -350,7 +358,9 @@ public class DocumentStore : IDocumentStore
         if (Options.InitialData.Count > 0)
         {
             _logger.LogInformation("Running {Count} initial data seeders", Options.InitialData.Count);
+#pragma warning disable CS0618
             await using var seedSession = await LightweightSessionAsync(ct).ConfigureAwait(false);
+#pragma warning restore CS0618
 
             foreach (var seeder in Options.InitialData)
             {
@@ -376,20 +386,51 @@ public class DocumentStore : IDocumentStore
             var session = await tenantClient.CreateSession(ct).ConfigureAwait(false);
             var dbName = $"{Options.Namespace ?? "test"}_{tenantId}";
             await session.Use(Options.Namespace ?? "test", dbName, ct).ConfigureAwait(false);
-            var qs = new QuerySession(tenantClient, session, Options) { TenantId = tenantId };
+            var qs = new QuerySession(tenantClient, session, Options, DocumentTracking.None) { TenantId = tenantId };
             _logger.LogInformation("Created QuerySession for tenant {TenantId}", tenantId);
             return qs;
         }
 
         var defaultSession = await Client.CreateSession(ct).ConfigureAwait(false);
         await defaultSession.Use(Options.Namespace ?? "test", Options.Database ?? "test", ct).ConfigureAwait(false);
-        var qs2 = new QuerySession(Client, defaultSession, Options);
+        var qs2 = new QuerySession(Client, defaultSession, Options, DocumentTracking.None);
         if (Options.TenancyStyle == TenancyStyle.Conjoined && Options.DefaultTenantId is not null)
             qs2.TenantId = Options.DefaultTenantId;
         _logger.LogInformation("Created QuerySession");
         return qs2;
     }
 
+    public async Task<IDocumentSession> OpenSessionAsync(SessionOptions options, CancellationToken ct = default)
+    {
+        ArgumentNullException.ThrowIfNull(options);
+        await EnsureInitialized(ct).ConfigureAwait(false);
+
+        if (Options.TenancyStyle == TenancyStyle.DatabasePerTenant)
+        {
+            var tenantId = options.TenantId ?? ResolveTenantId();
+            var tenantClient = await _tenantSelector!.GetOrCreateClientAsync(tenantId, ct).ConfigureAwait(false);
+            var session = await tenantClient.CreateSession(ct).ConfigureAwait(false);
+            var dbName = $"{Options.Namespace ?? "test"}_{tenantId}";
+            await session.Use(Options.Namespace ?? "test", dbName, ct).ConfigureAwait(false);
+            var ds = new DocumentSession(tenantClient, session, Options, options.Tracking) { TenantId = tenantId };
+            _logger.LogInformation("Opened session (tracking={Tracking}) for tenant {TenantId}", options.Tracking, tenantId);
+            return ds;
+        }
+
+        var defaultSession = await Client.CreateSession(ct).ConfigureAwait(false);
+        await defaultSession.Use(Options.Namespace ?? "test", Options.Database ?? "test", ct).ConfigureAwait(false);
+        var ds2 = new DocumentSession(Client, defaultSession, Options, options.Tracking);
+
+        if (options.TenantId is not null)
+            ds2.TenantId = options.TenantId;
+        else if (Options.TenancyStyle == TenancyStyle.Conjoined && Options.DefaultTenantId is not null)
+            ds2.TenantId = Options.DefaultTenantId;
+
+        _logger.LogInformation("Opened session (tracking={Tracking})", options.Tracking);
+        return ds2;
+    }
+
+    [Obsolete("Use OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }) instead.")]
     public async Task<IDocumentSession> LightweightSessionAsync(CancellationToken ct = default)
     {
         await EnsureInitialized(ct).ConfigureAwait(false);
@@ -401,20 +442,21 @@ public class DocumentStore : IDocumentStore
             var session = await tenantClient.CreateSession(ct).ConfigureAwait(false);
             var dbName = $"{Options.Namespace ?? "test"}_{tenantId}";
             await session.Use(Options.Namespace ?? "test", dbName, ct).ConfigureAwait(false);
-            var ds = new DocumentSession(tenantClient, session, Options, isDirtyTracking: false) { TenantId = tenantId };
+            var ds = new DocumentSession(tenantClient, session, Options, DocumentTracking.None) { TenantId = tenantId };
             _logger.LogInformation("Created LightweightSession (no tracking) for tenant {TenantId}", tenantId);
             return ds;
         }
 
         var defaultSession = await Client.CreateSession(ct).ConfigureAwait(false);
         await defaultSession.Use(Options.Namespace ?? "test", Options.Database ?? "test", ct).ConfigureAwait(false);
-        var ds2 = new DocumentSession(Client, defaultSession, Options, isDirtyTracking: false);
+        var ds2 = new DocumentSession(Client, defaultSession, Options, DocumentTracking.None);
         if (Options.TenancyStyle == TenancyStyle.Conjoined && Options.DefaultTenantId is not null)
             ds2.TenantId = Options.DefaultTenantId;
         _logger.LogInformation("Created LightweightSession (no tracking)");
         return ds2;
     }
 
+    [Obsolete("Use OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.IdentityOnly }) instead.")]
     public async Task<IDocumentSession> DocumentSessionAsync(CancellationToken ct = default)
     {
         await EnsureInitialized(ct).ConfigureAwait(false);
@@ -426,17 +468,17 @@ public class DocumentStore : IDocumentStore
             var session = await tenantClient.CreateSession(ct).ConfigureAwait(false);
             var dbName = $"{Options.Namespace ?? "test"}_{tenantId}";
             await session.Use(Options.Namespace ?? "test", dbName, ct).ConfigureAwait(false);
-            var ds = new DocumentSession(tenantClient, session, Options, isDirtyTracking: true) { TenantId = tenantId };
-            _logger.LogInformation("Created DocumentSession (dirty tracking) for tenant {TenantId}", tenantId);
+            var ds = new DocumentSession(tenantClient, session, Options, DocumentTracking.IdentityOnly) { TenantId = tenantId };
+            _logger.LogInformation("Created DocumentSession (identity tracking) for tenant {TenantId}", tenantId);
             return ds;
         }
 
         var defaultSession = await Client.CreateSession(ct).ConfigureAwait(false);
         await defaultSession.Use(Options.Namespace ?? "test", Options.Database ?? "test", ct).ConfigureAwait(false);
-        var ds2 = new DocumentSession(Client, defaultSession, Options, isDirtyTracking: true);
+        var ds2 = new DocumentSession(Client, defaultSession, Options, DocumentTracking.IdentityOnly);
         if (Options.TenancyStyle == TenancyStyle.Conjoined && Options.DefaultTenantId is not null)
             ds2.TenantId = Options.DefaultTenantId;
-        _logger.LogInformation("Created DocumentSession (dirty tracking)");
+        _logger.LogInformation("Created DocumentSession (identity tracking)");
         return ds2;
     }
 
@@ -464,8 +506,17 @@ public class DocumentStore : IDocumentStore
 
         var surrealSession = Client.CreateSession(DefaultCt).GetAwaiter().GetResult();
         surrealSession.Use(Options.Namespace ?? "test", Options.Database ?? "test", CancellationToken.None).GetAwaiter().GetResult();
-        var querySession = new QuerySession(Client, surrealSession, Options);
+        var querySession = new QuerySession(Client, surrealSession, Options, DocumentTracking.None);
         return GraphQueryProvider.Graph<T>(querySession);
+    }
+
+    private void ApplyPolicies()
+    {
+        foreach (var kvp in Options.Schema.Mappings)
+        {
+            foreach (var policy in Options.Policies.RegisteredPolicies)
+                policy.Apply(kvp.Value);
+        }
     }
 
     private static async Task ApplyDiscoveredConfigurators(StoreOptions options, CancellationToken ct)

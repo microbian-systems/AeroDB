@@ -15,7 +15,8 @@ public abstract class InternalSessionBase : IAsyncDisposable
     public ISurrealDbSession Session { get; }
     protected readonly StoreOptions Options;
     internal StoreOptions StoreOptions => Options;
-    protected readonly Dictionary<Type, Dictionary<string, object>> IdentityMap = new();
+    protected readonly ConcurrentDictionary<Type, ConcurrentDictionary<string, object>> IdentityMap = new();
+    protected DocumentTracking Tracking { get; }
     protected bool Disposed;
 
     /// <summary>
@@ -43,11 +44,12 @@ public abstract class InternalSessionBase : IAsyncDisposable
     /// </summary>
     private readonly ConcurrentDictionary<string, Lazy<Task<ISurrealDbSession>>> _forkedSessionCache = new();
 
-    protected InternalSessionBase(ISurrealDbClient client, ISurrealDbSession session, StoreOptions options)
+    protected InternalSessionBase(ISurrealDbClient client, ISurrealDbSession session, StoreOptions options, DocumentTracking tracking)
     {
         Client = client;
         Session = session;
         Options = options;
+        Tracking = tracking;
     }
 
     protected ILogger<T> CreateLogger<T>() =>
@@ -130,6 +132,16 @@ public abstract class InternalSessionBase : IAsyncDisposable
         {
             var rid = new RecordIdOf<string>(table, id);
 
+            // Check identity map first
+            if (Tracking >= DocumentTracking.IdentityOnly)
+            {
+                if (IdentityMap.TryGetValue(typeof(T), out var typeMap) && typeMap.TryGetValue(id, out var cached))
+                {
+                    logger.LogDebug("LoadAsync<{Type}> identity hit for id={Id}", typeof(T).Name, id);
+                    return (T?)cached;
+                }
+            }
+
             // Try shim-based deserialization for IEntity<TId> types
             T? result;
             var shimType = MetadataRegistry.GetShimType(typeof(T));
@@ -165,6 +177,13 @@ public abstract class InternalSessionBase : IAsyncDisposable
                         typeof(T).Name, entityTenant, TenantId);
                     return default;
                 }
+            }
+
+            // Store in identity map when tracking is enabled
+            if (Tracking >= DocumentTracking.IdentityOnly && result is not null)
+            {
+                var typeMap = IdentityMap.GetOrAdd(typeof(T), _ => new ConcurrentDictionary<string, object>(StringComparer.Ordinal));
+                typeMap[id] = result;
             }
 
             // Track original version for optimistic concurrency
@@ -303,6 +322,25 @@ public abstract class InternalSessionBase : IAsyncDisposable
     protected long GetTrackedVersion(object entity)
     {
         return _originalVersions.GetValueOrDefault(entity, 0);
+    }
+
+    /// <summary>Remove a document from the identity map by ID. Does NOT delete from the database.</summary>
+    public void Eject<T>(string id) where T : class
+    {
+        if (IdentityMap.TryGetValue(typeof(T), out var typeMap))
+            typeMap.TryRemove(id, out _);
+    }
+
+    /// <summary>Remove all documents of a given type from the identity map.</summary>
+    public void EjectAll<T>() where T : class
+    {
+        IdentityMap.TryRemove(typeof(T), out _);
+    }
+
+    /// <summary>Remove ALL documents from the identity map.</summary>
+    public void EjectAll()
+    {
+        IdentityMap.Clear();
     }
 
     internal string Snake(string name)

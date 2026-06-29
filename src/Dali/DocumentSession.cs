@@ -12,7 +12,6 @@ namespace Dali;
 public class DocumentSession : InternalSessionBase, IDocumentSession
 {
     private readonly ILogger<DocumentSession> _logger;
-    private readonly bool _isDirtyTracking;
     private readonly UnitOfWork _unitOfWork = new();
     private IEvents? _events;
     internal readonly List<IEvent> _appendedEvents = new();
@@ -57,10 +56,9 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
             && m.GetParameters()[2].ParameterType == typeof(RecordId)
             && m.GetParameters()[4].ParameterType == typeof(CancellationToken));
 
-    public DocumentSession(ISurrealDbClient client, ISurrealDbSession session, StoreOptions options, bool isDirtyTracking)
-        : base(client, session, options)
+    public DocumentSession(ISurrealDbClient client, ISurrealDbSession session, StoreOptions options, DocumentTracking tracking)
+        : base(client, session, options, tracking)
     {
-        _isDirtyTracking = isDirtyTracking;
         _logger = CreateLogger<DocumentSession>();
     }
 
@@ -201,6 +199,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         _queuedPatches.Clear();
         _queuedRelations.Clear();
         _queuedUnrelations.Clear();
+        EjectAll();
     }
 
     public async Task<int> SaveChangesAsync(CancellationToken ct = default)

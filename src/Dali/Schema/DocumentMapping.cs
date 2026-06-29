@@ -11,6 +11,12 @@ namespace Dali;
 public abstract class DocumentMapping
 {
     internal abstract Type EntityType { get; }
+
+    /// <summary>
+    /// The CLR type mapped by this document mapping.
+    /// </summary>
+    public Type DocumentType => EntityType;
+
     internal abstract List<IndexDefinition> Indices { get; }
     internal abstract bool IsMultiTenanted { get; }
     internal abstract SchemaMode SchemaModeType { get; }
