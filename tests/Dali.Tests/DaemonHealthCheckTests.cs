@@ -1,4 +1,6 @@
+using System.Reflection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using NSubstitute;
 
 namespace Dali.Tests;
 
@@ -56,7 +58,13 @@ public class DaemonHealthCheckTests
         state.HighWaterSequence.ShouldBe(50);
     }
 
-    // ─── DaliDaemonHealthCheck tests ──────────────────────────────────
+    // ─── DaliDaemonHealthCheck.CheckHealthAsync tests ─────────────────
+    //
+    // Branches covered:
+    //   1. _daemon == null                          → Healthy("not configured")
+    //   2. !health.IsRunning                        → Unhealthy("stopped")
+    //   3. IsRunning + recent LastSuccess           → Healthy(description, data)
+    //   4. IsRunning + stale/null LastSuccess       → Degraded("no recent success")
 
     [Test]
     public async Task HealthCheck_null_daemon_reports_healthy()
@@ -70,6 +78,7 @@ public class DaemonHealthCheckTests
         var result = await check.CheckHealthAsync(context);
 
         result.Status.ShouldBe(HealthStatus.Healthy);
+        result.Description.ShouldContain("not configured");
     }
 
     [Test]
@@ -87,5 +96,109 @@ public class DaemonHealthCheckTests
 
         result.Status.ShouldBe(HealthStatus.Unhealthy);
         result.Description.ShouldContain("stopped");
+    }
+
+    [Test]
+    public async Task HealthCheck_running_daemon_with_recent_success_reports_healthy()
+    {
+        // Branch 3: daemon is running with a recent LastSuccess within 2x poll interval
+        var daemon = CreateDaemonWithHealth(new DaemonHealthState(
+            IsRunning: true,
+            LastSuccess: DateTimeOffset.UtcNow.AddSeconds(-3),   // 3 s ago; well within 2 × 5 = 10 s window
+            LastError: null,
+            HighWaterSequence: 42,
+            LagCount: 3,
+            LastException: null
+        ));
+
+        var check = new DaliDaemonHealthCheck(daemon, TimeSpan.FromSeconds(5));
+        var context = new HealthCheckContext
+        {
+            Registration = new HealthCheckRegistration("test", _ => null!, null, null)
+        };
+
+        var result = await check.CheckHealthAsync(context);
+
+        result.Status.ShouldBe(HealthStatus.Healthy);
+        result.Description.ShouldContain("42");                // HighWaterSequence in message
+        result.Description.ShouldContain("3");                 // LagCount in message
+        result.Data.ShouldContainKey("HighWaterSequence");
+        result.Data.ShouldContainKey("LagCount");
+        result.Data["HighWaterSequence"].ShouldBe(42L);
+        result.Data["LagCount"].ShouldBe(3);
+    }
+
+    [Test]
+    public async Task HealthCheck_running_daemon_without_last_success_reports_degraded()
+    {
+        // Branch 4a: running but LastSuccess is null → Degraded
+        var daemon = CreateDaemonWithHealth(new DaemonHealthState(
+            IsRunning: true,
+            LastSuccess: null,
+            LastError: DateTimeOffset.UtcNow.AddMinutes(-5),
+            HighWaterSequence: 10,
+            LagCount: 7,
+            LastException: "Timeout exceeded"
+        ));
+
+        var check = new DaliDaemonHealthCheck(daemon, TimeSpan.FromSeconds(5));
+        var context = new HealthCheckContext
+        {
+            Registration = new HealthCheckRegistration("test", _ => null!, null, null)
+        };
+
+        var result = await check.CheckHealthAsync(context);
+
+        result.Status.ShouldBe(HealthStatus.Degraded);
+        result.Description.ShouldContain("no recent success");
+        result.Description.ShouldContain("Timeout exceeded");
+    }
+
+    [Test]
+    public async Task HealthCheck_running_daemon_with_stale_success_reports_degraded()
+    {
+        // Branch 4b: running but LastSuccess is outside the 2x poll-interval window → Degraded
+        var daemon = CreateDaemonWithHealth(new DaemonHealthState(
+            IsRunning: true,
+            LastSuccess: DateTimeOffset.UtcNow.AddSeconds(-30), // 30 s ago; outside 2 × 5 = 10 s window
+            LastError: null,
+            HighWaterSequence: 15,
+            LagCount: 2,
+            LastException: null
+        ));
+
+        var check = new DaliDaemonHealthCheck(daemon, TimeSpan.FromSeconds(5));
+        var context = new HealthCheckContext
+        {
+            Registration = new HealthCheckRegistration("test", _ => null!, null, null)
+        };
+
+        var result = await check.CheckHealthAsync(context);
+
+        result.Status.ShouldBe(HealthStatus.Degraded);
+        result.Description.ShouldContain("no recent success");
+        result.Description.ShouldContain("none");               // last error reported as "none"
+    }
+
+    // ─── Helpers ──────────────────────────────────────────────────────
+
+    /// <summary>
+    /// Create an <see cref="AsyncDaemon"/> whose <see cref="AsyncDaemon.Health"/>
+    /// property has been set to <paramref name="health"/> via the private setter.
+    /// </summary>
+    private static AsyncDaemon CreateDaemonWithHealth(DaemonHealthState health)
+    {
+        var store = new DocumentStore(new StoreOptions());
+        var daemon = new AsyncDaemon(store, []);
+        SetHealth(daemon, health);
+        return daemon;
+    }
+
+    private static void SetHealth(AsyncDaemon daemon, DaemonHealthState health)
+    {
+        // AsyncDaemon.Health has a private setter — use reflection to set test state.
+        var prop = typeof(AsyncDaemon).GetProperty("Health", BindingFlags.Public | BindingFlags.Instance)!;
+        var setter = prop.GetSetMethod(nonPublic: true)!;
+        setter.Invoke(daemon, [health]);
     }
 }

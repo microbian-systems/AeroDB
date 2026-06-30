@@ -379,20 +379,34 @@ public class EventStore : IEvents
         var jsonOptions = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower };
         int totalInserted = 0;
 
+        // Track version per stream across all chunks so that when a single stream's
+        // events span multiple batches, each event still gets a unique (stream_id, version)
+        // pair.  This is necessary because mt_events may have a UNIQUE INDEX on
+        // (stream_id, version) set up by EnsureEventSchemaAsync, and a SCHEMAFULL table
+        // that requires the version field.
+        var versionByStream = new Dictionary<string, long>();
+
         foreach (var chunk in streams.Chunk(batchSize))
         {
             var statements = new List<string>();
+
             foreach (var (streamId, events) in chunk)
             {
+                if (!versionByStream.TryGetValue(streamId, out var version))
+                    version = 0;
+
                 foreach (var evt in events)
                 {
+                    version++;
                     var json = JsonSerializer.Serialize(evt, jsonOptions);
                     var eventType = evt.GetType().Name;
                     var streamIdEscaped = streamId.Replace("'", "\\'");
                     var escapedJson = json.Replace("'", "\\'");
                     statements.Add(
-                        $"INSERT INTO mt_events {{ stream_id: '{streamIdEscaped}', event_type: '{eventType}', data_json: '{escapedJson}', created_at: time::now() }}");
+                        $"INSERT INTO mt_events {{ stream_id: '{streamIdEscaped}', version: {version}, sequence: 0, stream_key: '', event_type: '{eventType}', data_json: '{escapedJson}', headers_json: NONE, created_at: time::now() }}");
                 }
+
+                versionByStream[streamId] = version;
             }
 
             if (statements.Count > 0)

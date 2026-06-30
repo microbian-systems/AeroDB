@@ -1,7 +1,8 @@
 namespace Dali;
 
 /// <summary>
-/// Transforms <see cref="SurrealArrayFunctions"/> marker class method calls into SurrealQL array:: function expressions.
+/// Transforms <see cref="SurrealArrayFunctions"/> marker class method calls into
+/// SurrealQL expressions — either <c>array::*()</c> functions or SQL operators.
 /// </summary>
 internal static class ArrayExpressionHandler
 {
@@ -23,13 +24,15 @@ internal static class ArrayExpressionHandler
             "Distinct" when args.Length == 1 => $"array::distinct({args[0]})",
             "Union" when args.Length == 2 => $"array::union({args[0]}, {args[1]})",
             "Intersect" when args.Length == 2 => $"array::intersect({args[0]}, {args[1]})",
-            "Intersects" when args.Length == 2 => $"array::intersect({args[0]}, {args[1]})",
             "ArrayContains" when args.Length == 2 => $"array::contains({args[0]}, {args[1]})",
-            "ContainsAll" when args.Length == 2 => $"array::contains_all({args[0]}, {args[1]})",
-            "ContainsAny" when args.Length == 2 => $"array::contains_any({args[0]}, {args[1]})",
-            "ContainsNone" when args.Length == 2 => $"array::contains_none({args[0]}, {args[1]})",
             "Flatten" when args.Length == 1 => $"array::flatten({args[0]})",
             "Len" when args.Length == 1 => $"array::len({args[0]})",
+
+            // SurrealDB operators (not function calls)
+            "ContainsAll"   when args.Length == 2 => $"{args[0]} CONTAINSALL {args[1]}",
+            "ContainsAny"   when args.Length == 2 => $"{args[0]} CONTAINSANY {args[1]}",
+            "ContainsNone"  when args.Length == 2 => $"{args[0]} CONTAINSNONE {args[1]}",
+            "Intersects"    when args.Length == 2 => $"array::len(array::intersect({args[0]}, {args[1]})) > 0",
             _ => null
         };
     }

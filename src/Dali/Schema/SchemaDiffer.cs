@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Reflection;
 using System.Text.Json.Serialization;
 using Dali.Metadata;
@@ -51,7 +52,7 @@ public class SchemaDiffer
                 }
 
                 // INFO FOR TABLE returns an array of field/definition objects
-                var infoRows = infoResponse.GetValue<List<object>>(0);
+                var infoRows = infoResponse.GetValue<List<Dictionary<string, object>>>(0);
                 if (infoRows is { Count: > 0 })
                 {
                     var infoJson = System.Text.Json.JsonSerializer.Serialize(infoRows);

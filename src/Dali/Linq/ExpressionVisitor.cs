@@ -564,6 +564,8 @@ namespace Dali;
     {
         null => "NONE",
         bool b => b ? "true" : "false",
+        DateTime dt => $"time::from_unix({new DateTimeOffset(dt.ToUniversalTime(), TimeSpan.Zero).ToUnixTimeSeconds()})",
+        DateTimeOffset dto => $"time::from_unix({dto.ToUnixTimeSeconds()})",
         _ => builder.Parameter(val)
     };
 
