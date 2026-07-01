@@ -193,15 +193,15 @@ The Helpdesk app does **not** use Aspire. It has its own `docker-compose.yml` at
 
 | Service | Purpose | Porting Action |
 |---------|---------|---------------|
-| **Postgres** (plv8) | Marten database | ❌ Remove — replace with `surrealdb/surrealdb` |
-| **pgadmin** | Postgres admin | ❌ Remove — replace with `surrealdb/surrealist` (SurrealDB web UI) |
+| **Postgres** (plv8) | Marten database | ❌ Remove — replace with SurrealDB |
+| **pgadmin** | Postgres admin | ❌ Remove — not needed |
 | **Zookeeper** | Kafka coordination | ✅ Keep |
 | **Kafka** | Message bus for projection | ✅ Keep |
 | **Schema Registry** | Avro schema | ✅ Keep |
 | **Kafka REST** | Kafka HTTP proxy | ✅ Keep |
 | **Kafka Topics UI** | Kafka management UI | ✅ Keep |
 
-Porting: Postgres service replaced with `surrealdb/surrealdb:latest`. pgadmin replaced with `surrealdb/surrealist:latest`. Zookeeper + Kafka + Schema Registry remain for the Kafka-based `KafkaProducer` projection.
+Porting: Postgres service replaced with `surrealdb/surrealdb:latest`. Zookeeper + Kafka + Schema Registry remain for the Kafka-based `KafkaProducer` projection.
 
 ### New docker structure (for future use)
 
