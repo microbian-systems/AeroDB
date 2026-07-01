@@ -19,10 +19,21 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
     private ILogger ResolvedLogger => _loggerOverride ?? _baseLogger;
 
     /// <inheritdoc />
-    public Microsoft.Extensions.Logging.ILogger? Logger
+    public new Microsoft.Extensions.Logging.ILogger? Logger
     {
         get => _loggerOverride;
         set => _loggerOverride = value;
+    }
+
+    /// <summary>
+    /// Explicit implementation of <see cref="IQuerySession.Logger"/> to resolve the
+    /// naming conflict with <see cref="IDocumentSession.Logger"/>. Delegates to the
+    /// <see cref="InternalSessionBase"/> property.
+    /// </summary>
+    IMartenSessionLogger? IQuerySession.Logger
+    {
+        get => base.Logger;
+        set => base.Logger = value;
     }
     private readonly SessionOptions? _sessionOptions;
     private IEvents? _events;
@@ -31,6 +42,29 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
     internal readonly List<QueuedRelation> _queuedRelations = new();
     internal readonly List<RecordId> _queuedUnrelations = new();
     internal readonly List<IFetchForWritingResult> _fetchForWritingResults = new();
+    private ConcurrencyChecks? _concurrencyOverride;
+
+    /// <summary>
+    /// The current explicit transaction, if any. Set by <see cref="BeginTransaction"/> /
+    /// <see cref="BeginTransactionAsync"/>. When non-null, <see cref="SaveChangesAsync"/>
+    /// runs inside this transaction without auto-committing.
+    /// </summary>
+    private SurrealDbTransaction? _explicitTransaction;
+
+    /// <summary>
+    /// Whether this session owns the explicit transaction and is responsible for
+    /// cleaning it up on dispose.
+    /// </summary>
+    private bool _ownsTransaction;
+
+    /// <summary>
+    /// Whether the store-level <c>UseOptimisticConcurrency</c> is active for this session,
+    /// respecting any per-session override set via <see cref="Concurrency"/>.
+    /// </summary>
+    internal protected override bool UseOptimisticConcurrency =>
+        _concurrencyOverride.HasValue
+            ? _concurrencyOverride.Value == ConcurrencyChecks.Enabled
+            : Options.UseOptimisticConcurrency;
 
     /// <summary>
     /// Cached <c>MethodInfo</c> for <see cref="SurrealDbResponse.GetValue{T}"/>,
@@ -102,6 +136,86 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         }
     }
 
+    /// <summary>
+    /// Begins an explicit SurrealDB transaction. Returns an <see cref="IDaliTransaction"/> for
+    /// explicit commit/rollback control. When active, <see cref="SaveChangesAsync"/> runs inside
+    /// this transaction without auto-committing, supporting multiple <c>SaveChangesAsync</c> calls
+    /// within a single transaction.
+    /// <para>
+    /// Alternative: use <see cref="CommitTransactionAsync"/> or <see cref="RollbackTransactionAsync"/>
+    /// on the session directly.
+    /// </para>
+    /// </summary>
+    public IDaliTransaction BeginTransaction()
+    {
+        if (_explicitTransaction != null)
+            throw new InvalidOperationException("A transaction is already in progress.");
+
+        _explicitTransaction = Session.BeginTransaction(DefaultCt).GetAwaiter().GetResult();
+        _ownsTransaction = true;
+        return new DaliTransaction(_explicitTransaction, this);
+    }
+
+    /// <summary>
+    /// Begins an explicit SurrealDB transaction asynchronously. Returns an <see cref="IDaliTransaction"/>
+    /// for explicit commit/rollback control. When active, <see cref="SaveChangesAsync"/> runs inside
+    /// this transaction without auto-committing, supporting multiple <c>SaveChangesAsync</c> calls
+    /// within a single transaction.
+    /// <para>
+    /// Alternative: use <see cref="CommitTransactionAsync"/> or <see cref="RollbackTransactionAsync"/>
+    /// on the session directly.
+    /// </para>
+    /// </summary>
+    public async Task<IDaliTransaction> BeginTransactionAsync(CancellationToken ct = default)
+    {
+        if (_explicitTransaction != null)
+            throw new InvalidOperationException("A transaction is already in progress.");
+
+        _explicitTransaction = await Session.BeginTransaction(ct).ConfigureAwait(false);
+        _ownsTransaction = true;
+        return new DaliTransaction(_explicitTransaction, this);
+    }
+
+    /// <summary>
+    /// Commits the current explicit transaction started by <see cref="BeginTransaction"/> or
+    /// <see cref="BeginTransactionAsync"/>. Throws if no active transaction exists.
+    /// </summary>
+    public async Task CommitTransactionAsync(CancellationToken ct = default)
+    {
+        if (_explicitTransaction == null)
+            throw new InvalidOperationException("No active transaction to commit.");
+
+        await _explicitTransaction.Commit(ct).ConfigureAwait(false);
+        await _explicitTransaction.DisposeAsync().ConfigureAwait(false);
+        _explicitTransaction = null;
+        _ownsTransaction = false;
+    }
+
+    /// <summary>
+    /// Rolls back / cancels the current explicit transaction started by <see cref="BeginTransaction"/> or
+    /// <see cref="BeginTransactionAsync"/>. Throws if no active transaction exists.
+    /// </summary>
+    public async Task RollbackTransactionAsync(CancellationToken ct = default)
+    {
+        if (_explicitTransaction == null)
+            throw new InvalidOperationException("No active transaction to rollback.");
+
+        await _explicitTransaction.Cancel(ct).ConfigureAwait(false);
+        await _explicitTransaction.DisposeAsync().ConfigureAwait(false);
+        _explicitTransaction = null;
+        _ownsTransaction = false;
+    }
+
+    /// <summary>
+    /// Called by <see cref="DaliTransaction"/> after commit/rollback to clear the session's
+    /// transaction state and return to auto-transact mode.
+    /// </summary>
+    internal void ClearTransaction()
+    {
+        _explicitTransaction = null;
+        _ownsTransaction = false;
+    }
+
     public IEvents Events
     {
         get
@@ -163,7 +277,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         }
 
         // Track original version for optimistic concurrency
-        if (Options.UseOptimisticConcurrency)
+        if (UseOptimisticConcurrency)
             TrackOriginalVersion(entity);
 
         // Populate identity map when dirty tracking is enabled
@@ -200,7 +314,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
     /// </summary>
     internal void TrackVersion<T>(T entity) where T : class
     {
-        if (Options.UseOptimisticConcurrency)
+        if (UseOptimisticConcurrency)
             TrackOriginalVersion(entity);
     }
 
@@ -317,6 +431,11 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         _queuedPatches.Clear();
         _queuedRelations.Clear();
         _queuedUnrelations.Clear();
+        _queuedStorageOperations.Clear();
+        QueuedSqlCommands.Clear();
+        _expectedVersions.Clear();
+        _expectedRevisions.Clear();
+        _tryUpdateRevisions.Clear();
         ClearSnapshots();
         EjectAll();
     }
@@ -326,7 +445,8 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         RequestCount++;
         var count = _unitOfWork.Operations.Count;
         if (count == 0 && _appendedEvents.Count == 0 && _queuedPatches.Count == 0
-            && _queuedRelations.Count == 0 && _queuedUnrelations.Count == 0) return 0;
+            && _queuedRelations.Count == 0 && _queuedUnrelations.Count == 0
+            && _queuedStorageOperations.Count == 0 && QueuedSqlCommands.Count == 0) return 0;
 
         ResolvedLogger.LogInformation("SaveChangesAsync: committing {EntityCount} entities and {EventCount} events",
             count, _appendedEvents.Count);
@@ -383,10 +503,15 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
 
         try
         {
-            // BeforeSaveChangesAsync hooks
+            // BeforeSaveChangesAsync hooks (store + session level)
             if (Options.Listeners.Count > 0)
             {
                 foreach (var listener in Options.Listeners)
+                    await listener.BeforeSaveChangesAsync(this, ct).ConfigureAwait(false);
+            }
+            if (SessionListeners.Count > 0)
+            {
+                foreach (var listener in SessionListeners)
                     await listener.BeforeSaveChangesAsync(this, ct).ConfigureAwait(false);
             }
 
@@ -394,18 +519,74 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
 
             // Begin SurrealDB transaction — all per-entity operations on this session
             // participate because they share the underlying connection.
-            var tx = await targetSession.BeginTransaction(ct).ConfigureAwait(false);
+            SurrealDbTransaction? tx = null;
+            bool ownsTx = false;
+
+            if (_explicitTransaction != null)
+            {
+                // Use the explicit transaction — caller manages commit/rollback.
+                // Operations run inside the explicit transaction scope.
+                // Do NOT commit/cancel at the end — caller will do it.
+            }
+            else
+            {
+                tx = await targetSession.BeginTransaction(ct).ConfigureAwait(false);
+                ownsTx = true;
+            }
 
             try
             {
                 // Phase 1: Optimistic concurrency checks (Modified entities only)
                 // Runs before any mutations so we fail-fast if a conflict exists.
-                if (Options.UseOptimisticConcurrency && count > 0)
+                HashSet<object>? revisionSkipOps = null;
+                if ((UseOptimisticConcurrency || _expectedVersions.Count > 0 || _expectedRevisions.Count > 0) && count > 0)
                 {
+                    revisionSkipOps = new HashSet<object>();
                     foreach (var op in _unitOfWork.Operations)
                     {
                         if (op.Type == OperationType.Modified)
-                            await CheckConcurrencyAsync(op, targetSession, ct).ConfigureAwait(false);
+                        {
+                            // Standard optimistic concurrency check
+                            if (UseOptimisticConcurrency)
+                                await CheckConcurrencyAsync(op, targetSession, ct).ConfigureAwait(false);
+
+                            // Expected version check (UpdateExpectedVersion)
+                            if (_expectedVersions.TryGetValue(op.Entity, out var expectedVer))
+                            {
+                                var dbVersion = await FetchVersionAsync(op.Entity, op.EntityType, targetSession, ct).ConfigureAwait(false);
+                                if (expectedVer != dbVersion)
+                                {
+                                    ResolvedLogger.LogWarning(
+                                        "Expected version mismatch on {Type} (id={Id}): expected {Expected}, found {Actual}",
+                                        op.EntityType.Name, GetEntityId(op.Entity), expectedVer, dbVersion);
+                                    throw new ConcurrencyException(op.EntityType, GetEntityId(op.Entity) ?? "?", expectedVer, dbVersion);
+                                }
+                            }
+
+                            // Expected revision check (UpdateRevision / TryUpdateRevision)
+                            if (_expectedRevisions.TryGetValue(op.Entity, out var expectedRev))
+                            {
+                                var dbVersion = await FetchVersionAsync(op.Entity, op.EntityType, targetSession, ct).ConfigureAwait(false);
+                                if (expectedRev != dbVersion)
+                                {
+                                    if (_tryUpdateRevisions.Contains(op.Entity))
+                                    {
+                                        // Skip this entity — don't throw, just leave it out
+                                        revisionSkipOps.Add(op.Entity);
+                                        ResolvedLogger.LogDebug(
+                                            "TryUpdateRevision: revision mismatch on {Type} (id={Id}), skipping",
+                                            op.EntityType.Name, GetEntityId(op.Entity));
+                                    }
+                                    else
+                                    {
+                                        ResolvedLogger.LogWarning(
+                                            "Revision mismatch on {Type} (id={Id}): expected {Expected}, found {Actual}",
+                                            op.EntityType.Name, GetEntityId(op.Entity), expectedRev, dbVersion);
+                                        throw new ConcurrencyException(op.EntityType, GetEntityId(op.Entity) ?? "?", expectedRev, dbVersion);
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
 
@@ -432,7 +613,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
 
                 // Phase 2: Increment version fields on all entities before persisting.
                 // Skip clean dirty-tracked ops (handled in Phase 1.5).
-                if (Options.UseOptimisticConcurrency && count > 0)
+                if (UseOptimisticConcurrency && count > 0)
                 {
                     foreach (var op in _unitOfWork.Operations)
                     {
@@ -451,6 +632,10 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                         if (cleanOps?.Contains(op) == true)
                             continue;
 
+                        // TryUpdateRevision: skip entities whose revision didn't match
+                        if (revisionSkipOps?.Contains(op.Entity) == true)
+                            continue;
+
                         var table = MetadataDispatch.GetTableName(op.EntityType);
 
                         // Call before-store/before-delete listeners (after dirty-tracking skip)
@@ -458,7 +643,17 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                         {
                             foreach (var listener in Options.Listeners)
                             {
-                                if (op.Type is OperationType.Added or OperationType.Modified)
+                                if (op.Type is OperationType.Added or OperationType.Modified or OperationType.Insert or OperationType.Update)
+                                    await listener.BeforeStoreAsync(this, op.Entity, ct).ConfigureAwait(false);
+                                else if (op.Type is OperationType.Deleted or OperationType.SoftDeleted)
+                                    await listener.BeforeDeleteAsync(this, op.Entity, ct).ConfigureAwait(false);
+                            }
+                        }
+                        if (SessionListeners.Count > 0)
+                        {
+                            foreach (var listener in SessionListeners)
+                            {
+                                if (op.Type is OperationType.Added or OperationType.Modified or OperationType.Insert or OperationType.Update)
                                     await listener.BeforeStoreAsync(this, op.Entity, ct).ConfigureAwait(false);
                                 else if (op.Type is OperationType.Deleted or OperationType.SoftDeleted)
                                     await listener.BeforeDeleteAsync(this, op.Entity, ct).ConfigureAwait(false);
@@ -468,7 +663,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                         switch (op.Type)
                         {
                             case OperationType.Added:
-                                ResolvedLogger.LogDebug("CREATE/UPSERT {Type} ({Table})", op.EntityType.Name, table);
+                                ResolvedLogger.LogDebug("UPSERT {Type} ({Table})", op.EntityType.Name, table);
                                 var entityId = GetEntityId(op.Entity);
                                 if (!string.IsNullOrEmpty(entityId))
                                 {
@@ -528,6 +723,44 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                                 }
                                 break;
 
+                            case OperationType.Insert:
+                                ResolvedLogger.LogDebug("INSERT {Type} ({Table})", op.EntityType.Name, table);
+                                var insertId = GetEntityId(op.Entity);
+                                if (!string.IsNullOrEmpty(insertId))
+                                {
+                                    // Use CREATE (insert-only, fails if record already exists)
+                                    await targetSession.RawQuery(
+                                        $"CREATE {table}:`{insertId}` CONTENT $data",
+                                        new Dictionary<string, object?> { ["data"] = op.Entity },
+                                        ct).ConfigureAwait(false);
+                                }
+                                else
+                                {
+                                    // No explicit ID — auto-generate via CREATE
+                                    var createdResult = await CreateEntityAsync(op, table, targetSession, ct).ConfigureAwait(false);
+                                    if (createdResult is not null)
+                                    {
+                                        var idProp = op.EntityType.GetProperty("Id");
+                                        var createdId = createdResult.GetType().GetProperty("Id")?.GetValue(createdResult);
+                                        if (idProp is not null && createdId is not null)
+                                            idProp.SetValue(op.Entity, createdId);
+                                    }
+                                }
+                                break;
+
+                            case OperationType.Update:
+                                ResolvedLogger.LogDebug("UPDATE-ONLY {Type} ({Table})", op.EntityType.Name, table);
+                                var updateId = GetEntityId(op.Entity);
+                                if (!string.IsNullOrEmpty(updateId))
+                                {
+                                    // Use UPDATE (update-only, fails if record doesn't exist)
+                                    await targetSession.RawQuery(
+                                        $"UPDATE {table}:`{updateId}` MERGE $data",
+                                        new Dictionary<string, object?> { ["data"] = op.Entity },
+                                        ct).ConfigureAwait(false);
+                                }
+                                break;
+
                             case OperationType.Deleted:
                                 ResolvedLogger.LogDebug("DELETE {Type} ({Table})", op.EntityType.Name, table);
                                 var delId = GetRecordId(op.Entity, table);
@@ -568,6 +801,16 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                         if (Options.Listeners.Count > 0)
                         {
                             foreach (var listener in Options.Listeners)
+                            {
+                                if (op.Type is OperationType.Added or OperationType.Modified)
+                                    await listener.AfterStoreAsync(this, op.Entity, ct).ConfigureAwait(false);
+                                else if (op.Type is OperationType.Deleted or OperationType.SoftDeleted)
+                                    await listener.AfterDeleteAsync(this, op.Entity, ct).ConfigureAwait(false);
+                            }
+                        }
+                        if (SessionListeners.Count > 0)
+                        {
+                            foreach (var listener in SessionListeners)
                             {
                                 if (op.Type is OperationType.Added or OperationType.Modified)
                                     await listener.AfterStoreAsync(this, op.Entity, ct).ConfigureAwait(false);
@@ -760,38 +1003,78 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                     _fetchForWritingResults.Clear();
                 }
 
-                // AfterSaveChangesAsync hooks (inside transaction, before commit)
+                // Phase 6: Execute queued storage operations (from QueueOperation)
+                if (_queuedStorageOperations.Count > 0)
+                {
+                    foreach (var op in _queuedStorageOperations)
+                    {
+                        await op.ExecuteAsync(this, ct).ConfigureAwait(false);
+                    }
+                    _queuedStorageOperations.Clear();
+                }
+
+                // Phase 7: Execute queued SQL commands (from QueueSqlCommand)
+                if (QueuedSqlCommands.Count > 0)
+                {
+                    await ExecuteQueuedSqlCommandsAsync(ct).ConfigureAwait(false);
+                }
+
+                // AfterSaveChangesAsync hooks (store + session level, inside transaction, before commit)
                 if (Options.Listeners.Count > 0)
                 {
                     foreach (var listener in Options.Listeners)
                         await listener.AfterSaveChangesAsync(this, ct).ConfigureAwait(false);
                 }
+                if (SessionListeners.Count > 0)
+                {
+                    foreach (var listener in SessionListeners)
+                        await listener.AfterSaveChangesAsync(this, ct).ConfigureAwait(false);
+                }
 
-                // BeforeCommitAsync hooks
+                // BeforeCommitAsync hooks (store + session level)
                 if (Options.Listeners.Count > 0)
                 {
                     foreach (var listener in Options.Listeners)
                         await listener.BeforeCommitAsync(this, ct).ConfigureAwait(false);
                 }
+                if (SessionListeners.Count > 0)
+                {
+                    foreach (var listener in SessionListeners)
+                        await listener.BeforeCommitAsync(this, ct).ConfigureAwait(false);
+                }
 
-                await tx.Commit(ct).ConfigureAwait(false);
+                if (ownsTx && tx is not null)
+                {
+                    await tx.Commit(ct).ConfigureAwait(false);
+                }
             }
             catch
             {
-                await tx.Cancel(ct).ConfigureAwait(false);
+                if (ownsTx && tx is not null)
+                {
+                    await tx.Cancel(ct).ConfigureAwait(false);
+                }
                 throw;
             }
 
             // AfterCommitAsync hooks (called only after successful commit)
+            var committedChanges = new ChangeSet
+            {
+                Operations = committedOperations,
+                AppendedEvents = appendedEventSnapshot,
+                Updated = committedOperations.Where(op => op.Type == OperationType.Modified).Select(op => op.Entity).ToArray(),
+                Inserted = committedOperations.Where(op => op.Type == OperationType.Added).Select(op => op.Entity).ToArray(),
+                Deleted = committedOperations.Where(op => op.Type is OperationType.Deleted or OperationType.SoftDeleted).Select(op => op.Entity).ToArray()
+            };
             if (Options.Listeners.Count > 0)
             {
-                var changes = new ChangeSet
-                {
-                    Operations = committedOperations,
-                    AppendedEvents = appendedEventSnapshot
-                };
                 foreach (var listener in Options.Listeners)
-                    await listener.AfterCommitAsync(this, changes, ct).ConfigureAwait(false);
+                    await listener.AfterCommitAsync(this, committedChanges, ct).ConfigureAwait(false);
+            }
+            if (SessionListeners.Count > 0)
+            {
+                foreach (var listener in SessionListeners)
+                    await listener.AfterCommitAsync(this, committedChanges, ct).ConfigureAwait(false);
             }
 
             var resultCount = count > 0 ? count : appendedEventSnapshot.Length + graphOpCount;
@@ -850,6 +1133,35 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
     {
         var id = GetEntityId(entity);
         return string.IsNullOrEmpty(id) ? null : new RecordIdOf<string>(table, id);
+    }
+
+    /// <summary>
+    /// Fetches the current version of an entity from the database.
+    /// Used by <see cref="UpdateExpectedVersion{T}"/> and <see cref="UpdateRevision{T}"/> checks.
+    /// Returns -1 if no version field is found or the entity has no ID.
+    /// </summary>
+    private async Task<long> FetchVersionAsync(object entity, Type entityType, ISurrealDbSession session, CancellationToken ct)
+    {
+        if (MetadataDispatch.GetVersionFieldName(entityType) is null)
+            return -1;
+
+        var table = MetadataDispatch.GetTableName(entityType);
+        var id = GetEntityId(entity);
+        if (id is null) return -1;
+
+        var surql = $"SELECT * FROM {table}:{id};";
+        var response = await session.RawQuery(surql, null, ct).ConfigureAwait(false);
+
+        if (response.HasErrors || response.Count == 0 || GetValueMethod is null)
+            return -1;
+
+        var listType = typeof(List<>).MakeGenericType(entityType);
+        var typedGetValue = GetValueMethod.MakeGenericMethod(listType);
+        var raw = typedGetValue.Invoke(response, [0]);
+        if (raw is System.Collections.IList list && list.Count > 0 && list[0] is not null)
+            return GetVersion(list[0]);
+
+        return -1;
     }
 
     /// <summary>
@@ -962,29 +1274,47 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         await task.ConfigureAwait(false);
     }
 
-    /// <summary>Starts a live query monitoring a table for changes.</summary>
+    // ===================================================================
+    // Marten API parity: Watch* live query wrappers
+    // ===================================================================
+
+    /// <summary>
+    /// [Marten API parity] Starts a live query monitoring a table.
+    /// Delegates to <see cref="Dali.LiveQuery.ILiveQuerySession.Live{T}"/> internally,
+    /// wrapping the result in <see cref="LegacyLiveQueryAdapter{T}"/>.
+    /// </summary>
     public async Task<ILiveQuery<T>> WatchTableAsync<T>(CancellationToken ct = default) where T : class
     {
-        var table = MetadataDispatch.GetTableName(typeof(T));
-        var live = await Session.LiveTable<T>(table, diff: false, ct).ConfigureAwait(false);
-        return new LiveQuery<T>(live);
+        var liveSession = new Dali.LiveQuery.LiveQuerySession(
+            Session, Options, Options.LoggerFactory, TenantId);
+        var sub = await liveSession.Live<T>().SubscribeAsync(ct).ConfigureAwait(false);
+        return new LegacyLiveQueryAdapter<T>(sub);
     }
 
-    /// <summary>Starts a live query with a custom where clause.</summary>
+    /// <summary>
+    /// [Marten API parity] Starts a live query with a raw SurrealQL WHERE clause.
+    /// Delegates to <see cref="Dali.LiveQuery.ILiveQuerySession.LiveRawQuery{T}"/> internally.
+    /// </summary>
     public async Task<ILiveQuery<T>> WatchQueryAsync<T>(string whereClause, CancellationToken ct = default) where T : class
     {
         var table = MetadataDispatch.GetTableName(typeof(T));
         var surql = $"LIVE SELECT * FROM `{table}` WHERE {whereClause}";
-        var live = await Session.LiveRawQuery<T>(surql, null, ct).ConfigureAwait(false);
-        return new LiveQuery<T>(live);
+        var liveSession = new Dali.LiveQuery.LiveQuerySession(
+            Session, Options, Options.LoggerFactory, TenantId);
+        var sub = await liveSession.LiveRawQuery<T>(surql, ct: ct).ConfigureAwait(false);
+        return new LegacyLiveQueryAdapter<T>(sub);
     }
 
-    /// <summary>Watches events for a specific stream ID.</summary>
+    /// <summary>
+    /// [Marten API parity] Watches events for a specific stream ID (mt_events table).
+    /// </summary>
     public async Task<ILiveQuery<object>> WatchStreamAsync(string streamId, CancellationToken ct = default)
     {
         var surql = $"LIVE SELECT * FROM mt_events WHERE stream_id = '{streamId.Replace("'", "\\'")}'";
-        var live = await Session.LiveRawQuery<object>(surql, null, ct).ConfigureAwait(false);
-        return new LiveQuery<object>(live);
+        var liveSession = new Dali.LiveQuery.LiveQuerySession(
+            Session, Options, Options.LoggerFactory, TenantId);
+        var sub = await liveSession.LiveRawQuery<object>(surql, ct: ct).ConfigureAwait(false);
+        return new LegacyLiveQueryAdapter<object>(sub);
     }
 
     /// <summary>Start a graph traversal query.</summary>
@@ -1008,6 +1338,439 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         _queuedUnrelations.Add(edgeId);
     }
 
+    // ===================================================================
+    // IDocumentSession additions (Marten API parity)
+    // ===================================================================
+
+    /// <inheritdoc />
+    public IDocumentSession ForTenant(string tenantId)
+    {
+        SetTenant(tenantId);
+        return this;
+    }
+
+    /// <summary>
+    /// Session-scoped listeners (in addition to store-level listeners).
+    /// Delegates to the <see cref="InternalSessionBase.SessionListeners"/> list
+    /// populated by the <see cref="DocumentSession"/> constructor.
+    /// </summary>
+    public IList<IDocumentSessionListener> Listeners => SessionListeners;
+
+    /// <inheritdoc />
+    public ConcurrencyChecks? Concurrency
+    {
+        get => _concurrencyOverride;
+        set => _concurrencyOverride = value;
+    }
+
+    /// <inheritdoc />
+    public async Task<IDocumentSession> IdentitySessionForTenantAsync(string tenantId, CancellationToken ct = default)
+    {
+        if (DocumentStore is null)
+            throw new InvalidOperationException("DocumentStore is not available on this session.");
+        return await DocumentStore.IdentitySessionAsync(tenantId, ct).ConfigureAwait(false);
+    }
+
+    // ===================================================================
+    // IQuerySession additions (Marten API parity)
+    // ===================================================================
+
+    /// <inheritdoc />
+    public Task<T?> LoadAsync<T>(int id, CancellationToken ct = default) where T : class
+        => LoadAsync<T>(id.ToString(), ct);
+
+    /// <inheritdoc />
+    public Task<T?> LoadAsync<T>(long id, CancellationToken ct = default) where T : class
+        => LoadAsync<T>(id.ToString(), ct);
+
+    /// <inheritdoc />
+    public Task<T?> LoadAsync<T>(Guid id, CancellationToken ct = default) where T : class
+        => LoadAsync<T>(id.ToString(), ct);
+
+    /// <inheritdoc />
+    public Task<T?> LoadAsync<T>(object id, CancellationToken ct = default) where T : class
+    {
+        ArgumentNullException.ThrowIfNull(id);
+        var strId = id.ToString();
+        return base.LoadAsync<T>(strId, ct);
+    }
+
+    /// <inheritdoc />
+    public Task<bool> CheckExistsAsync<T>(string id, CancellationToken ct = default) where T : class
+        => CheckExistsAsyncCore<T>(id, ct);
+
+    /// <inheritdoc />
+    public Task<bool> CheckExistsAsync<T>(int id, CancellationToken ct = default) where T : class
+        => CheckExistsAsync<T>(id.ToString(), ct);
+
+    /// <inheritdoc />
+    public Task<bool> CheckExistsAsync<T>(long id, CancellationToken ct = default) where T : class
+        => CheckExistsAsync<T>(id.ToString(), ct);
+
+    /// <inheritdoc />
+    public Task<bool> CheckExistsAsync<T>(Guid id, CancellationToken ct = default) where T : class
+        => CheckExistsAsync<T>(id.ToString(), ct);
+
+    /// <inheritdoc />
+    public Task<bool> CheckExistsAsync<T>(object id, CancellationToken ct = default) where T : class
+    {
+        ArgumentNullException.ThrowIfNull(id);
+        var strId = id.ToString();
+        return CheckExistsAsyncCore<T>(strId, ct);
+    }
+
+    /// <inheritdoc />
+    public Task<IReadOnlyList<T>> LoadManyAsync<T>(IEnumerable<string> ids, CancellationToken ct = default) where T : class
+        => LoadManyExtensions.LoadManyAsync<T>(this, ids, ct);
+
+    /// <inheritdoc />
+    public Task<IReadOnlyList<T>> LoadManyAsync<T>(IEnumerable<Guid> ids, CancellationToken ct = default) where T : class
+        => LoadManyAsync<T>(ids.Select(id => id.ToString()), ct);
+
+    /// <inheritdoc />
+    public Task<IReadOnlyList<T>> LoadManyAsync<T>(IEnumerable<long> ids, CancellationToken ct = default) where T : class
+        => LoadManyAsync<T>(ids.Select(id => id.ToString()), ct);
+
+    /// <inheritdoc />
+    public Task<IReadOnlyList<T>> LoadManyAsync<T>(IEnumerable<int> ids, CancellationToken ct = default) where T : class
+        => LoadManyAsync<T>(ids.Select(id => id.ToString()), ct);
+
+    /// <inheritdoc />
+    public async Task<IDocumentMetadata?> MetadataForAsync<T>(T entity, CancellationToken ct = default) where T : class
+    {
+        ArgumentNullException.ThrowIfNull(entity);
+
+        if (entity is IDocumentMetadata existing)
+            return existing;
+
+        var id = GetEntityId(entity);
+        if (id is null) return null;
+
+        var fresh = await LoadAsync<T>(id, ct).ConfigureAwait(false);
+        return fresh as IDocumentMetadata;
+    }
+
+    // ===================================================================
+    // IDocumentOperations additions (Marten API parity)
+    // ===================================================================
+
+    /// <inheritdoc />
+    public void Delete<T>(string id) where T : class
+    {
+        var entity = CreateEntityWithId<T>(id);
+        Delete(entity);
+    }
+
+    /// <inheritdoc />
+    public void Delete<T>(long id) where T : class
+        => Delete<T>(id.ToString());
+
+    /// <inheritdoc />
+    public void Delete<T>(int id) where T : class
+        => Delete<T>(id.ToString());
+
+    /// <inheritdoc />
+    public void Delete<T>(Guid id) where T : class
+        => Delete<T>(id.ToString());
+
+    /// <inheritdoc />
+    public void Delete<T>(object id) where T : class
+    {
+        ArgumentNullException.ThrowIfNull(id);
+        Delete<T>(id.ToString()!);
+    }
+
+    /// <inheritdoc />
+    public void Store<T>(IEnumerable<T> documents) where T : class
+    {
+        foreach (var doc in documents)
+            Store(doc);
+    }
+
+    /// <inheritdoc />
+    public void Store<T>(params T[] documents) where T : class
+    {
+        foreach (var doc in documents)
+            Store(doc);
+    }
+
+    private static readonly ConcurrentDictionary<Type, Action<DocumentSession, object>> _storeCache = new();
+    private static readonly ConcurrentDictionary<Type, Action<DocumentSession, object>> _deleteCache = new();
+
+    /// <inheritdoc />
+    public void StoreObjects(IEnumerable<object> documents)
+    {
+        foreach (var doc in documents)
+        {
+            if (doc is null) continue;
+            var type = doc.GetType();
+            var action = _storeCache.GetOrAdd(type, t =>
+            {
+                var method = typeof(DocumentSession).GetMethod(nameof(Store), 1, [t])!;
+                var generic = method.MakeGenericMethod(t);
+                return (session, obj) => generic.Invoke(session, [obj]);
+            });
+            action(this, doc);
+        }
+    }
+
+    /// <inheritdoc />
+    public void DeleteObjects(IEnumerable<object> documents)
+    {
+        foreach (var doc in documents)
+        {
+            if (doc is null) continue;
+            var type = doc.GetType();
+            var action = _deleteCache.GetOrAdd(type, t =>
+            {
+                var method = typeof(DocumentSession).GetMethod(nameof(Delete), 1, [t])!;
+                var generic = method.MakeGenericMethod(t);
+                return (session, obj) => generic.Invoke(session, [obj]);
+            });
+            action(this, doc);
+        }
+    }
+
+    /// <inheritdoc />
+    public void Insert<T>(IEnumerable<T> documents) where T : class
+    {
+        foreach (var doc in documents)
+            _unitOfWork.Add(doc, OperationType.Insert);
+    }
+
+    /// <inheritdoc />
+    public void Insert<T>(params T[] documents) where T : class
+    {
+        foreach (var doc in documents)
+            _unitOfWork.Add(doc, OperationType.Insert);
+    }
+
+    private static readonly ConcurrentDictionary<Type, Action<DocumentSession, object>> _insertCache = new();
+
+    /// <inheritdoc />
+    public void InsertObjects(IEnumerable<object> documents)
+    {
+        foreach (var doc in documents)
+        {
+            if (doc is null) continue;
+            var type = doc.GetType();
+            var action = _insertCache.GetOrAdd(type, t =>
+            {
+                var method = typeof(DocumentSession).GetMethod(nameof(Insert), 1, [t])!;
+                var generic = method.MakeGenericMethod(t);
+                return (session, obj) => generic.Invoke(session, [obj]);
+            });
+            action(this, doc);
+        }
+    }
+
+    private readonly HashSet<Type> _identityMapForTypes = new();
+
+    /// <inheritdoc />
+    public void UseIdentityMapFor<T>() where T : class
+    {
+        _identityMapForTypes.Add(typeof(T));
+    }
+
+    /// <summary>
+    /// Override: also track in identity map for types registered via <see cref="UseIdentityMapFor{T}"/>.
+    /// </summary>
+    internal protected override bool ShouldTrackInIdentityMap(Type type)
+        => base.ShouldTrackInIdentityMap(type) || _identityMapForTypes.Contains(type);
+
+    private readonly List<IStorageOperation> _queuedStorageOperations = new();
+
+    /// <inheritdoc />
+    public void QueueOperation(IStorageOperation operation)
+    {
+        ArgumentNullException.ThrowIfNull(operation);
+        _queuedStorageOperations.Add(operation);
+    }
+
+    /// <summary>
+    /// Tracks expected versions for entities registered via <see cref="UpdateExpectedVersion{T}"/>.
+    /// Key is the entity instance (reference equality), value is the expected version.
+    /// </summary>
+    private readonly Dictionary<object, long> _expectedVersions = new();
+    /// <summary>
+    /// Tracks expected revisions for entities registered via <see cref="UpdateRevision{T}"/>.
+    /// Key is the entity instance (reference equality), value is the expected revision.
+    /// </summary>
+    private readonly Dictionary<object, int> _expectedRevisions = new();
+    /// <summary>
+    /// Tracks entities registered via <see cref="TryUpdateRevision{T}"/> where revision mismatch should be silently skipped.
+    /// </summary>
+    private readonly HashSet<object> _tryUpdateRevisions = new();
+
+    /// <inheritdoc />
+    public void UpdateExpectedVersion<T>(T entity, long expectedVersion) where T : class
+    {
+        ArgumentNullException.ThrowIfNull(entity);
+        Store(entity);
+        _expectedVersions[entity] = expectedVersion;
+    }
+
+    /// <inheritdoc />
+    public void UpdateRevision<T>(T entity, int revision) where T : class
+    {
+        ArgumentNullException.ThrowIfNull(entity);
+        Store(entity);
+        _expectedRevisions[entity] = revision;
+    }
+
+    /// <inheritdoc />
+    public void TryUpdateRevision<T>(T entity, int revision) where T : class
+    {
+        ArgumentNullException.ThrowIfNull(entity);
+        Store(entity);
+        _expectedRevisions[entity] = revision;
+        _tryUpdateRevisions.Add(entity);
+    }
+
+    /// <inheritdoc />
+    public void Update<T>(IEnumerable<T> documents) where T : class
+    {
+        foreach (var doc in documents)
+            _unitOfWork.Add(doc, OperationType.Update);
+    }
+
+    /// <inheritdoc />
+    public void Update<T>(params T[] documents) where T : class
+    {
+        foreach (var doc in documents)
+            _unitOfWork.Add(doc, OperationType.Update);
+    }
+
+    /// <inheritdoc />
+    public void HardDelete<T>(T entity) where T : class
+    {
+        ArgumentNullException.ThrowIfNull(entity);
+        RequestCount++;
+        // Always use OperationType.Deleted (hard delete), even for ISoftDeleted types
+        _unitOfWork.Add(entity, OperationType.Deleted);
+        ResolvedLogger.LogDebug("Queued {Type} for hard-deletion", typeof(T).Name);
+    }
+
+    /// <inheritdoc />
+    public void HardDelete<T>(string id) where T : class
+    {
+        var entity = CreateEntityWithId<T>(id);
+        HardDelete(entity);
+    }
+
+    /// <inheritdoc />
+    public void HardDelete<T>(long id) where T : class
+        => HardDelete<T>(id.ToString());
+
+    /// <inheritdoc />
+    public void HardDelete<T>(int id) where T : class
+        => HardDelete<T>(id.ToString());
+
+    /// <inheritdoc />
+    public void HardDelete<T>(Guid id) where T : class
+        => HardDelete<T>(id.ToString());
+
+    /// <inheritdoc />
+    public async Task<long> HardDeleteWhere<T>(System.Linq.Expressions.Expression<Func<T, bool>> predicate, CancellationToken ct = default) where T : class
+    {
+        var table = MetadataDispatch.GetTableName(typeof(T));
+        var whereClause = BuildWhereClause(predicate);
+        var sql = $"DELETE FROM {table} WHERE {whereClause};";
+        RequestCount++;
+        var response = await Session.RawQuery(sql, null, ct).ConfigureAwait(false);
+        return response.Count;
+    }
+
+    /// <inheritdoc />
+    public async Task<long> UndoDeleteWhere<T>(System.Linq.Expressions.Expression<Func<T, bool>> predicate, CancellationToken ct = default) where T : class
+    {
+        var table = MetadataDispatch.GetTableName(typeof(T));
+        var whereClause = BuildWhereClause(predicate);
+        var sql = $"UPDATE {table} SET deleted = false WHERE deleted = true AND {whereClause};";
+        RequestCount++;
+        var response = await Session.RawQuery(sql, null, ct).ConfigureAwait(false);
+        return response.Count;
+    }
+
+    /// <inheritdoc />
+    public IUnitOfWork PendingChanges => (IUnitOfWork)_unitOfWork;
+
+    /// <inheritdoc />
+    public void EjectById<T>(T document) where T : class
+    {
+        var id = GetEntityId(document);
+        if (id is not null)
+            Eject<T>(id);
+    }
+
+    /// <inheritdoc />
+    public void Eject<T>(T entity) where T : class
+    {
+        var id = GetEntityId(entity);
+        if (id is not null)
+            Eject<T>(id);
+        _unitOfWork.Eject(entity);
+    }
+
+    private static readonly ConcurrentDictionary<Type, Action<DocumentSession>> _ejectAllDelegates = new();
+
+    /// <inheritdoc />
+    public void EjectAllOfType(Type type)
+    {
+        var action = _ejectAllDelegates.GetOrAdd(type, t =>
+        {
+            var method = typeof(InternalSessionBase).GetMethod("EjectAll", 1, Type.EmptyTypes)!
+                .MakeGenericMethod(t);
+            var param = System.Linq.Expressions.Expression.Parameter(typeof(DocumentSession), "s");
+            var call = System.Linq.Expressions.Expression.Call(param, method);
+            return System.Linq.Expressions.Expression.Lambda<Action<DocumentSession>>(call, param).Compile();
+        });
+        action(this);
+        _unitOfWork.EjectAllOfType(type);
+    }
+
+    /// <summary>
+    /// Creates a minimal entity of type T with the given string ID set on its Id property.
+    /// Uses <see cref="Activator.CreateInstance{T}"/> which requires a parameterless constructor.
+    /// </summary>
+    private static T CreateEntityWithId<T>(string id) where T : class
+    {
+        var entity = Activator.CreateInstance<T>();
+        var idProp = typeof(T).GetProperty("Id", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
+        if (idProp is not null && idProp.CanWrite)
+        {
+            var propType = idProp.PropertyType;
+            object convertedId = id;
+            if (propType == typeof(long))
+                convertedId = long.TryParse(id, out var l) ? l : 0L;
+            else if (propType == typeof(int))
+                convertedId = int.TryParse(id, out var i) ? i : 0;
+            else if (propType == typeof(Guid))
+                convertedId = Guid.TryParse(id, out var g) ? g : Guid.Empty;
+            else if (propType.IsGenericType && propType.GetGenericTypeDefinition() == typeof(RecordIdOf<>))
+                convertedId = Activator.CreateInstance(propType, id)!;
+            idProp.SetValue(entity, convertedId);
+        }
+        return entity;
+    }
+
+    /// <summary>
+    /// Disposes the session. If an explicit transaction is active and owned by this session,
+    /// cancels it before disposing the underlying SurrealDB session.
+    /// </summary>
+    public override async ValueTask DisposeAsync()
+    {
+        if (_explicitTransaction is not null && _ownsTransaction)
+        {
+            await _explicitTransaction.Cancel(DefaultCt).ConfigureAwait(false);
+            await _explicitTransaction.DisposeAsync().ConfigureAwait(false);
+            _explicitTransaction = null;
+            _ownsTransaction = false;
+        }
+
+        await base.DisposeAsync().ConfigureAwait(false);
+    }
+
     /// <summary>
     /// Wraps EventStore to track appended events for inline projections.
     /// </summary>
@@ -1026,7 +1789,10 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         {
             var result = await _inner.Append(streamId, events, headers, ct).ConfigureAwait(false);
             foreach (var evt in result)
+            {
                 _owner._appendedEvents.Add(evt);
+                _owner._unitOfWork.StreamIds.Add(evt.StreamId);
+            }
             return result;
         }
 
@@ -1034,7 +1800,10 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         {
             var result = await _inner.Append(streamId, expectedVersion, events, ct).ConfigureAwait(false);
             foreach (var evt in result)
+            {
                 _owner._appendedEvents.Add(evt);
+                _owner._unitOfWork.StreamIds.Add(evt.StreamId);
+            }
             return result;
         }
 
@@ -1042,7 +1811,10 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         {
             var result = await _inner.AppendOptimistic(streamId, lastKnownVersion, events, ct).ConfigureAwait(false);
             foreach (var evt in result)
+            {
                 _owner._appendedEvents.Add(evt);
+                _owner._unitOfWork.StreamIds.Add(evt.StreamId);
+            }
             return result;
         }
 
@@ -1050,7 +1822,10 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         {
             var result = await _inner.AppendExclusive(streamId, events, ct).ConfigureAwait(false);
             foreach (var evt in result)
+            {
                 _owner._appendedEvents.Add(evt);
+                _owner._unitOfWork.StreamIds.Add(evt.StreamId);
+            }
             return result;
         }
 
@@ -1058,7 +1833,10 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         {
             var result = await _inner.AppendOptimistic(streamId, lastKnownVersion, events, ct).ConfigureAwait(false);
             foreach (var evt in result)
+            {
                 _owner._appendedEvents.Add(evt);
+                _owner._unitOfWork.StreamIds.Add(evt.StreamId);
+            }
             return result;
         }
 
@@ -1066,7 +1844,10 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         {
             var result = await _inner.AppendExclusive(streamId, events, ct).ConfigureAwait(false);
             foreach (var evt in result)
+            {
                 _owner._appendedEvents.Add(evt);
+                _owner._unitOfWork.StreamIds.Add(evt.StreamId);
+            }
             return result;
         }
 
@@ -1075,7 +1856,10 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
             // Use Append directly to capture the wrapped IEvent objects
             var result = await _inner.Append(streamId, events, headers: null, ct).ConfigureAwait(false);
             foreach (var evt in result)
+            {
                 _owner._appendedEvents.Add(evt);
+                _owner._unitOfWork.StreamIds.Add(evt.StreamId);
+            }
             return streamId;
         }
 
@@ -1086,8 +1870,28 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
             return result;
         }
 
-        public Task<T?> AggregateStreamAsync<T>(string streamId, CancellationToken ct = default) where T : class
-            => _inner.AggregateStreamAsync<T>(streamId, ct);
+        public Task<T?> AggregateStreamAsync<T>(
+            string streamId,
+            long? version = null,
+            DateTimeOffset? timestamp = null,
+            T? state = default,
+            long? fromVersion = null,
+            CancellationToken ct = default) where T : class
+            => _inner.AggregateStreamAsync(streamId, version, timestamp, state, fromVersion, ct);
+
+        public Task<StreamState?> FetchStreamStateAsync(string streamId, CancellationToken ct = default)
+            => _inner.FetchStreamStateAsync(streamId, ct);
+
+        public Task<StreamState?> FetchStreamStateAsync(Guid streamId, CancellationToken ct = default)
+            => _inner.FetchStreamStateAsync(streamId, ct);
+
+        public Task<IReadOnlyList<IEvent>> FetchStreamAsync(
+            string streamId,
+            long? version = null,
+            DateTimeOffset? timestamp = null,
+            long? fromVersion = null,
+            CancellationToken ct = default)
+            => _inner.FetchStreamAsync(streamId, version, timestamp, fromVersion, ct);
 
         public Task<string> StartStream<T>(string streamId, IEnumerable<object> events, CancellationToken ct = default)
             => _inner.StartStream<T>(streamId, events, ct);
@@ -1111,7 +1915,11 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         public async Task<IReadOnlyList<IEvent>> WriteTombstone(string streamId, long version, CancellationToken ct = default)
         {
             var result = await _inner.WriteTombstone(streamId, version, ct).ConfigureAwait(false);
-            foreach (var evt in result) _owner._appendedEvents.Add(evt);
+            foreach (var evt in result)
+            {
+                _owner._appendedEvents.Add(evt);
+                _owner._unitOfWork.StreamIds.Add(evt.StreamId);
+            }
             return result;
         }
 
@@ -1123,6 +1931,33 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
             // Bulk insert doesn't add to _appendedEvents since it bypasses per-stream tracking
             return await _inner.BulkInsertEventsAsync(streams, batchSize, ct).ConfigureAwait(false);
         }
+
+        public Task<T?> AggregateStreamToLastKnownAsync<T>(string streamId, CancellationToken ct = default) where T : class
+            => _inner.AggregateStreamToLastKnownAsync<T>(streamId, ct);
+
+        public Task CompactStreamAsync<T>(string streamId, Action<CompactStreamOptions>? configure = null, CancellationToken ct = default) where T : class
+            => _inner.CompactStreamAsync<T>(streamId, configure, ct);
+
+        public Task<FetchForWritingResult<T>?> FetchForExclusiveWriting<T>(string streamId, CancellationToken ct = default) where T : class
+            => _inner.FetchForExclusiveWriting<T>(streamId, ct);
+
+        public ISurrealDbQueryable<T> QueryRawEventDataOnly<T>() where T : class
+            => _inner.QueryRawEventDataOnly<T>();
+
+        public ISurrealDbQueryable<IEvent> QueryAllRawEvents()
+            => _inner.QueryAllRawEvents();
+
+        public IEvent BuildEvent(object data)
+            => _inner.BuildEvent(data);
+
+        public Task OverwriteEventAsync(IEvent e, CancellationToken ct = default)
+            => _inner.OverwriteEventAsync(e, ct);
+
+        public Task DeleteSingleEventAsync(string streamId, long eventSequence, CancellationToken ct = default)
+            => _inner.DeleteSingleEventAsync(streamId, eventSequence, ct);
+
+        public Task<bool> EventsExistAsync(EventTagQuery query, CancellationToken ct = default)
+            => _inner.EventsExistAsync(query, ct);
     }
 }
 

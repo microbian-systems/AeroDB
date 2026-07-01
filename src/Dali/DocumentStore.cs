@@ -3,11 +3,12 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using SurrealDb.Net;
 using System.Threading;
+using Dali.LiveQuery;
 
 namespace Dali;
 
 /// <summary>The concrete implementation of <see cref="IDocumentStore"/>. Manages a SurrealDB connection, schema initialization, projection lifecycle, and session factory. Created via <see cref="Documents.For"/> or the <c>AddDali()</c> DI extension.</summary>
-public class DocumentStore : IDocumentStore
+public class DocumentStore : IDocumentStore, ISessionFactory
 {
     private readonly ILogger<DocumentStore> _logger;
     private ISurrealDbClient? _client;
@@ -412,18 +413,42 @@ public class DocumentStore : IDocumentStore
             var session = await tenantClient.CreateSession(ct).ConfigureAwait(false);
             var dbName = $"{Options.Namespace ?? "test"}_{tenantId}";
             await session.Use(Options.Namespace ?? "test", dbName, ct).ConfigureAwait(false);
-            var qs = new QuerySession(tenantClient, session, Options, DocumentTracking.None) { TenantId = tenantId };
+            var qs = new QuerySession(tenantClient, session, Options, DocumentTracking.None) { TenantId = tenantId, DocumentStore = this };
             _logger.LogInformation("Created QuerySession for tenant {TenantId}", tenantId);
             return qs;
         }
 
         var defaultSession = await Client.CreateSession(ct).ConfigureAwait(false);
         await defaultSession.Use(Options.Namespace ?? "test", Options.Database ?? "test", ct).ConfigureAwait(false);
-        var qs2 = new QuerySession(Client, defaultSession, Options, DocumentTracking.None);
+        var qs2 = new QuerySession(Client, defaultSession, Options, DocumentTracking.None) { DocumentStore = this };
         if (Options.TenancyStyle == TenancyStyle.Conjoined && Options.DefaultTenantId is not null)
             qs2.TenantId = Options.DefaultTenantId;
         _logger.LogInformation("Created QuerySession");
         return qs2;
+    }
+
+    public async Task<ILiveQuerySession> LiveQuerySessionAsync(CancellationToken ct = default)
+    {
+        await EnsureInitialized(ct).ConfigureAwait(false);
+
+        ISurrealDbClient client;
+        string? tenantId = null;
+        if (Options.TenancyStyle == TenancyStyle.DatabasePerTenant)
+        {
+            tenantId = ResolveTenantId();
+            client = await _tenantSelector!.GetOrCreateClientAsync(tenantId, ct).ConfigureAwait(false);
+        }
+        else
+        {
+            tenantId = Options.DefaultTenantId;
+            client = Client;
+        }
+
+        var dbSession = await client.CreateSession(ct).ConfigureAwait(false);
+        await dbSession.Use(Options.Namespace ?? "test", Options.Database ?? "test", ct)
+            .ConfigureAwait(false);
+
+        return new LiveQuerySession(dbSession, Options, Options.LoggerFactory, tenantId);
     }
 
     public async Task<TOut> QueryAsync<TDoc, TOut>(ICompiledQuery<TDoc, TOut> query, CancellationToken ct = default)
@@ -432,6 +457,15 @@ public class DocumentStore : IDocumentStore
         await using var session = await OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }, ct).ConfigureAwait(false);
         return await session.QueryAsync(query, ct).ConfigureAwait(false);
     }
+
+    Task<IQuerySession> ISessionFactory.QuerySessionAsync(CancellationToken ct)
+        => QuerySessionAsync(ct);
+
+    Task<IDocumentSession> ISessionFactory.OpenSessionAsync(CancellationToken ct)
+        => OpenSessionAsync(new SessionOptions(), ct);
+
+    Task<IDocumentSession> ISessionFactory.OpenSessionAsync(SessionOptions options, CancellationToken ct)
+        => OpenSessionAsync(options, ct);
 
     public async Task<IDocumentSession> OpenSessionAsync(SessionOptions options, CancellationToken ct = default)
     {
@@ -445,14 +479,14 @@ public class DocumentStore : IDocumentStore
             var session = await tenantClient.CreateSession(ct).ConfigureAwait(false);
             var dbName = $"{Options.Namespace ?? "test"}_{tenantId}";
             await session.Use(Options.Namespace ?? "test", dbName, ct).ConfigureAwait(false);
-            var ds = new DocumentSession(tenantClient, session, Options, options) { TenantId = tenantId };
+            var ds = new DocumentSession(tenantClient, session, Options, options) { TenantId = tenantId, DocumentStore = this };
             _logger.LogInformation("Opened session (tracking={Tracking}) for tenant {TenantId}", options.Tracking, tenantId);
             return ds;
         }
 
         var defaultSession = await Client.CreateSession(ct).ConfigureAwait(false);
         await defaultSession.Use(Options.Namespace ?? "test", Options.Database ?? "test", ct).ConfigureAwait(false);
-        var ds2 = new DocumentSession(Client, defaultSession, Options, options);
+        var ds2 = new DocumentSession(Client, defaultSession, Options, options) { DocumentStore = this };
 
         if (options.TenantId is not null)
             ds2.TenantId = options.TenantId;
@@ -475,14 +509,14 @@ public class DocumentStore : IDocumentStore
             var session = await tenantClient.CreateSession(ct).ConfigureAwait(false);
             var dbName = $"{Options.Namespace ?? "test"}_{tenantId}";
             await session.Use(Options.Namespace ?? "test", dbName, ct).ConfigureAwait(false);
-            var ds = new DocumentSession(tenantClient, session, Options, DocumentTracking.None) { TenantId = tenantId };
+            var ds = new DocumentSession(tenantClient, session, Options, DocumentTracking.None) { TenantId = tenantId, DocumentStore = this };
             _logger.LogInformation("Created LightweightSession (no tracking) for tenant {TenantId}", tenantId);
             return ds;
         }
 
         var defaultSession = await Client.CreateSession(ct).ConfigureAwait(false);
         await defaultSession.Use(Options.Namespace ?? "test", Options.Database ?? "test", ct).ConfigureAwait(false);
-        var ds2 = new DocumentSession(Client, defaultSession, Options, DocumentTracking.None);
+        var ds2 = new DocumentSession(Client, defaultSession, Options, DocumentTracking.None) { DocumentStore = this };
         if (Options.TenancyStyle == TenancyStyle.Conjoined && Options.DefaultTenantId is not null)
             ds2.TenantId = Options.DefaultTenantId;
         _logger.LogInformation("Created LightweightSession (no tracking)");
@@ -501,14 +535,14 @@ public class DocumentStore : IDocumentStore
             var session = await tenantClient.CreateSession(ct).ConfigureAwait(false);
             var dbName = $"{Options.Namespace ?? "test"}_{tenantId}";
             await session.Use(Options.Namespace ?? "test", dbName, ct).ConfigureAwait(false);
-            var ds = new DocumentSession(tenantClient, session, Options, DocumentTracking.IdentityOnly) { TenantId = tenantId };
+            var ds = new DocumentSession(tenantClient, session, Options, DocumentTracking.IdentityOnly) { TenantId = tenantId, DocumentStore = this };
             _logger.LogInformation("Created DocumentSession (identity tracking) for tenant {TenantId}", tenantId);
             return ds;
         }
 
         var defaultSession = await Client.CreateSession(ct).ConfigureAwait(false);
         await defaultSession.Use(Options.Namespace ?? "test", Options.Database ?? "test", ct).ConfigureAwait(false);
-        var ds2 = new DocumentSession(Client, defaultSession, Options, DocumentTracking.IdentityOnly);
+        var ds2 = new DocumentSession(Client, defaultSession, Options, DocumentTracking.IdentityOnly) { DocumentStore = this };
         if (Options.TenancyStyle == TenancyStyle.Conjoined && Options.DefaultTenantId is not null)
             ds2.TenantId = Options.DefaultTenantId;
         _logger.LogInformation("Created DocumentSession (identity tracking)");
@@ -539,7 +573,7 @@ public class DocumentStore : IDocumentStore
 
         var surrealSession = Client.CreateSession(DefaultCt).GetAwaiter().GetResult();
         surrealSession.Use(Options.Namespace ?? "test", Options.Database ?? "test", CancellationToken.None).GetAwaiter().GetResult();
-        var querySession = new QuerySession(Client, surrealSession, Options, DocumentTracking.None);
+        var querySession = new QuerySession(Client, surrealSession, Options, DocumentTracking.None) { DocumentStore = this };
         return GraphQueryProvider.Graph<T>(querySession);
     }
 
@@ -624,6 +658,59 @@ public class DocumentStore : IDocumentStore
         }
 
         return totalDeleted;
+    }
+
+    // ── Tenant-scoped BulkInsert overloads ──────────────────────
+
+    /// <inheritdoc />
+    public async Task BulkInsertAsync<T>(string tenantId, IEnumerable<T> documents, BulkInsertMode mode = BulkInsertMode.InsertsOnly, int batchSize = 1000, CancellationToken ct = default) where T : class
+    {
+        await using var session = (DocumentSession)await LightweightSessionAsync(ct).ConfigureAwait(false);
+        session.SetTenant(tenantId);
+        await session.BulkInsertAsync(documents, batchSize, ct).ConfigureAwait(false);
+    }
+
+    /// <inheritdoc />
+    public async Task BulkInsertDocumentsAsync(string tenantId, IEnumerable<object> documents, BulkInsertMode mode = BulkInsertMode.InsertsOnly, int batchSize = 1000, CancellationToken ct = default)
+    {
+        await using var session = (DocumentSession)await LightweightSessionAsync(ct).ConfigureAwait(false);
+        session.SetTenant(tenantId);
+        session.StoreObjects(documents);
+        await session.SaveChangesAsync(ct).ConfigureAwait(false);
+    }
+
+    /// <inheritdoc />
+    public async Task BulkInsertDocumentsAsync(IEnumerable<object> documents, BulkInsertMode mode = BulkInsertMode.InsertsOnly, int batchSize = 1000, CancellationToken ct = default)
+    {
+        await using var session = (DocumentSession)await LightweightSessionAsync(ct).ConfigureAwait(false);
+        session.StoreObjects(documents);
+        await session.SaveChangesAsync(ct).ConfigureAwait(false);
+    }
+
+    /// <inheritdoc />
+    public async Task BulkInsertEventsAsync(string tenantId, IEnumerable<(string StreamId, IEnumerable<object> Events)> streams, int batchSize = 1000, CancellationToken ct = default)
+    {
+        await using var session = (DocumentSession)await LightweightSessionAsync(ct).ConfigureAwait(false);
+        session.SetTenant(tenantId);
+        await session.Events.BulkInsertEventsAsync(streams, batchSize, ct).ConfigureAwait(false);
+    }
+
+    // ── Tenant-scoped session factories ─────────────────────────
+
+    /// <inheritdoc />
+    public async Task<IDocumentSession> IdentitySessionAsync(string tenantId, CancellationToken ct = default)
+    {
+        var session = await OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.IdentityOnly }, ct).ConfigureAwait(false);
+        session.SetTenant(tenantId);
+        return session;
+    }
+
+    /// <inheritdoc />
+    public async Task<IDocumentSession> DirtyTrackedSessionAsync(string tenantId, CancellationToken ct = default)
+    {
+        var session = await OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.DirtyTracking }, ct).ConfigureAwait(false);
+        session.SetTenant(tenantId);
+        return session;
     }
 
     public async ValueTask DisposeAsync()

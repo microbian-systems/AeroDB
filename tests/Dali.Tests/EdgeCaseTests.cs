@@ -10,7 +10,7 @@ public class EdgeCaseTests
         await using var store = await TestHarness.CreateStoreAsync();
         await using var session = await store.LightweightSessionAsync();
 
-        Should.Throw<ArgumentNullException>(() => session.Store<Person>(null!));
+        Should.Throw<ArgumentNullException>(() => session.Store<Person>((Person)null!));
     }
 
     [Test]

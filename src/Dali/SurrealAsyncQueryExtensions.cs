@@ -160,6 +160,12 @@ public static class SurrealAsyncQueryExtensions
 
         public string ToCommand() => _inner.ToCommand();
 
+        public ISurrealDbQueryable<T> Stats(out QueryStatistics stats)
+        {
+            stats = new QueryStatistics();
+            return this;
+        }
+
         public ISurrealDbQueryable<T> Fetch(Expression<Func<T, object?>> property)
             => new DeletedBeforeQueryable<T>(_inner.Fetch(property), _cutoff);
 

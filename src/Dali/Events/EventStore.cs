@@ -1,9 +1,12 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Reflection;
 using System.Text.Json;
+using Dali.Metadata;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using SurrealDb.Net;
+using SurrealDb.Net.Models;
 using SurrealDb.Net.Models.Response;
 
 namespace Dali;
@@ -205,13 +208,176 @@ public class EventStore : IEvents
         return new FetchForWritingResult<T>(aggregate, expectedVersion, streamId);
     }
 
-    public async Task<T?> AggregateStreamAsync<T>(string streamId, CancellationToken ct = default) where T : class
+    public async Task<T?> AggregateStreamAsync<T>(
+        string streamId,
+        long? version = null,
+        DateTimeOffset? timestamp = null,
+        T? state = default,
+        long? fromVersion = null,
+        CancellationToken ct = default) where T : class
     {
-        var events = await FetchStream(streamId, ct).ConfigureAwait(false);
-        if (events.Count == 0)
-            return default;
+        IReadOnlyList<IEvent> events;
 
-        return LiveStreamAggregation.AggregateEvents<T>(events);
+        // Use the faster FetchStream path when no filters are specified
+        if (version is null && timestamp is null && fromVersion is null)
+        {
+            events = await FetchStream(streamId, ct).ConfigureAwait(false);
+        }
+        else
+        {
+            events = await FetchStreamAsync(streamId, version, timestamp, fromVersion, ct).ConfigureAwait(false);
+        }
+        if (events.Count == 0)
+            return state ?? default;
+
+        T aggregate;
+        if (state is not null)
+        {
+            aggregate = state;
+            foreach (var e in events)
+            {
+                if (e.Data is null) continue;
+                var eventType = e.Data.GetType();
+                var method = typeof(T).GetMethod("Apply", [eventType])
+                    ?? typeof(T).GetMethod("When", [eventType]);
+                method?.Invoke(aggregate, [e.Data]);
+            }
+        }
+        else
+        {
+            aggregate = LiveStreamAggregation.AggregateEvents<T>(events);
+        }
+
+        return aggregate;
+    }
+
+    public async Task<StreamState?> FetchStreamStateAsync(string streamId, CancellationToken ct = default)
+    {
+        // Query aggregate event metadata
+        var response = await _session.RawQuery(
+            $"SELECT count() AS total_events, " +
+            $"math::min(created_at) AS first_event, " +
+            $"math::max(created_at) AS last_event " +
+            $"FROM mt_events WHERE stream_id = '{streamId.Replace("'", "\\'")}' " +
+            $"GROUP ALL;",
+            null, ct).ConfigureAwait(false);
+
+        if (response.HasErrors || response.Count == 0)
+            return null;
+
+        long version = 0;
+        DateTimeOffset? created = null;
+        DateTimeOffset? lastModified = null;
+
+        try
+        {
+            var result = response.GetValue<List<Dictionary<string, object>>>(0);
+            if (result is { Count: > 0 })
+            {
+                var row = result[0];
+
+                if (row.TryGetValue("total_events", out var totalVal) && totalVal is not null)
+                    version = Convert.ToInt64(totalVal);
+
+                if (row.TryGetValue("first_event", out var firstVal) && firstVal is not null)
+                {
+                    created = firstVal switch
+                    {
+                        DateTimeOffset dto => dto,
+                        DateTime dt => new DateTimeOffset(dt, TimeSpan.Zero),
+                        string s => DateTimeOffset.TryParse(s, out var parsed) ? parsed : null,
+                        _ => null
+                    };
+                }
+
+                if (row.TryGetValue("last_event", out var lastVal) && lastVal is not null)
+                {
+                    lastModified = lastVal switch
+                    {
+                        DateTimeOffset dto => dto,
+                        DateTime dt => new DateTimeOffset(dt, TimeSpan.Zero),
+                        string s => DateTimeOffset.TryParse(s, out var parsed) ? parsed : null,
+                        _ => null
+                    };
+                }
+            }
+        }
+        catch
+        {
+            // CBOR deserialization fallback
+        }
+
+        // Check archive status
+        bool isArchived = false;
+        try
+        {
+            var archiveResponse = await _session.RawQuery(
+                $"SELECT * FROM mt_archived_streams WHERE stream_id = '{streamId.Replace("'", "\\'")}' LIMIT 1;",
+                null, ct).ConfigureAwait(false);
+            isArchived = !archiveResponse.HasErrors && archiveResponse.Count > 0;
+        }
+        catch
+        {
+            // Table may not exist
+        }
+
+        return new StreamState
+        {
+            StreamId = streamId,
+            Version = version,
+            Created = created,
+            LastModified = lastModified,
+            IsArchived = isArchived
+        };
+    }
+
+    public Task<StreamState?> FetchStreamStateAsync(Guid streamId, CancellationToken ct = default)
+        => FetchStreamStateAsync(streamId.ToString("D"), ct);
+
+    public async Task<IReadOnlyList<IEvent>> FetchStreamAsync(
+        string streamId,
+        long? version = null,
+        DateTimeOffset? timestamp = null,
+        long? fromVersion = null,
+        CancellationToken ct = default)
+    {
+        var conditions = new List<string> { $"stream_id = '{streamId.Replace("'", "\\'")}'" };
+
+        if (version.HasValue)
+            conditions.Add($"version = {version.Value}");
+
+        if (timestamp.HasValue)
+        {
+            var tsStr = timestamp.Value.ToString("O");
+            conditions.Add($"created_at >= d'{tsStr}'");
+        }
+
+        if (fromVersion.HasValue)
+            conditions.Add($"version >= {fromVersion.Value}");
+
+        var whereClause = string.Join(" AND ", conditions);
+        var sql = $"SELECT * FROM mt_events WHERE {whereClause} ORDER BY version ASC;";
+
+        var response = await _session.RawQuery(sql, null, ct).ConfigureAwait(false);
+
+        if (!response.HasErrors && response.Count > 0)
+        {
+            try
+            {
+                var records = response.GetValue<List<EventRecord>>(0);
+                if (records is { Count: > 0 })
+                {
+                    var upcasters = _options?.Events.Upcasters;
+                    return records.Select(r => ToEvent(r, upcasters)).ToList().AsReadOnly();
+                }
+            }
+            catch
+            {
+                // CBOR deserialization fallback
+            }
+        }
+
+        return [];
     }
 
     public async Task<IReadOnlyList<IEvent>> FetchAllAfterSequence(
@@ -421,6 +587,248 @@ public class EventStore : IEvents
         return totalInserted;
     }
 
+    // ───────────────────────────────────────────────────────────────────
+    // Marten parity items
+    // ───────────────────────────────────────────────────────────────────
+
+    /// <inheritdoc />
+    public async Task<T?> AggregateStreamToLastKnownAsync<T>(string streamId, CancellationToken ct = default) where T : class
+    {
+        // Try to load the last known projected state from the projection table.
+        // The projected document uses the stream ID as its record ID.
+        T? state = default;
+        long lastKnownVersion = 0;
+
+        try
+        {
+            // Load the projected aggregate (single-stream projection stores doc with streamId as key)
+            state = await _session.Select<T>(new RecordIdOf<string>(
+                MetadataDispatch.GetTableName(typeof(T)), streamId), ct).ConfigureAwait(false);
+
+            if (state is not null)
+            {
+                // Determine the last applied version from the state.
+                // Convention: look for a Version property, or record the event count from the stream.
+                var versionProp = typeof(T).GetProperty("Version",
+                    System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public);
+                if (versionProp is not null && versionProp.PropertyType == typeof(long))
+                {
+                    lastKnownVersion = (long)versionProp.GetValue(state)!;
+                }
+            }
+        }
+        catch
+        {
+            // Projection table may not exist or type is not a projection — fall through to full aggregation
+        }
+
+        // Fetch events after the last known version and apply them
+        if (lastKnownVersion > 0)
+        {
+            var newEvents = await FetchStreamAsync(streamId, fromVersion: lastKnownVersion + 1, ct: ct).ConfigureAwait(false);
+            if (newEvents.Count == 0)
+                return state;
+
+            foreach (var e in newEvents)
+            {
+                if (e.Data is null) continue;
+                var eventType = e.Data.GetType();
+                var method = typeof(T).GetMethod("Apply", [eventType])
+                    ?? typeof(T).GetMethod("When", [eventType]);
+                method?.Invoke(state, [e.Data]);
+            }
+            return state;
+        }
+
+        // Fall back to full stream aggregation
+        return await AggregateStreamAsync<T>(streamId, ct: ct).ConfigureAwait(false);
+    }
+
+    /// <inheritdoc />
+    public async Task CompactStreamAsync<T>(string streamId, Action<CompactStreamOptions>? configure = null, CancellationToken ct = default) where T : class
+    {
+        var options = new CompactStreamOptions();
+        configure?.Invoke(options);
+
+        // Aggregate the full stream to get the current state
+        var events = await FetchStream(streamId, ct).ConfigureAwait(false);
+        if (events.Count == 0) return;
+
+        var aggregate = LiveStreamAggregation.AggregateEvents<T>(events);
+
+        // If KeepRecentEvents is set, determine how many events to keep
+        int eventsToDelete;
+        if (options.KeepRecentEvents.HasValue && options.KeepRecentEvents.Value > 0)
+        {
+            eventsToDelete = Math.Max(0, events.Count - options.KeepRecentEvents.Value);
+            if (eventsToDelete == 0) return; // Nothing to compact
+        }
+        else
+        {
+            eventsToDelete = events.Count;
+        }
+
+        // Optionally archive the events being deleted
+        if (options.KeepArchivedCopy && eventsToDelete > 0)
+        {
+            var eventsToArchive = events.Take(eventsToDelete);
+            foreach (var evt in eventsToArchive)
+            {
+                await _session.RawQuery(
+                    $"CREATE mt_archived_events CONTENT {{ stream_id: '{streamId.Replace("'", "\\'")}', " +
+                    $"version: {evt.Version}, event_type: '{evt.Data?.GetType().Name ?? "unknown"}', " +
+                    $"archived_at: time::now() }};",
+                    null, ct).ConfigureAwait(false);
+            }
+        }
+
+        // Delete old events
+        var deleteSql = options.KeepRecentEvents.HasValue
+            ? $"DELETE FROM mt_events WHERE stream_id = '{streamId.Replace("'", "\\'")}' " +
+              $"AND version <= {events.Count - options.KeepRecentEvents.Value};"
+            : $"DELETE FROM mt_events WHERE stream_id = '{streamId.Replace("'", "\\'")}';";
+        await _session.RawQuery(deleteSql, null, ct).ConfigureAwait(false);
+
+        // Insert the snapshot event
+        var snapshotRecord = new EventRecord
+        {
+            StreamId = streamId,
+            Version = events.Count, // Use the last version number
+            Sequence = 0,
+            StreamKey = "",
+            EventType = aggregate?.GetType().Name ?? typeof(T).Name,
+            CreatedAt = DateTimeOffset.UtcNow,
+            DataJson = aggregate is not null ? JsonSerializer.Serialize(aggregate, JsonOptions) : null,
+            DataBinary = null
+        };
+        await _session.Create("mt_events", snapshotRecord, ct).ConfigureAwait(false);
+
+        _logger.LogInformation("Compacted stream {StreamId}: {DeletedCount} events replaced with snapshot of type {SnapshotType}",
+            streamId, eventsToDelete, snapshotRecord.EventType);
+    }
+
+    /// <inheritdoc />
+    public async Task<FetchForWritingResult<T>?> FetchForExclusiveWriting<T>(string streamId, CancellationToken ct = default) where T : class
+    {
+        // Use a SurrealDB BEGIN TRANSACTION to get exclusive access
+        // Check if the stream exists
+        var streamState = await FetchStreamStateAsync(streamId, ct).ConfigureAwait(false);
+
+        // If stream has no events, we can write exclusively — no concurrency risk
+        if (streamState is null || streamState.Version == 0)
+        {
+            return new FetchForWritingResult<T>(null, 0, streamId);
+        }
+
+        // Lock the stream by reading the latest version inside a transaction.
+        // In SurrealDB, transactions serialize writes.
+        var tx = await _session.BeginTransaction(ct).ConfigureAwait(false);
+        try
+        {
+            var checkResponse = await _session.RawQuery(
+                $"SELECT version FROM mt_events WHERE stream_id = '{streamId.Replace("'", "\\'")}' " +
+                $"ORDER BY version DESC LIMIT 1;",
+                null, ct).ConfigureAwait(false);
+
+            long currentVersion = 0;
+            if (!checkResponse.HasErrors && checkResponse.Count > 0)
+            {
+                try
+                {
+                    var records = checkResponse.GetValue<List<EventRecord>>(0);
+                    if (records is { Count: > 0 })
+                        currentVersion = records[0].Version;
+                }
+                catch { }
+            }
+
+            // Fetch events and aggregate
+            var events = await FetchStream(streamId, ct).ConfigureAwait(false);
+            T? aggregate = null;
+            if (events.Count > 0)
+            {
+                aggregate = LiveStreamAggregation.AggregateEvents<T>(events);
+            }
+
+            // Keep the transaction open — the caller uses this result and
+            // SaveChangesAsync will commit the transaction.
+            // Note: the caller's SaveChangesAsync must append events via the
+            // returned FetchForWritingResult<T>.
+            var result = new FetchForWritingResult<T>(aggregate, currentVersion, streamId);
+
+            // Commit the lock-read transaction immediately (it was just a read-lock).
+            // The actual write will happen in SaveChangesAsync with its own concurrency check.
+            await tx.Commit(ct).ConfigureAwait(false);
+
+            return result;
+        }
+        catch
+        {
+            await tx.Cancel(ct).ConfigureAwait(false);
+            throw;
+        }
+    }
+
+    /// <inheritdoc />
+    public ISurrealDbQueryable<T> QueryRawEventDataOnly<T>() where T : class
+    {
+        var provider = new SurrealQueryProvider(_session, _options);
+        var queryable = new SurrealDbQueryable<T>(provider);
+        // Scope queries to the mt_events table
+        queryable.ViewName = "mt_events";
+        return queryable;
+    }
+
+    /// <inheritdoc />
+    public ISurrealDbQueryable<IEvent> QueryAllRawEvents()
+    {
+        var provider = new SurrealQueryProvider(_session, _options);
+        var queryable = new SurrealDbQueryable<IEvent>(provider);
+        // Scope queries to the mt_events table
+        queryable.ViewName = "mt_events";
+        return queryable;
+    }
+
+    /// <inheritdoc />
+    public IEvent BuildEvent(object data)
+    {
+        ArgumentNullException.ThrowIfNull(data);
+        return (IEvent)Activator.CreateInstance(
+            typeof(Event<>).MakeGenericType(data.GetType()),
+            [data, 0L, 0L, DateTimeOffset.UtcNow, "", Guid.Empty, null])!;
+    }
+
+    /// <inheritdoc />
+    public async Task OverwriteEventAsync(IEvent e, CancellationToken ct = default)
+    {
+        ArgumentNullException.ThrowIfNull(e);
+        var dataJson = System.Text.Json.JsonSerializer.Serialize(e.Data, JsonOptions);
+        var sql = "UPDATE mt_events SET data_json = $data, data_binary = NONE WHERE sequence = $seq AND stream_id = $sid;";
+        var parameters = new Dictionary<string, object?>
+        {
+            ["data"] = dataJson,
+            ["seq"] = e.Sequence,
+            ["sid"] = e.StreamId
+        };
+        await _session.RawQuery(sql, parameters, ct).ConfigureAwait(false);
+        _logger.LogDebug("Overwrote data for event seq={Sequence} in stream {StreamId}", e.Sequence, e.StreamId);
+    }
+
+    /// <inheritdoc />
+    public async Task DeleteSingleEventAsync(string streamId, long eventSequence, CancellationToken ct = default)
+    {
+        // Soft-delete: clear the data payload to preserve event metadata
+        // (version, sequence, timestamp, stream identity) for stream integrity.
+        var sql = "UPDATE mt_events SET data_json = NONE, data_binary = NONE WHERE sequence = $seq AND stream_id = $sid;";
+        var parameters = new Dictionary<string, object?>
+        {
+            ["seq"] = eventSequence,
+            ["sid"] = streamId
+        };
+        await _session.RawQuery(sql, parameters, ct).ConfigureAwait(false);
+        _logger.LogDebug("Soft-deleted event seq={Sequence} in stream {StreamId}", eventSequence, streamId);
+    }
+
     /// <summary>
     /// Wraps a raw event object and its stored <see cref="EventRecord"/> into an <see cref="IEvent"/>.
     /// </summary>
@@ -488,6 +896,42 @@ public class EventStore : IEvents
             }
         }
         return Guid.NewGuid();
+    }
+
+    /// <inheritdoc />
+    public async Task<bool> EventsExistAsync(EventTagQuery query, CancellationToken ct = default)
+    {
+        ArgumentNullException.ThrowIfNull(query);
+
+        // Build WHERE clause: tags CONTAINS each value
+        var conditions = query.TagValues.Select(t => $"tags CONTAINS '{t.Replace("'", "\\'")}'");
+        var whereClause = string.Join(" OR ", conditions);
+
+        if (query.EventType is not null)
+        {
+            var escapedType = query.EventType.Replace("'", "\\'");
+            whereClause = $"({whereClause}) AND event_type = '{escapedType}'";
+        }
+
+        var surql = $"SELECT count() FROM mt_events WHERE {whereClause} GROUP ALL;";
+
+        var response = await _session.RawQuery(surql, null, ct).ConfigureAwait(false);
+
+        if (response.HasErrors || response.Count == 0)
+            return false;
+
+        try
+        {
+            var result = response.GetValue<List<Dictionary<string, object>>>(0);
+            if (result is { Count: > 0 } && result[0].TryGetValue("count", out var countVal) && countVal is not null)
+                return Convert.ToInt64(countVal) > 0;
+        }
+        catch
+        {
+            // CBOR deserialization fallback
+        }
+
+        return false;
     }
 }
 

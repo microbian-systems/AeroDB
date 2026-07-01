@@ -150,6 +150,17 @@ public class PatchExpression<T> : IPatchExpression<T>, IDeferredPatch where T : 
         return this;
     }
 
+    // ── SetAll ──────────────────────────────────────────────────────────
+
+    public IPatchExpression<T> SetAll<TValue>(TValue value)
+    {
+        var props = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance)
+            .Where(p => p.CanRead && p.CanWrite && p.PropertyType == typeof(TValue));
+        foreach (var prop in props)
+            _operations.Add(new SetOperation(prop.Name, value, OperationKind.Set));
+        return this;
+    }
+
     // ── Execute (IDeferredPatch) ──────────────────────────────────────
 
     /// <summary>

@@ -24,6 +24,15 @@ public abstract class DocumentMapping
 
     /// <summary>Custom field definitions for this document type. Overridden in generic subclass.</summary>
     internal virtual IReadOnlyList<FieldDefinition> GetFieldDefinitions() => [];
+
+    /// <summary>Multi-tenancy style for this document type.</summary>
+    public TenancyStyle TenancyStyle { get; set; }
+
+    /// <summary>When true, this document type supports soft-delete (ISoftDeleted).</summary>
+    public bool SoftDeleted { get; set; }
+
+    /// <summary>When true, optimistic concurrency is enforced for this document type.</summary>
+    public bool UseOptimisticConcurrency { get; set; }
 }
 
 /// <summary>Controls the SurrealDB table schema mode. <c>Schemaless</c> (Flexible) allows any fields; <c>Schemafull</c> (Strict) enforces a strict field definition.</summary>

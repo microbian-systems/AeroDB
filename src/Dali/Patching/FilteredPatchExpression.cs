@@ -68,6 +68,15 @@ internal class FilteredPatchExpression<T> : IPatchExpression<T>, IDeferredPatch 
     public IPatchExpression<T> Delete<TValue>(Expression<Func<T, TValue>> property)
     { _operations.Add(new SetOperation(GetMember(property).Name, null, OperationKind.Delete)); return this; }
 
+    public IPatchExpression<T> SetAll<TValue>(TValue value)
+    {
+        var props = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance)
+            .Where(p => p.CanRead && p.CanWrite && p.PropertyType == typeof(TValue));
+        foreach (var prop in props)
+            _operations.Add(new SetOperation(prop.Name, value, OperationKind.Set));
+        return this;
+    }
+
     async Task IDeferredPatch.ExecuteAsync(IDocumentSession session, CancellationToken ct)
     {
         if (_operations.Count == 0) return;

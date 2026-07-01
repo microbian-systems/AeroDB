@@ -23,4 +23,7 @@ public interface IPatchExpression<T> where T : class
     IPatchExpression<T> Duplicate<TElement>(Expression<Func<T, TElement>> source, params Expression<Func<T, TElement>>[] destinations);
     IPatchExpression<T> Rename(string oldName, Expression<Func<T, object?>> target);
     IPatchExpression<T> Delete<TValue>(Expression<Func<T, TValue>> property);
+
+    /// <summary>Set all writable properties of the matching type to the given value.</summary>
+    IPatchExpression<T> SetAll<TValue>(TValue value);
 }

@@ -297,8 +297,8 @@ public class StoreOptionsAndBulkOperationsTests
         var count = await BulkOperations.BulkDeleteAsync<Person>(session, ids);
 
         count.ShouldBe(0);
-        await session.DidNotReceiveWithAnyArgs().LoadAsync<Person>(default!, default!);
-        session.DidNotReceiveWithAnyArgs().Delete<Person>(default!);
+        await session.DidNotReceiveWithAnyArgs().LoadAsync<Person>(default(string)!, default);
+        session.DidNotReceiveWithAnyArgs().Delete<Person>(Arg.Any<Person>());
         await session.DidNotReceiveWithAnyArgs().SaveChangesAsync(default!);
     }
 }

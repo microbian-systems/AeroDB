@@ -13,6 +13,7 @@ public static class SnapshotExtensions
     /// </summary>
     /// <param name="projections">The projections list (typically <c>store.Options.Projections</c>).</param>
     /// <param name="configure">Optional configuration delegate.</param>
+    [Obsolete("Use opts.Projections.Snapshot<T>(lifecycle) for Marten 1:1 parity.")]
     public static void Snapshot<T>(this List<IProjection> projections, Action<SnapshotOptions>? configure = null)
         where T : Record, new()
     {

@@ -21,6 +21,12 @@ public interface ISurrealDbQueryable<T> : IOrderedQueryable<T>
     Task<decimal> AverageAsync(Expression<Func<T, decimal>> selector, CancellationToken ct = default);
 
     /// <summary>
+    /// Enable query statistics for this query. The <paramref name="stats"/> will be populated
+    /// with the total number of matching records when the query executes.
+    /// </summary>
+    ISurrealDbQueryable<T> Stats(out QueryStatistics stats);
+
+    /// <summary>
     /// Returns the generated SurrealQL for this query without executing it.
     /// Useful for debugging and logging.
     /// </summary>
@@ -169,6 +175,17 @@ public class SurrealDbQueryable<T> : ISurrealDbQueryable<T>, IAsyncEnumerable<T>
     public IQueryProvider Provider => _provider;
 
     public string ToCommand() => _provider.ToCommand(Expression);
+
+    /// <summary>
+    /// Enable query statistics for this query. The <paramref name="stats"/> will be populated
+    /// with the total number of matching records when the query executes.
+    /// </summary>
+    public ISurrealDbQueryable<T> Stats(out QueryStatistics stats)
+    {
+        stats = new QueryStatistics();
+        QueryStats = stats;
+        return this;
+    }
 
     public IEnumerator<T> GetEnumerator()
         => _provider.ToListAsync<T>(Expression, FetchFields, IncludeDescriptors, IncludeSpecs, FilterIncludeSpecs, null, default).GetAwaiter().GetResult().GetEnumerator();

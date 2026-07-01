@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
@@ -408,9 +409,25 @@ namespace Dali;
         // ── Collection containment ──
         if (m.Method.Name == "Contains" && m.Arguments.Count == 1)
         {
-            var col = op(m.Object!);
             var item = op(m.Arguments[0]);
+
+            // H3 FIXED: captured C# collection → item INSIDE [...]
+            if (TryExtractCollection(m.Object!, out var values))
+            {
+                var formatted = string.Join(", ", values.Select(FormatValue));
+                return $"{item} INSIDE [{formatted}]";
+            }
+
+            var col = op(m.Object!);
             return $"{col} CONTAINS {item}";
+        }
+
+        // ── Enumerable.Any(predicate) → SurrealDB subquery ──
+        if (m.Method.Name == "Any" && m.Arguments.Count == 2)
+        {
+            throw new NotSupportedException(
+                ".Any(predicate) on a collection is not directly translatable to SurrealQL. " +
+                "Use array::any() or array::all() functions instead, or restructure the query.");
         }
 
         // ── Type-based handler dispatch ──
@@ -555,6 +572,7 @@ namespace Dali;
         string s => $"'{s.Replace("'", "\\'")}'",
         bool b => b ? "true" : "false",
         int or long or short or byte or float or double or decimal => val.ToString()!,
+        Enum e => $"'{Convert.ToInt64(e)}'",
         DateTime dt => $"d'{dt:yyyy-MM-ddTHH:mm:ssZ}'",
         DateTimeOffset dto => $"d'{dto:yyyy-MM-ddTHH:mm:ssZ}'",
         _ => val.ToString()!
@@ -574,6 +592,42 @@ namespace Dali;
         if (string.IsNullOrEmpty(name)) return name;
         return string.Concat(name.Select((c, i) =>
             i > 0 && char.IsUpper(c) ? "_" + char.ToLower(c) : char.ToLower(c).ToString()));
+    }
+
+    /// <summary>
+    /// H3: Extracts the actual collection values from a captured C# variable
+    /// (constant or closure member) for <c>list.Contains(x.Id)</c> → <c>Id INSIDE [...]</c> translation.
+    /// </summary>
+    private static bool TryExtractCollection(Expression expr, [NotNullWhen(true)] out List<object?>? values)
+    {
+        values = null;
+
+        // Case 1: ConstantExpression wrapping an array/list (e.g. new[] { 1, 2, 3 } passed as constant)
+        if (expr is ConstantExpression { Value: System.Collections.IEnumerable c and not string })
+        {
+            values = c.Cast<object?>().ToList();
+            return true;
+        }
+
+        // Case 2: MemberExpression on a ConstantExpression (captured local variable)
+        if (expr is MemberExpression { Expression: ConstantExpression constExpr } me)
+        {
+            var container = constExpr.Value!;
+            var val = me.Member switch
+            {
+                FieldInfo fi => fi.GetValue(container),
+                PropertyInfo pi => pi.GetValue(container),
+                _ => null
+            };
+
+            if (val is System.Collections.IEnumerable e and not string)
+            {
+                values = e.Cast<object?>().ToList();
+                return values.Count > 0;
+            }
+        }
+
+        return false;
     }
 
     private static Expression StripQuote(Expression e)

@@ -396,14 +396,47 @@ public class SurrealQueryProvider : IQueryProvider
         var hasIncludes = includeDescriptors is { Count: > 0 };
         var hasIncludeSpecs = includeSpecs is { Count: > 0 };
 
-        // Run count query first when Stats is requested (separate round trip)
+        // ── Stats: single-round-trip optimization ──────────────────────────────────
+        // When no includes are present, prepend SELECT count() ... to the main query
+        // and read both results from one RawQuery call. For queries with includes
+        // (LET-based multi-statement), the result-set index detection is complex, so
+        // the separate round-trip is kept with a TODO for future optimization.
         if (queryStats is not null)
         {
-            try
+            if (!hasIncludes && !hasIncludeSpecs)
             {
-                queryStats.TotalResults = await CountAsync(expression, ct).ConfigureAwait(false);
+                var countQuery = query.Clone();
+                countQuery.OrderBy.Clear();
+                countQuery.Limit = null;
+                countQuery.Skip = null;
+                countQuery.Projection = "count()";
+                countQuery.GroupAll = true;
+                var combinedSurql = countQuery.ToSurrealQL() + "\n" + query.ToSurrealQL();
+                _logger.LogDebug("ToSurrealQL (with stats): {Surql}", combinedSurql);
+                var statsSession = await GetSessionForElementType(sourceType, ct).ConfigureAwait(false);
+                var statsResponse = await statsSession.RawQuery(combinedSurql, query.Parameters, ct).ConfigureAwait(false);
+                if (!statsResponse.HasErrors && statsResponse.Count > 1)
+                {
+                    // Result set 0: count(), Result set 1: main data
+                    var countVal = TryExtractCount(statsResponse);
+                    if (countVal.HasValue)
+                        queryStats.TotalResults = countVal.Value;
+                    var dataResults = DeserializeQueryResults<T>(statsResponse, 1);
+                    if (filterIncludeSpecs is { Count: > 0 } && dataResults is { Count: > 0 })
+                        dataResults = ApplyFilterIncludePredicates(dataResults, filterIncludeSpecs);
+                    return dataResults;
+                }
+                return [];
             }
-            catch { /* ignore count failures */ }
+            else
+            {
+                // TODO: Combine count into the multi-statement LET query for single round-trip
+                try
+                {
+                    queryStats.TotalResults = await CountAsync(expression, ct).ConfigureAwait(false);
+                }
+                catch { /* ignore count failures */ }
+            }
         }
 
         string surql;
