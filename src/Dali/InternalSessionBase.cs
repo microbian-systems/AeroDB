@@ -522,6 +522,24 @@ public abstract class InternalSessionBase : IAsyncDisposable
     {
         if (Disposed) return;
         Disposed = true;
+
+        // Dispose all forked sessions first (they may depend on primary)
+        foreach (var kvp in _forkedSessionCache)
+        {
+            try
+            {
+                if (kvp.Value.IsValueCreated)
+                {
+                    var forked = await kvp.Value.Value.ConfigureAwait(false);
+                    await forked.CloseSession(DefaultCt).ConfigureAwait(false);
+                    if (forked is IAsyncDisposable fd)
+                        await fd.DisposeAsync().ConfigureAwait(false);
+                }
+            }
+            catch (ObjectDisposedException) { /* Already disposed — safe to ignore */ }
+        }
+        _forkedSessionCache.Clear();
+
         await Session.CloseSession(DefaultCt).ConfigureAwait(false);
         if (Session is IAsyncDisposable d)
             await d.DisposeAsync().ConfigureAwait(false);

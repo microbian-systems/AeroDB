@@ -113,15 +113,13 @@ public class SessionTests
         var countAfterStore = await session.SaveChangesAsync();
         countAfterStore.ShouldBe(1);
 
-        // Delete requires Id to be set. Since SaveChangesAsync doesn't currently
-        // back-populate the Id, the Delete is a no-op. Verify the second save
-        // completes without error and the record still exists.
+        // SaveChangesAsync now back-populates the Id, so Delete works.
+        // The person should be deleted and no longer exist.
         session.Delete(person);
         var countAfterDelete = await session.SaveChangesAsync();
-        
-        // After delete (no-op due to missing Id), the record should still exist.
+
         var all = await session.Query<Person>().ToListAsync();
-        all.Count(p => p.Name == "Ghost").ShouldBe(1);
+        all.Count(p => p.Name == "Ghost").ShouldBe(0);
     }
 
     [Test]

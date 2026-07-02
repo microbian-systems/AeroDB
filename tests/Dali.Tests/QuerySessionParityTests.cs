@@ -442,7 +442,7 @@ public class QuerySessionParityTests
     public async Task IDocumentSession_Eject_removes_from_identity_map()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.IdentityOnly });
         await session.ExecuteSqlAsync(
             "CREATE person:eject CONTENT { Name: 'EjectTest', Age: 30 };");
 

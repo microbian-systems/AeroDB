@@ -280,15 +280,16 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         if (UseOptimisticConcurrency)
             TrackOriginalVersion(entity);
 
-        // Populate identity map when dirty tracking is enabled
-        if (IsDirtyTracking)
+        // Populate identity map when identity tracking is enabled
+        if (ShouldTrackInIdentityMap(typeof(T)))
         {
             var id = GetEntityId(entity);
             if (id is not null)
             {
                 var typeMap = IdentityMap.GetOrAdd(typeof(T), _ => new ConcurrentDictionary<string, object>(StringComparer.Ordinal));
                 typeMap[id] = entity;
-                CaptureSnapshot(typeof(T), id, entity);
+                if (IsDirtyTracking)
+                    CaptureSnapshot(typeof(T), id, entity);
             }
         }
 
@@ -401,6 +402,19 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         return response.Count;
     }
 
+    private static string FormatWhereValue(object? value) => value switch
+    {
+        null => "NONE",
+        string s => $"'{s.Replace("'", "\\'")}'",
+        bool b => b ? "true" : "false",
+        int or long or short or byte or sbyte or ushort or uint or ulong
+            or float or double or decimal => value.ToString()!,
+        Enum e => Convert.ToInt64(e).ToString(),
+        DateTime dt => $"d'{dt:yyyy-MM-ddTHH:mm:ssZ}'",
+        DateTimeOffset dto => $"d'{dto:yyyy-MM-ddTHH:mm:ssZ}'",
+        _ => $"'{value}'"
+    };
+
     private static string BuildWhereClause<T>(System.Linq.Expressions.Expression<Func<T, bool>> predicate)
     {
         // Simple binary expression handler: field == value
@@ -409,10 +423,8 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
             && binary.Left is System.Linq.Expressions.MemberExpression member
             && binary.Right is System.Linq.Expressions.ConstantExpression constant)
         {
-            var fieldName = System.Text.Json.JsonNamingPolicy.SnakeCaseLower.ConvertName(member.Member.Name);
-            var value = constant.Value;
-            var strVal = value?.ToString()?.Replace("'", "\\'") ?? "null";
-            return $"{fieldName} = '{strVal}'";
+            var fieldName = member.Member.Name;  // PascalCase matches CBOR storage
+            return $"{fieldName} = {FormatWhereValue(constant.Value)}";
         }
         // Fallback: return a tautology (matches everything)
         return "true";
@@ -664,6 +676,12 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                         {
                             case OperationType.Added:
                                 ResolvedLogger.LogDebug("UPSERT {Type} ({Table})", op.EntityType.Name, table);
+                                // Fast path: entity has a typed RecordId — preserve it
+                                if (op.Entity is IRecord recAdded && recAdded.Id is not null)
+                                {
+                                    await UpsertRecordAsync(recAdded, recAdded.Id, targetSession, ct).ConfigureAwait(false);
+                                    break;
+                                }
                                 var entityId = GetEntityId(op.Entity);
                                 if (!string.IsNullOrEmpty(entityId))
                                 {
@@ -686,19 +704,33 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                                 }
                                 else
                                 {
+                                    // Use typed Create via reflection for proper RecordId population
                                     var createdResult = await CreateEntityAsync(op, table, targetSession, ct).ConfigureAwait(false);
                                     if (createdResult is not null)
                                     {
-                                        var idProp = op.EntityType.GetProperty("Id");
-                                        var createdId = createdResult.GetType().GetProperty("Id")?.GetValue(createdResult);
-                                        if (idProp is not null && createdId is not null)
-                                            idProp.SetValue(op.Entity, createdId);
+                                        // Try IRecord interface first (for Record-based types like Person)
+                                        if (op.Entity is IRecord origRec && createdResult is IRecord createdRec && createdRec.Id is not null)
+                                            origRec.Id = createdRec.Id;
+                                        else
+                                        {
+                                            // Fallback: try reflection-based property copy
+                                            var idProp = op.EntityType.GetProperty("Id");
+                                            var createdId = createdResult.GetType().GetProperty("Id")?.GetValue(createdResult);
+                                            if (idProp is not null && createdId is not null)
+                                                idProp.SetValue(op.Entity, createdId);
+                                        }
                                     }
                                 }
                                 break;
 
                             case OperationType.Modified:
                                 ResolvedLogger.LogDebug("UPDATE {Type} ({Table})", op.EntityType.Name, table);
+                                // Fast path: entity has a typed RecordId — preserve it
+                                if (op.Entity is IRecord recMod && recMod.Id is not null)
+                                {
+                                    await UpsertRecordAsync(recMod, recMod.Id, targetSession, ct).ConfigureAwait(false);
+                                    break;
+                                }
                                 var modId = GetRecordId(op.Entity, table);
                                 if (modId is not null)
                                 {
@@ -763,6 +795,12 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
 
                             case OperationType.Deleted:
                                 ResolvedLogger.LogDebug("DELETE {Type} ({Table})", op.EntityType.Name, table);
+                                // Fast path: entity has a typed RecordId — preserve it
+                                if (op.Entity is IRecord recDel && recDel.Id is not null)
+                                {
+                                    await targetSession.Delete(recDel.Id, ct).ConfigureAwait(false);
+                                    break;
+                                }
                                 var delId = GetRecordId(op.Entity, table);
                                 if (delId is not null)
                                     await targetSession.Delete(delId, ct).ConfigureAwait(false);
@@ -774,6 +812,12 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                                 {
                                     sd.Deleted = true;
                                     sd.DeletedAt = DateTimeOffset.UtcNow;
+                                }
+                                // Fast path: entity has a typed RecordId — preserve it
+                                if (op.Entity is IRecord recSoft && recSoft.Id is not null)
+                                {
+                                    await UpsertRecordAsync(recSoft, recSoft.Id, targetSession, ct).ConfigureAwait(false);
+                                    break;
                                 }
                                 var softDelId = GetRecordId(op.Entity, table);
                                 if (softDelId is not null)
@@ -1241,19 +1285,28 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
     /// </summary>
     private async Task<object?> CreateEntityAsync(Operation op, string table, ISurrealDbSession session, CancellationToken ct)
     {
-        if (CreateMethod is null)
+        try
         {
-            // Fallback to untyped Create
-            return await session.Create(table, op.Entity, ct).ConfigureAwait(false);
+            // Use dynamic dispatch to invoke the correct generic Create<T> overload.
+            // This avoids reflection issues with Task<T>.Result property.
+            dynamic dynSession = session;
+            dynamic dynEntity = op.Entity;
+            return await dynSession.Create(table, dynEntity, ct).ConfigureAwait(false);
         }
+        catch
+        {
+            // Fallback to reflection-based Create for types not supported by dynamic dispatch
+            if (CreateMethod is null)
+                return await session.Create(table, op.Entity, ct).ConfigureAwait(false);
 
-        var genericCreate = CreateMethod.MakeGenericMethod(op.EntityType);
-        var task = (Task?)genericCreate.Invoke(session, [table, op.Entity, ct]);
-        if (task is null) return null;
+            var genericCreate = CreateMethod.MakeGenericMethod(op.EntityType);
+            var rawResult = genericCreate.Invoke(session, [table, op.Entity, ct]);
+            if (rawResult is not Task task) return null;
 
-        await task.ConfigureAwait(false);
-        var resultProp = task.GetType().GetProperty("Result");
-        return resultProp?.GetValue(task);
+            await task.ConfigureAwait(false);
+            var resultProp = task.GetType().GetProperty("Result");
+            return resultProp?.GetValue(task);
+        }
     }
 
     /// <summary>
@@ -1376,12 +1429,40 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
     // ===================================================================
 
     /// <inheritdoc />
-    public Task<T?> LoadAsync<T>(int id, CancellationToken ct = default) where T : class
-        => LoadAsync<T>(id.ToString(), ct);
+    public async Task<T?> LoadAsync<T>(int id, CancellationToken ct = default) where T : class
+    {
+        RequestCount++;
+        var table = MetadataDispatch.GetTableName(typeof(T));
+        var rid = new RecordIdOf<int>(table, id);
+        var strId = id.ToString();
+
+        if (ShouldTrackInIdentityMap(typeof(T))
+            && IdentityMap.TryGetValue(typeof(T), out var typeMap)
+            && typeMap.TryGetValue(strId, out var cached))
+            return (T?)cached;
+
+        var (schemaName, _) = MetadataDispatch.GetSchemaTarget(typeof(T), Options.Schema);
+        var loadSession = await GetSessionForSchemaAsync(schemaName, ct).ConfigureAwait(false);
+        return await loadSession.Select<T>(rid, ct).ConfigureAwait(false);
+    }
 
     /// <inheritdoc />
-    public Task<T?> LoadAsync<T>(long id, CancellationToken ct = default) where T : class
-        => LoadAsync<T>(id.ToString(), ct);
+    public async Task<T?> LoadAsync<T>(long id, CancellationToken ct = default) where T : class
+    {
+        RequestCount++;
+        var table = MetadataDispatch.GetTableName(typeof(T));
+        var rid = new RecordIdOf<long>(table, id);
+        var strId = id.ToString();
+
+        if (ShouldTrackInIdentityMap(typeof(T))
+            && IdentityMap.TryGetValue(typeof(T), out var typeMap)
+            && typeMap.TryGetValue(strId, out var cached))
+            return (T?)cached;
+
+        var (schemaName, _) = MetadataDispatch.GetSchemaTarget(typeof(T), Options.Schema);
+        var loadSession = await GetSessionForSchemaAsync(schemaName, ct).ConfigureAwait(false);
+        return await loadSession.Select<T>(rid, ct).ConfigureAwait(false);
+    }
 
     /// <inheritdoc />
     public Task<T?> LoadAsync<T>(Guid id, CancellationToken ct = default) where T : class
@@ -1506,7 +1587,13 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
             var type = doc.GetType();
             var action = _storeCache.GetOrAdd(type, t =>
             {
-                var method = typeof(DocumentSession).GetMethod(nameof(Store), 1, [t])!;
+                var method = typeof(DocumentSession).GetMethods(
+                    System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance)
+                    .First(m => m.Name == nameof(Store)
+                        && m.IsGenericMethodDefinition
+                        && m.GetGenericArguments().Length == 1
+                        && m.GetParameters().Length == 1
+                        && m.GetParameters()[0].ParameterType == m.GetGenericArguments()[0]);
                 var generic = method.MakeGenericMethod(t);
                 return (session, obj) => generic.Invoke(session, [obj]);
             });
@@ -1523,7 +1610,13 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
             var type = doc.GetType();
             var action = _deleteCache.GetOrAdd(type, t =>
             {
-                var method = typeof(DocumentSession).GetMethod(nameof(Delete), 1, [t])!;
+                var method = typeof(DocumentSession).GetMethods(
+                    System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance)
+                    .First(m => m.Name == nameof(Delete)
+                        && m.IsGenericMethodDefinition
+                        && m.GetGenericArguments().Length == 1
+                        && m.GetParameters().Length == 1
+                        && m.GetParameters()[0].ParameterType == m.GetGenericArguments()[0]);
                 var generic = method.MakeGenericMethod(t);
                 return (session, obj) => generic.Invoke(session, [obj]);
             });
@@ -1740,14 +1833,17 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         if (idProp is not null && idProp.CanWrite)
         {
             var propType = idProp.PropertyType;
+            var actualType = Nullable.GetUnderlyingType(propType) ?? propType;
             object convertedId = id;
-            if (propType == typeof(long))
+            if (actualType == typeof(long))
                 convertedId = long.TryParse(id, out var l) ? l : 0L;
-            else if (propType == typeof(int))
+            else if (actualType == typeof(int))
                 convertedId = int.TryParse(id, out var i) ? i : 0;
-            else if (propType == typeof(Guid))
+            else if (actualType == typeof(Guid))
                 convertedId = Guid.TryParse(id, out var g) ? g : Guid.Empty;
-            else if (propType.IsGenericType && propType.GetGenericTypeDefinition() == typeof(RecordIdOf<>))
+            else if (actualType == typeof(RecordId))
+                convertedId = RecordId.From(MetadataDispatch.GetTableName(typeof(T)), id);
+            else if (actualType.IsGenericType && actualType.GetGenericTypeDefinition() == typeof(RecordIdOf<>))
                 convertedId = Activator.CreateInstance(propType, id)!;
             idProp.SetValue(entity, convertedId);
         }

@@ -96,6 +96,7 @@ public class ShipmentProjection : SingleStreamProjection<ShipmentRecord>
 
 // ─── Tests ──────────────────────────────────────────────────────────
 
+[NotInParallel]
 public class ProjectionRebuildTests
 {
     // ── Configuration tests ──────────────────────────────────────────
@@ -605,8 +606,18 @@ public class ProjectionRebuildTests
         // Run the daemon for a few poll cycles
         var daemon = new AsyncDaemon(store, store.Options.Projections);
         daemon.Start(TimeSpan.FromMilliseconds(50));
-        await Task.Delay(500);
+
+        // Poll until daemon health shows a successful cycle or timeout (10s)
+        var sw = System.Diagnostics.Stopwatch.StartNew();
+        while (sw.ElapsedMilliseconds < 10_000 &&
+               (daemon.Health.LastSuccess is null || daemon.Health.HighWaterSequence <= 0))
+        {
+            await Task.Delay(100);
+        }
+
+        // Stop and give a moment for final health aggregation
         await daemon.StopAsync();
+        await Task.Delay(100);
 
         // Verify the daemon completed at least one cycle successfully
         daemon.Health.LastSuccess.ShouldNotBeNull();
@@ -636,8 +647,16 @@ public class ProjectionRebuildTests
         // First daemon run: processes events and persists progress
         var daemon1 = new AsyncDaemon(store, store.Options.Projections);
         daemon1.Start(TimeSpan.FromMilliseconds(50));
-        await Task.Delay(500);
+
+        // Poll until first daemon has processed events
+        var sw1 = System.Diagnostics.Stopwatch.StartNew();
+        while (sw1.ElapsedMilliseconds < 10_000 && daemon1.Health.HighWaterSequence <= 0)
+        {
+            await Task.Delay(100);
+        }
+
         await daemon1.StopAsync();
+        await Task.Delay(100);
 
         var firstRunSequence = daemon1.Health.HighWaterSequence;
         firstRunSequence.ShouldBeGreaterThan(0);
@@ -658,8 +677,17 @@ public class ProjectionRebuildTests
         // Second daemon (simulates restart) — should load persisted progress
         var daemon2 = new AsyncDaemon(store, store.Options.Projections);
         daemon2.Start(TimeSpan.FromMilliseconds(50));
-        await Task.Delay(500);
+
+        // Poll until second daemon processes the new events (sequence > firstRunSequence)
+        var sw2 = System.Diagnostics.Stopwatch.StartNew();
+        while (sw2.ElapsedMilliseconds < 10_000 &&
+               daemon2.Health.HighWaterSequence <= firstRunSequence)
+        {
+            await Task.Delay(100);
+        }
+
         await daemon2.StopAsync();
+        await Task.Delay(100);
 
         // Should have processed only the new event (skipping the old ones)
         daemon2.Health.HighWaterSequence.ShouldBeGreaterThan(firstRunSequence);

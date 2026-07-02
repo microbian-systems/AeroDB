@@ -304,16 +304,17 @@ public class SessionCudParityTests
     public async Task EjectById_removes_document_from_identity_map()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.IdentityOnly });
 
-        var person = new Person { Name = "EjectMe", Age = 33 };
+        var person = new Person { Id = RecordId.From("person", "ejectid"), Name = "EjectMe", Age = 33 };
         session.Store(person);
 
         var beforeCount = session.IdentityMapCount;
+        beforeCount.ShouldBeGreaterThan(0);
         session.EjectById(person);
         var afterCount = session.IdentityMapCount;
 
-        await Assert.That(afterCount).IsLessThan(beforeCount);
+        afterCount.ShouldBeLessThan(beforeCount);
     }
 
     // =====================================================================
@@ -328,6 +329,13 @@ public class SessionCudParityTests
     {
         if (entity is Record record && record.Id is RecordIdOf<string> rid)
             return rid.Id;
+
+        // Handle bare RecordId (returned by RecordId.From in CreateEntityWithId)
+        if (entity is Record rec && rec.Id is RecordId bareRid)
+        {
+            try { return new RecordIdOfString(bareRid.Table, bareRid.DeserializeId<string>()).Id; }
+            catch { /* Fall through to reflection */ }
+        }
 
         // Fallback: try reflection on any Id property
         var prop = typeof(T).GetProperty("Id");
