@@ -14,7 +14,7 @@ public class DocumentStore : IDocumentStore, ISessionFactory
     private ISurrealDbClient? _client;
     private DatabasePerTenantSelector? _tenantSelector;
     private string? _currentTenantId;
-    private int _initialized; // 0 = false, 1 = true (Interlocked-atomic)
+    private int _initialized; // 0 = uninitialized, 1 = initializing, 2 = initialized (Interlocked-atomic)
     private bool _disposed;
 
     public DocumentStore(StoreOptions options)
@@ -51,7 +51,19 @@ public class DocumentStore : IDocumentStore, ISessionFactory
 
     public async Task InitializeAsync(CancellationToken ct = default)
     {
-        if (Interlocked.Exchange(ref _initialized, 1) == 1) return;
+        // Fast path: already fully initialized
+        if (Volatile.Read(ref _initialized) == 2) return;
+
+        // Attempt to claim initialization
+        if (Interlocked.CompareExchange(ref _initialized, 1, 0) != 0)
+        {
+            // Another thread is already initializing or done
+            // Spin-wait for it (or just return — calls will trigger EnsureInitialized)
+            return;
+        }
+
+        try
+        {
 
         // DatabasePerTenant: skip connecting to a default database;
         // each tenant gets its own database on first session creation.
@@ -84,6 +96,7 @@ public class DocumentStore : IDocumentStore, ISessionFactory
             ApplyPolicies();
 
             _logger.LogInformation("Dali store initialized (DatabasePerTenant mode)");
+            Interlocked.Exchange(ref _initialized, 2);
             return;
         }
 
@@ -400,6 +413,16 @@ public class DocumentStore : IDocumentStore, ISessionFactory
         }
 
         _logger.LogInformation("Dali store initialized successfully: ns={Namespace}, db={Database}", ns, db);
+
+            // Mark fully initialized only after everything succeeds
+            Interlocked.Exchange(ref _initialized, 2);
+        }
+        catch
+        {
+            // Reset on failure so retry is possible
+            Interlocked.Exchange(ref _initialized, 0);
+            throw;
+        }
     }
 
     public async Task<IQuerySession> QuerySessionAsync(CancellationToken ct = default)
@@ -561,11 +584,24 @@ public class DocumentStore : IDocumentStore, ISessionFactory
 
     private async Task EnsureInitialized(CancellationToken ct)
     {
-        if (_initialized == 0)
+        if (Volatile.Read(ref _initialized) != 2)
             await InitializeAsync(ct).ConfigureAwait(false);
     }
 
+    /// <summary>
+    /// Creates a graph query builder for traversal operations.
+    /// </summary>
+    public async Task<IGraphQuery<T>> GraphAsync<T>(CancellationToken ct = default) where T : class
+    {
+        await EnsureInitialized(ct).ConfigureAwait(false);
+        var surrealSession = await Client.CreateSession(ct).ConfigureAwait(false);
+        await surrealSession.Use(Options.Namespace ?? "test", Options.Database ?? "test", ct).ConfigureAwait(false);
+        var querySession = new QuerySession(Client, surrealSession, Options, DocumentTracking.None) { DocumentStore = this };
+        return GraphQueryProvider.Graph<T>(querySession);
+    }
+
     /// <summary>Start a graph traversal query. Creates an ephemeral session internally.</summary>
+    [Obsolete("Use GraphAsync() to avoid sync-over-async deadlock. This will be removed in GA.")]
     public IGraphQuery<T> Graph<T>() where T : class
     {
         if (_initialized == 0)

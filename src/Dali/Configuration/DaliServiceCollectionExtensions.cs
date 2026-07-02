@@ -1,3 +1,4 @@
+using System.Threading;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
@@ -27,7 +28,18 @@ public static class DaliServiceCollectionExtensions
         {
             options.ServiceProvider = sp;
             var store = new DocumentStore(options);
-            store.InitializeAsync().GetAwaiter().GetResult();
+            // Initialize synchronously for configurator discovery.
+            // Null sync-context prevents ASP.NET deadlocks.
+            var prevCtx = SynchronizationContext.Current;
+            try
+            {
+                SynchronizationContext.SetSynchronizationContext(null);
+                store.InitializeAsync().GetAwaiter().GetResult();
+            }
+            finally
+            {
+                SynchronizationContext.SetSynchronizationContext(prevCtx);
+            }
             return store;
         });
 
@@ -67,7 +79,18 @@ public static class DaliServiceCollectionExtensions
         {
             options.ServiceProvider = sp;
             var store = new DocumentStore(options);
-            store.InitializeAsync().GetAwaiter().GetResult();
+            // Initialize synchronously for configurator discovery.
+            // Null sync-context prevents ASP.NET deadlocks.
+            var prevCtx = SynchronizationContext.Current;
+            try
+            {
+                SynchronizationContext.SetSynchronizationContext(null);
+                store.InitializeAsync().GetAwaiter().GetResult();
+            }
+            finally
+            {
+                SynchronizationContext.SetSynchronizationContext(prevCtx);
+            }
             return store;
         });
 

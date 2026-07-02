@@ -42,13 +42,14 @@ public class EventStore : IEvents
                     return records.Select(r => ToEvent(r, upcasters)).ToList().AsReadOnly();
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                // CBOR deserialization fallback
+                _logger.LogWarning(ex, "Event deserialization failed for stream {StreamId}", streamId);
+                return Array.Empty<IEvent>();
             }
         }
 
-        return [];
+        return Array.Empty<IEvent>();
     }
 
     public async Task<IReadOnlyList<IEvent>> Append(string streamId, IEnumerable<object> events, Dictionary<string, string>? headers = null, CancellationToken ct = default)
@@ -136,12 +137,22 @@ public class EventStore : IEvents
 
     public async Task<IReadOnlyList<IEvent>> Append(string streamId, long expectedVersion, IEnumerable<object> events, CancellationToken ct = default)
     {
-        var currentVersion = await GetNextVersion(streamId, ct).ConfigureAwait(false);
-        if (currentVersion != expectedVersion)
+        await using var tx = await _session.BeginTransaction(ct).ConfigureAwait(false);
+        try
         {
-            throw new ConcurrencyException(typeof(EventStore), streamId, expectedVersion, currentVersion);
+            var currentVersion = await GetNextVersion(streamId, ct).ConfigureAwait(false);
+            if (currentVersion != expectedVersion)
+                throw new ConcurrencyException(typeof(EventStore), streamId, expectedVersion, currentVersion);
+
+            var result = await Append(streamId, events, headers: null, ct).ConfigureAwait(false);
+            await tx.Commit(ct).ConfigureAwait(false);
+            return result;
         }
-        return await Append(streamId, events, headers: null, ct).ConfigureAwait(false);
+        catch
+        {
+            await tx.Cancel(ct).ConfigureAwait(false);
+            throw;
+        }
     }
 
     public Task<IReadOnlyList<IEvent>> AppendOptimistic(string streamId, long lastKnownVersion, IEnumerable<object> events, CancellationToken ct = default)

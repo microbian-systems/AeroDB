@@ -137,14 +137,8 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
     }
 
     /// <summary>
-    /// Begins an explicit SurrealDB transaction. Returns an <see cref="IDaliTransaction"/> for
-    /// explicit commit/rollback control. When active, <see cref="SaveChangesAsync"/> runs inside
-    /// this transaction without auto-committing, supporting multiple <c>SaveChangesAsync</c> calls
-    /// within a single transaction.
-    /// <para>
-    /// Alternative: use <see cref="CommitTransactionAsync"/> or <see cref="RollbackTransactionAsync"/>
-    /// on the session directly.
-    /// </para>
+    /// Begins a database transaction synchronously.
+    /// Prefer <see cref="BeginTransactionAsync"/> in ASP.NET contexts to avoid sync-over-async deadlock.
     /// </summary>
     public IDaliTransaction BeginTransaction()
     {

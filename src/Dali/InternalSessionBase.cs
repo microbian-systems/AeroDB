@@ -26,6 +26,7 @@ public abstract class InternalSessionBase : IAsyncDisposable
 
     protected DocumentTracking Tracking { get; }
     protected bool Disposed;
+    private readonly ILogger _logger;
 
     /// <summary>Total number of entities currently tracked in the identity map.</summary>
     public int IdentityMapCount => IdentityMap.Values.Sum(m => m.Count);
@@ -83,6 +84,7 @@ public abstract class InternalSessionBase : IAsyncDisposable
         Tracking = tracking;
         Database = new DatabaseInfo(options);
         Json = new JsonLoader(this);
+        _logger = options.LoggerFactory?.CreateLogger<InternalSessionBase>() ?? NullLogger<InternalSessionBase>.Instance;
     }
 
     private sealed class DatabaseInfo : IDatabase
@@ -248,7 +250,6 @@ public abstract class InternalSessionBase : IAsyncDisposable
     public async Task<T?> LoadAsync<T>(string id, CancellationToken ct = default) where T : class
     {
         RequestCount++;
-        var logger = CreateLogger<InternalSessionBase>();
         var table = MetadataDispatch.GetTableName(typeof(T));
         var (schemaName, _) = MetadataDispatch.GetSchemaTarget(typeof(T), Options.Schema);
         var loadSession = await GetSessionForSchemaAsync(schemaName, ct).ConfigureAwait(false);
@@ -261,7 +262,7 @@ public abstract class InternalSessionBase : IAsyncDisposable
             {
                 if (IdentityMap.TryGetValue(typeof(T), out var typeMap) && typeMap.TryGetValue(id, out var cached))
                 {
-                    logger.LogDebug("LoadAsync<{Type}> identity hit for id={Id}", typeof(T).Name, id);
+                    _logger.LogDebug("LoadAsync<{Type}> identity hit for id={Id}", typeof(T).Name, id);
                     return (T?)cached;
                 }
             }
@@ -297,7 +298,7 @@ public abstract class InternalSessionBase : IAsyncDisposable
                 
                 if (!string.Equals(entityTenant, TenantId, StringComparison.Ordinal))
                 {
-                    logger.LogDebug("Tenant filter applied for LoadAsync<{Type}>: entity tenant '{EntityTenant}' != session tenant '{SessionTenant}'",
+                    _logger.LogDebug("Tenant filter applied for LoadAsync<{Type}>: entity tenant '{EntityTenant}' != session tenant '{SessionTenant}'",
                         typeof(T).Name, entityTenant, TenantId);
                     return default;
                 }
@@ -314,11 +315,12 @@ public abstract class InternalSessionBase : IAsyncDisposable
             if (result is not null && UseOptimisticConcurrency)
                 TrackOriginalVersion(result);
 
-            logger.LogDebug("Loaded {Type} with id={Id}", typeof(T).Name, id);
+            _logger.LogDebug("Loaded {Type} with id={Id}", typeof(T).Name, id);
             return result;
         }
-        catch
+        catch (Exception ex)
         {
+            _logger.LogWarning(ex, "LoadAsync failed for id={Id}", id);
             return null;
         }
     }
@@ -887,9 +889,9 @@ public abstract class InternalSessionBase : IAsyncDisposable
                 }
             }
         }
-        catch
+        catch (Exception ex)
         {
-            // Table may not exist yet — report 0
+            _logger.LogWarning(ex, "Daemon query failed (table may not exist yet)");
         }
         return 0;
     }
@@ -913,9 +915,9 @@ public abstract class InternalSessionBase : IAsyncDisposable
                 }
             }
         }
-        catch
+        catch (Exception ex)
         {
-            // Table may not exist yet — report 0
+            _logger.LogWarning(ex, "Daemon query failed (table may not exist yet)");
         }
         return 0;
     }
