@@ -509,6 +509,7 @@ public class DaliUserStore<TUser, TRole> :
     {
         cancellationToken.ThrowIfCancellationRequested();
 
+        // Raw SQL: reads a single embedded field without loading the full user document.
         await using var session = await _store.QuerySessionAsync(cancellationToken);
         var results = await session.RawQueryAsync<AuthenticatorKeyResult>(
             $"SELECT authenticator_key FROM {_userTable}:{user.Id}",
@@ -523,6 +524,7 @@ public class DaliUserStore<TUser, TRole> :
         cancellationToken.ThrowIfCancellationRequested();
 
         await using var session = await _store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }, cancellationToken);
+        // Raw SQL: updates a single embedded field without loading the full user document.
         await session.ExecuteSqlAsync(
             $"UPDATE {_userTable}:{user.Id} SET authenticator_key = $key",
             new Dictionary<string, object?> { ["key"] = key },
@@ -841,6 +843,7 @@ public class DaliUserStore<TUser, TRole> :
         if (role is null)
             return Array.Empty<TUser>();
 
+        // Raw SQL: SurrealDB CONTAINS operator has no LINQ equivalent in Dali's fluent API.
         return await session.RawQueryAsync<TUser>(
             $"SELECT * FROM {_userTable} WHERE role_ids CONTAINS $roleId",
             new Dictionary<string, object?> { ["roleId"] = role.Id },
@@ -990,7 +993,8 @@ public class DaliUserStore<TUser, TRole> :
 
         await using var session = await _store.QuerySessionAsync(cancellationToken);
 
-        // Look up the passkey record by credential ID via raw SQL (byte[] comparison).
+        // Raw SQL: byte[] credential ID comparison is not reliably supported in LINQ
+        // across SurrealDB drivers. See FindPasskeyRecordAsync for detailed comment.
         var passkeys = await session.RawQueryAsync<DaliUserPasskey>(
             $"SELECT * FROM {_passkeyTable} WHERE credential_id = $credentialId LIMIT 1",
             new Dictionary<string, object?> { ["credentialId"] = credentialId },
@@ -1038,6 +1042,7 @@ public class DaliUserStore<TUser, TRole> :
 
     private async Task<List<string>> GetRecoveryCodesAsync(IQuerySession session, string userId, CancellationToken ct)
     {
+        // Raw SQL: reads a single embedded field without loading the full user document.
         var result = await session.RawQueryAsync<RecoveryCodesResult>(
             $"SELECT recovery_codes FROM {_userTable}:{userId}",
             parameters: null,
@@ -1047,6 +1052,7 @@ public class DaliUserStore<TUser, TRole> :
 
     private async Task SetRecoveryCodesAsync(IDocumentSession session, string userId, List<string> codes, CancellationToken ct)
     {
+        // Raw SQL: updates a single embedded field without loading the full user document.
         await session.ExecuteSqlAsync(
             $"UPDATE {_userTable}:{userId} SET recovery_codes = $codes",
             new Dictionary<string, object?> { ["codes"] = codes },
@@ -1059,6 +1065,7 @@ public class DaliUserStore<TUser, TRole> :
 
     private async Task<List<string>> GetRoleIdsAsync(IQuerySession session, string userId, CancellationToken ct)
     {
+        // Raw SQL: reads a single embedded field without loading the full user document.
         var result = await session.RawQueryAsync<RoleIdsResult>(
             $"SELECT role_ids FROM {_userTable}:{userId}",
             parameters: null,
@@ -1068,6 +1075,7 @@ public class DaliUserStore<TUser, TRole> :
 
     private async Task SetRoleIdsAsync(IDocumentSession session, string userId, List<string> roleIds, CancellationToken ct)
     {
+        // Raw SQL: updates an embedded array field without loading the full user document.
         if (roleIds.Count == 0)
         {
             await session.ExecuteSqlAsync(
