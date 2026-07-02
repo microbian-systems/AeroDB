@@ -4,6 +4,9 @@
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <!-- NU1903: Newtonsoft.Json 10.0.2 vulnerability is transitive through Dali.Snowflake → Aero.Core.
+         We don't use Newtonsoft.Json or WindowsAzure.Storage directly. -->
+    <NoWarn>$(NoWarn);NU1903</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Bogus" Version="35.6.5" />

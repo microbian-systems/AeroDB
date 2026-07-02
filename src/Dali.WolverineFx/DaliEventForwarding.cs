@@ -13,7 +13,7 @@ namespace Dali.WolverineFx;
 /// <see cref="Wolverine.IMessageContext"/> for each handler invocation
 /// (set by <see cref="DaliOutboxedSessionFactory"/>).
 ///
-/// Reflection access to <see cref="DocumentSession._appendedEvents"/> is
+/// Reflection access to <c>DocumentSession._appendedEvents</c> is
 /// delegated to <see cref="Internal.DaliSessionEventAccessor"/> to avoid
 /// duplicating that logic with <see cref="FlushOutgoingMessagesOnDaliCommit"/>.
 /// </summary>

@@ -17,7 +17,7 @@ public class DaliRoleStoreTests
         logger = Substitute.For<ILogger<DaliRoleStore<IdentityRole>>>();
 
         store.QuerySessionAsync(Arg.Any<CancellationToken>()).Returns(querySession);
-        store.LightweightSessionAsync(Arg.Any<CancellationToken>()).Returns(documentSession);
+        store.OpenSessionAsync(Arg.Any<SessionOptions>(), Arg.Any<CancellationToken>()).Returns(documentSession);
         documentSession.SaveChangesAsync(Arg.Any<CancellationToken>()).Returns(1);
 
         return store;

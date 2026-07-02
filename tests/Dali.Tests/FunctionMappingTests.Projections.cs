@@ -142,7 +142,7 @@ public partial class FunctionMappingTests
 
         var param = Expression.Parameter(typeof(FunctionTestDoc), "x");
         var tagsProp = Expression.Property(param, "Tags");
-        var lenMethod = typeof(SurrealArrayFunctions).GetMethod("Len").MakeGenericMethod(typeof(string));
+        var lenMethod = typeof(SurrealArrayFunctions).GetMethod("Len")!.MakeGenericMethod(typeof(string));
         var lenCall = Expression.Call(lenMethod, tagsProp);
 
         var valueProp = typeof(FunctionTestDoc).GetProperty("Value")!;

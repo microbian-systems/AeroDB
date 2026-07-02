@@ -14,7 +14,7 @@ public partial class FunctionMappingTests
     {
         var arrConst = Expression.Constant(new string[] { "a", "b" });
         var valConst = Expression.Constant("c");
-        var addMethod = typeof(SurrealArrayFunctions).GetMethod("Add").MakeGenericMethod(typeof(string));
+        var addMethod = typeof(SurrealArrayFunctions).GetMethod("Add")!.MakeGenericMethod(typeof(string));
         var call = Expression.Call(addMethod, arrConst, valConst);
         var result = SurrealExpressionVisitor.TranslateCondition(Expression.Equal(call, Expression.Constant(null)));
         result.ShouldContain("array::add(");
@@ -25,7 +25,7 @@ public partial class FunctionMappingTests
     {
         var arrConst = Expression.Constant(new string[] { "a", "b" });
         var valConst = Expression.Constant("c");
-        var method = typeof(SurrealArrayFunctions).GetMethod("Append").MakeGenericMethod(typeof(string));
+        var method = typeof(SurrealArrayFunctions).GetMethod("Append")!.MakeGenericMethod(typeof(string));
         var call = Expression.Call(method, arrConst, valConst);
         var result = SurrealExpressionVisitor.TranslateCondition(Expression.Equal(call, Expression.Constant(null)));
         result.ShouldContain("array::append(");
@@ -36,7 +36,7 @@ public partial class FunctionMappingTests
     {
         var arrConst = Expression.Constant(new string[] { "a", "b" });
         var valConst = Expression.Constant("c");
-        var method = typeof(SurrealArrayFunctions).GetMethod("Prepend").MakeGenericMethod(typeof(string));
+        var method = typeof(SurrealArrayFunctions).GetMethod("Prepend")!.MakeGenericMethod(typeof(string));
         var call = Expression.Call(method, arrConst, valConst);
         var result = SurrealExpressionVisitor.TranslateCondition(Expression.Equal(call, Expression.Constant(null)));
         result.ShouldContain("array::prepend(");
@@ -46,7 +46,7 @@ public partial class FunctionMappingTests
     public async Task SurrealArrayFunctions_Remove_TranslatesCorrectly()
     {
         var arrConst = Expression.Constant(new string[] { "a", "b" });
-        var method = typeof(SurrealArrayFunctions).GetMethod("Remove").MakeGenericMethod(typeof(string));
+        var method = typeof(SurrealArrayFunctions).GetMethod("Remove")!.MakeGenericMethod(typeof(string));
         var call = Expression.Call(method, arrConst, Expression.Constant(0));
         var result = SurrealExpressionVisitor.TranslateCondition(Expression.Equal(call, Expression.Constant(null)));
         result.ShouldContain("array::remove(");
@@ -56,7 +56,7 @@ public partial class FunctionMappingTests
     public async Task SurrealArrayFunctions_Sort_TranslatesCorrectly()
     {
         var arrConst = Expression.Constant(new string[] { "b", "a" });
-        var method = typeof(SurrealArrayFunctions).GetMethod("Sort").MakeGenericMethod(typeof(string));
+        var method = typeof(SurrealArrayFunctions).GetMethod("Sort")!.MakeGenericMethod(typeof(string));
         var call = Expression.Call(method, arrConst);
         var result = SurrealExpressionVisitor.TranslateCondition(Expression.Equal(call, Expression.Constant(null)));
         result.ShouldContain("array::sort(");
@@ -66,7 +66,7 @@ public partial class FunctionMappingTests
     public async Task SurrealArrayFunctions_Distinct_TranslatesCorrectly()
     {
         var arrConst = Expression.Constant(new string[] { "a", "b", "a" });
-        var method = typeof(SurrealArrayFunctions).GetMethod("Distinct").MakeGenericMethod(typeof(string));
+        var method = typeof(SurrealArrayFunctions).GetMethod("Distinct")!.MakeGenericMethod(typeof(string));
         var call = Expression.Call(method, arrConst);
         var result = SurrealExpressionVisitor.TranslateCondition(Expression.Equal(call, Expression.Constant(null)));
         result.ShouldContain("array::distinct(");
@@ -77,7 +77,7 @@ public partial class FunctionMappingTests
     {
         var arr1 = Expression.Constant(new string[] { "a", "b" });
         var arr2 = Expression.Constant(new string[] { "c", "d" });
-        var method = typeof(SurrealArrayFunctions).GetMethod("Union").MakeGenericMethod(typeof(string));
+        var method = typeof(SurrealArrayFunctions).GetMethod("Union")!.MakeGenericMethod(typeof(string));
         var call = Expression.Call(method, arr1, arr2);
         var result = SurrealExpressionVisitor.TranslateCondition(Expression.Equal(call, Expression.Constant(null)));
         result.ShouldContain("array::union(");
@@ -88,7 +88,7 @@ public partial class FunctionMappingTests
     {
         var arrConst = Expression.Constant(new string[] { "a", "b" });
         var valConst = Expression.Constant("a");
-        var method = typeof(SurrealArrayFunctions).GetMethod("ArrayContains").MakeGenericMethod(typeof(string));
+        var method = typeof(SurrealArrayFunctions).GetMethod("ArrayContains")!.MakeGenericMethod(typeof(string));
         var call = Expression.Call(method, arrConst, valConst);
         var result = SurrealExpressionVisitor.TranslateCondition(Expression.Equal(call, Expression.Constant(true)));
         result.ShouldContain("array::contains(");
@@ -98,7 +98,7 @@ public partial class FunctionMappingTests
     public async Task SurrealArrayFunctions_Len_TranslatesCorrectly()
     {
         var arrConst = Expression.Constant(new string[] { "a", "b" });
-        var method = typeof(SurrealArrayFunctions).GetMethod("Len").MakeGenericMethod(typeof(string));
+        var method = typeof(SurrealArrayFunctions).GetMethod("Len")!.MakeGenericMethod(typeof(string));
         var call = Expression.Call(method, arrConst);
         var result = SurrealExpressionVisitor.TranslateCondition(Expression.GreaterThan(call, Expression.Constant(0)));
         result.ShouldContain("array::len(");
@@ -168,7 +168,7 @@ public partial class FunctionMappingTests
 
         var param = Expression.Parameter(typeof(FunctionTestDoc), "x");
         var nameProp = Expression.Property(param, "Name");
-        var method = typeof(SurrealArrayFunctions).GetMethod("ArrayContains").MakeGenericMethod(typeof(string));
+        var method = typeof(SurrealArrayFunctions).GetMethod("ArrayContains")!.MakeGenericMethod(typeof(string));
         var call = Expression.Call(method,
             Expression.Constant(new string[] { "a", "b" }), nameProp);
         var condition = Expression.Equal(call, Expression.Constant(true));
@@ -194,7 +194,7 @@ public partial class FunctionMappingTests
 
         var param = Expression.Parameter(typeof(FunctionTestDoc), "x");
         var nameProp = Expression.Property(param, "Name");
-        var method = typeof(SurrealArrayFunctions).GetMethod("Len").MakeGenericMethod(typeof(string));
+        var method = typeof(SurrealArrayFunctions).GetMethod("Len")!.MakeGenericMethod(typeof(string));
         var call = Expression.Call(method, Expression.Constant(new string[] { "a", "b", "c" }));
         var condition = Expression.GreaterThan(call, Expression.Constant(0));
         var lambda = Expression.Lambda<Func<FunctionTestDoc, bool>>(condition, param);

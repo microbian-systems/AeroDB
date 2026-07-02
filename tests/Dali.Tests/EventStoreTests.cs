@@ -303,6 +303,6 @@ public class EventStoreTests
         events.Count.ShouldBe(1);
         events[0].Headers.ShouldNotBeNull();
         events[0].Headers!["causation_id"].ShouldBe("cause-123");
-        events[0].Headers["correlation_id"].ShouldBe("corr-456");
+        events[0].Headers!["correlation_id"].ShouldBe("corr-456");
     }
 }

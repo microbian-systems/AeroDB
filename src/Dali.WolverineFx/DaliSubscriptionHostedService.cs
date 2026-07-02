@@ -251,7 +251,7 @@ internal sealed class DaliEnvelopeEvent : JasperFx.Events.IEvent
     public string DotNetTypeName { get; set; } = "";
     public string? CausationId { get; set; }
     public string? CorrelationId { get; set; }
-    public Dictionary<string, object> Headers { get; set; } = new();
+    public Dictionary<string, object>? Headers { get; set; } = new();
     IReadOnlyList<EventTag>? JasperFx.Events.IEvent.Tags => _tags?.AsReadOnly();
     public bool IsArchived { get; set; }
     public string? AggregateTypeName { get; set; }

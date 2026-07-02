@@ -22,7 +22,9 @@ using Wolverine.Runtime;
 /// </summary>
 public class DaliIntegrationRegistrationTests
 {
+#pragma warning disable TUnit0023 // _options doesn't implement IDisposable — false positive
     private readonly WolverineOptions _options;
+#pragma warning restore TUnit0023
     private readonly DaliIntegration _integration;
 
     public DaliIntegrationRegistrationTests()

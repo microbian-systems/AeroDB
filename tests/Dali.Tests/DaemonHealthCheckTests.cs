@@ -78,7 +78,7 @@ public class DaemonHealthCheckTests
         var result = await check.CheckHealthAsync(context);
 
         result.Status.ShouldBe(HealthStatus.Healthy);
-        result.Description.ShouldContain("not configured");
+        result.Description!.ShouldContain("not configured");
     }
 
     [Test]
@@ -95,7 +95,7 @@ public class DaemonHealthCheckTests
         var result = await check.CheckHealthAsync(context);
 
         result.Status.ShouldBe(HealthStatus.Unhealthy);
-        result.Description.ShouldContain("stopped");
+        result.Description!.ShouldContain("stopped");
     }
 
     [Test]
@@ -120,8 +120,8 @@ public class DaemonHealthCheckTests
         var result = await check.CheckHealthAsync(context);
 
         result.Status.ShouldBe(HealthStatus.Healthy);
-        result.Description.ShouldContain("42");                // HighWaterSequence in message
-        result.Description.ShouldContain("3");                 // LagCount in message
+        result.Description!.ShouldContain("42");                // HighWaterSequence in message
+        result.Description!.ShouldContain("3");                 // LagCount in message
         result.Data.ShouldContainKey("HighWaterSequence");
         result.Data.ShouldContainKey("LagCount");
         result.Data["HighWaterSequence"].ShouldBe(42L);
@@ -150,8 +150,8 @@ public class DaemonHealthCheckTests
         var result = await check.CheckHealthAsync(context);
 
         result.Status.ShouldBe(HealthStatus.Degraded);
-        result.Description.ShouldContain("no recent success");
-        result.Description.ShouldContain("Timeout exceeded");
+        result.Description!.ShouldContain("no recent success");
+        result.Description!.ShouldContain("Timeout exceeded");
     }
 
     [Test]
@@ -176,8 +176,8 @@ public class DaemonHealthCheckTests
         var result = await check.CheckHealthAsync(context);
 
         result.Status.ShouldBe(HealthStatus.Degraded);
-        result.Description.ShouldContain("no recent success");
-        result.Description.ShouldContain("none");               // last error reported as "none"
+        result.Description!.ShouldContain("no recent success");
+        result.Description!.ShouldContain("none");               // last error reported as "none"
     }
 
     // ─── Helpers ──────────────────────────────────────────────────────

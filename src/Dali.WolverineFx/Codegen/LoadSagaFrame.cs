@@ -6,7 +6,7 @@ using Dali;
 namespace Dali.WolverineFx.Codegen;
 
 /// <summary>
-/// Codegen frame that loads a saga document using <see cref="IDocumentSession.LoadAsync{T}"/>
+/// Codegen frame that loads a saga document using <c>IDocumentSession.LoadAsync&lt;T&gt;</c>
 /// from the Dali session.
 /// </summary>
 internal sealed class LoadSagaFrame : AsyncFrame

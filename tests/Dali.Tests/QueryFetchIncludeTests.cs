@@ -812,14 +812,14 @@ public class FetchIncludeIntegrationTests
         await session.SaveChangesAsync();
 
         // Query with Include dictionary overload
-        var userMap = new Dictionary<RecordId?, User>();
+        var userMap = new Dictionary<RecordId, User>();
         var issues = await session.Query<Issue>()
-            .IncludeBatch(i => i.AssigneeId, userMap)
+            .IncludeBatch<RecordId, User>(i => i.AssigneeId!, userMap)
             .ToListAsync();
 
         issues.Count.ShouldBe(1);
         userMap.Count.ShouldBe(1);
-        userMap[savedUser.Id]!.Name.ShouldBe("Bob");
+        userMap[savedUser.Id!].Name.ShouldBe("Bob");
     }
 
     [Test]

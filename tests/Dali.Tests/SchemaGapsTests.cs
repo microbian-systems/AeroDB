@@ -150,7 +150,7 @@ public class SchemaGapsTests
         mapping.ComputedIndex(p => p.Age, opts => { });
         var idx = mapping.Indices.FirstOrDefault(i => i.Name.Contains("person_age"));
         idx.ShouldNotBeNull();
-        idx.ComputedOptions.Method.ShouldBe(ComputedIndexOptions.IndexMethod.BTree);
+        idx!.ComputedOptions!.Method.ShouldBe(ComputedIndexOptions.IndexMethod.BTree);
     }
 
     // ── MetadataConfig ───────────────────────────────────────────

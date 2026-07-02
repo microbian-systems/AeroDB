@@ -25,7 +25,7 @@ public class SchemaConfigurationTests
         // Write and read back a record to prove the schema works
         var person = new Person { Name = "IndexTest", Age = 30 };
         surrealSession.RawQuery("CREATE person CONTENT $content",
-            new Dictionary<string, object> { ["content"] = person }).GetAwaiter().GetResult();
+            new Dictionary<string, object?> { ["content"] = person }).GetAwaiter().GetResult();
 
         var queryResponse = await surrealSession.RawQuery("SELECT * FROM person WHERE Name = 'IndexTest';");
         queryResponse.HasErrors.ShouldBeFalse();
@@ -53,7 +53,7 @@ public class SchemaConfigurationTests
         await using var store = Documents.For(o =>
         {
             o.ClientFactory = () => new SurrealDb.Embedded.InMemory.SurrealDbMemoryClient();
-            o.Schema.For<Product>().CompositeIndex(p => p.Name, p => p.Category);
+            o.Schema.For<Product>().Index(x => new { x.Name, x.Category });
         });
         await store.InitializeAsync();
 
@@ -69,7 +69,7 @@ public class SchemaConfigurationTests
         await using var store = Documents.For(o =>
         {
             o.ClientFactory = () => new SurrealDb.Embedded.InMemory.SurrealDbMemoryClient();
-            o.Schema.For<Product>().UniqueCompositeIndex(p => p.Name, p => p.Category);
+            o.Schema.For<Product>().Index(x => new { x.Name, x.Category }, c => c.IsUnique());
         });
         await store.InitializeAsync();
 

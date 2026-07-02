@@ -11,7 +11,7 @@ public class FindPersonByFirstName : ICompiledQuery<Person, Person>
 {
     public string FirstName { get; set; } = "";
     public Expression<Func<ISurrealDbQueryable<Person>, Person>> QueryIs()
-        => q => q.Where(x => x.Name == FirstName).FirstOrDefault();
+        => q => q.Where(x => x.Name == FirstName).FirstOrDefault()!;
 }
 
 /// <summary>
@@ -41,7 +41,7 @@ public class FindPersonByFirstNameShorthand : ICompiledQuery<Person>
 {
     public string FirstName { get; set; } = "";
     public Expression<Func<ISurrealDbQueryable<Person>, Person>> QueryIs()
-        => q => q.Where(x => x.Name == FirstName).FirstOrDefault();
+        => q => q.Where(x => x.Name == FirstName).FirstOrDefault()!;
 }
 
 /// <summary>
