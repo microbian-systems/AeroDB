@@ -23,7 +23,7 @@ public static class CompiledQueryPlanner
     private static readonly ConcurrentDictionary<Type, CompiledPlan> _plans = new();
 
     /// <summary>
-    /// Returns the cached plan for <paramref name="queryType"/>, building it
+    /// Returns the cached plan for the query type, building it
     /// on first access.
     /// </summary>
     public static CompiledPlan GetOrBuildPlan<TDoc, TOut>(ICompiledQuery<TDoc, TOut> query)

@@ -173,8 +173,8 @@ public class GraphEntry<TSource> where TSource : class
 /// <summary>
 /// Typed graph traversal builder within a view SELECT column.
 /// <typeparamref name="TSource"/> is the view's source entity type.
-/// <typeparamref name="TTarget"/> is the current traversal target type (used by <see cref="Select"/>).
-/// Call <see cref="Select"/> to close the chain and return to the parent <see cref="ViewSelectBuilder{TSource}"/>.
+/// <typeparamref name="TTarget"/> is the current traversal target type (used by <c>Select</c>).
+/// Call <c>Select</c> to close the chain and return to the parent <see cref="ViewSelectBuilder{TSource}"/>.
 /// </summary>
 public class ViewGraphSelectBuilder<TSource, TTarget>
     where TSource : class

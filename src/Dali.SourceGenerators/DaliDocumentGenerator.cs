@@ -109,7 +109,7 @@ public class DaliDocumentGenerator : IIncrementalGenerator
     }
 
     /// <summary>
-    /// Checks if <paramref name="type"/> is a subclass of <see cref="Entity{TId}"/>.
+    /// Checks if <paramref name="type"/> is a subclass of <c>Entity&lt;TId&gt;</c>.
     /// </summary>
     private static bool IsEntitySubclass(INamedTypeSymbol type, INamedTypeSymbol entityGenericType)
     {
@@ -125,7 +125,7 @@ public class DaliDocumentGenerator : IIncrementalGenerator
     }
 
     /// <summary>
-    /// Generates the per-type metadata class implementing <see cref="global::Dali.Metadata.ITypeMetadata{T}"/>.
+    /// Generates the per-type metadata class implementing <c>ITypeMetadata&lt;T&gt;</c>.
     /// </summary>
     private static string GenerateMetadataClass(INamedTypeSymbol type, Compilation compilation, bool isEntity)
     {

@@ -316,7 +316,7 @@ public class SchemaManager
     }
 
     /// <summary>
-    /// Non-generic overload of <see cref="EnsureDocumentSchemaAsync{T}"/> for use without
+    /// Non-generic overload of <c>EnsureDocumentSchemaAsync&lt;T&gt;</c> for use without
     /// compile-time type knowledge (e.g. when iterating configured mappings).
     /// </summary>
     internal async Task EnsureDocumentSchemaAsync(Type entityType, ISurrealDbSession session, SchemaMode mode = SchemaMode.Strict, IReadOnlyList<FieldDefinition>? fieldDefinitions = null, CancellationToken ct = default)

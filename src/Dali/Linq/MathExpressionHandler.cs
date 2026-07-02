@@ -19,7 +19,7 @@ namespace Dali;
 /// This allows adding new categories without modifying existing handlers.
 ///
 /// <b>Registration:</b> Add a <c>if (m.Method.DeclaringType == typeof(Math))</c> branch
-/// in <see cref="SurrealExpressionVisitor.TranslateMethod"/>.
+/// in <c>TranslateMethod</c>.
 ///
 /// <b>Design rationale:</b> Marten uses <c>IMethodCallParser</c> (interface + registration list + caching)
 /// for 30+ parser types with composite <c>ISqlFragment</c> output. Dali's functions are simpler:

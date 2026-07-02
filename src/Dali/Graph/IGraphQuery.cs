@@ -11,22 +11,22 @@ public interface IGraphQuery<TNode> where TNode : class
     /// <summary>Forward traversal using the edge table name inferred from TEdge.</summary>
     IGraphQuery<TTarget> Out<TTarget, TEdge>() where TTarget : class where TEdge : EdgeRecord;
 
-    /// <summary>Backward traversal: SELECT <-edge<-target FROM ...</summary>
+    /// <summary>Backward traversal: <c>SELECT &lt;-edge&lt;-target FROM ...</c></summary>
     IGraphQuery<TTarget> In<TTarget>(string edgeType) where TTarget : class;
 
     /// <summary>Backward traversal using the edge table name inferred from TEdge.</summary>
     IGraphQuery<TTarget> In<TTarget, TEdge>() where TTarget : class where TEdge : EdgeRecord;
 
-    /// <summary>Bidirectional traversal: SELECT <->edge<->target FROM ...</summary>
+    /// <summary>Bidirectional traversal: <c>SELECT &lt;-&gt;edge&lt;-&gt;target FROM ...</c></summary>
     IGraphQuery<TTarget> Both<TTarget>(string edgeType) where TTarget : class;
 
     /// <summary>Bidirectional traversal using the edge table name inferred from TEdge.</summary>
     IGraphQuery<TTarget> Both<TTarget, TEdge>() where TTarget : class where TEdge : EdgeRecord;
 
-    /// <summary>Wildcard outgoing: SELECT ->?->... FROM ...</summary>
+    /// <summary>Wildcard outgoing: <c>SELECT -&gt;?-&gt;... FROM ...</c></summary>
     IGraphQuery<GraphNode> OutAny();
 
-    /// <summary>Wildcard incoming: SELECT <-?<-... FROM ...</summary>
+    /// <summary>Wildcard incoming: <c>SELECT &lt;-?&lt;-... FROM ...</c></summary>
     IGraphQuery<GraphNode> InAny();
 
     /// <summary>Any edge type (no direction constraint).</summary>

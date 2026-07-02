@@ -74,7 +74,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         .FirstOrDefault(m => m.Name == "GetValue" && m.IsGenericMethodDefinition);
 
     /// <summary>
-    /// Cached <c>MethodInfo</c> for <see cref="ISurrealDbSession.Create{T}"/>,
+    /// Cached <c>MethodInfo</c> for <c>ISurrealDbSession.Create&lt;T&gt;</c>,
     /// used by <see cref="CreateEntityAsync"/> to avoid reflection lookup on every call.
     /// </summary>
     private static readonly MethodInfo? CreateMethod = typeof(ISurrealDbSession).GetMethods()
@@ -85,7 +85,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
             && m.GetParameters()[2].ParameterType == typeof(CancellationToken));
 
     /// <summary>
-    /// Cached <c>MethodInfo</c> for <see cref="ISurrealDbSharedMethods.Upsert{T, T}"/>,
+    /// Cached <c>MethodInfo</c> for <c>ISurrealDbSharedMethods.Upsert&lt;T, T&gt;</c>,
     /// used by <see cref="UpsertRecordAsync"/> to avoid reflection lookup on every call.
     /// </summary>
     private static readonly MethodInfo? UpsertMethod = typeof(ISurrealDbSharedMethods).GetMethods()
@@ -293,7 +293,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
 
     /// <summary>
     /// Adds an operation directly to the unit of work with a specified type.
-    /// Internal for testing — use <see cref="Store{T}"/> or <see cref="Delete{T}"/> in production.
+    /// Internal for testing — use <c>Store&lt;T&gt;</c> or <c>Delete&lt;T&gt;</c> in production.
     /// </summary>
     internal void AddOperation<T>(T entity, OperationType type) where T : class
     {
@@ -303,7 +303,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
 
     /// <summary>
     /// Tracks the version of an entity for optimistic concurrency checking.
-    /// Called automatically by <see cref="Store{T}"/> and <see cref="InternalSessionBase.LoadAsync{T}"/>.
+    /// Called automatically by <c>Store&lt;T&gt;</c> and <see cref="InternalSessionBase.LoadAsync{T}"/>.
     /// This method is available for cases where entities are obtained via other means (e.g., Query)
     /// and their version needs to be captured for subsequent concurrency checks.
     /// </summary>
@@ -1006,7 +1006,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                     foreach (var rel in _queuedRelations)
                     {
                         var table = MetadataDispatch.GetTableName(rel.EdgeType);
-                        var genericRelate = RelateMethod.MakeGenericMethod(rel.EdgeType, rel.EdgeType);
+                        var genericRelate = RelateMethod!.MakeGenericMethod(rel.EdgeType, rel.EdgeType);
                         var task = (Task)genericRelate.Invoke(targetSession, [table, rel.From, rel.To, rel.Data, ct])!;
                         await task.ConfigureAwait(false);
                     }
@@ -1197,7 +1197,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         var typedGetValue = GetValueMethod.MakeGenericMethod(listType);
         var raw = typedGetValue.Invoke(response, [0]);
         if (raw is System.Collections.IList list && list.Count > 0 && list[0] is not null)
-            return GetVersion(list[0]);
+            return GetVersion(list[0]!);
 
         return -1;
     }
@@ -1467,7 +1467,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
     {
         ArgumentNullException.ThrowIfNull(id);
         var strId = id.ToString();
-        return base.LoadAsync<T>(strId, ct);
+        return base.LoadAsync<T>(strId!, ct);
     }
 
     /// <inheritdoc />
@@ -1491,7 +1491,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
     {
         ArgumentNullException.ThrowIfNull(id);
         var strId = id.ToString();
-        return CheckExistsAsyncCore<T>(strId, ct);
+        return CheckExistsAsyncCore<T>(strId!, ct);
     }
 
     /// <inheritdoc />

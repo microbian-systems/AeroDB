@@ -4,7 +4,7 @@ namespace Dali.Metadata;
 
 /// <summary>
 /// Compile-time schema for a document property, emitted by the Dali source generator.
-/// Used by <see cref="Schema.SchemaManager"/> to emit DEFINE FIELD statements without reflection.
+/// Used by <c>SchemaManager</c> to emit DEFINE FIELD statements without reflection.
 /// </summary>
 public readonly record struct FieldSchema(string Name, string SurrealType, bool CanRead, bool CanWrite);
 

@@ -476,7 +476,7 @@ public interface IDocumentSession : IDocumentOperations, IQuerySession
     void EjectAll();
 
     /// <summary>Bulk-insert documents. More efficient than individual Store calls for large batches.</summary>
-    Task<int> BulkInsertAsync<T>(IEnumerable<T> documents, int batchSize = 100, CancellationToken ct = default) where T : class;
+    new Task<int> BulkInsertAsync<T>(IEnumerable<T> documents, int batchSize = 100, CancellationToken ct = default) where T : class;
 
     /// <summary>Queue a graph edge for creation during <see cref="SaveChangesAsync"/>. Executes inside the transaction.</summary>
     void Relate<TEdge>(
@@ -491,7 +491,7 @@ public interface IDocumentSession : IDocumentOperations, IQuerySession
     /// Swappable per-session logger for diagnostics and recording.
     /// When set, all session operations log to this logger instead of the global factory.
     /// </summary>
-    Microsoft.Extensions.Logging.ILogger? Logger { get; set; }
+    new Microsoft.Extensions.Logging.ILogger? Logger { get; set; }
 
     /// <summary>The pending unit of work. Allows inspection of queued operations before commit.</summary>
     IUnitOfWork PendingChanges { get; }

@@ -7,8 +7,8 @@ namespace Dali;
 /// by <see cref="SubscriptionName"/> for progress checkpointing.
 /// <br/>
 /// This is a simplified Marten-parity interface. For advanced subscriptions
-/// with JasperFx types (<see cref="JasperFx.Events.Daemon.EventRange"/>,
-/// <see cref="JasperFx.Events.Projections.ISubscriptionController"/>),
+/// with JasperFx types (<c>EventRange</c>,
+/// <c>ISubscriptionController</c>),
 /// use <see cref="IDaliSubscription"/> instead.
 /// </summary>
 public interface ISubscription

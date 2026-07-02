@@ -489,7 +489,7 @@ public class EventStore : IEvents
                 }
                 else
                 {
-                    try { data = JsonSerializer.Deserialize<object>(r.DataBinary, JsonOptions) ?? (object)r.DataBinary; }
+                    try { data = JsonSerializer.Deserialize<object>(r.DataBinary, JsonOptions) ?? (object?)r.DataBinary; }
                     catch { data = r.DataBinary; }
                 }
             }
@@ -497,12 +497,12 @@ public class EventStore : IEvents
             {
                 if (type != null)
                 {
-                    try { data = JsonSerializer.Deserialize(r.DataJson, type, JsonOptions); }
+                    try { data = JsonSerializer.Deserialize(r.DataJson!, type, JsonOptions); }
                     catch { data = r.DataJson; }
                 }
                 else
                 {
-                    try { data = JsonSerializer.Deserialize<object>(r.DataJson, JsonOptions) ?? r.DataJson; }
+                    try { data = JsonSerializer.Deserialize<object>(r.DataJson!, JsonOptions) ?? r.DataJson; }
                     catch { data = r.DataJson; }
                 }
             }
@@ -783,7 +783,7 @@ public class EventStore : IEvents
     /// <inheritdoc />
     public ISurrealDbQueryable<T> QueryRawEventDataOnly<T>() where T : class
     {
-        var provider = new SurrealQueryProvider(_session, _options);
+        var provider = new SurrealQueryProvider(_session, _options!);
         var queryable = new SurrealDbQueryable<T>(provider);
         // Scope queries to the mt_events table
         queryable.ViewName = "mt_events";
@@ -793,7 +793,7 @@ public class EventStore : IEvents
     /// <inheritdoc />
     public ISurrealDbQueryable<IEvent> QueryAllRawEvents()
     {
-        var provider = new SurrealQueryProvider(_session, _options);
+        var provider = new SurrealQueryProvider(_session, _options!);
         var queryable = new SurrealDbQueryable<IEvent>(provider);
         // Scope queries to the mt_events table
         queryable.ViewName = "mt_events";

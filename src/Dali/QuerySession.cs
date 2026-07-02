@@ -86,7 +86,7 @@ public class QuerySession : InternalSessionBase, IQuerySession
     {
         ArgumentNullException.ThrowIfNull(id);
         var strId = id.ToString();
-        return base.LoadAsync<T>(strId, ct);
+        return base.LoadAsync<T>(strId!, ct);
     }
 
     /// <inheritdoc />
@@ -110,7 +110,7 @@ public class QuerySession : InternalSessionBase, IQuerySession
     {
         ArgumentNullException.ThrowIfNull(id);
         var strId = id.ToString();
-        return CheckExistsAsyncCore<T>(strId, ct);
+        return CheckExistsAsyncCore<T>(strId!, ct);
     }
 
     /// <inheritdoc />

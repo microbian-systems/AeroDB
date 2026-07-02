@@ -1654,7 +1654,7 @@ public class SurrealQueryProvider : IQueryProvider
         try
         {
             var json = cv.ToString();
-            using var doc = JsonDocument.Parse(json);
+            using var doc = JsonDocument.Parse(json!);
             if (doc.RootElement.ValueKind == JsonValueKind.Object)
             {
                 foreach (var prop in doc.RootElement.EnumerateObject())
@@ -1680,7 +1680,7 @@ public class SurrealQueryProvider : IQueryProvider
         try
         {
             var json = cv.ToString();
-            using var doc = JsonDocument.Parse(json);
+            using var doc = JsonDocument.Parse(json!);
             if (doc.RootElement.ValueKind == JsonValueKind.Object)
             {
                 foreach (var prop in doc.RootElement.EnumerateObject())

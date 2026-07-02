@@ -223,7 +223,7 @@ internal sealed class SurrealDaliLiveQuery<T> : IDaliLiveQuery<T> where T : clas
     /// <summary>
     /// H4: Throws <see cref="InvalidOperationException"/> if callbacks are active
     /// (only one consumption model per subscription is allowed).
-    /// L2: Guards against double-enumeration via <see cref="Interlocked.Exchange"/>.
+    /// L2: Guards against double-enumeration via <c>Interlocked.Exchange</c>.
     /// </summary>
     public IAsyncEnumerable<DaliLiveChange<T>> Changes(CancellationToken ct = default)
     {

@@ -434,7 +434,7 @@ public static class SurrealDbQueryableExtensions
     /// SELECT * FROM `child` WHERE `fkField` IN (SELECT VALUE [id|Id] FROM $main);</c>
     /// </para>
     ///
-    /// <para>Unlike <see cref="Include{T,TInclude}(ISurrealDbQueryable{T}, Expression{Func{T,TInclude?}})"/>,
+    /// <para>Unlike <c>Include&lt;T,TInclude&gt;</c>,
     /// which is forward (FK on parent), this is reverse (FK on child). The child records
     /// are collected into a <c>List&lt;TChild&gt;</c> and set on the collection property.</para>
     /// </summary>

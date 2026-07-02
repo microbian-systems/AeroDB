@@ -35,10 +35,10 @@ public interface IEvents
     /// </summary>
     Task<IReadOnlyList<IEvent>> AppendExclusive(string streamId, IEnumerable<object> events, CancellationToken ct = default);
 
-    /// <summary>Guid variant of <see cref="AppendOptimistic"/>.</summary>
+    /// <summary>Guid variant of <c>AppendOptimistic</c>.</summary>
     Task<IReadOnlyList<IEvent>> AppendOptimistic(Guid streamId, long lastKnownVersion, IEnumerable<object> events, CancellationToken ct = default);
 
-    /// <summary>Guid variant of <see cref="AppendExclusive"/>.</summary>
+    /// <summary>Guid variant of <c>AppendExclusive</c>.</summary>
     Task<IReadOnlyList<IEvent>> AppendExclusive(Guid streamId, IEnumerable<object> events, CancellationToken ct = default);
 
     /// <summary>

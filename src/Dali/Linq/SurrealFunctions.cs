@@ -3,7 +3,7 @@ namespace Dali;
 /// <summary>
 /// SurrealQL search and vector functions for use in LINQ expressions.
 /// These methods are NOT callable at runtime — they exist for expression-tree translation only.
-/// Use <see cref="SearchExtensions.MatchTextAsync{T}"/> and <see cref="SearchExtensions.MatchKnnAsync{T}"/> for query execution.
+/// Use <c>MatchTextAsync&lt;T&gt;</c> and <see cref="SearchExtensions.MatchKnnAsync{T}"/> for query execution.
 /// </summary>
 public static class SurrealFunctions
 {

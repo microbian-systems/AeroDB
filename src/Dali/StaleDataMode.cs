@@ -1,7 +1,7 @@
 namespace Dali;
 
 /// <summary>
-/// Controls staleness tolerance for <see cref="IQuerySession.QueryForNonStaleData{T}"/>.
+/// Controls staleness tolerance for <c>QueryForNonStaleData&lt;T&gt;</c>.
 /// </summary>
 public enum StaleDataMode
 {

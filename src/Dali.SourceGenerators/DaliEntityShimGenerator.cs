@@ -7,7 +7,7 @@ using System.Linq;
 namespace Dali.SourceGenerators;
 
 /// <summary>
-/// Generates CBOR-compatible shim <see cref="Record"/> types for <see cref="Entity{TId}"/> subclasses.
+/// Generates CBOR-compatible shim <c>Record</c> types for <c>Entity&lt;TId&gt;</c> subclasses.
 /// Enables <c>LoadAsync&lt;T&gt;()</c> via the <c>DeserializeViaShimAsync&lt;T&gt;()</c> path:
 /// the shim is deserialized by the SurrealDB SDK (CBOR), then materialized to the entity via <c>ToEntity()</c>.
 /// </summary>
@@ -81,7 +81,7 @@ public class DaliEntityShimGenerator : IIncrementalGenerator
     }
 
     /// <summary>
-    /// Checks if <paramref name="type"/> is a subclass of <see cref="Entity{TId}"/>.
+    /// Checks if <paramref name="type"/> is a subclass of <c>Entity&lt;TId&gt;</c>.
     /// </summary>
     private static bool IsEntitySubclass(INamedTypeSymbol type, INamedTypeSymbol entityGenericType)
     {
@@ -97,7 +97,7 @@ public class DaliEntityShimGenerator : IIncrementalGenerator
     }
 
     /// <summary>
-    /// Extracts the <typeparamref name="TId"/> type argument from <see cref="Entity{TId}"/> in the inheritance chain.
+    /// Extracts the <c>TId</c> type argument from <c>Entity&lt;TId&gt;</c> in the inheritance chain.
     /// </summary>
     private static ITypeSymbol? GetEntityIdType(INamedTypeSymbol type, INamedTypeSymbol entityGenericType)
     {
@@ -114,7 +114,7 @@ public class DaliEntityShimGenerator : IIncrementalGenerator
 
     /// <summary>
     /// Generates the shim class source for the given entity type.
-    /// The shim extends <see cref="Record"/> and mirrors writable properties with <see cref="CborPropertyAttribute"/>.
+    /// The shim extends <c>Record</c> and mirrors writable properties with <c>CborPropertyAttribute</c>.
     /// </summary>
     private static string GenerateShimClass(INamedTypeSymbol type, ITypeSymbol? idType)
     {
