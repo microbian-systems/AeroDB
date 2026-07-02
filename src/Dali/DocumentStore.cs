@@ -41,7 +41,7 @@ public class DocumentStore : IDocumentStore, ISessionFactory
     /// <summary>
     /// Sets the tenant ID for the next session created from this store (DatabasePerTenant mode).
     /// The tenant ID is consumed on the next call to <c>QuerySessionAsync</c>,
-    /// <c>LightweightSessionAsync</c>, or <c>DocumentSessionAsync</c>.
+    /// <c>OpenSessionAsync</c>, or <c>OpenSessionAsync</c>.
     /// </summary>
     public IDocumentStore WithTenant(string tenantId)
     {
@@ -384,9 +384,7 @@ public class DocumentStore : IDocumentStore, ISessionFactory
                 if (names.Length == 0 || names.Contains(name))
                 {
                     _logger.LogInformation("Rebuilding projection {ProjectionName}...", name);
-#pragma warning disable CS0618
-                    await using var rebuildSession = await LightweightSessionAsync(ct).ConfigureAwait(false);
-#pragma warning restore CS0618
+                    await using var rebuildSession = await OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }, ct).ConfigureAwait(false);
                     await projection.RebuildAsync(rebuildSession, ct).ConfigureAwait(false);
                     await rebuildSession.SaveChangesAsync(ct).ConfigureAwait(false);
                     _logger.LogInformation("Projection {ProjectionName} rebuilt successfully.", name);
@@ -398,9 +396,7 @@ public class DocumentStore : IDocumentStore, ISessionFactory
         if (Options.InitialData.Count > 0)
         {
             _logger.LogInformation("Running {Count} initial data seeders", Options.InitialData.Count);
-#pragma warning disable CS0618
-            await using var seedSession = await LightweightSessionAsync(ct).ConfigureAwait(false);
-#pragma warning restore CS0618
+            await using var seedSession = await OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }, ct).ConfigureAwait(false);
 
             foreach (var seeder in Options.InitialData)
             {
@@ -701,7 +697,7 @@ public class DocumentStore : IDocumentStore, ISessionFactory
     /// <inheritdoc />
     public async Task BulkInsertAsync<T>(string tenantId, IEnumerable<T> documents, BulkInsertMode mode = BulkInsertMode.InsertsOnly, int batchSize = 1000, CancellationToken ct = default) where T : class
     {
-        await using var session = (DocumentSession)await LightweightSessionAsync(ct).ConfigureAwait(false);
+        await using var session = (DocumentSession)await OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }, ct).ConfigureAwait(false);
         session.SetTenant(tenantId);
         await session.BulkInsertAsync(documents, batchSize, ct).ConfigureAwait(false);
     }
@@ -709,7 +705,7 @@ public class DocumentStore : IDocumentStore, ISessionFactory
     /// <inheritdoc />
     public async Task BulkInsertDocumentsAsync(string tenantId, IEnumerable<object> documents, BulkInsertMode mode = BulkInsertMode.InsertsOnly, int batchSize = 1000, CancellationToken ct = default)
     {
-        await using var session = (DocumentSession)await LightweightSessionAsync(ct).ConfigureAwait(false);
+        await using var session = (DocumentSession)await OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }, ct).ConfigureAwait(false);
         session.SetTenant(tenantId);
         session.StoreObjects(documents);
         await session.SaveChangesAsync(ct).ConfigureAwait(false);
@@ -718,7 +714,7 @@ public class DocumentStore : IDocumentStore, ISessionFactory
     /// <inheritdoc />
     public async Task BulkInsertDocumentsAsync(IEnumerable<object> documents, BulkInsertMode mode = BulkInsertMode.InsertsOnly, int batchSize = 1000, CancellationToken ct = default)
     {
-        await using var session = (DocumentSession)await LightweightSessionAsync(ct).ConfigureAwait(false);
+        await using var session = (DocumentSession)await OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }, ct).ConfigureAwait(false);
         session.StoreObjects(documents);
         await session.SaveChangesAsync(ct).ConfigureAwait(false);
     }
@@ -726,7 +722,7 @@ public class DocumentStore : IDocumentStore, ISessionFactory
     /// <inheritdoc />
     public async Task BulkInsertEventsAsync(string tenantId, IEnumerable<(string StreamId, IEnumerable<object> Events)> streams, int batchSize = 1000, CancellationToken ct = default)
     {
-        await using var session = (DocumentSession)await LightweightSessionAsync(ct).ConfigureAwait(false);
+        await using var session = (DocumentSession)await OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }, ct).ConfigureAwait(false);
         session.SetTenant(tenantId);
         await session.Events.BulkInsertEventsAsync(streams, batchSize, ct).ConfigureAwait(false);
     }

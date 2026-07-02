@@ -32,7 +32,7 @@ public class DaliAdvancedOperationsTests
 {
     private static async Task SeedAsync<T>(IDocumentStore store, params T[] docs) where T : class
     {
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         foreach (var doc in docs)
             session.Store(doc);
         await session.SaveChangesAsync();
@@ -178,7 +178,7 @@ public class DaliAdvancedOperationsTests
     public async Task DeleteAllEventDataAsync_RemovesEventData()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var streamId = $"daevt-{Guid.NewGuid():N}";
         await session.Events.StartStream(streamId,

@@ -21,7 +21,7 @@ public class StoreCleanupTests
     public async Task BulkInsertAsync_InsertsAllDocuments()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var docs = Enumerable.Range(1, 50)
             .Select(i => new CleanupSimpleDoc { Name = $"Doc{i}" })
@@ -38,7 +38,7 @@ public class StoreCleanupTests
     public async Task BulkInsertAsync_EmptyList_DoesNotThrow()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var empty = new List<CleanupSimpleDoc>();
         var count = await session.BulkInsertAsync(empty);
@@ -49,7 +49,7 @@ public class StoreCleanupTests
     public async Task BulkInsertAsync_BatchSizeOne_Works()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var docs = Enumerable.Range(1, 3)
             .Select(i => new CleanupSimpleDoc { Name = $"Batch{i}" })
@@ -69,7 +69,7 @@ public class StoreCleanupTests
         // Register the mapping after initialization so CleanDeletedDocumentsAsync can find it.
         await using var store = await TestHarness.CreateStoreAsync();
         store.Options.Schema.For<SoftDeleteDoc>();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var doc = new SoftDeleteDoc { Name = "ToClean" };
         session.Store(doc);

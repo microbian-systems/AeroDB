@@ -8,7 +8,7 @@ public class EntityIncludeTests
     public async Task IncludeReverse_loads_children_for_Entity_types()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var parent = new EntityIncludeParent { Title = "Parent Title" };
         session.Store(parent);
@@ -36,7 +36,7 @@ public class EntityIncludeTests
     public async Task IncludeReverse_Entity_empty_children_returns_empty_collection()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var parent = new EntityIncludeParent { Title = "No Kids" };
         session.Store(parent);
@@ -55,7 +55,7 @@ public class EntityIncludeTests
     public async Task IncludeReverse_Entity_filter_include_filters_parents()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var parent1 = new EntityIncludeParent { Title = "Has Kids" };
         var parent2 = new EntityIncludeParent { Title = "No Kids" };
@@ -84,7 +84,7 @@ public class EntityIncludeTests
     public async Task IncludeReverse_Entity_stringFK_loads_children()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var parent = new EntityIncludeParentStr { Title = "String Parent", Id = "p-str-1" };
         session.Store(parent);
@@ -105,7 +105,7 @@ public class EntityIncludeTests
     public async Task IncludeReverse_Entity_intFK_loads_children()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var parent = new EntityIncludeParentInt { Title = "Int Parent", Id = 100 };
         session.Store(parent);
@@ -126,7 +126,7 @@ public class EntityIncludeTests
     public async Task IncludeReverse_Entity_guidFK_loads_children()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var parentId = Guid.NewGuid();
         var parent = new EntityIncludeParentGuid { Title = "Guid Parent", Id = parentId };
@@ -148,7 +148,7 @@ public class EntityIncludeTests
     public async Task IncludeReverse_Entity_FirstOrDefaultAsync_loads_children()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var parent = new EntityIncludeParent { Title = "FirstOrDef Parent" };
         session.Store(parent);
@@ -171,7 +171,7 @@ public class EntityIncludeTests
     public async Task IncludeReverse_Entity_SingleOrDefaultAsync_loads_children()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var parent = new EntityIncludeParent { Title = "Single Parent" };
         session.Store(parent);

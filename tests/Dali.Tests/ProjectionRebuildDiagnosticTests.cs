@@ -13,7 +13,7 @@ public class ProjectionRebuildDiagnosticTests
     public async Task Debug_RebuildAsync_StepByStep()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         store.Options.Projections.Add(new RebuildableOrderSummaryProjection());
 
         var streamId = $"debug-{Guid.NewGuid():N}";
@@ -32,7 +32,7 @@ public class ProjectionRebuildDiagnosticTests
 
         // 3. Now test the actual session.Store + SaveChangesAsync
         var tableName = "order_summary";
-        var rebuildSession = await store.LightweightSessionAsync();
+        var rebuildSession = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         var doc = new OrderSummary
         {
             Id = new RecordIdOf<string>(tableName, streamId),
@@ -52,7 +52,7 @@ public class ProjectionRebuildDiagnosticTests
         
         // 5. Now try with the projection's rebuild
         var projection = new RebuildableOrderSummaryProjection();
-        await using var rs2 = await store.LightweightSessionAsync();
+        await using var rs2 = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await projection.RebuildAsync(rs2, CancellationToken.None);
         var savedAfterRebuild = await rs2.SaveChangesAsync();
         savedAfterRebuild.ShouldBeGreaterThan(0);

@@ -131,7 +131,7 @@ public class SideEffectTests
     public async Task Projection_raises_side_effect_appends_event()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         store.Options.Projections.Add(new SideEffectTestProjection());
 
@@ -143,7 +143,7 @@ public class SideEffectTests
         await session.SaveChangesAsync();
 
         // Verify the side-effect event was appended to "gen-stream"
-        await using var readSession = await store.LightweightSessionAsync();
+        await using var readSession = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         var genEvents = await readSession.Events.FetchStream("gen-stream");
         genEvents.Count.ShouldBe(1);
         var gen = genEvents[0].Data.ShouldBeOfType<SideEffectGenerated>();
@@ -154,7 +154,7 @@ public class SideEffectTests
     public async Task Multiple_side_effects_all_processed()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         store.Options.Projections.Add(new MultiSideEffectTestProjection());
 
@@ -165,7 +165,7 @@ public class SideEffectTests
         await session.SaveChangesAsync();
 
         // Verify both side-effect events were appended
-        await using var readSession = await store.LightweightSessionAsync();
+        await using var readSession = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         var streamA = await readSession.Events.FetchStream("stream-a");
         streamA.Count.ShouldBe(1);
         streamA[0].Data.ShouldBeOfType<SideEffectGenerated>().SourceId.ShouldBe("multi-a");
@@ -181,7 +181,7 @@ public class SideEffectTests
         ChainedSideEffectProjection.Reset();
 
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         store.Options.Projections.Add(new ChainedSideEffectProjection());
 
@@ -193,7 +193,7 @@ public class SideEffectTests
         await session.SaveChangesAsync();
 
         // Verify the chained events
-        await using var readSession = await store.LightweightSessionAsync();
+        await using var readSession = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         var chainEvents = await readSession.Events.FetchStream("chain-stream");
         chainEvents.Count.ShouldBe(2);
     }
@@ -202,7 +202,7 @@ public class SideEffectTests
     public async Task No_side_effects_normal_processing()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         // Use a standard projection that doesn't raise side effects
         store.Options.Projections.Add(new OrderSummaryProjection());

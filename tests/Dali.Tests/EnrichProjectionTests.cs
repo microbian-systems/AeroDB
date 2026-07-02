@@ -41,7 +41,7 @@ public class EnrichProjectionTests
     {
         await using var store = await TestHarness.CreateStoreAsync();
         store.Options.Projections.Add(new EnrichedProjection());
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         await session.Events.StartStream("enrich-stream", [new OrderCreated { StreamId = "enrich-stream", OrderId = "e1" }]);
         await session.SaveChangesAsync();

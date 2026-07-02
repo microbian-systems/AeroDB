@@ -152,7 +152,7 @@ public class SchemaRoutingTests
             o.Schema.For<DefaultEntity>();
         });
 
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         // Write an entity via RawQuery (default db = "test")
         var defaultSession = ((InternalSessionBase)session).Session;
         await defaultSession.RawQuery("CREATE default_entity CONTENT { Name: 'default-test' };");
@@ -172,7 +172,7 @@ public class SchemaRoutingTests
             o.Schema.AutoCreateDatabases = true;
         });
 
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         var internalSession = (InternalSessionBase)session;
 
         // Get the schema session and write data directly to the "sales" database
@@ -200,7 +200,7 @@ public class SchemaRoutingTests
             o.Schema.AutoCreateDatabases = true;
         });
 
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         var internalSession = (InternalSessionBase)session;
 
         // Write data to the "sales" database
@@ -236,7 +236,7 @@ public class SchemaRoutingTests
             o.Schema.For<DefaultEntity>();
         });
 
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new DefaultEntity { Name = "Single DB" });
         await session.SaveChangesAsync();
@@ -255,7 +255,7 @@ public class SchemaRoutingTests
             o.Schema.AutoCreateDatabases = true;
         });
 
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new SalesOrder { OrderNumber = "SO-001", Amount = 50.00m });
         await session.SaveChangesAsync();
@@ -276,7 +276,7 @@ public class SchemaRoutingTests
             o.Schema.AutoCreateDatabases = true;
         });
 
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new SalesOrder { OrderNumber = "SO-002", Amount = 75.00m });
         session.Store(new WarehouseItem { Sku = "WH-001", Quantity = 10 });
@@ -300,7 +300,7 @@ public class SchemaRoutingTests
             o.Schema.AutoCreateDatabases = true;
         });
 
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new SalesOrder { OrderNumber = "SO-003", Amount = 25.00m });
         session.Store(new DefaultEntity { Name = "default-item" });
@@ -321,7 +321,7 @@ public class SchemaRoutingTests
             o.Schema.For<Person>();
         });
 
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new DefaultEntity { Name = "Mixed-A" });
         session.Store(new Person { Name = "Mixed-B", Age = 25 });
@@ -351,7 +351,7 @@ public class SchemaRoutingTests
         });
 
         // This should not throw — the schema session will implicitly create the DB
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         session.Store(new SalesOrder { OrderNumber = "AUTO-001", Amount = 10m });
         await session.SaveChangesAsync();
     }
@@ -365,7 +365,7 @@ public class SchemaRoutingTests
             o.Schema.AutoCreateDatabases = true;
         });
 
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         session.Store(new SalesOrder { OrderNumber = "EXPLICIT-001", Amount = 20m });
         await session.SaveChangesAsync();
 
@@ -385,7 +385,7 @@ public class SchemaRoutingTests
             o.Schema.For<SalesOrder>().Schema("cached_db");
         });
 
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         var internalSession = (InternalSessionBase)session;
 
         var session1 = await internalSession.GetSessionForSchemaAsync("cached_db");
@@ -404,7 +404,7 @@ public class SchemaRoutingTests
             o.Schema.For<WarehouseItem>().Schema("db_b");
         });
 
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         var internalSession = (InternalSessionBase)session;
 
         var sessionA = await internalSession.GetSessionForSchemaAsync("db_a");
@@ -418,7 +418,7 @@ public class SchemaRoutingTests
     public async Task Null_schema_returns_parent_session()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         var internalSession = (InternalSessionBase)session;
 
         var defaultSession = await internalSession.GetSessionForSchemaAsync(null);
@@ -479,7 +479,7 @@ public class SchemaRoutingTests
             o.Schema.For<DefaultEntity>();
         });
 
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new DefaultEntity { Name = "Interop Test" });
         await session.SaveChangesAsync();
@@ -498,7 +498,7 @@ public class SchemaRoutingTests
             o.Schema.AutoCreateDatabases = true;
         });
 
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new SalesOrder { OrderNumber = "SQ-001", Amount = 42.00m });
         await session.SaveChangesAsync();
@@ -522,7 +522,7 @@ public class SchemaRoutingTests
             o.Schema.AutoCreateDatabases = true;
         });
 
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new SalesOrder { OrderNumber = "LOAD-001", Amount = 99.99m });
         await session.SaveChangesAsync();
@@ -548,7 +548,7 @@ public class SchemaRoutingTests
             o.Schema.For<Product>().Schema("db3");
         });
 
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new SalesOrder { OrderNumber = "X01" });
         session.Store(new WarehouseItem { Sku = "X02" });
@@ -573,7 +573,7 @@ public class SchemaRoutingTests
             o.Schema.For<WarehouseItem>().Schema("db2");
         });
 
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         // No operations — should succeed without throwing
         var count = await session.SaveChangesAsync();

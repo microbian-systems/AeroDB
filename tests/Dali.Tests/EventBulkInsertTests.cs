@@ -31,7 +31,7 @@ public class EventBulkInsertTests
     public async Task BulkInsertEventsAsync_EmptyList_DoesNotThrow()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var count = await session.Events.BulkInsertEventsAsync(
             Array.Empty<(string, IEnumerable<object>)>());
@@ -51,7 +51,7 @@ public class EventBulkInsertTests
     public async Task FetchAllAfterSequence_ReturnsEventsAfterIndex()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var streamId = $"seq-test-{Guid.NewGuid():N}";
         await session.Events.Append(streamId,

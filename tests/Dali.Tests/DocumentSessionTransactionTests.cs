@@ -14,7 +14,7 @@ public class DocumentSessionTransactionTests
         });
 
         // First session: save an entity
-        await using var session1 = await store.LightweightSessionAsync();
+        await using var session1 = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         session1.Store(new Person { Name = "Alice" });
         await session1.SaveChangesAsync();
         await session1.DisposeAsync();
@@ -40,7 +40,7 @@ public class DocumentSessionTransactionTests
             o.Listeners.Add(listener);
         });
 
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         session.Store(new Person { Name = "Bob" });
         await session.SaveChangesAsync();
 
@@ -63,7 +63,7 @@ public class DocumentSessionTransactionTests
             o.Listeners.Add(throwingListener);
         });
 
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         session.Store(new Person { Name = "Charlie" });
 
         // BeforeCommit throws -> tx cancels, AfterCommit NOT called
@@ -82,7 +82,7 @@ public class DocumentSessionTransactionTests
             o.Database = "test";
         });
 
-        await using (var session = await store.LightweightSessionAsync())
+        await using (var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }))
         {
             // Add the throwing listener to trigger rollback from BeforeCommitAsync
             store.Options.Listeners.Add(errorListener);
@@ -113,7 +113,7 @@ public class DocumentSessionTransactionTests
             o.Listeners.Add(commitTracker);
         });
 
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         session.Store(new Person { Name = "Dave" });
         await session.SaveChangesAsync();
 

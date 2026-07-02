@@ -90,7 +90,7 @@ public class LifecycleHooksTests
             o.Listeners.Add(listener);
         });
 
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         session.Store(new LifecycleTestItem { Name = "Test" });
         session.Store(new LifecycleTestItem { Name = "Test2" });
         await session.SaveChangesAsync();
@@ -108,7 +108,7 @@ public class LifecycleHooksTests
             o.Listeners.Add(listener);
         });
 
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         session.Store(new LifecycleTestItem { Name = "Test" });
         await session.SaveChangesAsync();
 
@@ -124,7 +124,7 @@ public class LifecycleHooksTests
             o.Listeners.Add(listener);
         });
 
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         var item = new LifecycleTestItem { Name = "ToDelete" };
         session.Store(item);
         await session.SaveChangesAsync();
@@ -144,7 +144,7 @@ public class LifecycleHooksTests
             o.Listeners.Add(listener);
         });
 
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         var item = new LifecycleTestItem { Name = "ToDelete" };
         session.Store(item);
         await session.SaveChangesAsync();
@@ -166,7 +166,7 @@ public class LifecycleHooksTests
             o.Listeners.Add(listener);
         });
 
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         // Store two entities to trigger BeforeStore twice
         session.Store(new LifecycleTestItem { Name = "First" });
@@ -193,7 +193,7 @@ public class LifecycleHooksTests
             o.Listeners.Add(listener);
         });
 
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         session.Store(new LifecycleTestItem { Name = "CS1" });
         await session.SaveChangesAsync();
 
@@ -209,7 +209,7 @@ public class LifecycleHooksTests
             o.Listeners.Add(listener);
         });
 
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         session.Store(new LifecycleTestItem { Name = "CS2" });
         session.Store(new LifecycleTestItem { Name = "CS3" });
         await session.SaveChangesAsync();
@@ -226,7 +226,7 @@ public class LifecycleHooksTests
             o.Listeners.Add(listener);
         });
 
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         session.Store(new LifecycleTestItem { Name = "Added" });
         await session.SaveChangesAsync();
 
@@ -248,7 +248,7 @@ public class LifecycleHooksTests
             o.Listeners.Add(listener);
         });
 
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         session.Store(new LifecycleTestItem { Name = "BaseTest" });
         await session.SaveChangesAsync();
 
@@ -266,7 +266,7 @@ public class LifecycleHooksTests
             o.Listeners.Add(listener);
         });
 
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         session.Store(new LifecycleTestItem { Name = "MatchTest" });
         await session.SaveChangesAsync();
 
@@ -285,7 +285,7 @@ public class LifecycleHooksTests
         });
 
         // Store a different entity type — listener should not match
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         session.Store(new Person { Name = "NoMatch", Age = 30 });
         await session.SaveChangesAsync();
 
@@ -305,7 +305,7 @@ public class LifecycleHooksTests
             o.Listeners.Add(listener);
         });
 
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         session.Store(new LifecycleTestItem { Name = "OrderTest" });
         await session.SaveChangesAsync();
 
@@ -338,7 +338,7 @@ public class LifecycleHooksTests
             o.Listeners.Add(listener2);
         });
 
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         session.Store(new LifecycleTestItem { Name = "Multi" });
         await session.SaveChangesAsync();
 
@@ -359,7 +359,7 @@ public class LifecycleHooksTests
             o.Listeners.Add(listener);
         });
 
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         session.Store(new LifecycleTestItem { Name = "TypeTest" });
         await session.SaveChangesAsync();
 

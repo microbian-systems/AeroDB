@@ -31,7 +31,7 @@ public interface IDocumentStore : IAsyncDisposable
     /// <summary>
     /// Sets the tenant ID for the next session created from this store (DatabasePerTenant mode).
     /// The tenant ID is consumed on the next call to <c>QuerySessionAsync</c>,
-    /// <c>LightweightSessionAsync</c>, or <c>DocumentSessionAsync</c>.
+    /// <c>OpenSessionAsync</c>, or <c>OpenSessionAsync</c>.
     /// </summary>
     IDocumentStore WithTenant(string tenantId);
 

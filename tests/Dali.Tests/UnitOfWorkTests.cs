@@ -8,7 +8,7 @@ public class UnitOfWorkTests
     public async Task Mixed_operations_in_single_save()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         // Add 2 persons
         session.Store(new Person { Name = "Keep1", Age = 10 });
@@ -36,7 +36,7 @@ public class UnitOfWorkTests
     public async Task Batch_size_equals_operations()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "A", Age = 1 });
         session.Store(new Person { Name = "B", Age = 2 });
@@ -50,7 +50,7 @@ public class UnitOfWorkTests
     public async Task Clear_after_save()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "First", Age = 10 });
         var firstCount = await session.SaveChangesAsync();

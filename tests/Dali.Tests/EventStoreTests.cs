@@ -72,7 +72,7 @@ public class EventStoreTests
     public async Task StartStream_appends_events()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var streamId = $"order-{Guid.NewGuid():N}";
         await session.Events.StartStream(streamId, [
@@ -85,7 +85,7 @@ public class EventStoreTests
     public async Task Append_to_existing_stream()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var streamId = $"stream-{Guid.NewGuid():N}";
         await session.Events.StartStream(streamId, [new OrderCreated { OrderId = streamId }]);
@@ -96,7 +96,7 @@ public class EventStoreTests
     public async Task Fetch_nonexistent_stream_returns_empty()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var fetched = await session.Events.FetchStream("nonexistent");
         fetched.Count.ShouldBe(0);
@@ -106,7 +106,7 @@ public class EventStoreTests
     public async Task FetchLatest_returns_projected_document()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         // Register a projection
         store.Options.Projections.Add(new FetchTestProjection());
@@ -137,7 +137,7 @@ public class EventStoreTests
     public async Task FetchLatest_with_Guid_works()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         store.Options.Projections.Add(new FetchTestProjection());
 
@@ -157,7 +157,7 @@ public class EventStoreTests
     public async Task StartStream_with_type_parameter_works()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         
         var streamId = await session.Events.StartStream<string>("typed-stream", [new TestEvent("test")]);
         streamId.ShouldBe("typed-stream");
@@ -167,7 +167,7 @@ public class EventStoreTests
     public async Task StartStream_with_type_and_guid_works()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var guid = Guid.NewGuid();
         var streamId = await session.Events.StartStream<TypedStreamMyEvent>(guid, [new TypedStreamMyEvent { Name = "test" }]);
@@ -185,7 +185,7 @@ public class EventStoreTests
             o.Events.AppendMode = EventAppendMode.Quick;
         });
         await store.InitializeAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await session.Events.StartStream("qs-1", [new TypedStreamTestEvent { Name = "quick" }]);
         var events = await session.Events.FetchStream("qs-1");
         events[0].Sequence.ShouldBe(0);
@@ -202,7 +202,7 @@ public class EventStoreTests
     public async Task AppendExclusive_succeeds_on_empty_stream()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         var sid = Guid.NewGuid().ToString("N");
         await session.Events.AppendExclusive(sid, [new TestEvent("exclusive")]);
     }
@@ -211,7 +211,7 @@ public class EventStoreTests
     public async Task AppendExclusive_throws_on_existing_stream()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         var sid = Guid.NewGuid().ToString("N");
         await session.Events.Append(sid, [new TestEvent("first")]);
         Should.Throw<ConcurrencyException>(async () =>
@@ -222,7 +222,7 @@ public class EventStoreTests
     public async Task ArchiveStream_creates_archive_record()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         var sid = Guid.NewGuid().ToString("N");
         await session.Events.StartStream(sid, [new TestEvent("archive-test")]);
         await session.Events.ArchiveStream(sid);
@@ -233,7 +233,7 @@ public class EventStoreTests
     public async Task WriteTombstone_fills_version_gap()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         var sid = Guid.NewGuid().ToString("N");
         await session.Events.Append(sid, [new TestEvent("first")]); // version 1
         await session.Events.WriteTombstone(sid, 3); // skip version 2, write at 3
@@ -245,7 +245,7 @@ public class EventStoreTests
     public async Task AppendOptimistic_passes_with_correct_version()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         var sid = Guid.NewGuid().ToString("N");
         await session.Events.Append(sid, [new TestEvent("first")]); // version = 1
         await session.Events.AppendOptimistic(sid, 1, [new TestEvent("second")]); // expected = 1
@@ -257,7 +257,7 @@ public class EventStoreTests
     public async Task AggregateStreamAsync_ReturnsAggregatedResult()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         var streamId = $"agg-{Guid.NewGuid():N}";
 
         // Append events that WriteModel.Apply handles
@@ -274,7 +274,7 @@ public class EventStoreTests
     public async Task AggregateStreamAsync_EmptyStream_ReturnsDefault()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var result = await session.Events.AggregateStreamAsync<WriteModel>("nonexistent-stream");
         result.ShouldBeNull();
@@ -286,7 +286,7 @@ public class EventStoreTests
     public async Task Append_WithHeaders_StoresHeaders()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         var streamId = $"headers-{Guid.NewGuid():N}";
 
         var headers = new Dictionary<string, string>

@@ -26,7 +26,7 @@ public class SearchIntegrationTests
             o.Schema.For<SearchablePage>().FullTextIndex(p => p.Content, Search.Analyzer.Simple);
         });
 
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         // Insert 10 pages: some containing "quick", "brown", or "fox", others not
         var pages = new[]
@@ -82,7 +82,7 @@ public class SearchIntegrationTests
                 .FullTextIndex(p => p.Content, Search.Analyzer.Simple);
         });
 
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         // One page has the keyword in the title, another in the content
         session.Store(new SearchablePage { Title = "Important data report", Content = "Monthly sales figures" });
@@ -129,7 +129,7 @@ public class SearchIntegrationTests
             o.Schema.For<SearchablePage>().FullTextIndex(p => p.Content, Search.Analyzer.Simple);
         });
 
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new SearchablePage { Title = "Doc1", Content = "Hello world" });
         session.Store(new SearchablePage { Title = "Doc2", Content = "Foo bar baz" });
@@ -157,7 +157,7 @@ public class SearchIntegrationTests
             o.Schema.For<SearchablePage>().FullTextIndex(p => p.Content, Search.Analyzer.Simple);
         });
 
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         // Documents with varying frequencies of the word "data"
         session.Store(new SearchablePage { Title = "ManyMatches", Content = "data data data data data" });        // 5x
@@ -205,7 +205,7 @@ public class SearchIntegrationTests
             o.Schema.For<SearchablePage>().FullTextIndex(p => p.Content, Search.Analyzer.Simple);
         });
 
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         // Insert 20 pages all containing the word "data"
         for (int i = 0; i < 20; i++)
@@ -248,7 +248,7 @@ public class SearchIntegrationTests
             o.Schema.For<SearchablePage>().FullTextIndex(p => p.Content, Search.Analyzer.Simple, (1.5, 0.8));
         });
 
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new SearchablePage { Title = "Doc1", Content = "data analysis with machine learning data" });
         session.Store(new SearchablePage { Title = "Doc2", Content = "data data data is everywhere" });
@@ -286,7 +286,7 @@ public class SearchIntegrationTests
             o.Schema.For<SearchablePage>().HnswIndex(p => p.Embedding, 3, Search.Distance.Cosine);
         });
 
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         // Insert pages with 3D embedding vectors
         session.Store(new SearchablePage { Title = "X-Axis",    Embedding = [1.0f, 0.0f, 0.0f] });
@@ -354,7 +354,7 @@ public class SearchIntegrationTests
             );
         });
 
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         // Insert documents with varying text + vector signals
         session.Store(new SearchablePage
@@ -461,7 +461,7 @@ public class SearchIntegrationTests
                 .FullTextIndex(p => p.Content, Search.Analyzer.Simple);
         });
 
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         // DocA: keyword in the title (weighted 25x)
         session.Store(new SearchablePage { Title = "Important data analysis", Content = "Some random text here" });
@@ -501,7 +501,7 @@ public class SearchIntegrationTests
             o.Schema.For<SearchablePage>().FullTextIndex(p => p.Content, Search.Analyzer.Simple);
         });
 
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new SearchablePage { Title = "Alpha", Content = "hello world this is a test" });
         session.Store(new SearchablePage { Title = "Beta",  Content = "nothing should match here" });
@@ -531,7 +531,7 @@ public class SearchIntegrationTests
             o.Schema.For<SearchablePage>().FullTextIndex(p => p.Content, Search.Analyzer.Simple);
         });
 
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         // Insert documents with vectors (no HNSW index — using brute-force)
         session.Store(new SearchablePage { Title = "Close",   Content = "a", Embedding = [0.95f, 0.05f, 0.0f] });
@@ -571,7 +571,7 @@ public class SearchIntegrationTests
             o.Schema.For<SearchablePage>().FullTextIndex(p => p.Content, Search.Analyzer.Simple);
         });
 
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         // Insert 40 documents, all containing "matchme"
         for (int i = 0; i < 40; i++)
@@ -605,7 +605,7 @@ public class SearchIntegrationTests
             o.Database = "test";
         });
 
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new SearchablePage { Title = "A", Content = "x", Embedding = [1.0f, 0.0f, 0.0f] });
         session.Store(new SearchablePage { Title = "B", Content = "y", Embedding = [0.0f, 1.0f, 0.0f] });
@@ -648,7 +648,7 @@ public class SearchIntegrationTests
             o.Schema.For<SearchablePage>().FullTextIndex(p => p.Content, Search.Analyzer.English);
         });
 
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new SearchablePage { Title = "Stemmed", Content = "The dogs are running in the park" });
         session.Store(new SearchablePage { Title = "Other", Content = "Completely unrelated text here" });
@@ -684,7 +684,7 @@ public class SearchIntegrationTests
             // Create HNSW index via RawQueryAsync after store init
         });
 
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         // Manually define the HNSW index through raw query
         // This allows graceful fallback if the in-memory engine doesn't support it

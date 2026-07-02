@@ -103,7 +103,7 @@ public class DaliSagaStorageTests
         };
 
         // Insert directly via session to seed data
-        await using (var session = await store.LightweightSessionAsync())
+        await using (var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }))
         {
             session.Store(saga);
             await session.SaveChangesAsync();
@@ -126,7 +126,7 @@ public class DaliSagaStorageTests
 
         // Force creation of the test_saga table by inserting and removing a seed record.
         // Without this, SurrealDB throws NotSupportedException when querying a non-existent table.
-        await using (var seed = await store.LightweightSessionAsync())
+        await using (var seed = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }))
         {
             seed.Store(new TestSaga { Id = "_init_", Name = "init" });
             await seed.SaveChangesAsync();
@@ -188,7 +188,7 @@ public class DaliSagaStorageTests
         };
 
         // Insert directly
-        await using (var session = await store.LightweightSessionAsync())
+        await using (var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }))
         {
             session.Store(saga);
             await session.SaveChangesAsync();
@@ -228,7 +228,7 @@ public class DaliSagaStorageTests
         };
 
         // Insert directly
-        await using (var session = await store.LightweightSessionAsync())
+        await using (var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }))
         {
             session.Store(saga);
             await session.SaveChangesAsync();
@@ -299,7 +299,7 @@ public class DaliSagaStorageTests
         };
 
         // Store directly
-        await using (var session = await store.LightweightSessionAsync())
+        await using (var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }))
         {
             session.Store(saga);
             await session.SaveChangesAsync();
@@ -331,7 +331,7 @@ public class DaliSagaStorageTests
         };
 
         // Store directly
-        await using (var session = await store.LightweightSessionAsync())
+        await using (var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }))
         {
             session.Store(saga);
             await session.SaveChangesAsync();

@@ -79,7 +79,7 @@ public class EventReplayTests
     public async Task Append_returns_envelopes_with_correct_metadata()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var sid = Guid.NewGuid().ToString("N");
         var registered = new PlayerRegistered { PlayerName = "Alice", Score = 100 };
@@ -103,7 +103,7 @@ public class EventReplayTests
     public async Task FetchStream_returns_events_in_version_order()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var sid = Guid.NewGuid().ToString("N");
         // Start with 3 events in one call
@@ -141,7 +141,7 @@ public class EventReplayTests
     public async Task Rich_mode_events_have_nonzero_sequence_and_stream_key()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var sid = Guid.NewGuid().ToString("N");
         var envelopes = await session.Events.Append(sid, [
@@ -162,7 +162,7 @@ public class EventReplayTests
     public async Task Append_with_correct_expected_version_succeeds()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var sid = Guid.NewGuid().ToString("N");
         await session.Events.Append(sid, [new TestEvent("v1")]); // version = 1
@@ -176,7 +176,7 @@ public class EventReplayTests
     public async Task Append_with_wrong_expected_version_throws_ConcurrencyException()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var sid = Guid.NewGuid().ToString("N");
         await session.Events.Append(sid, [new TestEvent("first")]); // version = 1
@@ -195,7 +195,7 @@ public class EventReplayTests
     public async Task AppendOptimistic_with_wrong_version_throws()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var sid = Guid.NewGuid().ToString("N");
         await session.Events.Append(sid, [new TestEvent("first")]); // version = 1
@@ -208,7 +208,7 @@ public class EventReplayTests
     public async Task AppendExclusive_succeeds_on_empty_stream()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var sid = Guid.NewGuid().ToString("N");
         var envelopes = await session.Events.AppendExclusive(sid, [new TestEvent("exclusive")]);
@@ -220,7 +220,7 @@ public class EventReplayTests
     public async Task AppendExclusive_throws_when_stream_has_multiple_events()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var sid = Guid.NewGuid().ToString("N");
         await session.Events.Append(sid, [new TestEvent("first"), new TestEvent("second")]); // versions 1, 2
@@ -237,7 +237,7 @@ public class EventReplayTests
     public async Task Replay_thousand_events_via_FetchStream()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var sid = Guid.NewGuid().ToString("N");
         // Initialize stream with a PlayerRegistered event (Score=0)
@@ -314,7 +314,7 @@ public class EventReplayTests
     public async Task Replay_via_AggregateAsync_counts_all_events()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var sid = Guid.NewGuid().ToString("N");
         // Start with PlayerRegistered (Score = 50)
@@ -343,7 +343,7 @@ public class EventReplayTests
     public async Task Replay_multiple_event_types_via_AggregateAsync()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var sid = Guid.NewGuid().ToString("N");
         // Stream: Registered, 3 ScoreUpdated, Banned, 2 Achievements = 7 events
@@ -371,7 +371,7 @@ public class EventReplayTests
         await using var store = await TestHarness.CreateStoreAsync();
 
         // Write 1001 events (1 PlayerRegistered + 1000 ScoreUpdated) in session 1
-        await using var session1 = await store.LightweightSessionAsync();
+        await using var session1 = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         var sid = Guid.NewGuid().ToString("N");
         await session1.Events.StartStream(sid, [
             new PlayerRegistered { PlayerName = "CrossSessionThousand", Score = 0 }
@@ -391,7 +391,7 @@ public class EventReplayTests
         await session1.SaveChangesAsync();
 
         // Re-fetch from a completely new session
-        await using var session2 = await store.LightweightSessionAsync();
+        await using var session2 = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         var events2 = await session2.Events.FetchStream(sid);
         events2.Count.ShouldBe(1001);
 
@@ -428,7 +428,7 @@ public class EventReplayTests
         await using var store = await TestHarness.CreateStoreAsync();
 
         // Session 1: write
-        await using var session1 = await store.LightweightSessionAsync();
+        await using var session1 = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         var sid = Guid.NewGuid().ToString("N");
         await session1.Events.StartStream(sid, [
             new PlayerRegistered { PlayerName = "CrossSession", Score = 42 }
@@ -439,7 +439,7 @@ public class EventReplayTests
         await session1.SaveChangesAsync();
 
         // Session 2: read
-        await using var session2 = await store.LightweightSessionAsync();
+        await using var session2 = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         var events = await session2.Events.FetchStream(sid);
         events.Count.ShouldBe(2);
         events[0].Data.ShouldBeOfType<PlayerRegistered>();
@@ -455,7 +455,7 @@ public class EventReplayTests
 
         await using var store = await TestHarness.CreateStoreAsync();
 
-        await using var session1 = await store.LightweightSessionAsync();
+        await using var session1 = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         var sid = Guid.NewGuid().ToString("N");
         await session1.Events.StartStream(sid, [
             new PlayerRegistered { PlayerName = "Persistent", Score = 99 }
@@ -463,7 +463,7 @@ public class EventReplayTests
 
         // Save and verify visibility from another session
         await session1.SaveChangesAsync();
-        await using var session2 = await store.LightweightSessionAsync();
+        await using var session2 = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         var afterSave = await session2.Events.FetchStream(sid);
         afterSave.Count.ShouldBe(1);
         ((PlayerRegistered)afterSave[0].Data!).PlayerName.ShouldBe("Persistent");
@@ -477,7 +477,7 @@ public class EventReplayTests
     public async Task FetchAllAfterSequence_returns_events_after_given_sequence()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var sid = Guid.NewGuid().ToString("N");
         var envelopes = await session.Events.Append(sid, [
@@ -496,7 +496,7 @@ public class EventReplayTests
     public async Task FetchAllAfterSequence_with_0_returns_all_events()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var sid = Guid.NewGuid().ToString("N");
         await session.Events.StartStream(sid, [
@@ -519,7 +519,7 @@ public class EventReplayTests
     public async Task ArchiveStream_does_not_prevent_fetching()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var sid = Guid.NewGuid().ToString("N");
         await session.Events.StartStream(sid, [
@@ -544,7 +544,7 @@ public class EventReplayTests
     public async Task WriteTombstone_and_fetch_and_replay()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var sid = Guid.NewGuid().ToString("N");
         await session.Events.Append(sid, [new TestEvent("first")]); // version 1
@@ -578,7 +578,7 @@ public class EventReplayTests
     public async Task Events_from_different_streams_are_isolated()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var sid1 = Guid.NewGuid().ToString("N");
         var sid2 = Guid.NewGuid().ToString("N");
@@ -614,7 +614,7 @@ public class EventReplayTests
     public async Task FetchAllAfterSequence_sees_all_streams_globally()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var sidA = Guid.NewGuid().ToString("N");
         var sidB = Guid.NewGuid().ToString("N");
@@ -655,7 +655,7 @@ public class EventReplayTests
     public async Task FetchStream_returns_empty_for_nonexistent_stream()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var events = await session.Events.FetchStream("no-such-stream-exists");
         events.ShouldNotBeNull();
@@ -666,7 +666,7 @@ public class EventReplayTests
     public async Task Append_to_nonexistent_stream_succeeds()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var sid = Guid.NewGuid().ToString("N");
         var envelopes = await session.Events.Append(sid, [
@@ -683,7 +683,7 @@ public class EventReplayTests
     public async Task Duplicate_save_with_events_is_safe()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var sid = Guid.NewGuid().ToString("N");
         await session.Events.StartStream(sid, [

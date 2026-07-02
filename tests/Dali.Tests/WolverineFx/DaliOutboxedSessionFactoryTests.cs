@@ -28,7 +28,7 @@ public class DaliOutboxedSessionFactoryTests
         documentStore = Substitute.For<IDocumentStore>();
         documentStore.Options.Returns(new StoreOptions());
         documentStore.Client.Returns(client);
-        documentStore.LightweightSessionAsync(Arg.Any<CancellationToken>())
+        documentStore.OpenSessionAsync(Arg.Any<SessionOptions>(), Arg.Any<CancellationToken>())
             .Returns(Substitute.For<IDocumentSession>());
 
         messageStore = new DaliMessageStore(client, NullLogger<DaliMessageStore>.Instance);
@@ -91,7 +91,7 @@ public class DaliOutboxedSessionFactoryTests
     {
         var factory = CreateFactory(out var documentStore, out _);
         var mockSession = Substitute.For<IDocumentSession>();
-        documentStore.LightweightSessionAsync(Arg.Any<CancellationToken>())
+        documentStore.OpenSessionAsync(Arg.Any<SessionOptions>(), Arg.Any<CancellationToken>())
             .Returns(mockSession);
 
         var runtime = Substitute.For<IWolverineRuntime>();
@@ -102,7 +102,7 @@ public class DaliOutboxedSessionFactoryTests
         var session = await factory.OpenSession(context);
 
         session.ShouldBe(mockSession);
-        await documentStore.Received(1).LightweightSessionAsync(Arg.Any<CancellationToken>());
+        await documentStore.Received(1).OpenSessionAsync(Arg.Any<SessionOptions>(), Arg.Any<CancellationToken>());
         documentStore.DidNotReceive().WithTenant(Arg.Any<string>());
     }
 
@@ -113,7 +113,7 @@ public class DaliOutboxedSessionFactoryTests
         var tenantStore = Substitute.For<IDocumentStore>();
         var mockSession = Substitute.For<IDocumentSession>();
         documentStore.WithTenant("tenant-alpha").Returns(tenantStore);
-        tenantStore.LightweightSessionAsync(Arg.Any<CancellationToken>())
+        tenantStore.OpenSessionAsync(Arg.Any<SessionOptions>(), Arg.Any<CancellationToken>())
             .Returns(mockSession);
 
         var runtime = Substitute.For<IWolverineRuntime>();
@@ -136,7 +136,7 @@ public class DaliOutboxedSessionFactoryTests
         var tenantStore = Substitute.For<IDocumentStore>();
         var mockSession = Substitute.For<IDocumentSession>();
         documentStore.WithTenant("tenant-beta").Returns(tenantStore);
-        tenantStore.LightweightSessionAsync(Arg.Any<CancellationToken>())
+        tenantStore.OpenSessionAsync(Arg.Any<SessionOptions>(), Arg.Any<CancellationToken>())
             .Returns(mockSession);
 
         var runtime = Substitute.For<IWolverineRuntime>();
@@ -154,7 +154,7 @@ public class DaliOutboxedSessionFactoryTests
     {
         var factory = CreateFactory(out var documentStore, out _);
         var mockSession = Substitute.For<IDocumentSession>();
-        documentStore.LightweightSessionAsync(Arg.Any<CancellationToken>())
+        documentStore.OpenSessionAsync(Arg.Any<SessionOptions>(), Arg.Any<CancellationToken>())
             .Returns(mockSession);
 
         var runtime = Substitute.For<IWolverineRuntime>();
@@ -174,7 +174,7 @@ public class DaliOutboxedSessionFactoryTests
         var tenantStore = Substitute.For<IDocumentStore>();
         var mockSession = Substitute.For<IDocumentSession>();
         documentStore.WithTenant("explicit-tenant").Returns(tenantStore);
-        tenantStore.LightweightSessionAsync(Arg.Any<CancellationToken>())
+        tenantStore.OpenSessionAsync(Arg.Any<SessionOptions>(), Arg.Any<CancellationToken>())
             .Returns(mockSession);
 
         var runtime = Substitute.For<IWolverineRuntime>();
@@ -195,7 +195,7 @@ public class DaliOutboxedSessionFactoryTests
     {
         var factory = CreateFactory(out var documentStore, out _);
         var mockSession = Substitute.For<IDocumentSession>();
-        documentStore.LightweightSessionAsync(Arg.Any<CancellationToken>())
+        documentStore.OpenSessionAsync(Arg.Any<SessionOptions>(), Arg.Any<CancellationToken>())
             .Returns(mockSession);
 
         var runtime = Substitute.For<IWolverineRuntime>();

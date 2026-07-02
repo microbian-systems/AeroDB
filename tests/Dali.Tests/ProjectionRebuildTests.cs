@@ -177,7 +177,7 @@ public class ProjectionRebuildTests
     public async Task RebuildAsync_Replays_Events_And_Creates_Document()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         // Register projection and enable events
         store.Options.Projections.Add(new RebuildableOrderSummaryProjection());
@@ -192,7 +192,7 @@ public class ProjectionRebuildTests
 
         // Now rebuild from scratch
         var projection = new RebuildableOrderSummaryProjection();
-        await using var rebuildSession = await store.LightweightSessionAsync();
+        await using var rebuildSession = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await projection.RebuildAsync(rebuildSession, CancellationToken.None);
         await rebuildSession.SaveChangesAsync();
 
@@ -209,7 +209,7 @@ public class ProjectionRebuildTests
     public async Task RebuildAsync_Idempotent_Calling_Twice_Produces_Same_Result()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         store.Options.Projections.Add(new RebuildableOrderSummaryProjection());
 
@@ -225,12 +225,12 @@ public class ProjectionRebuildTests
 
         // First rebuild
         var projection = new RebuildableOrderSummaryProjection();
-        await using var rs1 = await store.LightweightSessionAsync();
+        await using var rs1 = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await projection.RebuildAsync(rs1, CancellationToken.None);
         await rs1.SaveChangesAsync();
 
         // Second rebuild
-        await using var rs2 = await store.LightweightSessionAsync();
+        await using var rs2 = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await projection.RebuildAsync(rs2, CancellationToken.None);
         await rs2.SaveChangesAsync();
 
@@ -246,13 +246,13 @@ public class ProjectionRebuildTests
     public async Task RebuildAsync_Empty_Events_Does_Nothing()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         store.Options.Projections.Add(new RebuildableOrderSummaryProjection());
 
         // No events appended — rebuild should do nothing
         var projection = new RebuildableOrderSummaryProjection();
-        await using var rebuildSession = await store.LightweightSessionAsync();
+        await using var rebuildSession = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await projection.RebuildAsync(rebuildSession, CancellationToken.None);
         await rebuildSession.SaveChangesAsync();
 
@@ -265,7 +265,7 @@ public class ProjectionRebuildTests
     public async Task RebuildAsync_Preserves_Existing_Documents_Of_Other_Types()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         store.Options.Projections.Add(new RebuildableOrderSummaryProjection());
         store.Options.Projections.Add(new ShipmentProjection());
@@ -284,7 +284,7 @@ public class ProjectionRebuildTests
 
         // Rebuild only the order projection
         var projection = new RebuildableOrderSummaryProjection();
-        await using var rebuildSession = await store.LightweightSessionAsync();
+        await using var rebuildSession = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await projection.RebuildAsync(rebuildSession, CancellationToken.None);
         await rebuildSession.SaveChangesAsync();
 
@@ -304,7 +304,7 @@ public class ProjectionRebuildTests
     public async Task RebuildAsync_Multiple_Streams()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         store.Options.Projections.Add(new RebuildableOrderSummaryProjection());
 
@@ -323,7 +323,7 @@ public class ProjectionRebuildTests
 
         // Rebuild
         var projection = new RebuildableOrderSummaryProjection();
-        await using var rebuildSession = await store.LightweightSessionAsync();
+        await using var rebuildSession = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await projection.RebuildAsync(rebuildSession, CancellationToken.None);
         await rebuildSession.SaveChangesAsync();
 
@@ -344,7 +344,7 @@ public class ProjectionRebuildTests
     public async Task RebuildAsync_Multiple_Event_Types()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         store.Options.Projections.Add(new RebuildableOrderSummaryProjection());
 
@@ -357,7 +357,7 @@ public class ProjectionRebuildTests
 
         // Rebuild
         var projection = new RebuildableOrderSummaryProjection();
-        await using var rebuildSession = await store.LightweightSessionAsync();
+        await using var rebuildSession = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await projection.RebuildAsync(rebuildSession, CancellationToken.None);
         await rebuildSession.SaveChangesAsync();
 
@@ -373,7 +373,7 @@ public class ProjectionRebuildTests
     public async Task RebuildAsync_Replaces_Existing_Projection_Data()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         store.Options.Projections.Add(new RebuildableOrderSummaryProjection());
 
@@ -386,7 +386,7 @@ public class ProjectionRebuildTests
 
         // Second: rebuild should recreate from scratch
         var projection = new RebuildableOrderSummaryProjection();
-        await using var rebuildSession = await store.LightweightSessionAsync();
+        await using var rebuildSession = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await projection.RebuildAsync(rebuildSession, CancellationToken.None);
         await rebuildSession.SaveChangesAsync();
 
@@ -402,7 +402,7 @@ public class ProjectionRebuildTests
     public async Task RebuildAsync_With_Async_Lifecycle_Projection()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         store.Options.Projections.Add(new AsyncRebuildableProjection());
 
@@ -414,7 +414,7 @@ public class ProjectionRebuildTests
 
         // Even though this is an Async lifecycle projection, we can still rebuild it
         var projection = new AsyncRebuildableProjection();
-        await using var rebuildSession = await store.LightweightSessionAsync();
+        await using var rebuildSession = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await projection.RebuildAsync(rebuildSession, CancellationToken.None);
         await rebuildSession.SaveChangesAsync();
 
@@ -430,7 +430,7 @@ public class ProjectionRebuildTests
     public async Task RebuildAsync_Handles_Different_Projection_Type()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         store.Options.Projections.Add(new ShipmentProjection());
 
@@ -441,7 +441,7 @@ public class ProjectionRebuildTests
         await session.SaveChangesAsync();
 
         var projection = new ShipmentProjection();
-        await using var rebuildSession = await store.LightweightSessionAsync();
+        await using var rebuildSession = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await projection.RebuildAsync(rebuildSession, CancellationToken.None);
         await rebuildSession.SaveChangesAsync();
 
@@ -456,7 +456,7 @@ public class ProjectionRebuildTests
     public async Task EnsureProjectionStateTableAsync_Executes_Without_Error()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var schemaManager = new SchemaManager();
         await schemaManager.EnsureProjectionStateTableAsync(
@@ -472,7 +472,7 @@ public class ProjectionRebuildTests
     public async Task EnsureProjectionStateTableAsync_Is_Idempotent()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var schemaManager = new SchemaManager();
         var surrealSession = ((InternalSessionBase)session).Session;
@@ -487,7 +487,7 @@ public class ProjectionRebuildTests
     {
         // The projection can be rebuilt even if not registered in store.Options.Projections
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var streamId = $"unreg-{Guid.NewGuid():N}";
         await session.Events.Append(streamId, [
@@ -497,7 +497,7 @@ public class ProjectionRebuildTests
 
         // Create a separate projection instance (not registered)
         var projection = new RebuildableOrderSummaryProjection();
-        await using var rebuildSession = await store.LightweightSessionAsync();
+        await using var rebuildSession = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await projection.RebuildAsync(rebuildSession, CancellationToken.None);
         await rebuildSession.SaveChangesAsync();
 
@@ -512,7 +512,7 @@ public class ProjectionRebuildTests
     public async Task RebuildAsync_Clears_Then_Rebuilds()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         store.Options.Projections.Add(new RebuildableOrderSummaryProjection());
         store.Options.Projections.Add(new ShipmentProjection());
@@ -525,19 +525,19 @@ public class ProjectionRebuildTests
 
         // Rebuild once
         var projection = new RebuildableOrderSummaryProjection();
-        await using var rs1 = await store.LightweightSessionAsync();
+        await using var rs1 = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await projection.RebuildAsync(rs1, CancellationToken.None);
         await rs1.SaveChangesAsync();
 
         // Add more events to the same stream
-        await using var session2 = await store.LightweightSessionAsync();
+        await using var session2 = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await session2.Events.Append(streamId, [
             new OrderEvent { StreamId = streamId, OrderId = "CLEAR", Amount = 50.00m }
         ]);
         await session2.SaveChangesAsync();
 
         // Rebuild again — should clear old doc and reconstruct from all events
-        await using var rs2 = await store.LightweightSessionAsync();
+        await using var rs2 = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await projection.RebuildAsync(rs2, CancellationToken.None);
         await rs2.SaveChangesAsync();
 
@@ -555,7 +555,7 @@ public class ProjectionRebuildTests
     public async Task ProjectionProgress_CanBeSavedAndLoaded()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         // Use CREATE IF NOT EXISTS + UPDATE as a reliable way to persist progress
         // (UPSERT with CONTENT may not work reliably with the in-memory SurrealKV engine)
@@ -578,7 +578,7 @@ public class ProjectionRebuildTests
     public async Task ProjectionProgress_UnknownProjection_ReturnsEmpty()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var internalSession = (InternalSessionBase)session;
         var response = await internalSession.Session.RawQuery(
@@ -596,7 +596,7 @@ public class ProjectionRebuildTests
         store.Options.Projections.Add(new AsyncRebuildableProjection());
 
         // Append an event that the async projection can process
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         var streamId = $"dprogress-{Guid.NewGuid():N}";
         await session.Events.Append(streamId, [
             new OrderEvent { StreamId = streamId, OrderId = "DPROG", Amount = 100.00m }
@@ -637,7 +637,7 @@ public class ProjectionRebuildTests
         store.Options.Projections.Add(new AsyncRebuildableProjection());
 
         // Append an initial batch of events
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         var streamId = $"restart-{Guid.NewGuid():N}";
         await session.Events.Append(streamId, [
             new OrderEvent { StreamId = streamId, OrderId = "RESTART", Amount = 100.00m }
@@ -668,7 +668,7 @@ public class ProjectionRebuildTests
             $"CREATE mt_projection_progress:`async_daemon` CONTENT {{ projection_name: 'async_daemon', last_version: {firstRunSequence}, last_updated: time::now() }};", null);
 
         // Append more events (simulating new events arriving after restart)
-        await using var session2 = await store.LightweightSessionAsync();
+        await using var session2 = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await session2.Events.Append(streamId, [
             new OrderEvent { StreamId = streamId, OrderId = "RESTART", Amount = 50.00m }
         ]);
@@ -700,7 +700,7 @@ public class ProjectionRebuildTests
         store.Options.Projections.Add(new AsyncRebuildableProjection());
 
         // Write a per-projection watermark manually (simulating a previous daemon run)
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await session.ExecuteSqlAsync(
             $"UPSERT mt_projection_progress:`AsyncRebuildableProjection` CONTENT {{ projection_name: 'AsyncRebuildableProjection', last_version: 5, last_updated: time::now() }};");
 

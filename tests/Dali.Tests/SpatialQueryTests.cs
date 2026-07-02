@@ -433,7 +433,7 @@ public class SpatialQueryTests
             o.Namespace = "test";
             o.Database = "test";
         });
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         var surrealSession = ((InternalSessionBase)session).Session;
 
         // Create table and insert geo-tagged records using raw queries
@@ -469,7 +469,7 @@ public class SpatialQueryTests
             o.Namespace = "test";
             o.Database = "test";
         });
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         var surrealSession = ((InternalSessionBase)session).Session;
 
         await surrealSession.RawQuery("DEFINE TABLE store SCHEMALESS;");
@@ -509,7 +509,7 @@ public class SpatialQueryTests
             o.Namespace = "test";
             o.Database = "test";
         });
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         var surrealSession = ((InternalSessionBase)session).Session;
 
         await surrealSession.RawQuery("DEFINE TABLE store SCHEMALESS;");
@@ -544,7 +544,7 @@ public class SpatialQueryTests
             o.Namespace = "test";
             o.Database = "test";
         });
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         var surrealSession = ((InternalSessionBase)session).Session;
 
         await surrealSession.RawQuery("DEFINE TABLE spatial_soft_delete_record SCHEMALESS;");
@@ -586,7 +586,7 @@ public class SpatialQueryTests
             o.Namespace = "test";
             o.Database = "test";
         });
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         var surrealSession = ((InternalSessionBase)session).Session;
 
         await surrealSession.RawQuery("DEFINE TABLE store SCHEMALESS;");
@@ -623,7 +623,7 @@ public class SpatialQueryTests
             o.Namespace = "test";
             o.Database = "test";
         });
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         var surrealSession = ((InternalSessionBase)session).Session;
 
         await surrealSession.RawQuery("DEFINE TABLE store SCHEMALESS;");
@@ -656,7 +656,7 @@ public class SpatialQueryTests
             o.Namespace = "test";
             o.Database = "test";
         });
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         var surrealSession = ((InternalSessionBase)session).Session;
 
         await surrealSession.RawQuery("DEFINE TABLE store SCHEMALESS;");
@@ -718,7 +718,7 @@ public class SpatialQueryTests
             o.Namespace = "test";
             o.Database = "test";
         });
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         var surrealSession = ((InternalSessionBase)session).Session;
 
         // This should not throw — SchemaManager handles GeometryPoint as "geometry" type

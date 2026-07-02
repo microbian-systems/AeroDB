@@ -9,7 +9,7 @@ public class PatchTests
     public async Task Patch_set_single_field()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "Alice", Age = 30 });
         await session.SaveChangesAsync();
@@ -32,7 +32,7 @@ public class PatchTests
     public async Task Patch_set_multiple_fields()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "Bob", Age = 25, Email = "bob@test.com" });
         await session.SaveChangesAsync();
@@ -57,7 +57,7 @@ public class PatchTests
     public async Task Patch_increment_numeric()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Product { Name = "Widget", Quantity = 10, Price = 5.99m });
         await session.SaveChangesAsync();
@@ -80,7 +80,7 @@ public class PatchTests
     public async Task Patch_append_to_array_field()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "Charlie", Age = 30, Tags = new List<string> { "a" } });
         await session.SaveChangesAsync();
@@ -104,7 +104,7 @@ public class PatchTests
     public async Task Patch_delete_field_sets_to_none()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Product { Name = "DeletePrice", Price = 10.00m, Quantity = 1 });
         await session.SaveChangesAsync();
@@ -127,7 +127,7 @@ public class PatchTests
     public async Task Patch_on_nonexistent_record_is_noop()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         // Patching a record that doesn't exist should not throw
         session.Patch<Person>("nonexistent-id")

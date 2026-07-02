@@ -21,7 +21,7 @@ public class PatchApiTests
     public async Task patch_by_string_id_sets_field()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "Alice", Age = 30 });
         await session.SaveChangesAsync();
@@ -46,7 +46,7 @@ public class PatchApiTests
     public async Task patch_by_int_id_sets_field()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         // Store a person then query it back to get the auto-generated string ID.
         // The int overload (Patch<T>(int id)) converts to string internally, same as
@@ -75,7 +75,7 @@ public class PatchApiTests
     public async Task patch_by_long_id_sets_field()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "Alice", Age = 30 });
         await session.SaveChangesAsync();
@@ -104,7 +104,7 @@ public class PatchApiTests
     public async Task increment_int()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "Alice", Age = 30 });
         await session.SaveChangesAsync();
@@ -127,7 +127,7 @@ public class PatchApiTests
     public async Task increment_long_default()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "Bob", Age = 20 });
         await session.SaveChangesAsync();
@@ -150,7 +150,7 @@ public class PatchApiTests
     public async Task append_if_not_exists_skips_duplicate()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "Charlie", Tags = new List<string> { "a", "b" } });
         await session.SaveChangesAsync();
@@ -174,7 +174,7 @@ public class PatchApiTests
     public async Task append_if_not_exists_adds_new()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "Diana", Tags = new List<string> { "a" } });
         await session.SaveChangesAsync();
@@ -198,7 +198,7 @@ public class PatchApiTests
     public async Task insert_at_beginning()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "Eve", Tags = new List<string> { "a", "b", "c" } });
         await session.SaveChangesAsync();
@@ -224,7 +224,7 @@ public class PatchApiTests
     public async Task insert_at_end_null_index()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "Frank", Tags = new List<string> { "a", "b" } });
         await session.SaveChangesAsync();
@@ -250,7 +250,7 @@ public class PatchApiTests
     public async Task insert_if_not_exists_skips()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "Grace", Tags = new List<string> { "a", "b" } });
         await session.SaveChangesAsync();
@@ -274,7 +274,7 @@ public class PatchApiTests
     public async Task insert_if_not_exists_adds()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "Heidi", Tags = new List<string> { "a" } });
         await session.SaveChangesAsync();
@@ -298,7 +298,7 @@ public class PatchApiTests
     public async Task remove_from_array()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "Ivan", Tags = new List<string> { "a", "b", "c" } });
         await session.SaveChangesAsync();
@@ -323,7 +323,7 @@ public class PatchApiTests
     public async Task duplicate_field()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "test", Age = 30, Email = "" });
         await session.SaveChangesAsync();
@@ -350,7 +350,7 @@ public class PatchApiTests
     public async Task filter_patch_updates_multiple_documents()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         // Store 5 persons all with Name="Old"
         for (int i = 0; i < 5; i++)
@@ -374,7 +374,7 @@ public class PatchApiTests
     public async Task filter_patch_only_matches_filter()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "A", Age = 20 });
         session.Store(new Person { Name = "B", Age = 30 });
@@ -403,7 +403,7 @@ public class PatchApiTests
     public async Task filter_patch_empty_filter_matches_none()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "X", Age = 10 });
         session.Store(new Person { Name = "Y", Age = 20 });
@@ -431,7 +431,7 @@ public class PatchApiTests
     public async Task multiple_ops_in_one_patch()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "Multi", Age = 10, Email = "old@test.com" });
         await session.SaveChangesAsync();
@@ -457,7 +457,7 @@ public class PatchApiTests
     public async Task patch_noop_on_empty_operations()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "Noop", Age = 30 });
         await session.SaveChangesAsync();

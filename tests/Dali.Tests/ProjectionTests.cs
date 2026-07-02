@@ -84,7 +84,7 @@ public class ProjectionTests
     public async Task Inline_projection_runs_with_saveChanges()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         // Register the inline projection
         store.Options.Projections.Add(new OrderSummaryProjection());
@@ -112,7 +112,7 @@ public class ProjectionTests
     public async Task Inline_projection_accumulates_multiple_events()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         store.Options.Projections.Add(new OrderSummaryProjection());
 
@@ -140,7 +140,7 @@ public class ProjectionTests
     public async Task Inline_projection_skips_nonmatching_events()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         // Register projection that only handles OrderEvent
         store.Options.Projections.Add(new OrderSummaryProjection());
@@ -176,7 +176,7 @@ public class ProjectionTests
     public async Task Projection_event_types_filtering()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         store.Options.Projections.Add(new OrderSummaryProjection());
 
@@ -204,7 +204,7 @@ public class ProjectionTests
     public async Task AsyncDaemon_starts_and_stops()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         store.Options.Projections.Add(new AsyncOrderSummaryProjection());
 
@@ -232,7 +232,7 @@ public class ProjectionTests
     public async Task Inline_projection_with_no_events_does_nothing()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         store.Options.Projections.Add(new OrderSummaryProjection());
 
@@ -245,7 +245,7 @@ public class ProjectionTests
     public async Task Inline_projection_preserves_aggregate_across_saves()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         store.Options.Projections.Add(new OrderSummaryProjection());
 
@@ -258,7 +258,7 @@ public class ProjectionTests
         await session.SaveChangesAsync();
 
         // Second append in a new session: the projection loads existing aggregate and adds to it
-        await using var session2 = await store.LightweightSessionAsync();
+        await using var session2 = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await session2.Events.Append(streamId, [
             new OrderEvent { StreamId = streamId, OrderId = "ORD-PRESERVE", Amount = 75.00m }
         ]);

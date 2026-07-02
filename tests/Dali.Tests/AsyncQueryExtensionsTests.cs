@@ -162,7 +162,7 @@ public class AsyncQueryExtensionsTests
     public async Task SurrealDb_ToListAsync_returns_all_documents()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "Alice", Age = 30 });
         session.Store(new Person { Name = "Bob", Age = 25 });
@@ -177,7 +177,7 @@ public class AsyncQueryExtensionsTests
     public async Task SurrealDb_FirstOrDefaultAsync_no_predicate_returns_first()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "First", Age = 10 });
         session.Store(new Person { Name = "Second", Age = 20 });
@@ -192,7 +192,7 @@ public class AsyncQueryExtensionsTests
     public async Task SurrealDb_FirstOrDefaultAsync_with_predicate_matches()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "Alice", Age = 30, Email = "a@t.com" });
         session.Store(new Person { Name = "Bob", Age = 25, Email = "b@t.com" });
@@ -209,7 +209,7 @@ public class AsyncQueryExtensionsTests
     public async Task SurrealDb_FirstOrDefaultAsync_with_predicate_no_match()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "Alice", Age = 30 });
         await session.SaveChangesAsync();
@@ -223,7 +223,7 @@ public class AsyncQueryExtensionsTests
     public async Task SurrealDb_SingleOrDefaultAsync_single_match()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "Unique", Age = 40 });
         await session.SaveChangesAsync();
@@ -240,7 +240,7 @@ public class AsyncQueryExtensionsTests
     public async Task SurrealDb_SingleOrDefaultAsync_no_match_returns_null()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var person = await session.Query<Person>()
             .Where(p => p.Name == "NonExistent")
@@ -253,7 +253,7 @@ public class AsyncQueryExtensionsTests
     public async Task SurrealDb_CountAsync_with_filter()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "Alice", Age = 30 });
         session.Store(new Person { Name = "Bob", Age = 25 });
@@ -269,7 +269,7 @@ public class AsyncQueryExtensionsTests
     public async Task SurrealDb_AnyAsync_returns_true()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "Exists", Age = 1 });
         await session.SaveChangesAsync();
@@ -283,7 +283,7 @@ public class AsyncQueryExtensionsTests
     public async Task SurrealDb_AnyAsync_returns_false()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var any = await session.Query<Person>().AnyAsync();
 
@@ -306,7 +306,7 @@ public class AsyncQueryExtensionsTests
     public async Task ContainsAll_filters_matching_all_tags()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await SeedArrayPeople(session);
 
         var results = await session.Query<Person>()
@@ -321,7 +321,7 @@ public class AsyncQueryExtensionsTests
     public async Task ContainsAll_no_match_returns_empty()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await SeedArrayPeople(session);
 
         var results = await session.Query<Person>()
@@ -335,7 +335,7 @@ public class AsyncQueryExtensionsTests
     public async Task ContainsAny_filters_matching_any_tag()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await SeedArrayPeople(session);
 
         var results = await session.Query<Person>()
@@ -349,7 +349,7 @@ public class AsyncQueryExtensionsTests
     public async Task ContainsNone_filters_excluding_tags()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await SeedArrayPeople(session);
 
         var results = await session.Query<Person>()
@@ -364,7 +364,7 @@ public class AsyncQueryExtensionsTests
     public async Task Intersects_filters_overlapping_tags()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await SeedArrayPeople(session);
 
         var results = await session.Query<Person>()
@@ -378,7 +378,7 @@ public class AsyncQueryExtensionsTests
     public async Task Intersects_no_match_returns_empty()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await SeedArrayPeople(session);
 
         var results = await session.Query<Person>()
@@ -396,7 +396,7 @@ public class AsyncQueryExtensionsTests
     public async Task DeleteAsync_removes_matching_records()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "DeleteMe", Age = 10 });
         session.Store(new Person { Name = "KeepMe", Age = 20 });
@@ -417,7 +417,7 @@ public class AsyncQueryExtensionsTests
     public async Task DeleteAsync_without_filter_deletes_all()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "A", Age = 10 });
         session.Store(new Person { Name = "B", Age = 20 });
@@ -438,7 +438,7 @@ public class AsyncQueryExtensionsTests
         {
             o.SoftDeleteEnabled = false;
         });
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var past = DateTimeOffset.UtcNow.AddDays(-5);
         var recent = DateTimeOffset.UtcNow.AddHours(-1);

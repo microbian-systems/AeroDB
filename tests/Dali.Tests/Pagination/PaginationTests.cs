@@ -34,7 +34,7 @@ public class PaginationTests
     public async Task ToPagedList_first_page()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         await SeedPeople(session, 25);
 
@@ -59,7 +59,7 @@ public class PaginationTests
     public async Task ToPagedList_second_page()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         await SeedPeople(session, 25);
 
@@ -82,7 +82,7 @@ public class PaginationTests
     public async Task ToPagedList_last_partial_page()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         await SeedPeople(session, 25);
 
@@ -104,7 +104,7 @@ public class PaginationTests
     public async Task ToPagedList_single_page()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         await SeedPeople(session, 3);
 
@@ -128,7 +128,7 @@ public class PaginationTests
     public async Task ToPagedList_empty()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var paged = await session.Query<Person>().ToPagedListAsync(1, 10);
 
@@ -147,7 +147,7 @@ public class PaginationTests
     public async Task ToPagedList_page_size_1()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         await SeedPeople(session, 5);
 
@@ -174,7 +174,7 @@ public class PaginationTests
     public async Task ToPagedList_with_where_filter()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         // Seed 10 persons: ages 21..30 → 5 over age 25 (26..30)
         for (var i = 1; i <= 10; i++)
@@ -209,7 +209,7 @@ public class PaginationTests
     public async Task ToPagedList_use_count_query()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         await SeedPeople(session, 25);
 
@@ -233,7 +233,7 @@ public class PaginationTests
     public async Task ToPagedList_page_number_zero_throws()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         await SeedPeople(session, 5);
 
@@ -248,7 +248,7 @@ public class PaginationTests
     public async Task ToPagedList_page_size_zero_throws()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         await SeedPeople(session, 5);
 
@@ -264,7 +264,7 @@ public class PaginationTests
     public async Task ToPagedList_FirstItemOnPage_LastItemOnPage()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         await SeedPeople(session, 15);
 
@@ -284,7 +284,7 @@ public class PaginationTests
     public async Task ToPagedList_FirstItemOnPage_last_partial()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         await SeedPeople(session, 15);
 

@@ -25,7 +25,7 @@ public class QueryDiagnosticsTests
     public async Task PreviewCommandAsync_ReturnsSurrealQL()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         IQueryable<Person> query = session.Query<Person>()
             .Where(p => p.Age > 25);
@@ -51,7 +51,7 @@ public class QueryDiagnosticsTests
     public async Task StreamAsync_StreamsResults()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "Alice", Age = 30, Email = "alice@test.com" });
         session.Store(new Person { Name = "Bob", Age = 25, Email = "bob@test.com" });

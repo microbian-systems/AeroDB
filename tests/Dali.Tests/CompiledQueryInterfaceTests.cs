@@ -91,7 +91,7 @@ public class CompiledQueryInterfaceTests
     public async Task Compiled_interface_returns_filtered_result()
     {
         await using var store = await CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await SeedPeople(session);
 
         var query = new FindPersonByFirstName { FirstName = "Alice" };
@@ -105,7 +105,7 @@ public class CompiledQueryInterfaceTests
     public async Task Compiled_interface_list_query_with_where_returns_correct_results()
     {
         await using var store = await CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await SeedPeople(session);
 
         var query = new ListPeopleOlderThan { MinAge = 25 };
@@ -121,7 +121,7 @@ public class CompiledQueryInterfaceTests
     public async Task Compiled_interface_list_with_order()
     {
         await using var store = await CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await SeedPeople(session);
 
         var query = new ListPeopleOlderThanOrdered { MinAge = 20 };
@@ -140,7 +140,7 @@ public class CompiledQueryInterfaceTests
     public async Task Compiled_interface_single_result_query()
     {
         await using var store = await CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await SeedPeople(session);
 
         var query = new FindPersonByFirstNameShorthand { FirstName = "Bob" };
@@ -155,7 +155,7 @@ public class CompiledQueryInterfaceTests
     public async Task Compiled_interface_empty_results_returns_empty_list()
     {
         await using var store = await CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await SeedPeople(session);
 
         var query = new ListPeopleOlderThan { MinAge = 100 };
@@ -169,7 +169,7 @@ public class CompiledQueryInterfaceTests
     public async Task Compiled_interface_different_parameters_produce_different_results()
     {
         await using var store = await CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await SeedPeople(session);
 
         var aliceQuery = new FindPersonByFirstName { FirstName = "Alice" };
@@ -189,7 +189,7 @@ public class CompiledQueryInterfaceTests
     public async Task Compiled_interface_single_result_not_found_returns_default()
     {
         await using var store = await CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await SeedPeople(session);
 
         var query = new FindPersonByFirstName { FirstName = "NonExistent" };
@@ -206,7 +206,7 @@ public class CompiledQueryInterfaceTests
     public async Task Compiled_interface_multiple_instances_work_concurrently()
     {
         await using var store = await CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await SeedPeople(session);
 
         var queryA = new FindPersonByFirstName { FirstName = "Alice" };
@@ -229,7 +229,7 @@ public class CompiledQueryInterfaceTests
     public async Task Compiled_interface_string_contains()
     {
         await using var store = await CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await SeedPeople(session);
 
         var query = new ListPeopleByNameContains { Search = "Ali" };
@@ -245,7 +245,7 @@ public class CompiledQueryInterfaceTests
     public async Task Compiled_interface_skip_take_pagination()
     {
         await using var store = await CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         // Seed 5 people with ordered names
         session.Store(new Person { Name = "Eve", Age = 28 });

@@ -34,7 +34,7 @@ public class IntegrationTests
         if (!available) return;
 
         await using var store = await TestHarnessRemote.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         // Create a customer record
         var customer = new Customer { Name = "Alice", Email = "alice@example.com" };
@@ -81,7 +81,7 @@ public class IntegrationTests
         if (!available) return;
 
         await using var store = await TestHarnessRemote.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         // Create records using raw SurrealQL
         await session.ExecuteSqlAsync("CREATE person:alice CONTENT { Name: 'Alice', Age: 30 };");
@@ -113,7 +113,7 @@ public class IntegrationTests
             o.Events.Enabled = true;
         });
 
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         // Append an event that contains DateTimeOffset data
         var streamId = Guid.NewGuid().ToString();
@@ -157,7 +157,7 @@ public class IntegrationTests
         if (!available) return;
 
         await using var store = await TestHarnessRemote.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var original = new Product
         {

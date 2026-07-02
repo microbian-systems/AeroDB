@@ -69,7 +69,7 @@ public class DirtyTrackingTests
         await session2.SaveChangesAsync();
 
         // Verify the change persisted
-        await using var session3 = await store.LightweightSessionAsync();
+        await using var session3 = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         var reloaded = await session3.LoadAsync<Person>(id);
         reloaded.ShouldNotBeNull();
         reloaded.Name.ShouldBe("AliceUpdated");
@@ -79,7 +79,7 @@ public class DirtyTrackingTests
     public async Task IdentityMapCount_reflects_tracked_entities()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.DocumentSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.IdentityOnly });
 
         // Store and persist so there are entities to query
         session.Store(new Person { Name = "Alice", Age = 30 });

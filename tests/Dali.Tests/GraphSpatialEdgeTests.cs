@@ -29,7 +29,7 @@ public sealed class GraphSpatialEdgeTests
     public async Task OutAny_TraversesAnyOutgoingEdge()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "Alice" });
         session.Store(new Person { Name = "Bob" });
@@ -68,7 +68,7 @@ public sealed class GraphSpatialEdgeTests
     public async Task InAny_TraversesAnyIncomingEdge()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "Alice" });
         session.Store(new Person { Name = "Bob" });
@@ -107,7 +107,7 @@ public sealed class GraphSpatialEdgeTests
     public async Task AnyEdge_TraversesBothDirections()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "Alice" });
         session.Store(new Person { Name = "Bob" });
@@ -150,7 +150,7 @@ public sealed class GraphSpatialEdgeTests
     public async Task Out_MultiLabel_TraversesMultipleEdges()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "Alice" });
         session.Store(new Person { Name = "Bob" });
@@ -184,7 +184,7 @@ public sealed class GraphSpatialEdgeTests
     public async Task ToPathListAsync_ReturnsPaths()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "Alice" });
         session.Store(new Person { Name = "Bob" });
@@ -219,7 +219,7 @@ public sealed class GraphSpatialEdgeTests
     public async Task IncludeIntermediate_DoesNotThrow()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "Alice" });
         session.Store(new Person { Name = "Bob" });
@@ -254,7 +254,7 @@ public sealed class GraphSpatialEdgeTests
     public async Task IncludeOrigin_DoesNotThrow()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "Alice" });
         session.Store(new Person { Name = "Bob" });
@@ -289,7 +289,7 @@ public sealed class GraphSpatialEdgeTests
     public async Task Fetch_WithFields_DoesNotThrow()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "Alice" });
         session.Store(new Person { Name = "Bob" });
@@ -323,7 +323,7 @@ public sealed class GraphSpatialEdgeTests
             o.Namespace = "test";
             o.Database = "test";
         });
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         var surrealSession = ((InternalSessionBase)session).Session;
 
         await surrealSession.RawQuery("DEFINE TABLE store SCHEMALESS;");

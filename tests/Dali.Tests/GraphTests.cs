@@ -305,7 +305,7 @@ public class GraphIntegrationTests
     public async Task Graph_SelectAll_ReturnsAllPersons()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "Alice" });
         session.Store(new Person { Name = "Bob" });
@@ -321,7 +321,7 @@ public class GraphIntegrationTests
     public async Task Graph_OutTraversal_DoesNotThrow()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         await SetupSocialGraphAsync(session);
 
@@ -337,7 +337,7 @@ public class GraphIntegrationTests
     public async Task Graph_InTraversal_DoesNotThrow()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         await SetupSocialGraphAsync(session);
 
@@ -352,7 +352,7 @@ public class GraphIntegrationTests
     public async Task Graph_BothTraversal_DoesNotThrow()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         await SetupSocialGraphAsync(session);
 
@@ -367,7 +367,7 @@ public class GraphIntegrationTests
     public async Task Graph_Depth_DoesNotThrow()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         await SetupSocialGraphAsync(session);
 
@@ -383,7 +383,7 @@ public class GraphIntegrationTests
     public async Task Graph_FirstOrDefaultAsync_ReturnsFirst()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "Alice" });
         session.Store(new Person { Name = "Bob" });
@@ -398,7 +398,7 @@ public class GraphIntegrationTests
     public async Task Graph_FirstOrDefaultAsync_TableNotExist_Throws()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         // No data stored — no table exists yet, so RawQueryAsync
         // returns an error result which throws NotSupportedException.
@@ -415,7 +415,7 @@ public class GraphIntegrationTests
     public async Task Relate_CreatesEdgeRecord()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var alice = new Person { Name = "Alice" };
         var bob = new Person { Name = "Bob" };
@@ -441,7 +441,7 @@ public class GraphIntegrationTests
     public async Task Relate_WithData_StoresEdgeProperties()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "A" });
         session.Store(new Person { Name = "B" });
@@ -461,7 +461,7 @@ public class GraphIntegrationTests
     public async Task EdgeRecord_ChildOf_CanBeCreated()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "Parent" });
         session.Store(new Person { Name = "Child" });
@@ -479,7 +479,7 @@ public class GraphIntegrationTests
     public async Task EdgeRecord_Created_CanBeCreated()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "Creator" });
         session.Store(new Person { Name = "Art" });
@@ -500,7 +500,7 @@ public class GraphIntegrationTests
     public async Task RawQuery_GraphOut_ExecutesWithoutError()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         await SetupSocialGraphAsync(session);
 
@@ -515,7 +515,7 @@ public class GraphIntegrationTests
     public async Task RawQuery_GraphIn_ExecutesWithoutError()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         await SetupSocialGraphAsync(session);
 
@@ -529,7 +529,7 @@ public class GraphIntegrationTests
     public async Task RawQuery_WithWhereClause_UsingPascalCase()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "Alice" });
         session.Store(new Person { Name = "Bob" });
@@ -547,7 +547,7 @@ public class GraphIntegrationTests
     public async Task Graph_Where_ExecutesWithoutError()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "Alice" });
         session.Store(new Person { Name = "Bob" });

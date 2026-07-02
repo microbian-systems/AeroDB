@@ -36,7 +36,7 @@ public class ConcurrencyTests
         {
             o.UseOptimisticConcurrency = true;
         });
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var person = new VersionedPerson { Name = "FirstSave", Age = 20 };
         person.Version.ShouldBe(0);
@@ -61,7 +61,7 @@ public class ConcurrencyTests
         {
             o.UseOptimisticConcurrency = true;
         });
-        await using var session = AsDoc(await store.LightweightSessionAsync());
+        await using var session = AsDoc(await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }));
 
         // Use RawQuery to create an entity with an explicit Version field.
         const string id = "no_conflict_test";
@@ -98,7 +98,7 @@ public class ConcurrencyTests
 
         // Arrange: create a base entity with version=1 via RawQuery
         const string id = "conflict_test";
-        await using (var seedSession = AsDoc(await store.LightweightSessionAsync()))
+        await using (var seedSession = AsDoc(await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None })))
         {
             await seedSession.Session.RawQuery(
                 $"CREATE versioned_person:{id} CONTENT {{ Name: 'ConflictTest', Age: 10, Version: 1 }};",
@@ -106,8 +106,8 @@ public class ConcurrencyTests
         }
 
         // Both sessions load the same entity (both track the same version)
-        await using var session1 = AsDoc(await store.LightweightSessionAsync());
-        await using var session2 = AsDoc(await store.LightweightSessionAsync());
+        await using var session1 = AsDoc(await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }));
+        await using var session2 = AsDoc(await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }));
 
         var entity1 = await session1.LoadAsync<VersionedPerson>(id);
         var entity2 = await session2.LoadAsync<VersionedPerson>(id);
@@ -149,7 +149,7 @@ public class ConcurrencyTests
 
         // Arrange: create a base entity with version via RawQuery
         const string id = "no_concurrency_test";
-        await using (var seedSession = AsDoc(await store.LightweightSessionAsync()))
+        await using (var seedSession = AsDoc(await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None })))
         {
             await seedSession.Session.RawQuery(
                 $"CREATE versioned_person:{id} CONTENT {{ Name: 'NoConcurrency', Age: 5, Version: 1 }};",
@@ -157,8 +157,8 @@ public class ConcurrencyTests
         }
 
         // Both sessions load the same entity
-        await using var session1 = AsDoc(await store.LightweightSessionAsync());
-        await using var session2 = AsDoc(await store.LightweightSessionAsync());
+        await using var session1 = AsDoc(await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }));
+        await using var session2 = AsDoc(await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }));
 
         var entity1 = await session1.LoadAsync<VersionedPerson>(id);
         var entity2 = await session2.LoadAsync<VersionedPerson>(id);
@@ -188,7 +188,7 @@ public class ConcurrencyTests
         {
             o.UseOptimisticConcurrency = true;
         });
-        await using var session = AsDoc(await store.LightweightSessionAsync());
+        await using var session = AsDoc(await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }));
 
         // Use RawQuery to create with an explicit version field
         const string id = "attr_test";
@@ -216,7 +216,7 @@ public class ConcurrencyTests
     {
         await using var store = await TestHarness.CreateStoreAsync();
         store.Options.Projections.Add(new AsyncRebuildableProjection());
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         // Start a stream
         var streamId = $"ffw-{Guid.NewGuid():N}";
@@ -238,7 +238,7 @@ public class ConcurrencyTests
     public async Task FetchForWriting_ConcurrencyConflict_Throws()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var streamId = $"conflict-{Guid.NewGuid():N}";
 
@@ -253,7 +253,7 @@ public class ConcurrencyTests
         result.Aggregate.ShouldNotBeNull();
 
         // Another session appends to the stream (making it version 2)
-        await using var session2 = await store.LightweightSessionAsync();
+        await using var session2 = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await session2.Events.Append(streamId, [
             new OrderEvent { StreamId = streamId, OrderId = "CONF-2", Amount = 50m }
         ]);
@@ -284,7 +284,7 @@ public class ConcurrencyTests
 
         // Create a plain (non-versioned) entity
         const string id = "plain_test";
-        await using (var seedSession = AsDoc(await store.LightweightSessionAsync()))
+        await using (var seedSession = AsDoc(await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None })))
         {
             await seedSession.Session.RawQuery(
                 $"CREATE person:{id} CONTENT {{ Name: 'PlainJane', Age: 40 }};",
@@ -292,7 +292,7 @@ public class ConcurrencyTests
         }
 
         // Load and modify
-        await using var session2 = AsDoc(await store.LightweightSessionAsync());
+        await using var session2 = AsDoc(await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }));
         var loaded = await session2.LoadAsync<Person>(id);
         loaded.ShouldNotBeNull();
 
@@ -309,7 +309,7 @@ public class ConcurrencyTests
     public async Task FetchForWriting_AutoFlush_TracksResults()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var streamId = $"autoffw-{Guid.NewGuid():N}";
 

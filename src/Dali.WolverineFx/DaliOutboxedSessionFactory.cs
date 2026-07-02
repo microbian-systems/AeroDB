@@ -44,7 +44,7 @@ public sealed class DaliOutboxedSessionFactory
             store = _store.WithTenant(context.TenantId);
         }
 
-        var session = await store.LightweightSessionAsync();
+        var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         ConfigureSession(context, session);
         return session;
     }
@@ -61,11 +61,11 @@ public sealed class DaliOutboxedSessionFactory
         if (!string.IsNullOrEmpty(tenantId))
         {
             var store = _store.WithTenant(tenantId);
-            session = await store.LightweightSessionAsync();
+            session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         }
         else
         {
-            session = await _store.LightweightSessionAsync();
+            session = await _store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         }
 
         ConfigureSession(context, session);

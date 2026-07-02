@@ -77,7 +77,7 @@ public class InfrastructureParityTests
     public async Task Patch_Set_ModifiesDocument()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         // Create a person with known ID
         session.Store(new Person { Name = "BeforePatch", Age = 20 });
@@ -123,7 +123,7 @@ public class InfrastructureParityTests
         {
             o.Listeners.Add(listener);
         });
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         // Insert a document
         var person = new Person { Name = "UpdateTest", Age = 30 };
@@ -163,7 +163,7 @@ public class InfrastructureParityTests
         {
             o.Listeners.Add(listener);
         });
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "InsertedTest", Age = 30 });
         await session.SaveChangesAsync();
@@ -187,7 +187,7 @@ public class InfrastructureParityTests
         {
             o.Events.Enabled = true;
         });
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         // Append an event to a stream
         var streamId = $"test-stream-{Guid.NewGuid():N}";
@@ -204,7 +204,7 @@ public class InfrastructureParityTests
             o.Events.Enabled = true;
             o.Listeners.Add(listener);
         });
-        await using var session2 = await store2.LightweightSessionAsync();
+        await using var session2 = await store2.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var streamId2 = $"test-stream-{Guid.NewGuid():N}";
         session2.Events.StartStream(streamId2, [new EventA { Name = "StreamEvent" }]);
@@ -234,7 +234,7 @@ public class InfrastructureParityTests
         {
             o.Listeners.Add(listener);
         });
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "HookTest", Age = 30 });
         await session.SaveChangesAsync();
@@ -253,7 +253,7 @@ public class InfrastructureParityTests
         {
             o.Listeners.Add(listener);
         });
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "AfterStoreTest", Age = 25 });
         await session.SaveChangesAsync();
@@ -272,7 +272,7 @@ public class InfrastructureParityTests
         {
             o.Listeners.Add(listener);
         });
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "BeforeSaveTest", Age = 35 });
         await session.SaveChangesAsync();
@@ -291,7 +291,7 @@ public class InfrastructureParityTests
         {
             o.Listeners.Add(listener);
         });
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "ChangeSetCollect", Age = 40 });
         await session.SaveChangesAsync();
@@ -311,7 +311,7 @@ public class InfrastructureParityTests
         {
             o.Listeners.Add(listener);
         });
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "OpTest", Age = 22 });
         session.Store(new Person { Name = "OpTest2", Age = 23 });
@@ -334,7 +334,7 @@ public class InfrastructureParityTests
         {
             o.Listeners.Add(listener);
         });
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "OrderTest", Age = 28 });
         await session.SaveChangesAsync();
@@ -365,7 +365,7 @@ public class InfrastructureParityTests
         {
             o.Listeners.Add(listener);
         });
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         await session.ExecuteSqlAsync(
             "CREATE person:todelete CONTENT { Name: 'ToDelete', Age: 99 };");
@@ -391,7 +391,7 @@ public class InfrastructureParityTests
         {
             o.Listeners.Add(listener);
         });
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         await session.ExecuteSqlAsync(
             "CREATE person:todelete2 CONTENT { Name: 'ToDelete2', Age: 88 };");
@@ -418,7 +418,7 @@ public class InfrastructureParityTests
         await using var store = await TestHarness.CreateStoreAsync();
 
         // IInitialData.PopulateAsync accepts an IDocumentSession
-        await using var seedSession = await store.LightweightSessionAsync();
+        await using var seedSession = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await initialData.PopulateAsync(seedSession, CancellationToken.None);
 
         // Verify the seeder created the expected data

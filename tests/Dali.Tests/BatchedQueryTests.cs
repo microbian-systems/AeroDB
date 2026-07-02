@@ -32,7 +32,7 @@ public class BatchedQueryTests
     public async Task Batch_query_returns_results_for_single_compiled_query()
     {
         await using var store = await CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await SeedPeople(session);
 
         var batch = session.CreateBatchQuery();
@@ -50,7 +50,7 @@ public class BatchedQueryTests
     public async Task Batch_query_returns_results_for_multiple_compiled_queries()
     {
         await using var store = await CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await SeedPeople(session);
 
         var batch = session.CreateBatchQuery();
@@ -80,7 +80,7 @@ public class BatchedQueryTests
     public async Task Batch_query_with_different_parameter_values()
     {
         await using var store = await CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await SeedPeople(session);
 
         var batch = session.CreateBatchQuery();
@@ -102,7 +102,7 @@ public class BatchedQueryTests
     public async Task Batch_query_empty_returns_empty()
     {
         await using var store = await CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var batch = session.CreateBatchQuery();
 
@@ -114,7 +114,7 @@ public class BatchedQueryTests
     public async Task Batch_query_multiple_execute_calls()
     {
         await using var store = await CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await SeedPeople(session);
 
         var batch = session.CreateBatchQuery();
@@ -146,7 +146,7 @@ public class BatchedQueryTests
     public async Task Batch_query_futures_preserve_order()
     {
         await using var store = await CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await SeedPeople(session);
 
         var batch = session.CreateBatchQuery();
@@ -176,7 +176,7 @@ public class BatchedQueryTests
     public async Task Batch_query_mixed_single_and_list_queries()
     {
         await using var store = await CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await SeedPeople(session);
 
         var batch = session.CreateBatchQuery();
@@ -200,7 +200,7 @@ public class BatchedQueryTests
     public async Task Batch_query_with_skip_take()
     {
         await using var store = await CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         // Seed 5 people with ordered names
         session.Store(new Person { Name = "Eve", Age = 28 });
@@ -233,7 +233,7 @@ public class BatchedQueryTests
     public async Task Batch_query_string_contains()
     {
         await using var store = await CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await SeedPeople(session);
 
         var batch = session.CreateBatchQuery();

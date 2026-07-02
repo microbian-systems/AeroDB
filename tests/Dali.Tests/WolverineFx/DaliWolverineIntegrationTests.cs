@@ -222,7 +222,7 @@ public class DaliWolverineIntegrationTests
         };
 
         // Store
-        await using (var session = await store.LightweightSessionAsync())
+        await using (var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }))
         {
             session.Store(doc);
             await session.SaveChangesAsync();
@@ -255,7 +255,7 @@ public class DaliWolverineIntegrationTests
         };
 
         // Create
-        await using (var session = await store.LightweightSessionAsync())
+        await using (var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }))
         {
             session.Store(doc);
             await session.SaveChangesAsync();
@@ -269,7 +269,7 @@ public class DaliWolverineIntegrationTests
         }
 
         // Delete via document reference (same session)
-        await using (var session = await store.LightweightSessionAsync())
+        await using (var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }))
         {
             var toDelete = await session.LoadAsync<StoreTestDoc>(id);
             toDelete.ShouldNotBeNull();
@@ -312,7 +312,7 @@ public class DaliWolverineIntegrationTests
         };
 
         // Create
-        await using (var session = await store.LightweightSessionAsync())
+        await using (var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }))
         {
             session.Store(doc);
             await session.SaveChangesAsync();
@@ -327,7 +327,7 @@ public class DaliWolverineIntegrationTests
         }
 
         // Delete
-        await using (var session = await store.LightweightSessionAsync())
+        await using (var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }))
         {
             var toDelete = await session.LoadAsync<VersionedDoc>(docId);
             toDelete.ShouldNotBeNull();
@@ -480,13 +480,13 @@ public class DaliWolverineIntegrationTests
 
         // Verify tenant-scoped session via WithTenant
         var tenantStore = docStore.WithTenant("tenant-gamma");
-        await using var tenantSession = await tenantStore.LightweightSessionAsync();
+        await using var tenantSession = await tenantStore.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         tenantSession.ShouldNotBeNull();
         tenantSession.TenantId.ShouldBe("tenant-gamma");
 
         // Verify different tenant gets different session
         var tenantStore2 = docStore.WithTenant("tenant-delta");
-        await using var tenantSession2 = await tenantStore2.LightweightSessionAsync();
+        await using var tenantSession2 = await tenantStore2.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         tenantSession2.ShouldNotBeNull();
         tenantSession2.TenantId.ShouldBe("tenant-delta");
     }
@@ -556,7 +556,7 @@ public class DaliWolverineIntegrationTests
         // Verify that DaliEventForwarding can access _appendedEvents via reflection
         using var host = await BuildWolverineHostAsync();
         var store = host.Services.GetRequiredService<IDocumentStore>();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         // Append events to trigger tracking
         await session.Events.Append("test-stream-1", new object[] { new TestEvent("evt1") });
@@ -819,7 +819,7 @@ public class ExplicitSessionHandler
     public async Task<DocumentCreated> Handle(CreateDocCommand command)
     {
         InvocationCount++;
-        await using var session = await _store.LightweightSessionAsync();
+        await using var session = await _store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         var doc = new StoreTestDoc
         {
             Id = new RecordIdOf<string>("store_test_doc", command.DocId),
@@ -860,7 +860,7 @@ public class AncillaryStoreHandler
     public async Task Handle(AncillaryStoreCmd cmd)
     {
         InvocationCount++;
-        await using var session = await _store.LightweightSessionAsync();
+        await using var session = await _store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         var doc = new StoreTestDoc
         {
             Id = new RecordIdOf<string>("store_test_doc", cmd.DocId),

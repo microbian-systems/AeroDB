@@ -30,7 +30,7 @@ public class SchemaManagerEdgeTests
     {
         await using var store = await TestHarness.CreateStoreAsync();
         var schemaManager = new SchemaManager();
-        var surrealSession = ((InternalSessionBase)await store.LightweightSessionAsync()).Session;
+        var surrealSession = ((InternalSessionBase)await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None })).Session;
 
         // Arrange: create a table first
         await schemaManager.EnsureDocumentSchemaAsync<SchemaTestDoc>(surrealSession);
@@ -59,7 +59,7 @@ public class SchemaManagerEdgeTests
     {
         await using var store = await TestHarness.CreateStoreAsync();
         var schemaManager = new SchemaManager();
-        var surrealSession = ((InternalSessionBase)await store.LightweightSessionAsync()).Session;
+        var surrealSession = ((InternalSessionBase)await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None })).Session;
 
         // Arrange: create a table first
         await schemaManager.EnsureDocumentSchemaAsync<SchemaTestDoc>(surrealSession);
@@ -88,7 +88,7 @@ public class SchemaManagerEdgeTests
     {
         await using var store = await TestHarness.CreateStoreAsync();
         var schemaManager = new SchemaManager();
-        var surrealSession = ((InternalSessionBase)await store.LightweightSessionAsync()).Session;
+        var surrealSession = ((InternalSessionBase)await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None })).Session;
 
         // Arrange: create a table
         await schemaManager.EnsureDocumentSchemaAsync<SchemaTestDoc>(surrealSession);
@@ -110,7 +110,7 @@ public class SchemaManagerEdgeTests
     {
         await using var store = await TestHarness.CreateStoreAsync();
         var schemaManager = new SchemaManager();
-        var surrealSession = ((InternalSessionBase)await store.LightweightSessionAsync()).Session;
+        var surrealSession = ((InternalSessionBase)await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None })).Session;
 
         // Act
         await schemaManager.EnsureProjectionStateTableAsync(surrealSession);
@@ -126,7 +126,7 @@ public class SchemaManagerEdgeTests
     {
         await using var store = await TestHarness.CreateStoreAsync();
         var schemaManager = new SchemaManager();
-        var surrealSession = ((InternalSessionBase)await store.LightweightSessionAsync()).Session;
+        var surrealSession = ((InternalSessionBase)await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None })).Session;
 
         // Arrange: create two document tables to serve as relation endpoints
         await schemaManager.EnsureDocumentSchemaAsync<Person>(surrealSession);
@@ -159,7 +159,7 @@ public class SchemaManagerEdgeTests
         await using var store = await TestHarness.CreateStoreAsync();
         var schemaManager = new SchemaManager();
         var triggerManager = new EventTriggerManager();
-        var surrealSession = ((InternalSessionBase)await store.LightweightSessionAsync()).Session;
+        var surrealSession = ((InternalSessionBase)await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None })).Session;
 
         // Arrange: create a table first
         await schemaManager.EnsureDocumentSchemaAsync<SchemaTestDoc>(surrealSession);
@@ -187,7 +187,7 @@ public class SchemaManagerEdgeTests
         await using var store = await TestHarness.CreateStoreAsync();
         var schemaManager = new SchemaManager();
         var triggerManager = new EventTriggerManager();
-        var surrealSession = ((InternalSessionBase)await store.LightweightSessionAsync()).Session;
+        var surrealSession = ((InternalSessionBase)await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None })).Session;
 
         // Arrange: create table and trigger
         await schemaManager.EnsureDocumentSchemaAsync<SchemaTestDoc>(surrealSession);
@@ -214,7 +214,7 @@ public class SchemaManagerEdgeTests
         await using var store = await TestHarness.CreateStoreAsync();
         var schemaManager = new SchemaManager();
         var triggerManager = new EventTriggerManager();
-        var surrealSession = ((InternalSessionBase)await store.LightweightSessionAsync()).Session;
+        var surrealSession = ((InternalSessionBase)await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None })).Session;
 
         // Arrange: create table and trigger
         await schemaManager.EnsureDocumentSchemaAsync<SchemaTestDoc>(surrealSession);
@@ -264,7 +264,7 @@ public class SchemaManagerEdgeTests
     {
         await using var store = await TestHarness.CreateStoreAsync();
         var functionManager = new FunctionManager();
-        var surrealSession = ((InternalSessionBase)await store.LightweightSessionAsync()).Session;
+        var surrealSession = ((InternalSessionBase)await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None })).Session;
 
         var fn = new SurrealFunction
         {
@@ -286,7 +286,7 @@ public class SchemaManagerEdgeTests
     {
         await using var store = await TestHarness.CreateStoreAsync();
         var functionManager = new FunctionManager();
-        var surrealSession = ((InternalSessionBase)await store.LightweightSessionAsync()).Session;
+        var surrealSession = ((InternalSessionBase)await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None })).Session;
 
         // Arrange: create function
         var fn = new SurrealFunction
@@ -316,7 +316,7 @@ public class SchemaManagerEdgeTests
     {
         await using var store = await TestHarness.CreateStoreAsync();
         var schemaManager = new SchemaManager();
-        var surrealSession = ((InternalSessionBase)await store.LightweightSessionAsync()).Session;
+        var surrealSession = ((InternalSessionBase)await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None })).Session;
 
         // Act & Assert — empty options should produce no errors
         var options = new AnalyzerOptions();
@@ -329,7 +329,7 @@ public class SchemaManagerEdgeTests
     {
         await using var store = await TestHarness.CreateStoreAsync();
         var schemaManager = new SchemaManager();
-        var surrealSession = ((InternalSessionBase)await store.LightweightSessionAsync()).Session;
+        var surrealSession = ((InternalSessionBase)await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None })).Session;
 
         var accesses = new List<AccessDefinition>();
 

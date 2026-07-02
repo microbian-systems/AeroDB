@@ -51,7 +51,7 @@ public class FlatTableProjectionTests
         await using var store = await TestHarness.CreateStoreAsync();
         store.Options.Projections.Add(projection);
         store.Options.Events.Enabled = true;
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         await session.Events.StartStream("stream-1", [
             new TableEvent { StreamId = "stream-1", Name = "TestName", Value = 42 }
@@ -80,14 +80,14 @@ public class FlatTableProjectionTests
         await using var store = await TestHarness.CreateStoreAsync();
         store.Options.Projections.Add(projection);
         store.Options.Events.Enabled = true;
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         await session.Events.StartStream("stream-2", [
             new TableEvent { StreamId = "stream-2", Name = "First", Value = 10 }
         ]);
         await session.SaveChangesAsync();
 
-        await using var session2 = await store.LightweightSessionAsync();
+        await using var session2 = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await session2.Events.StartStream("stream-2", [
             new TableEvent { StreamId = "stream-2", Name = "Second", Value = 20 }
         ]);
@@ -112,7 +112,7 @@ public class FlatTableProjectionTests
         await using var store = await TestHarness.CreateStoreAsync();
         store.Options.Projections.Add(projection);
         store.Options.Events.Enabled = true;
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         await session.Events.StartStream("stream-3", [
             new CustomEvent { StreamId = "stream-3", FirstName = "John", LastName = "Doe" }
@@ -139,7 +139,7 @@ public class FlatTableProjectionTests
         await using var store = await TestHarness.CreateStoreAsync();
         store.Options.Projections.Add(projection);
         store.Options.Events.Enabled = true;
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         // First, create the document
         await session.Events.StartStream("stream-4", [
@@ -154,7 +154,7 @@ public class FlatTableProjectionTests
         existing.Name.ShouldBe("ToDelete");
 
         // Now delete it
-        await using var session2 = await store.LightweightSessionAsync();
+        await using var session2 = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await session2.Events.StartStream("stream-4", [
             new DeleteEvent { StreamId = "stream-4", ShouldDelete = true }
         ]);
@@ -178,7 +178,7 @@ public class FlatTableProjectionTests
         await using var store = await TestHarness.CreateStoreAsync();
         store.Options.Projections.Add(projection);
         store.Options.Events.Enabled = true;
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         // Append a non-matching event type (DeleteEvent has no mappings under Project)
         await session.Events.StartStream("stream-5", [
@@ -210,7 +210,7 @@ public class FlatTableProjectionTests
         await using var store = await TestHarness.CreateStoreAsync();
         store.Options.Projections.Add(projection);
         store.Options.Events.Enabled = true;
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         await session.Events.StartStream("stream-6", [
             new TableEvent { StreamId = "stream-6", Name = "Multi", Value = 100 },

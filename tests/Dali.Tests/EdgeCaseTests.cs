@@ -8,7 +8,7 @@ public class EdgeCaseTests
     public async Task Store_null_throws()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         Should.Throw<ArgumentNullException>(() => session.Store<Person>((Person)null!));
     }
@@ -17,7 +17,7 @@ public class EdgeCaseTests
     public async Task Duplicate_store_overwrites()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var person = new Person { Name = "Duplicate", Age = 25 };
         session.Store(person);

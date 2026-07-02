@@ -19,7 +19,7 @@ public class QuerySessionParityTests
     public async Task LoadAsync_by_string_id_works()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         // Use ExecuteSqlAsync to create a record with a known string ID
         await session.ExecuteSqlAsync(
@@ -54,7 +54,7 @@ public class QuerySessionParityTests
     public async Task LoadAsync_by_int_id_works_on_concrete_session()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await session.ExecuteSqlAsync(
             "CREATE person:42 CONTENT { Name: 'IntLoad', Age: 25 };");
 
@@ -68,7 +68,7 @@ public class QuerySessionParityTests
     public async Task LoadAsync_by_long_id_works_on_concrete_session()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await session.ExecuteSqlAsync(
             "CREATE person:999 CONTENT { Name: 'LongLoad', Age: 35 };");
 
@@ -82,7 +82,7 @@ public class QuerySessionParityTests
     public async Task LoadAsync_by_object_id_works_on_concrete_session()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await session.ExecuteSqlAsync(
             "CREATE person:objload CONTENT { Name: 'ObjLoad', Age: 30 };");
 
@@ -96,7 +96,7 @@ public class QuerySessionParityTests
     public async Task LoadAsync_by_guid_id_works_on_concrete_session()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         var guidId = Guid.NewGuid();
         await session.ExecuteSqlAsync(
             $"CREATE person:`{guidId}` CONTENT {{ Name: 'GuidLoad', Age: 40 }};");
@@ -115,7 +115,7 @@ public class QuerySessionParityTests
     public async Task CheckExistsAsync_string_returns_true_for_existing()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await session.ExecuteSqlAsync(
             "CREATE person:exists1 CONTENT { Name: 'Exists', Age: 30 };");
 
@@ -128,7 +128,7 @@ public class QuerySessionParityTests
     public async Task CheckExistsAsync_string_returns_false_for_missing()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         var exists = await session.CheckExistsAsync<Person>("nonexistent-id");
         exists.ShouldBeFalse();
     }
@@ -138,7 +138,7 @@ public class QuerySessionParityTests
     public async Task CheckExistsAsync_int_works()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await session.ExecuteSqlAsync(
             "CREATE person:100 CONTENT { Name: 'IntExists', Age: 40 };");
 
@@ -151,7 +151,7 @@ public class QuerySessionParityTests
     public async Task CheckExistsAsync_long_works()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await session.ExecuteSqlAsync(
             "CREATE person:500 CONTENT { Name: 'LongExists', Age: 35 };");
 
@@ -164,7 +164,7 @@ public class QuerySessionParityTests
     public async Task CheckExistsAsync_guid_works()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         var guidId = Guid.NewGuid();
         await session.ExecuteSqlAsync(
             $"CREATE person:`{guidId}` CONTENT {{ Name: 'GuidExists', Age: 45 }};");
@@ -178,7 +178,7 @@ public class QuerySessionParityTests
     public async Task CheckExistsAsync_object_works()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await session.ExecuteSqlAsync(
             "CREATE person:objexists CONTENT { Name: 'ObjExists', Age: 50 };");
 
@@ -195,7 +195,7 @@ public class QuerySessionParityTests
     public async Task LoadManyAsync_by_string_ids_loads_all()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         await session.ExecuteSqlAsync(
             "CREATE person:lm1 CONTENT { Name: 'LM1', Age: 10 };");
@@ -220,7 +220,7 @@ public class QuerySessionParityTests
     public async Task LoadManyAsync_empty_list_returns_empty()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var results = await session.LoadManyAsync<Person>(Array.Empty<string>());
 
@@ -233,7 +233,7 @@ public class QuerySessionParityTests
     public async Task LoadManyAsync_by_RecordId_overload_works()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         await session.ExecuteSqlAsync(
             "CREATE person:rid1 CONTENT { Name: 'RID1', Age: 11 };");
@@ -257,7 +257,7 @@ public class QuerySessionParityTests
     public async Task LoadManyAsync_by_numeric_ids_with_table_name_works()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         await session.ExecuteSqlAsync(
             "CREATE person:1001 CONTENT { Name: 'Num1', Age: 30 };");
@@ -281,7 +281,7 @@ public class QuerySessionParityTests
     public async Task MetadataForAsync_returns_metadata_for_entity_implementing_IDocumentMetadata()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         // TimestampedDoc implements IDocumentMetadata — MetadataForAsync requires this
         var doc = new TimestampedDoc
         {
@@ -306,7 +306,7 @@ public class QuerySessionParityTests
     public async Task MetadataForAsync_returns_null_for_entity_without_IDocumentMetadata()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         // Person does NOT implement IDocumentMetadata
         await session.ExecuteSqlAsync(
             "CREATE person:nometa CONTENT { Name: 'NoMeta', Age: 30 };");
@@ -328,7 +328,7 @@ public class QuerySessionParityTests
     public async Task IQuerySession_Query_returns_data_written_by_write_session()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "QuerySessionTest", Age = 30 });
         await session.SaveChangesAsync();
@@ -344,7 +344,7 @@ public class QuerySessionParityTests
     public async Task IQuerySession_RawQueryAsync_works()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         await session.ExecuteSqlAsync(
             "CREATE person:rawq CONTENT { Name: 'RawQuery', Age: 40 };");
@@ -419,7 +419,7 @@ public class QuerySessionParityTests
     public async Task IDocumentSession_IdentityMapCount_starts_at_zero()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.IdentityMapCount.ShouldBe(0);
     }
@@ -429,7 +429,7 @@ public class QuerySessionParityTests
     public async Task IDocumentSession_SaveChangesAsync_returns_affected_count()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "CountTest", Age = 30 });
         var count = await session.SaveChangesAsync();
@@ -460,7 +460,7 @@ public class QuerySessionParityTests
     public async Task IDocumentSession_EjectAll_clears_identity_map()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await session.ExecuteSqlAsync(
             "CREATE person:eject1 CONTENT { Name: 'E1', Age: 10 };");
         await session.ExecuteSqlAsync(
@@ -480,7 +480,7 @@ public class QuerySessionParityTests
     public async Task IDocumentSession_Logger_can_be_set()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Logger.ShouldBeNull();
         session.Logger = new Microsoft.Extensions.Logging.Abstractions.NullLogger<DocumentSession>();

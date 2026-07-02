@@ -627,7 +627,7 @@ public class FetchIncludeIntegrationTests
     public async Task Fetch_DoesNotThrow()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var record = new FetchableRecord { Data = "test" };
         session.Store(record);
@@ -647,7 +647,7 @@ public class FetchIncludeIntegrationTests
         // RecordId deserialization. This test verifies the query compiles and the
         // FETCH clause is attached without crashing on a basic level.
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         // Store a FetchableRecord with a self-referencing null RelatedId
         var record = new FetchableRecord { Data = "referencing" };
@@ -667,7 +667,7 @@ public class FetchIncludeIntegrationTests
     public async Task Fetch_Chained_AccumulatesFields()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var record = new FetchableRecord { Data = "multi-fetch" };
         session.Store(record);
@@ -688,7 +688,7 @@ public class FetchIncludeIntegrationTests
     public async Task Include_Callback_DispatchesMatchingRecords()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         // Create a user
         var user = new User { Name = "Alice", Email = "alice@example.com" };
@@ -720,7 +720,7 @@ public class FetchIncludeIntegrationTests
     public async Task Include_Multiple_Chained()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         // Create two users
         var user1 = new User { Name = "Alice" };
@@ -770,7 +770,7 @@ public class FetchIncludeIntegrationTests
     public async Task Include_NoMatchingRecords_DoesNotThrow()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         // Create an issue with a non-existent user reference
         var orphanId = new RecordIdOf<string>("user", Guid.NewGuid().ToString());
@@ -794,7 +794,7 @@ public class FetchIncludeIntegrationTests
     public async Task Include_Dictionary_PopulatesCorrectKey()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         // Create a user
         var user = new User { Name = "Bob", Email = "bob@example.com" };
@@ -826,7 +826,7 @@ public class FetchIncludeIntegrationTests
     public async Task Fetch_ExpandsTypedRecordProperty()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var customer = new Customer { Name = "Alice", Email = "alice@example.com" };
         session.Store(customer);
@@ -854,7 +854,7 @@ public class FetchIncludeIntegrationTests
     public async Task Fetch_ChainedTypedRecord_AccumulatesFields()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var order = new OrderWithCustomer { Product = "Chained" };
         session.Store(order);
@@ -877,7 +877,7 @@ public class FetchIncludeIntegrationTests
         // Note: Full FETCH + Include chaining is limited in the embedded engine.
         // This test verifies the chaining API surface and that basic queries work.
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         // Create a record
         var record = new FetchableRecord { Data = "test" };
@@ -901,7 +901,7 @@ public class FetchIncludeIntegrationTests
     public async Task Include_Forward_LoadsTypedRecord()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var customer = new Customer { Name = "Alice", Email = "alice@example.com" };
         session.Store(customer);
@@ -927,7 +927,7 @@ public class FetchIncludeIntegrationTests
     public async Task Include_Forward_NullLinkedRecord()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var order = new OrderWithCustomer { Product = "Widget", Customer = null };
         session.Store(order);
@@ -947,7 +947,7 @@ public class FetchIncludeIntegrationTests
     public async Task Include_Forward_MultipleOrders()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var customer = new Customer { Name = "Alice", Email = "alice@example.com" };
         session.Store(customer);
@@ -974,7 +974,7 @@ public class FetchIncludeIntegrationTests
     public async Task Include_Forward_MultipleOrders_All()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var customer = new Customer { Name = "Alice", Email = "alice@example.com" };
         session.Store(customer);
@@ -1003,7 +1003,7 @@ public class FetchIncludeIntegrationTests
     public async Task MultipleIncludes_DifferentTypes_AllDispatched()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         // Create a user and a project
         var user = new User { Name = "Dave" };
@@ -1051,7 +1051,7 @@ public class FetchIncludeIntegrationTests
     public async Task IncludeReverse_LoadsChildRecords()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var order = new OrderWithItems { Name = "Order 1" };
         session.Store(order);
@@ -1082,7 +1082,7 @@ public class FetchIncludeIntegrationTests
     public async Task IncludeReverse_EmptyChildSet()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var order = new OrderWithItems { Name = "Empty Order" };
         session.Store(order);
@@ -1102,7 +1102,7 @@ public class FetchIncludeIntegrationTests
     public async Task IncludeReverse_MultipleParents_EachGetsCorrectChildren()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var order1 = new OrderWithItems { Name = "Order A" };
         var order2 = new OrderWithItems { Name = "Order B" };
@@ -1139,7 +1139,7 @@ public class FetchIncludeIntegrationTests
     public async Task IncludeReverse_NullForeignKeyField_HandlesGracefully()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var order = new OrderWithItems { Name = "Orphan Order" };
         session.Store(order);
@@ -1163,7 +1163,7 @@ public class FetchIncludeIntegrationTests
     public async Task ForwardInclude_WithWhere_ComposesCorrectly()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var alice = new Customer { Name = "Alice" };
         var bob = new Customer { Name = "Bob" };
@@ -1193,7 +1193,7 @@ public class FetchIncludeIntegrationTests
     public async Task ReverseInclude_WithOrderBy_ComposesCorrectly()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var order = new OrderWithItems { Name = "TestOrder" };
         session.Store(order);
@@ -1222,7 +1222,7 @@ public class FetchIncludeIntegrationTests
     public async Task FilterInclude_WithPagination_SkipsCorrectly()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var order1 = new OrderWithItems { Name = "Skip1" };
         var order2 = new OrderWithItems { Name = "Skip2" };
@@ -1261,7 +1261,7 @@ public class FetchIncludeIntegrationTests
     public async Task MultipleFeatures_Combined_ForwardReverseFilter()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         // Set up: 2 customers, 3 orders
         var alice = new Customer { Name = "Alice", Email = "alice@example.com" };
@@ -1330,7 +1330,7 @@ public class FetchIncludeIntegrationTests
     {
         // Verify the renamed IncludeBatch() still works correctly
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var user = new User { Name = "Charlie" };
         session.Store(user);
@@ -1362,7 +1362,7 @@ public class FetchIncludeIntegrationTests
     public async Task IncludeReverse_EmptyResultSet_NoCrash()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         // Query with conditions that return no results
         var results = await session.Query<OrderWithItems>()
@@ -1377,7 +1377,7 @@ public class FetchIncludeIntegrationTests
     public async Task FilterInclude_EmptyResultSet_NoCrash()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var results = await session.Query<OrderWithItems>()
             .IncludeReverse(o => o.Items, "Order")
@@ -1392,7 +1392,7 @@ public class FetchIncludeIntegrationTests
     public async Task IncludeForward_NullCustomer_DoesNotThrow()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var order = new OrderWithCustomer { Product = "Orphan", Customer = null };
         session.Store(order);
@@ -1430,7 +1430,7 @@ public class FilterIncludeIntegrationTests
     public async Task FilterInclude_Any_KeepsMatchingParents()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var order = new OrderWithItems { Name = "OrderX" };
         session.Store(order);
@@ -1460,7 +1460,7 @@ public class FilterIncludeIntegrationTests
     public async Task FilterInclude_Any_ExcludesNonMatchingParents()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var order1 = new OrderWithItems { Name = "Cheap Order" };
         var order2 = new OrderWithItems { Name = "Expensive Order" };
@@ -1490,7 +1490,7 @@ public class FilterIncludeIntegrationTests
     public async Task FilterInclude_NoIncludes_ReturnsEmpty()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var order = new OrderWithItems { Name = "Lonely Order" };
         session.Store(order);
@@ -1509,7 +1509,7 @@ public class FilterIncludeIntegrationTests
     public async Task FilterInclude_Chained_WithInclude()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var customer = new Customer { Name = "Alice" };
         session.Store(customer);
@@ -1574,7 +1574,7 @@ public class FilterIncludeIntegrationTests
         // Tests dot-walk through MemberInitExpression:
         //   o.Customer.Name → customer.name AS CustomerName
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var customer = new Customer { Name = "Alice", Email = "alice@example.com" };
         session.Store(customer);
@@ -1606,7 +1606,7 @@ public class FilterIncludeIntegrationTests
     {
         // Single level: o.Product → "Product" (backward compat, unchanged behavior)
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var customer = new Customer { Name = "Charlie" };
         var order = new OrderWithCustomer { Product = "Test", Customer = customer };
@@ -1638,7 +1638,7 @@ public class AutoFetchIntegrationTests
         // the FETCH clause. The embedded in-memory engine has limitations
         // with FETCH + explicit projections, but the SQL generation is correct.
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var customer = new Customer { Name = "Bob" };
         session.Store(customer);
@@ -1669,7 +1669,7 @@ public class AutoFetchIntegrationTests
     public async Task Select_Dto_FullRecordProperty_AutoFetches_SelectBeforeWhere_SurrealQL()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var customer = new Customer { Name = "Alice" };
         session.Store(customer);
@@ -1699,7 +1699,7 @@ public class AutoFetchIntegrationTests
     public async Task Select_Dto_NonRecordProperties_BackwardCompatible()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var order = new OrderWithCustomer { Product = "Basic" };
         session.Store(order);
@@ -1723,7 +1723,7 @@ public class AutoFetchIntegrationTests
     public async Task Select_Dto_NullCustomer_DoesNotThrow()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var order = new OrderWithCustomer { Product = "Orphan", Customer = null };
         session.Store(order);
@@ -1824,7 +1824,7 @@ public class AutoFetchIntegrationTests
     public async Task Select_WithDiverseOperations_DoesNotCrash()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var customer = new Customer { Name = "Stress" };
         var order = new OrderWithCustomer { Product = "StressTest", Customer = customer };
@@ -1863,7 +1863,7 @@ public class DtoProjectionSourceTypeTests
         // Verifies that when we Select to an anonymous DTO and then Where on the DTO's property,
         // the provider correctly uses the source entity type for query routing.
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var customer = new Customer { Name = "Alice" };
         var order = new OrderWithCustomer { Product = "TestFilter", Customer = customer };
@@ -1887,7 +1887,7 @@ public class DtoProjectionSourceTypeTests
         // Verifies that a .Select() projecting to a DTO with a Record property
         // can still be filtered with .Where()
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var customer = new Customer { Name = "Charlie" };
         session.Store(customer);
@@ -1922,7 +1922,7 @@ public class IncludeGraphIntegrationTests
     public async Task CustomerOrders_WithItems_FullGraph()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         // ── Generate data with Bogus ────────────────────────────────
         var customer = new Faker<Customer>()
@@ -2012,7 +2012,7 @@ public class IncludeGraphIntegrationTests
     public async Task CustomerOrders_WithExpensiveItems_Filtered()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var customer = new Faker<Customer>()
             .RuleFor(c => c.Name, f => f.Name.FullName())
@@ -2072,7 +2072,7 @@ public class IncludeGraphIntegrationTests
     public async Task CustomerOrders_DtoProjection_AutoFetch()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var customer = new Customer { Name = "ProjectionTest", Email = "pt@test.com" };
         session.Store(customer);
@@ -2106,7 +2106,7 @@ public class IncludeGraphIntegrationTests
     public async Task CustomerOrders_NoItems_EmptyCollections()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var customer = new Customer { Name = "Orderless" };
         session.Store(customer);

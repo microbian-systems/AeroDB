@@ -149,7 +149,7 @@ public class FluentApiSearchTests
             o.Schema.Analyzers.DefineAnalyzer(Search.Analyzer.Simple);
             o.Schema.For<SearchDoc>().FullTextIndex(x => x.Body, Search.Analyzer.Simple);
         });
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         // Store some test documents
         for (int i = 1; i <= 5; i++)
@@ -190,7 +190,7 @@ public class FluentApiSearchTests
             o.Schema.Analyzers.DefineAnalyzer(Search.Analyzer.Simple);
             o.Schema.For<SearchDoc>().FullTextIndex(x => x.Body, Search.Analyzer.Simple);
         });
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new SearchDoc
         {
@@ -224,7 +224,7 @@ public class FluentApiSearchTests
             o.Database = "test";
             o.Schema.For<SearchDoc>().HnswIndex(x => x.Embedding, 3, Search.Distance.Cosine);
         });
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         session.Store(new SearchDoc
         {
             Id = RecordId.From("search_doc", "v1"),
@@ -250,7 +250,7 @@ public class FluentApiSearchTests
     public async Task Search_Builder_SearchExtension_ReturnsBuilder()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         var builder = session.Search<SearchDoc>();
         builder.ShouldNotBeNull();
         builder.ShouldBeAssignableTo<ISearchQuery<SearchDoc>>();
@@ -273,7 +273,7 @@ public class FluentApiSearchTests
             o.Schema.Analyzers.DefineAnalyzer(Search.Analyzer.Simple);
             o.Schema.For<SearchDoc>().FullTextIndex(x => x.Body, Search.Analyzer.Simple);
         });
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         for (int i = 1; i <= 5; i++)
         {
@@ -308,7 +308,7 @@ public class FluentApiSearchTests
             o.Schema.Analyzers.DefineAnalyzer(Search.Analyzer.Simple);
             o.Schema.For<SearchDoc>().FullTextIndex(x => x.Body, Search.Analyzer.Simple);
         });
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new SearchDoc
         {
@@ -345,7 +345,7 @@ public class FluentApiSearchTests
             o.Database = "test";
             o.Schema.For<SearchDoc>().HnswIndex(x => x.Embedding, 3, Search.Distance.Cosine);
         });
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new SearchDoc
         {
@@ -387,7 +387,7 @@ public class FluentApiSearchTests
                 .FullTextIndex(x => x.Body, Search.Analyzer.Simple)
                 .HnswIndex(x => x.Embedding, 3, Search.Distance.Cosine);
         });
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var docs = new[]
         {

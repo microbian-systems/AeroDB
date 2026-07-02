@@ -14,7 +14,7 @@ public class SessionDeleteWhereTests
     public async Task DeleteWhere_DeletesMatchingDocuments()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new SimpleDoc { Name = "test-1" });
         session.Store(new SimpleDoc { Name = "test-2" });
@@ -40,7 +40,7 @@ public class SessionDeleteWhereTests
     public async Task DeleteWhere_NoMatch_ReturnsZero()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new SimpleDoc { Name = "alpha" });
         session.Store(new SimpleDoc { Name = "beta" });
@@ -57,7 +57,7 @@ public class SessionDeleteWhereTests
     public async Task FetchLatest_ReturnsProjectedAggregate()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var doc = new SimpleDoc { Name = "FetchMe" };
         session.Store(doc);
@@ -77,7 +77,7 @@ public class SessionDeleteWhereTests
     public async Task FetchLatest_Nonexistent_ReturnsNull()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var result = await session.FetchLatest<SimpleDoc>("nonexistent-id-12345");
         result.ShouldBeNull();
@@ -87,7 +87,7 @@ public class SessionDeleteWhereTests
     public async Task EjectAll_ClearsIdentityMap()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.DocumentSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.IdentityOnly });
 
         session.Store(new SimpleDoc { Name = "IdentityTest" });
         await session.SaveChangesAsync();
@@ -115,7 +115,7 @@ public class SessionDeleteWhereTests
         });
 
         // Store doc with tenant-A (SetTenant auto-populates TenantId on the entity)
-        await using (var s = await store.LightweightSessionAsync())
+        await using (var s = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }))
         {
             s.SetTenant("tenant-A");
             s.Store(new TenantPerson { Name = "DocA", Age = 10 });
@@ -123,7 +123,7 @@ public class SessionDeleteWhereTests
         }
 
         // Store doc with tenant-B
-        await using (var s = await store.LightweightSessionAsync())
+        await using (var s = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }))
         {
             s.SetTenant("tenant-B");
             s.Store(new TenantPerson { Name = "DocB", Age = 20 });

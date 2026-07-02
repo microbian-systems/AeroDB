@@ -45,7 +45,7 @@ public class LinqQuerySyntaxTests
     {
         // from p in source select p  —  the simplest query comprehension.
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await SeedPeople(session);
 
         var results = await (from p in session.Query<Person>()
@@ -63,7 +63,7 @@ public class LinqQuerySyntaxTests
     public async Task QuerySyntax_Where_SimpleCondition_Works()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await SeedPeople(session);
 
         var results = await (from p in session.Query<Person>()
@@ -83,7 +83,7 @@ public class LinqQuerySyntaxTests
     public async Task QuerySyntax_Where_CompoundConditions_Works()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await SeedPeople(session);
 
         var results = await (from p in session.Query<Person>()
@@ -103,7 +103,7 @@ public class LinqQuerySyntaxTests
     {
         // Person only has Name (not Firstname), so we use p.Name here.
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await SeedPeople(session);
 
         var results = await (from p in session.Query<Person>()
@@ -122,7 +122,7 @@ public class LinqQuerySyntaxTests
     public async Task QuerySyntax_Where_StringContains_Works()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await SeedPeople(session);
 
         var results = await (from p in session.Query<Person>()
@@ -142,7 +142,7 @@ public class LinqQuerySyntaxTests
     public async Task QuerySyntax_Where_StringEndsWith_Works()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await SeedPeople(session);
 
         var results = await (from p in session.Query<Person>()
@@ -161,7 +161,7 @@ public class LinqQuerySyntaxTests
     public async Task QuerySyntax_OrderBy_Ascending_Works()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await SeedPeople(session);
 
         var results = await (from p in session.Query<Person>()
@@ -183,7 +183,7 @@ public class LinqQuerySyntaxTests
     public async Task QuerySyntax_OrderBy_Descending_Works()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await SeedPeople(session);
 
         var results = await (from p in session.Query<Person>()
@@ -205,7 +205,7 @@ public class LinqQuerySyntaxTests
     public async Task QuerySyntax_Where_And_OrderBy_Works()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await SeedPeople(session);
 
         var results = await (from p in session.Query<Person>()
@@ -227,7 +227,7 @@ public class LinqQuerySyntaxTests
     public async Task QuerySyntax_AnonymousProjection_Works()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await SeedPeople(session);
 
         // Query comprehension with a NewExpression projection.
@@ -250,7 +250,7 @@ public class LinqQuerySyntaxTests
     public async Task QuerySyntax_MultipleWhere_Works()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await SeedPeople(session);
 
         // Multiple sequential WHERE clauses should be ANDed together.
@@ -273,7 +273,7 @@ public class LinqQuerySyntaxTests
         // Query comprehension and fluent method calls compose naturally:
         // the parens wrap the comprehension, then .Take(n) is applied.
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await SeedPeople(session);
 
         var results = await (from p in session.Query<Person>()
@@ -295,7 +295,7 @@ public class LinqQuerySyntaxTests
     public async Task QuerySyntax_EmptyResult_ReturnsEmptyList()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await SeedPeople(session);
 
         // A WHERE clause that matches no records should return a 0-length
@@ -316,7 +316,7 @@ public class LinqQuerySyntaxTests
     public async Task QuerySyntax_StandaloneSelect_NoWhere_ReturnsAll()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await SeedPeople(session);
 
         // A query with only SELECT (no WHERE, no ORDER BY) returns every row.
@@ -335,7 +335,7 @@ public class LinqQuerySyntaxTests
     public async Task QuerySyntax_Where_OrCondition_Works()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await SeedPeople(session);
 
         // WHERE Name = "Alice" OR Age = 25
@@ -356,7 +356,7 @@ public class LinqQuerySyntaxTests
     public async Task QuerySyntax_MultipleOrderBy_Works()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await SeedPeople(session);
 
         // orderby p.Age descending, p.Name
@@ -381,7 +381,7 @@ public class LinqQuerySyntaxTests
     public async Task QuerySyntax_Where_NotEqual_Works()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await SeedPeople(session);
 
         var results = await (from p in session.Query<Person>()
@@ -400,7 +400,7 @@ public class LinqQuerySyntaxTests
     public async Task QuerySyntax_Where_GreaterThanOrEqual_Works()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await SeedPeople(session);
 
         var results = await (from p in session.Query<Person>()
@@ -419,7 +419,7 @@ public class LinqQuerySyntaxTests
     public async Task QuerySyntax_Where_LessThan_Works()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await SeedPeople(session);
 
         var results = await (from p in session.Query<Person>()
@@ -438,7 +438,7 @@ public class LinqQuerySyntaxTests
     public async Task QuerySyntax_WithSkip_ViaMethodSyntax_MixesWell()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await SeedPeople(session);
 
         var results = await (from p in session.Query<Person>()
@@ -458,7 +458,7 @@ public class LinqQuerySyntaxTests
     public async Task QuerySyntax_ToCommand_ProducesSurrealQL()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         // Build a query using comprehension, then inspect the generated SQL
         // without executing it.  ToCommand() is a zero-round-trip operation.
@@ -488,7 +488,7 @@ public class LinqQuerySyntaxTests
     public async Task QuerySyntax_ToCommand_WithAnonymousProjection()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         // Use `where` + `select` (no `orderby`) so the custom Select extension
         // on ISurrealDbQueryable<T> preserves the ToCommand() method.
@@ -511,7 +511,7 @@ public class LinqQuerySyntaxTests
     public async Task QuerySyntax_Where_LogicalNot_Works()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await SeedPeople(session);
 
         var results = await (from p in session.Query<Person>()
@@ -531,7 +531,7 @@ public class LinqQuerySyntaxTests
     public async Task QuerySyntax_WithSkipAndTake_MixesWell()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await SeedPeople(session);
 
         var results = await (from p in session.Query<Person>()
@@ -551,7 +551,7 @@ public class LinqQuerySyntaxTests
     public async Task QuerySyntax_Where_RangeCondition_Works()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await SeedPeople(session);
 
         var results = await (from p in session.Query<Person>()
@@ -596,7 +596,7 @@ public class LinqQuerySyntaxTests
         // correct query with the current expression visitor.
 
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var query = from p in session.Query<Person>()
                     let upper = p.Name.ToUpper()
@@ -636,7 +636,7 @@ public class LinqQuerySyntaxTests
         // Resulting projection: "Name, *" — invalid SurrealQL.
 
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var query = from p in session.Query<Person>()
                     select new { p.Name, EstimatedYear = 2026 - p.Age };
@@ -662,7 +662,7 @@ public class LinqQuerySyntaxTests
         // session.RawQueryAsync<T>() can be used alongside or as an
         // alternative to LINQ queries for ad-hoc SurrealQL.
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await SeedPeople(session);
 
         var results = await session.RawQueryAsync<Person>(
@@ -684,7 +684,7 @@ public class LinqQuerySyntaxTests
         // ISurrealDbQueryable<Person>. The CountAsync() method defined on
         // the interface can be called directly.
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await SeedPeople(session);
 
         var count = await (from p in session.Query<Person>()
@@ -702,7 +702,7 @@ public class LinqQuerySyntaxTests
     public async Task QuerySyntax_FirstOrDefault_ViaMethodSyntax_Works()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await SeedPeople(session);
 
         var person = await (from p in session.Query<Person>()
@@ -722,7 +722,7 @@ public class LinqQuerySyntaxTests
     public async Task QuerySyntax_AnyAsync_ViaMethodSyntax_Works()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await SeedPeople(session);
 
         var any = await (from p in session.Query<Person>()
@@ -740,7 +740,7 @@ public class LinqQuerySyntaxTests
     public async Task QuerySyntax_SingleOrDefault_ViaMethodSyntax_Works()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await SeedPeople(session);
 
         var person = await (from p in session.Query<Person>()

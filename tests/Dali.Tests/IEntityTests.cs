@@ -10,7 +10,7 @@ public class IEntityTests
     public async Task Store_EntityLong_and_query_by_id()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         var product = new EntityProduct { Name = "Widget", Price = 29.99m, Stock = 100 };
         session.Store(product);
         await session.SaveChangesAsync();
@@ -32,7 +32,7 @@ public class IEntityTests
     public async Task EntityLong_explicit_snowflake_id_is_preserved()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         var product = new EntityProduct { Name = "ExplicitSnowflake", Price = 10m };
         var explicitId = product.Id; // EntitySnowlake constructor generates it
         explicitId.ShouldBeGreaterThan(0);
@@ -52,7 +52,7 @@ public class IEntityTests
     public async Task Store_multiple_EntityLong_and_query_all()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         for (var i = 0; i < 5; i++)
             session.Store(new EntityProduct { Name = $"Product_{i}", Price = i * 10m });
         await session.SaveChangesAsync();
@@ -65,7 +65,7 @@ public class IEntityTests
     public async Task EntityLong_query_with_linq_where()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         session.Store(new EntityProduct { Name = "Expensive", Price = 999m, Stock = 5 });
         session.Store(new EntityProduct { Name = "Cheap", Price = 5m, Stock = 500 });
         await session.SaveChangesAsync();
@@ -83,7 +83,7 @@ public class IEntityTests
     public async Task Store_EntityString_and_query()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         var customer = new EntityCustomer { Name = "Alice", Email = "alice@test.com" };
         session.Store(customer);
         await session.SaveChangesAsync();
@@ -101,7 +101,7 @@ public class IEntityTests
     public async Task Store_multiple_EntityString_unique_ids()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         var c1 = new EntityCustomer { Name = "Alice", Email = "a@test.com" };
         var c2 = new EntityCustomer { Name = "Bob", Email = "b@test.com" };
         session.Store(c1);
@@ -117,7 +117,7 @@ public class IEntityTests
     public async Task EntityString_query_with_linq()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         session.Store(new EntityCustomer { Name = "Admin", Email = "admin@test.com" });
         session.Store(new EntityCustomer { Name = "Guest", Email = "guest@test.com" });
         await session.SaveChangesAsync();
@@ -134,7 +134,7 @@ public class IEntityTests
     public async Task Store_EntityInt_and_query()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         var order = new EntityOrder { Description = "Books", Quantity = 3, Amount = 45.50m };
         session.Store(order);
         await session.SaveChangesAsync();
@@ -147,7 +147,7 @@ public class IEntityTests
     public async Task Store_multiple_EntityInt_unique_ids()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         for (var i = 0; i < 10; i++)
             session.Store(new EntityOrder { Description = $"Order_{i}", Quantity = 1 });
         await session.SaveChangesAsync();
@@ -164,7 +164,7 @@ public class IEntityTests
     public async Task Store_EntityGuid_and_query()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         var token = new EntitySession { Token = "abc123", UserName = "testuser", CreatedAt = DateTimeOffset.UtcNow };
         session.Store(token);
         await session.SaveChangesAsync();
@@ -177,7 +177,7 @@ public class IEntityTests
     public async Task EntityGuid_explicit_id_is_preserved()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         var sessionEntity = new EntitySession { Token = "preserved", UserName = "guidtest" };
         var explicitId = sessionEntity.Id;
         explicitId.ShouldNotBe(Guid.Empty);
@@ -196,7 +196,7 @@ public class IEntityTests
     public async Task Store_multiple_EntityGuid_unique_ids()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         for (var i = 0; i < 5; i++)
             session.Store(new EntitySession { Token = $"tok_{i}", UserName = $"user_{i}" });
         await session.SaveChangesAsync();
@@ -213,7 +213,7 @@ public class IEntityTests
     public async Task Store_mixed_entity_types_in_same_session()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         session.Store(new EntityProduct { Name = "MixedProduct", Price = 100m });
         session.Store(new EntityCustomer { Name = "MixedCustomer", Email = "mixed@test.com" });
         session.Store(new EntityOrder { Description = "MixedOrder", Quantity = 1 });
@@ -238,7 +238,7 @@ public class IEntityTests
     public async Task Update_EntityLong_preserves_id()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         var product = new EntityProduct { Name = "BeforeUpdate", Price = 50m };
         session.Store(product);
         await session.SaveChangesAsync();
@@ -258,7 +258,7 @@ public class IEntityTests
     public async Task Delete_EntityLong_exercises_delete_path()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         var product = new EntityProduct { Name = "DeleteMe", Price = 1m };
         session.Store(product);
         await session.SaveChangesAsync();
@@ -273,7 +273,7 @@ public class IEntityTests
     public async Task Roundtrip_all_entity_types_store_and_query()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var product = new EntityProduct { Name = "RT_Product", Price = 42m, Stock = 7 };
         var customer = new EntityCustomer { Name = "RT_Customer", Email = "rt@test.com" };
@@ -321,7 +321,7 @@ public class IEntityTests
     public async Task EntityLong_and_Record_coexist_in_same_session()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         // Entity<TId> type
         session.Store(new EntityProduct { Name = "EntityProduct", Price = 10m });
@@ -350,7 +350,7 @@ public class IEntityTests
     public async Task EntityLong_LoadAsync_by_id()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var product = new EntityProduct
         {
@@ -375,7 +375,7 @@ public class IEntityTests
     public async Task EntityString_LoadAsync_by_id()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var customer = new EntityCustomer { Name = "LoadCustomer", Email = "load@test.com" };
         session.Store(customer);
@@ -393,7 +393,7 @@ public class IEntityTests
     public async Task EntityInt_LoadAsync_by_id()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var order = new EntityOrder { Description = "LoadOrder", Quantity = 3, Amount = 50m };
         session.Store(order);
@@ -411,7 +411,7 @@ public class IEntityTests
     public async Task EntityGuid_LoadAsync_by_id()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var sess = new EntitySession { Token = "load_token", UserName = "load_user" };
         session.Store(sess);
@@ -429,7 +429,7 @@ public class IEntityTests
     public async Task EntityLong_BulkInsertAsync()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var products = new[]
         {

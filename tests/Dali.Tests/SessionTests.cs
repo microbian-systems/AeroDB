@@ -8,7 +8,7 @@ public class SessionTests
     public async Task Store_entity_and_query()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "Alice", Age = 30, Email = "alice@test.com" });
         session.Store(new Person { Name = "Bob", Age = 25, Email = "bob@test.com" });
@@ -23,7 +23,7 @@ public class SessionTests
     public async Task Delete_entity()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var person = new Person { Name = "DeleteMe", Age = 99 };
         session.Store(person);
@@ -38,7 +38,7 @@ public class SessionTests
     {
         await using var store = await TestHarness.CreateStoreAsync();
 
-        await using var ws = await store.LightweightSessionAsync();
+        await using var ws = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         ws.Store(new Person { Name = "Zoe", Age = 40 });
         await ws.SaveChangesAsync();
 
@@ -51,7 +51,7 @@ public class SessionTests
     public async Task Store_and_load_by_id()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var person = new Person { Name = "Alice", Age = 30 };
         session.Store(person);
@@ -69,7 +69,7 @@ public class SessionTests
     public async Task Dirty_tracking_update()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var person = new Person { Name = "Bob", Age = 25 };
         session.Store(person);
@@ -90,7 +90,7 @@ public class SessionTests
     public async Task Store_multiple_and_query_all()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         for (var i = 0; i < 5; i++)
         {
@@ -106,7 +106,7 @@ public class SessionTests
     public async Task Delete_and_verify_gone()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var person = new Person { Name = "Ghost", Age = 99 };
         session.Store(person);
@@ -127,8 +127,8 @@ public class SessionTests
     {
         await using var store = await TestHarness.CreateStoreAsync();
 
-        await using var session1 = await store.LightweightSessionAsync();
-        await using var session2 = await store.LightweightSessionAsync();
+        await using var session1 = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
+        await using var session2 = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session1.Store(new Person { Name = "Isolated", Age = 50 });
 

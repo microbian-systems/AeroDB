@@ -22,7 +22,7 @@ public class SessionCudParityTests
     public async Task Delete_by_string_id_removes_document()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var person = new Person { Name = "ToDelete", Age = 42 };
         session.Store(person);
@@ -33,7 +33,7 @@ public class SessionCudParityTests
         // We extract the raw string portion via GetEntityId-equivalent lookup.
         var id = ExtractStringId(person);
 
-        await using var session2 = await store.LightweightSessionAsync();
+        await using var session2 = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         session2.Delete<Person>(id);
         await session2.SaveChangesAsync();
 
@@ -46,7 +46,7 @@ public class SessionCudParityTests
     public async Task Delete_by_object_id_removes_document()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var person = new Person { Name = "Test", Age = 25 };
         session.Store(person);
@@ -54,7 +54,7 @@ public class SessionCudParityTests
 
         var id = ExtractStringId(person);
 
-        await using var session2 = await store.LightweightSessionAsync();
+        await using var session2 = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         session2.Delete<Person>((object)id);
         await session2.SaveChangesAsync();
 
@@ -71,7 +71,7 @@ public class SessionCudParityTests
     public async Task Store_IEnumerable_batch_stores_all()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var people = new List<Person>
         {
@@ -95,7 +95,7 @@ public class SessionCudParityTests
     public async Task Insert_batch_creates_new_documents()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var person = new Person { Name = "NewInsert", Age = 99 };
         session.Insert<Person>(new[] { person });
@@ -117,7 +117,7 @@ public class SessionCudParityTests
     public async Task Update_batch_modifies_existing_documents()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var person = new Person { Name = "Before", Age = 10 };
         session.Store(person);
@@ -126,7 +126,7 @@ public class SessionCudParityTests
         person.Name = "After";
         person.Age = 20;
 
-        await using var session2 = await store.LightweightSessionAsync();
+        await using var session2 = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         session2.Update<Person>(new[] { person });
         await session2.SaveChangesAsync();
 
@@ -145,7 +145,7 @@ public class SessionCudParityTests
     public async Task HardDelete_removes_document_permanently()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var person = new Person { Name = "HardDeletable", Age = 10 };
         session.Store(person);
@@ -153,7 +153,7 @@ public class SessionCudParityTests
 
         var id = ExtractStringId(person);
 
-        await using var session2 = await store.LightweightSessionAsync();
+        await using var session2 = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         session2.HardDelete<Person>(id);
         await session2.SaveChangesAsync();
 
@@ -166,14 +166,14 @@ public class SessionCudParityTests
     public async Task HardDelete_by_entity_removes_document()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var person = new Person { Name = "HardDelEntity", Age = 10 };
         session.Store(person);
         await session.SaveChangesAsync();
 
         // Reload first so it's tracked and we have a proper RecordId
-        await using var session2 = await store.LightweightSessionAsync();
+        await using var session2 = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         var reloaded = await session2.LoadAsync<Person>(ExtractStringId(person));
         await Assert.That(reloaded).IsNotNull();
         session2.HardDelete(reloaded!);
@@ -192,7 +192,7 @@ public class SessionCudParityTests
     public async Task StoreObjects_stores_mixed_types()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var person = new Person { Name = "MixedStore", Age = 30 };
         var product = new Product { Name = "Widget", Price = 9.99m };
@@ -215,7 +215,7 @@ public class SessionCudParityTests
     public async Task PendingChanges_exposes_queued_operations()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var person = new Person { Name = "UoW", Age = 50 };
         session.Store(person);
@@ -230,7 +230,7 @@ public class SessionCudParityTests
     public async Task PendingChanges_Inserts_returns_inserted_documents()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var person = new Person { Name = "UoWInsert", Age = 60 };
         session.Insert<Person>(new[] { person });
@@ -247,13 +247,13 @@ public class SessionCudParityTests
     public async Task DeleteWhere_removes_matching_documents()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "D1", Age = 99 });
         session.Store(new Person { Name = "D2", Age = 100 });
         await session.SaveChangesAsync();
 
-        await using var session2 = await store.LightweightSessionAsync();
+        await using var session2 = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         var count = await session2.DeleteWhere<Person>(p => p.Age == 99);
         await Assert.That(count).IsGreaterThan(0);
     }
@@ -262,13 +262,13 @@ public class SessionCudParityTests
     public async Task HardDeleteWhere_permanently_removes_documents()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "HDW1", Age = 5 });
         session.Store(new Person { Name = "HDW2", Age = 5 });
         await session.SaveChangesAsync();
 
-        await using var session2 = await store.LightweightSessionAsync();
+        await using var session2 = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         var count = await session2.HardDeleteWhere<Person>(p => p.Age == 5);
         await Assert.That(count).IsGreaterThan(0);
 
@@ -281,15 +281,15 @@ public class SessionCudParityTests
     public async Task UndoDeleteWhere_restores_soft_deleted_documents()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "ToUndelete", Age = 77 });
         await session.SaveChangesAsync();
 
-        await using var session2 = await store.LightweightSessionAsync();
+        await using var session2 = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await session2.DeleteWhere<Person>(p => p.Age == 77);
 
-        await using var session3 = await store.LightweightSessionAsync();
+        await using var session3 = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         var count = await session3.UndoDeleteWhere<Person>(p => p.Name == "ToUndelete");
         // UndoDeleteWhere restores soft-deleted records — count may be 0 if
         // DeleteWhere physically removed the row (Person is not soft-deleted)

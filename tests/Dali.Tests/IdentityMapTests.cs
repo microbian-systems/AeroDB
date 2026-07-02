@@ -9,7 +9,7 @@ public class IdentityMapTests
     public async Task LightweightSession_NoIdentityMap_DifferentInstances()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "Alice", Age = 30 });
         await session.SaveChangesAsync();
@@ -29,7 +29,7 @@ public class IdentityMapTests
     public async Task DocumentSession_IdentityMap_SameInstance()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.DocumentSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.IdentityOnly });
 
         session.Store(new Person { Name = "Alice", Age = 30 });
         await session.SaveChangesAsync();
@@ -49,7 +49,7 @@ public class IdentityMapTests
     public async Task Eject_RemovesFromIdentityMap()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.DocumentSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.IdentityOnly });
 
         session.Store(new Person { Name = "Alice", Age = 30 });
         await session.SaveChangesAsync();
@@ -71,7 +71,7 @@ public class IdentityMapTests
     public async Task ClearChanges_ClearsIdentityMap()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.DocumentSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.IdentityOnly });
 
         session.Store(new Person { Name = "Alice", Age = 30 });
         await session.SaveChangesAsync();
@@ -93,7 +93,7 @@ public class IdentityMapTests
     public async Task EjectAll_ClearsAllTypes()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.DocumentSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.IdentityOnly });
 
         session.Store(new Person { Name = "Alice", Age = 30 });
         session.Store(new Person { Name = "Bob", Age = 25 });
@@ -122,7 +122,7 @@ public class IdentityMapTests
     public async Task IdentityMap_MultipleTypes_Independent()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.DocumentSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.IdentityOnly });
 
         session.Store(new Person { Name = "Alice", Age = 30 });
         session.Store(new Product { Name = "Widget", Price = 9.99m, Quantity = 10 });
@@ -163,7 +163,7 @@ public class IdentityMapTests
     public async Task DocumentSession_IdentityMap_AfterStoreAndQuery()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.DocumentSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.IdentityOnly });
 
         // Store two entities so we have data
         session.Store(new Person { Name = "Alice", Age = 30 });
@@ -189,7 +189,7 @@ public class IdentityMapTests
     public async Task LightweightSession_EjectDoesNotAffectBehavior()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "Alice", Age = 30 });
         await session.SaveChangesAsync();

@@ -540,7 +540,7 @@ public class SchemaGapsTests
     public async Task RequestCount_Increments_On_Operations()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var initial = ((DocumentSession)session).RequestCount;
         // Use a valid SurrealDB query: DEFINE is always valid and doesn't require specific tables

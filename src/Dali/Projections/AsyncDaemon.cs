@@ -166,7 +166,7 @@ public class AsyncDaemon : IAsyncDisposable
         {
             try
             {
-                await using var initSession = await _store.LightweightSessionAsync().ConfigureAwait(false);
+                await using var initSession = await _store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }).ConfigureAwait(false);
                 var internalSession = (InternalSessionBase)initSession;
                 var response = await internalSession.Session.RawQuery(
                     $"SELECT * FROM mt_projection_progress WHERE projection_name = '{projectionName}'",
@@ -202,7 +202,7 @@ public class AsyncDaemon : IAsyncDisposable
                 await Task.Delay(pollInterval, ct).ConfigureAwait(false);
                 if (ct.IsCancellationRequested || !shard.IsActive) break;
 
-                await using var session = await _store.LightweightSessionAsync().ConfigureAwait(false);
+                await using var session = await _store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }).ConfigureAwait(false);
                 if (ct.IsCancellationRequested) break;
 
                 // Fetch events after this shard's watermark

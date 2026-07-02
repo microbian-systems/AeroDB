@@ -55,7 +55,7 @@ public sealed class GraphFriendOfFriendsTests
         people.Count.ShouldBe(1000);
 
         // ── Store all people ──
-        await using var session = await _largeStore.LightweightSessionAsync();
+        await using var session = await _largeStore.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         foreach (var person in people)
             session.Store(person);
         var saved = await session.SaveChangesAsync();
@@ -141,7 +141,7 @@ public sealed class GraphFriendOfFriendsTests
     public async Task FoF_Traversal_Depth1_FindsDirectFriends()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         for (var i = 0; i < 100; i++)
             session.Store(new Person { Name = $"Person_{i}", Age = 20 + (i % 60), Email = $"p{i}@test.com" });
@@ -191,7 +191,7 @@ public sealed class GraphFriendOfFriendsTests
     public async Task FoF_Traversal_Depth2_FindsFriendsOfFriends()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         for (var i = 0; i < 15; i++)
             session.Store(new Person { Name = $"P{i}", Age = 20 + i });
@@ -248,7 +248,7 @@ public sealed class GraphFriendOfFriendsTests
     public async Task FoF_Traversal_ThreeHops_ReturnsCorrectCount()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         foreach (var name in new[] { "P0", "P1", "P2", "P3", "P4", "P5", "P6" })
             session.Store(new Person { Name = name });
@@ -303,7 +303,7 @@ public sealed class GraphFriendOfFriendsTests
     public async Task FoF_ShortestPath_FindsPathBetweenTwoPeople()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         const int chainLength = 50;
         for (var i = 0; i < chainLength; i++)
@@ -378,7 +378,7 @@ public sealed class GraphFriendOfFriendsTests
     public async Task FoF_BothDirection_FindsBidirectionalFriends()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         foreach (var name in new[] { "Alice", "Bob", "Charlie" })
             session.Store(new Person { Name = name, Age = 30 });
@@ -435,7 +435,7 @@ public sealed class GraphFriendOfFriendsTests
     public async Task FoF_CollectAll_DeduplicatesResults()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         foreach (var name in new[] { "Alice", "Bob", "Charlie", "Diana" })
             session.Store(new Person { Name = name, Age = 25 });
@@ -487,7 +487,7 @@ public sealed class GraphFriendOfFriendsTests
     public async Task FoF_ManyEdgeProperties_PreservesEdgeData()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         foreach (var name in new[] { "Alice", "Bob", "Charlie", "Diana" })
             session.Store(new Person { Name = name, Age = 30 });
@@ -560,7 +560,7 @@ public sealed class GraphFriendOfFriendsTests
     public async Task FoF_UnboundedDepth_FindsAllDescendants()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         foreach (var name in new[] { "A", "B", "C", "D", "E", "F", "G" })
             session.Store(new Person { Name = name });
@@ -623,7 +623,7 @@ public sealed class GraphFriendOfFriendsTests
     public async Task FoF_Unrelate_RemovesEdgeFromTraversal()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "Alice", Age = 30 });
         session.Store(new Person { Name = "Bob", Age = 25 });

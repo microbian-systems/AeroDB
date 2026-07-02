@@ -79,7 +79,7 @@ public class GraphQueueTests
     public async Task Relate_Queued_ExecutesInSaveChangesAsync()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         // Store two people and retrieve their RecordIds
         session.Store(new Person { Name = "Alice", Age = 30 });
@@ -110,7 +110,7 @@ public class GraphQueueTests
     public async Task Unrelate_Queued_RemovesEdgeInSaveChangesAsync()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         // Create two Persons
         session.Store(new Person { Name = "Alice", Age = 30 });
@@ -131,7 +131,7 @@ public class GraphQueueTests
         var edgeId = edgesBefore[0].Id!;
 
         // Open a new session and queue the unrelate
-        await using var session2 = await store.LightweightSessionAsync();
+        await using var session2 = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         session2.Unrelate(edgeId);
 
         // BEFORE SaveChangesAsync: edge still exists in the database
@@ -153,7 +153,7 @@ public class GraphQueueTests
     public async Task RelateAndUnrelate_Queued_BothExecuteInSaveChangesAsync()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         // Create three People: Alice (source for both edges),
         // Bob (target for new edge), Charlie (target for edge to remove)
@@ -177,7 +177,7 @@ public class GraphQueueTests
         var existingEdgeId = initialEdges.Single().Id!;
 
         // Open a new session and queue BOTH operations
-        await using var session2 = await store.LightweightSessionAsync();
+        await using var session2 = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         // Queue a new edge: Alice -> Bob
         session2.Relate<Knows>(aliceId, bobId, new Knows { Kind = "new" });
@@ -199,7 +199,7 @@ public class GraphQueueTests
     public async Task ClearChanges_ClearsQueuedRelations()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         // Create two People
         session.Store(new Person { Name = "Alice", Age = 30 });
@@ -239,7 +239,7 @@ public class GraphQueueTests
             o.Schema.For<Knows>().Schema("other_db");
         });
 
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "Alice" });
         session.Store(new Person { Name = "Bob" });
@@ -277,7 +277,7 @@ public class GraphQueueTests
             o.Listeners.Add(failingListener);
         });
 
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         // Store two Persons
         session.Store(new Person { Name = "Alice", Age = 30 });
@@ -346,7 +346,7 @@ public class GraphQueueTests
         // Register the projection
         store.Options.Projections.Add(new FriendshipEdgeProjection());
 
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         // Store two Persons
         session.Store(new Person { Name = "Alice", Age = 30 });
@@ -398,7 +398,7 @@ public class GraphQueueTests
     {
         // ── Arrange ─────────────────────────────────────────────────
         await using var store = await TestHarness.CreateStoreAsync();
-        await using (var session = await store.LightweightSessionAsync())
+        await using (var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }))
         {
             // Store two people
             session.Store(new Person { Name = "Alice", Age = 30 });
@@ -417,7 +417,7 @@ public class GraphQueueTests
         }
 
         // ── Assert: orphaned edge was never flushed ────────────────
-        await using (var session2 = await store.LightweightSessionAsync())
+        await using (var session2 = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }))
         {
             var edgesAfterDispose = await session2.Query<Knows>().ToListAsync();
             edgesAfterDispose.Count.ShouldBe(0);
@@ -456,7 +456,7 @@ public class GraphQueueTests
         // ───────────────────────────────────────────────────────────
 
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         // 1. Store 6 people
         session.Store(new Person { Name = "Alice", Age = 30 });

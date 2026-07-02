@@ -47,7 +47,7 @@ public class StatsTests
     public async Task Stats_returns_total_count_when_no_filters()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         await SeedPeople(session, 5);
 
@@ -67,7 +67,7 @@ public class StatsTests
     public async Task Stats_returns_filtered_count()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         // Ages: 21, 25, 26, 30, 35 → 3 over 25 (26, 30, 35)
         await SeedAges(session, 21, 25, 26, 30, 35);
@@ -89,7 +89,7 @@ public class StatsTests
     public async Task Stats_with_Skip_Take_returns_correct_count()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         await SeedPeople(session, 10);
 
@@ -111,7 +111,7 @@ public class StatsTests
     public async Task Stats_with_empty_result()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var results = await session.Query<Person>()
             .Stats(out var stats)
@@ -129,7 +129,7 @@ public class StatsTests
     public async Task Stats_out_parameter_populated()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         await SeedPeople(session, 4);
 
@@ -150,7 +150,7 @@ public class StatsTests
     public async Task Stats_after_Where_chain()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "Alice", Age = 30 });
         session.Store(new Person { Name = "Bob", Age = 25 });
@@ -175,7 +175,7 @@ public class StatsTests
     public async Task Stats_with_OrderBy()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         await SeedAges(session, 30, 25, 35, 22, 28);
 

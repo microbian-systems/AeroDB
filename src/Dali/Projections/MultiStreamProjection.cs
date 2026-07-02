@@ -22,7 +22,7 @@ public abstract class MultiStreamProjection<T> : InlineProjection<T> where T : R
     /// Register a custom event grouper for this multi-stream projection.
     /// The grouper determines which aggregate each event belongs to.
     /// </summary>
-    public void CustomGrouping<TId>(IAggregateGrouper<TId> grouper)
+    public void CustomGrouping<TId>(IAggregateGrouper<TId> grouper) where TId : notnull
     {
         _customGrouper = async (session, events, ct) =>
         {
