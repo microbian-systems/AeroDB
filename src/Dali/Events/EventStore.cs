@@ -98,8 +98,8 @@ public class EventStore : IEvents
                 Sequence = isQuick ? 0 : sequence,
                 StreamKey = streamKeyValue,
                 EventType = evt.GetType().Name,
-                CreatedAt = DateTimeOffset.UtcNow,
-                HeadersJson = headersJson
+                CreatedAt = DateTime.UtcNow,
+                HeadersJson = headersJson ?? ""
             };
 
             if (isMasked)
@@ -542,7 +542,7 @@ public class EventStore : IEvents
             data ?? "",
             r.Version,
             r.Sequence,
-            r.CreatedAt,
+            ToDateTimeOffset(r.CreatedAt),
             r.StreamId,
             streamKey,
             headers);
@@ -708,7 +708,7 @@ public class EventStore : IEvents
             Sequence = 0,
             StreamKey = "",
             EventType = aggregate?.GetType().Name ?? typeof(T).Name,
-            CreatedAt = DateTimeOffset.UtcNow,
+            CreatedAt = DateTime.UtcNow,
             DataJson = aggregate is not null ? JsonSerializer.Serialize(aggregate, JsonOptions) : null,
             DataBinary = null
         };
@@ -859,7 +859,7 @@ public class EventStore : IEvents
 
         return (IEvent)Activator.CreateInstance(
             typeof(Event<>).MakeGenericType(evt.GetType()),
-            [evt, record.Version, record.Sequence, record.CreatedAt, record.StreamId, streamKey, headers])!;
+            [evt, record.Version, record.Sequence, ToDateTimeOffset(record.CreatedAt), record.StreamId, streamKey, headers])!;
     }
 
     private async Task<long> GetNextSequence(CancellationToken ct)
@@ -907,6 +907,13 @@ public class EventStore : IEvents
             }
         }
         return Guid.NewGuid();
+    }
+
+    private static DateTimeOffset ToDateTimeOffset(DateTime value)
+    {
+        return value.Kind == DateTimeKind.Unspecified
+            ? new DateTimeOffset(DateTime.SpecifyKind(value, DateTimeKind.Utc))
+            : new DateTimeOffset(value.ToUniversalTime());
     }
 
     /// <inheritdoc />
@@ -963,7 +970,7 @@ internal class EventRecord
     [Column("data_binary")]
     public byte[]? DataBinary { get; set; }
     [Column("created_at")]
-    public DateTimeOffset CreatedAt { get; set; }
+    public DateTime CreatedAt { get; set; }
     [Column("headers_json")]
-    public string? HeadersJson { get; set; }
+    public string HeadersJson { get; set; } = "";
 }

@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using SurrealDb.Net;
 using System.Threading;
+using Dali.Internals.Cbor;
 using Dali.LiveQuery;
 
 namespace Dali;
@@ -109,6 +110,7 @@ public class DocumentStore : IDocumentStore, ISessionFactory
         if (Options.ClientFactory is not null)
         {
             _client = Options.ClientFactory();
+            DaliCborOptions.ConfigureClient(_client);
             await _client.Connect(ct).ConfigureAwait(false);
             await _client.Use(ns, db, ct).ConfigureAwait(false);
         }
@@ -126,7 +128,9 @@ public class DocumentStore : IDocumentStore, ISessionFactory
                 .WithPassword(pass)
                 .Build();
 
-            _client = new SurrealDbClient(surrealOptions);
+            _client = new SurrealDbClient(
+                surrealOptions,
+                configureCborOptions: DaliCborOptions.Configure);
             await _client.Connect(ct).ConfigureAwait(false);
             await _client.Use(ns, db, ct).ConfigureAwait(false);
         }
