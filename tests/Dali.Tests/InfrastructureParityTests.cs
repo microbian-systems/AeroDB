@@ -191,7 +191,7 @@ public class InfrastructureParityTests
 
         // Append an event to a stream
         var streamId = $"test-stream-{Guid.NewGuid():N}";
-        session.Events.StartStream(streamId, [new EventA { Name = "TestEvent" }]);
+        await session.Events.StartStream(streamId, [new EventA { Name = "TestEvent" }]);
         await session.SaveChangesAsync();
 
         // Get the change set from the session internals via a listener
@@ -207,7 +207,7 @@ public class InfrastructureParityTests
         await using var session2 = await store2.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var streamId2 = $"test-stream-{Guid.NewGuid():N}";
-        session2.Events.StartStream(streamId2, [new EventA { Name = "StreamEvent" }]);
+        await session2.Events.StartStream(streamId2, [new EventA { Name = "StreamEvent" }]);
         await session2.SaveChangesAsync();
 
         // On embedded engine, AfterCommitAsync listener may not fire reliably.

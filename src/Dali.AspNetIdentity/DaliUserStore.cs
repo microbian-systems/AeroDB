@@ -151,7 +151,7 @@ public class DaliUserStore<TUser, TRole> :
 
         try
         {
-            await using var session = await _store.LightweightSessionAsync(cancellationToken);
+            await using var session = await _store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }, cancellationToken);
             session.Store(user);
             await session.SaveChangesAsync(cancellationToken);
             _logger.LogDebug("Created user {UserId}", user.Id);
@@ -178,7 +178,7 @@ public class DaliUserStore<TUser, TRole> :
 
         try
         {
-            await using var session = await _store.LightweightSessionAsync(cancellationToken);
+            await using var session = await _store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }, cancellationToken);
             session.Store(user);
             await session.SaveChangesAsync(cancellationToken);
             _logger.LogDebug("Updated user {UserId}", user.Id);
@@ -205,7 +205,7 @@ public class DaliUserStore<TUser, TRole> :
 
         try
         {
-            await using var session = await _store.LightweightSessionAsync(cancellationToken);
+            await using var session = await _store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }, cancellationToken);
 
             // Remove associated records from separate tables
             await DeleteAssociatedRecordsAsync(session, user.Id, cancellationToken);
@@ -522,7 +522,7 @@ public class DaliUserStore<TUser, TRole> :
     {
         cancellationToken.ThrowIfCancellationRequested();
 
-        await using var session = await _store.LightweightSessionAsync(cancellationToken);
+        await using var session = await _store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }, cancellationToken);
         await session.ExecuteSqlAsync(
             $"UPDATE {_userTable}:{user.Id} SET authenticator_key = $key",
             new Dictionary<string, object?> { ["key"] = key },
@@ -538,7 +538,7 @@ public class DaliUserStore<TUser, TRole> :
     {
         cancellationToken.ThrowIfCancellationRequested();
 
-        await using var session = await _store.LightweightSessionAsync(cancellationToken);
+        await using var session = await _store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }, cancellationToken);
 
         var codes = await GetRecoveryCodesAsync(session, user.Id, cancellationToken);
         var match = codes.FirstOrDefault(c => c == code);
@@ -565,7 +565,7 @@ public class DaliUserStore<TUser, TRole> :
     {
         cancellationToken.ThrowIfCancellationRequested();
 
-        await using var session = await _store.LightweightSessionAsync(cancellationToken);
+        await using var session = await _store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }, cancellationToken);
         await SetRecoveryCodesAsync(session, user.Id, recoveryCodes.ToList(), cancellationToken);
     }
 
@@ -590,7 +590,7 @@ public class DaliUserStore<TUser, TRole> :
     {
         cancellationToken.ThrowIfCancellationRequested();
 
-        await using var session = await _store.LightweightSessionAsync(cancellationToken);
+        await using var session = await _store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }, cancellationToken);
         foreach (var claim in claims)
         {
             session.Store(new DaliUserClaim
@@ -608,7 +608,7 @@ public class DaliUserStore<TUser, TRole> :
     {
         cancellationToken.ThrowIfCancellationRequested();
 
-        await using var session = await _store.LightweightSessionAsync(cancellationToken);
+        await using var session = await _store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }, cancellationToken);
 
         var records = await session.Query<DaliUserClaim>()
             .Where(c => c.UserId == user.Id
@@ -631,7 +631,7 @@ public class DaliUserStore<TUser, TRole> :
     {
         cancellationToken.ThrowIfCancellationRequested();
 
-        await using var session = await _store.LightweightSessionAsync(cancellationToken);
+        await using var session = await _store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }, cancellationToken);
 
         foreach (var claim in claims)
         {
@@ -681,7 +681,7 @@ public class DaliUserStore<TUser, TRole> :
     {
         cancellationToken.ThrowIfCancellationRequested();
 
-        await using var session = await _store.LightweightSessionAsync(cancellationToken);
+        await using var session = await _store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }, cancellationToken);
         session.Store(new DaliUserLogin
         {
             UserId = user.Id,
@@ -697,7 +697,7 @@ public class DaliUserStore<TUser, TRole> :
     {
         cancellationToken.ThrowIfCancellationRequested();
 
-        await using var session = await _store.LightweightSessionAsync(cancellationToken);
+        await using var session = await _store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }, cancellationToken);
 
         var record = await session.Query<DaliUserLogin>()
             .FirstOrDefaultAsync(l =>
@@ -757,7 +757,7 @@ public class DaliUserStore<TUser, TRole> :
     {
         cancellationToken.ThrowIfCancellationRequested();
 
-        await using var session = await _store.LightweightSessionAsync(cancellationToken);
+        await using var session = await _store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }, cancellationToken);
 
         var role = await session.Query<TRole>()
             .FirstOrDefaultAsync(r => r.NormalizedName == normalizedRoleName, cancellationToken);
@@ -778,7 +778,7 @@ public class DaliUserStore<TUser, TRole> :
     {
         cancellationToken.ThrowIfCancellationRequested();
 
-        await using var session = await _store.LightweightSessionAsync(cancellationToken);
+        await using var session = await _store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }, cancellationToken);
 
         var role = await session.Query<TRole>()
             .FirstOrDefaultAsync(r => r.NormalizedName == normalizedRoleName, cancellationToken);
@@ -856,7 +856,7 @@ public class DaliUserStore<TUser, TRole> :
     {
         cancellationToken.ThrowIfCancellationRequested();
 
-        await using var session = await _store.LightweightSessionAsync(cancellationToken);
+        await using var session = await _store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }, cancellationToken);
 
         var existing = await session.Query<DaliUserToken>()
             .FirstOrDefaultAsync(t =>
@@ -889,7 +889,7 @@ public class DaliUserStore<TUser, TRole> :
     {
         cancellationToken.ThrowIfCancellationRequested();
 
-        await using var session = await _store.LightweightSessionAsync(cancellationToken);
+        await using var session = await _store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }, cancellationToken);
 
         var existing = await session.Query<DaliUserToken>()
             .FirstOrDefaultAsync(t =>
@@ -945,7 +945,7 @@ public class DaliUserStore<TUser, TRole> :
     {
         cancellationToken.ThrowIfCancellationRequested();
 
-        await using var session = await _store.LightweightSessionAsync(cancellationToken);
+        await using var session = await _store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }, cancellationToken);
 
         // Try to find an existing passkey with the same credential ID for this user.
         var existing = await FindPasskeyRecordAsync(session, user.Id, passkey.CredentialId, cancellationToken);
@@ -1008,7 +1008,7 @@ public class DaliUserStore<TUser, TRole> :
     {
         cancellationToken.ThrowIfCancellationRequested();
 
-        await using var session = await _store.LightweightSessionAsync(cancellationToken);
+        await using var session = await _store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }, cancellationToken);
 
         // Find the passkey record by credential ID for this user.
         var passkey = await FindPasskeyRecordAsync(session, user.Id, credentialId, cancellationToken);

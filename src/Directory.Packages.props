@@ -34,10 +34,10 @@
     <PackageVersion Include="Markdig" Version="1.2.0" />
     <PackageVersion Include="Marten" Version="8.37.1" />
     <PackageVersion Include="Marten.AspNetCore" Version="8.37.1" />
-    <PackageVersion Include="JasperFx.Events" Version="2.13.0" />
+    <PackageVersion Include="JasperFx.Events" Version="2.18.1" />
     <PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.8" />
     <PackageVersion Include="Microsoft.AspNetCore.Html.Abstractions" Version="2.3.10" />
-    <PackageVersion Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.9" />
+    <PackageVersion Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.11" />
     <PackageVersion Include="Microsoft.AspNetCore.Rewrite" Version="2.3.10" />
     <PackageVersion Include="Microsoft.AspNetCore.Routing.Abstractions" Version="2.3.10" />
     <PackageVersion Include="Microsoft.AspNetCore.Components.Authorization" Version="10.0.8" />
@@ -46,7 +46,7 @@
     <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="10.0.8" />
     <PackageVersion Include="Microsoft.AspNetCore.Components.WebView.Maui" Version="10.0.60" />
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="5.3.0" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="10.0.8" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="10.0.9" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Abstractions" Version="10.0.8" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.8" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Relational" Version="10.0.8" />
@@ -56,21 +56,21 @@
     <PackageVersion Include="SurrealDb.Reactive" Version="0.10.2" />
     <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.1" />
     <PackageVersion Include="Microsoft.Extensions.Caching.Abstractions" Version="10.0.8" />
-    <PackageVersion Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="10.0.0" />
-    <PackageVersion Include="Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions" Version="10.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="10.0.9" />
+    <PackageVersion Include="Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions" Version="10.0.9" />
     <PackageVersion Include="Microsoft.Extensions.Configuration" Version="10.0.5" />
     <PackageVersion Include="Microsoft.Extensions.Configuration.Abstractions" Version="10.0.8" />
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="10.0.5" />
-    <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.8" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.9" />
     <PackageVersion Include="Microsoft.Extensions.Hosting" Version="10.0.5" />
     <PackageVersion Include="Microsoft.Extensions.DependencyModel" Version="10.0.8" />
     <PackageVersion Include="Microsoft.Extensions.Hosting.Abstractions" Version="10.0.8" />
     <PackageVersion Include="Microsoft.Extensions.Http.Resilience" Version="10.6.0" />
-    <PackageVersion Include="Microsoft.Extensions.Identity.Core" Version="10.0.8" />
-    <PackageVersion Include="Microsoft.Extensions.Identity.Stores" Version="10.0.8" />
+    <PackageVersion Include="Microsoft.Extensions.Identity.Core" Version="10.0.9" />
+    <PackageVersion Include="Microsoft.Extensions.Identity.Stores" Version="10.0.9" />
     <PackageVersion Include="Microsoft.Extensions.Localization" Version="10.0.8" />
     <PackageVersion Include="Microsoft.Extensions.Logging" Version="10.0.5" />
-    <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.8" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.9" />
     <PackageVersion Include="Microsoft.Extensions.Logging.Debug" Version="10.0.8" />
     <PackageVersion Include="Microsoft.Extensions.ServiceDiscovery" Version="10.6.0" />
     <PackageVersion Include="Microsoft.Garnet" Version="1.1.8" />
@@ -135,7 +135,6 @@
     <PackageVersion Include="System.IdentityModel.Tokens.Jwt" Version="8.18.0" />
     <PackageVersion Include="System.Numerics.Tensors" Version="10.0.8" />
     <PackageVersion Include="System.Threading" Version="10.0.3" />
-    <PackageVersion Include="System.Threading.Channels" Version="10.0.3" />
     <PackageVersion Include="TickerQ" Version="10.4.0" />
     <PackageVersion Include="TickerQ.Caching.StackExchangeRedis" Version="10.4.0" />
     <PackageVersion Include="TickerQ.Dashboard" Version="10.4.0" />

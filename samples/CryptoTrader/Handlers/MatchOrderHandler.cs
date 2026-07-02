@@ -37,7 +37,7 @@ public class MatchOrderHandler
 
     public async Task<TradeExecuted> Handle(OrderPlaced placed)
     {
-        await using var session = await _store.LightweightSessionAsync();
+        await using var session = await _store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         // 1. Get current market price
         var marketPrice = _prices.GetCurrentPrice(placed.Asset);

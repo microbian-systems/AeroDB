@@ -702,8 +702,8 @@ public class BatchedQueryTests
             .AndDoes(call => capturedSql = call.ArgAt<string>(0));
 
         var batch = new BatchedQuery(session);
-        batch.Query(new FindPersonByFirstName { FirstName = "Alice" });
-        batch.Query(new ListPeopleOlderThan { MinAge = 25 });
+        _ = batch.Query(new FindPersonByFirstName { FirstName = "Alice" });
+        _ = batch.Query(new ListPeopleOlderThan { MinAge = 25 });
 
         await batch.Execute();
 
@@ -734,7 +734,7 @@ public class BatchedQueryTests
             .AndDoes(call => capturedSql = call.ArgAt<string>(0));
 
         var batch = new BatchedQuery(session);
-        batch.Query(new FindPersonByFirstName { FirstName = "Alice" }); // IsSingleResult
+        _ = batch.Query(new FindPersonByFirstName { FirstName = "Alice" }); // IsSingleResult
 
         await batch.Execute();
 
@@ -756,7 +756,7 @@ public class BatchedQueryTests
             .AndDoes(call => capturedSql = call.ArgAt<string>(0));
 
         var batch = new BatchedQuery(session);
-        batch.Query(new PagedPeopleQuery { Skip = 3, Limit = 5 });
+        _ = batch.Query(new PagedPeopleQuery { Skip = 3, Limit = 5 });
 
         await batch.Execute();
 
@@ -810,7 +810,7 @@ public class BatchedQueryTests
         callCount.ShouldBe(1);
 
         // Add another item and execute again
-        batch.Query(new FindPersonByFirstName { FirstName = "Bob" });
+        _ = batch.Query(new FindPersonByFirstName { FirstName = "Bob" });
         await batch.Execute();
         callCount.ShouldBe(2);
 

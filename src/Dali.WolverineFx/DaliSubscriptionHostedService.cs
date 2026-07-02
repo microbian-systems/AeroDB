@@ -82,7 +82,7 @@ internal class DaliSubscriptionHostedService : IHostedService, IAsyncDisposable
                 if (ct.IsCancellationRequested) break;
 
                 var store = _services.GetRequiredService<IDocumentStore>();
-                await using var pollSession = await store.LightweightSessionAsync(ct);
+                await using var pollSession = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }, ct);
 
                 // Fetch all new events since the highest known sequence across all subscriptions
                 var maxWatermark = _states.Count > 0
@@ -108,7 +108,7 @@ internal class DaliSubscriptionHostedService : IHostedService, IAsyncDisposable
                     try
                     {
                         var controller = new DaliSubscriptionController(_logger);
-                        await using var session = await store.LightweightSessionAsync(ct);
+                        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }, ct);
                         await state.Runner.ProcessBatchAsync(range, controller, session, ct);
                         // Track global sequence (not version) for polling semantics
                         state.HighWaterSequence = Math.Max(state.HighWaterSequence,

@@ -52,7 +52,7 @@ public class DaliRoleStore<TRole> : IRoleStore<TRole>, IQueryableRoleStore<TRole
 
         try
         {
-            await using var session = await _store.LightweightSessionAsync(cancellationToken);
+            await using var session = await _store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }, cancellationToken);
             session.Store(role);
             await session.SaveChangesAsync(cancellationToken);
             _logger.LogDebug("Created role {RoleName} ({RoleId})", role.Name, role.Id);
@@ -79,7 +79,7 @@ public class DaliRoleStore<TRole> : IRoleStore<TRole>, IQueryableRoleStore<TRole
 
         try
         {
-            await using var session = await _store.LightweightSessionAsync(cancellationToken);
+            await using var session = await _store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }, cancellationToken);
             session.Store(role);
             await session.SaveChangesAsync(cancellationToken);
             _logger.LogDebug("Updated role {RoleName} ({RoleId})", role.Name, role.Id);
@@ -106,7 +106,7 @@ public class DaliRoleStore<TRole> : IRoleStore<TRole>, IQueryableRoleStore<TRole
 
         try
         {
-            await using var session = await _store.LightweightSessionAsync(cancellationToken);
+            await using var session = await _store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }, cancellationToken);
             session.Delete(role);
             await session.SaveChangesAsync(cancellationToken);
             _logger.LogDebug("Deleted role {RoleName} ({RoleId})", role.Name, role.Id);

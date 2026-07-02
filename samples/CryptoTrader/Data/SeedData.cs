@@ -66,7 +66,7 @@ public static class SeedData
         var accounts = new List<Account>();
         var wallets = new List<Wallet>();
 
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         // 0. Store the 4 crypto asset nodes so they exist for graph references
         foreach (var asset in CryptoAssets)

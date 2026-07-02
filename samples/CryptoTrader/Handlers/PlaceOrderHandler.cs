@@ -28,7 +28,7 @@ public class PlaceOrderHandler
     {
         var sagaId = Guid.NewGuid().ToString("N");
 
-        await using var session = await _store.LightweightSessionAsync();
+        await using var session = await _store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         var sagaData = new TradeSagaData
         {
             Id = new RecordIdOf<string>("trade_saga_data", sagaId),
@@ -52,7 +52,7 @@ public class PlaceOrderHandler
     {
         var sagaId = Guid.NewGuid().ToString("N");
 
-        await using var session = await _store.LightweightSessionAsync();
+        await using var session = await _store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         var sagaData = new TradeSagaData
         {
             Id = new RecordIdOf<string>("trade_saga_data", sagaId),
