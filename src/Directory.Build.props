@@ -15,7 +15,7 @@
 	</PropertyGroup>
 
 	<PropertyGroup Label="Package information">
-		<VersionPrefix>0.0.7.1</VersionPrefix>
+		<VersionPrefix>0.0.7.2</VersionPrefix>
 		<VersionSuffix>alpha</VersionSuffix>
 		<Authors>Microbians</Authors>
 		<Company>Microbian Systems</Company>
