@@ -190,6 +190,12 @@ public sealed class DaliSpatialQuery<T> : ISpatialQuery<T> where T : class
         var response = await _provider.Session.RawQuery(surql, _paramBuilder.Parameters, ct).ConfigureAwait(false);
         if (!response.HasErrors && response.Count > 0)
         {
+            if (_provider.SessionBase is not null)
+            {
+                var mapped = _provider.SessionBase.DeserializeMappedPocoResponse<T>(response);
+                if (mapped.Count > 0) return mapped;
+            }
+
             var raw = response.GetValue<List<T>>(0);
             if (raw is not null) return raw;
         }

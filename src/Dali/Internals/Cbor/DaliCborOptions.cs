@@ -18,6 +18,14 @@ internal static class DaliCborOptions
         options.Registry.ConverterRegistry.RegisterConverter(
             typeof(DateTimeOffset),
             new DateTimeOffsetSurrogateConverter());
+
+        options.Registry.ConverterRegistry.RegisterConverter(
+            typeof(GeometryPoint),
+            new GeometryPointSurrogateConverter());
+
+        options.Registry.ConverterRegistry.RegisterConverter(
+            typeof(GeometryPolygon),
+            new GeometryPolygonSurrogateConverter());
     }
 
     public static void ConfigureClient(ISurrealDbClient client)

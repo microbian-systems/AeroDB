@@ -1,3 +1,4 @@
+using System.Reflection;
 using System.Text;
 using Dali.Metadata;
 using Microsoft.Extensions.Logging;
@@ -71,20 +72,30 @@ public class SchemaManager
     /// </summary>
     private static IEnumerable<(string Name, string SurrealType)> GetFieldSchemas(Type type)
     {
+        var nullability = new NullabilityInfoContext();
+        var properties = type
+            .GetProperties(BindingFlags.Public | BindingFlags.Instance)
+            .Where(prop => prop.Name != "Id" && prop.CanRead && prop.CanWrite)
+            .ToDictionary(prop => prop.Name, StringComparer.Ordinal);
+
         var meta = Metadata.MetadataRegistry.TryGet(type);
         if (meta?.Fields is { Count: > 0 } fields)
         {
             foreach (var f in fields)
-                yield return (f.Name, f.SurrealType);
+            {
+                if (properties.TryGetValue(f.Name, out var prop))
+                    yield return (f.Name, MakeOptionalIfNullable(f.SurrealType, prop, nullability));
+                else
+                    yield return (f.Name, f.SurrealType);
+            }
+
             yield break;
         }
 
         // Fallback: runtime reflection (legacy path for non-generated types)
-        foreach (var prop in type.GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance))
+        foreach (var prop in properties.Values)
         {
-            if (prop.Name == "Id") continue;
-            if (!prop.CanRead || !prop.CanWrite) continue;
-            yield return (prop.Name, GetSurrealType(prop.PropertyType));
+            yield return (prop.Name, GetSurrealType(prop.PropertyType, prop, nullability));
         }
     }
 
@@ -479,21 +490,46 @@ public class SchemaManager
         await session.RawQuery($"REMOVE TABLE {tableName};", null, ct).ConfigureAwait(false);
     }
 
-    private static string GetSurrealType(Type type)
+    private static string GetSurrealType(Type type, PropertyInfo? property = null, NullabilityInfoContext? nullability = null)
     {
-        // Check for geometry types first
-        if (type == typeof(GeometryPoint) || type == typeof(GeometryPolygon))
-            return "geometry";
+        var underlyingNullableType = Nullable.GetUnderlyingType(type);
+        var isNullable = underlyingNullableType is not null
+            || (property is not null && IsNullableReferenceProperty(property, nullability));
+        var effectiveType = underlyingNullableType ?? type;
 
-        if (type == typeof(string) || type == typeof(Guid)) return "string";
-        if (type == typeof(long) || type == typeof(int) || type == typeof(short) || type == typeof(byte)) return "int";
-        if (type == typeof(float) || type == typeof(double) || type == typeof(decimal)) return "float";
-        if (type == typeof(bool)) return "bool";
-        if (type == typeof(DateTime) || type == typeof(DateTimeOffset)) return "datetime";
-        if (type == typeof(byte[])) return "bytes";
-        if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(List<>)) return "array";
-        if (type.IsArray) return "array";
-        return "object";
+        // Check for geometry types first
+        var surrealType =
+            effectiveType == typeof(GeometryPoint) || effectiveType == typeof(GeometryPolygon) ? "geometry" :
+            effectiveType == typeof(string) || effectiveType == typeof(Guid) ? "string" :
+            effectiveType == typeof(long) || effectiveType == typeof(int) || effectiveType == typeof(short) || effectiveType == typeof(byte) ? "int" :
+            effectiveType == typeof(float) || effectiveType == typeof(double) || effectiveType == typeof(decimal) ? "float" :
+            effectiveType == typeof(bool) ? "bool" :
+            effectiveType == typeof(DateTime) || effectiveType == typeof(DateTimeOffset) ? "datetime" :
+            effectiveType == typeof(byte[]) ? "bytes" :
+            effectiveType.IsGenericType && effectiveType.GetGenericTypeDefinition() == typeof(List<>) ? "array" :
+            effectiveType.IsArray ? "array" :
+            "object";
+
+        return isNullable ? $"option<{surrealType}>" : surrealType;
+    }
+
+    private static string MakeOptionalIfNullable(string surrealType, PropertyInfo property, NullabilityInfoContext nullability)
+    {
+        if (surrealType.StartsWith("option<", StringComparison.Ordinal))
+            return surrealType;
+
+        var isNullable = Nullable.GetUnderlyingType(property.PropertyType) is not null
+            || IsNullableReferenceProperty(property, nullability);
+        return isNullable ? $"option<{surrealType}>" : surrealType;
+    }
+
+    private static bool IsNullableReferenceProperty(PropertyInfo property, NullabilityInfoContext? nullability)
+    {
+        if (property.PropertyType.IsValueType)
+            return false;
+
+        var context = nullability ?? new NullabilityInfoContext();
+        return context.Create(property).WriteState == NullabilityState.Nullable;
     }
 
     internal static string Snake(string name)

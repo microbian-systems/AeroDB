@@ -16,6 +16,9 @@ internal static class CborResultReader
     private const ulong RecordIdTag = 8;
     private const ulong CustomDateTimeTag = 12;
     private const ulong UuidTag = 37;
+    private const ulong GeometryPointTag = 88;
+    private const ulong GeometryLineTag = 89;
+    private const ulong GeometryPolygonTag = 90;
 
     /// <summary>
     /// Reads the raw CBOR result at the given index and returns it as a list of dictionaries.
@@ -200,6 +203,9 @@ internal static class CborResultReader
             RecordIdTag => ReadRecordIdIntoString(ref reader),
             CustomDateTimeTag => ReadDateTimeIntoObject(ref reader),
             UuidTag => ReadGuidIntoObject(ref reader),
+            GeometryPointTag => ReadGeometryPointIntoObject(ref reader),
+            GeometryPolygonTag => ReadGeometryPolygonIntoObject(ref reader),
+            GeometryLineTag => ReadGeometryLineIntoObject(ref reader),
             _ => ReadCborValueIntoObject(ref reader)
         };
     }
@@ -263,6 +269,73 @@ internal static class CborResultReader
         var value = reader.ReadByteString();
         return value.Length == 16 ? new Guid(value, true) : null;
     }
+
+    private static GeometryPoint? ReadGeometryPointIntoObject(ref CborReader reader)
+    {
+        if (reader.GetCurrentDataItemType() == CborDataItemType.Null)
+        {
+            reader.ReadNull();
+            return null;
+        }
+
+        if (reader.GetCurrentDataItemType() != CborDataItemType.Array)
+        {
+            reader.SkipDataItem();
+            return null;
+        }
+
+        reader.ReadBeginArray();
+        var size = reader.ReadSize();
+        if (size != 2)
+        {
+            for (var i = 0; i < size; i++)
+                reader.SkipDataItem();
+
+            return null;
+        }
+
+        return new GeometryPoint(reader.ReadDouble(), reader.ReadDouble());
+    }
+
+    private static GeometryPolygon? ReadGeometryPolygonIntoObject(ref CborReader reader)
+    {
+        if (reader.GetCurrentDataItemType() == CborDataItemType.Null)
+        {
+            reader.ReadNull();
+            return null;
+        }
+
+        if (reader.GetCurrentDataItemType() != CborDataItemType.Array)
+        {
+            reader.SkipDataItem();
+            return null;
+        }
+
+        reader.ReadBeginArray();
+        var size = reader.ReadSize();
+        var rings = new List<List<(double Lng, double Lat)>>(size);
+
+        for (var i = 0; i < size; i++)
+        {
+            var line = ReadCborValueIntoObject(ref reader);
+            if (line is List<object?> values)
+            {
+                var ring = new List<(double Lng, double Lat)>(values.Count);
+                foreach (var value in values)
+                {
+                    if (value is GeometryPoint point)
+                        ring.Add((point.Lng, point.Lat));
+                }
+
+                rings.Add(ring);
+            }
+        }
+
+        return new GeometryPolygon { Rings = rings };
+    }
+
+    private static List<object?> ReadGeometryLineIntoObject(ref CborReader reader)
+        => ReadCborArrayValuesIntoList(ref reader);
 
     private static string? FormatRecordIdPart(object? value)
     {

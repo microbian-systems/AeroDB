@@ -52,6 +52,10 @@ public class SurrealQueryProvider : IQueryProvider
     /// </summary>
     internal ISurrealDbSession Session => _session;
 
+    internal InternalSessionBase? SessionBase => _sessionBase;
+
+    internal StoreOptions StoreOptions => _options;
+
     /// <summary>
     /// Resolves the correct <see cref="ISurrealDbSession"/> for the given element type
     /// based on its schema mapping (database). When no schema is configured or when

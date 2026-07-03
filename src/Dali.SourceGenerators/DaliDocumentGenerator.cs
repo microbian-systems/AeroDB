@@ -246,7 +246,7 @@ public class DaliDocumentGenerator : IIncrementalGenerator
             if (member.IsStatic) continue;
             if (member.GetMethod is null || member.SetMethod is null) continue;
 
-            var surrealType = GetSurrealType(member.Type);
+            var surrealType = GetSurrealType(member);
             fields.Add($"            new global::Dali.Metadata.FieldSchema(\"{member.Name}\", \"{surrealType}\", true, true)");
         }
 
@@ -353,11 +353,24 @@ public class DaliDocumentGenerator : IIncrementalGenerator
                "    }";
     }
 
-    private static string GetSurrealType(ITypeSymbol type)
+    private static string GetSurrealType(IPropertySymbol property)
+    {
+        var type = property.Type;
+        var isNullable = IsNullableProperty(property);
+        var nullableUnderlying = GetNullableUnderlyingType(type);
+        var effectiveType = nullableUnderlying ?? type;
+
+        var surrealType = GetRequiredSurrealType(effectiveType);
+        return isNullable ? $"option<{surrealType}>" : surrealType;
+    }
+
+    private static string GetRequiredSurrealType(ITypeSymbol type)
     {
         var name = type.ToDisplayString();
         return name switch
         {
+            "Dali.GeometryPoint" or "global::Dali.GeometryPoint" or "GeometryPoint" => "geometry",
+            "Dali.GeometryPolygon" or "global::Dali.GeometryPolygon" or "GeometryPolygon" => "geometry",
             "string" or "System.Guid" => "string",
             "long" or "int" or "short" or "byte" or "System.Int64" or "System.Int32" or "System.Int16" or "System.Byte" => "int",
             "float" or "double" or "decimal" or "System.Single" or "System.Double" or "System.Decimal" => "float",
@@ -368,6 +381,26 @@ public class DaliDocumentGenerator : IIncrementalGenerator
             _ when type.OriginalDefinition?.ToDisplayString() == "System.Collections.Generic.List<T>" => "array",
             _ => "object"
         };
+    }
+
+    private static bool IsNullableProperty(IPropertySymbol property)
+    {
+        if (GetNullableUnderlyingType(property.Type) is not null)
+            return true;
+
+        return !property.Type.IsValueType && property.NullableAnnotation == NullableAnnotation.Annotated;
+    }
+
+    private static ITypeSymbol? GetNullableUnderlyingType(ITypeSymbol type)
+    {
+        if (type is INamedTypeSymbol named
+            && named.OriginalDefinition.SpecialType == SpecialType.System_Nullable_T
+            && named.TypeArguments.Length == 1)
+        {
+            return named.TypeArguments[0];
+        }
+
+        return null;
     }
 
     internal static string ToSnakeCase(string name)

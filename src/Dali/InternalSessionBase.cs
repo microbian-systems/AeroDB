@@ -2,6 +2,7 @@ using System.Collections.Concurrent;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using Dali.Metadata;
+using Dali.Internals.Cbor;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using SurrealDb.Net;
@@ -173,7 +174,34 @@ public abstract class InternalSessionBase : IAsyncDisposable
     {
         RequestCount++;
         var response = await Session.RawQuery(sql, parameters, ct).ConfigureAwait(false);
+
+        if (TryDeserializeMappedPocoResponse<T>(response, out var mapped))
+            return mapped;
+
         return response.GetValue<List<T>>(0) ?? [];
+    }
+
+    internal List<T> DeserializeMappedPocoResponse<T>(SurrealDbResponse response, int index = 0)
+    {
+        var mapping = Options.Schema.Mappings.GetValueOrDefault(typeof(T));
+        if (mapping?.IdentityProperty is null)
+            return [];
+
+        var records = CborResultReader.ReadPocoResult(response, index);
+        return DeserializePocoFromList<T>(records, mapping.IdentityProperty);
+    }
+
+    private bool TryDeserializeMappedPocoResponse<T>(SurrealDbResponse response, out List<T> results)
+    {
+        results = [];
+
+        var mapping = Options.Schema.Mappings.GetValueOrDefault(typeof(T));
+        if (mapping?.IdentityProperty is null)
+            return false;
+
+        var records = CborResultReader.ReadPocoResult(response, 0);
+        results = DeserializePocoFromList<T>(records, mapping.IdentityProperty);
+        return true;
     }
 
     public async Task<int> ExecuteSqlAsync(string sql, IReadOnlyDictionary<string, object?>? parameters = null, CancellationToken ct = default)
