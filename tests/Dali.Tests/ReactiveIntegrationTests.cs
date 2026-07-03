@@ -379,4 +379,340 @@ public class ReactiveIntegrationTests
             await CleanupAsync(store, writeSession, liveSession, query);
         }
     }
+
+    // ── Fluent-chain integration tests ────────────────────────────
+
+    [Test]
+    public async Task FluentChain_Where_ToObservable_SelectCreatedRecords()
+    {
+        if (!await TestHarnessRemote.IsRemoteAvailableAsync())
+            return;
+
+        var store = default(IDocumentStore);
+        var writeSession = default(IDocumentSession);
+        var liveSession = default(ILiveQuerySession);
+
+        try
+        {
+            // Arrange
+            store = await TestHarnessRemote.CreateStoreAsync();
+            writeSession = await store.OpenSessionAsync(new SessionOptions
+            {
+                Tracking = DocumentTracking.None
+            });
+            liveSession = await store.LiveQuerySessionAsync();
+
+            // Build the fluent chain: Where(p => p.Age > 18) → ToObservable → SelectCreatedRecords
+            var obs = liveSession.Live<Person>()
+                .Where(p => p.Age > 18)
+                .ToObservable()
+                .SelectCreatedRecords();
+
+            var createdPersons = new List<Person>();
+            using var sub = obs.Subscribe(createdPersons.Add);
+
+            // Wait for live query connection
+            await Task.Delay(TimeSpan.FromMilliseconds(300));
+
+            // Act — Store Adult (matches Where predicate) and Child (does NOT match)
+            var adult = new Person { Name = "Adult", Age = 25, Email = "adult@test.com" };
+            writeSession.Store(adult);
+            var child = new Person { Name = "Child", Age = 12, Email = "child@test.com" };
+            writeSession.Store(child);
+            await writeSession.SaveChangesAsync();
+
+            // Wait for live query events to arrive
+            await Task.Delay(TimeSpan.FromMilliseconds(500));
+
+            // Cleanup: dispose live session first so the channel closes
+            await liveSession.DisposeAsync();
+            liveSession = null;
+            await Task.Delay(TimeSpan.FromMilliseconds(300));
+
+            // Assert — only the Age=25 Adult should be emitted (Child filtered by the WHERE)
+            createdPersons.Count.ShouldBe(1);
+            createdPersons[0].Name.ShouldBe("Adult");
+            createdPersons[0].Age.ShouldBe(25);
+        }
+        finally
+        {
+            if (writeSession is not null)
+                await writeSession.DisposeAsync();
+            if (liveSession is not null)
+                await liveSession.DisposeAsync();
+            if (store is not null)
+                await store.DisposeAsync();
+        }
+    }
+
+    [Test]
+    public async Task FluentChain_CreatedRecords_Shortcut()
+    {
+        if (!await TestHarnessRemote.IsRemoteAvailableAsync())
+            return;
+
+        var store = default(IDocumentStore);
+        var writeSession = default(IDocumentSession);
+        var liveSession = default(ILiveQuerySession);
+
+        try
+        {
+            // Arrange
+            store = await TestHarnessRemote.CreateStoreAsync();
+            writeSession = await store.OpenSessionAsync(new SessionOptions
+            {
+                Tracking = DocumentTracking.None
+            });
+            liveSession = await store.LiveQuerySessionAsync();
+
+            // Use the CreatedRecords shortcut extension on the builder
+            var obs = liveSession.Live<Person>().CreatedRecords();
+
+            var createdPersons = new List<Person>();
+            using var sub = obs.Subscribe(createdPersons.Add);
+
+            // Wait for live query connection
+            await Task.Delay(TimeSpan.FromMilliseconds(300));
+
+            // Act — Store a Person
+            var alice = new Person { Name = "Alice", Age = 30, Email = "alice@test.com" };
+            writeSession.Store(alice);
+            await writeSession.SaveChangesAsync();
+
+            // Wait for live query events to arrive
+            await Task.Delay(TimeSpan.FromMilliseconds(500));
+
+            // Cleanup
+            await liveSession.DisposeAsync();
+            liveSession = null;
+            await Task.Delay(TimeSpan.FromMilliseconds(300));
+
+            // Assert — only the created Person should be received
+            createdPersons.Count.ShouldBe(1);
+            createdPersons[0].Name.ShouldBe("Alice");
+            createdPersons[0].Age.ShouldBe(30);
+        }
+        finally
+        {
+            if (writeSession is not null)
+                await writeSession.DisposeAsync();
+            if (liveSession is not null)
+                await liveSession.DisposeAsync();
+            if (store is not null)
+                await store.DisposeAsync();
+        }
+    }
+
+    [Test]
+    public async Task FluentChain_UpdatedRecords_Shortcut()
+    {
+        if (!await TestHarnessRemote.IsRemoteAvailableAsync())
+            return;
+
+        var store = default(IDocumentStore);
+        var writeSession = default(IDocumentSession);
+        var liveSession = default(ILiveQuerySession);
+
+        try
+        {
+            // Arrange
+            store = await TestHarnessRemote.CreateStoreAsync();
+            writeSession = await store.OpenSessionAsync(new SessionOptions
+            {
+                Tracking = DocumentTracking.None
+            });
+            liveSession = await store.LiveQuerySessionAsync();
+
+            // Use the UpdatedRecords shortcut extension on the builder
+            var obs = liveSession.Live<Person>().UpdatedRecords();
+
+            var updatedPersons = new List<Person>();
+            using var sub = obs.Subscribe(updatedPersons.Add);
+
+            // Wait for live query connection
+            await Task.Delay(TimeSpan.FromMilliseconds(300));
+
+            // Act — Store a Person first
+            var person = new Person { Name = "Original Name", Age = 25, Email = "test@test.com" };
+            writeSession.Store(person);
+            await writeSession.SaveChangesAsync();
+
+            // Wait for the create event to pass through (we don't capture it)
+            await Task.Delay(TimeSpan.FromMilliseconds(300));
+
+            // Act — Update the Person
+            person.Name = "Updated Name";
+            writeSession.Store(person);
+            await writeSession.SaveChangesAsync();
+
+            // Wait for the update event to arrive
+            await Task.Delay(TimeSpan.FromMilliseconds(500));
+
+            // Cleanup
+            await liveSession.DisposeAsync();
+            liveSession = null;
+            await Task.Delay(TimeSpan.FromMilliseconds(300));
+
+            // Assert — only the update event should be received (UpdatedRecords filters)
+            updatedPersons.Count.ShouldBe(1);
+            updatedPersons[0].Name.ShouldBe("Updated Name");
+        }
+        finally
+        {
+            if (writeSession is not null)
+                await writeSession.DisposeAsync();
+            if (liveSession is not null)
+                await liveSession.DisposeAsync();
+            if (store is not null)
+                await store.DisposeAsync();
+        }
+    }
+
+    [Test]
+    public async Task FluentChain_Results_AggregateRecords()
+    {
+        if (!await TestHarnessRemote.IsRemoteAvailableAsync())
+            return;
+
+        var store = default(IDocumentStore);
+        var writeSession = default(IDocumentSession);
+        var liveSession = default(ILiveQuerySession);
+
+        try
+        {
+            // Arrange
+            store = await TestHarnessRemote.CreateStoreAsync();
+            writeSession = await store.OpenSessionAsync(new SessionOptions
+            {
+                Tracking = DocumentTracking.None
+            });
+            liveSession = await store.LiveQuerySessionAsync();
+
+            // Build the fluent chain: Results() → AggregateRecords
+            var obs = liveSession.Live<Person>()
+                .Results()
+                .AggregateRecords(new Dictionary<string, Person>());
+
+            IDictionary<string, Person>? finalState = null;
+            var tcs = new TaskCompletionSource<bool>();
+
+            using var sub = obs.Subscribe(
+                state => finalState = state,
+                ex => tcs.TrySetException(ex),
+                () => tcs.TrySetResult(true)
+            );
+
+            // Wait for live query connection
+            await Task.Delay(TimeSpan.FromMilliseconds(500));
+
+            // Act — Store Alice
+            var alice = new Person { Name = "Alice", Age = 25 };
+            writeSession.Store(alice);
+            await writeSession.SaveChangesAsync();
+            await Task.Delay(TimeSpan.FromMilliseconds(500));
+
+            // Act — Store Bob
+            var bob = new Person { Name = "Bob", Age = 40 };
+            writeSession.Store(bob);
+            await writeSession.SaveChangesAsync();
+            await Task.Delay(TimeSpan.FromMilliseconds(500));
+
+            // Act — Update Alice (age)
+            alice.Age = 30;
+            writeSession.Store(alice);
+            await writeSession.SaveChangesAsync();
+            await Task.Delay(TimeSpan.FromMilliseconds(500));
+
+            // Act — Delete Bob
+            writeSession.Delete(bob);
+            await writeSession.SaveChangesAsync();
+            await Task.Delay(TimeSpan.FromMilliseconds(500));
+
+            // Cleanup: disposing the live session closes the channel → observable completes → Aggregate emits
+            await liveSession.DisposeAsync();
+            liveSession = null;
+
+            // Wait for AggregateRecords to emit the final state
+            var completed = await tcs.Task.WaitAsync(TimeSpan.FromSeconds(10));
+            completed.ShouldBeTrue();
+
+            // Assert — final dictionary should contain Alice (updated Age=30) but NOT Bob
+            finalState.ShouldNotBeNull();
+            finalState.Values.ShouldContain(p => p.Name == "Alice");
+            finalState.Values.First(p => p.Name == "Alice").Age.ShouldBe(30);
+            finalState.Values.ShouldNotContain(p => p.Name == "Bob");
+        }
+        finally
+        {
+            if (writeSession is not null)
+                await writeSession.DisposeAsync();
+            if (liveSession is not null)
+                await liveSession.DisposeAsync();
+            if (store is not null)
+                await store.DisposeAsync();
+        }
+    }
+
+    [Test]
+    public async Task FluentChain_Where_Results_WithPredicate()
+    {
+        if (!await TestHarnessRemote.IsRemoteAvailableAsync())
+            return;
+
+        var store = default(IDocumentStore);
+        var writeSession = default(IDocumentSession);
+        var liveSession = default(ILiveQuerySession);
+
+        try
+        {
+            // Arrange
+            store = await TestHarnessRemote.CreateStoreAsync();
+            writeSession = await store.OpenSessionAsync(new SessionOptions
+            {
+                Tracking = DocumentTracking.None
+            });
+            liveSession = await store.LiveQuerySessionAsync();
+
+            // Build the fluent chain: Where(p => p.Name == "Target") → Results()
+            var obs = liveSession.Live<Person>()
+                .Where(p => p.Name == "Target")
+                .Results();
+
+            var allChanges = new List<DaliLiveChange<Person>>();
+            using var sub = obs.Subscribe(allChanges.Add);
+
+            // Wait for live query connection
+            await Task.Delay(TimeSpan.FromMilliseconds(300));
+
+            // Act — Store "Target" (matches Where predicate) and "Other" (does NOT match)
+            var target = new Person { Name = "Target", Age = 30, Email = "target@test.com" };
+            writeSession.Store(target);
+            var other = new Person { Name = "Other", Age = 25, Email = "other@test.com" };
+            writeSession.Store(other);
+            await writeSession.SaveChangesAsync();
+
+            // Wait for live query events to arrive
+            await Task.Delay(TimeSpan.FromMilliseconds(500));
+
+            // Cleanup
+            await liveSession.DisposeAsync();
+            liveSession = null;
+            await Task.Delay(TimeSpan.FromMilliseconds(300));
+
+            // Assert — only the Created event for "Target" should arrive (Other filtered by WHERE)
+            allChanges.Count.ShouldBe(1);
+            allChanges[0].Action.ShouldBe(DaliLiveAction.Created);
+            allChanges[0].Document.ShouldNotBeNull();
+            allChanges[0].Document!.Name.ShouldBe("Target");
+        }
+        finally
+        {
+            if (writeSession is not null)
+                await writeSession.DisposeAsync();
+            if (liveSession is not null)
+                await liveSession.DisposeAsync();
+            if (store is not null)
+                await store.DisposeAsync();
+        }
+    }
 }

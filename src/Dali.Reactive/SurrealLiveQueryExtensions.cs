@@ -66,4 +66,48 @@ public static class SurrealLiveQueryExtensions
             }
         });
     }
+
+    /// <summary>
+    /// Shortcut: <c>builder.ToObservable(ct).SelectCreatedRecords()</c>.
+    /// Returns an observable of created documents only.
+    /// </summary>
+    public static IObservable<T> CreatedRecords<T>(
+        this IDaliLiveQueryBuilder<T> builder,
+        CancellationToken ct = default) where T : class
+    {
+        return builder.ToObservable(ct).SelectCreatedRecords();
+    }
+
+    /// <summary>
+    /// Shortcut: <c>builder.ToObservable(ct).SelectUpdatedRecords()</c>.
+    /// Returns an observable of updated documents only.
+    /// </summary>
+    public static IObservable<T> UpdatedRecords<T>(
+        this IDaliLiveQueryBuilder<T> builder,
+        CancellationToken ct = default) where T : class
+    {
+        return builder.ToObservable(ct).SelectUpdatedRecords();
+    }
+
+    /// <summary>
+    /// Shortcut: <c>builder.ToObservable(ct).SelectDeletedRecords()</c>.
+    /// Returns an observable of deleted documents only.
+    /// </summary>
+    public static IObservable<T> DeletedRecords<T>(
+        this IDaliLiveQueryBuilder<T> builder,
+        CancellationToken ct = default) where T : class
+    {
+        return builder.ToObservable(ct).SelectDeletedRecords();
+    }
+
+    /// <summary>
+    /// Shortcut: <c>builder.ToObservable(ct).SelectResults()</c>.
+    /// Returns an observable of all results EXCEPT Close events.
+    /// </summary>
+    public static IObservable<DaliLiveChange<T>> Results<T>(
+        this IDaliLiveQueryBuilder<T> builder,
+        CancellationToken ct = default) where T : class
+    {
+        return builder.ToObservable(ct).SelectResults();
+    }
 }

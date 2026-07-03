@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using System.Reactive.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -518,5 +519,443 @@ public class ReactiveExtensionsTests
     {
         await Task.CompletedTask;
         yield break;
+    }
+
+    // ── Shortcut Method Tests ─────────────────────────────────────
+
+    /// <summary>Helper: converts an IEnumerable to IAsyncEnumerable for mock setup.</summary>
+    private static async IAsyncEnumerable<T> ToAsyncEnumerable<T>(
+        IEnumerable<T> items,
+        [EnumeratorCancellation] CancellationToken ct = default)
+    {
+        await Task.CompletedTask;
+        foreach (var item in items) yield return item;
+    }
+
+    /// <summary>Collects items from an observable that completes normally.</summary>
+    private static async Task<List<T>> CollectAsync<T>(IObservable<T> observable)
+    {
+        var tcs = new TaskCompletionSource<bool>();
+        var results = new List<T>();
+        observable.Subscribe(
+            results.Add,
+            ex => tcs.TrySetException(ex),
+            () => tcs.TrySetResult(true));
+        await tcs.Task;
+        return results;
+    }
+
+    [Test]
+    public async Task CreatedRecords_ReturnsOnlyCreatedDocuments()
+    {
+        var changes = new[]
+        {
+            new DaliLiveChange<Person>(DaliLiveAction.Open, null, null),
+            new DaliLiveChange<Person>(DaliLiveAction.Created, "person:1", new Person { Name = "Alice" }),
+            new DaliLiveChange<Person>(DaliLiveAction.Updated, "person:2", new Person { Name = "Bob" }),
+            new DaliLiveChange<Person>(DaliLiveAction.Deleted, "person:3", new Person { Name = "Charlie" }),
+            new DaliLiveChange<Person>(DaliLiveAction.Closed, null, null, SurrealDbLiveQueryClosureReason.QueryKilled),
+        };
+
+        var mockQuery = Substitute.For<IDaliLiveQuery<Person>>();
+        mockQuery.Changes(Arg.Any<CancellationToken>())
+            .Returns(_ => ToAsyncEnumerable(changes, CancellationToken.None));
+        mockQuery.DisposeAsync().Returns(ValueTask.CompletedTask);
+
+        var mockBuilder = Substitute.For<IDaliLiveQueryBuilder<Person>>();
+        mockBuilder.SubscribeAsync(Arg.Any<CancellationToken>()).Returns(Task.FromResult(mockQuery));
+
+        var obs = mockBuilder.CreatedRecords();
+        var results = await CollectAsync(obs);
+
+        results.Count.ShouldBe(1);
+        results[0].Name.ShouldBe("Alice");
+    }
+
+    [Test]
+    public async Task UpdatedRecords_ReturnsOnlyUpdatedDocuments()
+    {
+        var changes = new[]
+        {
+            new DaliLiveChange<Person>(DaliLiveAction.Open, null, null),
+            new DaliLiveChange<Person>(DaliLiveAction.Created, "person:1", new Person { Name = "Alice" }),
+            new DaliLiveChange<Person>(DaliLiveAction.Updated, "person:2", new Person { Name = "Bob" }),
+            new DaliLiveChange<Person>(DaliLiveAction.Deleted, "person:3", new Person { Name = "Charlie" }),
+            new DaliLiveChange<Person>(DaliLiveAction.Closed, null, null, SurrealDbLiveQueryClosureReason.QueryKilled),
+        };
+
+        var mockQuery = Substitute.For<IDaliLiveQuery<Person>>();
+        mockQuery.Changes(Arg.Any<CancellationToken>())
+            .Returns(_ => ToAsyncEnumerable(changes, CancellationToken.None));
+        mockQuery.DisposeAsync().Returns(ValueTask.CompletedTask);
+
+        var mockBuilder = Substitute.For<IDaliLiveQueryBuilder<Person>>();
+        mockBuilder.SubscribeAsync(Arg.Any<CancellationToken>()).Returns(Task.FromResult(mockQuery));
+
+        var obs = mockBuilder.UpdatedRecords();
+        var results = await CollectAsync(obs);
+
+        results.Count.ShouldBe(1);
+        results[0].Name.ShouldBe("Bob");
+    }
+
+    [Test]
+    public async Task DeletedRecords_ReturnsOnlyDeletedDocuments()
+    {
+        var changes = new[]
+        {
+            new DaliLiveChange<Person>(DaliLiveAction.Open, null, null),
+            new DaliLiveChange<Person>(DaliLiveAction.Created, "person:1", new Person { Name = "Alice" }),
+            new DaliLiveChange<Person>(DaliLiveAction.Updated, "person:2", new Person { Name = "Bob" }),
+            new DaliLiveChange<Person>(DaliLiveAction.Deleted, "person:3", new Person { Name = "Charlie" }),
+            new DaliLiveChange<Person>(DaliLiveAction.Closed, null, null, SurrealDbLiveQueryClosureReason.QueryKilled),
+        };
+
+        var mockQuery = Substitute.For<IDaliLiveQuery<Person>>();
+        mockQuery.Changes(Arg.Any<CancellationToken>())
+            .Returns(_ => ToAsyncEnumerable(changes, CancellationToken.None));
+        mockQuery.DisposeAsync().Returns(ValueTask.CompletedTask);
+
+        var mockBuilder = Substitute.For<IDaliLiveQueryBuilder<Person>>();
+        mockBuilder.SubscribeAsync(Arg.Any<CancellationToken>()).Returns(Task.FromResult(mockQuery));
+
+        var obs = mockBuilder.DeletedRecords();
+        var results = await CollectAsync(obs);
+
+        results.Count.ShouldBe(1);
+        results[0].Name.ShouldBe("Charlie");
+    }
+
+    [Test]
+    public async Task Results_ExcludesCloseEvents()
+    {
+        var changes = new[]
+        {
+            new DaliLiveChange<Person>(DaliLiveAction.Open, null, null),
+            new DaliLiveChange<Person>(DaliLiveAction.Created, "person:1", new Person { Name = "Alice" }),
+            new DaliLiveChange<Person>(DaliLiveAction.Updated, "person:2", new Person { Name = "Bob" }),
+            new DaliLiveChange<Person>(DaliLiveAction.Deleted, "person:3", new Person { Name = "Charlie" }),
+            new DaliLiveChange<Person>(DaliLiveAction.Closed, null, null, SurrealDbLiveQueryClosureReason.QueryKilled),
+        };
+
+        var mockQuery = Substitute.For<IDaliLiveQuery<Person>>();
+        mockQuery.Changes(Arg.Any<CancellationToken>())
+            .Returns(_ => ToAsyncEnumerable(changes, CancellationToken.None));
+        mockQuery.DisposeAsync().Returns(ValueTask.CompletedTask);
+
+        var mockBuilder = Substitute.For<IDaliLiveQueryBuilder<Person>>();
+        mockBuilder.SubscribeAsync(Arg.Any<CancellationToken>()).Returns(Task.FromResult(mockQuery));
+
+        var obs = mockBuilder.Results();
+        var results = await CollectAsync(obs);
+
+        results.Count.ShouldBe(4); // Open + Created + Updated + Deleted, no Close
+        results[0].Action.ShouldBe(DaliLiveAction.Open);
+        results[1].Action.ShouldBe(DaliLiveAction.Created);
+        results[1].Document!.Name.ShouldBe("Alice");
+        results[2].Action.ShouldBe(DaliLiveAction.Updated);
+        results[2].Document!.Name.ShouldBe("Bob");
+        results[3].Action.ShouldBe(DaliLiveAction.Deleted);
+    }
+
+    [Test]
+    public async Task Results_WithOnlyOpenAndClose_EmitsOnlyOpen()
+    {
+        var changes = new[]
+        {
+            new DaliLiveChange<Person>(DaliLiveAction.Open, null, null),
+            new DaliLiveChange<Person>(DaliLiveAction.Closed, null, null, SurrealDbLiveQueryClosureReason.QueryKilled),
+        };
+
+        var mockQuery = Substitute.For<IDaliLiveQuery<Person>>();
+        mockQuery.Changes(Arg.Any<CancellationToken>())
+            .Returns(_ => ToAsyncEnumerable(changes, CancellationToken.None));
+        mockQuery.DisposeAsync().Returns(ValueTask.CompletedTask);
+
+        var mockBuilder = Substitute.For<IDaliLiveQueryBuilder<Person>>();
+        mockBuilder.SubscribeAsync(Arg.Any<CancellationToken>()).Returns(Task.FromResult(mockQuery));
+
+        var obs = mockBuilder.Results();
+        var results = await CollectAsync(obs);
+
+        results.Count.ShouldBe(1);
+        results[0].Action.ShouldBe(DaliLiveAction.Open);
+    }
+
+    [Test]
+    public async Task CreatedRecords_MultipleCreates_EmitsAllDocuments()
+    {
+        var changes = new[]
+        {
+            new DaliLiveChange<Person>(DaliLiveAction.Created, "person:1", new Person { Name = "Alice" }),
+            new DaliLiveChange<Person>(DaliLiveAction.Created, "person:2", new Person { Name = "Bob" }),
+            new DaliLiveChange<Person>(DaliLiveAction.Created, "person:3", new Person { Name = "Charlie" }),
+            new DaliLiveChange<Person>(DaliLiveAction.Closed, null, null, SurrealDbLiveQueryClosureReason.QueryKilled),
+        };
+
+        var mockQuery = Substitute.For<IDaliLiveQuery<Person>>();
+        mockQuery.Changes(Arg.Any<CancellationToken>())
+            .Returns(_ => ToAsyncEnumerable(changes, CancellationToken.None));
+        mockQuery.DisposeAsync().Returns(ValueTask.CompletedTask);
+
+        var mockBuilder = Substitute.For<IDaliLiveQueryBuilder<Person>>();
+        mockBuilder.SubscribeAsync(Arg.Any<CancellationToken>()).Returns(Task.FromResult(mockQuery));
+
+        var obs = mockBuilder.CreatedRecords();
+        var results = await CollectAsync(obs);
+
+        results.Count.ShouldBe(3);
+        results[0].Name.ShouldBe("Alice");
+        results[1].Name.ShouldBe("Bob");
+        results[2].Name.ShouldBe("Charlie");
+    }
+
+    [Test]
+    public async Task CreatedRecords_WhenNoCreatedEvents_ReturnsEmpty()
+    {
+        var changes = new[]
+        {
+            new DaliLiveChange<Person>(DaliLiveAction.Open, null, null),
+            new DaliLiveChange<Person>(DaliLiveAction.Updated, "person:2", new Person { Name = "Bob" }),
+            new DaliLiveChange<Person>(DaliLiveAction.Deleted, "person:3", new Person { Name = "Charlie" }),
+            new DaliLiveChange<Person>(DaliLiveAction.Closed, null, null, SurrealDbLiveQueryClosureReason.QueryKilled),
+        };
+
+        var mockQuery = Substitute.For<IDaliLiveQuery<Person>>();
+        mockQuery.Changes(Arg.Any<CancellationToken>())
+            .Returns(_ => ToAsyncEnumerable(changes, CancellationToken.None));
+        mockQuery.DisposeAsync().Returns(ValueTask.CompletedTask);
+
+        var mockBuilder = Substitute.For<IDaliLiveQueryBuilder<Person>>();
+        mockBuilder.SubscribeAsync(Arg.Any<CancellationToken>()).Returns(Task.FromResult(mockQuery));
+
+        var obs = mockBuilder.CreatedRecords();
+        var results = await CollectAsync(obs);
+
+        results.ShouldBeEmpty();
+    }
+
+    [Test]
+    public async Task UpdatedRecords_WhenSubscribeAsyncThrows_PropagatesError()
+    {
+        var mockBuilder = Substitute.For<IDaliLiveQueryBuilder<Person>>();
+        mockBuilder.SubscribeAsync(Arg.Any<CancellationToken>())
+            .Returns(Task.FromException<IDaliLiveQuery<Person>>(
+                new InvalidOperationException("Connection failed")));
+
+        var obs = mockBuilder.UpdatedRecords();
+        var tcs = new TaskCompletionSource<Exception>();
+        obs.Subscribe(_ => { }, ex => tcs.TrySetResult(ex), () => { });
+
+        var capturedEx = await tcs.Task.WaitAsync(TimeSpan.FromSeconds(5));
+
+        capturedEx.ShouldBeOfType<InvalidOperationException>();
+        capturedEx.Message.ShouldBe("Connection failed");
+    }
+
+    [Test]
+    public async Task ToObservable_WhenSubscribeAsyncThrows_PropagatesError()
+    {
+        var mockBuilder = Substitute.For<IDaliLiveQueryBuilder<Person>>();
+        mockBuilder.SubscribeAsync(Arg.Any<CancellationToken>())
+            .Returns(Task.FromException<IDaliLiveQuery<Person>>(
+                new InvalidOperationException("Connection failed")));
+
+        var obs = mockBuilder.ToObservable();
+        var tcs = new TaskCompletionSource<Exception>();
+        obs.Subscribe(_ => { }, ex => tcs.TrySetResult(ex), () => { });
+
+        var capturedEx = await tcs.Task.WaitAsync(TimeSpan.FromSeconds(5));
+
+        capturedEx.ShouldBeOfType<InvalidOperationException>();
+        capturedEx.Message.ShouldBe("Connection failed");
+    }
+
+    // ── Channel-based Streaming Test ──────────────────────────────
+
+    [Test]
+    public async Task GetResults_WithChannelSource_ReceivesLiveUpdates()
+    {
+        var channel = Channel.CreateUnbounded<SurrealDbLiveQueryResponse>();
+
+        var adapter = new SurrealDaliLiveQuery<Person>(
+            channel.Reader.ReadAllAsync(),
+            null, null, null, null,
+            4096,
+            BoundedChannelFullMode.Wait,
+            NullPersonLogger);
+        await adapter.StartAsync();
+
+        var results = new List<DaliLiveChange<Person>>();
+        var readTask = Task.Run(async () =>
+        {
+            await foreach (var change in adapter.GetResults())
+            {
+                results.Add(change);
+            }
+        });
+
+        // Push events into the channel
+        await channel.Writer.WriteAsync(CreateSdkOpen());
+        await Task.Delay(50);
+
+        var alice = new Person { Id = RecordId.From("person", "alice"), Name = "Alice" };
+        await channel.Writer.WriteAsync(CreateSdkCreate(alice));
+        await Task.Delay(50);
+
+        var bob = new Person { Id = RecordId.From("person", "bob"), Name = "Bob" };
+        await channel.Writer.WriteAsync(CreateSdkUpdate(bob));
+        await Task.Delay(50);
+
+        var charlie = new Person { Id = RecordId.From("person", "charlie"), Name = "Charlie" };
+        await channel.Writer.WriteAsync(CreateSdkDelete(charlie));
+        await Task.Delay(50);
+
+        await channel.Writer.WriteAsync(CreateSdkClose());
+        await Task.Delay(50);
+
+        // Complete the channel — this makes ReadAllAsync complete, which
+        // causes the adapter's read loop to complete and GetResults() to end.
+        channel.Writer.Complete();
+
+        // Wait for the reader to finish processing all events
+        await readTask.WaitAsync(TimeSpan.FromSeconds(5));
+
+        // Verify: 4 results (Open + Created + Updated + Deleted, no Close)
+        results.Count.ShouldBe(4);
+        results[0].Action.ShouldBe(DaliLiveAction.Open);
+        results[1].Action.ShouldBe(DaliLiveAction.Created);
+        results[1].Document!.Name.ShouldBe("Alice");
+        results[2].Action.ShouldBe(DaliLiveAction.Updated);
+        results[2].Document!.Name.ShouldBe("Bob");
+        results[3].Action.ShouldBe(DaliLiveAction.Deleted);
+    }
+
+    // ── Fluent Chain Tests ────────────────────────────────────────
+
+    /// <summary>Shared mock builder with fluent Where configured.</summary>
+    private static (IDaliLiveQueryBuilder<Person> builder, IDaliLiveQuery<Person> query) CreateFluentMock()
+    {
+        var changes = new[]
+        {
+            new DaliLiveChange<Person>(DaliLiveAction.Open, null, null),
+            new DaliLiveChange<Person>(DaliLiveAction.Created, "person:1", new Person { Name = "Alice" }),
+            new DaliLiveChange<Person>(DaliLiveAction.Updated, "person:2", new Person { Name = "Bob" }),
+            new DaliLiveChange<Person>(DaliLiveAction.Deleted, "person:3", new Person { Name = "Charlie" }),
+            new DaliLiveChange<Person>(DaliLiveAction.Closed, null, null, SurrealDbLiveQueryClosureReason.QueryKilled),
+        };
+
+        var mockQuery = Substitute.For<IDaliLiveQuery<Person>>();
+        mockQuery.Changes(Arg.Any<CancellationToken>())
+            .Returns(_ => ToAsyncEnumerable(changes, CancellationToken.None));
+        mockQuery.DisposeAsync().Returns(ValueTask.CompletedTask);
+
+        var mockBuilder = Substitute.For<IDaliLiveQueryBuilder<Person>>();
+        mockBuilder.Where(Arg.Any<Expression<Func<Person, bool>>>()).Returns(mockBuilder);
+        mockBuilder.SubscribeAsync(Arg.Any<CancellationToken>()).Returns(Task.FromResult(mockQuery));
+
+        return (mockBuilder, mockQuery);
+    }
+
+    [Test]
+    public async Task FluentChain_Where_ToObservable_SelectCreatedRecords_FlowsData()
+    {
+        var (mockBuilder, _) = CreateFluentMock();
+
+        var results = new List<Person>();
+        var tcs = new TaskCompletionSource<bool>();
+
+        mockBuilder
+            .Where(p => p.Age > 18)
+            .ToObservable()
+            .SelectCreatedRecords()
+            .Subscribe(
+                results.Add,
+                ex => tcs.TrySetException(ex),
+                () => tcs.TrySetResult(true));
+
+        await tcs.Task.WaitAsync(TimeSpan.FromSeconds(5));
+
+        results.Count.ShouldBe(1);
+        results[0].Name.ShouldBe("Alice");
+    }
+
+    [Test]
+    public async Task FluentChain_CreatedRecords_Shortcut_FlowsData()
+    {
+        var (mockBuilder, _) = CreateFluentMock();
+
+        var obs = mockBuilder.Where(p => p.Age > 18).CreatedRecords();
+        var results = await CollectAsync(obs);
+
+        results.Count.ShouldBe(1);
+        results[0].Name.ShouldBe("Alice");
+    }
+
+    [Test]
+    public async Task FluentChain_UpdatedRecords_Shortcut_FlowsData()
+    {
+        var (mockBuilder, _) = CreateFluentMock();
+
+        var obs = mockBuilder.Where(p => p.Age > 18).UpdatedRecords();
+        var results = await CollectAsync(obs);
+
+        results.Count.ShouldBe(1);
+        results[0].Name.ShouldBe("Bob");
+    }
+
+    [Test]
+    public async Task FluentChain_DeletedRecords_Shortcut_FlowsData()
+    {
+        var (mockBuilder, _) = CreateFluentMock();
+
+        var obs = mockBuilder.Where(p => p.Age > 18).DeletedRecords();
+        var results = await CollectAsync(obs);
+
+        results.Count.ShouldBe(1);
+        results[0].Name.ShouldBe("Charlie");
+    }
+
+    [Test]
+    public async Task FluentChain_Results_Shortcut_ExcludesClose()
+    {
+        var (mockBuilder, _) = CreateFluentMock();
+
+        var obs = mockBuilder.Where(p => p.Age > 18).Results();
+        var results = await CollectAsync(obs);
+
+        results.Count.ShouldBe(4); // Open + Created + Updated + Deleted
+        results[0].Action.ShouldBe(DaliLiveAction.Open);
+        results[1].Action.ShouldBe(DaliLiveAction.Created);
+        results[1].Document!.Name.ShouldBe("Alice");
+        results[2].Action.ShouldBe(DaliLiveAction.Updated);
+        results[2].Document!.Name.ShouldBe("Bob");
+        results[3].Action.ShouldBe(DaliLiveAction.Deleted);
+    }
+
+    [Test]
+    public async Task FluentChain_Where_Results_AggregateRecords_FullChain()
+    {
+        var (mockBuilder, _) = CreateFluentMock();
+
+        IDictionary<string, Person>? finalState = null;
+        var tcs = new TaskCompletionSource<bool>();
+
+        mockBuilder
+            .Where(p => p.Age > 18)
+            .Results()
+            .AggregateRecords(new Dictionary<string, Person>())
+            .Subscribe(
+                state => { finalState = state; },
+                ex => tcs.TrySetException(ex),
+                () => tcs.TrySetResult(true));
+
+        await tcs.Task.WaitAsync(TimeSpan.FromSeconds(5));
+
+        finalState.ShouldNotBeNull();
+        finalState.Count.ShouldBe(2); // Alice (Created) + Bob (Updated)
+        finalState.ShouldContain(kvp => kvp.Value.Name == "Alice");
+        finalState.ShouldContain(kvp => kvp.Value.Name == "Bob");
+        finalState.ShouldNotContain(kvp => kvp.Value.Name == "Charlie");
     }
 }

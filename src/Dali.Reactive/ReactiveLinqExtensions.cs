@@ -1,5 +1,6 @@
-namespace System.Reactive.Linq;
+namespace Dali;
 
+using System.Reactive.Linq;
 using Dali.LiveQuery;
 
 public static class ReactiveLinqExtensions
