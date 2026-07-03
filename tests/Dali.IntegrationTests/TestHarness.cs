@@ -1,11 +1,13 @@
-namespace Dali.Tests;
+namespace Dali.IntegrationTests;
 
 /// <summary>
-/// Test harness for integration tests against a real (remote) SurrealDB instance.
-/// Uses <see cref="SurrealDb.Net.SurrealDbClient"/> (WebSocket) instead of the in-memory engine.
+/// Test harness for integration tests against a real (remote) SurrealDB instance
+/// running in unauthenticated mode (--unauthenticated).
+/// Uses <see cref="StoreOptions.Endpoint"/>, <see cref="StoreOptions.Namespace"/>,
+/// and <see cref="StoreOptions.Database"/> directly — no username/password.
 /// Connection settings come from environment variables with sensible defaults.
 /// </summary>
-public static class TestHarnessRemote
+public static class TestHarness
 {
     public static string Endpoint =>
         Environment.GetEnvironmentVariable("DALI_TEST_ENDPOINT") ?? "ws://localhost:8000";
@@ -16,23 +18,19 @@ public static class TestHarnessRemote
     public static string Database =>
         Environment.GetEnvironmentVariable("DALI_TEST_DB") ?? "test";
 
-    public static string Username =>
-        Environment.GetEnvironmentVariable("DALI_TEST_USER") ?? "root";
-
-    public static string Password =>
-        Environment.GetEnvironmentVariable("DALI_TEST_PASS") ?? "root";
-
     /// <summary>
     /// Check whether a remote SurrealDB endpoint is reachable.
     /// Returns false if the connection fails (e.g., no server running).
     /// </summary>
-    public static async Task<bool> IsRemoteAvailableAsync()
+    public static async Task<bool> IsAvailableAsync()
     {
         try
         {
             var store = Documents.For(o =>
             {
-                o.Connection(Endpoint, Namespace, Database, Username, Password);
+                o.Endpoint = Endpoint;
+                o.Namespace = Namespace;
+                o.Database = Database;
             });
 
             await store.InitializeAsync();
@@ -53,7 +51,9 @@ public static class TestHarnessRemote
     {
         var store = Documents.For(o =>
         {
-            o.Connection(Endpoint, Namespace, Database, Username, Password);
+            o.Endpoint = Endpoint;
+            o.Namespace = Namespace;
+            o.Database = Database;
             configure?.Invoke(o);
         });
 

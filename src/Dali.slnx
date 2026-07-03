@@ -12,6 +12,7 @@
   <Folder Name="/Tests/">
     <Project Path="../tests/Dali.AspNetIdentity.Tests/Dali.AspNetIdentity.Tests.csproj" />
     <Project Path="../tests/Dali.Tests/Dali.Tests.csproj" />
+    <Project Path="../tests/Dali.IntegrationTests/Dali.IntegrationTests.csproj" />
   </Folder>
   <Folder Name="/__Misc__/">
     <File Path="../.gitignore" />
