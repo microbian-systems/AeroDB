@@ -801,10 +801,7 @@ public class ReactiveIntegrationTests
         {
             // Arrange
             store = await TestHarness.CreateStoreAsync();
-            writeSession = await store.OpenSessionAsync(new SessionOptions
-            {
-                Tracking = DocumentTracking.None
-            });
+            writeSession = await store.LightweightSessionAsync();
             liveSession = await store.LiveQuerySessionAsync();
 
             // Build the fluent chain: Where(p => p.Age > 18) → ToObservable → SelectDeletedRecords
