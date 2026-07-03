@@ -22,27 +22,51 @@ internal static class CborResultReader
     /// </summary>
     internal static List<Dictionary<string, object?>> ReadPocoResult(SurrealDbResponse response, int index)
     {
-        if (response.Count <= index)
+        if (!TryGetBinaryResult(response, index, out var mem))
             return [];
 
-        if (response[index] is not SurrealDbOkResult okResult)
+        var reader = new CborReader(mem.Span);
+        return ReadCborArrayIntoList(ref reader);
+    }
+
+    /// <summary>
+    /// Reads a top-level CBOR array whose elements are arrays of record maps.
+    /// This is the shape produced by <c>SELECT VALUE ->edge->target.* FROM source</c>.
+    /// </summary>
+    internal static List<List<Dictionary<string, object?>>> ReadPocoNestedResult(
+        SurrealDbResponse response,
+        int index)
+    {
+        if (!TryGetBinaryResult(response, index, out var mem))
             return [];
 
-        // Access the internal _binaryResult field via reflection
+        var reader = new CborReader(mem.Span);
+        return ReadCborArrayIntoNestedList(ref reader);
+    }
+
+    private static bool TryGetBinaryResult(
+        SurrealDbResponse response,
+        int index,
+        out ReadOnlyMemory<byte> binaryResult)
+    {
+        binaryResult = default;
+
+        if (response.Count <= index || response[index] is not SurrealDbOkResult okResult)
+            return false;
+
         var binaryField = typeof(SurrealDbOkResult).GetField(
             "_binaryResult",
             System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
 
         if (binaryField is null)
-            return [];
+            return false;
 
-        var binaryResult = (ReadOnlyMemory<byte>?)(binaryField.GetValue(okResult));
-        if (binaryResult is not { } mem || mem.IsEmpty)
-            return [];
+        var value = (ReadOnlyMemory<byte>?)(binaryField.GetValue(okResult));
+        if (value is not { } mem || mem.IsEmpty)
+            return false;
 
-        // Parse the CBOR data directly
-        var reader = new CborReader(mem.Span);
-        return ReadCborArrayIntoList(ref reader);
+        binaryResult = mem;
+        return true;
     }
 
     private static List<Dictionary<string, object?>> ReadCborArrayIntoList(ref CborReader reader)
@@ -65,6 +89,48 @@ internal static class CborResultReader
         }
 
         return list;
+    }
+
+    private static List<List<Dictionary<string, object?>>> ReadCborArrayIntoNestedList(ref CborReader reader)
+    {
+        if (reader.GetCurrentDataItemType() != CborDataItemType.Array)
+        {
+            reader.SkipDataItem();
+            return [];
+        }
+
+        reader.ReadBeginArray();
+        var size = reader.ReadSize();
+        var list = new List<List<Dictionary<string, object?>>>(size);
+
+        for (var i = 0; i < size; i++)
+        {
+            list.Add(ReadCborNestedItemIntoList(ref reader));
+        }
+
+        return list;
+    }
+
+    private static List<Dictionary<string, object?>> ReadCborNestedItemIntoList(ref CborReader reader)
+    {
+        if (reader.GetCurrentDataItemType() == CborDataItemType.Array)
+        {
+            reader.ReadBeginArray();
+            var size = reader.ReadSize();
+            var list = new List<Dictionary<string, object?>>(size);
+
+            for (var i = 0; i < size; i++)
+            {
+                var dict = ReadCborMapIntoDictionary(ref reader);
+                if (dict is not null)
+                    list.Add(dict);
+            }
+
+            return list;
+        }
+
+        var single = ReadCborMapIntoDictionary(ref reader);
+        return single is null ? [] : [single];
     }
 
     private static Dictionary<string, object?>? ReadCborMapIntoDictionary(ref CborReader reader)

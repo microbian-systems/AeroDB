@@ -41,6 +41,7 @@ The `Identity<TProp>()` method tells Dali which property to use as the SurrealDB
 1. Map `<TableName>:<IdentityValue>` to the native SurrealDB `RecordId` on save
 2. Hydrate the identity property from the SurrealDB record key on load
 3. Translate LINQ identity comparisons to native `WHERE id = ...` predicates
+4. Support graph operations (Relate, Graph traversal, Delete with edge cleanup) via explicit RecordId construction
 
 Configuration is validated eagerly — invalid identity types throw at registration time, not at runtime.
 
@@ -121,6 +122,72 @@ Delete(poco) → DELETE ProductSummary:42
 
 This matches the same `RecordId` that was created during save.
 
+### Graph Operations
+
+POCO nodes can participate in SurrealDB graph operations. Edge types (the relationships) must still inherit from `EdgeRecord`, but the connected nodes can be POCOs.
+
+#### Creating relationships with Relate
+
+Since POCOs don't have a `RecordId` property, construct one explicitly using `RecordIdOf<string>`:
+
+```csharp
+var table = MetadataDispatch.GetTableName(typeof(PocoPerson));
+var fromId = new RecordIdOf<string>(table, person.Id.ToString());
+var toId = new RecordIdOf<string>(table, book.Id.ToString());
+
+session.Relate<PocoWrote>(fromId, toId);
+await session.SaveChangesAsync();
+```
+
+#### Graph traversal
+
+POCOs work with `session.Graph<T>()` for traversal queries:
+
+```csharp
+// Out: find all books an author wrote
+var books = await session.Graph<PocoPerson>()
+    .Where(p => p.Name == "Author Name")
+    .Out<PocoBook>("poco_wrote")
+    .ToListAsync();
+
+// In: find all authors of a book
+var authors = await session.Graph<PocoBook>()
+    .Where(b => b.Title == "Book Title")
+    .In<PocoPerson>("poco_wrote")
+    .ToListAsync();
+```
+
+#### Edge cleanup on node deletion
+
+When a POCO node is deleted, SurrealDB automatically removes all edges pointing to or from that node:
+
+```csharp
+session.Delete(pocoPerson);
+await session.SaveChangesAsync();
+
+// All edges involving pocoPerson are cleaned up at the database level
+var edges = await session.Query<PocoWrote>().ToListAsync();
+// edges where pocoPerson is in or out are removed
+```
+
+#### Graph deduplication
+
+When using `CollectAll()` in graph queries, Dali's `GraphQueryBuilder` uses `DeduplicateByIdentity` to remove duplicates. For POCOs, this reads the configured identity property (e.g., `Id`) to identify unique nodes. The deduplication key is resolved via a compiled delegate (one-time per type, zero per-element reflection).
+
+#### Limitations
+
+- Edge types must still inherit from `EdgeRecord` (POCO edges are not supported)
+- The where-clause translation in `Graph<T>.Where()` uses a simplified expression translator that does not map POCO identity properties to the native `id` key. Use `RawQueryAsync` with explicit SurrealQL for identity-based graph filtering.
+- Graph traversal tests pass against a real SurrealDB instance. The in-memory embedded engine has limited support for graph traversal syntax (`->edge->table`).
+
+`session.Delete(poco)` uses the identity property to construct the `RecordId`:
+
+```
+Delete(poco) → DELETE ProductSummary:42
+```
+
+This matches the same `RecordId` that was created during save.
+
 ## Current Limitations
 
 | Limitation | Detail |
@@ -130,7 +197,7 @@ This matches the same `RecordId` that was created during save.
 | **Guid.Empty semantics** | On save, a `Guid` identity of `Guid.Empty` is auto-replaced with `Guid.NewGuid()`. You cannot store records with `Guid.Empty` as their identity. |
 | **Bulk query performance** | The JSON round-trip per entity adds measurable overhead for bulk queries (10+ ms per 1000 entities). Consider `Entity<TId>` with its CBOR shim for high-throughput scenarios. |
 | **No identity change tracking** | Changing the identity property after the first save creates a new record rather than updating the existing one. |
-| **No edge/graph support** | POCO types cannot participate in `Edge<TFrom, TTo>` graph relationships. |
+| **No source-generated edge shims** | POCO nodes can participate in graph operations, but edge types themselves must still inherit from `EdgeRecord`. |
 
 ## Comparison: Entity&lt;TId&gt; vs Record vs POCO
 
@@ -140,7 +207,7 @@ This matches the same `RecordId` that was created during save.
 | **Identity config** | `RecordId?` (auto-assigned) | `Identity(x => x.Id)` | `Identity(x => x.Id)` |
 | **CBOR deserialization** | Native (built into SurrealDb.Net) | Source-generated shim | JSON round-trip (dictionary + deserialize) |
 | **Load performance** | Fastest | Fast | Slower (JSON overhead) |
-| **Edge relationships** | ✅ | ❌ | ❌ |
+| **Edge relationships** | ✅ | ❌ | ✅ (see Graph Support) |
 | **Polymorphic hierarchy** | ✅ | ❌ | ❌ |
 | **Source-gen metadata** | ✅ | ✅ | ❌ |
 | **BulkInsert** | Fast | ~40% slower (Snowflake) | Slower (JSON per entity) |
@@ -150,7 +217,7 @@ This matches the same `RecordId` that was created during save.
 
 - **`Record`** — your default choice. Full Dali feature set, fastest deserialization, edge support.
 - **`Entity<TId>`** — when you need application-controlled identity (Snowflake IDs) with good performance. Use for primary domain entities.
-- **POCO** — when you can't or don't want to inherit from Dali base types. Good for DTOs, read models, existing domain objects. Accept the JSON round-trip cost.
+- **POCO** — when you can't or don't want to inherit from Dali base types. Good for DTOs, read models, existing domain objects. Supports graph operations via explicit RecordId construction. Accept the JSON round-trip cost.
 
 ## Example
 
@@ -198,13 +265,76 @@ await session.SaveChangesAsync();
 
 ## Implementation Details
 
-POCO identity support uses a **dictionary-based intermediate type** for deserialization:
+### Serialization / Materialization Pipeline
 
-1. The identity property is configured and stored in `DocumentMapping`
-2. On save, the identity value is extracted via reflection into the `RecordId`
-3. On load/query, SurrealDB results are deserialized to `Dictionary<string, object?>` then round-tripped through `System.Text.Json` into the target POCO type
-4. The identity property is then overwritten from the SurrealDB record key to guarantee correctness
+POCO deserialization avoids Dahomey.Cbor's converter system entirely. Instead, it reads raw CBOR directly and uses a cheap in-memory JSON round-trip to bridge unstructured dictionaries to typed objects:
 
-The dictionary+JSON approach is a deliberate trade-off: it avoids the complexity of runtime IL emit or required source generation for POCOs, at the cost of per-entity JSON serialization overhead. A source-generated CBOR shim for POCOs is planned to close this gap.
+```
+SurrealDB SELECT response (CBOR binary)
+    │
+    ▼
+CborResultReader.ReadPocoResult()          ← reads _binaryResult via reflection
+    │                                          (bypasses Dahomey.Cbor.GetValue<T>())
+    ▼
+List<Dictionary<string, object?>>
+    │
+    ▼
+NormalizePocoIdentityFields()               ← strips all native `id` entries from dicts,
+    │                                          inserts `Id = 42` (correct CLR type)
+    ▼
+JsonSerializer.Serialize(records)           ← in-memory: CLR dictionaries → JSON string
+    │                                          (no database call)
+    ▼
+JsonSerializer.Deserialize<List<T>>(json)   ← in-memory: JSON string → typed POCOs
+    │                                          (no database call)
+    ▼
+List<PocoLong>  (ready for use)
+```
+
+Key points:
+- The database is hit **once** (the `SELECT * FROM ...` query). Steps 2–4 are all in-memory.
+- `CborResultReader.ReadPocoResult()` accesses `SurrealDbOkResult._binaryResult` via reflection to get the raw CBOR bytes, then uses `Dahomey.Cbor.CborReader` directly (not the converter system) to walk the CBOR tree and produce `Dictionary<string, object?>` entries.
+- The JSON round-trip is purely a convenience mapper from `Dictionary<string, object?>` → `T`. The same memory is serialized and immediately deserialized — no network I/O.
+- After deserialization, `SetPocoIdentityFromRecordId` overwrites the identity property from the SurrealDB record key (e.g., `"table:42"` → `Id = 42`) to guarantee correctness, since the body field `Id` may be missing or stale.
+
+### Why not Dahomey.Cbor converters?
+
+Dahomey.Cbor has no built-in converter for `Dictionary<string, object?>` or `List<object>` that handles SurrealDB's tagged types (RecordId tag 8, DateTime tag 12, UUID tag 37). A custom `CborMapToDictionaryConverter` exists in the SurrealDB SDK, but wiring it into Dahomey's type resolution for `GetValue<List<Dictionary<string, object?>>>(index)` is fragile: it conflicts with the SDK's own parameter dictionary serialization path. `CborResultReader` avoids this by owning the entire read pipeline.
+
+### CborResultReader tag handling
+
+For SurrealDB native types that appear in CBOR responses:
+
+| CBOR Tag | SurrealDB Type | CborResultReader output |
+|----------|---------------|------------------------|
+| Tag 8    | RecordId (`["table", key]`) | `"table:key"` (string) |
+| Tag 12   | DateTime (`[seconds, nanos]`) | `DateTime` |
+| Tag 37   | UUID (16-byte string) | `Guid` |
+
+These tagged values are converted to plain CLR types before the JSON round-trip, so `System.Text.Json` never sees the raw CBOR representation.
+
+### Identity normalization before JSON
+
+`NormalizePocoIdentityFields` in `InternalSessionBase.cs` runs **before** the JSON round-trip:
+
+1. Finds all dictionary keys matching `"id"` (case-insensitive) and removes them
+2. Extracts the SurrealDB record key string (`"table:42"`) from whichever `id` entry was present
+3. Parses the key part (`"42"`) into the configured identity CLR type (`42L`)
+4. Inserts a new dictionary entry `"Id"` → `42L` (using the actual `IdentityProperty` name)
+
+This ensures `System.Text.Json` maps the identity value correctly to the POCO property without seeing the native RecordId string or array format.
+
+### Why no global dictionary converter / provider
+
+A Dahomey `CborConverterProvider` that handles `Dictionary<string, object?>` at the converter level is deliberately **not** registered. The SurrealDB SDK uses `Dictionary<string, object?>` internally for query parameter serialization (`RawQuery("...", new Dictionary<string, object?> { ... })`). A global converter provider for this type would:
+- Risk intercepting parameter dictionaries and breaking parameter writes
+- The SDK's `CborMapToDictionaryConverter.Write()` throws `NotSupportedException`
+- Create a hard-to-debug dependency between POCO deserialization and query parameter routing
+
+Instead, `CborResultReader` stays entirely inside Dali's own deserialization code and never touches the SDK's serialization paths.
+
+### Performance note
+
+The JSON round-trip adds ~10 ms per 1000 POCOs. For high-throughput scenarios, consider `Entity<TId>` with its source-generated CBOR shim (no JSON step). Source-generated CBOR shims for POCOs are planned for a future release.
 
 See [architecture.md](architecture.md) for overall Dali architecture and [entity-feature-matrix.md](entity-feature-matrix.md) for how POCO support fits into the broader type model.

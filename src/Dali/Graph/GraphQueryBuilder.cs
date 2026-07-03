@@ -2,6 +2,7 @@ using System.Linq.Expressions;
 using System.Text;
 using Dali.Metadata;
 using SurrealDb.Net;
+using SurrealDb.Net.Models;
 using SurrealDb.Net.Models.Response;
 
 namespace Dali;
@@ -10,6 +11,7 @@ internal sealed class GraphQueryBuilder<TNode> : IGraphQuery<TNode> where TNode 
 {
     private readonly IQuerySession _session;
     private readonly ISurrealDbSession _rawSession;
+    private readonly Type _rootType;
     private readonly List<GraphStep> _steps = new();
     private int? _depth;
     private int? _depthMin;
@@ -22,11 +24,22 @@ internal sealed class GraphQueryBuilder<TNode> : IGraphQuery<TNode> where TNode 
     private bool _includeOrigin;
     private string[]? _fetchRelations;
     private string? _filterSurql;
+    private static Func<TNode, string?>? _identityKeyAccessor;
 
     internal GraphQueryBuilder(IQuerySession session, ISurrealDbSession rawSession, string? filterSurql = null)
+        : this(session, rawSession, typeof(TNode), filterSurql)
+    {
+    }
+
+    private GraphQueryBuilder(
+        IQuerySession session,
+        ISurrealDbSession rawSession,
+        Type rootType,
+        string? filterSurql = null)
     {
         _session = session;
         _rawSession = rawSession;
+        _rootType = rootType;
         _filterSurql = filterSurql;
     }
 
@@ -148,13 +161,30 @@ internal sealed class GraphQueryBuilder<TNode> : IGraphQuery<TNode> where TNode 
         if (plan.Steps.Count == 0)
         {
             var sql = GraphSurrealQLGenerator.Generate(plan);
+            if (TryGetPocoIdentityProperty(out var identityProperty))
+            {
+                var response = await _rawSession.RawQuery(sql, null, ct).ConfigureAwait(false);
+                var items = Internals.Cbor.CborResultReader.ReadPocoResult(response, 0);
+                return InternalSessionBase.DeserializePocoFromList<TNode>(items, identityProperty);
+            }
+
             return await _session.RawQueryAsync<TNode>(sql, null, ct).ConfigureAwait(false);
         }
 
         var runtimeSql = GenerateRuntimeValueQuery(plan);
+        if (TryGetPocoIdentityProperty(out var nestedIdentityProperty))
+        {
+            var response = await _rawSession.RawQuery(runtimeSql, null, ct).ConfigureAwait(false);
+            var nestedItems = Internals.Cbor.CborResultReader.ReadPocoNestedResult(response, 0);
+            var pocoResults = nestedItems
+                .SelectMany(items => InternalSessionBase.DeserializePocoFromList<TNode>(items, nestedIdentityProperty))
+                .ToList();
+            return plan.CollectAll ? DeduplicateByIdentity(pocoResults) : pocoResults;
+        }
+
         var nested = await _session.RawQueryAsync<List<TNode>>(runtimeSql, null, ct).ConfigureAwait(false);
         var results = nested.SelectMany(static items => items).ToList();
-        return plan.CollectAll ? DeduplicateByRecordId(results) : results;
+        return plan.CollectAll ? DeduplicateByIdentity(results) : results;
     }
 
     public async Task<TNode?> FirstOrDefaultAsync(CancellationToken ct = default)
@@ -280,8 +310,26 @@ internal sealed class GraphQueryBuilder<TNode> : IGraphQuery<TNode> where TNode 
         return sb.ToString();
     }
 
-    private static List<TNode> DeduplicateByRecordId(List<TNode> results)
+    private List<TNode> DeduplicateByIdentity(List<TNode> results)
     {
+        if (_identityKeyAccessor is null && _session is InternalSessionBase sessionBase)
+        {
+            var mapping = sessionBase.StoreOptions.Schema.Mappings.GetValueOrDefault(typeof(TNode));
+            if (mapping?.IdentityProperty is { } propName)
+            {
+                var prop = typeof(TNode).GetProperty(propName);
+                if (prop is not null && prop.CanRead)
+                {
+                    var param = Expression.Parameter(typeof(TNode), "e");
+                    var access = Expression.Property(param, prop);
+                    var toString = Expression.Call(
+                        Expression.Convert(access, typeof(object)),
+                        typeof(object).GetMethod("ToString", Type.EmptyTypes)!);
+                    _identityKeyAccessor = Expression.Lambda<Func<TNode, string?>>(toString, param).Compile();
+                }
+            }
+        }
+
         var seen = new HashSet<string>();
         var deduped = new List<TNode>(results.Count);
 
@@ -289,15 +337,31 @@ internal sealed class GraphQueryBuilder<TNode> : IGraphQuery<TNode> where TNode 
         {
             var key = result switch
             {
-                SurrealDb.Net.Models.Record record when record.Id is not null => record.Id.ToString()!,
+                Record record when record.Id is not null => record.Id.ToString()!,
+                _ when _identityKeyAccessor is not null => _identityKeyAccessor(result),
                 _ => result.GetHashCode().ToString(System.Globalization.CultureInfo.InvariantCulture)
             };
 
-            if (seen.Add(key))
+            if (key is not null && seen.Add(key))
                 deduped.Add(result);
         }
 
         return deduped;
+    }
+
+    private bool TryGetPocoIdentityProperty(out string? identityProperty)
+    {
+        identityProperty = null;
+
+        if (_session is not InternalSessionBase sessionBase)
+            return false;
+
+        var mapping = sessionBase.StoreOptions.Schema.Mappings.GetValueOrDefault(typeof(TNode));
+        if (mapping?.IdentityProperty is null)
+            return false;
+
+        identityProperty = mapping.IdentityProperty;
+        return true;
     }
 
     private GraphQueryBuilder<TTarget> AddStep<TTarget>(
@@ -307,7 +371,7 @@ internal sealed class GraphQueryBuilder<TNode> : IGraphQuery<TNode> where TNode 
         GraphTargetKind targetKind = GraphTargetKind.Typed) where TTarget : class
     {
         // Copy current state to new builder
-        var builder = new GraphQueryBuilder<TTarget>(_session, _rawSession, _filterSurql);
+        var builder = new GraphQueryBuilder<TTarget>(_session, _rawSession, _rootType, _filterSurql);
         builder._steps.AddRange(_steps);
         builder._steps.Add(new GraphStep
         {
@@ -334,7 +398,7 @@ internal sealed class GraphQueryBuilder<TNode> : IGraphQuery<TNode> where TNode 
     {
         return new GraphQueryPlan
         {
-            NodeType = typeof(TNode),
+            NodeType = _rootType,
             Steps = new List<GraphStep>(_steps),
             Depth = _depth,
             DepthMin = _depthMin,
