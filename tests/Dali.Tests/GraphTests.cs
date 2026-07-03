@@ -1,4 +1,3 @@
-using System.Reflection;
 using SurrealDb.Net.Models;
 using TUnit.Core;
 
@@ -18,251 +17,8 @@ public class Project : Record
     public string Name { get; set; } = "";
 }
 
-// ═══════════════════════════════════════════════
-// PART 1: Reflection Tests (no database needed)
-// ═══════════════════════════════════════════════
-
-public class GraphReflectionTests
+public class Follows : EdgeRecord
 {
-    [Test]
-    public async Task EdgeRecord_ExtendsRelationRecord()
-    {
-        typeof(EdgeRecord).BaseType.ShouldBe(typeof(RelationRecord));
-    }
-
-    [Test]
-    public async Task Knows_IsEdgeRecord()
-    {
-        typeof(Knows).IsSubclassOf(typeof(EdgeRecord)).ShouldBeTrue();
-    }
-
-    [Test]
-    public async Task EdgeRecord_HasInProperty()
-    {
-        var prop = typeof(EdgeRecord).GetProperty("In");
-        prop.ShouldNotBeNull();
-        prop!.PropertyType.ShouldBe(typeof(RecordId));
-    }
-
-    [Test]
-    public async Task EdgeRecord_HasOutProperty()
-    {
-        var prop = typeof(EdgeRecord).GetProperty("Out");
-        prop.ShouldNotBeNull();
-        prop!.PropertyType.ShouldBe(typeof(RecordId));
-    }
-
-    [Test]
-    public async Task IGraphQuery_HasOutMethod()
-    {
-        var type = typeof(IGraphQuery<object>);
-        // Three overloads: Out<TTarget>(string), Out<TTarget>(string[]), and Out<TTarget, TEdge>()
-        var methods = type.GetMethods()
-            .Where(m => m.Name == "Out" && m.IsGenericMethod)
-            .ToList();
-        methods.Count.ShouldBe(3);
-        methods.All(m => m.ReturnType.IsGenericType).ShouldBeTrue();
-    }
-
-    [Test]
-    public async Task IGraphQuery_HasInMethod()
-    {
-        var type = typeof(IGraphQuery<object>);
-        var methods = type.GetMethods()
-            .Where(m => m.Name == "In" && m.IsGenericMethod)
-            .ToList();
-        methods.Count.ShouldBeGreaterThanOrEqualTo(1);
-    }
-
-    [Test]
-    public async Task IGraphQuery_HasBothMethod()
-    {
-        var type = typeof(IGraphQuery<object>);
-        type.GetMethods().Count(m => m.Name == "Both" && m.IsGenericMethod)
-            .ShouldBeGreaterThanOrEqualTo(1);
-    }
-
-    [Test]
-    public async Task IGraphQuery_HasDepthMethod()
-    {
-        var type = typeof(IGraphQuery<object>);
-        var methods = type.GetMethods().Where(m => m.Name == "Depth").ToList();
-        methods.Count.ShouldBe(3); // Depth(), Depth(int), Depth(int, int)
-    }
-
-    [Test]
-    public async Task IGraphQuery_HasShortestPathMethod()
-    {
-        var method = typeof(IGraphQuery<object>).GetMethod("ShortestPath");
-        method.ShouldNotBeNull();
-        method!.GetParameters()[0].ParameterType.ShouldBe(typeof(string));
-    }
-
-    [Test]
-    public async Task IGraphQuery_HasReturnPathMethod()
-    {
-        typeof(IGraphQuery<object>).GetMethod("ReturnPath").ShouldNotBeNull();
-    }
-
-    [Test]
-    public async Task IGraphQuery_HasCollectAllMethod()
-    {
-        typeof(IGraphQuery<object>).GetMethod("CollectAll").ShouldNotBeNull();
-    }
-
-    [Test]
-    public async Task IGraphQuery_HasIncludeIntermediateMethod()
-    {
-        typeof(IGraphQuery<object>).GetMethod("IncludeIntermediate").ShouldNotBeNull();
-    }
-
-    [Test]
-    public async Task IGraphQuery_HasIncludeOriginMethod()
-    {
-        typeof(IGraphQuery<object>).GetMethod("IncludeOrigin").ShouldNotBeNull();
-    }
-
-    [Test]
-    public async Task IGraphQuery_HasFetchMethod()
-    {
-        typeof(IGraphQuery<object>).GetMethod("Fetch").ShouldNotBeNull();
-    }
-
-    [Test]
-    public async Task IGraphQuery_HasToListAsyncMethod()
-    {
-        typeof(IGraphQuery<object>).GetMethod("ToListAsync").ShouldNotBeNull();
-    }
-
-    [Test]
-    public async Task IGraphQuery_HasFirstOrDefaultAsyncMethod()
-    {
-        typeof(IGraphQuery<object>).GetMethod("FirstOrDefaultAsync").ShouldNotBeNull();
-    }
-
-    [Test]
-    public async Task IGraphQuery_HasToPathListAsyncMethod()
-    {
-        typeof(IGraphQuery<object>).GetMethod("ToPathListAsync").ShouldNotBeNull();
-    }
-
-    [Test]
-    public async Task IGraphQuery_HasGenericOutMethod()
-    {
-        var method = typeof(IGraphQuery<object>).GetMethods()
-            .FirstOrDefault(m => m.Name == "Out" && m.IsGenericMethod && m.GetGenericArguments().Length == 2);
-        method.ShouldNotBeNull();
-    }
-
-    [Test]
-    public async Task IGraphQuery_HasGenericInMethod()
-    {
-        var method = typeof(IGraphQuery<object>).GetMethods()
-            .FirstOrDefault(m => m.Name == "In" && m.IsGenericMethod && m.GetGenericArguments().Length == 2);
-        method.ShouldNotBeNull();
-    }
-
-    [Test]
-    public async Task IGraphQuery_HasGenericBothMethod()
-    {
-        var method = typeof(IGraphQuery<object>).GetMethods()
-            .FirstOrDefault(m => m.Name == "Both" && m.IsGenericMethod && m.GetGenericArguments().Length == 2);
-        method.ShouldNotBeNull();
-    }
-
-    [Test]
-    public async Task IQuerySession_HasGraphMethod()
-    {
-        var method = typeof(IQuerySession).GetMethod("Graph");
-        method.ShouldNotBeNull();
-        method!.IsGenericMethod.ShouldBeTrue();
-        method.ReturnType.IsGenericType.ShouldBeTrue();
-        method.ReturnType.GetGenericTypeDefinition().ShouldBe(typeof(IGraphQuery<>));
-    }
-
-    [Test]
-    public async Task GraphNode_HasIdAndTable()
-    {
-        var idProp = typeof(GraphNode).GetProperty("Id");
-        idProp.ShouldNotBeNull();
-        idProp!.PropertyType.ShouldBe(typeof(string));
-
-        var tableProp = typeof(GraphNode).GetProperty("Table");
-        tableProp.ShouldNotBeNull();
-        tableProp!.PropertyType.ShouldBe(typeof(string));
-    }
-
-    [Test]
-    public async Task GraphPath_HasNodesAndEdges()
-    {
-        var nodesProp = typeof(GraphPath).GetProperty("Nodes");
-        nodesProp.ShouldNotBeNull();
-        nodesProp!.PropertyType.ShouldBe(typeof(List<GraphNode>));
-
-        var edgesProp = typeof(GraphPath).GetProperty("Edges");
-        edgesProp.ShouldNotBeNull();
-        edgesProp!.PropertyType.ShouldBe(typeof(List<GraphEdge>));
-    }
-
-    [Test]
-    public async Task GraphEdge_HasIdInOut()
-    {
-        var idProp = typeof(GraphEdge).GetProperty("Id");
-        idProp.ShouldNotBeNull();
-        idProp!.PropertyType.ShouldBe(typeof(string));
-
-        var inProp = typeof(GraphEdge).GetProperty("In");
-        inProp.ShouldNotBeNull();
-        inProp!.PropertyType.ShouldBe(typeof(string));
-
-        var outProp = typeof(GraphEdge).GetProperty("Out");
-        outProp.ShouldNotBeNull();
-        outProp!.PropertyType.ShouldBe(typeof(string));
-    }
-
-    [Test]
-    public async Task EdgeRecord_IsAbstract()
-    {
-        typeof(EdgeRecord).IsAbstract.ShouldBeTrue();
-    }
-
-    [Test]
-    public async Task IGraphQuery_HasOutAnyMethod()
-    {
-        typeof(IGraphQuery<object>).GetMethod("OutAny").ShouldNotBeNull();
-    }
-
-    [Test]
-    public async Task IGraphQuery_HasInAnyMethod()
-    {
-        typeof(IGraphQuery<object>).GetMethod("InAny").ShouldNotBeNull();
-    }
-
-    [Test]
-    public async Task IGraphQuery_HasAnyEdgeMethod()
-    {
-        typeof(IGraphQuery<object>).GetMethod("AnyEdge").ShouldNotBeNull();
-    }
-
-    [Test]
-    public async Task IGraphQuery_HasCountAsyncMethod()
-    {
-        typeof(IGraphQuery<object>).GetMethod("CountAsync").ShouldNotBeNull();
-    }
-
-    [Test]
-    public async Task IGraphQuery_HasOutGenericOverloads()
-    {
-        // Verify Out has both string and string[] overloads
-        var type = typeof(IGraphQuery<object>);
-        var outMethods = type.GetMethods().Where(m => m.Name == "Out" && m.IsGenericMethod).ToList();
-        var hasStringParam = outMethods.Any(m =>
-            m.GetParameters().Length == 1 && m.GetParameters()[0].ParameterType == typeof(string));
-        var hasArrayParam = outMethods.Any(m =>
-            m.GetParameters().Length == 1 && m.GetParameters()[0].ParameterType == typeof(string[]));
-        hasStringParam.ShouldBeTrue();
-        hasArrayParam.ShouldBeTrue();
-    }
 }
 
 // ═══════════════════════════════════════════════
@@ -694,6 +450,178 @@ public class GraphIntegrationTests
     {
         var tableName = Dali.Metadata.MetadataDispatch.GetTableName(typeof(Knows));
         tableName.ShouldBe("knows");
+    }
+
+    // ── Behavioral graph traversal tests (result verification) ──
+
+    [Test]
+    public async Task Graph_Out_ReturnsCorrectNode()
+    {
+        await using var store = await TestHarness.CreateStoreAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
+
+        await SetupSocialGraphAsync(session);
+
+        // Starting from Alice, traverse knows edges outward
+        var results = await session.Graph<Person>()
+            .Where(p => p.Name == "Alice")
+            .Out<Person>("knows")
+            .ToListAsync();
+
+        results.Count.ShouldBe(1);
+        results[0].Name.ShouldBe("Bob");
+    }
+
+    [Test]
+    public async Task Graph_In_ReturnsCorrectNode()
+    {
+        await using var store = await TestHarness.CreateStoreAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
+
+        await SetupSocialGraphAsync(session);
+
+        // Starting from Bob, traverse knows edges inward (who knows Bob?)
+        var results = await session.Graph<Person>()
+            .Where(p => p.Name == "Bob")
+            .In<Person>("knows")
+            .ToListAsync();
+
+        results.Count.ShouldBe(1);
+        results[0].Name.ShouldBe("Alice");
+    }
+
+    [Test]
+    public async Task Graph_Both_ReturnsAllConnected()
+    {
+        await using var store = await TestHarness.CreateStoreAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
+
+        await SetupSocialGraphAsync(session);
+
+        // Starting from Bob, traverse both directions — should find Alice (in) and Charlie (out)
+        var results = await session.Graph<Person>()
+            .Where(p => p.Name == "Bob")
+            .Both<Person>("knows")
+            .ToListAsync();
+
+        results.Count.ShouldBe(2);
+        results.Select(r => r.Name).OrderBy(n => n).ShouldBe(["Alice", "Charlie"]);
+    }
+
+    [Test]
+    public async Task Graph_Depth_LimitsTraversalHops()
+    {
+        await using var store = await TestHarness.CreateStoreAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
+
+        await SetupSocialGraphAsync(session);
+
+        // Depth 1 from Alice: only immediate neighbors (Bob)
+        var depth1 = await session.Graph<Person>()
+            .Where(p => p.Name == "Alice")
+            .Out<Person>("knows")
+            .Depth(1)
+            .ToListAsync();
+
+        depth1.Count.ShouldBe(1);
+        depth1[0].Name.ShouldBe("Bob");
+
+        // Depth 2 from Alice: Bob (1 hop) and Charlie (2 hops)
+        var depth2 = await session.Graph<Person>()
+            .Where(p => p.Name == "Alice")
+            .Out<Person>("knows")
+            .Depth(2)
+            .ToListAsync();
+
+        depth2.Select(r => r.Name).OrderBy(n => n).ShouldBe(["Bob", "Charlie"]);
+    }
+
+    [Test]
+    public async Task Graph_MultiHop_Chaining()
+    {
+        await using var store = await TestHarness.CreateStoreAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
+
+        await SetupSocialGraphAsync(session);
+
+        // Two chained Out hops from Alice: Alice → Bob → Charlie
+        var results = await session.Graph<Person>()
+            .Where(p => p.Name == "Alice")
+            .Out<Person>("knows")
+            .Out<Person>("knows")
+            .ToListAsync();
+
+        results.Count.ShouldBe(1);
+        results[0].Name.ShouldBe("Charlie");
+    }
+
+    [Test]
+    public async Task Graph_FirstOrDefaultAsync_ReturnsCorrectNode()
+    {
+        await using var store = await TestHarness.CreateStoreAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
+
+        await SetupSocialGraphAsync(session);
+
+        var result = await session.Graph<Person>()
+            .Where(p => p.Name == "Alice")
+            .Out<Person>("knows")
+            .FirstOrDefaultAsync();
+
+        result.ShouldNotBeNull();
+        result.Name.ShouldBe("Bob");
+    }
+
+    [Test]
+    public async Task Graph_CountAsync_ReturnsCorrectCount()
+    {
+        await using var store = await TestHarness.CreateStoreAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
+
+        await SetupSocialGraphAsync(session);
+
+        var count = await session.Graph<Person>()
+            .Where(p => p.Name == "Alice")
+            .Out<Person>("knows")
+            .CountAsync();
+
+        count.ShouldBe(1);
+    }
+
+    /// <summary>Creates three persons with two edge types: Alice→Bob (knows), Alice→Charlie (follows).</summary>
+    private async Task SetupSocialAndFollowsGraphAsync(IDocumentSession session)
+    {
+        session.Store(new Person { Name = "Alice" });
+        session.Store(new Person { Name = "Bob" });
+        session.Store(new Person { Name = "Charlie" });
+        await session.SaveChangesAsync();
+
+        var people = await session.Query<Person>().ToListAsync();
+        var aliceId = people.First(p => p.Name == "Alice").Id;
+        var bobId = people.First(p => p.Name == "Bob").Id;
+        var charlieId = people.First(p => p.Name == "Charlie").Id;
+
+        session.Relate<Knows>(aliceId!, bobId!, new Knows { Kind = "friend", Since = 2020 });
+        session.Relate<Follows>(aliceId!, charlieId!, new Follows());
+        await session.SaveChangesAsync();
+    }
+
+    [Test]
+    public async Task Graph_MultiEdge_ReturnsNodesAcrossEdgeTypes()
+    {
+        await using var store = await TestHarness.CreateStoreAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
+
+        await SetupSocialAndFollowsGraphAsync(session);
+
+        // Alice knows Bob and follows Charlie — both edge types from Alice
+        var results = await session.Graph<Person>()
+            .Where(p => p.Name == "Alice")
+            .Out<Person>(new[] { "knows", "follows" })
+            .ToListAsync();
+
+        results.Count.ShouldBe(2);
+        results.Select(r => r.Name).OrderBy(n => n).ShouldBe(["Bob", "Charlie"]);
     }
 }
 

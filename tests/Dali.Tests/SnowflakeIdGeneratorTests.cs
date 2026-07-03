@@ -199,12 +199,4 @@ public class SnowflakeIdGeneratorTests
             $"Expected {threads * idsPerThread} unique IDs, got {distinct}");
     }
 
-    // ─── Interface Contract ──────────────────────────────────
-
-    [Test]
-    public async Task Implements_IIdGenerator()
-    {
-        var gen = new SnowflakeIdGenerator();
-        gen.ShouldBeAssignableTo<IIdGenerator>();
-    }
 }

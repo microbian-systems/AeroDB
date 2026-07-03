@@ -180,6 +180,37 @@ public class DaemonHealthCheckTests
         result.Description!.ShouldContain("none");               // last error reported as "none"
     }
 
+    // ─── Daemon lifecycle — start/stop ──────────────────────────────
+
+    [Test]
+    public async Task Daemon_lifecycle_start_stop()
+    {
+        // Create a store with events enabled (required for daemon usage)
+        var store = new DocumentStore(new StoreOptions { Events = { Enabled = true } });
+
+        // Daemon should be null initially (not started)
+        store.Daemon.ShouldBeNull();
+
+        // Create and assign daemon to the store
+        var daemon = new AsyncDaemon(store, []);
+        store.Daemon = daemon;
+
+        store.Daemon.ShouldNotBeNull();
+        store.Daemon.Health.IsRunning.ShouldBeFalse();
+
+        // Start — with no async projections, no shards are created but
+        // Health.IsRunning is set to true
+        daemon.Start(TimeSpan.FromSeconds(5));
+        store.Daemon.Health.IsRunning.ShouldBeTrue();
+
+        // Stop — verify clean shutdown
+        await daemon.StopAsync();
+        store.Daemon.Health.IsRunning.ShouldBeFalse();
+
+        // Dispose — Idempotent, should not throw
+        await daemon.DisposeAsync();
+    }
+
     // ─── Helpers ──────────────────────────────────────────────────────
 
     /// <summary>

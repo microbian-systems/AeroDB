@@ -1,3 +1,4 @@
+using System.IO;
 using SurrealDb.Net.Models;
 using TUnit.Core;
 
@@ -18,6 +19,11 @@ public class AdvOtherDoc : Record
 public class AdvThirdDoc : Record
 {
     public bool Flag { get; set; }
+}
+
+public class QueueTestDoc : Record
+{
+    public string Value { get; set; } = "";
 }
 
 // ─── DaliAdvanced operations tests ─────────────────────────────────
@@ -227,5 +233,75 @@ public class DaliAdvancedOperationsTests
         diff.ShouldNotBeNull();
         diff.Differences.ShouldBeEmpty();
         diff.HasChanges.ShouldBeFalse();
+    }
+
+    // ── StreamJson ──────────────────────────────────────────────────
+
+    [Test]
+    public async Task StreamJson_WritesQueryResultsAsJson()
+    {
+        await using var store = await TestHarness.CreateStoreAsync(o =>
+        {
+            o.Schema.For<Person>();
+        });
+
+        await SeedAsync(store, new Person { Name = "Stream Person", Age = 42 });
+
+        await using var query = await store.QuerySessionAsync();
+        using var stream = new MemoryStream();
+
+        await query.StreamJson<Person>(stream, "SELECT * FROM person", parameters: null);
+
+        stream.Position = 0;
+        var json = new StreamReader(stream).ReadToEnd();
+
+        json.ShouldContain("Stream Person");
+        json.ShouldContain("42");
+    }
+
+    [Test]
+    public async Task StreamJson_WithPlaceholder_WritesJsonToStream()
+    {
+        await using var store = await TestHarness.CreateStoreAsync(o =>
+        {
+            o.Schema.For<Person>();
+        });
+
+        await SeedAsync(store, new Person { Name = "Placeholder Person", Age = 99 });
+
+        await using var query = await store.QuerySessionAsync();
+        using var stream = new MemoryStream();
+
+        // The placeholder is replaced with the database name; if it doesn't appear
+        // in the SQL, the replacement is a no-op. The overload still functions correctly.
+        await query.StreamJson<Person>(stream, "{database}", "SELECT * FROM person", parameters: null);
+
+        stream.Position = 0;
+        var json = new StreamReader(stream).ReadToEnd();
+
+        json.ShouldContain("Placeholder Person");
+        json.ShouldContain("99");
+    }
+
+    // ── QueueSqlCommand ─────────────────────────────────────────────
+
+    [Test]
+    public async Task QueueSqlCommand_ExecutesDuringSaveChanges()
+    {
+        await using var store = await TestHarness.CreateStoreAsync();
+
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
+
+        // Note: SurrealDB in-memory engine uses CBOR with PascalCase field names,
+        // so the field name must match the C# property name exactly.
+        session.QueueSqlCommand("{database}", "CREATE queue_test_doc SET Value = $p0", "queued-value");
+        await session.SaveChangesAsync();
+
+        // Verify via RawQueryAsync (bypasses any LINQ-level field mapping)
+        await using var query = await store.QuerySessionAsync();
+        var results = await query.RawQueryAsync<QueueTestDoc>("SELECT * FROM queue_test_doc");
+
+        results.Count.ShouldBe(1);
+        results[0].Value.ShouldBe("queued-value");
     }
 }

@@ -202,19 +202,11 @@ public class EventTriggerTests
     [Test]
     public async Task EventTriggerManager_RemoveTrigger_BuildsCorrectSurql()
     {
-        // RemoveTriggerAsync uses a direct REMOVE EVENT command — verify via the public API
-        // by checking the method exists and accepts the expected parameters.
-        var manager = new EventTriggerManager();
-        var method = typeof(EventTriggerManager).GetMethod("RemoveTriggerAsync",
-            BindingFlags.Public | BindingFlags.Instance);
+        var surql = (string)typeof(EventTriggerManager)
+            .GetMethod("BuildRemoveEventSurql", BindingFlags.NonPublic | BindingFlags.Static)!
+            .Invoke(null, ["old_trigger", "user"])!;
 
-        method.ShouldNotBeNull();
-        var parameters = method.GetParameters();
-        parameters.Length.ShouldBe(4);
-        parameters[0].Name.ShouldBe("session");
-        parameters[1].Name.ShouldBe("name");
-        parameters[2].Name.ShouldBe("table");
-        parameters[3].Name.ShouldBe("ct");
+        surql.ShouldBe("REMOVE EVENT old_trigger ON TABLE user;");
     }
 
     [Test]

@@ -132,13 +132,6 @@ public class DaliOpsTests
         session.DidNotReceive().Delete(Arg.Any<MyEntity>());
     }
 
-    [Test]
-    public void IDaliOp_Implements_ISideEffect()
-    {
-        // Verify via reflection that IDaliOp extends ISideEffect
-        var iface = typeof(IDaliOp).GetInterfaces();
-        iface.ShouldContain(typeof(ISideEffect));
-    }
 
     // ====================================================================
     // 2. ScopedDocumentSessionHolder

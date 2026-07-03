@@ -368,28 +368,6 @@ public class SchemaGapsTests
         surql.ShouldContain("SIGNUP ( CREATE user SET email = $email )");
     }
 
-    // ── Gap #45: BulkInsert on IDocumentSession ───────────────────
-
-    [Test]
-    public void BulkInsert_PromotedToInterface()
-    {
-        var sessionType = typeof(IDocumentSession);
-        var method = sessionType.GetMethod("BulkInsertAsync");
-        method.ShouldNotBeNull();
-        method.ReturnType.ShouldBe(typeof(Task<int>));
-    }
-
-    // ── Gap #24: IBatchedQuery raw SQL overload ───────────────────
-
-    [Test]
-    public void IBatchedQuery_HasRawSqlOverload()
-    {
-        var batchType = typeof(IBatchedQuery);
-        var method = batchType.GetMethod("QueryRawAsync");
-        method.ShouldNotBeNull();
-        method.ReturnType.ShouldBe(typeof(Task<IReadOnlyList<string>>));
-    }
-
     // ── Gap #52: Live projection in daemon ────────────────────────
 
     [Test]
@@ -422,75 +400,6 @@ public class SchemaGapsTests
         ((int)DocumentTracking.DirtyTracking).ShouldBe(2);
         ((int)DocumentTracking.IdentityOnly).ShouldBe(1);
         ((int)DocumentTracking.None).ShouldBe(0);
-    }
-
-    // ── Advanced Clean API ─────────────────────────────────────
-
-    [Test]
-    public void Advanced_HasDiagnostics()
-    {
-        var storeType = typeof(IDaliAdvanced);
-        var prop = storeType.GetProperty("Diagnostics");
-        prop.ShouldNotBeNull();
-        prop.PropertyType.ShouldBe(typeof(IDiagnostics));
-    }
-
-    [Test]
-    public void Advanced_DeleteAllDocuments_ExistsOnInterface()
-    {
-        var advType = typeof(IDaliAdvanced);
-        var method = advType.GetMethod("DeleteAllDocumentsAsync");
-        method.ShouldNotBeNull();
-        method.IsGenericMethod.ShouldBeTrue();
-    }
-
-    [Test]
-    public void Advanced_DeleteAllEventData_ExistsOnInterface()
-    {
-        var advType = typeof(IDaliAdvanced);
-        var method = advType.GetMethod("DeleteAllEventDataAsync");
-        method.ShouldNotBeNull();
-    }
-
-    [Test]
-    public void Advanced_CompletelyRemove_ExistsOnInterface()
-    {
-        var advType = typeof(IDaliAdvanced);
-        var method = advType.GetMethod("CompletelyRemoveAsync");
-        method.ShouldNotBeNull();
-    }
-
-    [Test]
-    public void Advanced_DeleteDocumentsExcept_ExistsOnInterface()
-    {
-        var advType = typeof(IDaliAdvanced);
-        var method = advType.GetMethod("DeleteDocumentsExceptAsync");
-        method.ShouldNotBeNull();
-    }
-
-    [Test]
-    public void Advanced_ComputeSchemaDiff_ExistsOnInterface()
-    {
-        var advType = typeof(IDaliAdvanced);
-        var method = advType.GetMethod("ComputeSchemaDiffAsync");
-        method.ShouldNotBeNull();
-        method.ReturnType.ShouldBe(typeof(Task<SchemaDiff>));
-    }
-
-    [Test]
-    public void Diagnostics_HasPreviewCommand()
-    {
-        var diagType = typeof(IDiagnostics);
-        var method = diagType.GetMethod("PreviewCommandAsync");
-        method.ShouldNotBeNull();
-    }
-
-    [Test]
-    public void Diagnostics_HasExplainPlan()
-    {
-        var diagType = typeof(IDiagnostics);
-        var method = diagType.GetMethod("ExplainPlanAsync");
-        method.ShouldNotBeNull();
     }
 
     [Test]
@@ -554,38 +463,6 @@ public class SchemaGapsTests
     {
         // Field exists — can't easily create session without store
         ((int)DocumentTracking.None).ShouldBe(0);
-    }
-
-    // ── Gap #43: ISubscriber ────────────────────────────────────
-
-    [Test]
-    public void ISubscriber_Interface_Exists()
-    {
-        var subType = typeof(ISubscriber<>);
-        subType.ShouldNotBeNull();
-        subType.IsGenericType.ShouldBeTrue();
-    }
-
-    // ── Gap #49: Compiled query on store ─────────────────────────
-
-    [Test]
-    public void ICompiledQuery_On_Store_Exists()
-    {
-        var storeType = typeof(IDocumentStore);
-        var method = storeType.GetMethod("QueryAsync");
-        method.ShouldNotBeNull();
-        method.IsGenericMethod.ShouldBeTrue();
-    }
-
-    // ── Gap #51: Projection Name ─────────────────────────────────
-
-    [Test]
-    public void Projection_Has_Name_Property()
-    {
-        var iface = typeof(IProjection);
-        var prop = iface.GetProperty("Name");
-        prop.ShouldNotBeNull();
-        prop.PropertyType.ShouldBe(typeof(string));
     }
 
     [Test]

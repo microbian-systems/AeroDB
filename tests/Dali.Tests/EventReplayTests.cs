@@ -700,4 +700,213 @@ public class EventReplayTests
         var events = await session.Events.FetchStream(sid);
         events.Count.ShouldBe(2);
     }
+
+    // ═══════════════════════════════════════════
+    //  Section I: Behavioral Event Lifecycle
+    // ═══════════════════════════════════════════
+
+    // ──────────────────────────────────────────────
+    //  Simple aggregate for compact stream tests
+    // ──────────────────────────────────────────────
+
+    public class CounterState
+    {
+        public int Count { get; set; }
+        public void Apply(CounterIncremented e) => Count += e.Amount;
+        public void Apply(CounterDecremented e) => Count -= e.Amount;
+    }
+
+    public record CounterIncremented(int Amount);
+    public record CounterDecremented(int Amount);
+
+    [Test]
+    public async Task CompactStream_compresses_multi_event_stream_into_single_snapshot()
+    {
+        await using var store = await TestHarness.CreateStoreAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
+
+        var sid = Guid.NewGuid().ToString("N");
+        await session.Events.StartStream(sid, new object[]
+        {
+            new CounterIncremented(1),
+            new CounterIncremented(2),
+            new CounterDecremented(1),
+            new CounterIncremented(3),
+            new CounterDecremented(2)
+        });
+
+        await session.Events.CompactStreamAsync<CounterState>(sid);
+
+        var events = await session.Events.FetchStream(sid);
+        events.Count.ShouldBe(1);
+
+        var snapshot = events[0].Data;
+        snapshot.ShouldBeOfType<CounterState>();
+        ((CounterState)snapshot).Count.ShouldBe(3); // 1+2-1+3-2 = 3
+    }
+
+    [Test]
+    public async Task CompactStream_with_KeepRecentEvents_retains_specified_events()
+    {
+        await using var store = await TestHarness.CreateStoreAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
+
+        var sid = Guid.NewGuid().ToString("N");
+        await session.Events.StartStream(sid, new object[]
+        {
+            new CounterIncremented(1),
+            new CounterIncremented(2),
+            new CounterIncremented(3),
+            new CounterIncremented(4),
+            new CounterIncremented(5)
+        });
+
+        await session.Events.CompactStreamAsync<CounterState>(sid, o => o.KeepRecentEvents = 2);
+
+        var events = await session.Events.FetchStream(sid);
+        // Snapshot + 2 retained recent events = 3 total
+        events.Count.ShouldBe(3);
+
+        // Snapshot event is present with aggregated state
+        var snapshotEvent = events.FirstOrDefault(e => e.Data is CounterState);
+        snapshotEvent.ShouldNotBeNull();
+        ((CounterState)snapshotEvent.Data!).Count.ShouldBe(15); // 1+2+3+4+5
+
+        // Retained original events are present
+        var retained = events.Where(e => e.Data is CounterIncremented).ToList();
+        retained.Count.ShouldBe(2);
+    }
+
+    [Test]
+    public async Task OverwriteEvent_replaces_event_data_preserving_metadata()
+    {
+        await using var store = await TestHarness.CreateStoreAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
+
+        var sid = Guid.NewGuid().ToString("N");
+        var originalEnvelopes = await session.Events.Append(sid, new object[]
+        {
+            new ScoreUpdated { Delta = 10, Reason = "original" }
+        });
+        var original = originalEnvelopes[0];
+
+        // Build a replacement event with updated data but same identity metadata
+        var modifiedEvent = new Event<ScoreUpdated>(
+            new ScoreUpdated { Delta = 99, Reason = "overwritten" },
+            original.Version,
+            original.Sequence,
+            original.Timestamp,
+            original.StreamId,
+            original.StreamKey,
+            original.Headers
+        );
+        await session.Events.OverwriteEventAsync(modifiedEvent);
+
+        var events = await session.Events.FetchStream(sid);
+        events.Count.ShouldBe(1);
+
+        var evt = events[0];
+        evt.Version.ShouldBe(original.Version);
+        evt.Sequence.ShouldBe(original.Sequence);
+        evt.Timestamp.ShouldBe(original.Timestamp);
+        evt.StreamId.ShouldBe(original.StreamId);
+
+        evt.Data.ShouldBeOfType<ScoreUpdated>();
+        ((ScoreUpdated)evt.Data!).Delta.ShouldBe(99);
+        ((ScoreUpdated)evt.Data!).Reason.ShouldBe("overwritten");
+    }
+
+    [Test]
+    public async Task DeleteSingleEvent_soft_deletes_target_event()
+    {
+        await using var store = await TestHarness.CreateStoreAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
+
+        var sid = Guid.NewGuid().ToString("N");
+        var envelopes = await session.Events.Append(sid, new object[]
+        {
+            new ScoreUpdated { Delta = 1, Reason = "first" },
+            new ScoreUpdated { Delta = 2, Reason = "second" },
+            new ScoreUpdated { Delta = 3, Reason = "third" }
+        });
+
+        // Delete the middle event by its sequence number
+        await session.Events.DeleteSingleEventAsync(sid, envelopes[1].Sequence);
+
+        var events = await session.Events.FetchStream(sid);
+        events.Count.ShouldBe(3);
+
+        // First event unchanged
+        events[0].Data.ShouldBeOfType<ScoreUpdated>();
+        ((ScoreUpdated)events[0].Data!).Delta.ShouldBe(1);
+
+        // Middle event — soft-deleted; data payload is cleared but metadata preserved
+        events[1].Data.ShouldBeAssignableTo<string>();
+        ((string)events[1].Data!).ShouldBe("");
+        events[1].Version.ShouldBe(envelopes[1].Version);
+        events[1].Sequence.ShouldBe(envelopes[1].Sequence);
+        events[1].StreamId.ShouldBe(sid);
+
+        // Third event unchanged
+        events[2].Data.ShouldBeOfType<ScoreUpdated>();
+        ((ScoreUpdated)events[2].Data!).Delta.ShouldBe(3);
+    }
+
+    [Test]
+    public async Task ArchiveStream_marks_stream_as_archived()
+    {
+        await using var store = await TestHarness.CreateStoreAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
+
+        var sid = Guid.NewGuid().ToString("N");
+        await session.Events.StartStream(sid, new object[]
+        {
+            new PlayerRegistered { PlayerName = "ArchiveTest", Score = 100 }
+        });
+
+        await session.Events.ArchiveStream(sid);
+
+        var state = await session.Events.FetchStreamStateAsync(sid);
+        state.ShouldNotBeNull();
+        state.IsArchived.ShouldBeTrue();
+
+        // Append still succeeds after archiving (archive is informational, not a hard block)
+        await session.Events.Append(sid, 1, new object[]
+        {
+            new ScoreUpdated { Delta = 10, Reason = "post-archive" }
+        });
+
+        var events = await session.Events.FetchStream(sid);
+        events.Count.ShouldBe(2);
+    }
+
+    [Test]
+    public async Task ArchiveStream_guid_variant_marks_stream_as_archived()
+    {
+        await using var store = await TestHarness.CreateStoreAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
+
+        var sid = Guid.NewGuid();
+        await session.Events.StartStream(sid.ToString("D"), new object[]
+        {
+            new PlayerRegistered { PlayerName = "ArchiveGuidTest", Score = 200 }
+        });
+
+        // Call the Guid overload of ArchiveStream
+        await session.Events.ArchiveStream(sid);
+
+        // FetchStreamStateAsync with Guid overload
+        var state = await session.Events.FetchStreamStateAsync(sid);
+        state.ShouldNotBeNull();
+        state.IsArchived.ShouldBeTrue();
+
+        // Append still succeeds
+        await session.Events.Append(sid.ToString("D"), 1, new object[]
+        {
+            new ScoreUpdated { Delta = 20, Reason = "post-archive-guid" }
+        });
+
+        var events = await session.Events.FetchStream(sid.ToString("D"));
+        events.Count.ShouldBe(2);
+    }
 }

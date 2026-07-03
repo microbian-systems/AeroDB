@@ -121,15 +121,6 @@ public class DocumentSessionTransactionTests
         commitTracker.BeforeCommitCalled.ShouldBeTrue();
     }
 
-    [Test]
-    public async Task IDocumentSessionListener_HasNewTransactionHooks()
-    {
-        var type = typeof(IDocumentSessionListener);
-        var afterCommitMethod = type.GetMethod("AfterCommitAsync");
-        var beforeCommitMethod = type.GetMethod("BeforeCommitAsync");
-        afterCommitMethod.ShouldNotBeNull();
-        beforeCommitMethod.ShouldNotBeNull();
-    }
 }
 
 internal sealed class TestListener : IDocumentSessionListener
