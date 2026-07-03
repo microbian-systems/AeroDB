@@ -62,25 +62,31 @@ public class EntitySchemaTests
     }
 
     [Test]
-    public async Task Schema_For_string_throws_ArgumentException()
+    public async Task Schema_For_string_does_not_throw()
     {
+        // POCOs are now supported — validation is deferred to schema generation time.
+        // Schema.For<T>() should succeed for any type; the caller is responsible for
+        // configuring identity via .HasIdentity() if needed.
         var options = new StoreOptions { Namespace = "test", Database = "test" };
-        Should.Throw<ArgumentException>(() => options.Schema.For<string>());
+        var mapping = options.Schema.For<string>();
+        mapping.ShouldNotBeNull();
     }
 
     [Test]
-    public async Task Schema_For_int_throws_ArgumentException()
+    public async Task Schema_For_int_does_not_throw()
     {
         var options = new StoreOptions { Namespace = "test", Database = "test" };
-        Should.Throw<ArgumentException>(() => options.Schema.For<int>());
+        var mapping = options.Schema.For<int>();
+        mapping.ShouldNotBeNull();
     }
 
     [Test]
-    public async Task Schema_For_abstract_class_throws_ArgumentException()
+    public async Task Schema_For_abstract_class_does_not_throw()
     {
-        // Entity<TId> is abstract — should be rejected
+        // POCOs are now supported — validation is deferred to schema generation time.
         var options = new StoreOptions { Namespace = "test", Database = "test" };
-        Should.Throw<ArgumentException>(() => options.Schema.For<Entity<long>>());
+        var mapping = options.Schema.For<Entity<long>>();
+        mapping.ShouldNotBeNull();
     }
 
     [Test]

@@ -224,7 +224,23 @@ public abstract class InternalSessionBase : IAsyncDisposable
     }
 
     /// <summary>
-    /// Sets the tenant context for this session, scoping all subsequent operations to the given tenant.
+    /// Checks if <paramref name="type"/> derives from <c>Entity&lt;TId&gt;</c>.
+    /// Mirrors the source generator's <c>IsEntitySubclass</c> predicate.
+    /// </summary>
+    private static bool IsEntityBaseType(Type type)
+    {
+        var current = type;
+        while (current is not null)
+        {
+            if (current.IsGenericType && current.GetGenericTypeDefinition() == typeof(Entity<>))
+                return true;
+            current = current.BaseType;
+        }
+        return false;
+    }
+
+    /// <summary>
+    /// Loads multiple entities by their IDs with optional tenant filtering.
     /// </summary>
     public void SetTenant(string tenantId)
     {
@@ -274,9 +290,20 @@ public abstract class InternalSessionBase : IAsyncDisposable
             {
                 result = await DeserializeViaShimAsync<T>(loadSession, shimType, rid, ct).ConfigureAwait(false);
             }
-            else
+            else if (typeof(IRecord).IsAssignableFrom(typeof(T)))
             {
                 result = await loadSession.Select<T>(rid, ct).ConfigureAwait(false);
+            }
+            else if (IsEntityBaseType(typeof(T)))
+            {
+                // Entity<TId> without shim — Select<T> works because
+                // Dahomey.Cbor deserializes the body field "Id" to the typed Id property
+                result = await loadSession.Select<T>(rid, ct).ConfigureAwait(false);
+            }
+            else
+            {
+                // POCO path: use RawQuery to get dicts, then JSON round-trip
+                result = await LoadPocoAsync<T>(loadSession, table, id, ct).ConfigureAwait(false);
             }
 
             // Tenant isolation: if this session is tenant-scoped and the loaded entity
@@ -352,6 +379,191 @@ public abstract class InternalSessionBase : IAsyncDisposable
         if (toEntityMethod is null) return null;
 
         return (T?)toEntityMethod.Invoke(shim, null);
+    }
+
+    /// <summary>
+    /// Loads a POCO (non-IRecord, non-Entity&lt;TId&gt;) using RawQuery + object-based
+    /// deserialization to avoid CBOR RecordId type mismatch issues.
+    /// The native SurrealDB <c>id</c> field (e.g., <c>"table:42"</c>) cannot deserialize
+    /// to typed identity properties like <c>long</c>, so we read the response as objects,
+    /// extract the id, round-trip through JSON, and set identity manually.
+    /// </summary>
+    private async Task<T?> LoadPocoAsync<T>(ISurrealDbSession session, string table, string id, CancellationToken ct)
+        where T : class
+    {
+        var escapedId = id.Replace("`", "\\`");
+        var response = await session.RawQuery(
+            $"SELECT * FROM {table}:`{escapedId}`",
+            null,
+            ct).ConfigureAwait(false);
+
+        // Read raw CBOR data directly to avoid Dahomey.Cbor's ObjectConverter issue with maps.
+        var records = Dali.Internals.Cbor.CborResultReader.ReadPocoResult(response, 0);
+        if (records is not { Count: 1 })
+            return null;
+
+        var mapping = Options.Schema.Mappings.GetValueOrDefault(typeof(T));
+        return DeserializePocoFromList<T>(records, mapping?.IdentityProperty)[0];
+    }
+
+    /// <summary>
+    /// Deserializes a list of dictionary records to typed POCOs.
+    /// Serializes the dictionaries to JSON as an intermediate step, extracts the native
+    /// <c>id</c> field, then deserializes to <c>List&lt;T&gt;</c> and sets identity properties.
+    /// </summary>
+    internal static List<T> DeserializePocoFromList<T>(
+        List<Dictionary<string, object?>> records,
+        string? identityProperty = null)
+    {
+        if (records is null or { Count: 0 }) return [];
+
+        var nativeIds = NormalizePocoIdentityFields<T>(records, identityProperty);
+
+        // Serialize the cleaned dictionaries to JSON, then deserialize to typed POCOs
+        var jsonOpts = new System.Text.Json.JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        };
+        var json = System.Text.Json.JsonSerializer.Serialize(records);
+        var results = System.Text.Json.JsonSerializer.Deserialize<List<T>>(json, jsonOpts);
+        if (results is null) return [];
+
+        // Set identity properties from native ids
+        for (int j = 0; j < results.Count && j < nativeIds.Length; j++)
+        {
+            var nativeId = nativeIds[j];
+            if (nativeId is not null)
+            {
+                SetPocoIdentityFromRecordId(results[j]!, nativeId, identityProperty);
+            }
+        }
+
+        return results;
+    }
+
+    private static string?[] NormalizePocoIdentityFields<T>(
+        List<Dictionary<string, object?>> records,
+        string? identityProperty)
+    {
+        var nativeIds = new string?[records.Count];
+        var idProp = GetPocoIdentityProperty(typeof(T), identityProperty);
+
+        for (var i = 0; i < records.Count; i++)
+        {
+            var record = records[i];
+            var idEntries = record
+                .Where(kvp => string.Equals(kvp.Key, "id", StringComparison.OrdinalIgnoreCase))
+                .ToArray();
+
+            if (idEntries.Length == 0)
+            {
+                continue;
+            }
+
+            var nativeId = idEntries
+                .Select(kvp => ExtractRecordIdString(kvp.Value))
+                .FirstOrDefault(value => value?.Contains(':', StringComparison.Ordinal) == true)
+                ?? ExtractRecordIdString(idEntries[0].Value);
+
+            foreach (var (key, _) in idEntries)
+            {
+                record.Remove(key);
+            }
+
+            nativeIds[i] = nativeId;
+
+            if (nativeId is not null && idProp is not null)
+            {
+                record[idProp.Name] = ConvertRecordIdToIdentityValue(nativeId, idProp.PropertyType);
+            }
+        }
+
+        return nativeIds;
+    }
+
+    /// <summary>
+    /// Extracts a SurrealDB record ID string from a CBOR-deserialized id value.
+    /// Handles both string format (<c>"table:id"</c>) and array format
+    /// (<c>["table", id_value]</c> — SurrealDB RecordId encoding).
+    /// </summary>
+    private static string? ExtractRecordIdString(object? idValue)
+    {
+        if (idValue is string s)
+            return s;
+
+        // SurrealDB RecordId array format: ["table_name", id_value]
+        if (idValue is List<object?> { Count: >= 2 } list)
+        {
+            var table = FormatRecordIdPart(list[0]) ?? "";
+            var id = FormatRecordIdPart(list[1]) ?? "";
+            return string.IsNullOrEmpty(id) ? table : $"{table}:{id}";
+        }
+
+        return idValue?.ToString();
+    }
+
+    /// <summary>
+    /// Sets the identity property on a POCO from a SurrealDB record ID string
+    /// (e.g., <c>"table:42"</c> → sets <c>Id = 42</c> for <c>long</c> identity).
+    /// Supports <c>long</c>, <c>int</c>, <c>ulong</c>, <c>uint</c>,
+    /// <c>string</c>, and <c>Guid</c> identity types.
+    /// </summary>
+    private static void SetPocoIdentityFromRecordId(
+        object entity,
+        string nativeId,
+        string? identityProperty)
+    {
+        var entityType = entity.GetType();
+        var idProp = GetPocoIdentityProperty(entityType, identityProperty);
+        if (idProp is null || !idProp.CanWrite)
+            return;
+
+        idProp.SetValue(entity, ConvertRecordIdToIdentityValue(nativeId, idProp.PropertyType));
+    }
+
+    private static PropertyInfo? GetPocoIdentityProperty(Type entityType, string? identityProperty)
+    {
+        if (!string.IsNullOrWhiteSpace(identityProperty))
+        {
+            return entityType.GetProperty(identityProperty);
+        }
+
+        return entityType.GetProperty("Id");
+    }
+
+    private static object? ConvertRecordIdToIdentityValue(string nativeId, Type propertyType)
+    {
+        var lastColon = nativeId.LastIndexOf(':');
+        var idStr = lastColon >= 0 ? nativeId[(lastColon + 1)..] : nativeId;
+        var propType = Nullable.GetUnderlyingType(propertyType) ?? propertyType;
+
+        return propType switch
+        {
+            _ when propType == typeof(long) => long.Parse(idStr, System.Globalization.CultureInfo.InvariantCulture),
+            _ when propType == typeof(int) => int.Parse(idStr, System.Globalization.CultureInfo.InvariantCulture),
+            _ when propType == typeof(ulong) => ulong.Parse(idStr, System.Globalization.CultureInfo.InvariantCulture),
+            _ when propType == typeof(uint) => uint.Parse(idStr, System.Globalization.CultureInfo.InvariantCulture),
+            _ when propType == typeof(string) => idStr,
+            _ when propType == typeof(Guid) => Guid.Parse(idStr),
+            _ when propType == typeof(byte) => byte.Parse(idStr, System.Globalization.CultureInfo.InvariantCulture),
+            _ when propType == typeof(short) => short.Parse(idStr, System.Globalization.CultureInfo.InvariantCulture),
+            _ when propType == typeof(DateTime) => System.DateTime.Parse(
+                idStr,
+                System.Globalization.CultureInfo.InvariantCulture,
+                System.Globalization.DateTimeStyles.RoundtripKind),
+            _ => System.Convert.ChangeType(idStr, propType, System.Globalization.CultureInfo.InvariantCulture)
+        };
+    }
+
+    private static string? FormatRecordIdPart(object? value)
+    {
+        return value switch
+        {
+            null => null,
+            string s => s,
+            IFormattable formattable => formattable.ToString(null, System.Globalization.CultureInfo.InvariantCulture),
+            _ => value.ToString()
+        };
     }
 
     /// <summary>

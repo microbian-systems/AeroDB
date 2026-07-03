@@ -33,6 +33,9 @@ public abstract class DocumentMapping
 
     /// <summary>When true, optimistic concurrency is enforced for this document type.</summary>
     public bool UseOptimisticConcurrency { get; set; }
+
+    /// <summary>The configured identity (primary key) property name. Set via <c>Schema.For&lt;T&gt;().Identity(...)</c>.</summary>
+    internal string? IdentityProperty { get; set; }
 }
 
 /// <summary>Controls the SurrealDB table schema mode. <c>Schemaless</c> (Flexible) allows any fields; <c>Schemafull</c> (Strict) enforces a strict field definition.</summary>
@@ -161,23 +164,8 @@ public class DocumentMapping<T> : DocumentMapping
 
     internal static void ValidateDocumentType<TDocument>()
     {
-        var type = typeof(T);
-
-        // Reject abstract types — they cannot be instantiated as documents
-        if (type.IsAbstract)
-            throw new ArgumentException(
-                $"Type '{type.FullName ?? type.Name}' is abstract and cannot be used as a document type. " +
-                $"Document types must inherit from {nameof(Record)} or {typeof(Entity<>).Name}.");
-
-        // Allow IRecord and IEntity<TId> types
-        if (typeof(IRecord).IsAssignableFrom(type))
-            return;
-        if (type.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IEntity<>)))
-            return;
-
-        throw new ArgumentException(
-            $"Type '{type.FullName ?? type.Name}' is not a valid document type. " +
-            $"Document types must inherit from {nameof(Record)} or {typeof(Entity<>).Name}.");
+        // POCOs are now supported via Schema.For<T>().Identity(x => x.Id)
+        // Validation is deferred to schema generation time
     }
 
     /// <summary>
@@ -190,7 +178,12 @@ public class DocumentMapping<T> : DocumentMapping
         return this;
     }
 
-    internal string? IdentityProperty { get; private set; }
+    private static readonly HashSet<Type> SupportedIdentityTypes = new()
+    {
+        typeof(long), typeof(int), typeof(ulong), typeof(uint),
+        typeof(string), typeof(Guid), typeof(byte), typeof(short),
+        typeof(DateTime)
+    };
 
     /// <summary>
     /// Designates the primary key property explicitly for documentation purposes.
@@ -201,6 +194,11 @@ public class DocumentMapping<T> : DocumentMapping
     public DocumentMapping<T> Identity<TProp>(Expression<Func<T, TProp>> property)
     {
         var member = ExtractMember(property);
+        var propType = typeof(TProp);
+        if (!SupportedIdentityTypes.Contains(propType))
+            throw new ArgumentException(
+                $"Identity property type '{propType.Name}' is not supported. " +
+                $"Supported types: long, int, ulong, uint, string, Guid, byte, short, DateTime.");
         IdentityProperty = member.Name;
         return this;
     }

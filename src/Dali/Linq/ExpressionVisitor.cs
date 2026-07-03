@@ -18,6 +18,12 @@ namespace Dali;
         private int? _skip;
         private string _projection = "*";
         private SurrealCommandBuilder _cmdBuilder = new();
+        private readonly SchemaOptions? _schema;
+
+        public SurrealExpressionVisitor(SchemaOptions? schema = null)
+        {
+            _schema = schema;
+        }
 
         /// <summary>
         /// Dictionary dispatch for marker-class handler lookup.
@@ -97,7 +103,7 @@ namespace Dali;
                 Visit(node.Arguments[0]);
                 var lambda = StripQuote(node.Arguments[1]) as LambdaExpression;
                 if (lambda?.Body is not null)
-                    _where.Add(TranslateCondition(lambda.Body, _cmdBuilder));
+                    _where.Add(TranslateConditionCore(lambda.Body, _cmdBuilder));
                 break;
 
             case "OrderBy":
@@ -258,27 +264,33 @@ namespace Dali;
         return node;
     }
 
-    internal static string TranslateCondition(Expression expr, SurrealCommandBuilder builder) => expr switch
+    internal static string TranslateCondition(Expression expr, SurrealCommandBuilder builder)
+        => new SurrealExpressionVisitor().TranslateConditionCore(expr, builder);
+
+    internal static string TranslateCondition(Expression expr)
+        => new SurrealExpressionVisitor().TranslateConditionCore(expr);
+
+    private string TranslateConditionCore(Expression expr, SurrealCommandBuilder builder) => expr switch
     {
         BinaryExpression b => TranslateBinary(b, builder),
         MethodCallExpression m => TranslateMethod(m, builder),
         UnaryExpression u when u.NodeType == ExpressionType.Not
-            => $"NOT ({TranslateCondition(u.Operand, builder)})",
+            => $"NOT ({TranslateConditionCore(u.Operand, builder)})",
         MemberExpression m => m.Member.Name,
         _ => ""
     };
 
-    internal static string TranslateCondition(Expression expr) => expr switch
+    private string TranslateConditionCore(Expression expr) => expr switch
     {
         BinaryExpression b => TranslateBinary(b),
         MethodCallExpression m => TranslateMethod(m),
         UnaryExpression u when u.NodeType == ExpressionType.Not
-            => $"NOT ({TranslateCondition(u.Operand)})",
+            => $"NOT ({TranslateConditionCore(u.Operand)})",
         MemberExpression m => m.Member.Name,
         _ => ""
     };
 
-    private static string TranslateBinary(BinaryExpression b, SurrealCommandBuilder builder)
+    private string TranslateBinary(BinaryExpression b, SurrealCommandBuilder builder)
     {
         var left = Operand(b.Left, builder);
         var right = Operand(b.Right, builder);
@@ -306,7 +318,7 @@ namespace Dali;
         return $"{left} {op} {right}";
     }
 
-    private static string TranslateBinary(BinaryExpression b)
+    private string TranslateBinary(BinaryExpression b)
     {
         var left = Operand(b.Left);
         var right = Operand(b.Right);
@@ -362,13 +374,13 @@ namespace Dali;
     /// plus a name-based fallback (<see cref="_handlerByName"/>, 2 entries for separate-assembly handlers)
     /// provide O(1) stateless dispatch that scales to any number of handlers.
     /// </remarks>
-    private static string TranslateMethod(MethodCallExpression m, SurrealCommandBuilder builder)
+    private string TranslateMethod(MethodCallExpression m, SurrealCommandBuilder builder)
         => TranslateMethodInternal(m, builder);
 
-    private static string TranslateMethod(MethodCallExpression m)
+    private string TranslateMethod(MethodCallExpression m)
         => TranslateMethodInternal(m, null);
 
-    private static string TranslateMethodInternal(MethodCallExpression m, SurrealCommandBuilder? builder)
+    private string TranslateMethodInternal(MethodCallExpression m, SurrealCommandBuilder? builder)
     {
         Func<Expression, string> op = builder is null
             ? Operand
@@ -451,25 +463,25 @@ namespace Dali;
         throw new NotSupportedException($"Method {m.Method.Name}");
     }
 
-    private static string Operand(Expression expr, SurrealCommandBuilder builder) => expr switch
+    private string Operand(Expression expr, SurrealCommandBuilder builder) => expr switch
     {
         ConstantExpression c => FormatValue(c.Value, builder),
         MemberExpression m => MemberPath(m),
         NewArrayExpression na => string.Join(", ", na.Expressions.Select(e => Operand(e, builder))),
         UnaryExpression u when u.NodeType == ExpressionType.Convert => Operand(u.Operand, builder),
-        _ => TranslateCondition(expr, builder)
+        _ => TranslateConditionCore(expr, builder)
     };
 
-    private static string Operand(Expression expr) => expr switch
+    private string Operand(Expression expr) => expr switch
     {
         ConstantExpression c => FormatValue(c.Value),
         MemberExpression m => MemberPath(m),
         NewArrayExpression na => string.Join(", ", na.Expressions.Select(Operand)),
         UnaryExpression u when u.NodeType == ExpressionType.Convert => Operand(u.Operand),
-        _ => TranslateCondition(expr)
+        _ => TranslateConditionCore(expr)
     };
 
-    private static string MemberPath(MemberExpression m)
+    private string MemberPath(MemberExpression m)
     {
         // Handle string.Length property → string::length(expr)
         if (m.Member.DeclaringType == typeof(string) && m.Member.Name == "Length")
@@ -483,8 +495,15 @@ namespace Dali;
             return $"string::length({target})";
         }
 
-        if (m.Expression is ParameterExpression)
-            return m.Member.Name;
+        if (m.Expression is ParameterExpression paramExpr)
+        {
+            var propName = m.Member.Name;
+            // If this parameter's type has a configured identity, emit native "id" key
+            if (_schema?.Mappings.TryGetValue(paramExpr.Type, out var mapping) == true
+                && mapping.IdentityProperty == propName)
+                return "id";
+            return propName;
+        }
         if (m.Expression is MemberExpression inner)
         {
             var innerPath = MemberPath(inner);

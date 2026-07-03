@@ -705,6 +705,18 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                                 var entityId = GetEntityId(op.Entity);
                                 if (!string.IsNullOrEmpty(entityId))
                                 {
+                                    // Auto-generate Guid for Guid.Empty identity
+                                    var type = op.Entity.GetType();
+                                    var mp = Options.Schema.Mappings.GetValueOrDefault(type);
+                                    var idpName = mp?.IdentityProperty ?? "Id";
+                                    var idp = type.GetProperty(idpName);
+                                    if (idp is not null && idp.PropertyType == typeof(Guid) && idp.GetValue(op.Entity) is Guid guidVal && guidVal == Guid.Empty)
+                                    {
+                                        var newGuid = Guid.NewGuid();
+                                        idp.SetValue(op.Entity, newGuid);
+                                        entityId = newGuid.ToString();
+                                    }
+
                                     // Use Upsert (create-or-update) for entities with explicit IDs.
                                     // This avoids failure when the record already exists (e.g. from
                                     // inline projections run in a prior session, or RebuildAsync).
@@ -766,6 +778,18 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                                         var modEntityId = GetEntityId(op.Entity);
                                         if (modEntityId is not null)
                                         {
+                                            // Auto-generate Guid for Guid.Empty identity
+                                            var modType = op.Entity.GetType();
+                                            var modMp = Options.Schema.Mappings.GetValueOrDefault(modType);
+                                            var modIdpName = modMp?.IdentityProperty ?? "Id";
+                                            var modIdp = modType.GetProperty(modIdpName);
+                                            if (modIdp is not null && modIdp.PropertyType == typeof(Guid) && modIdp.GetValue(op.Entity) is Guid modGuidVal && modGuidVal == Guid.Empty)
+                                            {
+                                                var newGuid = Guid.NewGuid();
+                                                modIdp.SetValue(op.Entity, newGuid);
+                                                modEntityId = newGuid.ToString();
+                                            }
+
                                             await targetSession.RawQuery(
                                                 $"UPSERT {table}:`{modEntityId}` MERGE $data",
                                                 new Dictionary<string, object?> { ["data"] = op.Entity },
@@ -780,6 +804,18 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                                 var insertId = GetEntityId(op.Entity);
                                 if (!string.IsNullOrEmpty(insertId))
                                 {
+                                    // Auto-generate Guid for Guid.Empty identity
+                                    var insType = op.Entity.GetType();
+                                    var insMp = Options.Schema.Mappings.GetValueOrDefault(insType);
+                                    var insIdpName = insMp?.IdentityProperty ?? "Id";
+                                    var insIdp = insType.GetProperty(insIdpName);
+                                    if (insIdp is not null && insIdp.PropertyType == typeof(Guid) && insIdp.GetValue(op.Entity) is Guid insGuidVal && insGuidVal == Guid.Empty)
+                                    {
+                                        var newGuid = Guid.NewGuid();
+                                        insIdp.SetValue(op.Entity, newGuid);
+                                        insertId = newGuid.ToString();
+                                    }
+
                                     // Use CREATE (insert-only, fails if record already exists)
                                     await targetSession.RawQuery(
                                         $"CREATE {table}:`{insertId}` CONTENT $data",
@@ -805,6 +841,18 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                                 var updateId = GetEntityId(op.Entity);
                                 if (!string.IsNullOrEmpty(updateId))
                                 {
+                                    // Auto-generate Guid for Guid.Empty identity
+                                    var updType = op.Entity.GetType();
+                                    var updMp = Options.Schema.Mappings.GetValueOrDefault(updType);
+                                    var updIdpName = updMp?.IdentityProperty ?? "Id";
+                                    var updIdp = updType.GetProperty(updIdpName);
+                                    if (updIdp is not null && updIdp.PropertyType == typeof(Guid) && updIdp.GetValue(op.Entity) is Guid updGuidVal && updGuidVal == Guid.Empty)
+                                    {
+                                        var newGuid = Guid.NewGuid();
+                                        updIdp.SetValue(op.Entity, newGuid);
+                                        updateId = newGuid.ToString();
+                                    }
+
                                     // Use UPDATE (update-only, fails if record doesn't exist)
                                     await targetSession.RawQuery(
                                         $"UPDATE {table}:`{updateId}` MERGE $data",
@@ -1157,15 +1205,20 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         }
     }
 
-    private static string? GetEntityId(object entity)
+    private string? GetEntityId(object entity)
     {
         var entityType = entity.GetType();
         var meta = MetadataRegistry.TryGet(entityType);
         if (meta is not null && meta.GetRecordIdAccessor is not null)
             return meta.GetRecordIdAccessor(entity);
 
+        // Look up identity property from document mapping configuration
+        // This supports POCOs configured via Schema.For<T>().Identity(x => x.Id)
+        var mapping = Options.Schema.Mappings.GetValueOrDefault(entityType);
+        var idPropName = mapping?.IdentityProperty ?? "Id";
+
         // Fallback for non-generated types
-        var prop = entityType.GetProperty("Id");
+        var prop = entityType.GetProperty(idPropName);
         if (prop is null) return null;
 
         var idValue = prop.GetValue(entity);
@@ -1183,10 +1236,60 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         return string.IsNullOrEmpty(str) ? null : str;
     }
 
-    private static RecordIdOf<string>? GetRecordId(object entity, string table)
+    private RecordIdOf<string>? GetRecordId(object entity, string table)
     {
         var id = GetEntityId(entity);
         return string.IsNullOrEmpty(id) ? null : new RecordIdOf<string>(table, id);
+    }
+
+    /// <summary>
+    /// Sets the identity property on a POCO from a SurrealDB record ID string
+    /// (e.g., <c>"table:42"</c> → sets <c>Id = 42</c> for <c>long</c> identity).
+    /// For generated <c>Entity&lt;TId&gt;</c> types, the shim handles this — this method
+    /// is a no-op for them. Supports <c>long</c>, <c>int</c>, <c>ulong</c>, <c>uint</c>,
+    /// <c>string</c>, and <c>Guid</c> identity types.
+    /// </summary>
+    private void SetEntityIdFromRecordId(object entity, string? recordIdString)
+    {
+        if (string.IsNullOrEmpty(recordIdString)) return;
+
+        var entityType = entity.GetType();
+        var meta = MetadataRegistry.TryGet(entityType);
+        // For generated types (Entity<TId>), the shim handles identity — skip
+        if (meta is not null && meta.GetRecordIdAccessor is not null) return;
+
+        // Look up the identity property from the document mapping
+        var mapping = Options.Schema.Mappings.GetValueOrDefault(entityType);
+        var idPropName = mapping?.IdentityProperty ?? "Id";
+        var prop = entityType.GetProperty(idPropName);
+        if (prop is null) return;
+
+        // Parse: "table:id_value" → "id_value"
+        var colonIndex = recordIdString.LastIndexOf(':');
+        var idStr = colonIndex >= 0 ? recordIdString[(colonIndex + 1)..] : recordIdString;
+
+        try
+        {
+            var propType = prop.PropertyType;
+            object? convertedId = propType switch
+            {
+                _ when propType == typeof(long) => long.Parse(idStr),
+                _ when propType == typeof(int)  => int.Parse(idStr),
+                _ when propType == typeof(ulong) => ulong.Parse(idStr),
+                _ when propType == typeof(uint)  => uint.Parse(idStr),
+                _ when propType == typeof(string) => idStr,
+                _ when propType == typeof(Guid)  => Guid.Parse(idStr),
+                _ => Convert.ChangeType(idStr, propType)
+            };
+
+            prop.SetValue(entity, convertedId);
+        }
+        catch (FormatException fe)
+        {
+            throw new InvalidOperationException(
+                $"Cannot convert record ID '{recordIdString}' to identity type '{prop.PropertyType.Name}'. " +
+                $"The extracted id portion was not valid for this type.", fe);
+        }
     }
 
     /// <summary>
@@ -1914,21 +2017,36 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
     /// Creates a minimal entity of type T with the given string ID set on its Id property.
     /// Uses <see cref="Activator.CreateInstance{T}"/> which requires a parameterless constructor.
     /// </summary>
-    private static T CreateEntityWithId<T>(string id) where T : class
+    private T CreateEntityWithId<T>(string id) where T : class
     {
         var entity = Activator.CreateInstance<T>();
-        var idProp = typeof(T).GetProperty("Id", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
+        var mapping = Options.Schema.Mappings.GetValueOrDefault(typeof(T));
+        var idPropName = mapping?.IdentityProperty ?? "Id";
+        var idProp = typeof(T).GetProperty(idPropName, BindingFlags.Public | BindingFlags.Instance);
         if (idProp is not null && idProp.CanWrite)
         {
             var propType = idProp.PropertyType;
             var actualType = Nullable.GetUnderlyingType(propType) ?? propType;
             object convertedId = id;
             if (actualType == typeof(long))
-                convertedId = long.TryParse(id, out var l) ? l : 0L;
+                convertedId = long.Parse(id, System.Globalization.CultureInfo.InvariantCulture);
             else if (actualType == typeof(int))
-                convertedId = int.TryParse(id, out var i) ? i : 0;
+                convertedId = int.Parse(id, System.Globalization.CultureInfo.InvariantCulture);
+            else if (actualType == typeof(ulong))
+                convertedId = ulong.Parse(id, System.Globalization.CultureInfo.InvariantCulture);
+            else if (actualType == typeof(uint))
+                convertedId = uint.Parse(id, System.Globalization.CultureInfo.InvariantCulture);
+            else if (actualType == typeof(byte))
+                convertedId = byte.Parse(id, System.Globalization.CultureInfo.InvariantCulture);
+            else if (actualType == typeof(short))
+                convertedId = short.Parse(id, System.Globalization.CultureInfo.InvariantCulture);
             else if (actualType == typeof(Guid))
-                convertedId = Guid.TryParse(id, out var g) ? g : Guid.Empty;
+                convertedId = Guid.Parse(id);
+            else if (actualType == typeof(DateTime))
+                convertedId = DateTime.Parse(
+                    id,
+                    System.Globalization.CultureInfo.InvariantCulture,
+                    System.Globalization.DateTimeStyles.RoundtripKind);
             else if (actualType == typeof(RecordId))
                 convertedId = RecordId.From(MetadataDispatch.GetTableName(typeof(T)), id);
             else if (actualType.IsGenericType && actualType.GetGenericTypeDefinition() == typeof(RecordIdOf<>))

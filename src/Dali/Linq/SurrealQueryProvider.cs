@@ -66,7 +66,7 @@ public class SurrealQueryProvider : IQueryProvider
         return await _sessionBase.GetSessionForSchemaAsync(schemaName, ct).ConfigureAwait(false);
     }
 
-    private SurrealExpressionVisitor CreateVisitor() => new();
+    private SurrealExpressionVisitor CreateVisitor() => new(_options.Schema);
 
     /// <summary>
     /// Cached check for whether a type implements <see cref="ISoftDeleted"/>.
@@ -1030,7 +1030,7 @@ public class SurrealQueryProvider : IQueryProvider
     /// handling both engine behaviors (LET result present or absent).
     /// Used by IncludeSpec (forward include) post-processing.
     /// </summary>
-    private static List<T> DeserializeMainResults<T>(SurrealDbResponse response)
+    private List<T> DeserializeMainResults<T>(SurrealDbResponse response)
     {
         var testMain = DeserializeQueryResults<T>(response, 0);
         if (testMain is { Count: > 0 })
@@ -1050,7 +1050,7 @@ public class SurrealQueryProvider : IQueryProvider
     /// Deserializes query results via source-generated shim types for IEntity{TId} entities,
     /// or directly for Record subclasses.
     /// </summary>
-    private static List<T> DeserializeQueryResults<T>(SurrealDbResponse response, int index)
+    private List<T> DeserializeQueryResults<T>(SurrealDbResponse response, int index)
     {
         var shimType = MetadataRegistry.GetShimType(typeof(T));
         if (shimType is not null)
@@ -1079,6 +1079,17 @@ public class SurrealQueryProvider : IQueryProvider
             return results;
         }
 
+        // Check for POCO with configured identity — use raw CBOR reading
+        // to avoid Dahomey.Cbor's ObjectConverter issue with CBOR maps.
+        var mapping = _options.Schema.Mappings.GetValueOrDefault(typeof(T));
+        if (mapping?.IdentityProperty is not null)
+        {
+            var items = Dali.Internals.Cbor.CborResultReader.ReadPocoResult(response, index);
+            if (items is null or { Count: 0 }) return [];
+
+            return InternalSessionBase.DeserializePocoFromList<T>(items, mapping.IdentityProperty);
+        }
+
         // Direct deserialization for Record subclasses (existing path)
         var raw = response.GetValue<List<T>>(index);
         return raw ?? [];
@@ -1096,7 +1107,7 @@ public class SurrealQueryProvider : IQueryProvider
     /// Optional offset into the response for the first include result set.
     /// Defaults to <c>mainIndex + 1</c> (no prior include descriptor sets).
     /// </param>
-    private static void ApplyIncludeSpecsToResults<T>(
+    private void ApplyIncludeSpecsToResults<T>(
         SurrealDbResponse response,
         List<T> results,
         List<IncludeSpec> includeSpecs,
