@@ -242,6 +242,58 @@ internal sealed class SurrealDaliLiveQuery<T> : IDaliLiveQuery<T> where T : clas
         return _channel.Reader.ReadAllAsync(ct);
     }
 
+    /// <inheritdoc />
+    public async IAsyncEnumerable<DaliLiveChange<T>> GetResults(
+        [EnumeratorCancellation] CancellationToken ct = default)
+    {
+        if (_callbackLoop is not null)
+            throw new InvalidOperationException(
+                "Cannot call GetResults() when callbacks are active. Use one consumption model per subscription.");
+
+        if (Interlocked.Exchange(ref _changesConsumed, 1) == 1)
+            throw new InvalidOperationException(
+                "Already consumed. Create a new subscription.");
+
+        await foreach (var change in _channel.Reader.ReadAllAsync(ct).ConfigureAwait(false))
+        {
+            if (change.Action != DaliLiveAction.Closed)
+                yield return change;
+        }
+    }
+
+    /// <inheritdoc />
+    public async IAsyncEnumerable<T> GetCreatedRecords(
+        [EnumeratorCancellation] CancellationToken ct = default)
+    {
+        await foreach (var change in GetResults(ct).ConfigureAwait(false))
+        {
+            if (change.Action == DaliLiveAction.Created && change.Document is not null)
+                yield return change.Document;
+        }
+    }
+
+    /// <inheritdoc />
+    public async IAsyncEnumerable<T> GetUpdatedRecords(
+        [EnumeratorCancellation] CancellationToken ct = default)
+    {
+        await foreach (var change in GetResults(ct).ConfigureAwait(false))
+        {
+            if (change.Action == DaliLiveAction.Updated && change.Document is not null)
+                yield return change.Document;
+        }
+    }
+
+    /// <inheritdoc />
+    public async IAsyncEnumerable<T> GetDeletedRecords(
+        [EnumeratorCancellation] CancellationToken ct = default)
+    {
+        await foreach (var change in GetResults(ct).ConfigureAwait(false))
+        {
+            if (change.Action == DaliLiveAction.Deleted && change.Document is not null)
+                yield return change.Document;
+        }
+    }
+
     /// <summary>
     /// Exposes the underlying channel reader for custom pipelines.
     /// Returns <see langword="null"/> when callbacks are actively consuming the channel.

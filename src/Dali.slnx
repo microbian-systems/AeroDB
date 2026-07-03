@@ -5,6 +5,7 @@
   <Project Path="Dali.EntityFrameworkCore\Dali.EntityFrameworkCore.csproj" />
   <Project Path="Dali.Snowflake/Dali.Snowflake.csproj" />
   <Project Path="Dali.SourceGenerators\Dali.SourceGenerators.csproj" />
+  <Project Path="Dali.Reactive\Dali.Reactive.csproj" />
   <Folder Name="/Samples/">
     <Project Path="..\samples\CryptoTrader\CryptoTrader.csproj" />
   </Folder>

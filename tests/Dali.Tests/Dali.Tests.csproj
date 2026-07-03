@@ -34,6 +34,7 @@
     <ProjectReference Include="..\..\src\Dali.Snowflake\Dali.Snowflake.csproj" />
     <ProjectReference Include="..\..\src\Dali.EntityFrameworkCore\Dali.EntityFrameworkCore.csproj" />
     <ProjectReference Include="..\..\src\Dali.ML\Dali.ML.csproj" />
+    <ProjectReference Include="..\..\src\Dali.Reactive\Dali.Reactive.csproj" />
     <ProjectReference Include="..\..\src\Dali.WolverineFx\Dali.WolverineFx.csproj" />
     <ProjectReference Include="..\..\wolverine\src\Wolverine.RuntimeCompilation\Wolverine.RuntimeCompilation.csproj" />
   </ItemGroup>
