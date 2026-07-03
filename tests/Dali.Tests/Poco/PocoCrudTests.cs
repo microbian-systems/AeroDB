@@ -47,10 +47,72 @@ public class PocoUint
     public int Score { get; set; }
 }
 
+public class PocoNullableSchemafull
+{
+    public long Id { get; set; }
+    public string Name { get; set; } = "";
+    public string? Notes { get; set; }
+    public DateTime? ReviewedAt { get; set; }
+    public GeometryPolygon? DeliveryZone { get; set; }
+}
+
 // ─── CRUD Tests ────────────────────────────────────────────────────
 
 public class PocoCrudTests
 {
+    [Test]
+    public async Task PocoSchemafull_NullableFields_AllowNone()
+    {
+        await using var store = await TestHarness.CreateStoreAsync(opts =>
+        {
+            opts.Schema.For<PocoNullableSchemafull>()
+                .Identity(x => x.Id)
+                .SetSchemaMode(SchemaMode.Strict);
+        });
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
+
+        var entity = new PocoNullableSchemafull
+        {
+            Id = 1001,
+            Name = "Optional fields",
+            Notes = null,
+            ReviewedAt = null,
+            DeliveryZone = null
+        };
+
+        session.Store(entity);
+        await session.SaveChangesAsync();
+
+        var loaded = await session.LoadAsync<PocoNullableSchemafull>("1001");
+        loaded.ShouldNotBeNull();
+        loaded.Id.ShouldBe(1001);
+        loaded.Name.ShouldBe("Optional fields");
+        loaded.Notes.ShouldBeNull();
+        loaded.ReviewedAt.ShouldBeNull();
+        loaded.DeliveryZone.ShouldBeNull();
+    }
+
+    [Test]
+    public async Task PocoRawQueryAsync_MaterializesIdentity()
+    {
+        await using var store = await TestHarness.CreateStoreAsync(opts =>
+        {
+            opts.Schema.For<PocoLong>().Identity(x => x.Id).SetSchemaMode(SchemaMode.Flexible);
+        });
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
+
+        session.Store(new PocoLong { Id = 4242, Name = "Raw", Score = 7 });
+        await session.SaveChangesAsync();
+
+        var results = await session.RawQueryAsync<PocoLong>(
+            "SELECT * FROM poco_long WHERE Score = 7;");
+
+        results.Count.ShouldBe(1);
+        results[0].Id.ShouldBe(4242);
+        results[0].Name.ShouldBe("Raw");
+        results[0].Score.ShouldBe(7);
+    }
+
     // ─── long identity ─────────────────────────────────────────────
 
     [Test]

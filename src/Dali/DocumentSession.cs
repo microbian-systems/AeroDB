@@ -1467,7 +1467,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         }
     }
 
-    private static bool TryBuildSurrealQlObjectLiteral(object entity, out string literal)
+    private bool TryBuildSurrealQlObjectLiteral(object entity, out string literal)
     {
         literal = "";
 
@@ -1484,8 +1484,14 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         }
 
         var fields = new List<string>(properties.Length);
+        var mapping = Options.Schema.Mappings.GetValueOrDefault(entity.GetType());
+        var identityProperty = mapping?.IdentityProperty ?? "Id";
+
         foreach (var property in properties)
         {
+            if (string.Equals(property.Name, identityProperty, StringComparison.OrdinalIgnoreCase))
+                continue;
+
             var value = property.GetValue(entity);
             if (value is null)
                 continue;

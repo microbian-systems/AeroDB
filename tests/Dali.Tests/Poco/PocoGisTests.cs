@@ -159,4 +159,40 @@ public class PocoGisTests
             // Some embedded engine builds do not support geo functions.
         }
     }
+
+    [Test]
+    public async Task PocoGis_UpdateLocation_ReloadsGeometry()
+    {
+        await using var store = await TestHarness.CreateStoreAsync(opts =>
+        {
+            opts.Schema.For<PocoStore>()
+                .Identity(x => x.Id)
+                .SetSchemaMode(SchemaMode.Flexible)
+                .SpatialIndex(x => x.Location);
+        });
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
+
+        session.Store(new PocoStore
+        {
+            Id = 10,
+            Name = "Moving Store",
+            Category = "retail",
+            Location = new GeometryPoint(2.3522, 48.8566),
+            DeliveryZone = null
+        });
+        await session.SaveChangesAsync();
+
+        var loaded = await session.LoadAsync<PocoStore>("10");
+        loaded.ShouldNotBeNull();
+        loaded.Location = new GeometryPoint(-0.1276, 51.5072);
+
+        session.Store(loaded);
+        await session.SaveChangesAsync();
+
+        var reloaded = await session.LoadAsync<PocoStore>("10");
+        reloaded.ShouldNotBeNull();
+        reloaded.Location.Lng.ShouldBe(-0.1276, 0.0001);
+        reloaded.Location.Lat.ShouldBe(51.5072, 0.0001);
+        reloaded.DeliveryZone.ShouldBeNull();
+    }
 }

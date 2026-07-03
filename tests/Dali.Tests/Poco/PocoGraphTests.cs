@@ -19,15 +19,60 @@ public class PocoBook
     public string Title { get; set; } = "";
 }
 
+public class PocoStringPerson
+{
+    public string Id { get; set; } = "";
+    public string Name { get; set; } = "";
+}
+
+public class PocoStringBook
+{
+    public string Id { get; set; } = "";
+    public string Title { get; set; } = "";
+}
+
 // ─── Edge Types (Dali types, nodes are POCOs) ────────────────────
 
 public class PocoWrote : EdgeRecord { }
 public class PocoReviewed : EdgeRecord { }
+public class PocoStringWrote : EdgeRecord { }
 
 // ─── POCO Graph CRUD Tests ───────────────────────────────────────
 
 public class PocoGraphTests
 {
+    [Test]
+    public async Task PocoGraph_StringIdentity_TraverseAndDeduplicate()
+    {
+        await using var store = await TestHarness.CreateStoreAsync(opts =>
+        {
+            opts.Schema.For<PocoStringPerson>().Identity(x => x.Id).SetSchemaMode(SchemaMode.Flexible);
+            opts.Schema.For<PocoStringBook>().Identity(x => x.Id).SetSchemaMode(SchemaMode.Flexible);
+        });
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
+
+        var personTable = MetadataDispatch.GetTableName(typeof(PocoStringPerson));
+        var bookTable = MetadataDispatch.GetTableName(typeof(PocoStringBook));
+
+        session.Store(new PocoStringPerson { Id = "alice", Name = "Alice" });
+        session.Store(new PocoStringBook { Id = "book-1", Title = "String IDs" });
+        await session.SaveChangesAsync();
+
+        session.Relate<PocoStringWrote>(
+            new RecordIdOf<string>(personTable, "alice"),
+            new RecordIdOf<string>(bookTable, "book-1"));
+        await session.SaveChangesAsync();
+
+        var results = await session.Graph<PocoStringPerson>()
+            .Where(p => p.Id == "alice")
+            .Out<PocoStringBook>("poco_string_wrote")
+            .ToListAsync();
+
+        results.Count.ShouldBe(1);
+        results[0].Id.ShouldBe("book-1");
+        results[0].Title.ShouldBe("String IDs");
+    }
+
     [Test]
     public async Task PocoGraph_MultipleRelationships_ToSingleNode_AndDelete()
     {
