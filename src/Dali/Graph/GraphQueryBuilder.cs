@@ -145,16 +145,21 @@ internal sealed class GraphQueryBuilder<TNode> : IGraphQuery<TNode> where TNode 
     public async Task<List<TNode>> ToListAsync(CancellationToken ct = default)
     {
         var plan = BuildPlan();
-        var sql = GraphSurrealQLGenerator.Generate(plan);
-        return await _session.RawQueryAsync<TNode>(sql, null, ct).ConfigureAwait(false);
+        if (plan.Steps.Count == 0)
+        {
+            var sql = GraphSurrealQLGenerator.Generate(plan);
+            return await _session.RawQueryAsync<TNode>(sql, null, ct).ConfigureAwait(false);
+        }
+
+        var runtimeSql = GenerateRuntimeValueQuery(plan);
+        var nested = await _session.RawQueryAsync<List<TNode>>(runtimeSql, null, ct).ConfigureAwait(false);
+        var results = nested.SelectMany(static items => items).ToList();
+        return plan.CollectAll ? DeduplicateByRecordId(results) : results;
     }
 
     public async Task<TNode?> FirstOrDefaultAsync(CancellationToken ct = default)
     {
-        var plan = BuildPlan();
-        plan.ReturnPath = false;
-        var sql = GraphSurrealQLGenerator.Generate(plan);
-        var results = await _session.RawQueryAsync<TNode>(sql, null, ct).ConfigureAwait(false);
+        var results = await ToListAsync(ct).ConfigureAwait(false);
         return results.FirstOrDefault();
     }
 
@@ -169,26 +174,130 @@ internal sealed class GraphQueryBuilder<TNode> : IGraphQuery<TNode> where TNode 
 
     public async Task<int> CountAsync(CancellationToken ct = default)
     {
-        var plan = BuildPlan();
-        var sql = new StringBuilder();
-        sql.Append("SELECT count() FROM (");
-        sql.Append(GraphSurrealQLGenerator.Generate(plan).TrimEnd(';'));
-        sql.Append(") GROUP ALL;");
+        var results = await ToListAsync(ct).ConfigureAwait(false);
+        return results.Count;
+    }
 
-        var response = await _rawSession.RawQuery(sql.ToString(), null, ct).ConfigureAwait(false);
-        if (response.HasErrors || response.Count == 0)
-            return 0;
+    private static string GenerateRuntimeValueQuery(GraphQueryPlan plan)
+    {
+        var baseTable = MetadataDispatch.GetTableName(plan.NodeType);
+        var expression = BuildRuntimeTraversalExpression(plan);
+        var sql = new StringBuilder()
+            .Append("SELECT VALUE ")
+            .Append(expression)
+            .Append(" FROM `")
+            .Append(baseTable)
+            .Append('`');
 
-        var raw = response.GetValue<List<object>>(0);
-        if (raw == null || raw.Count == 0)
-            return 0;
+        if (!string.IsNullOrWhiteSpace(plan.FilterSurql))
+            sql.Append(" WHERE ").Append(plan.FilterSurql);
 
-        var json = System.Text.Json.JsonSerializer.Serialize(raw[0]);
-        using var doc = System.Text.Json.JsonDocument.Parse(json);
-        if (doc.RootElement.TryGetProperty("count", out var countProp))
-            return countProp.GetInt32();
+        if (plan.FetchRelations is { Length: > 0 })
+            sql.Append(" FETCH ").Append(string.Join(", ", plan.FetchRelations));
 
-        return raw.Count;
+        sql.Append(';');
+        return sql.ToString();
+    }
+
+    private static string BuildRuntimeTraversalExpression(GraphQueryPlan plan)
+    {
+        if (plan.Steps.Count == 1 && plan.Steps[0].Direction == GraphDirection.Both && !HasDepthRange(plan))
+        {
+            var step = plan.Steps[0];
+            return $"array::concat({BuildDirectionalStep(step, GraphDirection.In)}.*, {BuildDirectionalStep(step, GraphDirection.Out)}.*)";
+        }
+
+        var depthExpressions = BuildDepthExpressions(plan).ToList();
+        if (depthExpressions.Count > 1)
+            return $"array::concat({string.Join(", ", depthExpressions)})";
+
+        return depthExpressions[0];
+    }
+
+    private static IEnumerable<string> BuildDepthExpressions(GraphQueryPlan plan)
+    {
+        var (minDepth, maxDepth) = GetDepthRange(plan);
+        for (var depth = minDepth; depth <= maxDepth; depth++)
+            yield return BuildRepeatedTraversalExpression(plan.Steps, depth);
+    }
+
+    private static (int Min, int Max) GetDepthRange(GraphQueryPlan plan)
+    {
+        if (plan.DepthMin.HasValue && plan.DepthMax.HasValue)
+            return (Math.Max(1, plan.DepthMin.Value), Math.Max(plan.DepthMin.Value, plan.DepthMax.Value));
+
+        if (plan.Depth.HasValue)
+            return (1, Math.Max(1, plan.Depth.Value));
+
+        if (plan.IsUnboundedDepth)
+            return (1, 10);
+
+        return (1, 1);
+    }
+
+    private static bool HasDepthRange(GraphQueryPlan plan)
+        => plan.Depth.HasValue || plan.DepthMin.HasValue || plan.DepthMax.HasValue || plan.IsUnboundedDepth;
+
+    private static string BuildRepeatedTraversalExpression(IReadOnlyList<GraphStep> steps, int repeatCount)
+    {
+        var sb = new StringBuilder();
+        for (var i = 0; i < repeatCount; i++)
+        {
+            foreach (var step in steps)
+                sb.Append(BuildStep(step));
+        }
+        sb.Append(".*");
+        return sb.ToString();
+    }
+
+    private static string BuildStep(GraphStep step)
+        => step.Direction == GraphDirection.Both
+            ? BuildDirectionalStep(step, GraphDirection.Both)
+            : BuildDirectionalStep(step, step.Direction);
+
+    private static string BuildDirectionalStep(GraphStep step, GraphDirection direction)
+    {
+        var arrow = direction switch
+        {
+            GraphDirection.In => "<-",
+            GraphDirection.Both => "<->",
+            _ => "->"
+        };
+
+        var sb = new StringBuilder();
+        if (step.EdgeTypes is { Length: > 0 })
+            sb.Append(arrow).Append('(').Append(string.Join(", ", step.EdgeTypes)).Append(')');
+        else if (step.EdgeType is not null)
+            sb.Append(arrow).Append(step.EdgeType);
+        else
+            sb.Append(arrow).Append('?');
+
+        if (step.IncludeIntermediate)
+            sb.Append("(+)");
+
+        var targetTable = step.TargetType is null ? "?" : $"`{MetadataDispatch.GetTableName(step.TargetType)}`";
+        sb.Append(arrow).Append(targetTable);
+        return sb.ToString();
+    }
+
+    private static List<TNode> DeduplicateByRecordId(List<TNode> results)
+    {
+        var seen = new HashSet<string>();
+        var deduped = new List<TNode>(results.Count);
+
+        foreach (var result in results)
+        {
+            var key = result switch
+            {
+                SurrealDb.Net.Models.Record record when record.Id is not null => record.Id.ToString()!,
+                _ => result.GetHashCode().ToString(System.Globalization.CultureInfo.InvariantCulture)
+            };
+
+            if (seen.Add(key))
+                deduped.Add(result);
+        }
+
+        return deduped;
     }
 
     private GraphQueryBuilder<TTarget> AddStep<TTarget>(

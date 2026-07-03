@@ -41,6 +41,8 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
     internal readonly List<IDeferredPatch> _queuedPatches = new();
     internal readonly List<QueuedRelation> _queuedRelations = new();
     internal readonly List<RecordId> _queuedUnrelations = new();
+    private readonly List<QueuedRelation> _transactionRelations = new();
+    private readonly List<RecordId> _transactionUnrelations = new();
     internal readonly List<IFetchForWritingResult> _fetchForWritingResults = new();
     private ConcurrencyChecks? _concurrencyOverride;
 
@@ -179,6 +181,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         if (_explicitTransaction == null)
             throw new InvalidOperationException("No active transaction to commit.");
 
+        await FlushPendingGraphOperationsAsync(ct).ConfigureAwait(false);
         await _explicitTransaction.Commit(ct).ConfigureAwait(false);
         await _explicitTransaction.DisposeAsync().ConfigureAwait(false);
         _explicitTransaction = null;
@@ -194,8 +197,29 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         if (_explicitTransaction == null)
             throw new InvalidOperationException("No active transaction to rollback.");
 
-        await _explicitTransaction.Cancel(ct).ConfigureAwait(false);
-        await _explicitTransaction.DisposeAsync().ConfigureAwait(false);
+        await RollbackTransactionCoreAsync(ct).ConfigureAwait(false);
+    }
+
+    internal async Task RollbackTransactionIfActiveAsync(CancellationToken ct = default)
+    {
+        if (_explicitTransaction == null)
+            return;
+
+        await RollbackTransactionCoreAsync(ct).ConfigureAwait(false);
+    }
+
+    private async Task RollbackTransactionCoreAsync(CancellationToken ct)
+    {
+        var transaction = _explicitTransaction;
+        if (transaction == null)
+            return;
+
+        _queuedRelations.Clear();
+        _queuedUnrelations.Clear();
+        _transactionRelations.Clear();
+        _transactionUnrelations.Clear();
+        await transaction.Cancel(ct).ConfigureAwait(false);
+        await transaction.DisposeAsync().ConfigureAwait(false);
         _explicitTransaction = null;
         _ownsTransaction = false;
     }
@@ -437,6 +461,8 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         _queuedPatches.Clear();
         _queuedRelations.Clear();
         _queuedUnrelations.Clear();
+        _transactionRelations.Clear();
+        _transactionUnrelations.Clear();
         _queuedStorageOperations.Clear();
         QueuedSqlCommands.Clear();
         _expectedVersions.Clear();
@@ -999,33 +1025,23 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                     _queuedPatches.Clear();
                 }
 
-                // Phase 5b: Execute queued graph operations (inside transaction)
+                // Phase 5b: Execute queued graph operations.
+                // Explicit transactions stage graph mutations until CommitTransactionAsync so
+                // rollback is deterministic even for embedded engines that persist writes eagerly.
                 graphOpCount = _queuedRelations.Count + _queuedUnrelations.Count;
                 if (_queuedRelations.Count > 0 || _queuedUnrelations.Count > 0)
                 {
-                    foreach (var rel in _queuedRelations)
+                    if (_explicitTransaction != null)
                     {
-                        var table = MetadataDispatch.GetTableName(rel.EdgeType);
-                        var genericRelate = RelateMethod!.MakeGenericMethod(rel.EdgeType, rel.EdgeType);
-                        var task = (Task)genericRelate.Invoke(targetSession, [table, rel.From, rel.To, rel.Data, ct])!;
-                        await task.ConfigureAwait(false);
+                        _transactionRelations.AddRange(_queuedRelations);
+                        _transactionUnrelations.AddRange(_queuedUnrelations);
+                        _queuedRelations.Clear();
+                        _queuedUnrelations.Clear();
                     }
-                    _queuedRelations.Clear();
-
-                    foreach (var edgeId in _queuedUnrelations)
+                    else
                     {
-                        var ridStr = edgeId switch
-                        {
-                            RecordIdOf<string> s => $"{s.Table}:{s.Id}",
-                            RecordIdOf<long> l => $"{l.Table}:{l.Id}",
-                            RecordIdOf<int> i => $"{i.Table}:{i.Id}",
-                            _ => throw new ArgumentException(
-                                $"Unsupported RecordId type '{edgeId.GetType().Name}'. Expected RecordIdOf<string>, RecordIdOf<long>, or RecordIdOf<int>.",
-                                nameof(edgeId))
-                        };
-                        await targetSession.RawQuery($"DELETE {ridStr};", null, ct).ConfigureAwait(false);
+                        await ExecuteGraphOperationsAsync(targetSession, _queuedRelations, _queuedUnrelations, ct).ConfigureAwait(false);
                     }
-                    _queuedUnrelations.Clear();
                 }
 
                 // Phase 5c: Flush FetchForWriting pending events (auto-append with version check)
@@ -1383,6 +1399,84 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
     public void Unrelate(RecordId edgeId)
     {
         _queuedUnrelations.Add(edgeId);
+    }
+
+    internal async Task FlushPendingGraphOperationsAsync(CancellationToken ct = default)
+    {
+        if (_queuedRelations.Count > 0)
+        {
+            _transactionRelations.AddRange(_queuedRelations);
+            _queuedRelations.Clear();
+        }
+
+        if (_queuedUnrelations.Count > 0)
+        {
+            _transactionUnrelations.AddRange(_queuedUnrelations);
+            _queuedUnrelations.Clear();
+        }
+
+        if (_transactionRelations.Count == 0 && _transactionUnrelations.Count == 0)
+            return;
+
+        var schemaName = ResolveGraphSchemaName(_transactionRelations);
+        var targetSession = await GetSessionForSchemaAsync(schemaName, ct).ConfigureAwait(false);
+
+        await ExecuteGraphOperationsAsync(
+            targetSession,
+            _transactionRelations,
+            _transactionUnrelations,
+            ct).ConfigureAwait(false);
+    }
+
+    private string? ResolveGraphSchemaName(IReadOnlyCollection<QueuedRelation> relations)
+    {
+        if (relations.Count == 0)
+            return null;
+
+        var targets = relations
+            .Select(r => MetadataDispatch.GetSchemaTarget(r.EdgeType, Options.Schema).Database)
+            .Distinct()
+            .ToList();
+
+        if (targets.Count > 1)
+        {
+            var dbNames = string.Join(", ", targets.Select(d => $"'{d ?? "test"}'"));
+            throw new InvalidOperationException(
+                $"Cross-database graph operations are not supported. Queued relations span multiple databases: {dbNames}");
+        }
+
+        return targets[0];
+    }
+
+    private static async Task ExecuteGraphOperationsAsync(
+        ISurrealDbSession session,
+        List<QueuedRelation> relations,
+        List<RecordId> unrelations,
+        CancellationToken ct)
+    {
+        foreach (var rel in relations)
+        {
+            var table = MetadataDispatch.GetTableName(rel.EdgeType);
+            var genericRelate = RelateMethod!.MakeGenericMethod(rel.EdgeType, rel.EdgeType);
+            var task = (Task)genericRelate.Invoke(session, [table, rel.From, rel.To, rel.Data, ct])!;
+            await task.ConfigureAwait(false);
+        }
+        relations.Clear();
+
+        foreach (var edgeId in unrelations)
+        {
+            var ridStr = edgeId switch
+            {
+                RecordIdOf<string> s => $"{s.Table}:{s.Id}",
+                RecordIdOf<long> l => $"{l.Table}:{l.Id}",
+                RecordIdOf<int> i => $"{i.Table}:{i.Id}",
+                _ => throw new ArgumentException(
+                    $"Unsupported RecordId type '{edgeId.GetType().Name}'. Expected RecordIdOf<string>, RecordIdOf<long>, or RecordIdOf<int>.",
+                    nameof(edgeId))
+            };
+            await session.RawQuery($"DELETE {ridStr};", null, ct).ConfigureAwait(false);
+        }
+        unrelations.Clear();
     }
 
     // ===================================================================
