@@ -520,7 +520,6 @@ public class DocumentStore : IDocumentStore, ISessionFactory
         return ds2;
     }
 
-    [Obsolete("Use OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }) instead.")]
     public async Task<IDocumentSession> LightweightSessionAsync(CancellationToken ct = default)
     {
         await EnsureInitialized(ct).ConfigureAwait(false);

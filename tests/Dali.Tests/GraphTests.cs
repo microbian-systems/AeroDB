@@ -623,6 +623,398 @@ public class GraphIntegrationTests
         results.Count.ShouldBe(2);
         results.Select(r => r.Name).OrderBy(n => n).ShouldBe(["Bob", "Charlie"]);
     }
+
+    // ── Graph transaction tests (Relate/Unrelate with commit/rollback) ──
+
+    [Test]
+    public async Task Relate_Within_Transaction_Commits_Edge()
+    {
+        await using var store = await TestHarness.CreateStoreAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
+
+        // Set up two persons
+        session.Store(new Person { Name = "Alice" });
+        session.Store(new Person { Name = "Bob" });
+        await session.SaveChangesAsync();
+
+        var people = await session.Query<Person>().ToListAsync();
+        var aliceId = people.First(p => p.Name == "Alice").Id;
+        var bobId = people.First(p => p.Name == "Bob").Id;
+
+        // Begin explicit transaction, relate, save, commit
+        await session.BeginTransactionAsync();
+        session.Relate<Knows>(aliceId!, bobId!, new Knows { Kind = "friend", Since = 2020 });
+        await session.SaveChangesAsync();
+        await session.CommitTransactionAsync();
+
+        // Open a fresh session and verify the edge was committed
+        await using var verifySession = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
+        var edges = await verifySession.Query<Knows>().ToListAsync();
+        edges.Count.ShouldBe(1);
+        edges[0].Kind.ShouldBe("friend");
+        edges[0].Since.ShouldBe(2020);
+    }
+
+    [Test]
+    public async Task Unrelate_Within_Transaction_Commits_Deletion()
+    {
+        await using var store = await TestHarness.CreateStoreAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
+
+        // Set up Alice→Bob edge
+        session.Store(new Person { Name = "Alice" });
+        session.Store(new Person { Name = "Bob" });
+        await session.SaveChangesAsync();
+
+        var people = await session.Query<Person>().ToListAsync();
+        var aliceId = people.First(p => p.Name == "Alice").Id;
+        var bobId = people.First(p => p.Name == "Bob").Id;
+
+        session.Relate<Knows>(aliceId!, bobId!, new Knows { Kind = "friend", Since = 2020 });
+        await session.SaveChangesAsync();
+
+        // Get the edge ID for unrelate
+        var edges = await session.Query<Knows>().ToListAsync();
+        edges.Count.ShouldBe(1);
+        var edgeId = edges[0].Id;
+
+        // Begin transaction, unrelate, save, commit
+        await session.BeginTransactionAsync();
+        session.Unrelate(edgeId!);
+        await session.SaveChangesAsync();
+        await session.CommitTransactionAsync();
+
+        // Open a fresh session and verify the edge was deleted
+        await using var verifySession = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
+        var remaining = await verifySession.Query<Knows>().ToListAsync();
+        remaining.Count.ShouldBe(0);
+    }
+
+    [Test]
+    public async Task Relate_Rollback_Transaction_Discards_Edge()
+    {
+        await using var store = await TestHarness.CreateStoreAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
+
+        // Set up two persons
+        session.Store(new Person { Name = "Alice" });
+        session.Store(new Person { Name = "Bob" });
+        await session.SaveChangesAsync();
+
+        var people = await session.Query<Person>().ToListAsync();
+        var aliceId = people.First(p => p.Name == "Alice").Id;
+        var bobId = people.First(p => p.Name == "Bob").Id;
+
+        // Begin transaction, relate, save, rollback
+        await session.BeginTransactionAsync();
+        session.Relate<Knows>(aliceId!, bobId!, new Knows { Kind = "friend", Since = 2020 });
+        await session.SaveChangesAsync();
+        await session.RollbackTransactionAsync();
+
+        // Verify the edge was discarded (rollback undid the relate)
+        var edges = await session.Query<Knows>().ToListAsync();
+        edges.Count.ShouldBe(0);
+    }
+
+    [Test]
+    public async Task Unrelate_Rollback_Transaction_Keeps_Edge()
+    {
+        await using var store = await TestHarness.CreateStoreAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
+
+        // Set up Alice→Bob edge
+        session.Store(new Person { Name = "Alice" });
+        session.Store(new Person { Name = "Bob" });
+        await session.SaveChangesAsync();
+
+        var people = await session.Query<Person>().ToListAsync();
+        var aliceId = people.First(p => p.Name == "Alice").Id;
+        var bobId = people.First(p => p.Name == "Bob").Id;
+
+        session.Relate<Knows>(aliceId!, bobId!, new Knows { Kind = "friend", Since = 2020 });
+        await session.SaveChangesAsync();
+
+        var edges = await session.Query<Knows>().ToListAsync();
+        edges.Count.ShouldBe(1);
+        var edgeId = edges[0].Id;
+
+        // Begin transaction, unrelate, save, rollback — edge should survive
+        await session.BeginTransactionAsync();
+        session.Unrelate(edgeId!);
+        await session.SaveChangesAsync();
+        await session.RollbackTransactionAsync();
+
+        // Verify the edge was preserved (rollback restored it)
+        var remaining = await session.Query<Knows>().ToListAsync();
+        remaining.Count.ShouldBe(1);
+        remaining[0].Kind.ShouldBe("friend");
+        remaining[0].Since.ShouldBe(2020);
+    }
+
+    [Test]
+    public async Task Graph_Multiple_Relate_And_Unrelate_In_Transaction()
+    {
+        await using var store = await TestHarness.CreateStoreAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
+
+        // Set up three persons
+        session.Store(new Person { Name = "Alice" });
+        session.Store(new Person { Name = "Bob" });
+        session.Store(new Person { Name = "Charlie" });
+        await session.SaveChangesAsync();
+
+        var people = await session.Query<Person>().ToListAsync();
+        var aliceId = people.First(p => p.Name == "Alice").Id;
+        var bobId = people.First(p => p.Name == "Bob").Id;
+        var charlieId = people.First(p => p.Name == "Charlie").Id;
+
+        // Transaction 1: Relate Alice→Bob (friend), Bob→Charlie (colleague)
+        await session.BeginTransactionAsync();
+        session.Relate<Knows>(aliceId!, bobId!, new Knows { Kind = "friend", Since = 2020 });
+        session.Relate<Knows>(bobId!, charlieId!, new Knows { Kind = "colleague", Since = 2021 });
+        await session.SaveChangesAsync();
+        await session.CommitTransactionAsync();
+
+        // Verify both edges exist
+        var edges1 = await session.Query<Knows>().ToListAsync();
+        edges1.Count.ShouldBe(2);
+        edges1.Any(e => e.Kind == "friend").ShouldBeTrue();
+        edges1.Any(e => e.Kind == "colleague").ShouldBeTrue();
+
+        // Identify the Alice→Bob edge by its Kind
+        var friendEdge = edges1.First(e => e.Kind == "friend");
+
+        // Transaction 2: Unrelate Alice→Bob, Relate Alice→Charlie
+        await session.BeginTransactionAsync();
+        session.Unrelate(friendEdge.Id!);
+        session.Relate<Knows>(aliceId!, charlieId!, new Knows { Kind = "partner", Since = 2022 });
+        await session.SaveChangesAsync();
+        await session.CommitTransactionAsync();
+
+        // Open a fresh session and verify final state
+        await using var verifySession = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
+        var finalEdges = await verifySession.Query<Knows>().ToListAsync();
+        finalEdges.Count.ShouldBe(2);
+        finalEdges.Any(e => e.Kind == "partner").ShouldBeTrue();   // Alice→Charlie (new)
+        finalEdges.Any(e => e.Kind == "colleague").ShouldBeTrue(); // Bob→Charlie (untouched)
+        finalEdges.Any(e => e.Kind == "friend").ShouldBeFalse();   // Alice→Bob (deleted)
+    }
+
+    [Test]
+    public async Task Graph_Transaction_Rollback_PreservesExistingEdges()
+    {
+        await using var store = await TestHarness.CreateStoreAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
+
+        // Set up Alice→Bob edge (committed)
+        session.Store(new Person { Name = "Alice" });
+        session.Store(new Person { Name = "Bob" });
+        session.Store(new Person { Name = "Charlie" });
+        await session.SaveChangesAsync();
+
+        var people = await session.Query<Person>().ToListAsync();
+        var aliceId = people.First(p => p.Name == "Alice").Id;
+        var bobId = people.First(p => p.Name == "Bob").Id;
+        var charlieId = people.First(p => p.Name == "Charlie").Id;
+
+        session.Relate<Knows>(aliceId!, bobId!, new Knows { Kind = "friend", Since = 2020 });
+        await session.SaveChangesAsync();
+
+        var edges = await session.Query<Knows>().ToListAsync();
+        var abEdge = edges[0];
+
+        // Begin transaction: try to unrelate Alice→Bob and relate Alice→Charlie
+        await session.BeginTransactionAsync();
+        session.Unrelate(abEdge.Id!);
+        session.Relate<Knows>(aliceId!, charlieId!, new Knows { Kind = "colleague", Since = 2021 });
+        await session.SaveChangesAsync();
+        await session.RollbackTransactionAsync();
+
+        // Open a fresh session and verify rollback preserved original edge
+        await using var verifySession = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
+        var remaining = await verifySession.Query<Knows>().ToListAsync();
+        remaining.Count.ShouldBe(1);
+        remaining[0].Kind.ShouldBe("friend");
+        remaining[0].Since.ShouldBe(2020);
+    }
+
+    [Test]
+    public async Task Graph_SaveChanges_Without_Transaction_AutoCommits()
+    {
+        await using var store = await TestHarness.CreateStoreAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
+
+        // Set up persons and relate (no explicit transaction)
+        session.Store(new Person { Name = "Alice" });
+        session.Store(new Person { Name = "Bob" });
+        await session.SaveChangesAsync();
+
+        var people = await session.Query<Person>().ToListAsync();
+        var aliceId = people.First(p => p.Name == "Alice").Id;
+        var bobId = people.First(p => p.Name == "Bob").Id;
+
+        session.Relate<Knows>(aliceId!, bobId!, new Knows { Kind = "friend", Since = 2020 });
+        await session.SaveChangesAsync();
+
+        // Verify edge was auto-committed
+        var edges = await session.Query<Knows>().ToListAsync();
+        edges.Count.ShouldBe(1);
+        edges[0].Kind.ShouldBe("friend");
+        edges[0].Since.ShouldBe(2020);
+    }
+
+    [Test]
+    public async Task Graph_Relate_Existing_Edge_Overwrites_Data()
+    {
+        await using var store = await TestHarness.CreateStoreAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
+
+        // Set up two persons
+        session.Store(new Person { Name = "Alice" });
+        session.Store(new Person { Name = "Bob" });
+        await session.SaveChangesAsync();
+
+        var people = await session.Query<Person>().ToListAsync();
+        var aliceId = people.First(p => p.Name == "Alice").Id;
+        var bobId = people.First(p => p.Name == "Bob").Id;
+
+        // First relate with initial data
+        session.Relate<Knows>(aliceId!, bobId!, new Knows { Kind = "friend", Since = 2020 });
+        await session.SaveChangesAsync();
+
+        var edges1 = await session.Query<Knows>().ToListAsync();
+        edges1.Count.ShouldBe(1);
+        edges1[0].Kind.ShouldBe("friend");
+
+        // Second relate with different data for the same pair
+        session.Relate<Knows>(aliceId!, bobId!, new Knows { Kind = "colleague", Since = 2024 });
+        await session.SaveChangesAsync();
+
+        // Verify the new data is present (SurrealDB creates a new edge record)
+        var edges2 = await session.Query<Knows>().ToListAsync();
+        edges2.Count.ShouldBe(2);
+        edges2.Any(e => e.Kind == "colleague" && e.Since == 2024).ShouldBeTrue();
+    }
+
+    // ── Entity deletion clears graph edges ──
+
+    [Test]
+    public async Task Delete_Entity_Clears_Outgoing_Relationships()
+    {
+        await using var store = await TestHarness.CreateStoreAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
+
+        // Create 3 persons
+        session.Store(new Person { Name = "Alice" });
+        session.Store(new Person { Name = "Bob" });
+        session.Store(new Person { Name = "Charlie" });
+        await session.SaveChangesAsync();
+
+        var people = await session.Query<Person>().ToListAsync();
+        var alice = people.First(p => p.Name == "Alice");
+        var bobId = people.First(p => p.Name == "Bob").Id;
+        var charlieId = people.First(p => p.Name == "Charlie").Id;
+
+        // Create edges from Alice to both Bob and Charlie
+        session.Relate<Knows>(alice.Id!, bobId!, new Knows { Kind = "friend", Since = 2020 });
+        session.Relate<Knows>(alice.Id!, charlieId!, new Knows { Kind = "colleague", Since = 2021 });
+        await session.SaveChangesAsync();
+
+        // Verify from a fresh session that Alice has 2 outgoing knows edges
+        await using var verifyBefore = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
+        var outgoing = await verifyBefore.Graph<Person>()
+            .Where(p => p.Name == "Alice")
+            .Out<Person>("knows")
+            .ToListAsync();
+        outgoing.Count.ShouldBe(2);
+        outgoing.Select(e => e.Name).OrderBy(n => n).ShouldBe(["Bob", "Charlie"]);
+
+        // Delete Alice
+        session.Delete(alice);
+        await session.SaveChangesAsync();
+
+        // Verify from a fresh session that edges are cleaned up
+        await using var verifyAfter = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
+
+        // Alice no longer exists
+        var allPeople = await verifyAfter.Query<Person>().ToListAsync();
+        allPeople.Any(p => p.Name == "Alice").ShouldBeFalse();
+        allPeople.Any(p => p.Name == "Bob").ShouldBeTrue();
+        allPeople.Any(p => p.Name == "Charlie").ShouldBeTrue();
+
+        // The knows edges originating from Alice are cleaned up
+        var knowsEdges = await verifyAfter.Query<Knows>().ToListAsync();
+        knowsEdges.Count.ShouldBe(0);
+    }
+
+    [Test]
+    public async Task Delete_Entity_Clears_Incoming_Relationships()
+    {
+        await using var store = await TestHarness.CreateStoreAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
+
+        // Create 3 persons
+        session.Store(new Person { Name = "Alice" });
+        session.Store(new Person { Name = "Bob" });
+        session.Store(new Person { Name = "Charlie" });
+        await session.SaveChangesAsync();
+
+        var people = await session.Query<Person>().ToListAsync();
+        var alice = people.First(p => p.Name == "Alice");
+        var bobId = people.First(p => p.Name == "Bob").Id;
+        var charlieId = people.First(p => p.Name == "Charlie").Id;
+
+        // Create edges: Bob→Alice, Charlie→Alice (both point to Alice)
+        session.Relate<Knows>(bobId!, alice.Id!, new Knows { Kind = "friend", Since = 2020 });
+        session.Relate<Knows>(charlieId!, alice.Id!, new Knows { Kind = "colleague", Since = 2021 });
+        await session.SaveChangesAsync();
+
+        // Verify from a fresh session that both incoming edges exist
+        await using var verifyBefore = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
+        var bobOutgoing = await verifyBefore.Graph<Person>()
+            .Where(p => p.Name == "Bob")
+            .Out<Person>("knows")
+            .ToListAsync();
+        bobOutgoing.Count.ShouldBe(1);
+        bobOutgoing[0].Name.ShouldBe("Alice");
+
+        var charlieOutgoing = await verifyBefore.Graph<Person>()
+            .Where(p => p.Name == "Charlie")
+            .Out<Person>("knows")
+            .ToListAsync();
+        charlieOutgoing.Count.ShouldBe(1);
+        charlieOutgoing[0].Name.ShouldBe("Alice");
+
+        // Delete Alice
+        session.Delete(alice);
+        await session.SaveChangesAsync();
+
+        // Verify from a fresh session that edges pointing to Alice are cleaned up
+        await using var verifyAfter = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
+
+        // Alice no longer exists
+        var allPeople = await verifyAfter.Query<Person>().ToListAsync();
+        allPeople.Any(p => p.Name == "Alice").ShouldBeFalse();
+        allPeople.Any(p => p.Name == "Bob").ShouldBeTrue();
+        allPeople.Any(p => p.Name == "Charlie").ShouldBeTrue();
+
+        // Bob and Charlie no longer have outgoing knows edges to Alice
+        var bobOutAfter = await verifyAfter.Graph<Person>()
+            .Where(p => p.Name == "Bob")
+            .Out<Person>("knows")
+            .ToListAsync();
+        bobOutAfter.Count.ShouldBe(0);
+
+        var charlieOutAfter = await verifyAfter.Graph<Person>()
+            .Where(p => p.Name == "Charlie")
+            .Out<Person>("knows")
+            .ToListAsync();
+        charlieOutAfter.Count.ShouldBe(0);
+
+        // All knows edges are cleaned up
+        var knowsEdges = await verifyAfter.Query<Knows>().ToListAsync();
+        knowsEdges.Count.ShouldBe(0);
+    }
 }
 
 // ═══════════════════════════════════════════════

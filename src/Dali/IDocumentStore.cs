@@ -19,7 +19,13 @@ public interface IDocumentStore : IAsyncDisposable
     /// <summary>Open a session with full configuration control.</summary>
     Task<IDocumentSession> OpenSessionAsync(SessionOptions options, CancellationToken ct = default);
 
-    [Obsolete("Use OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }) instead.")]
+    /// <summary>
+    /// Opens a lightweight document session with no identity map or change tracking
+    /// (<see cref="DocumentTracking.None"/>). Equivalent to
+    /// <c>OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }, ct)</c>.
+    /// This is the recommended default for most read/write operations, matching Marten's
+    /// <c>LightweightSession()</c> pattern.
+    /// </summary>
     Task<IDocumentSession> LightweightSessionAsync(CancellationToken ct = default);
 
     [Obsolete("Use OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.IdentityOnly }) instead.")]
