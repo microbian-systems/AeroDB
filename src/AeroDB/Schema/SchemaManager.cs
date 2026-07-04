@@ -154,7 +154,6 @@ public class SchemaManager
         {
             IndexType.FullText => BuildFullTextIndex(tableName, index),
             IndexType.Hnsw => BuildHnswIndex(tableName, index),
-            IndexType.Mtree => BuildMtreeIndex(tableName, index),
             IndexType.Diskann => BuildDiskannIndex(tableName, index),
             IndexType.Geo => BuildStandardIndex(tableName, index),
             _ => BuildStandardIndex(tableName, index)
@@ -190,14 +189,6 @@ public class SchemaManager
         var dim = index.VectorDimension ?? 1536;
         var dist = index.VectorDistance ?? Search.Distance.Cosine;
         return $"DEFINE INDEX {index.Name} ON TABLE {tableName} FIELDS {columns} HNSW DIMENSION {dim} DIST {dist};";
-    }
-
-    private static string BuildMtreeIndex(string tableName, IndexDefinition index)
-    {
-        var columns = string.Join(", ", index.Columns);
-        var dim = index.VectorDimension ?? 1536;
-        var dist = index.VectorDistance ?? Search.Distance.Cosine;
-        return $"DEFINE INDEX {index.Name} ON TABLE {tableName} FIELDS {columns} MTREE DIMENSION {dim} DIST {dist};";
     }
 
     private static string BuildDiskannIndex(string tableName, IndexDefinition index)

@@ -8,6 +8,7 @@
   <Project Path="AeroDB/AeroDB.csproj" />
   <Folder Name="/Samples/">
     <Project Path="..\samples\CryptoTrader\CryptoTrader.csproj" />
+    <Project Path="..\samples\WikipediaSearch\WikipediaSearch.csproj" />
   </Folder>
   <Folder Name="/Tests/">
     <Project Path="../tests/AeroDB.IntegrationTests/AeroDB.IntegrationTests.csproj" />

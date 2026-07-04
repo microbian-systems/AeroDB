@@ -53,6 +53,9 @@ public interface IDocumentStore : IAsyncDisposable
     /// </summary>
     AsyncDaemon? Daemon { get; }
 
+    /// <summary>Get the SurrealDB server version string (e.g., "surrealdb-3.1.0").</summary>
+    Task<string?> GetVersionAsync(CancellationToken ct = default);
+
     /// <summary>Execute a compiled query against a lightweight session.</summary>
     Task<TOut> QueryAsync<TDoc, TOut>(ICompiledQuery<TDoc, TOut> query, CancellationToken ct = default) where TDoc : class;
 

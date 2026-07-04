@@ -3,6 +3,8 @@
 # AeroDB — SurrealDB Document Store for .NET
 
 > **⚠️⚠️⚠️ ALPHA** — This library is in active development. APIs may change without notice. Not recommended for production use. ⚠️⚠️⚠️
+>
+> **Compatible with SurrealDB 3.x and higher only.** Not compatible with SurrealDB 2.x.
 
 A .NET document store for SurrealDB with a Marten-compatible fluent API — idiomatic .NET sessions, schema management, indexing, and LINQ querying over SurrealDB's multi-model engine.
 
@@ -68,8 +70,7 @@ opts.Schema.For<T>()
     .UniqueIndex(x => x.Prop)                                 // shortcut unique
     .FullTextIndex(x => x.Body, "english")                    // full-text search
     .HnswIndex(x => x.Embedding, 1536)                        // vector (HNSW)
-    .MtreeIndex(x => x.Embedding, 768)                        // vector (MTREE)
-    .DiskannIndex(x => x.Embedding, 1536, vectorType: "F16")  // vector (DiskANN)
+    .DiskannIndex(x => x.Embedding, 1536, vectorType: "F16")  // vector (DiskANN — SurrealDB 3.1+ server)
     .SpatialIndex(x => x.Location)                             // geo-spatial marker
     .MultiTenanted()                                           // tenant-id filtered
     .SetSchemaMode(SchemaMode.Strict)                          // SCHEMAFULL / Flexible

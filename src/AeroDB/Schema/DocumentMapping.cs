@@ -417,32 +417,6 @@ public class DocumentMapping<T> : DocumentMapping
     }
 
     /// <summary>
-    /// Defines an MTREE vector index on the specified property.
-    /// MTREE supports both exact and approximate nearest-neighbor search.
-    /// Supports distance functions beyond cosine (Minkowski, Hamming, Jaccard).
-    /// Best for smaller datasets or when exact results are required.
-    /// </summary>
-    /// <param name="property">The property storing the vector embedding.</param>
-    /// <param name="dimension">The dimensionality of the vector.</param>
-    /// <param name="distance">The distance function: COSINE (default), EUCLIDEAN, MANHATTAN, MINKOWSKI, HAMMING, or JACCARD.</param>
-    public DocumentMapping<T> MtreeIndex<TProp>(
-        Expression<Func<T, TProp>> property,
-        int dimension,
-        string distance = Search.Distance.Cosine)
-    {
-        var member = ExtractMember(property);
-        Indices.Add(new IndexDefinition
-        {
-            Columns = [member.Name],
-            Name = $"mtree_{Snake(typeof(T).Name)}_{Snake(member.Name)}",
-            Type = IndexType.Mtree,
-            VectorDimension = dimension,
-            VectorDistance = distance
-        });
-        return this;
-    }
-
-    /// <summary>
     /// Defines a DISKANN vector index on the specified property.
     /// DiskANN is a disk-based approximate nearest-neighbour index for very large
     /// embedding sets. Uses the same &lt;|K, EF|&gt; query operator as HNSW.

@@ -60,13 +60,12 @@ public class FluentApiSearchTests
             .UniqueIndex(x => x.Ean)
             .FullTextIndex(x => x.Description, "english")
             .FullTextIndex("english", x => x.Name, x => x.Description)
-            .HnswIndex(x => x.Embedding, 1536)
-            .MtreeIndex(x => x.Features, 512, Search.Distance.Hamming);
+            .HnswIndex(x => x.Embedding, 1536);
 
         var mapping = (DocumentMapping<TestProduct>)options.Schema.Mappings[typeof(TestProduct)];
         mapping.SchemaModeType.ShouldBe(SchemaMode.Strict);
         mapping.IdentityProperty.ShouldBe("Sku");
-        mapping.Indices.Count.ShouldBe(6);
+        mapping.Indices.Count.ShouldBe(5);
 
         // BTreeIndex
         mapping.Indices[0].Name.ShouldBe("idx_test_product_sku");
@@ -96,12 +95,6 @@ public class FluentApiSearchTests
         mapping.Indices[4].Type.ShouldBe(IndexType.Hnsw);
         mapping.Indices[4].VectorDimension.ShouldBe(1536);
         mapping.Indices[4].VectorDistance.ShouldBe("COSINE");
-
-        // MtreeIndex
-        mapping.Indices[5].Name.ShouldBe("mtree_test_product_features");
-        mapping.Indices[5].Type.ShouldBe(IndexType.Mtree);
-        mapping.Indices[5].VectorDimension.ShouldBe(512);
-        mapping.Indices[5].VectorDistance.ShouldBe("HAMMING");
     }
 
     [Test]
@@ -112,21 +105,6 @@ public class FluentApiSearchTests
         var idx = options.Schema.Mappings[typeof(SearchablePage)].Indices[0];
         idx.Type.ShouldBe(IndexType.Standard);
         idx.Columns.ShouldBe(["Title"]);
-    }
-
-    [Test]
-    public async Task MtreeIndex_GeneratesCorrectSurql()
-    {
-        var idx = new IndexDefinition
-        {
-            Name = "mtree_page_features",
-            Columns = ["Features"],
-            Type = IndexType.Mtree,
-            VectorDimension = 512,
-            VectorDistance = Search.Distance.Hamming
-        };
-        var surql = BuildBuilderMethod("BuildMtreeIndex", idx, "page");
-        surql.ShouldBe("DEFINE INDEX mtree_page_features ON TABLE page FIELDS Features MTREE DIMENSION 512 DIST HAMMING;");
     }
 
     [Test]

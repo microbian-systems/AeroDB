@@ -26,13 +26,13 @@ public class IndexDefinition
     public (double K1, double B)? Bm25 { get; set; }
 
     /// <summary>
-    /// Vector dimension. Only used when <see cref="Type"/> is <see cref="IndexType.Hnsw"/> or <see cref="IndexType.Mtree"/> or <see cref="IndexType.Diskann"/>.
+    /// Vector dimension. Only used when <see cref="Type"/> is <see cref="IndexType.Hnsw"/> or <see cref="IndexType.Diskann"/>.
     /// </summary>
     public int? VectorDimension { get; set; }
 
     /// <summary>
     /// Distance function (e.g. "COSINE", "EUCLIDEAN", "MANHATTAN").
-    /// Only used when <see cref="Type"/> is <see cref="IndexType.Hnsw"/>, <see cref="IndexType.Mtree"/>, or <see cref="IndexType.Diskann"/>.
+    /// Only used when <see cref="Type"/> is <see cref="IndexType.Hnsw"/> or <see cref="IndexType.Diskann"/>.
     /// </summary>
     public string? VectorDistance { get; set; }
 
@@ -106,14 +106,6 @@ public enum IndexType
     /// Best for large datasets where speed matters more than exact results.
     /// </summary>
     Hnsw,
-
-    /// <summary>
-    /// MTREE vector index — DEFINE INDEX ... FIELDS ... MTREE DIMENSION ... DIST ...
-    /// Supports exact and approximate nearest-neighbor search.
-    /// Best for smaller datasets or when exact results are required.
-    /// Supports distance functions beyond cosine (Minkowski, Hamming, Jaccard).
-    /// </summary>
-    Mtree,
 
     /// <summary>
     /// DISKANN vector index — DEFINE INDEX ... FIELDS ... DISKANN DIMENSION ... TYPE ... DIST ...

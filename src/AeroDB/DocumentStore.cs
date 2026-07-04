@@ -425,6 +425,21 @@ public class DocumentStore : IDocumentStore, ISessionFactory
         }
     }
 
+    /// <inheritdoc />
+    public async Task<string?> GetVersionAsync(CancellationToken ct = default)
+    {
+        await EnsureInitialized(ct).ConfigureAwait(false);
+
+        try
+        {
+            return await Client.Version(ct).ConfigureAwait(false);
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
     public async Task<IQuerySession> QuerySessionAsync(CancellationToken ct = default)
     {
         await EnsureInitialized(ct).ConfigureAwait(false);

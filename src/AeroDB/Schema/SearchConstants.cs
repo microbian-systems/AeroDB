@@ -41,7 +41,7 @@ public static class Search
         public const string Chinese = "chinese";
     }
 
-    /// <summary>Distance functions for vector indexes (HNSW, MTREE, DISKANN).</summary>
+    /// <summary>Distance functions for vector indexes (HNSW, DISKANN).</summary>
     public static class Distance
     {
         public const string Cosine = "COSINE";

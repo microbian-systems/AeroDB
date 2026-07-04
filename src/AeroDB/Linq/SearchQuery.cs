@@ -33,7 +33,7 @@ public interface ISearchQuery<T> where T : class
 
     /// <summary>
     /// Sets the vector (embedding) for KNN vector search.
-    /// Requires an HNSW or MTREE index on the field.
+    /// Requires an HNSW index on the field.
     /// </summary>
     ISearchQuery<T> WithVector(Expression<Func<T, float[]>> fieldSelector, float[] queryVector);
 
