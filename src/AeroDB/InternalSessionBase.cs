@@ -128,17 +128,16 @@ public abstract class InternalSessionBase : IAsyncDisposable
             ArgumentNullException.ThrowIfNull(id);
             ArgumentNullException.ThrowIfNull(httpContext);
 
-            var doc = await _session.LoadAsync<T>(id.ToString()!, ct).ConfigureAwait(false);
-            if (doc is null)
+            var json = await LoadByIdAsync<T>(id.ToString()!, ct).ConfigureAwait(false);
+            if (json is null)
             {
                 httpContext.Response.StatusCode = 404;
                 return;
             }
 
             httpContext.Response.ContentType = "application/json";
-            await System.Text.Json.JsonSerializer
-                .SerializeAsync(httpContext.Response.Body, doc, _session.StoreOptions.SerializerOptions, ct)
-                .ConfigureAwait(false);
+            var bytes = System.Text.Encoding.UTF8.GetBytes(json);
+            await httpContext.Response.Body.WriteAsync(bytes, ct).ConfigureAwait(false);
         }
     }
 
@@ -476,6 +475,7 @@ public abstract class InternalSessionBase : IAsyncDisposable
         {
             PropertyNameCaseInsensitive = true
         };
+        jsonOpts.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
         var json = System.Text.Json.JsonSerializer.Serialize(records);
         var results = System.Text.Json.JsonSerializer.Deserialize<List<T>>(json, jsonOpts);
         if (results is null) return [];

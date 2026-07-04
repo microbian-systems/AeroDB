@@ -117,16 +117,27 @@ public class DocumentStore : IDocumentStore, ISessionFactory
         else
         {
             var endpoint = Options.Endpoint;
-            var user = Options.Username ?? "root";
-            var pass = Options.Password ?? "root";
-
-            var surrealOptions = new SurrealDbOptionsBuilder()
+            var surrealOptionsBuilder = new SurrealDbOptionsBuilder()
                 .WithEndpoint(endpoint)
                 .WithNamespace(ns)
-                .WithDatabase(db)
-                .WithUsername(user)
-                .WithPassword(pass)
-                .Build();
+                .WithDatabase(db);
+
+            if (!string.IsNullOrWhiteSpace(Options.Username))
+            {
+                surrealOptionsBuilder.WithUsername(Options.Username);
+            }
+
+            if (!string.IsNullOrWhiteSpace(Options.Password))
+            {
+                surrealOptionsBuilder.WithPassword(Options.Password);
+            }
+
+            if (!string.IsNullOrWhiteSpace(Options.Token))
+            {
+                surrealOptionsBuilder.WithToken(Options.Token);
+            }
+
+            var surrealOptions = surrealOptionsBuilder.Build();
 
             _client = new SurrealDbClient(
                 surrealOptions,

@@ -128,16 +128,33 @@ public abstract class InlineProjection<T> : IProjection, ILoggableProjection whe
             // First time — document doesn't exist yet
         }
 
+        var eventsToApply = events;
+        if (aggregate is null && docId is not null && context.Session is IDocumentSession documentSession)
+        {
+            try
+            {
+                var stream = await documentSession.Events.FetchStream(docId.ToString()!, ct).ConfigureAwait(false);
+                if (stream.Count > events.Count)
+                {
+                    eventsToApply = stream;
+                }
+            }
+            catch
+            {
+                // If the stream cannot be loaded, fall back to the current batch.
+            }
+        }
+
         // Determine action (override for soft-delete, hard-delete, or no-op)
-        var action = DetermineAction(aggregate, events);
+        var action = DetermineAction(aggregate, eventsToApply);
         if (action == ActionType.Nothing) return;
 
         // Try to evolve using typed events (new path)
-        var result = Evolve(aggregate, events, ct);
+        var result = Evolve(aggregate, eventsToApply, ct);
 
         // Fall back to old ApplyEvents if Evolve not overridden (returns same aggregate reference)
         if (ReferenceEquals(result, aggregate) && !IsEvolveOverridden())
-            result = ApplyEvents(aggregate, events.Select(e => e.Data).ToList().AsReadOnly(), ct);
+            result = ApplyEvents(aggregate, eventsToApply.Select(e => e.Data).ToList().AsReadOnly(), ct);
 
         if (action == ActionType.HardDelete)
         {
@@ -155,7 +172,9 @@ public abstract class InlineProjection<T> : IProjection, ILoggableProjection whe
 
         if (result is not null)
         {
-            if (IsPoco)
+            SetVersion(result, eventsToApply[^1].Version);
+
+            if (IsPoco && docId is not null)
             {
                 // For POCOs, set the identity property directly (e.g., long Id)
                 SetPocoIdentity(result, docId);
@@ -300,6 +319,18 @@ public abstract class InlineProjection<T> : IProjection, ILoggableProjection whe
 
         if (typedId is not null)
             _identityProperty.SetValue(result, typedId);
+    }
+
+    private static void SetVersion(T result, long version)
+    {
+        var versionProperty = typeof(T).GetProperty("Version", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public);
+        if (versionProperty is null || !versionProperty.CanWrite) return;
+
+        var targetType = Nullable.GetUnderlyingType(versionProperty.PropertyType) ?? versionProperty.PropertyType;
+        object typedVersion = targetType == typeof(int)
+            ? checked((int)version)
+            : Convert.ChangeType(version, targetType);
+        versionProperty.SetValue(result, typedVersion);
     }
 
     /// <summary>

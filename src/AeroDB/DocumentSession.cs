@@ -481,6 +481,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         var count = _unitOfWork.Operations.Count;
         if (count == 0 && _appendedEvents.Count == 0 && _queuedPatches.Count == 0
             && _queuedRelations.Count == 0 && _queuedUnrelations.Count == 0
+            && _fetchForWritingResults.Count == 0
             && _queuedStorageOperations.Count == 0 && QueuedSqlCommands.Count == 0) return 0;
 
         ResolvedLogger.LogInformation("SaveChangesAsync: committing {EntityCount} entities and {EventCount} events",
@@ -982,6 +983,19 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                     _unitOfWork.Clear();
                 }
 
+                // Phase 3.5: Flush FetchForWriting pending events before inline projections
+                if (_fetchForWritingResults.Count > 0)
+                {
+                    foreach (var ffw in _fetchForWritingResults)
+                    {
+                        if (ffw.PendingEvents.Count > 0)
+                        {
+                            await Events.Append(ffw.StreamId, ffw.ExpectedVersion, ffw.PendingEvents, ct).ConfigureAwait(false);
+                        }
+                    }
+                    _fetchForWritingResults.Clear();
+                }
+
                 // Phase 4: run inline projections on events appended during this session
                 if (_appendedEvents.Count > 0 && Options.Projections.Count > 0)
                 {
@@ -1073,10 +1087,11 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                                         else if (!string.IsNullOrEmpty(entityId))
                                         {
                                             // POCO projection with explicit identity — use MERGE to upsert
-                                            await targetSession.RawQuery(
+                                            var response = await targetSession.RawQuery(
                                                 $"UPSERT {table}:`{entityId}` MERGE $data",
                                                 new Dictionary<string, object?> { ["data"] = op.Entity },
                                                 ct).ConfigureAwait(false);
+                                            ThrowIfRawQueryFailed(response);
                                         }
                                         else
                                         {
@@ -1145,19 +1160,6 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                     {
                         await ExecuteGraphOperationsAsync(targetSession, _queuedRelations, _queuedUnrelations, ct).ConfigureAwait(false);
                     }
-                }
-
-                // Phase 5c: Flush FetchForWriting pending events (auto-append with version check)
-                if (_fetchForWritingResults.Count > 0)
-                {
-                    foreach (var ffw in _fetchForWritingResults)
-                    {
-                        if (ffw.PendingEvents.Count > 0)
-                        {
-                            await Events.Append(ffw.StreamId, ffw.ExpectedVersion, ffw.PendingEvents, ct).ConfigureAwait(false);
-                        }
-                    }
-                    _fetchForWritingResults.Clear();
                 }
 
                 // Phase 6: Execute queued storage operations (from QueueOperation)
@@ -2277,16 +2279,17 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
             return result;
         }
 
-        public async Task<string> StartStream(string streamId, IEnumerable<object> events, CancellationToken ct = default)
+        public Task<string> StartStream(string streamId, IEnumerable<object> events, CancellationToken ct = default)
         {
-            // Use Append directly to capture the wrapped IEvent objects
-            var result = await _inner.Append(streamId, events, headers: null, ct).ConfigureAwait(false);
+            // Marten's StartStream is commonly called without awaiting before SaveChangesAsync.
+            // Complete the append here so that compatibility pattern still feeds inline projections.
+            var result = _inner.Append(streamId, events, headers: null, ct).GetAwaiter().GetResult();
             foreach (var evt in result)
             {
                 _owner._appendedEvents.Add(evt);
                 _owner._unitOfWork.StreamIds.Add(evt.StreamId);
             }
-            return streamId;
+            return Task.FromResult(streamId);
         }
 
         public async Task<FetchForWritingResult<T>> FetchForWritingAsync<T>(string streamId, CancellationToken ct = default) where T : class
@@ -2332,10 +2335,10 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
             => _inner.FetchStreamAsync(streamId, version, timestamp, fromVersion, ct);
 
         public Task<string> StartStream<T>(string streamId, IEnumerable<object> events, CancellationToken ct = default)
-            => _inner.StartStream<T>(streamId, events, ct);
+            => StartStream(streamId, events, ct);
 
         public Task<string> StartStream<T>(Guid streamId, IEnumerable<object> events, CancellationToken ct = default)
-            => _inner.StartStream<T>(streamId, events, ct);
+            => StartStream(streamId.ToString("D"), events, ct);
 
         public Task<IReadOnlyList<IEvent>> FetchStream(string streamId, CancellationToken ct = default)
             => _inner.FetchStream(streamId, ct);

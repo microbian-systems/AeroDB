@@ -56,6 +56,8 @@ public static class AeroDBServiceCollectionExtensions
         services.TryAddSingleton<IHostedService>(sp =>
             sp.GetRequiredService<IProjectionCoordinator>());
 
+        services.AddAeroDBSessions();
+
         return services;
     }
 
@@ -89,6 +91,19 @@ public static class AeroDBServiceCollectionExtensions
             new ProjectionCoordinator(sp.GetRequiredService<IDocumentStore>()));
         services.TryAddSingleton<IHostedService>(sp =>
             sp.GetRequiredService<IProjectionCoordinator>());
+
+        services.AddAeroDBSessions();
+
+        return services;
+    }
+
+    private static IServiceCollection AddAeroDBSessions(this IServiceCollection services)
+    {
+        services.TryAddScoped<IQuerySession>(sp =>
+            sp.GetRequiredService<IDocumentStore>().QuerySessionAsync().GetAwaiter().GetResult());
+
+        services.TryAddScoped<IDocumentSession>(sp =>
+            sp.GetRequiredService<IDocumentStore>().OpenSessionAsync(new SessionOptions()).GetAwaiter().GetResult());
 
         return services;
     }

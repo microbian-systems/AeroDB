@@ -139,7 +139,7 @@ public abstract class EventProjection : IProjection, ILoggableProjection
             e.Version,
             e.Sequence,
             e.Timestamp,
-            e.StreamId,
+            e.StreamId.ToString(),
             e.StreamKey,
             e.Headers)!;
     }
