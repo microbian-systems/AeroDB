@@ -5,7 +5,7 @@ using AeroDB.Metadata;
 
 namespace AeroDB;
 
-public sealed class DaliMlQuery<TInput, TOutput> : IMlQuery<TInput, TOutput>
+public sealed class AeroDBMlQuery<TInput, TOutput> : IMlQuery<TInput, TOutput>
     where TInput : class
     where TOutput : class
 {
@@ -21,7 +21,7 @@ public sealed class DaliMlQuery<TInput, TOutput> : IMlQuery<TInput, TOutput>
 
     private readonly SurrealCommandBuilder _paramBuilder = new();
 
-    internal DaliMlQuery(SurrealQueryProvider provider)
+    internal AeroDBMlQuery(SurrealQueryProvider provider)
     {
         _provider = provider;
         _table = MetadataDispatch.GetTableName(typeof(TInput));

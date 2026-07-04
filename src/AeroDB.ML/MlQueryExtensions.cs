@@ -8,7 +8,7 @@ public static class MlQueryExtensions
     {
         var queryable = session.Query<TInput>();
         if (queryable.Provider is SurrealQueryProvider provider)
-            return new DaliMlQuery<TInput, TOutput>(provider);
+            return new AeroDBMlQuery<TInput, TOutput>(provider);
 
         throw new NotSupportedException(
             $"ML queries are only supported on AeroDB query sessions.");

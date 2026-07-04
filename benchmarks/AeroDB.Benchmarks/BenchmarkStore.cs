@@ -1,7 +1,7 @@
-using Dali;
+using AeroDB;
 using SurrealDb.Embedded.InMemory;
 
-namespace Dali.Benchmarks;
+namespace AeroDB.Benchmarks;
 
 public static class BenchmarkStore
 {

@@ -1,6 +1,6 @@
 using BenchmarkDotNet.Attributes;
 
-namespace Dali.Benchmarks;
+namespace AeroDB.Benchmarks;
 
 [SimpleJob(warmupCount: 2)]
 [MemoryDiagnoser]

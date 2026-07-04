@@ -35,7 +35,7 @@ public class AeroDBEnvelopeTests
         record.TenantId.ShouldBe("tenant1");
         record.CorrelationId.ShouldBe("corr-123");
         record.Source.ShouldBe("test-source");
-        record.Destination.ShouldBe("AeroDB://localhost/queue");
+        record.Destination.ShouldBe("aerodb://localhost/queue");
         record.DeliverBy.ShouldNotBeNull();
         record.DeliverBy.Value.ShouldBe(env.DeliverBy!.Value, TimeSpan.FromSeconds(1));
     }

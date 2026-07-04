@@ -1,6 +1,6 @@
 using SurrealDb.Net.Models;
 
-namespace Dali.Benchmarks;
+namespace AeroDB.Benchmarks;
 
 public class BenchDoc : Record
 {

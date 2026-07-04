@@ -1,6 +1,6 @@
-using Dali;
+using AeroDB;
 
-namespace Dali.Benchmarks;
+namespace AeroDB.Benchmarks;
 
 public class EntityDoc : Entity<long>
 {

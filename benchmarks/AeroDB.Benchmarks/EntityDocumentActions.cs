@@ -1,28 +1,27 @@
 using BenchmarkDotNet.Attributes;
-using SurrealDb.Net.Models;
 
-namespace Dali.Benchmarks;
+namespace AeroDB.Benchmarks;
 
 [SimpleJob(warmupCount: 2)]
 [MemoryDiagnoser]
-public class DocumentActions
+public class EntityDocumentActions
 {
-    public static BenchDoc[] Docs = BenchDoc.Generate(100).ToArray();
-    private BenchDoc[] _bulkDocs = Array.Empty<BenchDoc>();
+    public static EntityDoc[] Docs = EntityDoc.Generate(100).ToArray();
+    private EntityDoc[] _bulkDocs = Array.Empty<EntityDoc>();
 
     [GlobalSetup]
-    public async Task Setup() => await BenchmarkStore.CleanAsync();
+    public async Task Setup() => await BenchmarkStore.CleanEntityDocsAsync();
 
     [IterationSetup]
     public void IterationSetup()
     {
         // Regenerate docs each iteration so insert IDs are fresh
-        Docs = BenchDoc.Generate(100).ToArray();
-        _bulkDocs = BenchDoc.Generate(1000).ToArray();
+        Docs = EntityDoc.Generate(100).ToArray();
+        _bulkDocs = EntityDoc.Generate(1000).ToArray();
     }
 
     [Benchmark]
-    public async Task Record_Insert_100()
+    public async Task Entity_Insert_100()
     {
         await using var session = await BenchmarkStore.Store.LightweightSessionAsync();
         foreach (var doc in Docs)
@@ -31,32 +30,32 @@ public class DocumentActions
     }
 
     [Benchmark]
-    public async Task Record_Load_Single()
+    public async Task Entity_Load_Single()
     {
         // Pre-insert one doc with explicit ID so we know it without relying on SaveChangesAsync back-propagation
-        var docId = Guid.NewGuid().ToString();
+        var docId = SnowflakeGenerator.NewId();
         await using var setup = await BenchmarkStore.Store.LightweightSessionAsync();
-        var doc = BenchDoc.Generate(1)[0];
-        doc.Id = new RecordIdOf<string>("bench_doc", docId);
+        var doc = EntityDoc.Generate(1)[0];
+        doc.Id = docId;
         setup.Store(doc);
         await setup.SaveChangesAsync();
 
         // Benchmark: load it
         await using var query = await BenchmarkStore.Store.QuerySessionAsync();
-        var loaded = await query.LoadAsync<BenchDoc>(docId);
+        var loaded = await query.LoadAsync<EntityDoc>(docId.ToString());
     }
 
     [Benchmark]
-    public async Task Record_Query_By_Name()
+    public async Task Entity_Query_By_Name()
     {
         await using var query = await BenchmarkStore.Store.QuerySessionAsync();
-        var results = await query.Query<BenchDoc>()
+        var results = await query.Query<EntityDoc>()
             .Where(d => d.Name!.Contains("a"))
             .ToListAsync();
     }
 
     [Benchmark]
-    public async Task Record_Bulk_Insert_1000()
+    public async Task Entity_Bulk_Insert_1000()
     {
         await using var session = await BenchmarkStore.Store.LightweightSessionAsync();
         await session.BulkInsertAsync(_bulkDocs);
