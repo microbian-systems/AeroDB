@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <IsPackable>true</IsPackable>
+    <PackageId>AeroDB.Reactive</PackageId>
+    <Description>Reactive Extensions for Dali live queries</Description>
+    <PackageTags>Dali SurrealDB Reactive Extensions LiveQuery</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AeroDB\AeroDB.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Reactive" />
+  </ItemGroup>
+
+</Project>

@@ -14,10 +14,10 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\AeroDB\AeroDB.csproj" />
-    <ProjectReference Include="..\..\src\Dali.AspNetIdentity\Dali.AspNetIdentity.csproj" />
+    <ProjectReference Include="..\..\src\AeroDB.AspNetIdentity\AeroDB.AspNetIdentity.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Dali.SourceGenerators\Dali.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="true">
+    <ProjectReference Include="..\..\src\AeroDB.SourceGenerators\AeroDB.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="true">
       <PrivateAssets>all</PrivateAssets>
     </ProjectReference>
   </ItemGroup>

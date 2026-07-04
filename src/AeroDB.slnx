@@ -1,11 +1,11 @@
 <Solution>
-  <Project Path="Dali.WolverineFx/Dali.WolverineFx.csproj" />
+  <Project Path="AeroDB.AspNetIdentity/AeroDB.AspNetIdentity.csproj" />
+  <Project Path="AeroDB.EntityFrameworkCore/AeroDB.EntityFrameworkCore.csproj" />
+  <Project Path="AeroDB.Reactive/AeroDB.Reactive.csproj" />
+  <Project Path="AeroDB.Snowflake/AeroDB.Snowflake.csproj" />
+  <Project Path="AeroDB.SourceGenerators/AeroDB.SourceGenerators.csproj" />
+  <Project Path="AeroDB.WolverineFx/AeroDB.WolverineFx.csproj" />
   <Project Path="AeroDB/AeroDB.csproj" />
-  <Project Path="Dali.AspNetIdentity/Dali.AspNetIdentity.csproj" />
-  <Project Path="Dali.EntityFrameworkCore\Dali.EntityFrameworkCore.csproj" />
-  <Project Path="Dali.Snowflake/Dali.Snowflake.csproj" />
-  <Project Path="Dali.SourceGenerators\Dali.SourceGenerators.csproj" />
-  <Project Path="Dali.Reactive\Dali.Reactive.csproj" />
   <Folder Name="/Samples/">
     <Project Path="..\samples\CryptoTrader\CryptoTrader.csproj" />
   </Folder>

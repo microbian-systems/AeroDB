@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <Description>SurrealDB-backed message persistence and transport for WolverineFx</Description>
+        <PackageId>AeroDB.WolverineFx</PackageId>
+        <PackageTags>wolverine surrealdb messaging durability</PackageTags>
+    </PropertyGroup>
+    <ItemGroup>
+        <InternalsVisibleTo Include="Dali.Tests" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\AeroDB\AeroDB.csproj" />
+        <ProjectReference Include="..\..\wolverine\src\Wolverine\Wolverine.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+    </ItemGroup>
+</Project>

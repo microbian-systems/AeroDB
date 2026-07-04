@@ -29,17 +29,17 @@
     <PackageReference Include="Microsoft.Testing.Extensions.CodeCoverage" VersionOverride="18.6.2" Version="18.8.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Dali.AspNetIdentity\Dali.AspNetIdentity.csproj" />
+    <ProjectReference Include="..\..\src\AeroDB.AspNetIdentity\AeroDB.AspNetIdentity.csproj" />
     <ProjectReference Include="..\..\src\AeroDB\AeroDB.csproj" />
-    <ProjectReference Include="..\..\src\Dali.Snowflake\Dali.Snowflake.csproj" />
-    <ProjectReference Include="..\..\src\Dali.EntityFrameworkCore\Dali.EntityFrameworkCore.csproj" />
+    <ProjectReference Include="..\..\src\AeroDB.Snowflake\AeroDB.Snowflake.csproj" />
+    <ProjectReference Include="..\..\src\AeroDB.EntityFrameworkCore\AeroDB.EntityFrameworkCore.csproj" />
     <ProjectReference Include="..\..\src\Dali.ML\Dali.ML.csproj" />
-    <ProjectReference Include="..\..\src\Dali.Reactive\Dali.Reactive.csproj" />
-    <ProjectReference Include="..\..\src\Dali.WolverineFx\Dali.WolverineFx.csproj" />
+    <ProjectReference Include="..\..\src\AeroDB.Reactive\AeroDB.Reactive.csproj" />
+    <ProjectReference Include="..\..\src\AeroDB.WolverineFx\AeroDB.WolverineFx.csproj" />
     <ProjectReference Include="..\..\wolverine\src\Wolverine.RuntimeCompilation\Wolverine.RuntimeCompilation.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Dali.SourceGenerators\Dali.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="true">
+    <ProjectReference Include="..\..\src\AeroDB.SourceGenerators\AeroDB.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="true">
       <PrivateAssets>all</PrivateAssets>
     </ProjectReference>
   </ItemGroup>

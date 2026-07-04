@@ -15,6 +15,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\AeroDB\AeroDB.csproj" />
-    <ProjectReference Include="..\..\src\Dali.Reactive\Dali.Reactive.csproj" />
+    <ProjectReference Include="..\..\src\AeroDB.Reactive\AeroDB.Reactive.csproj" />
   </ItemGroup>
 </Project>
