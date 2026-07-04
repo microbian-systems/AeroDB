@@ -51,7 +51,7 @@ public class PocoBackwardCompatibilityTests
             opts.ClientFactory = () => new SurrealDbMemoryClient();
             opts.Namespace = "test";
             opts.Database = "test";
-            ((List<IProjection>)opts.Projections).Add(new RecordTripProjection());
+            opts.Projections.Add(new RecordTripProjection());
         });
         await store.InitializeAsync();
 
@@ -74,8 +74,8 @@ public class PocoBackwardCompatibilityTests
             opts.Namespace = "test";
             opts.Database = "test";
             opts.Schema.For<PocoTrip>().Identity(x => x.Id).SetSchemaMode(SchemaMode.Flexible);
-            ((List<IProjection>)opts.Projections).Add(new TestTripProjection());
-            ((List<IProjection>)opts.Projections).Add(new RecordTripProjection());
+            opts.Projections.Add(new TestTripProjection());
+            opts.Projections.Add(new RecordTripProjection());
         });
         await store.InitializeAsync();
 

@@ -159,7 +159,7 @@ public class StoreOptionsParityTests
         foreach (var policy in opts.Policies.RegisteredPolicies)
             policy.Apply(mapping);
 
-        mapping.SoftDeleted.ShouldBeTrue();
+        mapping.IsSoftDeleted.ShouldBeTrue();
     }
 
     [Test]

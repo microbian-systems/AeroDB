@@ -15,13 +15,13 @@ public static class AeroDBHttpExtensions
     /// </summary>
     /// <typeparam name="T">The document type.</typeparam>
     /// <param name="session">The query session.</param>
-    /// <param name="httpContext">The HTTP context to write the response to.</param>
     /// <param name="id">The document ID (string form, e.g. <c>"person:john"</c>).</param>
+    /// <param name="httpContext">The HTTP context to write the response to.</param>
     /// <param name="ct">Cancellation token.</param>
     public static async Task WriteById<T>(
         this IQuerySession session,
-        HttpContext httpContext,
         string id,
+        HttpContext httpContext,
         CancellationToken ct = default)
         where T : class
         => await session.Json.WriteById<T>(id, httpContext, ct).ConfigureAwait(false);
@@ -32,13 +32,13 @@ public static class AeroDBHttpExtensions
     /// </summary>
     /// <typeparam name="T">The document type.</typeparam>
     /// <param name="session">The query session.</param>
-    /// <param name="httpContext">The HTTP context to write the response to.</param>
     /// <param name="id">The document ID (long form).</param>
+    /// <param name="httpContext">The HTTP context to write the response to.</param>
     /// <param name="ct">Cancellation token.</param>
     public static async Task WriteById<T>(
         this IQuerySession session,
-        HttpContext httpContext,
         long id,
+        HttpContext httpContext,
         CancellationToken ct = default)
         where T : class
         => await session.Json.WriteById<T>(id, httpContext, ct).ConfigureAwait(false);
@@ -49,13 +49,13 @@ public static class AeroDBHttpExtensions
     /// </summary>
     /// <typeparam name="T">The document type.</typeparam>
     /// <param name="session">The query session.</param>
-    /// <param name="httpContext">The HTTP context to write the response to.</param>
     /// <param name="id">The document ID (Guid form).</param>
+    /// <param name="httpContext">The HTTP context to write the response to.</param>
     /// <param name="ct">Cancellation token.</param>
     public static async Task WriteById<T>(
         this IQuerySession session,
-        HttpContext httpContext,
         Guid id,
+        HttpContext httpContext,
         CancellationToken ct = default)
         where T : class
         => await session.Json.WriteById<T>(id, httpContext, ct).ConfigureAwait(false);

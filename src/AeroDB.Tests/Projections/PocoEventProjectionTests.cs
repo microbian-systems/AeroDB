@@ -75,7 +75,7 @@ public class PocoEventProjectionTests
             opts.Namespace = "test";
             opts.Database = "test";
             opts.Schema.For<PocoDistance>().Identity(x => x.Id).SetSchemaMode(SchemaMode.Flexible);
-            ((List<IProjection>)opts.Projections).Add(new TestDistanceProjection());
+            opts.Projections.Add(new TestDistanceProjection());
         });
     }
 }

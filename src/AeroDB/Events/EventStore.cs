@@ -819,7 +819,7 @@ public class EventStore : IEvents
         {
             ["data"] = dataJson,
             ["seq"] = e.Sequence,
-            ["sid"] = e.StreamId
+            ["sid"] = e.StreamId.Value // IMPORTANT! Use Value not StreamId obj to avoid issues w/ CBOR serialization
         };
         await _session.RawQuery(sql, parameters, ct).ConfigureAwait(false);
         _logger.LogDebug("Overwrote data for event seq={Sequence} in stream {StreamId}", e.Sequence, e.StreamId);

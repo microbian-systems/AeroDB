@@ -139,6 +139,18 @@ public abstract class InternalSessionBase : IAsyncDisposable
             var bytes = System.Text.Encoding.UTF8.GetBytes(json);
             await httpContext.Response.Body.WriteAsync(bytes, ct).ConfigureAwait(false);
         }
+
+        public async Task WriteArray<T>(Microsoft.AspNetCore.Http.HttpContext httpContext, CancellationToken ct = default)
+            where T : class
+        {
+            ArgumentNullException.ThrowIfNull(httpContext);
+
+            var results = await _session.Query<T>().ToListAsync(ct).ConfigureAwait(false);
+            httpContext.Response.ContentType = "application/json";
+            await System.Text.Json.JsonSerializer
+                .SerializeAsync(httpContext.Response.Body, results, cancellationToken: ct)
+                .ConfigureAwait(false);
+        }
     }
 
     /// <summary>

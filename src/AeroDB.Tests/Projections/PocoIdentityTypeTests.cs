@@ -38,7 +38,7 @@ public class PocoIdentityTypeTests
             opts.Namespace = "test";
             opts.Database = "test";
             opts.Schema.For<LongIdentityPoco>().Identity(x => x.Id).SetSchemaMode(SchemaMode.Flexible);
-            ((List<IProjection>)opts.Projections).Add(new LongIdentityProjection());
+            opts.Projections.Add(new LongIdentityProjection());
         });
         await store.InitializeAsync();
 
@@ -62,7 +62,7 @@ public class PocoIdentityTypeTests
             opts.Namespace = "test";
             opts.Database = "test";
             opts.Schema.For<PocoTrip>().Identity(x => x.Id).SetSchemaMode(SchemaMode.Flexible);
-            ((List<IProjection>)opts.Projections).Add(new TestTripProjection());
+            opts.Projections.Add(new TestTripProjection());
         });
         await store.InitializeAsync();
 

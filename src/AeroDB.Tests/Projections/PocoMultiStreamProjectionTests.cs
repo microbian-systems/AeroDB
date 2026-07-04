@@ -69,7 +69,7 @@ public class PocoMultiStreamProjectionTests
             opts.Namespace = "test";
             opts.Database = "test";
             opts.Schema.For<PocoDay>().Identity(x => x.Id).SetSchemaMode(SchemaMode.Flexible);
-            ((List<IProjection>)opts.Projections).Add(new TestDayProjection());
+            opts.Projections.Add(new TestDayProjection());
         });
     }
 }

@@ -88,7 +88,7 @@ public class EventReplayTests
         var envelopes = await session.Events.Append(sid, [registered]);
         var evt = envelopes[0];
         evt.Version.ShouldBe(1);
-        evt.StreamId.ShouldBe(sid);
+        evt.StreamId.ToString().ShouldBe(sid);
         evt.StreamKey.ShouldNotBe(Guid.Empty);
         evt.Timestamp.ShouldBeGreaterThan(DateTimeOffset.UtcNow.AddMinutes(-1));
         evt.Timestamp.ShouldBeLessThanOrEqualTo(DateTimeOffset.UtcNow);
@@ -398,7 +398,7 @@ public class EventReplayTests
 
         // Stream IDs must match
         foreach (var e in events2)
-            e.StreamId.ShouldBe(sid);
+            e.StreamId.ToString().ShouldBe(sid);
 
         // Verify beginning, middle, end from the new session
         events2[0].Version.ShouldBe(1);
@@ -600,15 +600,15 @@ public class EventReplayTests
 
         var s1 = await session.Events.FetchStream(sid1);
         s1.Count.ShouldBe(2);
-        foreach (var e in s1) e.StreamId.ShouldBe(sid1);
+        foreach (var e in s1) e.StreamId.ToString().ShouldBe(sid1);
 
         var s2 = await session.Events.FetchStream(sid2);
         s2.Count.ShouldBe(1);
-        foreach (var e in s2) e.StreamId.ShouldBe(sid2);
+        foreach (var e in s2) e.StreamId.ToString().ShouldBe(sid2);
 
         var s3 = await session.Events.FetchStream(sid3);
         s3.Count.ShouldBe(1);
-        foreach (var e in s3) e.StreamId.ShouldBe(sid3);
+        foreach (var e in s3) e.StreamId.ToString().ShouldBe(sid3);
     }
 
     [Test]
@@ -639,9 +639,12 @@ public class EventReplayTests
         allEvents.Count.ShouldBe(4);
 
         // Verify events from both streams are present
-        var streamIds = allEvents.Select(e => e.StreamId).Distinct().OrderBy(x => x).ToList();
-        streamIds.ShouldContain(sidA);
-        streamIds.ShouldContain(sidB);
+        var streamIds = allEvents.Select(e => e.StreamId.Value).Distinct().OrderBy(x => x).ToList();
+
+        streamIds.ShouldNotBeNull()
+            .ShouldContain(sidA);
+        streamIds
+            .ShouldContain(sidB);
 
         // Events should be sorted by global sequence
         for (int i = 1; i < allEvents.Count; i++)
@@ -846,7 +849,7 @@ public class EventReplayTests
         ((string)events[1].Data!).ShouldBe("");
         events[1].Version.ShouldBe(envelopes[1].Version);
         events[1].Sequence.ShouldBe(envelopes[1].Sequence);
-        events[1].StreamId.ShouldBe(sid);
+        events[1].StreamId.ToString().ShouldBe(sid);
 
         // Third event unchanged
         events[2].Data.ShouldBeOfType<ScoreUpdated>();

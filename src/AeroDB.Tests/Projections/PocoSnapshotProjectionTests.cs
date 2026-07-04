@@ -34,7 +34,7 @@ public class PocoSnapshotProjectionTests
             opts.Namespace = "test";
             opts.Database = "test";
             opts.Schema.For<PocoSnapshot>().Identity(x => x.Id).SetSchemaMode(SchemaMode.Flexible);
-            ((List<IProjection>)opts.Projections).Add(projection);
+            opts.Projections.Add(projection);
         });
     }
 }

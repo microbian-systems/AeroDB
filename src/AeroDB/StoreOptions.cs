@@ -243,7 +243,7 @@ public class StoreOptions : IReadOnlyStoreOptions
     /// <summary>Enable soft-delete on all document types.</summary>
     public void AllDocumentsSoftDeleted()
     {
-        Policies.ForAllDocuments(m => m.SoftDeleted = true);
+        Policies.ForAllDocuments(m => m.IsSoftDeleted = true);
     }
 
     /// <summary>Enable optimistic concurrency on all document types.</summary>

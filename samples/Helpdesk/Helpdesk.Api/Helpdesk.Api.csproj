@@ -10,6 +10,7 @@
     <ItemGroup>
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
         <PackageReference Include="Confluent.Kafka" Version="2.3.0" />
+        <PackageReference Include="SurrealDb.Embedded.InMemory" VersionOverride="0.10.2" />
     </ItemGroup>
 
     <ItemGroup>

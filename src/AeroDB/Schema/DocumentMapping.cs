@@ -29,7 +29,7 @@ public abstract class DocumentMapping
     public TenancyStyle TenancyStyle { get; set; }
 
     /// <summary>When true, this document type supports soft-delete (ISoftDeleted).</summary>
-    public bool SoftDeleted { get; set; }
+    public bool IsSoftDeleted { get; set; }
 
     /// <summary>When true, optimistic concurrency is enforced for this document type.</summary>
     public bool UseOptimisticConcurrency { get; set; }
@@ -528,9 +528,9 @@ public class DocumentMapping<T> : DocumentMapping
     /// Enable soft-delete for documents of this type. Soft-deleted documents
     /// are automatically filtered from queries and can be restored.
     /// </summary>
-    public new DocumentMapping<T> SoftDeleted()
+    public DocumentMapping<T> SoftDeleted()
     {
-        ((DocumentMapping)this).SoftDeleted = true;
+        ((DocumentMapping)this).IsSoftDeleted = true;
         return this;
     }
 

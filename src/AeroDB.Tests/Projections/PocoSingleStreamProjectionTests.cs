@@ -102,7 +102,7 @@ public class PocoSingleStreamProjectionTests
             opts.Namespace = "test";
             opts.Database = "test";
             opts.Schema.For<PocoTrip>().Identity(x => x.Id).SetSchemaMode(SchemaMode.Flexible);
-            ((List<IProjection>)opts.Projections).Add(new TestTripProjection());
+            opts.Projections.Add(new TestTripProjection());
         });
     }
 }

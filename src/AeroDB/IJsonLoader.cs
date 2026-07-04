@@ -29,4 +29,7 @@ public interface IJsonLoader
     /// <summary>Write a single document by its Guid ID to the HTTP response.</summary>
     Task WriteById<T>(Guid id, HttpContext httpContext, CancellationToken ct = default) where T : class
         => WriteById<T>((object)id, httpContext, ct);
+
+    /// <summary>Query all documents of type T and write them as a JSON array to the HTTP response.</summary>
+    Task WriteArray<T>(HttpContext httpContext, CancellationToken ct = default) where T : class;
 }
