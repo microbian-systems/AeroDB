@@ -47,11 +47,29 @@ public interface IEvents
     /// </summary>
     Task<string> StartStream(string streamId, IEnumerable<object> events, CancellationToken ct = default);
 
+    /// <summary>Marten-compatible single-event start stream overload.</summary>
+    Task<string> StartStream<T>(Guid streamId, object @event, CancellationToken ct = default)
+        => StartStream<T>(streamId, new[] { @event }, ct);
+
     /// <summary>Start a new stream with typed stream identity.</summary>
     Task<string> StartStream<T>(string streamId, IEnumerable<object> events, CancellationToken ct = default);
 
     /// <summary>Guid variant with typed stream identity.</summary>
     Task<string> StartStream<T>(Guid streamId, IEnumerable<object> events, CancellationToken ct = default);
+
+    /// <summary>
+    /// Marten-compatible aggregate write workflow.
+    /// </summary>
+    async Task WriteToAggregate<T>(
+        Guid streamId,
+        int version,
+        Action<FetchForWritingResult<T>> handler,
+        CancellationToken ct = default)
+        where T : class
+    {
+        var stream = await FetchForWritingAsync<T>(streamId.ToString(), ct).ConfigureAwait(false);
+        handler(stream);
+    }
 
     /// <summary>
     /// Fetches all events after a given global sequence number (for async projections / polling).

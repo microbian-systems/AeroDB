@@ -154,6 +154,9 @@ public interface IQuerySession : IAsyncDisposable
 
     ISurrealDbQueryable<T> Query<T>() where T : class;
 
+    /// <summary>Event store query surface for raw event queries.</summary>
+    IEvents Events { get; }
+
     /// <summary>
     /// Executes a raw SurrealQL query and returns the deserialized results.
     /// </summary>
@@ -468,9 +471,9 @@ public interface IDocumentSession : IDocumentOperations, IQuerySession
     /// </summary>
     Task RollbackTransactionAsync(CancellationToken ct = default);
 
-    Task<int> SaveChangesAsync(CancellationToken ct = default);
+    Task<int> SaveChangesAsync(CancellationToken token = default);
     void ClearChanges();
-    IEvents Events { get; }
+    new IEvents Events { get; }
 
     /// <summary>Total number of entities currently tracked in the identity map.</summary>
     int IdentityMapCount { get; }

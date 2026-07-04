@@ -121,6 +121,25 @@ public abstract class InternalSessionBase : IAsyncDisposable
             if (json is null) return null;
             return System.Text.Json.JsonDocument.Parse(json);
         }
+
+        public async Task WriteById<T>(object id, Microsoft.AspNetCore.Http.HttpContext httpContext, CancellationToken ct = default)
+            where T : class
+        {
+            ArgumentNullException.ThrowIfNull(id);
+            ArgumentNullException.ThrowIfNull(httpContext);
+
+            var doc = await _session.LoadAsync<T>(id.ToString()!, ct).ConfigureAwait(false);
+            if (doc is null)
+            {
+                httpContext.Response.StatusCode = 404;
+                return;
+            }
+
+            httpContext.Response.ContentType = "application/json";
+            await System.Text.Json.JsonSerializer
+                .SerializeAsync(httpContext.Response.Body, doc, _session.StoreOptions.SerializerOptions, ct)
+                .ConfigureAwait(false);
+        }
     }
 
     /// <summary>
@@ -147,6 +166,11 @@ public abstract class InternalSessionBase : IAsyncDisposable
 
     /// <summary>JSON document loader for raw JSON access.</summary>
     public IJsonLoader Json { get; }
+
+    private IEvents? _queryEvents;
+
+    /// <summary>Event store query surface for raw event queries.</summary>
+    public virtual IEvents Events => _queryEvents ??= new EventStore(Session, Options);
 
     /// <summary>
     /// Whether optimistic concurrency is enabled for this session.

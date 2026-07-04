@@ -1,6 +1,5 @@
-using Marten;
-using Marten.Events;
-using Marten.Events.Projections;
+using AeroDB;
+using JasperFx.Events;
 using Microsoft.AspNetCore.SignalR;
 
 namespace Helpdesk.Api.Core.SignalR;
@@ -24,4 +23,3 @@ public class SignalRProducer: IProjection
     public void Apply(IDocumentOperations operations, IReadOnlyList<StreamAction> streams) =>
         throw new NotImplementedException("Producer should be only used in the AsyncDaemon");
 }
-

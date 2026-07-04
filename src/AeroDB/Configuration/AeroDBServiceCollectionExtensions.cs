@@ -60,6 +60,40 @@ public static class AeroDBServiceCollectionExtensions
     }
 
     /// <summary>
+    /// Registers AeroDB using a Marten-compatible service-provider options factory.
+    /// </summary>
+    public static IServiceCollection AddAeroDB(this IServiceCollection services, Func<IServiceProvider, StoreOptions> configure)
+    {
+        services.AddSingleton<IDocumentStore>(sp =>
+        {
+            var options = configure(sp);
+            options.ServiceProvider = sp;
+            var store = new DocumentStore(options);
+            var prevCtx = SynchronizationContext.Current;
+            try
+            {
+                SynchronizationContext.SetSynchronizationContext(null);
+                store.InitializeAsync().GetAwaiter().GetResult();
+            }
+            finally
+            {
+                SynchronizationContext.SetSynchronizationContext(prevCtx);
+            }
+            return store;
+        });
+
+        services.AddSingleton<IAeroDBAdvanced>(sp =>
+            sp.GetRequiredService<IDocumentStore>().Advanced);
+
+        services.TryAddSingleton<IProjectionCoordinator>(sp =>
+            new ProjectionCoordinator(sp.GetRequiredService<IDocumentStore>()));
+        services.TryAddSingleton<IHostedService>(sp =>
+            sp.GetRequiredService<IProjectionCoordinator>());
+
+        return services;
+    }
+
+    /// <summary>
     /// Registers a secondary AeroDB <see cref="IDocumentStore"/> as a keyed scoped service,
     /// keyed by <typeparamref name="T"/>. Use <c>AddAeroDBStore&lt;IInvoicingStore&gt;(opts => ...)</c>
     /// for multi-database scenarios where <typeparamref name="T"/> is a marker interface

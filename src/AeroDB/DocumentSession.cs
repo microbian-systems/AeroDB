@@ -236,7 +236,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         _ownsTransaction = false;
     }
 
-    public IEvents Events
+    public override IEvents Events
     {
         get
         {
@@ -474,8 +474,9 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         EjectAll();
     }
 
-    public async Task<int> SaveChangesAsync(CancellationToken ct = default)
+    public async Task<int> SaveChangesAsync(CancellationToken token = default)
     {
+        var ct = token;
         RequestCount++;
         var count = _unitOfWork.Operations.Count;
         if (count == 0 && _appendedEvents.Count == 0 && _queuedPatches.Count == 0
@@ -992,7 +993,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                     {
                         // Group appended events by stream (typed IEvent wrappers)
                         var streamGroups = _appendedEvents
-                            .GroupBy(e => e.StreamId)
+                            .GroupBy(e => e.StreamId.ToString())
                             .ToDictionary(g => g.Key, g => g.ToList());
 
                         const int MaxReentrancyDepth = 10;
@@ -1097,7 +1098,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
 
                             streamGroups = _appendedEvents
                                 .Skip(totalEventsProcessedAtStart)
-                                .GroupBy(e => e.StreamId)
+                                .GroupBy(e => e.StreamId.ToString())
                                 .ToDictionary(g => g.Key, g => g.ToList());
                             totalEventsProcessedAtStart = _appendedEvents.Count;
 
@@ -2293,6 +2294,18 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
             var result = await _inner.FetchForWritingAsync<T>(streamId, ct).ConfigureAwait(false);
             _owner._fetchForWritingResults.Add(result);
             return result;
+        }
+
+        public async Task WriteToAggregate<T>(
+            Guid streamId,
+            int version,
+            Action<FetchForWritingResult<T>> handler,
+            CancellationToken ct = default)
+            where T : class
+        {
+            var stream = await FetchForWritingAsync<T>(streamId.ToString(), ct).ConfigureAwait(false);
+            handler(stream);
+            await _owner.SaveChangesAsync(ct).ConfigureAwait(false);
         }
 
         public Task<T?> AggregateStreamAsync<T>(

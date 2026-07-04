@@ -65,13 +65,25 @@ public abstract class InlineProjection<T> : IProjection, ILoggableProjection whe
     /// <summary>
     /// Declares which event types trigger this projection.
     /// </summary>
-    public abstract Type[] EventTypes { get; }
+    public virtual Type[] EventTypes => DiscoverEventTypes();
 
     /// <summary>
     /// Given the current aggregate state (or <c>null</c> if new) and a list of new events,
     /// return the new aggregate state, or <c>null</c> to delete the projected document.
     /// </summary>
-    protected abstract T? ApplyEvents(T? aggregate, IReadOnlyList<object> events, CancellationToken ct);
+    protected virtual T? ApplyEvents(T? aggregate, IReadOnlyList<object> events, CancellationToken ct)
+    {
+        var current = aggregate;
+
+        foreach (var @event in events)
+        {
+            current = current is null
+                ? InvokeCreate(@event) ?? current
+                : InvokeApply(@event, current) ?? current;
+        }
+
+        return current;
+    }
 
     /// <summary>
     /// Determines the document identity from the events (e.g., stream ID).
@@ -194,6 +206,59 @@ public abstract class InlineProjection<T> : IProjection, ILoggableProjection whe
     protected virtual T? Evolve(T? aggregate, IReadOnlyList<IEvent> events, CancellationToken ct) => aggregate;
 
     private bool? _evolveOverridden;
+
+    private Type[]? _discoveredEventTypes;
+
+    private Type[] DiscoverEventTypes()
+    {
+        if (_discoveredEventTypes is not null) return _discoveredEventTypes;
+
+        _discoveredEventTypes = GetType()
+            .GetMethods(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static)
+            .Where(m => m.Name is "Create" or "Apply")
+            .Select(m => m.GetParameters().FirstOrDefault()?.ParameterType)
+            .Where(t => t is not null && t != typeof(T))
+            .Select(t => t!)
+            .Distinct()
+            .ToArray();
+
+        return _discoveredEventTypes;
+    }
+
+    private T? InvokeCreate(object @event)
+    {
+        var method = GetType()
+            .GetMethods(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static)
+            .FirstOrDefault(m =>
+                m.Name == "Create"
+                && typeof(T).IsAssignableFrom(m.ReturnType)
+                && m.GetParameters() is [{ } p]
+                && p.ParameterType.IsAssignableFrom(@event.GetType()));
+
+        if (method is null) return null;
+
+        var target = method.IsStatic ? null : this;
+        return (T?)method.Invoke(target, [@event]);
+    }
+
+    private T? InvokeApply(object @event, T current)
+    {
+        var method = GetType()
+            .GetMethods(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)
+            .FirstOrDefault(m =>
+            {
+                if (m.Name != "Apply") return false;
+                var parameters = m.GetParameters();
+                return parameters.Length == 2
+                    && parameters[0].ParameterType.IsAssignableFrom(@event.GetType())
+                    && parameters[1].ParameterType.IsAssignableFrom(typeof(T));
+            });
+
+        if (method is null) return current;
+
+        var result = method.Invoke(this, [@event, current]);
+        return result is T typed ? typed : current;
+    }
 
     /// <summary>Checks whether the concrete subclass directly overrode <see cref="Evolve"/>.</summary>
     private bool IsEvolveOverridden()

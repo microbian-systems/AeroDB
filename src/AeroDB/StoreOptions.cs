@@ -13,6 +13,11 @@ public class StoreOptions : IReadOnlyStoreOptions
     public string Endpoint { get; set; } = "http://localhost:8000";
     public string? Namespace { get; set; }
     public string? Database { get; set; }
+    public string? DatabaseSchemaName
+    {
+        get => Database;
+        set => Database = value;
+    }
     public string? Username { get; set; }
     public string? Password { get; set; }
     public string? Token { get; set; }

@@ -20,4 +20,6 @@ public sealed record Event<T>(
     /// to avoid allocation.
     /// </summary>
     object IEvent.Data => Data!;
+
+    EventStreamIdentity IEvent.StreamId => new(StreamId, StreamKey);
 }

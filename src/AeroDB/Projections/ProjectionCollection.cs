@@ -78,7 +78,7 @@ public class ProjectionCollection : IList<IProjection>, IReadOnlyList<IProjectio
     /// Register a live (on-the-fly) stream aggregation. No projection data is stored;
     /// results are computed at read time by replaying stream events.
     /// </summary>
-    public void LiveStreamAggregation<T>() where T : class, new()
+    public void LiveStreamAggregation<T>() where T : class
     {
         // Live aggregation doesn't need a stored projection — the daemon skips it.
         // Create a marker projection that the daemon ignores.

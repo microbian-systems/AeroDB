@@ -7,6 +7,7 @@ namespace AeroDB;
 public interface IEvent<out T>
 {
     T Data { get; }
+    Type EventType => typeof(T);
     long Version { get; }
     long Sequence { get; }
     DateTimeOffset Timestamp { get; }
@@ -30,10 +31,11 @@ public interface IEvent<out T>
 public interface IEvent
 {
     object Data { get; }
+    Type EventType => Data.GetType();
     long Version { get; }
     long Sequence { get; }
     DateTimeOffset Timestamp { get; }
-    string StreamId { get; }
+    EventStreamIdentity StreamId { get; }
     Guid StreamKey { get; }
 
     /// <summary>Opaque headers dictionary for event metadata (causation, correlation, etc.).</summary>

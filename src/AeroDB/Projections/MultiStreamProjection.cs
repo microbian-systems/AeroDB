@@ -57,3 +57,33 @@ public abstract class MultiStreamProjection<T> : InlineProjection<T> where T : c
         return null;
     }
 }
+
+/// <summary>
+/// Marten-compatible multi-stream projection with a strongly typed aggregate identity.
+/// </summary>
+public abstract class MultiStreamProjection<T, TId> : MultiStreamProjection<T>
+    where T : class
+    where TId : notnull
+{
+    private readonly Dictionary<Type, Func<object, TId>> _identityResolvers = new();
+
+    /// <summary>
+    /// Register an identity resolver for an event type.
+    /// </summary>
+    public void Identity<TEvent>(Func<TEvent, TId> identity)
+    {
+        _identityResolvers[typeof(TEvent)] = e => identity((TEvent)e);
+    }
+
+    protected override object GetDocumentId(IReadOnlyList<object> events)
+    {
+        foreach (var @event in events)
+        {
+            if (_identityResolvers.TryGetValue(@event.GetType(), out var resolver))
+                return resolver(@event)!;
+        }
+
+        throw new InvalidOperationException(
+            $"No identity resolver matched events for projection {GetType().Name}.");
+    }
+}

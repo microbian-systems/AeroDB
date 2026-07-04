@@ -1,4 +1,5 @@
 using JasperFx;
+using JasperFx.CommandLine;
 using Xunit;
 using Xunit.Abstractions;
 using Xunit.Sdk;

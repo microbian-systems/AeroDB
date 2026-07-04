@@ -28,8 +28,8 @@ public abstract class SingleStreamProjection<TDoc, TId> : InlineProjection<TDoc>
             if (typeof(TId) == typeof(Guid))
                 return (TId)(object)ievt.StreamKey;
             if (typeof(TId) == typeof(string))
-                return (TId)(object)(ievt.StreamId ?? throw new InvalidOperationException("StreamId is null."));
-            return (TId)Convert.ChangeType(ievt.StreamId ?? "", typeof(TId));
+                return (TId)(object)ievt.StreamId.ToString();
+            return (TId)Convert.ChangeType(ievt.StreamId.ToString(), typeof(TId));
         }
 
         var evt = events[0];

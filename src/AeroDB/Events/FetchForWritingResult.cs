@@ -18,16 +18,17 @@ internal interface IFetchForWritingResult
 public class FetchForWritingResult<T> : IFetchForWritingResult where T : class
 {
     private readonly List<object> _pending = new();
+    private readonly T? _aggregate;
 
     internal FetchForWritingResult(T? aggregate, long expectedVersion, string streamId)
     {
-        Aggregate = aggregate;
+        _aggregate = aggregate;
         ExpectedVersion = expectedVersion;
         StreamId = streamId;
     }
 
     /// <summary>The aggregate instance, or null if the stream has no events.</summary>
-    public T? Aggregate { get; }
+    public T Aggregate => _aggregate!;
 
     /// <summary>The version that was current when the aggregate was fetched.</summary>
     public long ExpectedVersion { get; }
