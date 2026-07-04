@@ -175,10 +175,10 @@ public class SubTestEvent(string typeName) : JasperFx.Events.IEvent
     public string EventTypeName { get; set; } = typeName;
     public string? CausationId { get; set; }
     public string? CorrelationId { get; set; }
-    public Dictionary<string, object> Headers { get; set; } = [];
+    public Dictionary<string, object>? Headers { get; set; }
     public bool IsArchived { get; set; }
     public string? AggregateTypeName { get; set; }
-    public string StreamKey { get; set; } = "";
+    public string? StreamKey { get; set; }
     public string DotNetTypeName { get; set; } = "";
     public string? UserName { get; set; }
     public bool IsSkipped { get; set; }

@@ -9,7 +9,7 @@ public class SchemaTests
     {
         await using var store = await TestHarness.CreateStoreAsync();
         var schemaManager = new SchemaManager();
-        var surrealSession = ((InternalSessionBase)await store.LightweightSessionAsync()).Session;
+        var surrealSession = ((InternalSessionBase)await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None })).Session;
 
         // First creation should succeed
         await schemaManager.EnsureDocumentSchemaAsync<Person>(surrealSession);
@@ -23,7 +23,7 @@ public class SchemaTests
     {
         await using var store = await TestHarness.CreateStoreAsync();
         var schemaManager = new SchemaManager();
-        var surrealSession = ((InternalSessionBase)await store.LightweightSessionAsync()).Session;
+        var surrealSession = ((InternalSessionBase)await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None })).Session;
 
         await schemaManager.EnsureEventSchemaAsync(surrealSession);
 
@@ -38,7 +38,7 @@ public class SchemaTests
     {
         await using var store = await TestHarness.CreateStoreAsync();
         var schemaManager = new SchemaManager();
-        var surrealSession = ((InternalSessionBase)await store.LightweightSessionAsync()).Session;
+        var surrealSession = ((InternalSessionBase)await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None })).Session;
 
         // Ensure schema for Person (should create person table)
         await schemaManager.EnsureDocumentSchemaAsync<TenantPerson>(surrealSession);
@@ -60,7 +60,7 @@ public class SchemaTests
         await store.InitializeAsync();
 
         // Verify mt_events table was auto-created during InitializeAsync
-        var surrealSession = ((InternalSessionBase)await store.LightweightSessionAsync()).Session;
+        var surrealSession = ((InternalSessionBase)await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None })).Session;
         var response = await surrealSession.RawQuery("INFO FOR TABLE mt_events;");
         response.HasErrors.ShouldBeFalse();
         response.Count.ShouldBeGreaterThan(0);
@@ -71,7 +71,7 @@ public class SchemaTests
     {
         await using var store = await TestHarness.CreateStoreAsync();
         var schemaManager = new SchemaManager();
-        var surrealSession = ((InternalSessionBase)await store.LightweightSessionAsync()).Session;
+        var surrealSession = ((InternalSessionBase)await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None })).Session;
 
         await schemaManager.EnsureDocumentSchemaAsync<Product>(surrealSession);
 

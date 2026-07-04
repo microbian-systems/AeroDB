@@ -74,7 +74,7 @@ public class AdvancedSdkTests
         await using var store = await TestHarness.CreateStoreAsync();
 
         // Store some data first
-        await using var writeSession = await store.LightweightSessionAsync();
+        await using var writeSession = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         writeSession.Store(new Person { Name = "AdvTest", Age = 50, Email = "advtest@test.com" });
         await writeSession.SaveChangesAsync();
 

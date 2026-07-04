@@ -30,7 +30,7 @@ public class SoftDeleteTests
     public async Task Soft_delete_sets_deleted_at()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var person = new SoftDeletePerson { Name = "SoftTest1" };
         session.Store(person);
@@ -54,7 +54,7 @@ public class SoftDeleteTests
     public async Task Soft_deleted_documents_excluded_from_queries()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var keep = new SoftDeletePerson { Name = "Keep" };
         var discard = new SoftDeletePerson { Name = "Discard" };
@@ -82,7 +82,7 @@ public class SoftDeleteTests
     public async Task Non_soft_delete_entity_normal_delete()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var person = new Person { Name = "NormalDel", Age = 50 };
         session.Store(person);
@@ -104,7 +104,7 @@ public class SoftDeleteTests
     public async Task Soft_delete_is_idempotent()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var person = new SoftDeletePerson { Name = "Idempotent" };
         session.Store(person);
@@ -130,7 +130,7 @@ public class SoftDeleteTests
     public async Task Soft_delete_by_id_via_extension()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var person = new SoftDeletePerson { Name = "ByIdTest" };
         session.Store(person);
@@ -156,7 +156,7 @@ public class SoftDeleteTests
     public async Task Soft_delete_then_hard_delete_on_non_soft_entity()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var person = new SoftDeletePerson { Name = "ConvertToHard" };
         session.Store(person);
@@ -179,7 +179,7 @@ public class SoftDeleteTests
     public async Task Soft_delete_with_versioned_entity()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var person = new SoftDeleteVersionedPerson { Name = "VersionedSoft" };
         session.Store(person);
@@ -209,7 +209,7 @@ public class SoftDeleteTests
         {
             o.SoftDeleteEnabled = false;
         });
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var keep = new SoftDeletePerson { Name = "KeepVisible" };
         var discard = new SoftDeletePerson { Name = "DiscardVisible" };

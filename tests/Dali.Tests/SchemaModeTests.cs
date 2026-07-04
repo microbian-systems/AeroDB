@@ -67,7 +67,7 @@ public class SchemaModeTests
         });
         await store.InitializeAsync();
 
-        var surrealSession = ((InternalSessionBase)await store.LightweightSessionAsync()).Session;
+        var surrealSession = ((InternalSessionBase)await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None })).Session;
         var response = await surrealSession.RawQuery("INFO FOR TABLE person;");
         response.HasErrors.ShouldBeFalse();
         response.Count.ShouldBeGreaterThan(0);
@@ -83,7 +83,7 @@ public class SchemaModeTests
         });
         await store.InitializeAsync();
 
-        var surrealSession = ((InternalSessionBase)await store.LightweightSessionAsync()).Session;
+        var surrealSession = ((InternalSessionBase)await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None })).Session;
         var response = await surrealSession.RawQuery("INFO FOR TABLE product;");
         response.HasErrors.ShouldBeFalse();
         response.Count.ShouldBeGreaterThan(0);
@@ -96,7 +96,7 @@ public class SchemaModeTests
         // sealed → Strict, non-sealed → Flexible
         await using var store = await TestHarness.CreateStoreAsync();
         var schemaManager = new SchemaManager();
-        var surrealSession = ((InternalSessionBase)await store.LightweightSessionAsync()).Session;
+        var surrealSession = ((InternalSessionBase)await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None })).Session;
 
         // Person is not sealed, so default should be Flexible
         await schemaManager.EnsureDocumentSchemaAsync<Person>(surrealSession);
@@ -111,7 +111,7 @@ public class SchemaModeTests
     {
         await using var store = await TestHarness.CreateStoreAsync();
         var schemaManager = new SchemaManager();
-        var surrealSession = ((InternalSessionBase)await store.LightweightSessionAsync()).Session;
+        var surrealSession = ((InternalSessionBase)await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None })).Session;
 
         await schemaManager.EnsureDocumentSchemaAsync<Person>(surrealSession, SchemaMode.Strict);
 

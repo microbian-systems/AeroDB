@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Linq.Expressions;
+using SurrealDb.Net;
 using SurrealDb.Net.Models;
 
 namespace Dali;
@@ -18,6 +19,12 @@ public interface ISurrealDbQueryable<T> : IOrderedQueryable<T>
     Task<decimal> MinAsync(Expression<Func<T, decimal>> selector, CancellationToken ct = default);
     Task<decimal> MaxAsync(Expression<Func<T, decimal>> selector, CancellationToken ct = default);
     Task<decimal> AverageAsync(Expression<Func<T, decimal>> selector, CancellationToken ct = default);
+
+    /// <summary>
+    /// Enable query statistics for this query. The <paramref name="stats"/> will be populated
+    /// with the total number of matching records when the query executes.
+    /// </summary>
+    ISurrealDbQueryable<T> Stats(out QueryStatistics stats);
 
     /// <summary>
     /// Returns the generated SurrealQL for this query without executing it.
@@ -115,12 +122,21 @@ public class SurrealDbQueryable<T> : ISurrealDbQueryable<T>, IAsyncEnumerable<T>
     /// <summary>Filter predicates applied in-memory after includes are loaded.</summary>
     internal List<FilterIncludeSpec> FilterIncludeSpecs = new();
 
+    /// <summary>Returns the underlying SurrealDB session for raw query execution.</summary>
+    internal ISurrealDbSession GetSession() => ((SurrealQueryProvider)Provider).Session;
+
     /// <summary>
     /// Optional override for the table/view name used in generated SurrealQL.
     /// When set, replaces the type-inferred table name (e.g., for querying
     /// pre-computed views defined with <c>DEFINE TABLE ... AS SELECT ...</c>).
     /// </summary>
     internal string? ViewName { get; set; }
+
+    /// <summary>
+    /// When set, the query will also return total row count in a single round trip.
+    /// Populated after <see cref="ToListAsync"/> completes.
+    /// </summary>
+    internal QueryStatistics? QueryStats { get; set; }
 
     /// <summary>
     /// Describes a single Include operation — which property to match,
@@ -160,19 +176,31 @@ public class SurrealDbQueryable<T> : ISurrealDbQueryable<T>, IAsyncEnumerable<T>
 
     public string ToCommand() => _provider.ToCommand(Expression);
 
+    /// <summary>
+    /// Enable query statistics for this query. The <paramref name="stats"/> will be populated
+    /// with the total number of matching records when the query executes.
+    /// </summary>
+    public ISurrealDbQueryable<T> Stats(out QueryStatistics stats)
+    {
+        stats = new QueryStatistics();
+        QueryStats = stats;
+        return this;
+    }
+
     public IEnumerator<T> GetEnumerator()
-        => _provider.ToListAsync<T>(Expression, FetchFields, IncludeDescriptors, IncludeSpecs, FilterIncludeSpecs).GetAwaiter().GetResult().GetEnumerator();
+        => _provider.ToListAsync<T>(Expression, FetchFields, IncludeDescriptors, IncludeSpecs, FilterIncludeSpecs, null, default).GetAwaiter().GetResult().GetEnumerator();
 
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
     public async IAsyncEnumerator<T> GetAsyncEnumerator(CancellationToken ct = default)
     {
-        foreach (var item in await _provider.ToListAsync<T>(Expression, FetchFields, IncludeDescriptors, IncludeSpecs, FilterIncludeSpecs, ct))
+        foreach (var item in await _provider.ToListAsync<T>(Expression, FetchFields, IncludeDescriptors, IncludeSpecs, FilterIncludeSpecs, null, ct))
             yield return item;
     }
 
     public Task<List<T>> ToListAsync(CancellationToken ct = default)
-        => _provider.ToListAsync<T>(Expression, FetchFields, IncludeDescriptors, IncludeSpecs, FilterIncludeSpecs, ct);
+        => _provider.ToListAsync<T>(Expression, FetchFields, IncludeDescriptors, IncludeSpecs, FilterIncludeSpecs,
+            QueryStats ?? SurrealQueryProvider.ExtractQueryStats(Expression), ct);
 
     public Task<T?> FirstOrDefaultAsync(CancellationToken ct = default)
         => _provider.FirstOrDefaultAsync<T>(Expression, FetchFields, IncludeDescriptors, IncludeSpecs, FilterIncludeSpecs, ct);
@@ -403,10 +431,10 @@ public static class SurrealDbQueryableExtensions
     /// <para>Generated SurrealQL pattern:
     /// <c>LET $main = (SELECT * FROM source WHERE ...);
     /// SELECT * FROM $main;
-    /// SELECT * FROM `child` WHERE `fkField` IN (SELECT VALUE id FROM $main);</c>
+    /// SELECT * FROM `child` WHERE `fkField` IN (SELECT VALUE [id|Id] FROM $main);</c>
     /// </para>
     ///
-    /// <para>Unlike <see cref="Include{T,TInclude}(ISurrealDbQueryable{T}, Expression{Func{T,TInclude?}})"/>,
+    /// <para>Unlike <c>Include&lt;T,TInclude&gt;</c>,
     /// which is forward (FK on parent), this is reverse (FK on child). The child records
     /// are collected into a <c>List&lt;TChild&gt;</c> and set on the collection property.</para>
     /// </summary>
@@ -426,7 +454,7 @@ public static class SurrealDbQueryableExtensions
         this ISurrealDbQueryable<T> source,
         Expression<Func<T, IEnumerable<TChild>?>> property,
         string foreignKey)
-        where T : IRecord
+        where T : class
         where TChild : class
     {
         if (source is not SurrealDbQueryable<T> queryable)
@@ -438,7 +466,7 @@ public static class SurrealDbQueryableExtensions
         var propName = memberExpr.Member.Name;
         var targetTable = MetadataDispatch.GetTableName(typeof(TChild));
 
-        queryable.IncludeSpecs.Add(new IncludeSpec
+        var spec = new IncludeSpec
         {
             PropertyName = propName,
             TargetTable = targetTable,
@@ -446,7 +474,14 @@ public static class SurrealDbQueryableExtensions
             IncludeType = typeof(TChild),
             IsSingle = false,   // collection
             IsForward = false   // reverse
-        });
+        };
+
+        // Pre-compute the parent ID field name for SurrealQL generation.
+        // Record types use "id" (RecordId), Entity types use "Id" (typed property).
+        var parentIsRecord = typeof(IRecord).IsAssignableFrom(typeof(T));
+        spec.ParentIdField = parentIsRecord ? "id" : "Id";
+
+        queryable.IncludeSpecs.Add(spec);
 
         return queryable;
     }
@@ -481,7 +516,7 @@ public static class SurrealDbQueryableExtensions
         this ISurrealDbQueryable<T> source,
         Expression<Func<T, IEnumerable<TChild>>> property,
         Expression<Func<IEnumerable<TChild>, bool>> filter)
-        where T : IRecord
+        where T : class
         where TChild : class
     {
         if (source is not SurrealDbQueryable<T> queryable)

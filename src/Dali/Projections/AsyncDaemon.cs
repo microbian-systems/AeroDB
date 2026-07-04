@@ -4,29 +4,50 @@ using Microsoft.Extensions.Logging.Abstractions;
 namespace Dali;
 
 /// <summary>
+/// Reports progress during projection rebuilds.
+/// </summary>
+/// <param name="projectionName">The name of the projection being rebuilt.</param>
+/// <param name="current">The current sequence position.</param>
+/// <param name="total">The total number of events to process.</param>
+public delegate void ProjectionRebuildProgressCallback(string projectionName, long current, long total);
+
+/// <summary>
 /// Background worker that polls for new events and applies async projections.
-/// Tracks a high-water mark to avoid re-processing events.
+/// Runs each projection in its own shard with independent health and progress tracking,
+/// and persists per-projection watermarks to the mt_projection_progress table for restart resilience.
 /// </summary>
 public class AsyncDaemon : IAsyncDisposable
 {
     private readonly IDocumentStore _store;
     private readonly IReadOnlyList<IProjection> _projections;
     private readonly ILogger<AsyncDaemon> _logger;
+    private static readonly System.Text.Json.JsonSerializerOptions _snakeOptions = new()
+    {
+        PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.SnakeCaseLower,
+        PropertyNameCaseInsensitive = true
+    };
+
     private readonly object _lock = new();
-    private readonly AggregateCache _cache = new(1000);
-    private Task? _runTask;
-    private volatile bool _stopped;
-    private long _highWaterSequence;
+    private readonly List<ProjectionShard> _shards = new();
+    private readonly List<Task> _shardTasks = new();
+    private readonly CancellationTokenSource _cts = new();
+    private TimeSpan _pollInterval;
+    private bool _disposed;
 
     /// <summary>
-    /// Current health state of the daemon. Updated on each poll cycle.
+    /// Current health state of the daemon. Updated on each poll cycle from shard states.
     /// </summary>
     public DaemonHealthState Health { get; private set; } = new(false, null, null, 0, 0, null);
 
     /// <summary>
-    /// Exposed cache instance for health checks and diagnostics.
+    /// Read-only collection of all registered shards.
     /// </summary>
-    public AggregateCache? Cache => _cache;
+    public IReadOnlyList<ProjectionShard> Shards => _shards.AsReadOnly();
+
+    /// <summary>
+    /// Optional callback invoked during projection rebuilds to report progress.
+    /// </summary>
+    public ProjectionRebuildProgressCallback? RebuildProgress { get; set; }
 
     public AsyncDaemon(IDocumentStore store, IReadOnlyList<IProjection> projections, ILoggerFactory? loggerFactory = null)
     {
@@ -37,150 +58,227 @@ public class AsyncDaemon : IAsyncDisposable
     }
 
     /// <summary>
-    /// Starts the background polling loop. Each poll cycle reads new events
-    /// from the event store and applies matching async projections.
+    /// Starts the background polling loop. Creates one shard per async/live projection
+    /// and launches all shard workers in parallel.
     /// </summary>
     public void Start(TimeSpan pollInterval)
     {
         lock (_lock)
         {
-            if (_runTask is not null)
+            if (_shardTasks.Count > 0)
                 throw new InvalidOperationException("AsyncDaemon is already running.");
 
-            _stopped = false;
+            _pollInterval = pollInterval;
             Health = Health with { IsRunning = true };
-            _runTask = RunAsync(pollInterval);
-            _logger.LogInformation("AsyncDaemon started with poll interval {PollInterval}", pollInterval);
+
+            // Create one shard per async/live projection
+            var asyncProjections = _projections
+                .Where(p => p.Lifecycle == ProjectionLifecycle.Async || p.Lifecycle == ProjectionLifecycle.Live)
+                .ToList();
+
+            foreach (var proj in asyncProjections)
+            {
+                var shard = new ProjectionShard(proj.Name, proj);
+                shard.IsActive = true;
+                shard.Health = shard.Health with { IsRunning = true };
+                _shards.Add(shard);
+                _shardTasks.Add(RunShardAsync(shard, pollInterval, _cts.Token));
+            }
+
+            _logger.LogInformation("AsyncDaemon started {Count} shards with poll interval {PollInterval}",
+                _shards.Count, pollInterval);
         }
     }
 
     /// <summary>
-    /// Signals the background loop to stop and awaits completion.
+    /// Signals the background loop to stop and awaits completion of all shards.
     /// </summary>
     public async Task StopAsync()
     {
-        Task? runTask;
+        // Cancel all shard tasks before awaiting them.
+        // Cancel() may throw AggregateException if linked CTS instances
+        // are already disposed; swallow all cancellation-related errors.
+        try { _cts.Cancel(); }
+        catch (ObjectDisposedException) { }
+        catch (AggregateException) { }
+        catch (OperationCanceledException) { }
 
-        lock (_lock)
-        {
-            _stopped = true;
-            runTask = _runTask;
-        }
+        foreach (var shard in _shards)
+            shard.IsActive = false;
 
-        if (runTask is null)
+        if (_shardTasks.Count > 0)
         {
-            Health = Health with { IsRunning = false };
-            return;
-        }
-
-        try
-        {
-            await runTask.ConfigureAwait(false);
-        }
-        catch (OperationCanceledException)
-        {
-            // Expected on cancellation
-        }
-        catch
-        {
-            // Swallow any other exceptions during shutdown
+            try { await Task.WhenAll(_shardTasks).ConfigureAwait(false); }
+            catch { /* swallow */ }
         }
 
-        lock (_lock)
-        {
-            _runTask = null;
-        }
+        _shardTasks.Clear();
+
+        foreach (var shard in _shards)
+            shard.Health = shard.Health with { IsRunning = false };
 
         Health = Health with { IsRunning = false };
         _logger.LogInformation("AsyncDaemon stopped");
     }
 
-    private async Task RunAsync(TimeSpan pollInterval)
+    /// <summary>
+    /// Start a specific projection agent by shard name.
+    /// </summary>
+    public Task StartAgentAsync(string shardName, CancellationToken ct = default)
     {
-        _logger.LogInformation("AsyncDaemon background loop started");
-        while (!_stopped)
+        var shard = _shards.FirstOrDefault(s => s.Name == shardName);
+        if (shard is null) throw new InvalidOperationException($"No shard found with name '{shardName}'.");
+        if (shard.IsActive) return Task.CompletedTask;
+
+        shard.IsActive = true;
+        shard.Health = shard.Health with { IsRunning = true };
+        var task = RunShardAsync(shard, _pollInterval, _cts.Token);
+        lock (_lock)
+        {
+            _shardTasks.Add(task);
+        }
+        return Task.CompletedTask;
+    }
+
+    /// <summary>
+    /// Stop a specific projection agent by shard name.
+    /// </summary>
+    public Task StopAgentAsync(string shardName)
+    {
+        var shard = _shards.FirstOrDefault(s => s.Name == shardName);
+        if (shard is null || !shard.IsActive) return Task.CompletedTask;
+
+        shard.IsActive = false;
+        shard.Health = shard.Health with { IsRunning = false };
+        return Task.CompletedTask;
+    }
+
+    /// <summary>
+    /// Per-shard background loop that polls for new events matching the shard's projection.
+    /// </summary>
+    private async Task RunShardAsync(ProjectionShard shard, TimeSpan pollInterval, CancellationToken ct)
+    {
+        var projection = shard.Projection;
+        var projectionName = shard.Name;
+
+        // Load initial watermark for this shard
+        if (_store.Options.ProjectionBuild.EnsureStateTable)
         {
             try
             {
-                await Task.Delay(pollInterval).ConfigureAwait(false);
-                if (_stopped) break;
+                await using var initSession = await _store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }).ConfigureAwait(false);
+                var internalSession = (InternalSessionBase)initSession;
+                var response = await internalSession.Session.RawQuery(
+                    $"SELECT * FROM mt_projection_progress WHERE projection_name = '{projectionName}'",
+                    null, ct).ConfigureAwait(false);
 
-                Health = Health with { IsRunning = true };
-
-                var asyncProjections = _projections
-                    .Where(p => p.Lifecycle == ProjectionLifecycle.Async)
-                    .ToList();
-
-                if (asyncProjections.Count == 0)
-                    continue;
-
-                await using var session = await _store.LightweightSessionAsync().ConfigureAwait(false);
-                if (_stopped) break;
-
-                // Fetch new events after the high-water sequence (global ordering)
-                var newEvents = await session.Events.FetchAllAfterSequence(_highWaterSequence).ConfigureAwait(false);
-
-                if (newEvents.Count == 0)
-                    continue;
-
-                _logger.LogDebug("AsyncDaemon: fetched {Count} new events after sequence {Sequence}",
-                    newEvents.Count, _highWaterSequence);
-
-                // Group events by stream for per-stream processing
-                var streamGroups = newEvents
-                    .GroupBy(e => e.StreamId)
-                    .ToDictionary(g => g.Key, g => g.ToList());
-
-                foreach (var projection in asyncProjections)
+                if (!response.HasErrors && response.Count > 0)
                 {
-                    foreach (var (streamId, events) in streamGroups)
+                    var raw = response.GetValue<List<object>>(0);
+                    if (raw is { Count: > 0 })
                     {
-                        var matchingEvents = events
-                            .Where(e => e.Data is not null && projection.EventTypes.Contains(e.Data.GetType()))
-                            .ToList();
-
-                        if (matchingEvents.Count == 0)
-                            continue;
-
-                        // Try cache for aggregate — if found, we can skip loading from store
-                        if (_cache.TryGetValue(streamId, out var cached))
-                        {
-                            _logger.LogDebug(
-                                "AsyncDaemon: cache hit for stream {StreamId} on projection {ProjectionType}",
-                                streamId, projection.GetType().Name);
-                        }
-
-                        _logger.LogInformation("Async projection {ProjectionType} applied on stream {StreamId}",
-                            projection.GetType().Name, streamId);
-
-                        // Enrichment hook: allow projections to pre-load reference data
-                        if (projection is IEnrichProjection enricher)
-                        {
-                            await enricher.EnrichAsync(session, matchingEvents.AsReadOnly(), CancellationToken.None).ConfigureAwait(false);
-                        }
-
-                        var context = new ProjectionContext(session, matchingEvents.AsReadOnly());
-                        await projection.ApplyAsync(context, CancellationToken.None).ConfigureAwait(false);
-
-                        // Update cache with the projected aggregate result
-                        _cache.Set(streamId, matchingEvents);
+                        var json = System.Text.Json.JsonSerializer.Serialize(raw);
+                        var progress = System.Text.Json.JsonSerializer
+                            .Deserialize<List<ProjectionProgress>>(json, _snakeOptions);
+                        if (progress is { Count: > 0 } && progress[0].LastVersion > 0)
+                            shard.Watermark = progress[0].LastVersion;
                     }
                 }
 
-                // Track highest sequence seen (global ordering)
-                var maxSequence = newEvents.Max(e => e.Sequence);
-                if (maxSequence > _highWaterSequence)
-                    _highWaterSequence = maxSequence;
+                _logger.LogInformation("Shard {ShardName}: loaded watermark = {Watermark}",
+                    projectionName, shard.Watermark);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogDebug(ex, "Shard {ShardName}: could not load projection progress (table may not exist yet)",
+                    projectionName);
+            }
+        }
 
-                // Save any projected documents added by the projections
+        while (!ct.IsCancellationRequested && shard.IsActive)
+        {
+            try
+            {
+                await Task.Delay(pollInterval, ct).ConfigureAwait(false);
+                if (ct.IsCancellationRequested || !shard.IsActive) break;
+
+                await using var session = await _store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }).ConfigureAwait(false);
+                if (ct.IsCancellationRequested) break;
+
+                // Fetch events after this shard's watermark
+                var newEvents = await session.Events.FetchAllAfterSequence(shard.Watermark, ct).ConfigureAwait(false);
+
+                if (newEvents.Count == 0) continue;
+
+                _logger.LogDebug("Shard {ShardName}: fetched {Count} new events after sequence {Sequence}",
+                    projectionName, newEvents.Count, shard.Watermark);
+
+                // Process only events matching this projection's event types
+                var matchingEvents = newEvents
+                    .Where(e => e.Data is not null && projection.EventTypes.Contains(e.Data.GetType()))
+                    .ToList();
+
+                if (matchingEvents.Count == 0) continue;
+
+                _logger.LogInformation("Shard {ShardName}: processing {Count} matching events",
+                    projectionName, matchingEvents.Count);
+
+                // Enrichment hook
+                if (projection is IEnrichProjection enricher)
+                    await enricher.EnrichAsync(session, matchingEvents.AsReadOnly(), ct).ConfigureAwait(false);
+
+                // Build a context from all matching events (not grouped by stream — the
+                // projection's ApplyAsync handles grouping internally)
+                var context = new ProjectionContext(session, matchingEvents.AsReadOnly());
+                await projection.ApplyAsync(context, ct).ConfigureAwait(false);
+
+                // Update watermark
+                var maxSeq = matchingEvents.Max(e => e.Sequence);
+                if (maxSeq > shard.Watermark)
+                    shard.Watermark = maxSeq;
+
+                // Persist watermark
+                if (_store.Options.ProjectionBuild.EnsureStateTable)
+                {
+                    var sql =
+                        $"UPSERT mt_projection_progress:`{projectionName}` CONTENT {{ projection_name: '{projectionName}', last_version: {shard.Watermark}, last_updated: time::now() }}";
+                    await session.ExecuteSqlAsync(sql, null, CancellationToken.None).ConfigureAwait(false);
+                }
+
+                // Before Commit: invoke daemon-level change listeners
+                if (_store.Options.ChangeListeners.Count > 0)
+                {
+                    var asyncProjections = _shards
+                        .Where(s => s.IsActive)
+                        .Select(s => s.Projection)
+                        .ToList();
+                    foreach (var listener in _store.Options.ChangeListeners)
+                        await listener.BeforeCommitAsync(session, asyncProjections, CancellationToken.None).ConfigureAwait(false);
+                }
+
                 await session.SaveChangesAsync().ConfigureAwait(false);
 
-                Health = Health with
+                // After Commit: invoke daemon-level change listeners
+                if (_store.Options.ChangeListeners.Count > 0)
+                {
+                    var asyncProjections = _shards
+                        .Where(s => s.IsActive)
+                        .Select(s => s.Projection)
+                        .ToList();
+                    foreach (var listener in _store.Options.ChangeListeners)
+                        await listener.AfterCommitAsync(session, asyncProjections, CancellationToken.None, 0).ConfigureAwait(false);
+                }
+
+                // Update shard health
+                shard.Health = shard.Health with
                 {
                     LastSuccess = DateTimeOffset.UtcNow,
-                    HighWaterSequence = _highWaterSequence,
+                    HighWaterSequence = shard.Watermark,
                     LagCount = 0
                 };
+
+                // Update daemon-level health as aggregate across all shards
+                UpdateDaemonHealth();
             }
             catch (OperationCanceledException)
             {
@@ -188,20 +286,71 @@ public class AsyncDaemon : IAsyncDisposable
             }
             catch (Exception ex)
             {
-                _logger.LogWarning(ex, "AsyncDaemon cycle failed; will retry on next poll");
-                Health = Health with
+                _logger.LogWarning(ex, "Shard {ShardName} cycle failed; will retry on next poll", projectionName);
+                shard.Health = shard.Health with
                 {
                     LastError = DateTimeOffset.UtcNow,
                     LastException = ex.Message
                 };
             }
         }
-        _logger.LogInformation("AsyncDaemon background loop stopped");
+
+        _logger.LogInformation("Shard {ShardName} background loop stopped", projectionName);
+    }
+
+    /// <summary>
+    /// Update the daemon-level health as an aggregate of all shard states.
+    /// </summary>
+    private void UpdateDaemonHealth()
+    {
+        var activeShards = _shards.Where(s => s.IsActive).ToList();
+        if (activeShards.Count == 0)
+        {
+            Health = new DaemonHealthState(false, null, null, 0, 0, null);
+            return;
+        }
+
+        Health = new DaemonHealthState(
+            IsRunning: activeShards.Any(s => s.Health.IsRunning),
+            LastSuccess: activeShards.Max(s => s.Health.LastSuccess),
+            LastError: activeShards.Max(s => s.Health.LastError),
+            HighWaterSequence: activeShards.Max(s => s.Watermark),
+            LagCount: 0,
+            LastException: activeShards
+                .Where(s => s.Health.LastException is not null)
+                .Select(s => s.Health.LastException)
+                .FirstOrDefault()
+        );
     }
 
     public async ValueTask DisposeAsync()
     {
-        await StopAsync().ConfigureAwait(false);
+        if (_disposed) return;
+        _disposed = true;
+
+        // Cancel shard tasks and await them without relying on StopAsync
+        try { _cts.Cancel(); }
+        catch (ObjectDisposedException) { }
+        catch (AggregateException) { }
+        catch (OperationCanceledException) { }
+
+        foreach (var shard in _shards)
+            shard.IsActive = false;
+
+        if (_shardTasks.Count > 0)
+        {
+            try { await Task.WhenAll(_shardTasks).ConfigureAwait(false); }
+            catch { /* swallow */ }
+        }
+
+        _shardTasks.Clear();
+
+        foreach (var shard in _shards)
+            shard.Health = shard.Health with { IsRunning = false };
+
+        Health = Health with { IsRunning = false };
+
+        _cts.Dispose();
         GC.SuppressFinalize(this);
     }
 }

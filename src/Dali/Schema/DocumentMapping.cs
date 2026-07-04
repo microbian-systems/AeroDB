@@ -1,5 +1,6 @@
 using System.Linq.Expressions;
 using System.Reflection;
+using SurrealDb.Net.Models;
 
 namespace Dali;
 
@@ -10,10 +11,31 @@ namespace Dali;
 public abstract class DocumentMapping
 {
     internal abstract Type EntityType { get; }
+
+    /// <summary>
+    /// The CLR type mapped by this document mapping.
+    /// </summary>
+    public Type DocumentType => EntityType;
+
     internal abstract List<IndexDefinition> Indices { get; }
     internal abstract bool IsMultiTenanted { get; }
     internal abstract SchemaMode SchemaModeType { get; }
     internal abstract string? SchemaName { get; }
+
+    /// <summary>Custom field definitions for this document type. Overridden in generic subclass.</summary>
+    internal virtual IReadOnlyList<FieldDefinition> GetFieldDefinitions() => [];
+
+    /// <summary>Multi-tenancy style for this document type.</summary>
+    public TenancyStyle TenancyStyle { get; set; }
+
+    /// <summary>When true, this document type supports soft-delete (ISoftDeleted).</summary>
+    public bool SoftDeleted { get; set; }
+
+    /// <summary>When true, optimistic concurrency is enforced for this document type.</summary>
+    public bool UseOptimisticConcurrency { get; set; }
+
+    /// <summary>The configured identity (primary key) property name. Set via <c>Schema.For&lt;T&gt;().Identity(...)</c>.</summary>
+    internal string? IdentityProperty { get; set; }
 }
 
 /// <summary>Controls the SurrealDB table schema mode. <c>Schemaless</c> (Flexible) allows any fields; <c>Schemafull</c> (Strict) enforces a strict field definition.</summary>
@@ -35,7 +57,6 @@ public enum SchemaMode
 /// Accessed via <c>StoreOptions.Schema.For&lt;T&gt;()</c>.
 /// </summary>
 public class DocumentMapping<T> : DocumentMapping
-    where T : SurrealDb.Net.Models.IRecord
 {
     internal override Type EntityType => typeof(T);
     internal override List<IndexDefinition> Indices { get; } = [];
@@ -45,6 +66,107 @@ public class DocumentMapping<T> : DocumentMapping
     internal override SchemaMode SchemaModeType => _schemaModeType;
     private string? _schemaName;
     internal override string? SchemaName => _schemaName;
+
+    private readonly List<Type> _subClasses = [];
+    private readonly HashSet<string> _ignoredIndexes = [];
+    private readonly List<ForeignKeyDefinition> _foreignKeys = [];
+    private readonly List<FieldDefinition> _fieldDefinitions = [];
+
+    internal DocumentMapping()
+    {
+        ValidateDocumentType<T>();
+    }
+
+    /// <summary>Register a derived type for polymorphic querying.</summary>
+    public DocumentMapping<T> AddSubClass<TDerived>() where TDerived : T
+    {
+        _subClasses.Add(typeof(TDerived));
+        return this;
+    }
+
+    /// <summary>Registered derived types for this document type.</summary>
+    public IReadOnlyList<Type> SubClasses => _subClasses;
+
+    /// <summary>Prevent the schema manager from creating a specific index.</summary>
+    public DocumentMapping<T> IgnoreIndex(string indexName)
+    {
+        _ignoredIndexes.Add(indexName);
+        return this;
+    }
+
+    /// <summary>Index names that should not be created by EnsureSchema.</summary>
+    public IReadOnlyCollection<string> IgnoredIndexes => _ignoredIndexes;
+
+    /// <summary>
+    /// Declare a foreign key relationship for informational/validation purposes.
+    /// In SurrealDB, graph edges replace FK cascades — this metadata is stored
+    /// for tooling and documentation only.
+    /// </summary>
+    public DocumentMapping<T> ForeignKey<TChild>(Expression<Func<T, object>> property, Action<ForeignKeyDefinition>? configure = null)
+    {
+        var member = ExtractMemberFromBody(property.Body);
+        var fk = new ForeignKeyDefinition(member.Name, typeof(TChild));
+        configure?.Invoke(fk);
+        _foreignKeys.Add(fk);
+        return this;
+    }
+
+    /// <summary>Registered foreign key definitions.</summary>
+    public IReadOnlyList<ForeignKeyDefinition> ForeignKeys => _foreignKeys;
+
+    /// <summary>
+    /// Define a field with optional type, default, assertion, and permissions.
+    /// These are emitted as additional DEFINE FIELD statements by the schema manager.
+    /// </summary>
+    public DocumentMapping<T> Field(string fieldName, Action<FieldDefinition>? configure = null)
+    {
+        var def = new FieldDefinition { FieldName = fieldName };
+        configure?.Invoke(def);
+        _fieldDefinitions.Add(def);
+        return this;
+    }
+
+    /// <summary>Custom field definitions for this document type.</summary>
+    public IReadOnlyList<FieldDefinition> FieldDefinitions => _fieldDefinitions;
+    internal override IReadOnlyList<FieldDefinition> GetFieldDefinitions() => _fieldDefinitions;
+
+    /// <summary>
+    /// Defines a computed/expression-based index with configurable options
+    /// (index method, casing, sort order, predicate).
+    /// </summary>
+    public DocumentMapping<T> ComputedIndex(Expression<Func<T, object>> expression, Action<ComputedIndexOptions> configure)
+    {
+        var opts = new ComputedIndexOptions();
+        configure(opts);
+
+        var body = expression.Body;
+        while (body is UnaryExpression { NodeType: ExpressionType.Convert or ExpressionType.ConvertChecked } ue)
+            body = ue.Operand;
+
+        var columns = body switch
+        {
+            NewExpression ne when IsAnonymousType(ne.Type) =>
+                ne.Arguments.Select(ExtractMemberFromArgument).Select(m => m.Name).ToArray(),
+            _ => [ExtractMemberFromBody(body).Name]
+        };
+
+        var idxName = $"cidx_{Snake(typeof(T).Name)}_{string.Join("_", columns.Select(Snake))}";
+        var idx = new IndexDefinition
+        {
+            Columns = columns,
+            Name = idxName,
+            Type = IndexType.Standard,
+            ComputedOptions = opts
+        };
+        Indices.Add(idx);
+        return this;
+    }
+
+    internal static void ValidateDocumentType<TDocument>()
+    {
+        // POCOs are now supported via Schema.For<T>().Identity(x => x.Id)
+        // Validation is deferred to schema generation time
+    }
 
     /// <summary>
     /// Sets the schema mode for this document type (SCHEMAFULL vs SCHEMALESS).
@@ -56,7 +178,12 @@ public class DocumentMapping<T> : DocumentMapping
         return this;
     }
 
-    internal string? IdentityProperty { get; private set; }
+    private static readonly HashSet<Type> SupportedIdentityTypes = new()
+    {
+        typeof(long), typeof(int), typeof(ulong), typeof(uint),
+        typeof(string), typeof(Guid), typeof(byte), typeof(short),
+        typeof(DateTime)
+    };
 
     /// <summary>
     /// Designates the primary key property explicitly for documentation purposes.
@@ -67,6 +194,11 @@ public class DocumentMapping<T> : DocumentMapping
     public DocumentMapping<T> Identity<TProp>(Expression<Func<T, TProp>> property)
     {
         var member = ExtractMember(property);
+        var propType = typeof(TProp);
+        if (!SupportedIdentityTypes.Contains(propType))
+            throw new ArgumentException(
+                $"Identity property type '{propType.Name}' is not supported. " +
+                $"Supported types: long, int, ulong, uint, string, Guid, byte, short, DateTime.");
         IdentityProperty = member.Name;
         return this;
     }
@@ -88,14 +220,49 @@ public class DocumentMapping<T> : DocumentMapping
     /// </summary>
     public DocumentMapping<T> Index<TProp>(Expression<Func<T, TProp>> property, Action<IndexOptions>? configure = null)
     {
-        var member = ExtractMember(property);
-        var idx = new IndexDefinition
+        // Delegate to the non-generic overload — wraps if value types need boxing
+        var body = (Expression)property.Body;
+        if (body.Type != typeof(object))
+            body = Expression.Convert(body, typeof(object));
+        var wrapped = Expression.Lambda<Func<T, object>>(body, property.Parameters);
+        return Index(wrapped, configure);
+    }
+
+    /// <summary>
+    /// Defines a computed index. Supports single-property and multi-property
+    /// anonymous-type expressions (<c>x => new { x.FirstName, x.LastName }</c>).
+    /// For strongly-typed single-property access, prefer <see cref="Index{TProp}"/>.
+    /// </summary>
+    public DocumentMapping<T> Index(Expression<Func<T, object>> expression, Action<IndexOptions>? configure = null)
+    {
+        // Strip outer Convert/ConvertChecked — the generic Index<TProp> overload
+        // introduces it for reference types whose type != typeof(object) (including
+        // anonymous types which are reference types but not object).
+        var body = expression.Body;
+        while (body is UnaryExpression { NodeType: ExpressionType.Convert or ExpressionType.ConvertChecked } ue)
+            body = ue.Operand;
+
+        var columns = body switch
         {
-            Columns = [member.Name],
-            Name = $"idx_{Snake(typeof(T).Name)}_{Snake(member.Name)}",
-            IsUnique = false
+            NewExpression ne when IsAnonymousType(ne.Type) =>
+                ne.Arguments.Select(ExtractMemberFromArgument).Select(m => m.Name).ToArray(),
+
+            NewExpression =>
+                throw new ArgumentException(
+                    $"Multi-column index requires an anonymous type (new {{ ... }}). " +
+                    $"Use Index<TProp>() for single columns, or CompositeIndex() with explicit property lambdas.", nameof(expression)),
+
+            _ => [ExtractMemberFromBody(body).Name]
         };
+
+        var idx = new IndexDefinition { Columns = columns, IsUnique = false, Type = IndexType.Standard };
         configure?.Invoke(new IndexOptions(idx));
+        if (string.IsNullOrEmpty(idx.Name))
+        {
+            var prefix = idx.IsUnique ? "uidx" : "idx";
+            idx.Name = $"{prefix}_{Snake(typeof(T).Name)}_{string.Join("_", columns.Select(Snake))}";
+        }
+
         Indices.Add(idx);
         return this;
     }
@@ -112,44 +279,66 @@ public class DocumentMapping<T> : DocumentMapping
     /// Defines a unique index on the specified property.
     /// </summary>
     public DocumentMapping<T> UniqueIndex<TProp>(Expression<Func<T, TProp>> property)
-    {
-        var member = ExtractMember(property);
-        Indices.Add(new IndexDefinition
-        {
-            Columns = [member.Name],
-            Name = $"uidx_{Snake(typeof(T).Name)}_{Snake(member.Name)}",
-            IsUnique = true
-        });
-        return this;
-    }
+        => Index(property, c => c.IsUnique());
 
     /// <summary>
     /// Defines a composite index on the specified properties.
+    /// Prefer <see cref="Index(Expression{Func{T, object}}, Action{IndexOptions}?)"/> with an anonymous type expression.
     /// </summary>
+    [Obsolete("Use Index(x => new { x.Prop1, x.Prop2 }, configure) instead.")]
     public DocumentMapping<T> CompositeIndex(params Expression<Func<T, object>>[] properties)
     {
+#pragma warning disable CS0618
+        return CompositeIndex(null, properties);
+#pragma warning restore CS0618
+    }
+
+    /// <summary>
+    /// Defines a composite index on the specified properties with configuration.
+    /// Prefer <see cref="Index(Expression{Func{T, object}}, Action{IndexOptions}?)"/> with an anonymous type expression.
+    /// </summary>
+    [Obsolete("Use Index(x => new { x.Prop1, x.Prop2 }, configure) instead.")]
+    public DocumentMapping<T> CompositeIndex(Action<IndexOptions>? configure, params Expression<Func<T, object>>[] properties)
+    {
         var columns = properties.Select(p => ExtractMember(p).Name).ToArray();
-        Indices.Add(new IndexDefinition
+        var idx = new IndexDefinition { Columns = columns, IsUnique = false };
+        configure?.Invoke(new IndexOptions(idx));
+        if (string.IsNullOrEmpty(idx.Name))
         {
-            Columns = columns,
-            Name = $"idx_{Snake(typeof(T).Name)}_{string.Join("_", columns.Select(c => Snake(c)))}",
-            IsUnique = false
-        });
+            var prefix = idx.IsUnique ? "uidx" : "idx";
+            idx.Name = $"{prefix}_{Snake(typeof(T).Name)}_{string.Join("_", columns.Select(Snake))}";
+        }
+        Indices.Add(idx);
         return this;
     }
 
     /// <summary>
     /// Defines a composite unique index.
+    /// Prefer <see cref="Index(Expression{Func{T, object}}, Action{IndexOptions}?)"/> with <c>configure => configure.IsUnique()</c>.
     /// </summary>
+    [Obsolete("Use Index(x => new { x.Prop1, x.Prop2 }, c => c.IsUnique()) instead.")]
     public DocumentMapping<T> UniqueCompositeIndex(params Expression<Func<T, object>>[] properties)
     {
+#pragma warning disable CS0618
+        return UniqueCompositeIndex(null, properties);
+#pragma warning restore CS0618
+    }
+
+    /// <summary>
+    /// Defines a composite unique index with configuration.
+    /// Prefer <see cref="Index(Expression{Func{T, object}}, Action{IndexOptions}?)"/> with <c>configure => configure.IsUnique()</c>.
+    /// </summary>
+    [Obsolete("Use Index(x => new { x.Prop1, x.Prop2 }, c => c.IsUnique()) instead.")]
+    public DocumentMapping<T> UniqueCompositeIndex(Action<IndexOptions>? configure, params Expression<Func<T, object>>[] properties)
+    {
         var columns = properties.Select(p => ExtractMember(p).Name).ToArray();
-        Indices.Add(new IndexDefinition
+        var idx = new IndexDefinition { Columns = columns, IsUnique = true };
+        configure?.Invoke(new IndexOptions(idx));
+        if (string.IsNullOrEmpty(idx.Name))
         {
-            Columns = columns,
-            Name = $"uidx_{Snake(typeof(T).Name)}_{string.Join("_", columns.Select(c => Snake(c)))}",
-            IsUnique = true
-        });
+            idx.Name = $"uidx_{Snake(typeof(T).Name)}_{string.Join("_", columns.Select(Snake))}";
+        }
+        Indices.Add(idx);
         return this;
     }
 
@@ -203,6 +392,7 @@ public class DocumentMapping<T> : DocumentMapping
         });
         return this;
     }
+    /// <summary>
     /// Uses the HNSW algorithm for fast approximate vector similarity queries.
     /// Best for large datasets where speed matters more than exact results.
     /// </summary>
@@ -360,15 +550,35 @@ public class DocumentMapping<T> : DocumentMapping
         return this;
     }
 
-    private static MemberInfo ExtractMember<TProp>(Expression<Func<T, TProp>> expression)
+    /// <summary>
+    /// No-op. Exists only for Marten portability — SurrealDB does not need duplicated fields.
+    /// </summary>
+    public DocumentMapping<T> Duplicate(
+        Expression<Func<T, object?>> expression,
+        string? pgType = null,
+        object? dbType = null,
+        Action<DocumentIndex>? configure = null,
+        bool notNull = false)
     {
-        return expression.Body switch
-        {
-            MemberExpression me => me.Member,
-            UnaryExpression { NodeType: ExpressionType.Convert or ExpressionType.ConvertChecked, Operand: MemberExpression me } => me.Member,
-            _ => throw new ArgumentException("Expression must refer to a property or field.")
-        };
+        return this;
     }
+
+    /// <summary>
+    /// No-op. Exists only for Marten portability — SurrealDB does not need duplicated fields.
+    /// </summary>
+    public DocumentMapping<T> Duplicate<TSub>(
+        Expression<Func<TSub, object?>> expression,
+        string? pgType = null,
+        object? dbType = null,
+        Action<DocumentIndex>? configure = null,
+        bool notNull = false)
+        where TSub : T
+    {
+        return this;
+    }
+
+    private static MemberInfo ExtractMember<TProp>(Expression<Func<T, TProp>> expression)
+        => ExtractMemberFromBody(expression.Body);
 
     private static string Snake(string name)
     {
@@ -376,4 +586,52 @@ public class DocumentMapping<T> : DocumentMapping
         return string.Concat(name.Select((c, i) =>
             i > 0 && char.IsUpper(c) ? "_" + char.ToLowerInvariant(c) : char.ToLowerInvariant(c).ToString()));
     }
+
+    private static MemberInfo ExtractMemberFromBody(Expression expr) => expr switch
+    {
+        MemberExpression me => me.Member,
+        UnaryExpression { NodeType: ExpressionType.Convert or ExpressionType.ConvertChecked, Operand: MemberExpression me } => me.Member,
+        _ => throw new ArgumentException($"Expression must refer to a property or field, not '{expr.NodeType}'.")
+    };
+
+    private static MemberInfo ExtractMemberFromArgument(Expression expr)
+    {
+        try
+        {
+            return ExtractMemberFromBody(expr);
+        }
+        catch (ArgumentException)
+        {
+            throw new ArgumentException(
+                $"Each argument in a multi-column index anonymous type must be a property access (e.g. x => x.Prop). " +
+                $"Constants and method calls are not allowed.");
+        }
+    }
+
+    private static bool IsAnonymousType(Type type) =>
+        type.Namespace == null
+        && type.IsDefined(typeof(System.Runtime.CompilerServices.CompilerGeneratedAttribute), false)
+        && type.Name.Contains("<>");
+}
+
+/// <summary>
+/// Defines a SurrealDB field with optional type, default, assertion, and permissions.
+/// Emitted as DEFINE FIELD statements by the schema manager.
+/// </summary>
+public class FieldDefinition
+{
+    /// <summary>Field name in the SurrealDB table.</summary>
+    public string FieldName { get; set; } = "";
+
+    /// <summary>SurrealDB type (e.g., "string", "int", "datetime", "option&lt;string&gt;").</summary>
+    public string? FieldType { get; set; }
+
+    /// <summary>Default value expression (e.g., "0", "'default'", "time::now()").</summary>
+    public string? DefaultValue { get; set; }
+
+    /// <summary>Assert expression for validation (e.g., "string::is::email($value)").</summary>
+    public string? AssertExpression { get; set; }
+
+    /// <summary>Permissions clause (e.g., "WHERE $auth.role = 'admin'").</summary>
+    public string? Permissions { get; set; }
 }

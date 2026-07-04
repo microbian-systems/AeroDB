@@ -19,7 +19,7 @@ public class BinarySerializationTests
     public async Task Json_mode_round_trip()
     {
         await using var store = await CreateStoreAsync(EventSerializationMode.Json);
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var streamId = $"stream-{Guid.NewGuid():N}";
         await session.Events.StartStream(streamId, new BinaryTestEvent[] { new() { Name = "json-test" } });
@@ -35,7 +35,7 @@ public class BinarySerializationTests
     public async Task Binary_mode_round_trip()
     {
         await using var store = await CreateStoreAsync(EventSerializationMode.Binary);
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var streamId = $"stream-{Guid.NewGuid():N}";
         await session.Events.StartStream(streamId, new BinaryTestEvent[] { new() { Name = "binary-test" } });
@@ -54,7 +54,7 @@ public class BinarySerializationTests
         var jsonStore = await CreateStoreAsync(EventSerializationMode.Json);
         await using (jsonStore)
         {
-            await using var session = await jsonStore.LightweightSessionAsync();
+            await using var session = await jsonStore.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
             var streamId = $"stream-{Guid.NewGuid():N}";
             await session.Events.StartStream(streamId, new BinaryTestEvent[] { new() { Name = "cross-mode" } });
             await session.SaveChangesAsync();
@@ -74,7 +74,7 @@ public class BinarySerializationTests
         var binaryStore = await CreateStoreAsync(EventSerializationMode.Binary);
         await using (binaryStore)
         {
-            await using var session = await binaryStore.LightweightSessionAsync();
+            await using var session = await binaryStore.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
             var streamId = $"stream-{Guid.NewGuid():N}";
             await session.Events.StartStream(streamId, new BinaryTestEvent[] { new() { Name = "cross-mode" } });
             await session.SaveChangesAsync();
@@ -115,7 +115,7 @@ public class BinarySerializationTests
 
         // Write binary event and verify it round-trips
         await using var store = await CreateStoreAsync(EventSerializationMode.Binary);
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var streamId = $"stream-{Guid.NewGuid():N}";
         await session.Events.StartStream(streamId, new BinaryTestEvent[] { largeEvent });

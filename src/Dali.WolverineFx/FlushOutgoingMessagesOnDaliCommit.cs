@@ -13,7 +13,7 @@ namespace Dali.WolverineFx;
 ///   <item><description><see cref="AfterCommitAsync"/> — flushes outgoing messages after the transaction commits successfully.</description></item>
 /// </list>
 ///
-/// Reflection access to <see cref="DocumentSession._appendedEvents"/> is
+/// Reflection access to <c>DocumentSession._appendedEvents</c> is
 /// delegated to <see cref="Internal.DaliSessionEventAccessor"/> to avoid
 /// duplicating that logic with <see cref="DaliEventForwarding"/>.
 /// </summary>

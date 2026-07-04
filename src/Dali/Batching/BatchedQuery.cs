@@ -1,3 +1,4 @@
+using Dali.Metadata;
 using SurrealDb.Net.Models.Response;
 
 namespace Dali;
@@ -9,11 +10,13 @@ namespace Dali;
 internal class BatchedQuery : IBatchedQuery
 {
     private readonly InternalSessionBase _session;
-    private readonly List<BatchItem> _items = new();
+    private readonly List<BatchItem> _compiledItems = new();
+    private readonly List<SimpleBatchItem> _simpleItems = new();
 
     internal BatchedQuery(InternalSessionBase session)
     {
         _session = session ?? throw new ArgumentNullException(nameof(session));
+        Events = new BatchEvents(this);
     }
 
     /// <inheritdoc />
@@ -69,20 +72,183 @@ internal class BatchedQuery : IBatchedQuery
             }
         }
 
-        _items.Add(new BatchItem(compiledQuery, plan, SetResult));
+        _compiledItems.Add(new BatchItem(compiledQuery, plan, SetResult));
         return tcs.Task;
     }
 
     /// <inheritdoc />
+    public async Task<IReadOnlyList<string>> QueryRawAsync(string surql, CancellationToken ct = default)
+    {
+        var response = await _session.Session.RawQuery(surql, null, ct).ConfigureAwait(false);
+        var results = new List<string>();
+        for (var i = 0; i < response.Count; i++)
+        {
+            var raw = response.GetValue<List<object>>(i);
+            if (raw is { Count: > 0 })
+            {
+                foreach (var item in raw)
+                    results.Add(item?.ToString() ?? "");
+            }
+        }
+        return results.AsReadOnly();
+    }
+
+    // ── IBatchedQuery (Marten API parity) ─────────────────────────
+
+    /// <inheritdoc />
+    public IBatchedQuery CheckExists<T>(string id, out Task<bool> result) where T : class
+    {
+        var table = MetadataDispatch.GetTableName(typeof(T));
+        var surql = $"SELECT id FROM {table}:`{id.Replace("`", "\\`")}` LIMIT 1;";
+        var tcs = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
+        _simpleItems.Add(new SimpleBatchItem(surql, (response, index) =>
+        {
+            try
+            {
+                var exists = response.Count > 0 && !response.HasErrors
+                    && index < response.Count
+                    && response[index] is not ISurrealDbErrorResult;
+                tcs.TrySetResult(exists);
+            }
+            catch (Exception ex) { tcs.TrySetException(ex); }
+        }));
+        result = tcs.Task;
+        return this;
+    }
+
+    /// <inheritdoc />
+    public IBatchedQuery Load<T>(string id, out Task<T?> result) where T : class
+    {
+        var table = MetadataDispatch.GetTableName(typeof(T));
+        var surql = $"SELECT * FROM {table}:`{id.Replace("`", "\\`")}`;";
+        var tcs = new TaskCompletionSource<T?>(TaskCreationOptions.RunContinuationsAsynchronously);
+        _simpleItems.Add(new SimpleBatchItem(surql, (response, index) =>
+        {
+            try
+            {
+                if (response.Count <= index || response[index] is ISurrealDbErrorResult)
+                {
+                    tcs.TrySetResult(default);
+                    return;
+                }
+                var list = response.GetValue<List<T>>(index);
+                tcs.TrySetResult(list is { Count: > 0 } ? list[0] : default);
+            }
+            catch (Exception ex) { tcs.TrySetException(ex); }
+        }));
+        result = tcs.Task;
+        return this;
+    }
+
+    /// <inheritdoc />
+    public IBatchedQuery LoadMany<T>(IEnumerable<string> ids, out Task<IReadOnlyList<T>> result) where T : class
+    {
+        var idList = ids?.ToList() ?? throw new ArgumentNullException(nameof(ids));
+        var table = MetadataDispatch.GetTableName(typeof(T));
+        var inClause = string.Join(", ", idList.Select(id => $"'{table}:{id}'"));
+        var surql = $"SELECT * FROM {table} WHERE id IN [{inClause}];";
+        var tcs = new TaskCompletionSource<IReadOnlyList<T>>(TaskCreationOptions.RunContinuationsAsynchronously);
+        _simpleItems.Add(new SimpleBatchItem(surql, (response, index) =>
+        {
+            try
+            {
+                if (response.Count <= index || response[index] is ISurrealDbErrorResult)
+                {
+                    tcs.TrySetResult(Array.Empty<T>());
+                    return;
+                }
+                var list = response.GetValue<List<T>>(index);
+                tcs.TrySetResult(list?.AsReadOnly() ?? (IReadOnlyList<T>)Array.Empty<T>());
+            }
+            catch (Exception ex) { tcs.TrySetException(ex); }
+        }));
+        result = tcs.Task;
+        return this;
+    }
+
+    /// <inheritdoc />
+    public IBatchedQuery Query<T>(out Task<IReadOnlyList<T>> result) where T : class
+    {
+        var table = MetadataDispatch.GetTableName(typeof(T));
+        var surql = $"SELECT * FROM {table};";
+        var tcs = new TaskCompletionSource<IReadOnlyList<T>>(TaskCreationOptions.RunContinuationsAsynchronously);
+        _simpleItems.Add(new SimpleBatchItem(surql, (response, index) =>
+        {
+            try
+            {
+                if (response.Count <= index || response[index] is ISurrealDbErrorResult)
+                {
+                    tcs.TrySetResult(Array.Empty<T>());
+                    return;
+                }
+                var list = response.GetValue<List<T>>(index);
+                tcs.TrySetResult(list?.AsReadOnly() ?? (IReadOnlyList<T>)Array.Empty<T>());
+            }
+            catch (Exception ex) { tcs.TrySetException(ex); }
+        }));
+        result = tcs.Task;
+        return this;
+    }
+
+    /// <inheritdoc />
+    public IBatchedQuery AddItem<T>(Func<IReadOnlyList<T>, Task> handler) where T : class
+    {
+        // AddItem is reserved for post-batch custom processing and does not
+        // add a SQL statement. The handler is invoked during Execute() after
+        // all SQL statements complete. It receives an empty list — it is
+        // intended for correlation with other batch operations.
+        _simpleItems.Add(new SimpleBatchItem("", (_, _) =>
+        {
+            // No-op during response processing; handled after full execute
+        }));
+        // Store the handler separately for after-execute invocation
+        _postBatchHandlers.Add(handler as Delegate);
+        return this;
+    }
+
+    /// <inheritdoc />
+    public IBatchedQuery QueryByPlan<T>(string plan, out Task<IReadOnlyList<T>> result) where T : class
+    {
+        var surql = plan.EndsWith(';') ? plan : plan + ";";
+        var tcs = new TaskCompletionSource<IReadOnlyList<T>>(TaskCreationOptions.RunContinuationsAsynchronously);
+        _simpleItems.Add(new SimpleBatchItem(surql, (response, index) =>
+        {
+            try
+            {
+                if (response.Count <= index || response[index] is ISurrealDbErrorResult)
+                {
+                    tcs.TrySetResult(Array.Empty<T>());
+                    return;
+                }
+                var list = response.GetValue<List<T>>(index);
+                tcs.TrySetResult(list?.AsReadOnly() ?? (IReadOnlyList<T>)Array.Empty<T>());
+            }
+            catch (Exception ex) { tcs.TrySetException(ex); }
+        }));
+        result = tcs.Task;
+        return this;
+    }
+
+    /// <inheritdoc />
+    public IBatchEvents Events { get; }
+
+    /// <inheritdoc />
+    public IQuerySession Parent => (IQuerySession)_session;
+
+    // Holds AddItem handlers for post-execute invocation
+    private readonly List<Delegate> _postBatchHandlers = new();
+
+    /// <inheritdoc />
     public async Task Execute(CancellationToken ct = default)
     {
-        if (_items.Count == 0)
+        if (_compiledItems.Count == 0 && _simpleItems.Count == 0)
             return;
 
         var sqlParts = new List<string>();
-        var activeItems = new List<BatchItem>();
+        var compiledActive = new List<BatchItem>();
+        var simpleActive = new List<SimpleBatchItem>();
 
-        foreach (var item in _items)
+        foreach (var item in _compiledItems)
         {
             var queryResult = BuildSurrealQueryResult(item);
             var surql = queryResult.ToSurrealQL();
@@ -94,21 +260,50 @@ internal class BatchedQuery : IBatchedQuery
             if (!string.IsNullOrEmpty(surql))
             {
                 sqlParts.Add(surql);
-                activeItems.Add(item);
+                compiledActive.Add(item);
+            }
+        }
+
+        foreach (var item in _simpleItems)
+        {
+            if (!string.IsNullOrEmpty(item.Surql))
+            {
+                sqlParts.Add(item.Surql);
+                simpleActive.Add(item);
             }
         }
 
         if (sqlParts.Count == 0)
             return;
 
-        // Join all statements — each already ends with ';' from ToSurrealQL()
+        // Join all statements — each already ends with ';' from ToSurrealQL() or inline
         var combined = string.Join("\n", sqlParts);
         var response = await _session.Session.RawQuery(combined, null, ct)
             .ConfigureAwait(false);
 
-        for (int i = 0; i < activeItems.Count; i++)
+        int index = 0;
+        foreach (var item in compiledActive)
         {
-            activeItems[i].SetResult(response, i);
+            item.SetResult(response, index);
+            index++;
+        }
+        foreach (var item in simpleActive)
+        {
+            item.SetResult(response, index);
+            index++;
+        }
+
+        // Invoke post-batch AddItem handlers (only for non-empty results)
+        // Handlers are stored in order of AddItem calls
+        // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
+        var handlerIndex = 0;
+        foreach (var item in simpleActive)
+        {
+            if (handlerIndex < _postBatchHandlers.Count)
+            {
+                _postBatchHandlers[handlerIndex].DynamicInvoke(response);
+                handlerIndex++;
+            }
         }
     }
 
@@ -216,6 +411,81 @@ internal class BatchedQuery : IBatchedQuery
             CompiledQuery = compiledQuery;
             Plan = plan;
             SetResult = setResult;
+        }
+    }
+
+    /// <summary>
+    /// Holds a raw SurrealQL statement and a result callback for simple
+    /// (non-compiled-query) batch operations.
+    /// </summary>
+    private sealed class SimpleBatchItem
+    {
+        public string Surql { get; }
+        public Action<SurrealDbResponse, int> SetResult { get; }
+
+        public SimpleBatchItem(string surql, Action<SurrealDbResponse, int> setResult)
+        {
+            Surql = surql;
+            SetResult = setResult;
+        }
+    }
+
+    /// <summary>
+    /// Inner class that implements <see cref="IBatchEvents"/> for queuing
+    /// event-fetch operations within a batch.
+    /// </summary>
+    private sealed class BatchEvents : IBatchEvents
+    {
+        private readonly BatchedQuery _owner;
+
+        public BatchEvents(BatchedQuery owner)
+        {
+            _owner = owner ?? throw new ArgumentNullException(nameof(owner));
+        }
+
+        public IBatchedQuery FetchStream(string streamId, out Task<IReadOnlyList<IEvent>> result)
+        {
+            var safeStreamId = streamId.Replace("'", "\\'");
+            var surql = $"SELECT * FROM mt_events WHERE stream_id = '{safeStreamId}' ORDER BY sequence ASC;";
+            var tcs = new TaskCompletionSource<IReadOnlyList<IEvent>>(TaskCreationOptions.RunContinuationsAsynchronously);
+            _owner._simpleItems.Add(new SimpleBatchItem(surql, (response, index) =>
+            {
+                try
+                {
+                    if (response.Count <= index || response[index] is ISurrealDbErrorResult)
+                    {
+                        tcs.TrySetResult(Array.Empty<IEvent>());
+                        return;
+                    }
+                    var list = response.GetValue<List<IEvent>>(index);
+                    tcs.TrySetResult(list?.AsReadOnly() ?? (IReadOnlyList<IEvent>)Array.Empty<IEvent>());
+                }
+                catch (Exception ex) { tcs.TrySetException(ex); }
+            }));
+            result = tcs.Task;
+            return _owner;
+        }
+
+        public IBatchedQuery FetchAllAfterSequence(long sequence, out Task<IReadOnlyList<IEvent>> result)
+        {
+            var surql = $"SELECT * FROM mt_events WHERE sequence > {sequence} ORDER BY sequence ASC;";
+            var tcs = new TaskCompletionSource<IReadOnlyList<IEvent>>(TaskCreationOptions.RunContinuationsAsynchronously);
+            _owner._simpleItems.Add(new SimpleBatchItem(surql, (response, index) =>
+            {
+                try
+                {
+                    if (response.Count <= index || response[index] is ISurrealDbErrorResult)
+                    {
+                        tcs.TrySetResult(Array.Empty<IEvent>());
+                        return;
+                    }
+                    var list = response.GetValue<List<IEvent>>(index);
+                    tcs.TrySetResult(list?.AsReadOnly() ?? (IReadOnlyList<IEvent>)Array.Empty<IEvent>());
+                }
+                catch (Exception ex) { tcs.TrySetException(ex); }
+            }));
+            result = tcs.Task;
+            return _owner;
         }
     }
 }

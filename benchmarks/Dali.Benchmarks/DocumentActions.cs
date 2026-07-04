@@ -8,6 +8,7 @@ namespace Dali.Benchmarks;
 public class DocumentActions
 {
     public static BenchDoc[] Docs = BenchDoc.Generate(100).ToArray();
+    private BenchDoc[] _bulkDocs = Array.Empty<BenchDoc>();
 
     [GlobalSetup]
     public async Task Setup() => await BenchmarkStore.CleanAsync();
@@ -17,10 +18,11 @@ public class DocumentActions
     {
         // Regenerate docs each iteration so insert IDs are fresh
         Docs = BenchDoc.Generate(100).ToArray();
+        _bulkDocs = BenchDoc.Generate(1000).ToArray();
     }
 
     [Benchmark]
-    public async Task Insert_100_Documents()
+    public async Task Record_Insert_100()
     {
         await using var session = await BenchmarkStore.Store.LightweightSessionAsync();
         foreach (var doc in Docs)
@@ -29,7 +31,7 @@ public class DocumentActions
     }
 
     [Benchmark]
-    public async Task Load_Single_Document()
+    public async Task Record_Load_Single()
     {
         // Pre-insert one doc with explicit ID so we know it without relying on SaveChangesAsync back-propagation
         var docId = Guid.NewGuid().ToString();
@@ -45,7 +47,7 @@ public class DocumentActions
     }
 
     [Benchmark]
-    public async Task Query_By_Name()
+    public async Task Record_Query_By_Name()
     {
         await using var query = await BenchmarkStore.Store.QuerySessionAsync();
         var results = await query.Query<BenchDoc>()
@@ -54,10 +56,9 @@ public class DocumentActions
     }
 
     [Benchmark]
-    public async Task Bulk_Insert_1000()
+    public async Task Record_Bulk_Insert_1000()
     {
-        var docs = BenchDoc.Generate(1000);
         await using var session = await BenchmarkStore.Store.LightweightSessionAsync();
-        await session.BulkInsertAsync(docs);
+        await session.BulkInsertAsync(_bulkDocs);
     }
 }

@@ -37,7 +37,7 @@ public static class DaliEfCoreServiceCollectionExtensions
                 docStore.Options.LoggerFactory = loggerFactory;
 
             return Task.Run(async () =>
-                await docStore.LightweightSessionAsync().ConfigureAwait(false)).GetAwaiter().GetResult();
+                await docStore.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }).ConfigureAwait(false)).GetAwaiter().GetResult();
         });
 
         return services;

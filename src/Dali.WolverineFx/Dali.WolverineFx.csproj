@@ -1,8 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>net10.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
         <Description>SurrealDB-backed message persistence and transport for WolverineFx</Description>
         <PackageId>Dali.WolverineFx</PackageId>
         <PackageTags>wolverine surrealdb messaging durability</PackageTags>

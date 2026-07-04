@@ -32,21 +32,21 @@ public sealed class DaliSagaStorage<TId, TSaga> : ISagaStorage<TId, TSaga>
 
     public async Task InsertAsync(TSaga saga, CancellationToken cancellationToken)
     {
-        await using var session = await _store.LightweightSessionAsync(cancellationToken);
+        await using var session = await _store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }, cancellationToken);
         session.Store(saga);
         await session.SaveChangesAsync(cancellationToken);
     }
 
     public async Task UpdateAsync(TSaga saga, CancellationToken cancellationToken)
     {
-        await using var session = await _store.LightweightSessionAsync(cancellationToken);
+        await using var session = await _store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }, cancellationToken);
         session.Store(saga);
         await session.SaveChangesAsync(cancellationToken);
     }
 
     public async Task DeleteAsync(TSaga saga, CancellationToken cancellationToken)
     {
-        await using var session = await _store.LightweightSessionAsync(cancellationToken);
+        await using var session = await _store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }, cancellationToken);
         session.Delete(saga);
         await session.SaveChangesAsync(cancellationToken);
     }

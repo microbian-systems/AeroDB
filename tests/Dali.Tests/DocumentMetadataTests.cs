@@ -14,7 +14,7 @@ public class DocumentMetadataTests
             o.Listeners.Add(new DocumentMetadataListener());
         });
 
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         if (session is DocumentSession ds)
             ds.CurrentUser = "test-user";
 
@@ -33,7 +33,7 @@ public class DocumentMetadataTests
             o.Listeners.Add(new DocumentMetadataListener());
         });
 
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var doc = new TimestampedDoc { Name = "Test" };
         session.Store(doc);
@@ -50,7 +50,7 @@ public class DocumentMetadataTests
             o.Listeners.Add(new DocumentMetadataListener());
         });
 
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var before = DateTimeOffset.UtcNow;
         var doc = new TimestampedDoc { Name = "Test" };
@@ -73,7 +73,7 @@ public class DocumentMetadataTests
             o.Listeners.Add(new DocumentMetadataListener());
         });
 
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         if (session is DocumentSession ds)
             ds.CurrentUser = "update-user";
 
@@ -107,7 +107,7 @@ public class DocumentMetadataTests
         });
 
         // First store: user1
-        await using (var session = await store.LightweightSessionAsync())
+        await using (var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }))
         {
             if (session is DocumentSession ds)
                 ds.CurrentUser = "user1";
@@ -120,7 +120,7 @@ public class DocumentMetadataTests
         }
 
         // Second store: user2 (different user)
-        await using (var session = await store.LightweightSessionAsync())
+        await using (var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }))
         {
             if (session is DocumentSession ds)
                 ds.CurrentUser = "user2";

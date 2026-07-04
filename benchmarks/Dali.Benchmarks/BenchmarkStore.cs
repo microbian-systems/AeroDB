@@ -25,6 +25,13 @@ public static class BenchmarkStore
         await session.RawQueryAsync<object>("DELETE bench_doc;");
     }
 
+    public static async Task CleanEntityDocsAsync()
+    {
+        await using var session = await Store.LightweightSessionAsync();
+        await session.RawQueryAsync<object>("DEFINE TABLE IF NOT EXISTS entity_doc SCHEMALESS;");
+        await session.RawQueryAsync<object>("DELETE entity_doc;");
+    }
+
     public static async Task CleanEventsAsync()
     {
         await using var session = await Store.LightweightSessionAsync();

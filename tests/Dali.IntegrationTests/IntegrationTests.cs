@@ -1,8 +1,7 @@
-using Dali.Metadata;
 using SurrealDb.Net.Models;
 using TUnit.Core;
 
-namespace Dali.Tests;
+namespace Dali.IntegrationTests;
 
 /// <summary>
 /// Integration tests against a real (remote) SurrealDB instance.
@@ -16,7 +15,7 @@ namespace Dali.Tests;
 /// <c>dotnet test --filter "Category!=Integration"</c>
 ///
 /// Prerequisite: a SurrealDB instance running at the endpoint configured
-/// via <see cref="TestHarnessRemote"/> (default ws://localhost:8000).
+/// via <see cref="TestHarness"/> (default ws://localhost:8000).
 /// Use <c>docker-compose -f docker-compose.surrealdb.yml up</c> to start one.
 /// </summary>
 [Category("Integration")]
@@ -30,11 +29,11 @@ public class IntegrationTests
     [Test]
     public async Task Fetch_with_include_expands_related()
     {
-        var available = await TestHarnessRemote.IsRemoteAvailableAsync();
+        var available = await TestHarness.IsAvailableAsync();
         if (!available) return;
 
-        await using var store = await TestHarnessRemote.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var store = await TestHarness.CreateStoreAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         // Create a customer record
         var customer = new Customer { Name = "Alice", Email = "alice@example.com" };
@@ -51,9 +50,9 @@ public class IntegrationTests
         await session.SaveChangesAsync();
 
         // Query with FETCH — the real SurrealDB expands the Customer property
-        var tableName = MetadataDispatch.GetTableName(typeof(OrderWithCustomer));
+        // Table name is snake_case of the class name: OrderWithCustomer → order_with_customer
         var results = await session.RawQueryAsync<OrderWithCustomer>(
-            $"SELECT *, ->customer->customer.* FROM {tableName} FETCH customer;");
+            "SELECT *, ->customer->customer.* FROM order_with_customer FETCH customer;");
 
         results.ShouldNotBeNull();
         results.Count.ShouldBeGreaterThanOrEqualTo(1);
@@ -77,18 +76,18 @@ public class IntegrationTests
     [Test]
     public async Task LoadMany_resolves_execute_sql_created_records()
     {
-        var available = await TestHarnessRemote.IsRemoteAvailableAsync();
+        var available = await TestHarness.IsAvailableAsync();
         if (!available) return;
 
-        await using var store = await TestHarnessRemote.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var store = await TestHarness.CreateStoreAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         // Create records using raw SurrealQL
         await session.ExecuteSqlAsync("CREATE person:alice CONTENT { Name: 'Alice', Age: 30 };");
         await session.ExecuteSqlAsync("CREATE person:bob CONTENT { Name: 'Bob', Age: 25 };");
 
         // LoadManyAsync uses WHERE id IN [...] internally
-        var results = await session.LoadManyAsync<Person>(new[] { "alice", "bob" });
+        var results = await session.LoadManyAsync<TestPerson>(new[] { "alice", "bob" });
 
         results.ShouldNotBeNull();
         results.Count.ShouldBe(2);
@@ -105,15 +104,15 @@ public class IntegrationTests
     [Test]
     public async Task Events_enabled_with_datetimeoffset_and_schemafull()
     {
-        var available = await TestHarnessRemote.IsRemoteAvailableAsync();
+        var available = await TestHarness.IsAvailableAsync();
         if (!available) return;
 
-        await using var store = await TestHarnessRemote.CreateStoreAsync(o =>
+        await using var store = await TestHarness.CreateStoreAsync(o =>
         {
             o.Events.Enabled = true;
         });
 
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         // Append an event that contains DateTimeOffset data
         var streamId = Guid.NewGuid().ToString();
@@ -153,11 +152,11 @@ public class IntegrationTests
     [Test]
     public async Task Binary_serialization_roundtrips_datetimeoffset()
     {
-        var available = await TestHarnessRemote.IsRemoteAvailableAsync();
+        var available = await TestHarness.IsAvailableAsync();
         if (!available) return;
 
-        await using var store = await TestHarnessRemote.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var store = await TestHarness.CreateStoreAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var original = new Product
         {
@@ -180,14 +179,4 @@ public class IntegrationTests
         loaded[0].CreatedAt.ShouldBe(original.CreatedAt);
         loaded[0].Price.ShouldBe(19.99m);
     }
-}
-
-/// <summary>
-/// Sample event type used by the Events integration test.
-/// </summary>
-public class OrderSubmitted
-{
-    public string OrderId { get; set; } = "";
-    public DateTimeOffset SubmittedAt { get; set; }
-    public string CustomerName { get; set; } = "";
 }

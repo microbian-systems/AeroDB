@@ -52,6 +52,10 @@ public class SurrealQueryProvider : IQueryProvider
     /// </summary>
     internal ISurrealDbSession Session => _session;
 
+    internal InternalSessionBase? SessionBase => _sessionBase;
+
+    internal StoreOptions StoreOptions => _options;
+
     /// <summary>
     /// Resolves the correct <see cref="ISurrealDbSession"/> for the given element type
     /// based on its schema mapping (database). When no schema is configured or when
@@ -66,7 +70,7 @@ public class SurrealQueryProvider : IQueryProvider
         return await _sessionBase.GetSessionForSchemaAsync(schemaName, ct).ConfigureAwait(false);
     }
 
-    private SurrealExpressionVisitor CreateVisitor() => new();
+    private SurrealExpressionVisitor CreateVisitor() => new(_options.Schema);
 
     /// <summary>
     /// Cached check for whether a type implements <see cref="ISoftDeleted"/>.
@@ -211,6 +215,31 @@ public class SurrealQueryProvider : IQueryProvider
     }
 
     /// <summary>
+    /// Extracts <see cref="SurrealDbQueryable{T}.QueryStats"/> from the source queryable embedded
+    /// in the expression tree. Used to recover the QueryStatistics reference set via
+    /// <see cref="StatsExtensions.Stats{T}"/> when a LINQ operator (e.g. <c>.Where()</c>)
+    /// created a new queryable via <c>CreateQuery</c>.
+    /// </summary>
+    internal static QueryStatistics? ExtractQueryStats(Expression expression)
+    {
+        if (expression is ConstantExpression c && c.Value is IQueryable q)
+        {
+            var qType = q.GetType();
+            if (qType.IsGenericType && qType.GetGenericTypeDefinition() == typeof(SurrealDbQueryable<>))
+            {
+                var statsProp = qType.GetProperty("QueryStats",
+                    System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
+                return statsProp?.GetValue(q) as QueryStatistics;
+            }
+        }
+        if (expression is MethodCallExpression m && m.Arguments.Count > 0)
+            return ExtractQueryStats(m.Arguments[0]);
+        if (expression is UnaryExpression u)
+            return ExtractQueryStats(u.Operand);
+        return null;
+    }
+
+    /// <summary>
     /// Applies a tenant filter to the query if tenancy is active and the target type supports it.
     /// DatabasePerTenant isolates at the database level — no WHERE filter needed.
     /// </summary>
@@ -275,7 +304,7 @@ public class SurrealQueryProvider : IQueryProvider
     // --- Public entry points (expression-only, for IQueryProvider backward compat) ---
 
     public async Task<List<T>> ToListAsync<T>(Expression expression, CancellationToken ct = default)
-        => await ToListAsyncInternal<T>(expression, null, null, null, null, ct);
+        => await ToListAsyncInternal<T>(expression, null, null, null, null, null, ct);
 
     public async Task<T?> FirstOrDefaultAsync<T>(Expression expression, CancellationToken ct = default)
         => await FirstOrDefaultAsyncInternal<T>(expression, null, null, null, null, ct);
@@ -291,8 +320,9 @@ public class SurrealQueryProvider : IQueryProvider
         List<SurrealDbQueryable<T>.IncludeDescriptor> includeDescriptors,
         List<IncludeSpec>? includeSpecs,
         List<FilterIncludeSpec>? filterIncludeSpecs,
+        QueryStatistics? queryStats,
         CancellationToken ct = default)
-        => await ToListAsyncInternal<T>(expression, fetchFields, includeDescriptors, includeSpecs, filterIncludeSpecs, ct);
+        => await ToListAsyncInternal<T>(expression, fetchFields, includeDescriptors, includeSpecs, filterIncludeSpecs, queryStats, ct);
 
     internal async Task<T?> FirstOrDefaultAsync<T>(
         Expression expression,
@@ -320,6 +350,7 @@ public class SurrealQueryProvider : IQueryProvider
         List<SurrealDbQueryable<T>.IncludeDescriptor>? includeDescriptors,
         List<IncludeSpec>? includeSpecs,
         List<FilterIncludeSpec>? filterIncludeSpecs,
+        QueryStatistics? queryStats,
         CancellationToken ct)
     {
         var visitor = CreateVisitor();
@@ -369,6 +400,49 @@ public class SurrealQueryProvider : IQueryProvider
         var hasIncludes = includeDescriptors is { Count: > 0 };
         var hasIncludeSpecs = includeSpecs is { Count: > 0 };
 
+        // ── Stats: single-round-trip optimization ──────────────────────────────────
+        // When no includes are present, prepend SELECT count() ... to the main query
+        // and read both results from one RawQuery call. For queries with includes
+        // (LET-based multi-statement), the result-set index detection is complex, so
+        // the separate round-trip is kept with a TODO for future optimization.
+        if (queryStats is not null)
+        {
+            if (!hasIncludes && !hasIncludeSpecs)
+            {
+                var countQuery = query.Clone();
+                countQuery.OrderBy.Clear();
+                countQuery.Limit = null;
+                countQuery.Skip = null;
+                countQuery.Projection = "count()";
+                countQuery.GroupAll = true;
+                var combinedSurql = countQuery.ToSurrealQL() + "\n" + query.ToSurrealQL();
+                _logger.LogDebug("ToSurrealQL (with stats): {Surql}", combinedSurql);
+                var statsSession = await GetSessionForElementType(sourceType, ct).ConfigureAwait(false);
+                var statsResponse = await statsSession.RawQuery(combinedSurql, query.Parameters, ct).ConfigureAwait(false);
+                if (!statsResponse.HasErrors && statsResponse.Count > 1)
+                {
+                    // Result set 0: count(), Result set 1: main data
+                    var countVal = TryExtractCount(statsResponse);
+                    if (countVal.HasValue)
+                        queryStats.TotalResults = countVal.Value;
+                    var dataResults = DeserializeQueryResults<T>(statsResponse, 1);
+                    if (filterIncludeSpecs is { Count: > 0 } && dataResults is { Count: > 0 })
+                        dataResults = ApplyFilterIncludePredicates(dataResults, filterIncludeSpecs);
+                    return dataResults;
+                }
+                return [];
+            }
+            else
+            {
+                // TODO: Combine count into the multi-statement LET query for single round-trip
+                try
+                {
+                    queryStats.TotalResults = await CountAsync(expression, ct).ConfigureAwait(false);
+                }
+                catch { /* ignore count failures */ }
+            }
+        }
+
         string surql;
         if (hasIncludes || hasIncludeSpecs)
         {
@@ -408,8 +482,10 @@ public class SurrealQueryProvider : IQueryProvider
                     }
                     else
                     {
-                        // Reverse: FK on child. WHERE {childFk} IN (SELECT VALUE id FROM $main)
-                        sb.Append("`").Append(spec.ForeignKeyField).Append("` IN (SELECT VALUE id");
+                        // Reverse: FK on child. WHERE {childFk} IN (SELECT VALUE {parentIdField} FROM $main)
+                        // Use `Id` for Entity types (long FK), `id` for Record types (RecordId FK)
+                        var idField = GetIdFieldForReverseInclude(spec);
+                        sb.Append("`").Append(spec.ForeignKeyField).Append("` IN (SELECT VALUE ").Append(idField);
                     }
                     sb.Append(" FROM $main);");
                 }
@@ -433,7 +509,7 @@ public class SurrealQueryProvider : IQueryProvider
             List<T>? testMain = null;
             if (response.Count > 0 && response[0] is SurrealDbOkResult)
             {
-                try { testMain = response.GetValue<List<T>>(0); }
+                try { testMain = DeserializeQueryResults<T>(response, 0); }
                 catch { /* ignore type mismatch */ }
             }
 
@@ -444,7 +520,7 @@ public class SurrealQueryProvider : IQueryProvider
             else
                 return [];
 
-            var results = mainIndex == 0 ? testMain : response.GetValue<List<T>>(mainIndex);
+            var results = mainIndex == 0 ? testMain : DeserializeQueryResults<T>(response, mainIndex);
             if (results is null || results.Count == 0)
                 return [];
 
@@ -526,9 +602,7 @@ public class SurrealQueryProvider : IQueryProvider
 
         if (!response.HasErrors && response.Count > 0)
         {
-            var raw = response.GetValue<List<T>>(0);
-            if (raw is not null)
-                return raw;
+            return DeserializeQueryResults<T>(response, 0);
         }
 
         return [];
@@ -623,7 +697,8 @@ public class SurrealQueryProvider : IQueryProvider
                     }
                     else
                     {
-                        sb.Append("`").Append(spec.ForeignKeyField).Append("` IN (SELECT VALUE id");
+                        var idField = GetIdFieldForReverseInclude(spec);
+                        sb.Append("`").Append(spec.ForeignKeyField).Append("` IN (SELECT VALUE ").Append(idField);
                     }
                     sb.Append(" FROM $main);");
                 }
@@ -668,8 +743,8 @@ public class SurrealQueryProvider : IQueryProvider
 
         if (!response.HasErrors && response.Count > 0)
         {
-            var raw = response.GetValue<List<T>>(0);
-            if (raw is not null && raw.Count > 0)
+            var raw = DeserializeQueryResults<T>(response, 0);
+            if (raw is { Count: > 0 })
                 return raw[0];
         }
 
@@ -761,7 +836,8 @@ public class SurrealQueryProvider : IQueryProvider
                     }
                     else
                     {
-                        sb.Append("`").Append(spec.ForeignKeyField).Append("` IN (SELECT VALUE id");
+                        var idField = GetIdFieldForReverseInclude(spec);
+                        sb.Append("`").Append(spec.ForeignKeyField).Append("` IN (SELECT VALUE ").Append(idField);
                     }
                     sb.Append(" FROM $main);");
                 }
@@ -810,8 +886,8 @@ public class SurrealQueryProvider : IQueryProvider
 
         if (!response.HasErrors && response.Count > 0)
         {
-            var raw = response.GetValue<List<T>>(0);
-            if (raw is not null)
+            var raw = DeserializeQueryResults<T>(response, 0);
+            if (raw is { Count: > 0 })
             {
                 if (raw.Count > 1)
                     throw new InvalidOperationException("Sequence contains more than one element.");
@@ -848,7 +924,7 @@ public class SurrealQueryProvider : IQueryProvider
         int mainIndex;
         // Pragmatic heuristic: try index 0 first; if it yields results, use it.
         // If index 0 yields nothing and there are more result sets, try index 1.
-        var testMain = response.GetValue<List<T>>(0);
+        var testMain = DeserializeQueryResults<T>(response, 0);
         if (testMain is { Count: > 0 })
             mainIndex = 0;
         else if (response.Count > 1)
@@ -856,7 +932,7 @@ public class SurrealQueryProvider : IQueryProvider
         else
             return [];
 
-        var results = mainIndex == 0 ? testMain : response.GetValue<List<T>>(mainIndex);
+        var results = mainIndex == 0 ? testMain : DeserializeQueryResults<T>(response, mainIndex);
         if (results is null || results.Count == 0)
             return results ?? [];
 
@@ -958,20 +1034,69 @@ public class SurrealQueryProvider : IQueryProvider
     /// handling both engine behaviors (LET result present or absent).
     /// Used by IncludeSpec (forward include) post-processing.
     /// </summary>
-    private static List<T> DeserializeMainResults<T>(SurrealDbResponse response)
+    private List<T> DeserializeMainResults<T>(SurrealDbResponse response)
     {
-        var testMain = response.GetValue<List<T>>(0);
+        var testMain = DeserializeQueryResults<T>(response, 0);
         if (testMain is { Count: > 0 })
             return testMain;
 
         if (response.Count > 1)
         {
-            var altMain = response.GetValue<List<T>>(1);
+            var altMain = DeserializeQueryResults<T>(response, 1);
             if (altMain is { Count: > 0 })
                 return altMain;
         }
 
         return [];
+    }
+
+    /// <summary>
+    /// Deserializes query results via source-generated shim types for IEntity{TId} entities,
+    /// or directly for Record subclasses.
+    /// </summary>
+    private List<T> DeserializeQueryResults<T>(SurrealDbResponse response, int index)
+    {
+        var shimType = MetadataRegistry.GetShimType(typeof(T));
+        if (shimType is not null)
+        {
+            var listType = typeof(List<>).MakeGenericType(shimType);
+            var getValueMethod = typeof(SurrealDbResponse)
+                .GetMethod(nameof(SurrealDbResponse.GetValue), 1, [typeof(int)])!
+                .MakeGenericMethod(listType);
+
+            var shimList = getValueMethod.Invoke(response, [index]);
+            if (shimList is not IEnumerable enumerable)
+                return [];
+
+            // Materialize each shim to entity via ToEntity()
+            var toEntityMethod = shimType.GetMethod("ToEntity", Type.EmptyTypes);
+            if (toEntityMethod is null) return [];
+
+            var results = new List<T>();
+            foreach (var shim in enumerable)
+            {
+                if (shim is null) continue;
+                var entity = toEntityMethod.Invoke(shim, null);
+                if (entity is T t)
+                    results.Add(t);
+            }
+            return results;
+        }
+
+        // Check for POCO with configured identity — use raw CBOR reading
+        // to avoid Dahomey.Cbor's ObjectConverter issue with CBOR maps.
+        var mapping = _options.Schema.Mappings.GetValueOrDefault(typeof(T));
+        if (mapping?.IdentityProperty is not null)
+        {
+            var items = Dali.Internals.Cbor.CborResultReader.ReadPocoResult(response, index);
+            if (items is null or { Count: 0 }) return [];
+
+            return InternalSessionBase.DeserializePocoFromList<T>(items, mapping.IdentityProperty);
+        }
+
+        // Direct deserialization for Record subclasses (existing path)
+        var raw = response.GetValue<List<T>>(index);
+        return raw ?? [];
     }
 
     /// <summary>
@@ -986,7 +1111,7 @@ public class SurrealQueryProvider : IQueryProvider
     /// Optional offset into the response for the first include result set.
     /// Defaults to <c>mainIndex + 1</c> (no prior include descriptor sets).
     /// </param>
-    private static void ApplyIncludeSpecsToResults<T>(
+    private void ApplyIncludeSpecsToResults<T>(
         SurrealDbResponse response,
         List<T> results,
         List<IncludeSpec> includeSpecs,
@@ -1001,7 +1126,7 @@ public class SurrealQueryProvider : IQueryProvider
         {
             // Determine main result index
             int mainIndex;
-            var testMain = response.GetValue<List<T>>(0);
+            var testMain = DeserializeQueryResults<T>(response, 0);
             if (testMain is { Count: > 0 })
                 mainIndex = 0;
             else if (response.Count > 1)
@@ -1178,6 +1303,27 @@ public class SurrealQueryProvider : IQueryProvider
     /// Extracts a string key from a value for dictionary-based Include matching.
     /// Handles RecordId, string, Guid, and primitive types.
     /// </summary>
+    /// <summary>
+    /// Returns the SurrealDB field name for the parent's ID in a reverse-include subquery.
+    /// Uses the pre-computed value from <see cref="IncludeSpec.ParentIdField"/>.
+    /// </summary>
+    private static string GetIdFieldForReverseInclude(IncludeSpec spec)
+    {
+        // Validate FK field exists on child type
+        var fkProp = spec.IncludeType.GetProperty(
+            spec.ForeignKeyField,
+            BindingFlags.Public | BindingFlags.Instance);
+
+        if (fkProp is null && !string.IsNullOrWhiteSpace(spec.ForeignKeyField))
+        {
+            System.Diagnostics.Debug.WriteLine(
+                $"[Dali] IncludeReverse: FK field '{spec.ForeignKeyField}' not found on type '{spec.IncludeType.Name}'. " +
+                "Reverse include results may be incorrect.");
+        }
+
+        return spec.ParentIdField;
+    }
+
     private static string? ExtractKeyString(object? value)
     {
         if (value is null) return null;
@@ -1523,7 +1669,7 @@ public class SurrealQueryProvider : IQueryProvider
         try
         {
             var json = cv.ToString();
-            using var doc = JsonDocument.Parse(json);
+            using var doc = JsonDocument.Parse(json!);
             if (doc.RootElement.ValueKind == JsonValueKind.Object)
             {
                 foreach (var prop in doc.RootElement.EnumerateObject())
@@ -1549,7 +1695,7 @@ public class SurrealQueryProvider : IQueryProvider
         try
         {
             var json = cv.ToString();
-            using var doc = JsonDocument.Parse(json);
+            using var doc = JsonDocument.Parse(json!);
             if (doc.RootElement.ValueKind == JsonValueKind.Object)
             {
                 foreach (var prop in doc.RootElement.EnumerateObject())

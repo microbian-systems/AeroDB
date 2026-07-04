@@ -1,15 +1,17 @@
 namespace Dali;
 
 /// <summary>
-/// A live query subscription to a SurrealDB table or query.
-/// Disposing stops the underlying SurrealDB live query.
+/// Marten API parity: legacy live query interface. Wraps <see cref="Dali.LiveQuery.IDaliLiveQuery{T}"/>
+/// for backward compatibility with Marten's <c>IQuerySession.WatchTableAsync</c>,
+/// <c>WatchQueryAsync</c>, and <c>WatchStreamAsync</c> methods.
+/// Prefer <see cref="Dali.LiveQuery.ILiveQuerySession"/> for new code.
 /// </summary>
 public interface ILiveQuery<T> : IAsyncDisposable
 {
-    /// <summary>All results (create, update, delete) as they arrive.</summary>
+    /// <summary>All create, update, and delete results (no Open/Close events).</summary>
     IAsyncEnumerable<T> ResultsAsync(CancellationToken ct = default);
 
-    /// <summary>Only newly created records.</summary>
+    /// <summary>Only created records.</summary>
     IAsyncEnumerable<T> CreatedAsync(CancellationToken ct = default);
 
     /// <summary>Only updated records.</summary>
@@ -18,6 +20,6 @@ public interface ILiveQuery<T> : IAsyncDisposable
     /// <summary>Only deleted records.</summary>
     IAsyncEnumerable<T> DeletedAsync(CancellationToken ct = default);
 
-    /// <summary>Stops the live query. Same as disposal but allows explicit control.</summary>
+    /// <summary>Kill the server-side query.</summary>
     Task StopAsync(CancellationToken ct = default);
 }

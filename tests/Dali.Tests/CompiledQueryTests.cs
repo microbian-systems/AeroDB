@@ -48,7 +48,7 @@ public class CompiledQueryTests
     public async Task Compiled_where_returns_filtered_results()
     {
         await using var store = await CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await SeedPeople(session);
 
         var compiled = store.CompileQuery<Person>(q => q.Where(p => p.Age > 25));
@@ -62,7 +62,7 @@ public class CompiledQueryTests
     public async Task Compiled_orderBy_returns_ordered_results()
     {
         await using var store = await CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await SeedPeople(session);
 
         var compiled = store.CompileQuery<Person>(q => q.OrderBy(p => p.Age));
@@ -79,7 +79,7 @@ public class CompiledQueryTests
     public async Task Compiled_orderByDescending_returns_ordered_results()
     {
         await using var store = await CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await SeedPeople(session);
 
         var compiled = store.CompileQuery<Person>(q => q.OrderByDescending(p => p.Age));
@@ -94,7 +94,7 @@ public class CompiledQueryTests
     public async Task Compiled_where_and_orderBy_work_together()
     {
         await using var store = await CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await SeedPeople(session);
 
         var compiled = store.CompileQuery<Person>(q =>
@@ -111,7 +111,7 @@ public class CompiledQueryTests
     public async Task Compiled_skip_take_works()
     {
         await using var store = await CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "A", Age = 10 });
         session.Store(new Person { Name = "B", Age = 20 });
@@ -131,7 +131,7 @@ public class CompiledQueryTests
     public async Task Compiled_firstOrDefault_returns_first()
     {
         await using var store = await CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await SeedPeople(session);
 
         var compiled = store.CompileQuery<Person>(q => q.OrderBy(p => p.Age));
@@ -146,7 +146,7 @@ public class CompiledQueryTests
     public async Task Compiled_firstOrDefault_empty_returns_null()
     {
         await using var store = await CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var compiled = store.CompileQuery<Person>(q => q.Where(p => p.Name == "NonExistent"));
         var result = await session.QueryFirstOrDefaultAsync(compiled);
@@ -158,7 +158,7 @@ public class CompiledQueryTests
     public async Task Compiled_firstOrDefault_with_filter_returns_matching()
     {
         await using var store = await CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await SeedPeople(session);
 
         var compiled = store.CompileQuery<Person>(q => q.Where(p => p.Name == "Alice"));
@@ -174,7 +174,7 @@ public class CompiledQueryTests
     public async Task Compiled_reuse_produces_consistent_results()
     {
         await using var store = await CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await SeedPeople(session);
 
         var compiled = store.CompileQuery<Person>(q => q.Where(p => p.Age > 25));
@@ -195,7 +195,7 @@ public class CompiledQueryTests
     public async Task Compiled_multi_condition_where()
     {
         await using var store = await CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await SeedPeople(session);
 
         // Age between 25 and 32 inclusive
@@ -213,7 +213,7 @@ public class CompiledQueryTests
     public async Task Compiled_string_contains()
     {
         await using var store = await CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await SeedPeople(session);
 
         var compiled = store.CompileQuery<Person>(q =>

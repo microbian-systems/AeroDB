@@ -38,6 +38,8 @@ internal static class TimeExpressionHandler
                 $"time::second({args[0]})",
             "Week" when args.Length == 1 =>
                 $"time::week({args[0]})",
+            "ToUnixTimeSeconds" when args.Length == 1 =>
+                $"time::unix({args[0]})",
             "Format" when args.Length >= 2 =>
                 $"time::format({args[0]}, '{EscapedArg(args[1])}')",
             _ => null

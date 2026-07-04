@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using SurrealDb.Net;
+using Dali.Internals.Cbor;
 
 namespace Dali;
 
@@ -49,6 +50,7 @@ public class DatabasePerTenantSelector : IAsyncDisposable
         {
             // Embedded/factory clients — each tenant gets its own isolated client instance
             client = _options.ClientFactory();
+            DaliCborOptions.ConfigureClient(client);
             await client.Connect(ct).ConfigureAwait(false);
             await client.Use(ns, dbName, ct).ConfigureAwait(false);
         }
@@ -63,7 +65,9 @@ public class DatabasePerTenantSelector : IAsyncDisposable
                 .WithPassword(_options.Password ?? "root")
                 .Build();
 
-            client = new SurrealDbClient(surrealOptions);
+            client = new SurrealDbClient(
+                surrealOptions,
+                configureCborOptions: DaliCborOptions.Configure);
             await client.Connect(ct).ConfigureAwait(false);
             await client.Use(ns, dbName, ct).ConfigureAwait(false);
         }

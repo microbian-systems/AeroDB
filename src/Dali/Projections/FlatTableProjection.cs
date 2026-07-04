@@ -1,5 +1,6 @@
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Text.Json;
 using Dali.Metadata;
 using SurrealDb.Net.Models;
 
@@ -29,6 +30,9 @@ public class FlatTableProjection<TDoc, TId> : IProjection
         _tableName = tableName ?? throw new ArgumentNullException(nameof(tableName));
         _getDocumentId = getDocumentId ?? throw new ArgumentNullException(nameof(getDocumentId));
     }
+
+    /// <inheritdoc />
+    public string Name => GetType().Name;
 
     /// <inheritdoc />
     public Type[] EventTypes => _mappings.Select(m => m.EventType).Distinct().ToArray();
@@ -178,11 +182,86 @@ public class FlatTableProjection<TDoc, TId> : IProjection
     }
 
     /// <inheritdoc />
-    public Task RebuildAsync(IDocumentSession session, CancellationToken ct)
+    public async Task RebuildAsync(IDocumentSession session, CancellationToken ct)
     {
-        // Rebuild by replaying all events — delegates to the apply logic.
-        // For a full rebuild implementation, see InlineProjection<T>.RebuildAsync.
-        return Task.CompletedTask;
+        var eventTypeNames = EventTypes.Select(t => t.Name).ToList();
+        if (eventTypeNames.Count == 0) return;
+
+        var typeFilter = string.Join(", ", eventTypeNames.Select(n => $"'{n}'"));
+        var sql = $"SELECT * FROM mt_events WHERE event_type IN [{typeFilter}] ORDER BY stream_id ASC, version ASC";
+
+        if (session is not InternalSessionBase internalSession)
+            return;
+
+        var surrealSession = internalSession.Session;
+        var response = await surrealSession.RawQuery(sql, null, ct).ConfigureAwait(false);
+
+        if (response.HasErrors || response.Count == 0) return;
+
+        List<EventRow>? eventRows = null;
+        try
+        {
+            eventRows = response.GetValue<List<EventRow>>(0);
+        }
+        catch { return; }
+
+        if (eventRows is null || eventRows.Count == 0) return;
+
+        var jsonOptions = new JsonSerializerOptions
+        {
+            PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower,
+            PropertyNameCaseInsensitive = true
+        };
+
+        // Group events by stream and replay apply logic
+        var streamGroups = eventRows
+            .Where(r => !string.IsNullOrEmpty(r.DataJson))
+            .GroupBy(r => r.StreamId)
+            .ToList();
+
+        foreach (var group in streamGroups)
+        {
+            var events = new List<IEvent>();
+            foreach (var row in group)
+            {
+                if (string.IsNullOrEmpty(row.DataJson)) continue;
+                var eventType = EventTypes.FirstOrDefault(t => t.Name == row.EventType);
+                if (eventType is null) continue;
+
+                try
+                {
+                    var data = JsonSerializer.Deserialize(row.DataJson, eventType, jsonOptions);
+                    if (data is not null)
+                    {
+                        events.Add((IEvent)Activator.CreateInstance(
+                            typeof(Event<>).MakeGenericType(eventType),
+                            [data, row.Version, 0L, row.CreatedAt, row.StreamId, Guid.Empty])!);
+                    }
+                }
+                catch
+                {
+                    // Skip events that fail to deserialize
+                }
+            }
+
+            if (events.Count > 0)
+            {
+                // Clear existing data for this stream's document before replay
+                var docId = _getDocumentId(events.Select(e => e.Data).ToList().AsReadOnly());
+                if (docId is not null)
+                {
+                    var docIdString = docId.ToString();
+                    if (!string.IsNullOrEmpty(docIdString))
+                    {
+                        var storageTable = MetadataDispatch.GetTableName(typeof(TDoc));
+                        await session.ExecuteSqlAsync($"DELETE {storageTable}:`{docIdString.Replace("'", "\\'")}`;", null, ct).ConfigureAwait(false);
+                    }
+                }
+
+                var context = new ProjectionContext(session, events.AsReadOnly());
+                await ApplyAsync(context, ct).ConfigureAwait(false);
+            }
+        }
     }
 
     // ─── Helpers ──────────────────────────────────────────────────────

@@ -101,7 +101,7 @@ public class EventProjectionTests
     public async Task Create_event_produces_aggregate_with_correct_state()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         store.Options.Projections.Add(new OrdProjection());
 
@@ -124,7 +124,7 @@ public class EventProjectionTests
     public async Task Apply_event_updates_existing_aggregate()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         store.Options.Projections.Add(new OrdProjection());
 
@@ -137,7 +137,7 @@ public class EventProjectionTests
         await session.SaveChangesAsync();
 
         // Append EvtOrderShipped (updates aggregate)
-        await using var session2 = await store.LightweightSessionAsync();
+        await using var session2 = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await session2.Events.Append(streamId, [
             new EvtOrderShipped { StreamId = streamId }
         ]);
@@ -155,7 +155,7 @@ public class EventProjectionTests
     public async Task ShouldDelete_event_removes_aggregate()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         store.Options.Projections.Add(new OrdProjection());
 
@@ -173,7 +173,7 @@ public class EventProjectionTests
         aggregates1.Count.ShouldBe(1);
 
         // Append EvtOrderCancelled (should delete aggregate)
-        await using var session2 = await store.LightweightSessionAsync();
+        await using var session2 = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await session2.Events.Append(streamId, [
             new EvtOrderCancelled { StreamId = streamId }
         ]);
@@ -188,7 +188,7 @@ public class EventProjectionTests
     public async Task Multiple_events_in_sequence_produce_correct_final_state()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         store.Options.Projections.Add(new OrdProjection());
 

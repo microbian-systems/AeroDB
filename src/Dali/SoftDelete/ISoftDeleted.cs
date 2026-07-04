@@ -1,9 +1,9 @@
 namespace Dali;
 
 /// <summary>
-/// Marks a document as supporting soft deletes. When an entity implementing this
-/// interface is deleted, Dali sets the DeletedAt/Deleted fields instead of removing the record.
-/// Queries automatically filter out soft-deleted documents.
+/// Marks an entity as soft-deletable. Dali uses these properties directly on the entity
+/// (unlike Marten which uses shadow columns <c>mt_deleted</c> and <c>mt_deleted_at</c>).
+/// Queries on <see cref="ISoftDeleted"/> types automatically exclude entities where <c>Deleted == true</c>.
 /// </summary>
 public interface ISoftDeleted
 {

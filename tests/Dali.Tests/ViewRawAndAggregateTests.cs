@@ -151,7 +151,7 @@ public class ViewRawAndAggregateTests
             o.Database = "test";
         });
 
-        var surrealSession = ((InternalSessionBase)await store.LightweightSessionAsync()).Session;
+        var surrealSession = ((InternalSessionBase)await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None })).Session;
 
         // Create source table and insert data
         await surrealSession.RawQuery("DEFINE TABLE raw_view_order SCHEMALESS;", null);
@@ -290,7 +290,7 @@ public class ViewRawAndAggregateTests
         await using var session = await store.QuerySessionAsync();
 
         // Create source data
-        var surrealSession = ((InternalSessionBase)await store.LightweightSessionAsync()).Session;
+        var surrealSession = ((InternalSessionBase)await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None })).Session;
         await surrealSession.RawQuery("DEFINE TABLE raw_view_order SCHEMALESS;", null);
         await surrealSession.RawQuery(
             "CREATE raw_view_order CONTENT { Product: 'A', Amount: 10, Category: 'food' };", null);
@@ -320,7 +320,7 @@ public class ViewRawAndAggregateTests
         });
         await using var session = await store.QuerySessionAsync();
 
-        var surrealSession = ((InternalSessionBase)await store.LightweightSessionAsync()).Session;
+        var surrealSession = ((InternalSessionBase)await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None })).Session;
         await surrealSession.RawQuery("DEFINE TABLE raw_view_order SCHEMALESS;", null);
         await surrealSession.RawQuery(
             "CREATE raw_view_order CONTENT { Product: 'A', Amount: 10, Category: 'food' };", null);
@@ -351,7 +351,7 @@ public class ViewRawAndAggregateTests
             o.Database = "test";
         });
         var schemaManager = new SchemaManager();
-        var surrealSession = ((InternalSessionBase)await store.LightweightSessionAsync()).Session;
+        var surrealSession = ((InternalSessionBase)await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None })).Session;
 
         // Create source table with data
         await surrealSession.RawQuery("DEFINE TABLE raw_view_order SCHEMALESS;", null);
@@ -400,7 +400,7 @@ public class ViewRawAndAggregateTests
 
         await store.InitializeAsync();
 
-        var surrealSession = ((InternalSessionBase)await store.LightweightSessionAsync()).Session;
+        var surrealSession = ((InternalSessionBase)await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None })).Session;
         var infoResponse = await surrealSession.RawQuery("INFO FOR TABLE raw_view_from_store;");
         infoResponse.HasErrors.ShouldBeFalse();
     }

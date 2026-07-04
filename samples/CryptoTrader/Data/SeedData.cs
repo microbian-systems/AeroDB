@@ -9,7 +9,7 @@ namespace CryptoTrader.Data;
 /// Generates realistic test data using Bogus.
 /// Demonstrates:
 /// - Dali document CRUD (Store + SaveChangesAsync)
-/// - Graph relationships via RelateAsync (User → Account, User → holds_asset → CryptoAsset)
+/// - Graph relationships via Relate (User → Account, User → holds_asset → CryptoAsset), flushed in batches with SaveChangesAsync
 /// </summary>
 public static class SeedData
 {
@@ -66,7 +66,7 @@ public static class SeedData
         var accounts = new List<Account>();
         var wallets = new List<Wallet>();
 
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         // 0. Store the 4 crypto asset nodes so they exist for graph references
         foreach (var asset in CryptoAssets)
@@ -121,12 +121,14 @@ public static class SeedData
         {
             if (user.Id is null || account.Id is null) continue;
 
-            await session.RelateAsync<OwnsAccount>(
+            session.Relate<OwnsAccount>(
                 user.Id,
                 account.Id,
                 data: new OwnsAccount { Type = "owns_account" }
             );
         }
+
+        await session.SaveChangesAsync();
 
         // 5. Create graph relationships: User → holds_asset → CryptoAsset
         // Each user holds 1-3 random crypto assets
@@ -144,7 +146,7 @@ public static class SeedData
             {
                 if (asset.Id is null) continue;
 
-                await session.RelateAsync<HoldsAsset>(
+                session.Relate<HoldsAsset>(
                     user.Id,
                     asset.Id,
                     data: new HoldsAsset
@@ -156,6 +158,8 @@ public static class SeedData
                 );
             }
         }
+
+        await session.SaveChangesAsync();
 
         Console.WriteLine($"  ✓ {users.Count} users, {accounts.Count} accounts, {wallets.Count} wallets, {CryptoAssets.Count} assets");
         return (users, accounts, wallets);

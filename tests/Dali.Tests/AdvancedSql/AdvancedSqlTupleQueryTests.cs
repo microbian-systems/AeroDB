@@ -8,7 +8,7 @@ public class AdvancedSqlTupleQueryTests
     public async Task Query2Tuple_ReturnsBothResults()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "Alice", Age = 30, Email = "alice@test.com" });
         session.Store(new Person { Name = "Bob", Age = 25, Email = "bob@test.com" });
@@ -29,7 +29,7 @@ public class AdvancedSqlTupleQueryTests
     public async Task Query2Tuple_ResultOrderMatchesQueryOrder()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "First", Age = 20 });
         session.Store(new Order { CustomerName = "Second", Total = 200m });
@@ -51,7 +51,7 @@ public class AdvancedSqlTupleQueryTests
     public async Task Query3Tuple_ReturnsThreeResults()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "Alice", Age = 30 });
         session.Store(new Product { Name = "Gadget", Price = 9.99m, Quantity = 10 });
@@ -77,7 +77,7 @@ public class AdvancedSqlTupleQueryTests
     public async Task Query4Tuple_ReturnsFourResults()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "Alice", Age = 30 });
         session.Store(new Product { Name = "Widget", Price = 5.99m, Quantity = 20 });
@@ -105,7 +105,7 @@ public class AdvancedSqlTupleQueryTests
     public async Task StreamAsync_YieldsResults()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "Alice", Age = 30 });
         session.Store(new Person { Name = "Bob", Age = 25 });
@@ -128,7 +128,7 @@ public class AdvancedSqlTupleQueryTests
     public async Task StreamAsync_EmptyResult_YieldsNothing()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         // Create the table by storing one record, then query with non-matching filter
         session.Store(new Person { Name = "Alice", Age = 30 });
@@ -148,7 +148,7 @@ public class AdvancedSqlTupleQueryTests
     public async Task QueryWithBadSql_ThrowsInvalidOperationException()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var badSql = "SELECT * FROM nonexistent_table_xyz;";
         var ex = await Should.ThrowAsync<InvalidOperationException>(async () =>
@@ -164,7 +164,7 @@ public class AdvancedSqlTupleQueryTests
     {
         // Ensure tables exist before multi-statement query (in-memory engine requirement)
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await session.ExecuteSqlAsync("CREATE person:QTFE_temp CONTENT { Name: 'Temp' };");
 
         var sql = "SELECT * FROM person WHERE Name = 'NonExistent_QTFE_99'; SELECT * FROM person WHERE Name = 'NonExistent_QTFE_99';";
@@ -180,7 +180,7 @@ public class AdvancedSqlTupleQueryTests
     public async Task QueryWithParameters_PassesBindings()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "Alice", Age = 30 });
         session.Store(new Person { Name = "Bob", Age = 25 });
@@ -211,7 +211,7 @@ public class AdvancedSqlTupleQueryTests
         // from a response that may not directly deserialize via CBOR.
         // Using a dynamic query to test the JSON round-trip fallback.
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "CborFallback", Age = 99 });
         session.Store(new Order { CustomerName = "CborFallback", Total = 999m });
@@ -232,7 +232,7 @@ public class AdvancedSqlTupleQueryTests
     public async Task Query2Tuple_WorksOnQuerySession()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var writeSession = await store.LightweightSessionAsync();
+        await using var writeSession = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         writeSession.Store(new Person { Name = "QuerySessionUser", Age = 40 });
         writeSession.Store(new Order { CustomerName = "QuerySessionUser", Total = 400m });
@@ -252,7 +252,7 @@ public class AdvancedSqlTupleQueryTests
     public async Task Query2Tuple_NullParameters_Works()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "NoParams", Age = 50 });
         session.Store(new Order { CustomerName = "NoParams", Total = 500m });

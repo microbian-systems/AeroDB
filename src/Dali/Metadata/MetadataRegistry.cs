@@ -4,7 +4,7 @@ namespace Dali.Metadata;
 
 /// <summary>
 /// Compile-time schema for a document property, emitted by the Dali source generator.
-/// Used by <see cref="Schema.SchemaManager"/> to emit DEFINE FIELD statements without reflection.
+/// Used by <c>SchemaManager</c> to emit DEFINE FIELD statements without reflection.
 /// </summary>
 public readonly record struct FieldSchema(string Name, string SurrealType, bool CanRead, bool CanWrite);
 
@@ -131,5 +131,26 @@ public static class MetadataRegistry
         if (_cache.TryGetValue(typeof(T), out var metadata) && metadata is ITypeMetadata<T> typed)
             return typed;
         return null;
+    }
+
+    // Shim type lookup for IEntity<TId> CBOR deserialization
+    private static readonly ConcurrentDictionary<Type, Type> _shimTypes = new();
+
+    /// <summary>
+    /// Registers a shim type for an IEntity{TId} type.
+    /// Called by generated shim static constructors.
+    /// </summary>
+    public static void RegisterShimType<TEntity>(Type shimType)
+    {
+        _shimTypes[typeof(TEntity)] = shimType;
+    }
+
+    /// <summary>
+    /// Gets the registered shim type for the given entity type, or null if none.
+    /// </summary>
+    public static Type? GetShimType(Type entityType)
+    {
+        _shimTypes.TryGetValue(entityType, out var shimType);
+        return shimType;
     }
 }

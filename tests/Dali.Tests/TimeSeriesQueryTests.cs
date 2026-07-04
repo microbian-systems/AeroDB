@@ -608,7 +608,7 @@ public class TimeSeriesQueryTests
             o.Namespace = "test";
             o.Database = "test";
         });
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         var surrealSession = ((InternalSessionBase)session).Session;
 
         await surrealSession.RawQuery("DEFINE TABLE sensor_reading SCHEMALESS;");
@@ -643,7 +643,7 @@ public class TimeSeriesQueryTests
             o.Namespace = "test";
             o.Database = "test";
         });
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         var surrealSession = ((InternalSessionBase)session).Session;
 
         await surrealSession.RawQuery("DEFINE TABLE sensor_reading SCHEMALESS;");
@@ -676,7 +676,7 @@ public class TimeSeriesQueryTests
             o.Namespace = "test";
             o.Database = "test";
         });
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         var surrealSession = ((InternalSessionBase)session).Session;
 
         await surrealSession.RawQuery("DEFINE TABLE sensor_reading SCHEMALESS;");
@@ -713,7 +713,7 @@ public class TimeSeriesQueryTests
             o.Namespace = "test";
             o.Database = "test";
         });
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         var surrealSession = ((InternalSessionBase)session).Session;
 
         await surrealSession.RawQuery("DEFINE TABLE sensor_reading SCHEMALESS;");
@@ -751,7 +751,7 @@ public class TimeSeriesQueryTests
             o.Namespace = "test";
             o.Database = "test";
         });
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         var surrealSession = ((InternalSessionBase)session).Session;
 
         await surrealSession.RawQuery("DEFINE TABLE sensor_reading SCHEMALESS;");
@@ -782,7 +782,7 @@ public class TimeSeriesQueryTests
             o.Namespace = "test";
             o.Database = "test";
         });
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         var surrealSession = ((InternalSessionBase)session).Session;
 
         await surrealSession.RawQuery("DEFINE TABLE sensor_reading SCHEMALESS;");

@@ -8,7 +8,7 @@ public class QueryTests
     public async Task Query_all_returns_results()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "Alice", Age = 30 });
         session.Store(new Person { Name = "Bob", Age = 25 });
@@ -22,7 +22,7 @@ public class QueryTests
     public async Task Take_limits_results()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "A", Age = 10 });
         session.Store(new Person { Name = "B", Age = 20 });
@@ -50,7 +50,7 @@ public class QueryTests
     public async Task OrderBy_age_ascending()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await SeedPeople(session);
 
         var results = await session.Query<Person>().OrderBy(p => p.Age).ToListAsync();
@@ -63,7 +63,7 @@ public class QueryTests
     public async Task OrderByDescending_age()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await SeedPeople(session);
 
         var results = await session.Query<Person>().OrderByDescending(p => p.Age).ToListAsync();
@@ -78,7 +78,7 @@ public class QueryTests
     public async Task Where_simple_equals()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await SeedPeople(session);
 
         var results = await session.Query<Person>().Where(p => p.Age == 25).ToListAsync();
@@ -90,7 +90,7 @@ public class QueryTests
     public async Task Where_simple_greaterThan()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await SeedPeople(session);
 
         var results = await session.Query<Person>().Where(p => p.Age > 25).ToListAsync();
@@ -102,7 +102,7 @@ public class QueryTests
     public async Task FirstOrDefault_matching()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await SeedPeople(session);
 
         // FirstOrDefaultAsync without expression returns first record
@@ -114,7 +114,7 @@ public class QueryTests
     public async Task FirstOrDefault_no_match()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var result = await session.Query<Person>().FirstOrDefaultAsync();
         result.ShouldBeNull();
@@ -126,7 +126,7 @@ public class QueryTests
     public async Task Skip_offsets()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "A", Age = 10 });
         session.Store(new Person { Name = "B", Age = 20 });
@@ -143,7 +143,7 @@ public class QueryTests
     public async Task String_contains()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await SeedPeople(session);
 
         var results = await session.Query<Person>()
@@ -159,7 +159,7 @@ public class QueryTests
     public async Task Count_returns_total()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "A", Age = 10 });
         session.Store(new Person { Name = "B", Age = 20 });
@@ -174,7 +174,7 @@ public class QueryTests
     public async Task Any_returns_true()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await SeedPeople(session);
 
         var any = await session.Query<Person>().AnyAsync();
@@ -185,7 +185,7 @@ public class QueryTests
     public async Task Count_with_filter()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await SeedPeople(session);
 
         var count = await session.Query<Person>().Where(p => p.Age > 25).CountAsync();
@@ -198,7 +198,7 @@ public class QueryTests
     public async Task Query_empty_returns_empty()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var results = await session.Query<Person>().ToListAsync();
         results.Count.ShouldBe(0);
@@ -210,7 +210,7 @@ public class QueryTests
     public async Task Select_member_init()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "Alice", Age = 30, Email = "alice@test.com" });
         await session.SaveChangesAsync();
@@ -230,7 +230,7 @@ public class QueryTests
     public async Task Where_with_multiply()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Product { Name = "Widget", Price = 10m, Quantity = 5 });
         session.Store(new Product { Name = "Gadget", Price = 20m, Quantity = 1 });
@@ -249,7 +249,7 @@ public class QueryTests
     public async Task Where_with_divide()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Product { Name = "Widget", Price = 100m, Quantity = 5 });
         session.Store(new Product { Name = "Gadget", Price = 20m, Quantity = 2 });
@@ -278,7 +278,7 @@ public class QueryTests
     public async Task Sum_returns_total()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await SeedProducts(session);
 
         var sum = await session.Query<Product>().SumAsync(p => p.Price);
@@ -289,7 +289,7 @@ public class QueryTests
     public async Task Max_returns_maximum()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await SeedProducts(session);
 
         var max = await session.Query<Product>().MaxAsync(p => p.Price);
@@ -300,7 +300,7 @@ public class QueryTests
     public async Task Min_returns_minimum()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await SeedProducts(session);
 
         var min = await session.Query<Product>().MinAsync(p => p.Price);
@@ -311,7 +311,7 @@ public class QueryTests
     public async Task Average_returns_mean()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await SeedProducts(session);
 
         var avg = await session.Query<Product>().AverageAsync(p => p.Price);
@@ -322,7 +322,7 @@ public class QueryTests
     public async Task Sum_with_filter()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await SeedProducts(session);
 
         // sum of prices where price > 10
@@ -337,7 +337,7 @@ public class QueryTests
     public async Task SingleOrDefault_one_result()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await SeedPeople(session);
 
         var person = await session.Query<Person>()
@@ -352,7 +352,7 @@ public class QueryTests
     public async Task SingleOrDefault_multiple_throws()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await SeedPeople(session);
 
         // fetch all without filter — more than one result should throw
@@ -366,7 +366,7 @@ public class QueryTests
     public async Task SingleOrDefault_empty_returns_null()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         // no data — empty result should return null
         var person = await session.Query<Person>().SingleOrDefaultAsync();
@@ -379,7 +379,7 @@ public class QueryTests
     public async Task FirstOrDefault_with_predicate_matches()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await SeedPeople(session);
 
         var person = await session.Query<Person>().FirstOrDefaultAsync(p => p.Name == "Bob");
@@ -391,7 +391,7 @@ public class QueryTests
     public async Task FirstOrDefault_with_predicate_no_match()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await SeedPeople(session);
 
         var person = await session.Query<Person>().FirstOrDefaultAsync(p => p.Name == "NonExistent");
@@ -404,7 +404,7 @@ public class QueryTests
     public async Task Where_on_date_year()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var now = DateTimeOffset.UtcNow;
         session.Store(new Product
@@ -429,7 +429,7 @@ public class QueryTests
     public async Task Where_on_date_month()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var now = DateTimeOffset.UtcNow;
         session.Store(new Product
@@ -457,7 +457,7 @@ public class QueryTests
     public async Task ToCommand_returns_surrealql()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var sql = session.Query<Person>()
             .Where(p => p.Age > 25)
@@ -472,7 +472,7 @@ public class QueryTests
     public async Task ToCommand_with_select_returns_aliased_sql()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var sql = session.Query<Person>()
             .Select(p => new { p.Name })

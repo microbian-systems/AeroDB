@@ -5,7 +5,7 @@ using Dali;
 namespace Dali.WolverineFx.Internal;
 
 /// <summary>
-/// Shared helper for accessing <see cref="DocumentSession._appendedEvents"/>
+/// Shared helper for accessing <c>DocumentSession._appendedEvents</c>
 /// via reflection. Both <see cref="DaliEventForwarding"/> and
 /// <see cref="FlushOutgoingMessagesOnDaliCommit"/> need this same logic.
 /// Consolidating here avoids duplicating the reflection code.

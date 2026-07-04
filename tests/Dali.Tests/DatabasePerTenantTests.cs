@@ -17,14 +17,14 @@ public class DatabasePerTenantTests
         await store.InitializeAsync();
 
         // Store Alice in tenant-a (each tenant gets its own in-memory client/database)
-        await using (var sessionA = await store.WithTenant("tenant-a").LightweightSessionAsync())
+        await using (var sessionA = await store.WithTenant("tenant-a").OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }))
         {
             sessionA.Store(new Person { Name = "Alice", Age = 30 });
             await sessionA.SaveChangesAsync();
         }
 
         // Store Bob in tenant-b
-        await using (var sessionB = await store.WithTenant("tenant-b").LightweightSessionAsync())
+        await using (var sessionB = await store.WithTenant("tenant-b").OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }))
         {
             sessionB.Store(new Person { Name = "Bob", Age = 25 });
             await sessionB.SaveChangesAsync();
@@ -58,7 +58,7 @@ public class DatabasePerTenantTests
         await store.InitializeAsync();
 
         // Store in tenant-a
-        await using (var sessionA = await store.WithTenant("tenant-a").LightweightSessionAsync())
+        await using (var sessionA = await store.WithTenant("tenant-a").OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }))
         {
             sessionA.Store(new Person { Name = "Alice" });
             await sessionA.SaveChangesAsync();
@@ -86,7 +86,7 @@ public class DatabasePerTenantTests
         // Attempting to create a session without WithTenant() should throw
         await Should.ThrowAsync<InvalidOperationException>(async () =>
         {
-            await store.LightweightSessionAsync();
+            await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         });
     }
 
@@ -102,7 +102,7 @@ public class DatabasePerTenantTests
         await store.InitializeAsync();
 
         // Session should use the default tenant ID without needing WithTenant()
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         session.Store(new Person { Name = "Default", Age = 10 });
         await session.SaveChangesAsync();
 
@@ -123,14 +123,14 @@ public class DatabasePerTenantTests
         await store.InitializeAsync();
 
         // Store data in tenant-a
-        await using (var sessionA1 = await store.WithTenant("tenant-a").LightweightSessionAsync())
+        await using (var sessionA1 = await store.WithTenant("tenant-a").OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }))
         {
             sessionA1.Store(new Person { Name = "Shared-Tenant" });
             await sessionA1.SaveChangesAsync();
         }
 
         // Second session for same tenant should find the data (same client/database)
-        await using (var sessionA2 = await store.WithTenant("tenant-a").LightweightSessionAsync())
+        await using (var sessionA2 = await store.WithTenant("tenant-a").OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }))
         {
             var results = await sessionA2.Query<Person>().ToListAsync();
             results.Count.ShouldBe(1);
@@ -148,7 +148,7 @@ public class DatabasePerTenantTests
         });
         await store.InitializeAsync();
 
-        await using var session = await store.WithTenant("tenant-a").LightweightSessionAsync();
+        await using var session = await store.WithTenant("tenant-a").OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var person = new TenantPerson { Name = "NoAutoTenant", Age = 20 };
         session.Store(person);
@@ -171,13 +171,13 @@ public class DatabasePerTenantTests
         await conjoinedStore.InitializeAsync();
 
         // Store doc in tenant-A
-        await using var sessionA = await conjoinedStore.LightweightSessionAsync();
+        await using var sessionA = await conjoinedStore.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         sessionA.SetTenant("tenant-A");
         sessionA.Store(new TenantPerson { Name = "Alice" });
         await sessionA.SaveChangesAsync();
 
         // Store doc in tenant-B
-        await using var sessionB = await conjoinedStore.LightweightSessionAsync();
+        await using var sessionB = await conjoinedStore.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         sessionB.SetTenant("tenant-B");
         sessionB.Store(new TenantPerson { Name = "Bob" });
         await sessionB.SaveChangesAsync();
@@ -201,7 +201,7 @@ public class DatabasePerTenantTests
         await store.InitializeAsync();
 
         // Check that the TenantId is set on the session
-        await using var session = await store.WithTenant("my-tenant").LightweightSessionAsync();
+        await using var session = await store.WithTenant("my-tenant").OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         session.TenantId.ShouldBe("my-tenant");
     }
 
@@ -217,7 +217,7 @@ public class DatabasePerTenantTests
 
         // Store in tenant-a
         Person? saved;
-        await using (var sessionA = await store.WithTenant("tenant-a").LightweightSessionAsync())
+        await using (var sessionA = await store.WithTenant("tenant-a").OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }))
         {
             sessionA.Store(new Person { Name = "ToDelete" });
             await sessionA.SaveChangesAsync();
@@ -227,7 +227,7 @@ public class DatabasePerTenantTests
         }
 
         // Delete from the same tenant — should succeed
-        await using (var sessionA2 = await store.WithTenant("tenant-a").LightweightSessionAsync())
+        await using (var sessionA2 = await store.WithTenant("tenant-a").OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }))
         {
             sessionA2.Delete(saved!);
             await sessionA2.SaveChangesAsync();
@@ -252,7 +252,7 @@ public class DatabasePerTenantTests
         await store.InitializeAsync();
 
         // Store as TenantPerson (which has TenantId property) in tenant-a
-        await using (var sessionA = await store.WithTenant("tenant-a").LightweightSessionAsync())
+        await using (var sessionA = await store.WithTenant("tenant-a").OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }))
         {
             sessionA.Store(new TenantPerson { Name = "LoadTest", Age = 99 });
             await sessionA.SaveChangesAsync();
@@ -260,7 +260,7 @@ public class DatabasePerTenantTests
 
         // Load from a different tenant session — should NOT be filtered by TenantId
         // because DatabasePerTenant uses database isolation
-        await using (var sessionB = await store.WithTenant("tenant-b").LightweightSessionAsync())
+        await using (var sessionB = await store.WithTenant("tenant-b").OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }))
         {
             // This should return null because tenant-b's database is empty,
             // not because of a TenantId filter

@@ -14,6 +14,7 @@ public abstract class EfCoreEventProjection<TDbContext> : IProjection
     /// </summary>
     protected Func<TDbContext>? DbContextFactory { get; private set; }
 
+    public virtual string Name => GetType().Name;
     public abstract Type[] EventTypes { get; }
     public virtual ProjectionLifecycle Lifecycle => ProjectionLifecycle.Async;
 

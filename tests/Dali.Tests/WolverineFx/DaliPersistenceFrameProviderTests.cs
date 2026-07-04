@@ -1,0 +1,471 @@
+namespace Dali.Tests;
+
+using System.Reflection;
+using Dali.WolverineFx;
+using Dali.WolverineFx.Codegen;
+using global::Dali;
+using JasperFx;
+using JasperFx.CodeGeneration.Frames;
+using JasperFx.CodeGeneration.Model;
+using NSubstitute;
+using Shouldly;
+using TUnit.Core;
+using Wolverine.Configuration;
+using Wolverine.Persistence.Sagas;
+using Wolverine.Runtime.Handlers;
+
+/// <summary>
+/// Pure unit tests for <see cref="DaliPersistenceFrameProvider"/>.
+/// No Wolverine runtime, no SurrealDB — only NSubstitute mocks.
+/// </summary>
+public class DaliPersistenceFrameProviderTests
+{
+    private readonly DaliPersistenceFrameProvider _provider = new();
+    private readonly IServiceContainer _container = Substitute.For<IServiceContainer>();
+
+    // ====================================================================
+    // CanApply — SagaChain
+    // ====================================================================
+
+    [Test]
+    public void CanApply_ReturnsTrue_ForSagaChain()
+    {
+        // Arrange: create a minimal SagaChain via the (HandlerCall, HandlerGraph, Endpoint[]) ctor
+        var sagaChain = CreateMinimalSagaChain();
+        var container = Substitute.For<IServiceContainer>();
+
+        // Act
+        var result = _provider.CanApply(sagaChain, container);
+
+        // Assert
+        result.ShouldBeTrue();
+    }
+
+    // ====================================================================
+    // CanApply — Non-SagaChain with / without IDocumentSession
+    // ====================================================================
+
+    [Test]
+    public void CanApply_ReturnsTrue_ForChainWithIDocumentSessionDependency()
+    {
+        // Arrange
+        var chain = Substitute.For<IChain>();
+        chain.Middleware.Returns([]);
+        chain.Postprocessors.Returns([]);
+        chain.ServiceDependencies(_container, Arg.Is<IReadOnlyList<Type>>(l =>
+            l.Contains(typeof(IDocumentSession)) || l.Contains(typeof(IQuerySession))))
+            .Returns([typeof(IDocumentSession)]);
+
+        // Act
+        var result = _provider.CanApply(chain, _container);
+
+        // Assert
+        result.ShouldBeTrue();
+    }
+
+    [Test]
+    public void CanApply_ReturnsFalse_ForChainWithoutDaliDependencies()
+    {
+        // Arrange
+        var chain = Substitute.For<IChain>();
+        chain.Middleware.Returns([]);
+        chain.Postprocessors.Returns([]);
+        chain.ServiceDependencies(_container, Arg.Is<IReadOnlyList<Type>>(l =>
+            l.Contains(typeof(IDocumentSession)) || l.Contains(typeof(IQuerySession))))
+            .Returns([]);
+
+        // Act
+        var result = _provider.CanApply(chain, _container);
+
+        // Assert
+        result.ShouldBeFalse();
+    }
+
+    [Test]
+    public void CanApply_ReturnsFalse_WhenOnlyIQuerySessionDependency()
+    {
+        // Arrange: IQuerySession alone should NOT trigger Dali persistence
+        var chain = Substitute.For<IChain>();
+        chain.Middleware.Returns([]);
+        chain.Postprocessors.Returns([]);
+        chain.ServiceDependencies(_container, Arg.Is<IReadOnlyList<Type>>(l =>
+            l.Contains(typeof(IDocumentSession)) || l.Contains(typeof(IQuerySession))))
+            .Returns([typeof(IQuerySession)]);
+
+        // Act
+        var result = _provider.CanApply(chain, _container);
+
+        // Assert
+        result.ShouldBeFalse();
+    }
+
+    // ====================================================================
+    // ApplyTransactionSupport — non-SagaChain
+    // ====================================================================
+
+    [Test]
+    public void ApplyTransactionSupport_ForNonSagaChain_AddsOpenDaliSessionMiddleware()
+    {
+        // Arrange
+        var chain = Substitute.For<IChain>();
+        chain.Middleware.Returns([]);
+        chain.Postprocessors.Returns([]);
+
+        // Act
+        _provider.ApplyTransactionSupport(chain, _container);
+
+        // Assert
+        chain.Middleware.ShouldContain(f => f is OpenDaliSessionFrame);
+    }
+
+    [Test]
+    public void ApplyTransactionSupport_ForNonSagaChain_AddsSaveChangesPostProcessor()
+    {
+        // Arrange
+        var chain = Substitute.For<IChain>();
+        chain.Middleware.Returns([]);
+        chain.Postprocessors.Returns([]);
+
+        // Act
+        _provider.ApplyTransactionSupport(chain, _container);
+
+        // Assert
+        chain.Postprocessors.ShouldContain(f => f is DaliSessionSaveChangesFrame);
+    }
+
+    [Test]
+    public void ApplyTransactionSupport_ForNonSagaChain_AddsFlushOutgoingPostProcessor()
+    {
+        // Arrange
+        var chain = Substitute.For<IChain>();
+        chain.Middleware.Returns([]);
+        chain.Postprocessors.Returns([]);
+
+        // Act
+        _provider.ApplyTransactionSupport(chain, _container);
+
+        // Assert
+        chain.Postprocessors.ShouldContain(f => f is FlushDaliOutgoingMessagesFrame);
+    }
+
+    [Test]
+    public void ApplyTransactionSupport_ForNonSagaChain_DoesNotDuplicateMiddleware()
+    {
+        // Arrange: pre-add an OpenDaliSessionFrame
+        var chain = Substitute.For<IChain>();
+        var middleware = new List<Frame> { new OpenDaliSessionFrame(Substitute.For<IChain>()) };
+        chain.Middleware.Returns(middleware);
+        chain.Postprocessors.Returns([]);
+
+        // Act
+        _provider.ApplyTransactionSupport(chain, _container);
+
+        // Assert
+        chain.Middleware.Count(f => f is OpenDaliSessionFrame).ShouldBe(1);
+    }
+
+    [Test]
+    public void ApplyTransactionSupport_ForNonSagaChain_DoesNotDuplicatePostprocessors()
+    {
+        // Arrange: pre-add both post-processors
+        var chain = Substitute.For<IChain>();
+        chain.Middleware.Returns([]);
+        var postprocessors = new List<Frame>
+        {
+            new DaliSessionSaveChangesFrame(),
+            new FlushDaliOutgoingMessagesFrame()
+        };
+        chain.Postprocessors.Returns(postprocessors);
+
+        // Act
+        _provider.ApplyTransactionSupport(chain, _container);
+
+        // Assert: no duplicates added
+        chain.Postprocessors.Count(f => f is DaliSessionSaveChangesFrame).ShouldBe(1);
+        chain.Postprocessors.Count(f => f is FlushDaliOutgoingMessagesFrame).ShouldBe(1);
+    }
+
+    // ====================================================================
+    // ApplyTransactionSupport — SagaChain (should only get middleware, no postprocessors)
+    // ====================================================================
+
+    [Test]
+    public void ApplyTransactionSupport_ForSagaChain_DoesNotAddSaveChangesPostProcessor()
+    {
+        // Arrange
+        var sagaChain = CreateMinimalSagaChain();
+        var initialPostCount = sagaChain.Postprocessors.Count;
+
+        // Act
+        _provider.ApplyTransactionSupport(sagaChain, _container);
+
+        // Assert: no DaliSessionSaveChangesFrame or FlushDaliOutgoingMessagesFrame added
+        sagaChain.Postprocessors.ShouldNotContain(f => f is DaliSessionSaveChangesFrame);
+        sagaChain.Postprocessors.ShouldNotContain(f => f is FlushDaliOutgoingMessagesFrame);
+    }
+
+    [Test]
+    public void ApplyTransactionSupport_ForSagaChain_AddsOpenDaliSessionMiddleware()
+    {
+        // Arrange
+        var sagaChain = CreateMinimalSagaChain();
+
+        // Act
+        _provider.ApplyTransactionSupport(sagaChain, _container);
+
+        // Assert
+        sagaChain.Middleware.ShouldContain(f => f is OpenDaliSessionFrame);
+    }
+
+    // ====================================================================
+    // ApplyTransactionSupport overload with entityType
+    // ====================================================================
+
+    [Test]
+    public void ApplyTransactionSupport_WithEntityType_DelegatesToBaseMethod()
+    {
+        // Arrange
+        var chain = Substitute.For<IChain>();
+        chain.Middleware.Returns([]);
+        chain.Postprocessors.Returns([]);
+
+        // Act
+        _provider.ApplyTransactionSupport(chain, _container, typeof(object));
+
+        // Assert: same frames added as the non-entity overload
+        chain.Middleware.ShouldContain(f => f is OpenDaliSessionFrame);
+        chain.Postprocessors.ShouldContain(f => f is DaliSessionSaveChangesFrame);
+        chain.Postprocessors.ShouldContain(f => f is FlushDaliOutgoingMessagesFrame);
+    }
+
+    // ====================================================================
+    // DetermineSagaIdType
+    // ====================================================================
+
+    [Test]
+    public void DetermineSagaIdType_ReturnsGuid()
+    {
+        // Act
+        var idType = _provider.DetermineSagaIdType(typeof(object), _container);
+
+        // Assert
+        idType.ShouldBe(typeof(Guid));
+    }
+
+    // ====================================================================
+    // CanPersist
+    // ====================================================================
+
+    [Test]
+    public void CanPersist_ReturnsTrue_AndSetsPersistenceService()
+    {
+        // Act
+        var result = _provider.CanPersist(typeof(object), _container, out var serviceType);
+
+        // Assert
+        result.ShouldBeTrue();
+        serviceType.ShouldBe(typeof(IDocumentSession));
+    }
+
+    // ====================================================================
+    // DetermineLoadFrame
+    // ====================================================================
+
+    [Test]
+    public void DetermineLoadFrame_ReturnsLoadSagaFrame()
+    {
+        // Arrange
+        var sagaId = new Variable(typeof(Guid), "sagaId");
+
+        // Act
+        var frame = _provider.DetermineLoadFrame(_container, typeof(object), sagaId);
+
+        // Assert
+        frame.ShouldBeOfType<LoadSagaFrame>();
+    }
+
+    // ====================================================================
+    // DetermineInsertFrame
+    // ====================================================================
+
+    [Test]
+    public void DetermineInsertFrame_ReturnsSagaOperationFrameWithStore()
+    {
+        // Arrange
+        var saga = new Variable(typeof(object), "saga");
+
+        // Act
+        var frame = _provider.DetermineInsertFrame(saga, _container);
+
+        // Assert
+        frame.ShouldBeOfType<SagaOperationFrame>();
+    }
+
+    // ====================================================================
+    // CommitUnitOfWorkFrame
+    // ====================================================================
+
+    [Test]
+    public void CommitUnitOfWorkFrame_ReturnsDaliSessionSaveChangesFrame()
+    {
+        // Arrange
+        var saga = new Variable(typeof(object), "saga");
+
+        // Act
+        var frame = _provider.CommitUnitOfWorkFrame(saga, _container);
+
+        // Assert
+        frame.ShouldBeOfType<DaliSessionSaveChangesFrame>();
+    }
+
+    // ====================================================================
+    // DetermineUpdateFrame
+    // ====================================================================
+
+    [Test]
+    public void DetermineUpdateFrame_ReturnsSagaOperationFrame()
+    {
+        // Arrange
+        var saga = new Variable(typeof(object), "saga");
+
+        // Act
+        var frame = _provider.DetermineUpdateFrame(saga, _container);
+
+        // Assert
+        frame.ShouldBeOfType<SagaOperationFrame>();
+    }
+
+    // ====================================================================
+    // DetermineDeleteFrame (saga overload)
+    // ====================================================================
+
+    [Test]
+    public void DetermineDeleteFrame_WithSagaIdAndSaga_ReturnsSagaOperationFrame()
+    {
+        // Arrange
+        var sagaId = new Variable(typeof(Guid), "sagaId");
+        var saga = new Variable(typeof(object), "saga");
+
+        // Act
+        var frame = _provider.DetermineDeleteFrame(sagaId, saga, _container);
+
+        // Assert
+        frame.ShouldBeOfType<SagaOperationFrame>();
+    }
+
+    // ====================================================================
+    // DetermineDeleteFrame (variable overload)
+    // ====================================================================
+
+    [Test]
+    public void DetermineDeleteFrame_WithVariable_ReturnsSagaOperationFrame()
+    {
+        // Arrange
+        var variable = new Variable(typeof(object), "entity");
+
+        // Act
+        var frame = _provider.DetermineDeleteFrame(variable, _container);
+
+        // Assert
+        frame.ShouldBeOfType<SagaOperationFrame>();
+    }
+
+    // ====================================================================
+    // DetermineStoreFrame
+    // ====================================================================
+
+    [Test]
+    public void DetermineStoreFrame_ReturnsSagaOperationFrame()
+    {
+        // Arrange
+        var saga = new Variable(typeof(object), "saga");
+
+        // Act
+        var frame = _provider.DetermineStoreFrame(saga, _container);
+
+        // Assert
+        frame.ShouldBeOfType<SagaOperationFrame>();
+    }
+
+    // ====================================================================
+    // DetermineStorageActionFrame — NotSupported
+    // ====================================================================
+
+    [Test]
+    public void DetermineStorageActionFrame_ThrowsNotSupportedException()
+    {
+        // Arrange
+        var action = new Variable(typeof(object), "action");
+
+        // Act & Assert
+        Should.Throw<NotSupportedException>(() =>
+            _provider.DetermineStorageActionFrame(typeof(object), action, _container));
+    }
+
+    // ====================================================================
+    // DetermineFrameToNullOutMaybeSoftDeleted — returns empty array
+    // ====================================================================
+
+    [Test]
+    public void DetermineFrameToNullOutMaybeSoftDeleted_ReturnsEmptyArray()
+    {
+        // Arrange
+        var entity = new Variable(typeof(object), "entity");
+
+        // Act
+        var frames = _provider.DetermineFrameToNullOutMaybeSoftDeleted(entity);
+
+        // Assert
+        frames.ShouldBeEmpty();
+    }
+
+    // ====================================================================
+    // TryBuildFetchSpecificationFrame — returns false
+    // ====================================================================
+
+    [Test]
+    public void TryBuildFetchSpecificationFrame_ReturnsFalse()
+    {
+        // Arrange
+        var spec = new Variable(typeof(object), "spec");
+
+        // Act
+        var result = _provider.TryBuildFetchSpecificationFrame(spec, _container, out var frame, out var resultVar);
+
+        // Assert
+        result.ShouldBeFalse();
+        frame.ShouldBeNull();
+        resultVar.ShouldBeNull();
+    }
+
+    // ====================================================================
+    // Helpers
+    // ====================================================================
+
+    /// <summary>
+    /// Create a minimal SagaChain for testing purposes.
+    /// Uses a simple handler method with a string message parameter.
+    /// </summary>
+    private static Wolverine.Persistence.Sagas.SagaChain CreateMinimalSagaChain()
+    {
+        var handlerCall = new HandlerCall(typeof(SagaTestHandler), nameof(SagaTestHandler.Handle));
+        return new Wolverine.Persistence.Sagas.SagaChain(
+            handlerCall,
+            new HandlerGraph(),
+            System.Array.Empty<Endpoint>());
+    }
+
+    /// <summary>
+    /// Minimal handler used to bootstrap SagaChain for tests.
+    /// Must be public — HandlerCall uses reflection to find the method.
+    /// </summary>
+    public class SagaTestHandler
+    {
+        // ReSharper disable once UnusedMember.Global
+        // ReSharper disable once UnusedParameter.Global
+        public void Handle(string message)
+        {
+            // No-op: only needed to satisfy HandlerCall construction
+        }
+    }
+}

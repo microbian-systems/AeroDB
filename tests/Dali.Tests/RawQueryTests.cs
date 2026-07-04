@@ -8,7 +8,7 @@ public class RawQueryTests
     public async Task RawQueryAsync_ReturnsTypedResults()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "Alice", Age = 30 });
         session.Store(new Person { Name = "Bob", Age = 25 });
@@ -26,7 +26,7 @@ public class RawQueryTests
     public async Task RawQueryAsync_WithParameters()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "Alice", Age = 30 });
         await session.SaveChangesAsync();
@@ -43,7 +43,7 @@ public class RawQueryTests
     public async Task RawQueryAsync_EmptyResults()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var writeSession = await store.LightweightSessionAsync();
+        await using var writeSession = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         // Store a record to create the table, then query with a non-matching filter
         writeSession.Store(new Person { Name = "Alice", Age = 30 });
@@ -62,7 +62,7 @@ public class RawQueryTests
     public async Task ExecuteSqlAsync_CreatesEntity()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         await session.ExecuteSqlAsync(
             "CREATE person CONTENT { Name: 'FromSql', Age: 42 }");
@@ -78,7 +78,7 @@ public class RawQueryTests
     public async Task RawQueryAsync_HandlesNoParameters()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "Test", Age = 99 });
         await session.SaveChangesAsync();
@@ -93,7 +93,7 @@ public class RawQueryTests
     public async Task RawQueryAsync_ReturnsListOfDynamic()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         session.Store(new Person { Name = "Dynamic", Age = 50 });
         await session.SaveChangesAsync();
@@ -109,7 +109,7 @@ public class RawQueryTests
     public async Task ExecuteSqlAsync_DefinesAndRemovesTable()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         // Define a temporary table
         var defineResult = await session.ExecuteSqlAsync(
@@ -129,7 +129,7 @@ public class RawQueryTests
     public async Task RawQueryAsync_WorksOnQuerySession()
     {
         await using var store = await TestHarness.CreateStoreAsync();
-        await using var writeSession = await store.LightweightSessionAsync();
+        await using var writeSession = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         writeSession.Store(new Person { Name = "QuerySession", Age = 35 });
         await writeSession.SaveChangesAsync();

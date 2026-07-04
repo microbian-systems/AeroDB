@@ -50,6 +50,12 @@ public abstract class InlineProjection<T> : IProjection, ILoggableProjection whe
     public virtual ProjectionLifecycle Lifecycle => ProjectionLifecycle.Inline;
 
     /// <summary>
+    /// Projection name for identification in logs and progress tracking.
+    /// Defaults to the class name.
+    /// </summary>
+    public virtual string Name => GetType().Name;
+
+    /// <summary>
     /// Declares which event types trigger this projection.
     /// </summary>
     public abstract Type[] EventTypes { get; }
@@ -309,5 +315,5 @@ internal class EventRow
     [Column("data_json")]
     public string? DataJson { get; set; }
     [Column("created_at")]
-    public DateTimeOffset CreatedAt { get; set; }
+    public DateTime CreatedAt { get; set; }
 }

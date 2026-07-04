@@ -1,3 +1,4 @@
+using System.Reflection;
 using System.Text;
 using Dali.Metadata;
 using Microsoft.Extensions.Logging;
@@ -31,7 +32,7 @@ public class SchemaManager
     /// public readable/writable properties on T (except Id).
     /// </summary>
     public async Task EnsureDocumentSchemaAsync<T>(ISurrealDbSession session, CancellationToken ct = default)
-        where T : SurrealDb.Net.Models.IRecord
+        where T : class
     {
         var tableName = MetadataDispatch.GetTableName(typeof(T));
         _logger.LogDebug("Ensuring document schema for table {Table}", tableName);
@@ -49,7 +50,7 @@ public class SchemaManager
     /// Ensures a document table exists with the specified schema mode.
     /// </summary>
     public async Task EnsureDocumentSchemaAsync<T>(ISurrealDbSession session, SchemaMode mode, CancellationToken ct = default)
-        where T : SurrealDb.Net.Models.IRecord
+        where T : class
     {
         var tableName = MetadataDispatch.GetTableName(typeof(T));
         _logger.LogDebug("Ensuring document schema for table {Table} with mode {Mode}", tableName, mode);
@@ -71,20 +72,30 @@ public class SchemaManager
     /// </summary>
     private static IEnumerable<(string Name, string SurrealType)> GetFieldSchemas(Type type)
     {
+        var nullability = new NullabilityInfoContext();
+        var properties = type
+            .GetProperties(BindingFlags.Public | BindingFlags.Instance)
+            .Where(prop => prop.Name != "Id" && prop.CanRead && prop.CanWrite)
+            .ToDictionary(prop => prop.Name, StringComparer.Ordinal);
+
         var meta = Metadata.MetadataRegistry.TryGet(type);
         if (meta?.Fields is { Count: > 0 } fields)
         {
             foreach (var f in fields)
-                yield return (f.Name, f.SurrealType);
+            {
+                if (properties.TryGetValue(f.Name, out var prop))
+                    yield return (f.Name, MakeOptionalIfNullable(f.SurrealType, prop, nullability));
+                else
+                    yield return (f.Name, f.SurrealType);
+            }
+
             yield break;
         }
 
         // Fallback: runtime reflection (legacy path for non-generated types)
-        foreach (var prop in type.GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance))
+        foreach (var prop in properties.Values)
         {
-            if (prop.Name == "Id") continue;
-            if (!prop.CanRead || !prop.CanWrite) continue;
-            yield return (prop.Name, GetSurrealType(prop.PropertyType));
+            yield return (prop.Name, GetSurrealType(prop.PropertyType, prop, nullability));
         }
     }
 
@@ -102,6 +113,7 @@ public class SchemaManager
         await session.RawQuery("DEFINE FIELD event_type ON TABLE mt_events TYPE string;", null, ct).ConfigureAwait(false);
         await session.RawQuery("DEFINE FIELD data_json ON TABLE mt_events TYPE string;", null, ct).ConfigureAwait(false);
         await session.RawQuery("DEFINE FIELD data_binary ON TABLE mt_events TYPE option<bytes>;", null, ct).ConfigureAwait(false);
+        await session.RawQuery("DEFINE FIELD headers_json ON TABLE mt_events TYPE option<string>;", null, ct).ConfigureAwait(false);
         await session.RawQuery("DEFINE FIELD created_at ON TABLE mt_events TYPE datetime;", null, ct).ConfigureAwait(false);
         await session.RawQuery("DEFINE INDEX mt_events_stream_version ON TABLE mt_events COLUMNS stream_id, version UNIQUE;", null, ct).ConfigureAwait(false);
         await session.RawQuery("DEFINE TABLE mt_archived_streams SCHEMAFULL;", null, ct).ConfigureAwait(false);
@@ -316,10 +328,10 @@ public class SchemaManager
     }
 
     /// <summary>
-    /// Non-generic overload of <see cref="EnsureDocumentSchemaAsync{T}"/> for use without
+    /// Non-generic overload of <c>EnsureDocumentSchemaAsync&lt;T&gt;</c> for use without
     /// compile-time type knowledge (e.g. when iterating configured mappings).
     /// </summary>
-    internal async Task EnsureDocumentSchemaAsync(Type entityType, ISurrealDbSession session, SchemaMode mode = SchemaMode.Strict, CancellationToken ct = default)
+    internal async Task EnsureDocumentSchemaAsync(Type entityType, ISurrealDbSession session, SchemaMode mode = SchemaMode.Strict, IReadOnlyList<FieldDefinition>? fieldDefinitions = null, CancellationToken ct = default)
     {
         var tableName = MetadataDispatch.GetTableName(entityType);
         _logger.LogDebug("Ensuring document schema for type {Type} with table {Table} and mode {Mode}", entityType.Name, tableName, mode);
@@ -336,6 +348,12 @@ public class SchemaManager
         {
             await session.RawQuery(
                 $"DEFINE FIELD last_modified_by ON TABLE {tableName} TYPE option<string>;", null, ct).ConfigureAwait(false);
+        }
+
+        // Emit custom field definitions (assertions, defaults, permissions)
+        if (fieldDefinitions is { Count: > 0 })
+        {
+            await EnsureFieldDefinitionsAsync(session, tableName, fieldDefinitions, ct).ConfigureAwait(false);
         }
     }
 
@@ -385,27 +403,133 @@ public class SchemaManager
         }
     }
 
+    /// <summary>
+    /// Issues DEFINE ACCESS for configured access definitions (SurrealDB v3+).
+    /// </summary>
+    public async Task EnsureAccessesAsync(ISurrealDbSession session, List<AccessDefinition> accesses, CancellationToken ct = default)
+    {
+        foreach (var access in accesses)
+        {
+            var sb = new StringBuilder();
+            sb.Append("DEFINE ACCESS ").Append(access.Name);
+            sb.Append(" ON DATABASE TYPE ").Append(access.Type);
+            if (access.SignupQuery is not null)
+                sb.Append(" SIGNUP ( ").Append(access.SignupQuery).Append(" )");
+            if (access.SigninQuery is not null)
+                sb.Append(" SIGNIN ( ").Append(access.SigninQuery).Append(" )");
+            if (access.Duration is not null)
+                sb.Append(" DURATION FOR TOKEN ").Append(access.Duration);
+            sb.Append(';');
+            _logger.LogDebug("Ensuring access {Name}", access.Name);
+            await session.RawQuery(sb.ToString(), null, ct).ConfigureAwait(false);
+        }
+    }
+
+    /// <summary>
+    /// Issues DEFINE TOKEN for configured JWT/HMAC token definitions.
+    /// </summary>
+    public async Task EnsureTokensAsync(ISurrealDbSession session, List<TokenDefinition> tokens, CancellationToken ct = default)
+    {
+        foreach (var token in tokens)
+        {
+            var surql = $"DEFINE TOKEN {token.Name} ON DATABASE TYPE {token.Type} VALUE \"{token.Value}\";";
+            _logger.LogDebug("Ensuring token {Name} (type: {Type})", token.Name, token.Type);
+            await session.RawQuery(surql, null, ct).ConfigureAwait(false);
+        }
+    }
+
+    /// <summary>
+    /// Issues DEFINE SCOPE for configured scope definitions (user signup/signin).
+    /// </summary>
+    public async Task EnsureScopesAsync(ISurrealDbSession session, List<ScopeDefinition> scopes, CancellationToken ct = default)
+    {
+        foreach (var scope in scopes)
+        {
+            var sb = new StringBuilder();
+            sb.Append("DEFINE SCOPE ").Append(scope.Name);
+            sb.Append(" SESSION ").Append(scope.SessionDuration);
+            if (scope.SignupQuery is not null)
+                sb.Append(" SIGNUP ( ").Append(scope.SignupQuery).Append(" )");
+            if (scope.SigninQuery is not null)
+                sb.Append(" SIGNIN ( ").Append(scope.SigninQuery).Append(" )");
+            sb.Append(';');
+            _logger.LogDebug("Ensuring scope {Name}", scope.Name);
+            await session.RawQuery(sb.ToString(), null, ct).ConfigureAwait(false);
+        }
+    }
+
+    /// <summary>
+    /// Issues DEFINE FIELD for custom field definitions (assertions, defaults, permissions).
+    /// Called after the base field definitions from <see cref="EnsureDocumentSchemaAsync"/>.
+    /// </summary>
+    public async Task EnsureFieldDefinitionsAsync(
+        ISurrealDbSession session, string tableName, IReadOnlyList<FieldDefinition> fields, CancellationToken ct = default)
+    {
+        foreach (var field in fields)
+        {
+            var sb = new StringBuilder();
+            sb.Append("DEFINE FIELD ").Append(field.FieldName);
+            sb.Append(" ON TABLE ").Append(tableName);
+            if (field.FieldType is not null)
+                sb.Append(" TYPE ").Append(field.FieldType);
+            if (field.DefaultValue is not null)
+                sb.Append(" DEFAULT ").Append(field.DefaultValue);
+            if (field.AssertExpression is not null)
+                sb.Append(" ASSERT ").Append(field.AssertExpression);
+            if (field.Permissions is not null)
+                sb.Append(" PERMISSIONS FOR ").Append(field.Permissions);
+            sb.Append(';');
+            _logger.LogDebug("Ensuring field definition {Field} on table {Table}", field.FieldName, tableName);
+            await session.RawQuery(sb.ToString(), null, ct).ConfigureAwait(false);
+        }
+    }
+
     public async Task DropTableAsync(ISurrealDbSession session, string tableName, CancellationToken ct = default)
     {
         _logger.LogDebug("Dropping table {Table}", tableName);
         await session.RawQuery($"REMOVE TABLE {tableName};", null, ct).ConfigureAwait(false);
     }
 
-    private static string GetSurrealType(Type type)
+    private static string GetSurrealType(Type type, PropertyInfo? property = null, NullabilityInfoContext? nullability = null)
     {
-        // Check for geometry types first
-        if (type == typeof(GeometryPoint) || type == typeof(GeometryPolygon))
-            return "geometry";
+        var underlyingNullableType = Nullable.GetUnderlyingType(type);
+        var isNullable = underlyingNullableType is not null
+            || (property is not null && IsNullableReferenceProperty(property, nullability));
+        var effectiveType = underlyingNullableType ?? type;
 
-        if (type == typeof(string) || type == typeof(Guid)) return "string";
-        if (type == typeof(long) || type == typeof(int) || type == typeof(short) || type == typeof(byte)) return "int";
-        if (type == typeof(float) || type == typeof(double) || type == typeof(decimal)) return "float";
-        if (type == typeof(bool)) return "bool";
-        if (type == typeof(DateTime) || type == typeof(DateTimeOffset)) return "datetime";
-        if (type == typeof(byte[])) return "bytes";
-        if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(List<>)) return "array";
-        if (type.IsArray) return "array";
-        return "object";
+        // Check for geometry types first
+        var surrealType =
+            effectiveType == typeof(GeometryPoint) || effectiveType == typeof(GeometryPolygon) ? "geometry" :
+            effectiveType == typeof(string) || effectiveType == typeof(Guid) ? "string" :
+            effectiveType == typeof(long) || effectiveType == typeof(int) || effectiveType == typeof(short) || effectiveType == typeof(byte) ? "int" :
+            effectiveType == typeof(float) || effectiveType == typeof(double) || effectiveType == typeof(decimal) ? "float" :
+            effectiveType == typeof(bool) ? "bool" :
+            effectiveType == typeof(DateTime) || effectiveType == typeof(DateTimeOffset) ? "datetime" :
+            effectiveType == typeof(byte[]) ? "bytes" :
+            effectiveType.IsGenericType && effectiveType.GetGenericTypeDefinition() == typeof(List<>) ? "array" :
+            effectiveType.IsArray ? "array" :
+            "object";
+
+        return isNullable ? $"option<{surrealType}>" : surrealType;
+    }
+
+    private static string MakeOptionalIfNullable(string surrealType, PropertyInfo property, NullabilityInfoContext nullability)
+    {
+        if (surrealType.StartsWith("option<", StringComparison.Ordinal))
+            return surrealType;
+
+        var isNullable = Nullable.GetUnderlyingType(property.PropertyType) is not null
+            || IsNullableReferenceProperty(property, nullability);
+        return isNullable ? $"option<{surrealType}>" : surrealType;
+    }
+
+    private static bool IsNullableReferenceProperty(PropertyInfo property, NullabilityInfoContext? nullability)
+    {
+        if (property.PropertyType.IsValueType)
+            return false;
+
+        var context = nullability ?? new NullabilityInfoContext();
+        return context.Create(property).WriteState == NullabilityState.Nullable;
     }
 
     internal static string Snake(string name)

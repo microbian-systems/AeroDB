@@ -24,8 +24,9 @@ public class EventTriggerManager
 
     public async Task RemoveTriggerAsync(ISurrealDbSession session, string name, string table, CancellationToken ct = default)
     {
+        var surql = BuildRemoveEventSurql(name, table);
         _logger.LogDebug("Removing event trigger {Name} on table {Table}", name, table);
-        await session.RawQuery($"REMOVE EVENT {name} ON TABLE {table};", null, ct).ConfigureAwait(false);
+        await session.RawQuery(surql, null, ct).ConfigureAwait(false);
     }
 
     public async Task AlterTriggerAsync(ISurrealDbSession session, EventTriggerDefinition trigger, CancellationToken ct = default)
@@ -54,5 +55,10 @@ public class EventTriggerManager
 
         sb.Append($" THEN ({trigger.Action})");
         return sb.ToString();
+    }
+
+    private static string BuildRemoveEventSurql(string name, string table)
+    {
+        return $"REMOVE EVENT {name} ON TABLE {table};";
     }
 }

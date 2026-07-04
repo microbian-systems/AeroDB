@@ -474,7 +474,7 @@ public class ViewTests
     {
         await using var store = await TestHarness.CreateStoreAsync();
         var schemaManager = new SchemaManager();
-        var surrealSession = ((InternalSessionBase)await store.LightweightSessionAsync()).Session;
+        var surrealSession = ((InternalSessionBase)await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None })).Session;
 
         var view = new ViewDefinition<ViewEventLog>("test_logs_drop")
             .From<ViewEventLog>()
@@ -497,7 +497,7 @@ public class ViewTests
             o.Database = "test";
         });
         var schemaManager = new SchemaManager();
-        var surrealSession = ((InternalSessionBase)await store.LightweightSessionAsync()).Session;
+        var surrealSession = ((InternalSessionBase)await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None })).Session;
 
         // First, create the source table with data
         await surrealSession.RawQuery("DEFINE TABLE view_user SCHEMALESS;", null);
@@ -546,7 +546,7 @@ public class ViewTests
             o.Database = "test";
         });
         var schemaManager = new SchemaManager();
-        var surrealSession = ((InternalSessionBase)await store.LightweightSessionAsync()).Session;
+        var surrealSession = ((InternalSessionBase)await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None })).Session;
 
         // Create source table with data
         await surrealSession.RawQuery("DEFINE TABLE view_review SCHEMALESS;", null);
@@ -618,7 +618,7 @@ public class ViewTests
         await store.InitializeAsync();
 
         // Verify the view tables exist
-        var surrealSession = ((InternalSessionBase)await store.LightweightSessionAsync()).Session;
+        var surrealSession = ((InternalSessionBase)await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None })).Session;
 
         var activeUsersInfo = await surrealSession.RawQuery("INFO FOR TABLE active_users_init;");
         activeUsersInfo.HasErrors.ShouldBeFalse();
@@ -651,7 +651,7 @@ public class ViewTests
 
         await store.InitializeAsync();
 
-        var surrealSession = ((InternalSessionBase)await store.LightweightSessionAsync()).Session;
+        var surrealSession = ((InternalSessionBase)await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None })).Session;
 
         // All three view tables should exist
         var info1 = await surrealSession.RawQuery("INFO FOR TABLE v_active;");
@@ -685,7 +685,7 @@ public class ViewTests
         await store.InitializeAsync();
 
         // Verify the table exists
-        var surrealSession = ((InternalSessionBase)await store.LightweightSessionAsync()).Session;
+        var surrealSession = ((InternalSessionBase)await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None })).Session;
         var infoResponse = await surrealSession.RawQuery("INFO FOR TABLE idempotent_view;");
         infoResponse.HasErrors.ShouldBeFalse();
 

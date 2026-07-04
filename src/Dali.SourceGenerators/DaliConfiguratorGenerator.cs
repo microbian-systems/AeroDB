@@ -126,9 +126,9 @@ public class DaliConfiguratorGenerator : IIncrementalGenerator
 
     /// <summary>
     /// Generates the <c>DaliConfiguratorRegistrar</c> class with an extension method
-    /// that registers all discovered <see cref="global::Dali.IConfigureDali"/>,
-    /// <see cref="global::Dali.IGlobalConfigureDali"/>, and
-    /// <see cref="global::Dali.IAsyncConfigureDali"/> implementations.
+    /// that registers all discovered <c>IConfigureDali</c>,
+    /// <c>IGlobalConfigureDali</c>, and
+    /// <c>IAsyncConfigureDali</c> implementations.
     /// </summary>
     private static string GenerateRegistrar(
         List<INamedTypeSymbol> syncConfigurators,

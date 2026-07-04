@@ -16,7 +16,7 @@ internal sealed class DaliScheduledJobAgent : IAgent
     private readonly ILogger _logger;
     private CancellationTokenSource? _cts;
     private Task? _pollingTask;
-    private readonly TimeSpan _pollInterval = TimeSpan.FromSeconds(5);
+    private TimeSpan _pollInterval = TimeSpan.FromSeconds(5);
     private readonly TimeSpan _batchWindow = TimeSpan.FromMinutes(1);
 
     private const string IncomingTable = "wolverine_incoming_envelopes";
@@ -37,7 +37,9 @@ internal sealed class DaliScheduledJobAgent : IAgent
 
     public Task StartAsync(CancellationToken cancellationToken)
     {
-        _cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+        _cts = cancellationToken.CanBeCanceled
+            ? CancellationTokenSource.CreateLinkedTokenSource(cancellationToken)
+            : new CancellationTokenSource();
         _pollingTask = PollLoopAsync(_cts.Token);
         Status = AgentStatus.Running;
         _logger.LogInformation("DaliScheduledJobAgent started, polling every {Interval}", _pollInterval);
@@ -58,6 +60,8 @@ internal sealed class DaliScheduledJobAgent : IAgent
                 // Expected on shutdown
             }
         }
+        _cts?.Dispose();
+        _cts = null;
         Status = AgentStatus.Stopped;
         _logger.LogInformation("DaliScheduledJobAgent stopped");
     }
@@ -81,14 +85,12 @@ internal sealed class DaliScheduledJobAgent : IAgent
         {
             try
             {
-                await Task.Delay(_pollInterval, ct).ConfigureAwait(false);
-                await MoveReadyScheduledMessagesAsync(ct).ConfigureAwait(false);
+                await Task.Delay(_pollInterval).ConfigureAwait(false);
+                if (ct.IsCancellationRequested) break;
+
+                await MoveReadyScheduledMessagesAsync(CancellationToken.None).ConfigureAwait(false);
             }
-            catch (OperationCanceledException)
-            {
-                break;
-            }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is not OperationCanceledException)
             {
                 _logger.LogWarning(ex, "DaliScheduledJobAgent poll error, will retry");
             }
@@ -97,43 +99,19 @@ internal sealed class DaliScheduledJobAgent : IAgent
 
     /// <summary>
     /// Moves scheduled messages that are due (execution_time &lt;= now) to 'Incoming' status.
+    /// Uses string-based date comparison (ISO 8601 lexicographic orderable).
     /// </summary>
     private async Task MoveReadyScheduledMessagesAsync(CancellationToken ct)
     {
-        var nowStr = DateTimeOffset.UtcNow.ToString("o");
-
-        // Use a time-bounded window query to avoid scanning all future schedules.
-        var selectSql = $@"
-            SELECT id FROM {IncomingTable}
-            WHERE status = 'Scheduled'
-              AND execution_time <= <datetime>'{nowStr}'
-        ";
+        var nowStr = DateTimeOffset.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssK");
 
         try
         {
-            var response = await _client.RawQuery(selectSql, cancellationToken: ct).ConfigureAwait(false);
-            if (response.HasErrors || response.Count == 0) return;
+            var updateSql =
+                $"UPDATE {IncomingTable} SET status = 'Incoming', owner_id = 0 " +
+                $"WHERE status = 'Scheduled' AND execution_time <= '{nowStr}'";
 
-            // Count how many we're moving
-            var count = 0;
-            if (response.FirstOk is not null)
-            {
-                try
-                {
-                    var raw = response.GetValue<List<Dictionary<string, object>>>(0);
-                    if (raw is not null) count = raw.Count;
-                }
-                catch { /* best effort count */ }
-            }
-
-            if (count > 0)
-            {
-                // Move them to Incoming
-                await _client.RawQuery(
-                    $"UPDATE {IncomingTable} SET status = 'Incoming', owner_id = 0 WHERE status = 'Scheduled' AND execution_time <= <datetime>'{nowStr}'",
-                    cancellationToken: ct).ConfigureAwait(false);
-                _logger.LogDebug("Moved {Count} scheduled messages to Incoming", count);
-            }
+            await _client.RawQuery(updateSql, cancellationToken: ct).ConfigureAwait(false);
         }
         catch (Exception ex)
         {

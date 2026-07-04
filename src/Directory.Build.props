@@ -15,7 +15,7 @@
 	</PropertyGroup>
 
 	<PropertyGroup Label="Package information">
-		<VersionPrefix>0.0.6</VersionPrefix>
+		<VersionPrefix>0.0.7.2</VersionPrefix>
 		<VersionSuffix>alpha</VersionSuffix>
 		<Authors>Microbians</Authors>
 		<Company>Microbian Systems</Company>
@@ -48,11 +48,11 @@
     - HostModuleCatalogGenerator: activates when ModuleManifestProviderAttribute assembly
       attributes are detected on referenced assemblies (naturally only in Aero.Cms.Web)
   -->
-	<ItemGroup Condition="'$(MSBuildProjectName)' != 'Aero.Cms.SourceGenerators'">
+	<!-- ItemGroup Condition="'$(MSBuildProjectName)' != 'Aero.Cms.SourceGenerators' AND '$(MSBuildProjectName)' != 'Dali.SourceGenerators' AND '$(MSBuildProjectName)' != 'Dali' AND '$(MSBuildProjectName)' != 'Dali.WolverineFx' AND '$(MSBuildProjectName)' != 'Dali.AspNetIdentity' AND '$(MSBuildProjectName)' != 'Dali.EntityFrameworkCore' AND '$(MSBuildProjectName)' != 'Dali.Tests'">
 		<ProjectReference Include="$(MSBuildThisFileDirectory)Aero.Cms.SourceGenerators\Aero.Cms.SourceGenerators.csproj"
 			OutputItemType="Analyzer"
 			ReferenceOutputAssembly="false" />
-	</ItemGroup>
+	</!-->
 
 	<ItemGroup>
 		<!-- Package icon and README: included explicitly so dotnet pack finds them -->

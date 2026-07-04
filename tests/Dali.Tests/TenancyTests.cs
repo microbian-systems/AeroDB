@@ -16,13 +16,13 @@ public class TenancyTests
         await store.InitializeAsync();
 
         // Store doc in tenant-A session
-        await using var sessionA = await store.LightweightSessionAsync();
+        await using var sessionA = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         sessionA.SetTenant("tenant-A");
         sessionA.Store(new TenantPerson { Name = "Alice", Age = 30 });
         await sessionA.SaveChangesAsync();
 
         // Store doc in tenant-B session
-        await using var sessionB = await store.LightweightSessionAsync();
+        await using var sessionB = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         sessionB.SetTenant("tenant-B");
         sessionB.Store(new TenantPerson { Name = "Bob", Age = 25 });
         await sessionB.SaveChangesAsync();
@@ -55,14 +55,14 @@ public class TenancyTests
         await store.InitializeAsync();
 
         // Store 2 docs in tenant-A
-        await using var sessionA = await store.LightweightSessionAsync();
+        await using var sessionA = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         sessionA.SetTenant("tenant-A");
         sessionA.Store(new TenantPerson { Name = "Alice", Age = 30 });
         sessionA.Store(new TenantPerson { Name = "Charlie", Age = 35 });
         await sessionA.SaveChangesAsync();
 
         // Store 1 doc in tenant-B
-        await using var sessionB = await store.LightweightSessionAsync();
+        await using var sessionB = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         sessionB.SetTenant("tenant-B");
         sessionB.Store(new TenantPerson { Name = "Bob", Age = 25 });
         await sessionB.SaveChangesAsync();
@@ -95,7 +95,7 @@ public class TenancyTests
         });
         await store.InitializeAsync();
 
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         session.SetTenant("my-tenant");
 
         var person = new TenantPerson { Name = "AutoTenant", Age = 20 };
@@ -124,7 +124,7 @@ public class TenancyTests
         await store.InitializeAsync();
 
         // Session should inherit the default tenant ID
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         session.TenantId.ShouldBe("default-tenant");
 
         session.Store(new TenantPerson { Name = "Default", Age = 10 });
@@ -145,7 +145,7 @@ public class TenancyTests
         });
         await store.InitializeAsync();
 
-        await using var session = await store.LightweightSessionAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         session.SetTenant("tenant-X");
 
         // Person does NOT have a TenantId property, so it should not be filtered
@@ -175,7 +175,7 @@ public class TenancyTests
 
         // Store a person in tenant-A
         TenantPerson? savedPerson;
-        await using (var sessionA = await store.LightweightSessionAsync())
+        await using (var sessionA = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }))
         {
             sessionA.SetTenant("tenant-A");
             sessionA.Store(new TenantPerson { Name = "Secret", Age = 99 });
@@ -186,7 +186,7 @@ public class TenancyTests
         }
 
         // Try to delete from tenant-B — should throw
-        await using (var sessionB = await store.LightweightSessionAsync())
+        await using (var sessionB = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }))
         {
             sessionB.SetTenant("tenant-B");
             Should.Throw<InvalidOperationException>(() => sessionB.Delete(savedPerson!));
@@ -204,14 +204,14 @@ public class TenancyTests
         await store.InitializeAsync();
 
         // Store docs in two tenants
-        await using (var sA = await store.LightweightSessionAsync())
+        await using (var sA = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }))
         {
             sA.SetTenant("tenant-A");
             sA.Store(new TenantPerson { Name = "FromA" });
             await sA.SaveChangesAsync();
         }
 
-        await using (var sB = await store.LightweightSessionAsync())
+        await using (var sB = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }))
         {
             sB.SetTenant("tenant-B");
             sB.Store(new TenantPerson { Name = "FromB" });
