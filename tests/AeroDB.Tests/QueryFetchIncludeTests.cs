@@ -1084,20 +1084,20 @@ public class FetchIncludeIntegrationTests
         session.Store(order3);
         await session.SaveChangesAsync();
 
-        var loadedAlice = await session.Query<Customer>().FirstOrDefaultAsync(c => c.Name == "Alice");
+        var loadeAeroDBce = await session.Query<Customer>().FirstOrDefaultAsync(c => c.Name == "Alice");
         var loadedBob = await session.Query<Customer>().FirstOrDefaultAsync(c => c.Name == "Bob");
         var o1 = await session.Query<OrderWithItems>().FirstOrDefaultAsync(o => o.Name == "Multi1");
         var o2 = await session.Query<OrderWithItems>().FirstOrDefaultAsync(o => o.Name == "Multi2");
         var o3 = await session.Query<OrderWithItems>().FirstOrDefaultAsync(o => o.Name == "Multi3");
 
-        loadedAlice.ShouldNotBeNull();
+        loadeAeroDBce.ShouldNotBeNull();
         loadedBob.ShouldNotBeNull();
         o1.ShouldNotBeNull();
         o2.ShouldNotBeNull();
         o3.ShouldNotBeNull();
 
         // Orders with typed Customer references
-        var orderA = new OrderWithCustomer { Product = "LinkedToAlice", Customer = loadedAlice };
+        var orderA = new OrderWithCustomer { Product = "LinkedToAlice", Customer = loadeAeroDBce };
         var orderB = new OrderWithCustomer { Product = "LinkedToBob", Customer = loadedBob };
         session.Store(orderA);
         session.Store(orderB);

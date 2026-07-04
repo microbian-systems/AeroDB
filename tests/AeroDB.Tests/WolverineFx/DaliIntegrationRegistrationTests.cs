@@ -16,36 +16,36 @@ using Wolverine.Persistence.Sagas;
 using Wolverine.Runtime;
 
 /// <summary>
-/// Pure unit tests for <see cref="DaliIntegration.Configure"/>.
+/// Pure unit tests for <see cref="AeroDBIntegration.Configure"/>.
 /// Verifies that the correct services are registered in the WolverineOptions
 /// service collection. No SurrealDB, no Wolverine runtime — only options + NSubstitute.
 /// </summary>
-public class DaliIntegrationRegistrationTests
+public class AeroDBIntegrationRegistrationTests
 {
 #pragma warning disable TUnit0023 // _options doesn't implement IDisposable — false positive
     private readonly WolverineOptions _options;
 #pragma warning restore TUnit0023
-    private readonly DaliIntegration _integration;
+    private readonly AeroDBIntegration _integration;
 
-    public DaliIntegrationRegistrationTests()
+    public AeroDBIntegrationRegistrationTests()
     {
         _options = new WolverineOptions();
-        _integration = new DaliIntegration();
+        _integration = new AeroDBIntegration();
     }
 
     // ====================================================================
-    // DaliBackedPersistenceMarker — registered as codegen source
+    // AeroDBBackedPersistenceMarker — registered as codegen source
     // ====================================================================
 
     [Test]
-    public void Registers_DaliBackedPersistenceMarker_AsCodegenSource()
+    public void Registers_AeroDBBackedPersistenceMarker_AsCodegenSource()
     {
         // Act
         _integration.Configure(_options);
 
         // Assert
         _options.CodeGeneration.Sources
-            .ShouldContain(s => s is DaliBackedPersistenceMarker);
+            .ShouldContain(s => s is AeroDBBackedPersistenceMarker);
     }
 
     // ====================================================================
@@ -65,11 +65,11 @@ public class DaliIntegrationRegistrationTests
     }
 
     // ====================================================================
-    // DaliPersistenceFrameProvider — inserted as first persistence strategy
+    // AeroDBPersistenceFrameProvider — inserted as first persistence strategy
     // ====================================================================
 
     [Test]
-    public void Registers_DaliPersistenceFrameProvider_AsFirstPersistenceStrategy()
+    public void Registers_AeroDBPersistenceFrameProvider_AsFirstPersistenceStrategy()
     {
         // Act
         _integration.Configure(_options);
@@ -78,41 +78,41 @@ public class DaliIntegrationRegistrationTests
         // The code generation stores a list of persistence providers in its Properties dictionary.
         // PersistenceProviders() extension method retrieves them.
         var providers = _options.CodeGeneration.PersistenceProviders();
-        providers[0].ShouldBeOfType<DaliPersistenceFrameProvider>();
+        providers[0].ShouldBeOfType<AeroDBPersistenceFrameProvider>();
     }
 
     // ====================================================================
-    // DaliOutboxedSessionFactorySource — registered as codegen source
+    // AeroDBOutboxedSessionFactorySource — registered as codegen source
     // ====================================================================
 
     [Test]
-    public void Registers_DaliOutboxedSessionFactorySource_AsCodegenSource()
+    public void Registers_AeroDBOutboxedSessionFactorySource_AsCodegenSource()
     {
         // Act
         _integration.Configure(_options);
 
         // Assert
         _options.CodeGeneration.Sources
-            .ShouldContain(s => s is DaliOutboxedSessionFactorySource);
+            .ShouldContain(s => s is AeroDBOutboxedSessionFactorySource);
     }
 
     // ====================================================================
-    // DaliTransport — created / registered via options.Transports
+    // AeroDBTransport — created / registered via options.Transports
     // ====================================================================
 
     [Test]
-    public void Registers_DaliTransport()
+    public void Registers_AeroDBTransport()
     {
         // Act
         _integration.Configure(_options);
 
         // Assert: the AeroDB transport should be in the transports collection
         var transport = _options.Transports
-            .OfType<DaliTransport>()
+            .OfType<AeroDBTransport>()
             .FirstOrDefault();
 
         transport.ShouldNotBeNull();
-        transport.Protocol.ShouldBe("dali");
+        transport.Protocol.ShouldBe("AeroDB");
     }
 
     // ====================================================================
@@ -134,11 +134,11 @@ public class DaliIntegrationRegistrationTests
     }
 
     // ====================================================================
-    // DaliAncillaryStoreFrameProvider — registered as singleton
+    // AeroDBAncillaryStoreFrameProvider — registered as singleton
     // ====================================================================
 
     [Test]
-    public void Registers_DaliAncillaryStoreFrameProvider()
+    public void Registers_AeroDBAncillaryStoreFrameProvider()
     {
         // Act
         _integration.Configure(_options);
@@ -147,54 +147,54 @@ public class DaliIntegrationRegistrationTests
         var registration = _options.Services
             .FirstOrDefault(s =>
                 s.ServiceType == typeof(IAncillaryStoreFrameProvider) &&
-                s.ImplementationType == typeof(DaliAncillaryStoreFrameProvider));
+                s.ImplementationType == typeof(AeroDBAncillaryStoreFrameProvider));
 
         registration.ShouldNotBeNull();
         registration.Lifetime.ShouldBe(ServiceLifetime.Singleton);
     }
 
     // ====================================================================
-    // DaliOpPolicy — added to policies collection
+    // AeroDBOpPolicy — added to policies collection
     // ====================================================================
 
     [Test]
-    public void Registers_DaliOpPolicy()
+    public void Registers_AeroDBOpPolicy()
     {
         // Act
         _integration.Configure(_options);
 
-        // Assert: DaliOpPolicy is internal, so we check by type name via policies
+        // Assert: AeroDBOpPolicy is internal, so we check by type name via policies
         var policy = _options.Policies
             .OfType<object>()
-            .FirstOrDefault(p => p.GetType().Name == "DaliOpPolicy");
+            .FirstOrDefault(p => p.GetType().Name == "AeroDBOpPolicy");
 
         policy.ShouldNotBeNull();
     }
 
     // ====================================================================
-    // DaliEventForwarding — registered as singleton
+    // AeroDBEventForwarding — registered as singleton
     // ====================================================================
 
     [Test]
-    public void Registers_DaliEventForwarding_AsSingleton()
+    public void Registers_AeroDBEventForwarding_AsSingleton()
     {
         // Act
         _integration.Configure(_options);
 
         // Assert
         var registration = _options.Services
-            .FirstOrDefault(s => s.ServiceType == typeof(DaliEventForwarding));
+            .FirstOrDefault(s => s.ServiceType == typeof(AeroDBEventForwarding));
 
         registration.ShouldNotBeNull();
         registration.Lifetime.ShouldBe(ServiceLifetime.Singleton);
     }
 
     // ====================================================================
-    // DaliSagaStoreDiagnostics — registered as singleton with factory
+    // AeroDBSagaStoreDiagnostics — registered as singleton with factory
     // ====================================================================
 
     [Test]
-    public void Registers_DaliSagaStoreDiagnostics_AsSingleton()
+    public void Registers_AeroDBSagaStoreDiagnostics_AsSingleton()
     {
         // Act
         _integration.Configure(_options);
@@ -234,7 +234,7 @@ public class DaliIntegrationRegistrationTests
         // We verify the code doesn't throw and that AeroDB transport is still unique.
         Should.NotThrow(() => _integration.Configure(_options));
 
-        var transports = _options.Transports.OfType<DaliTransport>().ToArray();
+        var transports = _options.Transports.OfType<AeroDBTransport>().ToArray();
         transports.Length.ShouldBe(1);
     }
 }

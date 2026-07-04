@@ -7,14 +7,14 @@ using Shouldly;
 
 namespace AeroDB.AspNetIdentity.Tests;
 
-public class DaliRoleStoreTests
+public class AeroDBRoleStoreTests
 {
-    private static IDocumentStore CreateStore(out IQuerySession querySession, out IDocumentSession documentSession, out ILogger<DaliRoleStore<IdentityRole>> logger)
+    private static IDocumentStore CreateStore(out IQuerySession querySession, out IDocumentSession documentSession, out ILogger<AeroDBRoleStore<IdentityRole>> logger)
     {
         var store = Substitute.For<IDocumentStore>();
         querySession = Substitute.For<IQuerySession>();
         documentSession = Substitute.For<IDocumentSession>();
-        logger = Substitute.For<ILogger<DaliRoleStore<IdentityRole>>>();
+        logger = Substitute.For<ILogger<AeroDBRoleStore<IdentityRole>>>();
 
         store.QuerySessionAsync(Arg.Any<CancellationToken>()).Returns(querySession);
         store.OpenSessionAsync(Arg.Any<SessionOptions>(), Arg.Any<CancellationToken>()).Returns(documentSession);
@@ -29,7 +29,7 @@ public class DaliRoleStoreTests
     public async Task CreateAsync_ShouldReturnSuccess_WhenRoleCreated()
     {
         var store = CreateStore(out _, out var session, out var logger);
-        var roleStore = new DaliRoleStore<IdentityRole>(store, logger);
+        var roleStore = new AeroDBRoleStore<IdentityRole>(store, logger);
         var role = new IdentityRole("admin");
 
         var result = await roleStore.CreateAsync(role, CancellationToken.None);
@@ -45,7 +45,7 @@ public class DaliRoleStoreTests
         var store = CreateStore(out _, out var session, out var logger);
         session.When(s => s.Store(Arg.Any<IdentityRole>()))
             .Throw(new InvalidOperationException("DB error"));
-        var roleStore = new DaliRoleStore<IdentityRole>(store, logger);
+        var roleStore = new AeroDBRoleStore<IdentityRole>(store, logger);
         var role = new IdentityRole("admin");
 
         var result = await roleStore.CreateAsync(role, CancellationToken.None);
@@ -60,7 +60,7 @@ public class DaliRoleStoreTests
     public async Task UpdateAsync_ShouldReturnSuccess_WhenRoleUpdated()
     {
         var store = CreateStore(out _, out var session, out var logger);
-        var roleStore = new DaliRoleStore<IdentityRole>(store, logger);
+        var roleStore = new AeroDBRoleStore<IdentityRole>(store, logger);
         var role = new IdentityRole("admin");
 
         var result = await roleStore.UpdateAsync(role, CancellationToken.None);
@@ -76,7 +76,7 @@ public class DaliRoleStoreTests
         var store = CreateStore(out _, out var session, out var logger);
         session.When(s => s.Store(Arg.Any<IdentityRole>()))
             .Throw(new InvalidOperationException("DB error"));
-        var roleStore = new DaliRoleStore<IdentityRole>(store, logger);
+        var roleStore = new AeroDBRoleStore<IdentityRole>(store, logger);
         var role = new IdentityRole("admin");
 
         var result = await roleStore.UpdateAsync(role, CancellationToken.None);
@@ -91,7 +91,7 @@ public class DaliRoleStoreTests
     public async Task DeleteAsync_ShouldReturnSuccess_WhenRoleDeleted()
     {
         var store = CreateStore(out _, out var session, out var logger);
-        var roleStore = new DaliRoleStore<IdentityRole>(store, logger);
+        var roleStore = new AeroDBRoleStore<IdentityRole>(store, logger);
         var role = new IdentityRole("admin");
 
         var result = await roleStore.DeleteAsync(role, CancellationToken.None);
@@ -107,7 +107,7 @@ public class DaliRoleStoreTests
         var store = CreateStore(out _, out var session, out var logger);
         session.When(s => s.Delete(Arg.Any<IdentityRole>()))
             .Throw(new InvalidOperationException("DB error"));
-        var roleStore = new DaliRoleStore<IdentityRole>(store, logger);
+        var roleStore = new AeroDBRoleStore<IdentityRole>(store, logger);
         var role = new IdentityRole("admin");
 
         var result = await roleStore.DeleteAsync(role, CancellationToken.None);
@@ -124,7 +124,7 @@ public class DaliRoleStoreTests
         var store = CreateStore(out var querySession, out _, out var logger);
         var role = new IdentityRole("admin") { Id = "role-1" };
         querySession.LoadAsync<IdentityRole>("role-1", Arg.Any<CancellationToken>()).Returns(role);
-        var roleStore = new DaliRoleStore<IdentityRole>(store, logger);
+        var roleStore = new AeroDBRoleStore<IdentityRole>(store, logger);
 
         var result = await roleStore.FindByIdAsync("role-1", CancellationToken.None);
 
@@ -139,7 +139,7 @@ public class DaliRoleStoreTests
         var store = CreateStore(out var querySession, out _, out var logger);
         querySession.LoadAsync<IdentityRole>(Arg.Any<string>(), Arg.Any<CancellationToken>())
             .Returns((IdentityRole?)null);
-        var roleStore = new DaliRoleStore<IdentityRole>(store, logger);
+        var roleStore = new AeroDBRoleStore<IdentityRole>(store, logger);
 
         var result = await roleStore.FindByIdAsync("nonexistent", CancellationToken.None);
 
@@ -159,7 +159,7 @@ public class DaliRoleStoreTests
             Arg.Any<CancellationToken>())
             .Returns(role);
         querySession.Query<IdentityRole>().Returns(queryable);
-        var roleStore = new DaliRoleStore<IdentityRole>(store, logger);
+        var roleStore = new AeroDBRoleStore<IdentityRole>(store, logger);
 
         var result = await roleStore.FindByNameAsync("ADMIN", CancellationToken.None);
 
@@ -178,7 +178,7 @@ public class DaliRoleStoreTests
             Arg.Any<CancellationToken>())
             .Returns((IdentityRole?)null);
         querySession.Query<IdentityRole>().Returns(queryable);
-        var roleStore = new DaliRoleStore<IdentityRole>(store, logger);
+        var roleStore = new AeroDBRoleStore<IdentityRole>(store, logger);
 
         var result = await roleStore.FindByNameAsync("NONEXISTENT", CancellationToken.None);
 
@@ -191,7 +191,7 @@ public class DaliRoleStoreTests
     public async Task GetRoleIdAsync_ShouldReturnRoleId()
     {
         var store = CreateStore(out _, out _, out var logger);
-        var roleStore = new DaliRoleStore<IdentityRole>(store, logger);
+        var roleStore = new AeroDBRoleStore<IdentityRole>(store, logger);
         var role = new IdentityRole("admin") { Id = "role-42" };
 
         var result = await roleStore.GetRoleIdAsync(role, CancellationToken.None);
@@ -205,7 +205,7 @@ public class DaliRoleStoreTests
     public async Task GetRoleNameAsync_ShouldReturnRoleName()
     {
         var store = CreateStore(out _, out _, out var logger);
-        var roleStore = new DaliRoleStore<IdentityRole>(store, logger);
+        var roleStore = new AeroDBRoleStore<IdentityRole>(store, logger);
         var role = new IdentityRole("editor");
 
         var result = await roleStore.GetRoleNameAsync(role, CancellationToken.None);
@@ -219,7 +219,7 @@ public class DaliRoleStoreTests
     public async Task SetRoleNameAsync_ShouldSetRoleName()
     {
         var store = CreateStore(out _, out _, out var logger);
-        var roleStore = new DaliRoleStore<IdentityRole>(store, logger);
+        var roleStore = new AeroDBRoleStore<IdentityRole>(store, logger);
         var role = new IdentityRole("old-name");
 
         await roleStore.SetRoleNameAsync(role, "new-name", CancellationToken.None);
@@ -233,7 +233,7 @@ public class DaliRoleStoreTests
     public async Task GetNormalizedRoleNameAsync_ShouldReturnNormalizedName()
     {
         var store = CreateStore(out _, out _, out var logger);
-        var roleStore = new DaliRoleStore<IdentityRole>(store, logger);
+        var roleStore = new AeroDBRoleStore<IdentityRole>(store, logger);
         var role = new IdentityRole("admin") { NormalizedName = "ADMIN" };
 
         var result = await roleStore.GetNormalizedRoleNameAsync(role, CancellationToken.None);
@@ -247,7 +247,7 @@ public class DaliRoleStoreTests
     public async Task SetNormalizedRoleNameAsync_ShouldSetNormalizedName()
     {
         var store = CreateStore(out _, out _, out var logger);
-        var roleStore = new DaliRoleStore<IdentityRole>(store, logger);
+        var roleStore = new AeroDBRoleStore<IdentityRole>(store, logger);
         var role = new IdentityRole("admin") { NormalizedName = "OLD" };
 
         await roleStore.SetNormalizedRoleNameAsync(role, "NEW", CancellationToken.None);
@@ -264,7 +264,7 @@ public class DaliRoleStoreTests
         var expectedRoles = new List<IdentityRole> { new("admin"), new("editor") };
         var queryable = Substitute.For<ISurrealDbQueryable<IdentityRole>>();
         querySession.Query<IdentityRole>().Returns(queryable);
-        var roleStore = new DaliRoleStore<IdentityRole>(store, logger);
+        var roleStore = new AeroDBRoleStore<IdentityRole>(store, logger);
 
         var roles = roleStore.Roles;
 
@@ -278,7 +278,7 @@ public class DaliRoleStoreTests
     public void Dispose_ShouldNotThrow()
     {
         var store = CreateStore(out _, out _, out var logger);
-        var roleStore = new DaliRoleStore<IdentityRole>(store, logger);
+        var roleStore = new AeroDBRoleStore<IdentityRole>(store, logger);
 
         Should.NotThrow(() => roleStore.Dispose());
     }
@@ -287,7 +287,7 @@ public class DaliRoleStoreTests
     public void Dispose_CanBeCalledMultipleTimes()
     {
         var store = CreateStore(out _, out _, out var logger);
-        var roleStore = new DaliRoleStore<IdentityRole>(store, logger);
+        var roleStore = new AeroDBRoleStore<IdentityRole>(store, logger);
 
         Should.NotThrow(() =>
         {

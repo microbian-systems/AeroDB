@@ -47,7 +47,7 @@ public class SpatialQueryTests
     public async Task NearBy_Basic_SQL()
     {
         var (mockSession, provider) = CreateMockProvider();
-        var query = new DaliSpatialQuery<Store>(provider);
+        var query = new AeroDBSpatialQuery<Store>(provider);
 
         query.NearBy(s => s.Location, 48.8566, 2.3522, 1000);
         await query.ToListAsync();
@@ -68,7 +68,7 @@ public class SpatialQueryTests
     public async Task NearBy_With_Where_SQL()
     {
         var (mockSession, provider) = CreateMockProvider();
-        var query = new DaliSpatialQuery<Store>(provider);
+        var query = new AeroDBSpatialQuery<Store>(provider);
 
         query
             .NearBy(s => s.Location, 48.8566, 2.3522, 1000)
@@ -89,7 +89,7 @@ public class SpatialQueryTests
     public async Task NearBy_With_Limit_SQL()
     {
         var (mockSession, provider) = CreateMockProvider();
-        var query = new DaliSpatialQuery<Store>(provider);
+        var query = new AeroDBSpatialQuery<Store>(provider);
 
         query
             .NearBy(s => s.Location, 48.8566, 2.3522, 1000)
@@ -107,7 +107,7 @@ public class SpatialQueryTests
     public async Task NearBy_With_Skip_SQL()
     {
         var (mockSession, provider) = CreateMockProvider();
-        var query = new DaliSpatialQuery<Store>(provider);
+        var query = new AeroDBSpatialQuery<Store>(provider);
 
         query
             .NearBy(s => s.Location, 48.8566, 2.3522, 1000)
@@ -128,7 +128,7 @@ public class SpatialQueryTests
     public async Task NearBy_Bbox_Covers_Poles()
     {
         var (mockSession, provider) = CreateMockProvider();
-        var query = new DaliSpatialQuery<Store>(provider);
+        var query = new AeroDBSpatialQuery<Store>(provider);
 
         // Near the North Pole — longitude span wraps entire globe
         query.NearBy(s => s.Location, 89.9, 0, 100000);
@@ -147,7 +147,7 @@ public class SpatialQueryTests
     public async Task NearBy_Bbox_Near_Equator()
     {
         var (mockSession, provider) = CreateMockProvider();
-        var query = new DaliSpatialQuery<Store>(provider);
+        var query = new AeroDBSpatialQuery<Store>(provider);
 
         // At equator, lat and lon spans are approximately equal
         query.NearBy(s => s.Location, 0, 0, 1000);
@@ -166,7 +166,7 @@ public class SpatialQueryTests
     public async Task Within_Basic_SQL()
     {
         var (mockSession, provider) = CreateMockProvider();
-        var query = new DaliSpatialQuery<Store>(provider);
+        var query = new AeroDBSpatialQuery<Store>(provider);
 
         var polygon = new List<(double Lng, double Lat)>
         {
@@ -190,7 +190,7 @@ public class SpatialQueryTests
     public async Task Within_With_Where_SQL()
     {
         var (mockSession, provider) = CreateMockProvider();
-        var query = new DaliSpatialQuery<Store>(provider);
+        var query = new AeroDBSpatialQuery<Store>(provider);
 
         var polygon = new List<(double Lng, double Lat)>
         {
@@ -215,7 +215,7 @@ public class SpatialQueryTests
     public async Task Within_With_Limit_Skip_SQL()
     {
         var (mockSession, provider) = CreateMockProvider();
-        var query = new DaliSpatialQuery<Store>(provider);
+        var query = new AeroDBSpatialQuery<Store>(provider);
 
         var polygon = new List<(double Lng, double Lat)>
         {
@@ -240,7 +240,7 @@ public class SpatialQueryTests
     public async Task OrderByDistance_Basic_SQL()
     {
         var (mockSession, provider) = CreateMockProvider();
-        var query = new DaliSpatialQuery<Store>(provider);
+        var query = new AeroDBSpatialQuery<Store>(provider);
 
         query.OrderByDistance(s => s.Location, 48.8566, 2.3522);
         await query.ToListAsync();
@@ -259,7 +259,7 @@ public class SpatialQueryTests
     public async Task OrderByDistance_With_Where_SQL()
     {
         var (mockSession, provider) = CreateMockProvider();
-        var query = new DaliSpatialQuery<Store>(provider);
+        var query = new AeroDBSpatialQuery<Store>(provider);
 
         query
             .OrderByDistance(s => s.Location, 48.8566, 2.3522)
@@ -280,7 +280,7 @@ public class SpatialQueryTests
     public async Task OrderByDistance_With_Limit_SQL()
     {
         var (mockSession, provider) = CreateMockProvider();
-        var query = new DaliSpatialQuery<Store>(provider);
+        var query = new AeroDBSpatialQuery<Store>(provider);
 
         query
             .OrderByDistance(s => s.Location, 48.8566, 2.3522)
@@ -298,7 +298,7 @@ public class SpatialQueryTests
     public async Task NearBy_Zero_Distance()
     {
         var (mockSession, provider) = CreateMockProvider();
-        var query = new DaliSpatialQuery<Store>(provider);
+        var query = new AeroDBSpatialQuery<Store>(provider);
 
         // Edge case: zero distance means exact point match
         query.NearBy(s => s.Location, 48.8566, 2.3522, 0);
@@ -317,7 +317,7 @@ public class SpatialQueryTests
     public async Task Multiple_Calls_Overwrites()
     {
         var (mockSession, provider) = CreateMockProvider();
-        var query = new DaliSpatialQuery<Store>(provider);
+        var query = new AeroDBSpatialQuery<Store>(provider);
 
         // First NearBy (should be replaced)
         query.NearBy(s => s.Location, 48.8566, 2.3522, 1000);
@@ -689,7 +689,7 @@ public class SpatialQueryTests
     public async Task Spatial_Longitude_Wrap()
     {
         var (mockSession, provider) = CreateMockProvider();
-        var query = new DaliSpatialQuery<Store>(provider);
+        var query = new AeroDBSpatialQuery<Store>(provider);
 
         // Point near the 180°/-180° boundary
         query.NearBy(s => s.Location, 0, 179.9, 50000);

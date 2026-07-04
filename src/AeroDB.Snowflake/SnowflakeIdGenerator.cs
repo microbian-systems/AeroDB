@@ -1,4 +1,4 @@
-namespace Dali.IdGeneration;
+namespace AeroDB.IdGeneration;
 
 /// <summary>
 /// Snowflake ID generator wrapping <see cref="Aero.Core.Snowflake.NewId"/>.

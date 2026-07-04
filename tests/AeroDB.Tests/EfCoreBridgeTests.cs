@@ -9,10 +9,10 @@ namespace AeroDB.Tests;
 public class EfCoreBridgeTests
 {
     [Test]
-    public async Task DaliEfCoreTransaction_commit_calls_saveChangesAsync()
+    public async Task AeroDBEfCoreTransaction_commit_calls_saveChangesAsync()
     {
         var mockSession = Substitute.For<IDocumentSession>();
-        var tx = new DaliEfCoreTransaction(mockSession);
+        var tx = new AeroDBEfCoreTransaction(mockSession);
 
         await tx.CommitAsync();
 
@@ -20,11 +20,11 @@ public class EfCoreBridgeTests
     }
 
     [Test]
-    public async Task DaliEfCoreTransaction_commit_calls_owned_transaction()
+    public async Task AeroDBEfCoreTransaction_commit_calls_owned_transaction()
     {
         var mockSession = Substitute.For<IDocumentSession>();
         var mockOwned = Substitute.For<IDbContextTransaction>();
-        var tx = new DaliEfCoreTransaction(mockSession)
+        var tx = new AeroDBEfCoreTransaction(mockSession)
         {
             OwnedTransaction = mockOwned
         };
@@ -35,11 +35,11 @@ public class EfCoreBridgeTests
     }
 
     [Test]
-    public async Task DaliEfCoreTransaction_commit_calls_both()
+    public async Task AeroDBEfCoreTransaction_commit_calls_both()
     {
         var mockSession = Substitute.For<IDocumentSession>();
         var mockOwned = Substitute.For<IDbContextTransaction>();
-        var tx = new DaliEfCoreTransaction(mockSession)
+        var tx = new AeroDBEfCoreTransaction(mockSession)
         {
             OwnedTransaction = mockOwned
         };
@@ -51,11 +51,11 @@ public class EfCoreBridgeTests
     }
 
     [Test]
-    public async Task DaliEfCoreTransaction_rollback_calls_owned_transaction()
+    public async Task AeroDBEfCoreTransaction_rollback_calls_owned_transaction()
     {
         var mockSession = Substitute.For<IDocumentSession>();
         var mockOwned = Substitute.For<IDbContextTransaction>();
-        var tx = new DaliEfCoreTransaction(mockSession)
+        var tx = new AeroDBEfCoreTransaction(mockSession)
         {
             OwnedTransaction = mockOwned
         };
@@ -66,10 +66,10 @@ public class EfCoreBridgeTests
     }
 
     [Test]
-    public void DaliEfCoreTransaction_sync_commit_calls_saveChanges()
+    public void AeroDBEfCoreTransaction_sync_commit_calls_saveChanges()
     {
         var mockSession = Substitute.For<IDocumentSession>();
-        var tx = new DaliEfCoreTransaction(mockSession);
+        var tx = new AeroDBEfCoreTransaction(mockSession);
 
         tx.Commit();
 
@@ -77,11 +77,11 @@ public class EfCoreBridgeTests
     }
 
     [Test]
-    public void DaliEfCoreTransaction_sync_rollback_calls_owned()
+    public void AeroDBEfCoreTransaction_sync_rollback_calls_owned()
     {
         var mockSession = Substitute.For<IDocumentSession>();
         var mockOwned = Substitute.For<IDbContextTransaction>();
-        var tx = new DaliEfCoreTransaction(mockSession)
+        var tx = new AeroDBEfCoreTransaction(mockSession)
         {
             OwnedTransaction = mockOwned
         };
@@ -92,20 +92,20 @@ public class EfCoreBridgeTests
     }
 
     [Test]
-    public void DaliEfCoreTransaction_has_transactionId()
+    public void AeroDBEfCoreTransaction_has_transactionId()
     {
         var mockSession = Substitute.For<IDocumentSession>();
-        var tx = new DaliEfCoreTransaction(mockSession);
+        var tx = new AeroDBEfCoreTransaction(mockSession);
 
         tx.TransactionId.ShouldNotBe(Guid.Empty);
     }
 
     [Test]
-    public async Task DaliEfCoreTransaction_dispose_disposes_owned()
+    public async Task AeroDBEfCoreTransaction_dispose_disposes_owned()
     {
         var mockSession = Substitute.For<IDocumentSession>();
         var mockOwned = Substitute.For<IDbContextTransaction>();
-        var tx = new DaliEfCoreTransaction(mockSession)
+        var tx = new AeroDBEfCoreTransaction(mockSession)
         {
             OwnedTransaction = mockOwned
         };
@@ -116,10 +116,10 @@ public class EfCoreBridgeTests
     }
 
     [Test]
-    public async Task DaliEfCoreTransaction_multiple_commits_safe()
+    public async Task AeroDBEfCoreTransaction_multiple_commits_safe()
     {
         var mockSession = Substitute.For<IDocumentSession>();
-        var tx = new DaliEfCoreTransaction(mockSession);
+        var tx = new AeroDBEfCoreTransaction(mockSession);
 
         await tx.CommitAsync();
         // Second commit should be safe
@@ -131,38 +131,38 @@ public class EfCoreBridgeTests
     // ── TransactionManager tests (behavior-only, no real BeginTransactionAsync) ─
 
     [Test]
-    public async Task DaliEfCoreTransactionManager_commit_when_no_transaction_does_nothing()
+    public async Task AeroDBEfCoreTransactionManager_commit_when_no_transaction_does_nothing()
     {
         var mockSession = Substitute.For<IDocumentSession>();
         var mockDbContext = Substitute.For<DbContext>();
-        var manager = new DaliEfCoreTransactionManager<DbContext>(mockDbContext, mockSession);
+        var manager = new AeroDBEfCoreTransactionManager<DbContext>(mockDbContext, mockSession);
 
         // Should not throw
         await manager.CommitTransactionAsync();
     }
 
     [Test]
-    public async Task DaliEfCoreTransactionManager_rollback_when_no_transaction_does_nothing()
+    public async Task AeroDBEfCoreTransactionManager_rollback_when_no_transaction_does_nothing()
     {
         var mockSession = Substitute.For<IDocumentSession>();
         var mockDbContext = Substitute.For<DbContext>();
-        var manager = new DaliEfCoreTransactionManager<DbContext>(mockDbContext, mockSession);
+        var manager = new AeroDBEfCoreTransactionManager<DbContext>(mockDbContext, mockSession);
 
         // Should not throw
         await manager.RollbackTransactionAsync();
     }
 
     [Test]
-    public void DaliEfCoreTransactionManager_resetState_clears_transaction()
+    public void AeroDBEfCoreTransactionManager_resetState_clears_transaction()
     {
         var mockSession = Substitute.For<IDocumentSession>();
         var mockDbContext = Substitute.For<DbContext>();
-        var manager = new DaliEfCoreTransactionManager<DbContext>(mockDbContext, mockSession);
+        var manager = new AeroDBEfCoreTransactionManager<DbContext>(mockDbContext, mockSession);
 
         // Manually set a transaction
-        var tx = new DaliEfCoreTransaction(mockSession);
+        var tx = new AeroDBEfCoreTransaction(mockSession);
         // Use reflection to set private field since we can't access it
-        var field = typeof(DaliEfCoreTransactionManager<DbContext>)
+        var field = typeof(AeroDBEfCoreTransactionManager<DbContext>)
             .GetField("<CurrentTransaction>k__BackingField",
                 System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
         field!.SetValue(manager, tx);
@@ -174,15 +174,15 @@ public class EfCoreBridgeTests
     }
 
     [Test]
-    public async Task DaliEfCoreTransactionManager_resetStateAsync_clears_transaction()
+    public async Task AeroDBEfCoreTransactionManager_resetStateAsync_clears_transaction()
     {
         var mockSession = Substitute.For<IDocumentSession>();
         var mockDbContext = Substitute.For<DbContext>();
-        var manager = new DaliEfCoreTransactionManager<DbContext>(mockDbContext, mockSession);
+        var manager = new AeroDBEfCoreTransactionManager<DbContext>(mockDbContext, mockSession);
 
         // Manually set a transaction
-        var tx = new DaliEfCoreTransaction(mockSession);
-        var field = typeof(DaliEfCoreTransactionManager<DbContext>)
+        var tx = new AeroDBEfCoreTransaction(mockSession);
+        var field = typeof(AeroDBEfCoreTransactionManager<DbContext>)
             .GetField("<CurrentTransaction>k__BackingField",
                 System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
         field!.SetValue(manager, tx);
@@ -193,15 +193,15 @@ public class EfCoreBridgeTests
     }
 
     [Test]
-    public async Task DaliEfCoreTransactionManager_commitTransactionAsync_uses_currentTransaction()
+    public async Task AeroDBEfCoreTransactionManager_commitTransactionAsync_uses_currentTransaction()
     {
         var mockSession = Substitute.For<IDocumentSession>();
         var mockDbContext = Substitute.For<DbContext>();
-        var manager = new DaliEfCoreTransactionManager<DbContext>(mockDbContext, mockSession);
+        var manager = new AeroDBEfCoreTransactionManager<DbContext>(mockDbContext, mockSession);
 
-        // Inject a DaliEfCoreTransaction wrapping the mock session
-        var tx = new DaliEfCoreTransaction(mockSession);
-        var field = typeof(DaliEfCoreTransactionManager<DbContext>)
+        // Inject a AeroDBEfCoreTransaction wrapping the mock session
+        var tx = new AeroDBEfCoreTransaction(mockSession);
+        var field = typeof(AeroDBEfCoreTransactionManager<DbContext>)
             .GetField("<CurrentTransaction>k__BackingField",
                 System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
         field!.SetValue(manager, tx);
@@ -213,15 +213,15 @@ public class EfCoreBridgeTests
     }
 
     [Test]
-    public async Task DaliEfCoreTransactionManager_rollbackTransactionAsync_clears_transaction()
+    public async Task AeroDBEfCoreTransactionManager_rollbackTransactionAsync_clears_transaction()
     {
         var mockSession = Substitute.For<IDocumentSession>();
         var mockDbContext = Substitute.For<DbContext>();
-        var manager = new DaliEfCoreTransactionManager<DbContext>(mockDbContext, mockSession);
+        var manager = new AeroDBEfCoreTransactionManager<DbContext>(mockDbContext, mockSession);
 
-        // Inject a DaliEfCoreTransaction
-        var tx = new DaliEfCoreTransaction(mockSession);
-        var field = typeof(DaliEfCoreTransactionManager<DbContext>)
+        // Inject a AeroDBEfCoreTransaction
+        var tx = new AeroDBEfCoreTransaction(mockSession);
+        var field = typeof(AeroDBEfCoreTransactionManager<DbContext>)
             .GetField("<CurrentTransaction>k__BackingField",
                 System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
         field!.SetValue(manager, tx);
@@ -232,14 +232,14 @@ public class EfCoreBridgeTests
     }
 
     [Test]
-    public void DaliEfCoreTransactionManager_commitTransaction_sync_commits()
+    public void AeroDBEfCoreTransactionManager_commitTransaction_sync_commits()
     {
         var mockSession = Substitute.For<IDocumentSession>();
         var mockDbContext = Substitute.For<DbContext>();
-        var manager = new DaliEfCoreTransactionManager<DbContext>(mockDbContext, mockSession);
+        var manager = new AeroDBEfCoreTransactionManager<DbContext>(mockDbContext, mockSession);
 
-        var tx = new DaliEfCoreTransaction(mockSession);
-        var field = typeof(DaliEfCoreTransactionManager<DbContext>)
+        var tx = new AeroDBEfCoreTransaction(mockSession);
+        var field = typeof(AeroDBEfCoreTransactionManager<DbContext>)
             .GetField("<CurrentTransaction>k__BackingField",
                 System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
         field!.SetValue(manager, tx);
@@ -251,14 +251,14 @@ public class EfCoreBridgeTests
     }
 
     [Test]
-    public void DaliEfCoreTransactionManager_rollbackTransaction_sync_rolls_back()
+    public void AeroDBEfCoreTransactionManager_rollbackTransaction_sync_rolls_back()
     {
         var mockSession = Substitute.For<IDocumentSession>();
         var mockDbContext = Substitute.For<DbContext>();
-        var manager = new DaliEfCoreTransactionManager<DbContext>(mockDbContext, mockSession);
+        var manager = new AeroDBEfCoreTransactionManager<DbContext>(mockDbContext, mockSession);
 
-        var tx = new DaliEfCoreTransaction(mockSession);
-        var field = typeof(DaliEfCoreTransactionManager<DbContext>)
+        var tx = new AeroDBEfCoreTransaction(mockSession);
+        var field = typeof(AeroDBEfCoreTransactionManager<DbContext>)
             .GetField("<CurrentTransaction>k__BackingField",
                 System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
         field!.SetValue(manager, tx);

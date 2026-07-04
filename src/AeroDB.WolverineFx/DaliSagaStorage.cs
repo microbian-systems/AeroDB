@@ -7,12 +7,12 @@ namespace AeroDB.WolverineFx;
 /// <summary>
 /// AeroDB-backed saga storage for Wolverine using SurrealDB as the document store.
 /// </summary>
-public sealed class DaliSagaStorage<TId, TSaga> : ISagaStorage<TId, TSaga>
+public sealed class AeroDBSagaStorage<TId, TSaga> : ISagaStorage<TId, TSaga>
     where TSaga : Saga
 {
     private readonly IDocumentStore _store;
 
-    public DaliSagaStorage(IDocumentStore store)
+    public AeroDBSagaStorage(IDocumentStore store)
     {
         _store = store ?? throw new ArgumentNullException(nameof(store));
     }

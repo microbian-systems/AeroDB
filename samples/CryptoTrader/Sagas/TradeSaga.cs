@@ -13,7 +13,7 @@ namespace CryptoTrader.Sagas;
 /// Demonstrated AeroDB + Wolverine features:
 /// - AeroDB document persistence for custom saga state
 /// - Cascading message flow (PlaceBuyOrder → OrderPlaced → OrderMatched → TradeExecuted)
-/// - IDaliOp side-effect pattern for wallet updates
+/// - IAeroDBOp side-effect pattern for wallet updates
 /// - Session-based document operations (LoadAsync, Store)
 /// </summary>
 public class TradeSagaData : Record

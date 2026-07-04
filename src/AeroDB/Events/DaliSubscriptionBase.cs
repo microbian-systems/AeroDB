@@ -7,7 +7,7 @@ namespace AeroDB;
 /// Base class for AeroDB event subscriptions with built-in event type filtering.
 /// Override <see cref="ProcessEventsAsync"/> to implement custom logic.
 /// </summary>
-public abstract class DaliSubscriptionBase : IDaliSubscription
+public abstract class AeroDBSubscriptionBase : IAeroDBSubscription
 {
     private readonly List<Type> _eventTypes = new();
     private Type? _streamType;
@@ -17,7 +17,7 @@ public abstract class DaliSubscriptionBase : IDaliSubscription
     /// Creates a subscription with the given name.
     /// The name is used to track processing progress.
     /// </summary>
-    protected DaliSubscriptionBase(string subscriptionName)
+    protected AeroDBSubscriptionBase(string subscriptionName)
     {
         SubscriptionName = subscriptionName ?? throw new ArgumentNullException(nameof(subscriptionName));
     }
@@ -57,7 +57,7 @@ public abstract class DaliSubscriptionBase : IDaliSubscription
     }
 
     /// <inheritdoc />
-    void IDaliSubscription.Filter(IEventFilterable filterable)
+    void IAeroDBSubscription.Filter(IEventFilterable filterable)
     {
         foreach (var eventType in _eventTypes)
             filterable.IncludeType(eventType);

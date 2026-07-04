@@ -10,7 +10,7 @@ namespace AeroDB.WolverineFx;
 /// Polling agent that periodically checks for scheduled messages that are due
 /// and moves them to 'Incoming' status so the durability agent can process them.
 /// </summary>
-internal sealed class DaliScheduledJobAgent : IAgent
+internal sealed class AeroDBScheduledJobAgent : IAgent
 {
     private readonly ISurrealDbClient _client;
     private readonly ILogger _logger;
@@ -21,13 +21,13 @@ internal sealed class DaliScheduledJobAgent : IAgent
 
     private const string IncomingTable = "wolverine_incoming_envelopes";
 
-    public Uri Uri { get; } = new("dali://scheduled-jobs");
+    public Uri Uri { get; } = new("AeroDB://scheduled-jobs");
 
     public AgentStatus Status { get; private set; } = AgentStatus.Stopped;
 
     public string Description => "AeroDB scheduled job agent: polls for ready scheduled messages";
 
-    public DaliScheduledJobAgent(ISurrealDbClient client, ILogger logger)
+    public AeroDBScheduledJobAgent(ISurrealDbClient client, ILogger logger)
     {
         _client = client ?? throw new ArgumentNullException(nameof(client));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -42,7 +42,7 @@ internal sealed class DaliScheduledJobAgent : IAgent
             : new CancellationTokenSource();
         _pollingTask = PollLoopAsync(_cts.Token);
         Status = AgentStatus.Running;
-        _logger.LogInformation("DaliScheduledJobAgent started, polling every {Interval}", _pollInterval);
+        _logger.LogInformation("AeroDBScheduledJobAgent started, polling every {Interval}", _pollInterval);
         return Task.CompletedTask;
     }
 
@@ -63,7 +63,7 @@ internal sealed class DaliScheduledJobAgent : IAgent
         _cts?.Dispose();
         _cts = null;
         Status = AgentStatus.Stopped;
-        _logger.LogInformation("DaliScheduledJobAgent stopped");
+        _logger.LogInformation("AeroDBScheduledJobAgent stopped");
     }
 
     // ─── IHealthCheck ───
@@ -73,8 +73,8 @@ internal sealed class DaliScheduledJobAgent : IAgent
         CancellationToken cancellationToken)
     {
         return Task.FromResult(Status == AgentStatus.Running
-            ? HealthCheckResult.Healthy("DaliScheduledJobAgent is running")
-            : HealthCheckResult.Unhealthy($"DaliScheduledJobAgent is {Status}"));
+            ? HealthCheckResult.Healthy("AeroDBScheduledJobAgent is running")
+            : HealthCheckResult.Unhealthy($"AeroDBScheduledJobAgent is {Status}"));
     }
 
     // ─── Polling Loop ───
@@ -92,7 +92,7 @@ internal sealed class DaliScheduledJobAgent : IAgent
             }
             catch (Exception ex) when (ex is not OperationCanceledException)
             {
-                _logger.LogWarning(ex, "DaliScheduledJobAgent poll error, will retry");
+                _logger.LogWarning(ex, "AeroDBScheduledJobAgent poll error, will retry");
             }
         }
     }

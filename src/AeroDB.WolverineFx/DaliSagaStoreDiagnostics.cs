@@ -11,12 +11,12 @@ namespace AeroDB.WolverineFx;
 /// <summary>
 /// AeroDB-backed implementation of <see cref="ISagaStoreDiagnostics"/>.
 /// </summary>
-internal sealed class DaliSagaStoreDiagnostics : ISagaStoreDiagnostics
+internal sealed class AeroDBSagaStoreDiagnostics : ISagaStoreDiagnostics
 {
     private readonly IWolverineRuntime _runtime;
     private readonly IDocumentStore _store;
 
-    public DaliSagaStoreDiagnostics(IWolverineRuntime runtime, IDocumentStore store)
+    public AeroDBSagaStoreDiagnostics(IWolverineRuntime runtime, IDocumentStore store)
     {
         _runtime = runtime ?? throw new ArgumentNullException(nameof(runtime));
         _store = store ?? throw new ArgumentNullException(nameof(store));

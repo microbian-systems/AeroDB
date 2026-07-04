@@ -35,7 +35,7 @@ public class PocoTimeSeriesTests
     public async Task PocoTimeSeries_BucketByFloor_GeneratesCorrectSql()
     {
         var (mockSession, provider) = CreateMockProvider();
-        var query = new DaliTimeSeriesQuery<PocoSensorReading>(provider);
+        var query = new AeroDBTimeSeriesQuery<PocoSensorReading>(provider);
 
         await query
             .BucketByFloor(s => s.Timestamp, 1, TimeUnit.Hour)
@@ -56,7 +56,7 @@ public class PocoTimeSeriesTests
     public async Task PocoTimeSeries_BucketByGroup_GeneratesCorrectSql()
     {
         var (mockSession, provider) = CreateMockProvider();
-        var query = new DaliTimeSeriesQuery<PocoSensorReading>(provider);
+        var query = new AeroDBTimeSeriesQuery<PocoSensorReading>(provider);
 
         await query
             .BucketByGroup(s => s.Timestamp, TimeBucket.Hour)
@@ -75,7 +75,7 @@ public class PocoTimeSeriesTests
     public async Task PocoTimeSeries_Downsample_GeneratesCorrectSql()
     {
         var (mockSession, provider) = CreateMockProvider();
-        var query = new DaliTimeSeriesQuery<PocoSensorReading>(provider);
+        var query = new AeroDBTimeSeriesQuery<PocoSensorReading>(provider);
 
         await query
             .Downsample(s => s.Timestamp, 24)
@@ -95,7 +95,7 @@ public class PocoTimeSeriesTests
     public async Task PocoTimeSeries_WithWhere_GeneratesCorrectSql()
     {
         var (mockSession, provider) = CreateMockProvider();
-        var query = new DaliTimeSeriesQuery<PocoSensorReading>(provider);
+        var query = new AeroDBTimeSeriesQuery<PocoSensorReading>(provider);
 
         await query
             .BucketByFloor(s => s.Timestamp, 1, TimeUnit.Day)

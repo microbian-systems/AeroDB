@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 
-namespace Dali;
+namespace AeroDB;
 
 /// <summary>
 /// Projection that writes to EF Core alongside AeroDB in the same transaction.

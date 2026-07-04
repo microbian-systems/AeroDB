@@ -88,12 +88,12 @@ public class AdvancedSdkTests
     }
 
     [Test]
-    public async Task IDaliAdvanced_Is_Exposed_From_Store()
+    public async Task IAeroDBAdvanced_Is_Exposed_From_Store()
     {
         await using var store = await TestHarness.CreateStoreAsync();
 
         var advanced = store.Advanced;
         advanced.ShouldNotBeNull();
-        advanced.ShouldBeAssignableTo<IDaliAdvanced>();
+        advanced.ShouldBeAssignableTo<IAeroDBAdvanced>();
     }
 }

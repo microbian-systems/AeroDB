@@ -28,7 +28,7 @@ public static class SearchExtensions
                 f.FieldSelector.Parameters),
              f.Weight)).ToArray();
 
-        return await new DaliSearchQuery<T>(provider)
+        return await new AeroDBSearchQuery<T>(provider)
             .MatchText(converted, query)
             .Take(limit)
             .ToListAsync(ct).ConfigureAwait(false);
@@ -59,7 +59,7 @@ public static class SearchExtensions
         if (source.Provider is not SurrealQueryProvider provider)
             return [];
 
-        return await new DaliSearchQuery<T>(provider)
+        return await new AeroDBSearchQuery<T>(provider)
             .WithVector(fieldSelector, queryVector)
             .Take(limit)
             .Candidates(candidates)
@@ -81,7 +81,7 @@ public static class SearchExtensions
         if (config.TextFields.Count == 0 || config.QueryVector.Length == 0)
             return [];
 
-        var query = new DaliSearchQuery<T>(provider);
+        var query = new AeroDBSearchQuery<T>(provider);
 
         foreach (var (fieldName, weight) in config.TextFields)
             query.MatchTextField(fieldName, weight, config.Query);

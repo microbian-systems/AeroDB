@@ -8,7 +8,7 @@ namespace AeroDB.WolverineFx;
 /// Maps to wolverine_incoming_envelopes and wolverine_outgoing_envelopes tables.
 /// The body is stored as Base64 string (SurrealDB CBOR byte[] round-trip may be unreliable).
 /// </summary>
-public sealed class DaliEnvelope : Record
+public sealed class AeroDBEnvelope : Record
 {
     /// <summary>Wolverine envelope ID (Guid as string).</summary>
     public new string Id { get; set; } = string.Empty;
@@ -77,11 +77,11 @@ public sealed class DaliEnvelope : Record
     /// <summary>Whether this dead letter is replayable.</summary>
     public bool? Replayable { get; set; }
 
-    /// <summary>Map from Wolverine Envelope to DaliEnvelope (for incoming).</summary>
-    public static DaliEnvelope FromEnvelope(Envelope env, int ownerId)
+    /// <summary>Map from Wolverine Envelope to AeroDBEnvelope (for incoming).</summary>
+    public static AeroDBEnvelope FromEnvelope(Envelope env, int ownerId)
     {
         var body = env.Data is { Length: > 0 } ? Convert.ToBase64String(env.Data) : string.Empty;
-        return new DaliEnvelope
+        return new AeroDBEnvelope
         {
             Id = env.Id.ToString(),
             Status = env.Status.ToString(),
@@ -103,11 +103,11 @@ public sealed class DaliEnvelope : Record
         };
     }
 
-    /// <summary>Map from Wolverine Envelope to DaliEnvelope (for outgoing).</summary>
-    public static DaliEnvelope FromOutgoingEnvelope(Envelope env, int ownerId)
+    /// <summary>Map from Wolverine Envelope to AeroDBEnvelope (for outgoing).</summary>
+    public static AeroDBEnvelope FromOutgoingEnvelope(Envelope env, int ownerId)
     {
         var body = env.Data is { Length: > 0 } ? Convert.ToBase64String(env.Data) : string.Empty;
-        return new DaliEnvelope
+        return new AeroDBEnvelope
         {
             Id = env.Id.ToString(),
             Status = EnvelopeStatus.Outgoing.ToString(),

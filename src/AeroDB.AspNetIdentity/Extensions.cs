@@ -9,10 +9,10 @@ namespace Microsoft.Extensions.DependencyInjection;
 /// Extension methods for registering AeroDB-backed ASP.NET Core Identity stores
 /// onto an <see cref="IdentityBuilder"/>.
 /// </summary>
-public static class DaliIdentityExtensions
+public static class AeroDBIdentityExtensions
 {
     /// <summary>
-    /// Registers <see cref="DaliUserStore{TUser, TRole}"/> and <see cref="DaliRoleStore{TRole}"/>
+    /// Registers <see cref="AeroDBUserStore{TUser, TRole}"/> and <see cref="AeroDBRoleStore{TRole}"/>
     /// with the identity system. Expects an <see cref="IDocumentStore"/> to already be
     /// registered in the service collection (as a singleton).
     /// </summary>
@@ -20,14 +20,14 @@ public static class DaliIdentityExtensions
     /// <typeparam name="TRole">The role type, must inherit from <see cref="IdentityRole"/>.</typeparam>
     /// <param name="builder">The <see cref="IdentityBuilder"/> from <c>AddIdentity</c> or <c>AddDefaultIdentity</c>.</param>
     /// <returns>The <see cref="IdentityBuilder"/> for chaining.</returns>
-    public static IdentityBuilder AddDaliStores<TUser, TRole>(this IdentityBuilder builder)
+    public static IdentityBuilder AddAeroDBStores<TUser, TRole>(this IdentityBuilder builder)
         where TUser : IdentityUser
         where TRole : IdentityRole
     {
         ArgumentNullException.ThrowIfNull(builder);
 
         return builder
-            .AddRoleStore<DaliRoleStore<TRole>>()
-            .AddUserStore<DaliUserStore<TUser, TRole>>();
+            .AddRoleStore<AeroDBRoleStore<TRole>>()
+            .AddUserStore<AeroDBUserStore<TUser, TRole>>();
     }
 }

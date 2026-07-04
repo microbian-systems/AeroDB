@@ -6,19 +6,19 @@ namespace AeroDB.WolverineFx.Internal;
 
 /// <summary>
 /// Shared helper for accessing <c>DocumentSession._appendedEvents</c>
-/// via reflection. Both <see cref="DaliEventForwarding"/> and
-/// <see cref="FlushOutgoingMessagesOnDaliCommit"/> need this same logic.
+/// via reflection. Both <see cref="AeroDBEventForwarding"/> and
+/// <see cref="FlushOutgoingMessagesOnAeroDBCommit"/> need this same logic.
 /// Consolidating here avoids duplicating the reflection code.
 ///
 /// A future AeroDB API (e.g., <c>DocumentSession.GetPendingAppendedEvents()</c>)
 /// would eliminate the need for reflection entirely.
 /// </summary>
-internal static class DaliSessionEventAccessor
+internal static class AeroDBSessionEventAccessor
 {
     private static readonly FieldInfo? AppendedEventsField;
     private static readonly FieldInfo? ValueTupleItem2Field;
 
-    static DaliSessionEventAccessor()
+    static AeroDBSessionEventAccessor()
     {
         AppendedEventsField = typeof(DocumentSession).GetField(
             "_appendedEvents", BindingFlags.NonPublic | BindingFlags.Instance);

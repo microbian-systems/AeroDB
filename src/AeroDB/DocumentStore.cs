@@ -8,7 +8,7 @@ using AeroDB.LiveQuery;
 
 namespace AeroDB;
 
-/// <summary>The concrete implementation of <see cref="IDocumentStore"/>. Manages a SurrealDB connection, schema initialization, projection lifecycle, and session factory. Created via <see cref="Documents.For"/> or the <c>AddDali()</c> DI extension.</summary>
+/// <summary>The concrete implementation of <see cref="IDocumentStore"/>. Manages a SurrealDB connection, schema initialization, projection lifecycle, and session factory. Created via <see cref="Documents.For"/> or the <c>AddAeroDB()</c> DI extension.</summary>
 public class DocumentStore : IDocumentStore, ISessionFactory
 {
     private readonly ILogger<DocumentStore> _logger;
@@ -29,8 +29,8 @@ public class DocumentStore : IDocumentStore, ISessionFactory
     public ISurrealDbClient Client => _client
         ?? throw new InvalidOperationException("Store not initialized. Call InitializeAsync first.");
 
-    private IDaliAdvanced? _advanced;
-    public IDaliAdvanced Advanced => _advanced ??= new DaliAdvanced(Client, Options);
+    private IAeroDBAdvanced? _advanced;
+    public IAeroDBAdvanced Advanced => _advanced ??= new AeroDBAdvanced(Client, Options);
 
     /// <summary>
     /// Async daemon for background projection processing, if events are enabled
@@ -72,14 +72,14 @@ public class DocumentStore : IDocumentStore, ISessionFactory
         {
             _tenantSelector = new DatabasePerTenantSelector(Options);
 
-            // Apply IConfigureDali modules (manual Configurators list)
+            // Apply IConfigureAeroDB modules (manual Configurators list)
             foreach (var configurator in Options.Configurators)
                 configurator.Configure(Options.ServiceProvider, Options);
 
-            // Auto-discover and apply IConfigureDali from DI (if ServiceProvider is set)
+            // Auto-discover and apply IConfigureAeroDB from DI (if ServiceProvider is set)
             await ApplyDiscoveredConfigurators(Options, ct).ConfigureAwait(false);
 
-            // Apply IAsyncConfigureDali modules
+            // Apply IAsyncConfigureAeroDB modules
             foreach (var asyncConfigurator in Options.AsyncConfigurators)
                 await asyncConfigurator.ConfigureAsync(Options, ct).ConfigureAwait(false);
 
@@ -110,7 +110,7 @@ public class DocumentStore : IDocumentStore, ISessionFactory
         if (Options.ClientFactory is not null)
         {
             _client = Options.ClientFactory();
-            DaliCborOptions.ConfigureClient(_client);
+            AeroDBCborOptions.ConfigureClient(_client);
             await _client.Connect(ct).ConfigureAwait(false);
             await _client.Use(ns, db, ct).ConfigureAwait(false);
         }
@@ -130,7 +130,7 @@ public class DocumentStore : IDocumentStore, ISessionFactory
 
             _client = new SurrealDbClient(
                 surrealOptions,
-                configureCborOptions: DaliCborOptions.Configure);
+                configureCborOptions: AeroDBCborOptions.Configure);
             await _client.Connect(ct).ConfigureAwait(false);
             await _client.Use(ns, db, ct).ConfigureAwait(false);
         }
@@ -144,14 +144,14 @@ public class DocumentStore : IDocumentStore, ISessionFactory
             return await _client.CreateSession(ct).ConfigureAwait(false);
         };
 
-        // Apply IConfigureDali modules (manual Configurators list)
+        // Apply IConfigureAeroDB modules (manual Configurators list)
         foreach (var configurator in Options.Configurators)
             configurator.Configure(Options.ServiceProvider, Options);
 
-        // Auto-discover and apply IConfigureDali from DI (if ServiceProvider is set)
+        // Auto-discover and apply IConfigureAeroDB from DI (if ServiceProvider is set)
         await ApplyDiscoveredConfigurators(Options, ct).ConfigureAwait(false);
 
-        // Apply IAsyncConfigureDali modules (async config, e.g. satellite assemblies)
+        // Apply IAsyncConfigureAeroDB modules (async config, e.g. satellite assemblies)
         foreach (var asyncConfigurator in Options.AsyncConfigurators)
             await asyncConfigurator.ConfigureAsync(Options, ct).ConfigureAwait(false);
 
@@ -637,10 +637,10 @@ public class DocumentStore : IDocumentStore, ISessionFactory
         foreach (var c in options.AsyncConfigurators)
             manualAsyncConfiguratorTypes.Add(c.GetType());
 
-        // Resolve IConfigureDali implementations from DI and apply them,
+        // Resolve IConfigureAeroDB implementations from DI and apply them,
         // skipping types already in the manual Configurators list.
-        var diConfigurators = options.ServiceProvider.GetService(typeof(IEnumerable<IConfigureDali>))
-            as IEnumerable<IConfigureDali>;
+        var diConfigurators = options.ServiceProvider.GetService(typeof(IEnumerable<IConfigureAeroDB>))
+            as IEnumerable<IConfigureAeroDB>;
         if (diConfigurators is not null)
         {
             foreach (var configurator in diConfigurators)
@@ -651,9 +651,9 @@ public class DocumentStore : IDocumentStore, ISessionFactory
             }
         }
 
-        // Same for IAsyncConfigureDali
-        var diAsyncConfigurators = options.ServiceProvider.GetService(typeof(IEnumerable<IAsyncConfigureDali>))
-            as IEnumerable<IAsyncConfigureDali>;
+        // Same for IAsyncConfigureAeroDB
+        var diAsyncConfigurators = options.ServiceProvider.GetService(typeof(IEnumerable<IAsyncConfigureAeroDB>))
+            as IEnumerable<IAsyncConfigureAeroDB>;
         if (diAsyncConfigurators is not null)
         {
             foreach (var asyncCfg in diAsyncConfigurators)
@@ -759,7 +759,7 @@ public class DocumentStore : IDocumentStore, ISessionFactory
     }
 }
 
-/// <summary>Static factory class for creating document stores. Use <c>Documents.For(configure)</c> for programmatic setup, or <c>services.AddDali(configure)</c> for dependency injection integration.</summary>
+/// <summary>Static factory class for creating document stores. Use <c>Documents.For(configure)</c> for programmatic setup, or <c>services.AddAeroDB(configure)</c> for dependency injection integration.</summary>
 public static class Documents
 {
     public static IDocumentStore For(Action<StoreOptions> configure)

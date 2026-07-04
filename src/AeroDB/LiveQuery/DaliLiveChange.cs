@@ -2,8 +2,8 @@ using SurrealDb.Net.Models.LiveQuery;
 
 namespace AeroDB.LiveQuery;
 
-public sealed record DaliLiveChange<T>(
-    DaliLiveAction Action,
+public sealed record AeroDBLiveChange<T>(
+    AeroDBLiveAction Action,
     string? Id,
     T? Document,
     SurrealDbLiveQueryClosureReason? ClosureReason = null);

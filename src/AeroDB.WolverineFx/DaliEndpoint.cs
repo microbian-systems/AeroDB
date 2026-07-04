@@ -10,15 +10,15 @@ namespace AeroDB.WolverineFx;
 
 /// <summary>
 /// AeroDB endpoint backed by SurrealDB message storage.
-/// Creates <see cref="DaliQueueListener"/> and <see cref="DaliQueueSender"/>
+/// Creates <see cref="AeroDBQueueListener"/> and <see cref="AeroDBQueueSender"/>
 /// for message processing.
 /// </summary>
-public sealed class DaliEndpoint : Endpoint
+public sealed class AeroDBEndpoint : Endpoint
 {
     /// <summary>
     /// Configure the endpoint with the given URI.
     /// </summary>
-    public DaliEndpoint(Uri uri) : base(uri, EndpointRole.Application)
+    public AeroDBEndpoint(Uri uri) : base(uri, EndpointRole.Application)
     {
         Mode = EndpointMode.Durable;
         BrokerRole = "queue";
@@ -30,9 +30,9 @@ public sealed class DaliEndpoint : Endpoint
     public override async ValueTask<IListener> BuildListenerAsync(IWolverineRuntime runtime, IReceiver receiver)
     {
         var store = ResolveStore(runtime);
-        var options = new DaliTransportOptions();
-        var logger = runtime.LoggerFactory.CreateLogger<DaliQueueListener>();
-        var listener = new DaliQueueListener(store, receiver, options, logger, Uri);
+        var options = new AeroDBTransportOptions();
+        var logger = runtime.LoggerFactory.CreateLogger<AeroDBQueueListener>();
+        var listener = new AeroDBQueueListener(store, receiver, options, logger, Uri);
         await listener.StartAsync();
         return listener;
     }
@@ -43,7 +43,7 @@ public sealed class DaliEndpoint : Endpoint
     protected override ISender CreateSender(IWolverineRuntime runtime)
     {
         var store = ResolveStore(runtime);
-        return new DaliQueueSender(store, Uri);
+        return new AeroDBQueueSender(store, Uri);
     }
 
     /// <summary>
@@ -54,16 +54,16 @@ public sealed class DaliEndpoint : Endpoint
         return mode is EndpointMode.Durable or EndpointMode.BufferedInMemory;
     }
 
-    private static DaliMessageStore ResolveStore(IWolverineRuntime runtime)
+    private static AeroDBMessageStore ResolveStore(IWolverineRuntime runtime)
     {
         // Try ancillary store first, then main store, then DI fallback
-        var ancillary = runtime.Stores.FindAncillaryStore(typeof(DaliMessageStore));
-        if (ancillary is DaliMessageStore dms)
+        var ancillary = runtime.Stores.FindAncillaryStore(typeof(AeroDBMessageStore));
+        if (ancillary is AeroDBMessageStore dms)
             return dms;
 
-        if (runtime.Stores.Main is DaliMessageStore mainStore)
+        if (runtime.Stores.Main is AeroDBMessageStore mainStore)
             return mainStore;
 
-        return (DaliMessageStore)runtime.Services.GetRequiredService(typeof(IMessageStore));
+        return (AeroDBMessageStore)runtime.Services.GetRequiredService(typeof(IMessageStore));
     }
 }

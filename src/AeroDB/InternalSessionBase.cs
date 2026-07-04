@@ -879,8 +879,8 @@ public abstract class InternalSessionBase : IAsyncDisposable
     /// <inheritdoc />
     public IAsyncEnumerable<T> StreamAsync<T>(string sql, IReadOnlyDictionary<string, object?>? parameters = null, CancellationToken ct = default) where T : class
     {
-        // Delegate to the existing DaliAdvancedSql implementation
-        return new DaliAdvancedSql(this).StreamAsync<T>(sql, parameters, ct);
+        // Delegate to the existing AeroDBAdvancedSql implementation
+        return new AeroDBAdvancedSql(this).StreamAsync<T>(sql, parameters, ct);
     }
 
     /// <inheritdoc />

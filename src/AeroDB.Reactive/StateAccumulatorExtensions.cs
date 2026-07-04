@@ -1,4 +1,4 @@
-namespace Dali;
+namespace AeroDB;
 
 using System.Reactive.Linq;
 using AeroDB.LiveQuery;
@@ -10,7 +10,7 @@ public static class StateAccumulatorExtensions
     /// Emits the FINAL accumulated state once the source completes.
     /// </summary>
     public static IObservable<IDictionary<string, T>> AggregateRecords<T>(
-        this IObservable<DaliLiveChange<T>> source,
+        this IObservable<AeroDBLiveChange<T>> source,
         IDictionary<string, T> seed) where T : class
     {
         ArgumentNullException.ThrowIfNull(source);
@@ -24,7 +24,7 @@ public static class StateAccumulatorExtensions
     /// Emits the accumulated state after EVERY event (incremental).
     /// </summary>
     public static IObservable<IDictionary<string, T>> ScanRecords<T>(
-        this IObservable<DaliLiveChange<T>> source,
+        this IObservable<AeroDBLiveChange<T>> source,
         IDictionary<string, T> seed) where T : class
     {
         ArgumentNullException.ThrowIfNull(source);
@@ -35,17 +35,17 @@ public static class StateAccumulatorExtensions
 
     private static IDictionary<string, T> AccumulateRecord<T>(
         IDictionary<string, T> acc,
-        DaliLiveChange<T> change) where T : class
+        AeroDBLiveChange<T> change) where T : class
     {
         switch (change.Action)
         {
-            case DaliLiveAction.Created when change.Id is not null && change.Document is not null:
+            case AeroDBLiveAction.Created when change.Id is not null && change.Document is not null:
                 acc[change.Id] = change.Document;
                 break;
-            case DaliLiveAction.Updated when change.Id is not null && change.Document is not null:
+            case AeroDBLiveAction.Updated when change.Id is not null && change.Document is not null:
                 acc[change.Id] = change.Document;
                 break;
-            case DaliLiveAction.Deleted when change.Id is not null:
+            case AeroDBLiveAction.Deleted when change.Id is not null:
                 acc.Remove(change.Id);
                 break;
         }

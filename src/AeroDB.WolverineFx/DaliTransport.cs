@@ -10,14 +10,14 @@ namespace AeroDB.WolverineFx;
 
 /// <summary>
 /// AeroDB-backed transport for Wolverine using SurrealDB as the message store.
-/// Registers the "dali://" protocol scheme and creates DaliEndpoint instances.
+/// Registers the "AeroDB://" protocol scheme and creates AeroDBEndpoint instances.
 /// </summary>
-public sealed class DaliTransport : ITransport
+public sealed class AeroDBTransport : ITransport
 {
-    private readonly Dictionary<Uri, DaliEndpoint> _endpoints = new();
+    private readonly Dictionary<Uri, AeroDBEndpoint> _endpoints = new();
 
     /// <summary>The protocol scheme for this transport.</summary>
-    public string Protocol => "dali";
+    public string Protocol => "AeroDB";
 
     /// <summary>Diagnostic name.</summary>
     public string Name => "AeroDB SurrealDB Transport";
@@ -34,7 +34,7 @@ public sealed class DaliTransport : ITransport
         {
             if (!_endpoints.TryGetValue(uri, out var endpoint))
             {
-                endpoint = new DaliEndpoint(uri);
+                endpoint = new AeroDBEndpoint(uri);
                 _endpoints[uri] = endpoint;
             }
 
@@ -62,7 +62,7 @@ public sealed class DaliTransport : ITransport
         }
     }
 
-    /// <summary>Initialize the transport. Schema is managed by DaliMessageStore.</summary>
+    /// <summary>Initialize the transport. Schema is managed by AeroDBMessageStore.</summary>
     public ValueTask InitializeAsync(IWolverineRuntime runtime) => ValueTask.CompletedTask;
 
     /// <summary>
@@ -71,7 +71,7 @@ public sealed class DaliTransport : ITransport
     public WolverineTransportHealthCheck? BuildHealthCheck(IWolverineRuntime runtime)
     {
         var store = runtime.Services.GetRequiredService<IDocumentStore>();
-        return new DaliHealthCheck(store);
+        return new AeroDBHealthCheck(store);
     }
 
     /// <summary>No stateful resource to build.</summary>

@@ -4,7 +4,7 @@ namespace AeroDB;
 
 /// <summary>
 /// Wraps the <see cref="AsyncDaemon"/> in an <see cref="IHostedService"/>
-/// for automatic lifecycle management. Registered in DI by <c>AddDali()</c>.
+/// for automatic lifecycle management. Registered in DI by <c>AddAeroDB()</c>.
 /// </summary>
 public class ProjectionCoordinator : IProjectionCoordinator
 {

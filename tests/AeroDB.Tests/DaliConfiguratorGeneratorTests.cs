@@ -10,10 +10,10 @@ using TUnit.Core;
 
 namespace AeroDB.Tests;
 
-public class DaliConfiguratorGeneratorTests
+public class AeroDBConfiguratorGeneratorTests
 {
     /// <summary>
-    /// Runs the <see cref="DaliConfiguratorGenerator"/> in-process over the given
+    /// Runs the <see cref="AeroDBConfiguratorGenerator"/> in-process over the given
     /// C# source snippets and returns the generator driver result.
     /// </summary>
     /// <param name="sources">One or more C# source code strings.</param>
@@ -46,15 +46,15 @@ public class DaliConfiguratorGeneratorTests
             references,
             new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
 
-        var generator = new DaliConfiguratorGenerator();
+        var generator = new AeroDBConfiguratorGenerator();
         var driver = CSharpGeneratorDriver.Create(generator);
         return driver.RunGenerators(compilation).GetRunResult();
     }
 
-    // ── Test 1: IConfigureDali discovery ──────────────────────────────────────
+    // ── Test 1: IConfigureAeroDB discovery ──────────────────────────────────────
 
     [Test]
-    public void Generator_discovers_IConfigureDali_implementation()
+    public void Generator_discovers_IConfigureAeroDB_implementation()
     {
         var source = @"
 using System;
@@ -62,7 +62,7 @@ using AeroDB;
 
 namespace AeroDB
 {
-    public interface IConfigureDali
+    public interface IConfigureAeroDB
     {
         void Configure(StoreOptions options);
     }
@@ -70,7 +70,7 @@ namespace AeroDB
     public class StoreOptions { }
 }
 
-public class MyConfigurator : AeroDB.IConfigureDali
+public class MyConfigurator : AeroDB.IConfigureAeroDB
 {
     public void Configure(AeroDB.StoreOptions options) { }
 }
@@ -80,18 +80,18 @@ public class MyConfigurator : AeroDB.IConfigureDali
         result.GeneratedTrees.Length.ShouldBeGreaterThan(0);
         var generatedCode = result.GeneratedTrees[0].ToString();
 
-        // Should contain AddDiscoveredDaliConfigurators method
-        generatedCode.ShouldContain("AddDiscoveredDaliConfigurators");
+        // Should contain AddDiscoveredAeroDBConfigurators method
+        generatedCode.ShouldContain("AddDiscoveredAeroDBConfigurators");
         // Should register our configurator
         generatedCode.ShouldContain("MyConfigurator");
         // Should be in the right namespace
         generatedCode.ShouldContain("namespace AeroDB.Generated");
     }
 
-    // ── Test 2: IAsyncConfigureDali discovery ─────────────────────────────────
+    // ── Test 2: IAsyncConfigureAeroDB discovery ─────────────────────────────────
 
     [Test]
-    public void Generator_discovers_IAsyncConfigureDali_implementation()
+    public void Generator_discovers_IAsyncConfigureAeroDB_implementation()
     {
         var source = @"
 using System;
@@ -101,7 +101,7 @@ using AeroDB;
 
 namespace AeroDB
 {
-    public interface IAsyncConfigureDali
+    public interface IAsyncConfigureAeroDB
     {
         Task ConfigureAsync(StoreOptions options, CancellationToken ct = default);
     }
@@ -109,7 +109,7 @@ namespace AeroDB
     public class StoreOptions { }
 }
 
-public class MyAsyncConfigurator : AeroDB.IAsyncConfigureDali
+public class MyAsyncConfigurator : AeroDB.IAsyncConfigureAeroDB
 {
     public Task ConfigureAsync(AeroDB.StoreOptions options, CancellationToken ct) => Task.CompletedTask;
 }
@@ -118,9 +118,9 @@ public class MyAsyncConfigurator : AeroDB.IAsyncConfigureDali
 
         result.GeneratedTrees.Length.ShouldBeGreaterThan(0);
         var generatedCode = result.GeneratedTrees[0].ToString();
-        generatedCode.ShouldContain("AddDiscoveredDaliConfigurators");
+        generatedCode.ShouldContain("AddDiscoveredAeroDBConfigurators");
         generatedCode.ShouldContain("MyAsyncConfigurator");
-        generatedCode.ShouldContain("IAsyncConfigureDali");
+        generatedCode.ShouldContain("IAsyncConfigureAeroDB");
     }
 
     // ── Test 3: Abstract class filtering ─────────────────────────────────────
@@ -134,16 +134,16 @@ using AeroDB;
 
 namespace AeroDB
 {
-    public interface IConfigureDali { void Configure(StoreOptions options); }
+    public interface IConfigureAeroDB { void Configure(StoreOptions options); }
     public class StoreOptions { }
 }
 
-public abstract class AbstractConfigurator : AeroDB.IConfigureDali
+public abstract class AbstractConfigurator : AeroDB.IConfigureAeroDB
 {
     public abstract void Configure(AeroDB.StoreOptions options);
 }
 
-public class ConcreteConfigurator : AeroDB.IConfigureDali
+public class ConcreteConfigurator : AeroDB.IConfigureAeroDB
 {
     public void Configure(AeroDB.StoreOptions options) { }
 }
@@ -167,17 +167,17 @@ using AeroDB;
 
 namespace AeroDB
 {
-    public interface IConfigureDali { void Configure(StoreOptions options); }
+    public interface IConfigureAeroDB { void Configure(StoreOptions options); }
     public class StoreOptions { }
 }
 
-public class NotAConfigurator { } // Does NOT implement IConfigureDali
+public class NotAConfigurator { } // Does NOT implement IConfigureAeroDB
 ";
         var result = RunGenerator(source);
         var generatedCode = result.GeneratedTrees[0].ToString();
 
         // Should still generate the class but with empty registration
-        generatedCode.ShouldContain("AddDiscoveredDaliConfigurators");
+        generatedCode.ShouldContain("AddDiscoveredAeroDBConfigurators");
         generatedCode.ShouldContain("return services;"); // Just returns
         generatedCode.ShouldNotContain("AddSingleton"); // No registrations
     }
@@ -193,11 +193,11 @@ using AeroDB;
 
 namespace AeroDB
 {
-    public interface IConfigureDali { void Configure(StoreOptions options); }
+    public interface IConfigureAeroDB { void Configure(StoreOptions options); }
     public class StoreOptions { }
 }
 
-public class TestConfig : AeroDB.IConfigureDali
+public class TestConfig : AeroDB.IConfigureAeroDB
 {
     public void Configure(AeroDB.StoreOptions options) { }
 }
@@ -206,7 +206,7 @@ public class TestConfig : AeroDB.IConfigureDali
         var generatedCode = result.GeneratedTrees[0].ToString();
 
         // Compile the user source + generated code together so all type
-        // references (e.g. global::AeroDB.IConfigureDali) resolve correctly.
+        // references (e.g. global::AeroDB.IConfigureAeroDB) resolve correctly.
         var syntaxTrees = new[]
         {
             CSharpSyntaxTree.ParseText(source, new CSharpParseOptions(LanguageVersion.Latest)),

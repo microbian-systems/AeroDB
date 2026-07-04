@@ -13,25 +13,25 @@ namespace AeroDB.WolverineFx;
 
 /// <summary>
 /// Background service that polls the AeroDB event store and dispatches new events
-/// to registered subscriptions via <see cref="DaliSubscriptionRunner"/>.
+/// to registered subscriptions via <see cref="AeroDBSubscriptionRunner"/>.
 /// </summary>
-internal class DaliSubscriptionHostedService : IHostedService, IAsyncDisposable
+internal class AeroDBSubscriptionHostedService : IHostedService, IAsyncDisposable
 {
     private readonly IServiceProvider _services;
-    private readonly ILogger<DaliSubscriptionHostedService> _logger;
+    private readonly ILogger<AeroDBSubscriptionHostedService> _logger;
     private readonly List<SubscriptionState> _states = new();
     private readonly object _lock = new();
     private CancellationTokenSource? _cts;
     private Task? _runTask;
     private bool _disposed;
 
-    public DaliSubscriptionHostedService(
+    public AeroDBSubscriptionHostedService(
         IServiceProvider services,
-        IEnumerable<DaliSubscriptionRunner> runners,
-        ILogger<DaliSubscriptionHostedService>? logger = null)
+        IEnumerable<AeroDBSubscriptionRunner> runners,
+        ILogger<AeroDBSubscriptionHostedService>? logger = null)
     {
         _services = services;
-        _logger = logger ?? NullLogger<DaliSubscriptionHostedService>.Instance;
+        _logger = logger ?? NullLogger<AeroDBSubscriptionHostedService>.Instance;
 
         foreach (var runner in runners)
         {
@@ -107,7 +107,7 @@ internal class DaliSubscriptionHostedService : IHostedService, IAsyncDisposable
 
                     try
                     {
-                        var controller = new DaliSubscriptionController(_logger);
+                        var controller = new AeroDBSubscriptionController(_logger);
                         await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }, ct);
                         await state.Runner.ProcessBatchAsync(range, controller, session, ct);
                         // Track global sequence (not version) for polling semantics
@@ -138,13 +138,13 @@ internal class DaliSubscriptionHostedService : IHostedService, IAsyncDisposable
         long baseVersion)
     {
         var events = rawEvents
-            .Select(e => new DaliEnvelopeEvent(e.Data, e.StreamId, e.Version) as JasperFx.Events.IEvent)
+            .Select(e => new AeroDBEnvelopeEvent(e.Data, e.StreamId, e.Version) as JasperFx.Events.IEvent)
             .ToList();
 
         var minVersion = rawEvents.Count > 0 ? rawEvents.Min(e => e.Version) : baseVersion + 1;
         var maxVersion = rawEvents.Count > 0 ? rawEvents.Max(e => e.Version) : baseVersion;
 
-        var shardName = new ShardName("dali-subscriptions");
+        var shardName = new ShardName("AeroDB-subscriptions");
 
         var range = new EventRange(shardName, minVersion, maxVersion, agent: null!);
         range.Events = events;
@@ -165,11 +165,11 @@ internal class DaliSubscriptionHostedService : IHostedService, IAsyncDisposable
 
     private sealed class SubscriptionState
     {
-        public DaliSubscriptionRunner Runner { get; }
+        public AeroDBSubscriptionRunner Runner { get; }
         public AsyncOptions Options { get; }
         public long HighWaterSequence { get; set; }
 
-        public SubscriptionState(DaliSubscriptionRunner runner, AsyncOptions options)
+        public SubscriptionState(AeroDBSubscriptionRunner runner, AsyncOptions options)
         {
             Runner = runner;
             Options = options;
@@ -180,14 +180,14 @@ internal class DaliSubscriptionHostedService : IHostedService, IAsyncDisposable
     /// Simple in-process implementation of ISubscriptionController for the daemon.
     /// Logs dead letter events and critical failures.
     /// </summary>
-    private sealed class DaliSubscriptionController : ISubscriptionController
+    private sealed class AeroDBSubscriptionController : ISubscriptionController
     {
         private readonly ILogger _logger;
 
-        public DaliSubscriptionController(ILogger logger) => _logger = logger;
+        public AeroDBSubscriptionController(ILogger logger) => _logger = logger;
 
         public ErrorHandlingOptions ErrorOptions { get; set; } = new();
-        public ShardName Name { get; } = new("dali-daemon");
+        public ShardName Name { get; } = new("AeroDB-daemon");
         public ShardExecutionMode Mode => ShardExecutionMode.Continuous;
         public AsyncOptions Options { get; } = new();
 
@@ -221,12 +221,12 @@ internal class DaliSubscriptionHostedService : IHostedService, IAsyncDisposable
 /// <summary>
 /// Minimal IEvent implementation for wrapping raw AeroDB events into JasperFx EventRange.
 /// </summary>
-internal sealed class DaliEnvelopeEvent : JasperFx.Events.IEvent
+internal sealed class AeroDBEnvelopeEvent : JasperFx.Events.IEvent
 {
     private readonly Dictionary<string, object?> _headers = new();
     private List<EventTag>? _tags;
 
-    public DaliEnvelopeEvent(object data, string streamId, long version)
+    public AeroDBEnvelopeEvent(object data, string streamId, long version)
     {
         Data = data ?? throw new ArgumentNullException(nameof(data));
         StreamId = Guid.TryParse(streamId, out var g) ? g : Guid.Empty;

@@ -48,7 +48,7 @@
     - HostModuleCatalogGenerator: activates when ModuleManifestProviderAttribute assembly
       attributes are detected on referenced assemblies (naturally only in Aero.Cms.Web)
   -->
-	<!-- ItemGroup Condition="'$(MSBuildProjectName)' != 'Aero.Cms.SourceGenerators' AND '$(MSBuildProjectName)' != 'Dali.SourceGenerators' AND '$(MSBuildProjectName)' != 'Dali' AND '$(MSBuildProjectName)' != 'Dali.WolverineFx' AND '$(MSBuildProjectName)' != 'Dali.AspNetIdentity' AND '$(MSBuildProjectName)' != 'Dali.EntityFrameworkCore' AND '$(MSBuildProjectName)' != 'Dali.Tests'">
+	<!-- ItemGroup Condition="'$(MSBuildProjectName)' != 'Aero.Cms.SourceGenerators' AND '$(MSBuildProjectName)' != 'AeroDB.SourceGenerators' AND '$(MSBuildProjectName)' != 'AeroDB' AND '$(MSBuildProjectName)' != 'AeroDB.WolverineFx' AND '$(MSBuildProjectName)' != 'AeroDB.AspNetIdentity' AND '$(MSBuildProjectName)' != 'AeroDB.EntityFrameworkCore' AND '$(MSBuildProjectName)' != 'AeroDB.Tests'">
 		<ProjectReference Include="$(MSBuildThisFileDirectory)Aero.Cms.SourceGenerators\Aero.Cms.SourceGenerators.csproj"
 			OutputItemType="Analyzer"
 			ReferenceOutputAssembly="false" />

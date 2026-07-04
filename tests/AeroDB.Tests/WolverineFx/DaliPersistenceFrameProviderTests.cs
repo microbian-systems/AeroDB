@@ -15,12 +15,12 @@ using Wolverine.Persistence.Sagas;
 using Wolverine.Runtime.Handlers;
 
 /// <summary>
-/// Pure unit tests for <see cref="DaliPersistenceFrameProvider"/>.
+/// Pure unit tests for <see cref="AeroDBPersistenceFrameProvider"/>.
 /// No Wolverine runtime, no SurrealDB — only NSubstitute mocks.
 /// </summary>
-public class DaliPersistenceFrameProviderTests
+public class AeroDBPersistenceFrameProviderTests
 {
-    private readonly DaliPersistenceFrameProvider _provider = new();
+    private readonly AeroDBPersistenceFrameProvider _provider = new();
     private readonly IServiceContainer _container = Substitute.For<IServiceContainer>();
 
     // ====================================================================
@@ -64,7 +64,7 @@ public class DaliPersistenceFrameProviderTests
     }
 
     [Test]
-    public void CanApply_ReturnsFalse_ForChainWithoutDaliDependencies()
+    public void CanApply_ReturnsFalse_ForChainWithoutAeroDBDependencies()
     {
         // Arrange
         var chain = Substitute.For<IChain>();
@@ -104,7 +104,7 @@ public class DaliPersistenceFrameProviderTests
     // ====================================================================
 
     [Test]
-    public void ApplyTransactionSupport_ForNonSagaChain_AddsOpenDaliSessionMiddleware()
+    public void ApplyTransactionSupport_ForNonSagaChain_AddsOpenAeroDBSessionMiddleware()
     {
         // Arrange
         var chain = Substitute.For<IChain>();
@@ -115,7 +115,7 @@ public class DaliPersistenceFrameProviderTests
         _provider.ApplyTransactionSupport(chain, _container);
 
         // Assert
-        chain.Middleware.ShouldContain(f => f is OpenDaliSessionFrame);
+        chain.Middleware.ShouldContain(f => f is OpenAeroDBSessionFrame);
     }
 
     [Test]
@@ -130,7 +130,7 @@ public class DaliPersistenceFrameProviderTests
         _provider.ApplyTransactionSupport(chain, _container);
 
         // Assert
-        chain.Postprocessors.ShouldContain(f => f is DaliSessionSaveChangesFrame);
+        chain.Postprocessors.ShouldContain(f => f is AeroDBSessionSaveChangesFrame);
     }
 
     [Test]
@@ -145,15 +145,15 @@ public class DaliPersistenceFrameProviderTests
         _provider.ApplyTransactionSupport(chain, _container);
 
         // Assert
-        chain.Postprocessors.ShouldContain(f => f is FlushDaliOutgoingMessagesFrame);
+        chain.Postprocessors.ShouldContain(f => f is FlushAeroDBOutgoingMessagesFrame);
     }
 
     [Test]
     public void ApplyTransactionSupport_ForNonSagaChain_DoesNotDuplicateMiddleware()
     {
-        // Arrange: pre-add an OpenDaliSessionFrame
+        // Arrange: pre-add an OpenAeroDBSessionFrame
         var chain = Substitute.For<IChain>();
-        var middleware = new List<Frame> { new OpenDaliSessionFrame(Substitute.For<IChain>()) };
+        var middleware = new List<Frame> { new OpenAeroDBSessionFrame(Substitute.For<IChain>()) };
         chain.Middleware.Returns(middleware);
         chain.Postprocessors.Returns([]);
 
@@ -161,7 +161,7 @@ public class DaliPersistenceFrameProviderTests
         _provider.ApplyTransactionSupport(chain, _container);
 
         // Assert
-        chain.Middleware.Count(f => f is OpenDaliSessionFrame).ShouldBe(1);
+        chain.Middleware.Count(f => f is OpenAeroDBSessionFrame).ShouldBe(1);
     }
 
     [Test]
@@ -172,8 +172,8 @@ public class DaliPersistenceFrameProviderTests
         chain.Middleware.Returns([]);
         var postprocessors = new List<Frame>
         {
-            new DaliSessionSaveChangesFrame(),
-            new FlushDaliOutgoingMessagesFrame()
+            new AeroDBSessionSaveChangesFrame(),
+            new FlushAeroDBOutgoingMessagesFrame()
         };
         chain.Postprocessors.Returns(postprocessors);
 
@@ -181,8 +181,8 @@ public class DaliPersistenceFrameProviderTests
         _provider.ApplyTransactionSupport(chain, _container);
 
         // Assert: no duplicates added
-        chain.Postprocessors.Count(f => f is DaliSessionSaveChangesFrame).ShouldBe(1);
-        chain.Postprocessors.Count(f => f is FlushDaliOutgoingMessagesFrame).ShouldBe(1);
+        chain.Postprocessors.Count(f => f is AeroDBSessionSaveChangesFrame).ShouldBe(1);
+        chain.Postprocessors.Count(f => f is FlushAeroDBOutgoingMessagesFrame).ShouldBe(1);
     }
 
     // ====================================================================
@@ -199,13 +199,13 @@ public class DaliPersistenceFrameProviderTests
         // Act
         _provider.ApplyTransactionSupport(sagaChain, _container);
 
-        // Assert: no DaliSessionSaveChangesFrame or FlushDaliOutgoingMessagesFrame added
-        sagaChain.Postprocessors.ShouldNotContain(f => f is DaliSessionSaveChangesFrame);
-        sagaChain.Postprocessors.ShouldNotContain(f => f is FlushDaliOutgoingMessagesFrame);
+        // Assert: no AeroDBSessionSaveChangesFrame or FlushAeroDBOutgoingMessagesFrame added
+        sagaChain.Postprocessors.ShouldNotContain(f => f is AeroDBSessionSaveChangesFrame);
+        sagaChain.Postprocessors.ShouldNotContain(f => f is FlushAeroDBOutgoingMessagesFrame);
     }
 
     [Test]
-    public void ApplyTransactionSupport_ForSagaChain_AddsOpenDaliSessionMiddleware()
+    public void ApplyTransactionSupport_ForSagaChain_AddsOpenAeroDBSessionMiddleware()
     {
         // Arrange
         var sagaChain = CreateMinimalSagaChain();
@@ -214,7 +214,7 @@ public class DaliPersistenceFrameProviderTests
         _provider.ApplyTransactionSupport(sagaChain, _container);
 
         // Assert
-        sagaChain.Middleware.ShouldContain(f => f is OpenDaliSessionFrame);
+        sagaChain.Middleware.ShouldContain(f => f is OpenAeroDBSessionFrame);
     }
 
     // ====================================================================
@@ -233,9 +233,9 @@ public class DaliPersistenceFrameProviderTests
         _provider.ApplyTransactionSupport(chain, _container, typeof(object));
 
         // Assert: same frames added as the non-entity overload
-        chain.Middleware.ShouldContain(f => f is OpenDaliSessionFrame);
-        chain.Postprocessors.ShouldContain(f => f is DaliSessionSaveChangesFrame);
-        chain.Postprocessors.ShouldContain(f => f is FlushDaliOutgoingMessagesFrame);
+        chain.Middleware.ShouldContain(f => f is OpenAeroDBSessionFrame);
+        chain.Postprocessors.ShouldContain(f => f is AeroDBSessionSaveChangesFrame);
+        chain.Postprocessors.ShouldContain(f => f is FlushAeroDBOutgoingMessagesFrame);
     }
 
     // ====================================================================
@@ -306,7 +306,7 @@ public class DaliPersistenceFrameProviderTests
     // ====================================================================
 
     [Test]
-    public void CommitUnitOfWorkFrame_ReturnsDaliSessionSaveChangesFrame()
+    public void CommitUnitOfWorkFrame_ReturnsAeroDBSessionSaveChangesFrame()
     {
         // Arrange
         var saga = new Variable(typeof(object), "saga");
@@ -315,7 +315,7 @@ public class DaliPersistenceFrameProviderTests
         var frame = _provider.CommitUnitOfWorkFrame(saga, _container);
 
         // Assert
-        frame.ShouldBeOfType<DaliSessionSaveChangesFrame>();
+        frame.ShouldBeOfType<AeroDBSessionSaveChangesFrame>();
     }
 
     // ====================================================================

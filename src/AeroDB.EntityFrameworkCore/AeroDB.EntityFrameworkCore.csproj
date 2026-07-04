@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Description>EF Core bridge for Dali — coordinated transactions between SurrealDB (Dali) and Entity Framework Core</Description>
+    <Description>EF Core bridge for AeroDB — coordinated transactions between SurrealDB (AeroDB) and Entity Framework Core</Description>
     <PackageTags>surrealdb documentdb efcore bridge</PackageTags>
   </PropertyGroup>
   <ItemGroup>

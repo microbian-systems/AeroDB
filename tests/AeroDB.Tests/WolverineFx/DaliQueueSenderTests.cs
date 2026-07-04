@@ -10,18 +10,18 @@ using Wolverine;
 using Wolverine.Transports.Sending;
 
 /// <summary>
-/// Mock-based unit tests for <see cref="DaliQueueSender"/>.
-/// DaliMessageStore and SurrealDbResponse are sealed — tests create real
+/// Mock-based unit tests for <see cref="AeroDBQueueSender"/>.
+/// AeroDBMessageStore and SurrealDbResponse are sealed — tests create real
 /// store instances with a mocked ISurrealDbClient and verify behavior
 /// through client call patterns.
 /// </summary>
-public class DaliQueueSenderTests
+public class AeroDBQueueSenderTests
 {
-    private static readonly Uri TestUri = new("dali://localhost/test-queue");
+    private static readonly Uri TestUri = new("AeroDB://localhost/test-queue");
 
-    private static DaliMessageStore CreateStore(ISurrealDbClient client)
+    private static AeroDBMessageStore CreateStore(ISurrealDbClient client)
     {
-        return new DaliMessageStore(client, NullLogger<DaliMessageStore>.Instance);
+        return new AeroDBMessageStore(client, NullLogger<AeroDBMessageStore>.Instance);
     }
 
     private static Envelope MakeEnvelope()
@@ -42,7 +42,7 @@ public class DaliQueueSenderTests
     public async Task Constructor_throws_when_store_is_null()
     {
         Should.Throw<ArgumentNullException>(() =>
-            new DaliQueueSender(null!, TestUri));
+            new AeroDBQueueSender(null!, TestUri));
     }
 
     [Test]
@@ -51,7 +51,7 @@ public class DaliQueueSenderTests
         var client = Substitute.For<ISurrealDbClient>();
         var store = CreateStore(client);
         Should.Throw<ArgumentNullException>(() =>
-            new DaliQueueSender(store, null!));
+            new AeroDBQueueSender(store, null!));
     }
 
     // ─── Properties ─────────────────────────────────────────────────
@@ -61,7 +61,7 @@ public class DaliQueueSenderTests
     {
         var client = Substitute.For<ISurrealDbClient>();
         var store = CreateStore(client);
-        var sender = new DaliQueueSender(store, TestUri);
+        var sender = new AeroDBQueueSender(store, TestUri);
 
         sender.SupportsNativeScheduledSend.ShouldBeFalse();
     }
@@ -71,7 +71,7 @@ public class DaliQueueSenderTests
     {
         var client = Substitute.For<ISurrealDbClient>();
         var store = CreateStore(client);
-        var sender = new DaliQueueSender(store, TestUri);
+        var sender = new AeroDBQueueSender(store, TestUri);
 
         sender.Destination.ShouldBe(TestUri);
     }
@@ -83,7 +83,7 @@ public class DaliQueueSenderTests
     {
         var client = Substitute.For<ISurrealDbClient>();
         var store = CreateStore(client);
-        var sender = new DaliQueueSender(store, TestUri);
+        var sender = new AeroDBQueueSender(store, TestUri);
 
         var result = await sender.PingAsync();
 
@@ -98,7 +98,7 @@ public class DaliQueueSenderTests
             .Returns(Task.FromException<SurrealDb.Net.Models.Response.SurrealDbResponse>(
                 new InvalidOperationException("db down")));
         var store = CreateStore(client);
-        var sender = new DaliQueueSender(store, TestUri);
+        var sender = new AeroDBQueueSender(store, TestUri);
 
         var result = await sender.PingAsync();
 
@@ -110,7 +110,7 @@ public class DaliQueueSenderTests
     {
         var client = Substitute.For<ISurrealDbClient>();
         var store = CreateStore(client);
-        var sender = new DaliQueueSender(store, TestUri);
+        var sender = new AeroDBQueueSender(store, TestUri);
 
         await sender.PingAsync();
 
@@ -124,7 +124,7 @@ public class DaliQueueSenderTests
     {
         var client = Substitute.For<ISurrealDbClient>();
         var store = CreateStore(client);
-        var sender = new DaliQueueSender(store, TestUri);
+        var sender = new AeroDBQueueSender(store, TestUri);
         var envelope = MakeEnvelope();
 
         await sender.SendAsync(envelope);
@@ -139,7 +139,7 @@ public class DaliQueueSenderTests
     {
         var client = Substitute.For<ISurrealDbClient>();
         var store = CreateStore(client);
-        var sender = new DaliQueueSender(store, TestUri);
+        var sender = new AeroDBQueueSender(store, TestUri);
 
         await Should.ThrowAsync<ArgumentNullException>(() =>
             sender.SendAsync(null!).AsTask());
@@ -150,7 +150,7 @@ public class DaliQueueSenderTests
     {
         var client = Substitute.For<ISurrealDbClient>();
         var store = CreateStore(client);
-        var sender = new DaliQueueSender(store, TestUri);
+        var sender = new AeroDBQueueSender(store, TestUri);
         var envelope = MakeEnvelope();
 
         await sender.SendAsync(envelope);

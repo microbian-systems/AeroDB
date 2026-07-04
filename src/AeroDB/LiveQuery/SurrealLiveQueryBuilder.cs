@@ -6,7 +6,7 @@ using SurrealDb.Net.Models.LiveQuery;
 
 namespace AeroDB.LiveQuery;
 
-internal sealed class SurrealLiveQueryBuilder<T> : IDaliLiveQueryBuilder<T> where T : class
+internal sealed class SurrealLiveQueryBuilder<T> : IAeroDBLiveQueryBuilder<T> where T : class
 {
     private readonly ISurrealDbSession _session;
     private readonly StoreOptions _options;
@@ -35,14 +35,14 @@ internal sealed class SurrealLiveQueryBuilder<T> : IDaliLiveQueryBuilder<T> wher
         _logger = loggerFactory.CreateLogger<SurrealLiveQueryBuilder<T>>();
     }
 
-    public IDaliLiveQueryBuilder<T> Where(Expression<Func<T, bool>> predicate)
+    public IAeroDBLiveQueryBuilder<T> Where(Expression<Func<T, bool>> predicate)
     {
         ArgumentNullException.ThrowIfNull(predicate);
         _predicates.Add(predicate);
         return this;
     }
 
-    public IDaliLiveQueryBuilder<T> Select(params Expression<Func<T, object>>[] fields)
+    public IAeroDBLiveQueryBuilder<T> Select(params Expression<Func<T, object>>[] fields)
     {
         ArgumentNullException.ThrowIfNull(fields);
         _fields.AddRange(fields);
@@ -52,27 +52,27 @@ internal sealed class SurrealLiveQueryBuilder<T> : IDaliLiveQueryBuilder<T> wher
     /// <summary>
     /// M2: Override the per-subscription channel capacity (default: <see cref="StoreOptions.LiveQueryChannelCapacity"/>).
     /// </summary>
-    public IDaliLiveQueryBuilder<T> ChannelCapacity(int capacity)
+    public IAeroDBLiveQueryBuilder<T> ChannelCapacity(int capacity)
     {
         _channelCapacity = capacity;
         return this;
     }
 
-    public IDaliLiveQueryBuilder<T> OnCreated(Action<T> handler)
+    public IAeroDBLiveQueryBuilder<T> OnCreated(Action<T> handler)
     {
         ArgumentNullException.ThrowIfNull(handler);
         _onCreated.Add(handler);
         return this;
     }
 
-    public IDaliLiveQueryBuilder<T> OnUpdated(Action<T> handler)
+    public IAeroDBLiveQueryBuilder<T> OnUpdated(Action<T> handler)
     {
         ArgumentNullException.ThrowIfNull(handler);
         _onUpdated.Add(handler);
         return this;
     }
 
-    public IDaliLiveQueryBuilder<T> OnDeleted(Action<T> handler)
+    public IAeroDBLiveQueryBuilder<T> OnDeleted(Action<T> handler)
     {
         ArgumentNullException.ThrowIfNull(handler);
         _onDeleted.Add(handler);
@@ -82,14 +82,14 @@ internal sealed class SurrealLiveQueryBuilder<T> : IDaliLiveQueryBuilder<T> wher
     /// <summary>
     /// M3: Register a callback for when the live query opens (WebSocket connection established).
     /// </summary>
-    public IDaliLiveQueryBuilder<T> OnOpen(Action handler)
+    public IAeroDBLiveQueryBuilder<T> OnOpen(Action handler)
     {
         ArgumentNullException.ThrowIfNull(handler);
         _onOpen.Add(handler);
         return this;
     }
 
-    public async Task<IDaliLiveQuery<T>> SubscribeAsync(CancellationToken ct = default)
+    public async Task<IAeroDBLiveQuery<T>> SubscribeAsync(CancellationToken ct = default)
     {
         var table = MetadataDispatch.GetTableName(typeof(T));
         var needsTenancyFilter = _options.TenancyStyle == TenancyStyle.Conjoined
@@ -109,8 +109,8 @@ internal sealed class SurrealLiveQueryBuilder<T> : IDaliLiveQueryBuilder<T> wher
                 .ConfigureAwait(false);
         }
 
-        var queryLogger = _loggerFactory.CreateLogger<SurrealDaliLiveQuery<T>>();
-        var query = new SurrealDaliLiveQuery<T>(
+        var queryLogger = _loggerFactory.CreateLogger<SurrealAeroDBLiveQuery<T>>();
+        var query = new SurrealAeroDBLiveQuery<T>(
             sdkLive,
             _onCreated,
             _onUpdated,

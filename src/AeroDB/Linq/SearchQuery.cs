@@ -88,7 +88,7 @@ public interface ISearchQuery<T> where T : class
 /// Fluent search query builder for SurrealDB. Not intended for direct construction;
 /// use <c>session.Search&lt;T&gt;()</c> instead.
 /// </summary>
-public sealed class DaliSearchQuery<T> : ISearchQuery<T> where T : class
+public sealed class AeroDBSearchQuery<T> : ISearchQuery<T> where T : class
 {
     private readonly SurrealQueryProvider _provider;
     private readonly string _table;
@@ -109,7 +109,7 @@ public sealed class DaliSearchQuery<T> : ISearchQuery<T> where T : class
 
     private readonly SurrealCommandBuilder _paramBuilder = new();
 
-    internal DaliSearchQuery(SurrealQueryProvider provider)
+    internal AeroDBSearchQuery(SurrealQueryProvider provider)
     {
         _provider = provider;
         _table = MetadataDispatch.GetTableName(typeof(T));
@@ -374,7 +374,7 @@ public static class SearchQueryExtensions
     {
         var queryable = session.Query<T>();
         if (queryable.Provider is SurrealQueryProvider provider)
-            return new DaliSearchQuery<T>(provider);
+            return new AeroDBSearchQuery<T>(provider);
 
         throw new NotSupportedException(
             $"Search is only supported on AeroDB query sessions. The current provider is {queryable.Provider.GetType().Name}.");

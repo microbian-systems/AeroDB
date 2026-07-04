@@ -9,24 +9,24 @@ using Wolverine.Runtime;
 using Wolverine.Transports;
 
 /// <summary>
-/// Unit tests for <see cref="DaliTransport"/> — the ITransport implementation
-/// that registers the "dali://" protocol scheme for Wolverine.
+/// Unit tests for <see cref="AeroDBTransport"/> — the ITransport implementation
+/// that registers the "AeroDB://" protocol scheme for Wolverine.
 /// No Wolverine runtime or SurrealDB involved.
 /// </summary>
-public class DaliTransportTests
+public class AeroDBTransportTests
 {
     [Test]
-    public void Protocol_ReturnsDali()
+    public void Protocol_ReturnsAeroDB()
     {
-        var transport = new DaliTransport();
+        var transport = new AeroDBTransport();
 
-        transport.Protocol.ShouldBe("dali");
+        transport.Protocol.ShouldBe("AeroDB");
     }
 
     [Test]
     public void Name_ReturnsDescriptiveName()
     {
-        var transport = new DaliTransport();
+        var transport = new AeroDBTransport();
 
         transport.Name.ShouldBe("AeroDB SurrealDB Transport");
     }
@@ -34,7 +34,7 @@ public class DaliTransportTests
     [Test]
     public void ReplyEndpoint_ReturnsNull()
     {
-        var transport = new DaliTransport();
+        var transport = new AeroDBTransport();
 
         transport.ReplyEndpoint().ShouldBeNull();
     }
@@ -42,21 +42,21 @@ public class DaliTransportTests
     [Test]
     public void GetOrCreateEndpoint_ReturnsEndpoint_ForNewUri()
     {
-        var transport = new DaliTransport();
-        var uri = new Uri("dali://queue/incoming");
+        var transport = new AeroDBTransport();
+        var uri = new Uri("AeroDB://queue/incoming");
 
         var endpoint = transport.GetOrCreateEndpoint(uri);
 
         endpoint.ShouldNotBeNull();
-        endpoint.ShouldBeOfType<DaliEndpoint>();
+        endpoint.ShouldBeOfType<AeroDBEndpoint>();
         endpoint.Uri.ShouldBe(uri);
     }
 
     [Test]
     public void GetOrCreateEndpoint_ReturnsExistingEndpoint_OnSecondCall()
     {
-        var transport = new DaliTransport();
-        var uri = new Uri("dali://queue/incoming");
+        var transport = new AeroDBTransport();
+        var uri = new Uri("AeroDB://queue/incoming");
 
         var first = transport.GetOrCreateEndpoint(uri);
         var second = transport.GetOrCreateEndpoint(uri);
@@ -67,8 +67,8 @@ public class DaliTransportTests
     [Test]
     public void TryGetEndpoint_ReturnsNull_WhenNotFound()
     {
-        var transport = new DaliTransport();
-        var uri = new Uri("dali://queue/unknown");
+        var transport = new AeroDBTransport();
+        var uri = new Uri("AeroDB://queue/unknown");
 
         var endpoint = transport.TryGetEndpoint(uri);
 
@@ -78,22 +78,22 @@ public class DaliTransportTests
     [Test]
     public void TryGetEndpoint_ReturnsEndpoint_WhenExists()
     {
-        var transport = new DaliTransport();
-        var uri = new Uri("dali://queue/incoming");
+        var transport = new AeroDBTransport();
+        var uri = new Uri("AeroDB://queue/incoming");
 
         transport.GetOrCreateEndpoint(uri);
         var endpoint = transport.TryGetEndpoint(uri);
 
         endpoint.ShouldNotBeNull();
-        endpoint.ShouldBeOfType<DaliEndpoint>();
+        endpoint.ShouldBeOfType<AeroDBEndpoint>();
     }
 
     [Test]
     public void Endpoints_ReturnsAllRegisteredEndpoints()
     {
-        var transport = new DaliTransport();
-        var uri1 = new Uri("dali://queue/one");
-        var uri2 = new Uri("dali://queue/two");
+        var transport = new AeroDBTransport();
+        var uri1 = new Uri("AeroDB://queue/one");
+        var uri2 = new Uri("AeroDB://queue/two");
 
         transport.GetOrCreateEndpoint(uri1);
         transport.GetOrCreateEndpoint(uri2);
@@ -107,7 +107,7 @@ public class DaliTransportTests
     [Test]
     public async Task InitializeAsync_CompletesWithoutThrowing()
     {
-        var transport = new DaliTransport();
+        var transport = new AeroDBTransport();
         var runtime = Substitute.For<IWolverineRuntime>();
 
         await transport.InitializeAsync(runtime);
@@ -118,7 +118,7 @@ public class DaliTransportTests
     [Test]
     public void TryBuildBrokerUsage_ReturnsFalse()
     {
-        var transport = new DaliTransport();
+        var transport = new AeroDBTransport();
 
         var result = transport.TryBuildBrokerUsage(out var description);
 
@@ -129,15 +129,15 @@ public class DaliTransportTests
     [Test]
     public void Describe_ReturnsFormattedString()
     {
-        var transport = new DaliTransport();
+        var transport = new AeroDBTransport();
 
         var description = ((ITransport)transport).Describe();
 
-        description.ShouldBe("AeroDB SurrealDB Transport (scheme 'dali')");
+        description.ShouldBe("AeroDB SurrealDB Transport (scheme 'AeroDB')");
     }
 
     [Test]
-    public void BuildHealthCheck_ReturnsDaliHealthCheck()
+    public void BuildHealthCheck_ReturnsAeroDBHealthCheck()
     {
         var mockStore = Substitute.For<IDocumentStore>();
         var services = Substitute.For<IServiceProvider>();
@@ -145,10 +145,10 @@ public class DaliTransportTests
         var runtime = Substitute.For<IWolverineRuntime>();
         runtime.Services.Returns(services);
 
-        var transport = new DaliTransport();
+        var transport = new AeroDBTransport();
         var healthCheck = transport.BuildHealthCheck(runtime);
 
         healthCheck.ShouldNotBeNull();
-        healthCheck.ShouldBeOfType<DaliHealthCheck>();
+        healthCheck.ShouldBeOfType<AeroDBHealthCheck>();
     }
 }

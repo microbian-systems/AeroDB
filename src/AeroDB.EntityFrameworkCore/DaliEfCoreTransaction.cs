@@ -2,23 +2,23 @@ using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 
-namespace Dali;
+namespace AeroDB;
 
 /// <summary>
 /// Wraps a AeroDB document session in an EF Core IDbContextTransaction,
 /// allowing simultaneous SurrealDB + EF Core operations.
 /// </summary>
-public class DaliEfCoreTransaction : IDbContextTransaction
+public class AeroDBEfCoreTransaction : IDbContextTransaction
 {
-    private readonly IDocumentSession _daliSession;
-    private readonly ILogger<DaliEfCoreTransaction> _logger;
+    private readonly IDocumentSession _AeroDBSession;
+    private readonly ILogger<AeroDBEfCoreTransaction> _logger;
     private bool _disposed;
 
-    public DaliEfCoreTransaction(IDocumentSession daliSession, ILoggerFactory? loggerFactory = null)
+    public AeroDBEfCoreTransaction(IDocumentSession AeroDBSession, ILoggerFactory? loggerFactory = null)
     {
-        _daliSession = daliSession;
-        _logger = loggerFactory?.CreateLogger<DaliEfCoreTransaction>()
-            ?? NullLogger<DaliEfCoreTransaction>.Instance;
+        _AeroDBSession = AeroDBSession;
+        _logger = loggerFactory?.CreateLogger<AeroDBEfCoreTransaction>()
+            ?? NullLogger<AeroDBEfCoreTransaction>.Instance;
     }
 
     public Guid TransactionId { get; } = Guid.NewGuid();
@@ -27,27 +27,27 @@ public class DaliEfCoreTransaction : IDbContextTransaction
 
     public void Commit()
     {
-        Task.Run(async () => await _daliSession.SaveChangesAsync().ConfigureAwait(false)).GetAwaiter().GetResult();
+        Task.Run(async () => await _AeroDBSession.SaveChangesAsync().ConfigureAwait(false)).GetAwaiter().GetResult();
         OwnedTransaction?.Commit();
     }
 
     public async Task CommitAsync(CancellationToken ct = default)
     {
         _logger.LogInformation("Committing AeroDB EF Core transaction {TransactionId}", TransactionId);
-        await _daliSession.SaveChangesAsync(ct).ConfigureAwait(false);
+        await _AeroDBSession.SaveChangesAsync(ct).ConfigureAwait(false);
         if (OwnedTransaction is not null)
             await OwnedTransaction.CommitAsync(ct).ConfigureAwait(false);
     }
 
     public void Rollback()
     {
-        _daliSession.ClearChanges();
+        _AeroDBSession.ClearChanges();
         OwnedTransaction?.Rollback();
     }
 
     public Task RollbackAsync(CancellationToken ct = default)
     {
-        _daliSession.ClearChanges();
+        _AeroDBSession.ClearChanges();
         if (OwnedTransaction is not null)
             return OwnedTransaction.RollbackAsync(ct);
         return Task.CompletedTask;

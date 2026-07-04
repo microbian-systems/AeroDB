@@ -9,16 +9,16 @@ namespace AeroDB;
 /// <summary>
 /// Extension methods for registering AeroDB services with the DI container.
 /// </summary>
-public static class DaliServiceCollectionExtensions
+public static class AeroDBServiceCollectionExtensions
 {
     /// <summary>
     /// Registers an <see cref="IDocumentStore"/> singleton (fully initialized)
-    /// along with <see cref="IDaliAdvanced"/> for advanced low-level SDK access.
+    /// along with <see cref="IAeroDBAdvanced"/> for advanced low-level SDK access.
     /// </summary>
     /// <param name="services">The service collection.</param>
     /// <param name="configure">A delegate to configure <see cref="StoreOptions"/>.</param>
     /// <returns>The service collection for chaining.</returns>
-    public static IServiceCollection AddDali(this IServiceCollection services, Action<StoreOptions> configure)
+    public static IServiceCollection AddAeroDB(this IServiceCollection services, Action<StoreOptions> configure)
     {
         var options = new StoreOptions();
         configure(options);
@@ -46,7 +46,7 @@ public static class DaliServiceCollectionExtensions
         // Register advanced access
         if (options.Advanced.SurrealDbClient is not null)
         {
-            services.AddSingleton<IDaliAdvanced>(sp =>
+            services.AddSingleton<IAeroDBAdvanced>(sp =>
                 sp.GetRequiredService<IDocumentStore>().Advanced);
         }
 
@@ -61,7 +61,7 @@ public static class DaliServiceCollectionExtensions
 
     /// <summary>
     /// Registers a secondary AeroDB <see cref="IDocumentStore"/> as a keyed scoped service,
-    /// keyed by <typeparamref name="T"/>. Use <c>AddDaliStore&lt;IInvoicingStore&gt;(opts => ...)</c>
+    /// keyed by <typeparamref name="T"/>. Use <c>AddAeroDBStore&lt;IInvoicingStore&gt;(opts => ...)</c>
     /// for multi-database scenarios where <typeparamref name="T"/> is a marker interface
     /// extending <see cref="IDocumentStore"/>.
     /// </summary>
@@ -69,7 +69,7 @@ public static class DaliServiceCollectionExtensions
     /// <param name="configure">A delegate to configure <see cref="StoreOptions"/>.</param>
     /// <typeparam name="T">A marker interface (e.g., <c>IInvoicingStore : IDocumentStore</c>).</typeparam>
     /// <returns>The service collection for chaining.</returns>
-    public static IServiceCollection AddDaliStore<T>(this IServiceCollection services, Action<StoreOptions> configure)
+    public static IServiceCollection AddAeroDBStore<T>(this IServiceCollection services, Action<StoreOptions> configure)
         where T : class, IDocumentStore
     {
         var options = new StoreOptions();
@@ -105,7 +105,7 @@ public static class DaliServiceCollectionExtensions
     /// <param name="services">The service collection.</param>
     /// <param name="configure">A delegate to configure <see cref="StoreOptions"/>.</param>
     /// <returns>The service collection for chaining.</returns>
-    public static IServiceCollection ConfigureDali<T>(this IServiceCollection services, Action<StoreOptions> configure)
+    public static IServiceCollection ConfigureAeroDB<T>(this IServiceCollection services, Action<StoreOptions> configure)
         where T : class
     {
         // Store the config for later use — pattern: register a named options configurator

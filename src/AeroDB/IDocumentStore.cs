@@ -45,7 +45,7 @@ public interface IDocumentStore : IAsyncDisposable
     IGraphQuery<T> Graph<T>() where T : class;
 
     /// <summary>Advanced/low-level SDK access for scenarios AeroDB doesn't abstract.</summary>
-    IDaliAdvanced Advanced { get; }
+    IAeroDBAdvanced Advanced { get; }
 
     /// <summary>
     /// Async daemon for background projection processing, if events are enabled
@@ -430,7 +430,7 @@ public interface IQuerySession : IAsyncDisposable
 public interface IDocumentSession : IDocumentOperations, IQuerySession
 {
     /// <summary>
-    /// Begins an explicit SurrealDB transaction. Returns an <see cref="IDaliTransaction"/> for
+    /// Begins an explicit SurrealDB transaction. Returns an <see cref="IAeroDBTransaction"/> for
     /// explicit commit/rollback control. When active, <see cref="SaveChangesAsync"/> runs inside
     /// this transaction without auto-committing, supporting multiple <c>SaveChangesAsync</c> calls
     /// within a single transaction.
@@ -439,10 +439,10 @@ public interface IDocumentSession : IDocumentOperations, IQuerySession
     /// on the session directly.
     /// </para>
     /// </summary>
-    IDaliTransaction BeginTransaction();
+    IAeroDBTransaction BeginTransaction();
 
     /// <summary>
-    /// Begins an explicit SurrealDB transaction asynchronously. Returns an <see cref="IDaliTransaction"/>
+    /// Begins an explicit SurrealDB transaction asynchronously. Returns an <see cref="IAeroDBTransaction"/>
     /// for explicit commit/rollback control. When active, <see cref="SaveChangesAsync"/> runs inside
     /// this transaction without auto-committing, supporting multiple <c>SaveChangesAsync</c> calls
     /// within a single transaction.
@@ -451,7 +451,7 @@ public interface IDocumentSession : IDocumentOperations, IQuerySession
     /// on the session directly.
     /// </para>
     /// </summary>
-    Task<IDaliTransaction> BeginTransactionAsync(CancellationToken ct = default);
+    Task<IAeroDBTransaction> BeginTransactionAsync(CancellationToken ct = default);
 
     /// <summary>
     /// Commits the current explicit transaction started by <see cref="BeginTransaction"/> or

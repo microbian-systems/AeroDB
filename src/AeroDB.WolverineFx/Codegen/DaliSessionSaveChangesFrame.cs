@@ -9,9 +9,9 @@ namespace AeroDB.WolverineFx.Codegen;
 /// Codegen frame that calls <see cref="IDocumentSession.SaveChangesAsync"/>
 /// to persist pending changes within the handler pipeline.
 /// </summary>
-internal sealed class DaliSessionSaveChangesFrame : MethodCall
+internal sealed class AeroDBSessionSaveChangesFrame : MethodCall
 {
-    public DaliSessionSaveChangesFrame()
+    public AeroDBSessionSaveChangesFrame()
         : base(typeof(IDocumentSession), ReflectionHelper.GetMethod<IDocumentSession>(x => x.SaveChangesAsync(default))!)
     {
         CommentText = "Save all pending changes to this AeroDB session";

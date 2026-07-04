@@ -12,24 +12,24 @@ using TUnit.Core;
 using Wolverine;
 
 [NotInParallel]
-public class DaliScheduledJobAgentTests
+public class AeroDBScheduledJobAgentTests
 {
     /// <summary>
     /// Creates a connected SurrealDbKvClient with the wolverine_incoming_envelopes table defined
-    /// via the DaliMessageStore schema pipeline (same as production).
+    /// via the AeroDBMessageStore schema pipeline (same as production).
     /// Uses SurrealDbKvClient (file-based) rather than SurrealDbMemoryClient because the
     /// InMemory engine has CBOR deserialization issues with GetValue&lt;List&lt;Dictionary&lt;string, object&gt;&gt;&gt;.
     /// </summary>
     private static async Task<SurrealDbKvClient> CreateClientAsync()
     {
-        var dbPath = Path.Combine(Path.GetTempPath(), $"dali_scheduled_test_{Guid.NewGuid():N}.db");
+        var dbPath = Path.Combine(Path.GetTempPath(), $"AeroDB_scheduled_test_{Guid.NewGuid():N}.db");
         var client = new SurrealDbKvClient(dbPath);
         await client.Use("test", "test");
 
-        // Initialize the schema through DaliMessageStore — creates proper table definitions
+        // Initialize the schema through AeroDBMessageStore — creates proper table definitions
         // that the CBOR deserializer can work with.
-        var msgStoreLogger = NullLogger<DaliMessageStore>.Instance;
-        var msgStore = new DaliMessageStore(client, msgStoreLogger, loggerFactory: null);
+        var msgStoreLogger = NullLogger<AeroDBMessageStore>.Instance;
+        var msgStore = new AeroDBMessageStore(client, msgStoreLogger, loggerFactory: null);
         await msgStore.InitializeSchemaAsync();
 
         return client;
@@ -39,14 +39,14 @@ public class DaliScheduledJobAgentTests
     /// Helper to set the private _pollInterval field on the agent via reflection,
     /// so tests don't need to wait 5 seconds for a poll cycle.
     /// </summary>
-    private static void SetPollInterval(DaliScheduledJobAgent agent, TimeSpan interval)
+    private static void SetPollInterval(AeroDBScheduledJobAgent agent, TimeSpan interval)
     {
-        var field = typeof(DaliScheduledJobAgent).GetField(
+        var field = typeof(AeroDBScheduledJobAgent).GetField(
             "_pollInterval",
             BindingFlags.NonPublic | BindingFlags.Instance);
 
         if (field is null)
-            throw new InvalidOperationException("Cannot find _pollInterval field on DaliScheduledJobAgent");
+            throw new InvalidOperationException("Cannot find _pollInterval field on AeroDBScheduledJobAgent");
 
         field.SetValue(agent, interval);
     }
@@ -59,8 +59,8 @@ public class DaliScheduledJobAgentTests
         var client = await CreateClientAsync();
         await using var _ = client;
 
-        var logger = NullLogger<DaliScheduledJobAgent>.Instance;
-        var agent = new DaliScheduledJobAgent(client, logger);
+        var logger = NullLogger<AeroDBScheduledJobAgent>.Instance;
+        var agent = new AeroDBScheduledJobAgent(client, logger);
 
         try
         {
@@ -81,8 +81,8 @@ public class DaliScheduledJobAgentTests
         var client = await CreateClientAsync();
         await using var _ = client;
 
-        var logger = NullLogger<DaliScheduledJobAgent>.Instance;
-        var agent = new DaliScheduledJobAgent(client, logger);
+        var logger = NullLogger<AeroDBScheduledJobAgent>.Instance;
+        var agent = new AeroDBScheduledJobAgent(client, logger);
 
         await agent.StartAsync(CancellationToken.None);
         agent.Status.ShouldBe(AgentStatus.Running);
@@ -99,8 +99,8 @@ public class DaliScheduledJobAgentTests
         var client = await CreateClientAsync();
         await using var _ = client;
 
-        var logger = NullLogger<DaliScheduledJobAgent>.Instance;
-        var agent = new DaliScheduledJobAgent(client, logger);
+        var logger = NullLogger<AeroDBScheduledJobAgent>.Instance;
+        var agent = new AeroDBScheduledJobAgent(client, logger);
 
         try
         {
@@ -125,8 +125,8 @@ public class DaliScheduledJobAgentTests
         var client = await CreateClientAsync();
         await using var _ = client;
 
-        var logger = NullLogger<DaliScheduledJobAgent>.Instance;
-        var agent = new DaliScheduledJobAgent(client, logger);
+        var logger = NullLogger<AeroDBScheduledJobAgent>.Instance;
+        var agent = new AeroDBScheduledJobAgent(client, logger);
 
         // Agent has not been started — Status should be Stopped
         var context = new HealthCheckContext();
@@ -145,8 +145,8 @@ public class DaliScheduledJobAgentTests
         var client = await CreateClientAsync();
         await using var _ = client;
 
-        var logger = NullLogger<DaliScheduledJobAgent>.Instance;
-        var agent = new DaliScheduledJobAgent(client, logger);
+        var logger = NullLogger<AeroDBScheduledJobAgent>.Instance;
+        var agent = new AeroDBScheduledJobAgent(client, logger);
 
         // Before start
         agent.Status.ShouldBe(AgentStatus.Stopped);
@@ -168,7 +168,7 @@ public class DaliScheduledJobAgentTests
         var client = await CreateClientAsync();
         await using var _ = client;
 
-        // Insert a scheduled envelope via raw SurrealQL (bypass DaliMessageStore)
+        // Insert a scheduled envelope via raw SurrealQL (bypass AeroDBMessageStore)
         var msgId = Guid.NewGuid().ToString();
         var pastTime = DateTimeOffset.UtcNow.AddMinutes(-5).ToString("yyyy-MM-ddTHH:mm:ssK");
 
@@ -181,8 +181,8 @@ public class DaliScheduledJobAgentTests
             $"}}");
         createResult.HasErrors.ShouldBeFalse();
 
-        var logger = NullLogger<DaliScheduledJobAgent>.Instance;
-        var agent = new DaliScheduledJobAgent(client, logger);
+        var logger = NullLogger<AeroDBScheduledJobAgent>.Instance;
+        var agent = new AeroDBScheduledJobAgent(client, logger);
 
         // Set poll interval to 100ms
         SetPollInterval(agent, TimeSpan.FromMilliseconds(100));
@@ -217,8 +217,8 @@ public class DaliScheduledJobAgentTests
         var client = await CreateClientAsync();
         await using var _ = client;
 
-        var logger = NullLogger<DaliScheduledJobAgent>.Instance;
-        var agent = new DaliScheduledJobAgent(client, logger);
+        var logger = NullLogger<AeroDBScheduledJobAgent>.Instance;
+        var agent = new AeroDBScheduledJobAgent(client, logger);
 
         SetPollInterval(agent, TimeSpan.FromMilliseconds(100));
 
@@ -249,18 +249,18 @@ public class DaliScheduledJobAgentTests
         // However, the constructor requires non-null arguments.
         // Use NSubstitute mocks to avoid creating a real connection.
         var client = NSubstitute.Substitute.For<ISurrealDbClient>();
-        var logger = NullLogger<DaliScheduledJobAgent>.Instance;
-        var agent = new DaliScheduledJobAgent(client, logger);
+        var logger = NullLogger<AeroDBScheduledJobAgent>.Instance;
+        var agent = new AeroDBScheduledJobAgent(client, logger);
 
-        agent.Uri.ShouldBe(new Uri("dali://scheduled-jobs"));
+        agent.Uri.ShouldBe(new Uri("AeroDB://scheduled-jobs"));
     }
 
     [Test]
     public void Description_IsNotEmpty()
     {
         var client = NSubstitute.Substitute.For<ISurrealDbClient>();
-        var logger = NullLogger<DaliScheduledJobAgent>.Instance;
-        var agent = new DaliScheduledJobAgent(client, logger);
+        var logger = NullLogger<AeroDBScheduledJobAgent>.Instance;
+        var agent = new AeroDBScheduledJobAgent(client, logger);
 
         agent.Description.ShouldNotBeNullOrEmpty();
         agent.Description.ShouldContain("scheduled");

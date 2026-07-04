@@ -9,11 +9,11 @@ using TUnit.Core;
 namespace AeroDB.Tests.Generators;
 
 /// <summary>
-/// Tests for <see cref="DaliDocumentGenerator"/> — generates per-type metadata
+/// Tests for <see cref="AeroDBDocumentGenerator"/> — generates per-type metadata
 /// classes implementing <c>ITypeMetadata&lt;T&gt;</c> for <c>Record</c> and
 /// <c>Entity&lt;TId&gt;</c> subclasses.
 /// </summary>
-public class DaliDocumentGeneratorTests
+public class AeroDBDocumentGeneratorTests
 {
     /// <summary>
     /// Minimal inline definitions for AeroDB types that the generator discovers
@@ -21,7 +21,7 @@ public class DaliDocumentGeneratorTests
     /// real <c>AeroDB</c> assembly is excluded from compilation references to
     /// avoid interface conflicts.
     /// </summary>
-    private const string DaliTypes = @"
+    private const string AeroDBTypes = @"
 using System;
 using System.Collections.Generic;
 
@@ -40,7 +40,7 @@ namespace AeroDB
     }
 
     [AttributeUsage(AttributeTargets.Class)]
-    public class DaliDocumentAttribute : Attribute
+    public class AeroDBDocumentAttribute : Attribute
     {
         public bool SkipGeneration { get; set; }
     }
@@ -94,7 +94,7 @@ namespace AeroDB.Metadata
 ";
 
     /// <summary>
-    /// Runs the <see cref="DaliDocumentGenerator"/> in-process over the given
+    /// Runs the <see cref="AeroDBDocumentGenerator"/> in-process over the given
     /// C# source snippets combined with the inline AeroDB type definitions.
     /// </summary>
     private static GeneratorDriverRunResult RunGenerator(params string[] sources)
@@ -103,7 +103,7 @@ namespace AeroDB.Metadata
         _ = typeof(SurrealDb.Net.Models.Record);
         _ = typeof(SurrealDb.Net.Models.RecordIdOf<string>);
 
-        var allSources = sources.Prepend(DaliTypes).ToArray();
+        var allSources = sources.Prepend(AeroDBTypes).ToArray();
         var syntaxTrees = allSources
             .Select(s => CSharpSyntaxTree.ParseText(s, new CSharpParseOptions(LanguageVersion.Latest)))
             .ToArray();
@@ -138,7 +138,7 @@ namespace AeroDB.Metadata
                 $"Compilation has {preErrors.Length} error(s) before running the generator:{Environment.NewLine}{messages}");
         }
 
-        var generator = new DaliDocumentGenerator();
+        var generator = new AeroDBDocumentGenerator();
         var driver = CSharpGeneratorDriver.Create(generator);
         return driver.RunGenerators(compilation).GetRunResult();
     }
@@ -317,13 +317,13 @@ public class AuditDoc : SurrealDb.Net.Models.Record, IDocumentMetadata
         code.ShouldContain("HasDocumentMetadata => true");
     }
 
-    // ── Test 8: [DaliDocument(SkipGeneration = true)] opt-out ───────────────
+    // ── Test 8: [AeroDBDocument(SkipGeneration = true)] opt-out ───────────────
 
     [Test]
     public void SkipGeneration_opt_out_skips_type()
     {
         var source = @"
-[AeroDB.DaliDocument(SkipGeneration = true)]
+[AeroDB.AeroDBDocument(SkipGeneration = true)]
 public class SkippedDoc : SurrealDb.Net.Models.Record
 {
     public string Name { get; set; }
@@ -436,8 +436,8 @@ public class CompilableDoc : SurrealDb.Net.Models.Record
         _ = typeof(SurrealDb.Net.Models.Record);
         _ = typeof(SurrealDb.Net.Models.RecordIdOf<string>);
 
-        // Combine DaliTypes + userSource for the generator pass
-        var allSources = new[] { DaliTypes, userSource };
+        // Combine AeroDBTypes + userSource for the generator pass
+        var allSources = new[] { AeroDBTypes, userSource };
         var syntaxTrees = allSources
             .Select(s => CSharpSyntaxTree.ParseText(s, new CSharpParseOptions(LanguageVersion.Latest)))
             .ToArray();
@@ -461,7 +461,7 @@ public class CompilableDoc : SurrealDb.Net.Models.Record
                 .WithNullableContextOptions(NullableContextOptions.Enable));
 
         // Run the generator and get the output compilation
-        var generator = new DaliDocumentGenerator();
+        var generator = new AeroDBDocumentGenerator();
         var driver = CSharpGeneratorDriver.Create(generator);
         driver.RunGeneratorsAndUpdateCompilation(compilation, out var outputCompilation, out var diagnostics);
 

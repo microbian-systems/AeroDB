@@ -12,17 +12,17 @@ using Wolverine;
 using Wolverine.Persistence.Durability;
 
 /// <summary>
-/// Mock-based unit tests for <see cref="DaliEnvelopeTransaction"/>.
-/// DaliMessageStore and SurrealDbResponse are sealed — tests create real
+/// Mock-based unit tests for <see cref="AeroDBEnvelopeTransaction"/>.
+/// AeroDBMessageStore and SurrealDbResponse are sealed — tests create real
 /// store instances with a mocked ISurrealDbClient and verify delegation
 /// through client call patterns and interface contracts.
 /// No Wolverine runtime or SurrealDB involved.
 /// </summary>
-public class DaliEnvelopeTransactionTests
+public class AeroDBEnvelopeTransactionTests
 {
-    private static DaliMessageStore CreateStore(ISurrealDbClient client)
+    private static AeroDBMessageStore CreateStore(ISurrealDbClient client)
     {
-        return new DaliMessageStore(client, NullLogger<DaliMessageStore>.Instance);
+        return new AeroDBMessageStore(client, NullLogger<AeroDBMessageStore>.Instance);
     }
 
     private static Envelope MakeEnvelope()
@@ -43,7 +43,7 @@ public class DaliEnvelopeTransactionTests
     {
         var session = Substitute.For<IDocumentSession>();
         Should.Throw<ArgumentNullException>(() =>
-            new DaliEnvelopeTransaction(null!, session, 0));
+            new AeroDBEnvelopeTransaction(null!, session, 0));
     }
 
     [Test]
@@ -52,7 +52,7 @@ public class DaliEnvelopeTransactionTests
         var client = Substitute.For<ISurrealDbClient>();
         var store = CreateStore(client);
         Should.Throw<ArgumentNullException>(() =>
-            new DaliEnvelopeTransaction(store, null!, 0));
+            new AeroDBEnvelopeTransaction(store, null!, 0));
     }
 
     // ─── PersistOutgoingAsync (single) ─────────────────────────────
@@ -63,7 +63,7 @@ public class DaliEnvelopeTransactionTests
         var client = Substitute.For<ISurrealDbClient>();
         var store = CreateStore(client);
         var session = Substitute.For<IDocumentSession>();
-        var tx = new DaliEnvelopeTransaction(store, session, 42);
+        var tx = new AeroDBEnvelopeTransaction(store, session, 42);
         var envelope = MakeEnvelope();
 
         await tx.PersistOutgoingAsync(envelope);
@@ -79,7 +79,7 @@ public class DaliEnvelopeTransactionTests
         var client = Substitute.For<ISurrealDbClient>();
         var store = CreateStore(client);
         var session = Substitute.For<IDocumentSession>();
-        var tx = new DaliEnvelopeTransaction(store, session, 0);
+        var tx = new AeroDBEnvelopeTransaction(store, session, 0);
 
         await Should.ThrowAsync<ArgumentNullException>(() =>
             tx.PersistOutgoingAsync((Envelope)null!));
@@ -93,7 +93,7 @@ public class DaliEnvelopeTransactionTests
         var client = Substitute.For<ISurrealDbClient>();
         var store = CreateStore(client);
         var session = Substitute.For<IDocumentSession>();
-        var tx = new DaliEnvelopeTransaction(store, session, 0);
+        var tx = new AeroDBEnvelopeTransaction(store, session, 0);
 
         await Should.ThrowAsync<ArgumentNullException>(() =>
             tx.PersistOutgoingAsync((Envelope[])null!));
@@ -105,7 +105,7 @@ public class DaliEnvelopeTransactionTests
         var client = Substitute.For<ISurrealDbClient>();
         var store = CreateStore(client);
         var session = Substitute.For<IDocumentSession>();
-        var tx = new DaliEnvelopeTransaction(store, session, 42);
+        var tx = new AeroDBEnvelopeTransaction(store, session, 42);
         var env1 = MakeEnvelope();
         var env2 = MakeEnvelope();
         var env3 = MakeEnvelope();
@@ -123,7 +123,7 @@ public class DaliEnvelopeTransactionTests
         var client = Substitute.For<ISurrealDbClient>();
         var store = CreateStore(client);
         var session = Substitute.For<IDocumentSession>();
-        var tx = new DaliEnvelopeTransaction(store, session, 42);
+        var tx = new AeroDBEnvelopeTransaction(store, session, 42);
 
         await tx.PersistOutgoingAsync([]);
 
@@ -138,7 +138,7 @@ public class DaliEnvelopeTransactionTests
         var client = Substitute.For<ISurrealDbClient>();
         var store = CreateStore(client);
         var session = Substitute.For<IDocumentSession>();
-        var tx = new DaliEnvelopeTransaction(store, session, 0);
+        var tx = new AeroDBEnvelopeTransaction(store, session, 0);
         var envelope = MakeEnvelope();
 
         await tx.PersistIncomingAsync(envelope);
@@ -153,7 +153,7 @@ public class DaliEnvelopeTransactionTests
         var client = Substitute.For<ISurrealDbClient>();
         var store = CreateStore(client);
         var session = Substitute.For<IDocumentSession>();
-        var tx = new DaliEnvelopeTransaction(store, session, 0);
+        var tx = new AeroDBEnvelopeTransaction(store, session, 0);
 
         await Should.ThrowAsync<ArgumentNullException>(() =>
             tx.PersistIncomingAsync(null!));
@@ -167,7 +167,7 @@ public class DaliEnvelopeTransactionTests
         var client = Substitute.For<ISurrealDbClient>();
         var store = CreateStore(client);
         var session = Substitute.For<IDocumentSession>();
-        var tx = new DaliEnvelopeTransaction(store, session, 0);
+        var tx = new AeroDBEnvelopeTransaction(store, session, 0);
 
         await tx.RollbackAsync().AsTask();
     }
@@ -180,7 +180,7 @@ public class DaliEnvelopeTransactionTests
         var client = Substitute.For<ISurrealDbClient>();
         var store = CreateStore(client);
         var session = Substitute.For<IDocumentSession>();
-        var tx = new DaliEnvelopeTransaction(store, session, 0);
+        var tx = new AeroDBEnvelopeTransaction(store, session, 0);
         var envelope = MakeEnvelope();
         envelope.WasPersistedInInbox = true;
         var settings = new DurabilitySettings();
@@ -196,7 +196,7 @@ public class DaliEnvelopeTransactionTests
         var client = Substitute.For<ISurrealDbClient>();
         var store = CreateStore(client);
         var session = Substitute.For<IDocumentSession>();
-        var tx = new DaliEnvelopeTransaction(store, session, 0);
+        var tx = new AeroDBEnvelopeTransaction(store, session, 0);
         var envelope = MakeEnvelope();
         envelope.WasPersistedInInbox = false;
         var settings = new DurabilitySettings();
@@ -218,7 +218,7 @@ public class DaliEnvelopeTransactionTests
 
         var store = CreateStore(client);
         var session = Substitute.For<IDocumentSession>();
-        var tx = new DaliEnvelopeTransaction(store, session, 0);
+        var tx = new AeroDBEnvelopeTransaction(store, session, 0);
         var envelope = MakeEnvelope();
         envelope.WasPersistedInInbox = false;
         var settings = new DurabilitySettings();

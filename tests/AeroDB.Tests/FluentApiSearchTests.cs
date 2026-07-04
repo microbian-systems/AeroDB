@@ -258,7 +258,7 @@ public class FluentApiSearchTests
     }
 
     // ─── Section 3: Parameterized Where() Tests (constant-value comparisons) ───
-    // These tests exercise the $pN parameter path in DaliSearchQuery.Where().
+    // These tests exercise the $pN parameter path in AeroDBSearchQuery.Where().
     // Unlike bare member expressions (e.g. .Where(x => x.Active)), constant
     // comparisons like .Where(x => x.Rank > 3) generate $p0, $p1 placeholders
     // via SurrealCommandBuilder.  A successful query proves SurrealDB correctly

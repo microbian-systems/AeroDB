@@ -8,12 +8,12 @@ using Shouldly;
 namespace AeroDB.Tests;
 
 /// <summary>
-/// Tests for AeroDB event subscriptions — verifies IDaliSubscription interface,
-/// DaliSubscriptionBase filtering, and controller/event type contracts.
+/// Tests for AeroDB event subscriptions — verifies IAeroDBSubscription interface,
+/// AeroDBSubscriptionBase filtering, and controller/event type contracts.
 /// Integration tests (fetch→append→process cycle) are deferred until the daemon
 /// infrastructure supports constructing EventRange objects externally.
 /// </summary>
-public class DaliSubscriptionTests
+public class AeroDBSubscriptionTests
 {
 
     // ─── Unit tests: interface contract & base class ───
@@ -23,7 +23,7 @@ public class DaliSubscriptionTests
     {
         var sub = new TestOrderSubscription();
         var filterable = new TestEventFilterable();
-        ((IDaliSubscription)sub).Filter(filterable);
+        ((IAeroDBSubscription)sub).Filter(filterable);
         filterable.IncludedTypes.ShouldContain(typeof(OrderCreated));
         filterable.IncludedTypes.ShouldContain(typeof(ItemAdded));
     }
@@ -33,7 +33,7 @@ public class DaliSubscriptionTests
     {
         var sub = new FilteredOrderSubscription();
         var filterable = new TestEventFilterable();
-        ((IDaliSubscription)sub).Filter(filterable);
+        ((IAeroDBSubscription)sub).Filter(filterable);
         filterable.IncludedTypes.ShouldContain(typeof(OrderCreated));
         filterable.IncludedTypes.Count.ShouldBe(1);
     }
@@ -94,7 +94,7 @@ public class DaliSubscriptionTests
 
 // ─── Test subscription implementations ───
 
-public class TestOrderSubscription : IDaliSubscription
+public class TestOrderSubscription : IAeroDBSubscription
 {
     private readonly List<Type> _eventTypes = [typeof(OrderCreated), typeof(ItemAdded)];
     public List<object> ProcessedEvents { get; } = [];
@@ -117,7 +117,7 @@ public class TestOrderSubscription : IDaliSubscription
     }
 }
 
-public class FilteredOrderSubscription : DaliSubscriptionBase
+public class FilteredOrderSubscription : AeroDBSubscriptionBase
 {
     public List<object> ProcessedOrders { get; } = [];
 

@@ -10,26 +10,26 @@ using Wolverine;
 namespace AeroDB.Tests;
 
 /// <summary>
-/// Mock-based unit tests for <see cref="DaliEventForwarding"/>.
+/// Mock-based unit tests for <see cref="AeroDBEventForwarding"/>.
 /// Tests guard clauses (null context, non-DocumentSession, empty events),
 /// SetCurrentContext, and the BasicAccessor behaviors.
 ///
 /// NOTE: The event-publishing path (BeforeSaveChangesAsync with appended events)
-/// cannot be tested purely with mocks because DaliSessionEventAccessor reads
+/// cannot be tested purely with mocks because AeroDBSessionEventAccessor reads
 /// _appendedEvents (typed as List&lt;IEvent&gt;) and expects ValueTuple&lt;string,object&gt;
 /// items — a pre-existing mismatch in the reflection accessor. Full event-forwarding
-/// coverage requires an integration test (see DaliWolverineIntegrationTests).
+/// coverage requires an integration test (see AeroDBWolverineIntegrationTests).
 /// No Wolverine daemon or SurrealDB needed.
 /// </summary>
-public class DaliEventForwardingTests
+public class AeroDBEventForwardingTests
 {
     // ─── BeforeSaveChangesAsync: No context ─────────────────────────
 
     [Test]
     public async Task BeforeSaveChangesAsync_when_context_is_null_does_not_publish()
     {
-        DaliEventForwarding.SetCurrentContext(null);
-        var forwarder = new DaliEventForwarding();
+        AeroDBEventForwarding.SetCurrentContext(null);
+        var forwarder = new AeroDBEventForwarding();
         var session = Substitute.For<IDocumentSession>();
 
         await forwarder.BeforeSaveChangesAsync(session, CancellationToken.None);
@@ -40,8 +40,8 @@ public class DaliEventForwardingTests
     public async Task BeforeSaveChangesAsync_when_session_is_not_DocumentSession_does_not_publish()
     {
         var context = Substitute.For<IMessageContext>();
-        DaliEventForwarding.SetCurrentContext(context);
-        var forwarder = new DaliEventForwarding();
+        AeroDBEventForwarding.SetCurrentContext(context);
+        var forwarder = new AeroDBEventForwarding();
         var session = Substitute.For<IDocumentSession>(); // NOT a DocumentSession
 
         await forwarder.BeforeSaveChangesAsync(session, CancellationToken.None);
@@ -55,8 +55,8 @@ public class DaliEventForwardingTests
     public async Task BeforeSaveChangesAsync_when_no_events_does_not_publish()
     {
         var context = Substitute.For<IMessageContext>();
-        DaliEventForwarding.SetCurrentContext(context);
-        var forwarder = new DaliEventForwarding();
+        AeroDBEventForwarding.SetCurrentContext(context);
+        var forwarder = new AeroDBEventForwarding();
 
         // DocumentSession with empty _appendedEvents by default
         var client = Substitute.For<ISurrealDbClient>();
@@ -75,18 +75,18 @@ public class DaliEventForwardingTests
     public async Task SetCurrentContext_stores_and_retrieves_context()
     {
         var context = Substitute.For<IMessageContext>();
-        DaliEventForwarding.SetCurrentContext(context);
+        AeroDBEventForwarding.SetCurrentContext(context);
 
-        DaliEventForwarding.CurrentContext.Value.ShouldBe(context);
+        AeroDBEventForwarding.CurrentContext.Value.ShouldBe(context);
     }
 
     [Test]
     public async Task SetCurrentContext_with_null_clears_context()
     {
         var context = Substitute.For<IMessageContext>();
-        DaliEventForwarding.SetCurrentContext(context);
-        DaliEventForwarding.SetCurrentContext(null);
+        AeroDBEventForwarding.SetCurrentContext(context);
+        AeroDBEventForwarding.SetCurrentContext(null);
 
-        DaliEventForwarding.CurrentContext.Value.ShouldBeNull();
+        AeroDBEventForwarding.CurrentContext.Value.ShouldBeNull();
     }
 }

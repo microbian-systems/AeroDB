@@ -6,12 +6,12 @@ using Shouldly;
 using TUnit.Core;
 using WolverineFx;
 
-public class DaliTransportOptionsTests
+public class AeroDBTransportOptionsTests
 {
     [Test]
     public void DefaultValues_AreReasonable()
     {
-        var options = new DaliTransportOptions();
+        var options = new AeroDBTransportOptions();
         options.PollingInterval.ShouldBe(TimeSpan.FromSeconds(5));
         options.BatchSize.ShouldBe(100);
         options.UseLiveQuery.ShouldBeFalse();
@@ -20,7 +20,7 @@ public class DaliTransportOptionsTests
     [Test]
     public void CanCustomize()
     {
-        var options = new DaliTransportOptions
+        var options = new AeroDBTransportOptions
         {
             PollingInterval = TimeSpan.FromSeconds(10),
             BatchSize = 50,
@@ -34,7 +34,7 @@ public class DaliTransportOptionsTests
     [Test]
     public void PollingInterval_CanBeSetToZero()
     {
-        var options = new DaliTransportOptions
+        var options = new AeroDBTransportOptions
         {
             PollingInterval = TimeSpan.Zero
         };
@@ -44,7 +44,7 @@ public class DaliTransportOptionsTests
     [Test]
     public void BatchSize_CanBeSetToOne()
     {
-        var options = new DaliTransportOptions
+        var options = new AeroDBTransportOptions
         {
             BatchSize = 1
         };
@@ -54,7 +54,7 @@ public class DaliTransportOptionsTests
     [Test]
     public void UseLiveQuery_DefaultsToFalse()
     {
-        var options = new DaliTransportOptions();
+        var options = new AeroDBTransportOptions();
         options.UseLiveQuery.ShouldBeFalse();
     }
 }

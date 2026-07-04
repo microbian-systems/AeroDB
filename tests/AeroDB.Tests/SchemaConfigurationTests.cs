@@ -116,7 +116,7 @@ public class SchemaConfigurationTests
     }
 
     [Test]
-    public async Task IConfigureDali_executed_during_init()
+    public async Task IConfigureAeroDB_executed_during_init()
     {
         var executed = false;
 
@@ -131,7 +131,7 @@ public class SchemaConfigurationTests
     }
 
     [Test]
-    public async Task Multiple_IConfigureDali_are_all_executed()
+    public async Task Multiple_IConfigureAeroDB_are_all_executed()
     {
         var executionOrder = new List<string>();
 
@@ -149,7 +149,7 @@ public class SchemaConfigurationTests
     }
 
     [Test]
-    public async Task IConfigureDali_can_configure_schema()
+    public async Task IConfigureAeroDB_can_configure_schema()
     {
         await using var store = Documents.For(o =>
         {
@@ -189,9 +189,9 @@ public class SchemaConfigurationTests
         var services = new ServiceCollection();
         services.AddLogging();
         var cfg = new TestConfigurator(() => executed = true);
-        services.AddSingleton<IConfigureDali>(cfg);
+        services.AddSingleton<IConfigureAeroDB>(cfg);
         
-        services.AddDali(options =>
+        services.AddAeroDB(options =>
         {
             options.ClientFactory = () => new SurrealDb.Embedded.InMemory.SurrealDbMemoryClient();
             options.Namespace = "test";
@@ -214,9 +214,9 @@ public class SchemaConfigurationTests
         // Register in DI
         var services = new ServiceCollection();
         services.AddLogging();
-        services.AddSingleton<IConfigureDali>(cfg);
+        services.AddSingleton<IConfigureAeroDB>(cfg);
         
-        services.AddDali(options =>
+        services.AddAeroDB(options =>
         {
             options.ClientFactory = () => new SurrealDb.Embedded.InMemory.SurrealDbMemoryClient();
             options.Namespace = "test";
@@ -251,10 +251,10 @@ public class SchemaConfigurationTests
         
         var services = new ServiceCollection();
         services.AddLogging();
-        services.AddSingleton<IConfigureDali>(schemaA);
-        services.AddSingleton<IConfigureDali>(schemaB);
+        services.AddSingleton<IConfigureAeroDB>(schemaA);
+        services.AddSingleton<IConfigureAeroDB>(schemaB);
         
-        services.AddDali(options =>
+        services.AddAeroDB(options =>
         {
             options.ClientFactory = () => new SurrealDb.Embedded.InMemory.SurrealDbMemoryClient();
             options.Namespace = "test";
@@ -285,9 +285,9 @@ public class SchemaConfigurationTests
         
         var services = new ServiceCollection();
         services.AddLogging();
-        services.AddSingleton<IConfigureDali>(cfg);
+        services.AddSingleton<IConfigureAeroDB>(cfg);
         
-        services.AddDali(options =>
+        services.AddAeroDB(options =>
         {
             options.ClientFactory = () => new SurrealDb.Embedded.InMemory.SurrealDbMemoryClient();
             options.Namespace = "test";
@@ -309,7 +309,7 @@ public class SchemaConfigurationTests
         
         // Register in a separate DI container (not visible to Documents.For)
         var services = new ServiceCollection();
-        services.AddSingleton<IConfigureDali>(cfg);
+        services.AddSingleton<IConfigureAeroDB>(cfg);
         var sp = services.BuildServiceProvider();
         
         // Documents.For does NOT set ServiceProvider, so configurators from DI are NOT auto-discovered
@@ -334,9 +334,9 @@ public class SchemaConfigurationTests
         
         var services = new ServiceCollection();
         services.AddLogging();
-        services.AddSingleton<IAsyncConfigureDali>(cfg);
+        services.AddSingleton<IAsyncConfigureAeroDB>(cfg);
         
-        services.AddDali(options =>
+        services.AddAeroDB(options =>
         {
             options.ClientFactory = () => new SurrealDb.Embedded.InMemory.SurrealDbMemoryClient();
             options.Namespace = "test";
@@ -350,7 +350,7 @@ public class SchemaConfigurationTests
         await store.DisposeAsync();
     }
 
-    private sealed class AsyncTestConfigurator : IAsyncConfigureDali
+    private sealed class AsyncTestConfigurator : IAsyncConfigureAeroDB
     {
         private readonly Action _onConfigure;
         public AsyncTestConfigurator(Action onConfigure) => _onConfigure = onConfigure;
@@ -362,13 +362,13 @@ public class SchemaConfigurationTests
         }
     }
 
-    private sealed class TwoParamConfigurator : IConfigureDali
+    private sealed class TwoParamConfigurator : IConfigureAeroDB
     {
         private readonly Action<IServiceProvider?> _onConfigure;
         public TwoParamConfigurator(Action<IServiceProvider?> onConfigure) => _onConfigure = onConfigure;
         
         // Override the TWO-parameter overload (not the one-param one)
-        void IConfigureDali.Configure(IServiceProvider? services, StoreOptions options)
+        void IConfigureAeroDB.Configure(IServiceProvider? services, StoreOptions options)
         {
             _onConfigure(services);
         }
@@ -377,7 +377,7 @@ public class SchemaConfigurationTests
         public void Configure(StoreOptions options) { }
     }
 
-    private sealed class TestConfigurator : IConfigureDali
+    private sealed class TestConfigurator : IConfigureAeroDB
     {
         private readonly Action<StoreOptions> _action;
         public TestConfigurator(Action action) : this(_ => action()) { }

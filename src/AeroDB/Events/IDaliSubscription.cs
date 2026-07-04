@@ -7,7 +7,7 @@ namespace AeroDB;
 /// User-facing contract for subscribing to AeroDB events through the async daemon.
 /// Implement this to do custom processing against ordered event streams.
 /// </summary>
-public interface IDaliSubscription
+public interface IAeroDBSubscription
 {
     /// <summary>Unique name used to track subscription progress.</summary>
     string SubscriptionName { get; }

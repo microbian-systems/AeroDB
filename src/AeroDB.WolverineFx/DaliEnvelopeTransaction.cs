@@ -5,17 +5,17 @@ using Wolverine.Persistence.Durability;
 namespace AeroDB.WolverineFx;
 
 /// <summary>
-/// Wraps DaliMessageStore and an IDocumentSession to provide Wolverine's
+/// Wraps AeroDBMessageStore and an IDocumentSession to provide Wolverine's
 /// IEnvelopeTransaction contract. Envelope operations are queued and
 /// committed within AeroDB's SurrealDB transaction lifecycle.
 /// </summary>
-internal sealed class DaliEnvelopeTransaction : IEnvelopeTransaction
+internal sealed class AeroDBEnvelopeTransaction : IEnvelopeTransaction
 {
-    private readonly DaliMessageStore _store;
+    private readonly AeroDBMessageStore _store;
     private readonly IDocumentSession _session;
     private readonly int _ownerId;
 
-    public DaliEnvelopeTransaction(DaliMessageStore store, IDocumentSession session, int ownerId)
+    public AeroDBEnvelopeTransaction(AeroDBMessageStore store, IDocumentSession session, int ownerId)
     {
         _store = store ?? throw new ArgumentNullException(nameof(store));
         _session = session ?? throw new ArgumentNullException(nameof(session));

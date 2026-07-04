@@ -4,11 +4,11 @@ namespace AeroDB.WolverineFx;
 
 /// <summary>
 /// Registers Wolverine envelope table schemas on <see cref="StoreOptions.Schema"/>
-/// during <see cref="DocumentStore.InitializeAsync"/> via the <see cref="IConfigureDali"/> hook.
-/// This replaces the hardcoded 131-line SchemaScript string in <see cref="DaliMessageStore"/>
+/// during <see cref="DocumentStore.InitializeAsync"/> via the <see cref="IConfigureAeroDB"/> hook.
+/// This replaces the hardcoded 131-line SchemaScript string in <see cref="AeroDBMessageStore"/>
 /// with proper typed POCOs and the AeroDB schema pipeline.
 /// </summary>
-public sealed class WolverineEnvelopeSchemas : IConfigureDali
+public sealed class WolverineEnvelopeSchemas : IConfigureAeroDB
 {
     /// <summary>
     /// Registers all six Wolverine envelope tables with their indexes

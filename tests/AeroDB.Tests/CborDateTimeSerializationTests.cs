@@ -69,7 +69,7 @@ public class CborDateTimeSerializationTests
 {
     private static CborOptions GetCborOptions()
     {
-        return DaliCborOptions.GetCborSerializerOptions();
+        return AeroDBCborOptions.GetCborSerializerOptions();
     }
 
     [Test]
@@ -377,7 +377,7 @@ public class CborDateTimeSerializationTests
     }
 
     [Test]
-    public async Task Dali_client_factory_documents_can_store_datetimeoffset_fields()
+    public async Task AeroDB_client_factory_documents_can_store_datetimeoffset_fields()
     {
         await using var store = await TestHarness.CreateStoreAsync(o =>
         {

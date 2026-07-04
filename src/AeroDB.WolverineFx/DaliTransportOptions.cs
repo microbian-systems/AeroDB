@@ -4,7 +4,7 @@ namespace AeroDB.WolverineFx;
 /// Configuration options for the AeroDB-backed transport.
 /// Controls polling behavior and batch sizes for the SurrealDB message queue.
 /// </summary>
-public sealed class DaliTransportOptions
+public sealed class AeroDBTransportOptions
 {
     /// <summary>
     /// How often to poll for new incoming messages when the queue is idle.

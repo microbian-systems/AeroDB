@@ -7,18 +7,18 @@ namespace AeroDB.WolverineFx;
 /// Health check for the AeroDB (SurrealDB) transport.
 /// Verifies connectivity by opening a query session and running a heartbeat query.
 /// </summary>
-internal sealed class DaliHealthCheck : WolverineTransportHealthCheck
+internal sealed class AeroDBHealthCheck : WolverineTransportHealthCheck
 {
     private readonly IDocumentStore _store;
 
-    public DaliHealthCheck(IDocumentStore store)
+    public AeroDBHealthCheck(IDocumentStore store)
     {
         _store = store ?? throw new ArgumentNullException(nameof(store));
     }
 
     public override string TransportName => "AeroDB";
 
-    public override string Protocol => "dali";
+    public override string Protocol => "AeroDB";
 
     /// <summary>
     /// Check whether the SurrealDB backing store is reachable.
@@ -35,7 +35,7 @@ internal sealed class DaliHealthCheck : WolverineTransportHealthCheck
                 TransportName,
                 Protocol,
                 TransportHealthStatus.Healthy,
-                "dali:reachable",
+                "AeroDB:reachable",
                 DateTimeOffset.UtcNow);
         }
         catch (Exception ex)
@@ -44,7 +44,7 @@ internal sealed class DaliHealthCheck : WolverineTransportHealthCheck
                 TransportName,
                 Protocol,
                 TransportHealthStatus.Unhealthy,
-                $"dali:unreachable: {ex.Message}",
+                $"AeroDB:unreachable: {ex.Message}",
                 DateTimeOffset.UtcNow);
         }
     }

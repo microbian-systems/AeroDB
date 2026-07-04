@@ -59,7 +59,7 @@ public class DaemonHealthCheckTests
         state.HighWaterSequence.ShouldBe(50);
     }
 
-    // ─── DaliDaemonHealthCheck.CheckHealthAsync tests ─────────────────
+    // ─── AeroDBDaemonHealthCheck.CheckHealthAsync tests ─────────────────
     //
     // Branches covered:
     //   1. _daemon == null                          → Healthy("not configured")
@@ -70,7 +70,7 @@ public class DaemonHealthCheckTests
     [Test]
     public async Task HealthCheck_null_daemon_reports_healthy()
     {
-        var check = new DaliDaemonHealthCheck(null, TimeSpan.FromSeconds(5));
+        var check = new AeroDBDaemonHealthCheck(null, TimeSpan.FromSeconds(5));
         var context = new HealthCheckContext
         {
             Registration = new HealthCheckRegistration("test", _ => null!, null, null)
@@ -87,7 +87,7 @@ public class DaemonHealthCheckTests
     {
         var store = new DocumentStore(new StoreOptions());
         var daemon = new AsyncDaemon(store, []);
-        var check = new DaliDaemonHealthCheck(daemon, TimeSpan.FromSeconds(5));
+        var check = new AeroDBDaemonHealthCheck(daemon, TimeSpan.FromSeconds(5));
         var context = new HealthCheckContext
         {
             Registration = new HealthCheckRegistration("test", _ => null!, null, null)
@@ -112,7 +112,7 @@ public class DaemonHealthCheckTests
             LastException: null
         ));
 
-        var check = new DaliDaemonHealthCheck(daemon, TimeSpan.FromSeconds(5));
+        var check = new AeroDBDaemonHealthCheck(daemon, TimeSpan.FromSeconds(5));
         var context = new HealthCheckContext
         {
             Registration = new HealthCheckRegistration("test", _ => null!, null, null)
@@ -142,7 +142,7 @@ public class DaemonHealthCheckTests
             LastException: "Timeout exceeded"
         ));
 
-        var check = new DaliDaemonHealthCheck(daemon, TimeSpan.FromSeconds(5));
+        var check = new AeroDBDaemonHealthCheck(daemon, TimeSpan.FromSeconds(5));
         var context = new HealthCheckContext
         {
             Registration = new HealthCheckRegistration("test", _ => null!, null, null)
@@ -168,7 +168,7 @@ public class DaemonHealthCheckTests
             LastException: null
         ));
 
-        var check = new DaliDaemonHealthCheck(daemon, TimeSpan.FromSeconds(5));
+        var check = new AeroDBDaemonHealthCheck(daemon, TimeSpan.FromSeconds(5));
         var context = new HealthCheckContext
         {
             Registration = new HealthCheckRegistration("test", _ => null!, null, null)

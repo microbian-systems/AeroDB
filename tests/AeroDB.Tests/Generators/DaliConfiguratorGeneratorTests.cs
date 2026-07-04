@@ -11,13 +11,13 @@ using TUnit.Core;
 namespace AeroDB.Tests.Generators;
 
 /// <summary>
-/// Additional edge-case tests for <see cref="DaliConfiguratorGenerator"/>.
-/// See <c>AeroDB.Tests.DaliConfiguratorGeneratorTests</c> for the core scenario tests.
+/// Additional edge-case tests for <see cref="AeroDBConfiguratorGenerator"/>.
+/// See <c>AeroDB.Tests.AeroDBConfiguratorGeneratorTests</c> for the core scenario tests.
 /// </summary>
-public class DaliConfiguratorGeneratorEdgeCaseTests
+public class AeroDBConfiguratorGeneratorEdgeCaseTests
 {
     /// <summary>
-    /// Runs the <see cref="DaliConfiguratorGenerator"/> in-process.
+    /// Runs the <see cref="AeroDBConfiguratorGenerator"/> in-process.
     /// </summary>
     private static GeneratorDriverRunResult RunGenerator(params string[] sources)
     {
@@ -45,7 +45,7 @@ public class DaliConfiguratorGeneratorEdgeCaseTests
             new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary)
                 .WithNullableContextOptions(NullableContextOptions.Enable));
 
-        var generator = new DaliConfiguratorGenerator();
+        var generator = new AeroDBConfiguratorGenerator();
         var driver = CSharpGeneratorDriver.Create(generator);
         return driver.RunGenerators(compilation).GetRunResult();
     }
@@ -61,16 +61,16 @@ using AeroDB;
 
 namespace AeroDB
 {
-    public interface IConfigureDali { void Configure(StoreOptions options); }
+    public interface IConfigureAeroDB { void Configure(StoreOptions options); }
     public class StoreOptions { }
 }
 
-public static class StaticConfigurator : AeroDB.IConfigureDali
+public static class StaticConfigurator : AeroDB.IConfigureAeroDB
 {
     public static void Configure(AeroDB.StoreOptions options) { }
 }
 
-public class InstanceConfigurator : AeroDB.IConfigureDali
+public class InstanceConfigurator : AeroDB.IConfigureAeroDB
 {
     public void Configure(AeroDB.StoreOptions options) { }
 }
@@ -93,16 +93,16 @@ using AeroDB;
 
 namespace AeroDB
 {
-    public interface IConfigureDali { void Configure(StoreOptions options); }
+    public interface IConfigureAeroDB { void Configure(StoreOptions options); }
     public class StoreOptions { }
 }
 
-public class GenericConfigurator<T> : AeroDB.IConfigureDali
+public class GenericConfigurator<T> : AeroDB.IConfigureAeroDB
 {
     public void Configure(AeroDB.StoreOptions options) { }
 }
 
-public class SimpleConfigurator : AeroDB.IConfigureDali
+public class SimpleConfigurator : AeroDB.IConfigureAeroDB
 {
     public void Configure(AeroDB.StoreOptions options) { }
 }
@@ -125,11 +125,11 @@ using AeroDB;
 
 namespace AeroDB
 {
-    public interface IConfigureDali { void Configure(StoreOptions options); }
+    public interface IConfigureAeroDB { void Configure(StoreOptions options); }
     public class StoreOptions { }
 }
 
-class InternalConfigurator : AeroDB.IConfigureDali
+class InternalConfigurator : AeroDB.IConfigureAeroDB
 {
     public void Configure(AeroDB.StoreOptions options) { }
 }
@@ -152,18 +152,18 @@ using AeroDB;
 
 namespace AeroDB
 {
-    public interface IConfigureDali { void Configure(StoreOptions options); }
+    public interface IConfigureAeroDB { void Configure(StoreOptions options); }
     public class StoreOptions { }
 }
 
 public class Outer
 {
-    private class PrivateConfigurator : AeroDB.IConfigureDali
+    private class PrivateConfigurator : AeroDB.IConfigureAeroDB
     {
         public void Configure(AeroDB.StoreOptions options) { }
     }
 
-    public class PublicConfigurator : AeroDB.IConfigureDali
+    public class PublicConfigurator : AeroDB.IConfigureAeroDB
     {
         public void Configure(AeroDB.StoreOptions options) { }
     }
@@ -176,7 +176,7 @@ public class Outer
         code.ShouldNotContain("PrivateConfigurator");
     }
 
-    // ── Test 5: IGlobalConfigureDali registered separately ───────────────────
+    // ── Test 5: IGlobalConfigureAeroDB registered separately ───────────────────
 
     [Test]
     public void Global_configurator_registered_as_global()
@@ -187,12 +187,12 @@ using AeroDB;
 
 namespace AeroDB
 {
-    public interface IConfigureDali { void Configure(StoreOptions options); }
-    public interface IGlobalConfigureDali : IConfigureDali { }
+    public interface IConfigureAeroDB { void Configure(StoreOptions options); }
+    public interface IGlobalConfigureAeroDB : IConfigureAeroDB { }
     public class StoreOptions { }
 }
 
-public class MyGlobalConfigurator : AeroDB.IGlobalConfigureDali
+public class MyGlobalConfigurator : AeroDB.IGlobalConfigureAeroDB
 {
     public void Configure(AeroDB.StoreOptions options) { }
 }
@@ -201,17 +201,17 @@ public class MyGlobalConfigurator : AeroDB.IGlobalConfigureDali
         var code = result.GeneratedTrees[0].ToString();
 
         code.ShouldContain("MyGlobalConfigurator");
-        code.ShouldContain("IGlobalConfigureDali");
-        // Should NOT also register as IConfigureDali (exclusive)
+        code.ShouldContain("IGlobalConfigureAeroDB");
+        // Should NOT also register as IConfigureAeroDB (exclusive)
         // Generated code uses FullyQualifiedFormat → global:: prefix
-        var icdCount = CountOccurrences(code, "IConfigureDali, global::MyGlobalConfigurator");
+        var icdCount = CountOccurrences(code, "IConfigureAeroDB, global::MyGlobalConfigurator");
         icdCount.ShouldBe(0);
     }
 
-    // ── Test 6: IConfigureDali<TStore> generic variant ───────────────────────
+    // ── Test 6: IConfigureAeroDB<TStore> generic variant ───────────────────────
 
     [Test]
-    public void Typed_IConfigureDali_of_T_is_discovered()
+    public void Typed_IConfigureAeroDB_of_T_is_discovered()
     {
         var source = @"
 using System;
@@ -219,12 +219,12 @@ using AeroDB;
 
 namespace AeroDB
 {
-    public interface IConfigureDali { void Configure(StoreOptions options); }
-    public interface IConfigureDali<TStore> : IConfigureDali { }
+    public interface IConfigureAeroDB { void Configure(StoreOptions options); }
+    public interface IConfigureAeroDB<TStore> : IConfigureAeroDB { }
     public class StoreOptions { }
 }
 
-public class TypedConfigurator : AeroDB.IConfigureDali<int>
+public class TypedConfigurator : AeroDB.IConfigureAeroDB<int>
 {
     public void Configure(AeroDB.StoreOptions options) { }
 }
@@ -233,7 +233,7 @@ public class TypedConfigurator : AeroDB.IConfigureDali<int>
         var code = result.GeneratedTrees[0].ToString();
 
         code.ShouldContain("TypedConfigurator");
-        code.ShouldContain("IConfigureDali");
+        code.ShouldContain("IConfigureAeroDB");
     }
 
     // ── Test 7: Both sync and async on same class ────────────────────────────
@@ -249,12 +249,12 @@ using AeroDB;
 
 namespace AeroDB
 {
-    public interface IConfigureDali { void Configure(StoreOptions options); }
-    public interface IAsyncConfigureDali { Task ConfigureAsync(StoreOptions options, CancellationToken ct = default); }
+    public interface IConfigureAeroDB { void Configure(StoreOptions options); }
+    public interface IAsyncConfigureAeroDB { Task ConfigureAsync(StoreOptions options, CancellationToken ct = default); }
     public class StoreOptions { }
 }
 
-public class DualConfigurator : AeroDB.IConfigureDali, AeroDB.IAsyncConfigureDali
+public class DualConfigurator : AeroDB.IConfigureAeroDB, AeroDB.IAsyncConfigureAeroDB
 {
     public void Configure(AeroDB.StoreOptions options) { }
     public Task ConfigureAsync(AeroDB.StoreOptions options, CancellationToken ct) => Task.CompletedTask;
@@ -265,11 +265,11 @@ public class DualConfigurator : AeroDB.IConfigureDali, AeroDB.IAsyncConfigureDal
 
         // Should be registered as both sync and async
         // Generated code uses FullyQualifiedFormat → global:: prefix
-        code.ShouldContain("IConfigureDali, global::DualConfigurator");
-        code.ShouldContain("IAsyncConfigureDali, global::DualConfigurator");
+        code.ShouldContain("IConfigureAeroDB, global::DualConfigurator");
+        code.ShouldContain("IAsyncConfigureAeroDB, global::DualConfigurator");
 
         // Should appear only once per registration type (not duplicated)
-        var syncCount = CountOccurrences(code, "IConfigureDali, global::DualConfigurator");
+        var syncCount = CountOccurrences(code, "IConfigureAeroDB, global::DualConfigurator");
         syncCount.ShouldBe(1);
     }
 
@@ -278,7 +278,7 @@ public class DualConfigurator : AeroDB.IConfigureDali, AeroDB.IAsyncConfigureDal
     [Test]
     public void No_matching_configurators_generates_empty_registrar()
     {
-        // Must define IConfigureDali so the generator passes its early-return
+        // Must define IConfigureAeroDB so the generator passes its early-return
         // guard and proceeds to emit an empty registrar.
         var source = @"
 using System;
@@ -286,7 +286,7 @@ using AeroDB;
 
 namespace AeroDB
 {
-    public interface IConfigureDali { void Configure(StoreOptions options); }
+    public interface IConfigureAeroDB { void Configure(StoreOptions options); }
     public class StoreOptions { }
 }
 
@@ -299,7 +299,7 @@ public class AlsoPlain { public int X { get; set; } }
         result.GeneratedTrees.Length.ShouldBe(1);
         var code = result.GeneratedTrees[0].ToString();
 
-        code.ShouldContain("AddDiscoveredDaliConfigurators");
+        code.ShouldContain("AddDiscoveredAeroDBConfigurators");
         code.ShouldContain("return services;");
         code.ShouldNotContain("AddSingleton");
         // Non-configurator classes should not appear in generated code
@@ -321,23 +321,23 @@ using AeroDB;
 
 namespace AeroDB
 {
-    public interface IConfigureDali { void Configure(StoreOptions options); }
-    public interface IGlobalConfigureDali : IConfigureDali { }
-    public interface IAsyncConfigureDali { Task ConfigureAsync(StoreOptions options, CancellationToken ct = default); }
+    public interface IConfigureAeroDB { void Configure(StoreOptions options); }
+    public interface IGlobalConfigureAeroDB : IConfigureAeroDB { }
+    public interface IAsyncConfigureAeroDB { Task ConfigureAsync(StoreOptions options, CancellationToken ct = default); }
     public class StoreOptions { }
 }
 
-public class SyncCfg : AeroDB.IConfigureDali
+public class SyncCfg : AeroDB.IConfigureAeroDB
 {
     public void Configure(AeroDB.StoreOptions options) { }
 }
 
-public class GlobalCfg : AeroDB.IGlobalConfigureDali
+public class GlobalCfg : AeroDB.IGlobalConfigureAeroDB
 {
     public void Configure(AeroDB.StoreOptions options) { }
 }
 
-public class AsyncCfg : AeroDB.IAsyncConfigureDali
+public class AsyncCfg : AeroDB.IAsyncConfigureAeroDB
 {
     public Task ConfigureAsync(AeroDB.StoreOptions options, CancellationToken ct) => Task.CompletedTask;
 }

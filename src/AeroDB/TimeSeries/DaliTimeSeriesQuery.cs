@@ -5,7 +5,7 @@ using AeroDB.Metadata;
 
 namespace AeroDB;
 
-public sealed class DaliTimeSeriesQuery<T> : ITimeSeriesQuery<T> where T : class
+public sealed class AeroDBTimeSeriesQuery<T> : ITimeSeriesQuery<T> where T : class
 {
     private readonly SurrealQueryProvider _provider;
     private readonly string _table;
@@ -31,7 +31,7 @@ public sealed class DaliTimeSeriesQuery<T> : ITimeSeriesQuery<T> where T : class
 
     private readonly SurrealCommandBuilder _paramBuilder = new();
 
-    internal DaliTimeSeriesQuery(SurrealQueryProvider provider)
+    internal AeroDBTimeSeriesQuery(SurrealQueryProvider provider)
     {
         _provider = provider;
         _table = MetadataDispatch.GetTableName(typeof(T));

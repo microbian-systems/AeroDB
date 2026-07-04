@@ -5,7 +5,7 @@
         <PackageTags>wolverine surrealdb messaging durability</PackageTags>
     </PropertyGroup>
     <ItemGroup>
-        <InternalsVisibleTo Include="Dali.Tests" />
+        <InternalsVisibleTo Include="AeroDB.Tests" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\AeroDB\AeroDB.csproj" />

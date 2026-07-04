@@ -25,12 +25,12 @@ namespace AeroDB.WolverineFx;
 /// via typed POCOs (<see cref="WolverineIncomingEnvelope"/>, etc.) instead of
 /// a hardcoded SurrealQL string.
 /// </summary>
-public sealed class DaliMessageStore : IMessageStore,
+public sealed class AeroDBMessageStore : IMessageStore,
     IMessageInbox, IMessageOutbox, IDeadLetters,
     INodeAgentPersistence, IMessageStoreAdmin, IScheduledMessages
 {
     internal readonly ISurrealDbClient Client;
-    private readonly ILogger<DaliMessageStore> _logger;
+    private readonly ILogger<AeroDBMessageStore> _logger;
     private readonly SchemaManager _schemaManager;
     private int _ownerId;
     private bool _hasDisposed;
@@ -45,7 +45,7 @@ public sealed class DaliMessageStore : IMessageStore,
     private const string AgentRestrictionsTable = "wolverine_agent_restrictions";
     private const string NodeRecordsTable = "wolverine_node_records";
 
-    public DaliMessageStore(ISurrealDbClient client, ILogger<DaliMessageStore> logger, ILoggerFactory? loggerFactory = null, StoreOptions? storeOptions = null)
+    public AeroDBMessageStore(ISurrealDbClient client, ILogger<AeroDBMessageStore> logger, ILoggerFactory? loggerFactory = null, StoreOptions? storeOptions = null)
     {
         Client = client ?? throw new ArgumentNullException(nameof(client));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -54,7 +54,7 @@ public sealed class DaliMessageStore : IMessageStore,
         // Derive Uri from the actual connection endpoint if available
         Uri = storeOptions?.Endpoint is { Length: > 0 } ep
             ? new Uri(ep)
-            : new Uri("dali://localhost");
+            : new Uri("AeroDB://localhost");
     }
 
     // ─── IMessageStore Members ───
@@ -87,7 +87,7 @@ public sealed class DaliMessageStore : IMessageStore,
     {
         _ownerId = runtime.Options.Durability.AssignedNodeNumber;
         Name = runtime.Options.ServiceName ?? "AeroDB";
-        _logger.LogInformation("DaliMessageStore initialized as node {NodeId}, ownerId={OwnerId}", _nodeId, _ownerId);
+        _logger.LogInformation("AeroDBMessageStore initialized as node {NodeId}, ownerId={OwnerId}", _nodeId, _ownerId);
     }
 
     public DatabaseDescriptor Describe()
@@ -95,7 +95,7 @@ public sealed class DaliMessageStore : IMessageStore,
         return new DatabaseDescriptor
         {
             Engine = "SurrealDB",
-            ServerName = "dali",
+            ServerName = "AeroDB",
             DatabaseName = "wolverine",
             Subject = GetType().FullName!
         };
@@ -120,14 +120,14 @@ public sealed class DaliMessageStore : IMessageStore,
     {
         // Return a polling agent that checks for ready scheduled messages
         // and moves them to 'Incoming' status for the durability agent.
-        return new DaliScheduledJobAgent(Client, runtime.Logger);
+        return new AeroDBScheduledJobAgent(Client, runtime.Logger);
     }
 
     public async Task<IReadOnlyList<Envelope>> LoadPageOfGloballyOwnedIncomingAsync(Uri listenerAddress, int limit)
     {
         var sql = $"SELECT * FROM {IncomingTable} WHERE owner_id = 0 AND status = 'Incoming' ORDER BY execution_time ASC LIMIT {limit}";
         var response = await Client.RawQuery(sql);
-        var records = DeserializeDaliEnvelopes(response, 0);
+        var records = DeserializeAeroDBEnvelopes(response, 0);
         return records.Select(r => r.ToEnvelope()).ToList();
     }
 
@@ -196,7 +196,7 @@ public sealed class DaliMessageStore : IMessageStore,
     {
         if (_hasDisposed) return;
 
-        var env = DaliEnvelope.FromEnvelope(envelope, _ownerId);
+        var env = AeroDBEnvelope.FromEnvelope(envelope, _ownerId);
         env.Status = EnvelopeStatus.Incoming.ToString();
 
         var deadId = envelope.Id.ToString();
@@ -221,7 +221,7 @@ public sealed class DaliMessageStore : IMessageStore,
     public async Task StoreIncomingAsync(Envelope envelope)
     {
         if (_hasDisposed) return;
-        var env = DaliEnvelope.FromEnvelope(envelope, _ownerId);
+        var env = AeroDBEnvelope.FromEnvelope(envelope, _ownerId);
         env.ReceivedAt = envelope.Destination?.ToString();
         var json = JsonSerializer.Serialize(env, JsonOptions);
         await Client.RawQuery($"CREATE {IncomingTable} CONTENT {json}");
@@ -299,14 +299,14 @@ public sealed class DaliMessageStore : IMessageStore,
         var destStr = EscapeSurql(destination.ToString());
         var response = await Client.RawQuery(
             $"SELECT * FROM {OutgoingTable} WHERE owner_id = 0 AND destination = '{destStr}' ORDER BY execution_time ASC");
-        var records = DeserializeDaliEnvelopes(response, 0);
+        var records = DeserializeAeroDBEnvelopes(response, 0);
         return records.Select(r => r.ToEnvelope()).ToList();
     }
 
     public async Task StoreOutgoingAsync(Envelope envelope, int ownerId)
     {
         if (_hasDisposed) return;
-        var env = DaliEnvelope.FromOutgoingEnvelope(envelope, ownerId);
+        var env = AeroDBEnvelope.FromOutgoingEnvelope(envelope, ownerId);
         var json = JsonSerializer.Serialize(env, JsonOptions);
         await Client.RawQuery($"CREATE {OutgoingTable} CONTENT {json}");
         envelope.WasPersistedInOutbox = true;
@@ -361,7 +361,7 @@ public sealed class DaliMessageStore : IMessageStore,
     {
         var response = await Client.RawQuery(
             $"SELECT * FROM {DeadLetterTable}:`{EscapeId(id.ToString())}`");
-        var records = DeserializeDaliEnvelopes(response, 0);
+        var records = DeserializeAeroDBEnvelopes(response, 0);
         var record = records.FirstOrDefault();
         if (record is null) return null;
 
@@ -398,7 +398,7 @@ public sealed class DaliMessageStore : IMessageStore,
                         var dest = row.GetValueOrDefault("destination")?.ToString() ?? "";
                         var count = Convert.ToInt32(row.GetValueOrDefault("total") ?? 0);
                         results.Add(new DeadLetterQueueCount(serviceName,
-                            string.IsNullOrEmpty(dest) ? Uri : new Uri($"dali://{dest}"),
+                            string.IsNullOrEmpty(dest) ? Uri : new Uri($"AeroDB://{dest}"),
                             mt, et, Uri, count));
                     }
                 }
@@ -458,7 +458,7 @@ public sealed class DaliMessageStore : IMessageStore,
 
         var sql = $"SELECT * FROM {DeadLetterTable}{where} ORDER BY sent_at DESC{limit}{offset}";
         var response = await Client.RawQuery(sql, parameters);
-        var records = DeserializeDaliEnvelopes(response, 0);
+        var records = DeserializeAeroDBEnvelopes(response, 0);
 
         var results = new DeadLetterEnvelopeResults
         {
@@ -591,7 +591,7 @@ public sealed class DaliMessageStore : IMessageStore,
                     try
                     {
                         var id = Guid.Parse(r.GetValueOrDefault("id")?.ToString() ?? Guid.NewGuid().ToString());
-                        var uri = new Uri(r.GetValueOrDefault("agent_uri")?.ToString() ?? "dali://unknown");
+                        var uri = new Uri(r.GetValueOrDefault("agent_uri")?.ToString() ?? "AeroDB://unknown");
                         var type = r.GetValueOrDefault("type")?.ToString() == "Pinned"
                             ? AgentRestrictionType.Pinned
                             : r.GetValueOrDefault("type")?.ToString() == "Paused"
@@ -825,14 +825,14 @@ public sealed class DaliMessageStore : IMessageStore,
     public async Task<IReadOnlyList<Envelope>> AllIncomingAsync()
     {
         var response = await Client.RawQuery($"SELECT * FROM {IncomingTable}");
-        var records = DeserializeDaliEnvelopes(response, 0);
+        var records = DeserializeAeroDBEnvelopes(response, 0);
         return records.Select(r => r.ToEnvelope()).ToList();
     }
 
     public async Task<IReadOnlyList<Envelope>> AllOutgoingAsync()
     {
         var response = await Client.RawQuery($"SELECT * FROM {OutgoingTable}");
-        var records = DeserializeDaliEnvelopes(response, 0);
+        var records = DeserializeAeroDBEnvelopes(response, 0);
         return records.Select(r => r.ToEnvelope()).ToList();
     }
 
@@ -899,7 +899,7 @@ public sealed class DaliMessageStore : IMessageStore,
 
         var sql = $"SELECT * FROM {IncomingTable}{where} ORDER BY execution_time ASC{limit}{offset}";
         var response = await Client.RawQuery(sql, parameters);
-        var records = DeserializeDaliEnvelopes(response, 0);
+        var records = DeserializeAeroDBEnvelopes(response, 0);
 
         var results = new ScheduledMessageResults
         {
@@ -1032,7 +1032,7 @@ public sealed class DaliMessageStore : IMessageStore,
             Name = "idx_nodes_id", Columns = ["id"], IsUnique = true, Type = IndexType.Standard
         }).ConfigureAwait(false);
 
-        _logger.LogInformation("DaliMessageStore schema initialized (via SchemaManager pipeline)");
+        _logger.LogInformation("AeroDBMessageStore schema initialized (via SchemaManager pipeline)");
     }
 
     // ─── Helpers ───
@@ -1125,18 +1125,18 @@ public sealed class DaliMessageStore : IMessageStore,
     }
 
     /// <summary>
-    /// Deserialize SurrealDB response records into DaliEnvelope objects.
+    /// Deserialize SurrealDB response records into AeroDBEnvelope objects.
     /// Uses Dictionary-based deserialization to avoid CBOR issues with
     /// the Record base class's RecordId? Id conflicting with the string Id.
     /// </summary>
-    private static List<DaliEnvelope> DeserializeDaliEnvelopes(SurrealDb.Net.Models.Response.SurrealDbResponse response, int index)
+    private static List<AeroDBEnvelope> DeserializeAeroDBEnvelopes(SurrealDb.Net.Models.Response.SurrealDbResponse response, int index)
     {
         try
         {
             var raw = response.GetValue<List<Dictionary<string, object>>>(index);
             if (raw is null) return [];
 
-            return raw.Select(MapToDaliEnvelope).Where(e => e is not null).ToList()!;
+            return raw.Select(MapToAeroDBEnvelope).Where(e => e is not null).ToList()!;
         }
         catch
         {
@@ -1144,11 +1144,11 @@ public sealed class DaliMessageStore : IMessageStore,
         }
     }
 
-    private static DaliEnvelope? MapToDaliEnvelope(Dictionary<string, object> row)
+    private static AeroDBEnvelope? MapToAeroDBEnvelope(Dictionary<string, object> row)
     {
         try
         {
-            return new DaliEnvelope
+            return new AeroDBEnvelope
             {
                 Id = row.GetValueOrDefault("id")?.ToString() ?? string.Empty,
                 Status = row.GetValueOrDefault("status")?.ToString() ?? string.Empty,

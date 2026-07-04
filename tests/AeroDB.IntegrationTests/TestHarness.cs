@@ -12,13 +12,13 @@ namespace AeroDB.IntegrationTests;
 public static class TestHarness
 {
     public static string Endpoint =>
-        Environment.GetEnvironmentVariable("DALI_TEST_ENDPOINT") ?? "ws://localhost:8000";
+        Environment.GetEnvironmentVariable("AeroDB_TEST_ENDPOINT") ?? "ws://localhost:8000";
 
     public static string Namespace =>
-        Environment.GetEnvironmentVariable("DALI_TEST_NS") ?? "test";
+        Environment.GetEnvironmentVariable("AeroDB_TEST_NS") ?? "test";
 
     public static string Database =>
-        Environment.GetEnvironmentVariable("DALI_TEST_DB") ?? "test";
+        Environment.GetEnvironmentVariable("AeroDB_TEST_DB") ?? "test";
 
     /// <summary>
     /// Check whether a remote SurrealDB endpoint is reachable.

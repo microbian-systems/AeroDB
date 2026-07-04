@@ -185,21 +185,21 @@ public class StoreOptions : IReadOnlyStoreOptions
 
     /// <summary>
     /// Configuration modules applied during <see cref="DocumentStore.InitializeAsync"/>.
-    /// Add instances directly or register via DI with <c>ConfigureDali&lt;T&gt;()</c>.
+    /// Add instances directly or register via DI with <c>ConfigureAeroDB&lt;T&gt;()</c>.
     /// </summary>
-    public List<IConfigureDali> Configurators { get; } = new();
+    public List<IConfigureAeroDB> Configurators { get; } = new();
 
     /// <summary>
     /// Async configuration modules applied during <see cref="DocumentStore.InitializeAsync"/>
     /// after sync <see cref="Configurators"/>. Add instances directly or register via DI
-    /// with <c>ConfigureDaliAsync&lt;T&gt;()</c>.
+    /// with <c>ConfigureAeroDBAsync&lt;T&gt;()</c>.
     /// </summary>
-    public List<IAsyncConfigureDali> AsyncConfigurators { get; } = new();
+    public List<IAsyncConfigureAeroDB> AsyncConfigurators { get; } = new();
 
     /// <summary>
     /// Optional <see cref="IServiceProvider"/> for DI auto-discovery of configurators.
     /// When set before <see cref="DocumentStore.InitializeAsync"/>, the store resolves
-    /// <see cref="IConfigureDali"/> and <see cref="IAsyncConfigureDali"/> implementations
+    /// <see cref="IConfigureAeroDB"/> and <see cref="IAsyncConfigureAeroDB"/> implementations
     /// from DI and applies them automatically (in addition to <see cref="Configurators"/>).
     /// </summary>
     public IServiceProvider? ServiceProvider { get; set; }

@@ -8,19 +8,19 @@ namespace AeroDB.AspNetIdentity;
 /// implementing <see cref="IRoleStore{TRole}"/> and <see cref="IQueryableRoleStore{TRole}"/>.
 /// </summary>
 /// <typeparam name="TRole">The role type, must inherit from <see cref="IdentityRole"/>.</typeparam>
-public class DaliRoleStore<TRole> : IRoleStore<TRole>, IQueryableRoleStore<TRole>
+public class AeroDBRoleStore<TRole> : IRoleStore<TRole>, IQueryableRoleStore<TRole>
     where TRole : IdentityRole
 {
     private readonly IDocumentStore _store;
-    private readonly ILogger<DaliRoleStore<TRole>> _logger;
+    private readonly ILogger<AeroDBRoleStore<TRole>> _logger;
     private bool _disposed;
 
     /// <summary>
-    /// Initializes a new instance of <see cref="DaliRoleStore{TRole}"/>.
+    /// Initializes a new instance of <see cref="AeroDBRoleStore{TRole}"/>.
     /// </summary>
     /// <param name="store">The AeroDB document store.</param>
     /// <param name="logger">Logger instance.</param>
-    public DaliRoleStore(IDocumentStore store, ILogger<DaliRoleStore<TRole>> logger)
+    public AeroDBRoleStore(IDocumentStore store, ILogger<AeroDBRoleStore<TRole>> logger)
     {
         _store = store ?? throw new ArgumentNullException(nameof(store));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));

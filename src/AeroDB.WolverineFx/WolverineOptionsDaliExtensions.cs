@@ -13,20 +13,20 @@ namespace AeroDB.WolverineFx;
 /// <summary>
 /// Extension methods for integrating Wolverine with AeroDB (SurrealDB) persistence.
 /// </summary>
-public static class WolverineOptionsDaliExtensions
+public static class WolverineOptionsAeroDBExtensions
 {
     /// <summary>
     /// Configure Wolverine to use AeroDB for message persistence, outbox, sagas, and transport.
-    /// Registers DaliMessageStore, DaliOutboxedSessionFactory, and all supporting services.
+    /// Registers AeroDBMessageStore, AeroDBOutboxedSessionFactory, and all supporting services.
     /// </summary>
-    public static void IntegrateWithDali(this WolverineOptions options, IServiceProvider serviceProvider)
+    public static void IntegrateWithAeroDB(this WolverineOptions options, IServiceProvider serviceProvider)
     {
         var client = serviceProvider.GetRequiredService<ISurrealDbClient>();
-        var logger = serviceProvider.GetRequiredService<ILogger<DaliMessageStore>>();
+        var logger = serviceProvider.GetRequiredService<ILogger<AeroDBMessageStore>>();
         var store = serviceProvider.GetRequiredService<IDocumentStore>();
         var loggerFactory = serviceProvider.GetService<ILoggerFactory>();
 
-        var messageStore = new DaliMessageStore(client, logger, loggerFactory, store.Options);
+        var messageStore = new AeroDBMessageStore(client, logger, loggerFactory, store.Options);
 
         options.Services.AddSingleton<IMessageStore>(messageStore);
         options.Services.AddSingleton(messageStore);
@@ -34,9 +34,9 @@ public static class WolverineOptionsDaliExtensions
         options.Services.AddSingleton(sp =>
         {
             var docStore = sp.GetRequiredService<IDocumentStore>();
-            var daliStore = sp.GetRequiredService<DaliMessageStore>();
-            var factoryLogger = sp.GetRequiredService<ILogger<DaliOutboxedSessionFactory>>();
-            return new DaliOutboxedSessionFactory(docStore, daliStore, factoryLogger);
+            var AeroDBStore = sp.GetRequiredService<AeroDBMessageStore>();
+            var factoryLogger = sp.GetRequiredService<ILogger<AeroDBOutboxedSessionFactory>>();
+            return new AeroDBOutboxedSessionFactory(docStore, AeroDBStore, factoryLogger);
         });
 
         options.Services.AddScoped<ScopedDocumentSessionHolder>();
@@ -44,7 +44,7 @@ public static class WolverineOptionsDaliExtensions
         PreferScopedSession<IDocumentSession>(options.Services);
         PreferScopedSession<IQuerySession>(options.Services);
 
-        options.Services.AddSingleton<IWolverineExtension>(new DaliIntegration());
+        options.Services.AddSingleton<IWolverineExtension>(new AeroDBIntegration());
 
         WolverineOptionsSubscriptionExtensions.EnsureSubscriptionHostedService(options.Services);
     }
@@ -52,16 +52,16 @@ public static class WolverineOptionsDaliExtensions
     /// <summary>
     /// Configure Wolverine to persist messages using AeroDB (SurrealDB).
     /// </summary>
-    public static void PersistMessagesWithDali(
+    public static void PersistMessagesWithAeroDB(
         this WolverineOptions options,
         ISurrealDbClient client,
-        ILogger<DaliMessageStore> logger)
+        ILogger<AeroDBMessageStore> logger)
     {
-        var messageStore = new DaliMessageStore(client, logger);
+        var messageStore = new AeroDBMessageStore(client, logger);
 
         options.Services.AddSingleton<IMessageStore>(messageStore);
         options.Services.AddSingleton(messageStore);
-        options.Services.AddSingleton<IWolverineExtension>(new DaliIntegration());
+        options.Services.AddSingleton<IWolverineExtension>(new AeroDBIntegration());
     }
 
     private static void PreferScopedSession<T>(IServiceCollection services) where T : class

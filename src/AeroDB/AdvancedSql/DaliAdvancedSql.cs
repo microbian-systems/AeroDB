@@ -7,11 +7,11 @@ namespace AeroDB;
 /// Advanced SQL query API for multi-document tuple queries and result streaming.
 /// Access via <c>session.AdvancedSql</c>.
 /// </summary>
-public class DaliAdvancedSql
+public class AeroDBAdvancedSql
 {
     private readonly InternalSessionBase _session;
 
-    internal DaliAdvancedSql(InternalSessionBase session)
+    internal AeroDBAdvancedSql(InternalSessionBase session)
     {
         _session = session ?? throw new ArgumentNullException(nameof(session));
     }

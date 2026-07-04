@@ -569,7 +569,7 @@ public class ProjectionRebuildTests
         response.HasErrors.ShouldBeFalse();
         response.Count.ShouldBeGreaterThan(0);
 
-        // Use GetValue<List<object>> as proven by DaliAdvancedSql
+        // Use GetValue<List<object>> as proven by AeroDBAdvancedSql
         var raw = response.GetValue<List<object>>(0);
         raw.ShouldNotBeNull();
         raw.Count.ShouldBe(1);

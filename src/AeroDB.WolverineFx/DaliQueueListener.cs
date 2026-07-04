@@ -7,24 +7,24 @@ namespace AeroDB.WolverineFx;
 
 /// <summary>
 /// Polling listener that claims and dispatches incoming messages from SurrealDB.
-/// Uses the DaliMessageStore to load globally-owned incoming envelopes,
+/// Uses the AeroDBMessageStore to load globally-owned incoming envelopes,
 /// then dispatches them to the provided IReceiver.
 /// </summary>
-public sealed class DaliQueueListener : IListener
+public sealed class AeroDBQueueListener : IListener
 {
-    private readonly DaliMessageStore _store;
+    private readonly AeroDBMessageStore _store;
     private readonly IReceiver _receiver;
-    private readonly DaliTransportOptions _options;
-    private readonly ILogger<DaliQueueListener> _logger;
+    private readonly AeroDBTransportOptions _options;
+    private readonly ILogger<AeroDBQueueListener> _logger;
     private readonly CancellationTokenSource _cancellation = new();
     private Task? _pollTask;
     private bool _started;
 
-    public DaliQueueListener(
-        DaliMessageStore store,
+    public AeroDBQueueListener(
+        AeroDBMessageStore store,
         IReceiver receiver,
-        DaliTransportOptions options,
-        ILogger<DaliQueueListener> logger,
+        AeroDBTransportOptions options,
+        ILogger<AeroDBQueueListener> logger,
         Uri address)
     {
         _store = store ?? throw new ArgumentNullException(nameof(store));
@@ -48,7 +48,7 @@ public sealed class DaliQueueListener : IListener
         if (_started) return Task.CompletedTask;
         _started = true;
         _pollTask = Task.Run(PollLoopAsync, _cancellation.Token);
-        _logger.LogInformation("DaliQueueListener started for {Address}", Address);
+        _logger.LogInformation("AeroDBQueueListener started for {Address}", Address);
         return Task.CompletedTask;
     }
 
@@ -85,7 +85,7 @@ public sealed class DaliQueueListener : IListener
         {
             try { await _pollTask; } catch (OperationCanceledException) { }
         }
-        _logger.LogInformation("DaliQueueListener stopped for {Address}", Address);
+        _logger.LogInformation("AeroDBQueueListener stopped for {Address}", Address);
     }
 
     /// <summary>
@@ -111,7 +111,7 @@ public sealed class DaliQueueListener : IListener
 
                 if (envelopes.Count > 0)
                 {
-                    _logger.LogDebug("DaliQueueListener dispatching {Count} messages from {Address}",
+                    _logger.LogDebug("AeroDBQueueListener dispatching {Count} messages from {Address}",
                         envelopes.Count, Address);
                     await _receiver.ReceivedAsync(this, envelopes.ToArray());
                 }

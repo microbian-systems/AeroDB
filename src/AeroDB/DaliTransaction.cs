@@ -7,12 +7,12 @@ namespace AeroDB;
 /// control with commit/rollback semantics. Created by <see cref="DocumentSession.BeginTransactionAsync"/>
 /// and <see cref="DocumentSession.BeginTransaction"/>.
 /// </summary>
-internal sealed class DaliTransaction : IDaliTransaction
+internal sealed class AeroDBTransaction : IAeroDBTransaction
 {
     private readonly DocumentSession _session;
     private bool _disposed;
 
-    public DaliTransaction(SurrealDbTransaction inner, DocumentSession session)
+    public AeroDBTransaction(SurrealDbTransaction inner, DocumentSession session)
     {
         ArgumentNullException.ThrowIfNull(inner);
         _session = session ?? throw new ArgumentNullException(nameof(session));
@@ -20,14 +20,14 @@ internal sealed class DaliTransaction : IDaliTransaction
 
     public async Task CommitAsync(CancellationToken ct = default)
     {
-        if (_disposed) throw new ObjectDisposedException(nameof(DaliTransaction));
+        if (_disposed) throw new ObjectDisposedException(nameof(AeroDBTransaction));
         await _session.CommitTransactionAsync(ct).ConfigureAwait(false);
         _disposed = true;
     }
 
     public async Task RollbackAsync(CancellationToken ct = default)
     {
-        if (_disposed) throw new ObjectDisposedException(nameof(DaliTransaction));
+        if (_disposed) throw new ObjectDisposedException(nameof(AeroDBTransaction));
         await _session.RollbackTransactionAsync(ct).ConfigureAwait(false);
         _disposed = true;
     }

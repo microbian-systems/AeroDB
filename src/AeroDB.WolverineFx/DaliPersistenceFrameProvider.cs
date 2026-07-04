@@ -14,7 +14,7 @@ namespace AeroDB.WolverineFx;
 /// for saga persistence operations through AeroDB's IDocumentSession.
 /// Mirrors the MartenPersistenceFrameProvider pattern.
 /// </summary>
-internal sealed class DaliPersistenceFrameProvider : IPersistenceFrameProvider
+internal sealed class AeroDBPersistenceFrameProvider : IPersistenceFrameProvider
 {
     public bool CanPersist(Type entityType, IServiceContainer container, out Type persistenceService)
     {
@@ -29,21 +29,21 @@ internal sealed class DaliPersistenceFrameProvider : IPersistenceFrameProvider
 
     public void ApplyTransactionSupport(IChain chain, IServiceContainer container)
     {
-        if (!chain.Middleware.OfType<OpenDaliSessionFrame>().Any())
+        if (!chain.Middleware.OfType<OpenAeroDBSessionFrame>().Any())
         {
-            chain.Middleware.Add(new OpenDaliSessionFrame(chain));
+            chain.Middleware.Add(new OpenAeroDBSessionFrame(chain));
         }
 
         if (chain is not SagaChain)
         {
-            if (!chain.Postprocessors.OfType<DaliSessionSaveChangesFrame>().Any())
+            if (!chain.Postprocessors.OfType<AeroDBSessionSaveChangesFrame>().Any())
             {
-                chain.Postprocessors.Add(new DaliSessionSaveChangesFrame());
+                chain.Postprocessors.Add(new AeroDBSessionSaveChangesFrame());
             }
 
-            if (!chain.Postprocessors.OfType<FlushDaliOutgoingMessagesFrame>().Any())
+            if (!chain.Postprocessors.OfType<FlushAeroDBOutgoingMessagesFrame>().Any())
             {
-                chain.Postprocessors.Add(new FlushDaliOutgoingMessagesFrame());
+                chain.Postprocessors.Add(new FlushAeroDBOutgoingMessagesFrame());
             }
         }
     }
@@ -75,7 +75,7 @@ internal sealed class DaliPersistenceFrameProvider : IPersistenceFrameProvider
 
     public Frame CommitUnitOfWorkFrame(Variable saga, IServiceContainer container)
     {
-        return new DaliSessionSaveChangesFrame();
+        return new AeroDBSessionSaveChangesFrame();
     }
 
     public Frame DetermineUpdateFrame(Variable saga, IServiceContainer container)

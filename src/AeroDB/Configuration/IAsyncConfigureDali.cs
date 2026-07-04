@@ -3,9 +3,9 @@ namespace AeroDB;
 /// <summary>
 /// Async DI-registered AeroDB configuration module.
 /// Applied during <see cref="DocumentStore.InitializeAsync"/> after sync
-/// <see cref="IConfigureDali"/> configurators, but before schema initialization.
+/// <see cref="IConfigureAeroDB"/> configurators, but before schema initialization.
 /// </summary>
-public interface IAsyncConfigureDali
+public interface IAsyncConfigureAeroDB
 {
     /// <summary>
     /// Called during <c>DocumentStore.InitializeAsync</c> to apply async

@@ -1,6 +1,6 @@
 namespace AeroDB.LiveQuery;
 
-public enum DaliLiveAction
+public enum AeroDBLiveAction
 {
     Open,
     Created,

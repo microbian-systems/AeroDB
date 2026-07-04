@@ -14,15 +14,15 @@ namespace AeroDB.WolverineFx;
 /// </list>
 ///
 /// Reflection access to <c>DocumentSession._appendedEvents</c> is
-/// delegated to <see cref="Internal.DaliSessionEventAccessor"/> to avoid
-/// duplicating that logic with <see cref="DaliEventForwarding"/>.
+/// delegated to <see cref="Internal.AeroDBSessionEventAccessor"/> to avoid
+/// duplicating that logic with <see cref="AeroDBEventForwarding"/>.
 /// </summary>
-internal sealed class FlushOutgoingMessagesOnDaliCommit : IDocumentSessionListener
+internal sealed class FlushOutgoingMessagesOnAeroDBCommit : IDocumentSessionListener
 {
     private readonly MessageContext _context;
-    private readonly DaliMessageStore _messageStore;
+    private readonly AeroDBMessageStore _messageStore;
 
-    public FlushOutgoingMessagesOnDaliCommit(MessageContext context, DaliMessageStore messageStore)
+    public FlushOutgoingMessagesOnAeroDBCommit(MessageContext context, AeroDBMessageStore messageStore)
     {
         _context = context ?? throw new ArgumentNullException(nameof(context));
         _messageStore = messageStore ?? throw new ArgumentNullException(nameof(messageStore));
@@ -34,9 +34,9 @@ internal sealed class FlushOutgoingMessagesOnDaliCommit : IDocumentSessionListen
     /// </summary>
     public async Task BeforeSaveChangesAsync(IDocumentSession session, CancellationToken ct)
     {
-        if (session is not DocumentSession daliSession) return;
+        if (session is not DocumentSession AeroDBSession) return;
 
-        var events = Internal.DaliSessionEventAccessor.GetAppendedEvents(daliSession);
+        var events = Internal.AeroDBSessionEventAccessor.GetAppendedEvents(AeroDBSession);
         if (events.Count == 0) return;
 
         foreach (var evt in events)

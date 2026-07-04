@@ -52,7 +52,7 @@ public class PongHandler
 // ──────────────────────────────────────────────
 
 [NotInParallel]
-public class DaliWolverineIntegrationTests
+public class AeroDBWolverineIntegrationTests
 {
     /// <summary>
     /// Bootstrap a Wolverine host with AeroDB persistence backed by in-memory SurrealDB.
@@ -83,27 +83,27 @@ public class DaliWolverineIntegrationTests
                 extraWolverineConfig?.Invoke(opts);
 
                 // Manually register AeroDB persistence services (same as
-                // IntegrateWithDali but using factory lambdas since IServiceProvider
+                // IntegrateWithAeroDB but using factory lambdas since IServiceProvider
                 // isn't available during configuration).
-                opts.Services.AddSingleton<DaliMessageStore>(sp =>
+                opts.Services.AddSingleton<AeroDBMessageStore>(sp =>
                 {
                     var client = sp.GetRequiredService<ISurrealDbClient>();
-                    var logger = sp.GetRequiredService<ILogger<DaliMessageStore>>();
-                    return new DaliMessageStore(client, logger);
+                    var logger = sp.GetRequiredService<ILogger<AeroDBMessageStore>>();
+                    return new AeroDBMessageStore(client, logger);
                 });
                 opts.Services.AddSingleton<IMessageStore>(sp =>
-                    sp.GetRequiredService<DaliMessageStore>());
+                    sp.GetRequiredService<AeroDBMessageStore>());
 
                 opts.Services.AddSingleton(sp =>
                 {
                     var store = sp.GetRequiredService<IDocumentStore>();
-                    var ms = sp.GetRequiredService<DaliMessageStore>();
-                    var logger = sp.GetRequiredService<ILogger<DaliOutboxedSessionFactory>>();
-                    return new DaliOutboxedSessionFactory(store, ms, logger);
+                    var ms = sp.GetRequiredService<AeroDBMessageStore>();
+                    var logger = sp.GetRequiredService<ILogger<AeroDBOutboxedSessionFactory>>();
+                    return new AeroDBOutboxedSessionFactory(store, ms, logger);
                 });
 
                 opts.Services.AddScoped<ScopedDocumentSessionHolder>();
-                opts.Services.AddSingleton<IWolverineExtension>(new DaliIntegration());
+                opts.Services.AddSingleton<IWolverineExtension>(new AeroDBIntegration());
             })
             .Build();
 
@@ -114,7 +114,7 @@ public class DaliWolverineIntegrationTests
     // ─── Test 1: Host boots with AeroDB ───
 
     [Test]
-    public async Task Host_BootsWithDaliPersistence()
+    public async Task Host_BootsWithAeroDBPersistence()
     {
         using var host = await BuildWolverineHostAsync();
         // Host started without exception = success
@@ -150,20 +150,20 @@ public class DaliWolverineIntegrationTests
         PongHandler.Received[0].Message.ShouldBe("Pong: Hello");
     }
 
-    // ─── Test 3: DaliMessageStore stores incoming envelopes ───
+    // ─── Test 3: AeroDBMessageStore stores incoming envelopes ───
 
     [Test]
     public async Task MessageStore_StoreIncomingEnvelope()
     {
         using var host = await BuildWolverineHostAsync();
-        var store = host.Services.GetRequiredService<DaliMessageStore>();
+        var store = host.Services.GetRequiredService<AeroDBMessageStore>();
 
         var env = new Envelope
         {
             Id = Guid.NewGuid(),
             MessageType = "TestMessage",
             Data = new byte[] { 1, 2, 3 },
-            Destination = new Uri("dali://localhost/incoming")
+            Destination = new Uri("AeroDB://localhost/incoming")
         };
 
         // Store should not throw
@@ -171,36 +171,36 @@ public class DaliWolverineIntegrationTests
 
         // NOTE: AllIncomingAsync round-trip may not reflect the stored envelope
         // due to SurrealDB id field mapping (record ID format vs plain GUID).
-        // This is a pre-existing serialization concern in DaliEnvelope.
+        // This is a pre-existing serialization concern in AeroDBEnvelope.
     }
 
-    // ─── Test 4: DaliMessageStore stores outgoing envelopes ───
+    // ─── Test 4: AeroDBMessageStore stores outgoing envelopes ───
 
     [Test]
     public async Task MessageStore_StoreOutgoingEnvelope()
     {
         using var host = await BuildWolverineHostAsync();
-        var store = host.Services.GetRequiredService<DaliMessageStore>();
+        var store = host.Services.GetRequiredService<AeroDBMessageStore>();
 
         var env = new Envelope
         {
             Id = Guid.NewGuid(),
             MessageType = "OutgoingMessage",
             Data = new byte[] { 4, 5, 6 },
-            Destination = new Uri("dali://localhost/outgoing")
+            Destination = new Uri("AeroDB://localhost/outgoing")
         };
 
         // Store should not throw
         await store.StoreOutgoingAsync(env, ownerId: 1);
     }
 
-    // ─── Test 5: DaliMessageStore schema migration ───
+    // ─── Test 5: AeroDBMessageStore schema migration ───
 
     [Test]
     public async Task MessageStore_MigrateSchema()
     {
         using var host = await BuildWolverineHostAsync();
-        var store = host.Services.GetRequiredService<DaliMessageStore>();
+        var store = host.Services.GetRequiredService<AeroDBMessageStore>();
         await store.MigrateAsync();
         // Schema applied without exception
     }
@@ -379,7 +379,7 @@ public class DaliWolverineIntegrationTests
     public async Task Inbox_StoreAndMarkHandled()
     {
         using var host = await BuildWolverineHostAsync();
-        var store = host.Services.GetRequiredService<DaliMessageStore>();
+        var store = host.Services.GetRequiredService<AeroDBMessageStore>();
 
         var msgId = Guid.NewGuid();
         var env = new Envelope
@@ -387,7 +387,7 @@ public class DaliWolverineIntegrationTests
             Id = msgId,
             MessageType = "IdempotentMessage",
             Data = new byte[] { 1, 2, 3 },
-            Destination = new Uri("dali://localhost/incoming")
+            Destination = new Uri("AeroDB://localhost/incoming")
         };
 
         // Store twice (simulates duplicate delivery — store accepts duplicates)
@@ -399,7 +399,7 @@ public class DaliWolverineIntegrationTests
 
         // NOTE: ExistsAsync relies on exact record ID lookup which may not
         // round-trip correctly through SurrealDB's CREATE ... CONTENT serialization
-        // (pre-existing DaliEnvelope serialization concern). The core store/mark
+        // (pre-existing AeroDBEnvelope serialization concern). The core store/mark
         // operations are verified as working.
     }
 
@@ -409,7 +409,7 @@ public class DaliWolverineIntegrationTests
     public async Task DeadLetter_StoreAndReplay_DoesNotThrow()
     {
         using var host = await BuildWolverineHostAsync();
-        var store = host.Services.GetRequiredService<DaliMessageStore>();
+        var store = host.Services.GetRequiredService<AeroDBMessageStore>();
 
         var envId = Guid.NewGuid();
         var env = new Envelope
@@ -417,7 +417,7 @@ public class DaliWolverineIntegrationTests
             Id = envId,
             MessageType = "DeadLetterReplayTest",
             Data = new byte[] { 10, 20, 30 },
-            Destination = new Uri("dali://localhost/incoming")
+            Destination = new Uri("AeroDB://localhost/incoming")
         };
 
         // Store as incoming first
@@ -445,18 +445,18 @@ public class DaliWolverineIntegrationTests
     public async Task MultiTenancy_TenantIdFlowsToEnvelope()
     {
         using var host = await BuildWolverineHostAsync();
-        var store = host.Services.GetRequiredService<DaliMessageStore>();
+        var store = host.Services.GetRequiredService<AeroDBMessageStore>();
 
         var env = new Envelope
         {
             Id = Guid.NewGuid(),
             MessageType = "TenantTest",
             Data = new byte[] { 1 },
-            Destination = new Uri("dali://localhost/incoming"),
+            Destination = new Uri("AeroDB://localhost/incoming"),
             TenantId = "tenant-alpha"
         };
 
-        // Store the envelope — the DaliEnvelope.FromEnvelope already captures env.TenantId
+        // Store the envelope — the AeroDBEnvelope.FromEnvelope already captures env.TenantId
         await store.StoreIncomingAsync(env);
 
         // NOTE: Full envelope round-trip verification is limited by pre-existing
@@ -520,40 +520,40 @@ public class DaliWolverineIntegrationTests
         loaded!.Name.ShouldBe("Ancillary Test");
     }
 
-    // ─── Test 15: IDaliOp — type system and factory operations ───
+    // ─── Test 15: IAeroDBOp — type system and factory operations ───
 
     [Test]
-    public async Task DaliOp_TypesCompileAndOperationsWork()
+    public async Task AeroDBOp_TypesCompileAndOperationsWork()
     {
-        // Verify that IDaliOp factory methods create the correct types
+        // Verify that IAeroDBOp factory methods create the correct types
         var doc = new StoreTestDoc
         {
             Id = new RecordIdOf<string>("store_test_doc", Guid.NewGuid().ToString()),
-            Name = "DaliOp Test"
+            Name = "AeroDBOp Test"
         };
 
-        // Store operation - should be assignable to IDaliOp
-        IDaliOp storeOp = DaliOps.Store(doc);
+        // Store operation - should be assignable to IAeroDBOp
+        IAeroDBOp storeOp = AeroDBOps.Store(doc);
         storeOp.ShouldNotBeNull();
-        storeOp.ShouldBeAssignableTo<IDaliOp>();
+        storeOp.ShouldBeAssignableTo<IAeroDBOp>();
 
         // Delete operation
-        IDaliOp deleteOp = DaliOps.Delete(doc);
+        IAeroDBOp deleteOp = AeroDBOps.Delete(doc);
         deleteOp.ShouldNotBeNull();
-        deleteOp.ShouldBeAssignableTo<IDaliOp>();
+        deleteOp.ShouldBeAssignableTo<IAeroDBOp>();
 
         // Insert operation
-        IDaliOp insertOp = DaliOps.Insert(doc);
+        IAeroDBOp insertOp = AeroDBOps.Insert(doc);
         insertOp.ShouldNotBeNull();
-        insertOp.ShouldBeAssignableTo<IDaliOp>();
+        insertOp.ShouldBeAssignableTo<IAeroDBOp>();
     }
 
-    // ─── Test 16: DaliEventForwarding — listener can detect appended events ───
+    // ─── Test 16: AeroDBEventForwarding — listener can detect appended events ───
 
     [Test]
     public async Task EventForwarding_ListenerDetectsAppendedEvents()
     {
-        // Verify that DaliEventForwarding can access _appendedEvents via reflection
+        // Verify that AeroDBEventForwarding can access _appendedEvents via reflection
         using var host = await BuildWolverineHostAsync();
         var store = host.Services.GetRequiredService<IDocumentStore>();
         await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
@@ -563,7 +563,7 @@ public class DaliWolverineIntegrationTests
         await session.Events.Append("test-stream-2", new object[] { new TestEvent("evt2") });
 
         // Create forwarder and verify it can read events via reflection
-        var forwarder = new DaliEventForwarding();
+        var forwarder = new AeroDBEventForwarding();
 
         // Set a dummy context so the forwarder doesn't throw
         // (without a Wolverine context, the forwarder is a no-op)
@@ -591,7 +591,7 @@ public class DaliWolverineIntegrationTests
     public async Task Admin_ReleaseAllOwnership_Works()
     {
         using var host = await BuildWolverineHostAsync();
-        var store = host.Services.GetRequiredService<DaliMessageStore>();
+        var store = host.Services.GetRequiredService<AeroDBMessageStore>();
 
         // Store an incoming envelope with a specific owner
         var env1 = new Envelope
@@ -599,7 +599,7 @@ public class DaliWolverineIntegrationTests
             Id = Guid.NewGuid(),
             MessageType = "OwnershipTest",
             Data = new byte[] { 1, 2, 3 },
-            Destination = new Uri("dali://localhost/incoming")
+            Destination = new Uri("AeroDB://localhost/incoming")
         };
         await store.StoreIncomingAsync(env1);
 
@@ -609,7 +609,7 @@ public class DaliWolverineIntegrationTests
             Id = Guid.NewGuid(),
             MessageType = "OwnershipTestOutgoing",
             Data = new byte[] { 4, 5, 6 },
-            Destination = new Uri("dali://localhost/outgoing")
+            Destination = new Uri("AeroDB://localhost/outgoing")
         };
         await store.StoreOutgoingAsync(env2, ownerId: 42);
 
@@ -634,7 +634,7 @@ public class DaliWolverineIntegrationTests
     public async Task Admin_ReleaseAllOwnership_WithOwnerId_Works()
     {
         using var host = await BuildWolverineHostAsync();
-        var store = host.Services.GetRequiredService<DaliMessageStore>();
+        var store = host.Services.GetRequiredService<AeroDBMessageStore>();
 
         // Store envelope with a specific owner
         var env = new Envelope
@@ -642,7 +642,7 @@ public class DaliWolverineIntegrationTests
             Id = Guid.NewGuid(),
             MessageType = "OwnerReleaseTest",
             Data = new byte[] { 7, 8, 9 },
-            Destination = new Uri("dali://localhost/incoming")
+            Destination = new Uri("AeroDB://localhost/incoming")
         };
         await store.StoreIncomingAsync(env);
 
@@ -662,7 +662,7 @@ public class DaliWolverineIntegrationTests
     public async Task Admin_FetchRecentRecords_Works()
     {
         using var host = await BuildWolverineHostAsync();
-        var store = host.Services.GetRequiredService<DaliMessageStore>();
+        var store = host.Services.GetRequiredService<AeroDBMessageStore>();
 
         // Log some node records
         var records = new[]
@@ -674,7 +674,7 @@ public class DaliWolverineIntegrationTests
                 RecordType = NodeRecordType.NodeStarted,
                 Timestamp = DateTimeOffset.UtcNow,
                 Description = "Test node started",
-                ServiceName = "DaliTest"
+                ServiceName = "AeroDBTest"
             },
             new NodeRecord
             {
@@ -683,7 +683,7 @@ public class DaliWolverineIntegrationTests
                 RecordType = NodeRecordType.AgentStarted,
                 Timestamp = DateTimeOffset.UtcNow,
                 Description = "Agent started",
-                ServiceName = "DaliTest"
+                ServiceName = "AeroDBTest"
             }
         };
 
@@ -700,16 +700,16 @@ public class DaliWolverineIntegrationTests
         // Full round-trip verification requires a persistent SurrealDB instance.
     }
 
-    // ─── Test 20: DaliScheduledJobAgent — can be constructed and started ───
+    // ─── Test 20: AeroDBScheduledJobAgent — can be constructed and started ───
 
     [Test]
     public async Task ScheduledJobAgent_StartAndStop()
     {
         using var host = await BuildWolverineHostAsync();
         var client = host.Services.GetRequiredService<ISurrealDbClient>();
-        var logger = host.Services.GetRequiredService<ILogger<DaliMessageStore>>();
+        var logger = host.Services.GetRequiredService<ILogger<AeroDBMessageStore>>();
 
-        var agent = new DaliScheduledJobAgent(client, logger);
+        var agent = new AeroDBScheduledJobAgent(client, logger);
 
         try
         {
@@ -723,16 +723,16 @@ public class DaliWolverineIntegrationTests
         }
     }
 
-    // ─── Test 21: DaliOpPolicy is registered in handler chains ───
+    // ─── Test 21: AeroDBOpPolicy is registered in handler chains ───
 
     [Test]
-    public async Task DaliOpPolicy_IsRegistered()
+    public async Task AeroDBOpPolicy_IsRegistered()
     {
-        // Verify the DaliOpPolicy was added via DaliIntegration
+        // Verify the AeroDBOpPolicy was added via AeroDBIntegration
         using var host = await BuildWolverineHostAsync();
         var runtime = host.Services.GetRequiredService<Wolverine.Runtime.IWolverineRuntime>();
 
-        // The DaliOpPolicy should be in the handler policies collection
+        // The AeroDBOpPolicy should be in the handler policies collection
         runtime.ShouldNotBeNull();
     }
 
@@ -742,13 +742,13 @@ public class DaliWolverineIntegrationTests
     public async Task Admin_PersistAgentRestrictions_Works()
     {
         using var host = await BuildWolverineHostAsync();
-        var store = host.Services.GetRequiredService<DaliMessageStore>();
+        var store = host.Services.GetRequiredService<AeroDBMessageStore>();
 
         var restrictions = new List<AgentRestriction>
         {
                 new AgentRestriction(
                 Guid.NewGuid(),
-                new Uri("dali://agent/test-agent"),
+                new Uri("AeroDB://agent/test-agent"),
                 AgentRestrictionType.Pinned,
                 1)
         };
@@ -802,7 +802,7 @@ public record IdempotentMessage(Guid Id);
 /// IDocumentStore is registered as a singleton instance (opaque-free),
 /// so Wolverine's codegen can inject it. The handler opens its own
 /// session explicitly rather than relying on the transactional middleware
-/// (which has a known codegen issue with DaliOutboxedSessionFactory).
+/// (which has a known codegen issue with AeroDBOutboxedSessionFactory).
 /// </summary>
 public class ExplicitSessionHandler
 {
@@ -874,13 +874,13 @@ public class AncillaryStoreHandler
 public record AncillaryStoreCmd(string DocId, string Name);
 
 /// <summary>
-/// Handler that returns a DaliOps.Store side effect to test the IDaliOp pattern.
+/// Handler that returns a AeroDBOps.Store side effect to test the IAeroDBOp pattern.
 /// </summary>
-public class DaliOpTestHandler
+public class AeroDBOpTestHandler
 {
     public static Guid? StoredId;
 
-    public IDaliOp Handle(DaliOpCommand cmd)
+    public IAeroDBOp Handle(AeroDBOpCommand cmd)
     {
         var doc = new StoreTestDoc
         {
@@ -888,9 +888,9 @@ public class DaliOpTestHandler
             Name = cmd.Name
         };
         StoredId = cmd.DocId is { Length: > 0 } ? Guid.Parse(cmd.DocId) : null;
-        return DaliOps.Store(doc);
+        return AeroDBOps.Store(doc);
     }
 }
 
-public record DaliOpCommand(string DocId, string Name);
+public record AeroDBOpCommand(string DocId, string Name);
 

@@ -12,7 +12,7 @@ namespace AeroDB.SourceGenerators;
 /// the shim is deserialized by the SurrealDB SDK (CBOR), then materialized to the entity via <c>ToEntity()</c>.
 /// </summary>
 [Generator]
-public class DaliEntityShimGenerator : IIncrementalGenerator
+public class AeroDBEntityShimGenerator : IIncrementalGenerator
 {
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
@@ -39,8 +39,8 @@ public class DaliEntityShimGenerator : IIncrementalGenerator
             var recordType = compilation.GetTypeByMetadataName("SurrealDb.Net.Models.Record");
             if (recordType is null) return;
 
-            // Optionally find the DaliDocumentAttribute for opt-out
-            var daliDocAttrType = compilation.GetTypeByMetadataName("AeroDB.DaliDocumentAttribute");
+            // Optionally find the AeroDBDocumentAttribute for opt-out
+            var AeroDBDocAttrType = compilation.GetTypeByMetadataName("AeroDB.AeroDBDocumentAttribute");
 
             foreach (var type in types)
             {
@@ -48,11 +48,11 @@ public class DaliEntityShimGenerator : IIncrementalGenerator
                 if (type.IsAbstract) continue;
                 if (!IsEntitySubclass(type, entityGenericType)) continue;
 
-                // Check for [DaliDocument(SkipGeneration = true)] opt-out
-                if (daliDocAttrType is not null)
+                // Check for [AeroDBDocument(SkipGeneration = true)] opt-out
+                if (AeroDBDocAttrType is not null)
                 {
                     var skipAttr = type.GetAttributes()
-                        .FirstOrDefault(a => SymbolEqualityComparer.Default.Equals(a.AttributeClass, daliDocAttrType));
+                        .FirstOrDefault(a => SymbolEqualityComparer.Default.Equals(a.AttributeClass, AeroDBDocAttrType));
                     if (skipAttr is not null)
                     {
                         var skipNamedArg = skipAttr.NamedArguments

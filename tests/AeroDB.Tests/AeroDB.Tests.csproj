@@ -4,7 +4,7 @@
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <!-- NU1903: Newtonsoft.Json 10.0.2 vulnerability is transitive through Dali.Snowflake → Aero.Core.
+    <!-- NU1903: Newtonsoft.Json 10.0.2 vulnerability is transitive through AeroDB.Snowflake → Aero.Core.
          We don't use Newtonsoft.Json or WindowsAzure.Storage directly. -->
     <NoWarn>$(NoWarn);NU1903</NoWarn>
   </PropertyGroup>
@@ -33,7 +33,7 @@
     <ProjectReference Include="..\..\src\AeroDB\AeroDB.csproj" />
     <ProjectReference Include="..\..\src\AeroDB.Snowflake\AeroDB.Snowflake.csproj" />
     <ProjectReference Include="..\..\src\AeroDB.EntityFrameworkCore\AeroDB.EntityFrameworkCore.csproj" />
-    <ProjectReference Include="..\..\src\Dali.ML\Dali.ML.csproj" />
+    <ProjectReference Include="..\..\src\AeroDB.ML\AeroDB.ML.csproj" />
     <ProjectReference Include="..\..\src\AeroDB.Reactive\AeroDB.Reactive.csproj" />
     <ProjectReference Include="..\..\src\AeroDB.WolverineFx\AeroDB.WolverineFx.csproj" />
     <ProjectReference Include="..\..\wolverine\src\Wolverine.RuntimeCompilation\Wolverine.RuntimeCompilation.csproj" />

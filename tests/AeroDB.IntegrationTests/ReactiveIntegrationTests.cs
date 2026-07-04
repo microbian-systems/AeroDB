@@ -19,7 +19,7 @@ public class ReactiveIntegrationTests
     /// Helper: get a reference to the built query so we can manage its lifecycle
     /// (avoiding reentrancy in builder.ToObservable's own dispose-on-unsubscribe).
     /// </summary>
-    private static async Task<(IDocumentStore Store, IDocumentSession WriteSession, ILiveQuerySession LiveSession, IDaliLiveQuery<TestPerson> Query, IObservable<DaliLiveChange<TestPerson>> Observable)> SetupAsync()
+    private static async Task<(IDocumentStore Store, IDocumentSession WriteSession, ILiveQuerySession LiveSession, IAeroDBLiveQuery<TestPerson> Query, IObservable<AeroDBLiveChange<TestPerson>> Observable)> SetupAsync()
     {
         var store = await TestHarness.CreateStoreAsync();
         var writeSession = await store.OpenSessionAsync(new SessionOptions
@@ -42,7 +42,7 @@ public class ReactiveIntegrationTests
         IDocumentStore? store,
         IDocumentSession? writeSession,
         ILiveQuerySession? liveSession,
-        IDaliLiveQuery<TestPerson>? query)
+        IAeroDBLiveQuery<TestPerson>? query)
     {
         if (writeSession is not null)
             await writeSession.DisposeAsync();
@@ -68,14 +68,14 @@ public class ReactiveIntegrationTests
         var store = default(IDocumentStore);
         var writeSession = default(IDocumentSession);
         var liveSession = default(ILiveQuerySession);
-        IDaliLiveQuery<TestPerson>? query = null;
+        IAeroDBLiveQuery<TestPerson>? query = null;
 
         try
         {
             // Arrange
             (store, writeSession, liveSession, query, var observable) = await SetupAsync();
 
-            var results = new List<DaliLiveChange<TestPerson>>();
+            var results = new List<AeroDBLiveChange<TestPerson>>();
             var tcs = new TaskCompletionSource();
 
             using var sub = observable.Subscribe(
@@ -111,19 +111,19 @@ public class ReactiveIntegrationTests
             // Assert
             results.Count.ShouldBeGreaterThan(1);
 
-            var created = results.FirstOrDefault(r => r.Action == DaliLiveAction.Created);
+            var created = results.FirstOrDefault(r => r.Action == AeroDBLiveAction.Created);
             created.ShouldNotBeNull();
             created.Document.ShouldNotBeNull();
             created.Document.Name.ShouldBe("Alice");
             created.Document.Email.ShouldBe("alice@test.com");
             created.Document.Age.ShouldBe(25);
 
-            var updated = results.FirstOrDefault(r => r.Action == DaliLiveAction.Updated);
+            var updated = results.FirstOrDefault(r => r.Action == AeroDBLiveAction.Updated);
             updated.ShouldNotBeNull();
             updated.Document.ShouldNotBeNull();
             updated.Document.Name.ShouldBe("Alice Updated");
 
-            var deleted = results.FirstOrDefault(r => r.Action == DaliLiveAction.Deleted);
+            var deleted = results.FirstOrDefault(r => r.Action == AeroDBLiveAction.Deleted);
             deleted.ShouldNotBeNull();
         }
         finally
@@ -141,14 +141,14 @@ public class ReactiveIntegrationTests
         var store = default(IDocumentStore);
         var writeSession = default(IDocumentSession);
         var liveSession = default(ILiveQuerySession);
-        IDaliLiveQuery<TestPerson>? query = null;
+        IAeroDBLiveQuery<TestPerson>? query = null;
 
         try
         {
             // Arrange
             (store, writeSession, liveSession, query, var observable) = await SetupAsync();
 
-            var results = new List<DaliLiveChange<TestPerson>>();
+            var results = new List<AeroDBLiveChange<TestPerson>>();
 
             using var sub = observable.Subscribe(results.Add);
 
@@ -169,10 +169,10 @@ public class ReactiveIntegrationTests
             await Task.Delay(TimeSpan.FromMilliseconds(500));
 
             // Assert — at least one Close event should have been received
-            results.ShouldContain(r => r.Action == DaliLiveAction.Closed);
+            results.ShouldContain(r => r.Action == AeroDBLiveAction.Closed);
 
             // Also verify we received at least one Created event before close
-            results.ShouldContain(r => r.Action == DaliLiveAction.Created);
+            results.ShouldContain(r => r.Action == AeroDBLiveAction.Created);
         }
         finally
         {
@@ -189,7 +189,7 @@ public class ReactiveIntegrationTests
         var store = default(IDocumentStore);
         var writeSession = default(IDocumentSession);
         var liveSession = default(ILiveQuerySession);
-        IDaliLiveQuery<TestPerson>? query = null;
+        IAeroDBLiveQuery<TestPerson>? query = null;
 
         try
         {
@@ -212,7 +212,7 @@ public class ReactiveIntegrationTests
             query = await builder.SubscribeAsync();
             var observable = query.ToObservable();
 
-            var results = new List<DaliLiveChange<TestPerson>>();
+            var results = new List<AeroDBLiveChange<TestPerson>>();
             using var sub = observable.Subscribe(results.Add);
 
             // Wait for live query connection
@@ -230,11 +230,11 @@ public class ReactiveIntegrationTests
 
             // Assert — Alice (stored before subscription) should NOT be in results
             results.ShouldNotContain(r =>
-                r.Action == DaliLiveAction.Created && r.Document != null && r.Document.Name == "Alice");
+                r.Action == AeroDBLiveAction.Created && r.Document != null && r.Document.Name == "Alice");
 
             // Assert — Bob (stored after subscription) SHOULD be in results
             results.ShouldContain(r =>
-                r.Action == DaliLiveAction.Created && r.Document != null && r.Document.Name == "Bob");
+                r.Action == AeroDBLiveAction.Created && r.Document != null && r.Document.Name == "Bob");
         }
         finally
         {
@@ -251,7 +251,7 @@ public class ReactiveIntegrationTests
         var store = default(IDocumentStore);
         var writeSession = default(IDocumentSession);
         var liveSession = default(ILiveQuerySession);
-        IDaliLiveQuery<TestPerson>? query = null;
+        IAeroDBLiveQuery<TestPerson>? query = null;
 
         try
         {
@@ -323,7 +323,7 @@ public class ReactiveIntegrationTests
         var store = default(IDocumentStore);
         var writeSession = default(IDocumentSession);
         var liveSession = default(ILiveQuerySession);
-        IDaliLiveQuery<TestPerson>? query = null;
+        IAeroDBLiveQuery<TestPerson>? query = null;
 
         try
         {
@@ -679,7 +679,7 @@ public class ReactiveIntegrationTests
                 .Where(p => p.Name == "Target")
                 .Results();
 
-            var allChanges = new List<DaliLiveChange<TestPerson>>();
+            var allChanges = new List<AeroDBLiveChange<TestPerson>>();
             using var sub = obs.Subscribe(allChanges.Add);
 
             // Wait for live query connection
@@ -702,7 +702,7 @@ public class ReactiveIntegrationTests
 
             // Assert — only the Created event for "Target" should arrive (Other filtered by WHERE)
             allChanges.Count.ShouldBe(1);
-            allChanges[0].Action.ShouldBe(DaliLiveAction.Created);
+            allChanges[0].Action.ShouldBe(AeroDBLiveAction.Created);
             allChanges[0].Document.ShouldNotBeNull();
             allChanges[0].Document!.Name.ShouldBe("Target");
         }

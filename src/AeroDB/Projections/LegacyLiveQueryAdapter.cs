@@ -6,15 +6,15 @@ namespace AeroDB;
 
 /// <summary>
 /// Marten API parity adapter: bridges the old <see cref="ILiveQuery{T}"/> interface
-/// over the new <see cref="IDaliLiveQuery{T}"/> subsystem.
+/// over the new <see cref="IAeroDBLiveQuery{T}"/> subsystem.
 /// Used internally by <c>WatchTableAsync</c>, <c>WatchQueryAsync</c>, and
 /// <c>WatchStreamAsync</c> compatibility methods.
 /// </summary>
 internal sealed class LegacyLiveQueryAdapter<T> : ILiveQuery<T>
 {
-    private readonly IDaliLiveQuery<T> _inner;
+    private readonly IAeroDBLiveQuery<T> _inner;
 
-    public LegacyLiveQueryAdapter(IDaliLiveQuery<T> inner)
+    public LegacyLiveQueryAdapter(IAeroDBLiveQuery<T> inner)
     {
         _inner = inner;
     }
@@ -23,9 +23,9 @@ internal sealed class LegacyLiveQueryAdapter<T> : ILiveQuery<T>
         [EnumeratorCancellation] CancellationToken ct = default)
     {
         await foreach (var change in _inner.Changes(ct)
-            .Where(c => c.Action is DaliLiveAction.Created
-                                     or DaliLiveAction.Updated
-                                     or DaliLiveAction.Deleted)
+            .Where(c => c.Action is AeroDBLiveAction.Created
+                                     or AeroDBLiveAction.Updated
+                                     or AeroDBLiveAction.Deleted)
             .ConfigureAwait(false))
         {
             if (change.Document is not null)
@@ -37,7 +37,7 @@ internal sealed class LegacyLiveQueryAdapter<T> : ILiveQuery<T>
         [EnumeratorCancellation] CancellationToken ct = default)
     {
         await foreach (var change in _inner.Changes(ct)
-            .Where(c => c.Action == DaliLiveAction.Created)
+            .Where(c => c.Action == AeroDBLiveAction.Created)
             .ConfigureAwait(false))
         {
             if (change.Document is not null)
@@ -49,7 +49,7 @@ internal sealed class LegacyLiveQueryAdapter<T> : ILiveQuery<T>
         [EnumeratorCancellation] CancellationToken ct = default)
     {
         await foreach (var change in _inner.Changes(ct)
-            .Where(c => c.Action == DaliLiveAction.Updated)
+            .Where(c => c.Action == AeroDBLiveAction.Updated)
             .ConfigureAwait(false))
         {
             if (change.Document is not null)
@@ -61,7 +61,7 @@ internal sealed class LegacyLiveQueryAdapter<T> : ILiveQuery<T>
         [EnumeratorCancellation] CancellationToken ct = default)
     {
         await foreach (var change in _inner.Changes(ct)
-            .Where(c => c.Action == DaliLiveAction.Deleted)
+            .Where(c => c.Action == AeroDBLiveAction.Deleted)
             .ConfigureAwait(false))
         {
             if (change.Document is not null)

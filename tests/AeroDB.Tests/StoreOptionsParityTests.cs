@@ -243,14 +243,14 @@ public class StoreOptionsParityTests
     }
 
     // ──────────────────────────────────────────────
-    // 6. DI extensions — AddDali overloads
+    // 6. DI extensions — AddAeroDB overloads
     // ──────────────────────────────────────────────
 
     [Test]
-    public async Task AddDali_registers_IDocumentStore()
+    public async Task AddAeroDB_registers_IDocumentStore()
     {
         var services = new ServiceCollection();
-        services.AddDali(options =>
+        services.AddAeroDB(options =>
         {
             options.ClientFactory = () => new SurrealDbMemoryClient();
             options.Namespace = "test";
@@ -265,11 +265,11 @@ public class StoreOptionsParityTests
     }
 
     [Test]
-    public async Task AddDali_connection_string_configuration()
+    public async Task AddAeroDB_connection_string_configuration()
     {
-        // AddDali only accepts Action<StoreOptions>; configure endpoint via lambda
+        // AddAeroDB only accepts Action<StoreOptions>; configure endpoint via lambda
         var services = new ServiceCollection();
-        services.AddDali(options =>
+        services.AddAeroDB(options =>
         {
             options.Endpoint = "ws://example.com:8000";
             options.Namespace = "app_ns";

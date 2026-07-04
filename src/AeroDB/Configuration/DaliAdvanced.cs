@@ -3,7 +3,7 @@ using SurrealDb.Net;
 
 namespace AeroDB;
 
-internal sealed class DaliAdvanced : IDaliAdvanced
+internal sealed class AeroDBAdvanced : IAeroDBAdvanced
 {
     private readonly ISurrealDbClient _client;
     private readonly StoreOptions _options;
@@ -12,9 +12,9 @@ internal sealed class DaliAdvanced : IDaliAdvanced
 
     public ISurrealDbClient Client => _client;
 
-    public IDiagnostics Diagnostics => _diagnostics ??= new DaliDiagnostics(_client);
+    public IDiagnostics Diagnostics => _diagnostics ??= new AeroDBDiagnostics(_client);
 
-    public DaliAdvanced(ISurrealDbClient client, StoreOptions options)
+    public AeroDBAdvanced(ISurrealDbClient client, StoreOptions options)
     {
         _client = client ?? throw new ArgumentNullException(nameof(client));
         _options = options ?? throw new ArgumentNullException(nameof(options));

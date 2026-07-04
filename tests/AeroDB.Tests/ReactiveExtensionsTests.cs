@@ -25,21 +25,21 @@ public class ReactiveExtensionsTests
     private static string RecordKey(Person p) =>
         p.Id is RecordIdOf<string> rid ? rid.Id : p.Id?.ToString() ?? "";
 
-    private static DaliLiveChange<Person> CreateOpen() =>
-        new(DaliLiveAction.Open, null, null);
+    private static AeroDBLiveChange<Person> CreateOpen() =>
+        new(AeroDBLiveAction.Open, null, null);
 
-    private static DaliLiveChange<Person> CreateCreated(Person p) =>
-        new(DaliLiveAction.Created, RecordKey(p), p);
+    private static AeroDBLiveChange<Person> CreateCreated(Person p) =>
+        new(AeroDBLiveAction.Created, RecordKey(p), p);
 
-    private static DaliLiveChange<Person> CreateUpdated(Person p) =>
-        new(DaliLiveAction.Updated, RecordKey(p), p);
+    private static AeroDBLiveChange<Person> CreateUpdated(Person p) =>
+        new(AeroDBLiveAction.Updated, RecordKey(p), p);
 
-    private static DaliLiveChange<Person> CreateDeleted(Person p) =>
-        new(DaliLiveAction.Deleted, RecordKey(p), p);
+    private static AeroDBLiveChange<Person> CreateDeleted(Person p) =>
+        new(AeroDBLiveAction.Deleted, RecordKey(p), p);
 
-    private static DaliLiveChange<Person> CreateClosed(
+    private static AeroDBLiveChange<Person> CreateClosed(
         SurrealDbLiveQueryClosureReason reason = SurrealDbLiveQueryClosureReason.QueryKilled) =>
-        new(DaliLiveAction.Closed, null, null, reason);
+        new(AeroDBLiveAction.Closed, null, null, reason);
 
     /// <summary>Subscribes to an observable, collects all items, and returns them.</summary>
     private static async Task<List<T>> ToListAsync<T>(IObservable<T> observable)
@@ -181,8 +181,8 @@ public class ReactiveExtensionsTests
         var results = await ToListAsync(source.SelectResults());
 
         results.Count.ShouldBe(2);
-        results[0].Action.ShouldBe(DaliLiveAction.Open);
-        results[1].Action.ShouldBe(DaliLiveAction.Created);
+        results[0].Action.ShouldBe(AeroDBLiveAction.Open);
+        results[1].Action.ShouldBe(AeroDBLiveAction.Created);
     }
 
     // ── Builder ToObservable Tests (need mocking) ───────────────
@@ -193,8 +193,8 @@ public class ReactiveExtensionsTests
         var alice = new Person { Id = RecordId.From("person", "alice"), Name = "Alice" };
         var aliceOlder = new Person { Id = RecordId.From("person", "alice"), Name = "Alice (older)" };
 
-        var query = Substitute.For<IDaliLiveQuery<Person>>();
-        var builder = Substitute.For<IDaliLiveQueryBuilder<Person>>();
+        var query = Substitute.For<IAeroDBLiveQuery<Person>>();
+        var builder = Substitute.For<IAeroDBLiveQueryBuilder<Person>>();
 
         builder.SubscribeAsync(Arg.Any<CancellationToken>()).Returns(query);
 
@@ -205,19 +205,19 @@ public class ReactiveExtensionsTests
         var results = await ToListAsync(observable);
 
         results.Count.ShouldBe(4);
-        results[0].Action.ShouldBe(DaliLiveAction.Open);
-        results[1].Action.ShouldBe(DaliLiveAction.Created);
+        results[0].Action.ShouldBe(AeroDBLiveAction.Open);
+        results[1].Action.ShouldBe(AeroDBLiveAction.Created);
         results[1].Document!.Name.ShouldBe("Alice");
-        results[2].Action.ShouldBe(DaliLiveAction.Updated);
+        results[2].Action.ShouldBe(AeroDBLiveAction.Updated);
         results[2].Document!.Name.ShouldBe("Alice (older)");
-        results[3].Action.ShouldBe(DaliLiveAction.Closed);
+        results[3].Action.ShouldBe(AeroDBLiveAction.Closed);
     }
 
     [Test]
     public async Task ToObservable_Builder_DisposesOnUnsubscribe()
     {
-        var query = Substitute.For<IDaliLiveQuery<Person>>();
-        var builder = Substitute.For<IDaliLiveQueryBuilder<Person>>();
+        var query = Substitute.For<IAeroDBLiveQuery<Person>>();
+        var builder = Substitute.For<IAeroDBLiveQueryBuilder<Person>>();
 
         builder.SubscribeAsync(Arg.Any<CancellationToken>()).Returns(query);
 
@@ -249,7 +249,7 @@ public class ReactiveExtensionsTests
         var alice = new Person { Id = RecordId.From("person", "alice"), Name = "Alice" };
         var aliceOlder = new Person { Id = RecordId.From("person", "alice"), Name = "Alice (older)" };
 
-        var query = Substitute.For<IDaliLiveQuery<Person>>();
+        var query = Substitute.For<IAeroDBLiveQuery<Person>>();
 
         var changes = new[] { CreateCreated(alice), CreateUpdated(aliceOlder) };
         query.Changes(Arg.Any<CancellationToken>()).Returns(MakeAsyncEnumerable(changes));
@@ -258,16 +258,16 @@ public class ReactiveExtensionsTests
         var results = await ToListAsync(observable);
 
         results.Count.ShouldBe(2);
-        results[0].Action.ShouldBe(DaliLiveAction.Created);
+        results[0].Action.ShouldBe(AeroDBLiveAction.Created);
         results[0].Document!.Name.ShouldBe("Alice");
-        results[1].Action.ShouldBe(DaliLiveAction.Updated);
+        results[1].Action.ShouldBe(AeroDBLiveAction.Updated);
         results[1].Document!.Name.ShouldBe("Alice (older)");
     }
 
     [Test]
     public async Task ToObservable_Query_DoesNotDisposeOnUnsubscribe()
     {
-        var query = Substitute.For<IDaliLiveQuery<Person>>();
+        var query = Substitute.For<IAeroDBLiveQuery<Person>>();
 
         query.Changes(Arg.Any<CancellationToken>()).Returns(callInfo =>
         {
@@ -286,8 +286,8 @@ public class ReactiveExtensionsTests
         await query.DidNotReceive().DisposeAsync();
     }
 
-    private static async IAsyncEnumerable<DaliLiveChange<Person>> MakeAsyncEnumerable(
-        DaliLiveChange<Person>[] changes,
+    private static async IAsyncEnumerable<AeroDBLiveChange<Person>> MakeAsyncEnumerable(
+        AeroDBLiveChange<Person>[] changes,
         [EnumeratorCancellation] CancellationToken ct = default)
     {
         foreach (var c in changes)
@@ -297,7 +297,7 @@ public class ReactiveExtensionsTests
         }
     }
 
-    private static async IAsyncEnumerable<DaliLiveChange<Person>> MakeInfiniteEnumerable(
+    private static async IAsyncEnumerable<AeroDBLiveChange<Person>> MakeInfiniteEnumerable(
         [EnumeratorCancellation] CancellationToken ct = default)
     {
         yield return CreateOpen();
@@ -310,8 +310,8 @@ public class ReactiveExtensionsTests
 
     // ── SurrealDB LiveQuery Response Helpers ──────────────────────
 
-    private static readonly ILogger<SurrealDaliLiveQuery<Person>> NullPersonLogger
-        = NullLogger<SurrealDaliLiveQuery<Person>>.Instance;
+    private static readonly ILogger<SurrealAeroDBLiveQuery<Person>> NullPersonLogger
+        = NullLogger<SurrealAeroDBLiveQuery<Person>>.Instance;
 
     private static async IAsyncEnumerable<SurrealDbLiveQueryResponse> SingleResponse(
         SurrealDbLiveQueryResponse response,
@@ -361,7 +361,7 @@ public class ReactiveExtensionsTests
             BindingFlags.NonPublic | BindingFlags.Instance, null,
             new object[] { r! }, null)!;
 
-    // ── IDaliLiveQuery<T> Filter Method Tests ────────────────────
+    // ── IAeroDBLiveQuery<T> Filter Method Tests ────────────────────
 
     [Test]
     public async Task GetResults_FiltersOutClose()
@@ -375,23 +375,23 @@ public class ReactiveExtensionsTests
             CreateSdkUpdate(aliceUpdated),
             CreateSdkDelete(alice),
         });
-        var adapter = new SurrealDaliLiveQuery<Person>(
+        var adapter = new SurrealAeroDBLiveQuery<Person>(
             source, null, null, null, null, 4096, BoundedChannelFullMode.Wait, NullPersonLogger);
         await adapter.StartAsync();
 
-        var results = new List<DaliLiveChange<Person>>();
+        var results = new List<AeroDBLiveChange<Person>>();
         await foreach (var c in adapter.GetResults())
         {
             results.Add(c);
         }
 
         results.Count.ShouldBe(4); // Open + Created + Updated + Deleted (no Close)
-        results[0].Action.ShouldBe(DaliLiveAction.Open);
-        results[1].Action.ShouldBe(DaliLiveAction.Created);
+        results[0].Action.ShouldBe(AeroDBLiveAction.Open);
+        results[1].Action.ShouldBe(AeroDBLiveAction.Created);
         results[1].Document!.Name.ShouldBe("Alice");
-        results[2].Action.ShouldBe(DaliLiveAction.Updated);
+        results[2].Action.ShouldBe(AeroDBLiveAction.Updated);
         results[2].Document!.Name.ShouldBe("Alice Updated");
-        results[3].Action.ShouldBe(DaliLiveAction.Deleted);
+        results[3].Action.ShouldBe(AeroDBLiveAction.Deleted);
     }
 
     [Test]
@@ -407,7 +407,7 @@ public class ReactiveExtensionsTests
             CreateSdkUpdate(bob),
             CreateSdkDelete(charlie),
         });
-        var adapter = new SurrealDaliLiveQuery<Person>(
+        var adapter = new SurrealAeroDBLiveQuery<Person>(
             source, null, null, null, null, 4096, BoundedChannelFullMode.Wait, NullPersonLogger);
         await adapter.StartAsync();
 
@@ -434,7 +434,7 @@ public class ReactiveExtensionsTests
             CreateSdkUpdate(bob),
             CreateSdkDelete(charlie),
         });
-        var adapter = new SurrealDaliLiveQuery<Person>(
+        var adapter = new SurrealAeroDBLiveQuery<Person>(
             source, null, null, null, null, 4096, BoundedChannelFullMode.Wait, NullPersonLogger);
         await adapter.StartAsync();
 
@@ -461,7 +461,7 @@ public class ReactiveExtensionsTests
             CreateSdkUpdate(bob),
             CreateSdkDelete(charlie),
         });
-        var adapter = new SurrealDaliLiveQuery<Person>(
+        var adapter = new SurrealAeroDBLiveQuery<Person>(
             source, null, null, null, null, 4096, BoundedChannelFullMode.Wait, NullPersonLogger);
         await adapter.StartAsync();
 
@@ -479,11 +479,11 @@ public class ReactiveExtensionsTests
     public async Task GetResults_WhenOnlyOpenAndClose_ReturnsOnlyOpen()
     {
         var source = SingleResponse(CreateSdkCreate(new Person { Id = RecordId.From("person", "x"), Name = "X" }));
-        var adapter = new SurrealDaliLiveQuery<Person>(
+        var adapter = new SurrealAeroDBLiveQuery<Person>(
             source, null, null, null, null, 4096, BoundedChannelFullMode.Wait, NullPersonLogger);
         await adapter.StartAsync();
 
-        var results = new List<DaliLiveChange<Person>>();
+        var results = new List<AeroDBLiveChange<Person>>();
         await foreach (var c in adapter.GetResults())
         {
             results.Add(c);
@@ -492,8 +492,8 @@ public class ReactiveExtensionsTests
         // SingleResponse wraps a single Create response with Open/Close,
         // so we should see: Open + Created (no Close)
         results.Count.ShouldBe(2);
-        results[0].Action.ShouldBe(DaliLiveAction.Open);
-        results[1].Action.ShouldBe(DaliLiveAction.Created);
+        results[0].Action.ShouldBe(AeroDBLiveAction.Open);
+        results[1].Action.ShouldBe(AeroDBLiveAction.Created);
     }
 
     [Test]
@@ -501,11 +501,11 @@ public class ReactiveExtensionsTests
     {
         // A source that immediately completes without yielding any responses
         var source = EmptySource();
-        var adapter = new SurrealDaliLiveQuery<Person>(
+        var adapter = new SurrealAeroDBLiveQuery<Person>(
             source, null, null, null, null, 4096, BoundedChannelFullMode.Wait, NullPersonLogger);
         await adapter.StartAsync();
 
-        var results = new List<DaliLiveChange<Person>>();
+        var results = new List<AeroDBLiveChange<Person>>();
         await foreach (var c in adapter.GetResults())
         {
             results.Add(c);
@@ -550,19 +550,19 @@ public class ReactiveExtensionsTests
     {
         var changes = new[]
         {
-            new DaliLiveChange<Person>(DaliLiveAction.Open, null, null),
-            new DaliLiveChange<Person>(DaliLiveAction.Created, "person:1", new Person { Name = "Alice" }),
-            new DaliLiveChange<Person>(DaliLiveAction.Updated, "person:2", new Person { Name = "Bob" }),
-            new DaliLiveChange<Person>(DaliLiveAction.Deleted, "person:3", new Person { Name = "Charlie" }),
-            new DaliLiveChange<Person>(DaliLiveAction.Closed, null, null, SurrealDbLiveQueryClosureReason.QueryKilled),
+            new AeroDBLiveChange<Person>(AeroDBLiveAction.Open, null, null),
+            new AeroDBLiveChange<Person>(AeroDBLiveAction.Created, "person:1", new Person { Name = "Alice" }),
+            new AeroDBLiveChange<Person>(AeroDBLiveAction.Updated, "person:2", new Person { Name = "Bob" }),
+            new AeroDBLiveChange<Person>(AeroDBLiveAction.Deleted, "person:3", new Person { Name = "Charlie" }),
+            new AeroDBLiveChange<Person>(AeroDBLiveAction.Closed, null, null, SurrealDbLiveQueryClosureReason.QueryKilled),
         };
 
-        var mockQuery = Substitute.For<IDaliLiveQuery<Person>>();
+        var mockQuery = Substitute.For<IAeroDBLiveQuery<Person>>();
         mockQuery.Changes(Arg.Any<CancellationToken>())
             .Returns(_ => ToAsyncEnumerable(changes, CancellationToken.None));
         mockQuery.DisposeAsync().Returns(ValueTask.CompletedTask);
 
-        var mockBuilder = Substitute.For<IDaliLiveQueryBuilder<Person>>();
+        var mockBuilder = Substitute.For<IAeroDBLiveQueryBuilder<Person>>();
         mockBuilder.SubscribeAsync(Arg.Any<CancellationToken>()).Returns(Task.FromResult(mockQuery));
 
         var obs = mockBuilder.CreatedRecords();
@@ -577,19 +577,19 @@ public class ReactiveExtensionsTests
     {
         var changes = new[]
         {
-            new DaliLiveChange<Person>(DaliLiveAction.Open, null, null),
-            new DaliLiveChange<Person>(DaliLiveAction.Created, "person:1", new Person { Name = "Alice" }),
-            new DaliLiveChange<Person>(DaliLiveAction.Updated, "person:2", new Person { Name = "Bob" }),
-            new DaliLiveChange<Person>(DaliLiveAction.Deleted, "person:3", new Person { Name = "Charlie" }),
-            new DaliLiveChange<Person>(DaliLiveAction.Closed, null, null, SurrealDbLiveQueryClosureReason.QueryKilled),
+            new AeroDBLiveChange<Person>(AeroDBLiveAction.Open, null, null),
+            new AeroDBLiveChange<Person>(AeroDBLiveAction.Created, "person:1", new Person { Name = "Alice" }),
+            new AeroDBLiveChange<Person>(AeroDBLiveAction.Updated, "person:2", new Person { Name = "Bob" }),
+            new AeroDBLiveChange<Person>(AeroDBLiveAction.Deleted, "person:3", new Person { Name = "Charlie" }),
+            new AeroDBLiveChange<Person>(AeroDBLiveAction.Closed, null, null, SurrealDbLiveQueryClosureReason.QueryKilled),
         };
 
-        var mockQuery = Substitute.For<IDaliLiveQuery<Person>>();
+        var mockQuery = Substitute.For<IAeroDBLiveQuery<Person>>();
         mockQuery.Changes(Arg.Any<CancellationToken>())
             .Returns(_ => ToAsyncEnumerable(changes, CancellationToken.None));
         mockQuery.DisposeAsync().Returns(ValueTask.CompletedTask);
 
-        var mockBuilder = Substitute.For<IDaliLiveQueryBuilder<Person>>();
+        var mockBuilder = Substitute.For<IAeroDBLiveQueryBuilder<Person>>();
         mockBuilder.SubscribeAsync(Arg.Any<CancellationToken>()).Returns(Task.FromResult(mockQuery));
 
         var obs = mockBuilder.UpdatedRecords();
@@ -604,19 +604,19 @@ public class ReactiveExtensionsTests
     {
         var changes = new[]
         {
-            new DaliLiveChange<Person>(DaliLiveAction.Open, null, null),
-            new DaliLiveChange<Person>(DaliLiveAction.Created, "person:1", new Person { Name = "Alice" }),
-            new DaliLiveChange<Person>(DaliLiveAction.Updated, "person:2", new Person { Name = "Bob" }),
-            new DaliLiveChange<Person>(DaliLiveAction.Deleted, "person:3", new Person { Name = "Charlie" }),
-            new DaliLiveChange<Person>(DaliLiveAction.Closed, null, null, SurrealDbLiveQueryClosureReason.QueryKilled),
+            new AeroDBLiveChange<Person>(AeroDBLiveAction.Open, null, null),
+            new AeroDBLiveChange<Person>(AeroDBLiveAction.Created, "person:1", new Person { Name = "Alice" }),
+            new AeroDBLiveChange<Person>(AeroDBLiveAction.Updated, "person:2", new Person { Name = "Bob" }),
+            new AeroDBLiveChange<Person>(AeroDBLiveAction.Deleted, "person:3", new Person { Name = "Charlie" }),
+            new AeroDBLiveChange<Person>(AeroDBLiveAction.Closed, null, null, SurrealDbLiveQueryClosureReason.QueryKilled),
         };
 
-        var mockQuery = Substitute.For<IDaliLiveQuery<Person>>();
+        var mockQuery = Substitute.For<IAeroDBLiveQuery<Person>>();
         mockQuery.Changes(Arg.Any<CancellationToken>())
             .Returns(_ => ToAsyncEnumerable(changes, CancellationToken.None));
         mockQuery.DisposeAsync().Returns(ValueTask.CompletedTask);
 
-        var mockBuilder = Substitute.For<IDaliLiveQueryBuilder<Person>>();
+        var mockBuilder = Substitute.For<IAeroDBLiveQueryBuilder<Person>>();
         mockBuilder.SubscribeAsync(Arg.Any<CancellationToken>()).Returns(Task.FromResult(mockQuery));
 
         var obs = mockBuilder.DeletedRecords();
@@ -631,31 +631,31 @@ public class ReactiveExtensionsTests
     {
         var changes = new[]
         {
-            new DaliLiveChange<Person>(DaliLiveAction.Open, null, null),
-            new DaliLiveChange<Person>(DaliLiveAction.Created, "person:1", new Person { Name = "Alice" }),
-            new DaliLiveChange<Person>(DaliLiveAction.Updated, "person:2", new Person { Name = "Bob" }),
-            new DaliLiveChange<Person>(DaliLiveAction.Deleted, "person:3", new Person { Name = "Charlie" }),
-            new DaliLiveChange<Person>(DaliLiveAction.Closed, null, null, SurrealDbLiveQueryClosureReason.QueryKilled),
+            new AeroDBLiveChange<Person>(AeroDBLiveAction.Open, null, null),
+            new AeroDBLiveChange<Person>(AeroDBLiveAction.Created, "person:1", new Person { Name = "Alice" }),
+            new AeroDBLiveChange<Person>(AeroDBLiveAction.Updated, "person:2", new Person { Name = "Bob" }),
+            new AeroDBLiveChange<Person>(AeroDBLiveAction.Deleted, "person:3", new Person { Name = "Charlie" }),
+            new AeroDBLiveChange<Person>(AeroDBLiveAction.Closed, null, null, SurrealDbLiveQueryClosureReason.QueryKilled),
         };
 
-        var mockQuery = Substitute.For<IDaliLiveQuery<Person>>();
+        var mockQuery = Substitute.For<IAeroDBLiveQuery<Person>>();
         mockQuery.Changes(Arg.Any<CancellationToken>())
             .Returns(_ => ToAsyncEnumerable(changes, CancellationToken.None));
         mockQuery.DisposeAsync().Returns(ValueTask.CompletedTask);
 
-        var mockBuilder = Substitute.For<IDaliLiveQueryBuilder<Person>>();
+        var mockBuilder = Substitute.For<IAeroDBLiveQueryBuilder<Person>>();
         mockBuilder.SubscribeAsync(Arg.Any<CancellationToken>()).Returns(Task.FromResult(mockQuery));
 
         var obs = mockBuilder.Results();
         var results = await CollectAsync(obs);
 
         results.Count.ShouldBe(4); // Open + Created + Updated + Deleted, no Close
-        results[0].Action.ShouldBe(DaliLiveAction.Open);
-        results[1].Action.ShouldBe(DaliLiveAction.Created);
+        results[0].Action.ShouldBe(AeroDBLiveAction.Open);
+        results[1].Action.ShouldBe(AeroDBLiveAction.Created);
         results[1].Document!.Name.ShouldBe("Alice");
-        results[2].Action.ShouldBe(DaliLiveAction.Updated);
+        results[2].Action.ShouldBe(AeroDBLiveAction.Updated);
         results[2].Document!.Name.ShouldBe("Bob");
-        results[3].Action.ShouldBe(DaliLiveAction.Deleted);
+        results[3].Action.ShouldBe(AeroDBLiveAction.Deleted);
     }
 
     [Test]
@@ -663,23 +663,23 @@ public class ReactiveExtensionsTests
     {
         var changes = new[]
         {
-            new DaliLiveChange<Person>(DaliLiveAction.Open, null, null),
-            new DaliLiveChange<Person>(DaliLiveAction.Closed, null, null, SurrealDbLiveQueryClosureReason.QueryKilled),
+            new AeroDBLiveChange<Person>(AeroDBLiveAction.Open, null, null),
+            new AeroDBLiveChange<Person>(AeroDBLiveAction.Closed, null, null, SurrealDbLiveQueryClosureReason.QueryKilled),
         };
 
-        var mockQuery = Substitute.For<IDaliLiveQuery<Person>>();
+        var mockQuery = Substitute.For<IAeroDBLiveQuery<Person>>();
         mockQuery.Changes(Arg.Any<CancellationToken>())
             .Returns(_ => ToAsyncEnumerable(changes, CancellationToken.None));
         mockQuery.DisposeAsync().Returns(ValueTask.CompletedTask);
 
-        var mockBuilder = Substitute.For<IDaliLiveQueryBuilder<Person>>();
+        var mockBuilder = Substitute.For<IAeroDBLiveQueryBuilder<Person>>();
         mockBuilder.SubscribeAsync(Arg.Any<CancellationToken>()).Returns(Task.FromResult(mockQuery));
 
         var obs = mockBuilder.Results();
         var results = await CollectAsync(obs);
 
         results.Count.ShouldBe(1);
-        results[0].Action.ShouldBe(DaliLiveAction.Open);
+        results[0].Action.ShouldBe(AeroDBLiveAction.Open);
     }
 
     [Test]
@@ -687,18 +687,18 @@ public class ReactiveExtensionsTests
     {
         var changes = new[]
         {
-            new DaliLiveChange<Person>(DaliLiveAction.Created, "person:1", new Person { Name = "Alice" }),
-            new DaliLiveChange<Person>(DaliLiveAction.Created, "person:2", new Person { Name = "Bob" }),
-            new DaliLiveChange<Person>(DaliLiveAction.Created, "person:3", new Person { Name = "Charlie" }),
-            new DaliLiveChange<Person>(DaliLiveAction.Closed, null, null, SurrealDbLiveQueryClosureReason.QueryKilled),
+            new AeroDBLiveChange<Person>(AeroDBLiveAction.Created, "person:1", new Person { Name = "Alice" }),
+            new AeroDBLiveChange<Person>(AeroDBLiveAction.Created, "person:2", new Person { Name = "Bob" }),
+            new AeroDBLiveChange<Person>(AeroDBLiveAction.Created, "person:3", new Person { Name = "Charlie" }),
+            new AeroDBLiveChange<Person>(AeroDBLiveAction.Closed, null, null, SurrealDbLiveQueryClosureReason.QueryKilled),
         };
 
-        var mockQuery = Substitute.For<IDaliLiveQuery<Person>>();
+        var mockQuery = Substitute.For<IAeroDBLiveQuery<Person>>();
         mockQuery.Changes(Arg.Any<CancellationToken>())
             .Returns(_ => ToAsyncEnumerable(changes, CancellationToken.None));
         mockQuery.DisposeAsync().Returns(ValueTask.CompletedTask);
 
-        var mockBuilder = Substitute.For<IDaliLiveQueryBuilder<Person>>();
+        var mockBuilder = Substitute.For<IAeroDBLiveQueryBuilder<Person>>();
         mockBuilder.SubscribeAsync(Arg.Any<CancellationToken>()).Returns(Task.FromResult(mockQuery));
 
         var obs = mockBuilder.CreatedRecords();
@@ -715,18 +715,18 @@ public class ReactiveExtensionsTests
     {
         var changes = new[]
         {
-            new DaliLiveChange<Person>(DaliLiveAction.Open, null, null),
-            new DaliLiveChange<Person>(DaliLiveAction.Updated, "person:2", new Person { Name = "Bob" }),
-            new DaliLiveChange<Person>(DaliLiveAction.Deleted, "person:3", new Person { Name = "Charlie" }),
-            new DaliLiveChange<Person>(DaliLiveAction.Closed, null, null, SurrealDbLiveQueryClosureReason.QueryKilled),
+            new AeroDBLiveChange<Person>(AeroDBLiveAction.Open, null, null),
+            new AeroDBLiveChange<Person>(AeroDBLiveAction.Updated, "person:2", new Person { Name = "Bob" }),
+            new AeroDBLiveChange<Person>(AeroDBLiveAction.Deleted, "person:3", new Person { Name = "Charlie" }),
+            new AeroDBLiveChange<Person>(AeroDBLiveAction.Closed, null, null, SurrealDbLiveQueryClosureReason.QueryKilled),
         };
 
-        var mockQuery = Substitute.For<IDaliLiveQuery<Person>>();
+        var mockQuery = Substitute.For<IAeroDBLiveQuery<Person>>();
         mockQuery.Changes(Arg.Any<CancellationToken>())
             .Returns(_ => ToAsyncEnumerable(changes, CancellationToken.None));
         mockQuery.DisposeAsync().Returns(ValueTask.CompletedTask);
 
-        var mockBuilder = Substitute.For<IDaliLiveQueryBuilder<Person>>();
+        var mockBuilder = Substitute.For<IAeroDBLiveQueryBuilder<Person>>();
         mockBuilder.SubscribeAsync(Arg.Any<CancellationToken>()).Returns(Task.FromResult(mockQuery));
 
         var obs = mockBuilder.CreatedRecords();
@@ -738,9 +738,9 @@ public class ReactiveExtensionsTests
     [Test]
     public async Task UpdatedRecords_WhenSubscribeAsyncThrows_PropagatesError()
     {
-        var mockBuilder = Substitute.For<IDaliLiveQueryBuilder<Person>>();
+        var mockBuilder = Substitute.For<IAeroDBLiveQueryBuilder<Person>>();
         mockBuilder.SubscribeAsync(Arg.Any<CancellationToken>())
-            .Returns(Task.FromException<IDaliLiveQuery<Person>>(
+            .Returns(Task.FromException<IAeroDBLiveQuery<Person>>(
                 new InvalidOperationException("Connection failed")));
 
         var obs = mockBuilder.UpdatedRecords();
@@ -756,9 +756,9 @@ public class ReactiveExtensionsTests
     [Test]
     public async Task ToObservable_WhenSubscribeAsyncThrows_PropagatesError()
     {
-        var mockBuilder = Substitute.For<IDaliLiveQueryBuilder<Person>>();
+        var mockBuilder = Substitute.For<IAeroDBLiveQueryBuilder<Person>>();
         mockBuilder.SubscribeAsync(Arg.Any<CancellationToken>())
-            .Returns(Task.FromException<IDaliLiveQuery<Person>>(
+            .Returns(Task.FromException<IAeroDBLiveQuery<Person>>(
                 new InvalidOperationException("Connection failed")));
 
         var obs = mockBuilder.ToObservable();
@@ -778,7 +778,7 @@ public class ReactiveExtensionsTests
     {
         var channel = Channel.CreateUnbounded<SurrealDbLiveQueryResponse>();
 
-        var adapter = new SurrealDaliLiveQuery<Person>(
+        var adapter = new SurrealAeroDBLiveQuery<Person>(
             channel.Reader.ReadAllAsync(),
             null, null, null, null,
             4096,
@@ -786,7 +786,7 @@ public class ReactiveExtensionsTests
             NullPersonLogger);
         await adapter.StartAsync();
 
-        var results = new List<DaliLiveChange<Person>>();
+        var results = new List<AeroDBLiveChange<Person>>();
         var readTask = Task.Run(async () =>
         {
             await foreach (var change in adapter.GetResults())
@@ -823,34 +823,34 @@ public class ReactiveExtensionsTests
 
         // Verify: 4 results (Open + Created + Updated + Deleted, no Close)
         results.Count.ShouldBe(4);
-        results[0].Action.ShouldBe(DaliLiveAction.Open);
-        results[1].Action.ShouldBe(DaliLiveAction.Created);
+        results[0].Action.ShouldBe(AeroDBLiveAction.Open);
+        results[1].Action.ShouldBe(AeroDBLiveAction.Created);
         results[1].Document!.Name.ShouldBe("Alice");
-        results[2].Action.ShouldBe(DaliLiveAction.Updated);
+        results[2].Action.ShouldBe(AeroDBLiveAction.Updated);
         results[2].Document!.Name.ShouldBe("Bob");
-        results[3].Action.ShouldBe(DaliLiveAction.Deleted);
+        results[3].Action.ShouldBe(AeroDBLiveAction.Deleted);
     }
 
     // ── Fluent Chain Tests ────────────────────────────────────────
 
     /// <summary>Shared mock builder with fluent Where configured.</summary>
-    private static (IDaliLiveQueryBuilder<Person> builder, IDaliLiveQuery<Person> query) CreateFluentMock()
+    private static (IAeroDBLiveQueryBuilder<Person> builder, IAeroDBLiveQuery<Person> query) CreateFluentMock()
     {
         var changes = new[]
         {
-            new DaliLiveChange<Person>(DaliLiveAction.Open, null, null),
-            new DaliLiveChange<Person>(DaliLiveAction.Created, "person:1", new Person { Name = "Alice" }),
-            new DaliLiveChange<Person>(DaliLiveAction.Updated, "person:2", new Person { Name = "Bob" }),
-            new DaliLiveChange<Person>(DaliLiveAction.Deleted, "person:3", new Person { Name = "Charlie" }),
-            new DaliLiveChange<Person>(DaliLiveAction.Closed, null, null, SurrealDbLiveQueryClosureReason.QueryKilled),
+            new AeroDBLiveChange<Person>(AeroDBLiveAction.Open, null, null),
+            new AeroDBLiveChange<Person>(AeroDBLiveAction.Created, "person:1", new Person { Name = "Alice" }),
+            new AeroDBLiveChange<Person>(AeroDBLiveAction.Updated, "person:2", new Person { Name = "Bob" }),
+            new AeroDBLiveChange<Person>(AeroDBLiveAction.Deleted, "person:3", new Person { Name = "Charlie" }),
+            new AeroDBLiveChange<Person>(AeroDBLiveAction.Closed, null, null, SurrealDbLiveQueryClosureReason.QueryKilled),
         };
 
-        var mockQuery = Substitute.For<IDaliLiveQuery<Person>>();
+        var mockQuery = Substitute.For<IAeroDBLiveQuery<Person>>();
         mockQuery.Changes(Arg.Any<CancellationToken>())
             .Returns(_ => ToAsyncEnumerable(changes, CancellationToken.None));
         mockQuery.DisposeAsync().Returns(ValueTask.CompletedTask);
 
-        var mockBuilder = Substitute.For<IDaliLiveQueryBuilder<Person>>();
+        var mockBuilder = Substitute.For<IAeroDBLiveQueryBuilder<Person>>();
         mockBuilder.Where(Arg.Any<Expression<Func<Person, bool>>>()).Returns(mockBuilder);
         mockBuilder.SubscribeAsync(Arg.Any<CancellationToken>()).Returns(Task.FromResult(mockQuery));
 
@@ -925,12 +925,12 @@ public class ReactiveExtensionsTests
         var results = await CollectAsync(obs);
 
         results.Count.ShouldBe(4); // Open + Created + Updated + Deleted
-        results[0].Action.ShouldBe(DaliLiveAction.Open);
-        results[1].Action.ShouldBe(DaliLiveAction.Created);
+        results[0].Action.ShouldBe(AeroDBLiveAction.Open);
+        results[1].Action.ShouldBe(AeroDBLiveAction.Created);
         results[1].Document!.Name.ShouldBe("Alice");
-        results[2].Action.ShouldBe(DaliLiveAction.Updated);
+        results[2].Action.ShouldBe(AeroDBLiveAction.Updated);
         results[2].Document!.Name.ShouldBe("Bob");
-        results[3].Action.ShouldBe(DaliLiveAction.Deleted);
+        results[3].Action.ShouldBe(AeroDBLiveAction.Deleted);
     }
 
     [Test]

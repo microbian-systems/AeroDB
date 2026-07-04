@@ -36,7 +36,7 @@ public class PocoGisTests
     public async Task PocoGis_NearBy_GeneratesCorrectSql()
     {
         var (mockSession, provider) = CreateMockProvider();
-        var query = new DaliSpatialQuery<PocoStore>(provider);
+        var query = new AeroDBSpatialQuery<PocoStore>(provider);
 
         await query.NearBy(s => s.Location, 48.8566, 2.3522, 1000).ToListAsync();
 
@@ -54,7 +54,7 @@ public class PocoGisTests
     public async Task PocoGis_NearBy_WithWhere_GeneratesCorrectSql()
     {
         var (mockSession, provider) = CreateMockProvider();
-        var query = new DaliSpatialQuery<PocoStore>(provider);
+        var query = new AeroDBSpatialQuery<PocoStore>(provider);
 
         await query
             .NearBy(s => s.Location, 48.8566, 2.3522, 1000)
@@ -74,7 +74,7 @@ public class PocoGisTests
     public async Task PocoGis_NearBy_WithLimit_GeneratesCorrectSql()
     {
         var (mockSession, provider) = CreateMockProvider();
-        var query = new DaliSpatialQuery<PocoStore>(provider);
+        var query = new AeroDBSpatialQuery<PocoStore>(provider);
 
         await query.NearBy(s => s.Location, 48.8566, 2.3522, 1000).Take(25).ToListAsync();
 
@@ -88,7 +88,7 @@ public class PocoGisTests
     public async Task PocoGis_Within_GeneratesCorrectSql()
     {
         var (mockSession, provider) = CreateMockProvider();
-        var query = new DaliSpatialQuery<PocoStore>(provider);
+        var query = new AeroDBSpatialQuery<PocoStore>(provider);
 
         var polygon = new List<(double Lng, double Lat)>
         {
@@ -110,7 +110,7 @@ public class PocoGisTests
     public async Task PocoGis_OrderByDistance_GeneratesCorrectSql()
     {
         var (mockSession, provider) = CreateMockProvider();
-        var query = new DaliSpatialQuery<PocoStore>(provider);
+        var query = new AeroDBSpatialQuery<PocoStore>(provider);
 
         await query.OrderByDistance(s => s.Location, 48.8566, 2.3522).ToListAsync();
 

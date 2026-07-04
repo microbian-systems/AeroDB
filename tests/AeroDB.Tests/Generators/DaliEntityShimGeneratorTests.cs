@@ -9,17 +9,17 @@ using TUnit.Core;
 namespace AeroDB.Tests.Generators;
 
 /// <summary>
-/// Tests for <see cref="DaliEntityShimGenerator"/> — generates CBOR-compatible
+/// Tests for <see cref="AeroDBEntityShimGenerator"/> — generates CBOR-compatible
 /// shim <c>Record</c> types for <c>Entity&lt;TId&gt;</c> subclasses with
 /// <c>ToEntity()</c> materialization.
 /// </summary>
-public class DaliEntityShimGeneratorTests
+public class AeroDBEntityShimGeneratorTests
 {
     /// <summary>
     /// Minimal inline definitions for AeroDB types that the shim generator
     /// discovers via <c>GetTypeByMetadataName</c>.
     /// </summary>
-    private const string DaliTypes = @"
+    private const string AeroDBTypes = @"
 using System;
 using System.Collections.Generic;
 
@@ -38,7 +38,7 @@ namespace AeroDB
     }
 
     [AttributeUsage(AttributeTargets.Class)]
-    public class DaliDocumentAttribute : Attribute
+    public class AeroDBDocumentAttribute : Attribute
     {
         public bool SkipGeneration { get; set; }
     }
@@ -81,7 +81,7 @@ namespace AeroDB.Metadata
 ";
 
     /// <summary>
-    /// Runs the <see cref="DaliEntityShimGenerator"/> in-process.
+    /// Runs the <see cref="AeroDBEntityShimGenerator"/> in-process.
     /// </summary>
     private static GeneratorDriverRunResult RunGenerator(params string[] sources)
     {
@@ -89,7 +89,7 @@ namespace AeroDB.Metadata
         _ = typeof(SurrealDb.Net.Models.Record);
         _ = typeof(SurrealDb.Net.Models.RecordIdOf<string>);
 
-        var allSources = sources.Prepend(DaliTypes).ToArray();
+        var allSources = sources.Prepend(AeroDBTypes).ToArray();
         var syntaxTrees = allSources
             .Select(s => CSharpSyntaxTree.ParseText(s, new CSharpParseOptions(LanguageVersion.Latest)))
             .ToArray();
@@ -124,7 +124,7 @@ namespace AeroDB.Metadata
                 $"Compilation has {preErrors.Length} error(s) before running the generator:{Environment.NewLine}{messages}");
         }
 
-        var generator = new DaliEntityShimGenerator();
+        var generator = new AeroDBEntityShimGenerator();
         var driver = CSharpGeneratorDriver.Create(generator);
         return driver.RunGenerators(compilation).GetRunResult();
     }
@@ -280,7 +280,7 @@ public class EntityMapping : AeroDB.Entity<long>
     public void SkipGeneration_opt_out_skips_shim()
     {
         var source = @"
-[AeroDB.DaliDocument(SkipGeneration = true)]
+[AeroDB.AeroDBDocument(SkipGeneration = true)]
 public class SkippedEntity : AeroDB.Entity<long>
 {
     public string Name { get; set; }
@@ -358,7 +358,7 @@ public class CompilableShimEntity : AeroDB.Entity<long>
         _ = typeof(SurrealDb.Net.Models.Record);
         _ = typeof(SurrealDb.Net.Models.RecordIdOf<string>);
 
-        var allSources = new[] { DaliTypes, userSource };
+        var allSources = new[] { AeroDBTypes, userSource };
         var syntaxTrees = allSources
             .Select(s => CSharpSyntaxTree.ParseText(s, new CSharpParseOptions(LanguageVersion.Latest)))
             .ToArray();
@@ -381,7 +381,7 @@ public class CompilableShimEntity : AeroDB.Entity<long>
             new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary)
                 .WithNullableContextOptions(NullableContextOptions.Enable));
 
-        var generator = new DaliEntityShimGenerator();
+        var generator = new AeroDBEntityShimGenerator();
         var driver = CSharpGeneratorDriver.Create(generator);
         driver.RunGeneratorsAndUpdateCompilation(compilation, out var outputCompilation, out var diagnostics);
 

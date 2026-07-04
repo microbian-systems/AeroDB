@@ -9,16 +9,16 @@ using Wolverine;
 
 /// <summary>
 /// Pure unit tests for Layer 3 of AeroDB.WolverineFx:
-///  • DaliOps factory methods (Store/Delete/Insert)
+///  • AeroDBOps factory methods (Store/Delete/Insert)
 ///  • ScopedDocumentSessionHolder
 ///  • WolverineEnvelopeSchemas.Configure()
 ///
 /// No Wolverine runtime, no SurrealDB, no DI — only NSubstitute mocks.
 /// </summary>
-public class DaliOpsTests
+public class AeroDBOpsTests
 {
     // ====================================================================
-    // 1. DaliOps factory methods
+    // 1. AeroDBOps factory methods
     // ====================================================================
 
     public class MyEntity
@@ -28,13 +28,13 @@ public class DaliOpsTests
     }
 
     [Test]
-    public async Task DaliOps_Store_Returns_StoreOp_With_Correct_Entity()
+    public async Task AeroDBOps_Store_Returns_StoreOp_With_Correct_Entity()
     {
         var entity = new MyEntity { Id = "1", Name = "test" };
-        var op = DaliOps.Store(entity);
+        var op = AeroDBOps.Store(entity);
 
         op.ShouldNotBeNull();
-        op.ShouldBeAssignableTo<IDaliOp>();
+        op.ShouldBeAssignableTo<IAeroDBOp>();
         op.ShouldBeAssignableTo<ISideEffect>();
 
         // ExecuteAsync should call session.Store(entity)
@@ -45,13 +45,13 @@ public class DaliOpsTests
     }
 
     [Test]
-    public async Task DaliOps_Delete_Returns_DeleteOp_With_Correct_Entity()
+    public async Task AeroDBOps_Delete_Returns_DeleteOp_With_Correct_Entity()
     {
         var entity = new MyEntity { Id = "2", Name = "delete-me" };
-        var op = DaliOps.Delete(entity);
+        var op = AeroDBOps.Delete(entity);
 
         op.ShouldNotBeNull();
-        op.ShouldBeAssignableTo<IDaliOp>();
+        op.ShouldBeAssignableTo<IAeroDBOp>();
         op.ShouldBeAssignableTo<ISideEffect>();
 
         var session = Substitute.For<IDocumentSession>();
@@ -61,13 +61,13 @@ public class DaliOpsTests
     }
 
     [Test]
-    public async Task DaliOps_Insert_Returns_InsertOp_With_Correct_Entity()
+    public async Task AeroDBOps_Insert_Returns_InsertOp_With_Correct_Entity()
     {
         var entity = new MyEntity { Id = "3", Name = "insert-me" };
-        var op = DaliOps.Insert(entity);
+        var op = AeroDBOps.Insert(entity);
 
         op.ShouldNotBeNull();
-        op.ShouldBeAssignableTo<IDaliOp>();
+        op.ShouldBeAssignableTo<IAeroDBOp>();
         op.ShouldBeAssignableTo<ISideEffect>();
 
         var session = Substitute.For<IDocumentSession>();
@@ -77,13 +77,13 @@ public class DaliOpsTests
     }
 
     [Test]
-    public async Task DaliOps_Store_DifferentEntities_Are_Independent()
+    public async Task AeroDBOps_Store_DifferentEntities_Are_Independent()
     {
         var entity1 = new MyEntity { Id = "a", Name = "first" };
         var entity2 = new MyEntity { Id = "b", Name = "second" };
 
-        var op1 = DaliOps.Store(entity1);
-        var op2 = DaliOps.Store(entity2);
+        var op1 = AeroDBOps.Store(entity1);
+        var op2 = AeroDBOps.Store(entity2);
 
         var session = Substitute.For<IDocumentSession>();
         await op1.ExecuteAsync(session, CancellationToken.None);
@@ -94,13 +94,13 @@ public class DaliOpsTests
     }
 
     [Test]
-    public async Task DaliOps_Delete_DifferentEntities_Are_Independent()
+    public async Task AeroDBOps_Delete_DifferentEntities_Are_Independent()
     {
         var entity1 = new MyEntity { Id = "x", Name = "del1" };
         var entity2 = new MyEntity { Id = "y", Name = "del2" };
 
-        var op1 = DaliOps.Delete(entity1);
-        var op2 = DaliOps.Delete(entity2);
+        var op1 = AeroDBOps.Delete(entity1);
+        var op2 = AeroDBOps.Delete(entity2);
 
         var session = Substitute.For<IDocumentSession>();
         await op1.ExecuteAsync(session, CancellationToken.None);
@@ -111,10 +111,10 @@ public class DaliOpsTests
     }
 
     [Test]
-    public async Task DaliOps_Insert_DoesNotCallDelete()
+    public async Task AeroDBOps_Insert_DoesNotCallDelete()
     {
         var entity = new MyEntity { Id = "i1", Name = "insert-only" };
-        var op = DaliOps.Insert(entity);
+        var op = AeroDBOps.Insert(entity);
 
         var session = Substitute.For<IDocumentSession>();
         await op.ExecuteAsync(session, CancellationToken.None);
@@ -123,10 +123,10 @@ public class DaliOpsTests
     }
 
     [Test]
-    public async Task DaliOps_Store_DoesNotCallDelete()
+    public async Task AeroDBOps_Store_DoesNotCallDelete()
     {
         var entity = new MyEntity { Id = "s1", Name = "store-only" };
-        var op = DaliOps.Store(entity);
+        var op = AeroDBOps.Store(entity);
 
         var session = Substitute.For<IDocumentSession>();
         await op.ExecuteAsync(session, CancellationToken.None);
@@ -411,9 +411,9 @@ public class DaliOpsTests
     }
 
     [Test]
-    public void WolverineEnvelopeSchemas_Implements_IConfigureDali()
+    public void WolverineEnvelopeSchemas_Implements_IConfigureAeroDB()
     {
         var configurator = new WolverineEnvelopeSchemas();
-        configurator.ShouldBeAssignableTo<IConfigureDali>();
+        configurator.ShouldBeAssignableTo<IConfigureAeroDB>();
     }
 }

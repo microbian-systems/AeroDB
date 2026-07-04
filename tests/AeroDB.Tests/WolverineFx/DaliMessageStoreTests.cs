@@ -10,15 +10,15 @@ using Wolverine;
 using WolverineFx;
 
 [NotInParallel]
-public class DaliMessageStoreTests
+public class AeroDBMessageStoreTests
 {
-    private static async Task<DaliMessageStore> CreateStoreAsync()
+    private static async Task<AeroDBMessageStore> CreateStoreAsync()
     {
-        var dbPath = Path.Combine(Path.GetTempPath(), $"dali_test_{Guid.NewGuid():N}.db");
+        var dbPath = Path.Combine(Path.GetTempPath(), $"AeroDB_test_{Guid.NewGuid():N}.db");
         var client = new SurrealDbKvClient(dbPath);
         await client.Use("test", "test");
-        var logger = NullLogger<DaliMessageStore>.Instance;
-        var store = new DaliMessageStore(client, logger);
+        var logger = NullLogger<AeroDBMessageStore>.Instance;
+        var store = new AeroDBMessageStore(client, logger);
         await store.InitializeSchemaAsync();
         return store;
     }
@@ -49,7 +49,7 @@ public class DaliMessageStoreTests
         await using var store = await CreateStoreAsync();
         var env = MakeEnvelope("StoreTest");
         env.Data = new byte[] { 1, 2, 3 };
-        env.Destination = new Uri("dali://localhost/incoming");
+        env.Destination = new Uri("AeroDB://localhost/incoming");
         await store.StoreIncomingAsync(env);
     }
 
@@ -59,7 +59,7 @@ public class DaliMessageStoreTests
         await using var store = await CreateStoreAsync();
         var env = MakeEnvelope("OutgoingTest");
         env.Data = new byte[] { 4, 5, 6 };
-        env.Destination = new Uri("dali://localhost/outgoing");
+        env.Destination = new Uri("AeroDB://localhost/outgoing");
         await store.StoreOutgoingAsync(env, 0);
     }
 
@@ -85,7 +85,7 @@ public class DaliMessageStoreTests
     {
         await using var store = await CreateStoreAsync();
         var env = MakeEnvelope("DeadTest");
-        env.Destination = new Uri("dali://localhost/queue");
+        env.Destination = new Uri("AeroDB://localhost/queue");
         await store.StoreIncomingAsync(env);
         await store.MoveToDeadLetterStorageAsync(env, new InvalidOperationException("test"));
     }
@@ -105,7 +105,7 @@ public class DaliMessageStoreTests
     public async Task DeleteOutgoing_DoesNotThrow()
     {
         await using var store = await CreateStoreAsync();
-        var uri = new Uri("dali://localhost/delete-test");
+        var uri = new Uri("AeroDB://localhost/delete-test");
         var env = MakeEnvelope("DeleteMe");
         env.Destination = uri;
         await store.StoreOutgoingAsync(env, 0);
@@ -145,9 +145,9 @@ public class DaliMessageStoreTests
     {
         await using var store = await CreateStoreAsync();
         var env = MakeEnvelope("ReleaseTest");
-        env.Destination = new Uri("dali://localhost/listener");
+        env.Destination = new Uri("AeroDB://localhost/listener");
         await store.StoreIncomingAsync(env);
-        await store.Inbox.ReleaseIncomingAsync(0, new Uri("dali://localhost/listener"));
+        await store.Inbox.ReleaseIncomingAsync(0, new Uri("AeroDB://localhost/listener"));
     }
 
     [Test]

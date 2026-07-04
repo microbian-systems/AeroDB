@@ -50,7 +50,7 @@ public class DatabasePerTenantSelector : IAsyncDisposable
         {
             // Embedded/factory clients — each tenant gets its own isolated client instance
             client = _options.ClientFactory();
-            DaliCborOptions.ConfigureClient(client);
+            AeroDBCborOptions.ConfigureClient(client);
             await client.Connect(ct).ConfigureAwait(false);
             await client.Use(ns, dbName, ct).ConfigureAwait(false);
         }
@@ -67,7 +67,7 @@ public class DatabasePerTenantSelector : IAsyncDisposable
 
             client = new SurrealDbClient(
                 surrealOptions,
-                configureCborOptions: DaliCborOptions.Configure);
+                configureCborOptions: AeroDBCborOptions.Configure);
             await client.Connect(ct).ConfigureAwait(false);
             await client.Use(ns, dbName, ct).ConfigureAwait(false);
         }

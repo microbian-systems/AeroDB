@@ -39,7 +39,7 @@ public class CompiledPlan
 
     /// <summary>
     /// All readable public properties on the compiled query type (excluding
-    /// those decorated with <see cref="DaliIgnoreAttribute"/>).
+    /// those decorated with <see cref="AeroDBIgnoreAttribute"/>).
     /// </summary>
     public PropertyInfo[] Properties { get; internal set; } = [];
 

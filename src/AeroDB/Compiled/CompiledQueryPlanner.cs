@@ -98,9 +98,9 @@ public static class CompiledQueryPlanner
     {
         var queryType = query.GetType();
 
-        // 1. Discover public readable properties (skip [DaliIgnore])
+        // 1. Discover public readable properties (skip [AeroDBIgnore])
         var properties = queryType.GetProperties(BindingFlags.Public | BindingFlags.Instance)
-            .Where(p => p.CanRead && p.GetCustomAttribute<DaliIgnoreAttribute>() is null)
+            .Where(p => p.CanRead && p.GetCustomAttribute<AeroDBIgnoreAttribute>() is null)
             .ToArray();
 
         // 2. Create a fresh instance and assign sentinel values

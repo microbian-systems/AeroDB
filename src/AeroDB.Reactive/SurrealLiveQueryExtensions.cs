@@ -1,4 +1,4 @@
-namespace Dali;
+namespace AeroDB;
 
 using System.Reactive.Linq;
 using AeroDB.LiveQuery;
@@ -6,18 +6,18 @@ using AeroDB.LiveQuery;
 public static class SurrealLiveQueryExtensions
 {
     /// <summary>
-    /// Bridges the live query builder to an <see cref="IObservable{T}"/> of <see cref="DaliLiveChange{T}"/>.
-    /// Each subscriber triggers a fresh <see cref="IDaliLiveQueryBuilder{T}.SubscribeAsync"/>
+    /// Bridges the live query builder to an <see cref="IObservable{T}"/> of <see cref="AeroDBLiveChange{T}"/>.
+    /// Each subscriber triggers a fresh <see cref="IAeroDBLiveQueryBuilder{T}.SubscribeAsync"/>
     /// call (deferred execution). The server-side query starts only when the first subscriber
     /// attaches. Unsubscribing disposes the underlying query.
     /// </summary>
-    public static IObservable<DaliLiveChange<T>> ToObservable<T>(
-        this IDaliLiveQueryBuilder<T> builder,
+    public static IObservable<AeroDBLiveChange<T>> ToObservable<T>(
+        this IAeroDBLiveQueryBuilder<T> builder,
         CancellationToken ct = default) where T : class
     {
         ArgumentNullException.ThrowIfNull(builder);
 
-        return Observable.Create<DaliLiveChange<T>>(async (observer, innerCt) =>
+        return Observable.Create<AeroDBLiveChange<T>>(async (observer, innerCt) =>
         {
             using var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(ct, innerCt);
             var token = linkedCts.Token;
@@ -38,16 +38,16 @@ public static class SurrealLiveQueryExtensions
     }
 
     /// <summary>
-    /// Wraps an existing <see cref="IDaliLiveQuery{T}"/> as an <see cref="IObservable{T}"/> of <see cref="DaliLiveChange{T}"/>.
+    /// Wraps an existing <see cref="IAeroDBLiveQuery{T}"/> as an <see cref="IObservable{T}"/> of <see cref="AeroDBLiveChange{T}"/>.
     /// Caller owns the query lifecycle — the observable does not dispose the query.
     /// </summary>
-    public static IObservable<DaliLiveChange<T>> ToObservable<T>(
-        this IDaliLiveQuery<T> query,
+    public static IObservable<AeroDBLiveChange<T>> ToObservable<T>(
+        this IAeroDBLiveQuery<T> query,
         CancellationToken ct = default) where T : class
     {
         ArgumentNullException.ThrowIfNull(query);
 
-        return Observable.Create<DaliLiveChange<T>>(async (observer, innerCt) =>
+        return Observable.Create<AeroDBLiveChange<T>>(async (observer, innerCt) =>
         {
             using var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(ct, innerCt);
             var token = linkedCts.Token;
@@ -72,7 +72,7 @@ public static class SurrealLiveQueryExtensions
     /// Returns an observable of created documents only.
     /// </summary>
     public static IObservable<T> CreatedRecords<T>(
-        this IDaliLiveQueryBuilder<T> builder,
+        this IAeroDBLiveQueryBuilder<T> builder,
         CancellationToken ct = default) where T : class
     {
         return builder.ToObservable(ct).SelectCreatedRecords();
@@ -83,7 +83,7 @@ public static class SurrealLiveQueryExtensions
     /// Returns an observable of updated documents only.
     /// </summary>
     public static IObservable<T> UpdatedRecords<T>(
-        this IDaliLiveQueryBuilder<T> builder,
+        this IAeroDBLiveQueryBuilder<T> builder,
         CancellationToken ct = default) where T : class
     {
         return builder.ToObservable(ct).SelectUpdatedRecords();
@@ -94,7 +94,7 @@ public static class SurrealLiveQueryExtensions
     /// Returns an observable of deleted documents only.
     /// </summary>
     public static IObservable<T> DeletedRecords<T>(
-        this IDaliLiveQueryBuilder<T> builder,
+        this IAeroDBLiveQueryBuilder<T> builder,
         CancellationToken ct = default) where T : class
     {
         return builder.ToObservable(ct).SelectDeletedRecords();
@@ -104,8 +104,8 @@ public static class SurrealLiveQueryExtensions
     /// Shortcut: <c>builder.ToObservable(ct).SelectResults()</c>.
     /// Returns an observable of all results EXCEPT Close events.
     /// </summary>
-    public static IObservable<DaliLiveChange<T>> Results<T>(
-        this IDaliLiveQueryBuilder<T> builder,
+    public static IObservable<AeroDBLiveChange<T>> Results<T>(
+        this IAeroDBLiveQueryBuilder<T> builder,
         CancellationToken ct = default) where T : class
     {
         return builder.ToObservable(ct).SelectResults();

@@ -5,16 +5,16 @@ namespace AeroDB.WolverineFx;
 
 /// <summary>
 /// Sends outgoing messages by inserting them into the SurrealDB
-/// wolverine_outgoing_envelopes table via DaliMessageStore.
+/// wolverine_outgoing_envelopes table via AeroDBMessageStore.
 /// </summary>
-public sealed class DaliQueueSender : ISender
+public sealed class AeroDBQueueSender : ISender
 {
-    private readonly DaliMessageStore _store;
+    private readonly AeroDBMessageStore _store;
 
     /// <summary>
     /// Create a new sender with the given store and destination.
     /// </summary>
-    public DaliQueueSender(DaliMessageStore store, Uri destination)
+    public AeroDBQueueSender(AeroDBMessageStore store, Uri destination)
     {
         _store = store ?? throw new ArgumentNullException(nameof(store));
         Destination = destination ?? throw new ArgumentNullException(nameof(destination));

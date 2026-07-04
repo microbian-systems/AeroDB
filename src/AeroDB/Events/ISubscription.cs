@@ -9,7 +9,7 @@ namespace AeroDB;
 /// This is a simplified Marten-parity interface. For advanced subscriptions
 /// with JasperFx types (<c>EventRange</c>,
 /// <c>ISubscriptionController</c>),
-/// use <see cref="IDaliSubscription"/> instead.
+/// use <see cref="IAeroDBSubscription"/> instead.
 /// </summary>
 public interface ISubscription
 {

@@ -1,4 +1,4 @@
-namespace Dali.IdGeneration;
+namespace AeroDB.IdGeneration;
 
 /// <summary>
 /// Defines a contract for generating unique, time-sortable long identifiers

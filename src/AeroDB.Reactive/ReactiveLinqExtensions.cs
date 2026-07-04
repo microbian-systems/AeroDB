@@ -1,4 +1,4 @@
-namespace Dali;
+namespace AeroDB;
 
 using System.Reactive.Linq;
 using AeroDB.LiveQuery;
@@ -6,40 +6,40 @@ using AeroDB.LiveQuery;
 public static class ReactiveLinqExtensions
 {
     /// <summary>Excludes CLOSE notifications, keeping Open, Created, Updated, Deleted.</summary>
-    public static IObservable<DaliLiveChange<T>> SelectResults<T>(
-        this IObservable<DaliLiveChange<T>> source) where T : class
+    public static IObservable<AeroDBLiveChange<T>> SelectResults<T>(
+        this IObservable<AeroDBLiveChange<T>> source) where T : class
     {
         ArgumentNullException.ThrowIfNull(source);
-        return source.Where(c => c.Action != DaliLiveAction.Closed);
+        return source.Where(c => c.Action != AeroDBLiveAction.Closed);
     }
 
     /// <summary>Projects only CREATE events' documents.</summary>
     public static IObservable<T> SelectCreatedRecords<T>(
-        this IObservable<DaliLiveChange<T>> source) where T : class
+        this IObservable<AeroDBLiveChange<T>> source) where T : class
     {
         ArgumentNullException.ThrowIfNull(source);
         return source
-            .Where(c => c.Action == DaliLiveAction.Created && c.Document is not null)
+            .Where(c => c.Action == AeroDBLiveAction.Created && c.Document is not null)
             .Select(c => c.Document!);
     }
 
     /// <summary>Projects only UPDATE events' documents.</summary>
     public static IObservable<T> SelectUpdatedRecords<T>(
-        this IObservable<DaliLiveChange<T>> source) where T : class
+        this IObservable<AeroDBLiveChange<T>> source) where T : class
     {
         ArgumentNullException.ThrowIfNull(source);
         return source
-            .Where(c => c.Action == DaliLiveAction.Updated && c.Document is not null)
+            .Where(c => c.Action == AeroDBLiveAction.Updated && c.Document is not null)
             .Select(c => c.Document!);
     }
 
     /// <summary>Projects only DELETE events' documents.</summary>
     public static IObservable<T> SelectDeletedRecords<T>(
-        this IObservable<DaliLiveChange<T>> source) where T : class
+        this IObservable<AeroDBLiveChange<T>> source) where T : class
     {
         ArgumentNullException.ThrowIfNull(source);
         return source
-            .Where(c => c.Action == DaliLiveAction.Deleted && c.Document is not null)
+            .Where(c => c.Action == AeroDBLiveAction.Deleted && c.Document is not null)
             .Select(c => c.Document!);
     }
 }

@@ -8,17 +8,17 @@ namespace AeroDB;
 /// ASP.NET Core health check for the AeroDB async daemon.
 /// Reports Healthy/Degraded/Unhealthy based on daemon state.
 /// </summary>
-public class DaliDaemonHealthCheck : IHealthCheck
+public class AeroDBDaemonHealthCheck : IHealthCheck
 {
     private readonly AsyncDaemon? _daemon;
     private readonly TimeSpan _pollInterval;
-    private readonly ILogger<DaliDaemonHealthCheck> _logger;
+    private readonly ILogger<AeroDBDaemonHealthCheck> _logger;
 
-    public DaliDaemonHealthCheck(AsyncDaemon? daemon, TimeSpan pollInterval, ILogger<DaliDaemonHealthCheck>? logger = null)
+    public AeroDBDaemonHealthCheck(AsyncDaemon? daemon, TimeSpan pollInterval, ILogger<AeroDBDaemonHealthCheck>? logger = null)
     {
         _daemon = daemon;
         _pollInterval = pollInterval;
-        _logger = logger ?? NullLogger<DaliDaemonHealthCheck>.Instance;
+        _logger = logger ?? NullLogger<AeroDBDaemonHealthCheck>.Instance;
     }
 
     /// <summary>

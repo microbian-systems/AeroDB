@@ -8,7 +8,7 @@ using System.Linq;
 namespace AeroDB.SourceGenerators;
 
 [Generator]
-public class DaliDocumentGenerator : IIncrementalGenerator
+public class AeroDBDocumentGenerator : IIncrementalGenerator
 {
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
@@ -33,10 +33,10 @@ public class DaliDocumentGenerator : IIncrementalGenerator
             if (recordType is null && entityGenericType is null)
                 return;
 
-            // Optionally find the DaliDocumentAttribute — if it's not available
+            // Optionally find the AeroDBDocumentAttribute — if it's not available
             // in the compilation (e.g., consumer doesn't reference the attribute assembly),
             // we skip the opt-out check and generate for all Record subclasses.
-            var daliDocAttrType = compilation.GetTypeByMetadataName("AeroDB.DaliDocumentAttribute");
+            var AeroDBDocAttrType = compilation.GetTypeByMetadataName("AeroDB.AeroDBDocumentAttribute");
 
             var validTypes = new List<INamedTypeSymbol>();
 
@@ -49,11 +49,11 @@ public class DaliDocumentGenerator : IIncrementalGenerator
                 bool isEntity = entityGenericType is not null && IsEntitySubclass(type, entityGenericType);
                 if (!isRecord && !isEntity) continue;
 
-                // Check for [DaliDocument(SkipGeneration = true)] — opt-out
-                if (daliDocAttrType is not null)
+                // Check for [AeroDBDocument(SkipGeneration = true)] — opt-out
+                if (AeroDBDocAttrType is not null)
                 {
                     var skipAttr = type.GetAttributes()
-                        .FirstOrDefault(a => SymbolEqualityComparer.Default.Equals(a.AttributeClass, daliDocAttrType));
+                        .FirstOrDefault(a => SymbolEqualityComparer.Default.Equals(a.AttributeClass, AeroDBDocAttrType));
                     if (skipAttr is not null)
                     {
                         var skipNamedArg = skipAttr.NamedArguments

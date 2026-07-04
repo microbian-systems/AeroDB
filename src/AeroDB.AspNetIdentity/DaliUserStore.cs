@@ -8,9 +8,9 @@ namespace AeroDB.AspNetIdentity;
 // ── Internal Model Types for Separate SurrealDB Tables ──────────────
 
 /// <summary>
-/// Represents a user claim stored in the <c>dali_user_claim</c> SurrealDB table.
+/// Represents a user claim stored in the <c>AeroDB_user_claim</c> SurrealDB table.
 /// </summary>
-internal sealed class DaliUserClaim
+internal sealed class AeroDBUserClaim
 {
     public string Id { get; set; } = string.Empty;
     public string UserId { get; set; } = string.Empty;
@@ -19,9 +19,9 @@ internal sealed class DaliUserClaim
 }
 
 /// <summary>
-/// Represents an external login stored in the <c>dali_user_login</c> SurrealDB table.
+/// Represents an external login stored in the <c>AeroDB_user_login</c> SurrealDB table.
 /// </summary>
-internal sealed class DaliUserLogin
+internal sealed class AeroDBUserLogin
 {
     public string Id { get; set; } = string.Empty;
     public string UserId { get; set; } = string.Empty;
@@ -31,9 +31,9 @@ internal sealed class DaliUserLogin
 }
 
 /// <summary>
-/// Represents an authentication token stored in the <c>dali_user_token</c> SurrealDB table.
+/// Represents an authentication token stored in the <c>AeroDB_user_token</c> SurrealDB table.
 /// </summary>
-internal sealed class DaliUserToken
+internal sealed class AeroDBUserToken
 {
     public string Id { get; set; } = string.Empty;
     public string UserId { get; set; } = string.Empty;
@@ -43,9 +43,9 @@ internal sealed class DaliUserToken
 }
 
 /// <summary>
-/// Represents a WebAuthn passkey stored in the <c>dali_user_passkey</c> SurrealDB table.
+/// Represents a WebAuthn passkey stored in the <c>AeroDB_user_passkey</c> SurrealDB table.
 /// </summary>
-internal sealed class DaliUserPasskey
+internal sealed class AeroDBUserPasskey
 {
     public string Id { get; set; } = string.Empty;
     public string UserId { get; set; } = string.Empty;
@@ -72,7 +72,7 @@ internal sealed class DaliUserPasskey
 /// </summary>
 /// <typeparam name="TUser">The user type, must inherit from <see cref="IdentityUser"/>.</typeparam>
 /// <typeparam name="TRole">The role type, must inherit from <see cref="IdentityRole"/>.</typeparam>
-public class DaliUserStore<TUser, TRole> :
+public class AeroDBUserStore<TUser, TRole> :
     IUserStore<TUser>,
     IUserPasswordStore<TUser>,
     IUserEmailStore<TUser>,
@@ -93,7 +93,7 @@ public class DaliUserStore<TUser, TRole> :
     where TRole : IdentityRole
 {
     private readonly IDocumentStore _store;
-    private readonly ILogger<DaliUserStore<TUser, TRole>> _logger;
+    private readonly ILogger<AeroDBUserStore<TUser, TRole>> _logger;
     private bool _disposed;
 
     // Cached snake_case table names computed from the CLR type names.
@@ -105,21 +105,21 @@ public class DaliUserStore<TUser, TRole> :
     private readonly string _passkeyTable;
 
     /// <summary>
-    /// Initializes a new instance of <see cref="DaliUserStore{TUser, TRole}"/>.
+    /// Initializes a new instance of <see cref="AeroDBUserStore{TUser, TRole}"/>.
     /// </summary>
     /// <param name="store">The AeroDB document store.</param>
     /// <param name="logger">Logger instance.</param>
-    public DaliUserStore(IDocumentStore store, ILogger<DaliUserStore<TUser, TRole>> logger)
+    public AeroDBUserStore(IDocumentStore store, ILogger<AeroDBUserStore<TUser, TRole>> logger)
     {
         _store = store ?? throw new ArgumentNullException(nameof(store));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
         _userTable = ToSnakeCase(typeof(TUser).Name);
         _roleTable = ToSnakeCase(typeof(TRole).Name);
-        _claimTable = ToSnakeCase(typeof(DaliUserClaim).Name);
-        _loginTable = ToSnakeCase(typeof(DaliUserLogin).Name);
-        _tokenTable = ToSnakeCase(typeof(DaliUserToken).Name);
-        _passkeyTable = ToSnakeCase(typeof(DaliUserPasskey).Name);
+        _claimTable = ToSnakeCase(typeof(AeroDBUserClaim).Name);
+        _loginTable = ToSnakeCase(typeof(AeroDBUserLogin).Name);
+        _tokenTable = ToSnakeCase(typeof(AeroDBUserToken).Name);
+        _passkeyTable = ToSnakeCase(typeof(AeroDBUserPasskey).Name);
     }
 
     // ══════════════════════════════════════════════════════════════════
@@ -581,7 +581,7 @@ public class DaliUserStore<TUser, TRole> :
         cancellationToken.ThrowIfCancellationRequested();
 
         await using var session = await _store.QuerySessionAsync(cancellationToken);
-        var records = await session.Query<DaliUserClaim>()
+        var records = await session.Query<AeroDBUserClaim>()
             .Where(c => c.UserId == user.Id)
             .ToListAsync(cancellationToken);
         return records.Select(ToClaim).ToList();
@@ -595,7 +595,7 @@ public class DaliUserStore<TUser, TRole> :
         await using var session = await _store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }, cancellationToken);
         foreach (var claim in claims)
         {
-            session.Store(new DaliUserClaim
+            session.Store(new AeroDBUserClaim
             {
                 UserId = user.Id,
                 ClaimType = claim.Type,
@@ -612,7 +612,7 @@ public class DaliUserStore<TUser, TRole> :
 
         await using var session = await _store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }, cancellationToken);
 
-        var records = await session.Query<DaliUserClaim>()
+        var records = await session.Query<AeroDBUserClaim>()
             .Where(c => c.UserId == user.Id
                      && c.ClaimType == claim.Type
                      && c.ClaimValue == claim.Value)
@@ -637,7 +637,7 @@ public class DaliUserStore<TUser, TRole> :
 
         foreach (var claim in claims)
         {
-            var records = await session.Query<DaliUserClaim>()
+            var records = await session.Query<AeroDBUserClaim>()
                 .Where(c => c.UserId == user.Id
                          && c.ClaimType == claim.Type
                          && c.ClaimValue == claim.Value)
@@ -657,7 +657,7 @@ public class DaliUserStore<TUser, TRole> :
 
         await using var session = await _store.QuerySessionAsync(cancellationToken);
 
-        var claimRecords = await session.Query<DaliUserClaim>()
+        var claimRecords = await session.Query<AeroDBUserClaim>()
             .Where(c => c.ClaimType == claim.Type && c.ClaimValue == claim.Value)
             .ToListAsync(cancellationToken);
 
@@ -684,7 +684,7 @@ public class DaliUserStore<TUser, TRole> :
         cancellationToken.ThrowIfCancellationRequested();
 
         await using var session = await _store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }, cancellationToken);
-        session.Store(new DaliUserLogin
+        session.Store(new AeroDBUserLogin
         {
             UserId = user.Id,
             LoginProvider = login.LoginProvider,
@@ -701,7 +701,7 @@ public class DaliUserStore<TUser, TRole> :
 
         await using var session = await _store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }, cancellationToken);
 
-        var record = await session.Query<DaliUserLogin>()
+        var record = await session.Query<AeroDBUserLogin>()
             .FirstOrDefaultAsync(l =>
                 l.UserId == user.Id &&
                 l.LoginProvider == loginProvider &&
@@ -722,7 +722,7 @@ public class DaliUserStore<TUser, TRole> :
 
         await using var session = await _store.QuerySessionAsync(cancellationToken);
 
-        var records = await session.Query<DaliUserLogin>()
+        var records = await session.Query<AeroDBUserLogin>()
             .Where(l => l.UserId == user.Id)
             .ToListAsync(cancellationToken);
 
@@ -738,7 +738,7 @@ public class DaliUserStore<TUser, TRole> :
 
         await using var session = await _store.QuerySessionAsync(cancellationToken);
 
-        var loginRecord = await session.Query<DaliUserLogin>()
+        var loginRecord = await session.Query<AeroDBUserLogin>()
             .FirstOrDefaultAsync(l =>
                 l.LoginProvider == loginProvider &&
                 l.ProviderKey == providerKey,
@@ -861,7 +861,7 @@ public class DaliUserStore<TUser, TRole> :
 
         await using var session = await _store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }, cancellationToken);
 
-        var existing = await session.Query<DaliUserToken>()
+        var existing = await session.Query<AeroDBUserToken>()
             .FirstOrDefaultAsync(t =>
                 t.UserId == user.Id &&
                 t.LoginProvider == loginProvider &&
@@ -875,7 +875,7 @@ public class DaliUserStore<TUser, TRole> :
         }
         else
         {
-            session.Store(new DaliUserToken
+            session.Store(new AeroDBUserToken
             {
                 UserId = user.Id,
                 LoginProvider = loginProvider,
@@ -894,7 +894,7 @@ public class DaliUserStore<TUser, TRole> :
 
         await using var session = await _store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }, cancellationToken);
 
-        var existing = await session.Query<DaliUserToken>()
+        var existing = await session.Query<AeroDBUserToken>()
             .FirstOrDefaultAsync(t =>
                 t.UserId == user.Id &&
                 t.LoginProvider == loginProvider &&
@@ -915,7 +915,7 @@ public class DaliUserStore<TUser, TRole> :
 
         await using var session = await _store.QuerySessionAsync(cancellationToken);
 
-        var token = await session.Query<DaliUserToken>()
+        var token = await session.Query<AeroDBUserToken>()
             .FirstOrDefaultAsync(t =>
                 t.UserId == user.Id &&
                 t.LoginProvider == loginProvider &&
@@ -936,7 +936,7 @@ public class DaliUserStore<TUser, TRole> :
 
         await using var session = await _store.QuerySessionAsync(cancellationToken);
 
-        var records = await session.Query<DaliUserPasskey>()
+        var records = await session.Query<AeroDBUserPasskey>()
             .Where(p => p.UserId == user.Id)
             .ToListAsync(cancellationToken);
 
@@ -995,7 +995,7 @@ public class DaliUserStore<TUser, TRole> :
 
         // Raw SQL: byte[] credential ID comparison is not reliably supported in LINQ
         // across SurrealDB drivers. See FindPasskeyRecordAsync for detailed comment.
-        var passkeys = await session.RawQueryAsync<DaliUserPasskey>(
+        var passkeys = await session.RawQueryAsync<AeroDBUserPasskey>(
             $"SELECT * FROM {_passkeyTable} WHERE credential_id = $credentialId LIMIT 1",
             new Dictionary<string, object?> { ["credentialId"] = credentialId },
             cancellationToken);
@@ -1100,9 +1100,9 @@ public class DaliUserStore<TUser, TRole> :
     /// Finds a passkey record for the given user and credential ID using raw SQL
     /// (byte[] comparison is not reliably supported via LINQ across all SurrealDB drivers).
     /// </summary>
-    private async Task<DaliUserPasskey?> FindPasskeyRecordAsync(IQuerySession session, string userId, byte[] credentialId, CancellationToken ct)
+    private async Task<AeroDBUserPasskey?> FindPasskeyRecordAsync(IQuerySession session, string userId, byte[] credentialId, CancellationToken ct)
     {
-        var passkeys = await session.RawQueryAsync<DaliUserPasskey>(
+        var passkeys = await session.RawQueryAsync<AeroDBUserPasskey>(
             $"SELECT * FROM {_passkeyTable} WHERE user_id = $userId AND credential_id = $credentialId LIMIT 1",
             new Dictionary<string, object?>
             {
@@ -1124,28 +1124,28 @@ public class DaliUserStore<TUser, TRole> :
     private async Task DeleteAssociatedRecordsAsync(IDocumentSession session, string userId, CancellationToken ct)
     {
         // Claims
-        var claims = await session.Query<DaliUserClaim>()
+        var claims = await session.Query<AeroDBUserClaim>()
             .Where(c => c.UserId == userId)
             .ToListAsync(ct);
         foreach (var c in claims)
             session.Delete(c);
 
         // Logins
-        var logins = await session.Query<DaliUserLogin>()
+        var logins = await session.Query<AeroDBUserLogin>()
             .Where(l => l.UserId == userId)
             .ToListAsync(ct);
         foreach (var l in logins)
             session.Delete(l);
 
         // Tokens
-        var tokens = await session.Query<DaliUserToken>()
+        var tokens = await session.Query<AeroDBUserToken>()
             .Where(t => t.UserId == userId)
             .ToListAsync(ct);
         foreach (var t in tokens)
             session.Delete(t);
 
         // Passkeys
-        var passkeys = await session.Query<DaliUserPasskey>()
+        var passkeys = await session.Query<AeroDBUserPasskey>()
             .Where(p => p.UserId == userId)
             .ToListAsync(ct);
         foreach (var p in passkeys)
@@ -1156,10 +1156,10 @@ public class DaliUserStore<TUser, TRole> :
     //  Private Conversion Helpers
     // ══════════════════════════════════════════════════════════════════
 
-    private static Claim ToClaim(DaliUserClaim record)
+    private static Claim ToClaim(AeroDBUserClaim record)
         => new(record.ClaimType, record.ClaimValue);
 
-    private static DaliUserPasskey ToPasskeyRecord(string userId, UserPasskeyInfo info)
+    private static AeroDBUserPasskey ToPasskeyRecord(string userId, UserPasskeyInfo info)
         => new()
         {
             UserId = userId,
@@ -1176,7 +1176,7 @@ public class DaliUserStore<TUser, TRole> :
             Name = info.Name
         };
 
-    private static UserPasskeyInfo ToPasskeyInfo(DaliUserPasskey record)
+    private static UserPasskeyInfo ToPasskeyInfo(AeroDBUserPasskey record)
         => new(
             credentialId: record.CredentialId,
             publicKey: record.PublicKey,

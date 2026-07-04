@@ -7,7 +7,7 @@ namespace AeroDB;
 /// Provides Marten-compatible <c>WriteById&lt;T&gt;</c> and <c>WriteArray&lt;T&gt;</c>
 /// methods for writing documents directly to HTTP responses.
 /// </summary>
-public static class DaliHttpExtensions
+public static class AeroDBHttpExtensions
 {
     /// <summary>
     /// Loads a single document by its string ID and writes it as JSON to the HTTP response.

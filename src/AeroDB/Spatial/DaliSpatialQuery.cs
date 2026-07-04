@@ -5,7 +5,7 @@ using AeroDB.Metadata;
 
 namespace AeroDB;
 
-public sealed class DaliSpatialQuery<T> : ISpatialQuery<T> where T : class
+public sealed class AeroDBSpatialQuery<T> : ISpatialQuery<T> where T : class
 {
     private readonly SurrealQueryProvider _provider;
     private readonly string _table;
@@ -33,7 +33,7 @@ public sealed class DaliSpatialQuery<T> : ISpatialQuery<T> where T : class
 
     private readonly SurrealCommandBuilder _paramBuilder = new();
 
-    internal DaliSpatialQuery(SurrealQueryProvider provider)
+    internal AeroDBSpatialQuery(SurrealQueryProvider provider)
     {
         _provider = provider;
         _table = MetadataDispatch.GetTableName(typeof(T));

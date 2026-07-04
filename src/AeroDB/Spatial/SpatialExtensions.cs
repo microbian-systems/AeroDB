@@ -15,7 +15,7 @@ public static class SpatialExtensions
     {
         var queryable = session.Query<T>();
         if (queryable.Provider is SurrealQueryProvider provider)
-            return new DaliSpatialQuery<T>(provider);
+            return new AeroDBSpatialQuery<T>(provider);
 
         throw new NotSupportedException(
             $"Spatial queries are only supported on AeroDB query sessions. The current provider is {queryable.Provider.GetType().Name}.");

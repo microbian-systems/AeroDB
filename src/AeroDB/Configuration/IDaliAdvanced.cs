@@ -2,7 +2,7 @@ using SurrealDb.Net;
 
 namespace AeroDB;
 
-public interface IDaliAdvanced
+public interface IAeroDBAdvanced
 {
     /// <summary>Direct access to the underlying SurrealDB client.</summary>
     ISurrealDbClient Client { get; }

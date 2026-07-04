@@ -14,18 +14,18 @@ using Wolverine.Persistence.Durability;
 using Wolverine.Runtime;
 
 /// <summary>
-/// Mock-based unit tests for <see cref="DaliOutboxedSessionFactory"/>.
-/// DaliMessageStore is sealed — tests create real instances with a mocked
+/// Mock-based unit tests for <see cref="AeroDBOutboxedSessionFactory"/>.
+/// AeroDBMessageStore is sealed — tests create real instances with a mocked
 /// ISurrealDbClient. Verifies session opening, tenant scoping, and outbox enlistment.
 /// </summary>
-public class DaliOutboxedSessionFactoryTests
+public class AeroDBOutboxedSessionFactoryTests
 {
-    private static DaliOutboxedSessionFactory CreateFactory(
+    private static AeroDBOutboxedSessionFactory CreateFactory(
         out IDocumentStore documentStore,
-        out DaliMessageStore messageStore)
+        out AeroDBMessageStore messageStore)
     {
         var client = Substitute.For<ISurrealDbClient>();
-        var factoryLogger = Substitute.For<ILogger<DaliOutboxedSessionFactory>>();
+        var factoryLogger = Substitute.For<ILogger<AeroDBOutboxedSessionFactory>>();
 
         documentStore = Substitute.For<IDocumentStore>();
         documentStore.Options.Returns(new StoreOptions());
@@ -33,9 +33,9 @@ public class DaliOutboxedSessionFactoryTests
         documentStore.OpenSessionAsync(Arg.Any<SessionOptions>(), Arg.Any<CancellationToken>())
             .Returns(Substitute.For<IDocumentSession>());
 
-        messageStore = new DaliMessageStore(client, NullLogger<DaliMessageStore>.Instance);
+        messageStore = new AeroDBMessageStore(client, NullLogger<AeroDBMessageStore>.Instance);
 
-        return new DaliOutboxedSessionFactory(documentStore, messageStore, factoryLogger);
+        return new AeroDBOutboxedSessionFactory(documentStore, messageStore, factoryLogger);
     }
 
     // ─── Constructor ─────────────────────────────────────────────────
@@ -44,21 +44,21 @@ public class DaliOutboxedSessionFactoryTests
     public async Task Constructor_throws_when_store_is_null()
     {
         var client = Substitute.For<ISurrealDbClient>();
-        var messageStore = new DaliMessageStore(client, NullLogger<DaliMessageStore>.Instance);
-        var logger = Substitute.For<ILogger<DaliOutboxedSessionFactory>>();
+        var messageStore = new AeroDBMessageStore(client, NullLogger<AeroDBMessageStore>.Instance);
+        var logger = Substitute.For<ILogger<AeroDBOutboxedSessionFactory>>();
 
         Should.Throw<ArgumentNullException>(() =>
-            new DaliOutboxedSessionFactory(null!, messageStore, logger));
+            new AeroDBOutboxedSessionFactory(null!, messageStore, logger));
     }
 
     [Test]
     public async Task Constructor_throws_when_messageStore_is_null()
     {
         var documentStore = Substitute.For<IDocumentStore>();
-        var logger = Substitute.For<ILogger<DaliOutboxedSessionFactory>>();
+        var logger = Substitute.For<ILogger<AeroDBOutboxedSessionFactory>>();
 
         Should.Throw<ArgumentNullException>(() =>
-            new DaliOutboxedSessionFactory(documentStore, null!, logger));
+            new AeroDBOutboxedSessionFactory(documentStore, null!, logger));
     }
 
     [Test]
@@ -66,10 +66,10 @@ public class DaliOutboxedSessionFactoryTests
     {
         var documentStore = Substitute.For<IDocumentStore>();
         var client = Substitute.For<ISurrealDbClient>();
-        var messageStore = new DaliMessageStore(client, NullLogger<DaliMessageStore>.Instance);
+        var messageStore = new AeroDBMessageStore(client, NullLogger<AeroDBMessageStore>.Instance);
 
         Should.Throw<ArgumentNullException>(() =>
-            new DaliOutboxedSessionFactory(documentStore, messageStore, null!));
+            new AeroDBOutboxedSessionFactory(documentStore, messageStore, null!));
     }
 
     // ─── MessageStore property ──────────────────────────────────────
@@ -80,7 +80,7 @@ public class DaliOutboxedSessionFactoryTests
         var factory = CreateFactory(out _, out var messageStore);
 
         // Access internal property via InternalsVisibleTo + reflection
-        var prop = typeof(DaliOutboxedSessionFactory)
+        var prop = typeof(AeroDBOutboxedSessionFactory)
             .GetProperty("MessageStore", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
         var exposed = prop!.GetValue(factory);
         exposed.ShouldBe(messageStore);

@@ -182,9 +182,9 @@ public class TimeSeriesQueryTests
     [Test]
     public async Task Select_Default_Count()
     {
-        // No Select configured — DaliTimeSeriesQuery defaults to "count() AS cnt"
+        // No Select configured — AeroDBTimeSeriesQuery defaults to "count() AS cnt"
         var (mockSession, provider) = CreateMockProvider();
-        var query = new DaliTimeSeriesQuery<SensorReading>(provider);
+        var query = new AeroDBTimeSeriesQuery<SensorReading>(provider);
 
         query.BucketByFloor(s => s.Timestamp, 1, TimeUnit.Hour);
         await query.ToListAsync();
@@ -206,9 +206,9 @@ public class TimeSeriesQueryTests
     public async Task Downsample_Hourly_Range()
     {
         var (mockSession, provider) = CreateMockProvider();
-        var query = new DaliTimeSeriesQuery<SensorReading>(provider);
+        var query = new AeroDBTimeSeriesQuery<SensorReading>(provider);
 
-        // Note: DaliTimeSeriesQuery.Where() can extract only one time bound (either from or to)
+        // Note: AeroDBTimeSeriesQuery.Where() can extract only one time bound (either from or to)
         // due to the `_downsampleFrom is null` guard. Multiple Where() calls will not
         // populate both bounds. With a single bound, downsample falls back to 1d default.
         // The full bucket computation is verified in TimeBucketHelper.ComputeBuckets tests.
@@ -230,7 +230,7 @@ public class TimeSeriesQueryTests
     public async Task Downsample_Daily_Range()
     {
         var (mockSession, provider) = CreateMockProvider();
-        var query = new DaliTimeSeriesQuery<SensorReading>(provider);
+        var query = new AeroDBTimeSeriesQuery<SensorReading>(provider);
 
         query
             .Downsample(s => s.Timestamp, 30)
@@ -250,7 +250,7 @@ public class TimeSeriesQueryTests
     public async Task Downsample_Weekly_Range()
     {
         var (mockSession, provider) = CreateMockProvider();
-        var query = new DaliTimeSeriesQuery<SensorReading>(provider);
+        var query = new AeroDBTimeSeriesQuery<SensorReading>(provider);
 
         query
             .Downsample(s => s.Timestamp, 30)
@@ -272,7 +272,7 @@ public class TimeSeriesQueryTests
     public async Task Downsample_No_Time_Range()
     {
         var (mockSession, provider) = CreateMockProvider();
-        var query = new DaliTimeSeriesQuery<SensorReading>(provider);
+        var query = new AeroDBTimeSeriesQuery<SensorReading>(provider);
 
         // Downsample without a Where time range — falls back to 1d default
         query
@@ -296,7 +296,7 @@ public class TimeSeriesQueryTests
     public async Task TimeSeries_Floor_Basic_SQL()
     {
         var (mockSession, provider) = CreateMockProvider();
-        var query = new DaliTimeSeriesQuery<SensorReading>(provider);
+        var query = new AeroDBTimeSeriesQuery<SensorReading>(provider);
 
         query
             .BucketByFloor(s => s.Timestamp, 1, TimeUnit.Hour)
@@ -319,7 +319,7 @@ public class TimeSeriesQueryTests
     public async Task TimeSeries_Group_Basic_SQL()
     {
         var (mockSession, provider) = CreateMockProvider();
-        var query = new DaliTimeSeriesQuery<SensorReading>(provider);
+        var query = new AeroDBTimeSeriesQuery<SensorReading>(provider);
 
         query
             .BucketByGroup(s => s.Timestamp, TimeBucket.Month)
@@ -339,7 +339,7 @@ public class TimeSeriesQueryTests
     public async Task TimeSeries_Floor_With_Where_SQL()
     {
         var (mockSession, provider) = CreateMockProvider();
-        var query = new DaliTimeSeriesQuery<SensorReading>(provider);
+        var query = new AeroDBTimeSeriesQuery<SensorReading>(provider);
 
         var from = new DateTime(2024, 1, 1, 0, 0, 0, DateTimeKind.Utc);
         query
@@ -360,7 +360,7 @@ public class TimeSeriesQueryTests
     public async Task TimeSeries_With_Order_By()
     {
         var (mockSession, provider) = CreateMockProvider();
-        var query = new DaliTimeSeriesQuery<SensorReading>(provider);
+        var query = new AeroDBTimeSeriesQuery<SensorReading>(provider);
 
         query
             .BucketByFloor(s => s.Timestamp, 1, TimeUnit.Hour)
@@ -379,7 +379,7 @@ public class TimeSeriesQueryTests
     public async Task TimeSeries_With_Limit_Skip()
     {
         var (mockSession, provider) = CreateMockProvider();
-        var query = new DaliTimeSeriesQuery<SensorReading>(provider);
+        var query = new AeroDBTimeSeriesQuery<SensorReading>(provider);
 
         query
             .BucketByFloor(s => s.Timestamp, 1, TimeUnit.Hour)
@@ -400,7 +400,7 @@ public class TimeSeriesQueryTests
     public async Task TimeSeries_Multiple_Buckets_SQL()
     {
         var (mockSession, provider) = CreateMockProvider();
-        var query = new DaliTimeSeriesQuery<SensorReading>(provider);
+        var query = new AeroDBTimeSeriesQuery<SensorReading>(provider);
 
         query
             .BucketByGroup(s => s.Timestamp, TimeBucket.Month)
@@ -423,7 +423,7 @@ public class TimeSeriesQueryTests
     public async Task TimeSeries_Select_Clause_Structure()
     {
         var (mockSession, provider) = CreateMockProvider();
-        var query = new DaliTimeSeriesQuery<SensorReading>(provider);
+        var query = new AeroDBTimeSeriesQuery<SensorReading>(provider);
 
         query
             .BucketByFloor(s => s.Timestamp, 1, TimeUnit.Day)
@@ -858,10 +858,10 @@ public class TimeSeriesQueryTests
     [Test]
     public async Task Null_Timestamp_Handling()
     {
-        // Verify that DaliTimeSeriesQuery handles null timestamp gracefully
+        // Verify that AeroDBTimeSeriesQuery handles null timestamp gracefully
         // by checking that the SQL generation doesn't throw with nullable fields
         var (mockSession, provider) = CreateMockProvider();
-        var query = new DaliTimeSeriesQuery<SensorReading>(provider);
+        var query = new AeroDBTimeSeriesQuery<SensorReading>(provider);
 
         // Should not throw — the Timestamp field is a non-nullable DateTime,
         // but the expression builder just extracts the member name

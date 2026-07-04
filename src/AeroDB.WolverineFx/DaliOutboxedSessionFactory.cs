@@ -10,16 +10,16 @@ namespace AeroDB.WolverineFx;
 /// Factory that creates <see cref="IDocumentSession"/> instances pre-enrolled in
 /// Wolverine's outbox. Mirrors the Wolverine.Marten <c>OutboxedSessionFactory</c> pattern.
 /// </summary>
-public sealed class DaliOutboxedSessionFactory
+public sealed class AeroDBOutboxedSessionFactory
 {
     private readonly IDocumentStore _store;
-    private readonly DaliMessageStore _messageStore;
-    private readonly ILogger<DaliOutboxedSessionFactory> _logger;
+    private readonly AeroDBMessageStore _messageStore;
+    private readonly ILogger<AeroDBOutboxedSessionFactory> _logger;
 
-    public DaliOutboxedSessionFactory(
+    public AeroDBOutboxedSessionFactory(
         IDocumentStore store,
-        DaliMessageStore messageStore,
-        ILogger<DaliOutboxedSessionFactory> logger)
+        AeroDBMessageStore messageStore,
+        ILogger<AeroDBOutboxedSessionFactory> logger)
     {
         _store = store ?? throw new ArgumentNullException(nameof(store));
         _messageStore = messageStore ?? throw new ArgumentNullException(nameof(messageStore));
@@ -27,7 +27,7 @@ public sealed class DaliOutboxedSessionFactory
     }
 
     /// <summary>The backing message store.</summary>
-    internal DaliMessageStore MessageStore => _messageStore;
+    internal AeroDBMessageStore MessageStore => _messageStore;
 
     /// <summary>
     /// Open a lightweight document session enrolled in the active Wolverine
@@ -80,22 +80,22 @@ public sealed class DaliOutboxedSessionFactory
 
         // Enlist the transaction in Wolverine's outbox
         var ownerId = _messageStore.GetOwnerId();
-        var tx = new DaliEnvelopeTransaction(_messageStore, session, ownerId);
+        var tx = new AeroDBEnvelopeTransaction(_messageStore, session, ownerId);
         context.EnlistInOutbox(tx);
 
         // One-time registration of the event forwarder on the store's global listener list.
         // Access the store options' Listeners list (shared across all sessions).
         if (!_forwarderRegistered)
         {
-            if (!_store.Options.Listeners.OfType<DaliEventForwarding>().Any())
+            if (!_store.Options.Listeners.OfType<AeroDBEventForwarding>().Any())
             {
-                _store.Options.Listeners.Add(new DaliEventForwarding());
+                _store.Options.Listeners.Add(new AeroDBEventForwarding());
             }
             _forwarderRegistered = true;
         }
 
-        // Wire the scoped message context so DaliEventForwarding can publish events
-        DaliEventForwarding.SetCurrentContext(context);
+        // Wire the scoped message context so AeroDBEventForwarding can publish events
+        AeroDBEventForwarding.SetCurrentContext(context);
     }
 
     /// <summary>

@@ -11,10 +11,10 @@ namespace AeroDB.WolverineFx.Codegen;
 
 /// <summary>
 /// Codegen frame that opens an outbox-enrolled <see cref="IDocumentSession"/>
-/// via <see cref="DaliOutboxedSessionFactory"/>. Inserted as middleware in handler
+/// via <see cref="AeroDBOutboxedSessionFactory"/>. Inserted as middleware in handler
 /// chains that need AeroDB persistence.
 /// </summary>
-internal sealed class OpenDaliSessionFrame : Frame
+internal sealed class OpenAeroDBSessionFrame : Frame
 {
     private readonly IChain _chain;
     private Variable? _cancellation;
@@ -22,7 +22,7 @@ internal sealed class OpenDaliSessionFrame : Frame
     private bool _createsSession;
     private Variable? _factory;
 
-    public OpenDaliSessionFrame(IChain chain) : base(true)
+    public OpenAeroDBSessionFrame(IChain chain) : base(true)
     {
         _chain = chain;
     }
@@ -40,7 +40,7 @@ internal sealed class OpenDaliSessionFrame : Frame
             _createsSession = true;
             Session = new Variable(typeof(IDocumentSession), this);
 
-            _factory = chain.FindVariable(typeof(DaliOutboxedSessionFactory));
+            _factory = chain.FindVariable(typeof(AeroDBOutboxedSessionFactory));
             yield return _factory;
         }
 
@@ -64,7 +64,7 @@ internal sealed class OpenDaliSessionFrame : Frame
             writer.WriteComment("Open a new AeroDB document session registered with the Wolverine");
             writer.WriteComment("message context to support the outbox functionality");
             writer.Write(
-                $"using var {Session!.Usage} = await {_factory!.Usage}.{nameof(DaliOutboxedSessionFactory.OpenSession)}({_context!.Usage}).ConfigureAwait(false);");
+                $"using var {Session!.Usage} = await {_factory!.Usage}.{nameof(AeroDBOutboxedSessionFactory.OpenSession)}({_context!.Usage}).ConfigureAwait(false);");
         }
 
         Next?.GenerateCode(method, writer);
@@ -78,7 +78,7 @@ internal sealed class OpenDaliSessionFrame : Frame
             writer.WriteComment("Open a new AeroDB document session registered with the Wolverine");
             writer.WriteComment("message context to support the outbox functionality");
             writer.Write(
-                $"use {Session!.Usage} = {_factory!.Usage}.{nameof(DaliOutboxedSessionFactory.OpenSession)}({_context!.Usage})");
+                $"use {Session!.Usage} = {_factory!.Usage}.{nameof(AeroDBOutboxedSessionFactory.OpenSession)}({_context!.Usage})");
         }
 
         Next?.GenerateFSharpCode(method, writer);

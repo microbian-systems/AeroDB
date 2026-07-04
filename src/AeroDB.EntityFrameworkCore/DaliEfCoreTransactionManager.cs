@@ -4,25 +4,25 @@ using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 
-namespace Dali;
+namespace AeroDB;
 
 /// <summary>
 /// EF Core transaction manager that wraps AeroDB sessions.
 /// Use when both EF Core and AeroDB operations must be atomic.
 /// </summary>
-public class DaliEfCoreTransactionManager<TDbContext> : IDbContextTransactionManager
+public class AeroDBEfCoreTransactionManager<TDbContext> : IDbContextTransactionManager
     where TDbContext : DbContext
 {
     private readonly TDbContext _dbContext;
-    private readonly IDocumentSession _daliSession;
-    private readonly ILogger<DaliEfCoreTransactionManager<TDbContext>> _logger;
+    private readonly IDocumentSession _AeroDBSession;
+    private readonly ILogger<AeroDBEfCoreTransactionManager<TDbContext>> _logger;
 
-    public DaliEfCoreTransactionManager(TDbContext dbContext, IDocumentSession daliSession, ILoggerFactory? loggerFactory = null)
+    public AeroDBEfCoreTransactionManager(TDbContext dbContext, IDocumentSession AeroDBSession, ILoggerFactory? loggerFactory = null)
     {
         _dbContext = dbContext;
-        _daliSession = daliSession;
-        _logger = loggerFactory?.CreateLogger<DaliEfCoreTransactionManager<TDbContext>>()
-            ?? NullLogger<DaliEfCoreTransactionManager<TDbContext>>.Instance;
+        _AeroDBSession = AeroDBSession;
+        _logger = loggerFactory?.CreateLogger<AeroDBEfCoreTransactionManager<TDbContext>>()
+            ?? NullLogger<AeroDBEfCoreTransactionManager<TDbContext>>.Instance;
     }
 
     public IDbContextTransaction? CurrentTransaction { get; private set; }
@@ -34,12 +34,12 @@ public class DaliEfCoreTransactionManager<TDbContext> : IDbContextTransactionMan
     {
         _logger.LogInformation("Beginning AeroDB EF Core transaction");
         var efTransaction = await _dbContext.Database.BeginTransactionAsync(ct).ConfigureAwait(false);
-        var daliTransaction = new DaliEfCoreTransaction(_daliSession)
+        var AeroDBTransaction = new AeroDBEfCoreTransaction(_AeroDBSession)
         {
             OwnedTransaction = efTransaction
         };
-        CurrentTransaction = daliTransaction;
-        return daliTransaction;
+        CurrentTransaction = AeroDBTransaction;
+        return AeroDBTransaction;
     }
 
     public void CommitTransaction()

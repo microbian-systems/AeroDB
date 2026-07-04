@@ -6,16 +6,16 @@ using SurrealDb.Net.Models.LiveQuery;
 
 namespace AeroDB.LiveQuery;
 
-internal sealed class SurrealDaliLiveQuery<T> : IDaliLiveQuery<T> where T : class
+internal sealed class SurrealAeroDBLiveQuery<T> : IAeroDBLiveQuery<T> where T : class
 {
-    private readonly Channel<DaliLiveChange<T>> _channel;
+    private readonly Channel<AeroDBLiveChange<T>> _channel;
     private readonly SurrealDbLiveQuery<T>? _sdkLive;
     private readonly IAsyncEnumerable<SurrealDbLiveQueryResponse>? _testSource;
     private readonly IReadOnlyList<Action<T>>? _onCreated;
     private readonly IReadOnlyList<Action<T>>? _onUpdated;
     private readonly IReadOnlyList<Action<T>>? _onDeleted;
     private readonly IReadOnlyList<Action>? _onOpen;
-    private readonly ILogger<SurrealDaliLiveQuery<T>> _logger;
+    private readonly ILogger<SurrealAeroDBLiveQuery<T>> _logger;
     private readonly CancellationTokenSource _cts = new();
 
     private Task? _readLoop;
@@ -25,7 +25,7 @@ internal sealed class SurrealDaliLiveQuery<T> : IDaliLiveQuery<T> where T : clas
     /// <summary>
     /// Production constructor: wraps a real <see cref="SurrealDbLiveQuery{T}"/> from the SDK.
     /// </summary>
-    internal SurrealDaliLiveQuery(
+    internal SurrealAeroDBLiveQuery(
         SurrealDbLiveQuery<T> sdkLive,
         IReadOnlyList<Action<T>>? onCreated,
         IReadOnlyList<Action<T>>? onUpdated,
@@ -33,7 +33,7 @@ internal sealed class SurrealDaliLiveQuery<T> : IDaliLiveQuery<T> where T : clas
         IReadOnlyList<Action>? onOpen,
         int channelCapacity,
         BoundedChannelFullMode fullMode,
-        ILogger<SurrealDaliLiveQuery<T>> logger)
+        ILogger<SurrealAeroDBLiveQuery<T>> logger)
         : this(onCreated, onUpdated, onDeleted, onOpen, channelCapacity, fullMode, logger)
     {
         _sdkLive = sdkLive;
@@ -43,7 +43,7 @@ internal sealed class SurrealDaliLiveQuery<T> : IDaliLiveQuery<T> where T : clas
     /// Test constructor: accepts a direct <see cref="IAsyncEnumerable{SurrealDbLiveQueryResponse}"/>
     /// so tests can feed controlled response sequences without needing a real SDK live query.
     /// </summary>
-    internal SurrealDaliLiveQuery(
+    internal SurrealAeroDBLiveQuery(
         IAsyncEnumerable<SurrealDbLiveQueryResponse> source,
         IReadOnlyList<Action<T>>? onCreated,
         IReadOnlyList<Action<T>>? onUpdated,
@@ -51,20 +51,20 @@ internal sealed class SurrealDaliLiveQuery<T> : IDaliLiveQuery<T> where T : clas
         IReadOnlyList<Action>? onOpen,
         int channelCapacity,
         BoundedChannelFullMode fullMode,
-        ILogger<SurrealDaliLiveQuery<T>> logger)
+        ILogger<SurrealAeroDBLiveQuery<T>> logger)
         : this(onCreated, onUpdated, onDeleted, onOpen, channelCapacity, fullMode, logger)
     {
         _testSource = source;
     }
 
-    private SurrealDaliLiveQuery(
+    private SurrealAeroDBLiveQuery(
         IReadOnlyList<Action<T>>? onCreated,
         IReadOnlyList<Action<T>>? onUpdated,
         IReadOnlyList<Action<T>>? onDeleted,
         IReadOnlyList<Action>? onOpen,
         int channelCapacity,
         BoundedChannelFullMode fullMode,
-        ILogger<SurrealDaliLiveQuery<T>> logger)
+        ILogger<SurrealAeroDBLiveQuery<T>> logger)
     {
         _onCreated = onCreated;
         _onUpdated = onUpdated;
@@ -72,7 +72,7 @@ internal sealed class SurrealDaliLiveQuery<T> : IDaliLiveQuery<T> where T : clas
         _onOpen = onOpen;
         _logger = logger;
 
-        _channel = Channel.CreateBounded<DaliLiveChange<T>>(
+        _channel = Channel.CreateBounded<AeroDBLiveChange<T>>(
             new BoundedChannelOptions(channelCapacity)
             {
                 FullMode = fullMode,
@@ -104,7 +104,7 @@ internal sealed class SurrealDaliLiveQuery<T> : IDaliLiveQuery<T> where T : clas
 
     /// <summary>
     /// Pulls <see cref="SurrealDbLiveQueryResponse"/> items from the SDK's <see cref="IAsyncEnumerable{T}"/>,
-    /// maps them to <see cref="DaliLiveChange{T}"/>, and writes them into the bounded channel.
+    /// maps them to <see cref="AeroDBLiveChange{T}"/>, and writes them into the bounded channel.
     /// On completion or failure, the channel writer is completed via <see cref="ChannelWriter{T}.TryComplete"/>.
     /// </summary>
     private async Task ReadFromSdkAsync(CancellationToken ct)
@@ -116,7 +116,7 @@ internal sealed class SurrealDaliLiveQuery<T> : IDaliLiveQuery<T> where T : clas
         {
             await foreach (var response in source.WithCancellation(ct).ConfigureAwait(false))
             {
-                var change = MapToDaliChange(response);
+                var change = MapToAeroDBChange(response);
                 await _channel.Writer.WriteAsync(change, ct).ConfigureAwait(false);
             }
         }
@@ -146,7 +146,7 @@ internal sealed class SurrealDaliLiveQuery<T> : IDaliLiveQuery<T> where T : clas
         {
             switch (change.Action)
             {
-                case DaliLiveAction.Open:
+                case AeroDBLiveAction.Open:
                     if (_onOpen is not null)
                     {
                         foreach (var handler in _onOpen)
@@ -154,7 +154,7 @@ internal sealed class SurrealDaliLiveQuery<T> : IDaliLiveQuery<T> where T : clas
                     }
                     break;
 
-                case DaliLiveAction.Created when change.Document is not null:
+                case AeroDBLiveAction.Created when change.Document is not null:
                     if (_onCreated is not null)
                     {
                         foreach (var handler in _onCreated)
@@ -164,7 +164,7 @@ internal sealed class SurrealDaliLiveQuery<T> : IDaliLiveQuery<T> where T : clas
                     }
                     break;
 
-                case DaliLiveAction.Updated when change.Document is not null:
+                case AeroDBLiveAction.Updated when change.Document is not null:
                     if (_onUpdated is not null)
                     {
                         foreach (var handler in _onUpdated)
@@ -174,7 +174,7 @@ internal sealed class SurrealDaliLiveQuery<T> : IDaliLiveQuery<T> where T : clas
                     }
                     break;
 
-                case DaliLiveAction.Deleted when change.Document is not null:
+                case AeroDBLiveAction.Deleted when change.Document is not null:
                     if (_onDeleted is not null)
                     {
                         foreach (var handler in _onDeleted)
@@ -218,14 +218,14 @@ internal sealed class SurrealDaliLiveQuery<T> : IDaliLiveQuery<T> where T : clas
         }
     }
 
-    // ── IDaliLiveQuery<T> ─────────────────────────────────────────────────────────
+    // ── IAeroDBLiveQuery<T> ─────────────────────────────────────────────────────────
 
     /// <summary>
     /// H4: Throws <see cref="InvalidOperationException"/> if callbacks are active
     /// (only one consumption model per subscription is allowed).
     /// L2: Guards against double-enumeration via <c>Interlocked.Exchange</c>.
     /// </summary>
-    public IAsyncEnumerable<DaliLiveChange<T>> Changes(CancellationToken ct = default)
+    public IAsyncEnumerable<AeroDBLiveChange<T>> Changes(CancellationToken ct = default)
     {
         if (_callbackLoop is not null)
         {
@@ -243,7 +243,7 @@ internal sealed class SurrealDaliLiveQuery<T> : IDaliLiveQuery<T> where T : clas
     }
 
     /// <inheritdoc />
-    public async IAsyncEnumerable<DaliLiveChange<T>> GetResults(
+    public async IAsyncEnumerable<AeroDBLiveChange<T>> GetResults(
         [EnumeratorCancellation] CancellationToken ct = default)
     {
         if (_callbackLoop is not null)
@@ -256,7 +256,7 @@ internal sealed class SurrealDaliLiveQuery<T> : IDaliLiveQuery<T> where T : clas
 
         await foreach (var change in _channel.Reader.ReadAllAsync(ct).ConfigureAwait(false))
         {
-            if (change.Action != DaliLiveAction.Closed)
+            if (change.Action != AeroDBLiveAction.Closed)
                 yield return change;
         }
     }
@@ -267,7 +267,7 @@ internal sealed class SurrealDaliLiveQuery<T> : IDaliLiveQuery<T> where T : clas
     {
         await foreach (var change in GetResults(ct).ConfigureAwait(false))
         {
-            if (change.Action == DaliLiveAction.Created && change.Document is not null)
+            if (change.Action == AeroDBLiveAction.Created && change.Document is not null)
                 yield return change.Document;
         }
     }
@@ -278,7 +278,7 @@ internal sealed class SurrealDaliLiveQuery<T> : IDaliLiveQuery<T> where T : clas
     {
         await foreach (var change in GetResults(ct).ConfigureAwait(false))
         {
-            if (change.Action == DaliLiveAction.Updated && change.Document is not null)
+            if (change.Action == AeroDBLiveAction.Updated && change.Document is not null)
                 yield return change.Document;
         }
     }
@@ -289,7 +289,7 @@ internal sealed class SurrealDaliLiveQuery<T> : IDaliLiveQuery<T> where T : clas
     {
         await foreach (var change in GetResults(ct).ConfigureAwait(false))
         {
-            if (change.Action == DaliLiveAction.Deleted && change.Document is not null)
+            if (change.Action == AeroDBLiveAction.Deleted && change.Document is not null)
                 yield return change.Document;
         }
     }
@@ -298,7 +298,7 @@ internal sealed class SurrealDaliLiveQuery<T> : IDaliLiveQuery<T> where T : clas
     /// Exposes the underlying channel reader for custom pipelines.
     /// Returns <see langword="null"/> when callbacks are actively consuming the channel.
     /// </summary>
-    public ChannelReader<DaliLiveChange<T>>? Reader
+    public ChannelReader<AeroDBLiveChange<T>>? Reader
         => _callbackLoop is null ? _channel.Reader : null;
 
     /// <summary>
@@ -365,26 +365,26 @@ internal sealed class SurrealDaliLiveQuery<T> : IDaliLiveQuery<T> where T : clas
     }
 
     /// <summary>
-    /// Maps an SDK <see cref="SurrealDbLiveQueryResponse"/> to a AeroDB <see cref="DaliLiveChange{T}"/>.
+    /// Maps an SDK <see cref="SurrealDbLiveQueryResponse"/> to a AeroDB <see cref="AeroDBLiveChange{T}"/>.
     /// Pattern-matches on the concrete response type.
     /// </summary>
-    private static DaliLiveChange<T> MapToDaliChange(SurrealDbLiveQueryResponse response)
+    private static AeroDBLiveChange<T> MapToAeroDBChange(SurrealDbLiveQueryResponse response)
         => response switch
         {
             SurrealDbLiveQueryOpenResponse
-                => new DaliLiveChange<T>(DaliLiveAction.Open, null, default),
+                => new AeroDBLiveChange<T>(AeroDBLiveAction.Open, null, default),
 
             SurrealDbLiveQueryCreateResponse<T> c
-                => new DaliLiveChange<T>(DaliLiveAction.Created, ExtractId(c.Result), c.Result),
+                => new AeroDBLiveChange<T>(AeroDBLiveAction.Created, ExtractId(c.Result), c.Result),
 
             SurrealDbLiveQueryUpdateResponse<T> u
-                => new DaliLiveChange<T>(DaliLiveAction.Updated, ExtractId(u.Result), u.Result),
+                => new AeroDBLiveChange<T>(AeroDBLiveAction.Updated, ExtractId(u.Result), u.Result),
 
             SurrealDbLiveQueryDeleteResponse<T> d
-                => new DaliLiveChange<T>(DaliLiveAction.Deleted, ExtractId(d.Result), d.Result),
+                => new AeroDBLiveChange<T>(AeroDBLiveAction.Deleted, ExtractId(d.Result), d.Result),
 
             SurrealDbLiveQueryCloseResponse close
-                => new DaliLiveChange<T>(DaliLiveAction.Closed, null, default, close.Reason),
+                => new AeroDBLiveChange<T>(AeroDBLiveAction.Closed, null, default, close.Reason),
 
             _ => throw new NotSupportedException(
                     $"Unknown SurrealDbLiveQueryResponse type: {response.GetType()}")

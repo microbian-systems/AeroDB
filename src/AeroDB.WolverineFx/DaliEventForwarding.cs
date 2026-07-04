@@ -11,13 +11,13 @@ namespace AeroDB.WolverineFx;
 /// The listener is registered once on <see cref="StoreOptions.Listeners"/> and
 /// uses an <see cref="AsyncLocal{T}"/> to receive the scoped
 /// <see cref="Wolverine.IMessageContext"/> for each handler invocation
-/// (set by <see cref="DaliOutboxedSessionFactory"/>).
+/// (set by <see cref="AeroDBOutboxedSessionFactory"/>).
 ///
 /// Reflection access to <c>DocumentSession._appendedEvents</c> is
-/// delegated to <see cref="Internal.DaliSessionEventAccessor"/> to avoid
-/// duplicating that logic with <see cref="FlushOutgoingMessagesOnDaliCommit"/>.
+/// delegated to <see cref="Internal.AeroDBSessionEventAccessor"/> to avoid
+/// duplicating that logic with <see cref="FlushOutgoingMessagesOnAeroDBCommit"/>.
 /// </summary>
-internal sealed class DaliEventForwarding : IDocumentSessionListener
+internal sealed class AeroDBEventForwarding : IDocumentSessionListener
 {
     /// <summary>
     /// Async-local storage for the current Wolverine message context.
@@ -27,7 +27,7 @@ internal sealed class DaliEventForwarding : IDocumentSessionListener
 
     /// <summary>
     /// Sets the current Wolverine message context for event forwarding.
-    /// Called by <see cref="DaliOutboxedSessionFactory"/> when opening a session.
+    /// Called by <see cref="AeroDBOutboxedSessionFactory"/> when opening a session.
     /// </summary>
     internal static void SetCurrentContext(Wolverine.IMessageContext? context)
     {
@@ -43,9 +43,9 @@ internal sealed class DaliEventForwarding : IDocumentSessionListener
         var context = CurrentContext.Value;
         if (context is null) return;
 
-        if (session is not DocumentSession daliSession) return;
+        if (session is not DocumentSession AeroDBSession) return;
 
-        var events = Internal.DaliSessionEventAccessor.GetAppendedEvents(daliSession);
+        var events = Internal.AeroDBSessionEventAccessor.GetAppendedEvents(AeroDBSession);
         if (events.Count == 0) return;
 
         // Publish each event through the message context.

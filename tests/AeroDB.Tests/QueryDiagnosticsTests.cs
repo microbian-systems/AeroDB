@@ -7,7 +7,7 @@ namespace AeroDB.Tests;
 /// <summary>
 /// Tests for <see cref="IDiagnostics.PreviewCommandAsync"/>,
 /// <see cref="IDiagnostics.ExplainPlanAsync"/>, and
-/// <see cref="DaliAdvancedSql.StreamAsync{T}"/>.
+/// <see cref="AeroDBAdvancedSql.StreamAsync{T}"/>.
 ///
 /// Note: ExplainPlanAsync in the embedded InMemory engine may throw
 /// <see cref="InvalidOperationException"/> wrapping a CBOR deserialization failure
@@ -45,7 +45,7 @@ public class QueryDiagnosticsTests
     // ─── StreamAsync ─────────────────────────────────────────────────
 
     /// <summary>
-    /// Store documents and then stream them back via DaliAdvancedSql.StreamAsync.
+    /// Store documents and then stream them back via AeroDBAdvancedSql.StreamAsync.
     /// Verifies all stored records are yielded by the async stream.
     /// </summary>
     [Test]

@@ -27,15 +27,15 @@ public class QueueTestDoc : Record
     public string Value { get; set; } = "";
 }
 
-// ─── DaliAdvanced operations tests ─────────────────────────────────
+// ─── AeroDBAdvanced operations tests ─────────────────────────────────
 
 /// <summary>
-/// Tests for <see cref="IDaliAdvanced"/> operations exposed via <c>store.Advanced</c>.
+/// Tests for <see cref="IAeroDBAdvanced"/> operations exposed via <c>store.Advanced</c>.
 /// Each test creates its own isolated store (unique namespace) so they do not share
 /// database state.
 /// </summary>
 [NotInParallel]
-public class DaliAdvancedOperationsTests
+public class AeroDBAdvancedOperationsTests
 {
     private static async Task SeedAsync<T>(IDocumentStore store, params T[] docs) where T : class
     {

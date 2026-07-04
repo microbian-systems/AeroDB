@@ -10,7 +10,7 @@ namespace AeroDB.WolverineFx.Codegen;
 /// AeroDB-backed <see cref="IAncillaryStoreFrameProvider"/> that teaches the generic
 /// <see cref="StorageAttribute"/> how to route a handler chain to a AeroDB ancillary store.
 /// </summary>
-internal sealed class DaliAncillaryStoreFrameProvider : IAncillaryStoreFrameProvider
+internal sealed class AeroDBAncillaryStoreFrameProvider : IAncillaryStoreFrameProvider
 {
     public bool Matches(Type storeType)
     {
@@ -20,26 +20,26 @@ internal sealed class DaliAncillaryStoreFrameProvider : IAncillaryStoreFrameProv
 
     public Frame BuildOutboxFactoryFrame(Type storeType)
     {
-        return new OpenAncillaryDaliSessionFrame(storeType);
+        return new OpenAncillaryAeroDBSessionFrame(storeType);
     }
 }
 
 /// <summary>
 /// Frame that resolves a AeroDB ancillary store's outbox-enrolled session factory.
 /// </summary>
-internal sealed class OpenAncillaryDaliSessionFrame : Frame
+internal sealed class OpenAncillaryAeroDBSessionFrame : Frame
 {
     private readonly Type _storeType;
     private Variable? _ancillaryStoreFactory;
 
-    public OpenAncillaryDaliSessionFrame(Type storeType) : base(false)
+    public OpenAncillaryAeroDBSessionFrame(Type storeType) : base(false)
     {
         _storeType = storeType;
     }
 
     public override IEnumerable<Variable> FindVariables(IMethodVariables chain)
     {
-        _ancillaryStoreFactory = chain.FindVariable(typeof(DaliOutboxedSessionFactory));
+        _ancillaryStoreFactory = chain.FindVariable(typeof(AeroDBOutboxedSessionFactory));
         yield return _ancillaryStoreFactory;
     }
 

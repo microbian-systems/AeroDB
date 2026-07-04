@@ -14,7 +14,7 @@ namespace AeroDB;
 /// overload, so existing implementations need no changes.
 /// </para>
 /// </summary>
-public interface IConfigureDali
+public interface IConfigureAeroDB
 {
     /// <summary>
     /// Called during <c>DocumentStore.InitializeAsync</c> to apply document-level

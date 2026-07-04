@@ -298,16 +298,16 @@ public class SessionFactoryTests
         await using var store = await TestHarness.CreateStoreAsync();
         await using var session = await store.LightweightSessionAsync();
 
-        session.Store(new Person { Name = "CommittedAlice", Age = 30 });
+        session.Store(new Person { Name = "CommitteAeroDBce", Age = 30 });
         await session.SaveChangesAsync();
 
         // Verify via a fresh query session
         await using var query = await store.QuerySessionAsync();
         var results = await query.Query<Person>()
-            .Where(p => p.Name == "CommittedAlice")
+            .Where(p => p.Name == "CommitteAeroDBce")
             .ToListAsync();
         results.Count.ShouldBeGreaterThanOrEqualTo(1);
-        results[0].Name.ShouldBe("CommittedAlice");
+        results[0].Name.ShouldBe("CommitteAeroDBce");
     }
 
     // ──────────────────────────────────────────────

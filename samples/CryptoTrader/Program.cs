@@ -20,7 +20,7 @@ using AeroDB.WolverineFx;
 //   1. AeroDB document persistence (users, accounts, wallets)
 //   2. Graph relationships (RELATE User → Account)
 //   3. Wolverine saga (TradeSaga lifecycle)
-//   4. IDaliOp side-effect pattern (wallet updates)
+//   4. IAeroDBOp side-effect pattern (wallet updates)
 //   5. Cascading messages through the outbox
 //   6. Optimistic concurrency (Wallet.IVersioned)
 //   7. Multi-schema routing (TradeEvent → "audit" DB)
@@ -81,26 +81,26 @@ var host = Host.CreateDefaultBuilder()
             .IncludeType<MatchOrderHandler>();
 
         // Manually register AeroDB persistence services
-        // (same pattern as DaliWolverineIntegrationTests)
-        opts.Services.AddSingleton<DaliMessageStore>(sp =>
+        // (same pattern as AeroDBWolverineIntegrationTests)
+        opts.Services.AddSingleton<AeroDBMessageStore>(sp =>
         {
             var client = sp.GetRequiredService<ISurrealDbClient>();
-            var logger = sp.GetRequiredService<ILogger<DaliMessageStore>>();
-            return new DaliMessageStore(client, logger);
+            var logger = sp.GetRequiredService<ILogger<AeroDBMessageStore>>();
+            return new AeroDBMessageStore(client, logger);
         });
         opts.Services.AddSingleton<IMessageStore>(sp =>
-            sp.GetRequiredService<DaliMessageStore>());
+            sp.GetRequiredService<AeroDBMessageStore>());
 
         opts.Services.AddSingleton(sp =>
         {
             var docStore = sp.GetRequiredService<IDocumentStore>();
-            var ms = sp.GetRequiredService<DaliMessageStore>();
-            var logger = sp.GetRequiredService<ILogger<DaliOutboxedSessionFactory>>();
-            return new DaliOutboxedSessionFactory(docStore, ms, logger);
+            var ms = sp.GetRequiredService<AeroDBMessageStore>();
+            var logger = sp.GetRequiredService<ILogger<AeroDBOutboxedSessionFactory>>();
+            return new AeroDBOutboxedSessionFactory(docStore, ms, logger);
         });
 
         opts.Services.AddScoped<ScopedDocumentSessionHolder>();
-        opts.Services.AddSingleton<IWolverineExtension>(new DaliIntegration());
+        opts.Services.AddSingleton<IWolverineExtension>(new AeroDBIntegration());
     })
     .Build();
 

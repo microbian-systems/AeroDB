@@ -16,34 +16,34 @@ using Wolverine.Transports;
 using Wolverine.Transports.Sending;
 
 /// <summary>
-/// Unit tests for <see cref="DaliEndpoint"/>.
+/// Unit tests for <see cref="AeroDBEndpoint"/>.
 /// Uses NSubstitute mocks for the Wolverine runtime and creates real
-/// <see cref="DaliMessageStore"/> instances with a mocked <see cref="ISurrealDbClient"/>.
+/// <see cref="AeroDBMessageStore"/> instances with a mocked <see cref="ISurrealDbClient"/>.
 /// </summary>
-public class DaliEndpointTests
+public class AeroDBEndpointTests
 {
-    private static readonly Uri TestUri = new("dali://localhost/test-queue");
+    private static readonly Uri TestUri = new("AeroDB://localhost/test-queue");
 
     // ─── Helpers ──────────────────────────────────────────────────────
 
     /// <summary>
     /// Creates a mock <see cref="IWolverineRuntime"/> with a real
-    /// <see cref="MessageStoreCollection"/> that contains a <see cref="DaliMessageStore"/>
-    /// registered as an ancillary store for <c>typeof(DaliMessageStore)</c>.
-    /// This lets <see cref="DaliEndpoint.ResolveStore"/> find the store via
+    /// <see cref="MessageStoreCollection"/> that contains a <see cref="AeroDBMessageStore"/>
+    /// registered as an ancillary store for <c>typeof(AeroDBMessageStore)</c>.
+    /// This lets <see cref="AeroDBEndpoint.ResolveStore"/> find the store via
     /// <c>FindAncillaryStore</c>.
     /// </summary>
-    private static (IWolverineRuntime Runtime, DaliMessageStore Store) CreateRuntimeWithStore()
+    private static (IWolverineRuntime Runtime, AeroDBMessageStore Store) CreateRuntimeWithStore()
     {
         var client = Substitute.For<ISurrealDbClient>();
-        var logger = NullLogger<DaliMessageStore>.Instance;
-        var store = new DaliMessageStore(client, logger);
+        var logger = NullLogger<AeroDBMessageStore>.Instance;
+        var store = new AeroDBMessageStore(client, logger);
 
         var runtime = Substitute.For<IWolverineRuntime>();
         runtime.Options.Returns(new WolverineOptions());
         runtime.LoggerFactory.Returns(NullLoggerFactory.Instance);
 
-        var ancillaryStore = new AncillaryMessageStore(typeof(DaliMessageStore), store);
+        var ancillaryStore = new AncillaryMessageStore(typeof(AeroDBMessageStore), store);
         var collection = new MessageStoreCollection(
             runtime,
             Array.Empty<IMessageStore>(),
@@ -59,7 +59,7 @@ public class DaliEndpointTests
     [Test]
     public void Constructor_SetsDurableMode_AndQueueBrokerRole()
     {
-        var endpoint = new DaliEndpoint(TestUri);
+        var endpoint = new AeroDBEndpoint(TestUri);
 
         endpoint.Mode.ShouldBe(EndpointMode.Durable);
         endpoint.BrokerRole.ShouldBe("queue");
@@ -68,7 +68,7 @@ public class DaliEndpointTests
     [Test]
     public void Constructor_AcceptsUri()
     {
-        var endpoint = new DaliEndpoint(TestUri);
+        var endpoint = new AeroDBEndpoint(TestUri);
 
         endpoint.Uri.ShouldBe(TestUri);
     }
@@ -78,7 +78,7 @@ public class DaliEndpointTests
     [Test]
     public void SupportsMode_Durable_ReturnsTrue()
     {
-        var endpoint = new DaliEndpoint(TestUri);
+        var endpoint = new AeroDBEndpoint(TestUri);
 
         endpoint.SupportsMode(EndpointMode.Durable).ShouldBeTrue();
     }
@@ -86,7 +86,7 @@ public class DaliEndpointTests
     [Test]
     public void SupportsMode_BufferedInMemory_ReturnsTrue()
     {
-        var endpoint = new DaliEndpoint(TestUri);
+        var endpoint = new AeroDBEndpoint(TestUri);
 
         endpoint.SupportsMode(EndpointMode.BufferedInMemory).ShouldBeTrue();
     }
@@ -94,7 +94,7 @@ public class DaliEndpointTests
     [Test]
     public void SupportsMode_Inline_ReturnsFalse()
     {
-        var endpoint = new DaliEndpoint(TestUri);
+        var endpoint = new AeroDBEndpoint(TestUri);
 
         endpoint.SupportsMode(EndpointMode.Inline).ShouldBeFalse();
     }
@@ -102,7 +102,7 @@ public class DaliEndpointTests
     [Test]
     public void SettingModeToInline_ThrowsInvalidOperationException()
     {
-        var endpoint = new DaliEndpoint(TestUri);
+        var endpoint = new AeroDBEndpoint(TestUri);
 
         Should.Throw<InvalidOperationException>(() =>
             endpoint.Mode = EndpointMode.Inline);
@@ -111,28 +111,28 @@ public class DaliEndpointTests
     // ─── CreateSender ────────────────────────────────────────────────
 
     [Test]
-    public void CreateSender_ReturnsDaliQueueSender()
+    public void CreateSender_ReturnsAeroDBQueueSender()
     {
         var (runtime, _) = CreateRuntimeWithStore();
-        var endpoint = new DaliEndpoint(TestUri);
+        var endpoint = new AeroDBEndpoint(TestUri);
 
         // CreateSender is protected — invoke via reflection
-        var method = typeof(DaliEndpoint).GetMethod("CreateSender",
+        var method = typeof(AeroDBEndpoint).GetMethod("CreateSender",
             BindingFlags.NonPublic | BindingFlags.Instance);
         var sender = (ISender)method!.Invoke(endpoint, [runtime])!;
 
         sender.ShouldNotBeNull();
-        sender.ShouldBeOfType<DaliQueueSender>();
+        sender.ShouldBeOfType<AeroDBQueueSender>();
         sender.Destination.ShouldBe(TestUri);
     }
 
     // ─── BuildListenerAsync ──────────────────────────────────────────
 
     [Test]
-    public async Task BuildListenerAsync_ReturnsStartedDaliQueueListener()
+    public async Task BuildListenerAsync_ReturnsStartedAeroDBQueueListener()
     {
         var (runtime, _) = CreateRuntimeWithStore();
-        var endpoint = new DaliEndpoint(TestUri);
+        var endpoint = new AeroDBEndpoint(TestUri);
         var receiver = Substitute.For<IReceiver>();
 
         // Pipeline is required when the listener is used, but not during
@@ -142,7 +142,7 @@ public class DaliEndpointTests
         var listener = await endpoint.BuildListenerAsync(runtime, receiver);
 
         listener.ShouldNotBeNull();
-        listener.ShouldBeOfType<DaliQueueListener>();
+        listener.ShouldBeOfType<AeroDBQueueListener>();
         listener.Address.ShouldBe(TestUri);
     }
 }

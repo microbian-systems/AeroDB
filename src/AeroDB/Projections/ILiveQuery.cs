@@ -3,7 +3,7 @@ using AeroDB.LiveQuery;
 namespace AeroDB;
 
 /// <summary>
-/// Marten API parity: legacy live query interface. Wraps <see cref="IDaliLiveQuery{T}"/>
+/// Marten API parity: legacy live query interface. Wraps <see cref="IAeroDBLiveQuery{T}"/>
 /// for backward compatibility with Marten's <c>IQuerySession.WatchTableAsync</c>,
 /// <c>WatchQueryAsync</c>, and <c>WatchStreamAsync</c> methods.
 /// Prefer <see cref="ILiveQuerySession"/> for new code.

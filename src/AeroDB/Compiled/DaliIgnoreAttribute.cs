@@ -6,6 +6,6 @@ namespace AeroDB;
 /// mapped to SQL parameters.
 /// </summary>
 [AttributeUsage(AttributeTargets.Property)]
-public class DaliIgnoreAttribute : Attribute
+public class AeroDBIgnoreAttribute : Attribute
 {
 }

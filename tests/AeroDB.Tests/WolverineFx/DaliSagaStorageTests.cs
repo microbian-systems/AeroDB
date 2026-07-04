@@ -50,9 +50,9 @@ public class StringIdSaga : Saga
 // ──────────────────────────────────────────────
 
 [NotInParallel]
-public class DaliSagaStorageTests
+public class AeroDBSagaStorageTests
 {
-    private static async Task<(IDocumentStore Store, DaliSagaStorage<string, TestSaga> Storage)> CreateFixtureAsync()
+    private static async Task<(IDocumentStore Store, AeroDBSagaStorage<string, TestSaga> Storage)> CreateFixtureAsync()
     {
         var client = new SurrealDbMemoryClient();
         await client.Use("test", "test");
@@ -64,11 +64,11 @@ public class DaliSagaStorageTests
 
         await store.InitializeAsync();
 
-        var storage = new DaliSagaStorage<string, TestSaga>(store);
+        var storage = new AeroDBSagaStorage<string, TestSaga>(store);
         return (store, storage);
     }
 
-    private static async Task<(IDocumentStore Store, DaliSagaStorage<TId, TSaga> Storage)> CreateFixtureForAsync<TId, TSaga>()
+    private static async Task<(IDocumentStore Store, AeroDBSagaStorage<TId, TSaga> Storage)> CreateFixtureForAsync<TId, TSaga>()
         where TSaga : Saga
     {
         var client = new SurrealDbMemoryClient();
@@ -81,7 +81,7 @@ public class DaliSagaStorageTests
 
         await store.InitializeAsync();
 
-        var storage = new DaliSagaStorage<TId, TSaga>(store);
+        var storage = new AeroDBSagaStorage<TId, TSaga>(store);
         return (store, storage);
     }
 
@@ -263,7 +263,7 @@ public class DaliSagaStorageTests
         await using var storeRef = store;
         await using var storageRef = storage;
 
-        // SaveChangesAsync is a no-op in DaliSagaStorage (returns Task.CompletedTask)
+        // SaveChangesAsync is a no-op in AeroDBSagaStorage (returns Task.CompletedTask)
         await storage.SaveChangesAsync(CancellationToken.None);
         // Success = no exception
     }
@@ -276,7 +276,7 @@ public class DaliSagaStorageTests
         var (store, storage) = await CreateFixtureAsync();
         await using var storeRef = store;
 
-        // DisposeAsync is a no-op in DaliSagaStorage
+        // DisposeAsync is a no-op in AeroDBSagaStorage
         await storage.DisposeAsync();
         // Success = no exception
     }
@@ -290,7 +290,7 @@ public class DaliSagaStorageTests
         await using var storeRef = store;
         await using var storageRef = rawStorage;
 
-        var storage = (DaliSagaStorage<string, StringIdSaga>)rawStorage;
+        var storage = (AeroDBSagaStorage<string, StringIdSaga>)rawStorage;
         var sagaId = Guid.NewGuid().ToString();
         var saga = new StringIdSaga
         {
@@ -320,7 +320,7 @@ public class DaliSagaStorageTests
         await using var storeRef = store;
         await using var storageRef = rawStorage;
 
-        var storage = (DaliSagaStorage<Guid, GuidIdSaga>)rawStorage;
+        var storage = (AeroDBSagaStorage<Guid, GuidIdSaga>)rawStorage;
         var sagaGuid = Guid.NewGuid();
         var sagaId = sagaGuid.ToString();
         var saga = new GuidIdSaga

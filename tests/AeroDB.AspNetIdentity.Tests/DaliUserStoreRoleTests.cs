@@ -8,17 +8,17 @@ using Shouldly;
 
 namespace AeroDB.AspNetIdentity.Tests;
 
-public class DaliUserStoreRoleTests
+public class AeroDBUserStoreRoleTests
 {
     private static IDocumentStore CreateStore(
         out IQuerySession querySession,
         out IDocumentSession documentSession,
-        out ILogger<DaliUserStore<IdentityUser, IdentityRole>> logger)
+        out ILogger<AeroDBUserStore<IdentityUser, IdentityRole>> logger)
     {
         var store = Substitute.For<IDocumentStore>();
         querySession = Substitute.For<IQuerySession>();
         documentSession = Substitute.For<IDocumentSession>();
-        logger = Substitute.For<ILogger<DaliUserStore<IdentityUser, IdentityRole>>>();
+        logger = Substitute.For<ILogger<AeroDBUserStore<IdentityUser, IdentityRole>>>();
 
         store.QuerySessionAsync(Arg.Any<CancellationToken>()).Returns(querySession);
         store.OpenSessionAsync(Arg.Any<SessionOptions>(), Arg.Any<CancellationToken>()).Returns(documentSession);
@@ -68,7 +68,7 @@ public class DaliUserStoreRoleTests
                 Arg.Any<CancellationToken>())
             .Returns(new List<RoleIdsResult> { roleIdsResult });
 
-        var userStore = new DaliUserStore<IdentityUser, IdentityRole>(store, logger);
+        var userStore = new AeroDBUserStore<IdentityUser, IdentityRole>(store, logger);
 
         await userStore.AddToRoleAsync(user, "ADMIN", CancellationToken.None);
 
@@ -94,7 +94,7 @@ public class DaliUserStoreRoleTests
             .Returns((IdentityRole?)null);
         session.Query<IdentityRole>().Returns(roleQueryable);
 
-        var userStore = new DaliUserStore<IdentityUser, IdentityRole>(store, logger);
+        var userStore = new AeroDBUserStore<IdentityUser, IdentityRole>(store, logger);
 
         await userStore.AddToRoleAsync(user, "ADMIN", CancellationToken.None);
 
@@ -125,7 +125,7 @@ public class DaliUserStoreRoleTests
                 Arg.Any<CancellationToken>())
             .Returns(new List<RoleIdsResult> { roleIdsResult });
 
-        var userStore = new DaliUserStore<IdentityUser, IdentityRole>(store, logger);
+        var userStore = new AeroDBUserStore<IdentityUser, IdentityRole>(store, logger);
 
         await userStore.AddToRoleAsync(user, "ADMIN", CancellationToken.None);
 
@@ -158,7 +158,7 @@ public class DaliUserStoreRoleTests
                 Arg.Any<CancellationToken>())
             .Returns(new List<RoleIdsResult> { roleIdsResult });
 
-        var userStore = new DaliUserStore<IdentityUser, IdentityRole>(store, logger);
+        var userStore = new AeroDBUserStore<IdentityUser, IdentityRole>(store, logger);
 
         await userStore.RemoveFromRoleAsync(user, "ADMIN", CancellationToken.None);
 
@@ -191,7 +191,7 @@ public class DaliUserStoreRoleTests
                 Arg.Any<CancellationToken>())
             .Returns(new List<RoleIdsResult> { roleIdsResult });
 
-        var userStore = new DaliUserStore<IdentityUser, IdentityRole>(store, logger);
+        var userStore = new AeroDBUserStore<IdentityUser, IdentityRole>(store, logger);
 
         await userStore.RemoveFromRoleAsync(user, "ADMIN", CancellationToken.None);
 
@@ -212,7 +212,7 @@ public class DaliUserStoreRoleTests
             .Returns((IdentityRole?)null);
         session.Query<IdentityRole>().Returns(roleQueryable);
 
-        var userStore = new DaliUserStore<IdentityUser, IdentityRole>(store, logger);
+        var userStore = new AeroDBUserStore<IdentityUser, IdentityRole>(store, logger);
 
         await userStore.RemoveFromRoleAsync(user, "ADMIN", CancellationToken.None);
 
@@ -245,7 +245,7 @@ public class DaliUserStoreRoleTests
         var roleQueryable = CreateMockQueryable(roles);
         querySession.Query<IdentityRole>().Returns(roleQueryable);
 
-        var userStore = new DaliUserStore<IdentityUser, IdentityRole>(store, logger);
+        var userStore = new AeroDBUserStore<IdentityUser, IdentityRole>(store, logger);
 
         var result = await userStore.GetRolesAsync(user, CancellationToken.None);
 
@@ -267,7 +267,7 @@ public class DaliUserStoreRoleTests
                 Arg.Any<CancellationToken>())
             .Returns(new List<RoleIdsResult> { roleIdsResult });
 
-        var userStore = new DaliUserStore<IdentityUser, IdentityRole>(store, logger);
+        var userStore = new AeroDBUserStore<IdentityUser, IdentityRole>(store, logger);
 
         var result = await userStore.GetRolesAsync(user, CancellationToken.None);
 
@@ -297,7 +297,7 @@ public class DaliUserStoreRoleTests
                 Arg.Any<CancellationToken>())
             .Returns(new List<RoleIdsResult> { roleIdsResult });
 
-        var userStore = new DaliUserStore<IdentityUser, IdentityRole>(store, logger);
+        var userStore = new AeroDBUserStore<IdentityUser, IdentityRole>(store, logger);
 
         var result = await userStore.IsInRoleAsync(user, "ADMIN", CancellationToken.None);
 
@@ -325,7 +325,7 @@ public class DaliUserStoreRoleTests
                 Arg.Any<CancellationToken>())
             .Returns(new List<RoleIdsResult> { roleIdsResult });
 
-        var userStore = new DaliUserStore<IdentityUser, IdentityRole>(store, logger);
+        var userStore = new AeroDBUserStore<IdentityUser, IdentityRole>(store, logger);
 
         var result = await userStore.IsInRoleAsync(user, "ADMIN", CancellationToken.None);
 
@@ -345,7 +345,7 @@ public class DaliUserStoreRoleTests
             .Returns((IdentityRole?)null);
         querySession.Query<IdentityRole>().Returns(roleQueryable);
 
-        var userStore = new DaliUserStore<IdentityUser, IdentityRole>(store, logger);
+        var userStore = new AeroDBUserStore<IdentityUser, IdentityRole>(store, logger);
 
         var result = await userStore.IsInRoleAsync(user, "ADMIN", CancellationToken.None);
 
@@ -378,7 +378,7 @@ public class DaliUserStoreRoleTests
                 Arg.Any<CancellationToken>())
             .Returns(users);
 
-        var userStore = new DaliUserStore<IdentityUser, IdentityRole>(store, logger);
+        var userStore = new AeroDBUserStore<IdentityUser, IdentityRole>(store, logger);
 
         var result = await userStore.GetUsersInRoleAsync("ADMIN", CancellationToken.None);
 
@@ -406,7 +406,7 @@ public class DaliUserStoreRoleTests
                 Arg.Any<CancellationToken>())
             .Returns(new List<IdentityUser>());
 
-        var userStore = new DaliUserStore<IdentityUser, IdentityRole>(store, logger);
+        var userStore = new AeroDBUserStore<IdentityUser, IdentityRole>(store, logger);
 
         var result = await userStore.GetUsersInRoleAsync("ADMIN", CancellationToken.None);
 
@@ -424,7 +424,7 @@ public class DaliUserStoreRoleTests
             .Returns((IdentityRole?)null);
         querySession.Query<IdentityRole>().Returns(roleQueryable);
 
-        var userStore = new DaliUserStore<IdentityUser, IdentityRole>(store, logger);
+        var userStore = new AeroDBUserStore<IdentityUser, IdentityRole>(store, logger);
 
         var result = await userStore.GetUsersInRoleAsync("ADMIN", CancellationToken.None);
 

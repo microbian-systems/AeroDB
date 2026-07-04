@@ -4,26 +4,26 @@ using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace Dali;
+namespace AeroDB;
 
 /// <summary>
 /// DI registration extensions for AeroDB EF Core integration.
 /// </summary>
-public static class DaliEfCoreServiceCollectionExtensions
+public static class AeroDBEfCoreServiceCollectionExtensions
 {
     /// <summary>
     /// Registers AeroDB alongside EF Core for coordinated transactions.
-    /// Consumers must also call <see cref="UseDaliTransactionManager{TDbContext}"/>
+    /// Consumers must also call <see cref="UseAeroDBTransactionManager{TDbContext}"/>
     /// in their DbContext's <c>OnConfiguring</c> method to wire up the transaction
     /// manager inside EF Core's internal service provider.
     /// </summary>
-    public static IServiceCollection AddDaliWithEfCore<TDbContext>(
+    public static IServiceCollection AddAeroDBWithEfCore<TDbContext>(
         this IServiceCollection services,
-        Action<StoreOptions> configureDali)
+        Action<StoreOptions> configureAeroDB)
         where TDbContext : DbContext
     {
         // Register AeroDB store (singleton)
-        var store = Documents.For(configureDali);
+        var store = Documents.For(configureAeroDB);
         services.AddSingleton(store);
 
         // Register session factory (scoped per request)
@@ -50,14 +50,14 @@ public static class DaliEfCoreServiceCollectionExtensions
     /// Call this inside your DbContext's <c>OnConfiguring</c> method:
     /// <code>
     /// protected override void OnConfiguring(DbContextOptionsBuilder options)
-    ///     => options.UseDaliTransactionManager&lt;MyDbContext&gt;();
+    ///     => options.UseAeroDBTransactionManager&lt;MyDbContext&gt;();
     /// </code>
     /// </summary>
-    public static DbContextOptionsBuilder UseDaliTransactionManager<TDbContext>(
+    public static DbContextOptionsBuilder UseAeroDBTransactionManager<TDbContext>(
         this DbContextOptionsBuilder optionsBuilder)
         where TDbContext : DbContext
     {
-        optionsBuilder.ReplaceService<IDbContextTransactionManager, DaliEfCoreTransactionManager<TDbContext>>();
+        optionsBuilder.ReplaceService<IDbContextTransactionManager, AeroDBEfCoreTransactionManager<TDbContext>>();
         return optionsBuilder;
     }
 

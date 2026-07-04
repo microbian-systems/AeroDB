@@ -2,11 +2,11 @@ using SurrealDb.Net;
 
 namespace AeroDB;
 
-internal class DaliDiagnostics : IDiagnostics
+internal class AeroDBDiagnostics : IDiagnostics
 {
     private readonly ISurrealDbClient _client;
 
-    public DaliDiagnostics(ISurrealDbClient client)
+    public AeroDBDiagnostics(ISurrealDbClient client)
     {
         _client = client;
     }

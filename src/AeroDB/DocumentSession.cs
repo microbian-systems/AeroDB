@@ -144,18 +144,18 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
     /// Begins a database transaction synchronously.
     /// Prefer <see cref="BeginTransactionAsync"/> in ASP.NET contexts to avoid sync-over-async deadlock.
     /// </summary>
-    public IDaliTransaction BeginTransaction()
+    public IAeroDBTransaction BeginTransaction()
     {
         if (_explicitTransaction != null)
             throw new InvalidOperationException("A transaction is already in progress.");
 
         _explicitTransaction = Session.BeginTransaction(DefaultCt).GetAwaiter().GetResult();
         _ownsTransaction = true;
-        return new DaliTransaction(_explicitTransaction, this);
+        return new AeroDBTransaction(_explicitTransaction, this);
     }
 
     /// <summary>
-    /// Begins an explicit SurrealDB transaction asynchronously. Returns an <see cref="IDaliTransaction"/>
+    /// Begins an explicit SurrealDB transaction asynchronously. Returns an <see cref="IAeroDBTransaction"/>
     /// for explicit commit/rollback control. When active, <see cref="SaveChangesAsync"/> runs inside
     /// this transaction without auto-committing, supporting multiple <c>SaveChangesAsync</c> calls
     /// within a single transaction.
@@ -164,14 +164,14 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
     /// on the session directly.
     /// </para>
     /// </summary>
-    public async Task<IDaliTransaction> BeginTransactionAsync(CancellationToken ct = default)
+    public async Task<IAeroDBTransaction> BeginTransactionAsync(CancellationToken ct = default)
     {
         if (_explicitTransaction != null)
             throw new InvalidOperationException("A transaction is already in progress.");
 
         _explicitTransaction = await Session.BeginTransaction(ct).ConfigureAwait(false);
         _ownsTransaction = true;
-        return new DaliTransaction(_explicitTransaction, this);
+        return new AeroDBTransaction(_explicitTransaction, this);
     }
 
     /// <summary>
@@ -227,7 +227,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
     }
 
     /// <summary>
-    /// Called by <see cref="DaliTransaction"/> after commit/rollback to clear the session's
+    /// Called by <see cref="AeroDBTransaction"/> after commit/rollback to clear the session's
     /// transaction state and return to auto-transact mode.
     /// </summary>
     internal void ClearTransaction()

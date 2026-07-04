@@ -65,7 +65,7 @@ public class MlQueryTests
     public async Task MlQuery_Compute_Basic_SQL()
     {
         var (mockSession, provider) = CreateMockProvider();
-        var query = new DaliMlQuery<HouseListing, PricePrediction>(provider);
+        var query = new AeroDBMlQuery<HouseListing, PricePrediction>(provider);
 
         query
             .Model("house-price-prediction", "0.0.1")
@@ -89,7 +89,7 @@ public class MlQueryTests
     public async Task MlQuery_Compute_With_Field_Bindings()
     {
         var (mockSession, provider) = CreateMockProvider();
-        var query = new DaliMlQuery<HouseListing, PricePrediction>(provider);
+        var query = new AeroDBMlQuery<HouseListing, PricePrediction>(provider);
 
         query
             .Model("house-price-prediction", "0.0.1")
@@ -116,7 +116,7 @@ public class MlQueryTests
     public async Task MlQuery_ComputeAll_Basic_SQL()
     {
         var (mockSession, provider) = CreateMockProvider();
-        var query = new DaliMlQuery<HouseListing, HouseWithPrediction>(provider);
+        var query = new AeroDBMlQuery<HouseListing, HouseWithPrediction>(provider);
 
         query
             .Model("house-price-prediction", "0.0.1")
@@ -140,7 +140,7 @@ public class MlQueryTests
     public async Task MlQuery_ComputeAll_With_Where()
     {
         var (mockSession, provider) = CreateMockProvider();
-        var query = new DaliMlQuery<HouseListing, HouseWithPrediction>(provider);
+        var query = new AeroDBMlQuery<HouseListing, HouseWithPrediction>(provider);
 
         query
             .Model("house-price-prediction", "0.0.1")
@@ -162,7 +162,7 @@ public class MlQueryTests
     public async Task MlQuery_ComputeAll_With_Limit_Skip()
     {
         var (mockSession, provider) = CreateMockProvider();
-        var query = new DaliMlQuery<HouseListing, HouseWithPrediction>(provider);
+        var query = new AeroDBMlQuery<HouseListing, HouseWithPrediction>(provider);
 
         query
             .Model("house-price-prediction", "0.0.1")
@@ -189,7 +189,7 @@ public class MlQueryTests
     public async Task MlQuery_Missing_Model_Throws()
     {
         var (_, provider) = CreateMockProvider();
-        var query = new DaliMlQuery<HouseListing, PricePrediction>(provider);
+        var query = new AeroDBMlQuery<HouseListing, PricePrediction>(provider);
 
         query.Input(x => new { squarefoot = x.Squarefoot });
 
@@ -201,7 +201,7 @@ public class MlQueryTests
     public async Task MlQuery_Missing_Input_Throws()
     {
         var (_, provider) = CreateMockProvider();
-        var query = new DaliMlQuery<HouseListing, PricePrediction>(provider);
+        var query = new AeroDBMlQuery<HouseListing, PricePrediction>(provider);
 
         query.Model("test", "1.0");
 
@@ -213,7 +213,7 @@ public class MlQueryTests
     public async Task MlQuery_ComputeAll_Missing_Model_Throws()
     {
         var (_, provider) = CreateMockProvider();
-        var query = new DaliMlQuery<HouseListing, PricePrediction>(provider);
+        var query = new AeroDBMlQuery<HouseListing, PricePrediction>(provider);
 
         query.Input(x => new { squarefoot = x.Squarefoot });
 
@@ -225,7 +225,7 @@ public class MlQueryTests
     public async Task MlQuery_ComputeAll_Missing_Input_Throws()
     {
         var (_, provider) = CreateMockProvider();
-        var query = new DaliMlQuery<HouseListing, PricePrediction>(provider);
+        var query = new AeroDBMlQuery<HouseListing, PricePrediction>(provider);
 
         query.Model("test", "1.0");
 
@@ -241,7 +241,7 @@ public class MlQueryTests
     public async Task MlQuery_InputMapping_Extracts_Fields()
     {
         var (mockSession, provider) = CreateMockProvider();
-        var query = new DaliMlQuery<HouseListing, PricePrediction>(provider);
+        var query = new AeroDBMlQuery<HouseListing, PricePrediction>(provider);
 
         query
             .Model("test", "1.0")
@@ -265,7 +265,7 @@ public class MlQueryTests
         // Value type properties (like int) produce Convert expressions in the lambda.
         // The implementation must unwrap Convert to extract the NewExpression.
         var (mockSession, provider) = CreateMockProvider();
-        var query = new DaliMlQuery<HouseListing, PricePrediction>(provider);
+        var query = new AeroDBMlQuery<HouseListing, PricePrediction>(provider);
 
         query
             .Model("test", "1.0")
@@ -292,7 +292,7 @@ public class MlQueryTests
     public async Task MlQuery_Json_To_SurrealQL_Conversion()
     {
         var json = """{"squarefoot":500.0,"num_floors":1.0}""";
-        var result = DaliMlQuery<HouseListing, PricePrediction>.ConvertJsonToSurrealQL(json);
+        var result = AeroDBMlQuery<HouseListing, PricePrediction>.ConvertJsonToSurrealQL(json);
 
         result.ShouldBe("{ squarefoot: 500.0, num_floors: 1.0 }");
     }
@@ -301,7 +301,7 @@ public class MlQueryTests
     public async Task MlQuery_Nested_Objects_Conversion()
     {
         var json = """{"address":{"street":"123 Main","city":"NYC"},"price":250.0}""";
-        var result = DaliMlQuery<HouseListing, PricePrediction>.ConvertJsonToSurrealQL(json);
+        var result = AeroDBMlQuery<HouseListing, PricePrediction>.ConvertJsonToSurrealQL(json);
 
         result.ShouldBe("{ address: { street: 123 Main, city: NYC }, price: 250.0 }");
     }
@@ -310,7 +310,7 @@ public class MlQueryTests
     public async Task MlQuery_Array_Values_Conversion()
     {
         var json = """{"features":["pool","garage"],"score":95.0}""";
-        var result = DaliMlQuery<HouseListing, PricePrediction>.ConvertJsonToSurrealQL(json);
+        var result = AeroDBMlQuery<HouseListing, PricePrediction>.ConvertJsonToSurrealQL(json);
 
         result.ShouldBe("{ features: [pool, garage], score: 95.0 }");
     }
@@ -386,11 +386,11 @@ public class MlQueryTests
 
         var result = mockQuerySession.Ml<HouseListing, PricePrediction>();
         result.ShouldNotBeNull();
-        result.ShouldBeOfType<DaliMlQuery<HouseListing, PricePrediction>>();
+        result.ShouldBeOfType<AeroDBMlQuery<HouseListing, PricePrediction>>();
     }
 
     [Test]
-    public async Task MlQuery_Extensions_With_NonDali_Session_Throws()
+    public async Task MlQuery_Extensions_With_NonAeroDB_Session_Throws()
     {
         var mockQuerySession = Substitute.For<IQuerySession>();
         var badQueryable = Substitute.For<ISurrealDbQueryable<HouseListing>>();

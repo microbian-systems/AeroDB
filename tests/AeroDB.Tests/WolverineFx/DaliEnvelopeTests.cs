@@ -7,7 +7,7 @@ using TUnit.Core;
 using Wolverine;
 using WolverineFx;
 
-public class DaliEnvelopeTests
+public class AeroDBEnvelopeTests
 {
     [Test]
     public void FromEnvelope_MapsAllFields()
@@ -15,7 +15,7 @@ public class DaliEnvelopeTests
         var env = new Envelope
         {
             Id = Guid.NewGuid(),
-            Destination = new Uri("dali://localhost/queue"),
+            Destination = new Uri("AeroDB://localhost/queue"),
             MessageType = "TestMessage",
             Attempts = 3,
             DeliverBy = DateTimeOffset.UtcNow.AddHours(1),
@@ -25,7 +25,7 @@ public class DaliEnvelopeTests
         };
         env.Data = new byte[] { 1, 2, 3, 4, 5 };
 
-        var record = DaliEnvelope.FromEnvelope(env, 42);
+        var record = AeroDBEnvelope.FromEnvelope(env, 42);
 
         record.Id.ShouldBe(env.Id.ToString());
         record.OwnerId.ShouldBe(42);
@@ -35,7 +35,7 @@ public class DaliEnvelopeTests
         record.TenantId.ShouldBe("tenant1");
         record.CorrelationId.ShouldBe("corr-123");
         record.Source.ShouldBe("test-source");
-        record.Destination.ShouldBe("dali://localhost/queue");
+        record.Destination.ShouldBe("AeroDB://localhost/queue");
         record.DeliverBy.ShouldNotBeNull();
         record.DeliverBy.Value.ShouldBe(env.DeliverBy!.Value, TimeSpan.FromSeconds(1));
     }
@@ -46,11 +46,11 @@ public class DaliEnvelopeTests
         var env = new Envelope { Id = Guid.NewGuid(), MessageType = "StatusTest" };
         env.Data = new byte[] { 1, 2, 3 };
         env.Status = EnvelopeStatus.Incoming;
-        var record = DaliEnvelope.FromEnvelope(env, 0);
+        var record = AeroDBEnvelope.FromEnvelope(env, 0);
         record.Status.ShouldBe("Incoming");
 
         env.Status = EnvelopeStatus.Outgoing;
-        record = DaliEnvelope.FromEnvelope(env, 0);
+        record = AeroDBEnvelope.FromEnvelope(env, 0);
         record.Status.ShouldBe("Outgoing");
     }
 
@@ -65,15 +65,15 @@ public class DaliEnvelopeTests
             TenantId = "t1",
             CorrelationId = "corr-abc",
             Source = "source-1",
-            Destination = new Uri("dali://localhost/rt"),
+            Destination = new Uri("AeroDB://localhost/rt"),
             ContentType = "application/json",
             SagaId = "saga-1",
             ConversationId = Guid.NewGuid(),
-            ReplyUri = new Uri("dali://localhost/reply")
+            ReplyUri = new Uri("AeroDB://localhost/reply")
         };
         env.Data = new byte[] { 10, 20, 30 };
 
-        var record = DaliEnvelope.FromEnvelope(env, 7);
+        var record = AeroDBEnvelope.FromEnvelope(env, 7);
         var restored = record.ToEnvelope();
 
         restored.Id.ShouldBe(env.Id);
@@ -100,23 +100,23 @@ public class DaliEnvelopeTests
         };
         env.Data = new byte[] { 1, 2, 3 };
 
-        var record = DaliEnvelope.FromEnvelope(env, 0);
+        var record = AeroDBEnvelope.FromEnvelope(env, 0);
         record.Body.ShouldNotBeNullOrEmpty();
 
         var restored = record.ToEnvelope();
         restored.Data.ShouldBe(new byte[] { 1, 2, 3 });
 
-        // Verify empty body stored as empty string in DaliEnvelope
+        // Verify empty body stored as empty string in AeroDBEnvelope
         var envEmpty = new Envelope
         {
             Id = Guid.NewGuid(),
             MessageType = "BodyEmpty"
         };
         envEmpty.Data = new byte[] { 42 };
-        var recordEmpty = DaliEnvelope.FromEnvelope(envEmpty, 0);
+        var recordEmpty = AeroDBEnvelope.FromEnvelope(envEmpty, 0);
         recordEmpty.Body.ShouldNotBe(string.Empty);
 
-        // Test DaliEnvelope directly: empty body → ToEnvelope Data is null
+        // Test AeroDBEnvelope directly: empty body → ToEnvelope Data is null
         recordEmpty.Body = string.Empty;
         var restoredEmpty = recordEmpty.ToEnvelope();
         // ToEnvelope skips setting Data when Body is empty, so _data isn't set.
@@ -130,7 +130,7 @@ public class DaliEnvelopeTests
         var env = new Envelope { Id = Guid.NewGuid(), MessageType = "OutMsg" };
         env.Data = new byte[] { 1, 2, 3 };
 
-        var record = DaliEnvelope.FromOutgoingEnvelope(env, 5);
+        var record = AeroDBEnvelope.FromOutgoingEnvelope(env, 5);
 
         record.Status.ShouldBe("Outgoing");
         record.OwnerId.ShouldBe(5);
@@ -148,7 +148,7 @@ public class DaliEnvelopeTests
         };
         env.Data = new byte[] { 1, 2, 3 };
 
-        var record = DaliEnvelope.FromEnvelope(env, 0);
+        var record = AeroDBEnvelope.FromEnvelope(env, 0);
         var restored = record.ToEnvelope();
 
         restored.Id.ShouldBe(env.Id);
@@ -166,8 +166,8 @@ public class DaliEnvelopeTests
         var env = new Envelope { Id = Guid.NewGuid(), MessageType = "Multi" };
         env.Data = new byte[] { 1, 2, 3 };
 
-        var record1 = DaliEnvelope.FromEnvelope(env, 0);
-        var record2 = DaliEnvelope.FromEnvelope(env, 1);
+        var record1 = AeroDBEnvelope.FromEnvelope(env, 0);
+        var record2 = AeroDBEnvelope.FromEnvelope(env, 1);
 
         record1.OwnerId.ShouldBe(0);
         record2.OwnerId.ShouldBe(1);
@@ -184,7 +184,7 @@ public class DaliEnvelopeTests
         var env = new Envelope { Id = Guid.NewGuid(), MessageType = "EmptyBody" };
         env.Data = [];
 
-        var record = DaliEnvelope.FromEnvelope(env, 0);
+        var record = AeroDBEnvelope.FromEnvelope(env, 0);
 
         record.Body.ShouldBe(string.Empty);
     }
@@ -192,7 +192,7 @@ public class DaliEnvelopeTests
     [Test]
     public void ToEnvelope_NullBody_DataIsNotSet()
     {
-        var record = new DaliEnvelope
+        var record = new AeroDBEnvelope
         {
             Id = Guid.NewGuid().ToString(),
             Status = "Incoming",
@@ -213,7 +213,7 @@ public class DaliEnvelopeTests
     public void ToEnvelope_EmptyBody_RoundTrips()
     {
         var originalId = Guid.NewGuid();
-        var record = new DaliEnvelope
+        var record = new AeroDBEnvelope
         {
             Id = originalId.ToString(),
             Status = "Outgoing",
@@ -236,7 +236,7 @@ public class DaliEnvelopeTests
         env.Data = new byte[] { 1, 2, 3 };
 
         // Deliberately leave nullable fields unset
-        var record = DaliEnvelope.FromEnvelope(env, 0);
+        var record = AeroDBEnvelope.FromEnvelope(env, 0);
 
         record.Destination.ShouldBeNull();
         record.CorrelationId.ShouldBeNull();
@@ -266,8 +266,8 @@ public class DaliEnvelopeTests
             CorrelationId = "corr-full-001",
             SagaId = "saga-xyz",
             ContentType = "application/json",
-            Destination = new Uri("dali://dest/queue"),
-            ReplyUri = new Uri("dali://reply/callback"),
+            Destination = new Uri("AeroDB://dest/queue"),
+            ReplyUri = new Uri("AeroDB://reply/callback"),
             ConversationId = Guid.NewGuid(),
             DeliverBy = DateTimeOffset.UtcNow.AddDays(1),
             KeepUntil = DateTimeOffset.UtcNow.AddDays(7),
@@ -275,7 +275,7 @@ public class DaliEnvelopeTests
         };
         env.Data = new byte[] { 0xAA, 0xBB, 0xCC, 0xDD, 0xEE };
 
-        var record = DaliEnvelope.FromEnvelope(env, 99);
+        var record = AeroDBEnvelope.FromEnvelope(env, 99);
         var restored = record.ToEnvelope();
 
         restored.Id.ShouldBe(env.Id);
@@ -307,7 +307,7 @@ public class DaliEnvelopeTests
         var longSagaId = new string('S', 500);
         var longBody = Convert.ToBase64String(new byte[10000]);  // Base64 of 10KB
 
-        var record = new DaliEnvelope
+        var record = new AeroDBEnvelope
         {
             Id = Guid.NewGuid().ToString(),
             Status = "Incoming",
@@ -316,15 +316,15 @@ public class DaliEnvelopeTests
             Attempts = int.MaxValue,
             Body = longBody,
             MessageType = longMessageType,
-            Destination = "dali://very-long-uri-that-should-still-work/" + new string('p', 200),
+            Destination = "AeroDB://very-long-uri-that-should-still-work/" + new string('p', 200),
             CorrelationId = longCorrelationId,
             Source = "source-" + new string('s', 200),
             TenantId = "tenant-" + new string('t', 200),
             ContentType = "application/x.custom+" + new string('z', 100),
-            ReplyUri = "dali://reply/" + new string('r', 200),
+            ReplyUri = "AeroDB://reply/" + new string('r', 200),
             SagaId = longSagaId,
             ConversationId = Guid.NewGuid().ToString(),
-            ReceivedAt = "dali://received/" + new string('a', 200),
+            ReceivedAt = "AeroDB://received/" + new string('a', 200),
             DeliverBy = DateTimeOffset.MaxValue,
             KeepUntil = DateTimeOffset.MaxValue,
             SentAt = DateTimeOffset.MaxValue,
@@ -352,7 +352,7 @@ public class DaliEnvelopeTests
     public void ToEnvelope_DefaultExecutionTime_DoesNotSetScheduledTime()
     {
         // When ExecutionTime is default(DateTimeOffset), ToEnvelope should not set ScheduledTime
-        var record = new DaliEnvelope
+        var record = new AeroDBEnvelope
         {
             Id = Guid.NewGuid().ToString(),
             Status = "Incoming",
@@ -377,7 +377,7 @@ public class DaliEnvelopeTests
         };
         env.Data = new byte[] { 1 };
 
-        var record = DaliEnvelope.FromEnvelope(env, 0);
+        var record = AeroDBEnvelope.FromEnvelope(env, 0);
 
         record.ConversationId.ShouldBeNull();
     }
@@ -388,7 +388,7 @@ public class DaliEnvelopeTests
         var env = new Envelope { Id = Guid.NewGuid(), MessageType = "OutEmptyBody" };
         env.Data = [];
 
-        var record = DaliEnvelope.FromOutgoingEnvelope(env, 0);
+        var record = AeroDBEnvelope.FromOutgoingEnvelope(env, 0);
 
         record.Body.ShouldBe(string.Empty);
         record.Status.ShouldBe("Outgoing");

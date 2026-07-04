@@ -16,7 +16,7 @@ public static class TimeSeriesExtensions
     {
         var queryable = session.Query<T>();
         if (queryable.Provider is SurrealQueryProvider provider)
-            return new DaliTimeSeriesQuery<T>(provider);
+            return new AeroDBTimeSeriesQuery<T>(provider);
 
         throw new NotSupportedException(
             $"Time-series queries are only supported on AeroDB query sessions. The current provider is {queryable.Provider.GetType().Name}.");

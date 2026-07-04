@@ -26,8 +26,8 @@ public class EnumTestDoc : Record
 public class LiveQueryTests
 {
     private static readonly BoundedChannelFullMode Wait = BoundedChannelFullMode.Wait;
-    private static readonly ILogger<SurrealDaliLiveQuery<Person>> NullPersonLogger
-        = NullLogger<SurrealDaliLiveQuery<Person>>.Instance;
+    private static readonly ILogger<SurrealAeroDBLiveQuery<Person>> NullPersonLogger
+        = NullLogger<SurrealAeroDBLiveQuery<Person>>.Instance;
 
     private static LiveQuerySession CreateSession(out ISurrealDbSession sessionMock)
     {
@@ -81,17 +81,17 @@ public class LiveQueryTests
     {
         var alice = new Person { Name = "Alice", Age = 30 };
         var source = SingleResponse(CreateCreate(alice));
-        var adapter = new SurrealDaliLiveQuery<Person>(source, null, null, null, null, 4096, Wait, NullPersonLogger);
+        var adapter = new SurrealAeroDBLiveQuery<Person>(source, null, null, null, null, 4096, Wait, NullPersonLogger);
         await adapter.StartAsync();
 
-        var changes = new List<DaliLiveChange<Person>>();
-        await foreach (var c in adapter.Changes()) { changes.Add(c); if (c.Action == DaliLiveAction.Closed) break; }
+        var changes = new List<AeroDBLiveChange<Person>>();
+        await foreach (var c in adapter.Changes()) { changes.Add(c); if (c.Action == AeroDBLiveAction.Closed) break; }
 
         changes.Count.ShouldBe(3);
-        changes[0].Action.ShouldBe(DaliLiveAction.Open);
-        changes[1].Action.ShouldBe(DaliLiveAction.Created);
+        changes[0].Action.ShouldBe(AeroDBLiveAction.Open);
+        changes[1].Action.ShouldBe(AeroDBLiveAction.Created);
         changes[1].Document!.Name.ShouldBe("Alice");
-        changes[2].Action.ShouldBe(DaliLiveAction.Closed);
+        changes[2].Action.ShouldBe(AeroDBLiveAction.Closed);
     }
 
     [Test]
@@ -99,14 +99,14 @@ public class LiveQueryTests
     {
         var bob = new Person { Name = "Bob", Age = 25 };
         var source = SingleResponse(CreateUpdate(bob));
-        var adapter = new SurrealDaliLiveQuery<Person>(source, null, null, null, null, 4096, Wait, NullPersonLogger);
+        var adapter = new SurrealAeroDBLiveQuery<Person>(source, null, null, null, null, 4096, Wait, NullPersonLogger);
         await adapter.StartAsync();
 
-        var actions = new List<DaliLiveAction>();
-        await foreach (var c in adapter.Changes()) { actions.Add(c.Action); if (c.Action == DaliLiveAction.Closed) break; }
+        var actions = new List<AeroDBLiveAction>();
+        await foreach (var c in adapter.Changes()) { actions.Add(c.Action); if (c.Action == AeroDBLiveAction.Closed) break; }
 
-        actions.ShouldContain(DaliLiveAction.Updated);
-        actions.ShouldNotContain(DaliLiveAction.Created);
+        actions.ShouldContain(AeroDBLiveAction.Updated);
+        actions.ShouldNotContain(AeroDBLiveAction.Created);
     }
 
     [Test]
@@ -114,13 +114,13 @@ public class LiveQueryTests
     {
         var charlie = new Person { Name = "Charlie", Age = 40 };
         var source = SingleResponse(CreateDelete(charlie));
-        var adapter = new SurrealDaliLiveQuery<Person>(source, null, null, null, null, 4096, Wait, NullPersonLogger);
+        var adapter = new SurrealAeroDBLiveQuery<Person>(source, null, null, null, null, 4096, Wait, NullPersonLogger);
         await adapter.StartAsync();
 
-        var actions = new List<DaliLiveAction>();
-        await foreach (var c in adapter.Changes()) { actions.Add(c.Action); if (c.Action == DaliLiveAction.Closed) break; }
+        var actions = new List<AeroDBLiveAction>();
+        await foreach (var c in adapter.Changes()) { actions.Add(c.Action); if (c.Action == AeroDBLiveAction.Closed) break; }
 
-        actions.ShouldContain(DaliLiveAction.Deleted);
+        actions.ShouldContain(AeroDBLiveAction.Deleted);
     }
 
     [Test]
@@ -131,29 +131,29 @@ public class LiveQueryTests
         var frank = new Person { Name = "Frank", Age = 35 };
         var source = MultipleResponses(new SurrealDbLiveQueryResponse[] {
             CreateCreate(dave), CreateUpdate(eve), CreateDelete(frank) });
-        var adapter = new SurrealDaliLiveQuery<Person>(source, null, null, null, null, 4096, Wait, NullPersonLogger);
+        var adapter = new SurrealAeroDBLiveQuery<Person>(source, null, null, null, null, 4096, Wait, NullPersonLogger);
         await adapter.StartAsync();
 
-        var actions = new List<DaliLiveAction>();
-        await foreach (var c in adapter.Changes()) { actions.Add(c.Action); if (c.Action == DaliLiveAction.Closed) break; }
+        var actions = new List<AeroDBLiveAction>();
+        await foreach (var c in adapter.Changes()) { actions.Add(c.Action); if (c.Action == AeroDBLiveAction.Closed) break; }
 
         actions.Count.ShouldBe(5);
-        actions[0].ShouldBe(DaliLiveAction.Open);
-        actions[1].ShouldBe(DaliLiveAction.Created);
-        actions[2].ShouldBe(DaliLiveAction.Updated);
-        actions[3].ShouldBe(DaliLiveAction.Deleted);
-        actions[4].ShouldBe(DaliLiveAction.Closed);
+        actions[0].ShouldBe(AeroDBLiveAction.Open);
+        actions[1].ShouldBe(AeroDBLiveAction.Created);
+        actions[2].ShouldBe(AeroDBLiveAction.Updated);
+        actions[3].ShouldBe(AeroDBLiveAction.Deleted);
+        actions[4].ShouldBe(AeroDBLiveAction.Closed);
     }
 
     [Test]
     public async Task Changes_closure_reason_is_populated()
     {
         var source = SingleResponse(CreateCreate(new Person { Name = "X", Age = 1 }));
-        var adapter = new SurrealDaliLiveQuery<Person>(source, null, null, null, null, 4096, Wait, NullPersonLogger);
+        var adapter = new SurrealAeroDBLiveQuery<Person>(source, null, null, null, null, 4096, Wait, NullPersonLogger);
         await adapter.StartAsync();
 
-        DaliLiveChange<Person>? closed = null;
-        await foreach (var c in adapter.Changes()) { if (c.Action == DaliLiveAction.Closed) { closed = c; break; } }
+        AeroDBLiveChange<Person>? closed = null;
+        await foreach (var c in adapter.Changes()) { if (c.Action == AeroDBLiveAction.Closed) { closed = c; break; } }
 
         closed.ShouldNotBeNull();
         closed!.ClosureReason.ShouldBe(SurrealDbLiveQueryClosureReason.QueryKilled);
@@ -168,7 +168,7 @@ public class LiveQueryTests
         var source = SingleResponse(CreateCreate(alice));
         bool opened = false;
         var tcs = new TaskCompletionSource();
-        var adapter = new SurrealDaliLiveQuery<Person>(source, null, null, null, new Action[] { () => { opened = true; tcs.TrySetResult(); } }, 4096, Wait, NullPersonLogger);
+        var adapter = new SurrealAeroDBLiveQuery<Person>(source, null, null, null, new Action[] { () => { opened = true; tcs.TrySetResult(); } }, 4096, Wait, NullPersonLogger);
         await adapter.StartAsync();
 
         await Task.WhenAny(tcs.Task, Task.Delay(5000));
@@ -182,7 +182,7 @@ public class LiveQueryTests
         var alice = new Person { Name = "Alice", Age = 30 };
         var source = SingleResponse(CreateCreate(alice));
         Person? received = null; var tcs = new TaskCompletionSource();
-        var adapter = new SurrealDaliLiveQuery<Person>(source, new Action<Person>[] { p => { received = p; tcs.TrySetResult(); } }, null, null, null, 4096, Wait, NullPersonLogger);
+        var adapter = new SurrealAeroDBLiveQuery<Person>(source, new Action<Person>[] { p => { received = p; tcs.TrySetResult(); } }, null, null, null, 4096, Wait, NullPersonLogger);
         await adapter.StartAsync();
         await Task.WhenAny(tcs.Task, Task.Delay(5000));
         received.ShouldNotBeNull(); received!.Name.ShouldBe("Alice");
@@ -195,7 +195,7 @@ public class LiveQueryTests
         var bob = new Person { Name = "Bob", Age = 25 };
         var source = SingleResponse(CreateUpdate(bob));
         Person? received = null; var tcs = new TaskCompletionSource();
-        var adapter = new SurrealDaliLiveQuery<Person>(source, null, new Action<Person>[] { p => { received = p; tcs.TrySetResult(); } }, null, null, 4096, Wait, NullPersonLogger);
+        var adapter = new SurrealAeroDBLiveQuery<Person>(source, null, new Action<Person>[] { p => { received = p; tcs.TrySetResult(); } }, null, null, 4096, Wait, NullPersonLogger);
         await adapter.StartAsync();
         await Task.WhenAny(tcs.Task, Task.Delay(5000));
         received.ShouldNotBeNull(); received!.Name.ShouldBe("Bob");
@@ -208,7 +208,7 @@ public class LiveQueryTests
         var charlie = new Person { Name = "Charlie", Age = 40 };
         var source = SingleResponse(CreateDelete(charlie));
         Person? received = null; var tcs = new TaskCompletionSource();
-        var adapter = new SurrealDaliLiveQuery<Person>(source, null, null, new Action<Person>[] { p => { received = p; tcs.TrySetResult(); } }, null, 4096, Wait, NullPersonLogger);
+        var adapter = new SurrealAeroDBLiveQuery<Person>(source, null, null, new Action<Person>[] { p => { received = p; tcs.TrySetResult(); } }, null, 4096, Wait, NullPersonLogger);
         await adapter.StartAsync();
         await Task.WhenAny(tcs.Task, Task.Delay(5000));
         received.ShouldNotBeNull(); received!.Name.ShouldBe("Charlie");
@@ -221,7 +221,7 @@ public class LiveQueryTests
         var person = new Person { Name = "X", Age = 1 };
         var source = MultipleResponses(new SurrealDbLiveQueryResponse[] { CreateUpdate(person), CreateDelete(person) });
         int createdFired = 0, eventCount = 0; var allDone = new TaskCompletionSource();
-        var adapter = new SurrealDaliLiveQuery<Person>(source,
+        var adapter = new SurrealAeroDBLiveQuery<Person>(source,
             new Action<Person>[] { _ => Interlocked.Increment(ref createdFired) },
             new Action<Person>[] { _ => { if (Interlocked.Increment(ref eventCount) == 2) allDone.TrySetResult(); } },
             new Action<Person>[] { _ => { if (Interlocked.Increment(ref eventCount) == 2) allDone.TrySetResult(); } },
@@ -239,7 +239,7 @@ public class LiveQueryTests
         var p2 = new Person { Name = "Good2", Age = 2 };
         var source = MultipleResponses(new SurrealDbLiveQueryResponse[] { CreateCreate(p1), CreateCreate(p2) });
         Person? received = null; var tcs = new TaskCompletionSource();
-        var adapter = new SurrealDaliLiveQuery<Person>(source,
+        var adapter = new SurrealAeroDBLiveQuery<Person>(source,
             new Action<Person>[] { p => throw new InvalidOperationException("Intentional failure"), p => { received = p; tcs.TrySetResult(); } },
             null, null, null, 4096, Wait, NullPersonLogger);
         await adapter.StartAsync();
@@ -252,7 +252,7 @@ public class LiveQueryTests
     public async Task Changes_throws_when_callbacks_are_active()
     {
         var source = SingleResponse(CreateCreate(new Person { Name = "X", Age = 1 }));
-        var adapter = new SurrealDaliLiveQuery<Person>(source, new Action<Person>[] { _ => { } }, null, null, null, 4096, Wait, NullPersonLogger);
+        var adapter = new SurrealAeroDBLiveQuery<Person>(source, new Action<Person>[] { _ => { } }, null, null, null, 4096, Wait, NullPersonLogger);
         await adapter.StartAsync();
         Should.Throw<InvalidOperationException>(() => adapter.Changes());
         await adapter.DisposeAsync();
@@ -262,7 +262,7 @@ public class LiveQueryTests
     public async Task StopAsync_stops_the_stream_and_is_idempotent()
     {
         var source = SingleResponse(CreateCreate(new Person { Name = "X", Age = 1 }));
-        var adapter = new SurrealDaliLiveQuery<Person>(source, null, null, null, null, 4096, Wait, NullPersonLogger);
+        var adapter = new SurrealAeroDBLiveQuery<Person>(source, null, null, null, null, 4096, Wait, NullPersonLogger);
         await adapter.StartAsync();
         await adapter.StopAsync();
         await adapter.StopAsync(); // idempotent
@@ -383,25 +383,25 @@ public class LiveQueryTests
     // ─────────────────────────────────────────────────────────────
 
     [Test]
-    public async Task Live_returns_IDaliLiveQuery()
+    public async Task Live_returns_IAeroDBLiveQuery()
     {
         var qs = CreateSession(out var session);
         session.LiveTable<Person>(Arg.Any<string>(), Arg.Any<bool>(), Arg.Any<CancellationToken>())
             .Returns(Task.FromResult<SurrealDbLiveQuery<Person>>(default!));
         var result = await qs.Live<Person>().SubscribeAsync();
         result.ShouldNotBeNull();
-        result.ShouldBeAssignableTo<IDaliLiveQuery<Person>>();
+        result.ShouldBeAssignableTo<IAeroDBLiveQuery<Person>>();
     }
 
     [Test]
-    public async Task LiveRawQuery_returns_IDaliLiveQuery()
+    public async Task LiveRawQuery_returns_IAeroDBLiveQuery()
     {
         var qs = CreateSession(out var session);
         session.LiveRawQuery<Person>(Arg.Any<string>(), Arg.Any<IReadOnlyDictionary<string, object?>?>(), Arg.Any<CancellationToken>())
             .Returns(Task.FromResult<SurrealDbLiveQuery<Person>>(default!));
         var result = await qs.LiveRawQuery<Person>("LIVE SELECT * FROM person");
         result.ShouldNotBeNull();
-        result.ShouldBeAssignableTo<IDaliLiveQuery<Person>>();
+        result.ShouldBeAssignableTo<IAeroDBLiveQuery<Person>>();
     }
 
     [Test]
@@ -413,15 +413,15 @@ public class LiveQueryTests
     }
 
     [Test]
-    public void IDaliLiveQuery_extends_IAsyncDisposable()
+    public void IAeroDBLiveQuery_extends_IAsyncDisposable()
     {
-        IDaliLiveQuery<Person> query = null!;
+        IAeroDBLiveQuery<Person> query = null!;
         IAsyncDisposable disposable = query;
         _ = disposable;
     }
 
     [Test]
-    public async Task IDaliLiveQuery_has_Reader_property()
+    public async Task IAeroDBLiveQuery_has_Reader_property()
     {
         var qs = CreateSession(out var session);
         session.LiveTable<Person>(Arg.Any<string>(), Arg.Any<bool>(), Arg.Any<CancellationToken>())

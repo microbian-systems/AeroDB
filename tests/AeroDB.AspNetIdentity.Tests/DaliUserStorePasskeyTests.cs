@@ -9,17 +9,17 @@ using Shouldly;
 
 namespace AeroDB.AspNetIdentity.Tests;
 
-public class DaliUserStorePasskeyTests
+public class AeroDBUserStorePasskeyTests
 {
     private static IDocumentStore CreateStore(
         out IQuerySession querySession,
         out IDocumentSession documentSession,
-        out ILogger<DaliUserStore<IdentityUser, IdentityRole>> logger)
+        out ILogger<AeroDBUserStore<IdentityUser, IdentityRole>> logger)
     {
         var store = Substitute.For<IDocumentStore>();
         querySession = Substitute.For<IQuerySession>();
         documentSession = Substitute.For<IDocumentSession>();
-        logger = Substitute.For<ILogger<DaliUserStore<IdentityUser, IdentityRole>>>();
+        logger = Substitute.For<ILogger<AeroDBUserStore<IdentityUser, IdentityRole>>>();
 
         store.QuerySessionAsync(Arg.Any<CancellationToken>()).Returns(querySession);
         store.OpenSessionAsync(Arg.Any<SessionOptions>(), Arg.Any<CancellationToken>()).Returns(documentSession);
@@ -62,9 +62,9 @@ public class DaliUserStorePasskeyTests
         };
     }
 
-    private static DaliUserPasskey CreatePasskeyRecord(string userId, byte[]? credentialId = null)
+    private static AeroDBUserPasskey CreatePasskeyRecord(string userId, byte[]? credentialId = null)
     {
-        return new DaliUserPasskey
+        return new AeroDBUserPasskey
         {
             Id = "pk-1",
             UserId = userId,
@@ -100,7 +100,7 @@ public class DaliUserStorePasskeyTests
         var store = CreateStore(out var querySession, out _, out var logger);
         var user = new IdentityUser("testuser") { Id = "user-1" };
 
-        var records = new List<DaliUserPasskey>
+        var records = new List<AeroDBUserPasskey>
         {
             CreatePasskeyRecord("user-1", [1, 2, 3]),
             CreatePasskeyRecord("user-1", [4, 5, 6])
@@ -109,9 +109,9 @@ public class DaliUserStorePasskeyTests
         records[1].CredentialId = [4, 5, 6];
 
         var passkeyQueryable = CreateMockQueryable(records);
-        querySession.Query<DaliUserPasskey>().Returns(passkeyQueryable);
+        querySession.Query<AeroDBUserPasskey>().Returns(passkeyQueryable);
 
-        var userStore = new DaliUserStore<IdentityUser, IdentityRole>(store, logger);
+        var userStore = new AeroDBUserStore<IdentityUser, IdentityRole>(store, logger);
 
         var result = await userStore.GetPasskeysAsync(user, CancellationToken.None);
 
@@ -128,10 +128,10 @@ public class DaliUserStorePasskeyTests
         var store = CreateStore(out var querySession, out _, out var logger);
         var user = new IdentityUser("testuser") { Id = "user-1" };
 
-        var passkeyQueryable = CreateMockQueryable(new List<DaliUserPasskey>());
-        querySession.Query<DaliUserPasskey>().Returns(passkeyQueryable);
+        var passkeyQueryable = CreateMockQueryable(new List<AeroDBUserPasskey>());
+        querySession.Query<AeroDBUserPasskey>().Returns(passkeyQueryable);
 
-        var userStore = new DaliUserStore<IdentityUser, IdentityRole>(store, logger);
+        var userStore = new AeroDBUserStore<IdentityUser, IdentityRole>(store, logger);
 
         var result = await userStore.GetPasskeysAsync(user, CancellationToken.None);
 
@@ -147,18 +147,18 @@ public class DaliUserStorePasskeyTests
         var user = new IdentityUser("testuser") { Id = "user-1" };
         var passkey = CreatePasskey();
 
-        // FindPasskeyRecordAsync uses RawQueryAsync<DaliUserPasskey> — returns empty
-        session.RawQueryAsync<DaliUserPasskey>(
+        // FindPasskeyRecordAsync uses RawQueryAsync<AeroDBUserPasskey> — returns empty
+        session.RawQueryAsync<AeroDBUserPasskey>(
                 Arg.Any<string>(),
                 Arg.Any<IReadOnlyDictionary<string, object?>>(),
                 Arg.Any<CancellationToken>())
-            .Returns(new List<DaliUserPasskey>());
+            .Returns(new List<AeroDBUserPasskey>());
 
-        var userStore = new DaliUserStore<IdentityUser, IdentityRole>(store, logger);
+        var userStore = new AeroDBUserStore<IdentityUser, IdentityRole>(store, logger);
 
         await userStore.AddOrUpdatePasskeyAsync(user, passkey, CancellationToken.None);
 
-        session.Received(1).Store(Arg.Is<DaliUserPasskey>(r =>
+        session.Received(1).Store(Arg.Is<AeroDBUserPasskey>(r =>
             r.UserId == "user-1" &&
             BytesEqual(r.CredentialId, passkey.CredentialId) &&
             r.Name == "test-passkey"));
@@ -174,18 +174,18 @@ public class DaliUserStorePasskeyTests
 
         var existingRecord = CreatePasskeyRecord("user-1", [1, 2, 3]);
 
-        session.RawQueryAsync<DaliUserPasskey>(
+        session.RawQueryAsync<AeroDBUserPasskey>(
                 Arg.Any<string>(),
                 Arg.Any<IReadOnlyDictionary<string, object?>>(),
                 Arg.Any<CancellationToken>())
-            .Returns(new List<DaliUserPasskey> { existingRecord });
+            .Returns(new List<AeroDBUserPasskey> { existingRecord });
 
-        var userStore = new DaliUserStore<IdentityUser, IdentityRole>(store, logger);
+        var userStore = new AeroDBUserStore<IdentityUser, IdentityRole>(store, logger);
 
         await userStore.AddOrUpdatePasskeyAsync(user, passkey, CancellationToken.None);
 
         // Existing record should be updated in place and stored
-        session.Received(1).Store(Arg.Is<DaliUserPasskey>(r => r.Id == "pk-1"));
+        session.Received(1).Store(Arg.Is<AeroDBUserPasskey>(r => r.Id == "pk-1"));
         await session.Received(1).SaveChangesAsync(Arg.Any<CancellationToken>());
     }
 
@@ -200,13 +200,13 @@ public class DaliUserStorePasskeyTests
 
         var passkeyRecord = CreatePasskeyRecord("user-1", credentialId);
 
-        querySession.RawQueryAsync<DaliUserPasskey>(
+        querySession.RawQueryAsync<AeroDBUserPasskey>(
                 Arg.Any<string>(),
                 Arg.Any<IReadOnlyDictionary<string, object?>>(),
                 Arg.Any<CancellationToken>())
-            .Returns(new List<DaliUserPasskey> { passkeyRecord });
+            .Returns(new List<AeroDBUserPasskey> { passkeyRecord });
 
-        var userStore = new DaliUserStore<IdentityUser, IdentityRole>(store, logger);
+        var userStore = new AeroDBUserStore<IdentityUser, IdentityRole>(store, logger);
 
         var result = await userStore.FindPasskeyAsync(user, credentialId, CancellationToken.None);
 
@@ -222,13 +222,13 @@ public class DaliUserStorePasskeyTests
         var user = new IdentityUser("testuser") { Id = "user-1" };
         var credentialId = new byte[] { 99, 99, 99 };
 
-        querySession.RawQueryAsync<DaliUserPasskey>(
+        querySession.RawQueryAsync<AeroDBUserPasskey>(
                 Arg.Any<string>(),
                 Arg.Any<IReadOnlyDictionary<string, object?>>(),
                 Arg.Any<CancellationToken>())
-            .Returns(new List<DaliUserPasskey>());
+            .Returns(new List<AeroDBUserPasskey>());
 
-        var userStore = new DaliUserStore<IdentityUser, IdentityRole>(store, logger);
+        var userStore = new AeroDBUserStore<IdentityUser, IdentityRole>(store, logger);
 
         var result = await userStore.FindPasskeyAsync(user, credentialId, CancellationToken.None);
 
@@ -243,23 +243,23 @@ public class DaliUserStorePasskeyTests
         var store = CreateStore(out var querySession, out _, out var logger);
         var credentialId = new byte[] { 1, 2, 3 };
 
-        var passkeyRecord = new DaliUserPasskey
+        var passkeyRecord = new AeroDBUserPasskey
         {
             Id = "pk-1",
             UserId = "user-1",
             CredentialId = credentialId
         };
 
-        querySession.RawQueryAsync<DaliUserPasskey>(
+        querySession.RawQueryAsync<AeroDBUserPasskey>(
                 Arg.Any<string>(),
                 Arg.Any<IReadOnlyDictionary<string, object?>>(),
                 Arg.Any<CancellationToken>())
-            .Returns(new List<DaliUserPasskey> { passkeyRecord });
+            .Returns(new List<AeroDBUserPasskey> { passkeyRecord });
 
         var user = new IdentityUser("testuser") { Id = "user-1" };
         querySession.LoadAsync<IdentityUser>("user-1", Arg.Any<CancellationToken>()).Returns(user);
 
-        var userStore = new DaliUserStore<IdentityUser, IdentityRole>(store, logger);
+        var userStore = new AeroDBUserStore<IdentityUser, IdentityRole>(store, logger);
 
         var result = await userStore.FindByPasskeyIdAsync(credentialId, CancellationToken.None);
 
@@ -273,13 +273,13 @@ public class DaliUserStorePasskeyTests
         var store = CreateStore(out var querySession, out _, out var logger);
         var credentialId = new byte[] { 99, 99, 99 };
 
-        querySession.RawQueryAsync<DaliUserPasskey>(
+        querySession.RawQueryAsync<AeroDBUserPasskey>(
                 Arg.Any<string>(),
                 Arg.Any<IReadOnlyDictionary<string, object?>>(),
                 Arg.Any<CancellationToken>())
-            .Returns(new List<DaliUserPasskey>());
+            .Returns(new List<AeroDBUserPasskey>());
 
-        var userStore = new DaliUserStore<IdentityUser, IdentityRole>(store, logger);
+        var userStore = new AeroDBUserStore<IdentityUser, IdentityRole>(store, logger);
 
         var result = await userStore.FindByPasskeyIdAsync(credentialId, CancellationToken.None);
 
@@ -297,13 +297,13 @@ public class DaliUserStorePasskeyTests
 
         var passkeyRecord = CreatePasskeyRecord("user-1", credentialId);
 
-        session.RawQueryAsync<DaliUserPasskey>(
+        session.RawQueryAsync<AeroDBUserPasskey>(
                 Arg.Any<string>(),
                 Arg.Any<IReadOnlyDictionary<string, object?>>(),
                 Arg.Any<CancellationToken>())
-            .Returns(new List<DaliUserPasskey> { passkeyRecord });
+            .Returns(new List<AeroDBUserPasskey> { passkeyRecord });
 
-        var userStore = new DaliUserStore<IdentityUser, IdentityRole>(store, logger);
+        var userStore = new AeroDBUserStore<IdentityUser, IdentityRole>(store, logger);
 
         await userStore.RemovePasskeyAsync(user, credentialId, CancellationToken.None);
 
@@ -318,17 +318,17 @@ public class DaliUserStorePasskeyTests
         var user = new IdentityUser("testuser") { Id = "user-1" };
         var credentialId = new byte[] { 99, 99, 99 };
 
-        session.RawQueryAsync<DaliUserPasskey>(
+        session.RawQueryAsync<AeroDBUserPasskey>(
                 Arg.Any<string>(),
                 Arg.Any<IReadOnlyDictionary<string, object?>>(),
                 Arg.Any<CancellationToken>())
-            .Returns(new List<DaliUserPasskey>());
+            .Returns(new List<AeroDBUserPasskey>());
 
-        var userStore = new DaliUserStore<IdentityUser, IdentityRole>(store, logger);
+        var userStore = new AeroDBUserStore<IdentityUser, IdentityRole>(store, logger);
 
         await userStore.RemovePasskeyAsync(user, credentialId, CancellationToken.None);
 
-        session.DidNotReceive().Delete(Arg.Any<DaliUserPasskey>());
+        session.DidNotReceive().Delete(Arg.Any<AeroDBUserPasskey>());
         await session.DidNotReceive().SaveChangesAsync(Arg.Any<CancellationToken>());
     }
 }

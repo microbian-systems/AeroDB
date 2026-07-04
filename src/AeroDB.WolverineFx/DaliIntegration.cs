@@ -15,7 +15,7 @@ namespace AeroDB.WolverineFx;
 /// and saga storage provider. Registers codegen sources, persistence frame provider,
 /// and the AeroDB transport.
 /// </summary>
-public sealed class DaliIntegration : IWolverineExtension
+public sealed class AeroDBIntegration : IWolverineExtension
 {
     /// <summary>
     /// Register AeroDB-specific code generation sources, persistence strategy,
@@ -23,34 +23,34 @@ public sealed class DaliIntegration : IWolverineExtension
     /// </summary>
     public void Configure(WolverineOptions options)
     {
-        options.CodeGeneration.Sources.Add(new DaliBackedPersistenceMarker());
+        options.CodeGeneration.Sources.Add(new AeroDBBackedPersistenceMarker());
 
         options.ScopingFrameSources.Add(() => new PrimeScopedDocumentSessionFrame());
 
-        options.CodeGeneration.InsertFirstPersistenceStrategy<DaliPersistenceFrameProvider>();
+        options.CodeGeneration.InsertFirstPersistenceStrategy<AeroDBPersistenceFrameProvider>();
 
-        options.CodeGeneration.Sources.Add(new DaliOutboxedSessionFactorySource());
+        options.CodeGeneration.Sources.Add(new AeroDBOutboxedSessionFactorySource());
 
-        var transport = options.Transports.GetOrCreate<DaliTransport>();
+        var transport = options.Transports.GetOrCreate<AeroDBTransport>();
 
         options.Services.AddSingleton<ISagaStoreDiagnostics>(sp =>
-            new DaliSagaStoreDiagnostics(
+            new AeroDBSagaStoreDiagnostics(
                 sp.GetRequiredService<IWolverineRuntime>(),
                 sp.GetRequiredService<IDocumentStore>()));
 
         options.Services.AddScoped<ScopedDocumentSessionHolder>();
 
         options.Services.TryAddEnumerable(
-            ServiceDescriptor.Singleton<IAncillaryStoreFrameProvider, DaliAncillaryStoreFrameProvider>());
+            ServiceDescriptor.Singleton<IAncillaryStoreFrameProvider, AeroDBAncillaryStoreFrameProvider>());
 
-        options.Policies.Add(new DaliOpPolicy());
+        options.Policies.Add(new AeroDBOpPolicy());
 
-        // WolverineEnvelopeSchemas can be registered as an IConfigureDali by users
-        // in their AddDali(options => opts.Configurators.Add(new WolverineEnvelopeSchemas()))
-        // callback. DaliMessageStore handles its own schema creation internally via
+        // WolverineEnvelopeSchemas can be registered as an IConfigureAeroDB by users
+        // in their AddAeroDB(options => opts.Configurators.Add(new WolverineEnvelopeSchemas()))
+        // callback. AeroDBMessageStore handles its own schema creation internally via
         // SchemaManager in InitializeSchemaAsync().
 
-        // Register DaliEventForwarding so it's available in the DI container for store configurators
-        options.Services.TryAddSingleton<DaliEventForwarding>();
+        // Register AeroDBEventForwarding so it's available in the DI container for store configurators
+        options.Services.TryAddSingleton<AeroDBEventForwarding>();
     }
 }

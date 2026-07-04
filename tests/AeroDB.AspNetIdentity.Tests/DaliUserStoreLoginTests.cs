@@ -8,17 +8,17 @@ using Shouldly;
 
 namespace AeroDB.AspNetIdentity.Tests;
 
-public class DaliUserStoreLoginTests
+public class AeroDBUserStoreLoginTests
 {
     private static IDocumentStore CreateStore(
         out IQuerySession querySession,
         out IDocumentSession documentSession,
-        out ILogger<DaliUserStore<IdentityUser, IdentityRole>> logger)
+        out ILogger<AeroDBUserStore<IdentityUser, IdentityRole>> logger)
     {
         var store = Substitute.For<IDocumentStore>();
         querySession = Substitute.For<IQuerySession>();
         documentSession = Substitute.For<IDocumentSession>();
-        logger = Substitute.For<ILogger<DaliUserStore<IdentityUser, IdentityRole>>>();
+        logger = Substitute.For<ILogger<AeroDBUserStore<IdentityUser, IdentityRole>>>();
 
         store.QuerySessionAsync(Arg.Any<CancellationToken>()).Returns(querySession);
         store.OpenSessionAsync(Arg.Any<SessionOptions>(), Arg.Any<CancellationToken>()).Returns(documentSession);
@@ -52,11 +52,11 @@ public class DaliUserStoreLoginTests
         var user = new IdentityUser("testuser") { Id = "user-1" };
         var login = new UserLoginInfo("Google", "google-id-123", "Google");
 
-        var userStore = new DaliUserStore<IdentityUser, IdentityRole>(store, logger);
+        var userStore = new AeroDBUserStore<IdentityUser, IdentityRole>(store, logger);
 
         await userStore.AddLoginAsync(user, login, CancellationToken.None);
 
-        session.Received(1).Store(Arg.Is<DaliUserLogin>(l =>
+        session.Received(1).Store(Arg.Is<AeroDBUserLogin>(l =>
             l.UserId == "user-1" &&
             l.LoginProvider == "Google" &&
             l.ProviderKey == "google-id-123" &&
@@ -72,7 +72,7 @@ public class DaliUserStoreLoginTests
         var store = CreateStore(out _, out var session, out var logger);
         var user = new IdentityUser("testuser") { Id = "user-1" };
 
-        var loginRecord = new DaliUserLogin
+        var loginRecord = new AeroDBUserLogin
         {
             Id = "l1",
             UserId = "user-1",
@@ -80,14 +80,14 @@ public class DaliUserStoreLoginTests
             ProviderKey = "google-id-123",
             ProviderDisplayName = "Google"
         };
-        var loginQueryable = Substitute.For<ISurrealDbQueryable<DaliUserLogin>>();
+        var loginQueryable = Substitute.For<ISurrealDbQueryable<AeroDBUserLogin>>();
         loginQueryable.FirstOrDefaultAsync(
-            Arg.Any<Expression<Func<DaliUserLogin, bool>>>(),
+            Arg.Any<Expression<Func<AeroDBUserLogin, bool>>>(),
             Arg.Any<CancellationToken>())
             .Returns(loginRecord);
-        session.Query<DaliUserLogin>().Returns(loginQueryable);
+        session.Query<AeroDBUserLogin>().Returns(loginQueryable);
 
-        var userStore = new DaliUserStore<IdentityUser, IdentityRole>(store, logger);
+        var userStore = new AeroDBUserStore<IdentityUser, IdentityRole>(store, logger);
 
         await userStore.RemoveLoginAsync(user, "Google", "google-id-123", CancellationToken.None);
 
@@ -101,18 +101,18 @@ public class DaliUserStoreLoginTests
         var store = CreateStore(out _, out var session, out var logger);
         var user = new IdentityUser("testuser") { Id = "user-1" };
 
-        var loginQueryable = Substitute.For<ISurrealDbQueryable<DaliUserLogin>>();
+        var loginQueryable = Substitute.For<ISurrealDbQueryable<AeroDBUserLogin>>();
         loginQueryable.FirstOrDefaultAsync(
-            Arg.Any<Expression<Func<DaliUserLogin, bool>>>(),
+            Arg.Any<Expression<Func<AeroDBUserLogin, bool>>>(),
             Arg.Any<CancellationToken>())
-            .Returns((DaliUserLogin?)null);
-        session.Query<DaliUserLogin>().Returns(loginQueryable);
+            .Returns((AeroDBUserLogin?)null);
+        session.Query<AeroDBUserLogin>().Returns(loginQueryable);
 
-        var userStore = new DaliUserStore<IdentityUser, IdentityRole>(store, logger);
+        var userStore = new AeroDBUserStore<IdentityUser, IdentityRole>(store, logger);
 
         await userStore.RemoveLoginAsync(user, "Google", "nonexistent", CancellationToken.None);
 
-        session.DidNotReceive().Delete(Arg.Any<DaliUserLogin>());
+        session.DidNotReceive().Delete(Arg.Any<AeroDBUserLogin>());
         await session.DidNotReceive().SaveChangesAsync(Arg.Any<CancellationToken>());
     }
 
@@ -124,15 +124,15 @@ public class DaliUserStoreLoginTests
         var store = CreateStore(out var querySession, out _, out var logger);
         var user = new IdentityUser("testuser") { Id = "user-1" };
 
-        var loginRecords = new List<DaliUserLogin>
+        var loginRecords = new List<AeroDBUserLogin>
         {
             new() { Id = "l1", UserId = "user-1", LoginProvider = "Google", ProviderKey = "g-1", ProviderDisplayName = "Google" },
             new() { Id = "l2", UserId = "user-1", LoginProvider = "GitHub", ProviderKey = "gh-1", ProviderDisplayName = "GitHub" }
         };
         var loginQueryable = CreateMockQueryable(loginRecords);
-        querySession.Query<DaliUserLogin>().Returns(loginQueryable);
+        querySession.Query<AeroDBUserLogin>().Returns(loginQueryable);
 
-        var userStore = new DaliUserStore<IdentityUser, IdentityRole>(store, logger);
+        var userStore = new AeroDBUserStore<IdentityUser, IdentityRole>(store, logger);
 
         var result = await userStore.GetLoginsAsync(user, CancellationToken.None);
 
@@ -147,10 +147,10 @@ public class DaliUserStoreLoginTests
         var store = CreateStore(out var querySession, out _, out var logger);
         var user = new IdentityUser("testuser") { Id = "user-1" };
 
-        var loginQueryable = CreateMockQueryable(new List<DaliUserLogin>());
-        querySession.Query<DaliUserLogin>().Returns(loginQueryable);
+        var loginQueryable = CreateMockQueryable(new List<AeroDBUserLogin>());
+        querySession.Query<AeroDBUserLogin>().Returns(loginQueryable);
 
-        var userStore = new DaliUserStore<IdentityUser, IdentityRole>(store, logger);
+        var userStore = new AeroDBUserStore<IdentityUser, IdentityRole>(store, logger);
 
         var result = await userStore.GetLoginsAsync(user, CancellationToken.None);
 
@@ -165,23 +165,23 @@ public class DaliUserStoreLoginTests
         var store = CreateStore(out var querySession, out _, out var logger);
         var user = new IdentityUser("testuser") { Id = "user-1" };
 
-        var loginRecord = new DaliUserLogin
+        var loginRecord = new AeroDBUserLogin
         {
             Id = "l1",
             UserId = "user-1",
             LoginProvider = "Google",
             ProviderKey = "google-id-123"
         };
-        var loginQueryable = Substitute.For<ISurrealDbQueryable<DaliUserLogin>>();
+        var loginQueryable = Substitute.For<ISurrealDbQueryable<AeroDBUserLogin>>();
         loginQueryable.FirstOrDefaultAsync(
-            Arg.Any<Expression<Func<DaliUserLogin, bool>>>(),
+            Arg.Any<Expression<Func<AeroDBUserLogin, bool>>>(),
             Arg.Any<CancellationToken>())
             .Returns(loginRecord);
-        querySession.Query<DaliUserLogin>().Returns(loginQueryable);
+        querySession.Query<AeroDBUserLogin>().Returns(loginQueryable);
 
         querySession.LoadAsync<IdentityUser>("user-1", Arg.Any<CancellationToken>()).Returns(user);
 
-        var userStore = new DaliUserStore<IdentityUser, IdentityRole>(store, logger);
+        var userStore = new AeroDBUserStore<IdentityUser, IdentityRole>(store, logger);
 
         var result = await userStore.FindByLoginAsync("Google", "google-id-123", CancellationToken.None);
 
@@ -194,14 +194,14 @@ public class DaliUserStoreLoginTests
     {
         var store = CreateStore(out var querySession, out _, out var logger);
 
-        var loginQueryable = Substitute.For<ISurrealDbQueryable<DaliUserLogin>>();
+        var loginQueryable = Substitute.For<ISurrealDbQueryable<AeroDBUserLogin>>();
         loginQueryable.FirstOrDefaultAsync(
-            Arg.Any<Expression<Func<DaliUserLogin, bool>>>(),
+            Arg.Any<Expression<Func<AeroDBUserLogin, bool>>>(),
             Arg.Any<CancellationToken>())
-            .Returns((DaliUserLogin?)null);
-        querySession.Query<DaliUserLogin>().Returns(loginQueryable);
+            .Returns((AeroDBUserLogin?)null);
+        querySession.Query<AeroDBUserLogin>().Returns(loginQueryable);
 
-        var userStore = new DaliUserStore<IdentityUser, IdentityRole>(store, logger);
+        var userStore = new AeroDBUserStore<IdentityUser, IdentityRole>(store, logger);
 
         var result = await userStore.FindByLoginAsync("Google", "nonexistent", CancellationToken.None);
 

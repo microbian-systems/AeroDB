@@ -4,7 +4,7 @@ using SurrealDb.Net;
 
 namespace AeroDB.Internals.Cbor;
 
-internal static class DaliCborOptions
+internal static class AeroDBCborOptions
 {
     public static CborOptions GetCborSerializerOptions()
     {
