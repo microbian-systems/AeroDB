@@ -3,7 +3,7 @@ using CryptoTrader.Handlers;
 using CryptoTrader.Messages;
 using CryptoTrader.Models;
 using CryptoTrader.Services;
-using Dali;
+using AeroDB;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -11,13 +11,13 @@ using SurrealDb.Embedded.InMemory;
 using SurrealDb.Net;
 using Wolverine;
 using Wolverine.Persistence.Durability;
-using Dali.WolverineFx;
+using AeroDB.WolverineFx;
 
 // ══════════════════════════════════════════════════════════
-// CryptoTrader — Dali + Wolverine Sample Application
+// CryptoTrader — AeroDB + Wolverine Sample Application
 // ══════════════════════════════════════════════════════════
 // Demonstrates:
-//   1. Dali document persistence (users, accounts, wallets)
+//   1. AeroDB document persistence (users, accounts, wallets)
 //   2. Graph relationships (RELATE User → Account)
 //   3. Wolverine saga (TradeSaga lifecycle)
 //   4. IDaliOp side-effect pattern (wallet updates)
@@ -30,27 +30,27 @@ using Dali.WolverineFx;
 Console.OutputEncoding = System.Text.Encoding.UTF8;
 Console.ForegroundColor = ConsoleColor.Cyan;
 Console.WriteLine("╔══════════════════════════════════════════════════╗");
-Console.WriteLine("║    CryptoTrader — Dali + Wolverine Sample        ║");
+Console.WriteLine("║    CryptoTrader — AeroDB + Wolverine Sample        ║");
 Console.WriteLine("╚══════════════════════════════════════════════════╝");
 Console.ResetColor();
 Console.WriteLine();
 
 // ──────────────────────────────────────────────
-// 1. Bootstrap Dali Store
+// 1. Bootstrap AeroDB Store
 // ──────────────────────────────────────────────
-Console.WriteLine("Initializing Dali document store...");
+Console.WriteLine("Initializing AeroDB document store...");
 var surrealDbClient = new SurrealDbMemoryClient();
 var store = Documents.For(o =>
 {
     o.ClientFactory = () => surrealDbClient;
-    o.Schema.For<CryptoTrader.Models.Wallet>().SetSchemaMode(Dali.SchemaMode.Flexible);
-    o.Schema.For<CryptoTrader.Models.TradeEvent>().SetSchemaMode(Dali.SchemaMode.Flexible);
+    o.Schema.For<CryptoTrader.Models.Wallet>().SetSchemaMode(AeroDB.SchemaMode.Flexible);
+    o.Schema.For<CryptoTrader.Models.TradeEvent>().SetSchemaMode(AeroDB.SchemaMode.Flexible);
     o.UseOptimisticConcurrency = true;
     o.Schema.AutoCreate = true;
     o.LoggerFactory = LoggerFactory.Create(b => b.AddConsole().SetMinimumLevel(LogLevel.Warning));
 });
 await store.InitializeAsync();
-Console.WriteLine($"  Dali store initialized (in-memory SurrealDB)\n");
+Console.WriteLine($"  AeroDB store initialized (in-memory SurrealDB)\n");
 
 // ──────────────────────────────────────────────
 // 2. Seed data
@@ -80,7 +80,7 @@ var host = Host.CreateDefaultBuilder()
         opts.Discovery.IncludeType<PlaceOrderHandler>()
             .IncludeType<MatchOrderHandler>();
 
-        // Manually register Dali persistence services
+        // Manually register AeroDB persistence services
         // (same pattern as DaliWolverineIntegrationTests)
         opts.Services.AddSingleton<DaliMessageStore>(sp =>
         {

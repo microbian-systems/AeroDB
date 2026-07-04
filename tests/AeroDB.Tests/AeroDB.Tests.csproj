@@ -1,0 +1,47 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <!-- NU1903: Newtonsoft.Json 10.0.2 vulnerability is transitive through Dali.Snowflake → Aero.Core.
+         We don't use Newtonsoft.Json or WindowsAzure.Storage directly. -->
+    <NoWarn>$(NoWarn);NU1903</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Bogus" Version="35.6.5" />
+    <PackageReference Include="FlakeId" Version="1.3.2" />
+    <PackageReference Include="TUnit" VersionOverride="1.39.0" Version="1.58.0" />
+    <PackageReference Include="Shouldly" VersionOverride="4.3.0" />
+    <PackageReference Include="SurrealDb.Embedded.InMemory" VersionOverride="0.10.2" />
+    <PackageReference Include="SurrealDb.Embedded.SurrealKv" VersionOverride="0.10.2" />
+    <PackageReference Include="NSubstitute" VersionOverride="5.3.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis" Version="5.6.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="5.6.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="5.6.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="5.6.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="5.6.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Scripting" Version="5.6.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Scripting.Common" Version="5.6.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic" Version="5.6.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic.Workspaces" Version="5.6.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.Common" Version="5.6.0" />
+    <PackageReference Include="Microsoft.Testing.Extensions.CodeCoverage" VersionOverride="18.6.2" Version="18.8.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Dali.AspNetIdentity\Dali.AspNetIdentity.csproj" />
+    <ProjectReference Include="..\..\src\AeroDB\AeroDB.csproj" />
+    <ProjectReference Include="..\..\src\Dali.Snowflake\Dali.Snowflake.csproj" />
+    <ProjectReference Include="..\..\src\Dali.EntityFrameworkCore\Dali.EntityFrameworkCore.csproj" />
+    <ProjectReference Include="..\..\src\Dali.ML\Dali.ML.csproj" />
+    <ProjectReference Include="..\..\src\Dali.Reactive\Dali.Reactive.csproj" />
+    <ProjectReference Include="..\..\src\Dali.WolverineFx\Dali.WolverineFx.csproj" />
+    <ProjectReference Include="..\..\wolverine\src\Wolverine.RuntimeCompilation\Wolverine.RuntimeCompilation.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Dali.SourceGenerators\Dali.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="true">
+      <PrivateAssets>all</PrivateAssets>
+    </ProjectReference>
+  </ItemGroup>
+</Project>
+

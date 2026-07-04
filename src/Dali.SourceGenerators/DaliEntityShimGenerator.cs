@@ -31,8 +31,8 @@ public class DaliEntityShimGenerator : IIncrementalGenerator
         {
             var (compilation, types) = source;
 
-            // Find the Entity<TId> type in Dali
-            var entityGenericType = compilation.GetTypeByMetadataName("Dali.Entity`1");
+            // Find the Entity<TId> type in AeroDB
+            var entityGenericType = compilation.GetTypeByMetadataName("AeroDB.Entity`1");
             if (entityGenericType is null) return;
 
             // Find the Record type in SurrealDb.Net (needed for shim base class)
@@ -40,7 +40,7 @@ public class DaliEntityShimGenerator : IIncrementalGenerator
             if (recordType is null) return;
 
             // Optionally find the DaliDocumentAttribute for opt-out
-            var daliDocAttrType = compilation.GetTypeByMetadataName("Dali.DaliDocumentAttribute");
+            var daliDocAttrType = compilation.GetTypeByMetadataName("AeroDB.DaliDocumentAttribute");
 
             foreach (var type in types)
             {
@@ -129,13 +129,13 @@ public class DaliEntityShimGenerator : IIncrementalGenerator
         sb.AppendLine("using global::SurrealDb.Net.Models;");
         sb.AppendLine("using global::Dahomey.Cbor.Attributes;");
         sb.AppendLine();
-        sb.AppendLine("namespace Dali.Metadata;");
+        sb.AppendLine("namespace AeroDB.Metadata;");
         sb.AppendLine();
         sb.AppendLine($"internal sealed class {typeName}Shim : Record");
         sb.AppendLine("{");
         sb.AppendLine($"    static {typeName}Shim()");
         sb.AppendLine("    {");
-        sb.AppendLine($"        global::Dali.Metadata.MetadataRegistry.RegisterShimType<{fullName}>(typeof({typeName}Shim));");
+        sb.AppendLine($"        global::AeroDB.Metadata.MetadataRegistry.RegisterShimType<{fullName}>(typeof({typeName}Shim));");
         sb.AppendLine("    }");
         sb.AppendLine();
 

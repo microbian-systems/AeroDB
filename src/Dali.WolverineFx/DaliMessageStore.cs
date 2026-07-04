@@ -1,6 +1,6 @@
 using System.Text;
 using System.Text.Json;
-using Dali;
+using AeroDB;
 using JasperFx.Core;
 using JasperFx.Descriptors;
 using Microsoft.Extensions.Logging;
@@ -17,11 +17,11 @@ using Wolverine.Runtime.Agents;
 namespace Dali.WolverineFx;
 
 /// <summary>
-/// SurrealDB (Dali) backed implementation of Wolverine's IMessageStore and all sub-interfaces.
+/// SurrealDB (AeroDB) backed implementation of Wolverine's IMessageStore and all sub-interfaces.
 /// All operations use SurrealQL RawQuery with parameterized queries.
 /// Envelope bodies are stored as Base64 strings for reliable CBOR round-tripping.
 /// 
-/// Schema initialization now delegates to the Dali <see cref="SchemaManager"/> pipeline
+/// Schema initialization now delegates to the AeroDB <see cref="SchemaManager"/> pipeline
 /// via typed POCOs (<see cref="WolverineIncomingEnvelope"/>, etc.) instead of
 /// a hardcoded SurrealQL string.
 /// </summary>
@@ -81,12 +81,12 @@ public sealed class DaliMessageStore : IMessageStore,
 
     public IScheduledMessages ScheduledMessages => this;
 
-    public string Name { get; set; } = "Dali";
+    public string Name { get; set; } = "AeroDB";
 
     public void Initialize(IWolverineRuntime runtime)
     {
         _ownerId = runtime.Options.Durability.AssignedNodeNumber;
-        Name = runtime.Options.ServiceName ?? "Dali";
+        Name = runtime.Options.ServiceName ?? "AeroDB";
         _logger.LogInformation("DaliMessageStore initialized as node {NodeId}, ownerId={OwnerId}", _nodeId, _ownerId);
     }
 
@@ -985,7 +985,7 @@ public sealed class DaliMessageStore : IMessageStore,
     // ─── Schema Initialization ───
 
     /// <summary>
-    /// Initialize the SurrealDB schema for all wolverine tables using the Dali schema pipeline.
+    /// Initialize the SurrealDB schema for all wolverine tables using the AeroDB schema pipeline.
     /// Creates tables, fields, and indexes via <see cref="SchemaManager"/>.
     /// Called during store initialization. Idempotent — uses IF NOT EXISTS variants.
     /// </summary>

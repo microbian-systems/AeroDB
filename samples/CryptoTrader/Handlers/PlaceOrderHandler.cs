@@ -1,17 +1,17 @@
 using CryptoTrader.Messages;
 using CryptoTrader.Sagas;
-using Dali;
+using AeroDB;
 using SurrealDb.Net.Models;
 
 namespace CryptoTrader.Handlers;
 
 /// <summary>
-/// Handles initial buy/sell order placement by creating a saga record in Dali.
+/// Handles initial buy/sell order placement by creating a saga record in AeroDB.
 /// Uses explicit session management (IDocumentStore via constructor) to avoid
-/// codegen issues with Dali's auto-transaction support.
+/// codegen issues with AeroDB's auto-transaction support.
 ///
 /// Demonstrates:
-/// - Dali document CRUD (manual session open/save)
+/// - AeroDB document CRUD (manual session open/save)
 /// - IDocumentStore dependency injection
 /// - Cascading message return (OrderPlaced)
 /// </summary>

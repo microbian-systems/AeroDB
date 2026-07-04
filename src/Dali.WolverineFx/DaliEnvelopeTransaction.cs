@@ -1,4 +1,4 @@
-using Dali;
+using AeroDB;
 using Wolverine;
 using Wolverine.Persistence.Durability;
 
@@ -7,7 +7,7 @@ namespace Dali.WolverineFx;
 /// <summary>
 /// Wraps DaliMessageStore and an IDocumentSession to provide Wolverine's
 /// IEnvelopeTransaction contract. Envelope operations are queued and
-/// committed within Dali's SurrealDB transaction lifecycle.
+/// committed within AeroDB's SurrealDB transaction lifecycle.
 /// </summary>
 internal sealed class DaliEnvelopeTransaction : IEnvelopeTransaction
 {
@@ -42,7 +42,7 @@ internal sealed class DaliEnvelopeTransaction : IEnvelopeTransaction
 
     public ValueTask RollbackAsync()
     {
-        // Transaction rollback is handled by Dali's SaveChangesAsync Cancel path.
+        // Transaction rollback is handled by AeroDB's SaveChangesAsync Cancel path.
         // No additional action needed here.
         return ValueTask.CompletedTask;
     }

@@ -1,10 +1,10 @@
-using Dali;
+using AeroDB;
 using Wolverine.Transports;
 
 namespace Dali.WolverineFx;
 
 /// <summary>
-/// Health check for the Dali (SurrealDB) transport.
+/// Health check for the AeroDB (SurrealDB) transport.
 /// Verifies connectivity by opening a query session and running a heartbeat query.
 /// </summary>
 internal sealed class DaliHealthCheck : WolverineTransportHealthCheck
@@ -16,7 +16,7 @@ internal sealed class DaliHealthCheck : WolverineTransportHealthCheck
         _store = store ?? throw new ArgumentNullException(nameof(store));
     }
 
-    public override string TransportName => "Dali";
+    public override string TransportName => "AeroDB";
 
     public override string Protocol => "dali";
 

@@ -1,7 +1,7 @@
 namespace Dali;
 
 using System.Reactive.Linq;
-using Dali.LiveQuery;
+using AeroDB.LiveQuery;
 
 public static class StateAccumulatorExtensions
 {

@@ -1,4 +1,4 @@
-using Dali;
+using AeroDB;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
@@ -11,12 +11,12 @@ using Wolverine.Runtime;
 namespace Dali.WolverineFx;
 
 /// <summary>
-/// Extension methods for integrating Wolverine with Dali (SurrealDB) persistence.
+/// Extension methods for integrating Wolverine with AeroDB (SurrealDB) persistence.
 /// </summary>
 public static class WolverineOptionsDaliExtensions
 {
     /// <summary>
-    /// Configure Wolverine to use Dali for message persistence, outbox, sagas, and transport.
+    /// Configure Wolverine to use AeroDB for message persistence, outbox, sagas, and transport.
     /// Registers DaliMessageStore, DaliOutboxedSessionFactory, and all supporting services.
     /// </summary>
     public static void IntegrateWithDali(this WolverineOptions options, IServiceProvider serviceProvider)
@@ -50,7 +50,7 @@ public static class WolverineOptionsDaliExtensions
     }
 
     /// <summary>
-    /// Configure Wolverine to persist messages using Dali (SurrealDB).
+    /// Configure Wolverine to persist messages using AeroDB (SurrealDB).
     /// </summary>
     public static void PersistMessagesWithDali(
         this WolverineOptions options,

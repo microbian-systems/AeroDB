@@ -4,7 +4,7 @@
     <PackageTags>surrealdb documentdb efcore bridge</PackageTags>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Dali\Dali.csproj" />
+    <ProjectReference Include="..\AeroDB\AeroDB.csproj" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" />
   </ItemGroup>
 </Project>

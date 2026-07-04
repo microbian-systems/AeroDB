@@ -1,12 +1,12 @@
-using Dali;
-using Dali.AspNetIdentity;
+using AeroDB;
+using AeroDB.AspNetIdentity;
 
 using Microsoft.AspNetCore.Identity;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
 /// <summary>
-/// Extension methods for registering Dali-backed ASP.NET Core Identity stores
+/// Extension methods for registering AeroDB-backed ASP.NET Core Identity stores
 /// onto an <see cref="IdentityBuilder"/>.
 /// </summary>
 public static class DaliIdentityExtensions

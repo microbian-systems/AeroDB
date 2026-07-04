@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging.Abstractions;
 namespace Dali;
 
 /// <summary>
-/// Wraps a Dali document session in an EF Core IDbContextTransaction,
+/// Wraps a AeroDB document session in an EF Core IDbContextTransaction,
 /// allowing simultaneous SurrealDB + EF Core operations.
 /// </summary>
 public class DaliEfCoreTransaction : IDbContextTransaction
@@ -33,7 +33,7 @@ public class DaliEfCoreTransaction : IDbContextTransaction
 
     public async Task CommitAsync(CancellationToken ct = default)
     {
-        _logger.LogInformation("Committing Dali EF Core transaction {TransactionId}", TransactionId);
+        _logger.LogInformation("Committing AeroDB EF Core transaction {TransactionId}", TransactionId);
         await _daliSession.SaveChangesAsync(ct).ConfigureAwait(false);
         if (OwnedTransaction is not null)
             await OwnedTransaction.CommitAsync(ct).ConfigureAwait(false);

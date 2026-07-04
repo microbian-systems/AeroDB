@@ -8,7 +8,7 @@
         <InternalsVisibleTo Include="Dali.Tests" />
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\Dali\Dali.csproj" />
+        <ProjectReference Include="..\AeroDB\AeroDB.csproj" />
         <ProjectReference Include="..\..\wolverine\src\Wolverine\Wolverine.csproj" />
     </ItemGroup>
     <ItemGroup>

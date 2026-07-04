@@ -25,7 +25,7 @@ internal sealed class DaliScheduledJobAgent : IAgent
 
     public AgentStatus Status { get; private set; } = AgentStatus.Stopped;
 
-    public string Description => "Dali scheduled job agent: polls for ready scheduled messages";
+    public string Description => "AeroDB scheduled job agent: polls for ready scheduled messages";
 
     public DaliScheduledJobAgent(ISurrealDbClient client, ILogger logger)
     {

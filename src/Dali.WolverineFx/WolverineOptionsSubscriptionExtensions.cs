@@ -1,4 +1,4 @@
-using Dali;
+using AeroDB;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
@@ -9,13 +9,13 @@ using Wolverine.Runtime;
 namespace Dali.WolverineFx;
 
 /// <summary>
-/// Extension methods for registering Dali event subscriptions with Wolverine.
+/// Extension methods for registering AeroDB event subscriptions with Wolverine.
 /// </summary>
 public static class WolverineOptionsSubscriptionExtensions
 {
     /// <summary>
-    /// Register a Dali event subscription as a singleton.
-    /// The subscription will be polled by the Dali subscription daemon automatically.
+    /// Register a AeroDB event subscription as a singleton.
+    /// The subscription will be polled by the AeroDB subscription daemon automatically.
     /// </summary>
     public static WolverineOptions AddDaliSubscription<T>(this WolverineOptions options)
         where T : class, IDaliSubscription
@@ -29,7 +29,7 @@ public static class WolverineOptionsSubscriptionExtensions
     }
 
     /// <summary>
-    /// Register a Dali event subscription with a specific instance.
+    /// Register a AeroDB event subscription with a specific instance.
     /// </summary>
     public static WolverineOptions AddDaliSubscription(this WolverineOptions options, IDaliSubscription subscription)
     {
@@ -42,7 +42,7 @@ public static class WolverineOptionsSubscriptionExtensions
     }
 
     /// <summary>
-    /// Ensure the Dali subscription hosted service is registered.
+    /// Ensure the AeroDB subscription hosted service is registered.
     /// Called automatically by <see cref="WolverineOptionsDaliExtensions.IntegrateWithDali"/>
     /// but can also be called manually for advanced scenarios.
     /// </summary>

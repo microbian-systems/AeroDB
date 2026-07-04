@@ -1,7 +1,7 @@
 using JasperFx.CodeGeneration;
 using JasperFx.CodeGeneration.Frames;
 using JasperFx.CodeGeneration.Model;
-using Dali;
+using AeroDB;
 
 namespace Dali.WolverineFx.Codegen;
 
@@ -30,7 +30,7 @@ internal sealed class SagaOperationFrame : SyncFrame
     public override void GenerateCode(GeneratedMethod method, ISourceWriter writer)
     {
         writer.WriteLine("");
-        writer.WriteComment("Register the document operation with the current Dali session");
+        writer.WriteComment("Register the document operation with the current AeroDB session");
         writer.Write($"{_session!.Usage}.{_methodName}({_saga.Usage});");
         Next?.GenerateCode(method, writer);
     }

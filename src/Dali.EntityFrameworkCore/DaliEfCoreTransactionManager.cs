@@ -7,8 +7,8 @@ using Microsoft.Extensions.Logging.Abstractions;
 namespace Dali;
 
 /// <summary>
-/// EF Core transaction manager that wraps Dali sessions.
-/// Use when both EF Core and Dali operations must be atomic.
+/// EF Core transaction manager that wraps AeroDB sessions.
+/// Use when both EF Core and AeroDB operations must be atomic.
 /// </summary>
 public class DaliEfCoreTransactionManager<TDbContext> : IDbContextTransactionManager
     where TDbContext : DbContext
@@ -32,7 +32,7 @@ public class DaliEfCoreTransactionManager<TDbContext> : IDbContextTransactionMan
 
     public async Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken ct = default)
     {
-        _logger.LogInformation("Beginning Dali EF Core transaction");
+        _logger.LogInformation("Beginning AeroDB EF Core transaction");
         var efTransaction = await _dbContext.Database.BeginTransactionAsync(ct).ConfigureAwait(false);
         var daliTransaction = new DaliEfCoreTransaction(_daliSession)
         {

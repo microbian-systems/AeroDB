@@ -9,7 +9,7 @@ using Wolverine.Transports.Sending;
 namespace Dali.WolverineFx;
 
 /// <summary>
-/// Dali endpoint backed by SurrealDB message storage.
+/// AeroDB endpoint backed by SurrealDB message storage.
 /// Creates <see cref="DaliQueueListener"/> and <see cref="DaliQueueSender"/>
 /// for message processing.
 /// </summary>

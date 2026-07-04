@@ -1,4 +1,4 @@
-using Dali;
+using AeroDB;
 
 namespace Dali.WolverineFx;
 
@@ -6,13 +6,13 @@ namespace Dali.WolverineFx;
 /// Registers Wolverine envelope table schemas on <see cref="StoreOptions.Schema"/>
 /// during <see cref="DocumentStore.InitializeAsync"/> via the <see cref="IConfigureDali"/> hook.
 /// This replaces the hardcoded 131-line SchemaScript string in <see cref="DaliMessageStore"/>
-/// with proper typed POCOs and the Dali schema pipeline.
+/// with proper typed POCOs and the AeroDB schema pipeline.
 /// </summary>
 public sealed class WolverineEnvelopeSchemas : IConfigureDali
 {
     /// <summary>
     /// Registers all six Wolverine envelope tables with their indexes
-    /// on the Dali <see cref="StoreOptions"/>.
+    /// on the AeroDB <see cref="StoreOptions"/>.
     /// </summary>
     public void Configure(StoreOptions options)
     {

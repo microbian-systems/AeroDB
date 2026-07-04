@@ -29,9 +29,9 @@ public class DaliConfiguratorGenerator : IIncrementalGenerator
 
             // Look for the configurator interfaces in the compilation.
             // If neither exists, there's nothing to generate.
-            var configureDaliType = compilation.GetTypeByMetadataName("Dali.IConfigureDali");
-            var globalConfigureDaliType = compilation.GetTypeByMetadataName("Dali.IGlobalConfigureDali");
-            var asyncConfigureDaliType = compilation.GetTypeByMetadataName("Dali.IAsyncConfigureDali");
+            var configureDaliType = compilation.GetTypeByMetadataName("AeroDB.IConfigureDali");
+            var globalConfigureDaliType = compilation.GetTypeByMetadataName("AeroDB.IGlobalConfigureDali");
+            var asyncConfigureDaliType = compilation.GetTypeByMetadataName("AeroDB.IAsyncConfigureDali");
 
             if (configureDaliType is null && asyncConfigureDaliType is null)
                 return;
@@ -83,7 +83,7 @@ public class DaliConfiguratorGenerator : IIncrementalGenerator
                 // Only add if not already registered as a plain IConfigureDali or IGlobalConfigureDali implementor.
                 if (!isGlobal && !isConfigureDali && configureDaliType is not null)
                 {
-                    var typedConfigureDali = compilation.GetTypeByMetadataName("Dali.IConfigureDali`1");
+                    var typedConfigureDali = compilation.GetTypeByMetadataName("AeroDB.IConfigureDali`1");
                     if (typedConfigureDali is not null)
                     {
                         foreach (var iface in type.AllInterfaces)
@@ -141,7 +141,7 @@ public class DaliConfiguratorGenerator : IIncrementalGenerator
         sb.AppendLine();
         sb.AppendLine("using Microsoft.Extensions.DependencyInjection;");
         sb.AppendLine();
-        sb.AppendLine("namespace Dali.Generated;");
+        sb.AppendLine("namespace AeroDB.Generated;");
         sb.AppendLine();
         sb.AppendLine("/// <summary>");
         sb.AppendLine("/// Source-generated registration helper for discovered IConfigureDali / IGlobalConfigureDali / IAsyncConfigureDali implementations.");
@@ -159,21 +159,21 @@ public class DaliConfiguratorGenerator : IIncrementalGenerator
         foreach (var type in syncConfigurators)
         {
             var fqn = type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
-            sb.AppendLine($"        services.AddSingleton<global::Dali.IConfigureDali, {fqn}>();");
+            sb.AppendLine($"        services.AddSingleton<global::AeroDB.IConfigureDali, {fqn}>();");
         }
 
         // Global configurators (all store types)
         foreach (var type in globalConfigurators)
         {
             var fqn = type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
-            sb.AppendLine($"        services.AddSingleton<global::Dali.IGlobalConfigureDali, {fqn}>();");
+            sb.AppendLine($"        services.AddSingleton<global::AeroDB.IGlobalConfigureDali, {fqn}>();");
         }
 
         // Async configurators
         foreach (var type in asyncConfigurators)
         {
             var fqn = type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
-            sb.AppendLine($"        services.AddSingleton<global::Dali.IAsyncConfigureDali, {fqn}>();");
+            sb.AppendLine($"        services.AddSingleton<global::AeroDB.IAsyncConfigureDali, {fqn}>();");
         }
 
         sb.AppendLine("        return services;");

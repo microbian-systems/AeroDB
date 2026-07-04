@@ -1,7 +1,7 @@
 using JasperFx.CodeGeneration.Frames;
 using JasperFx.CodeGeneration.Model;
 using JasperFx.Core.Reflection;
-using Dali;
+using AeroDB;
 
 namespace Dali.WolverineFx.Codegen;
 
@@ -14,6 +14,6 @@ internal sealed class DaliSessionSaveChangesFrame : MethodCall
     public DaliSessionSaveChangesFrame()
         : base(typeof(IDocumentSession), ReflectionHelper.GetMethod<IDocumentSession>(x => x.SaveChangesAsync(default))!)
     {
-        CommentText = "Save all pending changes to this Dali session";
+        CommentText = "Save all pending changes to this AeroDB session";
     }
 }

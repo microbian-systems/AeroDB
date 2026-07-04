@@ -107,7 +107,7 @@ public class DaliUserStore<TUser, TRole> :
     /// <summary>
     /// Initializes a new instance of <see cref="DaliUserStore{TUser, TRole}"/>.
     /// </summary>
-    /// <param name="store">The Dali document store.</param>
+    /// <param name="store">The AeroDB document store.</param>
     /// <param name="logger">Logger instance.</param>
     public DaliUserStore(IDocumentStore store, ILogger<DaliUserStore<TUser, TRole>> logger)
     {
@@ -131,7 +131,7 @@ public class DaliUserStore<TUser, TRole> :
     {
         get
         {
-            // IQueryableUserStore.Users is synchronous — Dali sessions are async-only.
+            // IQueryableUserStore.Users is synchronous — AeroDB sessions are async-only.
             // Block on the async call to match the synchronous property contract.
             var session = _store.QuerySessionAsync(CancellationToken.None)
                 .GetAwaiter()
@@ -843,7 +843,7 @@ public class DaliUserStore<TUser, TRole> :
         if (role is null)
             return Array.Empty<TUser>();
 
-        // Raw SQL: SurrealDB CONTAINS operator has no LINQ equivalent in Dali's fluent API.
+        // Raw SQL: SurrealDB CONTAINS operator has no LINQ equivalent in AeroDB's fluent API.
         return await session.RawQueryAsync<TUser>(
             $"SELECT * FROM {_userTable} WHERE role_ids CONTAINS $roleId",
             new Dictionary<string, object?> { ["roleId"] = role.Id },
@@ -1119,7 +1119,7 @@ public class DaliUserStore<TUser, TRole> :
 
     /// <summary>
     /// Loads and deletes all associated claim, login, token, and passkey records
-    /// for the given user ID using the Dali session pattern.
+    /// for the given user ID using the AeroDB session pattern.
     /// </summary>
     private async Task DeleteAssociatedRecordsAsync(IDocumentSession session, string userId, CancellationToken ct)
     {
@@ -1194,7 +1194,7 @@ public class DaliUserStore<TUser, TRole> :
 
     /// <summary>
     /// Converts a PascalCase or camelCase name to snake_case.
-    /// Matches Dali's default naming convention for SurrealDB tables.
+    /// Matches AeroDB's default naming convention for SurrealDB tables.
     /// </summary>
     private static string ToSnakeCase(string name)
     {

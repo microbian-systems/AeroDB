@@ -1,9 +1,9 @@
-using Dali;
+using AeroDB;
 
 namespace Dali.WolverineFx;
 
 /// <summary>
-/// Dali <see cref="IDocumentSessionListener"/> that publishes events appended
+/// AeroDB <see cref="IDocumentSessionListener"/> that publishes events appended
 /// during a Wolverine-enrolled session as Wolverine messages through the outbox.
 /// Events are forwarded in <see cref="BeforeSaveChangesAsync"/> so they are
 /// enlisted in Wolverine's outbox and flushed atomically with the transaction.

@@ -1,5 +1,5 @@
 using System.Text.Json;
-using Dali;
+using AeroDB;
 using Wolverine;
 using Wolverine.Configuration.Capabilities;
 using SagaInstanceState = JasperFx.Descriptors.SagaInstanceState;
@@ -9,7 +9,7 @@ using Wolverine.Runtime;
 namespace Dali.WolverineFx;
 
 /// <summary>
-/// Dali-backed implementation of <see cref="ISagaStoreDiagnostics"/>.
+/// AeroDB-backed implementation of <see cref="ISagaStoreDiagnostics"/>.
 /// </summary>
 internal sealed class DaliSagaStoreDiagnostics : ISagaStoreDiagnostics
 {

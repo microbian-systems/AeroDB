@@ -1,5 +1,5 @@
-using Dali;
-using Dali.WolverineFx.Codegen;
+using AeroDB;
+using AeroDB.WolverineFx.Codegen;
 using JasperFx;
 using JasperFx.CodeGeneration.Frames;
 using JasperFx.CodeGeneration.Model;
@@ -10,8 +10,8 @@ using Wolverine.Persistence.Sagas;
 namespace Dali.WolverineFx;
 
 /// <summary>
-/// Dali-backed <see cref="IPersistenceFrameProvider"/> that generates codegen frames
-/// for saga persistence operations through Dali's IDocumentSession.
+/// AeroDB-backed <see cref="IPersistenceFrameProvider"/> that generates codegen frames
+/// for saga persistence operations through AeroDB's IDocumentSession.
 /// Mirrors the MartenPersistenceFrameProvider pattern.
 /// </summary>
 internal sealed class DaliPersistenceFrameProvider : IPersistenceFrameProvider
@@ -100,7 +100,7 @@ internal sealed class DaliPersistenceFrameProvider : IPersistenceFrameProvider
 
     public Frame DetermineStorageActionFrame(Type entityType, Variable action, IServiceContainer container)
     {
-        throw new NotSupportedException("Storage action frames are not supported by Dali persistence.");
+        throw new NotSupportedException("Storage action frames are not supported by AeroDB persistence.");
     }
 
     public Frame[] DetermineFrameToNullOutMaybeSoftDeleted(Variable entity)

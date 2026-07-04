@@ -7,12 +7,12 @@ using Microsoft.Extensions.Logging;
 namespace Dali;
 
 /// <summary>
-/// DI registration extensions for Dali EF Core integration.
+/// DI registration extensions for AeroDB EF Core integration.
 /// </summary>
 public static class DaliEfCoreServiceCollectionExtensions
 {
     /// <summary>
-    /// Registers Dali alongside EF Core for coordinated transactions.
+    /// Registers AeroDB alongside EF Core for coordinated transactions.
     /// Consumers must also call <see cref="UseDaliTransactionManager{TDbContext}"/>
     /// in their DbContext's <c>OnConfiguring</c> method to wire up the transaction
     /// manager inside EF Core's internal service provider.
@@ -22,7 +22,7 @@ public static class DaliEfCoreServiceCollectionExtensions
         Action<StoreOptions> configureDali)
         where TDbContext : DbContext
     {
-        // Register Dali store (singleton)
+        // Register AeroDB store (singleton)
         var store = Documents.For(configureDali);
         services.AddSingleton(store);
 
@@ -45,7 +45,7 @@ public static class DaliEfCoreServiceCollectionExtensions
 
     /// <summary>
     /// Replaces EF Core's default <see cref="IDbContextTransactionManager"/> with
-    /// a Dali-aware one so that <c>Database.BeginTransaction()</c> coordinates
+    /// a AeroDB-aware one so that <c>Database.BeginTransaction()</c> coordinates
     /// both SurrealDB and EF Core changes.
     /// Call this inside your DbContext's <c>OnConfiguring</c> method:
     /// <code>

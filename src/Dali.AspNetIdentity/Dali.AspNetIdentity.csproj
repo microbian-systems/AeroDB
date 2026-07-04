@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Dali\Dali.csproj" />
+    <ProjectReference Include="..\AeroDB\AeroDB.csproj" />
   </ItemGroup>
 
   <ItemGroup>

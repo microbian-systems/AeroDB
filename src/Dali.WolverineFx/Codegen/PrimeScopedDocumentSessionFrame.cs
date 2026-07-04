@@ -3,7 +3,7 @@ using JasperFx.CodeGeneration.Frames;
 using JasperFx.CodeGeneration.Model;
 using JasperFx.CodeGeneration.Services;
 using JasperFx.Core.Reflection;
-using Dali;
+using AeroDB;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Dali.WolverineFx.Codegen;

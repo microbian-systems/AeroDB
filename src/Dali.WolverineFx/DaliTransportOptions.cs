@@ -1,7 +1,7 @@
 namespace Dali.WolverineFx;
 
 /// <summary>
-/// Configuration options for the Dali-backed transport.
+/// Configuration options for the AeroDB-backed transport.
 /// Controls polling behavior and batch sizes for the SurrealDB message queue.
 /// </summary>
 public sealed class DaliTransportOptions

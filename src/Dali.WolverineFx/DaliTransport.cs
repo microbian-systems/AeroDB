@@ -1,4 +1,4 @@
-using Dali;
+using AeroDB;
 using JasperFx.Resources;
 using Microsoft.Extensions.DependencyInjection;
 using Wolverine.Configuration;
@@ -9,7 +9,7 @@ using Wolverine.Transports;
 namespace Dali.WolverineFx;
 
 /// <summary>
-/// Dali-backed transport for Wolverine using SurrealDB as the message store.
+/// AeroDB-backed transport for Wolverine using SurrealDB as the message store.
 /// Registers the "dali://" protocol scheme and creates DaliEndpoint instances.
 /// </summary>
 public sealed class DaliTransport : ITransport
@@ -20,13 +20,13 @@ public sealed class DaliTransport : ITransport
     public string Protocol => "dali";
 
     /// <summary>Diagnostic name.</summary>
-    public string Name => "Dali SurrealDB Transport";
+    public string Name => "AeroDB SurrealDB Transport";
 
     /// <summary>No reply endpoint for this transport.</summary>
     public Endpoint? ReplyEndpoint() => null;
 
     /// <summary>
-    /// Get or create a Dali endpoint for the given URI.
+    /// Get or create a AeroDB endpoint for the given URI.
     /// </summary>
     public Endpoint GetOrCreateEndpoint(Uri uri)
     {

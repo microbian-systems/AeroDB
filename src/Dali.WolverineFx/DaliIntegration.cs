@@ -1,5 +1,5 @@
-using Dali;
-using Dali.WolverineFx.Codegen;
+using AeroDB;
+using AeroDB.WolverineFx.Codegen;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Wolverine;
@@ -11,14 +11,14 @@ using Wolverine.Runtime;
 namespace Dali.WolverineFx;
 
 /// <summary>
-/// Wolverine extension that integrates Dali (SurrealDB) as the message persistence
+/// Wolverine extension that integrates AeroDB (SurrealDB) as the message persistence
 /// and saga storage provider. Registers codegen sources, persistence frame provider,
-/// and the Dali transport.
+/// and the AeroDB transport.
 /// </summary>
 public sealed class DaliIntegration : IWolverineExtension
 {
     /// <summary>
-    /// Register Dali-specific code generation sources, persistence strategy,
+    /// Register AeroDB-specific code generation sources, persistence strategy,
     /// and transport with the Wolverine options.
     /// </summary>
     public void Configure(WolverineOptions options)

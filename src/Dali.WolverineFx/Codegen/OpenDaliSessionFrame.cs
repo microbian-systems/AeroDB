@@ -1,7 +1,7 @@
 using JasperFx.CodeGeneration;
 using JasperFx.CodeGeneration.Frames;
 using JasperFx.CodeGeneration.Model;
-using Dali;
+using AeroDB;
 using Wolverine;
 using Wolverine.Configuration;
 using Wolverine.Persistence;
@@ -12,7 +12,7 @@ namespace Dali.WolverineFx.Codegen;
 /// <summary>
 /// Codegen frame that opens an outbox-enrolled <see cref="IDocumentSession"/>
 /// via <see cref="DaliOutboxedSessionFactory"/>. Inserted as middleware in handler
-/// chains that need Dali persistence.
+/// chains that need AeroDB persistence.
 /// </summary>
 internal sealed class OpenDaliSessionFrame : Frame
 {
@@ -61,7 +61,7 @@ internal sealed class OpenDaliSessionFrame : Frame
         if (_createsSession)
         {
             writer.BlankLine();
-            writer.WriteComment("Open a new Dali document session registered with the Wolverine");
+            writer.WriteComment("Open a new AeroDB document session registered with the Wolverine");
             writer.WriteComment("message context to support the outbox functionality");
             writer.Write(
                 $"using var {Session!.Usage} = await {_factory!.Usage}.{nameof(DaliOutboxedSessionFactory.OpenSession)}({_context!.Usage}).ConfigureAwait(false);");
@@ -75,7 +75,7 @@ internal sealed class OpenDaliSessionFrame : Frame
         if (_createsSession)
         {
             writer.BlankLine();
-            writer.WriteComment("Open a new Dali document session registered with the Wolverine");
+            writer.WriteComment("Open a new AeroDB document session registered with the Wolverine");
             writer.WriteComment("message context to support the outbox functionality");
             writer.Write(
                 $"use {Session!.Usage} = {_factory!.Usage}.{nameof(DaliOutboxedSessionFactory.OpenSession)}({_context!.Usage})");

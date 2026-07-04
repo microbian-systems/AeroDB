@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Dali;
 
 /// <summary>
-/// Projection that writes to EF Core alongside Dali in the same transaction.
+/// Projection that writes to EF Core alongside AeroDB in the same transaction.
 /// The <typeparamref name="TDbContext"/> provides the relational data access.
 /// </summary>
 public abstract class EfCoreEventProjection<TDbContext> : IProjection

@@ -18,7 +18,7 @@ public class DaliRoleStore<TRole> : IRoleStore<TRole>, IQueryableRoleStore<TRole
     /// <summary>
     /// Initializes a new instance of <see cref="DaliRoleStore{TRole}"/>.
     /// </summary>
-    /// <param name="store">The Dali document store.</param>
+    /// <param name="store">The AeroDB document store.</param>
     /// <param name="logger">Logger instance.</param>
     public DaliRoleStore(IDocumentStore store, ILogger<DaliRoleStore<TRole>> logger)
     {
@@ -33,7 +33,7 @@ public class DaliRoleStore<TRole> : IRoleStore<TRole>, IQueryableRoleStore<TRole
     {
         get
         {
-            // IQueryableRoleStore.Roles is synchronous — Dali sessions are async-only.
+            // IQueryableRoleStore.Roles is synchronous — AeroDB sessions are async-only.
             // Block on the async call to match the synchronous property contract.
             // This matches the Marten.AspNetIdentity pattern.
             var session = _store.QuerySessionAsync(CancellationToken.None)

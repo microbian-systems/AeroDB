@@ -1,4 +1,4 @@
-using Dali;
+using AeroDB;
 using JasperFx.Events.Daemon;
 using JasperFx.Events.Projections;
 using Microsoft.Extensions.DependencyInjection;
@@ -8,7 +8,7 @@ using Wolverine.Runtime;
 namespace Dali.WolverineFx;
 
 /// <summary>
-/// Bridges a Dali event subscription to Wolverine's message bus.
+/// Bridges a AeroDB event subscription to Wolverine's message bus.
 /// Creates a MessageContext, enlists in the outbox, delegates to the subscription,
 /// then commits the session and flushes outgoing messages.
 /// </summary>
@@ -38,7 +38,7 @@ internal class DaliSubscriptionRunner
         // Create a Wolverine message context scoped to this batch
         var context = new MessageContext(_runtime);
 
-        // Get the Dali message store and enlist in outbox
+        // Get the AeroDB message store and enlist in outbox
         var store = _runtime.Services.GetRequiredService<DaliMessageStore>();
         context.OverrideStorage(store);
         var ownerId = store.GetOwnerId();

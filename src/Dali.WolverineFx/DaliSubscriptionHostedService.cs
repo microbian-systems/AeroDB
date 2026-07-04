@@ -1,4 +1,4 @@
-using Dali;
+using AeroDB;
 using JasperFx.Events;
 using JasperFx.Events.Daemon;
 using JasperFx.Events.Projections;
@@ -12,7 +12,7 @@ using IEvent = JasperFx.Events.IEvent;
 namespace Dali.WolverineFx;
 
 /// <summary>
-/// Background service that polls the Dali event store and dispatches new events
+/// Background service that polls the AeroDB event store and dispatches new events
 /// to registered subscriptions via <see cref="DaliSubscriptionRunner"/>.
 /// </summary>
 internal class DaliSubscriptionHostedService : IHostedService, IAsyncDisposable
@@ -43,13 +43,13 @@ internal class DaliSubscriptionHostedService : IHostedService, IAsyncDisposable
     {
         if (_states.Count == 0)
         {
-            _logger.LogInformation("No Dali subscriptions registered; daemon not started");
+            _logger.LogInformation("No AeroDB subscriptions registered; daemon not started");
             return Task.CompletedTask;
         }
 
         _cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
         _runTask = Task.Run(() => RunLoopAsync(_cts.Token), _cts.Token);
-        _logger.LogInformation("Dali Subscription Daemon started with {Count} subscriptions", _states.Count);
+        _logger.LogInformation("AeroDB Subscription Daemon started with {Count} subscriptions", _states.Count);
         return Task.CompletedTask;
     }
 
@@ -67,7 +67,7 @@ internal class DaliSubscriptionHostedService : IHostedService, IAsyncDisposable
             catch (Exception ex) { _logger.LogWarning(ex, "Error stopping subscription daemon"); }
         }
 
-        _logger.LogInformation("Dali Subscription Daemon stopped");
+        _logger.LogInformation("AeroDB Subscription Daemon stopped");
     }
 
     private async Task RunLoopAsync(CancellationToken ct)
@@ -134,7 +134,7 @@ internal class DaliSubscriptionHostedService : IHostedService, IAsyncDisposable
     }
 
     private static EventRange BuildEventRange(
-        IReadOnlyList<global::Dali.IEvent> rawEvents,
+        IReadOnlyList<global::AeroDB.IEvent> rawEvents,
         long baseVersion)
     {
         var events = rawEvents
@@ -219,7 +219,7 @@ internal class DaliSubscriptionHostedService : IHostedService, IAsyncDisposable
 }
 
 /// <summary>
-/// Minimal IEvent implementation for wrapping raw Dali events into JasperFx EventRange.
+/// Minimal IEvent implementation for wrapping raw AeroDB events into JasperFx EventRange.
 /// </summary>
 internal sealed class DaliEnvelopeEvent : JasperFx.Events.IEvent
 {
@@ -272,7 +272,7 @@ internal sealed class DaliEnvelopeEvent : JasperFx.Events.IEvent
 
     public Func<JasperFx.Events.IEvent, T> CreateAggregateIdentitySource<T>()
     {
-        throw new NotSupportedException("Dali envelope events do not support aggregate identity resolution");
+        throw new NotSupportedException("AeroDB envelope events do not support aggregate identity resolution");
     }
 
     void JasperFx.Events.IEvent.AddTag<T>(T tag)

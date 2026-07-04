@@ -1,4 +1,4 @@
-using Dali;
+using AeroDB;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 namespace Dali.WolverineFx;
 
 /// <summary>
-/// Extension methods for configuring Dali event forwarding through Wolverine.
+/// Extension methods for configuring AeroDB event forwarding through Wolverine.
 /// Event forwarding is automatically wired when sessions are opened via
 /// <see cref="DaliOutboxedSessionFactory"/>. This method provides additional
 /// store-level configuration for event-related options.
@@ -14,17 +14,17 @@ namespace Dali.WolverineFx;
 public static class DaliWolverineOptionsEventExtensions
 {
     /// <summary>
-    /// Configure Wolverine to forward events appended to Dali event streams
+    /// Configure Wolverine to forward events appended to AeroDB event streams
     /// as Wolverine messages. Events are published atomically within the
     /// same transaction as the document session's save operation.
     ///
     /// Event forwarding is automatically enabled when sessions are created
     /// through <see cref="DaliOutboxedSessionFactory"/>. This method provides
-    /// additional configuration hook for the Dali <see cref="StoreOptions"/>.
+    /// additional configuration hook for the AeroDB <see cref="StoreOptions"/>.
     /// </summary>
     /// <param name="options">The Wolverine options.</param>
     /// <param name="configureStore">
-    /// Optional callback to configure the underlying Dali <see cref="StoreOptions"/>.
+    /// Optional callback to configure the underlying AeroDB <see cref="StoreOptions"/>.
     /// Use this to set up event-related options on the document store.
     /// </param>
     public static void ForwardDaliEventsToWolverine(

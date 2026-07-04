@@ -1,4 +1,4 @@
-using Dali;
+using AeroDB;
 using SurrealDb.Net.Models;
 
 namespace CryptoTrader.Models;

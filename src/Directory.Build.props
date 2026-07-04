@@ -24,8 +24,8 @@
 		<PackageTags>surrealdb document-database event-sourcing orm efcore</PackageTags>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageIcon>logo.png</PackageIcon>
-		<PackageProjectUrl>https://github.com/microbian-systems/Dali</PackageProjectUrl>
-		<RepositoryUrl>https://github.com/microbian-systems/Dali</RepositoryUrl>
+		<PackageProjectUrl>https://github.com/microbian-systems/AeroDB</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/microbian-systems/AeroDB</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
 		<PublishRepositoryUrl>true</PublishRepositoryUrl>
 		<IncludeSymbols>true</IncludeSymbols>

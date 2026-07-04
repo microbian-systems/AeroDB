@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Reflection;
-using Dali;
+using AeroDB;
 
 namespace Dali.WolverineFx.Internal;
 
@@ -10,7 +10,7 @@ namespace Dali.WolverineFx.Internal;
 /// <see cref="FlushOutgoingMessagesOnDaliCommit"/> need this same logic.
 /// Consolidating here avoids duplicating the reflection code.
 ///
-/// A future Dali API (e.g., <c>DocumentSession.GetPendingAppendedEvents()</c>)
+/// A future AeroDB API (e.g., <c>DocumentSession.GetPendingAppendedEvents()</c>)
 /// would eliminate the need for reflection entirely.
 /// </summary>
 internal static class DaliSessionEventAccessor
@@ -28,7 +28,7 @@ internal static class DaliSessionEventAccessor
     }
 
     /// <summary>
-    /// Gets the list of appended event objects from a Dali DocumentSession
+    /// Gets the list of appended event objects from a AeroDB DocumentSession
     /// by reading the internal <c>_appendedEvents</c> field.
     /// Returns an empty list if no events are pending or if reflection fails.
     /// </summary>

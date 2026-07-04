@@ -1,11 +1,11 @@
-using Dali;
+using AeroDB;
 using Wolverine;
 using Wolverine.Persistence.Sagas;
 
 namespace Dali.WolverineFx;
 
 /// <summary>
-/// Dali-backed saga storage for Wolverine using SurrealDB as the document store.
+/// AeroDB-backed saga storage for Wolverine using SurrealDB as the document store.
 /// </summary>
 public sealed class DaliSagaStorage<TId, TSaga> : ISagaStorage<TId, TSaga>
     where TSaga : Saga

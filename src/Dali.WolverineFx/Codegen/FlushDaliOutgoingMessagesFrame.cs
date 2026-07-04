@@ -6,7 +6,7 @@ namespace Dali.WolverineFx.Codegen;
 
 /// <summary>
 /// Codegen frame that calls <see cref="MessageContext.FlushOutgoingMessagesAsync"/>
-/// to dispatch outgoing messages after the Dali session commits.
+/// to dispatch outgoing messages after the AeroDB session commits.
 /// </summary>
 internal sealed class FlushDaliOutgoingMessagesFrame : MethodCall
 {
@@ -15,6 +15,6 @@ internal sealed class FlushDaliOutgoingMessagesFrame : MethodCall
     public FlushDaliOutgoingMessagesFrame()
         : base(typeof(MessageContext), nameof(MessageContext.FlushOutgoingMessagesAsync))
     {
-        CommentText = "Flush outgoing messages after Dali transaction commits";
+        CommentText = "Flush outgoing messages after AeroDB transaction commits";
     }
 }

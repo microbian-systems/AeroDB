@@ -132,7 +132,7 @@ public sealed class DaliQueueListener : IListener
                     ? TimeSpan.FromSeconds(5)
                     : TimeSpan.FromMilliseconds(failedCount * 200);
                 _logger.LogError(ex,
-                    "Error polling Dali queue at {Address} (failure #{FailedCount}), pausing {Pause}ms",
+                    "Error polling AeroDB queue at {Address} (failure #{FailedCount}), pausing {Pause}ms",
                     Address, failedCount, pause.TotalMilliseconds);
                 try { await Task.Delay(pause, token); } catch (OperationCanceledException) { break; }
             }
