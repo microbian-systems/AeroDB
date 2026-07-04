@@ -153,9 +153,18 @@ public class AeroDBUserStore<TUser, TRole> :
         {
             await using var session = await _store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }, cancellationToken);
             session.Store(user);
-            await session.SaveChangesAsync(cancellationToken);
-            _logger.LogDebug("Created user {UserId}", user.Id);
-            return IdentityResult.Success;
+            var res = await session.SaveChangesAsync(cancellationToken);
+            if(res > 0) 
+               { _logger.LogDebug("Created user {UserId}", user.Id);
+                return IdentityResult.Success;
+            }
+            else
+            {
+                return IdentityResult.Failed(new IdentityError
+                {
+                    Description = $"Failed to create the user '{user.UserName}'."
+                });
+            }
         }
         catch (OperationCanceledException)
         {

@@ -31,3 +31,4 @@ public static class AeroDBIdentityExtensions
             .AddUserStore<AeroDBUserStore<TUser, TRole>>();
     }
 }
+`
