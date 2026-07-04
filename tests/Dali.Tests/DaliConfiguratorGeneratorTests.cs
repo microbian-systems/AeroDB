@@ -217,6 +217,13 @@ public class TestConfig : Dali.IConfigureDali
 
         var references = AppDomain.CurrentDomain.GetAssemblies()
             .Where(a => !a.IsDynamic && !string.IsNullOrEmpty(a.Location))
+            .Where(a =>
+            {
+                var name = a.GetName().Name;
+                return name != "Dali" && name != "Dali.SourceGenerators";
+            })
+            .GroupBy(a => a.Location)
+            .Select(g => g.First())
             .Select(a => MetadataReference.CreateFromFile(a.Location))
             .Cast<MetadataReference>()
             .ToArray();
