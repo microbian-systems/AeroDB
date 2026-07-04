@@ -1,4 +1,4 @@
-namespace Dali;
+namespace AeroDB;
 
 public static class MlQueryExtensions
 {
@@ -11,6 +11,6 @@ public static class MlQueryExtensions
             return new DaliMlQuery<TInput, TOutput>(provider);
 
         throw new NotSupportedException(
-            $"ML queries are only supported on Dali query sessions.");
+            $"ML queries are only supported on AeroDB query sessions.");
     }
 }

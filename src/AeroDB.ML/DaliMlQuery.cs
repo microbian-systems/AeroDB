@@ -1,9 +1,9 @@
 using System.Linq.Expressions;
 using System.Text;
 using System.Text.Json;
-using Dali.Metadata;
+using AeroDB.Metadata;
 
-namespace Dali;
+namespace AeroDB;
 
 public sealed class DaliMlQuery<TInput, TOutput> : IMlQuery<TInput, TOutput>
     where TInput : class

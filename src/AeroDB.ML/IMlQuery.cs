@@ -1,6 +1,6 @@
 using System.Linq.Expressions;
 
-namespace Dali;
+namespace AeroDB;
 
 public interface IMlQuery<TInput, TOutput>
     where TInput : class

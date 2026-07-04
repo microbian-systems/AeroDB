@@ -1,4 +1,4 @@
-namespace Dali;
+namespace AeroDB;
 
 /// <summary>
 /// Thrown when SurrealML functions (<c>ml::</c>) are not available on the connected SurrealDB server.
