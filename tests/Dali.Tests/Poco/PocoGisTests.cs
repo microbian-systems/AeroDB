@@ -170,7 +170,7 @@ public class PocoGisTests
                 .SetSchemaMode(SchemaMode.Flexible)
                 .SpatialIndex(x => x.Location);
         });
-        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
+        await using var session = await store.LightweightSessionAsync();
 
         session.Store(new PocoStore
         {
