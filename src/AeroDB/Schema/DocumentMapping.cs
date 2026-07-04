@@ -525,6 +525,16 @@ public class DocumentMapping<T> : DocumentMapping
     }
 
     /// <summary>
+    /// Enable soft-delete for documents of this type. Soft-deleted documents
+    /// are automatically filtered from queries and can be restored.
+    /// </summary>
+    public new DocumentMapping<T> SoftDeleted()
+    {
+        ((DocumentMapping)this).SoftDeleted = true;
+        return this;
+    }
+
+    /// <summary>
     /// No-op. Exists only for Marten portability — SurrealDB does not need duplicated fields.
     /// </summary>
     public DocumentMapping<T> Duplicate(

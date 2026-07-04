@@ -103,7 +103,7 @@ public class StoreOptions : IReadOnlyStoreOptions
     /// <summary>
     /// Registered projections (inline and async).
     /// </summary>
-    public List<IProjection> Projections { get; } = new();
+    public ProjectionCollection Projections { get; } = new();
 
     /// <summary>
     /// EF Core projections that write through a DbContext.

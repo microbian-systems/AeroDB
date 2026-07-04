@@ -16,7 +16,7 @@ public abstract class EfCoreEventProjection<TDbContext> : IProjection
 
     public virtual string Name => GetType().Name;
     public abstract Type[] EventTypes { get; }
-    public virtual ProjectionLifecycle Lifecycle => ProjectionLifecycle.Async;
+    public virtual ProjectionLifecycle Lifecycle { get; set; } = ProjectionLifecycle.Async;
 
     /// <summary>
     /// Set the DbContext factory. Called by the projection runner or DI registration.

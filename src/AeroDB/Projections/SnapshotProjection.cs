@@ -1,5 +1,3 @@
-using SurrealDb.Net.Models;
-
 namespace AeroDB;
 
 /// <summary>
@@ -7,7 +5,7 @@ namespace AeroDB;
 /// Event handlers are convention-based: <c>Apply(EventType)</c> or <c>When(EventType)</c> methods
 /// on the aggregate itself.
 /// </summary>
-public class SnapshotProjection<T> : EventProjection<T> where T : Record, new()
+public class SnapshotProjection<T> : EventProjection<T> where T : class, new()
 {
     private readonly Type[] _eventTypes;
 
@@ -39,7 +37,11 @@ public class SnapshotProjection<T> : EventProjection<T> where T : Record, new()
     public override Type[] EventTypes => _eventTypes;
 
     /// <inheritdoc />
-    public override ProjectionLifecycle Lifecycle => Options.Lifecycle;
+    public override ProjectionLifecycle Lifecycle
+    {
+        get => Options.Lifecycle;
+        set => Options.Lifecycle = value;
+    }
 
     /// <inheritdoc />
     protected override object GetDocumentId(IReadOnlyList<object> events)

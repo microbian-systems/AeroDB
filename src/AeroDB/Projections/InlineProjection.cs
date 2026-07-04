@@ -12,10 +12,12 @@ namespace AeroDB;
 /// Base class for projections that run inline during <c>SaveChangesAsync</c>.
 /// Subclasses define which event types trigger them and how to build the projected document.
 /// </summary>
-/// <typeparam name="T">The projected document type (must extend <see cref="Record"/>).</typeparam>
-public abstract class InlineProjection<T> : IProjection, ILoggableProjection where T : Record
+/// <typeparam name="T">The projected document type (can be a <see cref="Record"/> subclass or a POCO with configured identity).</typeparam>
+public abstract class InlineProjection<T> : IProjection, ILoggableProjection where T : class
 {
     private ILogger _logger;
+    private bool IsPoco => _identityProperty is not null;
+    private System.Reflection.PropertyInfo? _identityProperty;
 
     /// <summary>
     /// Logger for this projection. Uses <c>NullLogger{T}</c> by default
@@ -36,6 +38,11 @@ public abstract class InlineProjection<T> : IProjection, ILoggableProjection whe
     protected InlineProjection()
     {
         _logger = NullLogger<InlineProjection<T>>.Instance;
+        // Detect POCO identity: if T does not inherit Record, look for an "Id" property
+        // that will be used as the document identity instead of Record.Id.
+        _identityProperty = typeof(Record).IsAssignableFrom(typeof(T))
+            ? null
+            : typeof(T).GetProperty("Id", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public);
     }
 
     /// <summary>
@@ -47,7 +54,7 @@ public abstract class InlineProjection<T> : IProjection, ILoggableProjection whe
             ?? NullLogger<InlineProjection<T>>.Instance;
     }
 
-    public virtual ProjectionLifecycle Lifecycle => ProjectionLifecycle.Inline;
+    public virtual ProjectionLifecycle Lifecycle { get; set; } = ProjectionLifecycle.Inline;
 
     /// <summary>
     /// Projection name for identification in logs and progress tracking.
@@ -90,6 +97,19 @@ public abstract class InlineProjection<T> : IProjection, ILoggableProjection whe
             {
                 aggregate = await context.Session.LoadAsync<T>(id, ct).ConfigureAwait(false);
             }
+            else if (docId is int intId)
+            {
+                // Use string-based loading for POCOs (projections store with string record IDs)
+                aggregate = await context.Session.LoadAsync<T>(intId.ToString(), ct).ConfigureAwait(false);
+            }
+            else if (docId is long longId)
+            {
+                aggregate = await context.Session.LoadAsync<T>(longId.ToString(), ct).ConfigureAwait(false);
+            }
+            else if (docId is Guid guidId)
+            {
+                aggregate = await context.Session.LoadAsync<T>(guidId.ToString("D"), ct).ConfigureAwait(false);
+            }
         }
         catch
         {
@@ -123,19 +143,32 @@ public abstract class InlineProjection<T> : IProjection, ILoggableProjection whe
 
         if (result is not null)
         {
-            // Preserve existing Id from aggregate, or set from docId for a new document.
-            if (aggregate?.Id is not null)
+            if (IsPoco)
             {
-                result.Id = aggregate.Id;
+                // For POCOs, set the identity property directly (e.g., long Id)
+                SetPocoIdentity(result, docId);
+                _logger.LogDebug("Inline projection stored POCO result for {Type} with identity={Id}",
+                    typeof(T).Name, _identityProperty?.GetValue(result));
             }
-            else if (docId is string s && !string.IsNullOrEmpty(s))
+            else
             {
-                result.Id = new RecordIdOf<string>(tableName, s);
+                // Non-POCO: T is a Record subclass — cast through Record to access Id.
+                var recResult = (Record)(object)result!;
+                var recAggregate = (Record?)(object?)aggregate;
+                if (recAggregate?.Id is not null)
+                {
+                    recResult.Id = recAggregate.Id;
+                }
+                else if (docId is string s && !string.IsNullOrEmpty(s))
+                {
+                    recResult.Id = new RecordIdOf<string>(tableName, s);
+                }
+
+                _logger.LogDebug("Inline projection stored result for {Type} with id={Id}",
+                    typeof(T).Name, recResult.Id);
             }
 
             context.Session.Store(result);
-            _logger.LogDebug("Inline projection stored result for {Type} with id={Id}",
-                typeof(T).Name, result.Id);
         }
         else if (aggregate is not null)
         {
@@ -175,6 +208,33 @@ public abstract class InlineProjection<T> : IProjection, ILoggableProjection whe
         _evolveOverridden = baseMethod != null && thisMethod != null
             && thisMethod.DeclaringType == GetType();
         return _evolveOverridden.Value;
+    }
+
+    /// <summary>
+    /// Sets the identity property on a POCO result from the document ID extracted from events.
+    /// Handles type conversion (string, Guid, int, long, ulong, short) to match the target property type.
+    /// </summary>
+    private void SetPocoIdentity(T result, object docId)
+    {
+        if (_identityProperty is null || docId is null) return;
+
+        var targetType = _identityProperty.PropertyType;
+        object? typedId = docId switch
+        {
+            string s when targetType == typeof(Guid) => Guid.Parse(s),
+            string s when targetType == typeof(int) => int.Parse(s),
+            string s when targetType == typeof(long) => long.Parse(s),
+            string s when targetType == typeof(ulong) => ulong.Parse(s),
+            string s when targetType == typeof(short) => short.Parse(s),
+            string s => s,
+            Guid g when targetType == typeof(Guid) => g,
+            int i when targetType == typeof(int) => i,
+            long l when targetType == typeof(long) => l,
+            _ => docId
+        };
+
+        if (typedId is not null)
+            _identityProperty.SetValue(result, typedId);
     }
 
     /// <summary>
@@ -279,7 +339,10 @@ public abstract class InlineProjection<T> : IProjection, ILoggableProjection whe
                 var docId = GetDocumentId(events.AsReadOnly());
                 if (docId is string id && !string.IsNullOrEmpty(id))
                 {
-                    result.Id = new RecordIdOf<string>(tableName, id);
+                    if (IsPoco)
+                        SetPocoIdentity(result, id);
+                    else
+                        ((Record)(object)result).Id = new RecordIdOf<string>(tableName, id);
                 }
                 session.Store(result);
                 totalStreams++;

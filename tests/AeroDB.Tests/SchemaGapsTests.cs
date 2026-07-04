@@ -484,7 +484,7 @@ public class TestEventType
 public class InlineTestProjection : IProjection
 {
     public string Name => GetType().Name;
-    public ProjectionLifecycle Lifecycle => ProjectionLifecycle.Inline;
+    public ProjectionLifecycle Lifecycle { get; set; } = ProjectionLifecycle.Inline;
     public Type[] EventTypes => [typeof(TestEventType)];
     public Task ApplyAsync(IProjectionContext context, CancellationToken ct) => Task.CompletedTask;
     public Task RebuildAsync(IDocumentSession session, CancellationToken ct) => Task.CompletedTask;
@@ -493,7 +493,7 @@ public class InlineTestProjection : IProjection
 public class AsyncTestProjection : IProjection
 {
     public string Name => GetType().Name;
-    public ProjectionLifecycle Lifecycle => ProjectionLifecycle.Async;
+    public ProjectionLifecycle Lifecycle { get; set; } = ProjectionLifecycle.Async;
     public Type[] EventTypes => [typeof(TestEventType)];
     public Task ApplyAsync(IProjectionContext context, CancellationToken ct) => Task.CompletedTask;
     public Task RebuildAsync(IDocumentSession session, CancellationToken ct) => Task.CompletedTask;
@@ -502,7 +502,7 @@ public class AsyncTestProjection : IProjection
 public class LiveTestProjection : IProjection
 {
     public string Name => GetType().Name;
-    public ProjectionLifecycle Lifecycle => ProjectionLifecycle.Live;
+    public ProjectionLifecycle Lifecycle { get; set; } = ProjectionLifecycle.Live;
     public Type[] EventTypes => [typeof(TestEventType)];
     public Task ApplyAsync(IProjectionContext context, CancellationToken ct) => Task.CompletedTask;
     public Task RebuildAsync(IDocumentSession session, CancellationToken ct) => Task.CompletedTask;

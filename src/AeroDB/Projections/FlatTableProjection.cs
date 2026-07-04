@@ -38,7 +38,11 @@ public class FlatTableProjection<TDoc, TId> : IProjection
     public Type[] EventTypes => _mappings.Select(m => m.EventType).Distinct().ToArray();
 
     /// <inheritdoc />
-    public ProjectionLifecycle Lifecycle => _lifecycle;
+    public ProjectionLifecycle Lifecycle
+    {
+        get => _lifecycle;
+        set => _lifecycle = value;
+    }
 
     /// <summary>
     /// Set the projection lifecycle. Default is <see cref="ProjectionLifecycle.Inline"/>.

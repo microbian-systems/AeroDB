@@ -1,5 +1,3 @@
-using SurrealDb.Net.Models;
-
 namespace AeroDB;
 
 /// <summary>
@@ -7,8 +5,8 @@ namespace AeroDB;
 /// The document identity is defined by the subclass (e.g., from a correlation ID
 /// shared across streams).
 /// </summary>
-/// <typeparam name="T">The projected document type (must extend <see cref="Record"/>).</typeparam>
-public abstract class MultiStreamProjection<T> : InlineProjection<T> where T : Record
+/// <typeparam name="T">The projected document type.</typeparam>
+public abstract class MultiStreamProjection<T> : InlineProjection<T> where T : class
 {
     private Func<IQuerySession, IReadOnlyList<IEvent>, CancellationToken, Task<IEventGrouping<object>>>? _customGrouper;
 

@@ -1,7 +1,7 @@
 namespace AeroDB;
 
 /// <summary>
-/// Context passed to <see cref="IProjection.ApplyAsync"/> — provides access
+/// Context passed to <see cref="IProjection.ApplyAsync(AeroDB.IProjectionContext, System.Threading.CancellationToken)"/> — provides access
 /// to the current document session and the events that triggered the projection.
 /// </summary>
 public interface IProjectionContext

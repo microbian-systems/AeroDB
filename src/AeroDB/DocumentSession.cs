@@ -1064,10 +1064,18 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                                     {
                                         var entityId = GetEntityId(op.Entity);
 
-                                        if (!string.IsNullOrEmpty(entityId) && op.Entity is IRecord record)
+                                            if (!string.IsNullOrEmpty(entityId) && op.Entity is IRecord record)
                                         {
                                             var rid = new RecordIdOf<string>(table, entityId);
                                             await UpsertRecordAsync(record, rid, targetSession, ct).ConfigureAwait(false);
+                                        }
+                                        else if (!string.IsNullOrEmpty(entityId))
+                                        {
+                                            // POCO projection with explicit identity — use MERGE to upsert
+                                            await targetSession.RawQuery(
+                                                $"UPSERT {table}:`{entityId}` MERGE $data",
+                                                new Dictionary<string, object?> { ["data"] = op.Entity },
+                                                ct).ConfigureAwait(false);
                                         }
                                         else
                                         {

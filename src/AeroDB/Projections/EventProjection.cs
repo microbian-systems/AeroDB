@@ -1,5 +1,4 @@
 using Microsoft.Extensions.Logging;
-using SurrealDb.Net.Models;
 
 namespace AeroDB;
 
@@ -10,8 +9,8 @@ namespace AeroDB;
 /// <c>ShouldDelete(EventType, T, IEvent&lt;EventType&gt;, CancellationToken)</c>
 /// methods. Dispatch is handled by the source generator or a runtime reflection fallback.
 /// </summary>
-/// <typeparam name="T">The projected document type (must extend <see cref="SurrealDb.Net.Models.Record"/>).</typeparam>
-public abstract partial class EventProjection<T> : InlineProjection<T> where T : Record
+/// <typeparam name="T">The projected document type.</typeparam>
+public abstract partial class EventProjection<T> : InlineProjection<T> where T : class
 {
     /// <summary>
     /// Auto-generated dispatch switch. If the source generator hasn't run (e.g., IDE design-time),

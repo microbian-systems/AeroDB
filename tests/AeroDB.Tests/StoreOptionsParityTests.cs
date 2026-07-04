@@ -302,17 +302,15 @@ public class StoreOptionsParityTests
     }
 
     // ──────────────────────────────────────────────
-    // 8. Old SnapshotsExtensions still works (with Obsolete)
+    // 8. ProjectionCollection.Snapshot<T> registers projection
     // ──────────────────────────────────────────────
 
-#pragma warning disable CS0618 // Type or member is obsolete
     [Test]
-    public void old_SnapshotExtensions_still_registers_projection()
+    public void ProjectionCollection_Snapshot_registers_projection()
     {
         var opts = new StoreOptions();
-        opts.Projections.Snapshot<Person>();
+        opts.Projections.Snapshot<Person>(SnapshotLifecycle.Inline);
 
         opts.Projections.Count.ShouldBe(1);
     }
-#pragma warning restore CS0618
 }

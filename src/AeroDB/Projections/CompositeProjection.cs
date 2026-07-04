@@ -23,7 +23,11 @@ public class CompositeProjection : IProjection
     public Type[] EventTypes => _subProjections.SelectMany(p => p.EventTypes).Distinct().ToArray();
 
     /// <inheritdoc />
-    public ProjectionLifecycle Lifecycle => _lifecycle;
+    public ProjectionLifecycle Lifecycle
+    {
+        get => _lifecycle;
+        set => _lifecycle = value;
+    }
 
     /// <summary>Set the projection lifecycle. Default is Async.</summary>
     public CompositeProjection Life(ProjectionLifecycle lifecycle)

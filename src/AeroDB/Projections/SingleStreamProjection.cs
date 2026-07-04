@@ -1,13 +1,11 @@
-using SurrealDb.Net.Models;
-
 namespace AeroDB;
 
 /// <summary>
 /// Creates/updates one projected document per event stream.
 /// The document identity is derived from the stream ID stored on the first event.
 /// </summary>
-/// <typeparam name="T">The projected document type (must extend <see cref="Record"/>).</typeparam>
-public abstract class SingleStreamProjection<T> : InlineProjection<T> where T : Record
+/// <typeparam name="T">The projected document type.</typeparam>
+public abstract class SingleStreamProjection<T> : InlineProjection<T> where T : class
 {
     /// <summary>
     /// Derives the projected document identity from the stream ID of the first event.

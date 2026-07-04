@@ -15,7 +15,7 @@ public interface IProjection
     /// <summary>
     /// Whether the projection runs inline during SaveChangesAsync or asynchronously.
     /// </summary>
-    ProjectionLifecycle Lifecycle { get; }
+    ProjectionLifecycle Lifecycle { get; set; }
 
     /// <summary>
     /// Apply the projection logic to the given events.
@@ -37,10 +37,17 @@ public interface IProjection
     Task RebuildAsync(IDocumentSession session, CancellationToken ct);
 
     /// <summary>
-    /// Enrichment hook called before <see cref="ApplyAsync"/>. Projections can pre-load
+    /// Enrichment hook called before <see cref="ApplyAsync(IProjectionContext, CancellationToken)"/>. Projections can pre-load
     /// reference data or the aggregate document. Default is no-op.
     /// </summary>
     Task EnrichAsync<T>(IEventSlice<T> slice, CancellationToken ct) => Task.CompletedTask;
+
+    /// <summary>
+    /// Marten-compatible ApplyAsync overload. Accepts raw session + event list
+    /// and delegates to the <see cref="IProjectionContext"/>-based overload.
+    /// </summary>
+    Task ApplyAsync(IDocumentOperations operations, IEnumerable<IEvent> events, CancellationToken ct)
+        => ApplyAsync(new ProjectionContext(operations, events), ct);
 }
 
 /// <summary>

@@ -315,16 +315,48 @@ Also extract for MinimalAPI:
 | `session.Events.WriteToAggregate` | `FetchForWriting` + `AppendOne` | Different API, same semantics |
 | `session.Events.FetchForWriting` | Same | Full parity |
 | `Projections.Add<T>(lifecycle)` | Same | Full parity |
-| `SingleStreamProjection<T>` | Same (after Q1) | AeroDB uses POCO identity instead of stream ID type param |
-| `MultiStreamProjection<T>` | Same (after Q1) | Same |
-| `EventProjection` (base) | `EventProjection<T>` (after Q1) | AeroDB requires generic type param |
-| `IProjection.ApplyAsync` | Same (after Q2 DIM) | DIM overload added |
+| `SingleStreamProjection<T>` | Same | AeroDB uses POCO identity instead of stream ID type param |
+| `MultiStreamProjection<T>` | Same | Same |
+| `EventProjection<T>` | Same | AeroDB requires generic type param (Q1 POCO support enabled) |
+| `IProjection.ApplyAsync` | Same | DIM overload added |
 | `CombGuidIdGeneration.NewGuid()` | `Guid.NewGuid()` | AeroDB handles Guids natively |
 | `EnumStorage.AsString` | Default behavior | AeroDB STJ serializes enums as strings |
-| `Marten.Pagination.ToPagedListAsync` | `AeroDB.Pagination.ToPagedListAsync` | Same extension method, different namespace |
+| `Marten.Pagination.ToPagedListAsync` | `AeroDB.Pagination.ToPagedListAsync` | Same extension method, different namespace — **full pagination support** |
+| `LiveStreamAggregation<T>` | Same | AeroDB fully supports live stream aggregation |
+| `Projections.Snapshot<T>` | Same | AeroDB has `SnapshotProjection` (POCO-enabled via Q1) |
 | `Json.WriteById<T>` / `WriteArray` | Same (AeroDB Http extensions) | Same API surface |
 | `ApplyJasperFxExtensions` | **Remove** | CLI tooling only |
 | `RunJasperFxCommands` | `app.RunAsync()` | Standard ASP.NET startup |
+
+---
+
+## Reference Sample
+
+**CryptoTrader** (`samples/CryptoTrader/`) is the reference implementation — already ported to AeroDB + WolverineFx. Use it as the canonical pattern for porting:
+
+- **Project references**: `AeroDB.csproj` + `AeroDB.WolverineFx.csproj`
+- **Store bootstrap**: `Documents.For(o => { o.ClientFactory = () => new SurrealDbKvClient(); ... })`
+- **Event sourcing**: `session.Events.StartStream(id, events)`, `session.Events.Append(id, events)`, `session.Events.AggregateStreamAsync<T>(id)`
+- **Graph**: `session.Graph<TNode>()` with Out/In/Both, `session.Relate<TEdge>(from, to, edge)`
+- **Wolverine integration**: `Host.CreateDefaultBuilder().UseWolverine(opts => ...)` with `AeroDBMessageStore`, `AeroDBOutboxedSessionFactory`, `AeroDBIntegration`
+- **Wolverine sagas**: `TradeSaga` shows Wolverine saga pattern with AeroDB persistence
+- **Side effects**: `IAeroDBOp` (`AeroDBOps.Store<T>()`, `AeroDBOps.Delete<T>()`, `AeroDBOps.Insert<T>()`) for outbox-safe writes
+
+## Wolverine Integration
+
+AeroDB ships `AeroDB.WolverineFx` — a full Marten-parity Wolverine bridge. For samples that use Wolverine (CryptoTrader, Helpdesk), the integration pattern is:
+
+| Marten | AeroDB |
+|--------|--------|
+| `opts.Services.AddMartenStore<IMessageStore>(...)` | Register `AeroDBMessageStore` as singleton + `IMessageStore` resolution |
+| `opts.Services.AddMartenStore<IEventStore>(...)` | Not needed — events are on `IDocumentStore.Events` |
+| `Marten.Persistence.OutboxedSessionFactory` | `AeroDBOutboxedSessionFactory` |
+| `Marten.Persistence.MartenEventForwarding` | `AeroDBEventForwarding` |
+| `IWolverineExtension` | `new AeroDBIntegration()` registered as singleton |
+| `MartenSagaStorage` | `AeroDBSagaStorage<TId, TSaga>` |
+| `MartenMessageStore` | `AeroDBMessageStore` (inbox, outbox, dead letters, scheduled messages, admin) |
+
+See the CryptoTrader sample and `src/AeroDB.WolverineFx/` for implementation details.
 
 ---
 
@@ -350,3 +382,55 @@ Phase 5 (Helpdesk) -- validates full CQRS/ES + custom projections + tests
 ```
 
 Each phase depends on all previous phases succeeding. Start Phase 0 only after Q1 and Q2 library changes are complete and tested.
+
+---
+
+## Porting Checklist
+
+For each sample app:
+
+- [ ] `csproj`: Marten references removed, AeroDB project references added
+- [ ] `Program.cs`/entry point: `DocumentStore.For()` → `Documents.For()` + `InitializeAsync()`
+- [ ] Connection config: Postgres connection string → SurrealDB endpoint + InMemory fallback
+- [ ] Event sourcing: `StartStream/Append/AggregateStreamAsync/FetchForWriting` adapted
+- [ ] Projections: `SingleStreamProjection<T>` / `MultiStreamProjection<T>` / `EventProjection<T>` → AeroDB equivalents (POCOs supported)
+- [ ] Sessions: sync → async (`LightweightSession()` → `await LightweightSessionAsync()`)
+- [ ] DI registration: `AddMarten()` → `AddAeroDB()`
+- [ ] `app.RunJasperFxCommands(args)` → `app.RunAsync()`
+- [ ] `builder.Host.ApplyJasperFxExtensions()` → remove
+- [ ] Remove `DaemonTests` references — use extracted AeroDB.Samples.Shared types
+- [ ] Test projects: `FluentAssertions` → `Shouldly` (per conventions)
+- [ ] Verify: compile + run with `SurrealDbKvClient` (dev) and SurrealDB Docker (integration)
+
+## Docker for Integration Testing
+
+The Helpdesk sample has its own `docker-compose.yml` at `samples/Helpdesk/docker-compose.yml`. During porting:
+
+| Service | Purpose | Porting Action |
+|---------|---------|---------------|
+| **Postgres** (plv8) | Marten database | Remove — replace with SurrealDB |
+| **pgadmin** | Postgres admin | Remove — not needed |
+| **Zookeeper** | Kafka coordination | Keep |
+| **Kafka** | Message bus for projection | Keep |
+| **Schema Registry** | Avro schema | Keep |
+| **Kafka REST** | Kafka HTTP proxy | Keep |
+| **Kafka Topics UI** | Kafka management UI | Keep |
+
+Replace the Postgres service with:
+```yaml
+surrealdb:
+  image: surrealdb/surrealdb:latest
+  ports:
+    - "8000:8000"
+  command: start --log trace --user root --pass root rocksdb:/data/database.db
+```
+
+Other samples (EventSourcingIntro, DocSamples, MinimalAPI, AspireHeadlessTripService) use `SurrealDbKvClient` (embedded, no Docker needed).
+
+## Non-Goals
+
+- Marten's `IInitialData` seeding — use AeroDB bootstrapping instead
+- Marten's `IDocumentSessionListener` — use Wolverine middleware or `IDocumentSession` callbacks
+- Marten's patch/partial update API — AeroDB uses full document replacement
+- Marten's compiled query feature — AeroDB uses `ICompiledQuery` with SurrealQL
+- Marten's `MetadataColumn` and table partitioning — not applicable to SurrealDB
