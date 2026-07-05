@@ -1,6 +1,4 @@
-using Marten.Events;
-using Marten.Events.Projections;
-using Marten.Schema.Identity;
+using AeroDB;
 
 namespace Helpdesk.Api.Incidents.GetIncidentHistory;
 

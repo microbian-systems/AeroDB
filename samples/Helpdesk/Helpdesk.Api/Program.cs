@@ -8,18 +8,11 @@ using Helpdesk.Api.Incidents.GetCustomerIncidentsSummary;
 using Helpdesk.Api.Incidents.GetIncidentDetails;
 using Helpdesk.Api.Incidents.GetIncidentHistory;
 using Helpdesk.Api.Incidents.GetIncidentShortInfo;
+using AeroDB;
 using JasperFx.CodeGeneration;
-using Marten;
-using Marten.AspNetCore;
-using Marten.Events.Daemon.Resiliency;
-using Marten.Events.Projections;
-using Marten.Pagination;
-using Marten.Schema.Identity;
-using Marten.Services.Json;
+using JasperFx.Events.Daemon;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
-using JasperFx;
-using Weasel.Core;
 using static Microsoft.AspNetCore.Http.TypedResults;
 using static Helpdesk.Api.Incidents.IncidentService;
 using static Helpdesk.Api.Core.Http.ETagExtensions;
@@ -32,7 +25,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services
     .AddEndpointsApiExplorer()
     .AddSwaggerGen()
-    .AddMarten(sp =>
+    .AddAeroDB(sp =>
     {
         var options = new StoreOptions();
 

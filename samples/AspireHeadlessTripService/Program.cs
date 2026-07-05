@@ -1,14 +1,10 @@
-﻿using DaemonTests;
-using DaemonTests.TestingSupport;
-using EventSourcingTests.Projections;
-using Marten;
-using Marten.Events.Daemon.Resiliency;
-using Marten.Events.Projections;
-using Marten.Testing.Harness;
+﻿using AeroDB;
+using AeroDB.Samples.Shared;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using OpenTelemetry;
+using SurrealDb.Embedded.SurrealKv;
 
 var builder = Host.CreateApplicationBuilder();
 
@@ -30,23 +26,27 @@ builder.Services.AddOpenTelemetry().UseOtlpExporter();
 builder.Services.AddOpenTelemetry()
     .WithTracing(tracing =>
     {
-        tracing.AddSource("Marten");
+        tracing.AddSource("AeroDB");
     })
     .WithMetrics(metrics =>
     {
-        metrics.AddMeter("Marten");
+        metrics.AddMeter("AeroDB");
     });
 
 #endregion
 
-builder.Services.AddMarten(opts =>
+// Create AeroDB store and register
+var store = Documents.For(opts =>
 {
-    opts.DatabaseSchemaName = "cli";
+    opts.ClientFactory = () => new SurrealDbKvClient("aspiresservice");
+    opts.Namespace = "cli";
+    opts.Database = "cli";
 
-    opts.MultiTenantedWithSingleServer(
-        ConnectionSource.ConnectionString,
-        t => t.WithTenants("tenant1", "tenant2", "tenant3")
-    );
+    // Multi-tenancy: Conjoined (tenant_id field within a single database)
+    opts.TenancyStyle = TenancyStyle.Conjoined;
+
+    // Enable event sourcing for projections
+    opts.Events.Enabled = true;
 
     // Register all event store projections ahead of time
     opts.Projections
@@ -57,8 +57,15 @@ builder.Services.AddMarten(opts =>
 
     opts.Projections
         .Add(new DistanceProjection(), ProjectionLifecycle.Async);
+});
+await store.InitializeAsync();
 
+builder.Services.AddSingleton<IDocumentStore>(store);
 
-}).AddAsyncDaemon(DaemonMode.Solo);
+// Manually register the projection coordinator for daemon lifecycle management
+builder.Services.AddSingleton<IProjectionCoordinator>(sp =>
+    new ProjectionCoordinator(sp.GetRequiredService<IDocumentStore>()));
+builder.Services.AddSingleton<IHostedService>(sp =>
+    sp.GetRequiredService<IProjectionCoordinator>());
 
 await builder.Build().RunAsync();

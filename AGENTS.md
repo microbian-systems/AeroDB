@@ -1,4 +1,4 @@
-# Dali.SurrealDb.EfCore Project Guidelines
+# AeroDB.SurrealDb.EfCore Project Guidelines
 
 ## Tech Stack
 - **Backend framework**: .net core (.net 10+)

@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Description>EF Core bridge for AeroDB — coordinated transactions between SurrealDB (AeroDB) and Entity Framework Core</Description>
+    <PackageTags>surrealdb documentdb efcore bridge</PackageTags>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AeroDB\AeroDB.csproj" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" />
+  </ItemGroup>
+</Project>

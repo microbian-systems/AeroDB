@@ -1,4 +1,4 @@
-using Marten.Events.Aggregation;
+using AeroDB;
 
 namespace Helpdesk.Api.Incidents.GetIncidentDetails;
 
