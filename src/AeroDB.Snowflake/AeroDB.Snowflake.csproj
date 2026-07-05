@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>Snowflake ID generator for AeroDB — wraps Aero.Core's Snowflake.NewId() for unique, time-sortable long primary keys.</Description>
+    <PackageTags>surrealdb AeroDB snowflake idgen</PackageTags>
+    <!-- NU1903: Newtonsoft.Json 10.0.2 vulnerability is transitive through Aero.Core → WindowsAzure.Storage.
+         We don't use Newtonsoft.Json or WindowsAzure.Storage directly. -->
+    <NoWarn>$(NoWarn);NU1903</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AeroDB\AeroDB.csproj" />
+    <PackageReference Include="Aero.Core" />
+  </ItemGroup>
+
+</Project>

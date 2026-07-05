@@ -25,10 +25,10 @@ jobs:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
       - name: Restore
-        run: dotnet restore src/Dali.slnx
+        run: dotnet restore src/AeroDB.slnx
 
       - name: Build
-        run: dotnet build src/Dali.slnx --configuration Release --no-restore
+        run: dotnet build src/AeroDB.slnx --configuration Release --no-restore
 
       - name: Test
-        run: dotnet run --project tests/Dali.Tests/Dali.Tests.csproj --configuration Release -- --reflection --no-progress --fail-fast
+        run: dotnet run --project tests/AeroDB.Tests/AeroDB.Tests.csproj --configuration Release -- --reflection --no-progress --fail-fast

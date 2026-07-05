@@ -1,0 +1,39 @@
+<Solution>
+  <Project Path="AeroDB.AspNetIdentity/AeroDB.AspNetIdentity.csproj" />
+  <Project Path="AeroDB.EntityFrameworkCore/AeroDB.EntityFrameworkCore.csproj" />
+  <Project Path="AeroDB.Reactive/AeroDB.Reactive.csproj" />
+  <Project Path="AeroDB.Snowflake/AeroDB.Snowflake.csproj" />
+  <Project Path="AeroDB.SourceGenerators/AeroDB.SourceGenerators.csproj" />
+  <Project Path="AeroDB.WolverineFx/AeroDB.WolverineFx.csproj" />
+  <Project Path="AeroDB/AeroDB.csproj" />
+  <Folder Name="/Samples/">
+    <Project Path="../samples/AeroDbIdentity/AeroDbIdentity.csproj" />
+    <Project Path="..\samples\CryptoTrader\CryptoTrader.csproj" />
+    <Project Path="..\samples\WikipediaSearch\WikipediaSearch.csproj" />
+  </Folder>
+  <Folder Name="/Tests/">
+    <Project Path="../tests/AeroDB.IntegrationTests/AeroDB.IntegrationTests.csproj" />
+    <Project Path="../tests/AeroDB.AspNetIdentity.Tests/AeroDB.AspNetIdentity.Tests.csproj" />
+    <Project Path="../tests/AeroDB.Tests/AeroDB.Tests.csproj" />
+  </Folder>
+  <Folder Name="/__Misc__/">
+    <File Path="../.gitignore" />
+    <File Path="../AGENTS.md" />
+    <File Path="../build/nuget-pack.ps1" />
+    <File Path="../build/nuget-publish.ps1" />
+    <File Path="../CONTRIBUTING.md" />
+    <File Path="../global.json" />
+    <File Path="../LICENSE" />
+    <File Path="../NOTICE" />
+    <File Path="../opencode.http" />
+    <File Path="../push.ps1" />
+    <File Path="../README.md" />
+    <File Path=".editorconfig" />
+    <File Path="clean.cs" />
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
+    <File Path="global.json" />
+    <File Path="submod.cs" />
+    <File Path="upgrade.cs" />
+  </Folder>
+</Solution>

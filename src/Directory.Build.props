@@ -15,17 +15,17 @@
 	</PropertyGroup>
 
 	<PropertyGroup Label="Package information">
-		<VersionPrefix>0.0.7.2</VersionPrefix>
+		<VersionPrefix>0.0.5</VersionPrefix>
 		<VersionSuffix>alpha</VersionSuffix>
 		<Authors>Microbians</Authors>
 		<Company>Microbian Systems</Company>
-		<Copyright>Copyright (c) 2025 Microbians</Copyright>
+		<Copyright>Copyright (c) 2026 Microbians</Copyright>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
-		<PackageTags>surrealdb document-database event-sourcing orm efcore</PackageTags>
+		<PackageTags>surrealdb document-database event-sourcing nosql orm efcore</PackageTags>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<PackageIcon>logo.png</PackageIcon>
-		<PackageProjectUrl>https://github.com/microbian-systems/Dali</PackageProjectUrl>
-		<RepositoryUrl>https://github.com/microbian-systems/Dali</RepositoryUrl>
+		<PackageIcon>aero-logo-new.png</PackageIcon>
+		<PackageProjectUrl>https://github.com/microbian-systems/AeroDB</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/microbian-systems/AeroDB</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
 		<PublishRepositoryUrl>true</PublishRepositoryUrl>
 		<IncludeSymbols>true</IncludeSymbols>
@@ -33,11 +33,6 @@
 		<EmbedUntrackedSources>true</EmbedUntrackedSources>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 	</PropertyGroup>
-
-	<ItemGroup Condition="'$(MSBuildProjectName)' != 'Aero.Cms.Web.Core' AND '$(MSBuildProjectName)' != 'Aero.Cms.Core' AND '$(MSBuildProjectName)' != 'Aero.Cms.Modules.Modules' AND ($(MSBuildProjectName.StartsWith('Aero.Cms.Modules')) OR $(MSBuildProjectName.StartsWith('Aero.Cms.Banners')) OR $(MSBuildProjectName.StartsWith('Aero.Cms.CookiePolicy')))">
-		<ProjectReference Include="$(MSBuildThisFileDirectory)Aero.Cms.Web.Core\Aero.Cms.Web.Core.csproj" />
-	</ItemGroup>
-
 
 	<!--
     Source Generator & Analyzer: Wire Aero.Cms.SourceGenerators to every project
@@ -48,7 +43,7 @@
     - HostModuleCatalogGenerator: activates when ModuleManifestProviderAttribute assembly
       attributes are detected on referenced assemblies (naturally only in Aero.Cms.Web)
   -->
-	<!-- ItemGroup Condition="'$(MSBuildProjectName)' != 'Aero.Cms.SourceGenerators' AND '$(MSBuildProjectName)' != 'Dali.SourceGenerators' AND '$(MSBuildProjectName)' != 'Dali' AND '$(MSBuildProjectName)' != 'Dali.WolverineFx' AND '$(MSBuildProjectName)' != 'Dali.AspNetIdentity' AND '$(MSBuildProjectName)' != 'Dali.EntityFrameworkCore' AND '$(MSBuildProjectName)' != 'Dali.Tests'">
+	<!-- ItemGroup Condition="'$(MSBuildProjectName)' != 'Aero.Cms.SourceGenerators' AND '$(MSBuildProjectName)' != 'AeroDB.SourceGenerators' AND '$(MSBuildProjectName)' != 'AeroDB' AND '$(MSBuildProjectName)' != 'AeroDB.WolverineFx' AND '$(MSBuildProjectName)' != 'AeroDB.AspNetIdentity' AND '$(MSBuildProjectName)' != 'AeroDB.EntityFrameworkCore' AND '$(MSBuildProjectName)' != 'AeroDB.Tests'">
 		<ProjectReference Include="$(MSBuildThisFileDirectory)Aero.Cms.SourceGenerators\Aero.Cms.SourceGenerators.csproj"
 			OutputItemType="Analyzer"
 			ReferenceOutputAssembly="false" />
@@ -56,7 +51,7 @@
 
 	<ItemGroup>
 		<!-- Package icon and README: included explicitly so dotnet pack finds them -->
-		<None Include="../../assets/logo.png" Pack="true" PackagePath="/" Visible="false" />
+		<None Include="../../assets/aero-logo-new.png" Pack="true" PackagePath="/" Visible="false" />
 		<None Include="../../README.md" Pack="true" PackagePath="/" Visible="false" />
 	</ItemGroup>
 </Project>

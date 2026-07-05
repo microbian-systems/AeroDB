@@ -110,7 +110,7 @@ Audit of Marten's API surface (from docs/marten-llms-full.txt) and SurrealDB bui
 
 ---
 
-## 🟡 Major Gaps (#11-#30)
+## 🟡 Major Gaps (#11-#69)
 
 ### 11. Event causation (Headers) ✅ RESOLVED (Phase 8)
 
@@ -432,6 +432,52 @@ Audit of Marten's API surface (from docs/marten-llms-full.txt) and SurrealDB bui
 
 ---
 
+### 65. `SingleStreamProjection<TDoc, TId>` — 2 type parameters
+
+**Marten**: `public abstract class SingleStreamProjection<TDoc, TId>` — typed stream identity (Guid, string, int, etc.). Convention-based `static Create(EventType)` / `Apply(EventType, TDoc)` dispatch.
+
+**AeroDB**: Only has `SingleStreamProjection<T> where T : class` (1 type parameter). No typed identity, no static Create/Apply dispatch in this class.
+
+**Impact**: DocSamples `QuestProjection : SingleStreamProjection<Quest, Guid>` cannot compile. Also affects any sample that needs typed stream identity.
+
+**Resolution**: Add new `SingleStreamProjection<TDoc, TId> : InlineProjection<TDoc>` with dual-mode dispatch (static Marten conventions + instance AeroDB conventions). Typed `GetDocumentIdTyped()` and reflection-based Create/Apply/ShouldDelete dispatch. Keep existing 1-param class for backward compat.
+
+**Files affected**: `src/AeroDB/Projections/SingleStreamProjection.cs` (new file for 2-param variant)
+
+---
+
+### 66. Non-generic `EventProjection` base class
+
+**Marten**: `public abstract class EventProjection` — non-generic, subclasses override `ApplyAsync(IDocumentOperations operations, IEvent e, CancellationToken)`. No aggregate document type.
+
+**AeroDB**: Only has `EventProjection<T> where T : class` (generic, requires aggregate document type).
+
+**Impact**: DocSamples `MySpecialProjection : EventProjection` cannot compile. Also affects any custom projection that wants direct `IDocumentOperations` access without a typed aggregate.
+
+**Resolution**: Add non-generic `EventProjection : IProjection` with virtual `ApplyAsync(IDocumentOperations, IEvent, CancellationToken)`. Its `IProjection.ApplyAsync(IProjectionContext, CancellationToken)` implementation iterates `context.TypedEvents` and calls the virtual method per event. Existing `EventProjection<T>` unchanged.
+
+**Files affected**: New file `src/AeroDB/Projections/EventProjectionBase.cs`
+
+---
+
+### 67. Missing `ProjectionCollection` fluent API (Add<T>/Snapshot/LiveStreamAggregation)
+
+**Marten**: `StoreOptions.Projections` is a rich `ProjectionOptions` class with fluent methods:
+- `Add<T>(ProjectionLifecycle)` — register typed projection with lifecycle
+- `Add(instance, ProjectionLifecycle)` — register projection instance with lifecycle
+- `Snapshot<T>(SnapshotLifecycle)` — self-aggregating snapshot
+- `LiveStreamAggregation<T>()` — read-side only aggregation
+
+**AeroDB**: `StoreOptions.Projections` is `List<IProjection>` — raw list, no fluent methods.
+
+**Impact**: DocSamples `RegisteringProjections.cs` uses `opts.Projections.Add<MySpecialProjection>(ProjectionLifecycle.Live)`, `opts.Projections.Snapshot<QuestParty>(...)`, `opts.Projections.LiveStreamAggregation<QuestParty>()`. None compile against AeroDB.
+
+**Resolution**: Create `ProjectionCollection : IList<IProjection>` class with all 4 fluent methods. Change `StoreOptions.Projections` type to `ProjectionCollection`. Add `internal set;` to `IProjection.Lifecycle` so lifecycle can be assigned from the collection methods.
+
+**Files affected**: New `src/AeroDB/Projections/ProjectionCollection.cs`, modify `src/AeroDB/Projections/IProjection.cs`, modify `src/AeroDB/StoreOptions.cs`
+
+---
+
 ## 🟢 Minor Gaps
 
 | # | Gap | Marten | Dali |
@@ -555,18 +601,19 @@ The following areas lack robust tests and need dedicated test suites:
 
 | Field | Value |
 |-------|-------|
-| **Document** | Marten vs Dali API Gap Analysis |
+| **Document** | AeroDB Gap Analysis (Marten → AeroDB API parity) |
 | **Created** | 2026-06-28 |
-| **Last updated** | 2026-06-29 |
-| **Audit scope** | Marten docs (`docs/marten-llms-full.txt`) + SurrealDB MCP (built-in functions) vs Dali (`src/Dali/`) |
-| **Audit version** | Dali main branch, commit HEAD |
-| **Total gaps identified** | 64 (10 Critical, 32 Major, 22 Minor) |
-| **Gaps resolved** | 62 (#26 Projection sharding, #27 IAggregateGrouper, #28 Composite projections, plus prior 59) |
+| **Last updated** | 2026-07-04 |
+| **Audit source** | Marten `marten/` submodule samples vs AeroDB `src/AeroDB/` |
+| **Project** | AeroDB (formerly Dali) |
+| **Total gaps identified** | 69 (10 Critical, 35 Major, 22 Minor) |
+| **Gaps resolved** | 62 |
 | **Critical remaining** | **0** |
-| **Completion** | 97% (62/64). 2 deferred: #18 JS transforms (v1.1+, SurrealDB JAVASCRIPT functions) |
-| **Milestone** | **Dali v1.0 — all Critical + Major + Minor gaps resolved. 1 architectural deferred to v1.1.** |
+| **Major remaining** | 3 (new from Marten sample port: #65-67) |
+| **Completion** | 90% (62/69). 5 deferred. |
+| **Milestone** | **AeroDB v1.0 — Marten sample port gaps pending (#65-67)** |
 | **At parity** | 24 areas confirmed implemented |
-| **Next review** | TBD — after any gaps marked completed |
+| **Next review** | After #65-67 resolved — when DocSamples compiles |
 
 ---
 
@@ -686,3 +733,9 @@ Dali's functions are simpler: `MethodCallExpression` → `string` (SurrealQL fra
 | Projection sharding (Phase 18) | #26 | AsyncDaemon refactored to per-shard workers with independent health/watermark tracking |
 | Custom groupers (Phase 18) | #27 | IAggregateGrouper&lt;TId&gt;, IEventGrouping&lt;TId&gt;, EventGrouping&lt;TId&gt;, CustomGrouping on MultiStreamProjection |
 | Composite projections (Phase 18) | #28 | CompositeProjection class with Add/Life fluent API; auto-registration in DocumentStore |
+| POCO projection support (Q1) | — | Relaxed `T : Record` → `T : class` across all 5 projection base classes; added POCO identity detection and `SetPocoIdentity()` helper with type conversion (Guid/int/long/string) |
+| IProjection Marten DIM overload (Q2) | — | Added `ApplyAsync(IDocumentOperations, IEnumerable<IEvent>, CancellationToken)` as default interface method on `IProjection` |
+| POCO projection test suite (Q3) | — | 10/10 tests covering SingleStream, MultiStream, Event, Snapshot projections with POCOs, backward compat, and identity types |
+| Phase 0: Shared types extraction | — | Created `samples/AeroDB.Samples.Shared/` with event types, models (Trip/Day/Distance/User/Target), and AeroDB-native projection classes from DaemonTests |
+| Phase 1: EventSourcingIntro ported | — | First Marten sample ported to AeroDB — warehouse inventory demo runs correctly (0→100-10+5=95) validating Q1+Q2 |
+| Phase 2: DocSamples gap audit | — | Identified 3 new AeroDB gaps (#65-67) via minimal drop-in attempt. 12 Marten APIs verified at parity. |

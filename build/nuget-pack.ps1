@@ -1,7 +1,7 @@
 #!/usr/bin/env pwsh
 <#
 .SYNOPSIS
-    Packs all Dali library projects into NuGet packages.
+    Packs all AeroDB library projects into NuGet packages.
 .DESCRIPTION
     Builds all library projects in Release mode and produces .nupkg files
     in the build/nupkgs/ directory.
@@ -47,7 +47,7 @@ param(
 $RepoRoot = Resolve-Path "$PSScriptRoot/.."
 $OutputDir = $(if ($OutputDir) { $OutputDir } else { "$RepoRoot/build/nupkgs" })
 
-Write-Host "=== Dali NuGet Pack Script ===" -ForegroundColor Cyan
+Write-Host "=== AeroDB NuGet Pack Script ===" -ForegroundColor Cyan
 Write-Host "Repo:     $RepoRoot" -ForegroundColor Gray
 Write-Host "Output:   $OutputDir" -ForegroundColor Gray
 Write-Host "Config:   $Configuration" -ForegroundColor Gray
@@ -70,13 +70,13 @@ if ($Stable) {
 New-Item -ItemType Directory -Force -Path $OutputDir | Out-Null
 
 $libProjects = @(
-    "$RepoRoot/src/Dali"
-    "$RepoRoot/src/Dali.AspNetIdentity"
-    "$RepoRoot/src/Dali.EntityFrameworkCore"
-    "$RepoRoot/src/Dali.ML"
-    "$RepoRoot/src/Dali.Reactive"
-    "$RepoRoot/src/Dali.SourceGenerators"
-    "$RepoRoot/src/Dali.WolverineFx"
+    "$RepoRoot/src/AeroDB"
+    "$RepoRoot/src/AeroDB.AspNetIdentity"
+    "$RepoRoot/src/AeroDB.EntityFrameworkCore"
+    "$RepoRoot/src/AeroDB.ML"
+    "$RepoRoot/src/AeroDB.Reactive"
+    "$RepoRoot/src/AeroDB.SourceGenerators"
+    "$RepoRoot/src/AeroDB.WolverineFx"
 )
 
 $failed = @()

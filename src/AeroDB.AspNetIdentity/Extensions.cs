@@ -1,0 +1,89 @@
+using AeroDB;
+using AeroDB.AspNetIdentity;
+
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
+
+namespace Microsoft.Extensions.DependencyInjection;
+
+/// <summary>
+/// Extension methods for registering AeroDB-backed ASP.NET Core Identity stores
+/// onto an <see cref="IdentityBuilder"/>.
+/// </summary>
+public static class AeroDBIdentityExtensions
+{
+    /// <summary>
+    /// Registers <see cref="AeroDBUserStore{TUser, TRole}"/> and <see cref="AeroDBRoleStore{TRole}"/>
+    /// with the identity system. Expects an <see cref="IDocumentStore"/> to already be
+    /// registered in the service collection (as a singleton).
+    /// </summary>
+    /// <typeparam name="TUser">The user type, must inherit from <see cref="IdentityUser"/>.</typeparam>
+    /// <typeparam name="TRole">The role type, must inherit from <see cref="IdentityRole"/>.</typeparam>
+    /// <param name="builder">The <see cref="IdentityBuilder"/> from <c>AddIdentity</c> or <c>AddDefaultIdentity</c>.</param>
+    /// <returns>The <see cref="IdentityBuilder"/> for chaining.</returns>
+    public static IdentityBuilder AddAeroDBStores<TUser, TRole>(this IdentityBuilder builder)
+        where TUser : IdentityUser
+        where TRole : IdentityRole
+    {
+        ArgumentNullException.ThrowIfNull(builder);
+
+        builder.Services.AddSingleton<IConfigureAeroDB, AeroDBIdentityConfigurator<TUser, TRole, string>>();
+
+        return builder
+            .AddRoleStore<AeroDBRoleStore<TRole>>()
+            .AddUserStore<AeroDBUserStore<TUser, TRole>>();
+    }
+
+    /// <summary>
+    /// Registers <see cref="AeroDBUserStore{TUser, TRole, TKey}"/> and <see cref="AeroDBRoleStore{TRole, TKey}"/>
+    /// with the identity system. Expects an <see cref="IDocumentStore"/> to already be
+    /// registered in the service collection (as a singleton).
+    /// </summary>
+    /// <typeparam name="TUser">The user type, must inherit from <see cref="IdentityUser{TKey}"/>.</typeparam>
+    /// <typeparam name="TRole">The role type, must inherit from <see cref="IdentityRole{TKey}"/>.</typeparam>
+    /// <typeparam name="TKey">The identity key type.</typeparam>
+    /// <param name="builder">The <see cref="IdentityBuilder"/> from <c>AddIdentity</c> or <c>AddDefaultIdentity</c>.</param>
+    /// <returns>The <see cref="IdentityBuilder"/> for chaining.</returns>
+    public static IdentityBuilder AddAeroDBStores<TUser, TRole, TKey>(this IdentityBuilder builder)
+        where TUser : IdentityUser<TKey>
+        where TRole : IdentityRole<TKey>
+        where TKey : IEquatable<TKey>
+    {
+        ArgumentNullException.ThrowIfNull(builder);
+
+        builder.Services.AddSingleton<IConfigureAeroDB, AeroDBIdentityConfigurator<TUser, TRole, TKey>>();
+
+        return builder
+            .AddRoleStore<AeroDBRoleStore<TRole, TKey>>()
+            .AddUserStore<AeroDBUserStore<TUser, TRole, TKey>>();
+    }
+}
+
+internal sealed class AeroDBIdentityConfigurator<TUser, TRole, TKey> : IConfigureAeroDB
+    where TUser : IdentityUser<TKey>
+    where TRole : IdentityRole<TKey>
+    where TKey : IEquatable<TKey>
+{
+    public void Configure(AeroDB.StoreOptions options)
+        => Configure(options.ServiceProvider, options);
+
+    public void Configure(IServiceProvider? services, AeroDB.StoreOptions options)
+    {
+        var identityOptions = services?.GetService<IOptions<IdentityOptions>>();
+        var requireUniqueEmail = identityOptions?.Value.User.RequireUniqueEmail ?? true;
+
+        var userMapping = options.Schema.For<TUser>()
+            .Identity(x => x.Id)
+            .UniqueIndex(x => x.NormalizedUserName)
+            .Field("authenticator_key", f => f.FieldType = "option<string>")
+            .Field("recovery_codes", f => f.FieldType = "option<array<string>>")
+            .Field("role_ids", f => f.FieldType = "option<array<string>>");
+
+        if (requireUniqueEmail)
+            userMapping.UniqueIndex(x => x.NormalizedEmail);
+
+        options.Schema.For<TRole>()
+            .Identity(x => x.Id)
+            .UniqueIndex(x => x.NormalizedName);
+    }
+}
