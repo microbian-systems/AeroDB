@@ -7,6 +7,3 @@
 [submodule "wolverine"]
 	path = wolverine
 	url = git@github.com:JasperFx/wolverine.git
-[submodule "Marten.AspNetIdentity"]
-	path = Marten.AspNetIdentity
-	url = git@github.com:yetanotherchris/Marten.AspNetIdentity.git
