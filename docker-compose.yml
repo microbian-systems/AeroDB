@@ -1,0 +1,29 @@
+# ──────────────────────────────────────────────────────────────
+#  AeroDB Development SurrealDB Server
+#  Starts a local SurrealDB 3.2+ instance with DiskANN support.
+#
+#  Usage:
+#    docker compose up -d      # start detached
+#    docker compose down        # stop and remove
+#    docker compose logs -f     # tail logs
+# ──────────────────────────────────────────────────────────────
+
+services:
+  surrealdb:
+    image: surrealdb/surrealdb:releases-3-2
+    container_name: aerodb-dev
+    entrypoint:
+      - /surreal
+      - start
+      - --unauthenticated
+      - --log
+      - info
+      - rocksdb:/data/database.db
+    ports:
+      - "8000:8000"
+    user: root
+    volumes:
+      - surrealdb-data:/data
+
+volumes:
+  surrealdb-data:

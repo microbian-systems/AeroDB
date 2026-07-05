@@ -1,48 +1,33 @@
-using DaemonTests.Aggregations;
-using DaemonTests.EventProjections;
-using DaemonTests.TestingSupport;
-using JasperFx;
-using JasperFx.Events.Projections;
-using Marten;
-using Marten.Testing.Documents;
-using Marten.Testing.Harness;
-
-#region sample_using_webapplication_1
+using AeroDB;
+using AeroDB.Samples.Shared;
+using SurrealDb.Embedded.InMemory;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Easiest to just do this right after creating builder
-// Must be done before calling builder.Build() at least
-builder.Host.ApplyJasperFxExtensions();
-
-#endregion
-
-// Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddMarten(opts =>
+// Create AeroDB store and register as singleton
+var store = Documents.For(o =>
 {
-    opts.Connection(ConnectionSource.ConnectionString);
-    opts.RegisterDocumentType<User>();
-    opts.DatabaseSchemaName = "cli";
-
-    opts.Events.UseArchivedStreamPartitioning = true;
-
-    opts.Schema.For<Target>().SoftDeletedWithPartitioningAndIndex();
+    o.ClientFactory = () => new SurrealDbMemoryClient();
+    o.Namespace = "cli";
+    o.Database = "cli";
+    o.Schema.For<User>().Identity(x => x.Id);
+    o.Schema.For<Target>().Identity(x => x.Id);
+    o.Schema.For<Target>().SoftDeleted = true;
 
     // Register all event store projections ahead of time
-    opts.Projections.Add(new TripProjectionWithCustomName(), ProjectionLifecycle.Async);
-    opts.Projections.Add(new DayProjection(), ProjectionLifecycle.Async);
-    opts.Projections.Add(new DistanceProjection(), ProjectionLifecycle.Async);
+    o.Projections.Add(new TripProjectionWithCustomName(), ProjectionLifecycle.Async);
+    o.Projections.Add(new DayProjection(), ProjectionLifecycle.Async);
+    o.Projections.Add(new DistanceProjection(), ProjectionLifecycle.Async);
 });
+await store.InitializeAsync();
+builder.Services.AddSingleton<IDocumentStore>(store);
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -50,13 +35,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseAuthorization();
-
 app.MapControllers();
 
-#region sample_using_webapplication_2
-
-// Instead of App.Run(), use the app.RunJasperFxCommands(args)
-// as the last line of your Program.cs file
-return await app.RunJasperFxCommands(args);
-
-#endregion
+await app.RunAsync();

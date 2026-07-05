@@ -1,6 +1,6 @@
 using Bogus;
 using CryptoTrader.Models;
-using Dali;
+using AeroDB;
 using SurrealDb.Net.Models;
 
 namespace CryptoTrader.Data;
@@ -8,7 +8,7 @@ namespace CryptoTrader.Data;
 /// <summary>
 /// Generates realistic test data using Bogus.
 /// Demonstrates:
-/// - Dali document CRUD (Store + SaveChangesAsync)
+/// - AeroDB document CRUD (Store + SaveChangesAsync)
 /// - Graph relationships via Relate (User → Account, User → holds_asset → CryptoAsset), flushed in batches with SaveChangesAsync
 /// </summary>
 public static class SeedData

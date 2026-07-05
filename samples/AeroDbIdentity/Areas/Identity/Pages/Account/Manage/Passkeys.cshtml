@@ -1,0 +1,84 @@
+@page
+@model PasskeysModel
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<IdentityUser> UserManager
+@{
+    ViewData["Title"] = "Passkeys";
+    ViewData["ActivePage"] = ManageNavPages.Passkeys;
+}
+
+<h3>@ViewData["Title"]</h3>
+
+<div x-data="passkeyManage">
+    <p class="text-muted">
+        Passkeys let you sign in without a password using your fingerprint, face, or device PIN.
+        They are more secure than passwords and can't be phished.
+    </p>
+
+    <!-- Loading -->
+    <div x-show="loading" class="text-center py-4">
+        <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+
+    <!-- Error -->
+    <div x-show="error" x-text="error" class="alert alert-danger" role="alert" x-cloak></div>
+
+    <!-- Passkey list -->
+    <div x-show="!loading">
+        <!-- Empty state -->
+        <div x-show="passkeys.length === 0 && !adding" class="text-center py-4">
+            <p class="text-muted">You don't have any passkeys yet.</p>
+        </div>
+
+        <!-- Passkey cards -->
+        <ul class="list-group mb-3" x-show="passkeys.length > 0">
+            <template x-for="pk in passkeys" :key="pk.credentialId">
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div>
+                        <strong x-text="pk.name"></strong>
+                        <small class="text-muted d-block">
+                            Created <span x-text="formatDate(pk.createdAt)"></span>
+                            <span x-show="pk.isBackedUp" class="badge bg-info ms-1">synced</span>
+                        </small>
+                        <small class="text-muted d-block text-truncate" style="max-width:320px"
+                              x-text="pk.credentialId"></small>
+                    </div>
+                    <div class="btn-group btn-group-sm">
+                        <button type="button" class="btn btn-outline-secondary"
+                                x-on:click="renamePasskey(pk.credentialId, pk.name)"
+                                title="Rename">Rename</button>
+                        <button type="button" class="btn btn-outline-danger"
+                                x-on:click="deletePasskey(pk.credentialId)"
+                                title="Remove">Remove</button>
+                    </div>
+                </li>
+            </template>
+        </ul>
+    </div>
+
+    <!-- Add passkey form -->
+    <div class="card mb-3">
+        <div class="card-header">Add a new passkey</div>
+        <div class="card-body">
+            <div class="mb-3">
+                <label for="newPasskeyName" class="form-label">Friendly name (optional)</label>
+                <input type="text" id="newPasskeyName" class="form-control"
+                       x-model="newPasskeyName"
+                       placeholder="e.g. My iPhone, YubiKey"
+                       x-bind:disabled="adding" />
+                <div class="form-text">Give your passkey a name so you can recognize it later.</div>
+            </div>
+            <button type="button" class="btn btn-primary"
+                    x-on:click="startAdd()"
+                    x-bind:disabled="adding">
+                <span x-show="!adding">Add a passkey</span>
+                <span x-show="adding">
+                    <span class="spinner-border spinner-border-sm me-1" role="status"></span>
+                    Follow your browser's prompt...
+                </span>
+            </button>
+        </div>
+    </div>
+</div>

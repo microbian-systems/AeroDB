@@ -1,8 +1,6 @@
-﻿using JasperFx.Events.Projections;
-using Marten;
-using Marten.Events.Aggregation;
-using Marten.Events.Projections;
-using Marten.Testing.Harness;
+﻿// REMOVED: JasperFx.Events.Projections, Marten, Marten.Events.Aggregation, Marten.Events.Projections, Marten.Testing.Harness
+// AeroDB is global using from GlobalUsings.cs
+using SurrealDb.Embedded.InMemory;
 
 namespace DocSamples;
 
@@ -28,6 +26,9 @@ public sealed record MembersEscaped(Guid QuestId, string Location, string[] Memb
 
 public sealed record QuestParty(Guid Id, List<string> Members)
 {
+    // Parameterless constructor for AeroDB snapshot/live-aggregation projections
+    public QuestParty() : this(default, []) { }
+
     // These methods take in events and update the QuestParty
     public static QuestParty Create(QuestStarted started) => new(started.QuestId, []);
     public static QuestParty Apply(MembersJoined joined, QuestParty party) =>
@@ -60,7 +61,7 @@ public static class AddMembersHandler
     public static async Task HandleAsync(AddMembers command, IDocumentSession session)
     {
         // Fetch the current state of the quest
-        var quest = await session.Events.FetchForWriting<QuestParty>(command.Id);
+        var quest = await session.Events.FetchForWritingAsync<QuestParty>(command.Id.ToString());
         if (quest.Aggregate == null)
         {
             // Bad quest id, do nothing in this sample case
@@ -86,6 +87,9 @@ public sealed record Quest(Guid Id, List<string> Members, List<string> Slayed, s
 
 public sealed partial class QuestProjection: SingleStreamProjection<Quest, Guid>
 {
+    public override Type[] EventTypes =>
+        [typeof(QuestStarted), typeof(MembersJoined), typeof(MembersDeparted), typeof(MembersEscaped), typeof(QuestEnded)];
+
     public static Quest Create(QuestStarted started) => new(started.QuestId, [], [], started.Name, false);
     public static Quest Apply(MembersJoined joined, Quest party) =>
         party with
@@ -120,26 +124,29 @@ public class EventSourcingQuickstart
     {
         #region sample_event-store-quickstart
 
-        var store = DocumentStore.For(_ =>
+        var store = Documents.For(o =>
         {
-            _.Connection(ConnectionSource.ConnectionString);
+            o.ClientFactory = () => new SurrealDbMemoryClient();
+            o.Namespace = "docsamples";
+            o.Database = "docsamples";
         });
+        await store.InitializeAsync();
 
         var questId = Guid.NewGuid();
 
-        await using var session = store.LightweightSession();
+        await using var session = await store.LightweightSessionAsync();
         var started = new QuestStarted(questId, "Destroy the One Ring");
         var joined1 = new MembersJoined(questId,1, "Hobbiton", ["Frodo", "Sam"]);
 
         // Start a brand new stream and commit the new events as
         // part of a transaction
-        session.Events.StartStream(questId, started, joined1);
+        session.Events.StartStream(questId.ToString(), new object[] { started, joined1 });
 
         // Append more events to the same stream
         var joined2 = new MembersJoined(questId,3, "Buckland", ["Merry", "Pippen"]);
         var joined3 = new MembersJoined(questId,10, "Bree", ["Aragorn"]);
         var arrived = new ArrivedAtLocation(questId, 15, "Rivendell");
-        session.Events.Append(questId, joined2, joined3, arrived);
+        session.Events.Append(questId.ToString(), new object[] { joined2, joined3, arrived });
 
         // Save the pending changes to db
         await session.SaveChangesAsync();
@@ -148,15 +155,15 @@ public class EventSourcingQuickstart
 
         #region sample_events-aggregate-on-the-fly
 
-        await using var session2 = store.LightweightSession();
+        await using var session2 = await store.LightweightSessionAsync();
         // questId is the id of the stream
-        var party = await session2.Events.AggregateStreamAsync<QuestParty>(questId);
+        var party = await session2.Events.AggregateStreamAsync<QuestParty>(questId.ToString());
 
         var party_at_version_3 = await session2.Events
-            .AggregateStreamAsync<QuestParty>(questId, 3);
+            .AggregateStreamAsync<QuestParty>(questId.ToString(), 3);
 
         var party_yesterday = await session2.Events
-            .AggregateStreamAsync<QuestParty>(questId, timestamp: DateTime.UtcNow.AddDays(-1));
+            .AggregateStreamAsync<QuestParty>(questId.ToString(), timestamp: DateTime.UtcNow.AddDays(-1));
 
         #endregion
 
@@ -165,22 +172,26 @@ public class EventSourcingQuickstart
     public async Task quest_projection()
     {
         #region sample_adding-quest-projection
-        var store = DocumentStore.For(_ =>
+        var store = Documents.For(o =>
         {
-            _.Connection(ConnectionSource.ConnectionString);
-            _.Projections.Add<QuestProjection>(ProjectionLifecycle.Inline); // [!code ++]
+            o.ClientFactory = () => new SurrealDbMemoryClient();
+            o.Namespace = "docsamples";
+            o.Database = "docsamples";
+            o.Schema.For<Quest>().Identity(x => x.Id);
+            o.Projections.Add<QuestProjection>(ProjectionLifecycle.Inline);
         });
+        await store.InitializeAsync();
         #endregion
 
         var questId = Guid.NewGuid();
 
         #region sample_querying-quest-projection
-        await using var session = store.LightweightSession();
+        await using var session = await store.LightweightSessionAsync();
 
         var started = new QuestStarted(questId, "Destroy the One Ring");
         var joined1 = new MembersJoined(questId, 1, "Hobbiton", ["Frodo", "Sam"]);
 
-        session.Events.StartStream(questId, started, joined1);
+        session.Events.StartStream(questId.ToString(), new object[] { started, joined1 });
         await session.SaveChangesAsync();
 
         // we can now query the quest state like any other Marten document

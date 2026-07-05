@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Description>.NET Transactional Document DB and Event Store on SurrealDB</Description>
+    <PackageTags>surrealdb documentdb eventstore nosql</PackageTags>
+  </PropertyGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="AeroDB.Tests" />
+    <InternalsVisibleTo Include="AeroDB.ML" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AeroDB.SourceGenerators\AeroDB.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="SurrealDb.Net" VersionOverride="0.10.2" />
+    <PackageReference Include="SurrealDb.Reactive" VersionOverride="0.10.2" />
+    <PackageReference Include="FlakeId" VersionOverride="1.3.2" />
+    <PackageReference Include="JasperFx.Events" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" VersionOverride="10.0.9" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" VersionOverride="10.0.9" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" />
+    <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" VersionOverride="10.0.9" />
+    <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions" VersionOverride="10.0.9" />
+  </ItemGroup>
+</Project>

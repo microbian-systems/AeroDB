@@ -1,26 +1,26 @@
-﻿using JasperFx.Events.Projections;
-using Marten;
-using Marten.Events.Aggregation;
-using Marten.Events.Projections;
+﻿using AeroDB;
+using SurrealDb.Embedded.InMemory;
 
-const string connectionString =
-    "PORT = 5432; HOST = localhost; TIMEOUT = 15; POOLING = True; DATABASE = 'postgres'; PASSWORD = 'qwerty'; USER ID = 'postgres'";
-
-var documentStore = DocumentStore.For(options =>
+var store = Documents.For(o =>
 {
-    options.Connection(connectionString);
-
-    options.Projections.Add<WarehouseProductProjection>(ProjectionLifecycle.Inline);
+    o.ClientFactory = () => new SurrealDbMemoryClient();
+    o.Namespace = "warehouse";
+    o.Database = "warehouse";
+    o.Events.Enabled = true;
+    o.Schema.For<WarehouseProductReadModel>().Identity(x => x.Id).SetSchemaMode(SchemaMode.Flexible);
+    o.Projections.Add(new WarehouseProductProjection());
 });
+await store.InitializeAsync();
 
 var id = Guid.NewGuid();
 
-var warehouseRepository = new WarehouseRepository(documentStore);
-var warehouseProductReadModel = warehouseRepository.Get(id);
+var warehouseRepository = new WarehouseRepository(store);
+
+var warehouseProductReadModel = await warehouseRepository.GetAsync(id);
 
 DemoConsole.WriteWithColour($"{warehouseProductReadModel?.QuantityOnHand ?? 0} items of stock in the warehouse for {id}");
 
-var handler = new WarehouseProductHandler(id, documentStore);
+var handler = new WarehouseProductHandler(id, store);
 await handler.ReceiveProduct(100);
 
 DemoConsole.WriteWithColour($"Received 100 items of stock into the warehouse for {id}");
@@ -29,13 +29,13 @@ await handler.ShipProduct(10);
 
 DemoConsole.WriteWithColour($"Shipped 10 items of stock out of the warehouse for {id}");
 
-await handler.AdjustInventory(5,"Ordered too many");
+await handler.AdjustInventory(5, "Ordered too many");
 
 DemoConsole.WriteWithColour($"Found 5 items of stock hiding in the warehouse for {id} and have adjusted the stock count");
 
-warehouseProductReadModel = warehouseRepository.Get(id);
+warehouseProductReadModel = await warehouseRepository.GetAsync(id);
 
-DemoConsole.WriteWithColour($"{warehouseProductReadModel.QuantityOnHand} items of stock in the warehouse for {warehouseProductReadModel.Id}");
+DemoConsole.WriteWithColour($"{warehouseProductReadModel!.QuantityOnHand} items of stock in the warehouse for {warehouseProductReadModel.Id}");
 
 
 public record ProductShipped(Guid Id, int Quantity, DateTime DateTime);
@@ -47,20 +47,18 @@ public record InventoryAdjusted(Guid Id, int Quantity, string Reason, DateTime D
 
 public class WarehouseRepository
 {
-    private readonly IDocumentStore documentStore;
+    private readonly IDocumentStore store;
 
-    public WarehouseRepository(IDocumentStore documentStore)
+    public WarehouseRepository(IDocumentStore store)
     {
-        this.documentStore = documentStore;
+        this.store = store;
     }
 
-    public WarehouseProductReadModel Get(Guid id)
+    public async Task<WarehouseProductReadModel?> GetAsync(Guid id)
     {
-        using var session = documentStore.QuerySession();
+        await using var session = await store.QuerySessionAsync();
 
-        var doc = session.Query<WarehouseProductReadModel>()
-            .SingleOrDefault(x => x.Id == id);
-
+        var doc = await session.LoadAsync<WarehouseProductReadModel>(id);
         return doc;
     }
 }
@@ -71,14 +69,14 @@ public class WarehouseProductReadModel
     public int QuantityOnHand { get; set; }
 }
 
-public partial class WarehouseProductProjection: SingleStreamProjection<WarehouseProductReadModel, Guid>
+public partial class WarehouseProductProjection : SingleStreamProjection<WarehouseProductReadModel>
 {
-    // JasperFx.Events 2.0 (JasperFx/jasperfx#276 / #286) removed the
-    // ProjectEvent<TEvent>(handler) registration helpers. Convention methods on
-    // a `partial` projection class are the supported replacement — the
-    // JasperFx.Events.SourceGenerator emits a [GeneratedEvolver] dispatcher
-    // that wires the same Apply methods at compile time, with no reflection
-    // or FastExpressionCompiler at runtime.
+    public override ProjectionLifecycle Lifecycle => ProjectionLifecycle.Inline;
+
+    public override Type[] EventTypes => new[]
+    {
+        typeof(ProductShipped), typeof(ProductReceived), typeof(InventoryAdjusted)
+    };
 
     public void Apply(WarehouseProductReadModel readModel, ProductShipped evnt)
     {
@@ -93,6 +91,41 @@ public partial class WarehouseProductProjection: SingleStreamProjection<Warehous
     public void Apply(WarehouseProductReadModel readModel, InventoryAdjusted evnt)
     {
         readModel.QuantityOnHand += evnt.Quantity;
+    }
+
+    protected override object GetDocumentId(IReadOnlyList<object> events)
+    {
+        foreach (var e in events)
+        {
+            if (e is ProductShipped ps) return ps.Id;
+            if (e is ProductReceived pr) return pr.Id;
+            if (e is InventoryAdjusted ia) return ia.Id;
+        }
+        return Guid.NewGuid();
+    }
+
+    protected override WarehouseProductReadModel? ApplyEvents(
+        WarehouseProductReadModel? aggregate,
+        IReadOnlyList<object> events,
+        CancellationToken ct)
+    {
+        var readModel = aggregate ?? new WarehouseProductReadModel();
+        foreach (var e in events)
+        {
+            switch (e)
+            {
+                case ProductShipped ps:
+                    Apply(readModel, ps);
+                    break;
+                case ProductReceived pr:
+                    Apply(readModel, pr);
+                    break;
+                case InventoryAdjusted ia:
+                    Apply(readModel, ia);
+                    break;
+            }
+        }
+        return readModel;
     }
 }
 
@@ -123,56 +156,56 @@ public class WarehouseProductWriteModel
 public class WarehouseProductHandler
 {
     private readonly Guid id;
-    private readonly IDocumentStore documentStore;
+    private readonly IDocumentStore store;
 
-    public WarehouseProductHandler(Guid id, IDocumentStore documentStore)
+    public WarehouseProductHandler(Guid id, IDocumentStore store)
     {
         this.id = id;
-        this.documentStore = documentStore;
+        this.store = store;
     }
 
     public async Task ShipProduct(int quantity)
     {
-        await using var session = documentStore.LightweightSession();
+        await using var session = await store.LightweightSessionAsync();
 
-        var warehouseProduct = await session.Events.AggregateStreamAsync<WarehouseProductWriteModel>(id);
+        var warehouseProduct = await session.Events.AggregateStreamAsync<WarehouseProductWriteModel>(id.ToString());
 
         if (quantity > warehouseProduct?.QuantityOnHand)
         {
             throw new InvalidDomainException("Ah... we don't have enough product to ship?");
         }
 
-        session.Events.Append(id, new ProductShipped(id, quantity, DateTime.UtcNow));
+        await session.Events.Append(id.ToString(), [new ProductShipped(id, quantity, DateTime.UtcNow)]);
         await session.SaveChangesAsync();
     }
 
     public async Task ReceiveProduct(int quantity)
     {
-        using var session = documentStore.LightweightSession();
+        await using var session = await store.LightweightSessionAsync();
 
-        session.Events.Append(id, new ProductReceived(id, quantity, DateTime.UtcNow));
+        await session.Events.Append(id.ToString(), [new ProductReceived(id, quantity, DateTime.UtcNow)]);
         await session.SaveChangesAsync();
     }
 
     public async Task AdjustInventory(int quantity, string reason)
     {
-        using var session = documentStore.LightweightSession();
+        await using var session = await store.LightweightSessionAsync();
 
-        var warehouseProduct = await session.Events.AggregateStreamAsync<WarehouseProductWriteModel>(id);
+        var warehouseProduct = await session.Events.AggregateStreamAsync<WarehouseProductWriteModel>(id.ToString());
 
         if (warehouseProduct?.QuantityOnHand + quantity < 0)
         {
             throw new InvalidDomainException("Cannot adjust to a negative quantity on hand.");
         }
 
-        session.Events.Append(id, new InventoryAdjusted(id, quantity, reason, DateTime.UtcNow));
+        await session.Events.Append(id.ToString(), [new InventoryAdjusted(id, quantity, reason, DateTime.UtcNow)]);
         await session.SaveChangesAsync();
     }
 }
 
-public class InvalidDomainException: Exception
+public class InvalidDomainException : Exception
 {
-    public InvalidDomainException(string message): base(message)
+    public InvalidDomainException(string message) : base(message)
     {
     }
 }
