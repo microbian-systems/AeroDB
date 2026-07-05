@@ -1085,14 +1085,14 @@ public class AeroDBUserStore<TUser, TRole, TKey> :
 
         await using var session = await _store.QuerySessionAsync(cancellationToken);
 
-        // Raw SQL: byte[] credential ID comparison is not reliably supported in LINQ
-        // across SurrealDB drivers. See FindPasskeyRecordAsync for detailed comment.
-        var passkeys = await session.RawQueryAsync<AeroDBUserPasskey>(
-            $"SELECT * FROM {_passkeyTable} WHERE credential_id = $credentialId LIMIT 1",
-            new Dictionary<string, object?> { ["credentialId"] = credentialId },
-            cancellationToken);
+        // PERF: Loads all passkeys globally and filters client-side because
+        // SurrealDB's BYTES type doesn't support = equality over RPC.
+        // If passkey count grows beyond ~10K total, optimize with a base64 index
+        // column (e.g. CredentialIdB64 string) for server-side filtering.
+        var passkeys = await session.Query<AeroDBUserPasskey>()
+            .ToListAsync(cancellationToken);
 
-        var passkey = passkeys.FirstOrDefault();
+        var passkey = passkeys.FirstOrDefault(pk => pk.CredentialId.SequenceEqual(credentialId));
         if (passkey is null)
             return null;
 
@@ -1196,20 +1196,18 @@ public class AeroDBUserStore<TUser, TRole, TKey> :
     // ══════════════════════════════════════════════════════════════════
 
     /// <summary>
-    /// Finds a passkey record for the given user and credential ID using raw SQL
-    /// (byte[] comparison is not reliably supported via LINQ across all SurrealDB drivers).
+    /// Finds a passkey record for the given user and credential ID.
+    /// Credential ID comparison is done client-side (SequenceEqual) because
+    /// SurrealDB's BYTES type doesn't support = equality in WHERE clauses over RPC.
+    /// Users typically have 1-5 passkeys, so loading by userId is negligible.
     /// </summary>
     private async Task<AeroDBUserPasskey?> FindPasskeyRecordAsync(IQuerySession session, string userId, byte[] credentialId, CancellationToken ct)
     {
-        var passkeys = await session.RawQueryAsync<AeroDBUserPasskey>(
-            $"SELECT * FROM {_passkeyTable} WHERE user_id = $userId AND credential_id = $credentialId LIMIT 1",
-            new Dictionary<string, object?>
-            {
-                ["userId"] = userId,
-                ["credentialId"] = credentialId
-            },
-            ct);
-        return passkeys.FirstOrDefault();
+        var passkeys = await session.Query<AeroDBUserPasskey>()
+            .Where(pk => pk.UserId == userId)
+            .ToListAsync(ct);
+
+        return passkeys.FirstOrDefault(pk => pk.CredentialId.SequenceEqual(credentialId));
     }
 
     // ══════════════════════════════════════════════════════════════════
