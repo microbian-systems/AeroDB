@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Class AeroDBTransport | AeroDB API Reference </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="Class AeroDBTransport | AeroDB API Reference ">
+    
+    <meta name="description" content="AeroDB-backed transport for Wolverine using SurrealDB as the message store. Registers the &amp;quot;AeroDB://&amp;quot; protocol scheme and creates AeroDBEndpoint instances.">
+      <link rel="shortcut icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../styles/docfx.css">
+      <link rel="stylesheet" href="../styles/main.css">
+      <meta property="docfx:navrel" content="../toc.html">
+      <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="AeroDB">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="AeroDB.WolverineFx.AeroDBTransport">
+
+
+
+  <h1 id="AeroDB_WolverineFx_AeroDBTransport" data-uid="AeroDB.WolverineFx.AeroDBTransport" class="text-break">Class AeroDBTransport</h1>
+  <div class="markdown level0 summary"><p>AeroDB-backed transport for Wolverine using SurrealDB as the message store.
+Registers the &quot;AeroDB://&quot; protocol scheme and creates AeroDBEndpoint instances.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+    <div class="level1"><span class="xref">AeroDBTransport</span></div>
+  </div>
+  <div class="implements">
+    <h5>Implements</h5>
+    <div><span class="xref">ITransport</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="AeroDB.html">AeroDB</a>.<a class="xref" href="AeroDB.WolverineFx.html">WolverineFx</a></h6>
+  <h6><strong>Assembly</strong>: AeroDB.WolverineFx.dll</h6>
+  <h5 id="AeroDB_WolverineFx_AeroDBTransport_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public sealed class AeroDBTransport : ITransport</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+</h3>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBTransport.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBTransport__ctor_" data-uid="AeroDB.WolverineFx.AeroDBTransport.#ctor*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBTransport__ctor" data-uid="AeroDB.WolverineFx.AeroDBTransport.#ctor">AeroDBTransport()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public AeroDBTransport()</code></pre>
+  </div>
+  <h3 id="properties">Properties
+</h3>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBTransport.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBTransport_Name_" data-uid="AeroDB.WolverineFx.AeroDBTransport.Name*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBTransport_Name" data-uid="AeroDB.WolverineFx.AeroDBTransport.Name">Name</h4>
+  <div class="markdown level1 summary"><p>Diagnostic name.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string Name { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBTransport.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBTransport_Protocol_" data-uid="AeroDB.WolverineFx.AeroDBTransport.Protocol*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBTransport_Protocol" data-uid="AeroDB.WolverineFx.AeroDBTransport.Protocol">Protocol</h4>
+  <div class="markdown level1 summary"><p>The protocol scheme for this transport.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string Protocol { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+</h3>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBTransport.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBTransport_BuildHealthCheck_" data-uid="AeroDB.WolverineFx.AeroDBTransport.BuildHealthCheck*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBTransport_BuildHealthCheck_Wolverine_Runtime_IWolverineRuntime_" data-uid="AeroDB.WolverineFx.AeroDBTransport.BuildHealthCheck(Wolverine.Runtime.IWolverineRuntime)">BuildHealthCheck(IWolverineRuntime)</h4>
+  <div class="markdown level1 summary"><p>Build a health check that probes the SurrealDB connection via <a class="xref" href="AeroDB.IDocumentStore.html">IDocumentStore</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public WolverineTransportHealthCheck? BuildHealthCheck(IWolverineRuntime runtime)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IWolverineRuntime</span></td>
+        <td><span class="parametername">runtime</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">WolverineTransportHealthCheck</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBTransport.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBTransport_Endpoints_" data-uid="AeroDB.WolverineFx.AeroDBTransport.Endpoints*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBTransport_Endpoints" data-uid="AeroDB.WolverineFx.AeroDBTransport.Endpoints">Endpoints()</h4>
+  <div class="markdown level1 summary"><p>All registered endpoints.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerable&lt;Endpoint&gt; Endpoints()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<span class="xref">Endpoint</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBTransport.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBTransport_GetOrCreateEndpoint_" data-uid="AeroDB.WolverineFx.AeroDBTransport.GetOrCreateEndpoint*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBTransport_GetOrCreateEndpoint_System_Uri_" data-uid="AeroDB.WolverineFx.AeroDBTransport.GetOrCreateEndpoint(System.Uri)">GetOrCreateEndpoint(Uri)</h4>
+  <div class="markdown level1 summary"><p>Get or create a AeroDB endpoint for the given URI.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Endpoint GetOrCreateEndpoint(Uri uri)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Uri</span></td>
+        <td><span class="parametername">uri</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Endpoint</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBTransport.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBTransport_InitializeAsync_" data-uid="AeroDB.WolverineFx.AeroDBTransport.InitializeAsync*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBTransport_InitializeAsync_Wolverine_Runtime_IWolverineRuntime_" data-uid="AeroDB.WolverineFx.AeroDBTransport.InitializeAsync(Wolverine.Runtime.IWolverineRuntime)">InitializeAsync(IWolverineRuntime)</h4>
+  <div class="markdown level1 summary"><p>Initialize the transport. Schema is managed by AeroDBMessageStore.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ValueTask InitializeAsync(IWolverineRuntime runtime)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IWolverineRuntime</span></td>
+        <td><span class="parametername">runtime</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask">ValueTask</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBTransport.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBTransport_ReplyEndpoint_" data-uid="AeroDB.WolverineFx.AeroDBTransport.ReplyEndpoint*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBTransport_ReplyEndpoint" data-uid="AeroDB.WolverineFx.AeroDBTransport.ReplyEndpoint">ReplyEndpoint()</h4>
+  <div class="markdown level1 summary"><p>No reply endpoint for this transport.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Endpoint? ReplyEndpoint()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Endpoint</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBTransport.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBTransport_TryBuildBrokerUsage_" data-uid="AeroDB.WolverineFx.AeroDBTransport.TryBuildBrokerUsage*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBTransport_TryBuildBrokerUsage_Wolverine_Configuration_Capabilities_BrokerDescription__" data-uid="AeroDB.WolverineFx.AeroDBTransport.TryBuildBrokerUsage(Wolverine.Configuration.Capabilities.BrokerDescription@)">TryBuildBrokerUsage(out BrokerDescription)</h4>
+  <div class="markdown level1 summary"><p>No broker description.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool TryBuildBrokerUsage(out BrokerDescription description)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">BrokerDescription</span></td>
+        <td><span class="parametername">description</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBTransport.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBTransport_TryBuildStatefulResource_" data-uid="AeroDB.WolverineFx.AeroDBTransport.TryBuildStatefulResource*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBTransport_TryBuildStatefulResource_Wolverine_Runtime_IWolverineRuntime_JasperFx_Resources_IStatefulResource__" data-uid="AeroDB.WolverineFx.AeroDBTransport.TryBuildStatefulResource(Wolverine.Runtime.IWolverineRuntime,JasperFx.Resources.IStatefulResource@)">TryBuildStatefulResource(IWolverineRuntime, out IStatefulResource?)</h4>
+  <div class="markdown level1 summary"><p>No stateful resource to build.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool TryBuildStatefulResource(IWolverineRuntime runtime, out IStatefulResource? resource)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IWolverineRuntime</span></td>
+        <td><span class="parametername">runtime</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">IStatefulResource</span></td>
+        <td><span class="parametername">resource</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBTransport.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBTransport_TryGetEndpoint_" data-uid="AeroDB.WolverineFx.AeroDBTransport.TryGetEndpoint*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBTransport_TryGetEndpoint_System_Uri_" data-uid="AeroDB.WolverineFx.AeroDBTransport.TryGetEndpoint(System.Uri)">TryGetEndpoint(Uri)</h4>
+  <div class="markdown level1 summary"><p>Try to get an existing endpoint for the given URI.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Endpoint? TryGetEndpoint(Uri uri)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Uri</span></td>
+        <td><span class="parametername">uri</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Endpoint</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <span class="xref">Wolverine.Transports.ITransport</span>
+  </div>
+
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBTransport.cs" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In this article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      AeroDB Documentation
+      
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.min.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

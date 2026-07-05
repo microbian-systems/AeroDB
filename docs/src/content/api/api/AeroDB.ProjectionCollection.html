@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Class ProjectionCollection | AeroDB API Reference </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="Class ProjectionCollection | AeroDB API Reference ">
+    
+    <meta name="description" content="Fluent projection registration API. Replaces the raw  on . Implements  for backward compatibility.">
+      <link rel="shortcut icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../styles/docfx.css">
+      <link rel="stylesheet" href="../styles/main.css">
+      <meta property="docfx:navrel" content="../toc.html">
+      <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="AeroDB">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="AeroDB.ProjectionCollection">
+
+
+
+  <h1 id="AeroDB_ProjectionCollection" data-uid="AeroDB.ProjectionCollection" class="text-break">Class ProjectionCollection</h1>
+  <div class="markdown level0 summary"><p>Fluent projection registration API. Replaces the raw <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List&lt;T&gt;</a>
+on <a class="xref" href="AeroDB.StoreOptions.html#AeroDB_StoreOptions_Projections">Projections</a>. Implements <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList&lt;T&gt;</a>
+for backward compatibility.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+    <div class="level1"><span class="xref">ProjectionCollection</span></div>
+  </div>
+  <div class="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList</a>&lt;<a class="xref" href="AeroDB.IProjection.html">IProjection</a>&gt;</div>
+    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1">ICollection</a>&lt;<a class="xref" href="AeroDB.IProjection.html">IProjection</a>&gt;</div>
+    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<a class="xref" href="AeroDB.IProjection.html">IProjection</a>&gt;</div>
+    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1">IReadOnlyCollection</a>&lt;<a class="xref" href="AeroDB.IProjection.html">IProjection</a>&gt;</div>
+    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="AeroDB.IProjection.html">IProjection</a>&gt;</div>
+    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.ienumerable">IEnumerable</a></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="AeroDB.html">AeroDB</a></h6>
+  <h6><strong>Assembly</strong>: AeroDB.dll</h6>
+  <h5 id="AeroDB_ProjectionCollection_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class ProjectionCollection : IList&lt;IProjection&gt;, ICollection&lt;IProjection&gt;, IReadOnlyList&lt;IProjection&gt;, IReadOnlyCollection&lt;IProjection&gt;, IEnumerable&lt;IProjection&gt;, IEnumerable</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+</h3>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/ProjectionCollection.cs">View Source</a>
+  </span>
+  <a id="AeroDB_ProjectionCollection__ctor_" data-uid="AeroDB.ProjectionCollection.#ctor*"></a>
+  <h4 id="AeroDB_ProjectionCollection__ctor" data-uid="AeroDB.ProjectionCollection.#ctor">ProjectionCollection()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ProjectionCollection()</code></pre>
+  </div>
+  <h3 id="properties">Properties
+</h3>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/ProjectionCollection.cs">View Source</a>
+  </span>
+  <a id="AeroDB_ProjectionCollection_Count_" data-uid="AeroDB.ProjectionCollection.Count*"></a>
+  <h4 id="AeroDB_ProjectionCollection_Count" data-uid="AeroDB.ProjectionCollection.Count">Count</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int Count { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/ProjectionCollection.cs">View Source</a>
+  </span>
+  <a id="AeroDB_ProjectionCollection_IsReadOnly_" data-uid="AeroDB.ProjectionCollection.IsReadOnly*"></a>
+  <h4 id="AeroDB_ProjectionCollection_IsReadOnly" data-uid="AeroDB.ProjectionCollection.IsReadOnly">IsReadOnly</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsReadOnly { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/ProjectionCollection.cs">View Source</a>
+  </span>
+  <a id="AeroDB_ProjectionCollection_Item_" data-uid="AeroDB.ProjectionCollection.Item*"></a>
+  <h4 id="AeroDB_ProjectionCollection_Item_System_Int32_" data-uid="AeroDB.ProjectionCollection.Item(System.Int32)">this[int]</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IProjection this[int index] { get; set; }</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><span class="parametername">index</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.IProjection.html">IProjection</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+</h3>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/ProjectionCollection.cs">View Source</a>
+  </span>
+  <a id="AeroDB_ProjectionCollection_Add_" data-uid="AeroDB.ProjectionCollection.Add*"></a>
+  <h4 id="AeroDB_ProjectionCollection_Add_AeroDB_IProjection_" data-uid="AeroDB.ProjectionCollection.Add(AeroDB.IProjection)">Add(IProjection)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Add(IProjection item)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.IProjection.html">IProjection</a></td>
+        <td><span class="parametername">item</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/ProjectionCollection.cs">View Source</a>
+  </span>
+  <a id="AeroDB_ProjectionCollection_Add_" data-uid="AeroDB.ProjectionCollection.Add*"></a>
+  <h4 id="AeroDB_ProjectionCollection_Add_AeroDB_IProjection_AeroDB_ProjectionLifecycle_" data-uid="AeroDB.ProjectionCollection.Add(AeroDB.IProjection,AeroDB.ProjectionLifecycle)">Add(IProjection, ProjectionLifecycle)</h4>
+  <div class="markdown level1 summary"><p>Register an existing projection instance with the given lifecycle.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Add(IProjection projection, ProjectionLifecycle lifecycle)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.IProjection.html">IProjection</a></td>
+        <td><span class="parametername">projection</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="AeroDB.ProjectionLifecycle.html">ProjectionLifecycle</a></td>
+        <td><span class="parametername">lifecycle</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/ProjectionCollection.cs">View Source</a>
+  </span>
+  <a id="AeroDB_ProjectionCollection_Add_" data-uid="AeroDB.ProjectionCollection.Add*"></a>
+  <h4 id="AeroDB_ProjectionCollection_Add__1_AeroDB_ProjectionLifecycle_" data-uid="AeroDB.ProjectionCollection.Add``1(AeroDB.ProjectionLifecycle)">Add&lt;T&gt;(ProjectionLifecycle)</h4>
+  <div class="markdown level1 summary"><p>Register a projection type with the given lifecycle. Instantiates
+<code class="typeparamref">T</code> via its parameterless constructor and sets
+<a class="xref" href="AeroDB.IProjection.html#AeroDB_IProjection_Lifecycle">Lifecycle</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Add&lt;T&gt;(ProjectionLifecycle lifecycle) where T : IProjection, new()</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.ProjectionLifecycle.html">ProjectionLifecycle</a></td>
+        <td><span class="parametername">lifecycle</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/ProjectionCollection.cs">View Source</a>
+  </span>
+  <a id="AeroDB_ProjectionCollection_Clear_" data-uid="AeroDB.ProjectionCollection.Clear*"></a>
+  <h4 id="AeroDB_ProjectionCollection_Clear" data-uid="AeroDB.ProjectionCollection.Clear">Clear()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Clear()</code></pre>
+  </div>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/ProjectionCollection.cs">View Source</a>
+  </span>
+  <a id="AeroDB_ProjectionCollection_Contains_" data-uid="AeroDB.ProjectionCollection.Contains*"></a>
+  <h4 id="AeroDB_ProjectionCollection_Contains_AeroDB_IProjection_" data-uid="AeroDB.ProjectionCollection.Contains(AeroDB.IProjection)">Contains(IProjection)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Contains(IProjection item)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.IProjection.html">IProjection</a></td>
+        <td><span class="parametername">item</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/ProjectionCollection.cs">View Source</a>
+  </span>
+  <a id="AeroDB_ProjectionCollection_CopyTo_" data-uid="AeroDB.ProjectionCollection.CopyTo*"></a>
+  <h4 id="AeroDB_ProjectionCollection_CopyTo_AeroDB_IProjection___System_Int32_" data-uid="AeroDB.ProjectionCollection.CopyTo(AeroDB.IProjection[],System.Int32)">CopyTo(IProjection[], int)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void CopyTo(IProjection[] array, int arrayIndex)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.IProjection.html">IProjection</a>[]</td>
+        <td><span class="parametername">array</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><span class="parametername">arrayIndex</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/ProjectionCollection.cs">View Source</a>
+  </span>
+  <a id="AeroDB_ProjectionCollection_GetEnumerator_" data-uid="AeroDB.ProjectionCollection.GetEnumerator*"></a>
+  <h4 id="AeroDB_ProjectionCollection_GetEnumerator" data-uid="AeroDB.ProjectionCollection.GetEnumerator">GetEnumerator()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerator&lt;IProjection&gt; GetEnumerator()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerator-1">IEnumerator</a>&lt;<a class="xref" href="AeroDB.IProjection.html">IProjection</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/ProjectionCollection.cs">View Source</a>
+  </span>
+  <a id="AeroDB_ProjectionCollection_IndexOf_" data-uid="AeroDB.ProjectionCollection.IndexOf*"></a>
+  <h4 id="AeroDB_ProjectionCollection_IndexOf_AeroDB_IProjection_" data-uid="AeroDB.ProjectionCollection.IndexOf(AeroDB.IProjection)">IndexOf(IProjection)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int IndexOf(IProjection item)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.IProjection.html">IProjection</a></td>
+        <td><span class="parametername">item</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/ProjectionCollection.cs">View Source</a>
+  </span>
+  <a id="AeroDB_ProjectionCollection_Insert_" data-uid="AeroDB.ProjectionCollection.Insert*"></a>
+  <h4 id="AeroDB_ProjectionCollection_Insert_System_Int32_AeroDB_IProjection_" data-uid="AeroDB.ProjectionCollection.Insert(System.Int32,AeroDB.IProjection)">Insert(int, IProjection)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Insert(int index, IProjection item)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><span class="parametername">index</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="AeroDB.IProjection.html">IProjection</a></td>
+        <td><span class="parametername">item</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/ProjectionCollection.cs">View Source</a>
+  </span>
+  <a id="AeroDB_ProjectionCollection_LiveStreamAggregation_" data-uid="AeroDB.ProjectionCollection.LiveStreamAggregation*"></a>
+  <h4 id="AeroDB_ProjectionCollection_LiveStreamAggregation__1" data-uid="AeroDB.ProjectionCollection.LiveStreamAggregation``1">LiveStreamAggregation&lt;T&gt;()</h4>
+  <div class="markdown level1 summary"><p>Register a live (on-the-fly) stream aggregation. No projection data is stored;
+results are computed at read time by replaying stream events.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void LiveStreamAggregation&lt;T&gt;() where T : class</code></pre>
+  </div>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/ProjectionCollection.cs">View Source</a>
+  </span>
+  <a id="AeroDB_ProjectionCollection_Remove_" data-uid="AeroDB.ProjectionCollection.Remove*"></a>
+  <h4 id="AeroDB_ProjectionCollection_Remove_AeroDB_IProjection_" data-uid="AeroDB.ProjectionCollection.Remove(AeroDB.IProjection)">Remove(IProjection)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Remove(IProjection item)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.IProjection.html">IProjection</a></td>
+        <td><span class="parametername">item</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/ProjectionCollection.cs">View Source</a>
+  </span>
+  <a id="AeroDB_ProjectionCollection_RemoveAt_" data-uid="AeroDB.ProjectionCollection.RemoveAt*"></a>
+  <h4 id="AeroDB_ProjectionCollection_RemoveAt_System_Int32_" data-uid="AeroDB.ProjectionCollection.RemoveAt(System.Int32)">RemoveAt(int)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void RemoveAt(int index)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><span class="parametername">index</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/ProjectionCollection.cs">View Source</a>
+  </span>
+  <a id="AeroDB_ProjectionCollection_Snapshot_" data-uid="AeroDB.ProjectionCollection.Snapshot*"></a>
+  <h4 id="AeroDB_ProjectionCollection_Snapshot__1_AeroDB_SnapshotLifecycle_System_Action_AeroDB_SnapshotOptions__" data-uid="AeroDB.ProjectionCollection.Snapshot``1(AeroDB.SnapshotLifecycle,System.Action{AeroDB.SnapshotOptions})">Snapshot&lt;T&gt;(SnapshotLifecycle, Action&lt;SnapshotOptions&gt;?)</h4>
+  <div class="markdown level1 summary"><p>Register a self-aggregating snapshot projection. The aggregate type
+<code class="typeparamref">T</code> applies events to itself via <code>Apply(EventType)</code>
+or <code>When(EventType)</code> methods.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Snapshot&lt;T&gt;(SnapshotLifecycle lifecycle, Action&lt;SnapshotOptions&gt;? configure = null) where T : class, new()</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.SnapshotLifecycle.html">SnapshotLifecycle</a></td>
+        <td><span class="parametername">lifecycle</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;<a class="xref" href="AeroDB.SnapshotOptions.html">SnapshotOptions</a>&gt;</td>
+        <td><span class="parametername">configure</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList&lt;T&gt;</a>
+  </div>
+  <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1">ICollection&lt;T&gt;</a>
+  </div>
+  <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList&lt;T&gt;</a>
+  </div>
+  <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1">IReadOnlyCollection&lt;T&gt;</a>
+  </div>
+  <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable&lt;T&gt;</a>
+  </div>
+  <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.ienumerable">IEnumerable</a>
+  </div>
+
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/ProjectionCollection.cs" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In this article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      AeroDB Documentation
+      
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.min.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

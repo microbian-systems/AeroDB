@@ -1,0 +1,423 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.Metadata.ITypeMetadata`1
+  commentId: T:AeroDB.Metadata.ITypeMetadata`1
+  id: ITypeMetadata`1
+  parent: AeroDB.Metadata
+  children:
+  - AeroDB.Metadata.ITypeMetadata`1.GetRecordId(`0)
+  - AeroDB.Metadata.ITypeMetadata`1.GetTenantId(`0)
+  - AeroDB.Metadata.ITypeMetadata`1.GetVersion(`0)
+  - AeroDB.Metadata.ITypeMetadata`1.SetTenantId(`0,System.String)
+  - AeroDB.Metadata.ITypeMetadata`1.SetVersion(`0,System.Int64)
+  langs:
+  - csharp
+  - vb
+  name: ITypeMetadata<T>
+  nameWithType: ITypeMetadata<T>
+  fullName: AeroDB.Metadata.ITypeMetadata<T>
+  type: Interface
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Metadata/MetadataRegistry.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB.Metadata
+  summary: >-
+    Typed metadata interface for a specific document type T.
+
+    Generated metadata classes implement this interface.
+  example: []
+  syntax:
+    content: 'public interface ITypeMetadata<T> : ITypeMetadata'
+    typeParameters:
+    - id: T
+    content.vb: Public Interface ITypeMetadata(Of T) Inherits ITypeMetadata
+  inheritedMembers:
+  - AeroDB.Metadata.ITypeMetadata.TableName
+  - AeroDB.Metadata.ITypeMetadata.HasTenantId
+  - AeroDB.Metadata.ITypeMetadata.HasVersion
+  - AeroDB.Metadata.ITypeMetadata.HasDocumentMetadata
+  - AeroDB.Metadata.ITypeMetadata.HasEventProjectionDispatch
+  - AeroDB.Metadata.ITypeMetadata.VersionFieldName
+  - AeroDB.Metadata.ITypeMetadata.GetVersionAccessor
+  - AeroDB.Metadata.ITypeMetadata.SetVersionAccessor
+  - AeroDB.Metadata.ITypeMetadata.GetRecordIdAccessor
+  - AeroDB.Metadata.ITypeMetadata.Fields
+  nameWithType.vb: ITypeMetadata(Of T)
+  fullName.vb: AeroDB.Metadata.ITypeMetadata(Of T)
+  name.vb: ITypeMetadata(Of T)
+- uid: AeroDB.Metadata.ITypeMetadata`1.GetTenantId(`0)
+  commentId: M:AeroDB.Metadata.ITypeMetadata`1.GetTenantId(`0)
+  id: GetTenantId(`0)
+  parent: AeroDB.Metadata.ITypeMetadata`1
+  langs:
+  - csharp
+  - vb
+  name: GetTenantId(T)
+  nameWithType: ITypeMetadata<T>.GetTenantId(T)
+  fullName: AeroDB.Metadata.ITypeMetadata<T>.GetTenantId(T)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Metadata/MetadataRegistry.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB.Metadata
+  summary: Gets the tenant ID from the entity, or null if not tenant-aware.
+  example: []
+  syntax:
+    content: string? GetTenantId(T entity)
+    parameters:
+    - id: entity
+      type: '{T}'
+    return:
+      type: System.String
+    content.vb: Function GetTenantId(entity As T) As String
+  overload: AeroDB.Metadata.ITypeMetadata`1.GetTenantId*
+  nameWithType.vb: ITypeMetadata(Of T).GetTenantId(T)
+  fullName.vb: AeroDB.Metadata.ITypeMetadata(Of T).GetTenantId(T)
+- uid: AeroDB.Metadata.ITypeMetadata`1.GetVersion(`0)
+  commentId: M:AeroDB.Metadata.ITypeMetadata`1.GetVersion(`0)
+  id: GetVersion(`0)
+  parent: AeroDB.Metadata.ITypeMetadata`1
+  langs:
+  - csharp
+  - vb
+  name: GetVersion(T)
+  nameWithType: ITypeMetadata<T>.GetVersion(T)
+  fullName: AeroDB.Metadata.ITypeMetadata<T>.GetVersion(T)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Metadata/MetadataRegistry.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB.Metadata
+  summary: Gets the current version from the entity, or -1 if no version field.
+  example: []
+  syntax:
+    content: long GetVersion(T entity)
+    parameters:
+    - id: entity
+      type: '{T}'
+    return:
+      type: System.Int64
+    content.vb: Function GetVersion(entity As T) As Long
+  overload: AeroDB.Metadata.ITypeMetadata`1.GetVersion*
+  nameWithType.vb: ITypeMetadata(Of T).GetVersion(T)
+  fullName.vb: AeroDB.Metadata.ITypeMetadata(Of T).GetVersion(T)
+- uid: AeroDB.Metadata.ITypeMetadata`1.SetVersion(`0,System.Int64)
+  commentId: M:AeroDB.Metadata.ITypeMetadata`1.SetVersion(`0,System.Int64)
+  id: SetVersion(`0,System.Int64)
+  parent: AeroDB.Metadata.ITypeMetadata`1
+  langs:
+  - csharp
+  - vb
+  name: SetVersion(T, long)
+  nameWithType: ITypeMetadata<T>.SetVersion(T, long)
+  fullName: AeroDB.Metadata.ITypeMetadata<T>.SetVersion(T, long)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Metadata/MetadataRegistry.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB.Metadata
+  summary: Sets the version on the entity (increments it).
+  example: []
+  syntax:
+    content: void SetVersion(T entity, long version)
+    parameters:
+    - id: entity
+      type: '{T}'
+    - id: version
+      type: System.Int64
+    content.vb: Sub SetVersion(entity As T, version As Long)
+  overload: AeroDB.Metadata.ITypeMetadata`1.SetVersion*
+  nameWithType.vb: ITypeMetadata(Of T).SetVersion(T, Long)
+  fullName.vb: AeroDB.Metadata.ITypeMetadata(Of T).SetVersion(T, Long)
+  name.vb: SetVersion(T, Long)
+- uid: AeroDB.Metadata.ITypeMetadata`1.GetRecordId(`0)
+  commentId: M:AeroDB.Metadata.ITypeMetadata`1.GetRecordId(`0)
+  id: GetRecordId(`0)
+  parent: AeroDB.Metadata.ITypeMetadata`1
+  langs:
+  - csharp
+  - vb
+  name: GetRecordId(T)
+  nameWithType: ITypeMetadata<T>.GetRecordId(T)
+  fullName: AeroDB.Metadata.ITypeMetadata<T>.GetRecordId(T)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Metadata/MetadataRegistry.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB.Metadata
+  summary: >-
+    Extracts the string record ID from the entity's Id property.
+
+    Handles <xref href="SurrealDb.Net.Models.RecordIdOf%601" data-throw-if-not-resolved="false"></xref> types.
+  example: []
+  syntax:
+    content: string? GetRecordId(T entity)
+    parameters:
+    - id: entity
+      type: '{T}'
+    return:
+      type: System.String
+    content.vb: Function GetRecordId(entity As T) As String
+  overload: AeroDB.Metadata.ITypeMetadata`1.GetRecordId*
+  nameWithType.vb: ITypeMetadata(Of T).GetRecordId(T)
+  fullName.vb: AeroDB.Metadata.ITypeMetadata(Of T).GetRecordId(T)
+- uid: AeroDB.Metadata.ITypeMetadata`1.SetTenantId(`0,System.String)
+  commentId: M:AeroDB.Metadata.ITypeMetadata`1.SetTenantId(`0,System.String)
+  id: SetTenantId(`0,System.String)
+  parent: AeroDB.Metadata.ITypeMetadata`1
+  langs:
+  - csharp
+  - vb
+  name: SetTenantId(T, string?)
+  nameWithType: ITypeMetadata<T>.SetTenantId(T, string?)
+  fullName: AeroDB.Metadata.ITypeMetadata<T>.SetTenantId(T, string?)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Metadata/MetadataRegistry.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB.Metadata
+  summary: Sets the tenant ID on the entity, or no-op if not tenant-aware.
+  example: []
+  syntax:
+    content: void SetTenantId(T entity, string? tenantId)
+    parameters:
+    - id: entity
+      type: '{T}'
+    - id: tenantId
+      type: System.String
+    content.vb: Sub SetTenantId(entity As T, tenantId As String)
+  overload: AeroDB.Metadata.ITypeMetadata`1.SetTenantId*
+  nameWithType.vb: ITypeMetadata(Of T).SetTenantId(T, String)
+  fullName.vb: AeroDB.Metadata.ITypeMetadata(Of T).SetTenantId(T, String)
+  name.vb: SetTenantId(T, String)
+references:
+- uid: AeroDB.Metadata
+  commentId: N:AeroDB.Metadata
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB.Metadata
+  nameWithType: AeroDB.Metadata
+  fullName: AeroDB.Metadata
+  spec.csharp:
+  - uid: AeroDB
+    name: AeroDB
+    isExternal: true
+    href: AeroDB.html
+  - name: .
+  - uid: AeroDB.Metadata
+    name: Metadata
+    isExternal: true
+    href: AeroDB.Metadata.html
+  spec.vb:
+  - uid: AeroDB
+    name: AeroDB
+    isExternal: true
+    href: AeroDB.html
+  - name: .
+  - uid: AeroDB.Metadata
+    name: Metadata
+    isExternal: true
+    href: AeroDB.Metadata.html
+- uid: AeroDB.Metadata.ITypeMetadata.TableName
+  commentId: P:AeroDB.Metadata.ITypeMetadata.TableName
+  parent: AeroDB.Metadata.ITypeMetadata
+  isExternal: true
+  href: AeroDB.Metadata.ITypeMetadata.html#AeroDB_Metadata_ITypeMetadata_TableName
+  name: TableName
+  nameWithType: ITypeMetadata.TableName
+  fullName: AeroDB.Metadata.ITypeMetadata.TableName
+- uid: AeroDB.Metadata.ITypeMetadata.HasTenantId
+  commentId: P:AeroDB.Metadata.ITypeMetadata.HasTenantId
+  parent: AeroDB.Metadata.ITypeMetadata
+  isExternal: true
+  href: AeroDB.Metadata.ITypeMetadata.html#AeroDB_Metadata_ITypeMetadata_HasTenantId
+  name: HasTenantId
+  nameWithType: ITypeMetadata.HasTenantId
+  fullName: AeroDB.Metadata.ITypeMetadata.HasTenantId
+- uid: AeroDB.Metadata.ITypeMetadata.HasVersion
+  commentId: P:AeroDB.Metadata.ITypeMetadata.HasVersion
+  parent: AeroDB.Metadata.ITypeMetadata
+  isExternal: true
+  href: AeroDB.Metadata.ITypeMetadata.html#AeroDB_Metadata_ITypeMetadata_HasVersion
+  name: HasVersion
+  nameWithType: ITypeMetadata.HasVersion
+  fullName: AeroDB.Metadata.ITypeMetadata.HasVersion
+- uid: AeroDB.Metadata.ITypeMetadata.HasDocumentMetadata
+  commentId: P:AeroDB.Metadata.ITypeMetadata.HasDocumentMetadata
+  parent: AeroDB.Metadata.ITypeMetadata
+  isExternal: true
+  href: AeroDB.Metadata.ITypeMetadata.html#AeroDB_Metadata_ITypeMetadata_HasDocumentMetadata
+  name: HasDocumentMetadata
+  nameWithType: ITypeMetadata.HasDocumentMetadata
+  fullName: AeroDB.Metadata.ITypeMetadata.HasDocumentMetadata
+- uid: AeroDB.Metadata.ITypeMetadata.HasEventProjectionDispatch
+  commentId: P:AeroDB.Metadata.ITypeMetadata.HasEventProjectionDispatch
+  parent: AeroDB.Metadata.ITypeMetadata
+  isExternal: true
+  href: AeroDB.Metadata.ITypeMetadata.html#AeroDB_Metadata_ITypeMetadata_HasEventProjectionDispatch
+  name: HasEventProjectionDispatch
+  nameWithType: ITypeMetadata.HasEventProjectionDispatch
+  fullName: AeroDB.Metadata.ITypeMetadata.HasEventProjectionDispatch
+- uid: AeroDB.Metadata.ITypeMetadata.VersionFieldName
+  commentId: P:AeroDB.Metadata.ITypeMetadata.VersionFieldName
+  parent: AeroDB.Metadata.ITypeMetadata
+  isExternal: true
+  href: AeroDB.Metadata.ITypeMetadata.html#AeroDB_Metadata_ITypeMetadata_VersionFieldName
+  name: VersionFieldName
+  nameWithType: ITypeMetadata.VersionFieldName
+  fullName: AeroDB.Metadata.ITypeMetadata.VersionFieldName
+- uid: AeroDB.Metadata.ITypeMetadata.GetVersionAccessor
+  commentId: P:AeroDB.Metadata.ITypeMetadata.GetVersionAccessor
+  parent: AeroDB.Metadata.ITypeMetadata
+  isExternal: true
+  href: AeroDB.Metadata.ITypeMetadata.html#AeroDB_Metadata_ITypeMetadata_GetVersionAccessor
+  name: GetVersionAccessor
+  nameWithType: ITypeMetadata.GetVersionAccessor
+  fullName: AeroDB.Metadata.ITypeMetadata.GetVersionAccessor
+- uid: AeroDB.Metadata.ITypeMetadata.SetVersionAccessor
+  commentId: P:AeroDB.Metadata.ITypeMetadata.SetVersionAccessor
+  parent: AeroDB.Metadata.ITypeMetadata
+  isExternal: true
+  href: AeroDB.Metadata.ITypeMetadata.html#AeroDB_Metadata_ITypeMetadata_SetVersionAccessor
+  name: SetVersionAccessor
+  nameWithType: ITypeMetadata.SetVersionAccessor
+  fullName: AeroDB.Metadata.ITypeMetadata.SetVersionAccessor
+- uid: AeroDB.Metadata.ITypeMetadata.GetRecordIdAccessor
+  commentId: P:AeroDB.Metadata.ITypeMetadata.GetRecordIdAccessor
+  parent: AeroDB.Metadata.ITypeMetadata
+  isExternal: true
+  href: AeroDB.Metadata.ITypeMetadata.html#AeroDB_Metadata_ITypeMetadata_GetRecordIdAccessor
+  name: GetRecordIdAccessor
+  nameWithType: ITypeMetadata.GetRecordIdAccessor
+  fullName: AeroDB.Metadata.ITypeMetadata.GetRecordIdAccessor
+- uid: AeroDB.Metadata.ITypeMetadata.Fields
+  commentId: P:AeroDB.Metadata.ITypeMetadata.Fields
+  parent: AeroDB.Metadata.ITypeMetadata
+  isExternal: true
+  href: AeroDB.Metadata.ITypeMetadata.html#AeroDB_Metadata_ITypeMetadata_Fields
+  name: Fields
+  nameWithType: ITypeMetadata.Fields
+  fullName: AeroDB.Metadata.ITypeMetadata.Fields
+- uid: AeroDB.Metadata.ITypeMetadata
+  commentId: T:AeroDB.Metadata.ITypeMetadata
+  parent: AeroDB.Metadata
+  isExternal: true
+  href: AeroDB.Metadata.ITypeMetadata.html
+  name: ITypeMetadata
+  nameWithType: ITypeMetadata
+  fullName: AeroDB.Metadata.ITypeMetadata
+- uid: AeroDB.Metadata.ITypeMetadata`1.GetTenantId*
+  commentId: Overload:AeroDB.Metadata.ITypeMetadata`1.GetTenantId
+  isExternal: true
+  href: AeroDB.Metadata.ITypeMetadata-1.html#AeroDB_Metadata_ITypeMetadata_1_GetTenantId__0_
+  name: GetTenantId
+  nameWithType: ITypeMetadata<T>.GetTenantId
+  fullName: AeroDB.Metadata.ITypeMetadata<T>.GetTenantId
+  nameWithType.vb: ITypeMetadata(Of T).GetTenantId
+  fullName.vb: AeroDB.Metadata.ITypeMetadata(Of T).GetTenantId
+- uid: '{T}'
+  commentId: '!:T'
+  definition: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AeroDB.Metadata.ITypeMetadata`1.GetVersion*
+  commentId: Overload:AeroDB.Metadata.ITypeMetadata`1.GetVersion
+  isExternal: true
+  href: AeroDB.Metadata.ITypeMetadata-1.html#AeroDB_Metadata_ITypeMetadata_1_GetVersion__0_
+  name: GetVersion
+  nameWithType: ITypeMetadata<T>.GetVersion
+  fullName: AeroDB.Metadata.ITypeMetadata<T>.GetVersion
+  nameWithType.vb: ITypeMetadata(Of T).GetVersion
+  fullName.vb: AeroDB.Metadata.ITypeMetadata(Of T).GetVersion
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
+- uid: AeroDB.Metadata.ITypeMetadata`1.SetVersion*
+  commentId: Overload:AeroDB.Metadata.ITypeMetadata`1.SetVersion
+  isExternal: true
+  href: AeroDB.Metadata.ITypeMetadata-1.html#AeroDB_Metadata_ITypeMetadata_1_SetVersion__0_System_Int64_
+  name: SetVersion
+  nameWithType: ITypeMetadata<T>.SetVersion
+  fullName: AeroDB.Metadata.ITypeMetadata<T>.SetVersion
+  nameWithType.vb: ITypeMetadata(Of T).SetVersion
+  fullName.vb: AeroDB.Metadata.ITypeMetadata(Of T).SetVersion
+- uid: SurrealDb.Net.Models.RecordIdOf`1
+  commentId: T:SurrealDb.Net.Models.RecordIdOf`1
+  isExternal: true
+  name: RecordIdOf<TId>
+  nameWithType: RecordIdOf<TId>
+  fullName: SurrealDb.Net.Models.RecordIdOf<TId>
+  nameWithType.vb: RecordIdOf(Of TId)
+  fullName.vb: SurrealDb.Net.Models.RecordIdOf(Of TId)
+  name.vb: RecordIdOf(Of TId)
+  spec.csharp:
+  - uid: SurrealDb.Net.Models.RecordIdOf`1
+    name: RecordIdOf
+    isExternal: true
+  - name: <
+  - name: TId
+  - name: '>'
+  spec.vb:
+  - uid: SurrealDb.Net.Models.RecordIdOf`1
+    name: RecordIdOf
+    isExternal: true
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TId
+  - name: )
+- uid: AeroDB.Metadata.ITypeMetadata`1.GetRecordId*
+  commentId: Overload:AeroDB.Metadata.ITypeMetadata`1.GetRecordId
+  isExternal: true
+  href: AeroDB.Metadata.ITypeMetadata-1.html#AeroDB_Metadata_ITypeMetadata_1_GetRecordId__0_
+  name: GetRecordId
+  nameWithType: ITypeMetadata<T>.GetRecordId
+  fullName: AeroDB.Metadata.ITypeMetadata<T>.GetRecordId
+  nameWithType.vb: ITypeMetadata(Of T).GetRecordId
+  fullName.vb: AeroDB.Metadata.ITypeMetadata(Of T).GetRecordId
+- uid: AeroDB.Metadata.ITypeMetadata`1.SetTenantId*
+  commentId: Overload:AeroDB.Metadata.ITypeMetadata`1.SetTenantId
+  isExternal: true
+  href: AeroDB.Metadata.ITypeMetadata-1.html#AeroDB_Metadata_ITypeMetadata_1_SetTenantId__0_System_String_
+  name: SetTenantId
+  nameWithType: ITypeMetadata<T>.SetTenantId
+  fullName: AeroDB.Metadata.ITypeMetadata<T>.SetTenantId
+  nameWithType.vb: ITypeMetadata(Of T).SetTenantId
+  fullName.vb: AeroDB.Metadata.ITypeMetadata(Of T).SetTenantId

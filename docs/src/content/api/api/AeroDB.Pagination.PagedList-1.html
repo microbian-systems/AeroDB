@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Class PagedList&lt;T&gt; | AeroDB API Reference </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="Class PagedList&lt;T&gt; | AeroDB API Reference ">
+    
+    <meta name="description" content="Paged list implementation that adapts AeroDB&#39;s  for total row count (default, single round trip) or falls back to separate LongCountAsync when useCountQuery is set.">
+      <link rel="shortcut icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../styles/docfx.css">
+      <link rel="stylesheet" href="../styles/main.css">
+      <meta property="docfx:navrel" content="../toc.html">
+      <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="AeroDB">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="AeroDB.Pagination.PagedList`1">
+
+
+
+  <h1 id="AeroDB_Pagination_PagedList_1" data-uid="AeroDB.Pagination.PagedList`1" class="text-break">Class PagedList&lt;T&gt;</h1>
+  <div class="markdown level0 summary"><p>Paged list implementation that adapts AeroDB's <a class="xref" href="AeroDB.QueryStatistics.html">QueryStatistics</a>
+for total row count (default, single round trip) or falls back to separate
+<code>LongCountAsync</code> when <code>useCountQuery</code> is set.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+    <div class="level1"><span class="xref">PagedList&lt;T&gt;</span></div>
+  </div>
+  <div class="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="AeroDB.Pagination.IPagedList-1.html">IPagedList</a>&lt;T&gt;</div>
+    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;T&gt;</div>
+    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.ienumerable">IEnumerable</a></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="AeroDB.html">AeroDB</a>.<a class="xref" href="AeroDB.Pagination.html">Pagination</a></h6>
+  <h6><strong>Assembly</strong>: AeroDB.dll</h6>
+  <h5 id="AeroDB_Pagination_PagedList_1_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class PagedList&lt;T&gt; : IPagedList&lt;T&gt;, IEnumerable&lt;T&gt;, IEnumerable where T : class</code></pre>
+  </div>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>Document type.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+</h3>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Pagination/PagedList.cs">View Source</a>
+  </span>
+  <a id="AeroDB_Pagination_PagedList_1_Count_" data-uid="AeroDB.Pagination.PagedList`1.Count*"></a>
+  <h4 id="AeroDB_Pagination_PagedList_1_Count" data-uid="AeroDB.Pagination.PagedList`1.Count">Count</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public long Count { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">long</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Pagination/PagedList.cs">View Source</a>
+  </span>
+  <a id="AeroDB_Pagination_PagedList_1_FirstItemOnPage_" data-uid="AeroDB.Pagination.PagedList`1.FirstItemOnPage*"></a>
+  <h4 id="AeroDB_Pagination_PagedList_1_FirstItemOnPage" data-uid="AeroDB.Pagination.PagedList`1.FirstItemOnPage">FirstItemOnPage</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public long FirstItemOnPage { get; protected set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">long</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Pagination/PagedList.cs">View Source</a>
+  </span>
+  <a id="AeroDB_Pagination_PagedList_1_HasNextPage_" data-uid="AeroDB.Pagination.PagedList`1.HasNextPage*"></a>
+  <h4 id="AeroDB_Pagination_PagedList_1_HasNextPage" data-uid="AeroDB.Pagination.PagedList`1.HasNextPage">HasNextPage</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool HasNextPage { get; protected set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Pagination/PagedList.cs">View Source</a>
+  </span>
+  <a id="AeroDB_Pagination_PagedList_1_HasPreviousPage_" data-uid="AeroDB.Pagination.PagedList`1.HasPreviousPage*"></a>
+  <h4 id="AeroDB_Pagination_PagedList_1_HasPreviousPage" data-uid="AeroDB.Pagination.PagedList`1.HasPreviousPage">HasPreviousPage</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool HasPreviousPage { get; protected set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Pagination/PagedList.cs">View Source</a>
+  </span>
+  <a id="AeroDB_Pagination_PagedList_1_IsFirstPage_" data-uid="AeroDB.Pagination.PagedList`1.IsFirstPage*"></a>
+  <h4 id="AeroDB_Pagination_PagedList_1_IsFirstPage" data-uid="AeroDB.Pagination.PagedList`1.IsFirstPage">IsFirstPage</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsFirstPage { get; protected set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Pagination/PagedList.cs">View Source</a>
+  </span>
+  <a id="AeroDB_Pagination_PagedList_1_IsLastPage_" data-uid="AeroDB.Pagination.PagedList`1.IsLastPage*"></a>
+  <h4 id="AeroDB_Pagination_PagedList_1_IsLastPage" data-uid="AeroDB.Pagination.PagedList`1.IsLastPage">IsLastPage</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsLastPage { get; protected set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Pagination/PagedList.cs">View Source</a>
+  </span>
+  <a id="AeroDB_Pagination_PagedList_1_Item_" data-uid="AeroDB.Pagination.PagedList`1.Item*"></a>
+  <h4 id="AeroDB_Pagination_PagedList_1_Item_System_Int32_" data-uid="AeroDB.Pagination.PagedList`1.Item(System.Int32)">this[int]</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public T this[int index] { get; }</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><span class="parametername">index</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Pagination/PagedList.cs">View Source</a>
+  </span>
+  <a id="AeroDB_Pagination_PagedList_1_LastItemOnPage_" data-uid="AeroDB.Pagination.PagedList`1.LastItemOnPage*"></a>
+  <h4 id="AeroDB_Pagination_PagedList_1_LastItemOnPage" data-uid="AeroDB.Pagination.PagedList`1.LastItemOnPage">LastItemOnPage</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public long LastItemOnPage { get; protected set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">long</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Pagination/PagedList.cs">View Source</a>
+  </span>
+  <a id="AeroDB_Pagination_PagedList_1_PageCount_" data-uid="AeroDB.Pagination.PagedList`1.PageCount*"></a>
+  <h4 id="AeroDB_Pagination_PagedList_1_PageCount" data-uid="AeroDB.Pagination.PagedList`1.PageCount">PageCount</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public long PageCount { get; protected set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">long</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Pagination/PagedList.cs">View Source</a>
+  </span>
+  <a id="AeroDB_Pagination_PagedList_1_PageNumber_" data-uid="AeroDB.Pagination.PagedList`1.PageNumber*"></a>
+  <h4 id="AeroDB_Pagination_PagedList_1_PageNumber" data-uid="AeroDB.Pagination.PagedList`1.PageNumber">PageNumber</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public long PageNumber { get; protected set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">long</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Pagination/PagedList.cs">View Source</a>
+  </span>
+  <a id="AeroDB_Pagination_PagedList_1_PageSize_" data-uid="AeroDB.Pagination.PagedList`1.PageSize*"></a>
+  <h4 id="AeroDB_Pagination_PagedList_1_PageSize" data-uid="AeroDB.Pagination.PagedList`1.PageSize">PageSize</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public long PageSize { get; protected set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">long</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Pagination/PagedList.cs">View Source</a>
+  </span>
+  <a id="AeroDB_Pagination_PagedList_1_TotalItemCount_" data-uid="AeroDB.Pagination.PagedList`1.TotalItemCount*"></a>
+  <h4 id="AeroDB_Pagination_PagedList_1_TotalItemCount" data-uid="AeroDB.Pagination.PagedList`1.TotalItemCount">TotalItemCount</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public long TotalItemCount { get; protected set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">long</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+</h3>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Pagination/PagedList.cs">View Source</a>
+  </span>
+  <a id="AeroDB_Pagination_PagedList_1_CreateAsync_" data-uid="AeroDB.Pagination.PagedList`1.CreateAsync*"></a>
+  <h4 id="AeroDB_Pagination_PagedList_1_CreateAsync_System_Linq_IQueryable__0__System_Int32_System_Int32_System_Boolean_System_Threading_CancellationToken_" data-uid="AeroDB.Pagination.PagedList`1.CreateAsync(System.Linq.IQueryable{`0},System.Int32,System.Int32,System.Boolean,System.Threading.CancellationToken)">CreateAsync(IQueryable&lt;T&gt;, int, int, bool, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Creates a paged list from a queryable using either Stats (default)
+or a separate count query when <code class="paramref">useCountQuery</code> is true.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Task&lt;PagedList&lt;T&gt;&gt; CreateAsync(IQueryable&lt;T&gt; queryable, int pageNumber, int pageSize, bool useCountQuery, CancellationToken ct = default)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.iqueryable-1">IQueryable</a>&lt;T&gt;</td>
+        <td><span class="parametername">queryable</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><span class="parametername">pageNumber</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><span class="parametername">pageSize</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td><span class="parametername">useCountQuery</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">ct</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="AeroDB.Pagination.PagedList-1.html">PagedList</a>&lt;T&gt;&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Pagination/PagedList.cs">View Source</a>
+  </span>
+  <a id="AeroDB_Pagination_PagedList_1_CreateAsync_" data-uid="AeroDB.Pagination.PagedList`1.CreateAsync*"></a>
+  <h4 id="AeroDB_Pagination_PagedList_1_CreateAsync_System_Linq_IQueryable__0__System_Int32_System_Int32_System_Threading_CancellationToken_" data-uid="AeroDB.Pagination.PagedList`1.CreateAsync(System.Linq.IQueryable{`0},System.Int32,System.Int32,System.Threading.CancellationToken)">CreateAsync(IQueryable&lt;T&gt;, int, int, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Creates a paged list from a queryable using <a class="xref" href="AeroDB.QueryStatistics.html">QueryStatistics</a>
+for total row count (single round trip).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Task&lt;PagedList&lt;T&gt;&gt; CreateAsync(IQueryable&lt;T&gt; queryable, int pageNumber, int pageSize, CancellationToken ct = default)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.iqueryable-1">IQueryable</a>&lt;T&gt;</td>
+        <td><span class="parametername">queryable</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><span class="parametername">pageNumber</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><span class="parametername">pageSize</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">ct</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="AeroDB.Pagination.PagedList-1.html">PagedList</a>&lt;T&gt;&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Pagination/PagedList.cs">View Source</a>
+  </span>
+  <a id="AeroDB_Pagination_PagedList_1_GetEnumerator_" data-uid="AeroDB.Pagination.PagedList`1.GetEnumerator*"></a>
+  <h4 id="AeroDB_Pagination_PagedList_1_GetEnumerator" data-uid="AeroDB.Pagination.PagedList`1.GetEnumerator">GetEnumerator()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerator&lt;T&gt; GetEnumerator()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerator-1">IEnumerator</a>&lt;T&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="AeroDB.Pagination.IPagedList-1.html">IPagedList&lt;T&gt;</a>
+  </div>
+  <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable&lt;T&gt;</a>
+  </div>
+  <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.ienumerable">IEnumerable</a>
+  </div>
+
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Pagination/PagedList.cs" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In this article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      AeroDB Documentation
+      
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.min.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

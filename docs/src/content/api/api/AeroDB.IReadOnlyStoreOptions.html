@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Interface IReadOnlyStoreOptions | AeroDB API Reference </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="Interface IReadOnlyStoreOptions | AeroDB API Reference ">
+    
+    <meta name="description" content="Read-only view of StoreOptions for metadata consumers.">
+      <link rel="shortcut icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../styles/docfx.css">
+      <link rel="stylesheet" href="../styles/main.css">
+      <meta property="docfx:navrel" content="../toc.html">
+      <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="AeroDB">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="AeroDB.IReadOnlyStoreOptions">
+
+
+
+  <h1 id="AeroDB_IReadOnlyStoreOptions" data-uid="AeroDB.IReadOnlyStoreOptions" class="text-break">Interface IReadOnlyStoreOptions</h1>
+  <div class="markdown level0 summary"><p>Read-only view of StoreOptions for metadata consumers.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="AeroDB.html">AeroDB</a></h6>
+  <h6><strong>Assembly</strong>: AeroDB.dll</h6>
+  <h5 id="AeroDB_IReadOnlyStoreOptions_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public interface IReadOnlyStoreOptions</code></pre>
+  </div>
+  <h3 id="properties">Properties
+</h3>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IReadOnlyStoreOptions.cs">View Source</a>
+  </span>
+  <a id="AeroDB_IReadOnlyStoreOptions_ChangeListeners_" data-uid="AeroDB.IReadOnlyStoreOptions.ChangeListeners*"></a>
+  <h4 id="AeroDB_IReadOnlyStoreOptions_ChangeListeners" data-uid="AeroDB.IReadOnlyStoreOptions.ChangeListeners">ChangeListeners</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IReadOnlyList&lt;IChangeListener&gt; ChangeListeners { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<a class="xref" href="AeroDB.IChangeListener.html">IChangeListener</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IReadOnlyStoreOptions.cs">View Source</a>
+  </span>
+  <a id="AeroDB_IReadOnlyStoreOptions_CommandTimeout_" data-uid="AeroDB.IReadOnlyStoreOptions.CommandTimeout*"></a>
+  <h4 id="AeroDB_IReadOnlyStoreOptions_CommandTimeout" data-uid="AeroDB.IReadOnlyStoreOptions.CommandTimeout">CommandTimeout</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">int? CommandTimeout { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a>?</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IReadOnlyStoreOptions.cs">View Source</a>
+  </span>
+  <a id="AeroDB_IReadOnlyStoreOptions_Database_" data-uid="AeroDB.IReadOnlyStoreOptions.Database*"></a>
+  <h4 id="AeroDB_IReadOnlyStoreOptions_Database" data-uid="AeroDB.IReadOnlyStoreOptions.Database">Database</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">string? Database { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IReadOnlyStoreOptions.cs">View Source</a>
+  </span>
+  <a id="AeroDB_IReadOnlyStoreOptions_DefaultTenantId_" data-uid="AeroDB.IReadOnlyStoreOptions.DefaultTenantId*"></a>
+  <h4 id="AeroDB_IReadOnlyStoreOptions_DefaultTenantId" data-uid="AeroDB.IReadOnlyStoreOptions.DefaultTenantId">DefaultTenantId</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">string? DefaultTenantId { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IReadOnlyStoreOptions.cs">View Source</a>
+  </span>
+  <a id="AeroDB_IReadOnlyStoreOptions_Endpoint_" data-uid="AeroDB.IReadOnlyStoreOptions.Endpoint*"></a>
+  <h4 id="AeroDB_IReadOnlyStoreOptions_Endpoint" data-uid="AeroDB.IReadOnlyStoreOptions.Endpoint">Endpoint</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">string Endpoint { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IReadOnlyStoreOptions.cs">View Source</a>
+  </span>
+  <a id="AeroDB_IReadOnlyStoreOptions_Events_" data-uid="AeroDB.IReadOnlyStoreOptions.Events*"></a>
+  <h4 id="AeroDB_IReadOnlyStoreOptions_Events" data-uid="AeroDB.IReadOnlyStoreOptions.Events">Events</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">EventSourcingOptions Events { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.EventSourcingOptions.html">EventSourcingOptions</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IReadOnlyStoreOptions.cs">View Source</a>
+  </span>
+  <a id="AeroDB_IReadOnlyStoreOptions_Listeners_" data-uid="AeroDB.IReadOnlyStoreOptions.Listeners*"></a>
+  <h4 id="AeroDB_IReadOnlyStoreOptions_Listeners" data-uid="AeroDB.IReadOnlyStoreOptions.Listeners">Listeners</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IReadOnlyList&lt;IDocumentSessionListener&gt; Listeners { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<a class="xref" href="AeroDB.IDocumentSessionListener.html">IDocumentSessionListener</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IReadOnlyStoreOptions.cs">View Source</a>
+  </span>
+  <a id="AeroDB_IReadOnlyStoreOptions_Namespace_" data-uid="AeroDB.IReadOnlyStoreOptions.Namespace*"></a>
+  <h4 id="AeroDB_IReadOnlyStoreOptions_Namespace" data-uid="AeroDB.IReadOnlyStoreOptions.Namespace">Namespace</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">string? Namespace { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IReadOnlyStoreOptions.cs">View Source</a>
+  </span>
+  <a id="AeroDB_IReadOnlyStoreOptions_Password_" data-uid="AeroDB.IReadOnlyStoreOptions.Password*"></a>
+  <h4 id="AeroDB_IReadOnlyStoreOptions_Password" data-uid="AeroDB.IReadOnlyStoreOptions.Password">Password</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">string? Password { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IReadOnlyStoreOptions.cs">View Source</a>
+  </span>
+  <a id="AeroDB_IReadOnlyStoreOptions_Projections_" data-uid="AeroDB.IReadOnlyStoreOptions.Projections*"></a>
+  <h4 id="AeroDB_IReadOnlyStoreOptions_Projections" data-uid="AeroDB.IReadOnlyStoreOptions.Projections">Projections</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IReadOnlyList&lt;IProjection&gt; Projections { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<a class="xref" href="AeroDB.IProjection.html">IProjection</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IReadOnlyStoreOptions.cs">View Source</a>
+  </span>
+  <a id="AeroDB_IReadOnlyStoreOptions_Schema_" data-uid="AeroDB.IReadOnlyStoreOptions.Schema*"></a>
+  <h4 id="AeroDB_IReadOnlyStoreOptions_Schema" data-uid="AeroDB.IReadOnlyStoreOptions.Schema">Schema</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">SchemaOptions Schema { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.SchemaOptions.html">SchemaOptions</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IReadOnlyStoreOptions.cs">View Source</a>
+  </span>
+  <a id="AeroDB_IReadOnlyStoreOptions_TenancyStyle_" data-uid="AeroDB.IReadOnlyStoreOptions.TenancyStyle*"></a>
+  <h4 id="AeroDB_IReadOnlyStoreOptions_TenancyStyle" data-uid="AeroDB.IReadOnlyStoreOptions.TenancyStyle">TenancyStyle</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">TenancyStyle TenancyStyle { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.TenancyStyle.html">TenancyStyle</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IReadOnlyStoreOptions.cs">View Source</a>
+  </span>
+  <a id="AeroDB_IReadOnlyStoreOptions_Token_" data-uid="AeroDB.IReadOnlyStoreOptions.Token*"></a>
+  <h4 id="AeroDB_IReadOnlyStoreOptions_Token" data-uid="AeroDB.IReadOnlyStoreOptions.Token">Token</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">string? Token { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IReadOnlyStoreOptions.cs">View Source</a>
+  </span>
+  <a id="AeroDB_IReadOnlyStoreOptions_Tracking_" data-uid="AeroDB.IReadOnlyStoreOptions.Tracking*"></a>
+  <h4 id="AeroDB_IReadOnlyStoreOptions_Tracking" data-uid="AeroDB.IReadOnlyStoreOptions.Tracking">Tracking</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">DocumentTracking Tracking { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.DocumentTracking.html">DocumentTracking</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IReadOnlyStoreOptions.cs">View Source</a>
+  </span>
+  <a id="AeroDB_IReadOnlyStoreOptions_UpdateBatchSize_" data-uid="AeroDB.IReadOnlyStoreOptions.UpdateBatchSize*"></a>
+  <h4 id="AeroDB_IReadOnlyStoreOptions_UpdateBatchSize" data-uid="AeroDB.IReadOnlyStoreOptions.UpdateBatchSize">UpdateBatchSize</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">int UpdateBatchSize { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IReadOnlyStoreOptions.cs">View Source</a>
+  </span>
+  <a id="AeroDB_IReadOnlyStoreOptions_UseOptimisticConcurrency_" data-uid="AeroDB.IReadOnlyStoreOptions.UseOptimisticConcurrency*"></a>
+  <h4 id="AeroDB_IReadOnlyStoreOptions_UseOptimisticConcurrency" data-uid="AeroDB.IReadOnlyStoreOptions.UseOptimisticConcurrency">UseOptimisticConcurrency</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">bool UseOptimisticConcurrency { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IReadOnlyStoreOptions.cs">View Source</a>
+  </span>
+  <a id="AeroDB_IReadOnlyStoreOptions_Username_" data-uid="AeroDB.IReadOnlyStoreOptions.Username*"></a>
+  <h4 id="AeroDB_IReadOnlyStoreOptions_Username" data-uid="AeroDB.IReadOnlyStoreOptions.Username">Username</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">string? Username { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IReadOnlyStoreOptions.cs" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In this article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      AeroDB Documentation
+      
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.min.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

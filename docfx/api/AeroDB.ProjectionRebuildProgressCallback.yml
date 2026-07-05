@@ -1,0 +1,261 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.ProjectionRebuildProgressCallback
+  commentId: T:AeroDB.ProjectionRebuildProgressCallback
+  id: ProjectionRebuildProgressCallback
+  parent: AeroDB
+  children:
+  - AeroDB.ProjectionRebuildProgressCallback.#ctor(System.Object,System.IntPtr)
+  - AeroDB.ProjectionRebuildProgressCallback.BeginInvoke(System.String,System.Int64,System.Int64,System.AsyncCallback,System.Object)
+  - AeroDB.ProjectionRebuildProgressCallback.EndInvoke(System.IAsyncResult)
+  - AeroDB.ProjectionRebuildProgressCallback.Invoke(System.String,System.Int64,System.Int64)
+  langs:
+  - csharp
+  - vb
+  name: ProjectionRebuildProgressCallback
+  nameWithType: ProjectionRebuildProgressCallback
+  fullName: AeroDB.ProjectionRebuildProgressCallback
+  type: Delegate
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/AsyncDaemon.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Reports progress during projection rebuilds.
+  example: []
+  syntax:
+    content: public delegate void ProjectionRebuildProgressCallback(string projectionName, long current, long total)
+    parameters:
+    - id: projectionName
+      type: System.String
+      description: The name of the projection being rebuilt.
+    - id: current
+      type: System.Int64
+      description: The current sequence position.
+    - id: total
+      type: System.Int64
+      description: The total number of events to process.
+    content.vb: Public Delegate Sub ProjectionRebuildProgressCallback(projectionName As String, current As Long, total As Long)
+- uid: AeroDB.ProjectionRebuildProgressCallback.#ctor(System.Object,System.IntPtr)
+  commentId: M:AeroDB.ProjectionRebuildProgressCallback.#ctor(System.Object,System.IntPtr)
+  id: '#ctor(System.Object,System.IntPtr)'
+  parent: AeroDB.ProjectionRebuildProgressCallback
+  langs:
+  - csharp
+  - vb
+  name: ProjectionRebuildProgressCallback(object, nint)
+  nameWithType: ProjectionRebuildProgressCallback.ProjectionRebuildProgressCallback(object, nint)
+  fullName: AeroDB.ProjectionRebuildProgressCallback.ProjectionRebuildProgressCallback(object, nint)
+  type: Constructor
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/AsyncDaemon.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public ProjectionRebuildProgressCallback(object @object, nint method)
+    parameters:
+    - id: object
+      type: System.Object
+    - id: method
+      type: System.IntPtr
+    content.vb: Public Sub New([object] As Object, method As IntPtr)
+  overload: AeroDB.ProjectionRebuildProgressCallback.#ctor*
+  nameWithType.vb: ProjectionRebuildProgressCallback.New(Object, IntPtr)
+  fullName.vb: AeroDB.ProjectionRebuildProgressCallback.New(Object, System.IntPtr)
+  name.vb: New(Object, IntPtr)
+- uid: AeroDB.ProjectionRebuildProgressCallback.Invoke(System.String,System.Int64,System.Int64)
+  commentId: M:AeroDB.ProjectionRebuildProgressCallback.Invoke(System.String,System.Int64,System.Int64)
+  id: Invoke(System.String,System.Int64,System.Int64)
+  parent: AeroDB.ProjectionRebuildProgressCallback
+  langs:
+  - csharp
+  - vb
+  name: Invoke(string, long, long)
+  nameWithType: ProjectionRebuildProgressCallback.Invoke(string, long, long)
+  fullName: AeroDB.ProjectionRebuildProgressCallback.Invoke(string, long, long)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/AsyncDaemon.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public virtual void Invoke(string projectionName, long current, long total)
+    parameters:
+    - id: projectionName
+      type: System.String
+    - id: current
+      type: System.Int64
+    - id: total
+      type: System.Int64
+    content.vb: Public Overridable Sub Invoke(projectionName As String, current As Long, total As Long)
+  overload: AeroDB.ProjectionRebuildProgressCallback.Invoke*
+  nameWithType.vb: ProjectionRebuildProgressCallback.Invoke(String, Long, Long)
+  fullName.vb: AeroDB.ProjectionRebuildProgressCallback.Invoke(String, Long, Long)
+  name.vb: Invoke(String, Long, Long)
+- uid: AeroDB.ProjectionRebuildProgressCallback.BeginInvoke(System.String,System.Int64,System.Int64,System.AsyncCallback,System.Object)
+  commentId: M:AeroDB.ProjectionRebuildProgressCallback.BeginInvoke(System.String,System.Int64,System.Int64,System.AsyncCallback,System.Object)
+  id: BeginInvoke(System.String,System.Int64,System.Int64,System.AsyncCallback,System.Object)
+  parent: AeroDB.ProjectionRebuildProgressCallback
+  langs:
+  - csharp
+  - vb
+  name: BeginInvoke(string, long, long, AsyncCallback, object)
+  nameWithType: ProjectionRebuildProgressCallback.BeginInvoke(string, long, long, AsyncCallback, object)
+  fullName: AeroDB.ProjectionRebuildProgressCallback.BeginInvoke(string, long, long, System.AsyncCallback, object)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/AsyncDaemon.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public virtual IAsyncResult BeginInvoke(string projectionName, long current, long total, AsyncCallback callback, object @object)
+    parameters:
+    - id: projectionName
+      type: System.String
+    - id: current
+      type: System.Int64
+    - id: total
+      type: System.Int64
+    - id: callback
+      type: System.AsyncCallback
+    - id: object
+      type: System.Object
+    return:
+      type: System.IAsyncResult
+    content.vb: Public Overridable Function BeginInvoke(projectionName As String, current As Long, total As Long, callback As AsyncCallback, [object] As Object) As IAsyncResult
+  overload: AeroDB.ProjectionRebuildProgressCallback.BeginInvoke*
+  nameWithType.vb: ProjectionRebuildProgressCallback.BeginInvoke(String, Long, Long, AsyncCallback, Object)
+  fullName.vb: AeroDB.ProjectionRebuildProgressCallback.BeginInvoke(String, Long, Long, System.AsyncCallback, Object)
+  name.vb: BeginInvoke(String, Long, Long, AsyncCallback, Object)
+- uid: AeroDB.ProjectionRebuildProgressCallback.EndInvoke(System.IAsyncResult)
+  commentId: M:AeroDB.ProjectionRebuildProgressCallback.EndInvoke(System.IAsyncResult)
+  id: EndInvoke(System.IAsyncResult)
+  parent: AeroDB.ProjectionRebuildProgressCallback
+  langs:
+  - csharp
+  - vb
+  name: EndInvoke(IAsyncResult)
+  nameWithType: ProjectionRebuildProgressCallback.EndInvoke(IAsyncResult)
+  fullName: AeroDB.ProjectionRebuildProgressCallback.EndInvoke(System.IAsyncResult)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/AsyncDaemon.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public virtual void EndInvoke(IAsyncResult result)
+    parameters:
+    - id: result
+      type: System.IAsyncResult
+    content.vb: Public Overridable Sub EndInvoke(result As IAsyncResult)
+  overload: AeroDB.ProjectionRebuildProgressCallback.EndInvoke*
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AeroDB.ProjectionRebuildProgressCallback.#ctor*
+  commentId: Overload:AeroDB.ProjectionRebuildProgressCallback.#ctor
+  isExternal: true
+  href: AeroDB.ProjectionRebuildProgressCallback.html#AeroDB_ProjectionRebuildProgressCallback__ctor_System_Object_System_IntPtr_
+  name: ProjectionRebuildProgressCallback
+  nameWithType: ProjectionRebuildProgressCallback.ProjectionRebuildProgressCallback
+  fullName: AeroDB.ProjectionRebuildProgressCallback.ProjectionRebuildProgressCallback
+  nameWithType.vb: ProjectionRebuildProgressCallback.New
+  fullName.vb: AeroDB.ProjectionRebuildProgressCallback.New
+  name.vb: New
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.IntPtr
+  commentId: T:System.IntPtr
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.intptr
+  name: nint
+  nameWithType: nint
+  fullName: nint
+  nameWithType.vb: IntPtr
+  fullName.vb: System.IntPtr
+  name.vb: IntPtr
+- uid: AeroDB.ProjectionRebuildProgressCallback.Invoke*
+  commentId: Overload:AeroDB.ProjectionRebuildProgressCallback.Invoke
+  isExternal: true
+  href: AeroDB.ProjectionRebuildProgressCallback.html#AeroDB_ProjectionRebuildProgressCallback_Invoke_System_String_System_Int64_System_Int64_
+  name: Invoke
+  nameWithType: ProjectionRebuildProgressCallback.Invoke
+  fullName: AeroDB.ProjectionRebuildProgressCallback.Invoke
+- uid: AeroDB.ProjectionRebuildProgressCallback.BeginInvoke*
+  commentId: Overload:AeroDB.ProjectionRebuildProgressCallback.BeginInvoke
+  isExternal: true
+  href: AeroDB.ProjectionRebuildProgressCallback.html#AeroDB_ProjectionRebuildProgressCallback_BeginInvoke_System_String_System_Int64_System_Int64_System_AsyncCallback_System_Object_
+  name: BeginInvoke
+  nameWithType: ProjectionRebuildProgressCallback.BeginInvoke
+  fullName: AeroDB.ProjectionRebuildProgressCallback.BeginInvoke
+- uid: System.AsyncCallback
+  commentId: T:System.AsyncCallback
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.asynccallback
+  name: AsyncCallback
+  nameWithType: AsyncCallback
+  fullName: System.AsyncCallback
+- uid: System.IAsyncResult
+  commentId: T:System.IAsyncResult
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iasyncresult
+  name: IAsyncResult
+  nameWithType: IAsyncResult
+  fullName: System.IAsyncResult
+- uid: AeroDB.ProjectionRebuildProgressCallback.EndInvoke*
+  commentId: Overload:AeroDB.ProjectionRebuildProgressCallback.EndInvoke
+  isExternal: true
+  href: AeroDB.ProjectionRebuildProgressCallback.html#AeroDB_ProjectionRebuildProgressCallback_EndInvoke_System_IAsyncResult_
+  name: EndInvoke
+  nameWithType: ProjectionRebuildProgressCallback.EndInvoke
+  fullName: AeroDB.ProjectionRebuildProgressCallback.EndInvoke

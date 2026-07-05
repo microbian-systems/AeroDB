@@ -1,0 +1,1543 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.SchemaManager
+  commentId: T:AeroDB.SchemaManager
+  id: SchemaManager
+  parent: AeroDB
+  children:
+  - AeroDB.SchemaManager.#ctor(Microsoft.Extensions.Logging.ILoggerFactory)
+  - AeroDB.SchemaManager.DropTableAsync(SurrealDb.Net.ISurrealDbSession,System.String,System.Threading.CancellationToken)
+  - AeroDB.SchemaManager.EnsureAccessesAsync(SurrealDb.Net.ISurrealDbSession,System.Collections.Generic.List{AeroDB.AccessDefinition},System.Threading.CancellationToken)
+  - AeroDB.SchemaManager.EnsureAnalyzerAsync(SurrealDb.Net.ISurrealDbSession,AeroDB.AnalyzerDefinition,System.Threading.CancellationToken)
+  - AeroDB.SchemaManager.EnsureAnalyzersAsync(SurrealDb.Net.ISurrealDbSession,AeroDB.AnalyzerOptions,System.Threading.CancellationToken)
+  - AeroDB.SchemaManager.EnsureDatabaseAsync(SurrealDb.Net.ISurrealDbSession,System.String,System.Threading.CancellationToken)
+  - AeroDB.SchemaManager.EnsureDocumentSchemaAsync``1(SurrealDb.Net.ISurrealDbSession,AeroDB.SchemaMode,System.Threading.CancellationToken)
+  - AeroDB.SchemaManager.EnsureDocumentSchemaAsync``1(SurrealDb.Net.ISurrealDbSession,System.Threading.CancellationToken)
+  - AeroDB.SchemaManager.EnsureEdgeSchemaAsync``1(SurrealDb.Net.ISurrealDbSession,AeroDB.EdgeMapping{``0},System.Threading.CancellationToken)
+  - AeroDB.SchemaManager.EnsureEventSchemaAsync(SurrealDb.Net.ISurrealDbSession,System.Threading.CancellationToken)
+  - AeroDB.SchemaManager.EnsureFieldDefinitionsAsync(SurrealDb.Net.ISurrealDbSession,System.String,System.Collections.Generic.IReadOnlyList{AeroDB.FieldDefinition},System.Threading.CancellationToken)
+  - AeroDB.SchemaManager.EnsureIndexAsync(SurrealDb.Net.ISurrealDbSession,System.String,AeroDB.IndexDefinition,System.Threading.CancellationToken)
+  - AeroDB.SchemaManager.EnsureProjectionStateTableAsync(SurrealDb.Net.ISurrealDbSession,System.Threading.CancellationToken)
+  - AeroDB.SchemaManager.EnsureSchemaAsync``1(SurrealDb.Net.ISurrealDbSession,System.String,AeroDB.SchemaMode,System.Threading.CancellationToken)
+  - AeroDB.SchemaManager.EnsureScopesAsync(SurrealDb.Net.ISurrealDbSession,System.Collections.Generic.List{AeroDB.ScopeDefinition},System.Threading.CancellationToken)
+  - AeroDB.SchemaManager.EnsureTokensAsync(SurrealDb.Net.ISurrealDbSession,System.Collections.Generic.List{AeroDB.TokenDefinition},System.Threading.CancellationToken)
+  - AeroDB.SchemaManager.EnsureViewAsync``1(SurrealDb.Net.ISurrealDbSession,AeroDB.ViewDefinition{``0},System.Threading.CancellationToken)
+  langs:
+  - csharp
+  - vb
+  name: SchemaManager
+  nameWithType: SchemaManager
+  fullName: AeroDB.SchemaManager
+  type: Class
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/SchemaManager.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public class SchemaManager
+    content.vb: Public Class SchemaManager
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+- uid: AeroDB.SchemaManager.#ctor(Microsoft.Extensions.Logging.ILoggerFactory)
+  commentId: M:AeroDB.SchemaManager.#ctor(Microsoft.Extensions.Logging.ILoggerFactory)
+  id: '#ctor(Microsoft.Extensions.Logging.ILoggerFactory)'
+  parent: AeroDB.SchemaManager
+  langs:
+  - csharp
+  - vb
+  name: SchemaManager(ILoggerFactory?)
+  nameWithType: SchemaManager.SchemaManager(ILoggerFactory?)
+  fullName: AeroDB.SchemaManager.SchemaManager(Microsoft.Extensions.Logging.ILoggerFactory?)
+  type: Constructor
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/SchemaManager.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public SchemaManager(ILoggerFactory? loggerFactory = null)
+    parameters:
+    - id: loggerFactory
+      type: Microsoft.Extensions.Logging.ILoggerFactory
+    content.vb: Public Sub New(loggerFactory As ILoggerFactory = Nothing)
+  overload: AeroDB.SchemaManager.#ctor*
+  nameWithType.vb: SchemaManager.New(ILoggerFactory)
+  fullName.vb: AeroDB.SchemaManager.New(Microsoft.Extensions.Logging.ILoggerFactory)
+  name.vb: New(ILoggerFactory)
+- uid: AeroDB.SchemaManager.EnsureDatabaseAsync(SurrealDb.Net.ISurrealDbSession,System.String,System.Threading.CancellationToken)
+  commentId: M:AeroDB.SchemaManager.EnsureDatabaseAsync(SurrealDb.Net.ISurrealDbSession,System.String,System.Threading.CancellationToken)
+  id: EnsureDatabaseAsync(SurrealDb.Net.ISurrealDbSession,System.String,System.Threading.CancellationToken)
+  parent: AeroDB.SchemaManager
+  langs:
+  - csharp
+  - vb
+  name: EnsureDatabaseAsync(ISurrealDbSession, string, CancellationToken)
+  nameWithType: SchemaManager.EnsureDatabaseAsync(ISurrealDbSession, string, CancellationToken)
+  fullName: AeroDB.SchemaManager.EnsureDatabaseAsync(SurrealDb.Net.ISurrealDbSession, string, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/SchemaManager.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Ensures a SurrealDB database exists by executing <code>DEFINE DATABASE IF NOT EXISTS</code>.
+
+    The session must already be connected to the correct namespace.
+  example: []
+  syntax:
+    content: public Task EnsureDatabaseAsync(ISurrealDbSession session, string databaseName, CancellationToken ct = default)
+    parameters:
+    - id: session
+      type: SurrealDb.Net.ISurrealDbSession
+    - id: databaseName
+      type: System.String
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Function EnsureDatabaseAsync(session As ISurrealDbSession, databaseName As String, ct As CancellationToken = Nothing) As Task
+  overload: AeroDB.SchemaManager.EnsureDatabaseAsync*
+  nameWithType.vb: SchemaManager.EnsureDatabaseAsync(ISurrealDbSession, String, CancellationToken)
+  fullName.vb: AeroDB.SchemaManager.EnsureDatabaseAsync(SurrealDb.Net.ISurrealDbSession, String, System.Threading.CancellationToken)
+  name.vb: EnsureDatabaseAsync(ISurrealDbSession, String, CancellationToken)
+- uid: AeroDB.SchemaManager.EnsureDocumentSchemaAsync``1(SurrealDb.Net.ISurrealDbSession,System.Threading.CancellationToken)
+  commentId: M:AeroDB.SchemaManager.EnsureDocumentSchemaAsync``1(SurrealDb.Net.ISurrealDbSession,System.Threading.CancellationToken)
+  id: EnsureDocumentSchemaAsync``1(SurrealDb.Net.ISurrealDbSession,System.Threading.CancellationToken)
+  parent: AeroDB.SchemaManager
+  langs:
+  - csharp
+  - vb
+  name: EnsureDocumentSchemaAsync<T>(ISurrealDbSession, CancellationToken)
+  nameWithType: SchemaManager.EnsureDocumentSchemaAsync<T>(ISurrealDbSession, CancellationToken)
+  fullName: AeroDB.SchemaManager.EnsureDocumentSchemaAsync<T>(SurrealDb.Net.ISurrealDbSession, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/SchemaManager.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Ensures a document table exists with the configured schema mode and defines fields for all
+
+    public readable/writable properties on T (except Id).
+  example: []
+  syntax:
+    content: 'public Task EnsureDocumentSchemaAsync<T>(ISurrealDbSession session, CancellationToken ct = default) where T : class'
+    parameters:
+    - id: session
+      type: SurrealDb.Net.ISurrealDbSession
+    - id: ct
+      type: System.Threading.CancellationToken
+    typeParameters:
+    - id: T
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Function EnsureDocumentSchemaAsync(Of T As Class)(session As ISurrealDbSession, ct As CancellationToken = Nothing) As Task
+  overload: AeroDB.SchemaManager.EnsureDocumentSchemaAsync*
+  nameWithType.vb: SchemaManager.EnsureDocumentSchemaAsync(Of T)(ISurrealDbSession, CancellationToken)
+  fullName.vb: AeroDB.SchemaManager.EnsureDocumentSchemaAsync(Of T)(SurrealDb.Net.ISurrealDbSession, System.Threading.CancellationToken)
+  name.vb: EnsureDocumentSchemaAsync(Of T)(ISurrealDbSession, CancellationToken)
+- uid: AeroDB.SchemaManager.EnsureDocumentSchemaAsync``1(SurrealDb.Net.ISurrealDbSession,AeroDB.SchemaMode,System.Threading.CancellationToken)
+  commentId: M:AeroDB.SchemaManager.EnsureDocumentSchemaAsync``1(SurrealDb.Net.ISurrealDbSession,AeroDB.SchemaMode,System.Threading.CancellationToken)
+  id: EnsureDocumentSchemaAsync``1(SurrealDb.Net.ISurrealDbSession,AeroDB.SchemaMode,System.Threading.CancellationToken)
+  parent: AeroDB.SchemaManager
+  langs:
+  - csharp
+  - vb
+  name: EnsureDocumentSchemaAsync<T>(ISurrealDbSession, SchemaMode, CancellationToken)
+  nameWithType: SchemaManager.EnsureDocumentSchemaAsync<T>(ISurrealDbSession, SchemaMode, CancellationToken)
+  fullName: AeroDB.SchemaManager.EnsureDocumentSchemaAsync<T>(SurrealDb.Net.ISurrealDbSession, AeroDB.SchemaMode, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/SchemaManager.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Ensures a document table exists with the specified schema mode.
+  example: []
+  syntax:
+    content: 'public Task EnsureDocumentSchemaAsync<T>(ISurrealDbSession session, SchemaMode mode, CancellationToken ct = default) where T : class'
+    parameters:
+    - id: session
+      type: SurrealDb.Net.ISurrealDbSession
+    - id: mode
+      type: AeroDB.SchemaMode
+    - id: ct
+      type: System.Threading.CancellationToken
+    typeParameters:
+    - id: T
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Function EnsureDocumentSchemaAsync(Of T As Class)(session As ISurrealDbSession, mode As SchemaMode, ct As CancellationToken = Nothing) As Task
+  overload: AeroDB.SchemaManager.EnsureDocumentSchemaAsync*
+  nameWithType.vb: SchemaManager.EnsureDocumentSchemaAsync(Of T)(ISurrealDbSession, SchemaMode, CancellationToken)
+  fullName.vb: AeroDB.SchemaManager.EnsureDocumentSchemaAsync(Of T)(SurrealDb.Net.ISurrealDbSession, AeroDB.SchemaMode, System.Threading.CancellationToken)
+  name.vb: EnsureDocumentSchemaAsync(Of T)(ISurrealDbSession, SchemaMode, CancellationToken)
+- uid: AeroDB.SchemaManager.EnsureEventSchemaAsync(SurrealDb.Net.ISurrealDbSession,System.Threading.CancellationToken)
+  commentId: M:AeroDB.SchemaManager.EnsureEventSchemaAsync(SurrealDb.Net.ISurrealDbSession,System.Threading.CancellationToken)
+  id: EnsureEventSchemaAsync(SurrealDb.Net.ISurrealDbSession,System.Threading.CancellationToken)
+  parent: AeroDB.SchemaManager
+  langs:
+  - csharp
+  - vb
+  name: EnsureEventSchemaAsync(ISurrealDbSession, CancellationToken)
+  nameWithType: SchemaManager.EnsureEventSchemaAsync(ISurrealDbSession, CancellationToken)
+  fullName: AeroDB.SchemaManager.EnsureEventSchemaAsync(SurrealDb.Net.ISurrealDbSession, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/SchemaManager.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Ensures the mt_events table exists with the required schema for event sourcing.
+  example: []
+  syntax:
+    content: public Task EnsureEventSchemaAsync(ISurrealDbSession session, CancellationToken ct = default)
+    parameters:
+    - id: session
+      type: SurrealDb.Net.ISurrealDbSession
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Function EnsureEventSchemaAsync(session As ISurrealDbSession, ct As CancellationToken = Nothing) As Task
+  overload: AeroDB.SchemaManager.EnsureEventSchemaAsync*
+- uid: AeroDB.SchemaManager.EnsureProjectionStateTableAsync(SurrealDb.Net.ISurrealDbSession,System.Threading.CancellationToken)
+  commentId: M:AeroDB.SchemaManager.EnsureProjectionStateTableAsync(SurrealDb.Net.ISurrealDbSession,System.Threading.CancellationToken)
+  id: EnsureProjectionStateTableAsync(SurrealDb.Net.ISurrealDbSession,System.Threading.CancellationToken)
+  parent: AeroDB.SchemaManager
+  langs:
+  - csharp
+  - vb
+  name: EnsureProjectionStateTableAsync(ISurrealDbSession, CancellationToken)
+  nameWithType: SchemaManager.EnsureProjectionStateTableAsync(ISurrealDbSession, CancellationToken)
+  fullName: AeroDB.SchemaManager.EnsureProjectionStateTableAsync(SurrealDb.Net.ISurrealDbSession, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/SchemaManager.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Ensures the mt_projection_progress table exists for tracking projection rebuild state.
+  example: []
+  syntax:
+    content: public Task EnsureProjectionStateTableAsync(ISurrealDbSession session, CancellationToken ct = default)
+    parameters:
+    - id: session
+      type: SurrealDb.Net.ISurrealDbSession
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Function EnsureProjectionStateTableAsync(session As ISurrealDbSession, ct As CancellationToken = Nothing) As Task
+  overload: AeroDB.SchemaManager.EnsureProjectionStateTableAsync*
+- uid: AeroDB.SchemaManager.EnsureIndexAsync(SurrealDb.Net.ISurrealDbSession,System.String,AeroDB.IndexDefinition,System.Threading.CancellationToken)
+  commentId: M:AeroDB.SchemaManager.EnsureIndexAsync(SurrealDb.Net.ISurrealDbSession,System.String,AeroDB.IndexDefinition,System.Threading.CancellationToken)
+  id: EnsureIndexAsync(SurrealDb.Net.ISurrealDbSession,System.String,AeroDB.IndexDefinition,System.Threading.CancellationToken)
+  parent: AeroDB.SchemaManager
+  langs:
+  - csharp
+  - vb
+  name: EnsureIndexAsync(ISurrealDbSession, string, IndexDefinition, CancellationToken)
+  nameWithType: SchemaManager.EnsureIndexAsync(ISurrealDbSession, string, IndexDefinition, CancellationToken)
+  fullName: AeroDB.SchemaManager.EnsureIndexAsync(SurrealDb.Net.ISurrealDbSession, string, AeroDB.IndexDefinition, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/SchemaManager.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Ensures the specified index exists on the given table.
+  example: []
+  syntax:
+    content: public Task EnsureIndexAsync(ISurrealDbSession session, string tableName, IndexDefinition index, CancellationToken ct = default)
+    parameters:
+    - id: session
+      type: SurrealDb.Net.ISurrealDbSession
+    - id: tableName
+      type: System.String
+    - id: index
+      type: AeroDB.IndexDefinition
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Function EnsureIndexAsync(session As ISurrealDbSession, tableName As String, index As IndexDefinition, ct As CancellationToken = Nothing) As Task
+  overload: AeroDB.SchemaManager.EnsureIndexAsync*
+  nameWithType.vb: SchemaManager.EnsureIndexAsync(ISurrealDbSession, String, IndexDefinition, CancellationToken)
+  fullName.vb: AeroDB.SchemaManager.EnsureIndexAsync(SurrealDb.Net.ISurrealDbSession, String, AeroDB.IndexDefinition, System.Threading.CancellationToken)
+  name.vb: EnsureIndexAsync(ISurrealDbSession, String, IndexDefinition, CancellationToken)
+- uid: AeroDB.SchemaManager.EnsureAnalyzersAsync(SurrealDb.Net.ISurrealDbSession,AeroDB.AnalyzerOptions,System.Threading.CancellationToken)
+  commentId: M:AeroDB.SchemaManager.EnsureAnalyzersAsync(SurrealDb.Net.ISurrealDbSession,AeroDB.AnalyzerOptions,System.Threading.CancellationToken)
+  id: EnsureAnalyzersAsync(SurrealDb.Net.ISurrealDbSession,AeroDB.AnalyzerOptions,System.Threading.CancellationToken)
+  parent: AeroDB.SchemaManager
+  langs:
+  - csharp
+  - vb
+  name: EnsureAnalyzersAsync(ISurrealDbSession, AnalyzerOptions, CancellationToken)
+  nameWithType: SchemaManager.EnsureAnalyzersAsync(ISurrealDbSession, AnalyzerOptions, CancellationToken)
+  fullName: AeroDB.SchemaManager.EnsureAnalyzersAsync(SurrealDb.Net.ISurrealDbSession, AeroDB.AnalyzerOptions, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/SchemaManager.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Ensures all configured analyzers exist in the database.
+  example: []
+  syntax:
+    content: public Task EnsureAnalyzersAsync(ISurrealDbSession session, AnalyzerOptions options, CancellationToken ct = default)
+    parameters:
+    - id: session
+      type: SurrealDb.Net.ISurrealDbSession
+    - id: options
+      type: AeroDB.AnalyzerOptions
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Function EnsureAnalyzersAsync(session As ISurrealDbSession, options As AnalyzerOptions, ct As CancellationToken = Nothing) As Task
+  overload: AeroDB.SchemaManager.EnsureAnalyzersAsync*
+- uid: AeroDB.SchemaManager.EnsureAnalyzerAsync(SurrealDb.Net.ISurrealDbSession,AeroDB.AnalyzerDefinition,System.Threading.CancellationToken)
+  commentId: M:AeroDB.SchemaManager.EnsureAnalyzerAsync(SurrealDb.Net.ISurrealDbSession,AeroDB.AnalyzerDefinition,System.Threading.CancellationToken)
+  id: EnsureAnalyzerAsync(SurrealDb.Net.ISurrealDbSession,AeroDB.AnalyzerDefinition,System.Threading.CancellationToken)
+  parent: AeroDB.SchemaManager
+  langs:
+  - csharp
+  - vb
+  name: EnsureAnalyzerAsync(ISurrealDbSession, AnalyzerDefinition, CancellationToken)
+  nameWithType: SchemaManager.EnsureAnalyzerAsync(ISurrealDbSession, AnalyzerDefinition, CancellationToken)
+  fullName: AeroDB.SchemaManager.EnsureAnalyzerAsync(SurrealDb.Net.ISurrealDbSession, AeroDB.AnalyzerDefinition, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/SchemaManager.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Ensures a single analyzer exists in the database.
+  example: []
+  syntax:
+    content: public Task EnsureAnalyzerAsync(ISurrealDbSession session, AnalyzerDefinition analyzer, CancellationToken ct = default)
+    parameters:
+    - id: session
+      type: SurrealDb.Net.ISurrealDbSession
+    - id: analyzer
+      type: AeroDB.AnalyzerDefinition
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Function EnsureAnalyzerAsync(session As ISurrealDbSession, analyzer As AnalyzerDefinition, ct As CancellationToken = Nothing) As Task
+  overload: AeroDB.SchemaManager.EnsureAnalyzerAsync*
+- uid: AeroDB.SchemaManager.EnsureEdgeSchemaAsync``1(SurrealDb.Net.ISurrealDbSession,AeroDB.EdgeMapping{``0},System.Threading.CancellationToken)
+  commentId: M:AeroDB.SchemaManager.EnsureEdgeSchemaAsync``1(SurrealDb.Net.ISurrealDbSession,AeroDB.EdgeMapping{``0},System.Threading.CancellationToken)
+  id: EnsureEdgeSchemaAsync``1(SurrealDb.Net.ISurrealDbSession,AeroDB.EdgeMapping{``0},System.Threading.CancellationToken)
+  parent: AeroDB.SchemaManager
+  langs:
+  - csharp
+  - vb
+  name: EnsureEdgeSchemaAsync<TEdge>(ISurrealDbSession, EdgeMapping<TEdge>, CancellationToken)
+  nameWithType: SchemaManager.EnsureEdgeSchemaAsync<TEdge>(ISurrealDbSession, EdgeMapping<TEdge>, CancellationToken)
+  fullName: AeroDB.SchemaManager.EnsureEdgeSchemaAsync<TEdge>(SurrealDb.Net.ISurrealDbSession, AeroDB.EdgeMapping<TEdge>, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/SchemaManager.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Ensures an edge (relation) table schema exists in the database.
+  example: []
+  syntax:
+    content: 'public Task EnsureEdgeSchemaAsync<TEdge>(ISurrealDbSession session, EdgeMapping<TEdge> mapping, CancellationToken ct = default) where TEdge : EdgeRecord'
+    parameters:
+    - id: session
+      type: SurrealDb.Net.ISurrealDbSession
+    - id: mapping
+      type: AeroDB.EdgeMapping{{TEdge}}
+    - id: ct
+      type: System.Threading.CancellationToken
+    typeParameters:
+    - id: TEdge
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Function EnsureEdgeSchemaAsync(Of TEdge As EdgeRecord)(session As ISurrealDbSession, mapping As EdgeMapping(Of TEdge), ct As CancellationToken = Nothing) As Task
+  overload: AeroDB.SchemaManager.EnsureEdgeSchemaAsync*
+  nameWithType.vb: SchemaManager.EnsureEdgeSchemaAsync(Of TEdge)(ISurrealDbSession, EdgeMapping(Of TEdge), CancellationToken)
+  fullName.vb: AeroDB.SchemaManager.EnsureEdgeSchemaAsync(Of TEdge)(SurrealDb.Net.ISurrealDbSession, AeroDB.EdgeMapping(Of TEdge), System.Threading.CancellationToken)
+  name.vb: EnsureEdgeSchemaAsync(Of TEdge)(ISurrealDbSession, EdgeMapping(Of TEdge), CancellationToken)
+- uid: AeroDB.SchemaManager.EnsureViewAsync``1(SurrealDb.Net.ISurrealDbSession,AeroDB.ViewDefinition{``0},System.Threading.CancellationToken)
+  commentId: M:AeroDB.SchemaManager.EnsureViewAsync``1(SurrealDb.Net.ISurrealDbSession,AeroDB.ViewDefinition{``0},System.Threading.CancellationToken)
+  id: EnsureViewAsync``1(SurrealDb.Net.ISurrealDbSession,AeroDB.ViewDefinition{``0},System.Threading.CancellationToken)
+  parent: AeroDB.SchemaManager
+  langs:
+  - csharp
+  - vb
+  name: EnsureViewAsync<T>(ISurrealDbSession, ViewDefinition<T>, CancellationToken)
+  nameWithType: SchemaManager.EnsureViewAsync<T>(ISurrealDbSession, ViewDefinition<T>, CancellationToken)
+  fullName: AeroDB.SchemaManager.EnsureViewAsync<T>(SurrealDb.Net.ISurrealDbSession, AeroDB.ViewDefinition<T>, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/SchemaManager.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Ensures a SurrealDB pre-computed/aggregate view exists by executing
+
+    <code>DEFINE TABLE IF NOT EXISTS view_name AS SELECT ...</code>.
+  example: []
+  syntax:
+    content: 'public Task EnsureViewAsync<T>(ISurrealDbSession session, ViewDefinition<T> view, CancellationToken ct = default) where T : class'
+    parameters:
+    - id: session
+      type: SurrealDb.Net.ISurrealDbSession
+      description: The SurrealDB session to execute against.
+    - id: view
+      type: AeroDB.ViewDefinition{{T}}
+      description: The view definition to ensure.
+    - id: ct
+      type: System.Threading.CancellationToken
+      description: Cancellation token.
+    typeParameters:
+    - id: T
+      description: The entity type representing the view's result shape.
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Function EnsureViewAsync(Of T As Class)(session As ISurrealDbSession, view As ViewDefinition(Of T), ct As CancellationToken = Nothing) As Task
+  overload: AeroDB.SchemaManager.EnsureViewAsync*
+  nameWithType.vb: SchemaManager.EnsureViewAsync(Of T)(ISurrealDbSession, ViewDefinition(Of T), CancellationToken)
+  fullName.vb: AeroDB.SchemaManager.EnsureViewAsync(Of T)(SurrealDb.Net.ISurrealDbSession, AeroDB.ViewDefinition(Of T), System.Threading.CancellationToken)
+  name.vb: EnsureViewAsync(Of T)(ISurrealDbSession, ViewDefinition(Of T), CancellationToken)
+- uid: AeroDB.SchemaManager.EnsureSchemaAsync``1(SurrealDb.Net.ISurrealDbSession,System.String,AeroDB.SchemaMode,System.Threading.CancellationToken)
+  commentId: M:AeroDB.SchemaManager.EnsureSchemaAsync``1(SurrealDb.Net.ISurrealDbSession,System.String,AeroDB.SchemaMode,System.Threading.CancellationToken)
+  id: EnsureSchemaAsync``1(SurrealDb.Net.ISurrealDbSession,System.String,AeroDB.SchemaMode,System.Threading.CancellationToken)
+  parent: AeroDB.SchemaManager
+  langs:
+  - csharp
+  - vb
+  name: EnsureSchemaAsync<T>(ISurrealDbSession, string, SchemaMode, CancellationToken)
+  nameWithType: SchemaManager.EnsureSchemaAsync<T>(ISurrealDbSession, string, SchemaMode, CancellationToken)
+  fullName: AeroDB.SchemaManager.EnsureSchemaAsync<T>(SurrealDb.Net.ISurrealDbSession, string, AeroDB.SchemaMode, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/SchemaManager.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Legacy method: ensures a schema for the given type using explicit table name.
+
+    Kept for backward compatibility.
+  example: []
+  syntax:
+    content: public Task EnsureSchemaAsync<T>(ISurrealDbSession session, string tableName, SchemaMode mode = SchemaMode.Strict, CancellationToken ct = default)
+    parameters:
+    - id: session
+      type: SurrealDb.Net.ISurrealDbSession
+    - id: tableName
+      type: System.String
+    - id: mode
+      type: AeroDB.SchemaMode
+    - id: ct
+      type: System.Threading.CancellationToken
+    typeParameters:
+    - id: T
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Function EnsureSchemaAsync(Of T)(session As ISurrealDbSession, tableName As String, mode As SchemaMode = SchemaMode.Strict, ct As CancellationToken = Nothing) As Task
+  overload: AeroDB.SchemaManager.EnsureSchemaAsync*
+  nameWithType.vb: SchemaManager.EnsureSchemaAsync(Of T)(ISurrealDbSession, String, SchemaMode, CancellationToken)
+  fullName.vb: AeroDB.SchemaManager.EnsureSchemaAsync(Of T)(SurrealDb.Net.ISurrealDbSession, String, AeroDB.SchemaMode, System.Threading.CancellationToken)
+  name.vb: EnsureSchemaAsync(Of T)(ISurrealDbSession, String, SchemaMode, CancellationToken)
+- uid: AeroDB.SchemaManager.EnsureAccessesAsync(SurrealDb.Net.ISurrealDbSession,System.Collections.Generic.List{AeroDB.AccessDefinition},System.Threading.CancellationToken)
+  commentId: M:AeroDB.SchemaManager.EnsureAccessesAsync(SurrealDb.Net.ISurrealDbSession,System.Collections.Generic.List{AeroDB.AccessDefinition},System.Threading.CancellationToken)
+  id: EnsureAccessesAsync(SurrealDb.Net.ISurrealDbSession,System.Collections.Generic.List{AeroDB.AccessDefinition},System.Threading.CancellationToken)
+  parent: AeroDB.SchemaManager
+  langs:
+  - csharp
+  - vb
+  name: EnsureAccessesAsync(ISurrealDbSession, List<AccessDefinition>, CancellationToken)
+  nameWithType: SchemaManager.EnsureAccessesAsync(ISurrealDbSession, List<AccessDefinition>, CancellationToken)
+  fullName: AeroDB.SchemaManager.EnsureAccessesAsync(SurrealDb.Net.ISurrealDbSession, System.Collections.Generic.List<AeroDB.AccessDefinition>, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/SchemaManager.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Issues DEFINE ACCESS for configured access definitions (SurrealDB v3+).
+  example: []
+  syntax:
+    content: public Task EnsureAccessesAsync(ISurrealDbSession session, List<AccessDefinition> accesses, CancellationToken ct = default)
+    parameters:
+    - id: session
+      type: SurrealDb.Net.ISurrealDbSession
+    - id: accesses
+      type: System.Collections.Generic.List{AeroDB.AccessDefinition}
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Function EnsureAccessesAsync(session As ISurrealDbSession, accesses As List(Of AccessDefinition), ct As CancellationToken = Nothing) As Task
+  overload: AeroDB.SchemaManager.EnsureAccessesAsync*
+  nameWithType.vb: SchemaManager.EnsureAccessesAsync(ISurrealDbSession, List(Of AccessDefinition), CancellationToken)
+  fullName.vb: AeroDB.SchemaManager.EnsureAccessesAsync(SurrealDb.Net.ISurrealDbSession, System.Collections.Generic.List(Of AeroDB.AccessDefinition), System.Threading.CancellationToken)
+  name.vb: EnsureAccessesAsync(ISurrealDbSession, List(Of AccessDefinition), CancellationToken)
+- uid: AeroDB.SchemaManager.EnsureTokensAsync(SurrealDb.Net.ISurrealDbSession,System.Collections.Generic.List{AeroDB.TokenDefinition},System.Threading.CancellationToken)
+  commentId: M:AeroDB.SchemaManager.EnsureTokensAsync(SurrealDb.Net.ISurrealDbSession,System.Collections.Generic.List{AeroDB.TokenDefinition},System.Threading.CancellationToken)
+  id: EnsureTokensAsync(SurrealDb.Net.ISurrealDbSession,System.Collections.Generic.List{AeroDB.TokenDefinition},System.Threading.CancellationToken)
+  parent: AeroDB.SchemaManager
+  langs:
+  - csharp
+  - vb
+  name: EnsureTokensAsync(ISurrealDbSession, List<TokenDefinition>, CancellationToken)
+  nameWithType: SchemaManager.EnsureTokensAsync(ISurrealDbSession, List<TokenDefinition>, CancellationToken)
+  fullName: AeroDB.SchemaManager.EnsureTokensAsync(SurrealDb.Net.ISurrealDbSession, System.Collections.Generic.List<AeroDB.TokenDefinition>, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/SchemaManager.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Issues DEFINE TOKEN for configured JWT/HMAC token definitions.
+  example: []
+  syntax:
+    content: public Task EnsureTokensAsync(ISurrealDbSession session, List<TokenDefinition> tokens, CancellationToken ct = default)
+    parameters:
+    - id: session
+      type: SurrealDb.Net.ISurrealDbSession
+    - id: tokens
+      type: System.Collections.Generic.List{AeroDB.TokenDefinition}
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Function EnsureTokensAsync(session As ISurrealDbSession, tokens As List(Of TokenDefinition), ct As CancellationToken = Nothing) As Task
+  overload: AeroDB.SchemaManager.EnsureTokensAsync*
+  nameWithType.vb: SchemaManager.EnsureTokensAsync(ISurrealDbSession, List(Of TokenDefinition), CancellationToken)
+  fullName.vb: AeroDB.SchemaManager.EnsureTokensAsync(SurrealDb.Net.ISurrealDbSession, System.Collections.Generic.List(Of AeroDB.TokenDefinition), System.Threading.CancellationToken)
+  name.vb: EnsureTokensAsync(ISurrealDbSession, List(Of TokenDefinition), CancellationToken)
+- uid: AeroDB.SchemaManager.EnsureScopesAsync(SurrealDb.Net.ISurrealDbSession,System.Collections.Generic.List{AeroDB.ScopeDefinition},System.Threading.CancellationToken)
+  commentId: M:AeroDB.SchemaManager.EnsureScopesAsync(SurrealDb.Net.ISurrealDbSession,System.Collections.Generic.List{AeroDB.ScopeDefinition},System.Threading.CancellationToken)
+  id: EnsureScopesAsync(SurrealDb.Net.ISurrealDbSession,System.Collections.Generic.List{AeroDB.ScopeDefinition},System.Threading.CancellationToken)
+  parent: AeroDB.SchemaManager
+  langs:
+  - csharp
+  - vb
+  name: EnsureScopesAsync(ISurrealDbSession, List<ScopeDefinition>, CancellationToken)
+  nameWithType: SchemaManager.EnsureScopesAsync(ISurrealDbSession, List<ScopeDefinition>, CancellationToken)
+  fullName: AeroDB.SchemaManager.EnsureScopesAsync(SurrealDb.Net.ISurrealDbSession, System.Collections.Generic.List<AeroDB.ScopeDefinition>, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/SchemaManager.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Issues DEFINE SCOPE for configured scope definitions (user signup/signin).
+  example: []
+  syntax:
+    content: public Task EnsureScopesAsync(ISurrealDbSession session, List<ScopeDefinition> scopes, CancellationToken ct = default)
+    parameters:
+    - id: session
+      type: SurrealDb.Net.ISurrealDbSession
+    - id: scopes
+      type: System.Collections.Generic.List{AeroDB.ScopeDefinition}
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Function EnsureScopesAsync(session As ISurrealDbSession, scopes As List(Of ScopeDefinition), ct As CancellationToken = Nothing) As Task
+  overload: AeroDB.SchemaManager.EnsureScopesAsync*
+  nameWithType.vb: SchemaManager.EnsureScopesAsync(ISurrealDbSession, List(Of ScopeDefinition), CancellationToken)
+  fullName.vb: AeroDB.SchemaManager.EnsureScopesAsync(SurrealDb.Net.ISurrealDbSession, System.Collections.Generic.List(Of AeroDB.ScopeDefinition), System.Threading.CancellationToken)
+  name.vb: EnsureScopesAsync(ISurrealDbSession, List(Of ScopeDefinition), CancellationToken)
+- uid: AeroDB.SchemaManager.EnsureFieldDefinitionsAsync(SurrealDb.Net.ISurrealDbSession,System.String,System.Collections.Generic.IReadOnlyList{AeroDB.FieldDefinition},System.Threading.CancellationToken)
+  commentId: M:AeroDB.SchemaManager.EnsureFieldDefinitionsAsync(SurrealDb.Net.ISurrealDbSession,System.String,System.Collections.Generic.IReadOnlyList{AeroDB.FieldDefinition},System.Threading.CancellationToken)
+  id: EnsureFieldDefinitionsAsync(SurrealDb.Net.ISurrealDbSession,System.String,System.Collections.Generic.IReadOnlyList{AeroDB.FieldDefinition},System.Threading.CancellationToken)
+  parent: AeroDB.SchemaManager
+  langs:
+  - csharp
+  - vb
+  name: EnsureFieldDefinitionsAsync(ISurrealDbSession, string, IReadOnlyList<FieldDefinition>, CancellationToken)
+  nameWithType: SchemaManager.EnsureFieldDefinitionsAsync(ISurrealDbSession, string, IReadOnlyList<FieldDefinition>, CancellationToken)
+  fullName: AeroDB.SchemaManager.EnsureFieldDefinitionsAsync(SurrealDb.Net.ISurrealDbSession, string, System.Collections.Generic.IReadOnlyList<AeroDB.FieldDefinition>, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/SchemaManager.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Issues DEFINE FIELD for custom field definitions (assertions, defaults, permissions).
+
+    Called after the base field definitions from <xref href="AeroDB.SchemaManager.EnsureDocumentSchemaAsync(System.Type%2cSurrealDb.Net.ISurrealDbSession%2cAeroDB.SchemaMode%2cSystem.Collections.Generic.IReadOnlyList%7bAeroDB.FieldDefinition%7d%2cSystem.Threading.CancellationToken)" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: public Task EnsureFieldDefinitionsAsync(ISurrealDbSession session, string tableName, IReadOnlyList<FieldDefinition> fields, CancellationToken ct = default)
+    parameters:
+    - id: session
+      type: SurrealDb.Net.ISurrealDbSession
+    - id: tableName
+      type: System.String
+    - id: fields
+      type: System.Collections.Generic.IReadOnlyList{AeroDB.FieldDefinition}
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Function EnsureFieldDefinitionsAsync(session As ISurrealDbSession, tableName As String, fields As IReadOnlyList(Of FieldDefinition), ct As CancellationToken = Nothing) As Task
+  overload: AeroDB.SchemaManager.EnsureFieldDefinitionsAsync*
+  nameWithType.vb: SchemaManager.EnsureFieldDefinitionsAsync(ISurrealDbSession, String, IReadOnlyList(Of FieldDefinition), CancellationToken)
+  fullName.vb: AeroDB.SchemaManager.EnsureFieldDefinitionsAsync(SurrealDb.Net.ISurrealDbSession, String, System.Collections.Generic.IReadOnlyList(Of AeroDB.FieldDefinition), System.Threading.CancellationToken)
+  name.vb: EnsureFieldDefinitionsAsync(ISurrealDbSession, String, IReadOnlyList(Of FieldDefinition), CancellationToken)
+- uid: AeroDB.SchemaManager.DropTableAsync(SurrealDb.Net.ISurrealDbSession,System.String,System.Threading.CancellationToken)
+  commentId: M:AeroDB.SchemaManager.DropTableAsync(SurrealDb.Net.ISurrealDbSession,System.String,System.Threading.CancellationToken)
+  id: DropTableAsync(SurrealDb.Net.ISurrealDbSession,System.String,System.Threading.CancellationToken)
+  parent: AeroDB.SchemaManager
+  langs:
+  - csharp
+  - vb
+  name: DropTableAsync(ISurrealDbSession, string, CancellationToken)
+  nameWithType: SchemaManager.DropTableAsync(ISurrealDbSession, string, CancellationToken)
+  fullName: AeroDB.SchemaManager.DropTableAsync(SurrealDb.Net.ISurrealDbSession, string, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/SchemaManager.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public Task DropTableAsync(ISurrealDbSession session, string tableName, CancellationToken ct = default)
+    parameters:
+    - id: session
+      type: SurrealDb.Net.ISurrealDbSession
+    - id: tableName
+      type: System.String
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Function DropTableAsync(session As ISurrealDbSession, tableName As String, ct As CancellationToken = Nothing) As Task
+  overload: AeroDB.SchemaManager.DropTableAsync*
+  nameWithType.vb: SchemaManager.DropTableAsync(ISurrealDbSession, String, CancellationToken)
+  fullName.vb: AeroDB.SchemaManager.DropTableAsync(SurrealDb.Net.ISurrealDbSession, String, System.Threading.CancellationToken)
+  name.vb: DropTableAsync(ISurrealDbSession, String, CancellationToken)
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AeroDB.SchemaManager.#ctor*
+  commentId: Overload:AeroDB.SchemaManager.#ctor
+  isExternal: true
+  href: AeroDB.SchemaManager.html#AeroDB_SchemaManager__ctor_Microsoft_Extensions_Logging_ILoggerFactory_
+  name: SchemaManager
+  nameWithType: SchemaManager.SchemaManager
+  fullName: AeroDB.SchemaManager.SchemaManager
+  nameWithType.vb: SchemaManager.New
+  fullName.vb: AeroDB.SchemaManager.New
+  name.vb: New
+- uid: Microsoft.Extensions.Logging.ILoggerFactory
+  commentId: T:Microsoft.Extensions.Logging.ILoggerFactory
+  parent: Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.iloggerfactory
+  name: ILoggerFactory
+  nameWithType: ILoggerFactory
+  fullName: Microsoft.Extensions.Logging.ILoggerFactory
+- uid: Microsoft.Extensions.Logging
+  commentId: N:Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.Logging
+  nameWithType: Microsoft.Extensions.Logging
+  fullName: Microsoft.Extensions.Logging
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+- uid: AeroDB.SchemaManager.EnsureDatabaseAsync*
+  commentId: Overload:AeroDB.SchemaManager.EnsureDatabaseAsync
+  isExternal: true
+  href: AeroDB.SchemaManager.html#AeroDB_SchemaManager_EnsureDatabaseAsync_SurrealDb_Net_ISurrealDbSession_System_String_System_Threading_CancellationToken_
+  name: EnsureDatabaseAsync
+  nameWithType: SchemaManager.EnsureDatabaseAsync
+  fullName: AeroDB.SchemaManager.EnsureDatabaseAsync
+- uid: SurrealDb.Net.ISurrealDbSession
+  commentId: T:SurrealDb.Net.ISurrealDbSession
+  parent: SurrealDb.Net
+  isExternal: true
+  name: ISurrealDbSession
+  nameWithType: ISurrealDbSession
+  fullName: SurrealDb.Net.ISurrealDbSession
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: SurrealDb.Net
+  commentId: N:SurrealDb.Net
+  isExternal: true
+  name: SurrealDb.Net
+  nameWithType: SurrealDb.Net
+  fullName: SurrealDb.Net
+  spec.csharp:
+  - uid: SurrealDb
+    name: SurrealDb
+    isExternal: true
+  - name: .
+  - uid: SurrealDb.Net
+    name: Net
+    isExternal: true
+  spec.vb:
+  - uid: SurrealDb
+    name: SurrealDb
+    isExternal: true
+  - name: .
+  - uid: SurrealDb.Net
+    name: Net
+    isExternal: true
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: AeroDB.SchemaManager.EnsureDocumentSchemaAsync*
+  commentId: Overload:AeroDB.SchemaManager.EnsureDocumentSchemaAsync
+  isExternal: true
+  href: AeroDB.SchemaManager.html#AeroDB_SchemaManager_EnsureDocumentSchemaAsync__1_SurrealDb_Net_ISurrealDbSession_System_Threading_CancellationToken_
+  name: EnsureDocumentSchemaAsync
+  nameWithType: SchemaManager.EnsureDocumentSchemaAsync
+  fullName: AeroDB.SchemaManager.EnsureDocumentSchemaAsync
+- uid: AeroDB.SchemaMode
+  commentId: T:AeroDB.SchemaMode
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.SchemaMode.html
+  name: SchemaMode
+  nameWithType: SchemaMode
+  fullName: AeroDB.SchemaMode
+- uid: AeroDB.SchemaManager.EnsureEventSchemaAsync*
+  commentId: Overload:AeroDB.SchemaManager.EnsureEventSchemaAsync
+  isExternal: true
+  href: AeroDB.SchemaManager.html#AeroDB_SchemaManager_EnsureEventSchemaAsync_SurrealDb_Net_ISurrealDbSession_System_Threading_CancellationToken_
+  name: EnsureEventSchemaAsync
+  nameWithType: SchemaManager.EnsureEventSchemaAsync
+  fullName: AeroDB.SchemaManager.EnsureEventSchemaAsync
+- uid: AeroDB.SchemaManager.EnsureProjectionStateTableAsync*
+  commentId: Overload:AeroDB.SchemaManager.EnsureProjectionStateTableAsync
+  isExternal: true
+  href: AeroDB.SchemaManager.html#AeroDB_SchemaManager_EnsureProjectionStateTableAsync_SurrealDb_Net_ISurrealDbSession_System_Threading_CancellationToken_
+  name: EnsureProjectionStateTableAsync
+  nameWithType: SchemaManager.EnsureProjectionStateTableAsync
+  fullName: AeroDB.SchemaManager.EnsureProjectionStateTableAsync
+- uid: AeroDB.SchemaManager.EnsureIndexAsync*
+  commentId: Overload:AeroDB.SchemaManager.EnsureIndexAsync
+  isExternal: true
+  href: AeroDB.SchemaManager.html#AeroDB_SchemaManager_EnsureIndexAsync_SurrealDb_Net_ISurrealDbSession_System_String_AeroDB_IndexDefinition_System_Threading_CancellationToken_
+  name: EnsureIndexAsync
+  nameWithType: SchemaManager.EnsureIndexAsync
+  fullName: AeroDB.SchemaManager.EnsureIndexAsync
+- uid: AeroDB.IndexDefinition
+  commentId: T:AeroDB.IndexDefinition
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IndexDefinition.html
+  name: IndexDefinition
+  nameWithType: IndexDefinition
+  fullName: AeroDB.IndexDefinition
+- uid: AeroDB.SchemaManager.EnsureAnalyzersAsync*
+  commentId: Overload:AeroDB.SchemaManager.EnsureAnalyzersAsync
+  isExternal: true
+  href: AeroDB.SchemaManager.html#AeroDB_SchemaManager_EnsureAnalyzersAsync_SurrealDb_Net_ISurrealDbSession_AeroDB_AnalyzerOptions_System_Threading_CancellationToken_
+  name: EnsureAnalyzersAsync
+  nameWithType: SchemaManager.EnsureAnalyzersAsync
+  fullName: AeroDB.SchemaManager.EnsureAnalyzersAsync
+- uid: AeroDB.AnalyzerOptions
+  commentId: T:AeroDB.AnalyzerOptions
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.AnalyzerOptions.html
+  name: AnalyzerOptions
+  nameWithType: AnalyzerOptions
+  fullName: AeroDB.AnalyzerOptions
+- uid: AeroDB.SchemaManager.EnsureAnalyzerAsync*
+  commentId: Overload:AeroDB.SchemaManager.EnsureAnalyzerAsync
+  isExternal: true
+  href: AeroDB.SchemaManager.html#AeroDB_SchemaManager_EnsureAnalyzerAsync_SurrealDb_Net_ISurrealDbSession_AeroDB_AnalyzerDefinition_System_Threading_CancellationToken_
+  name: EnsureAnalyzerAsync
+  nameWithType: SchemaManager.EnsureAnalyzerAsync
+  fullName: AeroDB.SchemaManager.EnsureAnalyzerAsync
+- uid: AeroDB.AnalyzerDefinition
+  commentId: T:AeroDB.AnalyzerDefinition
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.AnalyzerDefinition.html
+  name: AnalyzerDefinition
+  nameWithType: AnalyzerDefinition
+  fullName: AeroDB.AnalyzerDefinition
+- uid: AeroDB.SchemaManager.EnsureEdgeSchemaAsync*
+  commentId: Overload:AeroDB.SchemaManager.EnsureEdgeSchemaAsync
+  isExternal: true
+  href: AeroDB.SchemaManager.html#AeroDB_SchemaManager_EnsureEdgeSchemaAsync__1_SurrealDb_Net_ISurrealDbSession_AeroDB_EdgeMapping___0__System_Threading_CancellationToken_
+  name: EnsureEdgeSchemaAsync
+  nameWithType: SchemaManager.EnsureEdgeSchemaAsync
+  fullName: AeroDB.SchemaManager.EnsureEdgeSchemaAsync
+- uid: AeroDB.EdgeMapping{{TEdge}}
+  commentId: T:AeroDB.EdgeMapping{``0}
+  parent: AeroDB
+  definition: AeroDB.EdgeMapping`1
+  href: AeroDB.EdgeMapping-1.html
+  name: EdgeMapping<TEdge>
+  nameWithType: EdgeMapping<TEdge>
+  fullName: AeroDB.EdgeMapping<TEdge>
+  nameWithType.vb: EdgeMapping(Of TEdge)
+  fullName.vb: AeroDB.EdgeMapping(Of TEdge)
+  name.vb: EdgeMapping(Of TEdge)
+  spec.csharp:
+  - uid: AeroDB.EdgeMapping`1
+    name: EdgeMapping
+    isExternal: true
+    href: AeroDB.EdgeMapping-1.html
+  - name: <
+  - name: TEdge
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.EdgeMapping`1
+    name: EdgeMapping
+    isExternal: true
+    href: AeroDB.EdgeMapping-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TEdge
+  - name: )
+- uid: AeroDB.EdgeMapping`1
+  commentId: T:AeroDB.EdgeMapping`1
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.EdgeMapping-1.html
+  name: EdgeMapping<TEdge>
+  nameWithType: EdgeMapping<TEdge>
+  fullName: AeroDB.EdgeMapping<TEdge>
+  nameWithType.vb: EdgeMapping(Of TEdge)
+  fullName.vb: AeroDB.EdgeMapping(Of TEdge)
+  name.vb: EdgeMapping(Of TEdge)
+  spec.csharp:
+  - uid: AeroDB.EdgeMapping`1
+    name: EdgeMapping
+    isExternal: true
+    href: AeroDB.EdgeMapping-1.html
+  - name: <
+  - name: TEdge
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.EdgeMapping`1
+    name: EdgeMapping
+    isExternal: true
+    href: AeroDB.EdgeMapping-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TEdge
+  - name: )
+- uid: AeroDB.SchemaManager.EnsureViewAsync*
+  commentId: Overload:AeroDB.SchemaManager.EnsureViewAsync
+  isExternal: true
+  href: AeroDB.SchemaManager.html#AeroDB_SchemaManager_EnsureViewAsync__1_SurrealDb_Net_ISurrealDbSession_AeroDB_ViewDefinition___0__System_Threading_CancellationToken_
+  name: EnsureViewAsync
+  nameWithType: SchemaManager.EnsureViewAsync
+  fullName: AeroDB.SchemaManager.EnsureViewAsync
+- uid: AeroDB.ViewDefinition{{T}}
+  commentId: T:AeroDB.ViewDefinition{``0}
+  parent: AeroDB
+  definition: AeroDB.ViewDefinition`1
+  href: AeroDB.ViewDefinition-1.html
+  name: ViewDefinition<T>
+  nameWithType: ViewDefinition<T>
+  fullName: AeroDB.ViewDefinition<T>
+  nameWithType.vb: ViewDefinition(Of T)
+  fullName.vb: AeroDB.ViewDefinition(Of T)
+  name.vb: ViewDefinition(Of T)
+  spec.csharp:
+  - uid: AeroDB.ViewDefinition`1
+    name: ViewDefinition
+    isExternal: true
+    href: AeroDB.ViewDefinition-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.ViewDefinition`1
+    name: ViewDefinition
+    isExternal: true
+    href: AeroDB.ViewDefinition-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.ViewDefinition`1
+  commentId: T:AeroDB.ViewDefinition`1
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.ViewDefinition-1.html
+  name: ViewDefinition<T>
+  nameWithType: ViewDefinition<T>
+  fullName: AeroDB.ViewDefinition<T>
+  nameWithType.vb: ViewDefinition(Of T)
+  fullName.vb: AeroDB.ViewDefinition(Of T)
+  name.vb: ViewDefinition(Of T)
+  spec.csharp:
+  - uid: AeroDB.ViewDefinition`1
+    name: ViewDefinition
+    isExternal: true
+    href: AeroDB.ViewDefinition-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.ViewDefinition`1
+    name: ViewDefinition
+    isExternal: true
+    href: AeroDB.ViewDefinition-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.SchemaManager.EnsureSchemaAsync*
+  commentId: Overload:AeroDB.SchemaManager.EnsureSchemaAsync
+  isExternal: true
+  href: AeroDB.SchemaManager.html#AeroDB_SchemaManager_EnsureSchemaAsync__1_SurrealDb_Net_ISurrealDbSession_System_String_AeroDB_SchemaMode_System_Threading_CancellationToken_
+  name: EnsureSchemaAsync
+  nameWithType: SchemaManager.EnsureSchemaAsync
+  fullName: AeroDB.SchemaManager.EnsureSchemaAsync
+- uid: AeroDB.SchemaManager.EnsureAccessesAsync*
+  commentId: Overload:AeroDB.SchemaManager.EnsureAccessesAsync
+  isExternal: true
+  href: AeroDB.SchemaManager.html#AeroDB_SchemaManager_EnsureAccessesAsync_SurrealDb_Net_ISurrealDbSession_System_Collections_Generic_List_AeroDB_AccessDefinition__System_Threading_CancellationToken_
+  name: EnsureAccessesAsync
+  nameWithType: SchemaManager.EnsureAccessesAsync
+  fullName: AeroDB.SchemaManager.EnsureAccessesAsync
+- uid: System.Collections.Generic.List{AeroDB.AccessDefinition}
+  commentId: T:System.Collections.Generic.List{AeroDB.AccessDefinition}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<AccessDefinition>
+  nameWithType: List<AccessDefinition>
+  fullName: System.Collections.Generic.List<AeroDB.AccessDefinition>
+  nameWithType.vb: List(Of AccessDefinition)
+  fullName.vb: System.Collections.Generic.List(Of AeroDB.AccessDefinition)
+  name.vb: List(Of AccessDefinition)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: AeroDB.AccessDefinition
+    name: AccessDefinition
+    isExternal: true
+    href: AeroDB.AccessDefinition.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.AccessDefinition
+    name: AccessDefinition
+    isExternal: true
+    href: AeroDB.AccessDefinition.html
+  - name: )
+- uid: System.Collections.Generic.List`1
+  commentId: T:System.Collections.Generic.List`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<T>
+  nameWithType: List<T>
+  fullName: System.Collections.Generic.List<T>
+  nameWithType.vb: List(Of T)
+  fullName.vb: System.Collections.Generic.List(Of T)
+  name.vb: List(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: AeroDB.SchemaManager.EnsureTokensAsync*
+  commentId: Overload:AeroDB.SchemaManager.EnsureTokensAsync
+  isExternal: true
+  href: AeroDB.SchemaManager.html#AeroDB_SchemaManager_EnsureTokensAsync_SurrealDb_Net_ISurrealDbSession_System_Collections_Generic_List_AeroDB_TokenDefinition__System_Threading_CancellationToken_
+  name: EnsureTokensAsync
+  nameWithType: SchemaManager.EnsureTokensAsync
+  fullName: AeroDB.SchemaManager.EnsureTokensAsync
+- uid: System.Collections.Generic.List{AeroDB.TokenDefinition}
+  commentId: T:System.Collections.Generic.List{AeroDB.TokenDefinition}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<TokenDefinition>
+  nameWithType: List<TokenDefinition>
+  fullName: System.Collections.Generic.List<AeroDB.TokenDefinition>
+  nameWithType.vb: List(Of TokenDefinition)
+  fullName.vb: System.Collections.Generic.List(Of AeroDB.TokenDefinition)
+  name.vb: List(Of TokenDefinition)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: AeroDB.TokenDefinition
+    name: TokenDefinition
+    isExternal: true
+    href: AeroDB.TokenDefinition.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.TokenDefinition
+    name: TokenDefinition
+    isExternal: true
+    href: AeroDB.TokenDefinition.html
+  - name: )
+- uid: AeroDB.SchemaManager.EnsureScopesAsync*
+  commentId: Overload:AeroDB.SchemaManager.EnsureScopesAsync
+  isExternal: true
+  href: AeroDB.SchemaManager.html#AeroDB_SchemaManager_EnsureScopesAsync_SurrealDb_Net_ISurrealDbSession_System_Collections_Generic_List_AeroDB_ScopeDefinition__System_Threading_CancellationToken_
+  name: EnsureScopesAsync
+  nameWithType: SchemaManager.EnsureScopesAsync
+  fullName: AeroDB.SchemaManager.EnsureScopesAsync
+- uid: System.Collections.Generic.List{AeroDB.ScopeDefinition}
+  commentId: T:System.Collections.Generic.List{AeroDB.ScopeDefinition}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<ScopeDefinition>
+  nameWithType: List<ScopeDefinition>
+  fullName: System.Collections.Generic.List<AeroDB.ScopeDefinition>
+  nameWithType.vb: List(Of ScopeDefinition)
+  fullName.vb: System.Collections.Generic.List(Of AeroDB.ScopeDefinition)
+  name.vb: List(Of ScopeDefinition)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: AeroDB.ScopeDefinition
+    name: ScopeDefinition
+    isExternal: true
+    href: AeroDB.ScopeDefinition.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.ScopeDefinition
+    name: ScopeDefinition
+    isExternal: true
+    href: AeroDB.ScopeDefinition.html
+  - name: )
+- uid: AeroDB.SchemaManager.EnsureDocumentSchemaAsync(System.Type,SurrealDb.Net.ISurrealDbSession,AeroDB.SchemaMode,System.Collections.Generic.IReadOnlyList{AeroDB.FieldDefinition},System.Threading.CancellationToken)
+  commentId: M:AeroDB.SchemaManager.EnsureDocumentSchemaAsync(System.Type,SurrealDb.Net.ISurrealDbSession,AeroDB.SchemaMode,System.Collections.Generic.IReadOnlyList{AeroDB.FieldDefinition},System.Threading.CancellationToken)
+  isExternal: true
+- uid: AeroDB.SchemaManager.EnsureFieldDefinitionsAsync*
+  commentId: Overload:AeroDB.SchemaManager.EnsureFieldDefinitionsAsync
+  isExternal: true
+  href: AeroDB.SchemaManager.html#AeroDB_SchemaManager_EnsureFieldDefinitionsAsync_SurrealDb_Net_ISurrealDbSession_System_String_System_Collections_Generic_IReadOnlyList_AeroDB_FieldDefinition__System_Threading_CancellationToken_
+  name: EnsureFieldDefinitionsAsync
+  nameWithType: SchemaManager.EnsureFieldDefinitionsAsync
+  fullName: AeroDB.SchemaManager.EnsureFieldDefinitionsAsync
+- uid: System.Collections.Generic.IReadOnlyList{AeroDB.FieldDefinition}
+  commentId: T:System.Collections.Generic.IReadOnlyList{AeroDB.FieldDefinition}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyList`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<FieldDefinition>
+  nameWithType: IReadOnlyList<FieldDefinition>
+  fullName: System.Collections.Generic.IReadOnlyList<AeroDB.FieldDefinition>
+  nameWithType.vb: IReadOnlyList(Of FieldDefinition)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of AeroDB.FieldDefinition)
+  name.vb: IReadOnlyList(Of FieldDefinition)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - uid: AeroDB.FieldDefinition
+    name: FieldDefinition
+    isExternal: true
+    href: AeroDB.FieldDefinition.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.FieldDefinition
+    name: FieldDefinition
+    isExternal: true
+    href: AeroDB.FieldDefinition.html
+  - name: )
+- uid: System.Collections.Generic.IReadOnlyList`1
+  commentId: T:System.Collections.Generic.IReadOnlyList`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<T>
+  nameWithType: IReadOnlyList<T>
+  fullName: System.Collections.Generic.IReadOnlyList<T>
+  nameWithType.vb: IReadOnlyList(Of T)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of T)
+  name.vb: IReadOnlyList(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.SchemaManager.DropTableAsync*
+  commentId: Overload:AeroDB.SchemaManager.DropTableAsync
+  isExternal: true
+  href: AeroDB.SchemaManager.html#AeroDB_SchemaManager_DropTableAsync_SurrealDb_Net_ISurrealDbSession_System_String_System_Threading_CancellationToken_
+  name: DropTableAsync
+  nameWithType: SchemaManager.DropTableAsync
+  fullName: AeroDB.SchemaManager.DropTableAsync

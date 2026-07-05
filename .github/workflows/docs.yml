@@ -1,0 +1,71 @@
+name: Build & Deploy Docs
+
+on:
+  push:
+    branches: [main, develop]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Restore & Build (Release with XML docs)
+        run: |
+          dotnet restore
+          dotnet build -c Release
+
+      - name: Generate API Docs (DocFX)
+        run: dotnet docfx docfx/docfx.json
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: docs/package-lock.json
+
+      - name: Install Starlight dependencies
+        working-directory: docs
+        run: npm ci
+
+      - name: Build Starlight site
+        working-directory: docs
+        run: npm run build
+
+      - name: Generate AI docs (llms-full.txt)
+        run: dotnet run tools/gen-llms-full.cs --split --out-dir docs/dist
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs/dist
+
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

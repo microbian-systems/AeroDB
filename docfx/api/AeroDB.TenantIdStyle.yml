@@ -1,0 +1,85 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.TenantIdStyle
+  commentId: T:AeroDB.TenantIdStyle
+  id: TenantIdStyle
+  parent: AeroDB
+  children:
+  - AeroDB.TenantIdStyle.CaseInsensitive
+  - AeroDB.TenantIdStyle.CaseSensitive
+  langs:
+  - csharp
+  - vb
+  name: TenantIdStyle
+  nameWithType: TenantIdStyle
+  fullName: AeroDB.TenantIdStyle
+  type: Enum
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Tenancy/TenantIdStyle.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Controls whether tenant IDs are treated as case-sensitive or case-insensitive
+
+    when matching multi-tenanted documents.
+  example: []
+  syntax:
+    content: public enum TenantIdStyle
+    content.vb: Public Enum TenantIdStyle
+- uid: AeroDB.TenantIdStyle.CaseSensitive
+  commentId: F:AeroDB.TenantIdStyle.CaseSensitive
+  id: CaseSensitive
+  parent: AeroDB.TenantIdStyle
+  langs:
+  - csharp
+  - vb
+  name: CaseSensitive
+  nameWithType: TenantIdStyle.CaseSensitive
+  fullName: AeroDB.TenantIdStyle.CaseSensitive
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Tenancy/TenantIdStyle.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: CaseSensitive = 0
+    return:
+      type: AeroDB.TenantIdStyle
+- uid: AeroDB.TenantIdStyle.CaseInsensitive
+  commentId: F:AeroDB.TenantIdStyle.CaseInsensitive
+  id: CaseInsensitive
+  parent: AeroDB.TenantIdStyle
+  langs:
+  - csharp
+  - vb
+  name: CaseInsensitive
+  nameWithType: TenantIdStyle.CaseInsensitive
+  fullName: AeroDB.TenantIdStyle.CaseInsensitive
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Tenancy/TenantIdStyle.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: CaseInsensitive = 1
+    return:
+      type: AeroDB.TenantIdStyle
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: AeroDB.TenantIdStyle
+  commentId: T:AeroDB.TenantIdStyle
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.TenantIdStyle.html
+  name: TenantIdStyle
+  nameWithType: TenantIdStyle
+  fullName: AeroDB.TenantIdStyle

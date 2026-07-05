@@ -1,0 +1,182 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.WolverineFx.IAeroDBOp
+  commentId: T:AeroDB.WolverineFx.IAeroDBOp
+  id: IAeroDBOp
+  parent: AeroDB.WolverineFx
+  children:
+  - AeroDB.WolverineFx.IAeroDBOp.ExecuteAsync(AeroDB.IDocumentSession,System.Threading.CancellationToken)
+  langs:
+  - csharp
+  - vb
+  name: IAeroDBOp
+  nameWithType: IAeroDBOp
+  fullName: AeroDB.WolverineFx.IAeroDBOp
+  type: Interface
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/IAeroDBOp.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  summary: Side effect that executes against a AeroDB document session.
+  example: []
+  syntax:
+    content: 'public interface IAeroDBOp : ISideEffect, IWolverineReturnType, INotToBeRouted'
+    content.vb: Public Interface IAeroDBOp Inherits ISideEffect, IWolverineReturnType, INotToBeRouted
+- uid: AeroDB.WolverineFx.IAeroDBOp.ExecuteAsync(AeroDB.IDocumentSession,System.Threading.CancellationToken)
+  commentId: M:AeroDB.WolverineFx.IAeroDBOp.ExecuteAsync(AeroDB.IDocumentSession,System.Threading.CancellationToken)
+  id: ExecuteAsync(AeroDB.IDocumentSession,System.Threading.CancellationToken)
+  parent: AeroDB.WolverineFx.IAeroDBOp
+  langs:
+  - csharp
+  - vb
+  name: ExecuteAsync(IDocumentSession, CancellationToken)
+  nameWithType: IAeroDBOp.ExecuteAsync(IDocumentSession, CancellationToken)
+  fullName: AeroDB.WolverineFx.IAeroDBOp.ExecuteAsync(AeroDB.IDocumentSession, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/IAeroDBOp.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  syntax:
+    content: Task ExecuteAsync(IDocumentSession session, CancellationToken ct)
+    parameters:
+    - id: session
+      type: AeroDB.IDocumentSession
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Function ExecuteAsync(session As IDocumentSession, ct As CancellationToken) As Task
+  overload: AeroDB.WolverineFx.IAeroDBOp.ExecuteAsync*
+references:
+- uid: AeroDB.WolverineFx
+  commentId: N:AeroDB.WolverineFx
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB.WolverineFx
+  nameWithType: AeroDB.WolverineFx
+  fullName: AeroDB.WolverineFx
+  spec.csharp:
+  - uid: AeroDB
+    name: AeroDB
+    isExternal: true
+    href: AeroDB.html
+  - name: .
+  - uid: AeroDB.WolverineFx
+    name: WolverineFx
+    isExternal: true
+    href: AeroDB.WolverineFx.html
+  spec.vb:
+  - uid: AeroDB
+    name: AeroDB
+    isExternal: true
+    href: AeroDB.html
+  - name: .
+  - uid: AeroDB.WolverineFx
+    name: WolverineFx
+    isExternal: true
+    href: AeroDB.WolverineFx.html
+- uid: AeroDB.WolverineFx.IAeroDBOp.ExecuteAsync*
+  commentId: Overload:AeroDB.WolverineFx.IAeroDBOp.ExecuteAsync
+  isExternal: true
+  href: AeroDB.WolverineFx.IAeroDBOp.html#AeroDB_WolverineFx_IAeroDBOp_ExecuteAsync_AeroDB_IDocumentSession_System_Threading_CancellationToken_
+  name: ExecuteAsync
+  nameWithType: IAeroDBOp.ExecuteAsync
+  fullName: AeroDB.WolverineFx.IAeroDBOp.ExecuteAsync
+- uid: AeroDB.IDocumentSession
+  commentId: T:AeroDB.IDocumentSession
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IDocumentSession.html
+  name: IDocumentSession
+  nameWithType: IDocumentSession
+  fullName: AeroDB.IDocumentSession
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks

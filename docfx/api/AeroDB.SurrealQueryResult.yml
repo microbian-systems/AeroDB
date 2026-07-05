@@ -1,0 +1,954 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.SurrealQueryResult
+  commentId: T:AeroDB.SurrealQueryResult
+  id: SurrealQueryResult
+  parent: AeroDB
+  children:
+  - AeroDB.SurrealQueryResult.#ctor
+  - AeroDB.SurrealQueryResult.Clone
+  - AeroDB.SurrealQueryResult.FetchFields
+  - AeroDB.SurrealQueryResult.GroupAll
+  - AeroDB.SurrealQueryResult.GroupBy
+  - AeroDB.SurrealQueryResult.Limit
+  - AeroDB.SurrealQueryResult.OrderBy
+  - AeroDB.SurrealQueryResult.Parameters
+  - AeroDB.SurrealQueryResult.Projection
+  - AeroDB.SurrealQueryResult.Skip
+  - AeroDB.SurrealQueryResult.TableName
+  - AeroDB.SurrealQueryResult.ToSurrealQL
+  - AeroDB.SurrealQueryResult.Where
+  langs:
+  - csharp
+  - vb
+  name: SurrealQueryResult
+  nameWithType: SurrealQueryResult
+  fullName: AeroDB.SurrealQueryResult
+  type: Class
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/ExpressionVisitor.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public class SurrealQueryResult
+    content.vb: Public Class SurrealQueryResult
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+- uid: AeroDB.SurrealQueryResult.ToSurrealQL
+  commentId: M:AeroDB.SurrealQueryResult.ToSurrealQL
+  id: ToSurrealQL
+  parent: AeroDB.SurrealQueryResult
+  langs:
+  - csharp
+  - vb
+  name: ToSurrealQL()
+  nameWithType: SurrealQueryResult.ToSurrealQL()
+  fullName: AeroDB.SurrealQueryResult.ToSurrealQL()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/ExpressionVisitor.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public string ToSurrealQL()
+    return:
+      type: System.String
+    content.vb: Public Function ToSurrealQL() As String
+  overload: AeroDB.SurrealQueryResult.ToSurrealQL*
+- uid: AeroDB.SurrealQueryResult.Clone
+  commentId: M:AeroDB.SurrealQueryResult.Clone
+  id: Clone
+  parent: AeroDB.SurrealQueryResult
+  langs:
+  - csharp
+  - vb
+  name: Clone()
+  nameWithType: SurrealQueryResult.Clone()
+  fullName: AeroDB.SurrealQueryResult.Clone()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/ExpressionVisitor.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Creates a deep clone of this query result, including copies of all mutable collections.
+
+    Thread-safe for concurrent execution of compiled queries.
+  example: []
+  syntax:
+    content: public SurrealQueryResult Clone()
+    return:
+      type: AeroDB.SurrealQueryResult
+    content.vb: Public Function Clone() As SurrealQueryResult
+  overload: AeroDB.SurrealQueryResult.Clone*
+- uid: AeroDB.SurrealQueryResult.#ctor
+  commentId: M:AeroDB.SurrealQueryResult.#ctor
+  id: '#ctor'
+  parent: AeroDB.SurrealQueryResult
+  langs:
+  - csharp
+  - vb
+  name: SurrealQueryResult()
+  nameWithType: SurrealQueryResult.SurrealQueryResult()
+  fullName: AeroDB.SurrealQueryResult.SurrealQueryResult()
+  type: Constructor
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/ExpressionVisitor.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public SurrealQueryResult()
+    content.vb: Public Sub New()
+  overload: AeroDB.SurrealQueryResult.#ctor*
+  nameWithType.vb: SurrealQueryResult.New()
+  fullName.vb: AeroDB.SurrealQueryResult.New()
+  name.vb: New()
+- uid: AeroDB.SurrealQueryResult.TableName
+  commentId: P:AeroDB.SurrealQueryResult.TableName
+  id: TableName
+  parent: AeroDB.SurrealQueryResult
+  langs:
+  - csharp
+  - vb
+  name: TableName
+  nameWithType: SurrealQueryResult.TableName
+  fullName: AeroDB.SurrealQueryResult.TableName
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/ExpressionVisitor.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public string? TableName { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property TableName As String
+  overload: AeroDB.SurrealQueryResult.TableName*
+- uid: AeroDB.SurrealQueryResult.Where
+  commentId: P:AeroDB.SurrealQueryResult.Where
+  id: Where
+  parent: AeroDB.SurrealQueryResult
+  langs:
+  - csharp
+  - vb
+  name: Where
+  nameWithType: SurrealQueryResult.Where
+  fullName: AeroDB.SurrealQueryResult.Where
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/ExpressionVisitor.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public List<string> Where { get; set; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.List{System.String}
+    content.vb: Public Property Where As List(Of String)
+  overload: AeroDB.SurrealQueryResult.Where*
+- uid: AeroDB.SurrealQueryResult.OrderBy
+  commentId: P:AeroDB.SurrealQueryResult.OrderBy
+  id: OrderBy
+  parent: AeroDB.SurrealQueryResult
+  langs:
+  - csharp
+  - vb
+  name: OrderBy
+  nameWithType: SurrealQueryResult.OrderBy
+  fullName: AeroDB.SurrealQueryResult.OrderBy
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/ExpressionVisitor.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public List<string> OrderBy { get; set; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.List{System.String}
+    content.vb: Public Property OrderBy As List(Of String)
+  overload: AeroDB.SurrealQueryResult.OrderBy*
+- uid: AeroDB.SurrealQueryResult.Limit
+  commentId: P:AeroDB.SurrealQueryResult.Limit
+  id: Limit
+  parent: AeroDB.SurrealQueryResult
+  langs:
+  - csharp
+  - vb
+  name: Limit
+  nameWithType: SurrealQueryResult.Limit
+  fullName: AeroDB.SurrealQueryResult.Limit
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/ExpressionVisitor.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public int? Limit { get; set; }
+    parameters: []
+    return:
+      type: System.Nullable{System.Int32}
+    content.vb: Public Property Limit As Integer?
+  overload: AeroDB.SurrealQueryResult.Limit*
+- uid: AeroDB.SurrealQueryResult.Skip
+  commentId: P:AeroDB.SurrealQueryResult.Skip
+  id: Skip
+  parent: AeroDB.SurrealQueryResult
+  langs:
+  - csharp
+  - vb
+  name: Skip
+  nameWithType: SurrealQueryResult.Skip
+  fullName: AeroDB.SurrealQueryResult.Skip
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/ExpressionVisitor.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public int? Skip { get; set; }
+    parameters: []
+    return:
+      type: System.Nullable{System.Int32}
+    content.vb: Public Property Skip As Integer?
+  overload: AeroDB.SurrealQueryResult.Skip*
+- uid: AeroDB.SurrealQueryResult.Projection
+  commentId: P:AeroDB.SurrealQueryResult.Projection
+  id: Projection
+  parent: AeroDB.SurrealQueryResult
+  langs:
+  - csharp
+  - vb
+  name: Projection
+  nameWithType: SurrealQueryResult.Projection
+  fullName: AeroDB.SurrealQueryResult.Projection
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/ExpressionVisitor.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public string Projection { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property Projection As String
+  overload: AeroDB.SurrealQueryResult.Projection*
+- uid: AeroDB.SurrealQueryResult.GroupAll
+  commentId: P:AeroDB.SurrealQueryResult.GroupAll
+  id: GroupAll
+  parent: AeroDB.SurrealQueryResult
+  langs:
+  - csharp
+  - vb
+  name: GroupAll
+  nameWithType: SurrealQueryResult.GroupAll
+  fullName: AeroDB.SurrealQueryResult.GroupAll
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/ExpressionVisitor.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public bool GroupAll { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property GroupAll As Boolean
+  overload: AeroDB.SurrealQueryResult.GroupAll*
+- uid: AeroDB.SurrealQueryResult.GroupBy
+  commentId: P:AeroDB.SurrealQueryResult.GroupBy
+  id: GroupBy
+  parent: AeroDB.SurrealQueryResult
+  langs:
+  - csharp
+  - vb
+  name: GroupBy
+  nameWithType: SurrealQueryResult.GroupBy
+  fullName: AeroDB.SurrealQueryResult.GroupBy
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/ExpressionVisitor.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: GROUP BY column names for aggregate views.
+  example: []
+  syntax:
+    content: public List<string> GroupBy { get; set; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.List{System.String}
+    content.vb: Public Property GroupBy As List(Of String)
+  overload: AeroDB.SurrealQueryResult.GroupBy*
+- uid: AeroDB.SurrealQueryResult.FetchFields
+  commentId: P:AeroDB.SurrealQueryResult.FetchFields
+  id: FetchFields
+  parent: AeroDB.SurrealQueryResult
+  langs:
+  - csharp
+  - vb
+  name: FetchFields
+  nameWithType: SurrealQueryResult.FetchFields
+  fullName: AeroDB.SurrealQueryResult.FetchFields
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/ExpressionVisitor.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Fields to eager-load via SurrealQL FETCH clause.
+  example: []
+  syntax:
+    content: public List<string> FetchFields { get; set; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.List{System.String}
+    content.vb: Public Property FetchFields As List(Of String)
+  overload: AeroDB.SurrealQueryResult.FetchFields*
+- uid: AeroDB.SurrealQueryResult.Parameters
+  commentId: P:AeroDB.SurrealQueryResult.Parameters
+  id: Parameters
+  parent: AeroDB.SurrealQueryResult
+  langs:
+  - csharp
+  - vb
+  name: Parameters
+  nameWithType: SurrealQueryResult.Parameters
+  fullName: AeroDB.SurrealQueryResult.Parameters
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/ExpressionVisitor.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Parameter dictionary for safe, parameterized SurrealQL queries.
+  example: []
+  syntax:
+    content: public IReadOnlyDictionary<string, object?> Parameters { get; set; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object}
+    content.vb: Public Property Parameters As IReadOnlyDictionary(Of String, Object)
+  overload: AeroDB.SurrealQueryResult.Parameters*
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AeroDB.SurrealQueryResult.ToSurrealQL*
+  commentId: Overload:AeroDB.SurrealQueryResult.ToSurrealQL
+  isExternal: true
+  href: AeroDB.SurrealQueryResult.html#AeroDB_SurrealQueryResult_ToSurrealQL
+  name: ToSurrealQL
+  nameWithType: SurrealQueryResult.ToSurrealQL
+  fullName: AeroDB.SurrealQueryResult.ToSurrealQL
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: AeroDB.SurrealQueryResult.Clone*
+  commentId: Overload:AeroDB.SurrealQueryResult.Clone
+  isExternal: true
+  href: AeroDB.SurrealQueryResult.html#AeroDB_SurrealQueryResult_Clone
+  name: Clone
+  nameWithType: SurrealQueryResult.Clone
+  fullName: AeroDB.SurrealQueryResult.Clone
+- uid: AeroDB.SurrealQueryResult
+  commentId: T:AeroDB.SurrealQueryResult
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.SurrealQueryResult.html
+  name: SurrealQueryResult
+  nameWithType: SurrealQueryResult
+  fullName: AeroDB.SurrealQueryResult
+- uid: AeroDB.SurrealQueryResult.#ctor*
+  commentId: Overload:AeroDB.SurrealQueryResult.#ctor
+  isExternal: true
+  href: AeroDB.SurrealQueryResult.html#AeroDB_SurrealQueryResult__ctor
+  name: SurrealQueryResult
+  nameWithType: SurrealQueryResult.SurrealQueryResult
+  fullName: AeroDB.SurrealQueryResult.SurrealQueryResult
+  nameWithType.vb: SurrealQueryResult.New
+  fullName.vb: AeroDB.SurrealQueryResult.New
+  name.vb: New
+- uid: AeroDB.SurrealQueryResult.TableName*
+  commentId: Overload:AeroDB.SurrealQueryResult.TableName
+  isExternal: true
+  href: AeroDB.SurrealQueryResult.html#AeroDB_SurrealQueryResult_TableName
+  name: TableName
+  nameWithType: SurrealQueryResult.TableName
+  fullName: AeroDB.SurrealQueryResult.TableName
+- uid: AeroDB.SurrealQueryResult.Where*
+  commentId: Overload:AeroDB.SurrealQueryResult.Where
+  isExternal: true
+  href: AeroDB.SurrealQueryResult.html#AeroDB_SurrealQueryResult_Where
+  name: Where
+  nameWithType: SurrealQueryResult.Where
+  fullName: AeroDB.SurrealQueryResult.Where
+- uid: System.Collections.Generic.List{System.String}
+  commentId: T:System.Collections.Generic.List{System.String}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<string>
+  nameWithType: List<string>
+  fullName: System.Collections.Generic.List<string>
+  nameWithType.vb: List(Of String)
+  fullName.vb: System.Collections.Generic.List(Of String)
+  name.vb: List(Of String)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Collections.Generic.List`1
+  commentId: T:System.Collections.Generic.List`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<T>
+  nameWithType: List<T>
+  fullName: System.Collections.Generic.List<T>
+  nameWithType.vb: List(Of T)
+  fullName.vb: System.Collections.Generic.List(Of T)
+  name.vb: List(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: AeroDB.SurrealQueryResult.OrderBy*
+  commentId: Overload:AeroDB.SurrealQueryResult.OrderBy
+  isExternal: true
+  href: AeroDB.SurrealQueryResult.html#AeroDB_SurrealQueryResult_OrderBy
+  name: OrderBy
+  nameWithType: SurrealQueryResult.OrderBy
+  fullName: AeroDB.SurrealQueryResult.OrderBy
+- uid: AeroDB.SurrealQueryResult.Limit*
+  commentId: Overload:AeroDB.SurrealQueryResult.Limit
+  isExternal: true
+  href: AeroDB.SurrealQueryResult.html#AeroDB_SurrealQueryResult_Limit
+  name: Limit
+  nameWithType: SurrealQueryResult.Limit
+  fullName: AeroDB.SurrealQueryResult.Limit
+- uid: System.Nullable{System.Int32}
+  commentId: T:System.Nullable{System.Int32}
+  parent: System
+  definition: System.Nullable`1
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int?
+  nameWithType: int?
+  fullName: int?
+  nameWithType.vb: Integer?
+  fullName.vb: Integer?
+  name.vb: Integer?
+  spec.csharp:
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '?'
+  spec.vb:
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '?'
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.SurrealQueryResult.Skip*
+  commentId: Overload:AeroDB.SurrealQueryResult.Skip
+  isExternal: true
+  href: AeroDB.SurrealQueryResult.html#AeroDB_SurrealQueryResult_Skip
+  name: Skip
+  nameWithType: SurrealQueryResult.Skip
+  fullName: AeroDB.SurrealQueryResult.Skip
+- uid: AeroDB.SurrealQueryResult.Projection*
+  commentId: Overload:AeroDB.SurrealQueryResult.Projection
+  isExternal: true
+  href: AeroDB.SurrealQueryResult.html#AeroDB_SurrealQueryResult_Projection
+  name: Projection
+  nameWithType: SurrealQueryResult.Projection
+  fullName: AeroDB.SurrealQueryResult.Projection
+- uid: AeroDB.SurrealQueryResult.GroupAll*
+  commentId: Overload:AeroDB.SurrealQueryResult.GroupAll
+  isExternal: true
+  href: AeroDB.SurrealQueryResult.html#AeroDB_SurrealQueryResult_GroupAll
+  name: GroupAll
+  nameWithType: SurrealQueryResult.GroupAll
+  fullName: AeroDB.SurrealQueryResult.GroupAll
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: AeroDB.SurrealQueryResult.GroupBy*
+  commentId: Overload:AeroDB.SurrealQueryResult.GroupBy
+  isExternal: true
+  href: AeroDB.SurrealQueryResult.html#AeroDB_SurrealQueryResult_GroupBy
+  name: GroupBy
+  nameWithType: SurrealQueryResult.GroupBy
+  fullName: AeroDB.SurrealQueryResult.GroupBy
+- uid: AeroDB.SurrealQueryResult.FetchFields*
+  commentId: Overload:AeroDB.SurrealQueryResult.FetchFields
+  isExternal: true
+  href: AeroDB.SurrealQueryResult.html#AeroDB_SurrealQueryResult_FetchFields
+  name: FetchFields
+  nameWithType: SurrealQueryResult.FetchFields
+  fullName: AeroDB.SurrealQueryResult.FetchFields
+- uid: AeroDB.SurrealQueryResult.Parameters*
+  commentId: Overload:AeroDB.SurrealQueryResult.Parameters
+  isExternal: true
+  href: AeroDB.SurrealQueryResult.html#AeroDB_SurrealQueryResult_Parameters
+  name: Parameters
+  nameWithType: SurrealQueryResult.Parameters
+  fullName: AeroDB.SurrealQueryResult.Parameters
+- uid: System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object}
+  commentId: T:System.Collections.Generic.IReadOnlyDictionary{System.String,System.Object}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyDictionary`2
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  name: IReadOnlyDictionary<string, object>
+  nameWithType: IReadOnlyDictionary<string, object>
+  fullName: System.Collections.Generic.IReadOnlyDictionary<string, object>
+  nameWithType.vb: IReadOnlyDictionary(Of String, Object)
+  fullName.vb: System.Collections.Generic.IReadOnlyDictionary(Of String, Object)
+  name.vb: IReadOnlyDictionary(Of String, Object)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyDictionary`2
+    name: IReadOnlyDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyDictionary`2
+    name: IReadOnlyDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Collections.Generic.IReadOnlyDictionary`2
+  commentId: T:System.Collections.Generic.IReadOnlyDictionary`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  name: IReadOnlyDictionary<TKey, TValue>
+  nameWithType: IReadOnlyDictionary<TKey, TValue>
+  fullName: System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>
+  nameWithType.vb: IReadOnlyDictionary(Of TKey, TValue)
+  fullName.vb: System.Collections.Generic.IReadOnlyDictionary(Of TKey, TValue)
+  name.vb: IReadOnlyDictionary(Of TKey, TValue)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyDictionary`2
+    name: IReadOnlyDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  - name: <
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyDictionary`2
+    name: IReadOnlyDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )

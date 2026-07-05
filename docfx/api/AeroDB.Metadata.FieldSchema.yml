@@ -1,0 +1,878 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.Metadata.FieldSchema
+  commentId: T:AeroDB.Metadata.FieldSchema
+  id: FieldSchema
+  parent: AeroDB.Metadata
+  children:
+  - AeroDB.Metadata.FieldSchema.#ctor(System.String,System.String,System.Boolean,System.Boolean)
+  - AeroDB.Metadata.FieldSchema.CanRead
+  - AeroDB.Metadata.FieldSchema.CanWrite
+  - AeroDB.Metadata.FieldSchema.Deconstruct(System.String@,System.String@,System.Boolean@,System.Boolean@)
+  - AeroDB.Metadata.FieldSchema.Equals(AeroDB.Metadata.FieldSchema)
+  - AeroDB.Metadata.FieldSchema.Equals(System.Object)
+  - AeroDB.Metadata.FieldSchema.GetHashCode
+  - AeroDB.Metadata.FieldSchema.Name
+  - AeroDB.Metadata.FieldSchema.SurrealType
+  - AeroDB.Metadata.FieldSchema.ToString
+  - AeroDB.Metadata.FieldSchema.op_Equality(AeroDB.Metadata.FieldSchema,AeroDB.Metadata.FieldSchema)
+  - AeroDB.Metadata.FieldSchema.op_Inequality(AeroDB.Metadata.FieldSchema,AeroDB.Metadata.FieldSchema)
+  langs:
+  - csharp
+  - vb
+  name: FieldSchema
+  nameWithType: FieldSchema
+  fullName: AeroDB.Metadata.FieldSchema
+  type: Struct
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Metadata/MetadataRegistry.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB.Metadata
+  summary: >-
+    Compile-time schema for a document property, emitted by the AeroDB source generator.
+
+    Used by <code>SchemaManager</code> to emit DEFINE FIELD statements without reflection.
+  example: []
+  syntax:
+    content: 'public readonly struct FieldSchema : IEquatable<FieldSchema>'
+    content.vb: Public Structure FieldSchema Implements IEquatable(Of FieldSchema)
+  implements:
+  - System.IEquatable{AeroDB.Metadata.FieldSchema}
+  inheritedMembers:
+  - System.Object.GetType
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+- uid: AeroDB.Metadata.FieldSchema.#ctor(System.String,System.String,System.Boolean,System.Boolean)
+  commentId: M:AeroDB.Metadata.FieldSchema.#ctor(System.String,System.String,System.Boolean,System.Boolean)
+  id: '#ctor(System.String,System.String,System.Boolean,System.Boolean)'
+  parent: AeroDB.Metadata.FieldSchema
+  langs:
+  - csharp
+  - vb
+  name: FieldSchema(string, string, bool, bool)
+  nameWithType: FieldSchema.FieldSchema(string, string, bool, bool)
+  fullName: AeroDB.Metadata.FieldSchema.FieldSchema(string, string, bool, bool)
+  type: Constructor
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Metadata/MetadataRegistry.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB.Metadata
+  summary: >-
+    Compile-time schema for a document property, emitted by the AeroDB source generator.
+
+    Used by <code>SchemaManager</code> to emit DEFINE FIELD statements without reflection.
+  example: []
+  syntax:
+    content: public FieldSchema(string Name, string SurrealType, bool CanRead, bool CanWrite)
+    parameters:
+    - id: Name
+      type: System.String
+    - id: SurrealType
+      type: System.String
+    - id: CanRead
+      type: System.Boolean
+    - id: CanWrite
+      type: System.Boolean
+    content.vb: Public Sub New(Name As String, SurrealType As String, CanRead As Boolean, CanWrite As Boolean)
+  overload: AeroDB.Metadata.FieldSchema.#ctor*
+  nameWithType.vb: FieldSchema.New(String, String, Boolean, Boolean)
+  fullName.vb: AeroDB.Metadata.FieldSchema.New(String, String, Boolean, Boolean)
+  name.vb: New(String, String, Boolean, Boolean)
+- uid: AeroDB.Metadata.FieldSchema.ToString
+  commentId: M:AeroDB.Metadata.FieldSchema.ToString
+  id: ToString
+  parent: AeroDB.Metadata.FieldSchema
+  langs:
+  - csharp
+  - vb
+  name: ToString()
+  nameWithType: FieldSchema.ToString()
+  fullName: AeroDB.Metadata.FieldSchema.ToString()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Metadata/MetadataRegistry.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB.Metadata
+  example: []
+  syntax:
+    content: public override string ToString()
+    return:
+      type: System.String
+    content.vb: Public Overrides Function ToString() As String
+  overridden: System.ValueType.ToString
+  overload: AeroDB.Metadata.FieldSchema.ToString*
+- uid: AeroDB.Metadata.FieldSchema.op_Inequality(AeroDB.Metadata.FieldSchema,AeroDB.Metadata.FieldSchema)
+  commentId: M:AeroDB.Metadata.FieldSchema.op_Inequality(AeroDB.Metadata.FieldSchema,AeroDB.Metadata.FieldSchema)
+  id: op_Inequality(AeroDB.Metadata.FieldSchema,AeroDB.Metadata.FieldSchema)
+  parent: AeroDB.Metadata.FieldSchema
+  langs:
+  - csharp
+  - vb
+  name: operator !=(FieldSchema, FieldSchema)
+  nameWithType: FieldSchema.operator !=(FieldSchema, FieldSchema)
+  fullName: AeroDB.Metadata.FieldSchema.operator !=(AeroDB.Metadata.FieldSchema, AeroDB.Metadata.FieldSchema)
+  type: Operator
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Metadata/MetadataRegistry.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB.Metadata
+  syntax:
+    content: public static bool operator !=(FieldSchema left, FieldSchema right)
+    parameters:
+    - id: left
+      type: AeroDB.Metadata.FieldSchema
+    - id: right
+      type: AeroDB.Metadata.FieldSchema
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Operator <>(left As FieldSchema, right As FieldSchema) As Boolean
+  overload: AeroDB.Metadata.FieldSchema.op_Inequality*
+  nameWithType.vb: FieldSchema.<>(FieldSchema, FieldSchema)
+  fullName.vb: AeroDB.Metadata.FieldSchema.<>(AeroDB.Metadata.FieldSchema, AeroDB.Metadata.FieldSchema)
+  name.vb: <>(FieldSchema, FieldSchema)
+- uid: AeroDB.Metadata.FieldSchema.op_Equality(AeroDB.Metadata.FieldSchema,AeroDB.Metadata.FieldSchema)
+  commentId: M:AeroDB.Metadata.FieldSchema.op_Equality(AeroDB.Metadata.FieldSchema,AeroDB.Metadata.FieldSchema)
+  id: op_Equality(AeroDB.Metadata.FieldSchema,AeroDB.Metadata.FieldSchema)
+  parent: AeroDB.Metadata.FieldSchema
+  langs:
+  - csharp
+  - vb
+  name: operator ==(FieldSchema, FieldSchema)
+  nameWithType: FieldSchema.operator ==(FieldSchema, FieldSchema)
+  fullName: AeroDB.Metadata.FieldSchema.operator ==(AeroDB.Metadata.FieldSchema, AeroDB.Metadata.FieldSchema)
+  type: Operator
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Metadata/MetadataRegistry.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB.Metadata
+  syntax:
+    content: public static bool operator ==(FieldSchema left, FieldSchema right)
+    parameters:
+    - id: left
+      type: AeroDB.Metadata.FieldSchema
+    - id: right
+      type: AeroDB.Metadata.FieldSchema
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Operator =(left As FieldSchema, right As FieldSchema) As Boolean
+  overload: AeroDB.Metadata.FieldSchema.op_Equality*
+  nameWithType.vb: FieldSchema.=(FieldSchema, FieldSchema)
+  fullName.vb: AeroDB.Metadata.FieldSchema.=(AeroDB.Metadata.FieldSchema, AeroDB.Metadata.FieldSchema)
+  name.vb: =(FieldSchema, FieldSchema)
+- uid: AeroDB.Metadata.FieldSchema.GetHashCode
+  commentId: M:AeroDB.Metadata.FieldSchema.GetHashCode
+  id: GetHashCode
+  parent: AeroDB.Metadata.FieldSchema
+  langs:
+  - csharp
+  - vb
+  name: GetHashCode()
+  nameWithType: FieldSchema.GetHashCode()
+  fullName: AeroDB.Metadata.FieldSchema.GetHashCode()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Metadata/MetadataRegistry.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB.Metadata
+  example: []
+  syntax:
+    content: public override int GetHashCode()
+    return:
+      type: System.Int32
+    content.vb: Public Overrides Function GetHashCode() As Integer
+  overridden: System.ValueType.GetHashCode
+  overload: AeroDB.Metadata.FieldSchema.GetHashCode*
+- uid: AeroDB.Metadata.FieldSchema.Equals(System.Object)
+  commentId: M:AeroDB.Metadata.FieldSchema.Equals(System.Object)
+  id: Equals(System.Object)
+  parent: AeroDB.Metadata.FieldSchema
+  langs:
+  - csharp
+  - vb
+  name: Equals(object)
+  nameWithType: FieldSchema.Equals(object)
+  fullName: AeroDB.Metadata.FieldSchema.Equals(object)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Metadata/MetadataRegistry.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB.Metadata
+  example: []
+  syntax:
+    content: public override bool Equals(object obj)
+    parameters:
+    - id: obj
+      type: System.Object
+    return:
+      type: System.Boolean
+    content.vb: Public Overrides Function Equals(obj As Object) As Boolean
+  overridden: System.ValueType.Equals(System.Object)
+  overload: AeroDB.Metadata.FieldSchema.Equals*
+  nameWithType.vb: FieldSchema.Equals(Object)
+  fullName.vb: AeroDB.Metadata.FieldSchema.Equals(Object)
+  name.vb: Equals(Object)
+- uid: AeroDB.Metadata.FieldSchema.Equals(AeroDB.Metadata.FieldSchema)
+  commentId: M:AeroDB.Metadata.FieldSchema.Equals(AeroDB.Metadata.FieldSchema)
+  id: Equals(AeroDB.Metadata.FieldSchema)
+  parent: AeroDB.Metadata.FieldSchema
+  langs:
+  - csharp
+  - vb
+  name: Equals(FieldSchema)
+  nameWithType: FieldSchema.Equals(FieldSchema)
+  fullName: AeroDB.Metadata.FieldSchema.Equals(AeroDB.Metadata.FieldSchema)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Metadata/MetadataRegistry.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB.Metadata
+  example: []
+  syntax:
+    content: public bool Equals(FieldSchema other)
+    parameters:
+    - id: other
+      type: AeroDB.Metadata.FieldSchema
+    return:
+      type: System.Boolean
+    content.vb: Public Function Equals(other As FieldSchema) As Boolean
+  overload: AeroDB.Metadata.FieldSchema.Equals*
+  implements:
+  - System.IEquatable{AeroDB.Metadata.FieldSchema}.Equals(AeroDB.Metadata.FieldSchema)
+- uid: AeroDB.Metadata.FieldSchema.Deconstruct(System.String@,System.String@,System.Boolean@,System.Boolean@)
+  commentId: M:AeroDB.Metadata.FieldSchema.Deconstruct(System.String@,System.String@,System.Boolean@,System.Boolean@)
+  id: Deconstruct(System.String@,System.String@,System.Boolean@,System.Boolean@)
+  parent: AeroDB.Metadata.FieldSchema
+  langs:
+  - csharp
+  - vb
+  name: Deconstruct(out string, out string, out bool, out bool)
+  nameWithType: FieldSchema.Deconstruct(out string, out string, out bool, out bool)
+  fullName: AeroDB.Metadata.FieldSchema.Deconstruct(out string, out string, out bool, out bool)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Metadata/MetadataRegistry.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB.Metadata
+  syntax:
+    content: public void Deconstruct(out string Name, out string SurrealType, out bool CanRead, out bool CanWrite)
+    parameters:
+    - id: Name
+      type: System.String
+    - id: SurrealType
+      type: System.String
+    - id: CanRead
+      type: System.Boolean
+    - id: CanWrite
+      type: System.Boolean
+    content.vb: Public Sub Deconstruct(Name As String, SurrealType As String, CanRead As Boolean, CanWrite As Boolean)
+  overload: AeroDB.Metadata.FieldSchema.Deconstruct*
+  nameWithType.vb: FieldSchema.Deconstruct(String, String, Boolean, Boolean)
+  fullName.vb: AeroDB.Metadata.FieldSchema.Deconstruct(String, String, Boolean, Boolean)
+  name.vb: Deconstruct(String, String, Boolean, Boolean)
+- uid: AeroDB.Metadata.FieldSchema.Name
+  commentId: P:AeroDB.Metadata.FieldSchema.Name
+  id: Name
+  parent: AeroDB.Metadata.FieldSchema
+  langs:
+  - csharp
+  - vb
+  name: Name
+  nameWithType: FieldSchema.Name
+  fullName: AeroDB.Metadata.FieldSchema.Name
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Metadata/MetadataRegistry.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB.Metadata
+  syntax:
+    content: public string Name { get; init; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property Name As String
+  overload: AeroDB.Metadata.FieldSchema.Name*
+- uid: AeroDB.Metadata.FieldSchema.SurrealType
+  commentId: P:AeroDB.Metadata.FieldSchema.SurrealType
+  id: SurrealType
+  parent: AeroDB.Metadata.FieldSchema
+  langs:
+  - csharp
+  - vb
+  name: SurrealType
+  nameWithType: FieldSchema.SurrealType
+  fullName: AeroDB.Metadata.FieldSchema.SurrealType
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Metadata/MetadataRegistry.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB.Metadata
+  syntax:
+    content: public string SurrealType { get; init; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property SurrealType As String
+  overload: AeroDB.Metadata.FieldSchema.SurrealType*
+- uid: AeroDB.Metadata.FieldSchema.CanRead
+  commentId: P:AeroDB.Metadata.FieldSchema.CanRead
+  id: CanRead
+  parent: AeroDB.Metadata.FieldSchema
+  langs:
+  - csharp
+  - vb
+  name: CanRead
+  nameWithType: FieldSchema.CanRead
+  fullName: AeroDB.Metadata.FieldSchema.CanRead
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Metadata/MetadataRegistry.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB.Metadata
+  syntax:
+    content: public bool CanRead { get; init; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property CanRead As Boolean
+  overload: AeroDB.Metadata.FieldSchema.CanRead*
+- uid: AeroDB.Metadata.FieldSchema.CanWrite
+  commentId: P:AeroDB.Metadata.FieldSchema.CanWrite
+  id: CanWrite
+  parent: AeroDB.Metadata.FieldSchema
+  langs:
+  - csharp
+  - vb
+  name: CanWrite
+  nameWithType: FieldSchema.CanWrite
+  fullName: AeroDB.Metadata.FieldSchema.CanWrite
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Metadata/MetadataRegistry.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB.Metadata
+  syntax:
+    content: public bool CanWrite { get; init; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property CanWrite As Boolean
+  overload: AeroDB.Metadata.FieldSchema.CanWrite*
+references:
+- uid: AeroDB.Metadata
+  commentId: N:AeroDB.Metadata
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB.Metadata
+  nameWithType: AeroDB.Metadata
+  fullName: AeroDB.Metadata
+  spec.csharp:
+  - uid: AeroDB
+    name: AeroDB
+    isExternal: true
+    href: AeroDB.html
+  - name: .
+  - uid: AeroDB.Metadata
+    name: Metadata
+    isExternal: true
+    href: AeroDB.Metadata.html
+  spec.vb:
+  - uid: AeroDB
+    name: AeroDB
+    isExternal: true
+    href: AeroDB.html
+  - name: .
+  - uid: AeroDB.Metadata
+    name: Metadata
+    isExternal: true
+    href: AeroDB.Metadata.html
+- uid: System.IEquatable{AeroDB.Metadata.FieldSchema}
+  commentId: T:System.IEquatable{AeroDB.Metadata.FieldSchema}
+  parent: System
+  definition: System.IEquatable`1
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<FieldSchema>
+  nameWithType: IEquatable<FieldSchema>
+  fullName: System.IEquatable<AeroDB.Metadata.FieldSchema>
+  nameWithType.vb: IEquatable(Of FieldSchema)
+  fullName.vb: System.IEquatable(Of AeroDB.Metadata.FieldSchema)
+  name.vb: IEquatable(Of FieldSchema)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - uid: AeroDB.Metadata.FieldSchema
+    name: FieldSchema
+    isExternal: true
+    href: AeroDB.Metadata.FieldSchema.html
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.Metadata.FieldSchema
+    name: FieldSchema
+    isExternal: true
+    href: AeroDB.Metadata.FieldSchema.html
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.IEquatable`1
+  commentId: T:System.IEquatable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<T>
+  nameWithType: IEquatable<T>
+  fullName: System.IEquatable<T>
+  nameWithType.vb: IEquatable(Of T)
+  fullName.vb: System.IEquatable(Of T)
+  name.vb: IEquatable(Of T)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: AeroDB.Metadata.FieldSchema.#ctor*
+  commentId: Overload:AeroDB.Metadata.FieldSchema.#ctor
+  isExternal: true
+  href: AeroDB.Metadata.FieldSchema.html#AeroDB_Metadata_FieldSchema__ctor_System_String_System_String_System_Boolean_System_Boolean_
+  name: FieldSchema
+  nameWithType: FieldSchema.FieldSchema
+  fullName: AeroDB.Metadata.FieldSchema.FieldSchema
+  nameWithType.vb: FieldSchema.New
+  fullName.vb: AeroDB.Metadata.FieldSchema.New
+  name.vb: New
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: System.ValueType.ToString
+  commentId: M:System.ValueType.ToString
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  name: ToString()
+  nameWithType: ValueType.ToString()
+  fullName: System.ValueType.ToString()
+  spec.csharp:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+- uid: AeroDB.Metadata.FieldSchema.ToString*
+  commentId: Overload:AeroDB.Metadata.FieldSchema.ToString
+  isExternal: true
+  href: AeroDB.Metadata.FieldSchema.html#AeroDB_Metadata_FieldSchema_ToString
+  name: ToString
+  nameWithType: FieldSchema.ToString
+  fullName: AeroDB.Metadata.FieldSchema.ToString
+- uid: System.ValueType
+  commentId: T:System.ValueType
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype
+  name: ValueType
+  nameWithType: ValueType
+  fullName: System.ValueType
+- uid: AeroDB.Metadata.FieldSchema.op_Inequality*
+  commentId: Overload:AeroDB.Metadata.FieldSchema.op_Inequality
+  isExternal: true
+  href: AeroDB.Metadata.FieldSchema.html#AeroDB_Metadata_FieldSchema_op_Inequality_AeroDB_Metadata_FieldSchema_AeroDB_Metadata_FieldSchema_
+  name: operator !=
+  nameWithType: FieldSchema.operator !=
+  fullName: AeroDB.Metadata.FieldSchema.operator !=
+  nameWithType.vb: FieldSchema.<>
+  fullName.vb: AeroDB.Metadata.FieldSchema.<>
+  name.vb: <>
+  spec.csharp:
+  - name: operator
+  - name: " "
+  - uid: AeroDB.Metadata.FieldSchema.op_Inequality*
+    name: '!='
+    isExternal: true
+    href: AeroDB.Metadata.FieldSchema.html#AeroDB_Metadata_FieldSchema_op_Inequality_AeroDB_Metadata_FieldSchema_AeroDB_Metadata_FieldSchema_
+- uid: AeroDB.Metadata.FieldSchema
+  commentId: T:AeroDB.Metadata.FieldSchema
+  parent: AeroDB.Metadata
+  isExternal: true
+  href: AeroDB.Metadata.FieldSchema.html
+  name: FieldSchema
+  nameWithType: FieldSchema
+  fullName: AeroDB.Metadata.FieldSchema
+- uid: AeroDB.Metadata.FieldSchema.op_Equality*
+  commentId: Overload:AeroDB.Metadata.FieldSchema.op_Equality
+  isExternal: true
+  href: AeroDB.Metadata.FieldSchema.html#AeroDB_Metadata_FieldSchema_op_Equality_AeroDB_Metadata_FieldSchema_AeroDB_Metadata_FieldSchema_
+  name: operator ==
+  nameWithType: FieldSchema.operator ==
+  fullName: AeroDB.Metadata.FieldSchema.operator ==
+  nameWithType.vb: FieldSchema.=
+  fullName.vb: AeroDB.Metadata.FieldSchema.=
+  name.vb: =
+  spec.csharp:
+  - name: operator
+  - name: " "
+  - uid: AeroDB.Metadata.FieldSchema.op_Equality*
+    name: ==
+    isExternal: true
+    href: AeroDB.Metadata.FieldSchema.html#AeroDB_Metadata_FieldSchema_op_Equality_AeroDB_Metadata_FieldSchema_AeroDB_Metadata_FieldSchema_
+- uid: System.ValueType.GetHashCode
+  commentId: M:System.ValueType.GetHashCode
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  name: GetHashCode()
+  nameWithType: ValueType.GetHashCode()
+  fullName: System.ValueType.GetHashCode()
+  spec.csharp:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+- uid: AeroDB.Metadata.FieldSchema.GetHashCode*
+  commentId: Overload:AeroDB.Metadata.FieldSchema.GetHashCode
+  isExternal: true
+  href: AeroDB.Metadata.FieldSchema.html#AeroDB_Metadata_FieldSchema_GetHashCode
+  name: GetHashCode
+  nameWithType: FieldSchema.GetHashCode
+  fullName: AeroDB.Metadata.FieldSchema.GetHashCode
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System.ValueType.Equals(System.Object)
+  commentId: M:System.ValueType.Equals(System.Object)
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  name: Equals(object)
+  nameWithType: ValueType.Equals(object)
+  fullName: System.ValueType.Equals(object)
+  nameWithType.vb: ValueType.Equals(Object)
+  fullName.vb: System.ValueType.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: AeroDB.Metadata.FieldSchema.Equals*
+  commentId: Overload:AeroDB.Metadata.FieldSchema.Equals
+  isExternal: true
+  href: AeroDB.Metadata.FieldSchema.html#AeroDB_Metadata_FieldSchema_Equals_System_Object_
+  name: Equals
+  nameWithType: FieldSchema.Equals
+  fullName: AeroDB.Metadata.FieldSchema.Equals
+- uid: System.IEquatable{AeroDB.Metadata.FieldSchema}.Equals(AeroDB.Metadata.FieldSchema)
+  commentId: M:System.IEquatable{AeroDB.Metadata.FieldSchema}.Equals(AeroDB.Metadata.FieldSchema)
+  parent: System.IEquatable{AeroDB.Metadata.FieldSchema}
+  definition: System.IEquatable`1.Equals(`0)
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1.equals
+  name: Equals(FieldSchema)
+  nameWithType: IEquatable<FieldSchema>.Equals(FieldSchema)
+  fullName: System.IEquatable<AeroDB.Metadata.FieldSchema>.Equals(AeroDB.Metadata.FieldSchema)
+  nameWithType.vb: IEquatable(Of FieldSchema).Equals(FieldSchema)
+  fullName.vb: System.IEquatable(Of AeroDB.Metadata.FieldSchema).Equals(AeroDB.Metadata.FieldSchema)
+  spec.csharp:
+  - uid: System.IEquatable{AeroDB.Metadata.FieldSchema}.Equals(AeroDB.Metadata.FieldSchema)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1.equals
+  - name: (
+  - uid: AeroDB.Metadata.FieldSchema
+    name: FieldSchema
+    isExternal: true
+    href: AeroDB.Metadata.FieldSchema.html
+  - name: )
+  spec.vb:
+  - uid: System.IEquatable{AeroDB.Metadata.FieldSchema}.Equals(AeroDB.Metadata.FieldSchema)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1.equals
+  - name: (
+  - uid: AeroDB.Metadata.FieldSchema
+    name: FieldSchema
+    isExternal: true
+    href: AeroDB.Metadata.FieldSchema.html
+  - name: )
+- uid: System.IEquatable`1.Equals(`0)
+  commentId: M:System.IEquatable`1.Equals(`0)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1.equals
+  name: Equals(T)
+  nameWithType: IEquatable<T>.Equals(T)
+  fullName: System.IEquatable<T>.Equals(T)
+  nameWithType.vb: IEquatable(Of T).Equals(T)
+  fullName.vb: System.IEquatable(Of T).Equals(T)
+  spec.csharp:
+  - uid: System.IEquatable`1.Equals(`0)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1.equals
+  - name: (
+  - name: T
+  - name: )
+  spec.vb:
+  - uid: System.IEquatable`1.Equals(`0)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1.equals
+  - name: (
+  - name: T
+  - name: )
+- uid: AeroDB.Metadata.FieldSchema.Deconstruct*
+  commentId: Overload:AeroDB.Metadata.FieldSchema.Deconstruct
+  isExternal: true
+  href: AeroDB.Metadata.FieldSchema.html#AeroDB_Metadata_FieldSchema_Deconstruct_System_String__System_String__System_Boolean__System_Boolean__
+  name: Deconstruct
+  nameWithType: FieldSchema.Deconstruct
+  fullName: AeroDB.Metadata.FieldSchema.Deconstruct
+- uid: AeroDB.Metadata.FieldSchema.Name*
+  commentId: Overload:AeroDB.Metadata.FieldSchema.Name
+  isExternal: true
+  href: AeroDB.Metadata.FieldSchema.html#AeroDB_Metadata_FieldSchema_Name
+  name: Name
+  nameWithType: FieldSchema.Name
+  fullName: AeroDB.Metadata.FieldSchema.Name
+- uid: AeroDB.Metadata.FieldSchema.SurrealType*
+  commentId: Overload:AeroDB.Metadata.FieldSchema.SurrealType
+  isExternal: true
+  href: AeroDB.Metadata.FieldSchema.html#AeroDB_Metadata_FieldSchema_SurrealType
+  name: SurrealType
+  nameWithType: FieldSchema.SurrealType
+  fullName: AeroDB.Metadata.FieldSchema.SurrealType
+- uid: AeroDB.Metadata.FieldSchema.CanRead*
+  commentId: Overload:AeroDB.Metadata.FieldSchema.CanRead
+  isExternal: true
+  href: AeroDB.Metadata.FieldSchema.html#AeroDB_Metadata_FieldSchema_CanRead
+  name: CanRead
+  nameWithType: FieldSchema.CanRead
+  fullName: AeroDB.Metadata.FieldSchema.CanRead
+- uid: AeroDB.Metadata.FieldSchema.CanWrite*
+  commentId: Overload:AeroDB.Metadata.FieldSchema.CanWrite
+  isExternal: true
+  href: AeroDB.Metadata.FieldSchema.html#AeroDB_Metadata_FieldSchema_CanWrite
+  name: CanWrite
+  nameWithType: FieldSchema.CanWrite
+  fullName: AeroDB.Metadata.FieldSchema.CanWrite

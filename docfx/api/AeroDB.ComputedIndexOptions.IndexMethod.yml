@@ -1,0 +1,121 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.ComputedIndexOptions.IndexMethod
+  commentId: T:AeroDB.ComputedIndexOptions.IndexMethod
+  id: ComputedIndexOptions.IndexMethod
+  parent: AeroDB
+  children:
+  - AeroDB.ComputedIndexOptions.IndexMethod.BTree
+  - AeroDB.ComputedIndexOptions.IndexMethod.Search
+  - AeroDB.ComputedIndexOptions.IndexMethod.Unique
+  langs:
+  - csharp
+  - vb
+  name: ComputedIndexOptions.IndexMethod
+  nameWithType: ComputedIndexOptions.IndexMethod
+  fullName: AeroDB.ComputedIndexOptions.IndexMethod
+  type: Enum
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/IndexDefinition.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public enum ComputedIndexOptions.IndexMethod
+    content.vb: Public Enum ComputedIndexOptions.IndexMethod
+- uid: AeroDB.ComputedIndexOptions.IndexMethod.BTree
+  commentId: F:AeroDB.ComputedIndexOptions.IndexMethod.BTree
+  id: BTree
+  parent: AeroDB.ComputedIndexOptions.IndexMethod
+  langs:
+  - csharp
+  - vb
+  name: BTree
+  nameWithType: ComputedIndexOptions.IndexMethod.BTree
+  fullName: AeroDB.ComputedIndexOptions.IndexMethod.BTree
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/IndexDefinition.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: BTree = 0
+    return:
+      type: AeroDB.ComputedIndexOptions.IndexMethod
+- uid: AeroDB.ComputedIndexOptions.IndexMethod.Unique
+  commentId: F:AeroDB.ComputedIndexOptions.IndexMethod.Unique
+  id: Unique
+  parent: AeroDB.ComputedIndexOptions.IndexMethod
+  langs:
+  - csharp
+  - vb
+  name: Unique
+  nameWithType: ComputedIndexOptions.IndexMethod.Unique
+  fullName: AeroDB.ComputedIndexOptions.IndexMethod.Unique
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/IndexDefinition.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: Unique = 1
+    return:
+      type: AeroDB.ComputedIndexOptions.IndexMethod
+- uid: AeroDB.ComputedIndexOptions.IndexMethod.Search
+  commentId: F:AeroDB.ComputedIndexOptions.IndexMethod.Search
+  id: Search
+  parent: AeroDB.ComputedIndexOptions.IndexMethod
+  langs:
+  - csharp
+  - vb
+  name: Search
+  nameWithType: ComputedIndexOptions.IndexMethod.Search
+  fullName: AeroDB.ComputedIndexOptions.IndexMethod.Search
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/IndexDefinition.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: Search = 2
+    return:
+      type: AeroDB.ComputedIndexOptions.IndexMethod
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: AeroDB.ComputedIndexOptions.IndexMethod
+  commentId: T:AeroDB.ComputedIndexOptions.IndexMethod
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.ComputedIndexOptions.html
+  name: ComputedIndexOptions.IndexMethod
+  nameWithType: ComputedIndexOptions.IndexMethod
+  fullName: AeroDB.ComputedIndexOptions.IndexMethod
+  spec.csharp:
+  - uid: AeroDB.ComputedIndexOptions
+    name: ComputedIndexOptions
+    isExternal: true
+    href: AeroDB.ComputedIndexOptions.html
+  - name: .
+  - uid: AeroDB.ComputedIndexOptions.IndexMethod
+    name: IndexMethod
+    isExternal: true
+    href: AeroDB.ComputedIndexOptions.IndexMethod.html
+  spec.vb:
+  - uid: AeroDB.ComputedIndexOptions
+    name: ComputedIndexOptions
+    isExternal: true
+    href: AeroDB.ComputedIndexOptions.html
+  - name: .
+  - uid: AeroDB.ComputedIndexOptions.IndexMethod
+    name: IndexMethod
+    isExternal: true
+    href: AeroDB.ComputedIndexOptions.IndexMethod.html

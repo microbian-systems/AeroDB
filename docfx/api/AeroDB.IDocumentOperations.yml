@@ -1,0 +1,1738 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.IDocumentOperations
+  commentId: T:AeroDB.IDocumentOperations
+  id: IDocumentOperations
+  parent: AeroDB
+  children:
+  - AeroDB.IDocumentOperations.BulkInsertAsync``1(System.Collections.Generic.IEnumerable{``0},System.Int32,System.Threading.CancellationToken)
+  - AeroDB.IDocumentOperations.DeleteObjects(System.Collections.Generic.IEnumerable{System.Object})
+  - AeroDB.IDocumentOperations.DeleteWhere``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Threading.CancellationToken)
+  - AeroDB.IDocumentOperations.Delete``1(System.Guid)
+  - AeroDB.IDocumentOperations.Delete``1(System.Int32)
+  - AeroDB.IDocumentOperations.Delete``1(System.Int64)
+  - AeroDB.IDocumentOperations.Delete``1(System.Object)
+  - AeroDB.IDocumentOperations.Delete``1(System.String)
+  - AeroDB.IDocumentOperations.Delete``1(``0)
+  - AeroDB.IDocumentOperations.HardDeleteWhere``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Threading.CancellationToken)
+  - AeroDB.IDocumentOperations.HardDelete``1(System.Guid)
+  - AeroDB.IDocumentOperations.HardDelete``1(System.Int32)
+  - AeroDB.IDocumentOperations.HardDelete``1(System.Int64)
+  - AeroDB.IDocumentOperations.HardDelete``1(System.String)
+  - AeroDB.IDocumentOperations.HardDelete``1(``0)
+  - AeroDB.IDocumentOperations.InsertObjects(System.Collections.Generic.IEnumerable{System.Object})
+  - AeroDB.IDocumentOperations.Insert``1(System.Collections.Generic.IEnumerable{``0})
+  - AeroDB.IDocumentOperations.Insert``1(``0[])
+  - AeroDB.IDocumentOperations.QueryAsync``1(System.Threading.CancellationToken)
+  - AeroDB.IDocumentOperations.QueueOperation(AeroDB.IStorageOperation)
+  - AeroDB.IDocumentOperations.StoreObjects(System.Collections.Generic.IEnumerable{System.Object})
+  - AeroDB.IDocumentOperations.Store``1(System.Collections.Generic.IEnumerable{``0})
+  - AeroDB.IDocumentOperations.Store``1(System.String,``0)
+  - AeroDB.IDocumentOperations.Store``1(``0)
+  - AeroDB.IDocumentOperations.Store``1(``0[])
+  - AeroDB.IDocumentOperations.TryUpdateRevision``1(``0,System.Int32)
+  - AeroDB.IDocumentOperations.UndoDeleteWhere``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Threading.CancellationToken)
+  - AeroDB.IDocumentOperations.UpdateExpectedVersion``1(``0,System.Int64)
+  - AeroDB.IDocumentOperations.UpdateRevision``1(``0,System.Int32)
+  - AeroDB.IDocumentOperations.Update``1(System.Collections.Generic.IEnumerable{``0})
+  - AeroDB.IDocumentOperations.Update``1(``0[])
+  - AeroDB.IDocumentOperations.UseIdentityMapFor``1
+  langs:
+  - csharp
+  - vb
+  name: IDocumentOperations
+  nameWithType: IDocumentOperations
+  fullName: AeroDB.IDocumentOperations
+  type: Interface
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDocumentOperations.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Document CRUD operations shared between <xref href="AeroDB.IDocumentSession" data-throw-if-not-resolved="false"></xref> and projection operations.
+
+    Provides the raw document read/write surface without session lifecycle methods.
+
+    <br />
+
+    Note: <code>LoadAsync&lt;T&gt;(id)</code> is available via <code>IQuerySession</code> cast — intentionally omitted
+
+    to avoid diamond ambiguity with <code>IQuerySession</code> in the <code>IDocumentSession</code> hierarchy.
+  example: []
+  syntax:
+    content: public interface IDocumentOperations
+    content.vb: Public Interface IDocumentOperations
+  derivedClasses:
+  - AeroDB.DocumentSession
+- uid: AeroDB.IDocumentOperations.QueryAsync``1(System.Threading.CancellationToken)
+  commentId: M:AeroDB.IDocumentOperations.QueryAsync``1(System.Threading.CancellationToken)
+  id: QueryAsync``1(System.Threading.CancellationToken)
+  parent: AeroDB.IDocumentOperations
+  langs:
+  - csharp
+  - vb
+  name: QueryAsync<T>(CancellationToken)
+  nameWithType: IDocumentOperations.QueryAsync<T>(CancellationToken)
+  fullName: AeroDB.IDocumentOperations.QueryAsync<T>(System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDocumentOperations.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Query all documents of type T.
+  example: []
+  syntax:
+    content: 'Task<IReadOnlyList<T>> QueryAsync<T>(CancellationToken ct = default) where T : class'
+    parameters:
+    - id: ct
+      type: System.Threading.CancellationToken
+    typeParameters:
+    - id: T
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{{T}}}
+    content.vb: Function QueryAsync(Of T As Class)(ct As CancellationToken = Nothing) As Task(Of IReadOnlyList(Of T))
+  overload: AeroDB.IDocumentOperations.QueryAsync*
+  nameWithType.vb: IDocumentOperations.QueryAsync(Of T)(CancellationToken)
+  fullName.vb: AeroDB.IDocumentOperations.QueryAsync(Of T)(System.Threading.CancellationToken)
+  name.vb: QueryAsync(Of T)(CancellationToken)
+- uid: AeroDB.IDocumentOperations.Store``1(``0)
+  commentId: M:AeroDB.IDocumentOperations.Store``1(``0)
+  id: Store``1(``0)
+  parent: AeroDB.IDocumentOperations
+  langs:
+  - csharp
+  - vb
+  name: Store<T>(T)
+  nameWithType: IDocumentOperations.Store<T>(T)
+  fullName: AeroDB.IDocumentOperations.Store<T>(T)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDocumentOperations.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Register a document for insert/upsert during the next SaveChangesAsync.
+  example: []
+  syntax:
+    content: 'void Store<T>(T document) where T : class'
+    parameters:
+    - id: document
+      type: '{T}'
+    typeParameters:
+    - id: T
+    content.vb: Sub Store(Of T As Class)(document As T)
+  overload: AeroDB.IDocumentOperations.Store*
+  nameWithType.vb: IDocumentOperations.Store(Of T)(T)
+  fullName.vb: AeroDB.IDocumentOperations.Store(Of T)(T)
+  name.vb: Store(Of T)(T)
+- uid: AeroDB.IDocumentOperations.Store``1(System.String,``0)
+  commentId: M:AeroDB.IDocumentOperations.Store``1(System.String,``0)
+  id: Store``1(System.String,``0)
+  parent: AeroDB.IDocumentOperations
+  langs:
+  - csharp
+  - vb
+  name: Store<T>(string, T)
+  nameWithType: IDocumentOperations.Store<T>(string, T)
+  fullName: AeroDB.IDocumentOperations.Store<T>(string, T)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDocumentOperations.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Register a document with an explicit ID for insert/upsert.
+  example: []
+  syntax:
+    content: 'void Store<T>(string id, T document) where T : class'
+    parameters:
+    - id: id
+      type: System.String
+    - id: document
+      type: '{T}'
+    typeParameters:
+    - id: T
+    content.vb: Sub Store(Of T As Class)(id As String, document As T)
+  overload: AeroDB.IDocumentOperations.Store*
+  nameWithType.vb: IDocumentOperations.Store(Of T)(String, T)
+  fullName.vb: AeroDB.IDocumentOperations.Store(Of T)(String, T)
+  name.vb: Store(Of T)(String, T)
+- uid: AeroDB.IDocumentOperations.Delete``1(``0)
+  commentId: M:AeroDB.IDocumentOperations.Delete``1(``0)
+  id: Delete``1(``0)
+  parent: AeroDB.IDocumentOperations
+  langs:
+  - csharp
+  - vb
+  name: Delete<T>(T)
+  nameWithType: IDocumentOperations.Delete<T>(T)
+  fullName: AeroDB.IDocumentOperations.Delete<T>(T)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDocumentOperations.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Register a document for deletion during the next SaveChangesAsync.
+  example: []
+  syntax:
+    content: 'void Delete<T>(T document) where T : class'
+    parameters:
+    - id: document
+      type: '{T}'
+    typeParameters:
+    - id: T
+    content.vb: Sub Delete(Of T As Class)(document As T)
+  overload: AeroDB.IDocumentOperations.Delete*
+  nameWithType.vb: IDocumentOperations.Delete(Of T)(T)
+  fullName.vb: AeroDB.IDocumentOperations.Delete(Of T)(T)
+  name.vb: Delete(Of T)(T)
+- uid: AeroDB.IDocumentOperations.BulkInsertAsync``1(System.Collections.Generic.IEnumerable{``0},System.Int32,System.Threading.CancellationToken)
+  commentId: M:AeroDB.IDocumentOperations.BulkInsertAsync``1(System.Collections.Generic.IEnumerable{``0},System.Int32,System.Threading.CancellationToken)
+  id: BulkInsertAsync``1(System.Collections.Generic.IEnumerable{``0},System.Int32,System.Threading.CancellationToken)
+  parent: AeroDB.IDocumentOperations
+  langs:
+  - csharp
+  - vb
+  name: BulkInsertAsync<T>(IEnumerable<T>, int, CancellationToken)
+  nameWithType: IDocumentOperations.BulkInsertAsync<T>(IEnumerable<T>, int, CancellationToken)
+  fullName: AeroDB.IDocumentOperations.BulkInsertAsync<T>(System.Collections.Generic.IEnumerable<T>, int, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDocumentOperations.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Bulk-insert documents. More efficient than individual Store calls for large batches.
+  example: []
+  syntax:
+    content: 'Task<int> BulkInsertAsync<T>(IEnumerable<T> documents, int batchSize = 100, CancellationToken ct = default) where T : class'
+    parameters:
+    - id: documents
+      type: System.Collections.Generic.IEnumerable{{T}}
+    - id: batchSize
+      type: System.Int32
+    - id: ct
+      type: System.Threading.CancellationToken
+    typeParameters:
+    - id: T
+    return:
+      type: System.Threading.Tasks.Task{System.Int32}
+    content.vb: Function BulkInsertAsync(Of T As Class)(documents As IEnumerable(Of T), batchSize As Integer = 100, ct As CancellationToken = Nothing) As Task(Of Integer)
+  overload: AeroDB.IDocumentOperations.BulkInsertAsync*
+  nameWithType.vb: IDocumentOperations.BulkInsertAsync(Of T)(IEnumerable(Of T), Integer, CancellationToken)
+  fullName.vb: AeroDB.IDocumentOperations.BulkInsertAsync(Of T)(System.Collections.Generic.IEnumerable(Of T), Integer, System.Threading.CancellationToken)
+  name.vb: BulkInsertAsync(Of T)(IEnumerable(Of T), Integer, CancellationToken)
+- uid: AeroDB.IDocumentOperations.DeleteWhere``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Threading.CancellationToken)
+  commentId: M:AeroDB.IDocumentOperations.DeleteWhere``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Threading.CancellationToken)
+  id: DeleteWhere``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Threading.CancellationToken)
+  parent: AeroDB.IDocumentOperations
+  langs:
+  - csharp
+  - vb
+  name: DeleteWhere<T>(Expression<Func<T, bool>>, CancellationToken)
+  nameWithType: IDocumentOperations.DeleteWhere<T>(Expression<Func<T, bool>>, CancellationToken)
+  fullName: AeroDB.IDocumentOperations.DeleteWhere<T>(System.Linq.Expressions.Expression<System.Func<T, bool>>, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDocumentOperations.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Delete all documents of type T matching the predicate. Executes immediately.
+  example: []
+  syntax:
+    content: 'Task<long> DeleteWhere<T>(Expression<Func<T, bool>> predicate, CancellationToken ct = default) where T : class'
+    parameters:
+    - id: predicate
+      type: System.Linq.Expressions.Expression{System.Func{{T},System.Boolean}}
+    - id: ct
+      type: System.Threading.CancellationToken
+    typeParameters:
+    - id: T
+    return:
+      type: System.Threading.Tasks.Task{System.Int64}
+    content.vb: Function DeleteWhere(Of T As Class)(predicate As Expression(Of Func(Of T, Boolean)), ct As CancellationToken = Nothing) As Task(Of Long)
+  overload: AeroDB.IDocumentOperations.DeleteWhere*
+  nameWithType.vb: IDocumentOperations.DeleteWhere(Of T)(Expression(Of Func(Of T, Boolean)), CancellationToken)
+  fullName.vb: AeroDB.IDocumentOperations.DeleteWhere(Of T)(System.Linq.Expressions.Expression(Of System.Func(Of T, Boolean)), System.Threading.CancellationToken)
+  name.vb: DeleteWhere(Of T)(Expression(Of Func(Of T, Boolean)), CancellationToken)
+- uid: AeroDB.IDocumentOperations.Delete``1(System.String)
+  commentId: M:AeroDB.IDocumentOperations.Delete``1(System.String)
+  id: Delete``1(System.String)
+  parent: AeroDB.IDocumentOperations
+  langs:
+  - csharp
+  - vb
+  name: Delete<T>(string)
+  nameWithType: IDocumentOperations.Delete<T>(string)
+  fullName: AeroDB.IDocumentOperations.Delete<T>(string)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDocumentOperations.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Register a document for deletion by its string ID.
+  example: []
+  syntax:
+    content: 'void Delete<T>(string id) where T : class'
+    parameters:
+    - id: id
+      type: System.String
+    typeParameters:
+    - id: T
+    content.vb: Sub Delete(Of T As Class)(id As String)
+  overload: AeroDB.IDocumentOperations.Delete*
+  nameWithType.vb: IDocumentOperations.Delete(Of T)(String)
+  fullName.vb: AeroDB.IDocumentOperations.Delete(Of T)(String)
+  name.vb: Delete(Of T)(String)
+- uid: AeroDB.IDocumentOperations.Delete``1(System.Int64)
+  commentId: M:AeroDB.IDocumentOperations.Delete``1(System.Int64)
+  id: Delete``1(System.Int64)
+  parent: AeroDB.IDocumentOperations
+  langs:
+  - csharp
+  - vb
+  name: Delete<T>(long)
+  nameWithType: IDocumentOperations.Delete<T>(long)
+  fullName: AeroDB.IDocumentOperations.Delete<T>(long)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDocumentOperations.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Register a document for deletion by its long ID.
+  example: []
+  syntax:
+    content: 'void Delete<T>(long id) where T : class'
+    parameters:
+    - id: id
+      type: System.Int64
+    typeParameters:
+    - id: T
+    content.vb: Sub Delete(Of T As Class)(id As Long)
+  overload: AeroDB.IDocumentOperations.Delete*
+  nameWithType.vb: IDocumentOperations.Delete(Of T)(Long)
+  fullName.vb: AeroDB.IDocumentOperations.Delete(Of T)(Long)
+  name.vb: Delete(Of T)(Long)
+- uid: AeroDB.IDocumentOperations.Delete``1(System.Int32)
+  commentId: M:AeroDB.IDocumentOperations.Delete``1(System.Int32)
+  id: Delete``1(System.Int32)
+  parent: AeroDB.IDocumentOperations
+  langs:
+  - csharp
+  - vb
+  name: Delete<T>(int)
+  nameWithType: IDocumentOperations.Delete<T>(int)
+  fullName: AeroDB.IDocumentOperations.Delete<T>(int)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDocumentOperations.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Register a document for deletion by its int ID.
+  example: []
+  syntax:
+    content: 'void Delete<T>(int id) where T : class'
+    parameters:
+    - id: id
+      type: System.Int32
+    typeParameters:
+    - id: T
+    content.vb: Sub Delete(Of T As Class)(id As Integer)
+  overload: AeroDB.IDocumentOperations.Delete*
+  nameWithType.vb: IDocumentOperations.Delete(Of T)(Integer)
+  fullName.vb: AeroDB.IDocumentOperations.Delete(Of T)(Integer)
+  name.vb: Delete(Of T)(Integer)
+- uid: AeroDB.IDocumentOperations.Delete``1(System.Guid)
+  commentId: M:AeroDB.IDocumentOperations.Delete``1(System.Guid)
+  id: Delete``1(System.Guid)
+  parent: AeroDB.IDocumentOperations
+  langs:
+  - csharp
+  - vb
+  name: Delete<T>(Guid)
+  nameWithType: IDocumentOperations.Delete<T>(Guid)
+  fullName: AeroDB.IDocumentOperations.Delete<T>(System.Guid)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDocumentOperations.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Register a document for deletion by its Guid ID.
+  example: []
+  syntax:
+    content: 'void Delete<T>(Guid id) where T : class'
+    parameters:
+    - id: id
+      type: System.Guid
+    typeParameters:
+    - id: T
+    content.vb: Sub Delete(Of T As Class)(id As Guid)
+  overload: AeroDB.IDocumentOperations.Delete*
+  nameWithType.vb: IDocumentOperations.Delete(Of T)(Guid)
+  fullName.vb: AeroDB.IDocumentOperations.Delete(Of T)(System.Guid)
+  name.vb: Delete(Of T)(Guid)
+- uid: AeroDB.IDocumentOperations.Delete``1(System.Object)
+  commentId: M:AeroDB.IDocumentOperations.Delete``1(System.Object)
+  id: Delete``1(System.Object)
+  parent: AeroDB.IDocumentOperations
+  langs:
+  - csharp
+  - vb
+  name: Delete<T>(object)
+  nameWithType: IDocumentOperations.Delete<T>(object)
+  fullName: AeroDB.IDocumentOperations.Delete<T>(object)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDocumentOperations.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Register a document for deletion by an object ID (boxed).
+  example: []
+  syntax:
+    content: 'void Delete<T>(object id) where T : class'
+    parameters:
+    - id: id
+      type: System.Object
+    typeParameters:
+    - id: T
+    content.vb: Sub Delete(Of T As Class)(id As Object)
+  overload: AeroDB.IDocumentOperations.Delete*
+  nameWithType.vb: IDocumentOperations.Delete(Of T)(Object)
+  fullName.vb: AeroDB.IDocumentOperations.Delete(Of T)(Object)
+  name.vb: Delete(Of T)(Object)
+- uid: AeroDB.IDocumentOperations.Store``1(System.Collections.Generic.IEnumerable{``0})
+  commentId: M:AeroDB.IDocumentOperations.Store``1(System.Collections.Generic.IEnumerable{``0})
+  id: Store``1(System.Collections.Generic.IEnumerable{``0})
+  parent: AeroDB.IDocumentOperations
+  langs:
+  - csharp
+  - vb
+  name: Store<T>(IEnumerable<T>)
+  nameWithType: IDocumentOperations.Store<T>(IEnumerable<T>)
+  fullName: AeroDB.IDocumentOperations.Store<T>(System.Collections.Generic.IEnumerable<T>)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDocumentOperations.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Register multiple documents for insert/upsert.
+  example: []
+  syntax:
+    content: 'void Store<T>(IEnumerable<T> documents) where T : class'
+    parameters:
+    - id: documents
+      type: System.Collections.Generic.IEnumerable{{T}}
+    typeParameters:
+    - id: T
+    content.vb: Sub Store(Of T As Class)(documents As IEnumerable(Of T))
+  overload: AeroDB.IDocumentOperations.Store*
+  nameWithType.vb: IDocumentOperations.Store(Of T)(IEnumerable(Of T))
+  fullName.vb: AeroDB.IDocumentOperations.Store(Of T)(System.Collections.Generic.IEnumerable(Of T))
+  name.vb: Store(Of T)(IEnumerable(Of T))
+- uid: AeroDB.IDocumentOperations.Store``1(``0[])
+  commentId: M:AeroDB.IDocumentOperations.Store``1(``0[])
+  id: Store``1(``0[])
+  parent: AeroDB.IDocumentOperations
+  langs:
+  - csharp
+  - vb
+  name: Store<T>(params T[])
+  nameWithType: IDocumentOperations.Store<T>(params T[])
+  fullName: AeroDB.IDocumentOperations.Store<T>(params T[])
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDocumentOperations.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Register multiple documents for insert/upsert.
+  example: []
+  syntax:
+    content: 'void Store<T>(params T[] documents) where T : class'
+    parameters:
+    - id: documents
+      type: '{T}[]'
+    typeParameters:
+    - id: T
+    content.vb: Sub Store(Of T As Class)(ParamArray documents As T())
+  overload: AeroDB.IDocumentOperations.Store*
+  nameWithType.vb: IDocumentOperations.Store(Of T)(ParamArray T())
+  fullName.vb: AeroDB.IDocumentOperations.Store(Of T)(ParamArray T())
+  name.vb: Store(Of T)(ParamArray T())
+- uid: AeroDB.IDocumentOperations.StoreObjects(System.Collections.Generic.IEnumerable{System.Object})
+  commentId: M:AeroDB.IDocumentOperations.StoreObjects(System.Collections.Generic.IEnumerable{System.Object})
+  id: StoreObjects(System.Collections.Generic.IEnumerable{System.Object})
+  parent: AeroDB.IDocumentOperations
+  langs:
+  - csharp
+  - vb
+  name: StoreObjects(IEnumerable<object>)
+  nameWithType: IDocumentOperations.StoreObjects(IEnumerable<object>)
+  fullName: AeroDB.IDocumentOperations.StoreObjects(System.Collections.Generic.IEnumerable<object>)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDocumentOperations.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Register multiple documents of mixed types for insert/upsert.
+  example: []
+  syntax:
+    content: void StoreObjects(IEnumerable<object> documents)
+    parameters:
+    - id: documents
+      type: System.Collections.Generic.IEnumerable{System.Object}
+    content.vb: Sub StoreObjects(documents As IEnumerable(Of Object))
+  overload: AeroDB.IDocumentOperations.StoreObjects*
+  nameWithType.vb: IDocumentOperations.StoreObjects(IEnumerable(Of Object))
+  fullName.vb: AeroDB.IDocumentOperations.StoreObjects(System.Collections.Generic.IEnumerable(Of Object))
+  name.vb: StoreObjects(IEnumerable(Of Object))
+- uid: AeroDB.IDocumentOperations.DeleteObjects(System.Collections.Generic.IEnumerable{System.Object})
+  commentId: M:AeroDB.IDocumentOperations.DeleteObjects(System.Collections.Generic.IEnumerable{System.Object})
+  id: DeleteObjects(System.Collections.Generic.IEnumerable{System.Object})
+  parent: AeroDB.IDocumentOperations
+  langs:
+  - csharp
+  - vb
+  name: DeleteObjects(IEnumerable<object>)
+  nameWithType: IDocumentOperations.DeleteObjects(IEnumerable<object>)
+  fullName: AeroDB.IDocumentOperations.DeleteObjects(System.Collections.Generic.IEnumerable<object>)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDocumentOperations.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Register multiple documents of mixed types for deletion.
+  example: []
+  syntax:
+    content: void DeleteObjects(IEnumerable<object> documents)
+    parameters:
+    - id: documents
+      type: System.Collections.Generic.IEnumerable{System.Object}
+    content.vb: Sub DeleteObjects(documents As IEnumerable(Of Object))
+  overload: AeroDB.IDocumentOperations.DeleteObjects*
+  nameWithType.vb: IDocumentOperations.DeleteObjects(IEnumerable(Of Object))
+  fullName.vb: AeroDB.IDocumentOperations.DeleteObjects(System.Collections.Generic.IEnumerable(Of Object))
+  name.vb: DeleteObjects(IEnumerable(Of Object))
+- uid: AeroDB.IDocumentOperations.Insert``1(System.Collections.Generic.IEnumerable{``0})
+  commentId: M:AeroDB.IDocumentOperations.Insert``1(System.Collections.Generic.IEnumerable{``0})
+  id: Insert``1(System.Collections.Generic.IEnumerable{``0})
+  parent: AeroDB.IDocumentOperations
+  langs:
+  - csharp
+  - vb
+  name: Insert<T>(IEnumerable<T>)
+  nameWithType: IDocumentOperations.Insert<T>(IEnumerable<T>)
+  fullName: AeroDB.IDocumentOperations.Insert<T>(System.Collections.Generic.IEnumerable<T>)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDocumentOperations.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Register multiple documents for insert-only.
+  example: []
+  syntax:
+    content: 'void Insert<T>(IEnumerable<T> documents) where T : class'
+    parameters:
+    - id: documents
+      type: System.Collections.Generic.IEnumerable{{T}}
+    typeParameters:
+    - id: T
+    content.vb: Sub Insert(Of T As Class)(documents As IEnumerable(Of T))
+  overload: AeroDB.IDocumentOperations.Insert*
+  nameWithType.vb: IDocumentOperations.Insert(Of T)(IEnumerable(Of T))
+  fullName.vb: AeroDB.IDocumentOperations.Insert(Of T)(System.Collections.Generic.IEnumerable(Of T))
+  name.vb: Insert(Of T)(IEnumerable(Of T))
+- uid: AeroDB.IDocumentOperations.Insert``1(``0[])
+  commentId: M:AeroDB.IDocumentOperations.Insert``1(``0[])
+  id: Insert``1(``0[])
+  parent: AeroDB.IDocumentOperations
+  langs:
+  - csharp
+  - vb
+  name: Insert<T>(params T[])
+  nameWithType: IDocumentOperations.Insert<T>(params T[])
+  fullName: AeroDB.IDocumentOperations.Insert<T>(params T[])
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDocumentOperations.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Register multiple documents for insert-only.
+  example: []
+  syntax:
+    content: 'void Insert<T>(params T[] documents) where T : class'
+    parameters:
+    - id: documents
+      type: '{T}[]'
+    typeParameters:
+    - id: T
+    content.vb: Sub Insert(Of T As Class)(ParamArray documents As T())
+  overload: AeroDB.IDocumentOperations.Insert*
+  nameWithType.vb: IDocumentOperations.Insert(Of T)(ParamArray T())
+  fullName.vb: AeroDB.IDocumentOperations.Insert(Of T)(ParamArray T())
+  name.vb: Insert(Of T)(ParamArray T())
+- uid: AeroDB.IDocumentOperations.Update``1(System.Collections.Generic.IEnumerable{``0})
+  commentId: M:AeroDB.IDocumentOperations.Update``1(System.Collections.Generic.IEnumerable{``0})
+  id: Update``1(System.Collections.Generic.IEnumerable{``0})
+  parent: AeroDB.IDocumentOperations
+  langs:
+  - csharp
+  - vb
+  name: Update<T>(IEnumerable<T>)
+  nameWithType: IDocumentOperations.Update<T>(IEnumerable<T>)
+  fullName: AeroDB.IDocumentOperations.Update<T>(System.Collections.Generic.IEnumerable<T>)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDocumentOperations.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Register multiple documents for update-only.
+  example: []
+  syntax:
+    content: 'void Update<T>(IEnumerable<T> documents) where T : class'
+    parameters:
+    - id: documents
+      type: System.Collections.Generic.IEnumerable{{T}}
+    typeParameters:
+    - id: T
+    content.vb: Sub Update(Of T As Class)(documents As IEnumerable(Of T))
+  overload: AeroDB.IDocumentOperations.Update*
+  nameWithType.vb: IDocumentOperations.Update(Of T)(IEnumerable(Of T))
+  fullName.vb: AeroDB.IDocumentOperations.Update(Of T)(System.Collections.Generic.IEnumerable(Of T))
+  name.vb: Update(Of T)(IEnumerable(Of T))
+- uid: AeroDB.IDocumentOperations.Update``1(``0[])
+  commentId: M:AeroDB.IDocumentOperations.Update``1(``0[])
+  id: Update``1(``0[])
+  parent: AeroDB.IDocumentOperations
+  langs:
+  - csharp
+  - vb
+  name: Update<T>(params T[])
+  nameWithType: IDocumentOperations.Update<T>(params T[])
+  fullName: AeroDB.IDocumentOperations.Update<T>(params T[])
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDocumentOperations.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Register multiple documents for update-only.
+  example: []
+  syntax:
+    content: 'void Update<T>(params T[] documents) where T : class'
+    parameters:
+    - id: documents
+      type: '{T}[]'
+    typeParameters:
+    - id: T
+    content.vb: Sub Update(Of T As Class)(ParamArray documents As T())
+  overload: AeroDB.IDocumentOperations.Update*
+  nameWithType.vb: IDocumentOperations.Update(Of T)(ParamArray T())
+  fullName.vb: AeroDB.IDocumentOperations.Update(Of T)(ParamArray T())
+  name.vb: Update(Of T)(ParamArray T())
+- uid: AeroDB.IDocumentOperations.HardDelete``1(``0)
+  commentId: M:AeroDB.IDocumentOperations.HardDelete``1(``0)
+  id: HardDelete``1(``0)
+  parent: AeroDB.IDocumentOperations
+  langs:
+  - csharp
+  - vb
+  name: HardDelete<T>(T)
+  nameWithType: IDocumentOperations.HardDelete<T>(T)
+  fullName: AeroDB.IDocumentOperations.HardDelete<T>(T)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDocumentOperations.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Hard-delete a document (bypass soft-delete).
+  example: []
+  syntax:
+    content: 'void HardDelete<T>(T entity) where T : class'
+    parameters:
+    - id: entity
+      type: '{T}'
+    typeParameters:
+    - id: T
+    content.vb: Sub HardDelete(Of T As Class)(entity As T)
+  overload: AeroDB.IDocumentOperations.HardDelete*
+  nameWithType.vb: IDocumentOperations.HardDelete(Of T)(T)
+  fullName.vb: AeroDB.IDocumentOperations.HardDelete(Of T)(T)
+  name.vb: HardDelete(Of T)(T)
+- uid: AeroDB.IDocumentOperations.HardDelete``1(System.String)
+  commentId: M:AeroDB.IDocumentOperations.HardDelete``1(System.String)
+  id: HardDelete``1(System.String)
+  parent: AeroDB.IDocumentOperations
+  langs:
+  - csharp
+  - vb
+  name: HardDelete<T>(string)
+  nameWithType: IDocumentOperations.HardDelete<T>(string)
+  fullName: AeroDB.IDocumentOperations.HardDelete<T>(string)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDocumentOperations.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Hard-delete a document by its string ID.
+  example: []
+  syntax:
+    content: 'void HardDelete<T>(string id) where T : class'
+    parameters:
+    - id: id
+      type: System.String
+    typeParameters:
+    - id: T
+    content.vb: Sub HardDelete(Of T As Class)(id As String)
+  overload: AeroDB.IDocumentOperations.HardDelete*
+  nameWithType.vb: IDocumentOperations.HardDelete(Of T)(String)
+  fullName.vb: AeroDB.IDocumentOperations.HardDelete(Of T)(String)
+  name.vb: HardDelete(Of T)(String)
+- uid: AeroDB.IDocumentOperations.HardDelete``1(System.Int64)
+  commentId: M:AeroDB.IDocumentOperations.HardDelete``1(System.Int64)
+  id: HardDelete``1(System.Int64)
+  parent: AeroDB.IDocumentOperations
+  langs:
+  - csharp
+  - vb
+  name: HardDelete<T>(long)
+  nameWithType: IDocumentOperations.HardDelete<T>(long)
+  fullName: AeroDB.IDocumentOperations.HardDelete<T>(long)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDocumentOperations.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Hard-delete a document by its long ID.
+  example: []
+  syntax:
+    content: 'void HardDelete<T>(long id) where T : class'
+    parameters:
+    - id: id
+      type: System.Int64
+    typeParameters:
+    - id: T
+    content.vb: Sub HardDelete(Of T As Class)(id As Long)
+  overload: AeroDB.IDocumentOperations.HardDelete*
+  nameWithType.vb: IDocumentOperations.HardDelete(Of T)(Long)
+  fullName.vb: AeroDB.IDocumentOperations.HardDelete(Of T)(Long)
+  name.vb: HardDelete(Of T)(Long)
+- uid: AeroDB.IDocumentOperations.HardDelete``1(System.Int32)
+  commentId: M:AeroDB.IDocumentOperations.HardDelete``1(System.Int32)
+  id: HardDelete``1(System.Int32)
+  parent: AeroDB.IDocumentOperations
+  langs:
+  - csharp
+  - vb
+  name: HardDelete<T>(int)
+  nameWithType: IDocumentOperations.HardDelete<T>(int)
+  fullName: AeroDB.IDocumentOperations.HardDelete<T>(int)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDocumentOperations.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Hard-delete a document by its int ID.
+  example: []
+  syntax:
+    content: 'void HardDelete<T>(int id) where T : class'
+    parameters:
+    - id: id
+      type: System.Int32
+    typeParameters:
+    - id: T
+    content.vb: Sub HardDelete(Of T As Class)(id As Integer)
+  overload: AeroDB.IDocumentOperations.HardDelete*
+  nameWithType.vb: IDocumentOperations.HardDelete(Of T)(Integer)
+  fullName.vb: AeroDB.IDocumentOperations.HardDelete(Of T)(Integer)
+  name.vb: HardDelete(Of T)(Integer)
+- uid: AeroDB.IDocumentOperations.HardDelete``1(System.Guid)
+  commentId: M:AeroDB.IDocumentOperations.HardDelete``1(System.Guid)
+  id: HardDelete``1(System.Guid)
+  parent: AeroDB.IDocumentOperations
+  langs:
+  - csharp
+  - vb
+  name: HardDelete<T>(Guid)
+  nameWithType: IDocumentOperations.HardDelete<T>(Guid)
+  fullName: AeroDB.IDocumentOperations.HardDelete<T>(System.Guid)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDocumentOperations.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Hard-delete a document by its Guid ID.
+  example: []
+  syntax:
+    content: 'void HardDelete<T>(Guid id) where T : class'
+    parameters:
+    - id: id
+      type: System.Guid
+    typeParameters:
+    - id: T
+    content.vb: Sub HardDelete(Of T As Class)(id As Guid)
+  overload: AeroDB.IDocumentOperations.HardDelete*
+  nameWithType.vb: IDocumentOperations.HardDelete(Of T)(Guid)
+  fullName.vb: AeroDB.IDocumentOperations.HardDelete(Of T)(System.Guid)
+  name.vb: HardDelete(Of T)(Guid)
+- uid: AeroDB.IDocumentOperations.HardDeleteWhere``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Threading.CancellationToken)
+  commentId: M:AeroDB.IDocumentOperations.HardDeleteWhere``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Threading.CancellationToken)
+  id: HardDeleteWhere``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Threading.CancellationToken)
+  parent: AeroDB.IDocumentOperations
+  langs:
+  - csharp
+  - vb
+  name: HardDeleteWhere<T>(Expression<Func<T, bool>>, CancellationToken)
+  nameWithType: IDocumentOperations.HardDeleteWhere<T>(Expression<Func<T, bool>>, CancellationToken)
+  fullName: AeroDB.IDocumentOperations.HardDeleteWhere<T>(System.Linq.Expressions.Expression<System.Func<T, bool>>, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDocumentOperations.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Hard-delete all documents of type T matching the predicate.
+  example: []
+  syntax:
+    content: 'Task<long> HardDeleteWhere<T>(Expression<Func<T, bool>> predicate, CancellationToken ct = default) where T : class'
+    parameters:
+    - id: predicate
+      type: System.Linq.Expressions.Expression{System.Func{{T},System.Boolean}}
+    - id: ct
+      type: System.Threading.CancellationToken
+    typeParameters:
+    - id: T
+    return:
+      type: System.Threading.Tasks.Task{System.Int64}
+    content.vb: Function HardDeleteWhere(Of T As Class)(predicate As Expression(Of Func(Of T, Boolean)), ct As CancellationToken = Nothing) As Task(Of Long)
+  overload: AeroDB.IDocumentOperations.HardDeleteWhere*
+  nameWithType.vb: IDocumentOperations.HardDeleteWhere(Of T)(Expression(Of Func(Of T, Boolean)), CancellationToken)
+  fullName.vb: AeroDB.IDocumentOperations.HardDeleteWhere(Of T)(System.Linq.Expressions.Expression(Of System.Func(Of T, Boolean)), System.Threading.CancellationToken)
+  name.vb: HardDeleteWhere(Of T)(Expression(Of Func(Of T, Boolean)), CancellationToken)
+- uid: AeroDB.IDocumentOperations.UndoDeleteWhere``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Threading.CancellationToken)
+  commentId: M:AeroDB.IDocumentOperations.UndoDeleteWhere``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Threading.CancellationToken)
+  id: UndoDeleteWhere``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Threading.CancellationToken)
+  parent: AeroDB.IDocumentOperations
+  langs:
+  - csharp
+  - vb
+  name: UndoDeleteWhere<T>(Expression<Func<T, bool>>, CancellationToken)
+  nameWithType: IDocumentOperations.UndoDeleteWhere<T>(Expression<Func<T, bool>>, CancellationToken)
+  fullName: AeroDB.IDocumentOperations.UndoDeleteWhere<T>(System.Linq.Expressions.Expression<System.Func<T, bool>>, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDocumentOperations.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Undo soft-delete for documents matching the predicate.
+  example: []
+  syntax:
+    content: 'Task<long> UndoDeleteWhere<T>(Expression<Func<T, bool>> predicate, CancellationToken ct = default) where T : class'
+    parameters:
+    - id: predicate
+      type: System.Linq.Expressions.Expression{System.Func{{T},System.Boolean}}
+    - id: ct
+      type: System.Threading.CancellationToken
+    typeParameters:
+    - id: T
+    return:
+      type: System.Threading.Tasks.Task{System.Int64}
+    content.vb: Function UndoDeleteWhere(Of T As Class)(predicate As Expression(Of Func(Of T, Boolean)), ct As CancellationToken = Nothing) As Task(Of Long)
+  overload: AeroDB.IDocumentOperations.UndoDeleteWhere*
+  nameWithType.vb: IDocumentOperations.UndoDeleteWhere(Of T)(Expression(Of Func(Of T, Boolean)), CancellationToken)
+  fullName.vb: AeroDB.IDocumentOperations.UndoDeleteWhere(Of T)(System.Linq.Expressions.Expression(Of System.Func(Of T, Boolean)), System.Threading.CancellationToken)
+  name.vb: UndoDeleteWhere(Of T)(Expression(Of Func(Of T, Boolean)), CancellationToken)
+- uid: AeroDB.IDocumentOperations.InsertObjects(System.Collections.Generic.IEnumerable{System.Object})
+  commentId: M:AeroDB.IDocumentOperations.InsertObjects(System.Collections.Generic.IEnumerable{System.Object})
+  id: InsertObjects(System.Collections.Generic.IEnumerable{System.Object})
+  parent: AeroDB.IDocumentOperations
+  langs:
+  - csharp
+  - vb
+  name: InsertObjects(IEnumerable<object>)
+  nameWithType: IDocumentOperations.InsertObjects(IEnumerable<object>)
+  fullName: AeroDB.IDocumentOperations.InsertObjects(System.Collections.Generic.IEnumerable<object>)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDocumentOperations.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Register multiple documents of mixed types for insert-only.
+  example: []
+  syntax:
+    content: void InsertObjects(IEnumerable<object> documents)
+    parameters:
+    - id: documents
+      type: System.Collections.Generic.IEnumerable{System.Object}
+    content.vb: Sub InsertObjects(documents As IEnumerable(Of Object))
+  overload: AeroDB.IDocumentOperations.InsertObjects*
+  nameWithType.vb: IDocumentOperations.InsertObjects(IEnumerable(Of Object))
+  fullName.vb: AeroDB.IDocumentOperations.InsertObjects(System.Collections.Generic.IEnumerable(Of Object))
+  name.vb: InsertObjects(IEnumerable(Of Object))
+- uid: AeroDB.IDocumentOperations.UseIdentityMapFor``1
+  commentId: M:AeroDB.IDocumentOperations.UseIdentityMapFor``1
+  id: UseIdentityMapFor``1
+  parent: AeroDB.IDocumentOperations
+  langs:
+  - csharp
+  - vb
+  name: UseIdentityMapFor<T>()
+  nameWithType: IDocumentOperations.UseIdentityMapFor<T>()
+  fullName: AeroDB.IDocumentOperations.UseIdentityMapFor<T>()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDocumentOperations.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Opt-in a type for identity map tracking within this session.
+  example: []
+  syntax:
+    content: 'void UseIdentityMapFor<T>() where T : class'
+    typeParameters:
+    - id: T
+    content.vb: Sub UseIdentityMapFor(Of T As Class)()
+  overload: AeroDB.IDocumentOperations.UseIdentityMapFor*
+  nameWithType.vb: IDocumentOperations.UseIdentityMapFor(Of T)()
+  fullName.vb: AeroDB.IDocumentOperations.UseIdentityMapFor(Of T)()
+  name.vb: UseIdentityMapFor(Of T)()
+- uid: AeroDB.IDocumentOperations.QueueOperation(AeroDB.IStorageOperation)
+  commentId: M:AeroDB.IDocumentOperations.QueueOperation(AeroDB.IStorageOperation)
+  id: QueueOperation(AeroDB.IStorageOperation)
+  parent: AeroDB.IDocumentOperations
+  langs:
+  - csharp
+  - vb
+  name: QueueOperation(IStorageOperation)
+  nameWithType: IDocumentOperations.QueueOperation(IStorageOperation)
+  fullName: AeroDB.IDocumentOperations.QueueOperation(AeroDB.IStorageOperation)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDocumentOperations.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Queue a low-level storage operation for execution during SaveChangesAsync.
+  example: []
+  syntax:
+    content: void QueueOperation(IStorageOperation operation)
+    parameters:
+    - id: operation
+      type: AeroDB.IStorageOperation
+    content.vb: Sub QueueOperation(operation As IStorageOperation)
+  overload: AeroDB.IDocumentOperations.QueueOperation*
+- uid: AeroDB.IDocumentOperations.UpdateExpectedVersion``1(``0,System.Int64)
+  commentId: M:AeroDB.IDocumentOperations.UpdateExpectedVersion``1(``0,System.Int64)
+  id: UpdateExpectedVersion``1(``0,System.Int64)
+  parent: AeroDB.IDocumentOperations
+  langs:
+  - csharp
+  - vb
+  name: UpdateExpectedVersion<T>(T, long)
+  nameWithType: IDocumentOperations.UpdateExpectedVersion<T>(T, long)
+  fullName: AeroDB.IDocumentOperations.UpdateExpectedVersion<T>(T, long)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDocumentOperations.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Register an entity with an expected version for optimistic concurrency gating.
+  example: []
+  syntax:
+    content: 'void UpdateExpectedVersion<T>(T entity, long expectedVersion) where T : class'
+    parameters:
+    - id: entity
+      type: '{T}'
+    - id: expectedVersion
+      type: System.Int64
+    typeParameters:
+    - id: T
+    content.vb: Sub UpdateExpectedVersion(Of T As Class)(entity As T, expectedVersion As Long)
+  overload: AeroDB.IDocumentOperations.UpdateExpectedVersion*
+  nameWithType.vb: IDocumentOperations.UpdateExpectedVersion(Of T)(T, Long)
+  fullName.vb: AeroDB.IDocumentOperations.UpdateExpectedVersion(Of T)(T, Long)
+  name.vb: UpdateExpectedVersion(Of T)(T, Long)
+- uid: AeroDB.IDocumentOperations.UpdateRevision``1(``0,System.Int32)
+  commentId: M:AeroDB.IDocumentOperations.UpdateRevision``1(``0,System.Int32)
+  id: UpdateRevision``1(``0,System.Int32)
+  parent: AeroDB.IDocumentOperations
+  langs:
+  - csharp
+  - vb
+  name: UpdateRevision<T>(T, int)
+  nameWithType: IDocumentOperations.UpdateRevision<T>(T, int)
+  fullName: AeroDB.IDocumentOperations.UpdateRevision<T>(T, int)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDocumentOperations.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Register an entity with an expected revision for gated updates.
+  example: []
+  syntax:
+    content: 'void UpdateRevision<T>(T entity, int revision) where T : class'
+    parameters:
+    - id: entity
+      type: '{T}'
+    - id: revision
+      type: System.Int32
+    typeParameters:
+    - id: T
+    content.vb: Sub UpdateRevision(Of T As Class)(entity As T, revision As Integer)
+  overload: AeroDB.IDocumentOperations.UpdateRevision*
+  nameWithType.vb: IDocumentOperations.UpdateRevision(Of T)(T, Integer)
+  fullName.vb: AeroDB.IDocumentOperations.UpdateRevision(Of T)(T, Integer)
+  name.vb: UpdateRevision(Of T)(T, Integer)
+- uid: AeroDB.IDocumentOperations.TryUpdateRevision``1(``0,System.Int32)
+  commentId: M:AeroDB.IDocumentOperations.TryUpdateRevision``1(``0,System.Int32)
+  id: TryUpdateRevision``1(``0,System.Int32)
+  parent: AeroDB.IDocumentOperations
+  langs:
+  - csharp
+  - vb
+  name: TryUpdateRevision<T>(T, int)
+  nameWithType: IDocumentOperations.TryUpdateRevision<T>(T, int)
+  fullName: AeroDB.IDocumentOperations.TryUpdateRevision<T>(T, int)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDocumentOperations.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Register an entity with an expected revision; skips the update on mismatch instead of throwing.
+  example: []
+  syntax:
+    content: 'void TryUpdateRevision<T>(T entity, int revision) where T : class'
+    parameters:
+    - id: entity
+      type: '{T}'
+    - id: revision
+      type: System.Int32
+    typeParameters:
+    - id: T
+    content.vb: Sub TryUpdateRevision(Of T As Class)(entity As T, revision As Integer)
+  overload: AeroDB.IDocumentOperations.TryUpdateRevision*
+  nameWithType.vb: IDocumentOperations.TryUpdateRevision(Of T)(T, Integer)
+  fullName.vb: AeroDB.IDocumentOperations.TryUpdateRevision(Of T)(T, Integer)
+  name.vb: TryUpdateRevision(Of T)(T, Integer)
+references:
+- uid: AeroDB.IDocumentSession
+  commentId: T:AeroDB.IDocumentSession
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IDocumentSession.html
+  name: IDocumentSession
+  nameWithType: IDocumentSession
+  fullName: AeroDB.IDocumentSession
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: AeroDB.IDocumentOperations.QueryAsync*
+  commentId: Overload:AeroDB.IDocumentOperations.QueryAsync
+  isExternal: true
+  href: AeroDB.IDocumentOperations.html#AeroDB_IDocumentOperations_QueryAsync__1_System_Threading_CancellationToken_
+  name: QueryAsync
+  nameWithType: IDocumentOperations.QueryAsync
+  fullName: AeroDB.IDocumentOperations.QueryAsync
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{{T}}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{``0}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<IReadOnlyList<T>>
+  nameWithType: Task<IReadOnlyList<T>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.IReadOnlyList<T>>
+  nameWithType.vb: Task(Of IReadOnlyList(Of T))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.IReadOnlyList(Of T))
+  name.vb: Task(Of IReadOnlyList(Of T))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - name: T
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: AeroDB.IDocumentOperations.Store*
+  commentId: Overload:AeroDB.IDocumentOperations.Store
+  isExternal: true
+  href: AeroDB.IDocumentOperations.html#AeroDB_IDocumentOperations_Store__1___0_
+  name: Store
+  nameWithType: IDocumentOperations.Store
+  fullName: AeroDB.IDocumentOperations.Store
+- uid: '{T}'
+  commentId: '!:T'
+  definition: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AeroDB.IDocumentOperations.Delete*
+  commentId: Overload:AeroDB.IDocumentOperations.Delete
+  isExternal: true
+  href: AeroDB.IDocumentOperations.html#AeroDB_IDocumentOperations_Delete__1___0_
+  name: Delete
+  nameWithType: IDocumentOperations.Delete
+  fullName: AeroDB.IDocumentOperations.Delete
+- uid: AeroDB.IDocumentOperations.BulkInsertAsync*
+  commentId: Overload:AeroDB.IDocumentOperations.BulkInsertAsync
+  isExternal: true
+  href: AeroDB.IDocumentOperations.html#AeroDB_IDocumentOperations_BulkInsertAsync__1_System_Collections_Generic_IEnumerable___0__System_Int32_System_Threading_CancellationToken_
+  name: BulkInsertAsync
+  nameWithType: IDocumentOperations.BulkInsertAsync
+  fullName: AeroDB.IDocumentOperations.BulkInsertAsync
+- uid: System.Collections.Generic.IEnumerable{{T}}
+  commentId: T:System.Collections.Generic.IEnumerable{``0}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System.Threading.Tasks.Task{System.Int32}
+  commentId: T:System.Threading.Tasks.Task{System.Int32}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<int>
+  nameWithType: Task<int>
+  fullName: System.Threading.Tasks.Task<int>
+  nameWithType.vb: Task(Of Integer)
+  fullName.vb: System.Threading.Tasks.Task(Of Integer)
+  name.vb: Task(Of Integer)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: AeroDB.IDocumentOperations.DeleteWhere*
+  commentId: Overload:AeroDB.IDocumentOperations.DeleteWhere
+  isExternal: true
+  href: AeroDB.IDocumentOperations.html#AeroDB_IDocumentOperations_DeleteWhere__1_System_Linq_Expressions_Expression_System_Func___0_System_Boolean___System_Threading_CancellationToken_
+  name: DeleteWhere
+  nameWithType: IDocumentOperations.DeleteWhere
+  fullName: AeroDB.IDocumentOperations.DeleteWhere
+- uid: System.Linq.Expressions.Expression{System.Func{{T},System.Boolean}}
+  commentId: T:System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}}
+  parent: System.Linq.Expressions
+  definition: System.Linq.Expressions.Expression`1
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  name: Expression<Func<T, bool>>
+  nameWithType: Expression<Func<T, bool>>
+  fullName: System.Linq.Expressions.Expression<System.Func<T, bool>>
+  nameWithType.vb: Expression(Of Func(Of T, Boolean))
+  fullName.vb: System.Linq.Expressions.Expression(Of System.Func(Of T, Boolean))
+  name.vb: Expression(Of Func(Of T, Boolean))
+  spec.csharp:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  - name: )
+- uid: System.Threading.Tasks.Task{System.Int64}
+  commentId: T:System.Threading.Tasks.Task{System.Int64}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<long>
+  nameWithType: Task<long>
+  fullName: System.Threading.Tasks.Task<long>
+  nameWithType.vb: Task(Of Long)
+  fullName.vb: System.Threading.Tasks.Task(Of Long)
+  name.vb: Task(Of Long)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Int64
+    name: long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Int64
+    name: Long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: )
+- uid: System.Linq.Expressions.Expression`1
+  commentId: T:System.Linq.Expressions.Expression`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  name: Expression<TDelegate>
+  nameWithType: Expression<TDelegate>
+  fullName: System.Linq.Expressions.Expression<TDelegate>
+  nameWithType.vb: Expression(Of TDelegate)
+  fullName.vb: System.Linq.Expressions.Expression(Of TDelegate)
+  name.vb: Expression(Of TDelegate)
+  spec.csharp:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - name: TDelegate
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TDelegate
+  - name: )
+- uid: System.Linq.Expressions
+  commentId: N:System.Linq.Expressions
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Linq.Expressions
+  nameWithType: System.Linq.Expressions
+  fullName: System.Linq.Expressions
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Linq
+    name: Linq
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq
+  - name: .
+  - uid: System.Linq.Expressions
+    name: Expressions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Linq
+    name: Linq
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq
+  - name: .
+  - uid: System.Linq.Expressions
+    name: Expressions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
+- uid: System.Guid
+  commentId: T:System.Guid
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: Guid
+  nameWithType: Guid
+  fullName: System.Guid
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: '{T}[]'
+  isExternal: true
+  name: T[]
+  nameWithType: T[]
+  fullName: T[]
+  nameWithType.vb: T()
+  fullName.vb: T()
+  name.vb: T()
+  spec.csharp:
+  - name: T
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - name: T
+  - name: (
+  - name: )
+- uid: AeroDB.IDocumentOperations.StoreObjects*
+  commentId: Overload:AeroDB.IDocumentOperations.StoreObjects
+  isExternal: true
+  href: AeroDB.IDocumentOperations.html#AeroDB_IDocumentOperations_StoreObjects_System_Collections_Generic_IEnumerable_System_Object__
+  name: StoreObjects
+  nameWithType: IDocumentOperations.StoreObjects
+  fullName: AeroDB.IDocumentOperations.StoreObjects
+- uid: System.Collections.Generic.IEnumerable{System.Object}
+  commentId: T:System.Collections.Generic.IEnumerable{System.Object}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<object>
+  nameWithType: IEnumerable<object>
+  fullName: System.Collections.Generic.IEnumerable<object>
+  nameWithType.vb: IEnumerable(Of Object)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of Object)
+  name.vb: IEnumerable(Of Object)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: AeroDB.IDocumentOperations.DeleteObjects*
+  commentId: Overload:AeroDB.IDocumentOperations.DeleteObjects
+  isExternal: true
+  href: AeroDB.IDocumentOperations.html#AeroDB_IDocumentOperations_DeleteObjects_System_Collections_Generic_IEnumerable_System_Object__
+  name: DeleteObjects
+  nameWithType: IDocumentOperations.DeleteObjects
+  fullName: AeroDB.IDocumentOperations.DeleteObjects
+- uid: AeroDB.IDocumentOperations.Insert*
+  commentId: Overload:AeroDB.IDocumentOperations.Insert
+  isExternal: true
+  href: AeroDB.IDocumentOperations.html#AeroDB_IDocumentOperations_Insert__1_System_Collections_Generic_IEnumerable___0__
+  name: Insert
+  nameWithType: IDocumentOperations.Insert
+  fullName: AeroDB.IDocumentOperations.Insert
+- uid: AeroDB.IDocumentOperations.Update*
+  commentId: Overload:AeroDB.IDocumentOperations.Update
+  isExternal: true
+  href: AeroDB.IDocumentOperations.html#AeroDB_IDocumentOperations_Update__1_System_Collections_Generic_IEnumerable___0__
+  name: Update
+  nameWithType: IDocumentOperations.Update
+  fullName: AeroDB.IDocumentOperations.Update
+- uid: AeroDB.IDocumentOperations.HardDelete*
+  commentId: Overload:AeroDB.IDocumentOperations.HardDelete
+  isExternal: true
+  href: AeroDB.IDocumentOperations.html#AeroDB_IDocumentOperations_HardDelete__1___0_
+  name: HardDelete
+  nameWithType: IDocumentOperations.HardDelete
+  fullName: AeroDB.IDocumentOperations.HardDelete
+- uid: AeroDB.IDocumentOperations.HardDeleteWhere*
+  commentId: Overload:AeroDB.IDocumentOperations.HardDeleteWhere
+  isExternal: true
+  href: AeroDB.IDocumentOperations.html#AeroDB_IDocumentOperations_HardDeleteWhere__1_System_Linq_Expressions_Expression_System_Func___0_System_Boolean___System_Threading_CancellationToken_
+  name: HardDeleteWhere
+  nameWithType: IDocumentOperations.HardDeleteWhere
+  fullName: AeroDB.IDocumentOperations.HardDeleteWhere
+- uid: AeroDB.IDocumentOperations.UndoDeleteWhere*
+  commentId: Overload:AeroDB.IDocumentOperations.UndoDeleteWhere
+  isExternal: true
+  href: AeroDB.IDocumentOperations.html#AeroDB_IDocumentOperations_UndoDeleteWhere__1_System_Linq_Expressions_Expression_System_Func___0_System_Boolean___System_Threading_CancellationToken_
+  name: UndoDeleteWhere
+  nameWithType: IDocumentOperations.UndoDeleteWhere
+  fullName: AeroDB.IDocumentOperations.UndoDeleteWhere
+- uid: AeroDB.IDocumentOperations.InsertObjects*
+  commentId: Overload:AeroDB.IDocumentOperations.InsertObjects
+  isExternal: true
+  href: AeroDB.IDocumentOperations.html#AeroDB_IDocumentOperations_InsertObjects_System_Collections_Generic_IEnumerable_System_Object__
+  name: InsertObjects
+  nameWithType: IDocumentOperations.InsertObjects
+  fullName: AeroDB.IDocumentOperations.InsertObjects
+- uid: AeroDB.IDocumentOperations.UseIdentityMapFor*
+  commentId: Overload:AeroDB.IDocumentOperations.UseIdentityMapFor
+  isExternal: true
+  href: AeroDB.IDocumentOperations.html#AeroDB_IDocumentOperations_UseIdentityMapFor__1
+  name: UseIdentityMapFor
+  nameWithType: IDocumentOperations.UseIdentityMapFor
+  fullName: AeroDB.IDocumentOperations.UseIdentityMapFor
+- uid: AeroDB.IDocumentOperations.QueueOperation*
+  commentId: Overload:AeroDB.IDocumentOperations.QueueOperation
+  isExternal: true
+  href: AeroDB.IDocumentOperations.html#AeroDB_IDocumentOperations_QueueOperation_AeroDB_IStorageOperation_
+  name: QueueOperation
+  nameWithType: IDocumentOperations.QueueOperation
+  fullName: AeroDB.IDocumentOperations.QueueOperation
+- uid: AeroDB.IStorageOperation
+  commentId: T:AeroDB.IStorageOperation
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IStorageOperation.html
+  name: IStorageOperation
+  nameWithType: IStorageOperation
+  fullName: AeroDB.IStorageOperation
+- uid: AeroDB.IDocumentOperations.UpdateExpectedVersion*
+  commentId: Overload:AeroDB.IDocumentOperations.UpdateExpectedVersion
+  isExternal: true
+  href: AeroDB.IDocumentOperations.html#AeroDB_IDocumentOperations_UpdateExpectedVersion__1___0_System_Int64_
+  name: UpdateExpectedVersion
+  nameWithType: IDocumentOperations.UpdateExpectedVersion
+  fullName: AeroDB.IDocumentOperations.UpdateExpectedVersion
+- uid: AeroDB.IDocumentOperations.UpdateRevision*
+  commentId: Overload:AeroDB.IDocumentOperations.UpdateRevision
+  isExternal: true
+  href: AeroDB.IDocumentOperations.html#AeroDB_IDocumentOperations_UpdateRevision__1___0_System_Int32_
+  name: UpdateRevision
+  nameWithType: IDocumentOperations.UpdateRevision
+  fullName: AeroDB.IDocumentOperations.UpdateRevision
+- uid: AeroDB.IDocumentOperations.TryUpdateRevision*
+  commentId: Overload:AeroDB.IDocumentOperations.TryUpdateRevision
+  isExternal: true
+  href: AeroDB.IDocumentOperations.html#AeroDB_IDocumentOperations_TryUpdateRevision__1___0_System_Int32_
+  name: TryUpdateRevision
+  nameWithType: IDocumentOperations.TryUpdateRevision
+  fullName: AeroDB.IDocumentOperations.TryUpdateRevision

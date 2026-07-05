@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Namespace AeroDB | AeroDB API Reference </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="Namespace AeroDB | AeroDB API Reference ">
+    
+    
+      <link rel="shortcut icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../styles/docfx.css">
+      <link rel="stylesheet" href="../styles/main.css">
+      <meta property="docfx:navrel" content="../toc.html">
+      <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="AeroDB">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="AeroDB">
+
+  <h1 id="AeroDB" data-uid="AeroDB" class="text-break">Namespace AeroDB</h1>
+  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="markdown level0 remarks"></div>
+    <h3 id="classes">
+Classes
+</h3>
+      <h4><a class="xref" href="AeroDB.AccessDefinition.html">AccessDefinition</a></h4>
+      <section><p>SurrealDB DEFINE ACCESS configuration (replaces DEFINE LOGIN in v3+).</p>
+</section>
+      <h4><a class="xref" href="AeroDB.AdvancedOptions.html">AdvancedOptions</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AeroDB.AeroDBAdvancedSql.html">AeroDBAdvancedSql</a></h4>
+      <section><p>Advanced SQL query API for multi-document tuple queries and result streaming.
+Access via <code>session.AdvancedSql</code>.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.AeroDBAdvancedSqlExtensions.html">AeroDBAdvancedSqlExtensions</a></h4>
+      <section><p>Extensions to expose <a class="xref" href="AeroDB.AeroDBAdvancedSql.html">AeroDBAdvancedSql</a> on session types.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.AeroDBConfigurationServiceCollectionExtensions.html">AeroDBConfigurationServiceCollectionExtensions</a></h4>
+      <section><p>Extension methods for registering AeroDB configuration with the DI container.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.AeroDBDaemonHealthCheck.html">AeroDBDaemonHealthCheck</a></h4>
+      <section><p>ASP.NET Core health check for the AeroDB async daemon.
+Reports Healthy/Degraded/Unhealthy based on daemon state.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.AeroDBEfCoreServiceCollectionExtensions.html">AeroDBEfCoreServiceCollectionExtensions</a></h4>
+      <section><p>DI registration extensions for AeroDB EF Core integration.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.AeroDBEfCoreTransaction.html">AeroDBEfCoreTransaction</a></h4>
+      <section><p>Wraps a AeroDB document session in an EF Core IDbContextTransaction,
+allowing simultaneous SurrealDB + EF Core operations.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.AeroDBEfCoreTransactionManager-1.html">AeroDBEfCoreTransactionManager&lt;TDbContext&gt;</a></h4>
+      <section><p>EF Core transaction manager that wraps AeroDB sessions.
+Use when both EF Core and AeroDB operations must be atomic.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.AeroDBHealthCheckExtensions.html">AeroDBHealthCheckExtensions</a></h4>
+      <section><p>Extension methods for registering AeroDB health checks with ASP.NET Core.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.AeroDBHttpExtensions.html">AeroDBHttpExtensions</a></h4>
+      <section><p>ASP.NET streaming helper extensions on <a class="xref" href="AeroDB.IQuerySession.html">IQuerySession</a>.
+Provides Marten-compatible <code>WriteById&lt;T&gt;</code> and <code>WriteArray&lt;T&gt;</code>
+methods for writing documents directly to HTTP responses.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.AeroDBIgnoreAttribute.html">AeroDBIgnoreAttribute</a></h4>
+      <section><p>Marks a property on a compiled query class that should be ignored during
+parameter discovery. Properties decorated with this attribute are not
+mapped to SQL parameters.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.AeroDBMlQuery-2.html">AeroDBMlQuery&lt;TInput, TOutput&gt;</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AeroDB.AeroDBSearchQuery-1.html">AeroDBSearchQuery&lt;T&gt;</a></h4>
+      <section><p>Fluent search query builder for SurrealDB. Not intended for direct construction;
+use <code>session.Search&lt;T&gt;()</code> instead.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.AeroDBServiceCollectionExtensions.html">AeroDBServiceCollectionExtensions</a></h4>
+      <section><p>Extension methods for registering AeroDB services with the DI container.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.AeroDBSpatialQuery-1.html">AeroDBSpatialQuery&lt;T&gt;</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AeroDB.AeroDBSubscriptionBase.html">AeroDBSubscriptionBase</a></h4>
+      <section><p>Base class for AeroDB event subscriptions with built-in event type filtering.
+Override <a class="xref" href="AeroDB.AeroDBSubscriptionBase.html#AeroDB_AeroDBSubscriptionBase_ProcessEventsAsync_JasperFx_Events_Projections_EventRange_JasperFx_Events_Daemon_ISubscriptionController_AeroDB_IDocumentSession_System_Threading_CancellationToken_">ProcessEventsAsync(EventRange, ISubscriptionController, IDocumentSession, CancellationToken)</a> to implement custom logic.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.AeroDBTimeSeriesQuery-1.html">AeroDBTimeSeriesQuery&lt;T&gt;</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AeroDB.AggregateCache.html">AggregateCache</a></h4>
+      <section><p>LRU cache for projected aggregate documents.
+Used by the async daemon to avoid reloading aggregates on every poll cycle.
+Thread-safe for concurrent access.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.AggregateQueryBuilder-1.html">AggregateQueryBuilder&lt;T&gt;</a></h4>
+      <section><p>Fluent builder for ad-hoc aggregate queries against SurrealDB views and tables.
+Supports count/sum/min/max/average, field references, raw expressions, and GROUP BY.
+Use via <code>session.Query&lt;T&gt;().AggregateQuery(b =&gt; ...)</code>.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.AggregateQueryExecutor-1.html">AggregateQueryExecutor&lt;T&gt;</a></h4>
+      <section><p>Executes an ad-hoc aggregate query built with <a class="xref" href="AeroDB.AggregateQueryBuilder-1.html">AggregateQueryBuilder&lt;T&gt;</a>.
+Translates the source expression for WHERE/ORDER BY, then overrides SELECT and GROUP BY
+with the builder's values.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.AggregateQueryExtensions.html">AggregateQueryExtensions</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AeroDB.AnalyzerDefinition.html">AnalyzerDefinition</a></h4>
+      <section><p>Defines a SurrealDB full-text analyzer (DEFINE ANALYZER).</p>
+</section>
+      <h4><a class="xref" href="AeroDB.AnalyzerOptions.html">AnalyzerOptions</a></h4>
+      <section><p>Configuration for SurrealDB analyzers (DEFINE ANALYZER).
+Accessed via <code>StoreOptions.Schema.Analyzers</code>.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.AppendEventSideEffect.html">AppendEventSideEffect</a></h4>
+      <section><p>Side effect: append an event to a stream.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.AsyncDaemon.html">AsyncDaemon</a></h4>
+      <section><p>Background worker that polls for new events and applies async projections.
+Runs each projection in its own shard with independent health and progress tracking,
+and persists per-projection watermarks to the mt_projection_progress table for restart resilience.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.BulkOperations.html">BulkOperations</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AeroDB.CombGuidIdGeneration.html">CombGuidIdGeneration</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AeroDB.CompactStreamOptions.html">CompactStreamOptions</a></h4>
+      <section><p>Options for stream compaction. Controls whether an archived copy is retained
+and how many recent events to keep (if any).</p>
+</section>
+      <h4><a class="xref" href="AeroDB.CompiledPlan.html">CompiledPlan</a></h4>
+      <section><p>A cached plan for a compiled query type. Stores the SurrealQL skeleton
+(with sentinel parameter values) and the mappings needed to substitute
+live property values at execution time.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.CompiledQueryExtensions.html">CompiledQueryExtensions</a></h4>
+      <section><p>Extension methods for compiling and executing compiled queries.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.CompiledQueryPlanner.html">CompiledQueryPlanner</a></h4>
+      <section><p>Static planner for interface-based compiled queries (Marten-compatible pattern).</p>
+<p>For each unique compiled query type, the planner builds a <a class="xref" href="AeroDB.CompiledPlan.html">CompiledPlan</a>
+once and caches it. The plan stores:</p>
+<ul><li>The <a class="xref" href="AeroDB.SurrealQueryResult.html">SurrealQueryResult</a> skeleton with sentinel parameter values.</li><li>A mapping from SurrealQL parameter keys ($p0, $p1, …) to query property names.</li><li>Which properties (if any) supply the LIMIT / START values.</li></ul>
+<p>At execution time the skeleton is cloned, property values are read from the
+query instance, parameters are substituted, and the query is executed.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.CompiledQueryProvider-1.html">CompiledQueryProvider&lt;T&gt;</a></h4>
+      <section><p>Query provider for compiled queries — uses pre-parsed SurrealQL from a <a class="xref" href="AeroDB.CompiledQuery-1.html">CompiledQuery&lt;T&gt;</a>
+without re-walking the LINQ expression tree.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.CompiledQuery-1.html">CompiledQuery&lt;T&gt;</a></h4>
+      <section><p>A pre-compiled LINQ query. Stores the parsed SurrealQL fragments
+so repeated executions skip expression tree walking.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.CompositeProjection.html">CompositeProjection</a></h4>
+      <section><p>A projection that composites multiple sub-projections into one logical projection.
+Events are dispatched to all sub-projections; each sub-projection maintains
+its own document table. Equivalent to Marten's composite projections.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.ComputedIndexOptions.html">ComputedIndexOptions</a></h4>
+      <section><p>Options for computed/expression-based indexes. Controls index method,
+casing, sort order, and optional predicate filtering.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.ConcurrencyException.html">ConcurrencyException</a></h4>
+      <section><p>Thrown when an optimistic concurrency check fails —
+the document was modified by another session between load and save.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.DaemonHealthState.html">DaemonHealthState</a></h4>
+      <section><p>Health state snapshot of the <a class="xref" href="AeroDB.AsyncDaemon.html">AsyncDaemon</a>.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.DatabaseEndpoint.html">DatabaseEndpoint</a></h4>
+      <section><p>Configuration for a single SurrealDB endpoint in a multi-host setup.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.DatabasePerTenantSelector.html">DatabasePerTenantSelector</a></h4>
+      <section><p>Creates and caches <span class="xref">SurrealDb.Net.ISurrealDbClient</span> instances per tenant when
+<a class="xref" href="AeroDB.TenancyStyle.html#AeroDB_TenancyStyle_DatabasePerTenant">DatabasePerTenant</a> is active. Each tenant gets its
+own database: <code>{namespace}_{tenantId}</code>.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.DocumentHierarchy.html">DocumentHierarchy</a></h4>
+      <section><p>Configures polymorphic document hierarchies.
+Maps a base document type to its subclasses.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.DocumentIndex.html">DocumentIndex</a></h4>
+      <section><p>No-op stub for Marten portability. In Marten, this configures a database index
+on a duplicated field. SurrealDB does not support duplicated fields, so all
+members are no-ops.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.DocumentMapping.html">DocumentMapping</a></h4>
+      <section><p>Non-generic base for storing document mappings in <span class="xref">AeroDB.SchemaOptions.Mappings</span>.
+Public because <a class="xref" href="AeroDB.DocumentMapping-1.html">DocumentMapping&lt;T&gt;</a> inherits from it.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.DocumentMapping-1.html">DocumentMapping&lt;T&gt;</a></h4>
+      <section><p>Fluent API for document-level schema configuration (indices, tenancy policy, etc.).
+Accessed via <code>StoreOptions.Schema.For&lt;T&gt;()</code>.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.DocumentPolicies.html">DocumentPolicies</a></h4>
+      <section><p>Global policy system for configuring all document mappings.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.DocumentSession.html">DocumentSession</a></h4>
+      <section><p>The concrete document session implementing <a class="xref" href="AeroDB.IDocumentSession.html">IDocumentSession</a>. Manages a unit-of-work with automatic change tracking, identity map, event appending, and transactional save via SurrealDB.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.DocumentSessionListenerBase.html">DocumentSessionListenerBase</a></h4>
+      <section><p>Base class for <a class="xref" href="AeroDB.IDocumentSessionListener.html">IDocumentSessionListener</a> that provides no-op
+default implementations for all hooks. Subclasses can override only the
+hooks they care about. Use pattern matching in overrides to handle specific entity types.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.DocumentStorage.html">DocumentStorage</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AeroDB.DocumentStore.html">DocumentStore</a></h4>
+      <section><p>The concrete implementation of <a class="xref" href="AeroDB.IDocumentStore.html">IDocumentStore</a>. Manages a SurrealDB connection, schema initialization, projection lifecycle, and session factory. Created via <a class="xref" href="AeroDB.Documents.html#AeroDB_Documents_For_System_Action_AeroDB_StoreOptions__">For(Action&lt;StoreOptions&gt;)</a> or the <code>AddAeroDB()</code> DI extension.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.Documents.html">Documents</a></h4>
+      <section><p>Static factory class for creating document stores. Use <code>Documents.For(configure)</code> for programmatic setup, or <code>services.AddAeroDB(configure)</code> for dependency injection integration.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.EdgeMapping-1.html">EdgeMapping&lt;TEdge&gt;</a></h4>
+      <section><p>Fluent configuration for a graph edge table.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.EdgeRecord.html">EdgeRecord</a></h4>
+      <section><p>Base class for graph edge types. Edges are SurrealDB records with In/Out direction.
+Extends SurrealDb.Net.Models.RelationRecord to gain IRelationRecord interface and CBOR compatibility.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.EfCoreEventProjection-1.html">EfCoreEventProjection&lt;TDbContext&gt;</a></h4>
+      <section><p>Projection that writes to EF Core alongside AeroDB in the same transaction.
+The <code class="typeparamref">TDbContext</code> provides the relational data access.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.EntityGuid.html">EntityGuid</a></h4>
+      <section><p>Convenience alias for a <code>Guid</code> primary key entity
+using a new random GUID.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.EntityInt.html">EntityInt</a></h4>
+      <section><p>Convenience alias for an <code>int</code> primary key entity
+using a random integer.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.EntitySnowlake.html">EntitySnowlake</a></h4>
+      <section><p>Convenience alias for the most common case: a <code>long</code> primary key entity
+using Snowflake ID generation.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.EntityString.html">EntityString</a></h4>
+      <section><p>Convenience alias for a <code>string</code> primary key entity
+using Snowflake ID generation converted to string.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.Entity-1.html">Entity&lt;TId&gt;</a></h4>
+      <section><p>Abstract base class for entities with a typed primary key.
+Implements <a class="xref" href="AeroDB.IEntity-1.html">IEntity&lt;TId&gt;</a> with a simple auto-property.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.EventGrouping-1.html">EventGrouping&lt;TId&gt;</a></h4>
+      <section><p>Default implementation of <a class="xref" href="AeroDB.IEventGrouping-1.html">IEventGrouping&lt;TId&gt;</a>.
+Maps aggregate IDs to their associated events.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.EventProjection.html">EventProjection</a></h4>
+      <section><p>Non-generic &quot;do anything&quot; projection. Subclasses override
+<a class="xref" href="AeroDB.EventProjection.html#AeroDB_EventProjection_ApplyAsync_AeroDB_IDocumentOperations_AeroDB_IEvent_System_Threading_CancellationToken_">ApplyAsync(IDocumentOperations, IEvent, CancellationToken)</a>
+to handle each event. Use the <code>operations</code> argument to store or delete
+any document type.</p>
+<p>Equivalent to Marten's non-generic <code>EventProjection</code>.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.EventProjection-1.html">EventProjection&lt;T&gt;</a></h4>
+      <section><p>Projection base class with per-event-type dispatch. Subclasses declare
+<code>Create(EventType, IEvent&lt;EventType&gt;, CancellationToken)</code>,
+<code>Apply(EventType, T, IEvent&lt;EventType&gt;, CancellationToken)</code>, and
+<code>ShouldDelete(EventType, T, IEvent&lt;EventType&gt;, CancellationToken)</code>
+methods. Dispatch is handled by the source generator or a runtime reflection fallback.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.EventSlice-1.html">EventSlice&lt;T&gt;</a></h4>
+      <section><p>Concrete implementation of <a class="xref" href="AeroDB.IEventSlice-1.html">IEventSlice&lt;T&gt;</a>.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.EventSourcingOptions.html">EventSourcingOptions</a></h4>
+      <section><p>Configuration for AeroDB's event sourcing subsystem. Controls event storage tables, append mode (Rich/Quick), serialization mode (JSON/Binary), and event upcasting.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.EventStore.html">EventStore</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AeroDB.EventTagQuery.html">EventTagQuery</a></h4>
+      <section><p>A query to check if events exist with specific tags.
+Used by the async daemon to determine if there are events to project.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.EventTriggerDefinition.html">EventTriggerDefinition</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AeroDB.EventTriggerManager.html">EventTriggerManager</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AeroDB.EventTriggerOptions.html">EventTriggerOptions</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AeroDB.Event-1.html">Event&lt;T&gt;</a></h4>
+      <section><p>Default implementation of <a class="xref" href="AeroDB.IEvent-1.html">IEvent&lt;T&gt;</a> and <a class="xref" href="AeroDB.IEvent.html">IEvent</a>.
+Immutable record — create via <a class="xref" href="AeroDB.EventStore.html">EventStore</a>, never mutate.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.ExperimentalOptions.html">ExperimentalOptions</a></h4>
+      <section><p>Groups experimental feature flags. Access via <code>o.Experimental.ML.Enabled = true</code>.
+ML support types live in <code>AeroDB.ML</code> project.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.FetchForWritingResult-1.html">FetchForWritingResult&lt;T&gt;</a></h4>
+      <section><p>Wraps a fetched aggregate for write-model operations. Tracks the expected
+stream version so SaveChangesAsync can detect concurrency conflicts.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.FetchLatestExtensions.html">FetchLatestExtensions</a></h4>
+      <section><p>Extension methods providing a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a> overload for <a class="xref" href="AeroDB.IQuerySession.html#AeroDB_IQuerySession_FetchLatest__1_System_String_System_Threading_CancellationToken_">FetchLatest&lt;T&gt;(string, CancellationToken)</a>.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.FieldDefinition.html">FieldDefinition</a></h4>
+      <section><p>Defines a SurrealDB field with optional type, default, assertion, and permissions.
+Emitted as DEFINE FIELD statements by the schema manager.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.FlatTableProjection-2.html">FlatTableProjection&lt;TDoc, TId&gt;</a></h4>
+      <section><p>Declarative event → table column mapping projection.
+Maps event properties to table columns via LINQ expressions.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.ForeignKeyDefinition.html">ForeignKeyDefinition</a></h4>
+      <section><p>Defines a foreign key relationship for informational/validation purposes.
+SurrealDB uses graph edges instead of FK cascades, so this metadata is
+stored for tooling and documentation only — no DDL is generated.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.FunctionManager.html">FunctionManager</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AeroDB.FunctionOptions.html">FunctionOptions</a></h4>
+      <section><p>Configuration for SurrealDB custom functions (<code>DEFINE FUNCTION</code>). Registers functions that run at the database level.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.GeometryPoint.html">GeometryPoint</a></h4>
+      <section><p>Represents a geographic point with longitude and latitude.
+Serializes to SurrealDB's native geometry type as a (lon, lat) tuple.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.GeometryPolygon.html">GeometryPolygon</a></h4>
+      <section><p>Represents a geographic polygon. Each ring is a list of (longitude, latitude) points.
+The first ring is the exterior boundary; subsequent rings are interior holes.
+Serializes to SurrealDB GeoJSON format.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.Graph.html">Graph</a></h4>
+      <section><p>Named constants for graph operations to avoid magic strings.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.Graph.Edge.html">Graph.Edge</a></h4>
+      <section><p>Edge relation table names.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.GraphEdge.html">GraphEdge</a></h4>
+      <section><p>A graph edge result from wildcard or path traversal.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.GraphEntry-1.html">GraphEntry&lt;TSource&gt;</a></h4>
+      <section><p>Entry point for a graph traversal chain within a view SELECT column.
+Provides .Out() and .In() steps that each produce a typed <a class="xref" href="AeroDB.ViewGraphSelectBuilder-2.html">ViewGraphSelectBuilder&lt;TSource, TTarget&gt;</a>.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.GraphNode.html">GraphNode</a></h4>
+      <section><p>A graph node result from wildcard or path traversal.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.GraphPath.html">GraphPath</a></h4>
+      <section><p>A full graph path with ordered nodes and edges.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.HybridSearchConfig.html">HybridSearchConfig</a></h4>
+      <section><p>Configuration for hybrid search combining full-text and vector results.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.IndexDefinition.html">IndexDefinition</a></h4>
+      <section><p>Defines a SurrealDB index (simple, unique, composite, full-text, or vector).</p>
+</section>
+      <h4><a class="xref" href="AeroDB.IndexOptions.html">IndexOptions</a></h4>
+      <section><p>Configures an index being built via the fluent <a class="xref" href="AeroDB.DocumentMapping-1.html">DocumentMapping&lt;T&gt;</a> API.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.InlineProjection-1.html">InlineProjection&lt;T&gt;</a></h4>
+      <section><p>Base class for projections that run inline during <code>SaveChangesAsync</code>.
+Subclasses define which event types trigger them and how to build the projected document.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.InternalSessionBase.html">InternalSessionBase</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AeroDB.LiveStreamAggregation.html">LiveStreamAggregation</a></h4>
+      <section><p>Aggregates events from a stream into a result using convention-based Apply methods.
+Unlike <a class="xref" href="AeroDB.SnapshotProjection-1.html">SnapshotProjection&lt;T&gt;</a>, this does not store the result — it is purely read-side.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.LoadManyExtensions.html">LoadManyExtensions</a></h4>
+      <section><p>Batch document loading extensions for <a class="xref" href="AeroDB.IQuerySession.html">IQuerySession</a>.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.MartenCompatibilityExtensions.html">MartenCompatibilityExtensions</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AeroDB.MetadataConfig.html">MetadataConfig</a></h4>
+      <section><p>Controls which metadata columns are enabled on stored events.
+Configured via <code>StoreOptions.Events.MetadataConfig</code>.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.MlNotAvailableException.html">MlNotAvailableException</a></h4>
+      <section><p>Thrown when SurrealML functions (<code>ml::</code>) are not available on the connected SurrealDB server.
+This typically means the server was not compiled with the <code>--features ml</code> flag,
+or the <code>ml</code> function family is blocked by server capability rules.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.MlOptions.html">MlOptions</a></h4>
+      <section><p>Experimental ML options. Feature-gated via <code>o.Experimental.ML.Enabled = true</code>.
+When enabled, probes SurrealDB for ML availability during store initialization.
+Full ML API lives in <code>AeroDB.ML</code> project.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.MlQueryExtensions.html">MlQueryExtensions</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AeroDB.MultiStreamProjection-1.html">MultiStreamProjection&lt;T&gt;</a></h4>
+      <section><p>Creates/updates projected documents that span multiple event streams.
+The document identity is defined by the subclass (e.g., from a correlation ID
+shared across streams).</p>
+</section>
+      <h4><a class="xref" href="AeroDB.MultiStreamProjection-2.html">MultiStreamProjection&lt;T, TId&gt;</a></h4>
+      <section><p>Marten-compatible multi-stream projection with a strongly typed aggregate identity.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.OpenTelemetryOptions.html">OpenTelemetryOptions</a></h4>
+      <section><p>Configuration for OpenTelemetry instrumentation of AeroDB operations.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.Operation.html">Operation</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AeroDB.PagedListCompatibilityExtensions.html">PagedListCompatibilityExtensions</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AeroDB.PatchExpression-1.html">PatchExpression&lt;T&gt;</a></h4>
+      <section><p>Fluent builder for partial document updates (patch operations).
+Collects SET/INCREMENT/APPEND/DELETE operations and generates a SurrealQL
+UPDATE statement when <a class="xref" href="AeroDB.PatchExpression-1.html#AeroDB_PatchExpression_1_ApplyAsync_System_Threading_CancellationToken_">ApplyAsync(CancellationToken)</a> is called.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.PatchExtensions.html">PatchExtensions</a></h4>
+      <section><p>Extension methods on <a class="xref" href="AeroDB.IDocumentSession.html">IDocumentSession</a> for partial document updates (patching).
+Equivalent to Marten's <code>Marten.Patching.PatchingExtensions</code>.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.ProjectionCollection.html">ProjectionCollection</a></h4>
+      <section><p>Fluent projection registration API. Replaces the raw <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List&lt;T&gt;</a>
+on <a class="xref" href="AeroDB.StoreOptions.html#AeroDB_StoreOptions_Projections">Projections</a>. Implements <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList&lt;T&gt;</a>
+for backward compatibility.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.ProjectionContext.html">ProjectionContext</a></h4>
+      <section><p>Default implementation of <a class="xref" href="AeroDB.IProjectionContext.html">IProjectionContext</a>.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.ProjectionCoordinator.html">ProjectionCoordinator</a></h4>
+      <section><p>Wraps the <a class="xref" href="AeroDB.AsyncDaemon.html">AsyncDaemon</a> in an <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.hosting.ihostedservice">IHostedService</a>
+for automatic lifecycle management. Registered in DI by <code>AddAeroDB()</code>.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.ProjectionOptions.html">ProjectionOptions</a></h4>
+      <section><p>Configuration for event projections. Controls which projections are registered, rebuild options (<code>RebuildOnStartup</code>/<code>RebuildProjectionNames</code>), and projection lifecycle strategies.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.ProjectionProgress.html">ProjectionProgress</a></h4>
+      <section><p>Tracks the last processed event sequence number for the async daemon,
+persisted in the mt_projection_progress table to prevent full event replay on restart.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.ProjectionReentrancyException.html">ProjectionReentrancyException</a></h4>
+      <section><p>Maximum side-effect processing depth to prevent infinite loops.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.ProjectionShard.html">ProjectionShard</a></h4>
+      <section><p>A projection shard — one worker that processes events for a specific projection.
+Each shard has independent progress tracking, health monitoring, and lifecycle.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.QuerySession.html">QuerySession</a></h4>
+      <section><p>The concrete query session implementing <a class="xref" href="AeroDB.IQuerySession.html">IQuerySession</a>. Provides read-only access to SurrealDB via LINQ, raw SQL, compiled queries, live notifications, and graph traversal.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.QueryStatistics.html">QueryStatistics</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AeroDB.ReactiveLinqExtensions.html">ReactiveLinqExtensions</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AeroDB.SchemaDiff.html">SchemaDiff</a></h4>
+      <section><p>Compares expected schema (from DocumentMapping) against actual database state.
+Generated by <a class="xref" href="AeroDB.SchemaDiffer.html">SchemaDiffer</a>.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.SchemaDiff.DiffEntry.html">SchemaDiff.DiffEntry</a></h4>
+      <section><p>A single difference between expected and actual schema.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.SchemaDiffer.html">SchemaDiffer</a></h4>
+      <section><p>Computes schema differences between configured mappings and the live database.
+Access via <code>store.Advanced.ComputeSchemaDiffAsync()</code>.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.SchemaManager.html">SchemaManager</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AeroDB.SchemaOptions.html">SchemaOptions</a></h4>
+      <section><p>Configuration for SurrealDB schema management. Controls auto-create behavior, schema mode (<code>SCHEMAFULL</code>/<code>SCHEMALESS</code>), analyzers, views, and per-type document mappings.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.ScopeDefinition.html">ScopeDefinition</a></h4>
+      <section><p>SurrealDB DEFINE SCOPE configuration for user signup/signin flows.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.Search.html">Search</a></h4>
+      <section><p>Well-known constants for SurrealDB search configuration.
+Use these instead of raw strings for type safety and IntelliSense.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.Search.Analyzer.html">Search.Analyzer</a></h4>
+      <section><p>Pre-defined analyzer names.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.Search.Distance.html">Search.Distance</a></h4>
+      <section><p>Distance functions for vector indexes (HNSW, DISKANN).</p>
+</section>
+      <h4><a class="xref" href="AeroDB.Search.Filter.html">Search.Filter</a></h4>
+      <section><p>Full-text token filters for DEFINE ANALYZER.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.Search.Tokenizer.html">Search.Tokenizer</a></h4>
+      <section><p>Full-text tokenizers for DEFINE ANALYZER.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.SearchExtensions.html">SearchExtensions</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AeroDB.SearchQueryExtensions.html">SearchQueryExtensions</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AeroDB.SessionOptions.html">SessionOptions</a></h4>
+      <section><p>Configuration options for creating a document session.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.SingleStreamProjection-1.html">SingleStreamProjection&lt;T&gt;</a></h4>
+      <section><p>Creates/updates one projected document per event stream.
+The document identity is derived from the stream ID stored on the first event.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.SingleStreamProjection-2.html">SingleStreamProjection&lt;TDoc, TId&gt;</a></h4>
+      <section><p>Single-stream projection with a typed stream identity.
+Supports both Marten-style static Create/Apply convention methods
+and AeroDB's instance-based Create/Apply/ShouldDelete methods.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.SnapshotOptions.html">SnapshotOptions</a></h4>
+      <section><p>Configuration for <a class="xref" href="AeroDB.SnapshotProjection-1.html">SnapshotProjection&lt;T&gt;</a>.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.SnapshotProjection-1.html">SnapshotProjection&lt;T&gt;</a></h4>
+      <section><p>Self-aggregating projection. The aggregate type <code class="typeparamref">T</code> is also the projection.
+Event handlers are convention-based: <code>Apply(EventType)</code> or <code>When(EventType)</code> methods
+on the aggregate itself.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.SnowflakeGenerator.html">SnowflakeGenerator</a></h4>
+      <section><p>Static helper for generating Snowflake IDs.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.SoftDeleteExtensions.html">SoftDeleteExtensions</a></h4>
+      <section><p>Extension methods for soft-deleting documents in SurrealDB.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.SpatialExtensions.html">SpatialExtensions</a></h4>
+      <section><p>Entry point for spatial (geo) queries against SurrealDB geometry fields.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.StateAccumulatorExtensions.html">StateAccumulatorExtensions</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AeroDB.StatsExtensions.html">StatsExtensions</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AeroDB.StoreOptions.html">StoreOptions</a></h4>
+      <section><p>The main configuration object for a AeroDB document store. Configures database connection settings, schema generation mode, projections, event sourcing, multi-tenancy, and all other store behaviors.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.StreamState.html">StreamState</a></h4>
+      <section><p>Metadata about an event stream.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.SubscriptionOptions.html">SubscriptionOptions</a></h4>
+      <section><p>Options for configuring event subscriptions.
+Controls batch size, polling interval, and stream-level filtering.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.SurrealArrayFunctions.html">SurrealArrayFunctions</a></h4>
+      <section><p>SurrealDB array functions for use in LINQ expressions.
+These methods are NOT callable at runtime — they exist for expression-tree translation only.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.SurrealAsyncQueryExtensions.html">SurrealAsyncQueryExtensions</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AeroDB.SurrealBytesFunctions.html">SurrealBytesFunctions</a></h4>
+      <section><p>SurrealDB bytes functions for use in LINQ expressions.
+These methods are NOT callable at runtime — they exist for expression-tree translation only.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.SurrealCommandBuilder.html">SurrealCommandBuilder</a></h4>
+      <section><p>Tracks parameterized query values. Each call to <a class="xref" href="AeroDB.SurrealCommandBuilder.html#AeroDB_SurrealCommandBuilder_Parameter_System_Object_">Parameter(object?)</a>
+returns a unique $pN placeholder string and records the value for later
+transmission alongside the SurrealQL string via <a class="xref" href="AeroDB.SurrealCommandBuilder.html#AeroDB_SurrealCommandBuilder_Parameters">Parameters</a>.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.SurrealCryptoFunctions.html">SurrealCryptoFunctions</a></h4>
+      <section><p>SurrealDB crypto functions for use in LINQ expressions.
+These methods are NOT callable at runtime — they exist for expression-tree translation only.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.SurrealDbQueryableExtensions.html">SurrealDbQueryableExtensions</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AeroDB.SurrealDbQueryable-1.html">SurrealDbQueryable&lt;T&gt;</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AeroDB.SurrealDurationFunctions.html">SurrealDurationFunctions</a></h4>
+      <section><p>SurrealDB duration functions for use in LINQ expressions.
+These methods are NOT callable at runtime — they exist for expression-tree translation only.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.SurrealExpressionVisitor.html">SurrealExpressionVisitor</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AeroDB.SurrealFunction.html">SurrealFunction</a></h4>
+      <section><p>Defines a SurrealDB user-defined function (DEFINE FUNCTION).</p>
+</section>
+      <h4><a class="xref" href="AeroDB.SurrealFunctionParameter.html">SurrealFunctionParameter</a></h4>
+      <section><p>Typed parameter definition for a SurrealDB user-defined function.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.SurrealFunctions.html">SurrealFunctions</a></h4>
+      <section><p>SurrealQL search and vector functions for use in LINQ expressions.
+These methods are NOT callable at runtime — they exist for expression-tree translation only.
+Use <code>MatchTextAsync&lt;T&gt;</code> and <a class="xref" href="AeroDB.SearchExtensions.html#AeroDB_SearchExtensions_MatchKnnAsync__1_AeroDB_ISurrealDbQueryable___0__System_Linq_Expressions_Expression_System_Func___0_System_Single_____System_Single___System_Int32_System_Int32_System_Threading_CancellationToken_">MatchKnnAsync&lt;T&gt;(ISurrealDbQueryable&lt;T&gt;, Expression&lt;Func&lt;T, float[]&gt;&gt;, float[], int, int, CancellationToken)</a> for query execution.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.SurrealHttpFunctions.html">SurrealHttpFunctions</a></h4>
+      <section><p>SurrealDB http functions for use in LINQ expressions.
+<b>WARNING:</b> These functions execute synchronous HTTP requests from within SurrealDB
+during query evaluation. Each invocation adds network latency. Using them in
+<code>Where()</code> predicates may cause one HTTP call per evaluated row.
+Prefer using these in <code>Select()</code> projections where the call count is bounded.
+These methods are NOT callable at runtime — they exist for expression-tree translation only.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.SurrealLiveQueryExtensions.html">SurrealLiveQueryExtensions</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AeroDB.SurrealMetaFunctions.html">SurrealMetaFunctions</a></h4>
+      <section><p>SurrealDB meta functions for use in LINQ expressions.
+These methods are NOT callable at runtime — they exist for expression-tree translation only.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.SurrealObjectFunctions.html">SurrealObjectFunctions</a></h4>
+      <section><p>SurrealDB object functions for use in LINQ expressions.
+These methods are NOT callable at runtime — they exist for expression-tree translation only.
+<br>
+Note: <code>object::merge</code>, <code>object::omit</code>, <code>object::pick</code>, <code>object::set</code>
+are not available in the current SurrealDB version. Add these when a newer version confirms availability.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.SurrealQueryProvider.html">SurrealQueryProvider</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AeroDB.SurrealQueryResult.html">SurrealQueryResult</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AeroDB.SurrealRandFunctions.html">SurrealRandFunctions</a></h4>
+      <section><p>SurrealDB rand functions for use in LINQ expressions.
+These methods are NOT callable at runtime — they exist for expression-tree translation only.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.SurrealSeriesFunctions.html">SurrealSeriesFunctions</a></h4>
+      <section><p>Marker methods for SurrealDB series:: time-series functions.
+These are never executed — they are intercepted by the LINQ expression visitor
+and translated to SurrealQL <code>series::*</code> function calls.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.SurrealSessionFunctions.html">SurrealSessionFunctions</a></h4>
+      <section><p>SurrealDB session functions for use in LINQ expressions.
+These methods are NOT callable at runtime — they exist for expression-tree translation only.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.SurrealStringFunctions.html">SurrealStringFunctions</a></h4>
+      <section><p>SurrealDB string functions for use in LINQ expressions.
+These methods are NOT callable at runtime — they exist for expression-tree translation only.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.SurrealTypeFunctions.html">SurrealTypeFunctions</a></h4>
+      <section><p>SurrealDB type conversion and type-check functions for use in LINQ expressions.
+These methods are NOT callable at runtime — they exist for expression-tree translation only.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.TimeSeriesExtensions.html">TimeSeriesExtensions</a></h4>
+      <section><p>Entry point for time-series queries with temporal bucketing and aggregation.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.TokenDefinition.html">TokenDefinition</a></h4>
+      <section><p>SurrealDB DEFINE TOKEN configuration for JWT/HS* token verification.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.TombstoneEvent.html">TombstoneEvent</a></h4>
+      <section><p>Marker event for gap-filling in event streams. Written by <code>WriteTombstone</code>.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.TriggerActionBuilder.html">TriggerActionBuilder</a></h4>
+      <section><p>Fluent builder for SurrealDB <code>DEFINE EVENT</code> trigger action bodies.
+Supports typed CREATE, UPDATE, DELETE, INSERT, and RELATE statements
+with compile-time-safe field references via expression trees.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.TriggerCreateStatement-1.html">TriggerCreateStatement&lt;T&gt;</a></h4>
+      <section><p>Builder for CREATE statements within a trigger action.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.TriggerDeleteStatement-1.html">TriggerDeleteStatement&lt;T&gt;</a></h4>
+      <section><p>Builder for DELETE statements within a trigger action.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.TriggerRelateStatement.html">TriggerRelateStatement</a></h4>
+      <section><p>Builder for RELATE statements within a trigger action.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.TriggerUpdateStatement-1.html">TriggerUpdateStatement&lt;T&gt;</a></h4>
+      <section><p>Builder for UPDATE statements within a trigger action.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.UnitOfWork.html">UnitOfWork</a></h4>
+      <section><p>Tracks pending document operations for a document session. Implements <a class="xref" href="AeroDB.IUnitOfWork.html">IUnitOfWork</a> to expose pending changes for inspection.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.VersionAttribute.html">VersionAttribute</a></h4>
+      <section><p>Applied to a <code>long</code> property to indicate it is the concurrency version field.
+Takes precedence over <a class="xref" href="AeroDB.IVersioned.html">IVersioned</a> when both are present on the same type.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.ViewDefinition.html">ViewDefinition</a></h4>
+      <section><p>Non-generic base for view definitions. Used by <a class="xref" href="AeroDB.ViewOptions.html">ViewOptions.ViewRegistration</a>
+to enable schema-aware routing of views to per-schema databases.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.ViewDefinition-1.html">ViewDefinition&lt;T&gt;</a></h4>
+      <section><p>Fluent builder for SurrealDB pre-computed/aggregate views (DEFINE TABLE ... AS SELECT ...).
+Views are materialized, incrementally-updating tables backed by a SELECT query.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.ViewGraphSelectBuilder-2.html">ViewGraphSelectBuilder&lt;TSource, TTarget&gt;</a></h4>
+      <section><p>Typed graph traversal builder within a view SELECT column.
+<code class="typeparamref">TSource</code> is the view's source entity type.
+<code class="typeparamref">TTarget</code> is the current traversal target type (used by <code>Select</code>).
+Call <code>Select</code> to close the chain and return to the parent <a class="xref" href="AeroDB.ViewSelectBuilder-1.html">ViewSelectBuilder&lt;T&gt;</a>.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.ViewOptions.html">ViewOptions</a></h4>
+      <section><p>Configuration root for SurrealDB pre-computed/aggregate views.
+Views are created during DocumentStore initialization.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.ViewQueryExtensions.html">ViewQueryExtensions</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AeroDB.ViewSelectBuilder-1.html">ViewSelectBuilder&lt;T&gt;</a></h4>
+      <section><p>Fluent builder for view SELECT columns. Supports aggregates (count/sum/min/max/average),
+column references, graph traversal entries, and raw SurrealQL expressions.
+Returned from <code>ViewDefinition&lt;T&gt;.Select(cols =&gt; ...)</code>.</p>
+</section>
+    <h3 id="structs">
+Structs
+</h3>
+      <h4><a class="xref" href="AeroDB.EventStreamIdentity.html">EventStreamIdentity</a></h4>
+      <section></section>
+    <h3 id="interfaces">
+Interfaces
+</h3>
+      <h4><a class="xref" href="AeroDB.IAeroDBAdvanced.html">IAeroDBAdvanced</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AeroDB.IAeroDBSubscription.html">IAeroDBSubscription</a></h4>
+      <section><p>User-facing contract for subscribing to AeroDB events through the async daemon.
+Implement this to do custom processing against ordered event streams.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.IAeroDBTransaction.html">IAeroDBTransaction</a></h4>
+      <section><p>Represents an explicit SurrealDB transaction started by <a class="xref" href="AeroDB.IDocumentSession.html#AeroDB_IDocumentSession_BeginTransactionAsync_System_Threading_CancellationToken_">BeginTransactionAsync(CancellationToken)</a>
+or <a class="xref" href="AeroDB.IDocumentSession.html#AeroDB_IDocumentSession_BeginTransaction">BeginTransaction()</a>.
+Supports multiple <a class="xref" href="AeroDB.IDocumentSession.html#AeroDB_IDocumentSession_SaveChangesAsync_System_Threading_CancellationToken_">SaveChangesAsync(CancellationToken)</a> calls within a single transaction.
+Implements <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iasyncdisposable">IAsyncDisposable</a> — rolling back if not committed before disposal.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.IAggregateGrouper-1.html">IAggregateGrouper&lt;TId&gt;</a></h4>
+      <section><p>Groups events into aggregate groups for multi-stream projections.
+Each group produces one projected document.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.IAsyncConfigureAeroDB.html">IAsyncConfigureAeroDB</a></h4>
+      <section><p>Async DI-registered AeroDB configuration module.
+Applied during <a class="xref" href="AeroDB.DocumentStore.html#AeroDB_DocumentStore_InitializeAsync_System_Threading_CancellationToken_">InitializeAsync(CancellationToken)</a> after sync
+<a class="xref" href="AeroDB.IConfigureAeroDB.html">IConfigureAeroDB</a> configurators, but before schema initialization.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.IBatchEvents.html">IBatchEvents</a></h4>
+      <section><p>Batch event operations that can be queued alongside document queries
+for execution in a single round trip.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.IBatchedQuery.html">IBatchedQuery</a></h4>
+      <section><p>A batch of compiled queries that are executed together in a single
+SurrealDB multi-statement round trip (Marten-compatible pattern).</p>
+<p>Usage:</p>
+<pre><code class="lang-csharp">var batch = session.CreateBatchQuery();
+var justin = batch.Query(new FindByFirstName { FirstName = "Justin" });
+var tamba = batch.Query(new FindByFirstName { FirstName = "Tamba" });
+await batch.Execute();
+var user1 = await justin;
+var user2 = await tamba;</code></pre>
+</section>
+      <h4><a class="xref" href="AeroDB.IChangeListener.html">IChangeListener</a></h4>
+      <section><p>Listener for projection change batches processed by the <a class="xref" href="AeroDB.AsyncDaemon.html">AsyncDaemon</a>.
+Analogous to <a class="xref" href="AeroDB.IDocumentSessionListener.html">IDocumentSessionListener</a> but for daemon-level operations.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.IChangeSet.html">IChangeSet</a></h4>
+      <section><p>Summary of changes committed during a single <code>SaveChangesAsync</code> call.
+Passed to <a class="xref" href="AeroDB.IDocumentSessionListener.html#AeroDB_IDocumentSessionListener_AfterCommitAsync_AeroDB_IDocumentSession_AeroDB_IChangeSet_System_Threading_CancellationToken_">AfterCommitAsync(IDocumentSession, IChangeSet, CancellationToken)</a>.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.ICompiledListQuery-1.html">ICompiledListQuery&lt;TDoc&gt;</a></h4>
+      <section><p>Compiled list query that returns whole documents (no Select).
+Shorthand for <code>ICompiledListQuery&lt;TDoc, TDoc&gt;</code>.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.ICompiledListQuery-2.html">ICompiledListQuery&lt;TDoc, TOut&gt;</a></h4>
+      <section><p>Compiled list query that returns <code>IEnumerable&lt;TOut&gt;</code> with an
+optional <code>Select</code> transform.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.ICompiledQueryMarker.html">ICompiledQueryMarker</a></h4>
+      <section><p>Marker interface for all compiled query types.
+Implemented by <a class="xref" href="AeroDB.ICompiledQuery-2.html">ICompiledQuery&lt;TDoc, TOut&gt;</a> and its descendants.
+Used for discovery and type checks.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.ICompiledQuery-1.html">ICompiledQuery&lt;TDoc&gt;</a></h4>
+      <section><p>Compiled query that returns a single document.
+Shorthand for <code>ICompiledQuery&lt;TDoc, TDoc&gt;</code>.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.ICompiledQuery-2.html">ICompiledQuery&lt;TDoc, TOut&gt;</a></h4>
+      <section><p>Core compiled query interface. The query type has properties that serve as
+parameters, and <a class="xref" href="AeroDB.ICompiledQuery-2.html#AeroDB_ICompiledQuery_2_QueryIs">QueryIs()</a> returns an expression tree that
+translates those parameters into a LINQ query.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.IConfigureAeroDB.html">IConfigureAeroDB</a></h4>
+      <section><p>DI-registered (or directly added) AeroDB configuration module.
+Implementations are applied during <a class="xref" href="AeroDB.DocumentStore.html#AeroDB_DocumentStore_InitializeAsync_System_Threading_CancellationToken_">InitializeAsync(CancellationToken)</a>.</p>
+<p>
+Implementers may override either overload:
+<ul><li><a class="xref" href="AeroDB.IConfigureAeroDB.html#AeroDB_IConfigureAeroDB_Configure_AeroDB_StoreOptions_">Configure(StoreOptions)</a> — simple configuration (backward-compatible).</li><li><a class="xref" href="AeroDB.IConfigureAeroDB.html#AeroDB_IConfigureAeroDB_Configure_System_IServiceProvider_AeroDB_StoreOptions_">Configure(IServiceProvider?, StoreOptions)</a> — configuration with DI service access.</li></ul>
+<p>The two-parameter overload has a default implementation that delegates to the single-parameter
+overload, so existing implementations need no changes.</p>
+
+</section>
+      <h4><a class="xref" href="AeroDB.IConfigureAeroDB-1.html">IConfigureAeroDB&lt;TStore&gt;</a></h4>
+      <section><p>Typed variant of <a class="xref" href="AeroDB.IConfigureAeroDB.html">IConfigureAeroDB</a> for store-specific configuration.
+Mimics Marten's <code>IConfigureMarten&lt;T&gt;</code>.
+When multiple store types exist, implementations of this interface are applied only
+to the matching store type (secondary store pattern).</p>
+</section>
+      <h4><a class="xref" href="AeroDB.IDatabase.html">IDatabase</a></h4>
+      <section><p>Metadata about the database this session is connected to.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.IDiagnostics.html">IDiagnostics</a></h4>
+      <section><p>Query diagnostics: preview generated SurrealQL and explain plans.
+Access via <code>store.Advanced.Diagnostics</code>.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.IDocumentOperations.html">IDocumentOperations</a></h4>
+      <section><p>Document CRUD operations shared between <a class="xref" href="AeroDB.IDocumentSession.html">IDocumentSession</a> and projection operations.
+Provides the raw document read/write surface without session lifecycle methods.
+<br>
+Note: <code>LoadAsync&lt;T&gt;(id)</code> is available via <code>IQuerySession</code> cast — intentionally omitted
+to avoid diamond ambiguity with <code>IQuerySession</code> in the <code>IDocumentSession</code> hierarchy.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.IDocumentPolicy.html">IDocumentPolicy</a></h4>
+      <section><p>Plugin interface for global document mapping conventions.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.IDocumentSession.html">IDocumentSession</a></h4>
+      <section><p>A read/write session that extends <a class="xref" href="AeroDB.IDocumentOperations.html">IDocumentOperations</a> and <a class="xref" href="AeroDB.IQuerySession.html">IQuerySession</a> with document storage (<code>Store</code>/<code>Delete</code>/<code>BulkInsert</code>), event sourcing (<code>Append</code>/<code>StartStream</code>), and unit-of-work change tracking.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.IDocumentSessionListener.html">IDocumentSessionListener</a></h4>
+      <section><p>Lifecycle hooks for document session events. Register via StoreOptions.
+Multiple listeners are called in registration order.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.IDocumentStore.html">IDocumentStore</a></h4>
+      <section><p>The primary entry point for the AeroDB document store. Provides access to query sessions, document sessions, event store, background daemon, and advanced SDK features.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.IEnrichProjection.html">IEnrichProjection</a></h4>
+      <section><p>Optional enrichment hook for projections. Called before each projection invocation.
+Use <a class="xref" href="AeroDB.IQuerySession.html">IQuerySession</a> to load reference data needed by the projection.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.IEntity-1.html">IEntity&lt;TId&gt;</a></h4>
+      <section><p>Interface for entities with a typed primary key.
+Use <a class="xref" href="AeroDB.Entity-1.html">Entity&lt;TId&gt;</a> as a base class for default implementation.
+For Snowflake-style long IDs, use <a class="xref" href="AeroDB.Entity-1.html">Entity&lt;TId&gt;</a> with <code>long</code>.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.IEvent.html">IEvent</a></h4>
+      <section><p>Non-generic event envelope. <code>Event&lt;T&gt;</code> implements both <a class="xref" href="AeroDB.IEvent-1.html">IEvent&lt;T&gt;</a>
+and <a class="xref" href="AeroDB.IEvent.html">IEvent</a> for maximum compatibility.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.IEventGrouping-1.html">IEventGrouping&lt;TId&gt;</a></h4>
+      <section><p>Represents a grouping of events by aggregate identifier.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.IEventSlice-1.html">IEventSlice&lt;T&gt;</a></h4>
+      <section><p>A slice of events for a specific stream, with optional pre-loaded aggregate.
+Equivalent to Marten's <code>IEventSlice&lt;T&gt;</code>.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.IEventUpcaster.html">IEventUpcaster</a></h4>
+      <section><p>Transforms old event versions to new event types during deserialization.
+Register upcasters via <a class="xref" href="AeroDB.EventSourcingOptions.html#AeroDB_EventSourcingOptions_Upcasters">Upcasters</a>.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.IEvent-1.html">IEvent&lt;T&gt;</a></h4>
+      <section><p>Typed event envelope carrying metadata (version, timestamp, sequence, stream identity)
+alongside the domain event data. Replaces bare <code>object</code> events throughout the pipeline.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.IEvents.html">IEvents</a></h4>
+      <section><p>The event sourcing API surface. Provides methods for appending events, starting streams, fetching streams, applying optimistic concurrency, archiving streams, and writing tombstone events.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.IGlobalConfigureAeroDB.html">IGlobalConfigureAeroDB</a></h4>
+      <section><p>Marker interface for <a class="xref" href="AeroDB.IConfigureAeroDB.html">IConfigureAeroDB</a> implementations that apply
+globally to all store types (primary and secondary). Mimics Marten's
+<code>IGlobalConfigureMarten</code>.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.IGraphQuery-1.html">IGraphQuery&lt;TNode&gt;</a></h4>
+      <section><p>Fluent graph query builder for SurrealDB traversal.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.IInitialData.html">IInitialData</a></h4>
+      <section><p>Populates initial data during <a class="xref" href="AeroDB.DocumentStore.html#AeroDB_DocumentStore_InitializeAsync_System_Threading_CancellationToken_">InitializeAsync(CancellationToken)</a>.
+Register implementations via <a class="xref" href="AeroDB.StoreOptions.html#AeroDB_StoreOptions_InitialData">InitialData</a>.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.IJsonLoader.html">IJsonLoader</a></h4>
+      <section><p>Raw JSON document loading without deserialization.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.ILiveQuery-1.html">ILiveQuery&lt;T&gt;</a></h4>
+      <section><p>Marten API parity: legacy live query interface. Wraps <a class="xref" href="AeroDB.LiveQuery.IAeroDBLiveQuery-1.html">IAeroDBLiveQuery&lt;T&gt;</a>
+for backward compatibility with Marten's <code>IQuerySession.WatchTableAsync</code>,
+<code>WatchQueryAsync</code>, and <code>WatchStreamAsync</code> methods.
+Prefer <a class="xref" href="AeroDB.LiveQuery.ILiveQuerySession.html">ILiveQuerySession</a> for new code.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.IMartenSessionLogger.html">IMartenSessionLogger</a></h4>
+      <section><p>Logger interface for recording session-level diagnostic information,
+mirroring the Marten <code>IMartenSessionLogger</code> contract.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.IMlQuery-2.html">IMlQuery&lt;TInput, TOutput&gt;</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AeroDB.IPatchExpression-1.html">IPatchExpression&lt;T&gt;</a></h4>
+      <section><p>Fluent interface for partial document updates (patching).
+Equivalent to Marten's <code>JasperFx.Events.IPatchExpression&lt;T&gt;</code>.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.IProjection.html">IProjection</a></h4>
+      <section><p>Defines a projection that builds read-side documents from events.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.IProjectionContext.html">IProjectionContext</a></h4>
+      <section><p>Context passed to <a class="xref" href="AeroDB.IProjection.html#AeroDB_IProjection_ApplyAsync_AeroDB_IProjectionContext_System_Threading_CancellationToken_">ApplyAsync(IProjectionContext, CancellationToken)</a> — provides access
+to the current document session and the events that triggered the projection.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.IProjectionCoordinator.html">IProjectionCoordinator</a></h4>
+      <section><p>Manages the lifecycle of the async projection daemon.
+Implements <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.hosting.ihostedservice">IHostedService</a> for automatic start/stop with the application.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.IProjectionSideEffect.html">IProjectionSideEffect</a></h4>
+      <section><p>Marker interface for side effects raised during projection processing.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.IQueryPlanning.html">IQueryPlanning</a></h4>
+      <section><p>Optional interface that compiled queries can implement to provide custom
+sentinel values for each property during plan building. When implemented,
+the planner calls <a class="xref" href="AeroDB.IQueryPlanning.html#AeroDB_IQueryPlanning_SetUniqueValuesForQueryPlanning">SetUniqueValuesForQueryPlanning()</a> after
+setting sentinel values on all public properties, allowing the query type
+to override or customize the sentinel values used for parameter mapping.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.IQuerySession.html">IQuerySession</a></h4>
+      <section><p>A read-only session for querying documents. Supports LINQ queries, raw SurrealQL, load-by-ID, compiled queries, batch queries, live notifications, and graph traversal.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.IReadOnlyStoreOptions.html">IReadOnlyStoreOptions</a></h4>
+      <section><p>Read-only view of StoreOptions for metadata consumers.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.ISearchQuery-1.html">ISearchQuery&lt;T&gt;</a></h4>
+      <section><p>Fluent builder for SurrealDB search queries (full-text, vector KNN, hybrid RRF fusion).
+Obtained via <code>session.Search&lt;T&gt;()</code>.
+Builds SurrealQL with LET variables internally, matching the pattern used by
+<a class="xref" href="AeroDB.SearchExtensions.html">SearchExtensions</a> for direct extension-method usage.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.ISessionFactory.html">ISessionFactory</a></h4>
+      <section><p>A pluggable session factory for creating query and document sessions from a store.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.ISingleServerMultiTenancy.html">ISingleServerMultiTenancy</a></h4>
+      <section><p>Fluent interface for configuring a single-server multi-tenancy strategy
+where each tenant maps to a separate database on the same SurrealDB server.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.ISoftDeleted.html">ISoftDeleted</a></h4>
+      <section><p>Marks an entity as soft-deletable. AeroDB uses these properties directly on the entity
+(unlike Marten which uses shadow columns <code>mt_deleted</code> and <code>mt_deleted_at</code>).
+Queries on <a class="xref" href="AeroDB.ISoftDeleted.html">ISoftDeleted</a> types automatically exclude entities where <code>Deleted == true</code>.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.ISpatialQuery-1.html">ISpatialQuery&lt;T&gt;</a></h4>
+      <section><p>Fluent builder for SurrealDB spatial (geo) queries.
+Supports Nearby, Within, OrderByDistance, filtering, sorting, and pagination.
+Obtained via <code>session.Spatial&lt;T&gt;()</code>.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.IStaticMultiTenancy.html">IStaticMultiTenancy</a></h4>
+      <section><p>Fluent interface for configuring static multi-tenancy where each tenant
+maps to an explicit connection string or endpoint/ns/db triple.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.IStorageOperation.html">IStorageOperation</a></h4>
+      <section><p>Represents a low-level storage operation that can be queued on a session
+and executed during <a class="xref" href="AeroDB.IDocumentSession.html#AeroDB_IDocumentSession_SaveChangesAsync_System_Threading_CancellationToken_">SaveChangesAsync(CancellationToken)</a>.
+Marten parity: <code>session.QueueOperation(operation)</code>.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.ISubscriber-1.html">ISubscriber&lt;T&gt;</a></h4>
+      <section><p>Receives notifications when documents of type T are created, updated, or deleted.
+Register on <a class="xref" href="AeroDB.SessionOptions.html#AeroDB_SessionOptions_Subscribers">Subscribers</a> for per-session subscriptions.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.ISubscription.html">ISubscription</a></h4>
+      <section><p>Event subscription for forwarding events to external handlers.
+Implement this interface to receive and process events as they are appended
+to streams. Subscriptions are managed by the async daemon and are tracked
+by <a class="xref" href="AeroDB.ISubscription.html#AeroDB_ISubscription_SubscriptionName">SubscriptionName</a> for progress checkpointing.
+<br>
+This is a simplified Marten-parity interface. For advanced subscriptions
+with JasperFx types (<code>EventRange</code>,
+<code>ISubscriptionController</code>),
+use <a class="xref" href="AeroDB.IAeroDBSubscription.html">IAeroDBSubscription</a> instead.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.ISurrealDbQueryable-1.html">ISurrealDbQueryable&lt;T&gt;</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AeroDB.ITagTypeRegistration.html">ITagTypeRegistration</a></h4>
+      <section><p>Registration of a tag type for dynamic consistency boundary (DCB) projections.
+Tags allow events across different streams to be grouped by a shared domain identity.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.ITenantOperations.html">ITenantOperations</a></h4>
+      <section><p>Cross-tenant document operations within a session.
+Provides access to per-tenant query sessions for multi-tenancy scenarios.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.ITenantQueryOperations.html">ITenantQueryOperations</a></h4>
+      <section><p>Tenant-scoped query operations. Provides document queries filtered by tenant.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.ITenantSliceGroup-1.html">ITenantSliceGroup&lt;TId&gt;</a></h4>
+      <section><p>Marten-compatible mutable grouping abstraction for multi-stream projections.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.ITimeSeriesQuery-1.html">ITimeSeriesQuery&lt;T&gt;</a></h4>
+      <section><p>Fluent builder for SurrealDB time-series queries with temporal bucketing and aggregation.
+Obtained via <code>session.TimeSeries&lt;T&gt;()</code>.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.IUnitOfWork.html">IUnitOfWork</a></h4>
+      <section><p>Exposes the pending unit-of-work operations before SaveChangesAsync.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.IVersioned.html">IVersioned</a></h4>
+      <section><p>Marks a document as supporting optimistic concurrency via a version field.</p>
+</section>
+    <h3 id="enums">
+Enums
+</h3>
+      <h4><a class="xref" href="AeroDB.ActionType.html">ActionType</a></h4>
+      <section><p>Determines what action a projection should take after processing events.
+Returned by <a class="xref" href="AeroDB.InlineProjection-1.html#AeroDB_InlineProjection_1_DetermineAction__0_System_Collections_Generic_IReadOnlyList_AeroDB_IEvent__">DetermineAction(T?, IReadOnlyList&lt;IEvent&gt;)</a>.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.BulkInsertMode.html">BulkInsertMode</a></h4>
+      <section><p>Controls bulk insert behavior for document storage.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.ComputedIndexOptions.IndexCasing.html">ComputedIndexOptions.IndexCasing</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AeroDB.ComputedIndexOptions.IndexMethod.html">ComputedIndexOptions.IndexMethod</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AeroDB.ComputedIndexOptions.SortOrder.html">ComputedIndexOptions.SortOrder</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AeroDB.ConcurrencyChecks.html">ConcurrencyChecks</a></h4>
+      <section><p>Per-session concurrency detection mode. When set to <a class="xref" href="AeroDB.ConcurrencyChecks.html#AeroDB_ConcurrencyChecks_Disabled">Disabled</a>,
+optimistic concurrency checks are skipped even if the store has
+<code>UseOptimisticConcurrency = true</code>.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.DocumentTracking.html">DocumentTracking</a></h4>
+      <section><p>Controls the document tracking behavior for a session.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.EnumStorage.html">EnumStorage</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AeroDB.EventAppendMode.html">EventAppendMode</a></h4>
+      <section><p>Controls how events are appended to the event store.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.EventSerializationMode.html">EventSerializationMode</a></h4>
+      <section><p>Controls how event data is serialized in the event store.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.IndexType.html">IndexType</a></h4>
+      <section><p>The type of SurrealDB index to create.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.OperationType.html">OperationType</a></h4>
+      <section><p>Describes the type of change tracked in a document session's unit of work (<code>Added</code>, <code>Modified</code>, <code>Deleted</code>, <code>SoftDeleted</code>, <code>Insert</code>, <code>Update</code>).</p>
+</section>
+      <h4><a class="xref" href="AeroDB.ProjectionLifecycle.html">ProjectionLifecycle</a></h4>
+      <section><p>Defines when a projection is applied. <code>Inline</code> projections run synchronously during <code>SaveChanges</code>; <code>Async</code> projections are processed by the background daemon; <code>Live</code> projections are computed on-demand at read time.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.ReadPreference.html">ReadPreference</a></h4>
+      <section><p>Controls which endpoint is used for read operations.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.SchemaMode.html">SchemaMode</a></h4>
+      <section><p>Controls the SurrealDB table schema mode. <code>Schemaless</code> (Flexible) allows any fields; <code>Schemafull</code> (Strict) enforces a strict field definition.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.SnapshotLifecycle.html">SnapshotLifecycle</a></h4>
+      <section><p>When a snapshot projection should be rebuilt/refreshed. Maps to Marten's SnapshotLifecycle.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.SortOrder.html">SortOrder</a></h4>
+      <section><p>No-op stub for Marten portability. SurrealDB does not use index sort orders.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.StaleDataMode.html">StaleDataMode</a></h4>
+      <section><p>Controls staleness tolerance for <code>QueryForNonStaleData&lt;T&gt;</code>.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.StreamIdentity.html">StreamIdentity</a></h4>
+      <section><p>Stream identity strategy for event store streams.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.TenancyScope.html">TenancyScope</a></h4>
+      <section><p>No-op stub for Marten portability. SurrealDB does not use tenancy-scoped indexes.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.TenancyStyle.html">TenancyStyle</a></h4>
+      <section><p>Defines the multi-tenancy strategy. <code>Single</code> for single-tenant; <code>Conjoined</code> uses a <code>tenant_id</code> field within a single database; <code>DatabasePerTenant</code> routes each tenant to a separate database.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.TenantIdStyle.html">TenantIdStyle</a></h4>
+      <section><p>Controls whether tenant IDs are treated as case-sensitive or case-insensitive
+when matching multi-tenanted documents.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.TimeBucket.html">TimeBucket</a></h4>
+      <section><p>Predefined time buckets for calendar-aligned grouping via <code>time::group()</code>.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.TimeUnit.html">TimeUnit</a></h4>
+      <section><p>Time units for duration-based bucketing via <code>time::floor()</code>.</p>
+</section>
+    <h3 id="delegates">
+Delegates
+</h3>
+      <h4><a class="xref" href="AeroDB.ProjectionRebuildProgressCallback.html">ProjectionRebuildProgressCallback</a></h4>
+      <section><p>Reports progress during projection rebuilds.</p>
+</section>
+
+
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In this article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      AeroDB Documentation
+      
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.min.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

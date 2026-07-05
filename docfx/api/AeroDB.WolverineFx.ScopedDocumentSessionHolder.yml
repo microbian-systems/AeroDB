@@ -1,0 +1,374 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.WolverineFx.ScopedDocumentSessionHolder
+  commentId: T:AeroDB.WolverineFx.ScopedDocumentSessionHolder
+  id: ScopedDocumentSessionHolder
+  parent: AeroDB.WolverineFx
+  children:
+  - AeroDB.WolverineFx.ScopedDocumentSessionHolder.#ctor
+  - AeroDB.WolverineFx.ScopedDocumentSessionHolder.Session
+  langs:
+  - csharp
+  - vb
+  name: ScopedDocumentSessionHolder
+  nameWithType: ScopedDocumentSessionHolder
+  fullName: AeroDB.WolverineFx.ScopedDocumentSessionHolder
+  type: Class
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/ScopedDocumentSessionHolder.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  summary: >-
+    Scope-local carrier for the outbox-enrolled <xref href="AeroDB.IDocumentSession" data-throw-if-not-resolved="false"></xref> a handler is using.
+
+    When a handler falls back to service location, Wolverine's generated code primes this holder
+
+    so a service-located <xref href="AeroDB.IDocumentSession" data-throw-if-not-resolved="false"></xref> / <xref href="AeroDB.IQuerySession" data-throw-if-not-resolved="false"></xref> resolves
+
+    to the SAME session enrolled with the active outbox. See GH-3001.
+  example: []
+  syntax:
+    content: public sealed class ScopedDocumentSessionHolder
+    content.vb: Public NotInheritable Class ScopedDocumentSessionHolder
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.GetType
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+- uid: AeroDB.WolverineFx.ScopedDocumentSessionHolder.#ctor
+  commentId: M:AeroDB.WolverineFx.ScopedDocumentSessionHolder.#ctor
+  id: '#ctor'
+  parent: AeroDB.WolverineFx.ScopedDocumentSessionHolder
+  langs:
+  - csharp
+  - vb
+  name: ScopedDocumentSessionHolder()
+  nameWithType: ScopedDocumentSessionHolder.ScopedDocumentSessionHolder()
+  fullName: AeroDB.WolverineFx.ScopedDocumentSessionHolder.ScopedDocumentSessionHolder()
+  type: Constructor
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/ScopedDocumentSessionHolder.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  syntax:
+    content: public ScopedDocumentSessionHolder()
+    content.vb: Public Sub New()
+  overload: AeroDB.WolverineFx.ScopedDocumentSessionHolder.#ctor*
+  nameWithType.vb: ScopedDocumentSessionHolder.New()
+  fullName.vb: AeroDB.WolverineFx.ScopedDocumentSessionHolder.New()
+  name.vb: New()
+- uid: AeroDB.WolverineFx.ScopedDocumentSessionHolder.Session
+  commentId: P:AeroDB.WolverineFx.ScopedDocumentSessionHolder.Session
+  id: Session
+  parent: AeroDB.WolverineFx.ScopedDocumentSessionHolder
+  langs:
+  - csharp
+  - vb
+  name: Session
+  nameWithType: ScopedDocumentSessionHolder.Session
+  fullName: AeroDB.WolverineFx.ScopedDocumentSessionHolder.Session
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/ScopedDocumentSessionHolder.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  summary: >-
+    The outbox-enrolled session to use for service-location resolution.
+
+    Null when not in a handler scope.
+  example: []
+  syntax:
+    content: public IDocumentSession? Session { get; set; }
+    parameters: []
+    return:
+      type: AeroDB.IDocumentSession
+    content.vb: Public Property Session As IDocumentSession
+  overload: AeroDB.WolverineFx.ScopedDocumentSessionHolder.Session*
+references:
+- uid: AeroDB.IDocumentSession
+  commentId: T:AeroDB.IDocumentSession
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IDocumentSession.html
+  name: IDocumentSession
+  nameWithType: IDocumentSession
+  fullName: AeroDB.IDocumentSession
+- uid: AeroDB.IQuerySession
+  commentId: T:AeroDB.IQuerySession
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IQuerySession.html
+  name: IQuerySession
+  nameWithType: IQuerySession
+  fullName: AeroDB.IQuerySession
+- uid: AeroDB.WolverineFx
+  commentId: N:AeroDB.WolverineFx
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB.WolverineFx
+  nameWithType: AeroDB.WolverineFx
+  fullName: AeroDB.WolverineFx
+  spec.csharp:
+  - uid: AeroDB
+    name: AeroDB
+    isExternal: true
+    href: AeroDB.html
+  - name: .
+  - uid: AeroDB.WolverineFx
+    name: WolverineFx
+    isExternal: true
+    href: AeroDB.WolverineFx.html
+  spec.vb:
+  - uid: AeroDB
+    name: AeroDB
+    isExternal: true
+    href: AeroDB.html
+  - name: .
+  - uid: AeroDB.WolverineFx
+    name: WolverineFx
+    isExternal: true
+    href: AeroDB.WolverineFx.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AeroDB.WolverineFx.ScopedDocumentSessionHolder.#ctor*
+  commentId: Overload:AeroDB.WolverineFx.ScopedDocumentSessionHolder.#ctor
+  isExternal: true
+  href: AeroDB.WolverineFx.ScopedDocumentSessionHolder.html#AeroDB_WolverineFx_ScopedDocumentSessionHolder__ctor
+  name: ScopedDocumentSessionHolder
+  nameWithType: ScopedDocumentSessionHolder.ScopedDocumentSessionHolder
+  fullName: AeroDB.WolverineFx.ScopedDocumentSessionHolder.ScopedDocumentSessionHolder
+  nameWithType.vb: ScopedDocumentSessionHolder.New
+  fullName.vb: AeroDB.WolverineFx.ScopedDocumentSessionHolder.New
+  name.vb: New
+- uid: AeroDB.WolverineFx.ScopedDocumentSessionHolder.Session*
+  commentId: Overload:AeroDB.WolverineFx.ScopedDocumentSessionHolder.Session
+  isExternal: true
+  href: AeroDB.WolverineFx.ScopedDocumentSessionHolder.html#AeroDB_WolverineFx_ScopedDocumentSessionHolder_Session
+  name: Session
+  nameWithType: ScopedDocumentSessionHolder.Session
+  fullName: AeroDB.WolverineFx.ScopedDocumentSessionHolder.Session

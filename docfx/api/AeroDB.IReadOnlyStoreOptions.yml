@@ -1,0 +1,854 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.IReadOnlyStoreOptions
+  commentId: T:AeroDB.IReadOnlyStoreOptions
+  id: IReadOnlyStoreOptions
+  parent: AeroDB
+  children:
+  - AeroDB.IReadOnlyStoreOptions.ChangeListeners
+  - AeroDB.IReadOnlyStoreOptions.CommandTimeout
+  - AeroDB.IReadOnlyStoreOptions.Database
+  - AeroDB.IReadOnlyStoreOptions.DefaultTenantId
+  - AeroDB.IReadOnlyStoreOptions.Endpoint
+  - AeroDB.IReadOnlyStoreOptions.Events
+  - AeroDB.IReadOnlyStoreOptions.Listeners
+  - AeroDB.IReadOnlyStoreOptions.Namespace
+  - AeroDB.IReadOnlyStoreOptions.Password
+  - AeroDB.IReadOnlyStoreOptions.Projections
+  - AeroDB.IReadOnlyStoreOptions.Schema
+  - AeroDB.IReadOnlyStoreOptions.TenancyStyle
+  - AeroDB.IReadOnlyStoreOptions.Token
+  - AeroDB.IReadOnlyStoreOptions.Tracking
+  - AeroDB.IReadOnlyStoreOptions.UpdateBatchSize
+  - AeroDB.IReadOnlyStoreOptions.UseOptimisticConcurrency
+  - AeroDB.IReadOnlyStoreOptions.Username
+  langs:
+  - csharp
+  - vb
+  name: IReadOnlyStoreOptions
+  nameWithType: IReadOnlyStoreOptions
+  fullName: AeroDB.IReadOnlyStoreOptions
+  type: Interface
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IReadOnlyStoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Read-only view of StoreOptions for metadata consumers.
+  example: []
+  syntax:
+    content: public interface IReadOnlyStoreOptions
+    content.vb: Public Interface IReadOnlyStoreOptions
+  derivedClasses:
+  - AeroDB.StoreOptions
+- uid: AeroDB.IReadOnlyStoreOptions.Endpoint
+  commentId: P:AeroDB.IReadOnlyStoreOptions.Endpoint
+  id: Endpoint
+  parent: AeroDB.IReadOnlyStoreOptions
+  langs:
+  - csharp
+  - vb
+  name: Endpoint
+  nameWithType: IReadOnlyStoreOptions.Endpoint
+  fullName: AeroDB.IReadOnlyStoreOptions.Endpoint
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IReadOnlyStoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: string Endpoint { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: ReadOnly Property Endpoint As String
+  overload: AeroDB.IReadOnlyStoreOptions.Endpoint*
+- uid: AeroDB.IReadOnlyStoreOptions.Namespace
+  commentId: P:AeroDB.IReadOnlyStoreOptions.Namespace
+  id: Namespace
+  parent: AeroDB.IReadOnlyStoreOptions
+  langs:
+  - csharp
+  - vb
+  name: Namespace
+  nameWithType: IReadOnlyStoreOptions.Namespace
+  fullName: AeroDB.IReadOnlyStoreOptions.Namespace
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IReadOnlyStoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: string? Namespace { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: ReadOnly Property [Namespace] As String
+  overload: AeroDB.IReadOnlyStoreOptions.Namespace*
+- uid: AeroDB.IReadOnlyStoreOptions.Database
+  commentId: P:AeroDB.IReadOnlyStoreOptions.Database
+  id: Database
+  parent: AeroDB.IReadOnlyStoreOptions
+  langs:
+  - csharp
+  - vb
+  name: Database
+  nameWithType: IReadOnlyStoreOptions.Database
+  fullName: AeroDB.IReadOnlyStoreOptions.Database
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IReadOnlyStoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: string? Database { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: ReadOnly Property Database As String
+  overload: AeroDB.IReadOnlyStoreOptions.Database*
+- uid: AeroDB.IReadOnlyStoreOptions.Username
+  commentId: P:AeroDB.IReadOnlyStoreOptions.Username
+  id: Username
+  parent: AeroDB.IReadOnlyStoreOptions
+  langs:
+  - csharp
+  - vb
+  name: Username
+  nameWithType: IReadOnlyStoreOptions.Username
+  fullName: AeroDB.IReadOnlyStoreOptions.Username
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IReadOnlyStoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: string? Username { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: ReadOnly Property Username As String
+  overload: AeroDB.IReadOnlyStoreOptions.Username*
+- uid: AeroDB.IReadOnlyStoreOptions.Password
+  commentId: P:AeroDB.IReadOnlyStoreOptions.Password
+  id: Password
+  parent: AeroDB.IReadOnlyStoreOptions
+  langs:
+  - csharp
+  - vb
+  name: Password
+  nameWithType: IReadOnlyStoreOptions.Password
+  fullName: AeroDB.IReadOnlyStoreOptions.Password
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IReadOnlyStoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: string? Password { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: ReadOnly Property Password As String
+  overload: AeroDB.IReadOnlyStoreOptions.Password*
+- uid: AeroDB.IReadOnlyStoreOptions.Token
+  commentId: P:AeroDB.IReadOnlyStoreOptions.Token
+  id: Token
+  parent: AeroDB.IReadOnlyStoreOptions
+  langs:
+  - csharp
+  - vb
+  name: Token
+  nameWithType: IReadOnlyStoreOptions.Token
+  fullName: AeroDB.IReadOnlyStoreOptions.Token
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IReadOnlyStoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: string? Token { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: ReadOnly Property Token As String
+  overload: AeroDB.IReadOnlyStoreOptions.Token*
+- uid: AeroDB.IReadOnlyStoreOptions.TenancyStyle
+  commentId: P:AeroDB.IReadOnlyStoreOptions.TenancyStyle
+  id: TenancyStyle
+  parent: AeroDB.IReadOnlyStoreOptions
+  langs:
+  - csharp
+  - vb
+  name: TenancyStyle
+  nameWithType: IReadOnlyStoreOptions.TenancyStyle
+  fullName: AeroDB.IReadOnlyStoreOptions.TenancyStyle
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IReadOnlyStoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: TenancyStyle TenancyStyle { get; }
+    parameters: []
+    return:
+      type: AeroDB.TenancyStyle
+    content.vb: ReadOnly Property TenancyStyle As TenancyStyle
+  overload: AeroDB.IReadOnlyStoreOptions.TenancyStyle*
+- uid: AeroDB.IReadOnlyStoreOptions.DefaultTenantId
+  commentId: P:AeroDB.IReadOnlyStoreOptions.DefaultTenantId
+  id: DefaultTenantId
+  parent: AeroDB.IReadOnlyStoreOptions
+  langs:
+  - csharp
+  - vb
+  name: DefaultTenantId
+  nameWithType: IReadOnlyStoreOptions.DefaultTenantId
+  fullName: AeroDB.IReadOnlyStoreOptions.DefaultTenantId
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IReadOnlyStoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: string? DefaultTenantId { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: ReadOnly Property DefaultTenantId As String
+  overload: AeroDB.IReadOnlyStoreOptions.DefaultTenantId*
+- uid: AeroDB.IReadOnlyStoreOptions.Tracking
+  commentId: P:AeroDB.IReadOnlyStoreOptions.Tracking
+  id: Tracking
+  parent: AeroDB.IReadOnlyStoreOptions
+  langs:
+  - csharp
+  - vb
+  name: Tracking
+  nameWithType: IReadOnlyStoreOptions.Tracking
+  fullName: AeroDB.IReadOnlyStoreOptions.Tracking
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IReadOnlyStoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: DocumentTracking Tracking { get; }
+    parameters: []
+    return:
+      type: AeroDB.DocumentTracking
+    content.vb: ReadOnly Property Tracking As DocumentTracking
+  overload: AeroDB.IReadOnlyStoreOptions.Tracking*
+- uid: AeroDB.IReadOnlyStoreOptions.UseOptimisticConcurrency
+  commentId: P:AeroDB.IReadOnlyStoreOptions.UseOptimisticConcurrency
+  id: UseOptimisticConcurrency
+  parent: AeroDB.IReadOnlyStoreOptions
+  langs:
+  - csharp
+  - vb
+  name: UseOptimisticConcurrency
+  nameWithType: IReadOnlyStoreOptions.UseOptimisticConcurrency
+  fullName: AeroDB.IReadOnlyStoreOptions.UseOptimisticConcurrency
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IReadOnlyStoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: bool UseOptimisticConcurrency { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: ReadOnly Property UseOptimisticConcurrency As Boolean
+  overload: AeroDB.IReadOnlyStoreOptions.UseOptimisticConcurrency*
+- uid: AeroDB.IReadOnlyStoreOptions.UpdateBatchSize
+  commentId: P:AeroDB.IReadOnlyStoreOptions.UpdateBatchSize
+  id: UpdateBatchSize
+  parent: AeroDB.IReadOnlyStoreOptions
+  langs:
+  - csharp
+  - vb
+  name: UpdateBatchSize
+  nameWithType: IReadOnlyStoreOptions.UpdateBatchSize
+  fullName: AeroDB.IReadOnlyStoreOptions.UpdateBatchSize
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IReadOnlyStoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: int UpdateBatchSize { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: ReadOnly Property UpdateBatchSize As Integer
+  overload: AeroDB.IReadOnlyStoreOptions.UpdateBatchSize*
+- uid: AeroDB.IReadOnlyStoreOptions.CommandTimeout
+  commentId: P:AeroDB.IReadOnlyStoreOptions.CommandTimeout
+  id: CommandTimeout
+  parent: AeroDB.IReadOnlyStoreOptions
+  langs:
+  - csharp
+  - vb
+  name: CommandTimeout
+  nameWithType: IReadOnlyStoreOptions.CommandTimeout
+  fullName: AeroDB.IReadOnlyStoreOptions.CommandTimeout
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IReadOnlyStoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: int? CommandTimeout { get; }
+    parameters: []
+    return:
+      type: System.Nullable{System.Int32}
+    content.vb: ReadOnly Property CommandTimeout As Integer?
+  overload: AeroDB.IReadOnlyStoreOptions.CommandTimeout*
+- uid: AeroDB.IReadOnlyStoreOptions.Projections
+  commentId: P:AeroDB.IReadOnlyStoreOptions.Projections
+  id: Projections
+  parent: AeroDB.IReadOnlyStoreOptions
+  langs:
+  - csharp
+  - vb
+  name: Projections
+  nameWithType: IReadOnlyStoreOptions.Projections
+  fullName: AeroDB.IReadOnlyStoreOptions.Projections
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IReadOnlyStoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: IReadOnlyList<IProjection> Projections { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IReadOnlyList{AeroDB.IProjection}
+    content.vb: ReadOnly Property Projections As IReadOnlyList(Of IProjection)
+  overload: AeroDB.IReadOnlyStoreOptions.Projections*
+- uid: AeroDB.IReadOnlyStoreOptions.Listeners
+  commentId: P:AeroDB.IReadOnlyStoreOptions.Listeners
+  id: Listeners
+  parent: AeroDB.IReadOnlyStoreOptions
+  langs:
+  - csharp
+  - vb
+  name: Listeners
+  nameWithType: IReadOnlyStoreOptions.Listeners
+  fullName: AeroDB.IReadOnlyStoreOptions.Listeners
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IReadOnlyStoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: IReadOnlyList<IDocumentSessionListener> Listeners { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IReadOnlyList{AeroDB.IDocumentSessionListener}
+    content.vb: ReadOnly Property Listeners As IReadOnlyList(Of IDocumentSessionListener)
+  overload: AeroDB.IReadOnlyStoreOptions.Listeners*
+- uid: AeroDB.IReadOnlyStoreOptions.ChangeListeners
+  commentId: P:AeroDB.IReadOnlyStoreOptions.ChangeListeners
+  id: ChangeListeners
+  parent: AeroDB.IReadOnlyStoreOptions
+  langs:
+  - csharp
+  - vb
+  name: ChangeListeners
+  nameWithType: IReadOnlyStoreOptions.ChangeListeners
+  fullName: AeroDB.IReadOnlyStoreOptions.ChangeListeners
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IReadOnlyStoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: IReadOnlyList<IChangeListener> ChangeListeners { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IReadOnlyList{AeroDB.IChangeListener}
+    content.vb: ReadOnly Property ChangeListeners As IReadOnlyList(Of IChangeListener)
+  overload: AeroDB.IReadOnlyStoreOptions.ChangeListeners*
+- uid: AeroDB.IReadOnlyStoreOptions.Schema
+  commentId: P:AeroDB.IReadOnlyStoreOptions.Schema
+  id: Schema
+  parent: AeroDB.IReadOnlyStoreOptions
+  langs:
+  - csharp
+  - vb
+  name: Schema
+  nameWithType: IReadOnlyStoreOptions.Schema
+  fullName: AeroDB.IReadOnlyStoreOptions.Schema
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IReadOnlyStoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: SchemaOptions Schema { get; }
+    parameters: []
+    return:
+      type: AeroDB.SchemaOptions
+    content.vb: ReadOnly Property Schema As SchemaOptions
+  overload: AeroDB.IReadOnlyStoreOptions.Schema*
+- uid: AeroDB.IReadOnlyStoreOptions.Events
+  commentId: P:AeroDB.IReadOnlyStoreOptions.Events
+  id: Events
+  parent: AeroDB.IReadOnlyStoreOptions
+  langs:
+  - csharp
+  - vb
+  name: Events
+  nameWithType: IReadOnlyStoreOptions.Events
+  fullName: AeroDB.IReadOnlyStoreOptions.Events
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IReadOnlyStoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: EventSourcingOptions Events { get; }
+    parameters: []
+    return:
+      type: AeroDB.EventSourcingOptions
+    content.vb: ReadOnly Property Events As EventSourcingOptions
+  overload: AeroDB.IReadOnlyStoreOptions.Events*
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: AeroDB.IReadOnlyStoreOptions.Endpoint*
+  commentId: Overload:AeroDB.IReadOnlyStoreOptions.Endpoint
+  isExternal: true
+  href: AeroDB.IReadOnlyStoreOptions.html#AeroDB_IReadOnlyStoreOptions_Endpoint
+  name: Endpoint
+  nameWithType: IReadOnlyStoreOptions.Endpoint
+  fullName: AeroDB.IReadOnlyStoreOptions.Endpoint
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AeroDB.IReadOnlyStoreOptions.Namespace*
+  commentId: Overload:AeroDB.IReadOnlyStoreOptions.Namespace
+  isExternal: true
+  href: AeroDB.IReadOnlyStoreOptions.html#AeroDB_IReadOnlyStoreOptions_Namespace
+  name: Namespace
+  nameWithType: IReadOnlyStoreOptions.Namespace
+  fullName: AeroDB.IReadOnlyStoreOptions.Namespace
+- uid: AeroDB.IReadOnlyStoreOptions.Database*
+  commentId: Overload:AeroDB.IReadOnlyStoreOptions.Database
+  isExternal: true
+  href: AeroDB.IReadOnlyStoreOptions.html#AeroDB_IReadOnlyStoreOptions_Database
+  name: Database
+  nameWithType: IReadOnlyStoreOptions.Database
+  fullName: AeroDB.IReadOnlyStoreOptions.Database
+- uid: AeroDB.IReadOnlyStoreOptions.Username*
+  commentId: Overload:AeroDB.IReadOnlyStoreOptions.Username
+  isExternal: true
+  href: AeroDB.IReadOnlyStoreOptions.html#AeroDB_IReadOnlyStoreOptions_Username
+  name: Username
+  nameWithType: IReadOnlyStoreOptions.Username
+  fullName: AeroDB.IReadOnlyStoreOptions.Username
+- uid: AeroDB.IReadOnlyStoreOptions.Password*
+  commentId: Overload:AeroDB.IReadOnlyStoreOptions.Password
+  isExternal: true
+  href: AeroDB.IReadOnlyStoreOptions.html#AeroDB_IReadOnlyStoreOptions_Password
+  name: Password
+  nameWithType: IReadOnlyStoreOptions.Password
+  fullName: AeroDB.IReadOnlyStoreOptions.Password
+- uid: AeroDB.IReadOnlyStoreOptions.Token*
+  commentId: Overload:AeroDB.IReadOnlyStoreOptions.Token
+  isExternal: true
+  href: AeroDB.IReadOnlyStoreOptions.html#AeroDB_IReadOnlyStoreOptions_Token
+  name: Token
+  nameWithType: IReadOnlyStoreOptions.Token
+  fullName: AeroDB.IReadOnlyStoreOptions.Token
+- uid: AeroDB.IReadOnlyStoreOptions.TenancyStyle*
+  commentId: Overload:AeroDB.IReadOnlyStoreOptions.TenancyStyle
+  isExternal: true
+  href: AeroDB.IReadOnlyStoreOptions.html#AeroDB_IReadOnlyStoreOptions_TenancyStyle
+  name: TenancyStyle
+  nameWithType: IReadOnlyStoreOptions.TenancyStyle
+  fullName: AeroDB.IReadOnlyStoreOptions.TenancyStyle
+- uid: AeroDB.TenancyStyle
+  commentId: T:AeroDB.TenancyStyle
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.TenancyStyle.html
+  name: TenancyStyle
+  nameWithType: TenancyStyle
+  fullName: AeroDB.TenancyStyle
+- uid: AeroDB.IReadOnlyStoreOptions.DefaultTenantId*
+  commentId: Overload:AeroDB.IReadOnlyStoreOptions.DefaultTenantId
+  isExternal: true
+  href: AeroDB.IReadOnlyStoreOptions.html#AeroDB_IReadOnlyStoreOptions_DefaultTenantId
+  name: DefaultTenantId
+  nameWithType: IReadOnlyStoreOptions.DefaultTenantId
+  fullName: AeroDB.IReadOnlyStoreOptions.DefaultTenantId
+- uid: AeroDB.IReadOnlyStoreOptions.Tracking*
+  commentId: Overload:AeroDB.IReadOnlyStoreOptions.Tracking
+  isExternal: true
+  href: AeroDB.IReadOnlyStoreOptions.html#AeroDB_IReadOnlyStoreOptions_Tracking
+  name: Tracking
+  nameWithType: IReadOnlyStoreOptions.Tracking
+  fullName: AeroDB.IReadOnlyStoreOptions.Tracking
+- uid: AeroDB.DocumentTracking
+  commentId: T:AeroDB.DocumentTracking
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.DocumentTracking.html
+  name: DocumentTracking
+  nameWithType: DocumentTracking
+  fullName: AeroDB.DocumentTracking
+- uid: AeroDB.IReadOnlyStoreOptions.UseOptimisticConcurrency*
+  commentId: Overload:AeroDB.IReadOnlyStoreOptions.UseOptimisticConcurrency
+  isExternal: true
+  href: AeroDB.IReadOnlyStoreOptions.html#AeroDB_IReadOnlyStoreOptions_UseOptimisticConcurrency
+  name: UseOptimisticConcurrency
+  nameWithType: IReadOnlyStoreOptions.UseOptimisticConcurrency
+  fullName: AeroDB.IReadOnlyStoreOptions.UseOptimisticConcurrency
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: AeroDB.IReadOnlyStoreOptions.UpdateBatchSize*
+  commentId: Overload:AeroDB.IReadOnlyStoreOptions.UpdateBatchSize
+  isExternal: true
+  href: AeroDB.IReadOnlyStoreOptions.html#AeroDB_IReadOnlyStoreOptions_UpdateBatchSize
+  name: UpdateBatchSize
+  nameWithType: IReadOnlyStoreOptions.UpdateBatchSize
+  fullName: AeroDB.IReadOnlyStoreOptions.UpdateBatchSize
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: AeroDB.IReadOnlyStoreOptions.CommandTimeout*
+  commentId: Overload:AeroDB.IReadOnlyStoreOptions.CommandTimeout
+  isExternal: true
+  href: AeroDB.IReadOnlyStoreOptions.html#AeroDB_IReadOnlyStoreOptions_CommandTimeout
+  name: CommandTimeout
+  nameWithType: IReadOnlyStoreOptions.CommandTimeout
+  fullName: AeroDB.IReadOnlyStoreOptions.CommandTimeout
+- uid: System.Nullable{System.Int32}
+  commentId: T:System.Nullable{System.Int32}
+  parent: System
+  definition: System.Nullable`1
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int?
+  nameWithType: int?
+  fullName: int?
+  nameWithType.vb: Integer?
+  fullName.vb: Integer?
+  name.vb: Integer?
+  spec.csharp:
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '?'
+  spec.vb:
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '?'
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.IReadOnlyStoreOptions.Projections*
+  commentId: Overload:AeroDB.IReadOnlyStoreOptions.Projections
+  isExternal: true
+  href: AeroDB.IReadOnlyStoreOptions.html#AeroDB_IReadOnlyStoreOptions_Projections
+  name: Projections
+  nameWithType: IReadOnlyStoreOptions.Projections
+  fullName: AeroDB.IReadOnlyStoreOptions.Projections
+- uid: System.Collections.Generic.IReadOnlyList{AeroDB.IProjection}
+  commentId: T:System.Collections.Generic.IReadOnlyList{AeroDB.IProjection}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyList`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<IProjection>
+  nameWithType: IReadOnlyList<IProjection>
+  fullName: System.Collections.Generic.IReadOnlyList<AeroDB.IProjection>
+  nameWithType.vb: IReadOnlyList(Of IProjection)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of AeroDB.IProjection)
+  name.vb: IReadOnlyList(Of IProjection)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - uid: AeroDB.IProjection
+    name: IProjection
+    isExternal: true
+    href: AeroDB.IProjection.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.IProjection
+    name: IProjection
+    isExternal: true
+    href: AeroDB.IProjection.html
+  - name: )
+- uid: System.Collections.Generic.IReadOnlyList`1
+  commentId: T:System.Collections.Generic.IReadOnlyList`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<T>
+  nameWithType: IReadOnlyList<T>
+  fullName: System.Collections.Generic.IReadOnlyList<T>
+  nameWithType.vb: IReadOnlyList(Of T)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of T)
+  name.vb: IReadOnlyList(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: AeroDB.IReadOnlyStoreOptions.Listeners*
+  commentId: Overload:AeroDB.IReadOnlyStoreOptions.Listeners
+  isExternal: true
+  href: AeroDB.IReadOnlyStoreOptions.html#AeroDB_IReadOnlyStoreOptions_Listeners
+  name: Listeners
+  nameWithType: IReadOnlyStoreOptions.Listeners
+  fullName: AeroDB.IReadOnlyStoreOptions.Listeners
+- uid: System.Collections.Generic.IReadOnlyList{AeroDB.IDocumentSessionListener}
+  commentId: T:System.Collections.Generic.IReadOnlyList{AeroDB.IDocumentSessionListener}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyList`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<IDocumentSessionListener>
+  nameWithType: IReadOnlyList<IDocumentSessionListener>
+  fullName: System.Collections.Generic.IReadOnlyList<AeroDB.IDocumentSessionListener>
+  nameWithType.vb: IReadOnlyList(Of IDocumentSessionListener)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of AeroDB.IDocumentSessionListener)
+  name.vb: IReadOnlyList(Of IDocumentSessionListener)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - uid: AeroDB.IDocumentSessionListener
+    name: IDocumentSessionListener
+    isExternal: true
+    href: AeroDB.IDocumentSessionListener.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.IDocumentSessionListener
+    name: IDocumentSessionListener
+    isExternal: true
+    href: AeroDB.IDocumentSessionListener.html
+  - name: )
+- uid: AeroDB.IReadOnlyStoreOptions.ChangeListeners*
+  commentId: Overload:AeroDB.IReadOnlyStoreOptions.ChangeListeners
+  isExternal: true
+  href: AeroDB.IReadOnlyStoreOptions.html#AeroDB_IReadOnlyStoreOptions_ChangeListeners
+  name: ChangeListeners
+  nameWithType: IReadOnlyStoreOptions.ChangeListeners
+  fullName: AeroDB.IReadOnlyStoreOptions.ChangeListeners
+- uid: System.Collections.Generic.IReadOnlyList{AeroDB.IChangeListener}
+  commentId: T:System.Collections.Generic.IReadOnlyList{AeroDB.IChangeListener}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyList`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<IChangeListener>
+  nameWithType: IReadOnlyList<IChangeListener>
+  fullName: System.Collections.Generic.IReadOnlyList<AeroDB.IChangeListener>
+  nameWithType.vb: IReadOnlyList(Of IChangeListener)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of AeroDB.IChangeListener)
+  name.vb: IReadOnlyList(Of IChangeListener)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - uid: AeroDB.IChangeListener
+    name: IChangeListener
+    isExternal: true
+    href: AeroDB.IChangeListener.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.IChangeListener
+    name: IChangeListener
+    isExternal: true
+    href: AeroDB.IChangeListener.html
+  - name: )
+- uid: AeroDB.IReadOnlyStoreOptions.Schema*
+  commentId: Overload:AeroDB.IReadOnlyStoreOptions.Schema
+  isExternal: true
+  href: AeroDB.IReadOnlyStoreOptions.html#AeroDB_IReadOnlyStoreOptions_Schema
+  name: Schema
+  nameWithType: IReadOnlyStoreOptions.Schema
+  fullName: AeroDB.IReadOnlyStoreOptions.Schema
+- uid: AeroDB.SchemaOptions
+  commentId: T:AeroDB.SchemaOptions
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.SchemaOptions.html
+  name: SchemaOptions
+  nameWithType: SchemaOptions
+  fullName: AeroDB.SchemaOptions
+- uid: AeroDB.IReadOnlyStoreOptions.Events*
+  commentId: Overload:AeroDB.IReadOnlyStoreOptions.Events
+  isExternal: true
+  href: AeroDB.IReadOnlyStoreOptions.html#AeroDB_IReadOnlyStoreOptions_Events
+  name: Events
+  nameWithType: IReadOnlyStoreOptions.Events
+  fullName: AeroDB.IReadOnlyStoreOptions.Events
+- uid: AeroDB.EventSourcingOptions
+  commentId: T:AeroDB.EventSourcingOptions
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.EventSourcingOptions.html
+  name: EventSourcingOptions
+  nameWithType: EventSourcingOptions
+  fullName: AeroDB.EventSourcingOptions

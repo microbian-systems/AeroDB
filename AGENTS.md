@@ -78,8 +78,9 @@
 
 Agents should read relevant docs before generating code.
 
-- `docs/`
-- `docs/efcore-plan.md` — architectural plan for the SurrealDB EF Core provider
+- `.docs/design/` — architecture, ADRs, gap analyses, research notes
+- `.docs/plan/` — implementation plans, todo lists, migration plans
+- `.docs/spec/` — formal specs, feature matrices, API parity
 
 
 ## Skills

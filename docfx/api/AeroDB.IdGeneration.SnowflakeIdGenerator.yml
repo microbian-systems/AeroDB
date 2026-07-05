@@ -1,0 +1,458 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.IdGeneration.SnowflakeIdGenerator
+  commentId: T:AeroDB.IdGeneration.SnowflakeIdGenerator
+  id: SnowflakeIdGenerator
+  parent: AeroDB.IdGeneration
+  children:
+  - AeroDB.IdGeneration.SnowflakeIdGenerator.#ctor
+  - AeroDB.IdGeneration.SnowflakeIdGenerator.#ctor(System.Int32)
+  - AeroDB.IdGeneration.SnowflakeIdGenerator.NewId
+  langs:
+  - csharp
+  - vb
+  name: SnowflakeIdGenerator
+  nameWithType: SnowflakeIdGenerator
+  fullName: AeroDB.IdGeneration.SnowflakeIdGenerator
+  type: Class
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.Snowflake/SnowflakeIdGenerator.cs
+  assemblies:
+  - AeroDB.Snowflake
+  namespace: AeroDB.IdGeneration
+  summary: >-
+    Snowflake ID generator wrapping <xref href="Aero.Core.Snowflake.NewId" data-throw-if-not-resolved="false"></xref>.
+
+    Produces unique, time-sortable long primary keys.
+
+    Uses the FlakeId algorithm underneath Aero.Core.
+  example: []
+  syntax:
+    content: 'public sealed class SnowflakeIdGenerator : IIdGenerator'
+    content.vb: Public NotInheritable Class SnowflakeIdGenerator Implements IIdGenerator
+  inheritance:
+  - System.Object
+  implements:
+  - AeroDB.IdGeneration.IIdGenerator
+  inheritedMembers:
+  - System.Object.GetType
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+- uid: AeroDB.IdGeneration.SnowflakeIdGenerator.#ctor
+  commentId: M:AeroDB.IdGeneration.SnowflakeIdGenerator.#ctor
+  id: '#ctor'
+  parent: AeroDB.IdGeneration.SnowflakeIdGenerator
+  langs:
+  - csharp
+  - vb
+  name: SnowflakeIdGenerator()
+  nameWithType: SnowflakeIdGenerator.SnowflakeIdGenerator()
+  fullName: AeroDB.IdGeneration.SnowflakeIdGenerator.SnowflakeIdGenerator()
+  type: Constructor
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.Snowflake/SnowflakeIdGenerator.cs
+  assemblies:
+  - AeroDB.Snowflake
+  namespace: AeroDB.IdGeneration
+  summary: >-
+    Creates a Snowflake generator using Aero.Core's default machine ID
+
+    (randomly assigned from 1–1023 via <code>RandomNumberGenerator</code>).
+  example: []
+  syntax:
+    content: public SnowflakeIdGenerator()
+    content.vb: Public Sub New()
+  overload: AeroDB.IdGeneration.SnowflakeIdGenerator.#ctor*
+  nameWithType.vb: SnowflakeIdGenerator.New()
+  fullName.vb: AeroDB.IdGeneration.SnowflakeIdGenerator.New()
+  name.vb: New()
+- uid: AeroDB.IdGeneration.SnowflakeIdGenerator.#ctor(System.Int32)
+  commentId: M:AeroDB.IdGeneration.SnowflakeIdGenerator.#ctor(System.Int32)
+  id: '#ctor(System.Int32)'
+  parent: AeroDB.IdGeneration.SnowflakeIdGenerator
+  langs:
+  - csharp
+  - vb
+  name: SnowflakeIdGenerator(int)
+  nameWithType: SnowflakeIdGenerator.SnowflakeIdGenerator(int)
+  fullName: AeroDB.IdGeneration.SnowflakeIdGenerator.SnowflakeIdGenerator(int)
+  type: Constructor
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.Snowflake/SnowflakeIdGenerator.cs
+  assemblies:
+  - AeroDB.Snowflake
+  namespace: AeroDB.IdGeneration
+  summary: >-
+    Creates a Snowflake generator with a specific machine ID (0–1023).
+
+    Useful for deterministic setups (e.g., Kubernetes pods with stable ordinals).
+  example: []
+  syntax:
+    content: public SnowflakeIdGenerator(int machineId)
+    parameters:
+    - id: machineId
+      type: System.Int32
+      description: Machine/worker ID (0–1023).
+    content.vb: Public Sub New(machineId As Integer)
+  overload: AeroDB.IdGeneration.SnowflakeIdGenerator.#ctor*
+  nameWithType.vb: SnowflakeIdGenerator.New(Integer)
+  fullName.vb: AeroDB.IdGeneration.SnowflakeIdGenerator.New(Integer)
+  name.vb: New(Integer)
+- uid: AeroDB.IdGeneration.SnowflakeIdGenerator.NewId
+  commentId: M:AeroDB.IdGeneration.SnowflakeIdGenerator.NewId
+  id: NewId
+  parent: AeroDB.IdGeneration.SnowflakeIdGenerator
+  langs:
+  - csharp
+  - vb
+  name: NewId()
+  nameWithType: SnowflakeIdGenerator.NewId()
+  fullName: AeroDB.IdGeneration.SnowflakeIdGenerator.NewId()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.Snowflake/SnowflakeIdGenerator.cs
+  assemblies:
+  - AeroDB.Snowflake
+  namespace: AeroDB.IdGeneration
+  summary: Generates a new unique identifier.
+  example: []
+  syntax:
+    content: public long NewId()
+    return:
+      type: System.Int64
+      description: A unique long identifier.
+    content.vb: Public Function NewId() As Long
+  overload: AeroDB.IdGeneration.SnowflakeIdGenerator.NewId*
+  implements:
+  - AeroDB.IdGeneration.IIdGenerator.NewId
+references:
+- uid: Aero.Core.Snowflake.NewId
+  commentId: M:Aero.Core.Snowflake.NewId
+  isExternal: true
+  name: NewId()
+  nameWithType: Snowflake.NewId()
+  fullName: Aero.Core.Snowflake.NewId()
+  spec.csharp:
+  - uid: Aero.Core.Snowflake.NewId
+    name: NewId
+    isExternal: true
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Aero.Core.Snowflake.NewId
+    name: NewId
+    isExternal: true
+  - name: (
+  - name: )
+- uid: AeroDB.IdGeneration
+  commentId: N:AeroDB.IdGeneration
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB.IdGeneration
+  nameWithType: AeroDB.IdGeneration
+  fullName: AeroDB.IdGeneration
+  spec.csharp:
+  - uid: AeroDB
+    name: AeroDB
+    isExternal: true
+    href: AeroDB.html
+  - name: .
+  - uid: AeroDB.IdGeneration
+    name: IdGeneration
+    isExternal: true
+    href: AeroDB.IdGeneration.html
+  spec.vb:
+  - uid: AeroDB
+    name: AeroDB
+    isExternal: true
+    href: AeroDB.html
+  - name: .
+  - uid: AeroDB.IdGeneration
+    name: IdGeneration
+    isExternal: true
+    href: AeroDB.IdGeneration.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: AeroDB.IdGeneration.IIdGenerator
+  commentId: T:AeroDB.IdGeneration.IIdGenerator
+  parent: AeroDB.IdGeneration
+  isExternal: true
+  href: AeroDB.IdGeneration.IIdGenerator.html
+  name: IIdGenerator
+  nameWithType: IIdGenerator
+  fullName: AeroDB.IdGeneration.IIdGenerator
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AeroDB.IdGeneration.SnowflakeIdGenerator.#ctor*
+  commentId: Overload:AeroDB.IdGeneration.SnowflakeIdGenerator.#ctor
+  isExternal: true
+  href: AeroDB.IdGeneration.SnowflakeIdGenerator.html#AeroDB_IdGeneration_SnowflakeIdGenerator__ctor
+  name: SnowflakeIdGenerator
+  nameWithType: SnowflakeIdGenerator.SnowflakeIdGenerator
+  fullName: AeroDB.IdGeneration.SnowflakeIdGenerator.SnowflakeIdGenerator
+  nameWithType.vb: SnowflakeIdGenerator.New
+  fullName.vb: AeroDB.IdGeneration.SnowflakeIdGenerator.New
+  name.vb: New
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: AeroDB.IdGeneration.SnowflakeIdGenerator.NewId*
+  commentId: Overload:AeroDB.IdGeneration.SnowflakeIdGenerator.NewId
+  isExternal: true
+  href: AeroDB.IdGeneration.SnowflakeIdGenerator.html#AeroDB_IdGeneration_SnowflakeIdGenerator_NewId
+  name: NewId
+  nameWithType: SnowflakeIdGenerator.NewId
+  fullName: AeroDB.IdGeneration.SnowflakeIdGenerator.NewId
+- uid: AeroDB.IdGeneration.IIdGenerator.NewId
+  commentId: M:AeroDB.IdGeneration.IIdGenerator.NewId
+  parent: AeroDB.IdGeneration.IIdGenerator
+  isExternal: true
+  href: AeroDB.IdGeneration.IIdGenerator.html#AeroDB_IdGeneration_IIdGenerator_NewId
+  name: NewId()
+  nameWithType: IIdGenerator.NewId()
+  fullName: AeroDB.IdGeneration.IIdGenerator.NewId()
+  spec.csharp:
+  - uid: AeroDB.IdGeneration.IIdGenerator.NewId
+    name: NewId
+    isExternal: true
+    href: AeroDB.IdGeneration.IIdGenerator.html#AeroDB_IdGeneration_IIdGenerator_NewId
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AeroDB.IdGeneration.IIdGenerator.NewId
+    name: NewId
+    isExternal: true
+    href: AeroDB.IdGeneration.IIdGenerator.html#AeroDB_IdGeneration_IIdGenerator_NewId
+  - name: (
+  - name: )
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long

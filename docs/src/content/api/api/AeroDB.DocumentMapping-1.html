@@ -1,0 +1,1809 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Class DocumentMapping&lt;T&gt; | AeroDB API Reference </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="Class DocumentMapping&lt;T&gt; | AeroDB API Reference ">
+    
+    <meta name="description" content="Fluent API for document-level schema configuration (indices, tenancy policy, etc.). Accessed via StoreOptions.Schema.For&amp;lt;T&amp;gt;().">
+      <link rel="shortcut icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../styles/docfx.css">
+      <link rel="stylesheet" href="../styles/main.css">
+      <meta property="docfx:navrel" content="../toc.html">
+      <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="AeroDB">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="AeroDB.DocumentMapping`1">
+
+
+
+  <h1 id="AeroDB_DocumentMapping_1" data-uid="AeroDB.DocumentMapping`1" class="text-break">Class DocumentMapping&lt;T&gt;</h1>
+  <div class="markdown level0 summary"><p>Fluent API for document-level schema configuration (indices, tenancy policy, etc.).
+Accessed via <code>StoreOptions.Schema.For&lt;T&gt;()</code>.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+    <div class="level1"><a class="xref" href="AeroDB.DocumentMapping.html">DocumentMapping</a></div>
+    <div class="level2"><span class="xref">DocumentMapping&lt;T&gt;</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="AeroDB.DocumentMapping.html#AeroDB_DocumentMapping_DocumentType">DocumentMapping.DocumentType</a>
+    </div>
+    <div>
+      <a class="xref" href="AeroDB.DocumentMapping.html#AeroDB_DocumentMapping_TenancyStyle">DocumentMapping.TenancyStyle</a>
+    </div>
+    <div>
+      <a class="xref" href="AeroDB.DocumentMapping.html#AeroDB_DocumentMapping_IsSoftDeleted">DocumentMapping.IsSoftDeleted</a>
+    </div>
+    <div>
+      <a class="xref" href="AeroDB.DocumentMapping.html#AeroDB_DocumentMapping_UseOptimisticConcurrency">DocumentMapping.UseOptimisticConcurrency</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="AeroDB.html">AeroDB</a></h6>
+  <h6><strong>Assembly</strong>: AeroDB.dll</h6>
+  <h5 id="AeroDB_DocumentMapping_1_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class DocumentMapping&lt;T&gt; : DocumentMapping</code></pre>
+  </div>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+</h3>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentMapping.cs">View Source</a>
+  </span>
+  <a id="AeroDB_DocumentMapping_1_FieldDefinitions_" data-uid="AeroDB.DocumentMapping`1.FieldDefinitions*"></a>
+  <h4 id="AeroDB_DocumentMapping_1_FieldDefinitions" data-uid="AeroDB.DocumentMapping`1.FieldDefinitions">FieldDefinitions</h4>
+  <div class="markdown level1 summary"><p>Custom field definitions for this document type.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IReadOnlyList&lt;FieldDefinition&gt; FieldDefinitions { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<a class="xref" href="AeroDB.FieldDefinition.html">FieldDefinition</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentMapping.cs">View Source</a>
+  </span>
+  <a id="AeroDB_DocumentMapping_1_ForeignKeys_" data-uid="AeroDB.DocumentMapping`1.ForeignKeys*"></a>
+  <h4 id="AeroDB_DocumentMapping_1_ForeignKeys" data-uid="AeroDB.DocumentMapping`1.ForeignKeys">ForeignKeys</h4>
+  <div class="markdown level1 summary"><p>Registered foreign key definitions.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IReadOnlyList&lt;ForeignKeyDefinition&gt; ForeignKeys { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<a class="xref" href="AeroDB.ForeignKeyDefinition.html">ForeignKeyDefinition</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentMapping.cs">View Source</a>
+  </span>
+  <a id="AeroDB_DocumentMapping_1_IgnoredIndexes_" data-uid="AeroDB.DocumentMapping`1.IgnoredIndexes*"></a>
+  <h4 id="AeroDB_DocumentMapping_1_IgnoredIndexes" data-uid="AeroDB.DocumentMapping`1.IgnoredIndexes">IgnoredIndexes</h4>
+  <div class="markdown level1 summary"><p>Index names that should not be created by EnsureSchema.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IReadOnlyCollection&lt;string&gt; IgnoredIndexes { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1">IReadOnlyCollection</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentMapping.cs">View Source</a>
+  </span>
+  <a id="AeroDB_DocumentMapping_1_SubClasses_" data-uid="AeroDB.DocumentMapping`1.SubClasses*"></a>
+  <h4 id="AeroDB_DocumentMapping_1_SubClasses" data-uid="AeroDB.DocumentMapping`1.SubClasses">SubClasses</h4>
+  <div class="markdown level1 summary"><p>Registered derived types for this document type.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IReadOnlyList&lt;Type&gt; SubClasses { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+</h3>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentMapping.cs">View Source</a>
+  </span>
+  <a id="AeroDB_DocumentMapping_1_AddSubClass_" data-uid="AeroDB.DocumentMapping`1.AddSubClass*"></a>
+  <h4 id="AeroDB_DocumentMapping_1_AddSubClass__1" data-uid="AeroDB.DocumentMapping`1.AddSubClass``1">AddSubClass&lt;TDerived&gt;()</h4>
+  <div class="markdown level1 summary"><p>Register a derived type for polymorphic querying.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DocumentMapping&lt;T&gt; AddSubClass&lt;TDerived&gt;() where TDerived : T</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.DocumentMapping-1.html">DocumentMapping</a>&lt;T&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TDerived</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentMapping.cs">View Source</a>
+  </span>
+  <a id="AeroDB_DocumentMapping_1_BTreeIndex_" data-uid="AeroDB.DocumentMapping`1.BTreeIndex*"></a>
+  <h4 id="AeroDB_DocumentMapping_1_BTreeIndex__1_System_Linq_Expressions_Expression_System_Func__0___0___System_Action_AeroDB_IndexOptions__" data-uid="AeroDB.DocumentMapping`1.BTreeIndex``1(System.Linq.Expressions.Expression{System.Func{`0,``0}},System.Action{AeroDB.IndexOptions})">BTreeIndex&lt;TProp&gt;(Expression&lt;Func&lt;T, TProp&gt;&gt;, Action&lt;IndexOptions&gt;?)</h4>
+  <div class="markdown level1 summary"><p>Defines a btree index on the specified property.
+Equivalent to <code>Index()</code> — SurrealDB's default index type is btree.
+This explicit alias exists for clarity when SurrealDB-native naming is preferred.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DocumentMapping&lt;T&gt; BTreeIndex&lt;TProp&gt;(Expression&lt;Func&lt;T, TProp&gt;&gt; property, Action&lt;IndexOptions&gt;? configure = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;T, TProp&gt;&gt;</td>
+        <td><span class="parametername">property</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;<a class="xref" href="AeroDB.IndexOptions.html">IndexOptions</a>&gt;</td>
+        <td><span class="parametername">configure</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.DocumentMapping-1.html">DocumentMapping</a>&lt;T&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TProp</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentMapping.cs">View Source</a>
+  </span>
+  <a id="AeroDB_DocumentMapping_1_CompositeIndex_" data-uid="AeroDB.DocumentMapping`1.CompositeIndex*"></a>
+  <h4 id="AeroDB_DocumentMapping_1_CompositeIndex_System_Action_AeroDB_IndexOptions__System_Linq_Expressions_Expression_System_Func__0_System_Object_____" data-uid="AeroDB.DocumentMapping`1.CompositeIndex(System.Action{AeroDB.IndexOptions},System.Linq.Expressions.Expression{System.Func{`0,System.Object}}[])">CompositeIndex(Action&lt;IndexOptions&gt;?, params Expression&lt;Func&lt;T, object&gt;&gt;[])</h4>
+  <div class="markdown level1 summary"><p>Defines a composite index on the specified properties with configuration.
+Prefer <a class="xref" href="AeroDB.DocumentMapping-1.html#AeroDB_DocumentMapping_1_Index_System_Linq_Expressions_Expression_System_Func__0_System_Object___System_Action_AeroDB_IndexOptions__">Index(Expression&lt;Func&lt;T, object&gt;&gt;, Action&lt;IndexOptions&gt;?)</a> with an anonymous type expression.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use Index(x =&gt; new { x.Prop1, x.Prop2 }, configure) instead.&quot;)]
+public DocumentMapping&lt;T&gt; CompositeIndex(Action&lt;IndexOptions&gt;? configure, params Expression&lt;Func&lt;T, object&gt;&gt;[] properties)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;<a class="xref" href="AeroDB.IndexOptions.html">IndexOptions</a>&gt;</td>
+        <td><span class="parametername">configure</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;T, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;&gt;[]</td>
+        <td><span class="parametername">properties</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.DocumentMapping-1.html">DocumentMapping</a>&lt;T&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentMapping.cs">View Source</a>
+  </span>
+  <a id="AeroDB_DocumentMapping_1_CompositeIndex_" data-uid="AeroDB.DocumentMapping`1.CompositeIndex*"></a>
+  <h4 id="AeroDB_DocumentMapping_1_CompositeIndex_System_Linq_Expressions_Expression_System_Func__0_System_Object_____" data-uid="AeroDB.DocumentMapping`1.CompositeIndex(System.Linq.Expressions.Expression{System.Func{`0,System.Object}}[])">CompositeIndex(params Expression&lt;Func&lt;T, object&gt;&gt;[])</h4>
+  <div class="markdown level1 summary"><p>Defines a composite index on the specified properties.
+Prefer <a class="xref" href="AeroDB.DocumentMapping-1.html#AeroDB_DocumentMapping_1_Index_System_Linq_Expressions_Expression_System_Func__0_System_Object___System_Action_AeroDB_IndexOptions__">Index(Expression&lt;Func&lt;T, object&gt;&gt;, Action&lt;IndexOptions&gt;?)</a> with an anonymous type expression.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use Index(x =&gt; new { x.Prop1, x.Prop2 }, configure) instead.&quot;)]
+public DocumentMapping&lt;T&gt; CompositeIndex(params Expression&lt;Func&lt;T, object&gt;&gt;[] properties)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;T, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;&gt;[]</td>
+        <td><span class="parametername">properties</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.DocumentMapping-1.html">DocumentMapping</a>&lt;T&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentMapping.cs">View Source</a>
+  </span>
+  <a id="AeroDB_DocumentMapping_1_ComputedIndex_" data-uid="AeroDB.DocumentMapping`1.ComputedIndex*"></a>
+  <h4 id="AeroDB_DocumentMapping_1_ComputedIndex_System_Linq_Expressions_Expression_System_Func__0_System_Object___System_Action_AeroDB_ComputedIndexOptions__" data-uid="AeroDB.DocumentMapping`1.ComputedIndex(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Action{AeroDB.ComputedIndexOptions})">ComputedIndex(Expression&lt;Func&lt;T, object&gt;&gt;, Action&lt;ComputedIndexOptions&gt;)</h4>
+  <div class="markdown level1 summary"><p>Defines a computed/expression-based index with configurable options
+(index method, casing, sort order, predicate).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DocumentMapping&lt;T&gt; ComputedIndex(Expression&lt;Func&lt;T, object&gt;&gt; expression, Action&lt;ComputedIndexOptions&gt; configure)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;T, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;&gt;</td>
+        <td><span class="parametername">expression</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;<a class="xref" href="AeroDB.ComputedIndexOptions.html">ComputedIndexOptions</a>&gt;</td>
+        <td><span class="parametername">configure</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.DocumentMapping-1.html">DocumentMapping</a>&lt;T&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentMapping.cs">View Source</a>
+  </span>
+  <a id="AeroDB_DocumentMapping_1_DiskannIndex_" data-uid="AeroDB.DocumentMapping`1.DiskannIndex*"></a>
+  <h4 id="AeroDB_DocumentMapping_1_DiskannIndex__1_System_Linq_Expressions_Expression_System_Func__0___0___System_Int32_System_String_System_String_System_Nullable_System_Int32__System_Nullable_System_Int32__System_Nullable_System_Double__System_Boolean_" data-uid="AeroDB.DocumentMapping`1.DiskannIndex``1(System.Linq.Expressions.Expression{System.Func{`0,``0}},System.Int32,System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Double},System.Boolean)">DiskannIndex&lt;TProp&gt;(Expression&lt;Func&lt;T, TProp&gt;&gt;, int, string, string, int?, int?, double?, bool)</h4>
+  <div class="markdown level1 summary"><p>Defines a DISKANN vector index on the specified property.
+DiskANN is a disk-based approximate nearest-neighbour index for very large
+embedding sets. Uses the same &lt;|K, EF|&gt; query operator as HNSW.
+Available since SurrealDB 3.1. Best when the working set exceeds available RAM.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DocumentMapping&lt;T&gt; DiskannIndex&lt;TProp&gt;(Expression&lt;Func&lt;T, TProp&gt;&gt; property, int dimension, string vectorType = &quot;F32&quot;, string distance = &quot;COSINE&quot;, int? degree = null, int? lBuild = null, double? alpha = null, bool hashedVector = false)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;T, TProp&gt;&gt;</td>
+        <td><span class="parametername">property</span></td>
+        <td><p>The property storing the vector embedding.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><span class="parametername">dimension</span></td>
+        <td><p>The dimensionality of the vector.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">vectorType</span></td>
+        <td><p>Element type: F32 (default), F16, I8, or U8.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">distance</span></td>
+        <td><p>The distance function: COSINE (default), EUCLIDEAN, INNER_PRODUCT, or COSINE_NORMALIZED.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a>?</td>
+        <td><span class="parametername">degree</span></td>
+        <td><p>DiskANN graph degree (default 64). Higher values improve accuracy at cost of memory.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a>?</td>
+        <td><span class="parametername">lBuild</span></td>
+        <td><p>Construction search-list size (default 100).</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a>?</td>
+        <td><span class="parametername">alpha</span></td>
+        <td><p>DiskANN pruning parameter (default 1.2).</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td><span class="parametername">hashedVector</span></td>
+        <td><p>Whether to use hash-stabilized vector keys.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.DocumentMapping-1.html">DocumentMapping</a>&lt;T&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TProp</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentMapping.cs">View Source</a>
+  </span>
+  <a id="AeroDB_DocumentMapping_1_Duplicate_" data-uid="AeroDB.DocumentMapping`1.Duplicate*"></a>
+  <h4 id="AeroDB_DocumentMapping_1_Duplicate_System_Linq_Expressions_Expression_System_Func__0_System_Object___System_String_System_Object_System_Action_AeroDB_DocumentIndex__System_Boolean_" data-uid="AeroDB.DocumentMapping`1.Duplicate(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.String,System.Object,System.Action{AeroDB.DocumentIndex},System.Boolean)">Duplicate(Expression&lt;Func&lt;T, object?&gt;&gt;, string?, object?, Action&lt;DocumentIndex&gt;?, bool)</h4>
+  <div class="markdown level1 summary"><p>No-op. Exists only for Marten portability — SurrealDB does not need duplicated fields.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DocumentMapping&lt;T&gt; Duplicate(Expression&lt;Func&lt;T, object?&gt;&gt; expression, string? pgType = null, object? dbType = null, Action&lt;DocumentIndex&gt;? configure = null, bool notNull = false)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;T, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;&gt;</td>
+        <td><span class="parametername">expression</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">pgType</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></td>
+        <td><span class="parametername">dbType</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;<a class="xref" href="AeroDB.DocumentIndex.html">DocumentIndex</a>&gt;</td>
+        <td><span class="parametername">configure</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td><span class="parametername">notNull</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.DocumentMapping-1.html">DocumentMapping</a>&lt;T&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentMapping.cs">View Source</a>
+  </span>
+  <a id="AeroDB_DocumentMapping_1_Duplicate_" data-uid="AeroDB.DocumentMapping`1.Duplicate*"></a>
+  <h4 id="AeroDB_DocumentMapping_1_Duplicate__1_System_Linq_Expressions_Expression_System_Func___0_System_Object___System_String_System_Object_System_Action_AeroDB_DocumentIndex__System_Boolean_" data-uid="AeroDB.DocumentMapping`1.Duplicate``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}},System.String,System.Object,System.Action{AeroDB.DocumentIndex},System.Boolean)">Duplicate&lt;TSub&gt;(Expression&lt;Func&lt;TSub, object?&gt;&gt;, string?, object?, Action&lt;DocumentIndex&gt;?, bool)</h4>
+  <div class="markdown level1 summary"><p>No-op. Exists only for Marten portability — SurrealDB does not need duplicated fields.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DocumentMapping&lt;T&gt; Duplicate&lt;TSub&gt;(Expression&lt;Func&lt;TSub, object?&gt;&gt; expression, string? pgType = null, object? dbType = null, Action&lt;DocumentIndex&gt;? configure = null, bool notNull = false) where TSub : T</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;TSub, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;&gt;</td>
+        <td><span class="parametername">expression</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">pgType</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></td>
+        <td><span class="parametername">dbType</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;<a class="xref" href="AeroDB.DocumentIndex.html">DocumentIndex</a>&gt;</td>
+        <td><span class="parametername">configure</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td><span class="parametername">notNull</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.DocumentMapping-1.html">DocumentMapping</a>&lt;T&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TSub</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentMapping.cs">View Source</a>
+  </span>
+  <a id="AeroDB_DocumentMapping_1_Field_" data-uid="AeroDB.DocumentMapping`1.Field*"></a>
+  <h4 id="AeroDB_DocumentMapping_1_Field_System_String_System_Action_AeroDB_FieldDefinition__" data-uid="AeroDB.DocumentMapping`1.Field(System.String,System.Action{AeroDB.FieldDefinition})">Field(string, Action&lt;FieldDefinition&gt;?)</h4>
+  <div class="markdown level1 summary"><p>Define a field with optional type, default, assertion, and permissions.
+These are emitted as additional DEFINE FIELD statements by the schema manager.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DocumentMapping&lt;T&gt; Field(string fieldName, Action&lt;FieldDefinition&gt;? configure = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">fieldName</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;<a class="xref" href="AeroDB.FieldDefinition.html">FieldDefinition</a>&gt;</td>
+        <td><span class="parametername">configure</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.DocumentMapping-1.html">DocumentMapping</a>&lt;T&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentMapping.cs">View Source</a>
+  </span>
+  <a id="AeroDB_DocumentMapping_1_ForeignKey_" data-uid="AeroDB.DocumentMapping`1.ForeignKey*"></a>
+  <h4 id="AeroDB_DocumentMapping_1_ForeignKey__1_System_Linq_Expressions_Expression_System_Func__0_System_Object___System_Action_AeroDB_ForeignKeyDefinition__" data-uid="AeroDB.DocumentMapping`1.ForeignKey``1(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Action{AeroDB.ForeignKeyDefinition})">ForeignKey&lt;TChild&gt;(Expression&lt;Func&lt;T, object&gt;&gt;, Action&lt;ForeignKeyDefinition&gt;?)</h4>
+  <div class="markdown level1 summary"><p>Declare a foreign key relationship for informational/validation purposes.
+In SurrealDB, graph edges replace FK cascades — this metadata is stored
+for tooling and documentation only.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DocumentMapping&lt;T&gt; ForeignKey&lt;TChild&gt;(Expression&lt;Func&lt;T, object&gt;&gt; property, Action&lt;ForeignKeyDefinition&gt;? configure = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;T, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;&gt;</td>
+        <td><span class="parametername">property</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;<a class="xref" href="AeroDB.ForeignKeyDefinition.html">ForeignKeyDefinition</a>&gt;</td>
+        <td><span class="parametername">configure</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.DocumentMapping-1.html">DocumentMapping</a>&lt;T&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TChild</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentMapping.cs">View Source</a>
+  </span>
+  <a id="AeroDB_DocumentMapping_1_FullTextIndex_" data-uid="AeroDB.DocumentMapping`1.FullTextIndex*"></a>
+  <h4 id="AeroDB_DocumentMapping_1_FullTextIndex_System_String_System_Linq_Expressions_Expression_System_Func__0_System_Object___System_Linq_Expressions_Expression_System_Func__0_System_Object___System_Linq_Expressions_Expression_System_Func__0_System_Object_____" data-uid="AeroDB.DocumentMapping`1.FullTextIndex(System.String,System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Linq.Expressions.Expression{System.Func{`0,System.Object}}[])">FullTextIndex(string, Expression&lt;Func&lt;T, object&gt;&gt;, Expression&lt;Func&lt;T, object&gt;&gt;, params Expression&lt;Func&lt;T, object&gt;&gt;[])</h4>
+  <div class="markdown level1 summary"><p>Defines a multi-field full-text search index on the specified properties.
+SurrealDB indexes all specified columns together in a single FTS index
+using <code>DEFINE INDEX ... FIELDS col1, col2, ... FULLTEXT ANALYZER ...</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DocumentMapping&lt;T&gt; FullTextIndex(string analyzer, Expression&lt;Func&lt;T, object&gt;&gt; property1, Expression&lt;Func&lt;T, object&gt;&gt; property2, params Expression&lt;Func&lt;T, object&gt;&gt;[] additionalProperties)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">analyzer</span></td>
+        <td><p>The SurrealDB analyzer name (e.g. &quot;english&quot;).</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;T, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;&gt;</td>
+        <td><span class="parametername">property1</span></td>
+        <td><p>First property to include in the FTS index.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;T, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;&gt;</td>
+        <td><span class="parametername">property2</span></td>
+        <td><p>Second property to include in the FTS index.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;T, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;&gt;[]</td>
+        <td><span class="parametername">additionalProperties</span></td>
+        <td><p>Additional properties to include.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.DocumentMapping-1.html">DocumentMapping</a>&lt;T&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentMapping.cs">View Source</a>
+  </span>
+  <a id="AeroDB_DocumentMapping_1_FullTextIndex_" data-uid="AeroDB.DocumentMapping`1.FullTextIndex*"></a>
+  <h4 id="AeroDB_DocumentMapping_1_FullTextIndex__1_System_Linq_Expressions_Expression_System_Func__0___0___System_String_System_Nullable_System_ValueTuple_System_Double_System_Double___" data-uid="AeroDB.DocumentMapping`1.FullTextIndex``1(System.Linq.Expressions.Expression{System.Func{`0,``0}},System.String,System.Nullable{System.ValueTuple{System.Double,System.Double}})">FullTextIndex&lt;TProp&gt;(Expression&lt;Func&lt;T, TProp&gt;&gt;, string, (double K1, double B)?)</h4>
+  <div class="markdown level1 summary"><p>Defines a full-text search index on the specified property.
+Requires an analyzer to be defined via <code>SchemaOptions.DefineAnalyzer()</code> or pre-existing in the database.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DocumentMapping&lt;T&gt; FullTextIndex&lt;TProp&gt;(Expression&lt;Func&lt;T, TProp&gt;&gt; property, string analyzer, (double K1, double B)? bm25 = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;T, TProp&gt;&gt;</td>
+        <td><span class="parametername">property</span></td>
+        <td><p>The property to index.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">analyzer</span></td>
+        <td><p>The SurrealDB analyzer name (e.g. &quot;simple&quot;).</p>
+</td>
+      </tr>
+      <tr>
+        <td>(<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.valuetuple-system.double,system.double-.k1">K1</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.valuetuple-system.double,system.double-.b">B</a>)?</td>
+        <td><span class="parametername">bm25</span></td>
+        <td><p>Optional BM25 scoring parameters (k1, b).</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.DocumentMapping-1.html">DocumentMapping</a>&lt;T&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TProp</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentMapping.cs">View Source</a>
+  </span>
+  <a id="AeroDB_DocumentMapping_1_HnswIndex_" data-uid="AeroDB.DocumentMapping`1.HnswIndex*"></a>
+  <h4 id="AeroDB_DocumentMapping_1_HnswIndex__1_System_Linq_Expressions_Expression_System_Func__0___0___System_Int32_System_String_" data-uid="AeroDB.DocumentMapping`1.HnswIndex``1(System.Linq.Expressions.Expression{System.Func{`0,``0}},System.Int32,System.String)">HnswIndex&lt;TProp&gt;(Expression&lt;Func&lt;T, TProp&gt;&gt;, int, string)</h4>
+  <div class="markdown level1 summary"><p>Uses the HNSW algorithm for fast approximate vector similarity queries.
+Best for large datasets where speed matters more than exact results.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DocumentMapping&lt;T&gt; HnswIndex&lt;TProp&gt;(Expression&lt;Func&lt;T, TProp&gt;&gt; property, int dimension, string distance = &quot;COSINE&quot;)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;T, TProp&gt;&gt;</td>
+        <td><span class="parametername">property</span></td>
+        <td><p>The property storing the vector embedding.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><span class="parametername">dimension</span></td>
+        <td><p>The dimensionality of the vector (e.g. 1536 for OpenAI ada-002).</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">distance</span></td>
+        <td><p>The distance function: COSINE (default), EUCLIDEAN, or MANHATTAN.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.DocumentMapping-1.html">DocumentMapping</a>&lt;T&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TProp</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentMapping.cs">View Source</a>
+  </span>
+  <a id="AeroDB_DocumentMapping_1_HybridSearch_" data-uid="AeroDB.DocumentMapping`1.HybridSearch*"></a>
+  <h4 id="AeroDB_DocumentMapping_1_HybridSearch_System_Collections_Generic_IReadOnlyList_System_ValueTuple_System_String_System_Double___System_Linq_Expressions_Expression_System_Func__0_System_Object___System_Int32_System_String_System_String_" data-uid="AeroDB.DocumentMapping`1.HybridSearch(System.Collections.Generic.IReadOnlyList{System.ValueTuple{System.String,System.Double}},System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Int32,System.String,System.String)">HybridSearch(IReadOnlyList&lt;(string FieldName, double Weight)&gt;, Expression&lt;Func&lt;T, object&gt;&gt;, int, string, string)</h4>
+  <div class="markdown level1 summary"><p>Convenience: creates both full-text and HNSW indexes for hybrid search.
+Sets up full-text indexes on each of the specified text fields.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DocumentMapping&lt;T&gt; HybridSearch(IReadOnlyList&lt;(string FieldName, double Weight)&gt; textFields, Expression&lt;Func&lt;T, object&gt;&gt; vectorField, int dimension, string analyzer, string distance = &quot;COSINE&quot;)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;(<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.valuetuple-system.string,system.double-.fieldname">FieldName</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.valuetuple-system.string,system.double-.weight">Weight</a>)&gt;</td>
+        <td><span class="parametername">textFields</span></td>
+        <td><p>Pairs of (field name, weight) for full-text search fields.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;T, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;&gt;</td>
+        <td><span class="parametername">vectorField</span></td>
+        <td><p>The property storing the vector embedding.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><span class="parametername">dimension</span></td>
+        <td><p>The dimensionality of the vector.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">analyzer</span></td>
+        <td><p>The SurrealDB analyzer name for full-text fields.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">distance</span></td>
+        <td><p>The distance function for HNSW.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.DocumentMapping-1.html">DocumentMapping</a>&lt;T&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentMapping.cs">View Source</a>
+  </span>
+  <a id="AeroDB_DocumentMapping_1_Identity_" data-uid="AeroDB.DocumentMapping`1.Identity*"></a>
+  <h4 id="AeroDB_DocumentMapping_1_Identity__1_System_Linq_Expressions_Expression_System_Func__0___0___" data-uid="AeroDB.DocumentMapping`1.Identity``1(System.Linq.Expressions.Expression{System.Func{`0,``0}})">Identity&lt;TProp&gt;(Expression&lt;Func&lt;T, TProp&gt;&gt;)</h4>
+  <div class="markdown level1 summary"><p>Designates the primary key property explicitly for documentation purposes.
+For <span class="xref">SurrealDb.Net.Models.IRecord</span> types, the Id property
+(<span class="xref">SurrealDb.Net.Models.RecordId</span>) is always the primary key.
+This method is present for API consistency and future extensibility.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DocumentMapping&lt;T&gt; Identity&lt;TProp&gt;(Expression&lt;Func&lt;T, TProp&gt;&gt; property)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;T, TProp&gt;&gt;</td>
+        <td><span class="parametername">property</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.DocumentMapping-1.html">DocumentMapping</a>&lt;T&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TProp</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentMapping.cs">View Source</a>
+  </span>
+  <a id="AeroDB_DocumentMapping_1_IgnoreIndex_" data-uid="AeroDB.DocumentMapping`1.IgnoreIndex*"></a>
+  <h4 id="AeroDB_DocumentMapping_1_IgnoreIndex_System_String_" data-uid="AeroDB.DocumentMapping`1.IgnoreIndex(System.String)">IgnoreIndex(string)</h4>
+  <div class="markdown level1 summary"><p>Prevent the schema manager from creating a specific index.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DocumentMapping&lt;T&gt; IgnoreIndex(string indexName)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">indexName</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.DocumentMapping-1.html">DocumentMapping</a>&lt;T&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentMapping.cs">View Source</a>
+  </span>
+  <a id="AeroDB_DocumentMapping_1_Index_" data-uid="AeroDB.DocumentMapping`1.Index*"></a>
+  <h4 id="AeroDB_DocumentMapping_1_Index_System_Linq_Expressions_Expression_System_Func__0_System_Object___System_Action_AeroDB_IndexOptions__" data-uid="AeroDB.DocumentMapping`1.Index(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Action{AeroDB.IndexOptions})">Index(Expression&lt;Func&lt;T, object&gt;&gt;, Action&lt;IndexOptions&gt;?)</h4>
+  <div class="markdown level1 summary"><p>Defines a computed index. Supports single-property and multi-property
+anonymous-type expressions (<code>x =&gt; new { x.FirstName, x.LastName }</code>).
+For strongly-typed single-property access, prefer <a class="xref" href="AeroDB.DocumentMapping-1.html#AeroDB_DocumentMapping_1_Index__1_System_Linq_Expressions_Expression_System_Func__0___0___System_Action_AeroDB_IndexOptions__">Index&lt;TProp&gt;(Expression&lt;Func&lt;T, TProp&gt;&gt;, Action&lt;IndexOptions&gt;?)</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DocumentMapping&lt;T&gt; Index(Expression&lt;Func&lt;T, object&gt;&gt; expression, Action&lt;IndexOptions&gt;? configure = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;T, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;&gt;</td>
+        <td><span class="parametername">expression</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;<a class="xref" href="AeroDB.IndexOptions.html">IndexOptions</a>&gt;</td>
+        <td><span class="parametername">configure</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.DocumentMapping-1.html">DocumentMapping</a>&lt;T&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentMapping.cs">View Source</a>
+  </span>
+  <a id="AeroDB_DocumentMapping_1_Index_" data-uid="AeroDB.DocumentMapping`1.Index*"></a>
+  <h4 id="AeroDB_DocumentMapping_1_Index__1_System_Linq_Expressions_Expression_System_Func__0___0___System_Action_AeroDB_IndexOptions__" data-uid="AeroDB.DocumentMapping`1.Index``1(System.Linq.Expressions.Expression{System.Func{`0,``0}},System.Action{AeroDB.IndexOptions})">Index&lt;TProp&gt;(Expression&lt;Func&lt;T, TProp&gt;&gt;, Action&lt;IndexOptions&gt;?)</h4>
+  <div class="markdown level1 summary"><p>Defines a simple index on the specified property.
+SurrealDB's default index type is btree, so this is equivalent to <a class="xref" href="AeroDB.DocumentMapping-1.html#AeroDB_DocumentMapping_1_BTreeIndex__1_System_Linq_Expressions_Expression_System_Func__0___0___System_Action_AeroDB_IndexOptions__">BTreeIndex&lt;TProp&gt;(Expression&lt;Func&lt;T, TProp&gt;&gt;, Action&lt;IndexOptions&gt;?)</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DocumentMapping&lt;T&gt; Index&lt;TProp&gt;(Expression&lt;Func&lt;T, TProp&gt;&gt; property, Action&lt;IndexOptions&gt;? configure = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;T, TProp&gt;&gt;</td>
+        <td><span class="parametername">property</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;<a class="xref" href="AeroDB.IndexOptions.html">IndexOptions</a>&gt;</td>
+        <td><span class="parametername">configure</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.DocumentMapping-1.html">DocumentMapping</a>&lt;T&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TProp</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentMapping.cs">View Source</a>
+  </span>
+  <a id="AeroDB_DocumentMapping_1_MultiTenanted_" data-uid="AeroDB.DocumentMapping`1.MultiTenanted*"></a>
+  <h4 id="AeroDB_DocumentMapping_1_MultiTenanted" data-uid="AeroDB.DocumentMapping`1.MultiTenanted">MultiTenanted()</h4>
+  <div class="markdown level1 summary"><p>Marks this document type as multi-tenanted (tenant_id filter applied).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DocumentMapping&lt;T&gt; MultiTenanted()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.DocumentMapping-1.html">DocumentMapping</a>&lt;T&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentMapping.cs">View Source</a>
+  </span>
+  <a id="AeroDB_DocumentMapping_1_Schema_" data-uid="AeroDB.DocumentMapping`1.Schema*"></a>
+  <h4 id="AeroDB_DocumentMapping_1_Schema_System_String_" data-uid="AeroDB.DocumentMapping`1.Schema(System.String)">Schema(string?)</h4>
+  <div class="markdown level1 summary"><p>Maps this document type to a specific SurrealDB database (schema).
+When null (default), the entity uses the default database from <code>StoreOptions.Database</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DocumentMapping&lt;T&gt; Schema(string? schemaName)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">schemaName</span></td>
+        <td><p>The SurrealDB database name, or null for the default.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.DocumentMapping-1.html">DocumentMapping</a>&lt;T&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentMapping.cs">View Source</a>
+  </span>
+  <a id="AeroDB_DocumentMapping_1_SetSchemaMode_" data-uid="AeroDB.DocumentMapping`1.SetSchemaMode*"></a>
+  <h4 id="AeroDB_DocumentMapping_1_SetSchemaMode_AeroDB_SchemaMode_" data-uid="AeroDB.DocumentMapping`1.SetSchemaMode(AeroDB.SchemaMode)">SetSchemaMode(SchemaMode)</h4>
+  <div class="markdown level1 summary"><p>Sets the schema mode for this document type (SCHEMAFULL vs SCHEMALESS).
+Default is <a class="xref" href="AeroDB.SchemaMode.html#AeroDB_SchemaMode_Strict">Strict</a> (SCHEMAFULL).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DocumentMapping&lt;T&gt; SetSchemaMode(SchemaMode mode)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.SchemaMode.html">SchemaMode</a></td>
+        <td><span class="parametername">mode</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.DocumentMapping-1.html">DocumentMapping</a>&lt;T&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentMapping.cs">View Source</a>
+  </span>
+  <a id="AeroDB_DocumentMapping_1_SoftDeleted_" data-uid="AeroDB.DocumentMapping`1.SoftDeleted*"></a>
+  <h4 id="AeroDB_DocumentMapping_1_SoftDeleted" data-uid="AeroDB.DocumentMapping`1.SoftDeleted">SoftDeleted()</h4>
+  <div class="markdown level1 summary"><p>Enable soft-delete for documents of this type. Soft-deleted documents
+are automatically filtered from queries and can be restored.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DocumentMapping&lt;T&gt; SoftDeleted()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.DocumentMapping-1.html">DocumentMapping</a>&lt;T&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentMapping.cs">View Source</a>
+  </span>
+  <a id="AeroDB_DocumentMapping_1_SpatialIndex_" data-uid="AeroDB.DocumentMapping`1.SpatialIndex*"></a>
+  <h4 id="AeroDB_DocumentMapping_1_SpatialIndex__1_System_Linq_Expressions_Expression_System_Func__0___0___" data-uid="AeroDB.DocumentMapping`1.SpatialIndex``1(System.Linq.Expressions.Expression{System.Func{`0,``0}})">SpatialIndex&lt;TProp&gt;(Expression&lt;Func&lt;T, TProp&gt;&gt;)</h4>
+  <div class="markdown level1 summary"><p>Defines a geo-spatial index marker on the specified geometry property.
+SurrealDB uses a standard btree under the hood; spatial queries use
+bounding-box pre-filters and geo::DISTANCE post-filters.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DocumentMapping&lt;T&gt; SpatialIndex&lt;TProp&gt;(Expression&lt;Func&lt;T, TProp&gt;&gt; property)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;T, TProp&gt;&gt;</td>
+        <td><span class="parametername">property</span></td>
+        <td><p>The property storing the geometry (GeometryPoint or GeometryPolygon).</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.DocumentMapping-1.html">DocumentMapping</a>&lt;T&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TProp</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentMapping.cs">View Source</a>
+  </span>
+  <a id="AeroDB_DocumentMapping_1_UniqueCompositeIndex_" data-uid="AeroDB.DocumentMapping`1.UniqueCompositeIndex*"></a>
+  <h4 id="AeroDB_DocumentMapping_1_UniqueCompositeIndex_System_Action_AeroDB_IndexOptions__System_Linq_Expressions_Expression_System_Func__0_System_Object_____" data-uid="AeroDB.DocumentMapping`1.UniqueCompositeIndex(System.Action{AeroDB.IndexOptions},System.Linq.Expressions.Expression{System.Func{`0,System.Object}}[])">UniqueCompositeIndex(Action&lt;IndexOptions&gt;?, params Expression&lt;Func&lt;T, object&gt;&gt;[])</h4>
+  <div class="markdown level1 summary"><p>Defines a composite unique index with configuration.
+Prefer <a class="xref" href="AeroDB.DocumentMapping-1.html#AeroDB_DocumentMapping_1_Index_System_Linq_Expressions_Expression_System_Func__0_System_Object___System_Action_AeroDB_IndexOptions__">Index(Expression&lt;Func&lt;T, object&gt;&gt;, Action&lt;IndexOptions&gt;?)</a> with <code>configure =&gt; configure.IsUnique()</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use Index(x =&gt; new { x.Prop1, x.Prop2 }, c =&gt; c.IsUnique()) instead.&quot;)]
+public DocumentMapping&lt;T&gt; UniqueCompositeIndex(Action&lt;IndexOptions&gt;? configure, params Expression&lt;Func&lt;T, object&gt;&gt;[] properties)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;<a class="xref" href="AeroDB.IndexOptions.html">IndexOptions</a>&gt;</td>
+        <td><span class="parametername">configure</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;T, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;&gt;[]</td>
+        <td><span class="parametername">properties</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.DocumentMapping-1.html">DocumentMapping</a>&lt;T&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentMapping.cs">View Source</a>
+  </span>
+  <a id="AeroDB_DocumentMapping_1_UniqueCompositeIndex_" data-uid="AeroDB.DocumentMapping`1.UniqueCompositeIndex*"></a>
+  <h4 id="AeroDB_DocumentMapping_1_UniqueCompositeIndex_System_Linq_Expressions_Expression_System_Func__0_System_Object_____" data-uid="AeroDB.DocumentMapping`1.UniqueCompositeIndex(System.Linq.Expressions.Expression{System.Func{`0,System.Object}}[])">UniqueCompositeIndex(params Expression&lt;Func&lt;T, object&gt;&gt;[])</h4>
+  <div class="markdown level1 summary"><p>Defines a composite unique index.
+Prefer <a class="xref" href="AeroDB.DocumentMapping-1.html#AeroDB_DocumentMapping_1_Index_System_Linq_Expressions_Expression_System_Func__0_System_Object___System_Action_AeroDB_IndexOptions__">Index(Expression&lt;Func&lt;T, object&gt;&gt;, Action&lt;IndexOptions&gt;?)</a> with <code>configure =&gt; configure.IsUnique()</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use Index(x =&gt; new { x.Prop1, x.Prop2 }, c =&gt; c.IsUnique()) instead.&quot;)]
+public DocumentMapping&lt;T&gt; UniqueCompositeIndex(params Expression&lt;Func&lt;T, object&gt;&gt;[] properties)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;T, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;&gt;[]</td>
+        <td><span class="parametername">properties</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.DocumentMapping-1.html">DocumentMapping</a>&lt;T&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentMapping.cs">View Source</a>
+  </span>
+  <a id="AeroDB_DocumentMapping_1_UniqueIndex_" data-uid="AeroDB.DocumentMapping`1.UniqueIndex*"></a>
+  <h4 id="AeroDB_DocumentMapping_1_UniqueIndex__1_System_Linq_Expressions_Expression_System_Func__0___0___" data-uid="AeroDB.DocumentMapping`1.UniqueIndex``1(System.Linq.Expressions.Expression{System.Func{`0,``0}})">UniqueIndex&lt;TProp&gt;(Expression&lt;Func&lt;T, TProp&gt;&gt;)</h4>
+  <div class="markdown level1 summary"><p>Defines a unique index on the specified property.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DocumentMapping&lt;T&gt; UniqueIndex&lt;TProp&gt;(Expression&lt;Func&lt;T, TProp&gt;&gt; property)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;T, TProp&gt;&gt;</td>
+        <td><span class="parametername">property</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.DocumentMapping-1.html">DocumentMapping</a>&lt;T&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TProp</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentMapping.cs" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In this article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      AeroDB Documentation
+      
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.min.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

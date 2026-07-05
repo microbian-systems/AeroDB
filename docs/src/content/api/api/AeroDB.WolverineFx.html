@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Namespace AeroDB.WolverineFx | AeroDB API Reference </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="Namespace AeroDB.WolverineFx | AeroDB API Reference ">
+    
+    
+      <link rel="shortcut icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../styles/docfx.css">
+      <link rel="stylesheet" href="../styles/main.css">
+      <meta property="docfx:navrel" content="../toc.html">
+      <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="AeroDB">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="AeroDB.WolverineFx">
+
+  <h1 id="AeroDB_WolverineFx" data-uid="AeroDB.WolverineFx" class="text-break">Namespace AeroDB.WolverineFx</h1>
+  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="markdown level0 remarks"></div>
+    <h3 id="classes">
+Classes
+</h3>
+      <h4><a class="xref" href="AeroDB.WolverineFx.AeroDBEndpoint.html">AeroDBEndpoint</a></h4>
+      <section><p>AeroDB endpoint backed by SurrealDB message storage.
+Creates <a class="xref" href="AeroDB.WolverineFx.AeroDBQueueListener.html">AeroDBQueueListener</a> and <a class="xref" href="AeroDB.WolverineFx.AeroDBQueueSender.html">AeroDBQueueSender</a>
+for message processing.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.WolverineFx.AeroDBEnvelope.html">AeroDBEnvelope</a></h4>
+      <section><p>SurrealDB record type for Wolverine message envelopes.
+Maps to wolverine_incoming_envelopes and wolverine_outgoing_envelopes tables.
+The body is stored as Base64 string (SurrealDB CBOR byte[] round-trip may be unreliable).</p>
+</section>
+      <h4><a class="xref" href="AeroDB.WolverineFx.AeroDBIntegration.html">AeroDBIntegration</a></h4>
+      <section><p>Wolverine extension that integrates AeroDB (SurrealDB) as the message persistence
+and saga storage provider. Registers codegen sources, persistence frame provider,
+and the AeroDB transport.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.WolverineFx.AeroDBMessageStore.html">AeroDBMessageStore</a></h4>
+      <section><p>SurrealDB (AeroDB) backed implementation of Wolverine's IMessageStore and all sub-interfaces.
+All operations use SurrealQL RawQuery with parameterized queries.
+Envelope bodies are stored as Base64 strings for reliable CBOR round-tripping.</p>
+<p>Schema initialization now delegates to the AeroDB <a class="xref" href="AeroDB.SchemaManager.html">SchemaManager</a> pipeline
+via typed POCOs (<span class="xref">AeroDB.WolverineFx.WolverineIncomingEnvelope</span>, etc.) instead of
+a hardcoded SurrealQL string.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.WolverineFx.AeroDBOps.html">AeroDBOps</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AeroDB.WolverineFx.AeroDBOutboxedSessionFactory.html">AeroDBOutboxedSessionFactory</a></h4>
+      <section><p>Factory that creates <a class="xref" href="AeroDB.IDocumentSession.html">IDocumentSession</a> instances pre-enrolled in
+Wolverine's outbox. Mirrors the Wolverine.Marten <code>OutboxedSessionFactory</code> pattern.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.WolverineFx.AeroDBQueueListener.html">AeroDBQueueListener</a></h4>
+      <section><p>Polling listener that claims and dispatches incoming messages from SurrealDB.
+Uses the AeroDBMessageStore to load globally-owned incoming envelopes,
+then dispatches them to the provided IReceiver.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.WolverineFx.AeroDBQueueSender.html">AeroDBQueueSender</a></h4>
+      <section><p>Sends outgoing messages by inserting them into the SurrealDB
+wolverine_outgoing_envelopes table via AeroDBMessageStore.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.WolverineFx.AeroDBSagaStorage-2.html">AeroDBSagaStorage&lt;TId, TSaga&gt;</a></h4>
+      <section><p>AeroDB-backed saga storage for Wolverine using SurrealDB as the document store.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.WolverineFx.AeroDBTransport.html">AeroDBTransport</a></h4>
+      <section><p>AeroDB-backed transport for Wolverine using SurrealDB as the message store.
+Registers the &quot;AeroDB://&quot; protocol scheme and creates AeroDBEndpoint instances.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.WolverineFx.AeroDBTransportOptions.html">AeroDBTransportOptions</a></h4>
+      <section><p>Configuration options for the AeroDB-backed transport.
+Controls polling behavior and batch sizes for the SurrealDB message queue.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.WolverineFx.AeroDBWolverineOptionsEventExtensions.html">AeroDBWolverineOptionsEventExtensions</a></h4>
+      <section><p>Extension methods for configuring AeroDB event forwarding through Wolverine.
+Event forwarding is automatically wired when sessions are opened via
+<a class="xref" href="AeroDB.WolverineFx.AeroDBOutboxedSessionFactory.html">AeroDBOutboxedSessionFactory</a>. This method provides additional
+store-level configuration for event-related options.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.WolverineFx.ScopedDocumentSessionHolder.html">ScopedDocumentSessionHolder</a></h4>
+      <section><p>Scope-local carrier for the outbox-enrolled <a class="xref" href="AeroDB.IDocumentSession.html">IDocumentSession</a> a handler is using.
+When a handler falls back to service location, Wolverine's generated code primes this holder
+so a service-located <a class="xref" href="AeroDB.IDocumentSession.html">IDocumentSession</a> / <a class="xref" href="AeroDB.IQuerySession.html">IQuerySession</a> resolves
+to the SAME session enrolled with the active outbox. See GH-3001.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.WolverineFx.WolverineEnvelopeSchemas.html">WolverineEnvelopeSchemas</a></h4>
+      <section><p>Registers Wolverine envelope table schemas on <a class="xref" href="AeroDB.StoreOptions.html#AeroDB_StoreOptions_Schema">Schema</a>
+during <a class="xref" href="AeroDB.DocumentStore.html#AeroDB_DocumentStore_InitializeAsync_System_Threading_CancellationToken_">InitializeAsync(CancellationToken)</a> via the <a class="xref" href="AeroDB.IConfigureAeroDB.html">IConfigureAeroDB</a> hook.
+This replaces the hardcoded 131-line SchemaScript string in <a class="xref" href="AeroDB.WolverineFx.AeroDBMessageStore.html">AeroDBMessageStore</a>
+with proper typed POCOs and the AeroDB schema pipeline.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.WolverineFx.WolverineOptionsAeroDBExtensions.html">WolverineOptionsAeroDBExtensions</a></h4>
+      <section><p>Extension methods for integrating Wolverine with AeroDB (SurrealDB) persistence.</p>
+</section>
+      <h4><a class="xref" href="AeroDB.WolverineFx.WolverineOptionsSubscriptionExtensions.html">WolverineOptionsSubscriptionExtensions</a></h4>
+      <section><p>Extension methods for registering AeroDB event subscriptions with Wolverine.</p>
+</section>
+    <h3 id="interfaces">
+Interfaces
+</h3>
+      <h4><a class="xref" href="AeroDB.WolverineFx.IAeroDBOp.html">IAeroDBOp</a></h4>
+      <section><p>Side effect that executes against a AeroDB document session.</p>
+</section>
+
+
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In this article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      AeroDB Documentation
+      
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.min.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

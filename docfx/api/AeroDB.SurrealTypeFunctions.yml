@@ -1,0 +1,1790 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.SurrealTypeFunctions
+  commentId: T:AeroDB.SurrealTypeFunctions
+  id: SurrealTypeFunctions
+  parent: AeroDB
+  children:
+  - AeroDB.SurrealTypeFunctions.IsArray(System.Object)
+  - AeroDB.SurrealTypeFunctions.IsBool(System.Object)
+  - AeroDB.SurrealTypeFunctions.IsBytes(System.Object)
+  - AeroDB.SurrealTypeFunctions.IsCollection(System.Object)
+  - AeroDB.SurrealTypeFunctions.IsDatetime(System.Object)
+  - AeroDB.SurrealTypeFunctions.IsDecimal(System.Object)
+  - AeroDB.SurrealTypeFunctions.IsDuration(System.Object)
+  - AeroDB.SurrealTypeFunctions.IsFloat(System.Object)
+  - AeroDB.SurrealTypeFunctions.IsGeometry(System.Object)
+  - AeroDB.SurrealTypeFunctions.IsInt(System.Object)
+  - AeroDB.SurrealTypeFunctions.IsLine(System.Object)
+  - AeroDB.SurrealTypeFunctions.IsMultiline(System.Object)
+  - AeroDB.SurrealTypeFunctions.IsMultipoint(System.Object)
+  - AeroDB.SurrealTypeFunctions.IsMultipolygon(System.Object)
+  - AeroDB.SurrealTypeFunctions.IsNone(System.Object)
+  - AeroDB.SurrealTypeFunctions.IsNull(System.Object)
+  - AeroDB.SurrealTypeFunctions.IsNumber(System.Object)
+  - AeroDB.SurrealTypeFunctions.IsObject(System.Object)
+  - AeroDB.SurrealTypeFunctions.IsPoint(System.Object)
+  - AeroDB.SurrealTypeFunctions.IsPolygon(System.Object)
+  - AeroDB.SurrealTypeFunctions.IsRange(System.Object)
+  - AeroDB.SurrealTypeFunctions.IsRecord(System.Object)
+  - AeroDB.SurrealTypeFunctions.IsString(System.Object)
+  - AeroDB.SurrealTypeFunctions.IsUuid(System.Object)
+  - AeroDB.SurrealTypeFunctions.TypeBool(System.Object)
+  - AeroDB.SurrealTypeFunctions.TypeBytes(System.Object)
+  - AeroDB.SurrealTypeFunctions.TypeDatetime(System.Object)
+  - AeroDB.SurrealTypeFunctions.TypeDecimal(System.Object)
+  - AeroDB.SurrealTypeFunctions.TypeDuration(System.Object)
+  - AeroDB.SurrealTypeFunctions.TypeFloat(System.Object)
+  - AeroDB.SurrealTypeFunctions.TypeInt(System.Object)
+  - AeroDB.SurrealTypeFunctions.TypeNumber(System.Object)
+  - AeroDB.SurrealTypeFunctions.TypeOf(System.Object)
+  - AeroDB.SurrealTypeFunctions.TypePoint(System.Object)
+  - AeroDB.SurrealTypeFunctions.TypeRecord(System.Object)
+  - AeroDB.SurrealTypeFunctions.TypeString(System.Object)
+  - AeroDB.SurrealTypeFunctions.TypeTable(System.Object)
+  - AeroDB.SurrealTypeFunctions.TypeThing(System.Object)
+  langs:
+  - csharp
+  - vb
+  name: SurrealTypeFunctions
+  nameWithType: SurrealTypeFunctions
+  fullName: AeroDB.SurrealTypeFunctions
+  type: Class
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealTypeFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    SurrealDB type conversion and type-check functions for use in LINQ expressions.
+
+    These methods are NOT callable at runtime — they exist for expression-tree translation only.
+  example: []
+  syntax:
+    content: public static class SurrealTypeFunctions
+    content.vb: Public Module SurrealTypeFunctions
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+- uid: AeroDB.SurrealTypeFunctions.TypeBool(System.Object)
+  commentId: M:AeroDB.SurrealTypeFunctions.TypeBool(System.Object)
+  id: TypeBool(System.Object)
+  parent: AeroDB.SurrealTypeFunctions
+  langs:
+  - csharp
+  - vb
+  name: TypeBool(object)
+  nameWithType: SurrealTypeFunctions.TypeBool(object)
+  fullName: AeroDB.SurrealTypeFunctions.TypeBool(object)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealTypeFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Converts a value to bool. Maps to <code>type::bool(value)</code>.
+  example: []
+  syntax:
+    content: public static object TypeBool(object value)
+    parameters:
+    - id: value
+      type: System.Object
+    return:
+      type: System.Object
+    content.vb: Public Shared Function TypeBool(value As Object) As Object
+  overload: AeroDB.SurrealTypeFunctions.TypeBool*
+  nameWithType.vb: SurrealTypeFunctions.TypeBool(Object)
+  fullName.vb: AeroDB.SurrealTypeFunctions.TypeBool(Object)
+  name.vb: TypeBool(Object)
+- uid: AeroDB.SurrealTypeFunctions.TypeBytes(System.Object)
+  commentId: M:AeroDB.SurrealTypeFunctions.TypeBytes(System.Object)
+  id: TypeBytes(System.Object)
+  parent: AeroDB.SurrealTypeFunctions
+  langs:
+  - csharp
+  - vb
+  name: TypeBytes(object)
+  nameWithType: SurrealTypeFunctions.TypeBytes(object)
+  fullName: AeroDB.SurrealTypeFunctions.TypeBytes(object)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealTypeFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Converts a value to bytes. Maps to <code>type::bytes(value)</code>.
+  example: []
+  syntax:
+    content: public static object TypeBytes(object value)
+    parameters:
+    - id: value
+      type: System.Object
+    return:
+      type: System.Object
+    content.vb: Public Shared Function TypeBytes(value As Object) As Object
+  overload: AeroDB.SurrealTypeFunctions.TypeBytes*
+  nameWithType.vb: SurrealTypeFunctions.TypeBytes(Object)
+  fullName.vb: AeroDB.SurrealTypeFunctions.TypeBytes(Object)
+  name.vb: TypeBytes(Object)
+- uid: AeroDB.SurrealTypeFunctions.TypeDatetime(System.Object)
+  commentId: M:AeroDB.SurrealTypeFunctions.TypeDatetime(System.Object)
+  id: TypeDatetime(System.Object)
+  parent: AeroDB.SurrealTypeFunctions
+  langs:
+  - csharp
+  - vb
+  name: TypeDatetime(object)
+  nameWithType: SurrealTypeFunctions.TypeDatetime(object)
+  fullName: AeroDB.SurrealTypeFunctions.TypeDatetime(object)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealTypeFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Converts a value to datetime. Maps to <code>type::datetime(value)</code>.
+  example: []
+  syntax:
+    content: public static object TypeDatetime(object value)
+    parameters:
+    - id: value
+      type: System.Object
+    return:
+      type: System.Object
+    content.vb: Public Shared Function TypeDatetime(value As Object) As Object
+  overload: AeroDB.SurrealTypeFunctions.TypeDatetime*
+  nameWithType.vb: SurrealTypeFunctions.TypeDatetime(Object)
+  fullName.vb: AeroDB.SurrealTypeFunctions.TypeDatetime(Object)
+  name.vb: TypeDatetime(Object)
+- uid: AeroDB.SurrealTypeFunctions.TypeDecimal(System.Object)
+  commentId: M:AeroDB.SurrealTypeFunctions.TypeDecimal(System.Object)
+  id: TypeDecimal(System.Object)
+  parent: AeroDB.SurrealTypeFunctions
+  langs:
+  - csharp
+  - vb
+  name: TypeDecimal(object)
+  nameWithType: SurrealTypeFunctions.TypeDecimal(object)
+  fullName: AeroDB.SurrealTypeFunctions.TypeDecimal(object)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealTypeFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Converts a value to decimal. Maps to <code>type::decimal(value)</code>.
+  example: []
+  syntax:
+    content: public static object TypeDecimal(object value)
+    parameters:
+    - id: value
+      type: System.Object
+    return:
+      type: System.Object
+    content.vb: Public Shared Function TypeDecimal(value As Object) As Object
+  overload: AeroDB.SurrealTypeFunctions.TypeDecimal*
+  nameWithType.vb: SurrealTypeFunctions.TypeDecimal(Object)
+  fullName.vb: AeroDB.SurrealTypeFunctions.TypeDecimal(Object)
+  name.vb: TypeDecimal(Object)
+- uid: AeroDB.SurrealTypeFunctions.TypeDuration(System.Object)
+  commentId: M:AeroDB.SurrealTypeFunctions.TypeDuration(System.Object)
+  id: TypeDuration(System.Object)
+  parent: AeroDB.SurrealTypeFunctions
+  langs:
+  - csharp
+  - vb
+  name: TypeDuration(object)
+  nameWithType: SurrealTypeFunctions.TypeDuration(object)
+  fullName: AeroDB.SurrealTypeFunctions.TypeDuration(object)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealTypeFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Converts a value to duration. Maps to <code>type::duration(value)</code>.
+  example: []
+  syntax:
+    content: public static object TypeDuration(object value)
+    parameters:
+    - id: value
+      type: System.Object
+    return:
+      type: System.Object
+    content.vb: Public Shared Function TypeDuration(value As Object) As Object
+  overload: AeroDB.SurrealTypeFunctions.TypeDuration*
+  nameWithType.vb: SurrealTypeFunctions.TypeDuration(Object)
+  fullName.vb: AeroDB.SurrealTypeFunctions.TypeDuration(Object)
+  name.vb: TypeDuration(Object)
+- uid: AeroDB.SurrealTypeFunctions.TypeFloat(System.Object)
+  commentId: M:AeroDB.SurrealTypeFunctions.TypeFloat(System.Object)
+  id: TypeFloat(System.Object)
+  parent: AeroDB.SurrealTypeFunctions
+  langs:
+  - csharp
+  - vb
+  name: TypeFloat(object)
+  nameWithType: SurrealTypeFunctions.TypeFloat(object)
+  fullName: AeroDB.SurrealTypeFunctions.TypeFloat(object)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealTypeFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Converts a value to float. Maps to <code>type::float(value)</code>.
+  example: []
+  syntax:
+    content: public static object TypeFloat(object value)
+    parameters:
+    - id: value
+      type: System.Object
+    return:
+      type: System.Object
+    content.vb: Public Shared Function TypeFloat(value As Object) As Object
+  overload: AeroDB.SurrealTypeFunctions.TypeFloat*
+  nameWithType.vb: SurrealTypeFunctions.TypeFloat(Object)
+  fullName.vb: AeroDB.SurrealTypeFunctions.TypeFloat(Object)
+  name.vb: TypeFloat(Object)
+- uid: AeroDB.SurrealTypeFunctions.TypeInt(System.Object)
+  commentId: M:AeroDB.SurrealTypeFunctions.TypeInt(System.Object)
+  id: TypeInt(System.Object)
+  parent: AeroDB.SurrealTypeFunctions
+  langs:
+  - csharp
+  - vb
+  name: TypeInt(object)
+  nameWithType: SurrealTypeFunctions.TypeInt(object)
+  fullName: AeroDB.SurrealTypeFunctions.TypeInt(object)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealTypeFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Converts a value to int. Maps to <code>type::int(value)</code>.
+  example: []
+  syntax:
+    content: public static object TypeInt(object value)
+    parameters:
+    - id: value
+      type: System.Object
+    return:
+      type: System.Object
+    content.vb: Public Shared Function TypeInt(value As Object) As Object
+  overload: AeroDB.SurrealTypeFunctions.TypeInt*
+  nameWithType.vb: SurrealTypeFunctions.TypeInt(Object)
+  fullName.vb: AeroDB.SurrealTypeFunctions.TypeInt(Object)
+  name.vb: TypeInt(Object)
+- uid: AeroDB.SurrealTypeFunctions.TypeNumber(System.Object)
+  commentId: M:AeroDB.SurrealTypeFunctions.TypeNumber(System.Object)
+  id: TypeNumber(System.Object)
+  parent: AeroDB.SurrealTypeFunctions
+  langs:
+  - csharp
+  - vb
+  name: TypeNumber(object)
+  nameWithType: SurrealTypeFunctions.TypeNumber(object)
+  fullName: AeroDB.SurrealTypeFunctions.TypeNumber(object)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealTypeFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Converts a value to number. Maps to <code>type::number(value)</code>.
+  example: []
+  syntax:
+    content: public static object TypeNumber(object value)
+    parameters:
+    - id: value
+      type: System.Object
+    return:
+      type: System.Object
+    content.vb: Public Shared Function TypeNumber(value As Object) As Object
+  overload: AeroDB.SurrealTypeFunctions.TypeNumber*
+  nameWithType.vb: SurrealTypeFunctions.TypeNumber(Object)
+  fullName.vb: AeroDB.SurrealTypeFunctions.TypeNumber(Object)
+  name.vb: TypeNumber(Object)
+- uid: AeroDB.SurrealTypeFunctions.TypePoint(System.Object)
+  commentId: M:AeroDB.SurrealTypeFunctions.TypePoint(System.Object)
+  id: TypePoint(System.Object)
+  parent: AeroDB.SurrealTypeFunctions
+  langs:
+  - csharp
+  - vb
+  name: TypePoint(object)
+  nameWithType: SurrealTypeFunctions.TypePoint(object)
+  fullName: AeroDB.SurrealTypeFunctions.TypePoint(object)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealTypeFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Converts a value to point. Maps to <code>type::point(value)</code>.
+  example: []
+  syntax:
+    content: public static object TypePoint(object value)
+    parameters:
+    - id: value
+      type: System.Object
+    return:
+      type: System.Object
+    content.vb: Public Shared Function TypePoint(value As Object) As Object
+  overload: AeroDB.SurrealTypeFunctions.TypePoint*
+  nameWithType.vb: SurrealTypeFunctions.TypePoint(Object)
+  fullName.vb: AeroDB.SurrealTypeFunctions.TypePoint(Object)
+  name.vb: TypePoint(Object)
+- uid: AeroDB.SurrealTypeFunctions.TypeString(System.Object)
+  commentId: M:AeroDB.SurrealTypeFunctions.TypeString(System.Object)
+  id: TypeString(System.Object)
+  parent: AeroDB.SurrealTypeFunctions
+  langs:
+  - csharp
+  - vb
+  name: TypeString(object)
+  nameWithType: SurrealTypeFunctions.TypeString(object)
+  fullName: AeroDB.SurrealTypeFunctions.TypeString(object)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealTypeFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Converts a value to string. Maps to <code>type::string(value)</code>.
+  example: []
+  syntax:
+    content: public static object TypeString(object value)
+    parameters:
+    - id: value
+      type: System.Object
+    return:
+      type: System.Object
+    content.vb: Public Shared Function TypeString(value As Object) As Object
+  overload: AeroDB.SurrealTypeFunctions.TypeString*
+  nameWithType.vb: SurrealTypeFunctions.TypeString(Object)
+  fullName.vb: AeroDB.SurrealTypeFunctions.TypeString(Object)
+  name.vb: TypeString(Object)
+- uid: AeroDB.SurrealTypeFunctions.TypeTable(System.Object)
+  commentId: M:AeroDB.SurrealTypeFunctions.TypeTable(System.Object)
+  id: TypeTable(System.Object)
+  parent: AeroDB.SurrealTypeFunctions
+  langs:
+  - csharp
+  - vb
+  name: TypeTable(object)
+  nameWithType: SurrealTypeFunctions.TypeTable(object)
+  fullName: AeroDB.SurrealTypeFunctions.TypeTable(object)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealTypeFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Converts a value to table. Maps to <code>type::table(value)</code>.
+  example: []
+  syntax:
+    content: public static object TypeTable(object value)
+    parameters:
+    - id: value
+      type: System.Object
+    return:
+      type: System.Object
+    content.vb: Public Shared Function TypeTable(value As Object) As Object
+  overload: AeroDB.SurrealTypeFunctions.TypeTable*
+  nameWithType.vb: SurrealTypeFunctions.TypeTable(Object)
+  fullName.vb: AeroDB.SurrealTypeFunctions.TypeTable(Object)
+  name.vb: TypeTable(Object)
+- uid: AeroDB.SurrealTypeFunctions.TypeThing(System.Object)
+  commentId: M:AeroDB.SurrealTypeFunctions.TypeThing(System.Object)
+  id: TypeThing(System.Object)
+  parent: AeroDB.SurrealTypeFunctions
+  langs:
+  - csharp
+  - vb
+  name: TypeThing(object)
+  nameWithType: SurrealTypeFunctions.TypeThing(object)
+  fullName: AeroDB.SurrealTypeFunctions.TypeThing(object)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealTypeFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Converts a value to thing. Maps to <code>type::thing(value)</code>.
+  example: []
+  syntax:
+    content: public static object TypeThing(object value)
+    parameters:
+    - id: value
+      type: System.Object
+    return:
+      type: System.Object
+    content.vb: Public Shared Function TypeThing(value As Object) As Object
+  overload: AeroDB.SurrealTypeFunctions.TypeThing*
+  nameWithType.vb: SurrealTypeFunctions.TypeThing(Object)
+  fullName.vb: AeroDB.SurrealTypeFunctions.TypeThing(Object)
+  name.vb: TypeThing(Object)
+- uid: AeroDB.SurrealTypeFunctions.TypeRecord(System.Object)
+  commentId: M:AeroDB.SurrealTypeFunctions.TypeRecord(System.Object)
+  id: TypeRecord(System.Object)
+  parent: AeroDB.SurrealTypeFunctions
+  langs:
+  - csharp
+  - vb
+  name: TypeRecord(object)
+  nameWithType: SurrealTypeFunctions.TypeRecord(object)
+  fullName: AeroDB.SurrealTypeFunctions.TypeRecord(object)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealTypeFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Converts a value to record. Maps to <code>type::record(value)</code>.
+  example: []
+  syntax:
+    content: public static object TypeRecord(object value)
+    parameters:
+    - id: value
+      type: System.Object
+    return:
+      type: System.Object
+    content.vb: Public Shared Function TypeRecord(value As Object) As Object
+  overload: AeroDB.SurrealTypeFunctions.TypeRecord*
+  nameWithType.vb: SurrealTypeFunctions.TypeRecord(Object)
+  fullName.vb: AeroDB.SurrealTypeFunctions.TypeRecord(Object)
+  name.vb: TypeRecord(Object)
+- uid: AeroDB.SurrealTypeFunctions.TypeOf(System.Object)
+  commentId: M:AeroDB.SurrealTypeFunctions.TypeOf(System.Object)
+  id: TypeOf(System.Object)
+  parent: AeroDB.SurrealTypeFunctions
+  langs:
+  - csharp
+  - vb
+  name: TypeOf(object)
+  nameWithType: SurrealTypeFunctions.TypeOf(object)
+  fullName: AeroDB.SurrealTypeFunctions.TypeOf(object)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealTypeFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Returns the type name of a value as a string. Maps to <code>type::of(value)</code>.
+  example: []
+  syntax:
+    content: public static string TypeOf(object value)
+    parameters:
+    - id: value
+      type: System.Object
+    return:
+      type: System.String
+    content.vb: Public Shared Function [TypeOf](value As Object) As String
+  overload: AeroDB.SurrealTypeFunctions.TypeOf*
+  nameWithType.vb: SurrealTypeFunctions.TypeOf(Object)
+  fullName.vb: AeroDB.SurrealTypeFunctions.TypeOf(Object)
+  name.vb: TypeOf(Object)
+- uid: AeroDB.SurrealTypeFunctions.IsArray(System.Object)
+  commentId: M:AeroDB.SurrealTypeFunctions.IsArray(System.Object)
+  id: IsArray(System.Object)
+  parent: AeroDB.SurrealTypeFunctions
+  langs:
+  - csharp
+  - vb
+  name: IsArray(object)
+  nameWithType: SurrealTypeFunctions.IsArray(object)
+  fullName: AeroDB.SurrealTypeFunctions.IsArray(object)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealTypeFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Checks if a value is an array. Maps to <code>type::is_array(value)</code>.
+  example: []
+  syntax:
+    content: public static bool IsArray(object value)
+    parameters:
+    - id: value
+      type: System.Object
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function IsArray(value As Object) As Boolean
+  overload: AeroDB.SurrealTypeFunctions.IsArray*
+  nameWithType.vb: SurrealTypeFunctions.IsArray(Object)
+  fullName.vb: AeroDB.SurrealTypeFunctions.IsArray(Object)
+  name.vb: IsArray(Object)
+- uid: AeroDB.SurrealTypeFunctions.IsBool(System.Object)
+  commentId: M:AeroDB.SurrealTypeFunctions.IsBool(System.Object)
+  id: IsBool(System.Object)
+  parent: AeroDB.SurrealTypeFunctions
+  langs:
+  - csharp
+  - vb
+  name: IsBool(object)
+  nameWithType: SurrealTypeFunctions.IsBool(object)
+  fullName: AeroDB.SurrealTypeFunctions.IsBool(object)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealTypeFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Checks if a value is a bool. Maps to <code>type::is_bool(value)</code>.
+  example: []
+  syntax:
+    content: public static bool IsBool(object value)
+    parameters:
+    - id: value
+      type: System.Object
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function IsBool(value As Object) As Boolean
+  overload: AeroDB.SurrealTypeFunctions.IsBool*
+  nameWithType.vb: SurrealTypeFunctions.IsBool(Object)
+  fullName.vb: AeroDB.SurrealTypeFunctions.IsBool(Object)
+  name.vb: IsBool(Object)
+- uid: AeroDB.SurrealTypeFunctions.IsBytes(System.Object)
+  commentId: M:AeroDB.SurrealTypeFunctions.IsBytes(System.Object)
+  id: IsBytes(System.Object)
+  parent: AeroDB.SurrealTypeFunctions
+  langs:
+  - csharp
+  - vb
+  name: IsBytes(object)
+  nameWithType: SurrealTypeFunctions.IsBytes(object)
+  fullName: AeroDB.SurrealTypeFunctions.IsBytes(object)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealTypeFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Checks if a value is bytes. Maps to <code>type::is_bytes(value)</code>.
+  example: []
+  syntax:
+    content: public static bool IsBytes(object value)
+    parameters:
+    - id: value
+      type: System.Object
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function IsBytes(value As Object) As Boolean
+  overload: AeroDB.SurrealTypeFunctions.IsBytes*
+  nameWithType.vb: SurrealTypeFunctions.IsBytes(Object)
+  fullName.vb: AeroDB.SurrealTypeFunctions.IsBytes(Object)
+  name.vb: IsBytes(Object)
+- uid: AeroDB.SurrealTypeFunctions.IsCollection(System.Object)
+  commentId: M:AeroDB.SurrealTypeFunctions.IsCollection(System.Object)
+  id: IsCollection(System.Object)
+  parent: AeroDB.SurrealTypeFunctions
+  langs:
+  - csharp
+  - vb
+  name: IsCollection(object)
+  nameWithType: SurrealTypeFunctions.IsCollection(object)
+  fullName: AeroDB.SurrealTypeFunctions.IsCollection(object)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealTypeFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Checks if a value is a collection. Maps to <code>type::is_collection(value)</code>.
+  example: []
+  syntax:
+    content: public static bool IsCollection(object value)
+    parameters:
+    - id: value
+      type: System.Object
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function IsCollection(value As Object) As Boolean
+  overload: AeroDB.SurrealTypeFunctions.IsCollection*
+  nameWithType.vb: SurrealTypeFunctions.IsCollection(Object)
+  fullName.vb: AeroDB.SurrealTypeFunctions.IsCollection(Object)
+  name.vb: IsCollection(Object)
+- uid: AeroDB.SurrealTypeFunctions.IsDatetime(System.Object)
+  commentId: M:AeroDB.SurrealTypeFunctions.IsDatetime(System.Object)
+  id: IsDatetime(System.Object)
+  parent: AeroDB.SurrealTypeFunctions
+  langs:
+  - csharp
+  - vb
+  name: IsDatetime(object)
+  nameWithType: SurrealTypeFunctions.IsDatetime(object)
+  fullName: AeroDB.SurrealTypeFunctions.IsDatetime(object)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealTypeFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Checks if a value is a datetime. Maps to <code>type::is_datetime(value)</code>.
+  example: []
+  syntax:
+    content: public static bool IsDatetime(object value)
+    parameters:
+    - id: value
+      type: System.Object
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function IsDatetime(value As Object) As Boolean
+  overload: AeroDB.SurrealTypeFunctions.IsDatetime*
+  nameWithType.vb: SurrealTypeFunctions.IsDatetime(Object)
+  fullName.vb: AeroDB.SurrealTypeFunctions.IsDatetime(Object)
+  name.vb: IsDatetime(Object)
+- uid: AeroDB.SurrealTypeFunctions.IsDecimal(System.Object)
+  commentId: M:AeroDB.SurrealTypeFunctions.IsDecimal(System.Object)
+  id: IsDecimal(System.Object)
+  parent: AeroDB.SurrealTypeFunctions
+  langs:
+  - csharp
+  - vb
+  name: IsDecimal(object)
+  nameWithType: SurrealTypeFunctions.IsDecimal(object)
+  fullName: AeroDB.SurrealTypeFunctions.IsDecimal(object)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealTypeFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Checks if a value is a decimal. Maps to <code>type::is_decimal(value)</code>.
+  example: []
+  syntax:
+    content: public static bool IsDecimal(object value)
+    parameters:
+    - id: value
+      type: System.Object
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function IsDecimal(value As Object) As Boolean
+  overload: AeroDB.SurrealTypeFunctions.IsDecimal*
+  nameWithType.vb: SurrealTypeFunctions.IsDecimal(Object)
+  fullName.vb: AeroDB.SurrealTypeFunctions.IsDecimal(Object)
+  name.vb: IsDecimal(Object)
+- uid: AeroDB.SurrealTypeFunctions.IsDuration(System.Object)
+  commentId: M:AeroDB.SurrealTypeFunctions.IsDuration(System.Object)
+  id: IsDuration(System.Object)
+  parent: AeroDB.SurrealTypeFunctions
+  langs:
+  - csharp
+  - vb
+  name: IsDuration(object)
+  nameWithType: SurrealTypeFunctions.IsDuration(object)
+  fullName: AeroDB.SurrealTypeFunctions.IsDuration(object)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealTypeFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Checks if a value is a duration. Maps to <code>type::is_duration(value)</code>.
+  example: []
+  syntax:
+    content: public static bool IsDuration(object value)
+    parameters:
+    - id: value
+      type: System.Object
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function IsDuration(value As Object) As Boolean
+  overload: AeroDB.SurrealTypeFunctions.IsDuration*
+  nameWithType.vb: SurrealTypeFunctions.IsDuration(Object)
+  fullName.vb: AeroDB.SurrealTypeFunctions.IsDuration(Object)
+  name.vb: IsDuration(Object)
+- uid: AeroDB.SurrealTypeFunctions.IsFloat(System.Object)
+  commentId: M:AeroDB.SurrealTypeFunctions.IsFloat(System.Object)
+  id: IsFloat(System.Object)
+  parent: AeroDB.SurrealTypeFunctions
+  langs:
+  - csharp
+  - vb
+  name: IsFloat(object)
+  nameWithType: SurrealTypeFunctions.IsFloat(object)
+  fullName: AeroDB.SurrealTypeFunctions.IsFloat(object)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealTypeFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Checks if a value is a float. Maps to <code>type::is_float(value)</code>.
+  example: []
+  syntax:
+    content: public static bool IsFloat(object value)
+    parameters:
+    - id: value
+      type: System.Object
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function IsFloat(value As Object) As Boolean
+  overload: AeroDB.SurrealTypeFunctions.IsFloat*
+  nameWithType.vb: SurrealTypeFunctions.IsFloat(Object)
+  fullName.vb: AeroDB.SurrealTypeFunctions.IsFloat(Object)
+  name.vb: IsFloat(Object)
+- uid: AeroDB.SurrealTypeFunctions.IsGeometry(System.Object)
+  commentId: M:AeroDB.SurrealTypeFunctions.IsGeometry(System.Object)
+  id: IsGeometry(System.Object)
+  parent: AeroDB.SurrealTypeFunctions
+  langs:
+  - csharp
+  - vb
+  name: IsGeometry(object)
+  nameWithType: SurrealTypeFunctions.IsGeometry(object)
+  fullName: AeroDB.SurrealTypeFunctions.IsGeometry(object)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealTypeFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Checks if a value is a geometry. Maps to <code>type::is_geometry(value)</code>.
+  example: []
+  syntax:
+    content: public static bool IsGeometry(object value)
+    parameters:
+    - id: value
+      type: System.Object
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function IsGeometry(value As Object) As Boolean
+  overload: AeroDB.SurrealTypeFunctions.IsGeometry*
+  nameWithType.vb: SurrealTypeFunctions.IsGeometry(Object)
+  fullName.vb: AeroDB.SurrealTypeFunctions.IsGeometry(Object)
+  name.vb: IsGeometry(Object)
+- uid: AeroDB.SurrealTypeFunctions.IsInt(System.Object)
+  commentId: M:AeroDB.SurrealTypeFunctions.IsInt(System.Object)
+  id: IsInt(System.Object)
+  parent: AeroDB.SurrealTypeFunctions
+  langs:
+  - csharp
+  - vb
+  name: IsInt(object)
+  nameWithType: SurrealTypeFunctions.IsInt(object)
+  fullName: AeroDB.SurrealTypeFunctions.IsInt(object)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealTypeFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Checks if a value is an int. Maps to <code>type::is_int(value)</code>.
+  example: []
+  syntax:
+    content: public static bool IsInt(object value)
+    parameters:
+    - id: value
+      type: System.Object
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function IsInt(value As Object) As Boolean
+  overload: AeroDB.SurrealTypeFunctions.IsInt*
+  nameWithType.vb: SurrealTypeFunctions.IsInt(Object)
+  fullName.vb: AeroDB.SurrealTypeFunctions.IsInt(Object)
+  name.vb: IsInt(Object)
+- uid: AeroDB.SurrealTypeFunctions.IsLine(System.Object)
+  commentId: M:AeroDB.SurrealTypeFunctions.IsLine(System.Object)
+  id: IsLine(System.Object)
+  parent: AeroDB.SurrealTypeFunctions
+  langs:
+  - csharp
+  - vb
+  name: IsLine(object)
+  nameWithType: SurrealTypeFunctions.IsLine(object)
+  fullName: AeroDB.SurrealTypeFunctions.IsLine(object)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealTypeFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Checks if a value is a line. Maps to <code>type::is_line(value)</code>.
+  example: []
+  syntax:
+    content: public static bool IsLine(object value)
+    parameters:
+    - id: value
+      type: System.Object
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function IsLine(value As Object) As Boolean
+  overload: AeroDB.SurrealTypeFunctions.IsLine*
+  nameWithType.vb: SurrealTypeFunctions.IsLine(Object)
+  fullName.vb: AeroDB.SurrealTypeFunctions.IsLine(Object)
+  name.vb: IsLine(Object)
+- uid: AeroDB.SurrealTypeFunctions.IsNone(System.Object)
+  commentId: M:AeroDB.SurrealTypeFunctions.IsNone(System.Object)
+  id: IsNone(System.Object)
+  parent: AeroDB.SurrealTypeFunctions
+  langs:
+  - csharp
+  - vb
+  name: IsNone(object)
+  nameWithType: SurrealTypeFunctions.IsNone(object)
+  fullName: AeroDB.SurrealTypeFunctions.IsNone(object)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealTypeFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Checks if a value is NONE (missing/absent). Equivalent to <code>x.Field == null</code> in LINQ expressions.
+
+    SurrealDB distinguishes NONE (absent) from NULL (JSON null). See <xref href="AeroDB.SurrealTypeFunctions.IsNull(System.Object)" data-throw-if-not-resolved="false"></xref> for NULL checking.
+
+    Maps to <code>type::is_none(value)</code>.
+  example: []
+  syntax:
+    content: public static bool IsNone(object value)
+    parameters:
+    - id: value
+      type: System.Object
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function IsNone(value As Object) As Boolean
+  overload: AeroDB.SurrealTypeFunctions.IsNone*
+  nameWithType.vb: SurrealTypeFunctions.IsNone(Object)
+  fullName.vb: AeroDB.SurrealTypeFunctions.IsNone(Object)
+  name.vb: IsNone(Object)
+- uid: AeroDB.SurrealTypeFunctions.IsNull(System.Object)
+  commentId: M:AeroDB.SurrealTypeFunctions.IsNull(System.Object)
+  id: IsNull(System.Object)
+  parent: AeroDB.SurrealTypeFunctions
+  langs:
+  - csharp
+  - vb
+  name: IsNull(object)
+  nameWithType: SurrealTypeFunctions.IsNull(object)
+  fullName: AeroDB.SurrealTypeFunctions.IsNull(object)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealTypeFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Checks if a value is NULL (JSON null). This is NOT equivalent to <code>x.Field == null</code> in LINQ,
+
+    which checks for NONE (absent). Use this for explicit SurrealDB NULL checking.
+
+    Maps to <code>type::is_null(value)</code>.
+  example: []
+  syntax:
+    content: public static bool IsNull(object value)
+    parameters:
+    - id: value
+      type: System.Object
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function IsNull(value As Object) As Boolean
+  overload: AeroDB.SurrealTypeFunctions.IsNull*
+  nameWithType.vb: SurrealTypeFunctions.IsNull(Object)
+  fullName.vb: AeroDB.SurrealTypeFunctions.IsNull(Object)
+  name.vb: IsNull(Object)
+- uid: AeroDB.SurrealTypeFunctions.IsMultiline(System.Object)
+  commentId: M:AeroDB.SurrealTypeFunctions.IsMultiline(System.Object)
+  id: IsMultiline(System.Object)
+  parent: AeroDB.SurrealTypeFunctions
+  langs:
+  - csharp
+  - vb
+  name: IsMultiline(object)
+  nameWithType: SurrealTypeFunctions.IsMultiline(object)
+  fullName: AeroDB.SurrealTypeFunctions.IsMultiline(object)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealTypeFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Checks if a value is a multiline. Maps to <code>type::is_multiline(value)</code>.
+  example: []
+  syntax:
+    content: public static bool IsMultiline(object value)
+    parameters:
+    - id: value
+      type: System.Object
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function IsMultiline(value As Object) As Boolean
+  overload: AeroDB.SurrealTypeFunctions.IsMultiline*
+  nameWithType.vb: SurrealTypeFunctions.IsMultiline(Object)
+  fullName.vb: AeroDB.SurrealTypeFunctions.IsMultiline(Object)
+  name.vb: IsMultiline(Object)
+- uid: AeroDB.SurrealTypeFunctions.IsMultipoint(System.Object)
+  commentId: M:AeroDB.SurrealTypeFunctions.IsMultipoint(System.Object)
+  id: IsMultipoint(System.Object)
+  parent: AeroDB.SurrealTypeFunctions
+  langs:
+  - csharp
+  - vb
+  name: IsMultipoint(object)
+  nameWithType: SurrealTypeFunctions.IsMultipoint(object)
+  fullName: AeroDB.SurrealTypeFunctions.IsMultipoint(object)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealTypeFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Checks if a value is a multipoint. Maps to <code>type::is_multipoint(value)</code>.
+  example: []
+  syntax:
+    content: public static bool IsMultipoint(object value)
+    parameters:
+    - id: value
+      type: System.Object
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function IsMultipoint(value As Object) As Boolean
+  overload: AeroDB.SurrealTypeFunctions.IsMultipoint*
+  nameWithType.vb: SurrealTypeFunctions.IsMultipoint(Object)
+  fullName.vb: AeroDB.SurrealTypeFunctions.IsMultipoint(Object)
+  name.vb: IsMultipoint(Object)
+- uid: AeroDB.SurrealTypeFunctions.IsMultipolygon(System.Object)
+  commentId: M:AeroDB.SurrealTypeFunctions.IsMultipolygon(System.Object)
+  id: IsMultipolygon(System.Object)
+  parent: AeroDB.SurrealTypeFunctions
+  langs:
+  - csharp
+  - vb
+  name: IsMultipolygon(object)
+  nameWithType: SurrealTypeFunctions.IsMultipolygon(object)
+  fullName: AeroDB.SurrealTypeFunctions.IsMultipolygon(object)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealTypeFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Checks if a value is a multipolygon. Maps to <code>type::is_multipolygon(value)</code>.
+  example: []
+  syntax:
+    content: public static bool IsMultipolygon(object value)
+    parameters:
+    - id: value
+      type: System.Object
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function IsMultipolygon(value As Object) As Boolean
+  overload: AeroDB.SurrealTypeFunctions.IsMultipolygon*
+  nameWithType.vb: SurrealTypeFunctions.IsMultipolygon(Object)
+  fullName.vb: AeroDB.SurrealTypeFunctions.IsMultipolygon(Object)
+  name.vb: IsMultipolygon(Object)
+- uid: AeroDB.SurrealTypeFunctions.IsNumber(System.Object)
+  commentId: M:AeroDB.SurrealTypeFunctions.IsNumber(System.Object)
+  id: IsNumber(System.Object)
+  parent: AeroDB.SurrealTypeFunctions
+  langs:
+  - csharp
+  - vb
+  name: IsNumber(object)
+  nameWithType: SurrealTypeFunctions.IsNumber(object)
+  fullName: AeroDB.SurrealTypeFunctions.IsNumber(object)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealTypeFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Checks if a value is a number. Maps to <code>type::is_number(value)</code>.
+  example: []
+  syntax:
+    content: public static bool IsNumber(object value)
+    parameters:
+    - id: value
+      type: System.Object
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function IsNumber(value As Object) As Boolean
+  overload: AeroDB.SurrealTypeFunctions.IsNumber*
+  nameWithType.vb: SurrealTypeFunctions.IsNumber(Object)
+  fullName.vb: AeroDB.SurrealTypeFunctions.IsNumber(Object)
+  name.vb: IsNumber(Object)
+- uid: AeroDB.SurrealTypeFunctions.IsObject(System.Object)
+  commentId: M:AeroDB.SurrealTypeFunctions.IsObject(System.Object)
+  id: IsObject(System.Object)
+  parent: AeroDB.SurrealTypeFunctions
+  langs:
+  - csharp
+  - vb
+  name: IsObject(object)
+  nameWithType: SurrealTypeFunctions.IsObject(object)
+  fullName: AeroDB.SurrealTypeFunctions.IsObject(object)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealTypeFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Checks if a value is an object. Maps to <code>type::is_object(value)</code>.
+  example: []
+  syntax:
+    content: public static bool IsObject(object value)
+    parameters:
+    - id: value
+      type: System.Object
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function IsObject(value As Object) As Boolean
+  overload: AeroDB.SurrealTypeFunctions.IsObject*
+  nameWithType.vb: SurrealTypeFunctions.IsObject(Object)
+  fullName.vb: AeroDB.SurrealTypeFunctions.IsObject(Object)
+  name.vb: IsObject(Object)
+- uid: AeroDB.SurrealTypeFunctions.IsPoint(System.Object)
+  commentId: M:AeroDB.SurrealTypeFunctions.IsPoint(System.Object)
+  id: IsPoint(System.Object)
+  parent: AeroDB.SurrealTypeFunctions
+  langs:
+  - csharp
+  - vb
+  name: IsPoint(object)
+  nameWithType: SurrealTypeFunctions.IsPoint(object)
+  fullName: AeroDB.SurrealTypeFunctions.IsPoint(object)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealTypeFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Checks if a value is a point. Maps to <code>type::is_point(value)</code>.
+  example: []
+  syntax:
+    content: public static bool IsPoint(object value)
+    parameters:
+    - id: value
+      type: System.Object
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function IsPoint(value As Object) As Boolean
+  overload: AeroDB.SurrealTypeFunctions.IsPoint*
+  nameWithType.vb: SurrealTypeFunctions.IsPoint(Object)
+  fullName.vb: AeroDB.SurrealTypeFunctions.IsPoint(Object)
+  name.vb: IsPoint(Object)
+- uid: AeroDB.SurrealTypeFunctions.IsPolygon(System.Object)
+  commentId: M:AeroDB.SurrealTypeFunctions.IsPolygon(System.Object)
+  id: IsPolygon(System.Object)
+  parent: AeroDB.SurrealTypeFunctions
+  langs:
+  - csharp
+  - vb
+  name: IsPolygon(object)
+  nameWithType: SurrealTypeFunctions.IsPolygon(object)
+  fullName: AeroDB.SurrealTypeFunctions.IsPolygon(object)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealTypeFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Checks if a value is a polygon. Maps to <code>type::is_polygon(value)</code>.
+  example: []
+  syntax:
+    content: public static bool IsPolygon(object value)
+    parameters:
+    - id: value
+      type: System.Object
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function IsPolygon(value As Object) As Boolean
+  overload: AeroDB.SurrealTypeFunctions.IsPolygon*
+  nameWithType.vb: SurrealTypeFunctions.IsPolygon(Object)
+  fullName.vb: AeroDB.SurrealTypeFunctions.IsPolygon(Object)
+  name.vb: IsPolygon(Object)
+- uid: AeroDB.SurrealTypeFunctions.IsRange(System.Object)
+  commentId: M:AeroDB.SurrealTypeFunctions.IsRange(System.Object)
+  id: IsRange(System.Object)
+  parent: AeroDB.SurrealTypeFunctions
+  langs:
+  - csharp
+  - vb
+  name: IsRange(object)
+  nameWithType: SurrealTypeFunctions.IsRange(object)
+  fullName: AeroDB.SurrealTypeFunctions.IsRange(object)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealTypeFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Checks if a value is a range. Maps to <code>type::is_range(value)</code>.
+  example: []
+  syntax:
+    content: public static bool IsRange(object value)
+    parameters:
+    - id: value
+      type: System.Object
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function IsRange(value As Object) As Boolean
+  overload: AeroDB.SurrealTypeFunctions.IsRange*
+  nameWithType.vb: SurrealTypeFunctions.IsRange(Object)
+  fullName.vb: AeroDB.SurrealTypeFunctions.IsRange(Object)
+  name.vb: IsRange(Object)
+- uid: AeroDB.SurrealTypeFunctions.IsRecord(System.Object)
+  commentId: M:AeroDB.SurrealTypeFunctions.IsRecord(System.Object)
+  id: IsRecord(System.Object)
+  parent: AeroDB.SurrealTypeFunctions
+  langs:
+  - csharp
+  - vb
+  name: IsRecord(object)
+  nameWithType: SurrealTypeFunctions.IsRecord(object)
+  fullName: AeroDB.SurrealTypeFunctions.IsRecord(object)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealTypeFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Checks if a value is a record. Maps to <code>type::is_record(value)</code>.
+  example: []
+  syntax:
+    content: public static bool IsRecord(object value)
+    parameters:
+    - id: value
+      type: System.Object
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function IsRecord(value As Object) As Boolean
+  overload: AeroDB.SurrealTypeFunctions.IsRecord*
+  nameWithType.vb: SurrealTypeFunctions.IsRecord(Object)
+  fullName.vb: AeroDB.SurrealTypeFunctions.IsRecord(Object)
+  name.vb: IsRecord(Object)
+- uid: AeroDB.SurrealTypeFunctions.IsString(System.Object)
+  commentId: M:AeroDB.SurrealTypeFunctions.IsString(System.Object)
+  id: IsString(System.Object)
+  parent: AeroDB.SurrealTypeFunctions
+  langs:
+  - csharp
+  - vb
+  name: IsString(object)
+  nameWithType: SurrealTypeFunctions.IsString(object)
+  fullName: AeroDB.SurrealTypeFunctions.IsString(object)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealTypeFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Checks if a value is a string. Maps to <code>type::is_string(value)</code>.
+  example: []
+  syntax:
+    content: public static bool IsString(object value)
+    parameters:
+    - id: value
+      type: System.Object
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function IsString(value As Object) As Boolean
+  overload: AeroDB.SurrealTypeFunctions.IsString*
+  nameWithType.vb: SurrealTypeFunctions.IsString(Object)
+  fullName.vb: AeroDB.SurrealTypeFunctions.IsString(Object)
+  name.vb: IsString(Object)
+- uid: AeroDB.SurrealTypeFunctions.IsUuid(System.Object)
+  commentId: M:AeroDB.SurrealTypeFunctions.IsUuid(System.Object)
+  id: IsUuid(System.Object)
+  parent: AeroDB.SurrealTypeFunctions
+  langs:
+  - csharp
+  - vb
+  name: IsUuid(object)
+  nameWithType: SurrealTypeFunctions.IsUuid(object)
+  fullName: AeroDB.SurrealTypeFunctions.IsUuid(object)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealTypeFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Checks if a value is a uuid. Maps to <code>type::is_uuid(value)</code>.
+  example: []
+  syntax:
+    content: public static bool IsUuid(object value)
+    parameters:
+    - id: value
+      type: System.Object
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function IsUuid(value As Object) As Boolean
+  overload: AeroDB.SurrealTypeFunctions.IsUuid*
+  nameWithType.vb: SurrealTypeFunctions.IsUuid(Object)
+  fullName.vb: AeroDB.SurrealTypeFunctions.IsUuid(Object)
+  name.vb: IsUuid(Object)
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AeroDB.SurrealTypeFunctions.TypeBool*
+  commentId: Overload:AeroDB.SurrealTypeFunctions.TypeBool
+  isExternal: true
+  href: AeroDB.SurrealTypeFunctions.html#AeroDB_SurrealTypeFunctions_TypeBool_System_Object_
+  name: TypeBool
+  nameWithType: SurrealTypeFunctions.TypeBool
+  fullName: AeroDB.SurrealTypeFunctions.TypeBool
+- uid: AeroDB.SurrealTypeFunctions.TypeBytes*
+  commentId: Overload:AeroDB.SurrealTypeFunctions.TypeBytes
+  isExternal: true
+  href: AeroDB.SurrealTypeFunctions.html#AeroDB_SurrealTypeFunctions_TypeBytes_System_Object_
+  name: TypeBytes
+  nameWithType: SurrealTypeFunctions.TypeBytes
+  fullName: AeroDB.SurrealTypeFunctions.TypeBytes
+- uid: AeroDB.SurrealTypeFunctions.TypeDatetime*
+  commentId: Overload:AeroDB.SurrealTypeFunctions.TypeDatetime
+  isExternal: true
+  href: AeroDB.SurrealTypeFunctions.html#AeroDB_SurrealTypeFunctions_TypeDatetime_System_Object_
+  name: TypeDatetime
+  nameWithType: SurrealTypeFunctions.TypeDatetime
+  fullName: AeroDB.SurrealTypeFunctions.TypeDatetime
+- uid: AeroDB.SurrealTypeFunctions.TypeDecimal*
+  commentId: Overload:AeroDB.SurrealTypeFunctions.TypeDecimal
+  isExternal: true
+  href: AeroDB.SurrealTypeFunctions.html#AeroDB_SurrealTypeFunctions_TypeDecimal_System_Object_
+  name: TypeDecimal
+  nameWithType: SurrealTypeFunctions.TypeDecimal
+  fullName: AeroDB.SurrealTypeFunctions.TypeDecimal
+- uid: AeroDB.SurrealTypeFunctions.TypeDuration*
+  commentId: Overload:AeroDB.SurrealTypeFunctions.TypeDuration
+  isExternal: true
+  href: AeroDB.SurrealTypeFunctions.html#AeroDB_SurrealTypeFunctions_TypeDuration_System_Object_
+  name: TypeDuration
+  nameWithType: SurrealTypeFunctions.TypeDuration
+  fullName: AeroDB.SurrealTypeFunctions.TypeDuration
+- uid: AeroDB.SurrealTypeFunctions.TypeFloat*
+  commentId: Overload:AeroDB.SurrealTypeFunctions.TypeFloat
+  isExternal: true
+  href: AeroDB.SurrealTypeFunctions.html#AeroDB_SurrealTypeFunctions_TypeFloat_System_Object_
+  name: TypeFloat
+  nameWithType: SurrealTypeFunctions.TypeFloat
+  fullName: AeroDB.SurrealTypeFunctions.TypeFloat
+- uid: AeroDB.SurrealTypeFunctions.TypeInt*
+  commentId: Overload:AeroDB.SurrealTypeFunctions.TypeInt
+  isExternal: true
+  href: AeroDB.SurrealTypeFunctions.html#AeroDB_SurrealTypeFunctions_TypeInt_System_Object_
+  name: TypeInt
+  nameWithType: SurrealTypeFunctions.TypeInt
+  fullName: AeroDB.SurrealTypeFunctions.TypeInt
+- uid: AeroDB.SurrealTypeFunctions.TypeNumber*
+  commentId: Overload:AeroDB.SurrealTypeFunctions.TypeNumber
+  isExternal: true
+  href: AeroDB.SurrealTypeFunctions.html#AeroDB_SurrealTypeFunctions_TypeNumber_System_Object_
+  name: TypeNumber
+  nameWithType: SurrealTypeFunctions.TypeNumber
+  fullName: AeroDB.SurrealTypeFunctions.TypeNumber
+- uid: AeroDB.SurrealTypeFunctions.TypePoint*
+  commentId: Overload:AeroDB.SurrealTypeFunctions.TypePoint
+  isExternal: true
+  href: AeroDB.SurrealTypeFunctions.html#AeroDB_SurrealTypeFunctions_TypePoint_System_Object_
+  name: TypePoint
+  nameWithType: SurrealTypeFunctions.TypePoint
+  fullName: AeroDB.SurrealTypeFunctions.TypePoint
+- uid: AeroDB.SurrealTypeFunctions.TypeString*
+  commentId: Overload:AeroDB.SurrealTypeFunctions.TypeString
+  isExternal: true
+  href: AeroDB.SurrealTypeFunctions.html#AeroDB_SurrealTypeFunctions_TypeString_System_Object_
+  name: TypeString
+  nameWithType: SurrealTypeFunctions.TypeString
+  fullName: AeroDB.SurrealTypeFunctions.TypeString
+- uid: AeroDB.SurrealTypeFunctions.TypeTable*
+  commentId: Overload:AeroDB.SurrealTypeFunctions.TypeTable
+  isExternal: true
+  href: AeroDB.SurrealTypeFunctions.html#AeroDB_SurrealTypeFunctions_TypeTable_System_Object_
+  name: TypeTable
+  nameWithType: SurrealTypeFunctions.TypeTable
+  fullName: AeroDB.SurrealTypeFunctions.TypeTable
+- uid: AeroDB.SurrealTypeFunctions.TypeThing*
+  commentId: Overload:AeroDB.SurrealTypeFunctions.TypeThing
+  isExternal: true
+  href: AeroDB.SurrealTypeFunctions.html#AeroDB_SurrealTypeFunctions_TypeThing_System_Object_
+  name: TypeThing
+  nameWithType: SurrealTypeFunctions.TypeThing
+  fullName: AeroDB.SurrealTypeFunctions.TypeThing
+- uid: AeroDB.SurrealTypeFunctions.TypeRecord*
+  commentId: Overload:AeroDB.SurrealTypeFunctions.TypeRecord
+  isExternal: true
+  href: AeroDB.SurrealTypeFunctions.html#AeroDB_SurrealTypeFunctions_TypeRecord_System_Object_
+  name: TypeRecord
+  nameWithType: SurrealTypeFunctions.TypeRecord
+  fullName: AeroDB.SurrealTypeFunctions.TypeRecord
+- uid: AeroDB.SurrealTypeFunctions.TypeOf*
+  commentId: Overload:AeroDB.SurrealTypeFunctions.TypeOf
+  isExternal: true
+  href: AeroDB.SurrealTypeFunctions.html#AeroDB_SurrealTypeFunctions_TypeOf_System_Object_
+  name: TypeOf
+  nameWithType: SurrealTypeFunctions.TypeOf
+  fullName: AeroDB.SurrealTypeFunctions.TypeOf
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: AeroDB.SurrealTypeFunctions.IsArray*
+  commentId: Overload:AeroDB.SurrealTypeFunctions.IsArray
+  isExternal: true
+  href: AeroDB.SurrealTypeFunctions.html#AeroDB_SurrealTypeFunctions_IsArray_System_Object_
+  name: IsArray
+  nameWithType: SurrealTypeFunctions.IsArray
+  fullName: AeroDB.SurrealTypeFunctions.IsArray
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: AeroDB.SurrealTypeFunctions.IsBool*
+  commentId: Overload:AeroDB.SurrealTypeFunctions.IsBool
+  isExternal: true
+  href: AeroDB.SurrealTypeFunctions.html#AeroDB_SurrealTypeFunctions_IsBool_System_Object_
+  name: IsBool
+  nameWithType: SurrealTypeFunctions.IsBool
+  fullName: AeroDB.SurrealTypeFunctions.IsBool
+- uid: AeroDB.SurrealTypeFunctions.IsBytes*
+  commentId: Overload:AeroDB.SurrealTypeFunctions.IsBytes
+  isExternal: true
+  href: AeroDB.SurrealTypeFunctions.html#AeroDB_SurrealTypeFunctions_IsBytes_System_Object_
+  name: IsBytes
+  nameWithType: SurrealTypeFunctions.IsBytes
+  fullName: AeroDB.SurrealTypeFunctions.IsBytes
+- uid: AeroDB.SurrealTypeFunctions.IsCollection*
+  commentId: Overload:AeroDB.SurrealTypeFunctions.IsCollection
+  isExternal: true
+  href: AeroDB.SurrealTypeFunctions.html#AeroDB_SurrealTypeFunctions_IsCollection_System_Object_
+  name: IsCollection
+  nameWithType: SurrealTypeFunctions.IsCollection
+  fullName: AeroDB.SurrealTypeFunctions.IsCollection
+- uid: AeroDB.SurrealTypeFunctions.IsDatetime*
+  commentId: Overload:AeroDB.SurrealTypeFunctions.IsDatetime
+  isExternal: true
+  href: AeroDB.SurrealTypeFunctions.html#AeroDB_SurrealTypeFunctions_IsDatetime_System_Object_
+  name: IsDatetime
+  nameWithType: SurrealTypeFunctions.IsDatetime
+  fullName: AeroDB.SurrealTypeFunctions.IsDatetime
+- uid: AeroDB.SurrealTypeFunctions.IsDecimal*
+  commentId: Overload:AeroDB.SurrealTypeFunctions.IsDecimal
+  isExternal: true
+  href: AeroDB.SurrealTypeFunctions.html#AeroDB_SurrealTypeFunctions_IsDecimal_System_Object_
+  name: IsDecimal
+  nameWithType: SurrealTypeFunctions.IsDecimal
+  fullName: AeroDB.SurrealTypeFunctions.IsDecimal
+- uid: AeroDB.SurrealTypeFunctions.IsDuration*
+  commentId: Overload:AeroDB.SurrealTypeFunctions.IsDuration
+  isExternal: true
+  href: AeroDB.SurrealTypeFunctions.html#AeroDB_SurrealTypeFunctions_IsDuration_System_Object_
+  name: IsDuration
+  nameWithType: SurrealTypeFunctions.IsDuration
+  fullName: AeroDB.SurrealTypeFunctions.IsDuration
+- uid: AeroDB.SurrealTypeFunctions.IsFloat*
+  commentId: Overload:AeroDB.SurrealTypeFunctions.IsFloat
+  isExternal: true
+  href: AeroDB.SurrealTypeFunctions.html#AeroDB_SurrealTypeFunctions_IsFloat_System_Object_
+  name: IsFloat
+  nameWithType: SurrealTypeFunctions.IsFloat
+  fullName: AeroDB.SurrealTypeFunctions.IsFloat
+- uid: AeroDB.SurrealTypeFunctions.IsGeometry*
+  commentId: Overload:AeroDB.SurrealTypeFunctions.IsGeometry
+  isExternal: true
+  href: AeroDB.SurrealTypeFunctions.html#AeroDB_SurrealTypeFunctions_IsGeometry_System_Object_
+  name: IsGeometry
+  nameWithType: SurrealTypeFunctions.IsGeometry
+  fullName: AeroDB.SurrealTypeFunctions.IsGeometry
+- uid: AeroDB.SurrealTypeFunctions.IsInt*
+  commentId: Overload:AeroDB.SurrealTypeFunctions.IsInt
+  isExternal: true
+  href: AeroDB.SurrealTypeFunctions.html#AeroDB_SurrealTypeFunctions_IsInt_System_Object_
+  name: IsInt
+  nameWithType: SurrealTypeFunctions.IsInt
+  fullName: AeroDB.SurrealTypeFunctions.IsInt
+- uid: AeroDB.SurrealTypeFunctions.IsLine*
+  commentId: Overload:AeroDB.SurrealTypeFunctions.IsLine
+  isExternal: true
+  href: AeroDB.SurrealTypeFunctions.html#AeroDB_SurrealTypeFunctions_IsLine_System_Object_
+  name: IsLine
+  nameWithType: SurrealTypeFunctions.IsLine
+  fullName: AeroDB.SurrealTypeFunctions.IsLine
+- uid: AeroDB.SurrealTypeFunctions.IsNull(System.Object)
+  commentId: M:AeroDB.SurrealTypeFunctions.IsNull(System.Object)
+  isExternal: true
+  href: AeroDB.SurrealTypeFunctions.html#AeroDB_SurrealTypeFunctions_IsNull_System_Object_
+  name: IsNull(object)
+  nameWithType: SurrealTypeFunctions.IsNull(object)
+  fullName: AeroDB.SurrealTypeFunctions.IsNull(object)
+  nameWithType.vb: SurrealTypeFunctions.IsNull(Object)
+  fullName.vb: AeroDB.SurrealTypeFunctions.IsNull(Object)
+  name.vb: IsNull(Object)
+  spec.csharp:
+  - uid: AeroDB.SurrealTypeFunctions.IsNull(System.Object)
+    name: IsNull
+    isExternal: true
+    href: AeroDB.SurrealTypeFunctions.html#AeroDB_SurrealTypeFunctions_IsNull_System_Object_
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AeroDB.SurrealTypeFunctions.IsNull(System.Object)
+    name: IsNull
+    isExternal: true
+    href: AeroDB.SurrealTypeFunctions.html#AeroDB_SurrealTypeFunctions_IsNull_System_Object_
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: AeroDB.SurrealTypeFunctions.IsNone*
+  commentId: Overload:AeroDB.SurrealTypeFunctions.IsNone
+  isExternal: true
+  href: AeroDB.SurrealTypeFunctions.html#AeroDB_SurrealTypeFunctions_IsNone_System_Object_
+  name: IsNone
+  nameWithType: SurrealTypeFunctions.IsNone
+  fullName: AeroDB.SurrealTypeFunctions.IsNone
+- uid: AeroDB.SurrealTypeFunctions.IsNull*
+  commentId: Overload:AeroDB.SurrealTypeFunctions.IsNull
+  isExternal: true
+  href: AeroDB.SurrealTypeFunctions.html#AeroDB_SurrealTypeFunctions_IsNull_System_Object_
+  name: IsNull
+  nameWithType: SurrealTypeFunctions.IsNull
+  fullName: AeroDB.SurrealTypeFunctions.IsNull
+- uid: AeroDB.SurrealTypeFunctions.IsMultiline*
+  commentId: Overload:AeroDB.SurrealTypeFunctions.IsMultiline
+  isExternal: true
+  href: AeroDB.SurrealTypeFunctions.html#AeroDB_SurrealTypeFunctions_IsMultiline_System_Object_
+  name: IsMultiline
+  nameWithType: SurrealTypeFunctions.IsMultiline
+  fullName: AeroDB.SurrealTypeFunctions.IsMultiline
+- uid: AeroDB.SurrealTypeFunctions.IsMultipoint*
+  commentId: Overload:AeroDB.SurrealTypeFunctions.IsMultipoint
+  isExternal: true
+  href: AeroDB.SurrealTypeFunctions.html#AeroDB_SurrealTypeFunctions_IsMultipoint_System_Object_
+  name: IsMultipoint
+  nameWithType: SurrealTypeFunctions.IsMultipoint
+  fullName: AeroDB.SurrealTypeFunctions.IsMultipoint
+- uid: AeroDB.SurrealTypeFunctions.IsMultipolygon*
+  commentId: Overload:AeroDB.SurrealTypeFunctions.IsMultipolygon
+  isExternal: true
+  href: AeroDB.SurrealTypeFunctions.html#AeroDB_SurrealTypeFunctions_IsMultipolygon_System_Object_
+  name: IsMultipolygon
+  nameWithType: SurrealTypeFunctions.IsMultipolygon
+  fullName: AeroDB.SurrealTypeFunctions.IsMultipolygon
+- uid: AeroDB.SurrealTypeFunctions.IsNumber*
+  commentId: Overload:AeroDB.SurrealTypeFunctions.IsNumber
+  isExternal: true
+  href: AeroDB.SurrealTypeFunctions.html#AeroDB_SurrealTypeFunctions_IsNumber_System_Object_
+  name: IsNumber
+  nameWithType: SurrealTypeFunctions.IsNumber
+  fullName: AeroDB.SurrealTypeFunctions.IsNumber
+- uid: AeroDB.SurrealTypeFunctions.IsObject*
+  commentId: Overload:AeroDB.SurrealTypeFunctions.IsObject
+  isExternal: true
+  href: AeroDB.SurrealTypeFunctions.html#AeroDB_SurrealTypeFunctions_IsObject_System_Object_
+  name: IsObject
+  nameWithType: SurrealTypeFunctions.IsObject
+  fullName: AeroDB.SurrealTypeFunctions.IsObject
+- uid: AeroDB.SurrealTypeFunctions.IsPoint*
+  commentId: Overload:AeroDB.SurrealTypeFunctions.IsPoint
+  isExternal: true
+  href: AeroDB.SurrealTypeFunctions.html#AeroDB_SurrealTypeFunctions_IsPoint_System_Object_
+  name: IsPoint
+  nameWithType: SurrealTypeFunctions.IsPoint
+  fullName: AeroDB.SurrealTypeFunctions.IsPoint
+- uid: AeroDB.SurrealTypeFunctions.IsPolygon*
+  commentId: Overload:AeroDB.SurrealTypeFunctions.IsPolygon
+  isExternal: true
+  href: AeroDB.SurrealTypeFunctions.html#AeroDB_SurrealTypeFunctions_IsPolygon_System_Object_
+  name: IsPolygon
+  nameWithType: SurrealTypeFunctions.IsPolygon
+  fullName: AeroDB.SurrealTypeFunctions.IsPolygon
+- uid: AeroDB.SurrealTypeFunctions.IsRange*
+  commentId: Overload:AeroDB.SurrealTypeFunctions.IsRange
+  isExternal: true
+  href: AeroDB.SurrealTypeFunctions.html#AeroDB_SurrealTypeFunctions_IsRange_System_Object_
+  name: IsRange
+  nameWithType: SurrealTypeFunctions.IsRange
+  fullName: AeroDB.SurrealTypeFunctions.IsRange
+- uid: AeroDB.SurrealTypeFunctions.IsRecord*
+  commentId: Overload:AeroDB.SurrealTypeFunctions.IsRecord
+  isExternal: true
+  href: AeroDB.SurrealTypeFunctions.html#AeroDB_SurrealTypeFunctions_IsRecord_System_Object_
+  name: IsRecord
+  nameWithType: SurrealTypeFunctions.IsRecord
+  fullName: AeroDB.SurrealTypeFunctions.IsRecord
+- uid: AeroDB.SurrealTypeFunctions.IsString*
+  commentId: Overload:AeroDB.SurrealTypeFunctions.IsString
+  isExternal: true
+  href: AeroDB.SurrealTypeFunctions.html#AeroDB_SurrealTypeFunctions_IsString_System_Object_
+  name: IsString
+  nameWithType: SurrealTypeFunctions.IsString
+  fullName: AeroDB.SurrealTypeFunctions.IsString
+- uid: AeroDB.SurrealTypeFunctions.IsUuid*
+  commentId: Overload:AeroDB.SurrealTypeFunctions.IsUuid
+  isExternal: true
+  href: AeroDB.SurrealTypeFunctions.html#AeroDB_SurrealTypeFunctions_IsUuid_System_Object_
+  name: IsUuid
+  nameWithType: SurrealTypeFunctions.IsUuid
+  fullName: AeroDB.SurrealTypeFunctions.IsUuid

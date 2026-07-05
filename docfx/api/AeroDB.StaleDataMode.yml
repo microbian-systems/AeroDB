@@ -1,0 +1,92 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.StaleDataMode
+  commentId: T:AeroDB.StaleDataMode
+  id: StaleDataMode
+  parent: AeroDB
+  children:
+  - AeroDB.StaleDataMode.AllowStale
+  - AeroDB.StaleDataMode.Strict
+  langs:
+  - csharp
+  - vb
+  name: StaleDataMode
+  nameWithType: StaleDataMode
+  fullName: AeroDB.StaleDataMode
+  type: Enum
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StaleDataMode.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Controls staleness tolerance for <code>QueryForNonStaleData&lt;T&gt;</code>.
+  example: []
+  syntax:
+    content: public enum StaleDataMode
+    content.vb: Public Enum StaleDataMode
+- uid: AeroDB.StaleDataMode.Strict
+  commentId: F:AeroDB.StaleDataMode.Strict
+  id: Strict
+  parent: AeroDB.StaleDataMode
+  langs:
+  - csharp
+  - vb
+  name: Strict
+  nameWithType: StaleDataMode.Strict
+  fullName: AeroDB.StaleDataMode.Strict
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StaleDataMode.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Wait for the async daemon to catch up to the latest event sequence
+
+    before returning results. Throws or times out if the timeout is exceeded.
+  example: []
+  syntax:
+    content: Strict = 0
+    return:
+      type: AeroDB.StaleDataMode
+- uid: AeroDB.StaleDataMode.AllowStale
+  commentId: F:AeroDB.StaleDataMode.AllowStale
+  id: AllowStale
+  parent: AeroDB.StaleDataMode
+  langs:
+  - csharp
+  - vb
+  name: AllowStale
+  nameWithType: StaleDataMode.AllowStale
+  fullName: AeroDB.StaleDataMode.AllowStale
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StaleDataMode.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Return results immediately even if the async daemon has not yet
+
+    processed all events. Results may be stale.
+  example: []
+  syntax:
+    content: AllowStale = 1
+    return:
+      type: AeroDB.StaleDataMode
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: AeroDB.StaleDataMode
+  commentId: T:AeroDB.StaleDataMode
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.StaleDataMode.html
+  name: StaleDataMode
+  nameWithType: StaleDataMode
+  fullName: AeroDB.StaleDataMode

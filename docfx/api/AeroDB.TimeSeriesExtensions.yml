@@ -1,0 +1,392 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.TimeSeriesExtensions
+  commentId: T:AeroDB.TimeSeriesExtensions
+  id: TimeSeriesExtensions
+  parent: AeroDB
+  children:
+  - AeroDB.TimeSeriesExtensions.TimeSeries``1(AeroDB.IQuerySession)
+  langs:
+  - csharp
+  - vb
+  name: TimeSeriesExtensions
+  nameWithType: TimeSeriesExtensions
+  fullName: AeroDB.TimeSeriesExtensions
+  type: Class
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/TimeSeries/TimeSeriesExtensions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Entry point for time-series queries with temporal bucketing and aggregation.
+  example: []
+  syntax:
+    content: public static class TimeSeriesExtensions
+    content.vb: Public Module TimeSeriesExtensions
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+- uid: AeroDB.TimeSeriesExtensions.TimeSeries``1(AeroDB.IQuerySession)
+  commentId: M:AeroDB.TimeSeriesExtensions.TimeSeries``1(AeroDB.IQuerySession)
+  id: TimeSeries``1(AeroDB.IQuerySession)
+  isExtensionMethod: true
+  parent: AeroDB.TimeSeriesExtensions
+  langs:
+  - csharp
+  - vb
+  name: TimeSeries<T>(IQuerySession)
+  nameWithType: TimeSeriesExtensions.TimeSeries<T>(IQuerySession)
+  fullName: AeroDB.TimeSeriesExtensions.TimeSeries<T>(AeroDB.IQuerySession)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/TimeSeries/TimeSeriesExtensions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Starts a time-series query. Supports bucketing by time::floor(), time::group(),
+
+    aggregation delegation, and downsampling.
+  example: []
+  syntax:
+    content: 'public static ITimeSeriesQuery<T> TimeSeries<T>(this IQuerySession session) where T : class'
+    parameters:
+    - id: session
+      type: AeroDB.IQuerySession
+      description: The query session.
+    typeParameters:
+    - id: T
+      description: The document type to query.
+    return:
+      type: AeroDB.ITimeSeriesQuery{{T}}
+      description: A fluent time-series query builder.
+    content.vb: Public Shared Function TimeSeries(Of T As Class)(session As IQuerySession) As ITimeSeriesQuery(Of T)
+  overload: AeroDB.TimeSeriesExtensions.TimeSeries*
+  nameWithType.vb: TimeSeriesExtensions.TimeSeries(Of T)(IQuerySession)
+  fullName.vb: AeroDB.TimeSeriesExtensions.TimeSeries(Of T)(AeroDB.IQuerySession)
+  name.vb: TimeSeries(Of T)(IQuerySession)
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AeroDB.TimeSeriesExtensions.TimeSeries*
+  commentId: Overload:AeroDB.TimeSeriesExtensions.TimeSeries
+  isExternal: true
+  href: AeroDB.TimeSeriesExtensions.html#AeroDB_TimeSeriesExtensions_TimeSeries__1_AeroDB_IQuerySession_
+  name: TimeSeries
+  nameWithType: TimeSeriesExtensions.TimeSeries
+  fullName: AeroDB.TimeSeriesExtensions.TimeSeries
+- uid: AeroDB.IQuerySession
+  commentId: T:AeroDB.IQuerySession
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IQuerySession.html
+  name: IQuerySession
+  nameWithType: IQuerySession
+  fullName: AeroDB.IQuerySession
+- uid: AeroDB.ITimeSeriesQuery{{T}}
+  commentId: T:AeroDB.ITimeSeriesQuery{`0}
+  parent: AeroDB
+  definition: AeroDB.ITimeSeriesQuery`1
+  href: AeroDB.ITimeSeriesQuery-1.html
+  name: ITimeSeriesQuery<T>
+  nameWithType: ITimeSeriesQuery<T>
+  fullName: AeroDB.ITimeSeriesQuery<T>
+  nameWithType.vb: ITimeSeriesQuery(Of T)
+  fullName.vb: AeroDB.ITimeSeriesQuery(Of T)
+  name.vb: ITimeSeriesQuery(Of T)
+  spec.csharp:
+  - uid: AeroDB.ITimeSeriesQuery`1
+    name: ITimeSeriesQuery
+    isExternal: true
+    href: AeroDB.ITimeSeriesQuery-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.ITimeSeriesQuery`1
+    name: ITimeSeriesQuery
+    isExternal: true
+    href: AeroDB.ITimeSeriesQuery-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.ITimeSeriesQuery`1
+  commentId: T:AeroDB.ITimeSeriesQuery`1
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.ITimeSeriesQuery-1.html
+  name: ITimeSeriesQuery<T>
+  nameWithType: ITimeSeriesQuery<T>
+  fullName: AeroDB.ITimeSeriesQuery<T>
+  nameWithType.vb: ITimeSeriesQuery(Of T)
+  fullName.vb: AeroDB.ITimeSeriesQuery(Of T)
+  name.vb: ITimeSeriesQuery(Of T)
+  spec.csharp:
+  - uid: AeroDB.ITimeSeriesQuery`1
+    name: ITimeSeriesQuery
+    isExternal: true
+    href: AeroDB.ITimeSeriesQuery-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.ITimeSeriesQuery`1
+    name: ITimeSeriesQuery
+    isExternal: true
+    href: AeroDB.ITimeSeriesQuery-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )

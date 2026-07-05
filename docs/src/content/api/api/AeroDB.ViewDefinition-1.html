@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Class ViewDefinition&lt;T&gt; | AeroDB API Reference </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="Class ViewDefinition&lt;T&gt; | AeroDB API Reference ">
+    
+    <meta name="description" content="Fluent builder for SurrealDB pre-computed/aggregate views (DEFINE TABLE ... AS SELECT ...). Views are materialized, incrementally-updating tables backed by a SELECT query.">
+      <link rel="shortcut icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../styles/docfx.css">
+      <link rel="stylesheet" href="../styles/main.css">
+      <meta property="docfx:navrel" content="../toc.html">
+      <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="AeroDB">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="AeroDB.ViewDefinition`1">
+
+
+
+  <h1 id="AeroDB_ViewDefinition_1" data-uid="AeroDB.ViewDefinition`1" class="text-break">Class ViewDefinition&lt;T&gt;</h1>
+  <div class="markdown level0 summary"><p>Fluent builder for SurrealDB pre-computed/aggregate views (DEFINE TABLE ... AS SELECT ...).
+Views are materialized, incrementally-updating tables backed by a SELECT query.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+    <div class="level1"><a class="xref" href="AeroDB.ViewDefinition.html">ViewDefinition</a></div>
+    <div class="level2"><span class="xref">ViewDefinition&lt;T&gt;</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="AeroDB.ViewDefinition.html#AeroDB_ViewDefinition_ViewName">ViewDefinition.ViewName</a>
+    </div>
+    <div>
+      <a class="xref" href="AeroDB.ViewDefinition.html#AeroDB_ViewDefinition_SchemaName">ViewDefinition.SchemaName</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="AeroDB.html">AeroDB</a></h6>
+  <h6><strong>Assembly</strong>: AeroDB.dll</h6>
+  <h5 id="AeroDB_ViewDefinition_1_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class ViewDefinition&lt;T&gt; : ViewDefinition where T : class</code></pre>
+  </div>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The entity type representing the view's result shape.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+</h3>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/ViewDefinition.cs">View Source</a>
+  </span>
+  <a id="AeroDB_ViewDefinition_1_FromTable_" data-uid="AeroDB.ViewDefinition`1.FromTable*"></a>
+  <h4 id="AeroDB_ViewDefinition_1_FromTable" data-uid="AeroDB.ViewDefinition`1.FromTable">FromTable</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string? FromTable { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/ViewDefinition.cs">View Source</a>
+  </span>
+  <a id="AeroDB_ViewDefinition_1_GroupByColumns_" data-uid="AeroDB.ViewDefinition`1.GroupByColumns*"></a>
+  <h4 id="AeroDB_ViewDefinition_1_GroupByColumns" data-uid="AeroDB.ViewDefinition`1.GroupByColumns">GroupByColumns</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string? GroupByColumns { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/ViewDefinition.cs">View Source</a>
+  </span>
+  <a id="AeroDB_ViewDefinition_1_IsDrop_" data-uid="AeroDB.ViewDefinition`1.IsDrop*"></a>
+  <h4 id="AeroDB_ViewDefinition_1_IsDrop" data-uid="AeroDB.ViewDefinition`1.IsDrop">IsDrop</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsDrop { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/ViewDefinition.cs">View Source</a>
+  </span>
+  <a id="AeroDB_ViewDefinition_1_SelectColumns_" data-uid="AeroDB.ViewDefinition`1.SelectColumns*"></a>
+  <h4 id="AeroDB_ViewDefinition_1_SelectColumns" data-uid="AeroDB.ViewDefinition`1.SelectColumns">SelectColumns</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string? SelectColumns { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/ViewDefinition.cs">View Source</a>
+  </span>
+  <a id="AeroDB_ViewDefinition_1_WhereClause_" data-uid="AeroDB.ViewDefinition`1.WhereClause*"></a>
+  <h4 id="AeroDB_ViewDefinition_1_WhereClause" data-uid="AeroDB.ViewDefinition`1.WhereClause">WhereClause</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string? WhereClause { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+</h3>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/ViewDefinition.cs">View Source</a>
+  </span>
+  <a id="AeroDB_ViewDefinition_1_Drop_" data-uid="AeroDB.ViewDefinition`1.Drop*"></a>
+  <h4 id="AeroDB_ViewDefinition_1_Drop" data-uid="AeroDB.ViewDefinition`1.Drop">Drop()</h4>
+  <div class="markdown level1 summary"><p>Marks this view as a DROP table (DEFINE TABLE ... DROP).
+Records are automatically deleted after event triggers fire.
+Mutually exclusive with SelectColumns.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ViewDefinition&lt;T&gt; Drop()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.ViewDefinition-1.html">ViewDefinition</a>&lt;T&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/ViewDefinition.cs">View Source</a>
+  </span>
+  <a id="AeroDB_ViewDefinition_1_From_" data-uid="AeroDB.ViewDefinition`1.From*"></a>
+  <h4 id="AeroDB_ViewDefinition_1_From_System_String_" data-uid="AeroDB.ViewDefinition`1.From(System.String)">From(string)</h4>
+  <div class="markdown level1 summary"><p>Sets the source table for the view SELECT using the provided table name directly.
+Useful when the source type is not registered in the metadata system.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ViewDefinition&lt;T&gt; From(string tableName)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">tableName</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.ViewDefinition-1.html">ViewDefinition</a>&lt;T&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/ViewDefinition.cs">View Source</a>
+  </span>
+  <a id="AeroDB_ViewDefinition_1_From_" data-uid="AeroDB.ViewDefinition`1.From*"></a>
+  <h4 id="AeroDB_ViewDefinition_1_From__1" data-uid="AeroDB.ViewDefinition`1.From``1">From&lt;TFrom&gt;()</h4>
+  <div class="markdown level1 summary"><p>Sets the source table for the view SELECT.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ViewDefinition&lt;T&gt; From&lt;TFrom&gt;() where TFrom : class</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.ViewDefinition-1.html">ViewDefinition</a>&lt;T&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TFrom</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/ViewDefinition.cs">View Source</a>
+  </span>
+  <a id="AeroDB_ViewDefinition_1_GroupBy_" data-uid="AeroDB.ViewDefinition`1.GroupBy*"></a>
+  <h4 id="AeroDB_ViewDefinition_1_GroupBy__1_System_Linq_Expressions_Expression_System_Func__0___0___" data-uid="AeroDB.ViewDefinition`1.GroupBy``1(System.Linq.Expressions.Expression{System.Func{`0,``0}})">GroupBy&lt;TKey&gt;(Expression&lt;Func&lt;T, TKey&gt;&gt;)</h4>
+  <div class="markdown level1 summary"><p>Adds a GROUP BY clause to the view, grouping results by the specified columns.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ViewDefinition&lt;T&gt; GroupBy&lt;TKey&gt;(Expression&lt;Func&lt;T, TKey&gt;&gt; keySelector)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;T, TKey&gt;&gt;</td>
+        <td><span class="parametername">keySelector</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.ViewDefinition-1.html">ViewDefinition</a>&lt;T&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TKey</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/ViewDefinition.cs">View Source</a>
+  </span>
+  <a id="AeroDB_ViewDefinition_1_RawView_" data-uid="AeroDB.ViewDefinition`1.RawView*"></a>
+  <h4 id="AeroDB_ViewDefinition_1_RawView_System_String_" data-uid="AeroDB.ViewDefinition`1.RawView(System.String)">RawView(string)</h4>
+  <div class="markdown level1 summary"><p>Bypasses all builder methods and uses the provided SurrealQL SELECT verbatim.
+Mutually exclusive with <a class="xref" href="AeroDB.ViewDefinition-1.html#AeroDB_ViewDefinition_1_From__1">From&lt;TFrom&gt;()</a>, <a class="xref" href="AeroDB.ViewDefinition-1.html#AeroDB_ViewDefinition_1_Where_System_Linq_Expressions_Expression_System_Func__0_System_Boolean___">Where(Expression&lt;Func&lt;T, bool&gt;&gt;)</a>,
+<a class="xref" href="AeroDB.ViewDefinition-1.html#AeroDB_ViewDefinition_1_GroupBy__1_System_Linq_Expressions_Expression_System_Func__0___0___">GroupBy&lt;TKey&gt;(Expression&lt;Func&lt;T, TKey&gt;&gt;)</a>, <a class="xref" href="AeroDB.ViewDefinition-1.html#AeroDB_ViewDefinition_1_WithSelect_System_String_">WithSelect(string)</a>, and <a class="xref" href="AeroDB.ViewDefinition-1.html#AeroDB_ViewDefinition_1_Select_System_Func_AeroDB_ViewSelectBuilder__0__AeroDB_ViewSelectBuilder__0___">Select(Func&lt;ViewSelectBuilder&lt;T&gt;, ViewSelectBuilder&lt;T&gt;&gt;)</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ViewDefinition&lt;T&gt; RawView(string selectSurql)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">selectSurql</span></td>
+        <td><p>The complete SurrealQL SELECT statement (e.g., &quot;SELECT count() AS n FROM my_table&quot;).</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.ViewDefinition-1.html">ViewDefinition</a>&lt;T&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/ViewDefinition.cs">View Source</a>
+  </span>
+  <a id="AeroDB_ViewDefinition_1_Schema_" data-uid="AeroDB.ViewDefinition`1.Schema*"></a>
+  <h4 id="AeroDB_ViewDefinition_1_Schema_System_String_" data-uid="AeroDB.ViewDefinition`1.Schema(System.String)">Schema(string)</h4>
+  <div class="markdown level1 summary"><p>Assigns this view to a specific schema (database).
+When set, the view is created in the specified schema database
+instead of the default database.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ViewDefinition&lt;T&gt; Schema(string schemaName)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">schemaName</span></td>
+        <td><p>The schema/database name.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.ViewDefinition-1.html">ViewDefinition</a>&lt;T&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/ViewDefinition.cs">View Source</a>
+  </span>
+  <a id="AeroDB_ViewDefinition_1_Select_" data-uid="AeroDB.ViewDefinition`1.Select*"></a>
+  <h4 id="AeroDB_ViewDefinition_1_Select_System_Func_AeroDB_ViewSelectBuilder__0__AeroDB_ViewSelectBuilder__0___" data-uid="AeroDB.ViewDefinition`1.Select(System.Func{AeroDB.ViewSelectBuilder{`0},AeroDB.ViewSelectBuilder{`0}})">Select(Func&lt;ViewSelectBuilder&lt;T&gt;, ViewSelectBuilder&lt;T&gt;&gt;)</h4>
+  <div class="markdown level1 summary"><p>Defines the SELECT columns using a type-safe fluent builder.
+Supports aggregates, column references, graph traversal, and raw SurrealQL expressions.
+Preferred over <a class="xref" href="AeroDB.ViewDefinition-1.html#AeroDB_ViewDefinition_1_WithSelect_System_String_">WithSelect(string)</a> for structured projections.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ViewDefinition&lt;T&gt; Select(Func&lt;ViewSelectBuilder&lt;T&gt;, ViewSelectBuilder&lt;T&gt;&gt; build)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;<a class="xref" href="AeroDB.ViewSelectBuilder-1.html">ViewSelectBuilder</a>&lt;T&gt;, <a class="xref" href="AeroDB.ViewSelectBuilder-1.html">ViewSelectBuilder</a>&lt;T&gt;&gt;</td>
+        <td><span class="parametername">build</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.ViewDefinition-1.html">ViewDefinition</a>&lt;T&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="AeroDB_ViewDefinition_1_Select_System_Func_AeroDB_ViewSelectBuilder__0__AeroDB_ViewSelectBuilder__0____examples">Examples</h5>
+  <pre><code class="lang-csharp">view.Select(cols =&gt; cols
+    .Count().As("total")
+    .Average(r =&gt; r.Rating).As("avg")
+    .Column(r =&gt; r.Title)
+    .Graph().Out&lt;Author&gt;("wrote").Select(a =&gt; a.Name).As("author")
+);</code></pre>
+
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/ViewDefinition.cs">View Source</a>
+  </span>
+  <a id="AeroDB_ViewDefinition_1_Where_" data-uid="AeroDB.ViewDefinition`1.Where*"></a>
+  <h4 id="AeroDB_ViewDefinition_1_Where_System_Linq_Expressions_Expression_System_Func__0_System_Boolean___" data-uid="AeroDB.ViewDefinition`1.Where(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">Where(Expression&lt;Func&lt;T, bool&gt;&gt;)</h4>
+  <div class="markdown level1 summary"><p>Adds a WHERE clause to the view, filtering the source data.
+The predicate is translated to SurrealQL using the same expression visitor
+that powers LINQ queries. Values are inlined since view definitions are schema.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ViewDefinition&lt;T&gt; Where(Expression&lt;Func&lt;T, bool&gt;&gt; predicate)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;T, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>&gt;&gt;</td>
+        <td><span class="parametername">predicate</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.ViewDefinition-1.html">ViewDefinition</a>&lt;T&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/ViewDefinition.cs">View Source</a>
+  </span>
+  <a id="AeroDB_ViewDefinition_1_WithSelect_" data-uid="AeroDB.ViewDefinition`1.WithSelect*"></a>
+  <h4 id="AeroDB_ViewDefinition_1_WithSelect_System_String_" data-uid="AeroDB.ViewDefinition`1.WithSelect(System.String)">WithSelect(string)</h4>
+  <div class="markdown level1 summary"><p>Specifies a custom SELECT column list for the view.
+Use this for aggregate functions, graph traversal expressions, and custom projections.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ViewDefinition&lt;T&gt; WithSelect(string columns)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">columns</span></td>
+        <td><p>The SurrealQL column expressions, e.g. &quot;count() AS num, math::mean(rating) AS avg, -&gt;product.id AS product_id&quot;.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.ViewDefinition-1.html">ViewDefinition</a>&lt;T&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/ViewDefinition.cs" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In this article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      AeroDB Documentation
+      
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.min.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

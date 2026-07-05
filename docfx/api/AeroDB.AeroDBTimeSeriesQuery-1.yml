@@ -1,0 +1,2050 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.AeroDBTimeSeriesQuery`1
+  commentId: T:AeroDB.AeroDBTimeSeriesQuery`1
+  id: AeroDBTimeSeriesQuery`1
+  parent: AeroDB
+  children:
+  - AeroDB.AeroDBTimeSeriesQuery`1.BucketByFloor(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Int32,AeroDB.TimeUnit)
+  - AeroDB.AeroDBTimeSeriesQuery`1.BucketByGroup(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},AeroDB.TimeBucket)
+  - AeroDB.AeroDBTimeSeriesQuery`1.Downsample(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Int32)
+  - AeroDB.AeroDBTimeSeriesQuery`1.Select(System.Action{AeroDB.AggregateQueryBuilder{`0}})
+  - AeroDB.AeroDBTimeSeriesQuery`1.Skip(System.Int32)
+  - AeroDB.AeroDBTimeSeriesQuery`1.Take(System.Int32)
+  - AeroDB.AeroDBTimeSeriesQuery`1.ToListAsync(System.Threading.CancellationToken)
+  - AeroDB.AeroDBTimeSeriesQuery`1.Where(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})
+  langs:
+  - csharp
+  - vb
+  name: AeroDBTimeSeriesQuery<T>
+  nameWithType: AeroDBTimeSeriesQuery<T>
+  fullName: AeroDB.AeroDBTimeSeriesQuery<T>
+  type: Class
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/TimeSeries/AeroDBTimeSeriesQuery.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: 'public sealed class AeroDBTimeSeriesQuery<T> : ITimeSeriesQuery<T> where T : class'
+    typeParameters:
+    - id: T
+    content.vb: Public NotInheritable Class AeroDBTimeSeriesQuery(Of T As Class) Implements ITimeSeriesQuery(Of T)
+  inheritance:
+  - System.Object
+  implements:
+  - AeroDB.ITimeSeriesQuery{{T}}
+  inheritedMembers:
+  - System.Object.GetType
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  nameWithType.vb: AeroDBTimeSeriesQuery(Of T)
+  fullName.vb: AeroDB.AeroDBTimeSeriesQuery(Of T)
+  name.vb: AeroDBTimeSeriesQuery(Of T)
+- uid: AeroDB.AeroDBTimeSeriesQuery`1.BucketByFloor(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Int32,AeroDB.TimeUnit)
+  commentId: M:AeroDB.AeroDBTimeSeriesQuery`1.BucketByFloor(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Int32,AeroDB.TimeUnit)
+  id: BucketByFloor(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Int32,AeroDB.TimeUnit)
+  parent: AeroDB.AeroDBTimeSeriesQuery`1
+  langs:
+  - csharp
+  - vb
+  name: BucketByFloor(Expression<Func<T, object>>, int, TimeUnit)
+  nameWithType: AeroDBTimeSeriesQuery<T>.BucketByFloor(Expression<Func<T, object>>, int, TimeUnit)
+  fullName: AeroDB.AeroDBTimeSeriesQuery<T>.BucketByFloor(System.Linq.Expressions.Expression<System.Func<T, object>>, int, AeroDB.TimeUnit)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/TimeSeries/AeroDBTimeSeriesQuery.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Buckets results using <code>time::floor()</code> with a flexible duration.
+
+    Example: BucketByFloor(x =&gt; x.Timestamp, 1, TimeUnit.Hour) → time::floor(Timestamp, 1h)
+  example: []
+  syntax:
+    content: public ITimeSeriesQuery<T> BucketByFloor(Expression<Func<T, object>> timestampField, int value, TimeUnit unit)
+    parameters:
+    - id: timestampField
+      type: System.Linq.Expressions.Expression{System.Func{{T},System.Object}}
+    - id: value
+      type: System.Int32
+    - id: unit
+      type: AeroDB.TimeUnit
+    return:
+      type: AeroDB.ITimeSeriesQuery{{T}}
+    content.vb: Public Function BucketByFloor(timestampField As Expression(Of Func(Of T, Object)), value As Integer, unit As TimeUnit) As ITimeSeriesQuery(Of T)
+  overload: AeroDB.AeroDBTimeSeriesQuery`1.BucketByFloor*
+  implements:
+  - AeroDB.ITimeSeriesQuery{{T}}.BucketByFloor(System.Linq.Expressions.Expression{System.Func{{T},System.Object}},System.Int32,AeroDB.TimeUnit)
+  nameWithType.vb: AeroDBTimeSeriesQuery(Of T).BucketByFloor(Expression(Of Func(Of T, Object)), Integer, TimeUnit)
+  fullName.vb: AeroDB.AeroDBTimeSeriesQuery(Of T).BucketByFloor(System.Linq.Expressions.Expression(Of System.Func(Of T, Object)), Integer, AeroDB.TimeUnit)
+  name.vb: BucketByFloor(Expression(Of Func(Of T, Object)), Integer, TimeUnit)
+- uid: AeroDB.AeroDBTimeSeriesQuery`1.BucketByGroup(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},AeroDB.TimeBucket)
+  commentId: M:AeroDB.AeroDBTimeSeriesQuery`1.BucketByGroup(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},AeroDB.TimeBucket)
+  id: BucketByGroup(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},AeroDB.TimeBucket)
+  parent: AeroDB.AeroDBTimeSeriesQuery`1
+  langs:
+  - csharp
+  - vb
+  name: BucketByGroup(Expression<Func<T, object>>, TimeBucket)
+  nameWithType: AeroDBTimeSeriesQuery<T>.BucketByGroup(Expression<Func<T, object>>, TimeBucket)
+  fullName: AeroDB.AeroDBTimeSeriesQuery<T>.BucketByGroup(System.Linq.Expressions.Expression<System.Func<T, object>>, AeroDB.TimeBucket)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/TimeSeries/AeroDBTimeSeriesQuery.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Buckets results using <code>time::group()</code> for calendar-aligned grouping.
+
+    Example: BucketByGroup(x =&gt; x.Timestamp, TimeBucket.Month) → time::group(Timestamp, "month")
+  example: []
+  syntax:
+    content: public ITimeSeriesQuery<T> BucketByGroup(Expression<Func<T, object>> timestampField, TimeBucket bucket)
+    parameters:
+    - id: timestampField
+      type: System.Linq.Expressions.Expression{System.Func{{T},System.Object}}
+    - id: bucket
+      type: AeroDB.TimeBucket
+    return:
+      type: AeroDB.ITimeSeriesQuery{{T}}
+    content.vb: Public Function BucketByGroup(timestampField As Expression(Of Func(Of T, Object)), bucket As TimeBucket) As ITimeSeriesQuery(Of T)
+  overload: AeroDB.AeroDBTimeSeriesQuery`1.BucketByGroup*
+  implements:
+  - AeroDB.ITimeSeriesQuery{{T}}.BucketByGroup(System.Linq.Expressions.Expression{System.Func{{T},System.Object}},AeroDB.TimeBucket)
+  nameWithType.vb: AeroDBTimeSeriesQuery(Of T).BucketByGroup(Expression(Of Func(Of T, Object)), TimeBucket)
+  fullName.vb: AeroDB.AeroDBTimeSeriesQuery(Of T).BucketByGroup(System.Linq.Expressions.Expression(Of System.Func(Of T, Object)), AeroDB.TimeBucket)
+  name.vb: BucketByGroup(Expression(Of Func(Of T, Object)), TimeBucket)
+- uid: AeroDB.AeroDBTimeSeriesQuery`1.Downsample(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Int32)
+  commentId: M:AeroDB.AeroDBTimeSeriesQuery`1.Downsample(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Int32)
+  id: Downsample(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Int32)
+  parent: AeroDB.AeroDBTimeSeriesQuery`1
+  langs:
+  - csharp
+  - vb
+  name: Downsample(Expression<Func<T, object>>, int)
+  nameWithType: AeroDBTimeSeriesQuery<T>.Downsample(Expression<Func<T, object>>, int)
+  fullName: AeroDB.AeroDBTimeSeriesQuery<T>.Downsample(System.Linq.Expressions.Expression<System.Func<T, object>>, int)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/TimeSeries/AeroDBTimeSeriesQuery.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Auto-compute bucket width to achieve approximately the target number of buckets.
+
+    Requires a time range to be specified via Where() first (or explicit start/end).
+  example: []
+  syntax:
+    content: public ITimeSeriesQuery<T> Downsample(Expression<Func<T, object>> timestampField, int targetBucketCount)
+    parameters:
+    - id: timestampField
+      type: System.Linq.Expressions.Expression{System.Func{{T},System.Object}}
+    - id: targetBucketCount
+      type: System.Int32
+    return:
+      type: AeroDB.ITimeSeriesQuery{{T}}
+    content.vb: Public Function Downsample(timestampField As Expression(Of Func(Of T, Object)), targetBucketCount As Integer) As ITimeSeriesQuery(Of T)
+  overload: AeroDB.AeroDBTimeSeriesQuery`1.Downsample*
+  implements:
+  - AeroDB.ITimeSeriesQuery{{T}}.Downsample(System.Linq.Expressions.Expression{System.Func{{T},System.Object}},System.Int32)
+  nameWithType.vb: AeroDBTimeSeriesQuery(Of T).Downsample(Expression(Of Func(Of T, Object)), Integer)
+  fullName.vb: AeroDB.AeroDBTimeSeriesQuery(Of T).Downsample(System.Linq.Expressions.Expression(Of System.Func(Of T, Object)), Integer)
+  name.vb: Downsample(Expression(Of Func(Of T, Object)), Integer)
+- uid: AeroDB.AeroDBTimeSeriesQuery`1.Select(System.Action{AeroDB.AggregateQueryBuilder{`0}})
+  commentId: M:AeroDB.AeroDBTimeSeriesQuery`1.Select(System.Action{AeroDB.AggregateQueryBuilder{`0}})
+  id: Select(System.Action{AeroDB.AggregateQueryBuilder{`0}})
+  parent: AeroDB.AeroDBTimeSeriesQuery`1
+  langs:
+  - csharp
+  - vb
+  name: Select(Action<AggregateQueryBuilder<T>>)
+  nameWithType: AeroDBTimeSeriesQuery<T>.Select(Action<AggregateQueryBuilder<T>>)
+  fullName: AeroDB.AeroDBTimeSeriesQuery<T>.Select(System.Action<AeroDB.AggregateQueryBuilder<T>>)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/TimeSeries/AeroDBTimeSeriesQuery.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Configures aggregate expressions. Delegates to <xref href="AeroDB.AggregateQueryBuilder%601" data-throw-if-not-resolved="false"></xref>.
+
+    Example: .Select(a =&gt; a.Count().As("cnt").Avg(x =&gt; x.Value).As("avg_temp"))
+  example: []
+  syntax:
+    content: public ITimeSeriesQuery<T> Select(Action<AggregateQueryBuilder<T>> configure)
+    parameters:
+    - id: configure
+      type: System.Action{AeroDB.AggregateQueryBuilder{{T}}}
+    return:
+      type: AeroDB.ITimeSeriesQuery{{T}}
+    content.vb: Public Function [Select](configure As Action(Of AggregateQueryBuilder(Of T))) As ITimeSeriesQuery(Of T)
+  overload: AeroDB.AeroDBTimeSeriesQuery`1.Select*
+  implements:
+  - AeroDB.ITimeSeriesQuery{{T}}.Select(System.Action{AeroDB.AggregateQueryBuilder{{T}}})
+  nameWithType.vb: AeroDBTimeSeriesQuery(Of T).Select(Action(Of AggregateQueryBuilder(Of T)))
+  fullName.vb: AeroDB.AeroDBTimeSeriesQuery(Of T).Select(System.Action(Of AeroDB.AggregateQueryBuilder(Of T)))
+  name.vb: Select(Action(Of AggregateQueryBuilder(Of T)))
+- uid: AeroDB.AeroDBTimeSeriesQuery`1.Where(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})
+  commentId: M:AeroDB.AeroDBTimeSeriesQuery`1.Where(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})
+  id: Where(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})
+  parent: AeroDB.AeroDBTimeSeriesQuery`1
+  langs:
+  - csharp
+  - vb
+  name: Where(Expression<Func<T, bool>>)
+  nameWithType: AeroDBTimeSeriesQuery<T>.Where(Expression<Func<T, bool>>)
+  fullName: AeroDB.AeroDBTimeSeriesQuery<T>.Where(System.Linq.Expressions.Expression<System.Func<T, bool>>)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/TimeSeries/AeroDBTimeSeriesQuery.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Applies a filter condition (typically a time range).
+
+    The expression is translated to a SurrealQL WHERE clause.
+  example: []
+  syntax:
+    content: public ITimeSeriesQuery<T> Where(Expression<Func<T, bool>> predicate)
+    parameters:
+    - id: predicate
+      type: System.Linq.Expressions.Expression{System.Func{{T},System.Boolean}}
+    return:
+      type: AeroDB.ITimeSeriesQuery{{T}}
+    content.vb: Public Function Where(predicate As Expression(Of Func(Of T, Boolean))) As ITimeSeriesQuery(Of T)
+  overload: AeroDB.AeroDBTimeSeriesQuery`1.Where*
+  implements:
+  - AeroDB.ITimeSeriesQuery{{T}}.Where(System.Linq.Expressions.Expression{System.Func{{T},System.Boolean}})
+  nameWithType.vb: AeroDBTimeSeriesQuery(Of T).Where(Expression(Of Func(Of T, Boolean)))
+  fullName.vb: AeroDB.AeroDBTimeSeriesQuery(Of T).Where(System.Linq.Expressions.Expression(Of System.Func(Of T, Boolean)))
+  name.vb: Where(Expression(Of Func(Of T, Boolean)))
+- uid: AeroDB.AeroDBTimeSeriesQuery`1.Take(System.Int32)
+  commentId: M:AeroDB.AeroDBTimeSeriesQuery`1.Take(System.Int32)
+  id: Take(System.Int32)
+  parent: AeroDB.AeroDBTimeSeriesQuery`1
+  langs:
+  - csharp
+  - vb
+  name: Take(int)
+  nameWithType: AeroDBTimeSeriesQuery<T>.Take(int)
+  fullName: AeroDB.AeroDBTimeSeriesQuery<T>.Take(int)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/TimeSeries/AeroDBTimeSeriesQuery.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Limits the number of result rows.
+  example: []
+  syntax:
+    content: public ITimeSeriesQuery<T> Take(int limit)
+    parameters:
+    - id: limit
+      type: System.Int32
+    return:
+      type: AeroDB.ITimeSeriesQuery{{T}}
+    content.vb: Public Function Take(limit As Integer) As ITimeSeriesQuery(Of T)
+  overload: AeroDB.AeroDBTimeSeriesQuery`1.Take*
+  implements:
+  - AeroDB.ITimeSeriesQuery{{T}}.Take(System.Int32)
+  nameWithType.vb: AeroDBTimeSeriesQuery(Of T).Take(Integer)
+  fullName.vb: AeroDB.AeroDBTimeSeriesQuery(Of T).Take(Integer)
+  name.vb: Take(Integer)
+- uid: AeroDB.AeroDBTimeSeriesQuery`1.Skip(System.Int32)
+  commentId: M:AeroDB.AeroDBTimeSeriesQuery`1.Skip(System.Int32)
+  id: Skip(System.Int32)
+  parent: AeroDB.AeroDBTimeSeriesQuery`1
+  langs:
+  - csharp
+  - vb
+  name: Skip(int)
+  nameWithType: AeroDBTimeSeriesQuery<T>.Skip(int)
+  fullName: AeroDB.AeroDBTimeSeriesQuery<T>.Skip(int)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/TimeSeries/AeroDBTimeSeriesQuery.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Skips rows (for pagination).
+  example: []
+  syntax:
+    content: public ITimeSeriesQuery<T> Skip(int count)
+    parameters:
+    - id: count
+      type: System.Int32
+    return:
+      type: AeroDB.ITimeSeriesQuery{{T}}
+    content.vb: Public Function Skip(count As Integer) As ITimeSeriesQuery(Of T)
+  overload: AeroDB.AeroDBTimeSeriesQuery`1.Skip*
+  implements:
+  - AeroDB.ITimeSeriesQuery{{T}}.Skip(System.Int32)
+  nameWithType.vb: AeroDBTimeSeriesQuery(Of T).Skip(Integer)
+  fullName.vb: AeroDB.AeroDBTimeSeriesQuery(Of T).Skip(Integer)
+  name.vb: Skip(Integer)
+- uid: AeroDB.AeroDBTimeSeriesQuery`1.ToListAsync(System.Threading.CancellationToken)
+  commentId: M:AeroDB.AeroDBTimeSeriesQuery`1.ToListAsync(System.Threading.CancellationToken)
+  id: ToListAsync(System.Threading.CancellationToken)
+  parent: AeroDB.AeroDBTimeSeriesQuery`1
+  langs:
+  - csharp
+  - vb
+  name: ToListAsync(CancellationToken)
+  nameWithType: AeroDBTimeSeriesQuery<T>.ToListAsync(CancellationToken)
+  fullName: AeroDB.AeroDBTimeSeriesQuery<T>.ToListAsync(System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/TimeSeries/AeroDBTimeSeriesQuery.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Executes the time-series query and returns results as a list of dynamic records.
+  example: []
+  syntax:
+    content: public Task<List<T>> ToListAsync(CancellationToken ct = default)
+    parameters:
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.List{{T}}}
+    content.vb: Public Function ToListAsync(ct As CancellationToken = Nothing) As Task(Of List(Of T))
+  overload: AeroDB.AeroDBTimeSeriesQuery`1.ToListAsync*
+  implements:
+  - AeroDB.ITimeSeriesQuery{{T}}.ToListAsync(System.Threading.CancellationToken)
+  nameWithType.vb: AeroDBTimeSeriesQuery(Of T).ToListAsync(CancellationToken)
+  fullName.vb: AeroDB.AeroDBTimeSeriesQuery(Of T).ToListAsync(System.Threading.CancellationToken)
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: AeroDB.ITimeSeriesQuery{{T}}
+  commentId: T:AeroDB.ITimeSeriesQuery{`0}
+  parent: AeroDB
+  definition: AeroDB.ITimeSeriesQuery`1
+  href: AeroDB.ITimeSeriesQuery-1.html
+  name: ITimeSeriesQuery<T>
+  nameWithType: ITimeSeriesQuery<T>
+  fullName: AeroDB.ITimeSeriesQuery<T>
+  nameWithType.vb: ITimeSeriesQuery(Of T)
+  fullName.vb: AeroDB.ITimeSeriesQuery(Of T)
+  name.vb: ITimeSeriesQuery(Of T)
+  spec.csharp:
+  - uid: AeroDB.ITimeSeriesQuery`1
+    name: ITimeSeriesQuery
+    isExternal: true
+    href: AeroDB.ITimeSeriesQuery-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.ITimeSeriesQuery`1
+    name: ITimeSeriesQuery
+    isExternal: true
+    href: AeroDB.ITimeSeriesQuery-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AeroDB.ITimeSeriesQuery`1
+  commentId: T:AeroDB.ITimeSeriesQuery`1
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.ITimeSeriesQuery-1.html
+  name: ITimeSeriesQuery<T>
+  nameWithType: ITimeSeriesQuery<T>
+  fullName: AeroDB.ITimeSeriesQuery<T>
+  nameWithType.vb: ITimeSeriesQuery(Of T)
+  fullName.vb: AeroDB.ITimeSeriesQuery(Of T)
+  name.vb: ITimeSeriesQuery(Of T)
+  spec.csharp:
+  - uid: AeroDB.ITimeSeriesQuery`1
+    name: ITimeSeriesQuery
+    isExternal: true
+    href: AeroDB.ITimeSeriesQuery-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.ITimeSeriesQuery`1
+    name: ITimeSeriesQuery
+    isExternal: true
+    href: AeroDB.ITimeSeriesQuery-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.AeroDBTimeSeriesQuery`1.BucketByFloor*
+  commentId: Overload:AeroDB.AeroDBTimeSeriesQuery`1.BucketByFloor
+  isExternal: true
+  href: AeroDB.AeroDBTimeSeriesQuery-1.html#AeroDB_AeroDBTimeSeriesQuery_1_BucketByFloor_System_Linq_Expressions_Expression_System_Func__0_System_Object___System_Int32_AeroDB_TimeUnit_
+  name: BucketByFloor
+  nameWithType: AeroDBTimeSeriesQuery<T>.BucketByFloor
+  fullName: AeroDB.AeroDBTimeSeriesQuery<T>.BucketByFloor
+  nameWithType.vb: AeroDBTimeSeriesQuery(Of T).BucketByFloor
+  fullName.vb: AeroDB.AeroDBTimeSeriesQuery(Of T).BucketByFloor
+- uid: AeroDB.ITimeSeriesQuery{{T}}.BucketByFloor(System.Linq.Expressions.Expression{System.Func{{T},System.Object}},System.Int32,AeroDB.TimeUnit)
+  commentId: M:AeroDB.ITimeSeriesQuery{`0}.BucketByFloor(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Int32,AeroDB.TimeUnit)
+  parent: AeroDB.ITimeSeriesQuery{{T}}
+  definition: AeroDB.ITimeSeriesQuery`1.BucketByFloor(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Int32,AeroDB.TimeUnit)
+  href: AeroDB.ITimeSeriesQuery-1.html#AeroDB_ITimeSeriesQuery_1_BucketByFloor_System_Linq_Expressions_Expression_System_Func__0_System_Object___System_Int32_AeroDB_TimeUnit_
+  name: BucketByFloor(Expression<Func<T, object>>, int, TimeUnit)
+  nameWithType: ITimeSeriesQuery<T>.BucketByFloor(Expression<Func<T, object>>, int, TimeUnit)
+  fullName: AeroDB.ITimeSeriesQuery<T>.BucketByFloor(System.Linq.Expressions.Expression<System.Func<T, object>>, int, AeroDB.TimeUnit)
+  nameWithType.vb: ITimeSeriesQuery(Of T).BucketByFloor(Expression(Of Func(Of T, Object)), Integer, TimeUnit)
+  fullName.vb: AeroDB.ITimeSeriesQuery(Of T).BucketByFloor(System.Linq.Expressions.Expression(Of System.Func(Of T, Object)), Integer, AeroDB.TimeUnit)
+  name.vb: BucketByFloor(Expression(Of Func(Of T, Object)), Integer, TimeUnit)
+  spec.csharp:
+  - uid: AeroDB.ITimeSeriesQuery{`0}.BucketByFloor(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Int32,AeroDB.TimeUnit)
+    name: BucketByFloor
+    isExternal: true
+    href: AeroDB.ITimeSeriesQuery-1.html#AeroDB_ITimeSeriesQuery_1_BucketByFloor_System_Linq_Expressions_Expression_System_Func__0_System_Object___System_Int32_AeroDB_TimeUnit_
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: AeroDB.TimeUnit
+    name: TimeUnit
+    isExternal: true
+    href: AeroDB.TimeUnit.html
+  - name: )
+  spec.vb:
+  - uid: AeroDB.ITimeSeriesQuery{`0}.BucketByFloor(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Int32,AeroDB.TimeUnit)
+    name: BucketByFloor
+    isExternal: true
+    href: AeroDB.ITimeSeriesQuery-1.html#AeroDB_ITimeSeriesQuery_1_BucketByFloor_System_Linq_Expressions_Expression_System_Func__0_System_Object___System_Int32_AeroDB_TimeUnit_
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: AeroDB.TimeUnit
+    name: TimeUnit
+    isExternal: true
+    href: AeroDB.TimeUnit.html
+  - name: )
+- uid: System.Linq.Expressions.Expression{System.Func{{T},System.Object}}
+  commentId: T:System.Linq.Expressions.Expression{System.Func{`0,System.Object}}
+  parent: System.Linq.Expressions
+  definition: System.Linq.Expressions.Expression`1
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  name: Expression<Func<T, object>>
+  nameWithType: Expression<Func<T, object>>
+  fullName: System.Linq.Expressions.Expression<System.Func<T, object>>
+  nameWithType.vb: Expression(Of Func(Of T, Object))
+  fullName.vb: System.Linq.Expressions.Expression(Of System.Func(Of T, Object))
+  name.vb: Expression(Of Func(Of T, Object))
+  spec.csharp:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  - name: )
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: AeroDB.TimeUnit
+  commentId: T:AeroDB.TimeUnit
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.TimeUnit.html
+  name: TimeUnit
+  nameWithType: TimeUnit
+  fullName: AeroDB.TimeUnit
+- uid: AeroDB.ITimeSeriesQuery`1.BucketByFloor(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Int32,AeroDB.TimeUnit)
+  commentId: M:AeroDB.ITimeSeriesQuery`1.BucketByFloor(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Int32,AeroDB.TimeUnit)
+  isExternal: true
+  href: AeroDB.ITimeSeriesQuery-1.html#AeroDB_ITimeSeriesQuery_1_BucketByFloor_System_Linq_Expressions_Expression_System_Func__0_System_Object___System_Int32_AeroDB_TimeUnit_
+  name: BucketByFloor(Expression<Func<T, object>>, int, TimeUnit)
+  nameWithType: ITimeSeriesQuery<T>.BucketByFloor(Expression<Func<T, object>>, int, TimeUnit)
+  fullName: AeroDB.ITimeSeriesQuery<T>.BucketByFloor(System.Linq.Expressions.Expression<System.Func<T, object>>, int, AeroDB.TimeUnit)
+  nameWithType.vb: ITimeSeriesQuery(Of T).BucketByFloor(Expression(Of Func(Of T, Object)), Integer, TimeUnit)
+  fullName.vb: AeroDB.ITimeSeriesQuery(Of T).BucketByFloor(System.Linq.Expressions.Expression(Of System.Func(Of T, Object)), Integer, AeroDB.TimeUnit)
+  name.vb: BucketByFloor(Expression(Of Func(Of T, Object)), Integer, TimeUnit)
+  spec.csharp:
+  - uid: AeroDB.ITimeSeriesQuery`1.BucketByFloor(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Int32,AeroDB.TimeUnit)
+    name: BucketByFloor
+    isExternal: true
+    href: AeroDB.ITimeSeriesQuery-1.html#AeroDB_ITimeSeriesQuery_1_BucketByFloor_System_Linq_Expressions_Expression_System_Func__0_System_Object___System_Int32_AeroDB_TimeUnit_
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: AeroDB.TimeUnit
+    name: TimeUnit
+    isExternal: true
+    href: AeroDB.TimeUnit.html
+  - name: )
+  spec.vb:
+  - uid: AeroDB.ITimeSeriesQuery`1.BucketByFloor(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Int32,AeroDB.TimeUnit)
+    name: BucketByFloor
+    isExternal: true
+    href: AeroDB.ITimeSeriesQuery-1.html#AeroDB_ITimeSeriesQuery_1_BucketByFloor_System_Linq_Expressions_Expression_System_Func__0_System_Object___System_Int32_AeroDB_TimeUnit_
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: AeroDB.TimeUnit
+    name: TimeUnit
+    isExternal: true
+    href: AeroDB.TimeUnit.html
+  - name: )
+- uid: System.Linq.Expressions.Expression`1
+  commentId: T:System.Linq.Expressions.Expression`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  name: Expression<TDelegate>
+  nameWithType: Expression<TDelegate>
+  fullName: System.Linq.Expressions.Expression<TDelegate>
+  nameWithType.vb: Expression(Of TDelegate)
+  fullName.vb: System.Linq.Expressions.Expression(Of TDelegate)
+  name.vb: Expression(Of TDelegate)
+  spec.csharp:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - name: TDelegate
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TDelegate
+  - name: )
+- uid: System.Linq.Expressions
+  commentId: N:System.Linq.Expressions
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Linq.Expressions
+  nameWithType: System.Linq.Expressions
+  fullName: System.Linq.Expressions
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Linq
+    name: Linq
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq
+  - name: .
+  - uid: System.Linq.Expressions
+    name: Expressions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Linq
+    name: Linq
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq
+  - name: .
+  - uid: System.Linq.Expressions
+    name: Expressions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions
+- uid: AeroDB.AeroDBTimeSeriesQuery`1.BucketByGroup*
+  commentId: Overload:AeroDB.AeroDBTimeSeriesQuery`1.BucketByGroup
+  isExternal: true
+  href: AeroDB.AeroDBTimeSeriesQuery-1.html#AeroDB_AeroDBTimeSeriesQuery_1_BucketByGroup_System_Linq_Expressions_Expression_System_Func__0_System_Object___AeroDB_TimeBucket_
+  name: BucketByGroup
+  nameWithType: AeroDBTimeSeriesQuery<T>.BucketByGroup
+  fullName: AeroDB.AeroDBTimeSeriesQuery<T>.BucketByGroup
+  nameWithType.vb: AeroDBTimeSeriesQuery(Of T).BucketByGroup
+  fullName.vb: AeroDB.AeroDBTimeSeriesQuery(Of T).BucketByGroup
+- uid: AeroDB.ITimeSeriesQuery{{T}}.BucketByGroup(System.Linq.Expressions.Expression{System.Func{{T},System.Object}},AeroDB.TimeBucket)
+  commentId: M:AeroDB.ITimeSeriesQuery{`0}.BucketByGroup(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},AeroDB.TimeBucket)
+  parent: AeroDB.ITimeSeriesQuery{{T}}
+  definition: AeroDB.ITimeSeriesQuery`1.BucketByGroup(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},AeroDB.TimeBucket)
+  href: AeroDB.ITimeSeriesQuery-1.html#AeroDB_ITimeSeriesQuery_1_BucketByGroup_System_Linq_Expressions_Expression_System_Func__0_System_Object___AeroDB_TimeBucket_
+  name: BucketByGroup(Expression<Func<T, object>>, TimeBucket)
+  nameWithType: ITimeSeriesQuery<T>.BucketByGroup(Expression<Func<T, object>>, TimeBucket)
+  fullName: AeroDB.ITimeSeriesQuery<T>.BucketByGroup(System.Linq.Expressions.Expression<System.Func<T, object>>, AeroDB.TimeBucket)
+  nameWithType.vb: ITimeSeriesQuery(Of T).BucketByGroup(Expression(Of Func(Of T, Object)), TimeBucket)
+  fullName.vb: AeroDB.ITimeSeriesQuery(Of T).BucketByGroup(System.Linq.Expressions.Expression(Of System.Func(Of T, Object)), AeroDB.TimeBucket)
+  name.vb: BucketByGroup(Expression(Of Func(Of T, Object)), TimeBucket)
+  spec.csharp:
+  - uid: AeroDB.ITimeSeriesQuery{`0}.BucketByGroup(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},AeroDB.TimeBucket)
+    name: BucketByGroup
+    isExternal: true
+    href: AeroDB.ITimeSeriesQuery-1.html#AeroDB_ITimeSeriesQuery_1_BucketByGroup_System_Linq_Expressions_Expression_System_Func__0_System_Object___AeroDB_TimeBucket_
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: AeroDB.TimeBucket
+    name: TimeBucket
+    isExternal: true
+    href: AeroDB.TimeBucket.html
+  - name: )
+  spec.vb:
+  - uid: AeroDB.ITimeSeriesQuery{`0}.BucketByGroup(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},AeroDB.TimeBucket)
+    name: BucketByGroup
+    isExternal: true
+    href: AeroDB.ITimeSeriesQuery-1.html#AeroDB_ITimeSeriesQuery_1_BucketByGroup_System_Linq_Expressions_Expression_System_Func__0_System_Object___AeroDB_TimeBucket_
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: AeroDB.TimeBucket
+    name: TimeBucket
+    isExternal: true
+    href: AeroDB.TimeBucket.html
+  - name: )
+- uid: AeroDB.TimeBucket
+  commentId: T:AeroDB.TimeBucket
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.TimeBucket.html
+  name: TimeBucket
+  nameWithType: TimeBucket
+  fullName: AeroDB.TimeBucket
+- uid: AeroDB.ITimeSeriesQuery`1.BucketByGroup(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},AeroDB.TimeBucket)
+  commentId: M:AeroDB.ITimeSeriesQuery`1.BucketByGroup(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},AeroDB.TimeBucket)
+  isExternal: true
+  href: AeroDB.ITimeSeriesQuery-1.html#AeroDB_ITimeSeriesQuery_1_BucketByGroup_System_Linq_Expressions_Expression_System_Func__0_System_Object___AeroDB_TimeBucket_
+  name: BucketByGroup(Expression<Func<T, object>>, TimeBucket)
+  nameWithType: ITimeSeriesQuery<T>.BucketByGroup(Expression<Func<T, object>>, TimeBucket)
+  fullName: AeroDB.ITimeSeriesQuery<T>.BucketByGroup(System.Linq.Expressions.Expression<System.Func<T, object>>, AeroDB.TimeBucket)
+  nameWithType.vb: ITimeSeriesQuery(Of T).BucketByGroup(Expression(Of Func(Of T, Object)), TimeBucket)
+  fullName.vb: AeroDB.ITimeSeriesQuery(Of T).BucketByGroup(System.Linq.Expressions.Expression(Of System.Func(Of T, Object)), AeroDB.TimeBucket)
+  name.vb: BucketByGroup(Expression(Of Func(Of T, Object)), TimeBucket)
+  spec.csharp:
+  - uid: AeroDB.ITimeSeriesQuery`1.BucketByGroup(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},AeroDB.TimeBucket)
+    name: BucketByGroup
+    isExternal: true
+    href: AeroDB.ITimeSeriesQuery-1.html#AeroDB_ITimeSeriesQuery_1_BucketByGroup_System_Linq_Expressions_Expression_System_Func__0_System_Object___AeroDB_TimeBucket_
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: AeroDB.TimeBucket
+    name: TimeBucket
+    isExternal: true
+    href: AeroDB.TimeBucket.html
+  - name: )
+  spec.vb:
+  - uid: AeroDB.ITimeSeriesQuery`1.BucketByGroup(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},AeroDB.TimeBucket)
+    name: BucketByGroup
+    isExternal: true
+    href: AeroDB.ITimeSeriesQuery-1.html#AeroDB_ITimeSeriesQuery_1_BucketByGroup_System_Linq_Expressions_Expression_System_Func__0_System_Object___AeroDB_TimeBucket_
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: AeroDB.TimeBucket
+    name: TimeBucket
+    isExternal: true
+    href: AeroDB.TimeBucket.html
+  - name: )
+- uid: AeroDB.AeroDBTimeSeriesQuery`1.Downsample*
+  commentId: Overload:AeroDB.AeroDBTimeSeriesQuery`1.Downsample
+  isExternal: true
+  href: AeroDB.AeroDBTimeSeriesQuery-1.html#AeroDB_AeroDBTimeSeriesQuery_1_Downsample_System_Linq_Expressions_Expression_System_Func__0_System_Object___System_Int32_
+  name: Downsample
+  nameWithType: AeroDBTimeSeriesQuery<T>.Downsample
+  fullName: AeroDB.AeroDBTimeSeriesQuery<T>.Downsample
+  nameWithType.vb: AeroDBTimeSeriesQuery(Of T).Downsample
+  fullName.vb: AeroDB.AeroDBTimeSeriesQuery(Of T).Downsample
+- uid: AeroDB.ITimeSeriesQuery{{T}}.Downsample(System.Linq.Expressions.Expression{System.Func{{T},System.Object}},System.Int32)
+  commentId: M:AeroDB.ITimeSeriesQuery{`0}.Downsample(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Int32)
+  parent: AeroDB.ITimeSeriesQuery{{T}}
+  definition: AeroDB.ITimeSeriesQuery`1.Downsample(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Int32)
+  href: AeroDB.ITimeSeriesQuery-1.html#AeroDB_ITimeSeriesQuery_1_Downsample_System_Linq_Expressions_Expression_System_Func__0_System_Object___System_Int32_
+  name: Downsample(Expression<Func<T, object>>, int)
+  nameWithType: ITimeSeriesQuery<T>.Downsample(Expression<Func<T, object>>, int)
+  fullName: AeroDB.ITimeSeriesQuery<T>.Downsample(System.Linq.Expressions.Expression<System.Func<T, object>>, int)
+  nameWithType.vb: ITimeSeriesQuery(Of T).Downsample(Expression(Of Func(Of T, Object)), Integer)
+  fullName.vb: AeroDB.ITimeSeriesQuery(Of T).Downsample(System.Linq.Expressions.Expression(Of System.Func(Of T, Object)), Integer)
+  name.vb: Downsample(Expression(Of Func(Of T, Object)), Integer)
+  spec.csharp:
+  - uid: AeroDB.ITimeSeriesQuery{`0}.Downsample(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Int32)
+    name: Downsample
+    isExternal: true
+    href: AeroDB.ITimeSeriesQuery-1.html#AeroDB_ITimeSeriesQuery_1_Downsample_System_Linq_Expressions_Expression_System_Func__0_System_Object___System_Int32_
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: AeroDB.ITimeSeriesQuery{`0}.Downsample(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Int32)
+    name: Downsample
+    isExternal: true
+    href: AeroDB.ITimeSeriesQuery-1.html#AeroDB_ITimeSeriesQuery_1_Downsample_System_Linq_Expressions_Expression_System_Func__0_System_Object___System_Int32_
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: AeroDB.ITimeSeriesQuery`1.Downsample(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Int32)
+  commentId: M:AeroDB.ITimeSeriesQuery`1.Downsample(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Int32)
+  isExternal: true
+  href: AeroDB.ITimeSeriesQuery-1.html#AeroDB_ITimeSeriesQuery_1_Downsample_System_Linq_Expressions_Expression_System_Func__0_System_Object___System_Int32_
+  name: Downsample(Expression<Func<T, object>>, int)
+  nameWithType: ITimeSeriesQuery<T>.Downsample(Expression<Func<T, object>>, int)
+  fullName: AeroDB.ITimeSeriesQuery<T>.Downsample(System.Linq.Expressions.Expression<System.Func<T, object>>, int)
+  nameWithType.vb: ITimeSeriesQuery(Of T).Downsample(Expression(Of Func(Of T, Object)), Integer)
+  fullName.vb: AeroDB.ITimeSeriesQuery(Of T).Downsample(System.Linq.Expressions.Expression(Of System.Func(Of T, Object)), Integer)
+  name.vb: Downsample(Expression(Of Func(Of T, Object)), Integer)
+  spec.csharp:
+  - uid: AeroDB.ITimeSeriesQuery`1.Downsample(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Int32)
+    name: Downsample
+    isExternal: true
+    href: AeroDB.ITimeSeriesQuery-1.html#AeroDB_ITimeSeriesQuery_1_Downsample_System_Linq_Expressions_Expression_System_Func__0_System_Object___System_Int32_
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: AeroDB.ITimeSeriesQuery`1.Downsample(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Int32)
+    name: Downsample
+    isExternal: true
+    href: AeroDB.ITimeSeriesQuery-1.html#AeroDB_ITimeSeriesQuery_1_Downsample_System_Linq_Expressions_Expression_System_Func__0_System_Object___System_Int32_
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: AeroDB.AggregateQueryBuilder`1
+  commentId: T:AeroDB.AggregateQueryBuilder`1
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.AggregateQueryBuilder-1.html
+  name: AggregateQueryBuilder<T>
+  nameWithType: AggregateQueryBuilder<T>
+  fullName: AeroDB.AggregateQueryBuilder<T>
+  nameWithType.vb: AggregateQueryBuilder(Of T)
+  fullName.vb: AeroDB.AggregateQueryBuilder(Of T)
+  name.vb: AggregateQueryBuilder(Of T)
+  spec.csharp:
+  - uid: AeroDB.AggregateQueryBuilder`1
+    name: AggregateQueryBuilder
+    isExternal: true
+    href: AeroDB.AggregateQueryBuilder-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.AggregateQueryBuilder`1
+    name: AggregateQueryBuilder
+    isExternal: true
+    href: AeroDB.AggregateQueryBuilder-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.AeroDBTimeSeriesQuery`1.Select*
+  commentId: Overload:AeroDB.AeroDBTimeSeriesQuery`1.Select
+  isExternal: true
+  href: AeroDB.AeroDBTimeSeriesQuery-1.html#AeroDB_AeroDBTimeSeriesQuery_1_Select_System_Action_AeroDB_AggregateQueryBuilder__0___
+  name: Select
+  nameWithType: AeroDBTimeSeriesQuery<T>.Select
+  fullName: AeroDB.AeroDBTimeSeriesQuery<T>.Select
+  nameWithType.vb: AeroDBTimeSeriesQuery(Of T).Select
+  fullName.vb: AeroDB.AeroDBTimeSeriesQuery(Of T).Select
+- uid: AeroDB.ITimeSeriesQuery{{T}}.Select(System.Action{AeroDB.AggregateQueryBuilder{{T}}})
+  commentId: M:AeroDB.ITimeSeriesQuery{`0}.Select(System.Action{AeroDB.AggregateQueryBuilder{`0}})
+  parent: AeroDB.ITimeSeriesQuery{{T}}
+  definition: AeroDB.ITimeSeriesQuery`1.Select(System.Action{AeroDB.AggregateQueryBuilder{`0}})
+  href: AeroDB.ITimeSeriesQuery-1.html#AeroDB_ITimeSeriesQuery_1_Select_System_Action_AeroDB_AggregateQueryBuilder__0___
+  name: Select(Action<AggregateQueryBuilder<T>>)
+  nameWithType: ITimeSeriesQuery<T>.Select(Action<AggregateQueryBuilder<T>>)
+  fullName: AeroDB.ITimeSeriesQuery<T>.Select(System.Action<AeroDB.AggregateQueryBuilder<T>>)
+  nameWithType.vb: ITimeSeriesQuery(Of T).Select(Action(Of AggregateQueryBuilder(Of T)))
+  fullName.vb: AeroDB.ITimeSeriesQuery(Of T).Select(System.Action(Of AeroDB.AggregateQueryBuilder(Of T)))
+  name.vb: Select(Action(Of AggregateQueryBuilder(Of T)))
+  spec.csharp:
+  - uid: AeroDB.ITimeSeriesQuery{`0}.Select(System.Action{AeroDB.AggregateQueryBuilder{`0}})
+    name: Select
+    isExternal: true
+    href: AeroDB.ITimeSeriesQuery-1.html#AeroDB_ITimeSeriesQuery_1_Select_System_Action_AeroDB_AggregateQueryBuilder__0___
+  - name: (
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: AeroDB.AggregateQueryBuilder`1
+    name: AggregateQueryBuilder
+    isExternal: true
+    href: AeroDB.AggregateQueryBuilder-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: AeroDB.ITimeSeriesQuery{`0}.Select(System.Action{AeroDB.AggregateQueryBuilder{`0}})
+    name: Select
+    isExternal: true
+    href: AeroDB.ITimeSeriesQuery-1.html#AeroDB_ITimeSeriesQuery_1_Select_System_Action_AeroDB_AggregateQueryBuilder__0___
+  - name: (
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.AggregateQueryBuilder`1
+    name: AggregateQueryBuilder
+    isExternal: true
+    href: AeroDB.AggregateQueryBuilder-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+  - name: )
+- uid: System.Action{AeroDB.AggregateQueryBuilder{{T}}}
+  commentId: T:System.Action{AeroDB.AggregateQueryBuilder{`0}}
+  parent: System
+  definition: System.Action`1
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<AggregateQueryBuilder<T>>
+  nameWithType: Action<AggregateQueryBuilder<T>>
+  fullName: System.Action<AeroDB.AggregateQueryBuilder<T>>
+  nameWithType.vb: Action(Of AggregateQueryBuilder(Of T))
+  fullName.vb: System.Action(Of AeroDB.AggregateQueryBuilder(Of T))
+  name.vb: Action(Of AggregateQueryBuilder(Of T))
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: AeroDB.AggregateQueryBuilder`1
+    name: AggregateQueryBuilder
+    isExternal: true
+    href: AeroDB.AggregateQueryBuilder-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.AggregateQueryBuilder`1
+    name: AggregateQueryBuilder
+    isExternal: true
+    href: AeroDB.AggregateQueryBuilder-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+- uid: AeroDB.ITimeSeriesQuery`1.Select(System.Action{AeroDB.AggregateQueryBuilder{`0}})
+  commentId: M:AeroDB.ITimeSeriesQuery`1.Select(System.Action{AeroDB.AggregateQueryBuilder{`0}})
+  isExternal: true
+  href: AeroDB.ITimeSeriesQuery-1.html#AeroDB_ITimeSeriesQuery_1_Select_System_Action_AeroDB_AggregateQueryBuilder__0___
+  name: Select(Action<AggregateQueryBuilder<T>>)
+  nameWithType: ITimeSeriesQuery<T>.Select(Action<AggregateQueryBuilder<T>>)
+  fullName: AeroDB.ITimeSeriesQuery<T>.Select(System.Action<AeroDB.AggregateQueryBuilder<T>>)
+  nameWithType.vb: ITimeSeriesQuery(Of T).Select(Action(Of AggregateQueryBuilder(Of T)))
+  fullName.vb: AeroDB.ITimeSeriesQuery(Of T).Select(System.Action(Of AeroDB.AggregateQueryBuilder(Of T)))
+  name.vb: Select(Action(Of AggregateQueryBuilder(Of T)))
+  spec.csharp:
+  - uid: AeroDB.ITimeSeriesQuery`1.Select(System.Action{AeroDB.AggregateQueryBuilder{`0}})
+    name: Select
+    isExternal: true
+    href: AeroDB.ITimeSeriesQuery-1.html#AeroDB_ITimeSeriesQuery_1_Select_System_Action_AeroDB_AggregateQueryBuilder__0___
+  - name: (
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: AeroDB.AggregateQueryBuilder`1
+    name: AggregateQueryBuilder
+    isExternal: true
+    href: AeroDB.AggregateQueryBuilder-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: AeroDB.ITimeSeriesQuery`1.Select(System.Action{AeroDB.AggregateQueryBuilder{`0}})
+    name: Select
+    isExternal: true
+    href: AeroDB.ITimeSeriesQuery-1.html#AeroDB_ITimeSeriesQuery_1_Select_System_Action_AeroDB_AggregateQueryBuilder__0___
+  - name: (
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.AggregateQueryBuilder`1
+    name: AggregateQueryBuilder
+    isExternal: true
+    href: AeroDB.AggregateQueryBuilder-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+  - name: )
+- uid: System.Action`1
+  commentId: T:System.Action`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<T>
+  nameWithType: Action<T>
+  fullName: System.Action<T>
+  nameWithType.vb: Action(Of T)
+  fullName.vb: System.Action(Of T)
+  name.vb: Action(Of T)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.AeroDBTimeSeriesQuery`1.Where*
+  commentId: Overload:AeroDB.AeroDBTimeSeriesQuery`1.Where
+  isExternal: true
+  href: AeroDB.AeroDBTimeSeriesQuery-1.html#AeroDB_AeroDBTimeSeriesQuery_1_Where_System_Linq_Expressions_Expression_System_Func__0_System_Boolean___
+  name: Where
+  nameWithType: AeroDBTimeSeriesQuery<T>.Where
+  fullName: AeroDB.AeroDBTimeSeriesQuery<T>.Where
+  nameWithType.vb: AeroDBTimeSeriesQuery(Of T).Where
+  fullName.vb: AeroDB.AeroDBTimeSeriesQuery(Of T).Where
+- uid: AeroDB.ITimeSeriesQuery{{T}}.Where(System.Linq.Expressions.Expression{System.Func{{T},System.Boolean}})
+  commentId: M:AeroDB.ITimeSeriesQuery{`0}.Where(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})
+  parent: AeroDB.ITimeSeriesQuery{{T}}
+  definition: AeroDB.ITimeSeriesQuery`1.Where(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})
+  href: AeroDB.ITimeSeriesQuery-1.html#AeroDB_ITimeSeriesQuery_1_Where_System_Linq_Expressions_Expression_System_Func__0_System_Boolean___
+  name: Where(Expression<Func<T, bool>>)
+  nameWithType: ITimeSeriesQuery<T>.Where(Expression<Func<T, bool>>)
+  fullName: AeroDB.ITimeSeriesQuery<T>.Where(System.Linq.Expressions.Expression<System.Func<T, bool>>)
+  nameWithType.vb: ITimeSeriesQuery(Of T).Where(Expression(Of Func(Of T, Boolean)))
+  fullName.vb: AeroDB.ITimeSeriesQuery(Of T).Where(System.Linq.Expressions.Expression(Of System.Func(Of T, Boolean)))
+  name.vb: Where(Expression(Of Func(Of T, Boolean)))
+  spec.csharp:
+  - uid: AeroDB.ITimeSeriesQuery{`0}.Where(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})
+    name: Where
+    isExternal: true
+    href: AeroDB.ITimeSeriesQuery-1.html#AeroDB_ITimeSeriesQuery_1_Where_System_Linq_Expressions_Expression_System_Func__0_System_Boolean___
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: AeroDB.ITimeSeriesQuery{`0}.Where(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})
+    name: Where
+    isExternal: true
+    href: AeroDB.ITimeSeriesQuery-1.html#AeroDB_ITimeSeriesQuery_1_Where_System_Linq_Expressions_Expression_System_Func__0_System_Boolean___
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  - name: )
+  - name: )
+- uid: System.Linq.Expressions.Expression{System.Func{{T},System.Boolean}}
+  commentId: T:System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}}
+  parent: System.Linq.Expressions
+  definition: System.Linq.Expressions.Expression`1
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  name: Expression<Func<T, bool>>
+  nameWithType: Expression<Func<T, bool>>
+  fullName: System.Linq.Expressions.Expression<System.Func<T, bool>>
+  nameWithType.vb: Expression(Of Func(Of T, Boolean))
+  fullName.vb: System.Linq.Expressions.Expression(Of System.Func(Of T, Boolean))
+  name.vb: Expression(Of Func(Of T, Boolean))
+  spec.csharp:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  - name: )
+- uid: AeroDB.ITimeSeriesQuery`1.Where(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})
+  commentId: M:AeroDB.ITimeSeriesQuery`1.Where(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})
+  isExternal: true
+  href: AeroDB.ITimeSeriesQuery-1.html#AeroDB_ITimeSeriesQuery_1_Where_System_Linq_Expressions_Expression_System_Func__0_System_Boolean___
+  name: Where(Expression<Func<T, bool>>)
+  nameWithType: ITimeSeriesQuery<T>.Where(Expression<Func<T, bool>>)
+  fullName: AeroDB.ITimeSeriesQuery<T>.Where(System.Linq.Expressions.Expression<System.Func<T, bool>>)
+  nameWithType.vb: ITimeSeriesQuery(Of T).Where(Expression(Of Func(Of T, Boolean)))
+  fullName.vb: AeroDB.ITimeSeriesQuery(Of T).Where(System.Linq.Expressions.Expression(Of System.Func(Of T, Boolean)))
+  name.vb: Where(Expression(Of Func(Of T, Boolean)))
+  spec.csharp:
+  - uid: AeroDB.ITimeSeriesQuery`1.Where(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})
+    name: Where
+    isExternal: true
+    href: AeroDB.ITimeSeriesQuery-1.html#AeroDB_ITimeSeriesQuery_1_Where_System_Linq_Expressions_Expression_System_Func__0_System_Boolean___
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: AeroDB.ITimeSeriesQuery`1.Where(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})
+    name: Where
+    isExternal: true
+    href: AeroDB.ITimeSeriesQuery-1.html#AeroDB_ITimeSeriesQuery_1_Where_System_Linq_Expressions_Expression_System_Func__0_System_Boolean___
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  - name: )
+  - name: )
+- uid: AeroDB.AeroDBTimeSeriesQuery`1.Take*
+  commentId: Overload:AeroDB.AeroDBTimeSeriesQuery`1.Take
+  isExternal: true
+  href: AeroDB.AeroDBTimeSeriesQuery-1.html#AeroDB_AeroDBTimeSeriesQuery_1_Take_System_Int32_
+  name: Take
+  nameWithType: AeroDBTimeSeriesQuery<T>.Take
+  fullName: AeroDB.AeroDBTimeSeriesQuery<T>.Take
+  nameWithType.vb: AeroDBTimeSeriesQuery(Of T).Take
+  fullName.vb: AeroDB.AeroDBTimeSeriesQuery(Of T).Take
+- uid: AeroDB.ITimeSeriesQuery{{T}}.Take(System.Int32)
+  commentId: M:AeroDB.ITimeSeriesQuery{`0}.Take(System.Int32)
+  parent: AeroDB.ITimeSeriesQuery{{T}}
+  definition: AeroDB.ITimeSeriesQuery`1.Take(System.Int32)
+  href: AeroDB.ITimeSeriesQuery-1.html#AeroDB_ITimeSeriesQuery_1_Take_System_Int32_
+  name: Take(int)
+  nameWithType: ITimeSeriesQuery<T>.Take(int)
+  fullName: AeroDB.ITimeSeriesQuery<T>.Take(int)
+  nameWithType.vb: ITimeSeriesQuery(Of T).Take(Integer)
+  fullName.vb: AeroDB.ITimeSeriesQuery(Of T).Take(Integer)
+  name.vb: Take(Integer)
+  spec.csharp:
+  - uid: AeroDB.ITimeSeriesQuery{`0}.Take(System.Int32)
+    name: Take
+    isExternal: true
+    href: AeroDB.ITimeSeriesQuery-1.html#AeroDB_ITimeSeriesQuery_1_Take_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: AeroDB.ITimeSeriesQuery{`0}.Take(System.Int32)
+    name: Take
+    isExternal: true
+    href: AeroDB.ITimeSeriesQuery-1.html#AeroDB_ITimeSeriesQuery_1_Take_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: AeroDB.ITimeSeriesQuery`1.Take(System.Int32)
+  commentId: M:AeroDB.ITimeSeriesQuery`1.Take(System.Int32)
+  isExternal: true
+  href: AeroDB.ITimeSeriesQuery-1.html#AeroDB_ITimeSeriesQuery_1_Take_System_Int32_
+  name: Take(int)
+  nameWithType: ITimeSeriesQuery<T>.Take(int)
+  fullName: AeroDB.ITimeSeriesQuery<T>.Take(int)
+  nameWithType.vb: ITimeSeriesQuery(Of T).Take(Integer)
+  fullName.vb: AeroDB.ITimeSeriesQuery(Of T).Take(Integer)
+  name.vb: Take(Integer)
+  spec.csharp:
+  - uid: AeroDB.ITimeSeriesQuery`1.Take(System.Int32)
+    name: Take
+    isExternal: true
+    href: AeroDB.ITimeSeriesQuery-1.html#AeroDB_ITimeSeriesQuery_1_Take_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: AeroDB.ITimeSeriesQuery`1.Take(System.Int32)
+    name: Take
+    isExternal: true
+    href: AeroDB.ITimeSeriesQuery-1.html#AeroDB_ITimeSeriesQuery_1_Take_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: AeroDB.AeroDBTimeSeriesQuery`1.Skip*
+  commentId: Overload:AeroDB.AeroDBTimeSeriesQuery`1.Skip
+  isExternal: true
+  href: AeroDB.AeroDBTimeSeriesQuery-1.html#AeroDB_AeroDBTimeSeriesQuery_1_Skip_System_Int32_
+  name: Skip
+  nameWithType: AeroDBTimeSeriesQuery<T>.Skip
+  fullName: AeroDB.AeroDBTimeSeriesQuery<T>.Skip
+  nameWithType.vb: AeroDBTimeSeriesQuery(Of T).Skip
+  fullName.vb: AeroDB.AeroDBTimeSeriesQuery(Of T).Skip
+- uid: AeroDB.ITimeSeriesQuery{{T}}.Skip(System.Int32)
+  commentId: M:AeroDB.ITimeSeriesQuery{`0}.Skip(System.Int32)
+  parent: AeroDB.ITimeSeriesQuery{{T}}
+  definition: AeroDB.ITimeSeriesQuery`1.Skip(System.Int32)
+  href: AeroDB.ITimeSeriesQuery-1.html#AeroDB_ITimeSeriesQuery_1_Skip_System_Int32_
+  name: Skip(int)
+  nameWithType: ITimeSeriesQuery<T>.Skip(int)
+  fullName: AeroDB.ITimeSeriesQuery<T>.Skip(int)
+  nameWithType.vb: ITimeSeriesQuery(Of T).Skip(Integer)
+  fullName.vb: AeroDB.ITimeSeriesQuery(Of T).Skip(Integer)
+  name.vb: Skip(Integer)
+  spec.csharp:
+  - uid: AeroDB.ITimeSeriesQuery{`0}.Skip(System.Int32)
+    name: Skip
+    isExternal: true
+    href: AeroDB.ITimeSeriesQuery-1.html#AeroDB_ITimeSeriesQuery_1_Skip_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: AeroDB.ITimeSeriesQuery{`0}.Skip(System.Int32)
+    name: Skip
+    isExternal: true
+    href: AeroDB.ITimeSeriesQuery-1.html#AeroDB_ITimeSeriesQuery_1_Skip_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: AeroDB.ITimeSeriesQuery`1.Skip(System.Int32)
+  commentId: M:AeroDB.ITimeSeriesQuery`1.Skip(System.Int32)
+  isExternal: true
+  href: AeroDB.ITimeSeriesQuery-1.html#AeroDB_ITimeSeriesQuery_1_Skip_System_Int32_
+  name: Skip(int)
+  nameWithType: ITimeSeriesQuery<T>.Skip(int)
+  fullName: AeroDB.ITimeSeriesQuery<T>.Skip(int)
+  nameWithType.vb: ITimeSeriesQuery(Of T).Skip(Integer)
+  fullName.vb: AeroDB.ITimeSeriesQuery(Of T).Skip(Integer)
+  name.vb: Skip(Integer)
+  spec.csharp:
+  - uid: AeroDB.ITimeSeriesQuery`1.Skip(System.Int32)
+    name: Skip
+    isExternal: true
+    href: AeroDB.ITimeSeriesQuery-1.html#AeroDB_ITimeSeriesQuery_1_Skip_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: AeroDB.ITimeSeriesQuery`1.Skip(System.Int32)
+    name: Skip
+    isExternal: true
+    href: AeroDB.ITimeSeriesQuery-1.html#AeroDB_ITimeSeriesQuery_1_Skip_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: AeroDB.AeroDBTimeSeriesQuery`1.ToListAsync*
+  commentId: Overload:AeroDB.AeroDBTimeSeriesQuery`1.ToListAsync
+  isExternal: true
+  href: AeroDB.AeroDBTimeSeriesQuery-1.html#AeroDB_AeroDBTimeSeriesQuery_1_ToListAsync_System_Threading_CancellationToken_
+  name: ToListAsync
+  nameWithType: AeroDBTimeSeriesQuery<T>.ToListAsync
+  fullName: AeroDB.AeroDBTimeSeriesQuery<T>.ToListAsync
+  nameWithType.vb: AeroDBTimeSeriesQuery(Of T).ToListAsync
+  fullName.vb: AeroDB.AeroDBTimeSeriesQuery(Of T).ToListAsync
+- uid: AeroDB.ITimeSeriesQuery{{T}}.ToListAsync(System.Threading.CancellationToken)
+  commentId: M:AeroDB.ITimeSeriesQuery{`0}.ToListAsync(System.Threading.CancellationToken)
+  parent: AeroDB.ITimeSeriesQuery{{T}}
+  definition: AeroDB.ITimeSeriesQuery`1.ToListAsync(System.Threading.CancellationToken)
+  href: AeroDB.ITimeSeriesQuery-1.html#AeroDB_ITimeSeriesQuery_1_ToListAsync_System_Threading_CancellationToken_
+  name: ToListAsync(CancellationToken)
+  nameWithType: ITimeSeriesQuery<T>.ToListAsync(CancellationToken)
+  fullName: AeroDB.ITimeSeriesQuery<T>.ToListAsync(System.Threading.CancellationToken)
+  nameWithType.vb: ITimeSeriesQuery(Of T).ToListAsync(CancellationToken)
+  fullName.vb: AeroDB.ITimeSeriesQuery(Of T).ToListAsync(System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: AeroDB.ITimeSeriesQuery{`0}.ToListAsync(System.Threading.CancellationToken)
+    name: ToListAsync
+    isExternal: true
+    href: AeroDB.ITimeSeriesQuery-1.html#AeroDB_ITimeSeriesQuery_1_ToListAsync_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: AeroDB.ITimeSeriesQuery{`0}.ToListAsync(System.Threading.CancellationToken)
+    name: ToListAsync
+    isExternal: true
+    href: AeroDB.ITimeSeriesQuery-1.html#AeroDB_ITimeSeriesQuery_1_ToListAsync_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.List{{T}}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.List{``0}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<List<T>>
+  nameWithType: Task<List<T>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.List<T>>
+  nameWithType.vb: Task(Of List(Of T))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.List(Of T))
+  name.vb: Task(Of List(Of T))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - name: T
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+- uid: AeroDB.ITimeSeriesQuery`1.ToListAsync(System.Threading.CancellationToken)
+  commentId: M:AeroDB.ITimeSeriesQuery`1.ToListAsync(System.Threading.CancellationToken)
+  isExternal: true
+  href: AeroDB.ITimeSeriesQuery-1.html#AeroDB_ITimeSeriesQuery_1_ToListAsync_System_Threading_CancellationToken_
+  name: ToListAsync(CancellationToken)
+  nameWithType: ITimeSeriesQuery<T>.ToListAsync(CancellationToken)
+  fullName: AeroDB.ITimeSeriesQuery<T>.ToListAsync(System.Threading.CancellationToken)
+  nameWithType.vb: ITimeSeriesQuery(Of T).ToListAsync(CancellationToken)
+  fullName.vb: AeroDB.ITimeSeriesQuery(Of T).ToListAsync(System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: AeroDB.ITimeSeriesQuery`1.ToListAsync(System.Threading.CancellationToken)
+    name: ToListAsync
+    isExternal: true
+    href: AeroDB.ITimeSeriesQuery-1.html#AeroDB_ITimeSeriesQuery_1_ToListAsync_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: AeroDB.ITimeSeriesQuery`1.ToListAsync(System.Threading.CancellationToken)
+    name: ToListAsync
+    isExternal: true
+    href: AeroDB.ITimeSeriesQuery-1.html#AeroDB_ITimeSeriesQuery_1_ToListAsync_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks

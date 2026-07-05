@@ -1,0 +1,159 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.ICompiledQuery`1
+  commentId: T:AeroDB.ICompiledQuery`1
+  id: ICompiledQuery`1
+  parent: AeroDB
+  children: []
+  langs:
+  - csharp
+  - vb
+  name: ICompiledQuery<TDoc>
+  nameWithType: ICompiledQuery<TDoc>
+  fullName: AeroDB.ICompiledQuery<TDoc>
+  type: Interface
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Compiled/CompiledQueryInterfaces.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Compiled query that returns a single document.
+
+    Shorthand for <code>ICompiledQuery&lt;TDoc, TDoc&gt;</code>.
+  example: []
+  syntax:
+    content: 'public interface ICompiledQuery<TDoc> : ICompiledQuery<TDoc, TDoc>, ICompiledQueryMarker where TDoc : class'
+    typeParameters:
+    - id: TDoc
+      description: The document type being queried and returned.
+    content.vb: Public Interface ICompiledQuery(Of TDoc As Class) Inherits ICompiledQuery(Of TDoc, TDoc), ICompiledQueryMarker
+  inheritedMembers:
+  - AeroDB.ICompiledQuery{{TDoc},{TDoc}}.QueryIs
+  nameWithType.vb: ICompiledQuery(Of TDoc)
+  fullName.vb: AeroDB.ICompiledQuery(Of TDoc)
+  name.vb: ICompiledQuery(Of TDoc)
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: AeroDB.ICompiledQuery{{TDoc},{TDoc}}.QueryIs
+  commentId: M:AeroDB.ICompiledQuery{`0,`0}.QueryIs
+  parent: AeroDB.ICompiledQuery{{TDoc},{TDoc}}
+  definition: AeroDB.ICompiledQuery`2.QueryIs
+  href: AeroDB.ICompiledQuery-2.html#AeroDB_ICompiledQuery_2_QueryIs
+  name: QueryIs()
+  nameWithType: ICompiledQuery<TDoc, TDoc>.QueryIs()
+  fullName: AeroDB.ICompiledQuery<TDoc, TDoc>.QueryIs()
+  nameWithType.vb: ICompiledQuery(Of TDoc, TDoc).QueryIs()
+  fullName.vb: AeroDB.ICompiledQuery(Of TDoc, TDoc).QueryIs()
+  spec.csharp:
+  - uid: AeroDB.ICompiledQuery{`0,`0}.QueryIs
+    name: QueryIs
+    isExternal: true
+    href: AeroDB.ICompiledQuery-2.html#AeroDB_ICompiledQuery_2_QueryIs
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AeroDB.ICompiledQuery{`0,`0}.QueryIs
+    name: QueryIs
+    isExternal: true
+    href: AeroDB.ICompiledQuery-2.html#AeroDB_ICompiledQuery_2_QueryIs
+  - name: (
+  - name: )
+- uid: AeroDB.ICompiledQuery`2.QueryIs
+  commentId: M:AeroDB.ICompiledQuery`2.QueryIs
+  isExternal: true
+  href: AeroDB.ICompiledQuery-2.html#AeroDB_ICompiledQuery_2_QueryIs
+  name: QueryIs()
+  nameWithType: ICompiledQuery<TDoc, TOut>.QueryIs()
+  fullName: AeroDB.ICompiledQuery<TDoc, TOut>.QueryIs()
+  nameWithType.vb: ICompiledQuery(Of TDoc, TOut).QueryIs()
+  fullName.vb: AeroDB.ICompiledQuery(Of TDoc, TOut).QueryIs()
+  spec.csharp:
+  - uid: AeroDB.ICompiledQuery`2.QueryIs
+    name: QueryIs
+    isExternal: true
+    href: AeroDB.ICompiledQuery-2.html#AeroDB_ICompiledQuery_2_QueryIs
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AeroDB.ICompiledQuery`2.QueryIs
+    name: QueryIs
+    isExternal: true
+    href: AeroDB.ICompiledQuery-2.html#AeroDB_ICompiledQuery_2_QueryIs
+  - name: (
+  - name: )
+- uid: AeroDB.ICompiledQuery{{TDoc},{TDoc}}
+  commentId: T:AeroDB.ICompiledQuery{`0,`0}
+  parent: AeroDB
+  definition: AeroDB.ICompiledQuery`2
+  href: AeroDB.ICompiledQuery-2.html
+  name: ICompiledQuery<TDoc, TDoc>
+  nameWithType: ICompiledQuery<TDoc, TDoc>
+  fullName: AeroDB.ICompiledQuery<TDoc, TDoc>
+  nameWithType.vb: ICompiledQuery(Of TDoc, TDoc)
+  fullName.vb: AeroDB.ICompiledQuery(Of TDoc, TDoc)
+  name.vb: ICompiledQuery(Of TDoc, TDoc)
+  spec.csharp:
+  - uid: AeroDB.ICompiledQuery`2
+    name: ICompiledQuery
+    isExternal: true
+    href: AeroDB.ICompiledQuery-2.html
+  - name: <
+  - name: TDoc
+  - name: ','
+  - name: " "
+  - name: TDoc
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.ICompiledQuery`2
+    name: ICompiledQuery
+    isExternal: true
+    href: AeroDB.ICompiledQuery-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TDoc
+  - name: ','
+  - name: " "
+  - name: TDoc
+  - name: )
+- uid: AeroDB.ICompiledQuery`2
+  commentId: T:AeroDB.ICompiledQuery`2
+  isExternal: true
+  href: AeroDB.ICompiledQuery-2.html
+  name: ICompiledQuery<TDoc, TOut>
+  nameWithType: ICompiledQuery<TDoc, TOut>
+  fullName: AeroDB.ICompiledQuery<TDoc, TOut>
+  nameWithType.vb: ICompiledQuery(Of TDoc, TOut)
+  fullName.vb: AeroDB.ICompiledQuery(Of TDoc, TOut)
+  name.vb: ICompiledQuery(Of TDoc, TOut)
+  spec.csharp:
+  - uid: AeroDB.ICompiledQuery`2
+    name: ICompiledQuery
+    isExternal: true
+    href: AeroDB.ICompiledQuery-2.html
+  - name: <
+  - name: TDoc
+  - name: ','
+  - name: " "
+  - name: TOut
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.ICompiledQuery`2
+    name: ICompiledQuery
+    isExternal: true
+    href: AeroDB.ICompiledQuery-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TDoc
+  - name: ','
+  - name: " "
+  - name: TOut
+  - name: )

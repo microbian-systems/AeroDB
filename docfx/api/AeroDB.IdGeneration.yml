@@ -1,0 +1,60 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.IdGeneration
+  commentId: N:AeroDB.IdGeneration
+  id: AeroDB.IdGeneration
+  children:
+  - AeroDB.IdGeneration.IIdGenerator
+  - AeroDB.IdGeneration.SnowflakeIdGenerator
+  langs:
+  - csharp
+  - vb
+  name: AeroDB.IdGeneration
+  nameWithType: AeroDB.IdGeneration
+  fullName: AeroDB.IdGeneration
+  type: Namespace
+  assemblies:
+  - AeroDB.Snowflake
+references:
+- uid: AeroDB.IdGeneration.IIdGenerator
+  commentId: T:AeroDB.IdGeneration.IIdGenerator
+  parent: AeroDB.IdGeneration
+  isExternal: true
+  href: AeroDB.IdGeneration.IIdGenerator.html
+  name: IIdGenerator
+  nameWithType: IIdGenerator
+  fullName: AeroDB.IdGeneration.IIdGenerator
+- uid: AeroDB.IdGeneration.SnowflakeIdGenerator
+  commentId: T:AeroDB.IdGeneration.SnowflakeIdGenerator
+  isExternal: true
+  href: AeroDB.IdGeneration.SnowflakeIdGenerator.html
+  name: SnowflakeIdGenerator
+  nameWithType: SnowflakeIdGenerator
+  fullName: AeroDB.IdGeneration.SnowflakeIdGenerator
+- uid: AeroDB.IdGeneration
+  commentId: N:AeroDB.IdGeneration
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB.IdGeneration
+  nameWithType: AeroDB.IdGeneration
+  fullName: AeroDB.IdGeneration
+  spec.csharp:
+  - uid: AeroDB
+    name: AeroDB
+    isExternal: true
+    href: AeroDB.html
+  - name: .
+  - uid: AeroDB.IdGeneration
+    name: IdGeneration
+    isExternal: true
+    href: AeroDB.IdGeneration.html
+  spec.vb:
+  - uid: AeroDB
+    name: AeroDB
+    isExternal: true
+    href: AeroDB.html
+  - name: .
+  - uid: AeroDB.IdGeneration
+    name: IdGeneration
+    isExternal: true
+    href: AeroDB.IdGeneration.html

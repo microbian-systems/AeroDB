@@ -1,0 +1,86 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.EventSerializationMode
+  commentId: T:AeroDB.EventSerializationMode
+  id: EventSerializationMode
+  parent: AeroDB
+  children:
+  - AeroDB.EventSerializationMode.Binary
+  - AeroDB.EventSerializationMode.Json
+  langs:
+  - csharp
+  - vb
+  name: EventSerializationMode
+  nameWithType: EventSerializationMode
+  fullName: AeroDB.EventSerializationMode
+  type: Enum
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/EventSerializationMode.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Controls how event data is serialized in the event store.
+  example: []
+  syntax:
+    content: public enum EventSerializationMode
+    content.vb: Public Enum EventSerializationMode
+- uid: AeroDB.EventSerializationMode.Json
+  commentId: F:AeroDB.EventSerializationMode.Json
+  id: Json
+  parent: AeroDB.EventSerializationMode
+  langs:
+  - csharp
+  - vb
+  name: Json
+  nameWithType: EventSerializationMode.Json
+  fullName: AeroDB.EventSerializationMode.Json
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/EventSerializationMode.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: JSON serialization (default). Human-readable, compatible.
+  example: []
+  syntax:
+    content: Json = 0
+    return:
+      type: AeroDB.EventSerializationMode
+- uid: AeroDB.EventSerializationMode.Binary
+  commentId: F:AeroDB.EventSerializationMode.Binary
+  id: Binary
+  parent: AeroDB.EventSerializationMode
+  langs:
+  - csharp
+  - vb
+  name: Binary
+  nameWithType: EventSerializationMode.Binary
+  fullName: AeroDB.EventSerializationMode.Binary
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/EventSerializationMode.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Binary serialization (UTF-8 JSON bytes). Smaller, faster.
+  example: []
+  syntax:
+    content: Binary = 1
+    return:
+      type: AeroDB.EventSerializationMode
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: AeroDB.EventSerializationMode
+  commentId: T:AeroDB.EventSerializationMode
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.EventSerializationMode.html
+  name: EventSerializationMode
+  nameWithType: EventSerializationMode
+  fullName: AeroDB.EventSerializationMode

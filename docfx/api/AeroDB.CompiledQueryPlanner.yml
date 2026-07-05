@@ -1,0 +1,604 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.CompiledQueryPlanner
+  commentId: T:AeroDB.CompiledQueryPlanner
+  id: CompiledQueryPlanner
+  parent: AeroDB
+  children:
+  - AeroDB.CompiledQueryPlanner.GetOrBuildPlan``2(AeroDB.ICompiledQuery{``0,``1})
+  - AeroDB.CompiledQueryPlanner.QueryAsync``2(AeroDB.InternalSessionBase,AeroDB.ICompiledQuery{``0,``1},System.Threading.CancellationToken)
+  langs:
+  - csharp
+  - vb
+  name: CompiledQueryPlanner
+  nameWithType: CompiledQueryPlanner
+  fullName: AeroDB.CompiledQueryPlanner
+  type: Class
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Compiled/CompiledQueryPlanner.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Static planner for interface-based compiled queries (Marten-compatible pattern).
+
+
+    For each unique compiled query type, the planner builds a <xref href="AeroDB.CompiledPlan" data-throw-if-not-resolved="false"></xref>
+
+    once and caches it. The plan stores:
+
+
+    <ul><li>The <xref href="AeroDB.SurrealQueryResult" data-throw-if-not-resolved="false"></xref> skeleton with sentinel parameter values.</li><li>A mapping from SurrealQL parameter keys ($p0, $p1, …) to query property names.</li><li>Which properties (if any) supply the LIMIT / START values.</li></ul>
+
+
+    At execution time the skeleton is cloned, property values are read from the
+
+    query instance, parameters are substituted, and the query is executed.
+  example: []
+  syntax:
+    content: public static class CompiledQueryPlanner
+    content.vb: Public Module CompiledQueryPlanner
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+- uid: AeroDB.CompiledQueryPlanner.GetOrBuildPlan``2(AeroDB.ICompiledQuery{``0,``1})
+  commentId: M:AeroDB.CompiledQueryPlanner.GetOrBuildPlan``2(AeroDB.ICompiledQuery{``0,``1})
+  id: GetOrBuildPlan``2(AeroDB.ICompiledQuery{``0,``1})
+  parent: AeroDB.CompiledQueryPlanner
+  langs:
+  - csharp
+  - vb
+  name: GetOrBuildPlan<TDoc, TOut>(ICompiledQuery<TDoc, TOut>)
+  nameWithType: CompiledQueryPlanner.GetOrBuildPlan<TDoc, TOut>(ICompiledQuery<TDoc, TOut>)
+  fullName: AeroDB.CompiledQueryPlanner.GetOrBuildPlan<TDoc, TOut>(AeroDB.ICompiledQuery<TDoc, TOut>)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Compiled/CompiledQueryPlanner.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Returns the cached plan for the query type, building it
+
+    on first access.
+  example: []
+  syntax:
+    content: 'public static CompiledPlan GetOrBuildPlan<TDoc, TOut>(ICompiledQuery<TDoc, TOut> query) where TDoc : class'
+    parameters:
+    - id: query
+      type: AeroDB.ICompiledQuery{{TDoc},{TOut}}
+    typeParameters:
+    - id: TDoc
+    - id: TOut
+    return:
+      type: AeroDB.CompiledPlan
+    content.vb: Public Shared Function GetOrBuildPlan(Of TDoc As Class, TOut)(query As ICompiledQuery(Of TDoc, TOut)) As CompiledPlan
+  overload: AeroDB.CompiledQueryPlanner.GetOrBuildPlan*
+  nameWithType.vb: CompiledQueryPlanner.GetOrBuildPlan(Of TDoc, TOut)(ICompiledQuery(Of TDoc, TOut))
+  fullName.vb: AeroDB.CompiledQueryPlanner.GetOrBuildPlan(Of TDoc, TOut)(AeroDB.ICompiledQuery(Of TDoc, TOut))
+  name.vb: GetOrBuildPlan(Of TDoc, TOut)(ICompiledQuery(Of TDoc, TOut))
+- uid: AeroDB.CompiledQueryPlanner.QueryAsync``2(AeroDB.InternalSessionBase,AeroDB.ICompiledQuery{``0,``1},System.Threading.CancellationToken)
+  commentId: M:AeroDB.CompiledQueryPlanner.QueryAsync``2(AeroDB.InternalSessionBase,AeroDB.ICompiledQuery{``0,``1},System.Threading.CancellationToken)
+  id: QueryAsync``2(AeroDB.InternalSessionBase,AeroDB.ICompiledQuery{``0,``1},System.Threading.CancellationToken)
+  parent: AeroDB.CompiledQueryPlanner
+  langs:
+  - csharp
+  - vb
+  name: QueryAsync<TDoc, TOut>(InternalSessionBase, ICompiledQuery<TDoc, TOut>, CancellationToken)
+  nameWithType: CompiledQueryPlanner.QueryAsync<TDoc, TOut>(InternalSessionBase, ICompiledQuery<TDoc, TOut>, CancellationToken)
+  fullName: AeroDB.CompiledQueryPlanner.QueryAsync<TDoc, TOut>(AeroDB.InternalSessionBase, AeroDB.ICompiledQuery<TDoc, TOut>, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Compiled/CompiledQueryPlanner.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Executes an interface-based compiled query against the given session.
+  example: []
+  syntax:
+    content: 'public static Task<TOut> QueryAsync<TDoc, TOut>(InternalSessionBase session, ICompiledQuery<TDoc, TOut> query, CancellationToken ct = default) where TDoc : class'
+    parameters:
+    - id: session
+      type: AeroDB.InternalSessionBase
+    - id: query
+      type: AeroDB.ICompiledQuery{{TDoc},{TOut}}
+    - id: ct
+      type: System.Threading.CancellationToken
+    typeParameters:
+    - id: TDoc
+    - id: TOut
+    return:
+      type: System.Threading.Tasks.Task{{TOut}}
+    content.vb: Public Shared Function QueryAsync(Of TDoc As Class, TOut)(session As InternalSessionBase, query As ICompiledQuery(Of TDoc, TOut), ct As CancellationToken = Nothing) As Task(Of TOut)
+  overload: AeroDB.CompiledQueryPlanner.QueryAsync*
+  nameWithType.vb: CompiledQueryPlanner.QueryAsync(Of TDoc, TOut)(InternalSessionBase, ICompiledQuery(Of TDoc, TOut), CancellationToken)
+  fullName.vb: AeroDB.CompiledQueryPlanner.QueryAsync(Of TDoc, TOut)(AeroDB.InternalSessionBase, AeroDB.ICompiledQuery(Of TDoc, TOut), System.Threading.CancellationToken)
+  name.vb: QueryAsync(Of TDoc, TOut)(InternalSessionBase, ICompiledQuery(Of TDoc, TOut), CancellationToken)
+references:
+- uid: AeroDB.CompiledPlan
+  commentId: T:AeroDB.CompiledPlan
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.CompiledPlan.html
+  name: CompiledPlan
+  nameWithType: CompiledPlan
+  fullName: AeroDB.CompiledPlan
+- uid: AeroDB.SurrealQueryResult
+  commentId: T:AeroDB.SurrealQueryResult
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.SurrealQueryResult.html
+  name: SurrealQueryResult
+  nameWithType: SurrealQueryResult
+  fullName: AeroDB.SurrealQueryResult
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AeroDB.CompiledQueryPlanner.GetOrBuildPlan*
+  commentId: Overload:AeroDB.CompiledQueryPlanner.GetOrBuildPlan
+  isExternal: true
+  href: AeroDB.CompiledQueryPlanner.html#AeroDB_CompiledQueryPlanner_GetOrBuildPlan__2_AeroDB_ICompiledQuery___0___1__
+  name: GetOrBuildPlan
+  nameWithType: CompiledQueryPlanner.GetOrBuildPlan
+  fullName: AeroDB.CompiledQueryPlanner.GetOrBuildPlan
+- uid: AeroDB.ICompiledQuery{{TDoc},{TOut}}
+  commentId: T:AeroDB.ICompiledQuery{``0,``1}
+  parent: AeroDB
+  definition: AeroDB.ICompiledQuery`2
+  href: AeroDB.ICompiledQuery-2.html
+  name: ICompiledQuery<TDoc, TOut>
+  nameWithType: ICompiledQuery<TDoc, TOut>
+  fullName: AeroDB.ICompiledQuery<TDoc, TOut>
+  nameWithType.vb: ICompiledQuery(Of TDoc, TOut)
+  fullName.vb: AeroDB.ICompiledQuery(Of TDoc, TOut)
+  name.vb: ICompiledQuery(Of TDoc, TOut)
+  spec.csharp:
+  - uid: AeroDB.ICompiledQuery`2
+    name: ICompiledQuery
+    isExternal: true
+    href: AeroDB.ICompiledQuery-2.html
+  - name: <
+  - name: TDoc
+  - name: ','
+  - name: " "
+  - name: TOut
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.ICompiledQuery`2
+    name: ICompiledQuery
+    isExternal: true
+    href: AeroDB.ICompiledQuery-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TDoc
+  - name: ','
+  - name: " "
+  - name: TOut
+  - name: )
+- uid: AeroDB.ICompiledQuery`2
+  commentId: T:AeroDB.ICompiledQuery`2
+  isExternal: true
+  href: AeroDB.ICompiledQuery-2.html
+  name: ICompiledQuery<TDoc, TOut>
+  nameWithType: ICompiledQuery<TDoc, TOut>
+  fullName: AeroDB.ICompiledQuery<TDoc, TOut>
+  nameWithType.vb: ICompiledQuery(Of TDoc, TOut)
+  fullName.vb: AeroDB.ICompiledQuery(Of TDoc, TOut)
+  name.vb: ICompiledQuery(Of TDoc, TOut)
+  spec.csharp:
+  - uid: AeroDB.ICompiledQuery`2
+    name: ICompiledQuery
+    isExternal: true
+    href: AeroDB.ICompiledQuery-2.html
+  - name: <
+  - name: TDoc
+  - name: ','
+  - name: " "
+  - name: TOut
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.ICompiledQuery`2
+    name: ICompiledQuery
+    isExternal: true
+    href: AeroDB.ICompiledQuery-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TDoc
+  - name: ','
+  - name: " "
+  - name: TOut
+  - name: )
+- uid: AeroDB.CompiledQueryPlanner.QueryAsync*
+  commentId: Overload:AeroDB.CompiledQueryPlanner.QueryAsync
+  isExternal: true
+  href: AeroDB.CompiledQueryPlanner.html#AeroDB_CompiledQueryPlanner_QueryAsync__2_AeroDB_InternalSessionBase_AeroDB_ICompiledQuery___0___1__System_Threading_CancellationToken_
+  name: QueryAsync
+  nameWithType: CompiledQueryPlanner.QueryAsync
+  fullName: AeroDB.CompiledQueryPlanner.QueryAsync
+- uid: AeroDB.InternalSessionBase
+  commentId: T:AeroDB.InternalSessionBase
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.InternalSessionBase.html
+  name: InternalSessionBase
+  nameWithType: InternalSessionBase
+  fullName: AeroDB.InternalSessionBase
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task{{TOut}}
+  commentId: T:System.Threading.Tasks.Task{``1}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TOut>
+  nameWithType: Task<TOut>
+  fullName: System.Threading.Tasks.Task<TOut>
+  nameWithType.vb: Task(Of TOut)
+  fullName.vb: System.Threading.Tasks.Task(Of TOut)
+  name.vb: Task(Of TOut)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TOut
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TOut
+  - name: )
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks

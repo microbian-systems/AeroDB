@@ -1,0 +1,318 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.IAeroDBTransaction
+  commentId: T:AeroDB.IAeroDBTransaction
+  id: IAeroDBTransaction
+  parent: AeroDB
+  children:
+  - AeroDB.IAeroDBTransaction.CommitAsync(System.Threading.CancellationToken)
+  - AeroDB.IAeroDBTransaction.RollbackAsync(System.Threading.CancellationToken)
+  langs:
+  - csharp
+  - vb
+  name: IAeroDBTransaction
+  nameWithType: IAeroDBTransaction
+  fullName: AeroDB.IAeroDBTransaction
+  type: Interface
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IAeroDBTransaction.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Represents an explicit SurrealDB transaction started by <xref href="AeroDB.IDocumentSession.BeginTransactionAsync(System.Threading.CancellationToken)" data-throw-if-not-resolved="false"></xref>
+
+    or <xref href="AeroDB.IDocumentSession.BeginTransaction" data-throw-if-not-resolved="false"></xref>.
+
+    Supports multiple <xref href="AeroDB.IDocumentSession.SaveChangesAsync(System.Threading.CancellationToken)" data-throw-if-not-resolved="false"></xref> calls within a single transaction.
+
+    Implements <xref href="System.IAsyncDisposable" data-throw-if-not-resolved="false"></xref> — rolling back if not committed before disposal.
+  example: []
+  syntax:
+    content: 'public interface IAeroDBTransaction : IAsyncDisposable'
+    content.vb: Public Interface IAeroDBTransaction Inherits IAsyncDisposable
+  inheritedMembers:
+  - System.IAsyncDisposable.DisposeAsync
+- uid: AeroDB.IAeroDBTransaction.CommitAsync(System.Threading.CancellationToken)
+  commentId: M:AeroDB.IAeroDBTransaction.CommitAsync(System.Threading.CancellationToken)
+  id: CommitAsync(System.Threading.CancellationToken)
+  parent: AeroDB.IAeroDBTransaction
+  langs:
+  - csharp
+  - vb
+  name: CommitAsync(CancellationToken)
+  nameWithType: IAeroDBTransaction.CommitAsync(CancellationToken)
+  fullName: AeroDB.IAeroDBTransaction.CommitAsync(System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IAeroDBTransaction.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Commits the transaction. After calling this, the session returns to auto-transact mode.
+  example: []
+  syntax:
+    content: Task CommitAsync(CancellationToken ct = default)
+    parameters:
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Function CommitAsync(ct As CancellationToken = Nothing) As Task
+  overload: AeroDB.IAeroDBTransaction.CommitAsync*
+- uid: AeroDB.IAeroDBTransaction.RollbackAsync(System.Threading.CancellationToken)
+  commentId: M:AeroDB.IAeroDBTransaction.RollbackAsync(System.Threading.CancellationToken)
+  id: RollbackAsync(System.Threading.CancellationToken)
+  parent: AeroDB.IAeroDBTransaction
+  langs:
+  - csharp
+  - vb
+  name: RollbackAsync(CancellationToken)
+  nameWithType: IAeroDBTransaction.RollbackAsync(CancellationToken)
+  fullName: AeroDB.IAeroDBTransaction.RollbackAsync(System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IAeroDBTransaction.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Rolls back the transaction. After calling this, the session returns to auto-transact mode.
+  example: []
+  syntax:
+    content: Task RollbackAsync(CancellationToken ct = default)
+    parameters:
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Function RollbackAsync(ct As CancellationToken = Nothing) As Task
+  overload: AeroDB.IAeroDBTransaction.RollbackAsync*
+references:
+- uid: AeroDB.IDocumentSession.BeginTransactionAsync(System.Threading.CancellationToken)
+  commentId: M:AeroDB.IDocumentSession.BeginTransactionAsync(System.Threading.CancellationToken)
+  parent: AeroDB.IDocumentSession
+  isExternal: true
+  href: AeroDB.IDocumentSession.html#AeroDB_IDocumentSession_BeginTransactionAsync_System_Threading_CancellationToken_
+  name: BeginTransactionAsync(CancellationToken)
+  nameWithType: IDocumentSession.BeginTransactionAsync(CancellationToken)
+  fullName: AeroDB.IDocumentSession.BeginTransactionAsync(System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: AeroDB.IDocumentSession.BeginTransactionAsync(System.Threading.CancellationToken)
+    name: BeginTransactionAsync
+    isExternal: true
+    href: AeroDB.IDocumentSession.html#AeroDB_IDocumentSession_BeginTransactionAsync_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: AeroDB.IDocumentSession.BeginTransactionAsync(System.Threading.CancellationToken)
+    name: BeginTransactionAsync
+    isExternal: true
+    href: AeroDB.IDocumentSession.html#AeroDB_IDocumentSession_BeginTransactionAsync_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: AeroDB.IDocumentSession.BeginTransaction
+  commentId: M:AeroDB.IDocumentSession.BeginTransaction
+  parent: AeroDB.IDocumentSession
+  isExternal: true
+  href: AeroDB.IDocumentSession.html#AeroDB_IDocumentSession_BeginTransaction
+  name: BeginTransaction()
+  nameWithType: IDocumentSession.BeginTransaction()
+  fullName: AeroDB.IDocumentSession.BeginTransaction()
+  spec.csharp:
+  - uid: AeroDB.IDocumentSession.BeginTransaction
+    name: BeginTransaction
+    isExternal: true
+    href: AeroDB.IDocumentSession.html#AeroDB_IDocumentSession_BeginTransaction
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AeroDB.IDocumentSession.BeginTransaction
+    name: BeginTransaction
+    isExternal: true
+    href: AeroDB.IDocumentSession.html#AeroDB_IDocumentSession_BeginTransaction
+  - name: (
+  - name: )
+- uid: AeroDB.IDocumentSession.SaveChangesAsync(System.Threading.CancellationToken)
+  commentId: M:AeroDB.IDocumentSession.SaveChangesAsync(System.Threading.CancellationToken)
+  parent: AeroDB.IDocumentSession
+  isExternal: true
+  href: AeroDB.IDocumentSession.html#AeroDB_IDocumentSession_SaveChangesAsync_System_Threading_CancellationToken_
+  name: SaveChangesAsync(CancellationToken)
+  nameWithType: IDocumentSession.SaveChangesAsync(CancellationToken)
+  fullName: AeroDB.IDocumentSession.SaveChangesAsync(System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: AeroDB.IDocumentSession.SaveChangesAsync(System.Threading.CancellationToken)
+    name: SaveChangesAsync
+    isExternal: true
+    href: AeroDB.IDocumentSession.html#AeroDB_IDocumentSession_SaveChangesAsync_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: AeroDB.IDocumentSession.SaveChangesAsync(System.Threading.CancellationToken)
+    name: SaveChangesAsync
+    isExternal: true
+    href: AeroDB.IDocumentSession.html#AeroDB_IDocumentSession_SaveChangesAsync_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: System.IAsyncDisposable
+  commentId: T:System.IAsyncDisposable
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iasyncdisposable
+  name: IAsyncDisposable
+  nameWithType: IAsyncDisposable
+  fullName: System.IAsyncDisposable
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: System.IAsyncDisposable.DisposeAsync
+  commentId: M:System.IAsyncDisposable.DisposeAsync
+  parent: System.IAsyncDisposable
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iasyncdisposable.disposeasync
+  name: DisposeAsync()
+  nameWithType: IAsyncDisposable.DisposeAsync()
+  fullName: System.IAsyncDisposable.DisposeAsync()
+  spec.csharp:
+  - uid: System.IAsyncDisposable.DisposeAsync
+    name: DisposeAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iasyncdisposable.disposeasync
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.IAsyncDisposable.DisposeAsync
+    name: DisposeAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iasyncdisposable.disposeasync
+  - name: (
+  - name: )
+- uid: AeroDB.IDocumentSession
+  commentId: T:AeroDB.IDocumentSession
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IDocumentSession.html
+  name: IDocumentSession
+  nameWithType: IDocumentSession
+  fullName: AeroDB.IDocumentSession
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AeroDB.IAeroDBTransaction.CommitAsync*
+  commentId: Overload:AeroDB.IAeroDBTransaction.CommitAsync
+  isExternal: true
+  href: AeroDB.IAeroDBTransaction.html#AeroDB_IAeroDBTransaction_CommitAsync_System_Threading_CancellationToken_
+  name: CommitAsync
+  nameWithType: IAeroDBTransaction.CommitAsync
+  fullName: AeroDB.IAeroDBTransaction.CommitAsync
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: AeroDB.IAeroDBTransaction.RollbackAsync*
+  commentId: Overload:AeroDB.IAeroDBTransaction.RollbackAsync
+  isExternal: true
+  href: AeroDB.IAeroDBTransaction.html#AeroDB_IAeroDBTransaction_RollbackAsync_System_Threading_CancellationToken_
+  name: RollbackAsync
+  nameWithType: IAeroDBTransaction.RollbackAsync
+  fullName: AeroDB.IAeroDBTransaction.RollbackAsync

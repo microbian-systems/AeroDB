@@ -1,0 +1,473 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.IDocumentSessionListener
+  commentId: T:AeroDB.IDocumentSessionListener
+  id: IDocumentSessionListener
+  parent: AeroDB
+  children:
+  - AeroDB.IDocumentSessionListener.AfterCommitAsync(AeroDB.IDocumentSession,AeroDB.IChangeSet,System.Threading.CancellationToken)
+  - AeroDB.IDocumentSessionListener.AfterDeleteAsync(AeroDB.IDocumentSession,System.Object,System.Threading.CancellationToken)
+  - AeroDB.IDocumentSessionListener.AfterSaveChangesAsync(AeroDB.IDocumentSession,System.Threading.CancellationToken)
+  - AeroDB.IDocumentSessionListener.AfterStoreAsync(AeroDB.IDocumentSession,System.Object,System.Threading.CancellationToken)
+  - AeroDB.IDocumentSessionListener.BeforeCommitAsync(AeroDB.IDocumentSession,System.Threading.CancellationToken)
+  - AeroDB.IDocumentSessionListener.BeforeDeleteAsync(AeroDB.IDocumentSession,System.Object,System.Threading.CancellationToken)
+  - AeroDB.IDocumentSessionListener.BeforeSaveChangesAsync(AeroDB.IDocumentSession,System.Threading.CancellationToken)
+  - AeroDB.IDocumentSessionListener.BeforeStoreAsync(AeroDB.IDocumentSession,System.Object,System.Threading.CancellationToken)
+  langs:
+  - csharp
+  - vb
+  name: IDocumentSessionListener
+  nameWithType: IDocumentSessionListener
+  fullName: AeroDB.IDocumentSessionListener
+  type: Interface
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Diagnostics/IDocumentSessionListener.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Lifecycle hooks for document session events. Register via StoreOptions.
+
+    Multiple listeners are called in registration order.
+  example: []
+  syntax:
+    content: public interface IDocumentSessionListener
+    content.vb: Public Interface IDocumentSessionListener
+  derivedClasses:
+  - AeroDB.Diagnostics.DocumentMetadataListener
+  - AeroDB.DocumentSessionListenerBase
+- uid: AeroDB.IDocumentSessionListener.BeforeSaveChangesAsync(AeroDB.IDocumentSession,System.Threading.CancellationToken)
+  commentId: M:AeroDB.IDocumentSessionListener.BeforeSaveChangesAsync(AeroDB.IDocumentSession,System.Threading.CancellationToken)
+  id: BeforeSaveChangesAsync(AeroDB.IDocumentSession,System.Threading.CancellationToken)
+  parent: AeroDB.IDocumentSessionListener
+  langs:
+  - csharp
+  - vb
+  name: BeforeSaveChangesAsync(IDocumentSession, CancellationToken)
+  nameWithType: IDocumentSessionListener.BeforeSaveChangesAsync(IDocumentSession, CancellationToken)
+  fullName: AeroDB.IDocumentSessionListener.BeforeSaveChangesAsync(AeroDB.IDocumentSession, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Diagnostics/IDocumentSessionListener.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Called before any entities are persisted in SaveChangesAsync.
+  example: []
+  syntax:
+    content: Task BeforeSaveChangesAsync(IDocumentSession session, CancellationToken ct)
+    parameters:
+    - id: session
+      type: AeroDB.IDocumentSession
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Function BeforeSaveChangesAsync(session As IDocumentSession, ct As CancellationToken) As Task
+  overload: AeroDB.IDocumentSessionListener.BeforeSaveChangesAsync*
+- uid: AeroDB.IDocumentSessionListener.AfterSaveChangesAsync(AeroDB.IDocumentSession,System.Threading.CancellationToken)
+  commentId: M:AeroDB.IDocumentSessionListener.AfterSaveChangesAsync(AeroDB.IDocumentSession,System.Threading.CancellationToken)
+  id: AfterSaveChangesAsync(AeroDB.IDocumentSession,System.Threading.CancellationToken)
+  parent: AeroDB.IDocumentSessionListener
+  langs:
+  - csharp
+  - vb
+  name: AfterSaveChangesAsync(IDocumentSession, CancellationToken)
+  nameWithType: IDocumentSessionListener.AfterSaveChangesAsync(IDocumentSession, CancellationToken)
+  fullName: AeroDB.IDocumentSessionListener.AfterSaveChangesAsync(AeroDB.IDocumentSession, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Diagnostics/IDocumentSessionListener.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Called after all entities have been persisted successfully.
+  example: []
+  syntax:
+    content: Task AfterSaveChangesAsync(IDocumentSession session, CancellationToken ct)
+    parameters:
+    - id: session
+      type: AeroDB.IDocumentSession
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Function AfterSaveChangesAsync(session As IDocumentSession, ct As CancellationToken) As Task
+  overload: AeroDB.IDocumentSessionListener.AfterSaveChangesAsync*
+- uid: AeroDB.IDocumentSessionListener.AfterCommitAsync(AeroDB.IDocumentSession,AeroDB.IChangeSet,System.Threading.CancellationToken)
+  commentId: M:AeroDB.IDocumentSessionListener.AfterCommitAsync(AeroDB.IDocumentSession,AeroDB.IChangeSet,System.Threading.CancellationToken)
+  id: AfterCommitAsync(AeroDB.IDocumentSession,AeroDB.IChangeSet,System.Threading.CancellationToken)
+  parent: AeroDB.IDocumentSessionListener
+  langs:
+  - csharp
+  - vb
+  name: AfterCommitAsync(IDocumentSession, IChangeSet, CancellationToken)
+  nameWithType: IDocumentSessionListener.AfterCommitAsync(IDocumentSession, IChangeSet, CancellationToken)
+  fullName: AeroDB.IDocumentSessionListener.AfterCommitAsync(AeroDB.IDocumentSession, AeroDB.IChangeSet, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Diagnostics/IDocumentSessionListener.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Called after the SurrealDB transaction has committed successfully.
+
+    Receives an <xref href="AeroDB.IChangeSet" data-throw-if-not-resolved="false"></xref> describing the operations that were committed.
+  example: []
+  syntax:
+    content: Task AfterCommitAsync(IDocumentSession session, IChangeSet changes, CancellationToken ct)
+    parameters:
+    - id: session
+      type: AeroDB.IDocumentSession
+    - id: changes
+      type: AeroDB.IChangeSet
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Function AfterCommitAsync(session As IDocumentSession, changes As IChangeSet, ct As CancellationToken) As Task
+  overload: AeroDB.IDocumentSessionListener.AfterCommitAsync*
+- uid: AeroDB.IDocumentSessionListener.BeforeCommitAsync(AeroDB.IDocumentSession,System.Threading.CancellationToken)
+  commentId: M:AeroDB.IDocumentSessionListener.BeforeCommitAsync(AeroDB.IDocumentSession,System.Threading.CancellationToken)
+  id: BeforeCommitAsync(AeroDB.IDocumentSession,System.Threading.CancellationToken)
+  parent: AeroDB.IDocumentSessionListener
+  langs:
+  - csharp
+  - vb
+  name: BeforeCommitAsync(IDocumentSession, CancellationToken)
+  nameWithType: IDocumentSessionListener.BeforeCommitAsync(IDocumentSession, CancellationToken)
+  fullName: AeroDB.IDocumentSessionListener.BeforeCommitAsync(AeroDB.IDocumentSession, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Diagnostics/IDocumentSessionListener.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Called just before the SurrealDB transaction commits.
+  example: []
+  syntax:
+    content: Task BeforeCommitAsync(IDocumentSession session, CancellationToken ct)
+    parameters:
+    - id: session
+      type: AeroDB.IDocumentSession
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Function BeforeCommitAsync(session As IDocumentSession, ct As CancellationToken) As Task
+  overload: AeroDB.IDocumentSessionListener.BeforeCommitAsync*
+- uid: AeroDB.IDocumentSessionListener.BeforeStoreAsync(AeroDB.IDocumentSession,System.Object,System.Threading.CancellationToken)
+  commentId: M:AeroDB.IDocumentSessionListener.BeforeStoreAsync(AeroDB.IDocumentSession,System.Object,System.Threading.CancellationToken)
+  id: BeforeStoreAsync(AeroDB.IDocumentSession,System.Object,System.Threading.CancellationToken)
+  parent: AeroDB.IDocumentSessionListener
+  langs:
+  - csharp
+  - vb
+  name: BeforeStoreAsync(IDocumentSession, object, CancellationToken)
+  nameWithType: IDocumentSessionListener.BeforeStoreAsync(IDocumentSession, object, CancellationToken)
+  fullName: AeroDB.IDocumentSessionListener.BeforeStoreAsync(AeroDB.IDocumentSession, object, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Diagnostics/IDocumentSessionListener.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Called right before a single entity is stored (inserted or updated).
+  example: []
+  syntax:
+    content: Task BeforeStoreAsync(IDocumentSession session, object entity, CancellationToken ct)
+    parameters:
+    - id: session
+      type: AeroDB.IDocumentSession
+    - id: entity
+      type: System.Object
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Function BeforeStoreAsync(session As IDocumentSession, entity As Object, ct As CancellationToken) As Task
+  overload: AeroDB.IDocumentSessionListener.BeforeStoreAsync*
+  nameWithType.vb: IDocumentSessionListener.BeforeStoreAsync(IDocumentSession, Object, CancellationToken)
+  fullName.vb: AeroDB.IDocumentSessionListener.BeforeStoreAsync(AeroDB.IDocumentSession, Object, System.Threading.CancellationToken)
+  name.vb: BeforeStoreAsync(IDocumentSession, Object, CancellationToken)
+- uid: AeroDB.IDocumentSessionListener.AfterStoreAsync(AeroDB.IDocumentSession,System.Object,System.Threading.CancellationToken)
+  commentId: M:AeroDB.IDocumentSessionListener.AfterStoreAsync(AeroDB.IDocumentSession,System.Object,System.Threading.CancellationToken)
+  id: AfterStoreAsync(AeroDB.IDocumentSession,System.Object,System.Threading.CancellationToken)
+  parent: AeroDB.IDocumentSessionListener
+  langs:
+  - csharp
+  - vb
+  name: AfterStoreAsync(IDocumentSession, object, CancellationToken)
+  nameWithType: IDocumentSessionListener.AfterStoreAsync(IDocumentSession, object, CancellationToken)
+  fullName: AeroDB.IDocumentSessionListener.AfterStoreAsync(AeroDB.IDocumentSession, object, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Diagnostics/IDocumentSessionListener.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Called right after a single entity has been stored.
+  example: []
+  syntax:
+    content: Task AfterStoreAsync(IDocumentSession session, object entity, CancellationToken ct)
+    parameters:
+    - id: session
+      type: AeroDB.IDocumentSession
+    - id: entity
+      type: System.Object
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Function AfterStoreAsync(session As IDocumentSession, entity As Object, ct As CancellationToken) As Task
+  overload: AeroDB.IDocumentSessionListener.AfterStoreAsync*
+  nameWithType.vb: IDocumentSessionListener.AfterStoreAsync(IDocumentSession, Object, CancellationToken)
+  fullName.vb: AeroDB.IDocumentSessionListener.AfterStoreAsync(AeroDB.IDocumentSession, Object, System.Threading.CancellationToken)
+  name.vb: AfterStoreAsync(IDocumentSession, Object, CancellationToken)
+- uid: AeroDB.IDocumentSessionListener.BeforeDeleteAsync(AeroDB.IDocumentSession,System.Object,System.Threading.CancellationToken)
+  commentId: M:AeroDB.IDocumentSessionListener.BeforeDeleteAsync(AeroDB.IDocumentSession,System.Object,System.Threading.CancellationToken)
+  id: BeforeDeleteAsync(AeroDB.IDocumentSession,System.Object,System.Threading.CancellationToken)
+  parent: AeroDB.IDocumentSessionListener
+  langs:
+  - csharp
+  - vb
+  name: BeforeDeleteAsync(IDocumentSession, object, CancellationToken)
+  nameWithType: IDocumentSessionListener.BeforeDeleteAsync(IDocumentSession, object, CancellationToken)
+  fullName: AeroDB.IDocumentSessionListener.BeforeDeleteAsync(AeroDB.IDocumentSession, object, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Diagnostics/IDocumentSessionListener.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Called right before a single entity is deleted.
+  example: []
+  syntax:
+    content: Task BeforeDeleteAsync(IDocumentSession session, object entity, CancellationToken ct)
+    parameters:
+    - id: session
+      type: AeroDB.IDocumentSession
+    - id: entity
+      type: System.Object
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Function BeforeDeleteAsync(session As IDocumentSession, entity As Object, ct As CancellationToken) As Task
+  overload: AeroDB.IDocumentSessionListener.BeforeDeleteAsync*
+  nameWithType.vb: IDocumentSessionListener.BeforeDeleteAsync(IDocumentSession, Object, CancellationToken)
+  fullName.vb: AeroDB.IDocumentSessionListener.BeforeDeleteAsync(AeroDB.IDocumentSession, Object, System.Threading.CancellationToken)
+  name.vb: BeforeDeleteAsync(IDocumentSession, Object, CancellationToken)
+- uid: AeroDB.IDocumentSessionListener.AfterDeleteAsync(AeroDB.IDocumentSession,System.Object,System.Threading.CancellationToken)
+  commentId: M:AeroDB.IDocumentSessionListener.AfterDeleteAsync(AeroDB.IDocumentSession,System.Object,System.Threading.CancellationToken)
+  id: AfterDeleteAsync(AeroDB.IDocumentSession,System.Object,System.Threading.CancellationToken)
+  parent: AeroDB.IDocumentSessionListener
+  langs:
+  - csharp
+  - vb
+  name: AfterDeleteAsync(IDocumentSession, object, CancellationToken)
+  nameWithType: IDocumentSessionListener.AfterDeleteAsync(IDocumentSession, object, CancellationToken)
+  fullName: AeroDB.IDocumentSessionListener.AfterDeleteAsync(AeroDB.IDocumentSession, object, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Diagnostics/IDocumentSessionListener.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Called right after a single entity has been deleted.
+  example: []
+  syntax:
+    content: Task AfterDeleteAsync(IDocumentSession session, object entity, CancellationToken ct)
+    parameters:
+    - id: session
+      type: AeroDB.IDocumentSession
+    - id: entity
+      type: System.Object
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Function AfterDeleteAsync(session As IDocumentSession, entity As Object, ct As CancellationToken) As Task
+  overload: AeroDB.IDocumentSessionListener.AfterDeleteAsync*
+  nameWithType.vb: IDocumentSessionListener.AfterDeleteAsync(IDocumentSession, Object, CancellationToken)
+  fullName.vb: AeroDB.IDocumentSessionListener.AfterDeleteAsync(AeroDB.IDocumentSession, Object, System.Threading.CancellationToken)
+  name.vb: AfterDeleteAsync(IDocumentSession, Object, CancellationToken)
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: AeroDB.IDocumentSessionListener.BeforeSaveChangesAsync*
+  commentId: Overload:AeroDB.IDocumentSessionListener.BeforeSaveChangesAsync
+  isExternal: true
+  href: AeroDB.IDocumentSessionListener.html#AeroDB_IDocumentSessionListener_BeforeSaveChangesAsync_AeroDB_IDocumentSession_System_Threading_CancellationToken_
+  name: BeforeSaveChangesAsync
+  nameWithType: IDocumentSessionListener.BeforeSaveChangesAsync
+  fullName: AeroDB.IDocumentSessionListener.BeforeSaveChangesAsync
+- uid: AeroDB.IDocumentSession
+  commentId: T:AeroDB.IDocumentSession
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IDocumentSession.html
+  name: IDocumentSession
+  nameWithType: IDocumentSession
+  fullName: AeroDB.IDocumentSession
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: AeroDB.IDocumentSessionListener.AfterSaveChangesAsync*
+  commentId: Overload:AeroDB.IDocumentSessionListener.AfterSaveChangesAsync
+  isExternal: true
+  href: AeroDB.IDocumentSessionListener.html#AeroDB_IDocumentSessionListener_AfterSaveChangesAsync_AeroDB_IDocumentSession_System_Threading_CancellationToken_
+  name: AfterSaveChangesAsync
+  nameWithType: IDocumentSessionListener.AfterSaveChangesAsync
+  fullName: AeroDB.IDocumentSessionListener.AfterSaveChangesAsync
+- uid: AeroDB.IChangeSet
+  commentId: T:AeroDB.IChangeSet
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IChangeSet.html
+  name: IChangeSet
+  nameWithType: IChangeSet
+  fullName: AeroDB.IChangeSet
+- uid: AeroDB.IDocumentSessionListener.AfterCommitAsync*
+  commentId: Overload:AeroDB.IDocumentSessionListener.AfterCommitAsync
+  isExternal: true
+  href: AeroDB.IDocumentSessionListener.html#AeroDB_IDocumentSessionListener_AfterCommitAsync_AeroDB_IDocumentSession_AeroDB_IChangeSet_System_Threading_CancellationToken_
+  name: AfterCommitAsync
+  nameWithType: IDocumentSessionListener.AfterCommitAsync
+  fullName: AeroDB.IDocumentSessionListener.AfterCommitAsync
+- uid: AeroDB.IDocumentSessionListener.BeforeCommitAsync*
+  commentId: Overload:AeroDB.IDocumentSessionListener.BeforeCommitAsync
+  isExternal: true
+  href: AeroDB.IDocumentSessionListener.html#AeroDB_IDocumentSessionListener_BeforeCommitAsync_AeroDB_IDocumentSession_System_Threading_CancellationToken_
+  name: BeforeCommitAsync
+  nameWithType: IDocumentSessionListener.BeforeCommitAsync
+  fullName: AeroDB.IDocumentSessionListener.BeforeCommitAsync
+- uid: AeroDB.IDocumentSessionListener.BeforeStoreAsync*
+  commentId: Overload:AeroDB.IDocumentSessionListener.BeforeStoreAsync
+  isExternal: true
+  href: AeroDB.IDocumentSessionListener.html#AeroDB_IDocumentSessionListener_BeforeStoreAsync_AeroDB_IDocumentSession_System_Object_System_Threading_CancellationToken_
+  name: BeforeStoreAsync
+  nameWithType: IDocumentSessionListener.BeforeStoreAsync
+  fullName: AeroDB.IDocumentSessionListener.BeforeStoreAsync
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AeroDB.IDocumentSessionListener.AfterStoreAsync*
+  commentId: Overload:AeroDB.IDocumentSessionListener.AfterStoreAsync
+  isExternal: true
+  href: AeroDB.IDocumentSessionListener.html#AeroDB_IDocumentSessionListener_AfterStoreAsync_AeroDB_IDocumentSession_System_Object_System_Threading_CancellationToken_
+  name: AfterStoreAsync
+  nameWithType: IDocumentSessionListener.AfterStoreAsync
+  fullName: AeroDB.IDocumentSessionListener.AfterStoreAsync
+- uid: AeroDB.IDocumentSessionListener.BeforeDeleteAsync*
+  commentId: Overload:AeroDB.IDocumentSessionListener.BeforeDeleteAsync
+  isExternal: true
+  href: AeroDB.IDocumentSessionListener.html#AeroDB_IDocumentSessionListener_BeforeDeleteAsync_AeroDB_IDocumentSession_System_Object_System_Threading_CancellationToken_
+  name: BeforeDeleteAsync
+  nameWithType: IDocumentSessionListener.BeforeDeleteAsync
+  fullName: AeroDB.IDocumentSessionListener.BeforeDeleteAsync
+- uid: AeroDB.IDocumentSessionListener.AfterDeleteAsync*
+  commentId: Overload:AeroDB.IDocumentSessionListener.AfterDeleteAsync
+  isExternal: true
+  href: AeroDB.IDocumentSessionListener.html#AeroDB_IDocumentSessionListener_AfterDeleteAsync_AeroDB_IDocumentSession_System_Object_System_Threading_CancellationToken_
+  name: AfterDeleteAsync
+  nameWithType: IDocumentSessionListener.AfterDeleteAsync
+  fullName: AeroDB.IDocumentSessionListener.AfterDeleteAsync

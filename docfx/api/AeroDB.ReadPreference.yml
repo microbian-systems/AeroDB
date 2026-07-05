@@ -1,0 +1,109 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.ReadPreference
+  commentId: T:AeroDB.ReadPreference
+  id: ReadPreference
+  parent: AeroDB
+  children:
+  - AeroDB.ReadPreference.Nearest
+  - AeroDB.ReadPreference.Primary
+  - AeroDB.ReadPreference.Secondary
+  langs:
+  - csharp
+  - vb
+  name: ReadPreference
+  nameWithType: ReadPreference
+  fullName: AeroDB.ReadPreference
+  type: Enum
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/MultiHost/ReadPreference.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Controls which endpoint is used for read operations.
+  example: []
+  syntax:
+    content: public enum ReadPreference
+    content.vb: Public Enum ReadPreference
+- uid: AeroDB.ReadPreference.Primary
+  commentId: F:AeroDB.ReadPreference.Primary
+  id: Primary
+  parent: AeroDB.ReadPreference
+  langs:
+  - csharp
+  - vb
+  name: Primary
+  nameWithType: ReadPreference.Primary
+  fullName: AeroDB.ReadPreference.Primary
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/MultiHost/ReadPreference.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Use the primary (write-capable) endpoint for reads.
+  example: []
+  syntax:
+    content: Primary = 0
+    return:
+      type: AeroDB.ReadPreference
+- uid: AeroDB.ReadPreference.Secondary
+  commentId: F:AeroDB.ReadPreference.Secondary
+  id: Secondary
+  parent: AeroDB.ReadPreference
+  langs:
+  - csharp
+  - vb
+  name: Secondary
+  nameWithType: ReadPreference.Secondary
+  fullName: AeroDB.ReadPreference.Secondary
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/MultiHost/ReadPreference.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Prefer secondary (read-only) endpoints for reads.
+  example: []
+  syntax:
+    content: Secondary = 1
+    return:
+      type: AeroDB.ReadPreference
+- uid: AeroDB.ReadPreference.Nearest
+  commentId: F:AeroDB.ReadPreference.Nearest
+  id: Nearest
+  parent: AeroDB.ReadPreference
+  langs:
+  - csharp
+  - vb
+  name: Nearest
+  nameWithType: ReadPreference.Nearest
+  fullName: AeroDB.ReadPreference.Nearest
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/MultiHost/ReadPreference.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Use the nearest endpoint (lowest latency).
+  example: []
+  syntax:
+    content: Nearest = 2
+    return:
+      type: AeroDB.ReadPreference
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: AeroDB.ReadPreference
+  commentId: T:AeroDB.ReadPreference
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.ReadPreference.html
+  name: ReadPreference
+  nameWithType: ReadPreference
+  fullName: AeroDB.ReadPreference

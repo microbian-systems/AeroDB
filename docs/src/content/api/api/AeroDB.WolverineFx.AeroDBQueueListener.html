@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Class AeroDBQueueListener | AeroDB API Reference </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="Class AeroDBQueueListener | AeroDB API Reference ">
+    
+    <meta name="description" content="Polling listener that claims and dispatches incoming messages from SurrealDB. Uses the AeroDBMessageStore to load globally-owned incoming envelopes, then dispatches them to the provided IReceiver.">
+      <link rel="shortcut icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../styles/docfx.css">
+      <link rel="stylesheet" href="../styles/main.css">
+      <meta property="docfx:navrel" content="../toc.html">
+      <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="AeroDB">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="AeroDB.WolverineFx.AeroDBQueueListener">
+
+
+
+  <h1 id="AeroDB_WolverineFx_AeroDBQueueListener" data-uid="AeroDB.WolverineFx.AeroDBQueueListener" class="text-break">Class AeroDBQueueListener</h1>
+  <div class="markdown level0 summary"><p>Polling listener that claims and dispatches incoming messages from SurrealDB.
+Uses the AeroDBMessageStore to load globally-owned incoming envelopes,
+then dispatches them to the provided IReceiver.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+    <div class="level1"><span class="xref">AeroDBQueueListener</span></div>
+  </div>
+  <div class="implements">
+    <h5>Implements</h5>
+    <div><span class="xref">IListener</span></div>
+    <div><span class="xref">IChannelCallback</span></div>
+    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iasyncdisposable">IAsyncDisposable</a></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="AeroDB.html">AeroDB</a>.<a class="xref" href="AeroDB.WolverineFx.html">WolverineFx</a></h6>
+  <h6><strong>Assembly</strong>: AeroDB.WolverineFx.dll</h6>
+  <h5 id="AeroDB_WolverineFx_AeroDBQueueListener_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public sealed class AeroDBQueueListener : IListener, IChannelCallback, IAsyncDisposable</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+</h3>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBQueueListener.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBQueueListener__ctor_" data-uid="AeroDB.WolverineFx.AeroDBQueueListener.#ctor*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBQueueListener__ctor_AeroDB_WolverineFx_AeroDBMessageStore_Wolverine_Transports_IReceiver_AeroDB_WolverineFx_AeroDBTransportOptions_Microsoft_Extensions_Logging_ILogger_AeroDB_WolverineFx_AeroDBQueueListener__System_Uri_" data-uid="AeroDB.WolverineFx.AeroDBQueueListener.#ctor(AeroDB.WolverineFx.AeroDBMessageStore,Wolverine.Transports.IReceiver,AeroDB.WolverineFx.AeroDBTransportOptions,Microsoft.Extensions.Logging.ILogger{AeroDB.WolverineFx.AeroDBQueueListener},System.Uri)">AeroDBQueueListener(AeroDBMessageStore, IReceiver, AeroDBTransportOptions, ILogger&lt;AeroDBQueueListener&gt;, Uri)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public AeroDBQueueListener(AeroDBMessageStore store, IReceiver receiver, AeroDBTransportOptions options, ILogger&lt;AeroDBQueueListener&gt; logger, Uri address)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.WolverineFx.AeroDBMessageStore.html">AeroDBMessageStore</a></td>
+        <td><span class="parametername">store</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">IReceiver</span></td>
+        <td><span class="parametername">receiver</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="AeroDB.WolverineFx.AeroDBTransportOptions.html">AeroDBTransportOptions</a></td>
+        <td><span class="parametername">options</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1">ILogger</a>&lt;<a class="xref" href="AeroDB.WolverineFx.AeroDBQueueListener.html">AeroDBQueueListener</a>&gt;</td>
+        <td><span class="parametername">logger</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">Uri</span></td>
+        <td><span class="parametername">address</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+</h3>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBQueueListener.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBQueueListener_Address_" data-uid="AeroDB.WolverineFx.AeroDBQueueListener.Address*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBQueueListener_Address" data-uid="AeroDB.WolverineFx.AeroDBQueueListener.Address">Address</h4>
+  <div class="markdown level1 summary"><p>The listener address.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Uri Address { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Uri</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBQueueListener.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBQueueListener_Pipeline_" data-uid="AeroDB.WolverineFx.AeroDBQueueListener.Pipeline*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBQueueListener_Pipeline" data-uid="AeroDB.WolverineFx.AeroDBQueueListener.Pipeline">Pipeline</h4>
+  <div class="markdown level1 summary"><p>Pipeline from the receiver.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IHandlerPipeline? Pipeline { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IHandlerPipeline</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+</h3>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBQueueListener.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBQueueListener_CompleteAsync_" data-uid="AeroDB.WolverineFx.AeroDBQueueListener.CompleteAsync*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBQueueListener_CompleteAsync_Wolverine_Envelope_" data-uid="AeroDB.WolverineFx.AeroDBQueueListener.CompleteAsync(Wolverine.Envelope)">CompleteAsync(Envelope)</h4>
+  <div class="markdown level1 summary"><p>Complete an envelope (no-op for this listener — the store handles persistence).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ValueTask CompleteAsync(Envelope envelope)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Envelope</span></td>
+        <td><span class="parametername">envelope</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask">ValueTask</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBQueueListener.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBQueueListener_DeferAsync_" data-uid="AeroDB.WolverineFx.AeroDBQueueListener.DeferAsync*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBQueueListener_DeferAsync_Wolverine_Envelope_" data-uid="AeroDB.WolverineFx.AeroDBQueueListener.DeferAsync(Wolverine.Envelope)">DeferAsync(Envelope)</h4>
+  <div class="markdown level1 summary"><p>Defer an envelope back to the store for retry.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ValueTask DeferAsync(Envelope envelope)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Envelope</span></td>
+        <td><span class="parametername">envelope</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask">ValueTask</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBQueueListener.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBQueueListener_DisposeAsync_" data-uid="AeroDB.WolverineFx.AeroDBQueueListener.DisposeAsync*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBQueueListener_DisposeAsync" data-uid="AeroDB.WolverineFx.AeroDBQueueListener.DisposeAsync">DisposeAsync()</h4>
+  <div class="markdown level1 summary"><p>Dispose the listener.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ValueTask DisposeAsync()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask">ValueTask</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBQueueListener.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBQueueListener_StartAsync_" data-uid="AeroDB.WolverineFx.AeroDBQueueListener.StartAsync*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBQueueListener_StartAsync" data-uid="AeroDB.WolverineFx.AeroDBQueueListener.StartAsync">StartAsync()</h4>
+  <div class="markdown level1 summary"><p>Start the polling loop.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task StartAsync()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBQueueListener.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBQueueListener_StopAsync_" data-uid="AeroDB.WolverineFx.AeroDBQueueListener.StopAsync*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBQueueListener_StopAsync" data-uid="AeroDB.WolverineFx.AeroDBQueueListener.StopAsync">StopAsync()</h4>
+  <div class="markdown level1 summary"><p>Stop the listener.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ValueTask StopAsync()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask">ValueTask</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <span class="xref">Wolverine.Transports.IListener</span>
+  </div>
+  <div>
+      <span class="xref">Wolverine.Transports.IChannelCallback</span>
+  </div>
+  <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iasyncdisposable">IAsyncDisposable</a>
+  </div>
+
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBQueueListener.cs" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In this article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      AeroDB Documentation
+      
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.min.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

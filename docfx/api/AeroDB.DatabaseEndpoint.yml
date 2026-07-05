@@ -1,0 +1,544 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.DatabaseEndpoint
+  commentId: T:AeroDB.DatabaseEndpoint
+  id: DatabaseEndpoint
+  parent: AeroDB
+  children:
+  - AeroDB.DatabaseEndpoint.#ctor
+  - AeroDB.DatabaseEndpoint.AcceptsReads
+  - AeroDB.DatabaseEndpoint.AcceptsWrites
+  - AeroDB.DatabaseEndpoint.Database
+  - AeroDB.DatabaseEndpoint.Endpoint
+  - AeroDB.DatabaseEndpoint.Namespace
+  - AeroDB.DatabaseEndpoint.Priority
+  langs:
+  - csharp
+  - vb
+  name: DatabaseEndpoint
+  nameWithType: DatabaseEndpoint
+  fullName: AeroDB.DatabaseEndpoint
+  type: Class
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/MultiHost/DatabaseEndpoint.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Configuration for a single SurrealDB endpoint in a multi-host setup.
+  example: []
+  syntax:
+    content: public class DatabaseEndpoint
+    content.vb: Public Class DatabaseEndpoint
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+- uid: AeroDB.DatabaseEndpoint.#ctor
+  commentId: M:AeroDB.DatabaseEndpoint.#ctor
+  id: '#ctor'
+  parent: AeroDB.DatabaseEndpoint
+  langs:
+  - csharp
+  - vb
+  name: DatabaseEndpoint()
+  nameWithType: DatabaseEndpoint.DatabaseEndpoint()
+  fullName: AeroDB.DatabaseEndpoint.DatabaseEndpoint()
+  type: Constructor
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/MultiHost/DatabaseEndpoint.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public DatabaseEndpoint()
+    content.vb: Public Sub New()
+  overload: AeroDB.DatabaseEndpoint.#ctor*
+  nameWithType.vb: DatabaseEndpoint.New()
+  fullName.vb: AeroDB.DatabaseEndpoint.New()
+  name.vb: New()
+- uid: AeroDB.DatabaseEndpoint.Endpoint
+  commentId: P:AeroDB.DatabaseEndpoint.Endpoint
+  id: Endpoint
+  parent: AeroDB.DatabaseEndpoint
+  langs:
+  - csharp
+  - vb
+  name: Endpoint
+  nameWithType: DatabaseEndpoint.Endpoint
+  fullName: AeroDB.DatabaseEndpoint.Endpoint
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/MultiHost/DatabaseEndpoint.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Endpoint URL (e.g., http://localhost:8000).
+  example: []
+  syntax:
+    content: public string Endpoint { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property Endpoint As String
+  overload: AeroDB.DatabaseEndpoint.Endpoint*
+- uid: AeroDB.DatabaseEndpoint.Namespace
+  commentId: P:AeroDB.DatabaseEndpoint.Namespace
+  id: Namespace
+  parent: AeroDB.DatabaseEndpoint
+  langs:
+  - csharp
+  - vb
+  name: Namespace
+  nameWithType: DatabaseEndpoint.Namespace
+  fullName: AeroDB.DatabaseEndpoint.Namespace
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/MultiHost/DatabaseEndpoint.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Optional namespace override.
+  example: []
+  syntax:
+    content: public string? Namespace { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property [Namespace] As String
+  overload: AeroDB.DatabaseEndpoint.Namespace*
+- uid: AeroDB.DatabaseEndpoint.Database
+  commentId: P:AeroDB.DatabaseEndpoint.Database
+  id: Database
+  parent: AeroDB.DatabaseEndpoint
+  langs:
+  - csharp
+  - vb
+  name: Database
+  nameWithType: DatabaseEndpoint.Database
+  fullName: AeroDB.DatabaseEndpoint.Database
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/MultiHost/DatabaseEndpoint.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Optional database override.
+  example: []
+  syntax:
+    content: public string? Database { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property Database As String
+  overload: AeroDB.DatabaseEndpoint.Database*
+- uid: AeroDB.DatabaseEndpoint.AcceptsReads
+  commentId: P:AeroDB.DatabaseEndpoint.AcceptsReads
+  id: AcceptsReads
+  parent: AeroDB.DatabaseEndpoint
+  langs:
+  - csharp
+  - vb
+  name: AcceptsReads
+  nameWithType: DatabaseEndpoint.AcceptsReads
+  fullName: AeroDB.DatabaseEndpoint.AcceptsReads
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/MultiHost/DatabaseEndpoint.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Whether this endpoint can serve read queries.
+  example: []
+  syntax:
+    content: public bool AcceptsReads { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property AcceptsReads As Boolean
+  overload: AeroDB.DatabaseEndpoint.AcceptsReads*
+- uid: AeroDB.DatabaseEndpoint.AcceptsWrites
+  commentId: P:AeroDB.DatabaseEndpoint.AcceptsWrites
+  id: AcceptsWrites
+  parent: AeroDB.DatabaseEndpoint
+  langs:
+  - csharp
+  - vb
+  name: AcceptsWrites
+  nameWithType: DatabaseEndpoint.AcceptsWrites
+  fullName: AeroDB.DatabaseEndpoint.AcceptsWrites
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/MultiHost/DatabaseEndpoint.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Whether this endpoint can accept writes.
+  example: []
+  syntax:
+    content: public bool AcceptsWrites { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property AcceptsWrites As Boolean
+  overload: AeroDB.DatabaseEndpoint.AcceptsWrites*
+- uid: AeroDB.DatabaseEndpoint.Priority
+  commentId: P:AeroDB.DatabaseEndpoint.Priority
+  id: Priority
+  parent: AeroDB.DatabaseEndpoint
+  langs:
+  - csharp
+  - vb
+  name: Priority
+  nameWithType: DatabaseEndpoint.Priority
+  fullName: AeroDB.DatabaseEndpoint.Priority
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/MultiHost/DatabaseEndpoint.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Priority for this endpoint (lower = higher priority).
+  example: []
+  syntax:
+    content: public int Priority { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property Priority As Integer
+  overload: AeroDB.DatabaseEndpoint.Priority*
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AeroDB.DatabaseEndpoint.#ctor*
+  commentId: Overload:AeroDB.DatabaseEndpoint.#ctor
+  isExternal: true
+  href: AeroDB.DatabaseEndpoint.html#AeroDB_DatabaseEndpoint__ctor
+  name: DatabaseEndpoint
+  nameWithType: DatabaseEndpoint.DatabaseEndpoint
+  fullName: AeroDB.DatabaseEndpoint.DatabaseEndpoint
+  nameWithType.vb: DatabaseEndpoint.New
+  fullName.vb: AeroDB.DatabaseEndpoint.New
+  name.vb: New
+- uid: AeroDB.DatabaseEndpoint.Endpoint*
+  commentId: Overload:AeroDB.DatabaseEndpoint.Endpoint
+  isExternal: true
+  href: AeroDB.DatabaseEndpoint.html#AeroDB_DatabaseEndpoint_Endpoint
+  name: Endpoint
+  nameWithType: DatabaseEndpoint.Endpoint
+  fullName: AeroDB.DatabaseEndpoint.Endpoint
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: AeroDB.DatabaseEndpoint.Namespace*
+  commentId: Overload:AeroDB.DatabaseEndpoint.Namespace
+  isExternal: true
+  href: AeroDB.DatabaseEndpoint.html#AeroDB_DatabaseEndpoint_Namespace
+  name: Namespace
+  nameWithType: DatabaseEndpoint.Namespace
+  fullName: AeroDB.DatabaseEndpoint.Namespace
+- uid: AeroDB.DatabaseEndpoint.Database*
+  commentId: Overload:AeroDB.DatabaseEndpoint.Database
+  isExternal: true
+  href: AeroDB.DatabaseEndpoint.html#AeroDB_DatabaseEndpoint_Database
+  name: Database
+  nameWithType: DatabaseEndpoint.Database
+  fullName: AeroDB.DatabaseEndpoint.Database
+- uid: AeroDB.DatabaseEndpoint.AcceptsReads*
+  commentId: Overload:AeroDB.DatabaseEndpoint.AcceptsReads
+  isExternal: true
+  href: AeroDB.DatabaseEndpoint.html#AeroDB_DatabaseEndpoint_AcceptsReads
+  name: AcceptsReads
+  nameWithType: DatabaseEndpoint.AcceptsReads
+  fullName: AeroDB.DatabaseEndpoint.AcceptsReads
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: AeroDB.DatabaseEndpoint.AcceptsWrites*
+  commentId: Overload:AeroDB.DatabaseEndpoint.AcceptsWrites
+  isExternal: true
+  href: AeroDB.DatabaseEndpoint.html#AeroDB_DatabaseEndpoint_AcceptsWrites
+  name: AcceptsWrites
+  nameWithType: DatabaseEndpoint.AcceptsWrites
+  fullName: AeroDB.DatabaseEndpoint.AcceptsWrites
+- uid: AeroDB.DatabaseEndpoint.Priority*
+  commentId: Overload:AeroDB.DatabaseEndpoint.Priority
+  isExternal: true
+  href: AeroDB.DatabaseEndpoint.html#AeroDB_DatabaseEndpoint_Priority
+  name: Priority
+  nameWithType: DatabaseEndpoint.Priority
+  fullName: AeroDB.DatabaseEndpoint.Priority
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer

@@ -6,6 +6,7 @@
     <!-- NU1903: Newtonsoft.Json 10.0.2 vulnerability is transitive through Aero.Core → WindowsAzure.Storage.
          We don't use Newtonsoft.Json or WindowsAzure.Storage directly. -->
     <NoWarn>$(NoWarn);NU1903</NoWarn>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

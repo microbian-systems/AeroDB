@@ -1,0 +1,99 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.IQueryPlanning
+  commentId: T:AeroDB.IQueryPlanning
+  id: IQueryPlanning
+  parent: AeroDB
+  children:
+  - AeroDB.IQueryPlanning.SetUniqueValuesForQueryPlanning
+  langs:
+  - csharp
+  - vb
+  name: IQueryPlanning
+  nameWithType: IQueryPlanning
+  fullName: AeroDB.IQueryPlanning
+  type: Interface
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Compiled/CompiledQueryInterfaces.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Optional interface that compiled queries can implement to provide custom
+
+    sentinel values for each property during plan building. When implemented,
+
+    the planner calls <xref href="AeroDB.IQueryPlanning.SetUniqueValuesForQueryPlanning" data-throw-if-not-resolved="false"></xref> after
+
+    setting sentinel values on all public properties, allowing the query type
+
+    to override or customize the sentinel values used for parameter mapping.
+  example: []
+  syntax:
+    content: public interface IQueryPlanning
+    content.vb: Public Interface IQueryPlanning
+- uid: AeroDB.IQueryPlanning.SetUniqueValuesForQueryPlanning
+  commentId: M:AeroDB.IQueryPlanning.SetUniqueValuesForQueryPlanning
+  id: SetUniqueValuesForQueryPlanning
+  parent: AeroDB.IQueryPlanning
+  langs:
+  - csharp
+  - vb
+  name: SetUniqueValuesForQueryPlanning()
+  nameWithType: IQueryPlanning.SetUniqueValuesForQueryPlanning()
+  fullName: AeroDB.IQueryPlanning.SetUniqueValuesForQueryPlanning()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Compiled/CompiledQueryInterfaces.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Called once during plan building, after the planner has set sentinel
+
+    values on all public readable properties. Implementations can override
+
+    specific property values to ensure distinguishable sentinels (e.g.,
+
+    for properties whose types don't have default sentinels).
+  example: []
+  syntax:
+    content: void SetUniqueValuesForQueryPlanning()
+    content.vb: Sub SetUniqueValuesForQueryPlanning()
+  overload: AeroDB.IQueryPlanning.SetUniqueValuesForQueryPlanning*
+references:
+- uid: AeroDB.IQueryPlanning.SetUniqueValuesForQueryPlanning
+  commentId: M:AeroDB.IQueryPlanning.SetUniqueValuesForQueryPlanning
+  isExternal: true
+  href: AeroDB.IQueryPlanning.html#AeroDB_IQueryPlanning_SetUniqueValuesForQueryPlanning
+  name: SetUniqueValuesForQueryPlanning()
+  nameWithType: IQueryPlanning.SetUniqueValuesForQueryPlanning()
+  fullName: AeroDB.IQueryPlanning.SetUniqueValuesForQueryPlanning()
+  spec.csharp:
+  - uid: AeroDB.IQueryPlanning.SetUniqueValuesForQueryPlanning
+    name: SetUniqueValuesForQueryPlanning
+    isExternal: true
+    href: AeroDB.IQueryPlanning.html#AeroDB_IQueryPlanning_SetUniqueValuesForQueryPlanning
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AeroDB.IQueryPlanning.SetUniqueValuesForQueryPlanning
+    name: SetUniqueValuesForQueryPlanning
+    isExternal: true
+    href: AeroDB.IQueryPlanning.html#AeroDB_IQueryPlanning_SetUniqueValuesForQueryPlanning
+  - name: (
+  - name: )
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: AeroDB.IQueryPlanning.SetUniqueValuesForQueryPlanning*
+  commentId: Overload:AeroDB.IQueryPlanning.SetUniqueValuesForQueryPlanning
+  isExternal: true
+  href: AeroDB.IQueryPlanning.html#AeroDB_IQueryPlanning_SetUniqueValuesForQueryPlanning
+  name: SetUniqueValuesForQueryPlanning
+  nameWithType: IQueryPlanning.SetUniqueValuesForQueryPlanning
+  fullName: AeroDB.IQueryPlanning.SetUniqueValuesForQueryPlanning

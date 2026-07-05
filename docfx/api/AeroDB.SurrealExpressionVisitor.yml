@@ -1,0 +1,2199 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.SurrealExpressionVisitor
+  commentId: T:AeroDB.SurrealExpressionVisitor
+  id: SurrealExpressionVisitor
+  parent: AeroDB
+  children:
+  - AeroDB.SurrealExpressionVisitor.#ctor(AeroDB.SchemaOptions)
+  - AeroDB.SurrealExpressionVisitor.TableName
+  - AeroDB.SurrealExpressionVisitor.Translate(System.Linq.Expressions.Expression)
+  - AeroDB.SurrealExpressionVisitor.ViewName
+  - AeroDB.SurrealExpressionVisitor.VisitConstant(System.Linq.Expressions.ConstantExpression)
+  - AeroDB.SurrealExpressionVisitor.VisitMethodCall(System.Linq.Expressions.MethodCallExpression)
+  langs:
+  - csharp
+  - vb
+  name: SurrealExpressionVisitor
+  nameWithType: SurrealExpressionVisitor
+  fullName: AeroDB.SurrealExpressionVisitor
+  type: Class
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/ExpressionVisitor.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: 'public class SurrealExpressionVisitor : ExpressionVisitor'
+    content.vb: Public Class SurrealExpressionVisitor Inherits ExpressionVisitor
+  inheritance:
+  - System.Object
+  - System.Linq.Expressions.ExpressionVisitor
+  inheritedMembers:
+  - System.Linq.Expressions.ExpressionVisitor.Visit(System.Linq.Expressions.Expression)
+  - System.Linq.Expressions.ExpressionVisitor.Visit(System.Collections.ObjectModel.ReadOnlyCollection{System.Linq.Expressions.Expression})
+  - System.Linq.Expressions.ExpressionVisitor.Visit``1(System.Collections.ObjectModel.ReadOnlyCollection{{T}},System.Func{{T},{T}})
+  - System.Linq.Expressions.ExpressionVisitor.VisitAndConvert``1({T},System.String)
+  - System.Linq.Expressions.ExpressionVisitor.VisitAndConvert``1(System.Collections.ObjectModel.ReadOnlyCollection{{T}},System.String)
+  - System.Linq.Expressions.ExpressionVisitor.VisitBinary(System.Linq.Expressions.BinaryExpression)
+  - System.Linq.Expressions.ExpressionVisitor.VisitBlock(System.Linq.Expressions.BlockExpression)
+  - System.Linq.Expressions.ExpressionVisitor.VisitConditional(System.Linq.Expressions.ConditionalExpression)
+  - System.Linq.Expressions.ExpressionVisitor.VisitDebugInfo(System.Linq.Expressions.DebugInfoExpression)
+  - System.Linq.Expressions.ExpressionVisitor.VisitDefault(System.Linq.Expressions.DefaultExpression)
+  - System.Linq.Expressions.ExpressionVisitor.VisitExtension(System.Linq.Expressions.Expression)
+  - System.Linq.Expressions.ExpressionVisitor.VisitGoto(System.Linq.Expressions.GotoExpression)
+  - System.Linq.Expressions.ExpressionVisitor.VisitInvocation(System.Linq.Expressions.InvocationExpression)
+  - System.Linq.Expressions.ExpressionVisitor.VisitLabelTarget(System.Linq.Expressions.LabelTarget)
+  - System.Linq.Expressions.ExpressionVisitor.VisitLabel(System.Linq.Expressions.LabelExpression)
+  - System.Linq.Expressions.ExpressionVisitor.VisitLambda``1(System.Linq.Expressions.Expression{{T}})
+  - System.Linq.Expressions.ExpressionVisitor.VisitLoop(System.Linq.Expressions.LoopExpression)
+  - System.Linq.Expressions.ExpressionVisitor.VisitMember(System.Linq.Expressions.MemberExpression)
+  - System.Linq.Expressions.ExpressionVisitor.VisitIndex(System.Linq.Expressions.IndexExpression)
+  - System.Linq.Expressions.ExpressionVisitor.VisitNewArray(System.Linq.Expressions.NewArrayExpression)
+  - System.Linq.Expressions.ExpressionVisitor.VisitNew(System.Linq.Expressions.NewExpression)
+  - System.Linq.Expressions.ExpressionVisitor.VisitParameter(System.Linq.Expressions.ParameterExpression)
+  - System.Linq.Expressions.ExpressionVisitor.VisitRuntimeVariables(System.Linq.Expressions.RuntimeVariablesExpression)
+  - System.Linq.Expressions.ExpressionVisitor.VisitSwitchCase(System.Linq.Expressions.SwitchCase)
+  - System.Linq.Expressions.ExpressionVisitor.VisitSwitch(System.Linq.Expressions.SwitchExpression)
+  - System.Linq.Expressions.ExpressionVisitor.VisitCatchBlock(System.Linq.Expressions.CatchBlock)
+  - System.Linq.Expressions.ExpressionVisitor.VisitTry(System.Linq.Expressions.TryExpression)
+  - System.Linq.Expressions.ExpressionVisitor.VisitTypeBinary(System.Linq.Expressions.TypeBinaryExpression)
+  - System.Linq.Expressions.ExpressionVisitor.VisitUnary(System.Linq.Expressions.UnaryExpression)
+  - System.Linq.Expressions.ExpressionVisitor.VisitMemberInit(System.Linq.Expressions.MemberInitExpression)
+  - System.Linq.Expressions.ExpressionVisitor.VisitListInit(System.Linq.Expressions.ListInitExpression)
+  - System.Linq.Expressions.ExpressionVisitor.VisitElementInit(System.Linq.Expressions.ElementInit)
+  - System.Linq.Expressions.ExpressionVisitor.VisitMemberBinding(System.Linq.Expressions.MemberBinding)
+  - System.Linq.Expressions.ExpressionVisitor.VisitMemberAssignment(System.Linq.Expressions.MemberAssignment)
+  - System.Linq.Expressions.ExpressionVisitor.VisitMemberMemberBinding(System.Linq.Expressions.MemberMemberBinding)
+  - System.Linq.Expressions.ExpressionVisitor.VisitMemberListBinding(System.Linq.Expressions.MemberListBinding)
+  - System.Linq.Expressions.ExpressionVisitor.VisitDynamic(System.Linq.Expressions.DynamicExpression)
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+- uid: AeroDB.SurrealExpressionVisitor.#ctor(AeroDB.SchemaOptions)
+  commentId: M:AeroDB.SurrealExpressionVisitor.#ctor(AeroDB.SchemaOptions)
+  id: '#ctor(AeroDB.SchemaOptions)'
+  parent: AeroDB.SurrealExpressionVisitor
+  langs:
+  - csharp
+  - vb
+  name: SurrealExpressionVisitor(SchemaOptions?)
+  nameWithType: SurrealExpressionVisitor.SurrealExpressionVisitor(SchemaOptions?)
+  fullName: AeroDB.SurrealExpressionVisitor.SurrealExpressionVisitor(AeroDB.SchemaOptions?)
+  type: Constructor
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/ExpressionVisitor.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public SurrealExpressionVisitor(SchemaOptions? schema = null)
+    parameters:
+    - id: schema
+      type: AeroDB.SchemaOptions
+    content.vb: Public Sub New(schema As SchemaOptions = Nothing)
+  overload: AeroDB.SurrealExpressionVisitor.#ctor*
+  nameWithType.vb: SurrealExpressionVisitor.New(SchemaOptions)
+  fullName.vb: AeroDB.SurrealExpressionVisitor.New(AeroDB.SchemaOptions)
+  name.vb: New(SchemaOptions)
+- uid: AeroDB.SurrealExpressionVisitor.Translate(System.Linq.Expressions.Expression)
+  commentId: M:AeroDB.SurrealExpressionVisitor.Translate(System.Linq.Expressions.Expression)
+  id: Translate(System.Linq.Expressions.Expression)
+  parent: AeroDB.SurrealExpressionVisitor
+  langs:
+  - csharp
+  - vb
+  name: Translate(Expression)
+  nameWithType: SurrealExpressionVisitor.Translate(Expression)
+  fullName: AeroDB.SurrealExpressionVisitor.Translate(System.Linq.Expressions.Expression)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/ExpressionVisitor.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public SurrealQueryResult Translate(Expression expression)
+    parameters:
+    - id: expression
+      type: System.Linq.Expressions.Expression
+    return:
+      type: AeroDB.SurrealQueryResult
+    content.vb: Public Function Translate(expression As Expression) As SurrealQueryResult
+  overload: AeroDB.SurrealExpressionVisitor.Translate*
+- uid: AeroDB.SurrealExpressionVisitor.VisitMethodCall(System.Linq.Expressions.MethodCallExpression)
+  commentId: M:AeroDB.SurrealExpressionVisitor.VisitMethodCall(System.Linq.Expressions.MethodCallExpression)
+  id: VisitMethodCall(System.Linq.Expressions.MethodCallExpression)
+  parent: AeroDB.SurrealExpressionVisitor
+  langs:
+  - csharp
+  - vb
+  name: VisitMethodCall(MethodCallExpression)
+  nameWithType: SurrealExpressionVisitor.VisitMethodCall(MethodCallExpression)
+  fullName: AeroDB.SurrealExpressionVisitor.VisitMethodCall(System.Linq.Expressions.MethodCallExpression)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/ExpressionVisitor.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  example: []
+  syntax:
+    content: protected override Expression VisitMethodCall(MethodCallExpression node)
+    parameters:
+    - id: node
+      type: System.Linq.Expressions.MethodCallExpression
+    return:
+      type: System.Linq.Expressions.Expression
+    content.vb: Protected Overrides Function VisitMethodCall(node As MethodCallExpression) As Expression
+  overridden: System.Linq.Expressions.ExpressionVisitor.VisitMethodCall(System.Linq.Expressions.MethodCallExpression)
+  overload: AeroDB.SurrealExpressionVisitor.VisitMethodCall*
+- uid: AeroDB.SurrealExpressionVisitor.VisitConstant(System.Linq.Expressions.ConstantExpression)
+  commentId: M:AeroDB.SurrealExpressionVisitor.VisitConstant(System.Linq.Expressions.ConstantExpression)
+  id: VisitConstant(System.Linq.Expressions.ConstantExpression)
+  parent: AeroDB.SurrealExpressionVisitor
+  langs:
+  - csharp
+  - vb
+  name: VisitConstant(ConstantExpression)
+  nameWithType: SurrealExpressionVisitor.VisitConstant(ConstantExpression)
+  fullName: AeroDB.SurrealExpressionVisitor.VisitConstant(System.Linq.Expressions.ConstantExpression)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/ExpressionVisitor.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  example: []
+  syntax:
+    content: protected override Expression VisitConstant(ConstantExpression node)
+    parameters:
+    - id: node
+      type: System.Linq.Expressions.ConstantExpression
+    return:
+      type: System.Linq.Expressions.Expression
+    content.vb: Protected Overrides Function VisitConstant(node As ConstantExpression) As Expression
+  overridden: System.Linq.Expressions.ExpressionVisitor.VisitConstant(System.Linq.Expressions.ConstantExpression)
+  overload: AeroDB.SurrealExpressionVisitor.VisitConstant*
+- uid: AeroDB.SurrealExpressionVisitor.TableName
+  commentId: P:AeroDB.SurrealExpressionVisitor.TableName
+  id: TableName
+  parent: AeroDB.SurrealExpressionVisitor
+  langs:
+  - csharp
+  - vb
+  name: TableName
+  nameWithType: SurrealExpressionVisitor.TableName
+  fullName: AeroDB.SurrealExpressionVisitor.TableName
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/ExpressionVisitor.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public string? TableName { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public ReadOnly Property TableName As String
+  overload: AeroDB.SurrealExpressionVisitor.TableName*
+- uid: AeroDB.SurrealExpressionVisitor.ViewName
+  commentId: P:AeroDB.SurrealExpressionVisitor.ViewName
+  id: ViewName
+  parent: AeroDB.SurrealExpressionVisitor
+  langs:
+  - csharp
+  - vb
+  name: ViewName
+  nameWithType: SurrealExpressionVisitor.ViewName
+  fullName: AeroDB.SurrealExpressionVisitor.ViewName
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/ExpressionVisitor.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Optional view name override. When set, replaces the type-inferred table name
+
+    in the generated SurrealQL. Used by <xref href="AeroDB.ViewQueryExtensions.View%60%601(AeroDB.IQuerySession%2cSystem.String)" data-throw-if-not-resolved="false"></xref>
+
+    to query pre-computed views.
+  example: []
+  syntax:
+    content: public string? ViewName { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property ViewName As String
+  overload: AeroDB.SurrealExpressionVisitor.ViewName*
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Linq.Expressions.ExpressionVisitor
+  commentId: T:System.Linq.Expressions.ExpressionVisitor
+  parent: System.Linq.Expressions
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor
+  name: ExpressionVisitor
+  nameWithType: ExpressionVisitor
+  fullName: System.Linq.Expressions.ExpressionVisitor
+- uid: System.Linq.Expressions.ExpressionVisitor.Visit(System.Linq.Expressions.Expression)
+  commentId: M:System.Linq.Expressions.ExpressionVisitor.Visit(System.Linq.Expressions.Expression)
+  parent: System.Linq.Expressions.ExpressionVisitor
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visit#system-linq-expressions-expressionvisitor-visit(system-linq-expressions-expression)
+  name: Visit(Expression)
+  nameWithType: ExpressionVisitor.Visit(Expression)
+  fullName: System.Linq.Expressions.ExpressionVisitor.Visit(System.Linq.Expressions.Expression)
+  spec.csharp:
+  - uid: System.Linq.Expressions.ExpressionVisitor.Visit(System.Linq.Expressions.Expression)
+    name: Visit
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visit#system-linq-expressions-expressionvisitor-visit(system-linq-expressions-expression)
+  - name: (
+  - uid: System.Linq.Expressions.Expression
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression
+  - name: )
+  spec.vb:
+  - uid: System.Linq.Expressions.ExpressionVisitor.Visit(System.Linq.Expressions.Expression)
+    name: Visit
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visit#system-linq-expressions-expressionvisitor-visit(system-linq-expressions-expression)
+  - name: (
+  - uid: System.Linq.Expressions.Expression
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression
+  - name: )
+- uid: System.Linq.Expressions.ExpressionVisitor.Visit(System.Collections.ObjectModel.ReadOnlyCollection{System.Linq.Expressions.Expression})
+  commentId: M:System.Linq.Expressions.ExpressionVisitor.Visit(System.Collections.ObjectModel.ReadOnlyCollection{System.Linq.Expressions.Expression})
+  parent: System.Linq.Expressions.ExpressionVisitor
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visit#system-linq-expressions-expressionvisitor-visit(system-collections-objectmodel-readonlycollection((system-linq-expressions-expression)))
+  name: Visit(ReadOnlyCollection<Expression>)
+  nameWithType: ExpressionVisitor.Visit(ReadOnlyCollection<Expression>)
+  fullName: System.Linq.Expressions.ExpressionVisitor.Visit(System.Collections.ObjectModel.ReadOnlyCollection<System.Linq.Expressions.Expression>)
+  nameWithType.vb: ExpressionVisitor.Visit(ReadOnlyCollection(Of Expression))
+  fullName.vb: System.Linq.Expressions.ExpressionVisitor.Visit(System.Collections.ObjectModel.ReadOnlyCollection(Of System.Linq.Expressions.Expression))
+  name.vb: Visit(ReadOnlyCollection(Of Expression))
+  spec.csharp:
+  - uid: System.Linq.Expressions.ExpressionVisitor.Visit(System.Collections.ObjectModel.ReadOnlyCollection{System.Linq.Expressions.Expression})
+    name: Visit
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visit#system-linq-expressions-expressionvisitor-visit(system-collections-objectmodel-readonlycollection((system-linq-expressions-expression)))
+  - name: (
+  - uid: System.Collections.ObjectModel.ReadOnlyCollection`1
+    name: ReadOnlyCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.readonlycollection-1
+  - name: <
+  - uid: System.Linq.Expressions.Expression
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: System.Linq.Expressions.ExpressionVisitor.Visit(System.Collections.ObjectModel.ReadOnlyCollection{System.Linq.Expressions.Expression})
+    name: Visit
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visit#system-linq-expressions-expressionvisitor-visit(system-collections-objectmodel-readonlycollection((system-linq-expressions-expression)))
+  - name: (
+  - uid: System.Collections.ObjectModel.ReadOnlyCollection`1
+    name: ReadOnlyCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.readonlycollection-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Linq.Expressions.Expression
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression
+  - name: )
+  - name: )
+- uid: System.Linq.Expressions.ExpressionVisitor.Visit``1(System.Collections.ObjectModel.ReadOnlyCollection{{T}},System.Func{{T},{T}})
+  commentId: M:System.Linq.Expressions.ExpressionVisitor.Visit``1(System.Collections.ObjectModel.ReadOnlyCollection{``0},System.Func{``0,``0})
+  parent: System.Linq.Expressions.ExpressionVisitor
+  definition: System.Linq.Expressions.ExpressionVisitor.Visit``1(System.Collections.ObjectModel.ReadOnlyCollection{``0},System.Func{``0,``0})
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visit#system-linq-expressions-expressionvisitor-visit-1(system-collections-objectmodel-readonlycollection((-0))-system-func((-0-0)))
+  name: Visit<T>(ReadOnlyCollection<T>, Func<T, T>)
+  nameWithType: ExpressionVisitor.Visit<T>(ReadOnlyCollection<T>, Func<T, T>)
+  fullName: System.Linq.Expressions.ExpressionVisitor.Visit<T>(System.Collections.ObjectModel.ReadOnlyCollection<T>, System.Func<T, T>)
+  nameWithType.vb: ExpressionVisitor.Visit(Of T)(ReadOnlyCollection(Of T), Func(Of T, T))
+  fullName.vb: System.Linq.Expressions.ExpressionVisitor.Visit(Of T)(System.Collections.ObjectModel.ReadOnlyCollection(Of T), System.Func(Of T, T))
+  name.vb: Visit(Of T)(ReadOnlyCollection(Of T), Func(Of T, T))
+  spec.csharp:
+  - uid: System.Linq.Expressions.ExpressionVisitor.Visit``1(System.Collections.ObjectModel.ReadOnlyCollection{``0},System.Func{``0,``0})
+    name: Visit
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visit#system-linq-expressions-expressionvisitor-visit-1(system-collections-objectmodel-readonlycollection((-0))-system-func((-0-0)))
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Collections.ObjectModel.ReadOnlyCollection`1
+    name: ReadOnlyCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.readonlycollection-1
+  - name: <
+  - name: T
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: T
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: System.Linq.Expressions.ExpressionVisitor.Visit``1(System.Collections.ObjectModel.ReadOnlyCollection{``0},System.Func{``0,``0})
+    name: Visit
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visit#system-linq-expressions-expressionvisitor-visit-1(system-collections-objectmodel-readonlycollection((-0))-system-func((-0-0)))
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Collections.ObjectModel.ReadOnlyCollection`1
+    name: ReadOnlyCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.readonlycollection-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+- uid: System.Linq.Expressions.ExpressionVisitor.VisitAndConvert``1({T},System.String)
+  commentId: M:System.Linq.Expressions.ExpressionVisitor.VisitAndConvert``1(``0,System.String)
+  parent: System.Linq.Expressions.ExpressionVisitor
+  definition: System.Linq.Expressions.ExpressionVisitor.VisitAndConvert``1(``0,System.String)
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitandconvert#system-linq-expressions-expressionvisitor-visitandconvert-1(-0-system-string)
+  name: VisitAndConvert<T>(T, string)
+  nameWithType: ExpressionVisitor.VisitAndConvert<T>(T, string)
+  fullName: System.Linq.Expressions.ExpressionVisitor.VisitAndConvert<T>(T, string)
+  nameWithType.vb: ExpressionVisitor.VisitAndConvert(Of T)(T, String)
+  fullName.vb: System.Linq.Expressions.ExpressionVisitor.VisitAndConvert(Of T)(T, String)
+  name.vb: VisitAndConvert(Of T)(T, String)
+  spec.csharp:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitAndConvert``1(``0,System.String)
+    name: VisitAndConvert
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitandconvert#system-linq-expressions-expressionvisitor-visitandconvert-1(-0-system-string)
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitAndConvert``1(``0,System.String)
+    name: VisitAndConvert
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitandconvert#system-linq-expressions-expressionvisitor-visitandconvert-1(-0-system-string)
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Linq.Expressions.ExpressionVisitor.VisitAndConvert``1(System.Collections.ObjectModel.ReadOnlyCollection{{T}},System.String)
+  commentId: M:System.Linq.Expressions.ExpressionVisitor.VisitAndConvert``1(System.Collections.ObjectModel.ReadOnlyCollection{``0},System.String)
+  parent: System.Linq.Expressions.ExpressionVisitor
+  definition: System.Linq.Expressions.ExpressionVisitor.VisitAndConvert``1(System.Collections.ObjectModel.ReadOnlyCollection{``0},System.String)
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitandconvert#system-linq-expressions-expressionvisitor-visitandconvert-1(system-collections-objectmodel-readonlycollection((-0))-system-string)
+  name: VisitAndConvert<T>(ReadOnlyCollection<T>, string)
+  nameWithType: ExpressionVisitor.VisitAndConvert<T>(ReadOnlyCollection<T>, string)
+  fullName: System.Linq.Expressions.ExpressionVisitor.VisitAndConvert<T>(System.Collections.ObjectModel.ReadOnlyCollection<T>, string)
+  nameWithType.vb: ExpressionVisitor.VisitAndConvert(Of T)(ReadOnlyCollection(Of T), String)
+  fullName.vb: System.Linq.Expressions.ExpressionVisitor.VisitAndConvert(Of T)(System.Collections.ObjectModel.ReadOnlyCollection(Of T), String)
+  name.vb: VisitAndConvert(Of T)(ReadOnlyCollection(Of T), String)
+  spec.csharp:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitAndConvert``1(System.Collections.ObjectModel.ReadOnlyCollection{``0},System.String)
+    name: VisitAndConvert
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitandconvert#system-linq-expressions-expressionvisitor-visitandconvert-1(system-collections-objectmodel-readonlycollection((-0))-system-string)
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Collections.ObjectModel.ReadOnlyCollection`1
+    name: ReadOnlyCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.readonlycollection-1
+  - name: <
+  - name: T
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitAndConvert``1(System.Collections.ObjectModel.ReadOnlyCollection{``0},System.String)
+    name: VisitAndConvert
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitandconvert#system-linq-expressions-expressionvisitor-visitandconvert-1(system-collections-objectmodel-readonlycollection((-0))-system-string)
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Collections.ObjectModel.ReadOnlyCollection`1
+    name: ReadOnlyCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.readonlycollection-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Linq.Expressions.ExpressionVisitor.VisitBinary(System.Linq.Expressions.BinaryExpression)
+  commentId: M:System.Linq.Expressions.ExpressionVisitor.VisitBinary(System.Linq.Expressions.BinaryExpression)
+  parent: System.Linq.Expressions.ExpressionVisitor
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitbinary
+  name: VisitBinary(BinaryExpression)
+  nameWithType: ExpressionVisitor.VisitBinary(BinaryExpression)
+  fullName: System.Linq.Expressions.ExpressionVisitor.VisitBinary(System.Linq.Expressions.BinaryExpression)
+  spec.csharp:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitBinary(System.Linq.Expressions.BinaryExpression)
+    name: VisitBinary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitbinary
+  - name: (
+  - uid: System.Linq.Expressions.BinaryExpression
+    name: BinaryExpression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.binaryexpression
+  - name: )
+  spec.vb:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitBinary(System.Linq.Expressions.BinaryExpression)
+    name: VisitBinary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitbinary
+  - name: (
+  - uid: System.Linq.Expressions.BinaryExpression
+    name: BinaryExpression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.binaryexpression
+  - name: )
+- uid: System.Linq.Expressions.ExpressionVisitor.VisitBlock(System.Linq.Expressions.BlockExpression)
+  commentId: M:System.Linq.Expressions.ExpressionVisitor.VisitBlock(System.Linq.Expressions.BlockExpression)
+  parent: System.Linq.Expressions.ExpressionVisitor
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitblock
+  name: VisitBlock(BlockExpression)
+  nameWithType: ExpressionVisitor.VisitBlock(BlockExpression)
+  fullName: System.Linq.Expressions.ExpressionVisitor.VisitBlock(System.Linq.Expressions.BlockExpression)
+  spec.csharp:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitBlock(System.Linq.Expressions.BlockExpression)
+    name: VisitBlock
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitblock
+  - name: (
+  - uid: System.Linq.Expressions.BlockExpression
+    name: BlockExpression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.blockexpression
+  - name: )
+  spec.vb:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitBlock(System.Linq.Expressions.BlockExpression)
+    name: VisitBlock
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitblock
+  - name: (
+  - uid: System.Linq.Expressions.BlockExpression
+    name: BlockExpression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.blockexpression
+  - name: )
+- uid: System.Linq.Expressions.ExpressionVisitor.VisitConditional(System.Linq.Expressions.ConditionalExpression)
+  commentId: M:System.Linq.Expressions.ExpressionVisitor.VisitConditional(System.Linq.Expressions.ConditionalExpression)
+  parent: System.Linq.Expressions.ExpressionVisitor
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitconditional
+  name: VisitConditional(ConditionalExpression)
+  nameWithType: ExpressionVisitor.VisitConditional(ConditionalExpression)
+  fullName: System.Linq.Expressions.ExpressionVisitor.VisitConditional(System.Linq.Expressions.ConditionalExpression)
+  spec.csharp:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitConditional(System.Linq.Expressions.ConditionalExpression)
+    name: VisitConditional
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitconditional
+  - name: (
+  - uid: System.Linq.Expressions.ConditionalExpression
+    name: ConditionalExpression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.conditionalexpression
+  - name: )
+  spec.vb:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitConditional(System.Linq.Expressions.ConditionalExpression)
+    name: VisitConditional
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitconditional
+  - name: (
+  - uid: System.Linq.Expressions.ConditionalExpression
+    name: ConditionalExpression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.conditionalexpression
+  - name: )
+- uid: System.Linq.Expressions.ExpressionVisitor.VisitDebugInfo(System.Linq.Expressions.DebugInfoExpression)
+  commentId: M:System.Linq.Expressions.ExpressionVisitor.VisitDebugInfo(System.Linq.Expressions.DebugInfoExpression)
+  parent: System.Linq.Expressions.ExpressionVisitor
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitdebuginfo
+  name: VisitDebugInfo(DebugInfoExpression)
+  nameWithType: ExpressionVisitor.VisitDebugInfo(DebugInfoExpression)
+  fullName: System.Linq.Expressions.ExpressionVisitor.VisitDebugInfo(System.Linq.Expressions.DebugInfoExpression)
+  spec.csharp:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitDebugInfo(System.Linq.Expressions.DebugInfoExpression)
+    name: VisitDebugInfo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitdebuginfo
+  - name: (
+  - uid: System.Linq.Expressions.DebugInfoExpression
+    name: DebugInfoExpression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.debuginfoexpression
+  - name: )
+  spec.vb:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitDebugInfo(System.Linq.Expressions.DebugInfoExpression)
+    name: VisitDebugInfo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitdebuginfo
+  - name: (
+  - uid: System.Linq.Expressions.DebugInfoExpression
+    name: DebugInfoExpression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.debuginfoexpression
+  - name: )
+- uid: System.Linq.Expressions.ExpressionVisitor.VisitDefault(System.Linq.Expressions.DefaultExpression)
+  commentId: M:System.Linq.Expressions.ExpressionVisitor.VisitDefault(System.Linq.Expressions.DefaultExpression)
+  parent: System.Linq.Expressions.ExpressionVisitor
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitdefault
+  name: VisitDefault(DefaultExpression)
+  nameWithType: ExpressionVisitor.VisitDefault(DefaultExpression)
+  fullName: System.Linq.Expressions.ExpressionVisitor.VisitDefault(System.Linq.Expressions.DefaultExpression)
+  spec.csharp:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitDefault(System.Linq.Expressions.DefaultExpression)
+    name: VisitDefault
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitdefault
+  - name: (
+  - uid: System.Linq.Expressions.DefaultExpression
+    name: DefaultExpression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.defaultexpression
+  - name: )
+  spec.vb:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitDefault(System.Linq.Expressions.DefaultExpression)
+    name: VisitDefault
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitdefault
+  - name: (
+  - uid: System.Linq.Expressions.DefaultExpression
+    name: DefaultExpression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.defaultexpression
+  - name: )
+- uid: System.Linq.Expressions.ExpressionVisitor.VisitExtension(System.Linq.Expressions.Expression)
+  commentId: M:System.Linq.Expressions.ExpressionVisitor.VisitExtension(System.Linq.Expressions.Expression)
+  parent: System.Linq.Expressions.ExpressionVisitor
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitextension
+  name: VisitExtension(Expression)
+  nameWithType: ExpressionVisitor.VisitExtension(Expression)
+  fullName: System.Linq.Expressions.ExpressionVisitor.VisitExtension(System.Linq.Expressions.Expression)
+  spec.csharp:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitExtension(System.Linq.Expressions.Expression)
+    name: VisitExtension
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitextension
+  - name: (
+  - uid: System.Linq.Expressions.Expression
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression
+  - name: )
+  spec.vb:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitExtension(System.Linq.Expressions.Expression)
+    name: VisitExtension
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitextension
+  - name: (
+  - uid: System.Linq.Expressions.Expression
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression
+  - name: )
+- uid: System.Linq.Expressions.ExpressionVisitor.VisitGoto(System.Linq.Expressions.GotoExpression)
+  commentId: M:System.Linq.Expressions.ExpressionVisitor.VisitGoto(System.Linq.Expressions.GotoExpression)
+  parent: System.Linq.Expressions.ExpressionVisitor
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitgoto
+  name: VisitGoto(GotoExpression)
+  nameWithType: ExpressionVisitor.VisitGoto(GotoExpression)
+  fullName: System.Linq.Expressions.ExpressionVisitor.VisitGoto(System.Linq.Expressions.GotoExpression)
+  spec.csharp:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitGoto(System.Linq.Expressions.GotoExpression)
+    name: VisitGoto
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitgoto
+  - name: (
+  - uid: System.Linq.Expressions.GotoExpression
+    name: GotoExpression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.gotoexpression
+  - name: )
+  spec.vb:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitGoto(System.Linq.Expressions.GotoExpression)
+    name: VisitGoto
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitgoto
+  - name: (
+  - uid: System.Linq.Expressions.GotoExpression
+    name: GotoExpression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.gotoexpression
+  - name: )
+- uid: System.Linq.Expressions.ExpressionVisitor.VisitInvocation(System.Linq.Expressions.InvocationExpression)
+  commentId: M:System.Linq.Expressions.ExpressionVisitor.VisitInvocation(System.Linq.Expressions.InvocationExpression)
+  parent: System.Linq.Expressions.ExpressionVisitor
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitinvocation
+  name: VisitInvocation(InvocationExpression)
+  nameWithType: ExpressionVisitor.VisitInvocation(InvocationExpression)
+  fullName: System.Linq.Expressions.ExpressionVisitor.VisitInvocation(System.Linq.Expressions.InvocationExpression)
+  spec.csharp:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitInvocation(System.Linq.Expressions.InvocationExpression)
+    name: VisitInvocation
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitinvocation
+  - name: (
+  - uid: System.Linq.Expressions.InvocationExpression
+    name: InvocationExpression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.invocationexpression
+  - name: )
+  spec.vb:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitInvocation(System.Linq.Expressions.InvocationExpression)
+    name: VisitInvocation
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitinvocation
+  - name: (
+  - uid: System.Linq.Expressions.InvocationExpression
+    name: InvocationExpression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.invocationexpression
+  - name: )
+- uid: System.Linq.Expressions.ExpressionVisitor.VisitLabelTarget(System.Linq.Expressions.LabelTarget)
+  commentId: M:System.Linq.Expressions.ExpressionVisitor.VisitLabelTarget(System.Linq.Expressions.LabelTarget)
+  parent: System.Linq.Expressions.ExpressionVisitor
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitlabeltarget
+  name: VisitLabelTarget(LabelTarget)
+  nameWithType: ExpressionVisitor.VisitLabelTarget(LabelTarget)
+  fullName: System.Linq.Expressions.ExpressionVisitor.VisitLabelTarget(System.Linq.Expressions.LabelTarget)
+  spec.csharp:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitLabelTarget(System.Linq.Expressions.LabelTarget)
+    name: VisitLabelTarget
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitlabeltarget
+  - name: (
+  - uid: System.Linq.Expressions.LabelTarget
+    name: LabelTarget
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.labeltarget
+  - name: )
+  spec.vb:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitLabelTarget(System.Linq.Expressions.LabelTarget)
+    name: VisitLabelTarget
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitlabeltarget
+  - name: (
+  - uid: System.Linq.Expressions.LabelTarget
+    name: LabelTarget
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.labeltarget
+  - name: )
+- uid: System.Linq.Expressions.ExpressionVisitor.VisitLabel(System.Linq.Expressions.LabelExpression)
+  commentId: M:System.Linq.Expressions.ExpressionVisitor.VisitLabel(System.Linq.Expressions.LabelExpression)
+  parent: System.Linq.Expressions.ExpressionVisitor
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitlabel
+  name: VisitLabel(LabelExpression)
+  nameWithType: ExpressionVisitor.VisitLabel(LabelExpression)
+  fullName: System.Linq.Expressions.ExpressionVisitor.VisitLabel(System.Linq.Expressions.LabelExpression)
+  spec.csharp:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitLabel(System.Linq.Expressions.LabelExpression)
+    name: VisitLabel
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitlabel
+  - name: (
+  - uid: System.Linq.Expressions.LabelExpression
+    name: LabelExpression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.labelexpression
+  - name: )
+  spec.vb:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitLabel(System.Linq.Expressions.LabelExpression)
+    name: VisitLabel
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitlabel
+  - name: (
+  - uid: System.Linq.Expressions.LabelExpression
+    name: LabelExpression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.labelexpression
+  - name: )
+- uid: System.Linq.Expressions.ExpressionVisitor.VisitLambda``1(System.Linq.Expressions.Expression{{T}})
+  commentId: M:System.Linq.Expressions.ExpressionVisitor.VisitLambda``1(System.Linq.Expressions.Expression{``0})
+  parent: System.Linq.Expressions.ExpressionVisitor
+  definition: System.Linq.Expressions.ExpressionVisitor.VisitLambda``1(System.Linq.Expressions.Expression{``0})
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitlambda
+  name: VisitLambda<T>(Expression<T>)
+  nameWithType: ExpressionVisitor.VisitLambda<T>(Expression<T>)
+  fullName: System.Linq.Expressions.ExpressionVisitor.VisitLambda<T>(System.Linq.Expressions.Expression<T>)
+  nameWithType.vb: ExpressionVisitor.VisitLambda(Of T)(Expression(Of T))
+  fullName.vb: System.Linq.Expressions.ExpressionVisitor.VisitLambda(Of T)(System.Linq.Expressions.Expression(Of T))
+  name.vb: VisitLambda(Of T)(Expression(Of T))
+  spec.csharp:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitLambda``1(System.Linq.Expressions.Expression{``0})
+    name: VisitLambda
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitlambda
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - name: T
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitLambda``1(System.Linq.Expressions.Expression{``0})
+    name: VisitLambda
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitlambda
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+- uid: System.Linq.Expressions.ExpressionVisitor.VisitLoop(System.Linq.Expressions.LoopExpression)
+  commentId: M:System.Linq.Expressions.ExpressionVisitor.VisitLoop(System.Linq.Expressions.LoopExpression)
+  parent: System.Linq.Expressions.ExpressionVisitor
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitloop
+  name: VisitLoop(LoopExpression)
+  nameWithType: ExpressionVisitor.VisitLoop(LoopExpression)
+  fullName: System.Linq.Expressions.ExpressionVisitor.VisitLoop(System.Linq.Expressions.LoopExpression)
+  spec.csharp:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitLoop(System.Linq.Expressions.LoopExpression)
+    name: VisitLoop
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitloop
+  - name: (
+  - uid: System.Linq.Expressions.LoopExpression
+    name: LoopExpression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.loopexpression
+  - name: )
+  spec.vb:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitLoop(System.Linq.Expressions.LoopExpression)
+    name: VisitLoop
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitloop
+  - name: (
+  - uid: System.Linq.Expressions.LoopExpression
+    name: LoopExpression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.loopexpression
+  - name: )
+- uid: System.Linq.Expressions.ExpressionVisitor.VisitMember(System.Linq.Expressions.MemberExpression)
+  commentId: M:System.Linq.Expressions.ExpressionVisitor.VisitMember(System.Linq.Expressions.MemberExpression)
+  parent: System.Linq.Expressions.ExpressionVisitor
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitmember
+  name: VisitMember(MemberExpression)
+  nameWithType: ExpressionVisitor.VisitMember(MemberExpression)
+  fullName: System.Linq.Expressions.ExpressionVisitor.VisitMember(System.Linq.Expressions.MemberExpression)
+  spec.csharp:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitMember(System.Linq.Expressions.MemberExpression)
+    name: VisitMember
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitmember
+  - name: (
+  - uid: System.Linq.Expressions.MemberExpression
+    name: MemberExpression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.memberexpression
+  - name: )
+  spec.vb:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitMember(System.Linq.Expressions.MemberExpression)
+    name: VisitMember
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitmember
+  - name: (
+  - uid: System.Linq.Expressions.MemberExpression
+    name: MemberExpression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.memberexpression
+  - name: )
+- uid: System.Linq.Expressions.ExpressionVisitor.VisitIndex(System.Linq.Expressions.IndexExpression)
+  commentId: M:System.Linq.Expressions.ExpressionVisitor.VisitIndex(System.Linq.Expressions.IndexExpression)
+  parent: System.Linq.Expressions.ExpressionVisitor
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitindex
+  name: VisitIndex(IndexExpression)
+  nameWithType: ExpressionVisitor.VisitIndex(IndexExpression)
+  fullName: System.Linq.Expressions.ExpressionVisitor.VisitIndex(System.Linq.Expressions.IndexExpression)
+  spec.csharp:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitIndex(System.Linq.Expressions.IndexExpression)
+    name: VisitIndex
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitindex
+  - name: (
+  - uid: System.Linq.Expressions.IndexExpression
+    name: IndexExpression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.indexexpression
+  - name: )
+  spec.vb:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitIndex(System.Linq.Expressions.IndexExpression)
+    name: VisitIndex
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitindex
+  - name: (
+  - uid: System.Linq.Expressions.IndexExpression
+    name: IndexExpression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.indexexpression
+  - name: )
+- uid: System.Linq.Expressions.ExpressionVisitor.VisitNewArray(System.Linq.Expressions.NewArrayExpression)
+  commentId: M:System.Linq.Expressions.ExpressionVisitor.VisitNewArray(System.Linq.Expressions.NewArrayExpression)
+  parent: System.Linq.Expressions.ExpressionVisitor
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitnewarray
+  name: VisitNewArray(NewArrayExpression)
+  nameWithType: ExpressionVisitor.VisitNewArray(NewArrayExpression)
+  fullName: System.Linq.Expressions.ExpressionVisitor.VisitNewArray(System.Linq.Expressions.NewArrayExpression)
+  spec.csharp:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitNewArray(System.Linq.Expressions.NewArrayExpression)
+    name: VisitNewArray
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitnewarray
+  - name: (
+  - uid: System.Linq.Expressions.NewArrayExpression
+    name: NewArrayExpression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.newarrayexpression
+  - name: )
+  spec.vb:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitNewArray(System.Linq.Expressions.NewArrayExpression)
+    name: VisitNewArray
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitnewarray
+  - name: (
+  - uid: System.Linq.Expressions.NewArrayExpression
+    name: NewArrayExpression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.newarrayexpression
+  - name: )
+- uid: System.Linq.Expressions.ExpressionVisitor.VisitNew(System.Linq.Expressions.NewExpression)
+  commentId: M:System.Linq.Expressions.ExpressionVisitor.VisitNew(System.Linq.Expressions.NewExpression)
+  parent: System.Linq.Expressions.ExpressionVisitor
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitnew
+  name: VisitNew(NewExpression)
+  nameWithType: ExpressionVisitor.VisitNew(NewExpression)
+  fullName: System.Linq.Expressions.ExpressionVisitor.VisitNew(System.Linq.Expressions.NewExpression)
+  spec.csharp:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitNew(System.Linq.Expressions.NewExpression)
+    name: VisitNew
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitnew
+  - name: (
+  - uid: System.Linq.Expressions.NewExpression
+    name: NewExpression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.newexpression
+  - name: )
+  spec.vb:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitNew(System.Linq.Expressions.NewExpression)
+    name: VisitNew
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitnew
+  - name: (
+  - uid: System.Linq.Expressions.NewExpression
+    name: NewExpression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.newexpression
+  - name: )
+- uid: System.Linq.Expressions.ExpressionVisitor.VisitParameter(System.Linq.Expressions.ParameterExpression)
+  commentId: M:System.Linq.Expressions.ExpressionVisitor.VisitParameter(System.Linq.Expressions.ParameterExpression)
+  parent: System.Linq.Expressions.ExpressionVisitor
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitparameter
+  name: VisitParameter(ParameterExpression)
+  nameWithType: ExpressionVisitor.VisitParameter(ParameterExpression)
+  fullName: System.Linq.Expressions.ExpressionVisitor.VisitParameter(System.Linq.Expressions.ParameterExpression)
+  spec.csharp:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitParameter(System.Linq.Expressions.ParameterExpression)
+    name: VisitParameter
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitparameter
+  - name: (
+  - uid: System.Linq.Expressions.ParameterExpression
+    name: ParameterExpression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.parameterexpression
+  - name: )
+  spec.vb:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitParameter(System.Linq.Expressions.ParameterExpression)
+    name: VisitParameter
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitparameter
+  - name: (
+  - uid: System.Linq.Expressions.ParameterExpression
+    name: ParameterExpression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.parameterexpression
+  - name: )
+- uid: System.Linq.Expressions.ExpressionVisitor.VisitRuntimeVariables(System.Linq.Expressions.RuntimeVariablesExpression)
+  commentId: M:System.Linq.Expressions.ExpressionVisitor.VisitRuntimeVariables(System.Linq.Expressions.RuntimeVariablesExpression)
+  parent: System.Linq.Expressions.ExpressionVisitor
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitruntimevariables
+  name: VisitRuntimeVariables(RuntimeVariablesExpression)
+  nameWithType: ExpressionVisitor.VisitRuntimeVariables(RuntimeVariablesExpression)
+  fullName: System.Linq.Expressions.ExpressionVisitor.VisitRuntimeVariables(System.Linq.Expressions.RuntimeVariablesExpression)
+  spec.csharp:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitRuntimeVariables(System.Linq.Expressions.RuntimeVariablesExpression)
+    name: VisitRuntimeVariables
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitruntimevariables
+  - name: (
+  - uid: System.Linq.Expressions.RuntimeVariablesExpression
+    name: RuntimeVariablesExpression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.runtimevariablesexpression
+  - name: )
+  spec.vb:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitRuntimeVariables(System.Linq.Expressions.RuntimeVariablesExpression)
+    name: VisitRuntimeVariables
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitruntimevariables
+  - name: (
+  - uid: System.Linq.Expressions.RuntimeVariablesExpression
+    name: RuntimeVariablesExpression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.runtimevariablesexpression
+  - name: )
+- uid: System.Linq.Expressions.ExpressionVisitor.VisitSwitchCase(System.Linq.Expressions.SwitchCase)
+  commentId: M:System.Linq.Expressions.ExpressionVisitor.VisitSwitchCase(System.Linq.Expressions.SwitchCase)
+  parent: System.Linq.Expressions.ExpressionVisitor
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitswitchcase
+  name: VisitSwitchCase(SwitchCase)
+  nameWithType: ExpressionVisitor.VisitSwitchCase(SwitchCase)
+  fullName: System.Linq.Expressions.ExpressionVisitor.VisitSwitchCase(System.Linq.Expressions.SwitchCase)
+  spec.csharp:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitSwitchCase(System.Linq.Expressions.SwitchCase)
+    name: VisitSwitchCase
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitswitchcase
+  - name: (
+  - uid: System.Linq.Expressions.SwitchCase
+    name: SwitchCase
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.switchcase
+  - name: )
+  spec.vb:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitSwitchCase(System.Linq.Expressions.SwitchCase)
+    name: VisitSwitchCase
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitswitchcase
+  - name: (
+  - uid: System.Linq.Expressions.SwitchCase
+    name: SwitchCase
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.switchcase
+  - name: )
+- uid: System.Linq.Expressions.ExpressionVisitor.VisitSwitch(System.Linq.Expressions.SwitchExpression)
+  commentId: M:System.Linq.Expressions.ExpressionVisitor.VisitSwitch(System.Linq.Expressions.SwitchExpression)
+  parent: System.Linq.Expressions.ExpressionVisitor
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitswitch
+  name: VisitSwitch(SwitchExpression)
+  nameWithType: ExpressionVisitor.VisitSwitch(SwitchExpression)
+  fullName: System.Linq.Expressions.ExpressionVisitor.VisitSwitch(System.Linq.Expressions.SwitchExpression)
+  spec.csharp:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitSwitch(System.Linq.Expressions.SwitchExpression)
+    name: VisitSwitch
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitswitch
+  - name: (
+  - uid: System.Linq.Expressions.SwitchExpression
+    name: SwitchExpression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.switchexpression
+  - name: )
+  spec.vb:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitSwitch(System.Linq.Expressions.SwitchExpression)
+    name: VisitSwitch
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitswitch
+  - name: (
+  - uid: System.Linq.Expressions.SwitchExpression
+    name: SwitchExpression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.switchexpression
+  - name: )
+- uid: System.Linq.Expressions.ExpressionVisitor.VisitCatchBlock(System.Linq.Expressions.CatchBlock)
+  commentId: M:System.Linq.Expressions.ExpressionVisitor.VisitCatchBlock(System.Linq.Expressions.CatchBlock)
+  parent: System.Linq.Expressions.ExpressionVisitor
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitcatchblock
+  name: VisitCatchBlock(CatchBlock)
+  nameWithType: ExpressionVisitor.VisitCatchBlock(CatchBlock)
+  fullName: System.Linq.Expressions.ExpressionVisitor.VisitCatchBlock(System.Linq.Expressions.CatchBlock)
+  spec.csharp:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitCatchBlock(System.Linq.Expressions.CatchBlock)
+    name: VisitCatchBlock
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitcatchblock
+  - name: (
+  - uid: System.Linq.Expressions.CatchBlock
+    name: CatchBlock
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.catchblock
+  - name: )
+  spec.vb:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitCatchBlock(System.Linq.Expressions.CatchBlock)
+    name: VisitCatchBlock
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitcatchblock
+  - name: (
+  - uid: System.Linq.Expressions.CatchBlock
+    name: CatchBlock
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.catchblock
+  - name: )
+- uid: System.Linq.Expressions.ExpressionVisitor.VisitTry(System.Linq.Expressions.TryExpression)
+  commentId: M:System.Linq.Expressions.ExpressionVisitor.VisitTry(System.Linq.Expressions.TryExpression)
+  parent: System.Linq.Expressions.ExpressionVisitor
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visittry
+  name: VisitTry(TryExpression)
+  nameWithType: ExpressionVisitor.VisitTry(TryExpression)
+  fullName: System.Linq.Expressions.ExpressionVisitor.VisitTry(System.Linq.Expressions.TryExpression)
+  spec.csharp:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitTry(System.Linq.Expressions.TryExpression)
+    name: VisitTry
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visittry
+  - name: (
+  - uid: System.Linq.Expressions.TryExpression
+    name: TryExpression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.tryexpression
+  - name: )
+  spec.vb:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitTry(System.Linq.Expressions.TryExpression)
+    name: VisitTry
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visittry
+  - name: (
+  - uid: System.Linq.Expressions.TryExpression
+    name: TryExpression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.tryexpression
+  - name: )
+- uid: System.Linq.Expressions.ExpressionVisitor.VisitTypeBinary(System.Linq.Expressions.TypeBinaryExpression)
+  commentId: M:System.Linq.Expressions.ExpressionVisitor.VisitTypeBinary(System.Linq.Expressions.TypeBinaryExpression)
+  parent: System.Linq.Expressions.ExpressionVisitor
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visittypebinary
+  name: VisitTypeBinary(TypeBinaryExpression)
+  nameWithType: ExpressionVisitor.VisitTypeBinary(TypeBinaryExpression)
+  fullName: System.Linq.Expressions.ExpressionVisitor.VisitTypeBinary(System.Linq.Expressions.TypeBinaryExpression)
+  spec.csharp:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitTypeBinary(System.Linq.Expressions.TypeBinaryExpression)
+    name: VisitTypeBinary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visittypebinary
+  - name: (
+  - uid: System.Linq.Expressions.TypeBinaryExpression
+    name: TypeBinaryExpression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.typebinaryexpression
+  - name: )
+  spec.vb:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitTypeBinary(System.Linq.Expressions.TypeBinaryExpression)
+    name: VisitTypeBinary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visittypebinary
+  - name: (
+  - uid: System.Linq.Expressions.TypeBinaryExpression
+    name: TypeBinaryExpression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.typebinaryexpression
+  - name: )
+- uid: System.Linq.Expressions.ExpressionVisitor.VisitUnary(System.Linq.Expressions.UnaryExpression)
+  commentId: M:System.Linq.Expressions.ExpressionVisitor.VisitUnary(System.Linq.Expressions.UnaryExpression)
+  parent: System.Linq.Expressions.ExpressionVisitor
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitunary
+  name: VisitUnary(UnaryExpression)
+  nameWithType: ExpressionVisitor.VisitUnary(UnaryExpression)
+  fullName: System.Linq.Expressions.ExpressionVisitor.VisitUnary(System.Linq.Expressions.UnaryExpression)
+  spec.csharp:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitUnary(System.Linq.Expressions.UnaryExpression)
+    name: VisitUnary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitunary
+  - name: (
+  - uid: System.Linq.Expressions.UnaryExpression
+    name: UnaryExpression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.unaryexpression
+  - name: )
+  spec.vb:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitUnary(System.Linq.Expressions.UnaryExpression)
+    name: VisitUnary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitunary
+  - name: (
+  - uid: System.Linq.Expressions.UnaryExpression
+    name: UnaryExpression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.unaryexpression
+  - name: )
+- uid: System.Linq.Expressions.ExpressionVisitor.VisitMemberInit(System.Linq.Expressions.MemberInitExpression)
+  commentId: M:System.Linq.Expressions.ExpressionVisitor.VisitMemberInit(System.Linq.Expressions.MemberInitExpression)
+  parent: System.Linq.Expressions.ExpressionVisitor
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitmemberinit
+  name: VisitMemberInit(MemberInitExpression)
+  nameWithType: ExpressionVisitor.VisitMemberInit(MemberInitExpression)
+  fullName: System.Linq.Expressions.ExpressionVisitor.VisitMemberInit(System.Linq.Expressions.MemberInitExpression)
+  spec.csharp:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitMemberInit(System.Linq.Expressions.MemberInitExpression)
+    name: VisitMemberInit
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitmemberinit
+  - name: (
+  - uid: System.Linq.Expressions.MemberInitExpression
+    name: MemberInitExpression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.memberinitexpression
+  - name: )
+  spec.vb:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitMemberInit(System.Linq.Expressions.MemberInitExpression)
+    name: VisitMemberInit
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitmemberinit
+  - name: (
+  - uid: System.Linq.Expressions.MemberInitExpression
+    name: MemberInitExpression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.memberinitexpression
+  - name: )
+- uid: System.Linq.Expressions.ExpressionVisitor.VisitListInit(System.Linq.Expressions.ListInitExpression)
+  commentId: M:System.Linq.Expressions.ExpressionVisitor.VisitListInit(System.Linq.Expressions.ListInitExpression)
+  parent: System.Linq.Expressions.ExpressionVisitor
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitlistinit
+  name: VisitListInit(ListInitExpression)
+  nameWithType: ExpressionVisitor.VisitListInit(ListInitExpression)
+  fullName: System.Linq.Expressions.ExpressionVisitor.VisitListInit(System.Linq.Expressions.ListInitExpression)
+  spec.csharp:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitListInit(System.Linq.Expressions.ListInitExpression)
+    name: VisitListInit
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitlistinit
+  - name: (
+  - uid: System.Linq.Expressions.ListInitExpression
+    name: ListInitExpression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.listinitexpression
+  - name: )
+  spec.vb:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitListInit(System.Linq.Expressions.ListInitExpression)
+    name: VisitListInit
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitlistinit
+  - name: (
+  - uid: System.Linq.Expressions.ListInitExpression
+    name: ListInitExpression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.listinitexpression
+  - name: )
+- uid: System.Linq.Expressions.ExpressionVisitor.VisitElementInit(System.Linq.Expressions.ElementInit)
+  commentId: M:System.Linq.Expressions.ExpressionVisitor.VisitElementInit(System.Linq.Expressions.ElementInit)
+  parent: System.Linq.Expressions.ExpressionVisitor
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitelementinit
+  name: VisitElementInit(ElementInit)
+  nameWithType: ExpressionVisitor.VisitElementInit(ElementInit)
+  fullName: System.Linq.Expressions.ExpressionVisitor.VisitElementInit(System.Linq.Expressions.ElementInit)
+  spec.csharp:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitElementInit(System.Linq.Expressions.ElementInit)
+    name: VisitElementInit
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitelementinit
+  - name: (
+  - uid: System.Linq.Expressions.ElementInit
+    name: ElementInit
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.elementinit
+  - name: )
+  spec.vb:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitElementInit(System.Linq.Expressions.ElementInit)
+    name: VisitElementInit
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitelementinit
+  - name: (
+  - uid: System.Linq.Expressions.ElementInit
+    name: ElementInit
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.elementinit
+  - name: )
+- uid: System.Linq.Expressions.ExpressionVisitor.VisitMemberBinding(System.Linq.Expressions.MemberBinding)
+  commentId: M:System.Linq.Expressions.ExpressionVisitor.VisitMemberBinding(System.Linq.Expressions.MemberBinding)
+  parent: System.Linq.Expressions.ExpressionVisitor
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitmemberbinding
+  name: VisitMemberBinding(MemberBinding)
+  nameWithType: ExpressionVisitor.VisitMemberBinding(MemberBinding)
+  fullName: System.Linq.Expressions.ExpressionVisitor.VisitMemberBinding(System.Linq.Expressions.MemberBinding)
+  spec.csharp:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitMemberBinding(System.Linq.Expressions.MemberBinding)
+    name: VisitMemberBinding
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitmemberbinding
+  - name: (
+  - uid: System.Linq.Expressions.MemberBinding
+    name: MemberBinding
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.memberbinding
+  - name: )
+  spec.vb:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitMemberBinding(System.Linq.Expressions.MemberBinding)
+    name: VisitMemberBinding
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitmemberbinding
+  - name: (
+  - uid: System.Linq.Expressions.MemberBinding
+    name: MemberBinding
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.memberbinding
+  - name: )
+- uid: System.Linq.Expressions.ExpressionVisitor.VisitMemberAssignment(System.Linq.Expressions.MemberAssignment)
+  commentId: M:System.Linq.Expressions.ExpressionVisitor.VisitMemberAssignment(System.Linq.Expressions.MemberAssignment)
+  parent: System.Linq.Expressions.ExpressionVisitor
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitmemberassignment
+  name: VisitMemberAssignment(MemberAssignment)
+  nameWithType: ExpressionVisitor.VisitMemberAssignment(MemberAssignment)
+  fullName: System.Linq.Expressions.ExpressionVisitor.VisitMemberAssignment(System.Linq.Expressions.MemberAssignment)
+  spec.csharp:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitMemberAssignment(System.Linq.Expressions.MemberAssignment)
+    name: VisitMemberAssignment
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitmemberassignment
+  - name: (
+  - uid: System.Linq.Expressions.MemberAssignment
+    name: MemberAssignment
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.memberassignment
+  - name: )
+  spec.vb:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitMemberAssignment(System.Linq.Expressions.MemberAssignment)
+    name: VisitMemberAssignment
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitmemberassignment
+  - name: (
+  - uid: System.Linq.Expressions.MemberAssignment
+    name: MemberAssignment
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.memberassignment
+  - name: )
+- uid: System.Linq.Expressions.ExpressionVisitor.VisitMemberMemberBinding(System.Linq.Expressions.MemberMemberBinding)
+  commentId: M:System.Linq.Expressions.ExpressionVisitor.VisitMemberMemberBinding(System.Linq.Expressions.MemberMemberBinding)
+  parent: System.Linq.Expressions.ExpressionVisitor
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitmembermemberbinding
+  name: VisitMemberMemberBinding(MemberMemberBinding)
+  nameWithType: ExpressionVisitor.VisitMemberMemberBinding(MemberMemberBinding)
+  fullName: System.Linq.Expressions.ExpressionVisitor.VisitMemberMemberBinding(System.Linq.Expressions.MemberMemberBinding)
+  spec.csharp:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitMemberMemberBinding(System.Linq.Expressions.MemberMemberBinding)
+    name: VisitMemberMemberBinding
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitmembermemberbinding
+  - name: (
+  - uid: System.Linq.Expressions.MemberMemberBinding
+    name: MemberMemberBinding
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.membermemberbinding
+  - name: )
+  spec.vb:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitMemberMemberBinding(System.Linq.Expressions.MemberMemberBinding)
+    name: VisitMemberMemberBinding
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitmembermemberbinding
+  - name: (
+  - uid: System.Linq.Expressions.MemberMemberBinding
+    name: MemberMemberBinding
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.membermemberbinding
+  - name: )
+- uid: System.Linq.Expressions.ExpressionVisitor.VisitMemberListBinding(System.Linq.Expressions.MemberListBinding)
+  commentId: M:System.Linq.Expressions.ExpressionVisitor.VisitMemberListBinding(System.Linq.Expressions.MemberListBinding)
+  parent: System.Linq.Expressions.ExpressionVisitor
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitmemberlistbinding
+  name: VisitMemberListBinding(MemberListBinding)
+  nameWithType: ExpressionVisitor.VisitMemberListBinding(MemberListBinding)
+  fullName: System.Linq.Expressions.ExpressionVisitor.VisitMemberListBinding(System.Linq.Expressions.MemberListBinding)
+  spec.csharp:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitMemberListBinding(System.Linq.Expressions.MemberListBinding)
+    name: VisitMemberListBinding
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitmemberlistbinding
+  - name: (
+  - uid: System.Linq.Expressions.MemberListBinding
+    name: MemberListBinding
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.memberlistbinding
+  - name: )
+  spec.vb:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitMemberListBinding(System.Linq.Expressions.MemberListBinding)
+    name: VisitMemberListBinding
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitmemberlistbinding
+  - name: (
+  - uid: System.Linq.Expressions.MemberListBinding
+    name: MemberListBinding
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.memberlistbinding
+  - name: )
+- uid: System.Linq.Expressions.ExpressionVisitor.VisitDynamic(System.Linq.Expressions.DynamicExpression)
+  commentId: M:System.Linq.Expressions.ExpressionVisitor.VisitDynamic(System.Linq.Expressions.DynamicExpression)
+  parent: System.Linq.Expressions.ExpressionVisitor
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitdynamic
+  name: VisitDynamic(DynamicExpression)
+  nameWithType: ExpressionVisitor.VisitDynamic(DynamicExpression)
+  fullName: System.Linq.Expressions.ExpressionVisitor.VisitDynamic(System.Linq.Expressions.DynamicExpression)
+  spec.csharp:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitDynamic(System.Linq.Expressions.DynamicExpression)
+    name: VisitDynamic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitdynamic
+  - name: (
+  - uid: System.Linq.Expressions.DynamicExpression
+    name: DynamicExpression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.dynamicexpression
+  - name: )
+  spec.vb:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitDynamic(System.Linq.Expressions.DynamicExpression)
+    name: VisitDynamic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitdynamic
+  - name: (
+  - uid: System.Linq.Expressions.DynamicExpression
+    name: DynamicExpression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.dynamicexpression
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Linq.Expressions
+  commentId: N:System.Linq.Expressions
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Linq.Expressions
+  nameWithType: System.Linq.Expressions
+  fullName: System.Linq.Expressions
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Linq
+    name: Linq
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq
+  - name: .
+  - uid: System.Linq.Expressions
+    name: Expressions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Linq
+    name: Linq
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq
+  - name: .
+  - uid: System.Linq.Expressions
+    name: Expressions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions
+- uid: System.Linq.Expressions.ExpressionVisitor.Visit``1(System.Collections.ObjectModel.ReadOnlyCollection{``0},System.Func{``0,``0})
+  commentId: M:System.Linq.Expressions.ExpressionVisitor.Visit``1(System.Collections.ObjectModel.ReadOnlyCollection{``0},System.Func{``0,``0})
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visit#system-linq-expressions-expressionvisitor-visit-1(system-collections-objectmodel-readonlycollection((-0))-system-func((-0-0)))
+  name: Visit<T>(ReadOnlyCollection<T>, Func<T, T>)
+  nameWithType: ExpressionVisitor.Visit<T>(ReadOnlyCollection<T>, Func<T, T>)
+  fullName: System.Linq.Expressions.ExpressionVisitor.Visit<T>(System.Collections.ObjectModel.ReadOnlyCollection<T>, System.Func<T, T>)
+  nameWithType.vb: ExpressionVisitor.Visit(Of T)(ReadOnlyCollection(Of T), Func(Of T, T))
+  fullName.vb: System.Linq.Expressions.ExpressionVisitor.Visit(Of T)(System.Collections.ObjectModel.ReadOnlyCollection(Of T), System.Func(Of T, T))
+  name.vb: Visit(Of T)(ReadOnlyCollection(Of T), Func(Of T, T))
+  spec.csharp:
+  - uid: System.Linq.Expressions.ExpressionVisitor.Visit``1(System.Collections.ObjectModel.ReadOnlyCollection{``0},System.Func{``0,``0})
+    name: Visit
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visit#system-linq-expressions-expressionvisitor-visit-1(system-collections-objectmodel-readonlycollection((-0))-system-func((-0-0)))
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Collections.ObjectModel.ReadOnlyCollection`1
+    name: ReadOnlyCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.readonlycollection-1
+  - name: <
+  - name: T
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: T
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: System.Linq.Expressions.ExpressionVisitor.Visit``1(System.Collections.ObjectModel.ReadOnlyCollection{``0},System.Func{``0,``0})
+    name: Visit
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visit#system-linq-expressions-expressionvisitor-visit-1(system-collections-objectmodel-readonlycollection((-0))-system-func((-0-0)))
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Collections.ObjectModel.ReadOnlyCollection`1
+    name: ReadOnlyCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.readonlycollection-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+- uid: System.Linq.Expressions.ExpressionVisitor.VisitAndConvert``1(``0,System.String)
+  commentId: M:System.Linq.Expressions.ExpressionVisitor.VisitAndConvert``1(``0,System.String)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitandconvert#system-linq-expressions-expressionvisitor-visitandconvert-1(-0-system-string)
+  name: VisitAndConvert<T>(T, string)
+  nameWithType: ExpressionVisitor.VisitAndConvert<T>(T, string)
+  fullName: System.Linq.Expressions.ExpressionVisitor.VisitAndConvert<T>(T, string)
+  nameWithType.vb: ExpressionVisitor.VisitAndConvert(Of T)(T, String)
+  fullName.vb: System.Linq.Expressions.ExpressionVisitor.VisitAndConvert(Of T)(T, String)
+  name.vb: VisitAndConvert(Of T)(T, String)
+  spec.csharp:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitAndConvert``1(``0,System.String)
+    name: VisitAndConvert
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitandconvert#system-linq-expressions-expressionvisitor-visitandconvert-1(-0-system-string)
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitAndConvert``1(``0,System.String)
+    name: VisitAndConvert
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitandconvert#system-linq-expressions-expressionvisitor-visitandconvert-1(-0-system-string)
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Linq.Expressions.ExpressionVisitor.VisitAndConvert``1(System.Collections.ObjectModel.ReadOnlyCollection{``0},System.String)
+  commentId: M:System.Linq.Expressions.ExpressionVisitor.VisitAndConvert``1(System.Collections.ObjectModel.ReadOnlyCollection{``0},System.String)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitandconvert#system-linq-expressions-expressionvisitor-visitandconvert-1(system-collections-objectmodel-readonlycollection((-0))-system-string)
+  name: VisitAndConvert<T>(ReadOnlyCollection<T>, string)
+  nameWithType: ExpressionVisitor.VisitAndConvert<T>(ReadOnlyCollection<T>, string)
+  fullName: System.Linq.Expressions.ExpressionVisitor.VisitAndConvert<T>(System.Collections.ObjectModel.ReadOnlyCollection<T>, string)
+  nameWithType.vb: ExpressionVisitor.VisitAndConvert(Of T)(ReadOnlyCollection(Of T), String)
+  fullName.vb: System.Linq.Expressions.ExpressionVisitor.VisitAndConvert(Of T)(System.Collections.ObjectModel.ReadOnlyCollection(Of T), String)
+  name.vb: VisitAndConvert(Of T)(ReadOnlyCollection(Of T), String)
+  spec.csharp:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitAndConvert``1(System.Collections.ObjectModel.ReadOnlyCollection{``0},System.String)
+    name: VisitAndConvert
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitandconvert#system-linq-expressions-expressionvisitor-visitandconvert-1(system-collections-objectmodel-readonlycollection((-0))-system-string)
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Collections.ObjectModel.ReadOnlyCollection`1
+    name: ReadOnlyCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.readonlycollection-1
+  - name: <
+  - name: T
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitAndConvert``1(System.Collections.ObjectModel.ReadOnlyCollection{``0},System.String)
+    name: VisitAndConvert
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitandconvert#system-linq-expressions-expressionvisitor-visitandconvert-1(system-collections-objectmodel-readonlycollection((-0))-system-string)
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Collections.ObjectModel.ReadOnlyCollection`1
+    name: ReadOnlyCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.readonlycollection-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Linq.Expressions.ExpressionVisitor.VisitLambda``1(System.Linq.Expressions.Expression{``0})
+  commentId: M:System.Linq.Expressions.ExpressionVisitor.VisitLambda``1(System.Linq.Expressions.Expression{``0})
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitlambda
+  name: VisitLambda<T>(Expression<T>)
+  nameWithType: ExpressionVisitor.VisitLambda<T>(Expression<T>)
+  fullName: System.Linq.Expressions.ExpressionVisitor.VisitLambda<T>(System.Linq.Expressions.Expression<T>)
+  nameWithType.vb: ExpressionVisitor.VisitLambda(Of T)(Expression(Of T))
+  fullName.vb: System.Linq.Expressions.ExpressionVisitor.VisitLambda(Of T)(System.Linq.Expressions.Expression(Of T))
+  name.vb: VisitLambda(Of T)(Expression(Of T))
+  spec.csharp:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitLambda``1(System.Linq.Expressions.Expression{``0})
+    name: VisitLambda
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitlambda
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - name: T
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitLambda``1(System.Linq.Expressions.Expression{``0})
+    name: VisitLambda
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitlambda
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+- uid: AeroDB.SurrealExpressionVisitor.#ctor*
+  commentId: Overload:AeroDB.SurrealExpressionVisitor.#ctor
+  isExternal: true
+  href: AeroDB.SurrealExpressionVisitor.html#AeroDB_SurrealExpressionVisitor__ctor_AeroDB_SchemaOptions_
+  name: SurrealExpressionVisitor
+  nameWithType: SurrealExpressionVisitor.SurrealExpressionVisitor
+  fullName: AeroDB.SurrealExpressionVisitor.SurrealExpressionVisitor
+  nameWithType.vb: SurrealExpressionVisitor.New
+  fullName.vb: AeroDB.SurrealExpressionVisitor.New
+  name.vb: New
+- uid: AeroDB.SchemaOptions
+  commentId: T:AeroDB.SchemaOptions
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.SchemaOptions.html
+  name: SchemaOptions
+  nameWithType: SchemaOptions
+  fullName: AeroDB.SchemaOptions
+- uid: AeroDB.SurrealExpressionVisitor.Translate*
+  commentId: Overload:AeroDB.SurrealExpressionVisitor.Translate
+  isExternal: true
+  href: AeroDB.SurrealExpressionVisitor.html#AeroDB_SurrealExpressionVisitor_Translate_System_Linq_Expressions_Expression_
+  name: Translate
+  nameWithType: SurrealExpressionVisitor.Translate
+  fullName: AeroDB.SurrealExpressionVisitor.Translate
+- uid: System.Linq.Expressions.Expression
+  commentId: T:System.Linq.Expressions.Expression
+  parent: System.Linq.Expressions
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression
+  name: Expression
+  nameWithType: Expression
+  fullName: System.Linq.Expressions.Expression
+- uid: AeroDB.SurrealQueryResult
+  commentId: T:AeroDB.SurrealQueryResult
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.SurrealQueryResult.html
+  name: SurrealQueryResult
+  nameWithType: SurrealQueryResult
+  fullName: AeroDB.SurrealQueryResult
+- uid: System.Linq.Expressions.ExpressionVisitor.VisitMethodCall(System.Linq.Expressions.MethodCallExpression)
+  commentId: M:System.Linq.Expressions.ExpressionVisitor.VisitMethodCall(System.Linq.Expressions.MethodCallExpression)
+  parent: System.Linq.Expressions.ExpressionVisitor
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitmethodcall
+  name: VisitMethodCall(MethodCallExpression)
+  nameWithType: ExpressionVisitor.VisitMethodCall(MethodCallExpression)
+  fullName: System.Linq.Expressions.ExpressionVisitor.VisitMethodCall(System.Linq.Expressions.MethodCallExpression)
+  spec.csharp:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitMethodCall(System.Linq.Expressions.MethodCallExpression)
+    name: VisitMethodCall
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitmethodcall
+  - name: (
+  - uid: System.Linq.Expressions.MethodCallExpression
+    name: MethodCallExpression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.methodcallexpression
+  - name: )
+  spec.vb:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitMethodCall(System.Linq.Expressions.MethodCallExpression)
+    name: VisitMethodCall
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitmethodcall
+  - name: (
+  - uid: System.Linq.Expressions.MethodCallExpression
+    name: MethodCallExpression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.methodcallexpression
+  - name: )
+- uid: AeroDB.SurrealExpressionVisitor.VisitMethodCall*
+  commentId: Overload:AeroDB.SurrealExpressionVisitor.VisitMethodCall
+  isExternal: true
+  href: AeroDB.SurrealExpressionVisitor.html#AeroDB_SurrealExpressionVisitor_VisitMethodCall_System_Linq_Expressions_MethodCallExpression_
+  name: VisitMethodCall
+  nameWithType: SurrealExpressionVisitor.VisitMethodCall
+  fullName: AeroDB.SurrealExpressionVisitor.VisitMethodCall
+- uid: System.Linq.Expressions.MethodCallExpression
+  commentId: T:System.Linq.Expressions.MethodCallExpression
+  parent: System.Linq.Expressions
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.methodcallexpression
+  name: MethodCallExpression
+  nameWithType: MethodCallExpression
+  fullName: System.Linq.Expressions.MethodCallExpression
+- uid: System.Linq.Expressions.ExpressionVisitor.VisitConstant(System.Linq.Expressions.ConstantExpression)
+  commentId: M:System.Linq.Expressions.ExpressionVisitor.VisitConstant(System.Linq.Expressions.ConstantExpression)
+  parent: System.Linq.Expressions.ExpressionVisitor
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitconstant
+  name: VisitConstant(ConstantExpression)
+  nameWithType: ExpressionVisitor.VisitConstant(ConstantExpression)
+  fullName: System.Linq.Expressions.ExpressionVisitor.VisitConstant(System.Linq.Expressions.ConstantExpression)
+  spec.csharp:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitConstant(System.Linq.Expressions.ConstantExpression)
+    name: VisitConstant
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitconstant
+  - name: (
+  - uid: System.Linq.Expressions.ConstantExpression
+    name: ConstantExpression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.constantexpression
+  - name: )
+  spec.vb:
+  - uid: System.Linq.Expressions.ExpressionVisitor.VisitConstant(System.Linq.Expressions.ConstantExpression)
+    name: VisitConstant
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expressionvisitor.visitconstant
+  - name: (
+  - uid: System.Linq.Expressions.ConstantExpression
+    name: ConstantExpression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.constantexpression
+  - name: )
+- uid: AeroDB.SurrealExpressionVisitor.VisitConstant*
+  commentId: Overload:AeroDB.SurrealExpressionVisitor.VisitConstant
+  isExternal: true
+  href: AeroDB.SurrealExpressionVisitor.html#AeroDB_SurrealExpressionVisitor_VisitConstant_System_Linq_Expressions_ConstantExpression_
+  name: VisitConstant
+  nameWithType: SurrealExpressionVisitor.VisitConstant
+  fullName: AeroDB.SurrealExpressionVisitor.VisitConstant
+- uid: System.Linq.Expressions.ConstantExpression
+  commentId: T:System.Linq.Expressions.ConstantExpression
+  parent: System.Linq.Expressions
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.constantexpression
+  name: ConstantExpression
+  nameWithType: ConstantExpression
+  fullName: System.Linq.Expressions.ConstantExpression
+- uid: AeroDB.SurrealExpressionVisitor.TableName*
+  commentId: Overload:AeroDB.SurrealExpressionVisitor.TableName
+  isExternal: true
+  href: AeroDB.SurrealExpressionVisitor.html#AeroDB_SurrealExpressionVisitor_TableName
+  name: TableName
+  nameWithType: SurrealExpressionVisitor.TableName
+  fullName: AeroDB.SurrealExpressionVisitor.TableName
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: AeroDB.ViewQueryExtensions.View``1(AeroDB.IQuerySession,System.String)
+  commentId: M:AeroDB.ViewQueryExtensions.View``1(AeroDB.IQuerySession,System.String)
+  isExternal: true
+  href: AeroDB.ViewQueryExtensions.html#AeroDB_ViewQueryExtensions_View__1_AeroDB_IQuerySession_System_String_
+  name: View<T>(IQuerySession, string)
+  nameWithType: ViewQueryExtensions.View<T>(IQuerySession, string)
+  fullName: AeroDB.ViewQueryExtensions.View<T>(AeroDB.IQuerySession, string)
+  nameWithType.vb: ViewQueryExtensions.View(Of T)(IQuerySession, String)
+  fullName.vb: AeroDB.ViewQueryExtensions.View(Of T)(AeroDB.IQuerySession, String)
+  name.vb: View(Of T)(IQuerySession, String)
+  spec.csharp:
+  - uid: AeroDB.ViewQueryExtensions.View``1(AeroDB.IQuerySession,System.String)
+    name: View
+    isExternal: true
+    href: AeroDB.ViewQueryExtensions.html#AeroDB_ViewQueryExtensions_View__1_AeroDB_IQuerySession_System_String_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: AeroDB.IQuerySession
+    name: IQuerySession
+    isExternal: true
+    href: AeroDB.IQuerySession.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: AeroDB.ViewQueryExtensions.View``1(AeroDB.IQuerySession,System.String)
+    name: View
+    isExternal: true
+    href: AeroDB.ViewQueryExtensions.html#AeroDB_ViewQueryExtensions_View__1_AeroDB_IQuerySession_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: AeroDB.IQuerySession
+    name: IQuerySession
+    isExternal: true
+    href: AeroDB.IQuerySession.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: AeroDB.SurrealExpressionVisitor.ViewName*
+  commentId: Overload:AeroDB.SurrealExpressionVisitor.ViewName
+  isExternal: true
+  href: AeroDB.SurrealExpressionVisitor.html#AeroDB_SurrealExpressionVisitor_ViewName
+  name: ViewName
+  nameWithType: SurrealExpressionVisitor.ViewName
+  fullName: AeroDB.SurrealExpressionVisitor.ViewName

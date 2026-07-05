@@ -1,0 +1,12 @@
+/* AeroDB custom styles */
+:root {
+  --sl-color-accent-low: #1a2332;
+  --sl-color-accent: #3b82f6;
+  --sl-color-accent-high: #93c5fd;
+}
+
+:root[data-theme='dark'] {
+  --sl-color-accent-low: #0f172a;
+  --sl-color-accent: #60a5fa;
+  --sl-color-accent-high: #bfdbfe;
+}

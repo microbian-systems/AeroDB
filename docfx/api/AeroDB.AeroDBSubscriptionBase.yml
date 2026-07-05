@@ -1,0 +1,971 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.AeroDBSubscriptionBase
+  commentId: T:AeroDB.AeroDBSubscriptionBase
+  id: AeroDBSubscriptionBase
+  parent: AeroDB
+  children:
+  - AeroDB.AeroDBSubscriptionBase.#ctor(System.String)
+  - AeroDB.AeroDBSubscriptionBase.FilterIncomingEventsOnStreamType(System.Type)
+  - AeroDB.AeroDBSubscriptionBase.IncludeArchivedEvents
+  - AeroDB.AeroDBSubscriptionBase.IncludeType(System.Type)
+  - AeroDB.AeroDBSubscriptionBase.IncludeType``1
+  - AeroDB.AeroDBSubscriptionBase.Options
+  - AeroDB.AeroDBSubscriptionBase.ProcessEventsAsync(JasperFx.Events.Projections.EventRange,JasperFx.Events.Daemon.ISubscriptionController,AeroDB.IDocumentSession,System.Threading.CancellationToken)
+  - AeroDB.AeroDBSubscriptionBase.SubscriptionName
+  - AeroDB.AeroDBSubscriptionBase.SubscriptionVersion
+  langs:
+  - csharp
+  - vb
+  name: AeroDBSubscriptionBase
+  nameWithType: AeroDBSubscriptionBase
+  fullName: AeroDB.AeroDBSubscriptionBase
+  type: Class
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/AeroDBSubscriptionBase.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Base class for AeroDB event subscriptions with built-in event type filtering.
+
+    Override <xref href="AeroDB.AeroDBSubscriptionBase.ProcessEventsAsync(JasperFx.Events.Projections.EventRange%2cJasperFx.Events.Daemon.ISubscriptionController%2cAeroDB.IDocumentSession%2cSystem.Threading.CancellationToken)" data-throw-if-not-resolved="false"></xref> to implement custom logic.
+  example: []
+  syntax:
+    content: 'public abstract class AeroDBSubscriptionBase : IAeroDBSubscription'
+    content.vb: Public MustInherit Class AeroDBSubscriptionBase Implements IAeroDBSubscription
+  inheritance:
+  - System.Object
+  implements:
+  - AeroDB.IAeroDBSubscription
+  inheritedMembers:
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+- uid: AeroDB.AeroDBSubscriptionBase.#ctor(System.String)
+  commentId: M:AeroDB.AeroDBSubscriptionBase.#ctor(System.String)
+  id: '#ctor(System.String)'
+  parent: AeroDB.AeroDBSubscriptionBase
+  langs:
+  - csharp
+  - vb
+  name: AeroDBSubscriptionBase(string)
+  nameWithType: AeroDBSubscriptionBase.AeroDBSubscriptionBase(string)
+  fullName: AeroDB.AeroDBSubscriptionBase.AeroDBSubscriptionBase(string)
+  type: Constructor
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/AeroDBSubscriptionBase.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Creates a subscription with the given name.
+
+    The name is used to track processing progress.
+  example: []
+  syntax:
+    content: protected AeroDBSubscriptionBase(string subscriptionName)
+    parameters:
+    - id: subscriptionName
+      type: System.String
+    content.vb: Protected Sub New(subscriptionName As String)
+  overload: AeroDB.AeroDBSubscriptionBase.#ctor*
+  nameWithType.vb: AeroDBSubscriptionBase.New(String)
+  fullName.vb: AeroDB.AeroDBSubscriptionBase.New(String)
+  name.vb: New(String)
+- uid: AeroDB.AeroDBSubscriptionBase.IncludeType``1
+  commentId: M:AeroDB.AeroDBSubscriptionBase.IncludeType``1
+  id: IncludeType``1
+  parent: AeroDB.AeroDBSubscriptionBase
+  langs:
+  - csharp
+  - vb
+  name: IncludeType<T>()
+  nameWithType: AeroDBSubscriptionBase.IncludeType<T>()
+  fullName: AeroDB.AeroDBSubscriptionBase.IncludeType<T>()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/AeroDBSubscriptionBase.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Include events of this type for processing.
+  example: []
+  syntax:
+    content: protected void IncludeType<T>()
+    typeParameters:
+    - id: T
+    content.vb: Protected Sub IncludeType(Of T)()
+  overload: AeroDB.AeroDBSubscriptionBase.IncludeType*
+  nameWithType.vb: AeroDBSubscriptionBase.IncludeType(Of T)()
+  fullName.vb: AeroDB.AeroDBSubscriptionBase.IncludeType(Of T)()
+  name.vb: IncludeType(Of T)()
+- uid: AeroDB.AeroDBSubscriptionBase.IncludeType(System.Type)
+  commentId: M:AeroDB.AeroDBSubscriptionBase.IncludeType(System.Type)
+  id: IncludeType(System.Type)
+  parent: AeroDB.AeroDBSubscriptionBase
+  langs:
+  - csharp
+  - vb
+  name: IncludeType(Type)
+  nameWithType: AeroDBSubscriptionBase.IncludeType(Type)
+  fullName: AeroDB.AeroDBSubscriptionBase.IncludeType(System.Type)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/AeroDBSubscriptionBase.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Include events of this type for processing.
+  example: []
+  syntax:
+    content: protected void IncludeType(Type type)
+    parameters:
+    - id: type
+      type: System.Type
+    content.vb: Protected Sub IncludeType(type As Type)
+  overload: AeroDB.AeroDBSubscriptionBase.IncludeType*
+- uid: AeroDB.AeroDBSubscriptionBase.FilterIncomingEventsOnStreamType(System.Type)
+  commentId: M:AeroDB.AeroDBSubscriptionBase.FilterIncomingEventsOnStreamType(System.Type)
+  id: FilterIncomingEventsOnStreamType(System.Type)
+  parent: AeroDB.AeroDBSubscriptionBase
+  langs:
+  - csharp
+  - vb
+  name: FilterIncomingEventsOnStreamType(Type)
+  nameWithType: AeroDBSubscriptionBase.FilterIncomingEventsOnStreamType(Type)
+  fullName: AeroDB.AeroDBSubscriptionBase.FilterIncomingEventsOnStreamType(System.Type)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/AeroDBSubscriptionBase.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Only process events from streams of the given aggregate type.
+  example: []
+  syntax:
+    content: protected void FilterIncomingEventsOnStreamType(Type streamType)
+    parameters:
+    - id: streamType
+      type: System.Type
+    content.vb: Protected Sub FilterIncomingEventsOnStreamType(streamType As Type)
+  overload: AeroDB.AeroDBSubscriptionBase.FilterIncomingEventsOnStreamType*
+- uid: AeroDB.AeroDBSubscriptionBase.ProcessEventsAsync(JasperFx.Events.Projections.EventRange,JasperFx.Events.Daemon.ISubscriptionController,AeroDB.IDocumentSession,System.Threading.CancellationToken)
+  commentId: M:AeroDB.AeroDBSubscriptionBase.ProcessEventsAsync(JasperFx.Events.Projections.EventRange,JasperFx.Events.Daemon.ISubscriptionController,AeroDB.IDocumentSession,System.Threading.CancellationToken)
+  id: ProcessEventsAsync(JasperFx.Events.Projections.EventRange,JasperFx.Events.Daemon.ISubscriptionController,AeroDB.IDocumentSession,System.Threading.CancellationToken)
+  parent: AeroDB.AeroDBSubscriptionBase
+  langs:
+  - csharp
+  - vb
+  name: ProcessEventsAsync(EventRange, ISubscriptionController, IDocumentSession, CancellationToken)
+  nameWithType: AeroDBSubscriptionBase.ProcessEventsAsync(EventRange, ISubscriptionController, IDocumentSession, CancellationToken)
+  fullName: AeroDB.AeroDBSubscriptionBase.ProcessEventsAsync(JasperFx.Events.Projections.EventRange, JasperFx.Events.Daemon.ISubscriptionController, AeroDB.IDocumentSession, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/AeroDBSubscriptionBase.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Process a batch of events. Called by the daemon with an open session.
+
+    Use <code class="paramref">session</code> for reads/writes and
+
+    <code class="paramref">controller</code> to report dead letters or failures.
+  example: []
+  syntax:
+    content: public abstract Task ProcessEventsAsync(EventRange page, ISubscriptionController controller, IDocumentSession session, CancellationToken cancellationToken)
+    parameters:
+    - id: page
+      type: JasperFx.Events.Projections.EventRange
+    - id: controller
+      type: JasperFx.Events.Daemon.ISubscriptionController
+    - id: session
+      type: AeroDB.IDocumentSession
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public MustOverride Function ProcessEventsAsync(page As EventRange, controller As ISubscriptionController, session As IDocumentSession, cancellationToken As CancellationToken) As Task
+  overload: AeroDB.AeroDBSubscriptionBase.ProcessEventsAsync*
+  implements:
+  - AeroDB.IAeroDBSubscription.ProcessEventsAsync(JasperFx.Events.Projections.EventRange,JasperFx.Events.Daemon.ISubscriptionController,AeroDB.IDocumentSession,System.Threading.CancellationToken)
+- uid: AeroDB.AeroDBSubscriptionBase.SubscriptionName
+  commentId: P:AeroDB.AeroDBSubscriptionBase.SubscriptionName
+  id: SubscriptionName
+  parent: AeroDB.AeroDBSubscriptionBase
+  langs:
+  - csharp
+  - vb
+  name: SubscriptionName
+  nameWithType: AeroDBSubscriptionBase.SubscriptionName
+  fullName: AeroDB.AeroDBSubscriptionBase.SubscriptionName
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/AeroDBSubscriptionBase.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Unique name used to track subscription progress.
+  example: []
+  syntax:
+    content: public string SubscriptionName { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public ReadOnly Property SubscriptionName As String
+  overload: AeroDB.AeroDBSubscriptionBase.SubscriptionName*
+  implements:
+  - AeroDB.IAeroDBSubscription.SubscriptionName
+- uid: AeroDB.AeroDBSubscriptionBase.SubscriptionVersion
+  commentId: P:AeroDB.AeroDBSubscriptionBase.SubscriptionVersion
+  id: SubscriptionVersion
+  parent: AeroDB.AeroDBSubscriptionBase
+  langs:
+  - csharp
+  - vb
+  name: SubscriptionVersion
+  nameWithType: AeroDBSubscriptionBase.SubscriptionVersion
+  fullName: AeroDB.AeroDBSubscriptionBase.SubscriptionVersion
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/AeroDBSubscriptionBase.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Version for blue/green subscription upgrades.
+  example: []
+  syntax:
+    content: public uint SubscriptionVersion { get; set; }
+    parameters: []
+    return:
+      type: System.UInt32
+    content.vb: Public Property SubscriptionVersion As UInteger
+  overload: AeroDB.AeroDBSubscriptionBase.SubscriptionVersion*
+  implements:
+  - AeroDB.IAeroDBSubscription.SubscriptionVersion
+- uid: AeroDB.AeroDBSubscriptionBase.Options
+  commentId: P:AeroDB.AeroDBSubscriptionBase.Options
+  id: Options
+  parent: AeroDB.AeroDBSubscriptionBase
+  langs:
+  - csharp
+  - vb
+  name: Options
+  nameWithType: AeroDBSubscriptionBase.Options
+  fullName: AeroDB.AeroDBSubscriptionBase.Options
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/AeroDBSubscriptionBase.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Fine-tune batch size and processing behavior.
+  example: []
+  syntax:
+    content: public AsyncOptions Options { get; }
+    parameters: []
+    return:
+      type: JasperFx.Events.Projections.AsyncOptions
+    content.vb: Public ReadOnly Property Options As AsyncOptions
+  overload: AeroDB.AeroDBSubscriptionBase.Options*
+  implements:
+  - AeroDB.IAeroDBSubscription.Options
+- uid: AeroDB.AeroDBSubscriptionBase.IncludeArchivedEvents
+  commentId: P:AeroDB.AeroDBSubscriptionBase.IncludeArchivedEvents
+  id: IncludeArchivedEvents
+  parent: AeroDB.AeroDBSubscriptionBase
+  langs:
+  - csharp
+  - vb
+  name: IncludeArchivedEvents
+  nameWithType: AeroDBSubscriptionBase.IncludeArchivedEvents
+  fullName: AeroDB.AeroDBSubscriptionBase.IncludeArchivedEvents
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/AeroDBSubscriptionBase.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: 'Whether to include archived events (default: false).'
+  example: []
+  syntax:
+    content: protected bool IncludeArchivedEvents { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Protected Property IncludeArchivedEvents As Boolean
+  overload: AeroDB.AeroDBSubscriptionBase.IncludeArchivedEvents*
+references:
+- uid: AeroDB.AeroDBSubscriptionBase.ProcessEventsAsync(JasperFx.Events.Projections.EventRange,JasperFx.Events.Daemon.ISubscriptionController,AeroDB.IDocumentSession,System.Threading.CancellationToken)
+  commentId: M:AeroDB.AeroDBSubscriptionBase.ProcessEventsAsync(JasperFx.Events.Projections.EventRange,JasperFx.Events.Daemon.ISubscriptionController,AeroDB.IDocumentSession,System.Threading.CancellationToken)
+  isExternal: true
+  href: AeroDB.AeroDBSubscriptionBase.html#AeroDB_AeroDBSubscriptionBase_ProcessEventsAsync_JasperFx_Events_Projections_EventRange_JasperFx_Events_Daemon_ISubscriptionController_AeroDB_IDocumentSession_System_Threading_CancellationToken_
+  name: ProcessEventsAsync(EventRange, ISubscriptionController, IDocumentSession, CancellationToken)
+  nameWithType: AeroDBSubscriptionBase.ProcessEventsAsync(EventRange, ISubscriptionController, IDocumentSession, CancellationToken)
+  fullName: AeroDB.AeroDBSubscriptionBase.ProcessEventsAsync(JasperFx.Events.Projections.EventRange, JasperFx.Events.Daemon.ISubscriptionController, AeroDB.IDocumentSession, System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: AeroDB.AeroDBSubscriptionBase.ProcessEventsAsync(JasperFx.Events.Projections.EventRange,JasperFx.Events.Daemon.ISubscriptionController,AeroDB.IDocumentSession,System.Threading.CancellationToken)
+    name: ProcessEventsAsync
+    isExternal: true
+    href: AeroDB.AeroDBSubscriptionBase.html#AeroDB_AeroDBSubscriptionBase_ProcessEventsAsync_JasperFx_Events_Projections_EventRange_JasperFx_Events_Daemon_ISubscriptionController_AeroDB_IDocumentSession_System_Threading_CancellationToken_
+  - name: (
+  - uid: JasperFx.Events.Projections.EventRange
+    name: EventRange
+    isExternal: true
+  - name: ','
+  - name: " "
+  - uid: JasperFx.Events.Daemon.ISubscriptionController
+    name: ISubscriptionController
+    isExternal: true
+  - name: ','
+  - name: " "
+  - uid: AeroDB.IDocumentSession
+    name: IDocumentSession
+    isExternal: true
+    href: AeroDB.IDocumentSession.html
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: AeroDB.AeroDBSubscriptionBase.ProcessEventsAsync(JasperFx.Events.Projections.EventRange,JasperFx.Events.Daemon.ISubscriptionController,AeroDB.IDocumentSession,System.Threading.CancellationToken)
+    name: ProcessEventsAsync
+    isExternal: true
+    href: AeroDB.AeroDBSubscriptionBase.html#AeroDB_AeroDBSubscriptionBase_ProcessEventsAsync_JasperFx_Events_Projections_EventRange_JasperFx_Events_Daemon_ISubscriptionController_AeroDB_IDocumentSession_System_Threading_CancellationToken_
+  - name: (
+  - uid: JasperFx.Events.Projections.EventRange
+    name: EventRange
+    isExternal: true
+  - name: ','
+  - name: " "
+  - uid: JasperFx.Events.Daemon.ISubscriptionController
+    name: ISubscriptionController
+    isExternal: true
+  - name: ','
+  - name: " "
+  - uid: AeroDB.IDocumentSession
+    name: IDocumentSession
+    isExternal: true
+    href: AeroDB.IDocumentSession.html
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: AeroDB.IAeroDBSubscription
+  commentId: T:AeroDB.IAeroDBSubscription
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IAeroDBSubscription.html
+  name: IAeroDBSubscription
+  nameWithType: IAeroDBSubscription
+  fullName: AeroDB.IAeroDBSubscription
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AeroDB.AeroDBSubscriptionBase.#ctor*
+  commentId: Overload:AeroDB.AeroDBSubscriptionBase.#ctor
+  isExternal: true
+  href: AeroDB.AeroDBSubscriptionBase.html#AeroDB_AeroDBSubscriptionBase__ctor_System_String_
+  name: AeroDBSubscriptionBase
+  nameWithType: AeroDBSubscriptionBase.AeroDBSubscriptionBase
+  fullName: AeroDB.AeroDBSubscriptionBase.AeroDBSubscriptionBase
+  nameWithType.vb: AeroDBSubscriptionBase.New
+  fullName.vb: AeroDB.AeroDBSubscriptionBase.New
+  name.vb: New
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: AeroDB.AeroDBSubscriptionBase.IncludeType*
+  commentId: Overload:AeroDB.AeroDBSubscriptionBase.IncludeType
+  isExternal: true
+  href: AeroDB.AeroDBSubscriptionBase.html#AeroDB_AeroDBSubscriptionBase_IncludeType__1
+  name: IncludeType
+  nameWithType: AeroDBSubscriptionBase.IncludeType
+  fullName: AeroDB.AeroDBSubscriptionBase.IncludeType
+- uid: System.Type
+  commentId: T:System.Type
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.type
+  name: Type
+  nameWithType: Type
+  fullName: System.Type
+- uid: AeroDB.AeroDBSubscriptionBase.FilterIncomingEventsOnStreamType*
+  commentId: Overload:AeroDB.AeroDBSubscriptionBase.FilterIncomingEventsOnStreamType
+  isExternal: true
+  href: AeroDB.AeroDBSubscriptionBase.html#AeroDB_AeroDBSubscriptionBase_FilterIncomingEventsOnStreamType_System_Type_
+  name: FilterIncomingEventsOnStreamType
+  nameWithType: AeroDBSubscriptionBase.FilterIncomingEventsOnStreamType
+  fullName: AeroDB.AeroDBSubscriptionBase.FilterIncomingEventsOnStreamType
+- uid: AeroDB.AeroDBSubscriptionBase.ProcessEventsAsync*
+  commentId: Overload:AeroDB.AeroDBSubscriptionBase.ProcessEventsAsync
+  isExternal: true
+  href: AeroDB.AeroDBSubscriptionBase.html#AeroDB_AeroDBSubscriptionBase_ProcessEventsAsync_JasperFx_Events_Projections_EventRange_JasperFx_Events_Daemon_ISubscriptionController_AeroDB_IDocumentSession_System_Threading_CancellationToken_
+  name: ProcessEventsAsync
+  nameWithType: AeroDBSubscriptionBase.ProcessEventsAsync
+  fullName: AeroDB.AeroDBSubscriptionBase.ProcessEventsAsync
+- uid: AeroDB.IAeroDBSubscription.ProcessEventsAsync(JasperFx.Events.Projections.EventRange,JasperFx.Events.Daemon.ISubscriptionController,AeroDB.IDocumentSession,System.Threading.CancellationToken)
+  commentId: M:AeroDB.IAeroDBSubscription.ProcessEventsAsync(JasperFx.Events.Projections.EventRange,JasperFx.Events.Daemon.ISubscriptionController,AeroDB.IDocumentSession,System.Threading.CancellationToken)
+  parent: AeroDB.IAeroDBSubscription
+  isExternal: true
+  href: AeroDB.IAeroDBSubscription.html#AeroDB_IAeroDBSubscription_ProcessEventsAsync_JasperFx_Events_Projections_EventRange_JasperFx_Events_Daemon_ISubscriptionController_AeroDB_IDocumentSession_System_Threading_CancellationToken_
+  name: ProcessEventsAsync(EventRange, ISubscriptionController, IDocumentSession, CancellationToken)
+  nameWithType: IAeroDBSubscription.ProcessEventsAsync(EventRange, ISubscriptionController, IDocumentSession, CancellationToken)
+  fullName: AeroDB.IAeroDBSubscription.ProcessEventsAsync(JasperFx.Events.Projections.EventRange, JasperFx.Events.Daemon.ISubscriptionController, AeroDB.IDocumentSession, System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: AeroDB.IAeroDBSubscription.ProcessEventsAsync(JasperFx.Events.Projections.EventRange,JasperFx.Events.Daemon.ISubscriptionController,AeroDB.IDocumentSession,System.Threading.CancellationToken)
+    name: ProcessEventsAsync
+    isExternal: true
+    href: AeroDB.IAeroDBSubscription.html#AeroDB_IAeroDBSubscription_ProcessEventsAsync_JasperFx_Events_Projections_EventRange_JasperFx_Events_Daemon_ISubscriptionController_AeroDB_IDocumentSession_System_Threading_CancellationToken_
+  - name: (
+  - uid: JasperFx.Events.Projections.EventRange
+    name: EventRange
+    isExternal: true
+  - name: ','
+  - name: " "
+  - uid: JasperFx.Events.Daemon.ISubscriptionController
+    name: ISubscriptionController
+    isExternal: true
+  - name: ','
+  - name: " "
+  - uid: AeroDB.IDocumentSession
+    name: IDocumentSession
+    isExternal: true
+    href: AeroDB.IDocumentSession.html
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: AeroDB.IAeroDBSubscription.ProcessEventsAsync(JasperFx.Events.Projections.EventRange,JasperFx.Events.Daemon.ISubscriptionController,AeroDB.IDocumentSession,System.Threading.CancellationToken)
+    name: ProcessEventsAsync
+    isExternal: true
+    href: AeroDB.IAeroDBSubscription.html#AeroDB_IAeroDBSubscription_ProcessEventsAsync_JasperFx_Events_Projections_EventRange_JasperFx_Events_Daemon_ISubscriptionController_AeroDB_IDocumentSession_System_Threading_CancellationToken_
+  - name: (
+  - uid: JasperFx.Events.Projections.EventRange
+    name: EventRange
+    isExternal: true
+  - name: ','
+  - name: " "
+  - uid: JasperFx.Events.Daemon.ISubscriptionController
+    name: ISubscriptionController
+    isExternal: true
+  - name: ','
+  - name: " "
+  - uid: AeroDB.IDocumentSession
+    name: IDocumentSession
+    isExternal: true
+    href: AeroDB.IDocumentSession.html
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: JasperFx.Events.Projections.EventRange
+  commentId: T:JasperFx.Events.Projections.EventRange
+  parent: JasperFx.Events.Projections
+  isExternal: true
+  name: EventRange
+  nameWithType: EventRange
+  fullName: JasperFx.Events.Projections.EventRange
+- uid: JasperFx.Events.Daemon.ISubscriptionController
+  commentId: T:JasperFx.Events.Daemon.ISubscriptionController
+  parent: JasperFx.Events.Daemon
+  isExternal: true
+  name: ISubscriptionController
+  nameWithType: ISubscriptionController
+  fullName: JasperFx.Events.Daemon.ISubscriptionController
+- uid: AeroDB.IDocumentSession
+  commentId: T:AeroDB.IDocumentSession
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IDocumentSession.html
+  name: IDocumentSession
+  nameWithType: IDocumentSession
+  fullName: AeroDB.IDocumentSession
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: JasperFx.Events.Projections
+  commentId: N:JasperFx.Events.Projections
+  isExternal: true
+  name: JasperFx.Events.Projections
+  nameWithType: JasperFx.Events.Projections
+  fullName: JasperFx.Events.Projections
+  spec.csharp:
+  - uid: JasperFx
+    name: JasperFx
+    isExternal: true
+  - name: .
+  - uid: JasperFx.Events
+    name: Events
+    isExternal: true
+  - name: .
+  - uid: JasperFx.Events.Projections
+    name: Projections
+    isExternal: true
+  spec.vb:
+  - uid: JasperFx
+    name: JasperFx
+    isExternal: true
+  - name: .
+  - uid: JasperFx.Events
+    name: Events
+    isExternal: true
+  - name: .
+  - uid: JasperFx.Events.Projections
+    name: Projections
+    isExternal: true
+- uid: JasperFx.Events.Daemon
+  commentId: N:JasperFx.Events.Daemon
+  isExternal: true
+  name: JasperFx.Events.Daemon
+  nameWithType: JasperFx.Events.Daemon
+  fullName: JasperFx.Events.Daemon
+  spec.csharp:
+  - uid: JasperFx
+    name: JasperFx
+    isExternal: true
+  - name: .
+  - uid: JasperFx.Events
+    name: Events
+    isExternal: true
+  - name: .
+  - uid: JasperFx.Events.Daemon
+    name: Daemon
+    isExternal: true
+  spec.vb:
+  - uid: JasperFx
+    name: JasperFx
+    isExternal: true
+  - name: .
+  - uid: JasperFx.Events
+    name: Events
+    isExternal: true
+  - name: .
+  - uid: JasperFx.Events.Daemon
+    name: Daemon
+    isExternal: true
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: AeroDB.AeroDBSubscriptionBase.SubscriptionName*
+  commentId: Overload:AeroDB.AeroDBSubscriptionBase.SubscriptionName
+  isExternal: true
+  href: AeroDB.AeroDBSubscriptionBase.html#AeroDB_AeroDBSubscriptionBase_SubscriptionName
+  name: SubscriptionName
+  nameWithType: AeroDBSubscriptionBase.SubscriptionName
+  fullName: AeroDB.AeroDBSubscriptionBase.SubscriptionName
+- uid: AeroDB.IAeroDBSubscription.SubscriptionName
+  commentId: P:AeroDB.IAeroDBSubscription.SubscriptionName
+  parent: AeroDB.IAeroDBSubscription
+  isExternal: true
+  href: AeroDB.IAeroDBSubscription.html#AeroDB_IAeroDBSubscription_SubscriptionName
+  name: SubscriptionName
+  nameWithType: IAeroDBSubscription.SubscriptionName
+  fullName: AeroDB.IAeroDBSubscription.SubscriptionName
+- uid: AeroDB.AeroDBSubscriptionBase.SubscriptionVersion*
+  commentId: Overload:AeroDB.AeroDBSubscriptionBase.SubscriptionVersion
+  isExternal: true
+  href: AeroDB.AeroDBSubscriptionBase.html#AeroDB_AeroDBSubscriptionBase_SubscriptionVersion
+  name: SubscriptionVersion
+  nameWithType: AeroDBSubscriptionBase.SubscriptionVersion
+  fullName: AeroDB.AeroDBSubscriptionBase.SubscriptionVersion
+- uid: AeroDB.IAeroDBSubscription.SubscriptionVersion
+  commentId: P:AeroDB.IAeroDBSubscription.SubscriptionVersion
+  parent: AeroDB.IAeroDBSubscription
+  isExternal: true
+  href: AeroDB.IAeroDBSubscription.html#AeroDB_IAeroDBSubscription_SubscriptionVersion
+  name: SubscriptionVersion
+  nameWithType: IAeroDBSubscription.SubscriptionVersion
+  fullName: AeroDB.IAeroDBSubscription.SubscriptionVersion
+- uid: System.UInt32
+  commentId: T:System.UInt32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.uint32
+  name: uint
+  nameWithType: uint
+  fullName: uint
+  nameWithType.vb: UInteger
+  fullName.vb: UInteger
+  name.vb: UInteger
+- uid: AeroDB.AeroDBSubscriptionBase.Options*
+  commentId: Overload:AeroDB.AeroDBSubscriptionBase.Options
+  isExternal: true
+  href: AeroDB.AeroDBSubscriptionBase.html#AeroDB_AeroDBSubscriptionBase_Options
+  name: Options
+  nameWithType: AeroDBSubscriptionBase.Options
+  fullName: AeroDB.AeroDBSubscriptionBase.Options
+- uid: AeroDB.IAeroDBSubscription.Options
+  commentId: P:AeroDB.IAeroDBSubscription.Options
+  parent: AeroDB.IAeroDBSubscription
+  isExternal: true
+  href: AeroDB.IAeroDBSubscription.html#AeroDB_IAeroDBSubscription_Options
+  name: Options
+  nameWithType: IAeroDBSubscription.Options
+  fullName: AeroDB.IAeroDBSubscription.Options
+- uid: JasperFx.Events.Projections.AsyncOptions
+  commentId: T:JasperFx.Events.Projections.AsyncOptions
+  parent: JasperFx.Events.Projections
+  isExternal: true
+  name: AsyncOptions
+  nameWithType: AsyncOptions
+  fullName: JasperFx.Events.Projections.AsyncOptions
+- uid: AeroDB.AeroDBSubscriptionBase.IncludeArchivedEvents*
+  commentId: Overload:AeroDB.AeroDBSubscriptionBase.IncludeArchivedEvents
+  isExternal: true
+  href: AeroDB.AeroDBSubscriptionBase.html#AeroDB_AeroDBSubscriptionBase_IncludeArchivedEvents
+  name: IncludeArchivedEvents
+  nameWithType: AeroDBSubscriptionBase.IncludeArchivedEvents
+  fullName: AeroDB.AeroDBSubscriptionBase.IncludeArchivedEvents
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean

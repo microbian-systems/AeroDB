@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Class SingleStreamProjection&lt;TDoc, TId&gt; | AeroDB API Reference </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="Class SingleStreamProjection&lt;TDoc, TId&gt; | AeroDB API Reference ">
+    
+    <meta name="description" content="Single-stream projection with a typed stream identity. Supports both Marten-style static Create/Apply convention methods and AeroDB&#39;s instance-based Create/Apply/ShouldDelete methods.">
+      <link rel="shortcut icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../styles/docfx.css">
+      <link rel="stylesheet" href="../styles/main.css">
+      <meta property="docfx:navrel" content="../toc.html">
+      <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="AeroDB">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="AeroDB.SingleStreamProjection`2">
+
+
+
+  <h1 id="AeroDB_SingleStreamProjection_2" data-uid="AeroDB.SingleStreamProjection`2" class="text-break">Class SingleStreamProjection&lt;TDoc, TId&gt;</h1>
+  <div class="markdown level0 summary"><p>Single-stream projection with a typed stream identity.
+Supports both Marten-style static Create/Apply convention methods
+and AeroDB's instance-based Create/Apply/ShouldDelete methods.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+    <div class="level1"><a class="xref" href="AeroDB.InlineProjection-1.html">InlineProjection</a>&lt;TDoc&gt;</div>
+    <div class="level2"><span class="xref">SingleStreamProjection&lt;TDoc, TId&gt;</span></div>
+  </div>
+  <div class="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="AeroDB.IProjection.html">IProjection</a></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="AeroDB.InlineProjection-1.html#AeroDB_InlineProjection_1_JsonOptions">InlineProjection&lt;TDoc&gt;.JsonOptions</a>
+    </div>
+    <div>
+      <a class="xref" href="AeroDB.InlineProjection-1.html#AeroDB_InlineProjection_1_ApplyAsync_AeroDB_IProjectionContext_System_Threading_CancellationToken_">InlineProjection&lt;TDoc&gt;.ApplyAsync(IProjectionContext, CancellationToken)</a>
+    </div>
+    <div>
+      <a class="xref" href="AeroDB.InlineProjection-1.html#AeroDB_InlineProjection_1_DetermineAction__0_System_Collections_Generic_IReadOnlyList_AeroDB_IEvent__">InlineProjection&lt;TDoc&gt;.DetermineAction(TDoc, IReadOnlyList&lt;IEvent&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="AeroDB.InlineProjection-1.html#AeroDB_InlineProjection_1_Evolve__0_System_Collections_Generic_IReadOnlyList_AeroDB_IEvent__System_Threading_CancellationToken_">InlineProjection&lt;TDoc&gt;.Evolve(TDoc, IReadOnlyList&lt;IEvent&gt;, CancellationToken)</a>
+    </div>
+    <div>
+      <a class="xref" href="AeroDB.InlineProjection-1.html#AeroDB_InlineProjection_1_RebuildAsync_AeroDB_IDocumentSession_System_Threading_CancellationToken_">InlineProjection&lt;TDoc&gt;.RebuildAsync(IDocumentSession, CancellationToken)</a>
+    </div>
+    <div>
+      <a class="xref" href="AeroDB.InlineProjection-1.html#AeroDB_InlineProjection_1_Logger">InlineProjection&lt;TDoc&gt;.Logger</a>
+    </div>
+    <div>
+      <a class="xref" href="AeroDB.InlineProjection-1.html#AeroDB_InlineProjection_1_Lifecycle">InlineProjection&lt;TDoc&gt;.Lifecycle</a>
+    </div>
+    <div>
+      <a class="xref" href="AeroDB.InlineProjection-1.html#AeroDB_InlineProjection_1_Name">InlineProjection&lt;TDoc&gt;.Name</a>
+    </div>
+    <div>
+      <a class="xref" href="AeroDB.InlineProjection-1.html#AeroDB_InlineProjection_1_EventTypes">InlineProjection&lt;TDoc&gt;.EventTypes</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="AeroDB.html">AeroDB</a></h6>
+  <h6><strong>Assembly</strong>: AeroDB.dll</h6>
+  <h5 id="AeroDB_SingleStreamProjection_2_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract class SingleStreamProjection&lt;TDoc, TId&gt; : InlineProjection&lt;TDoc&gt;, IProjection where TDoc : class</code></pre>
+  </div>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TDoc</span></td>
+        <td><p>Projected document type.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">TId</span></td>
+        <td><p>Stream identity type (Guid, string, int, long).</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="constructors">Constructors
+</h3>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/SingleStreamProjectionOf2.cs">View Source</a>
+  </span>
+  <a id="AeroDB_SingleStreamProjection_2__ctor_" data-uid="AeroDB.SingleStreamProjection`2.#ctor*"></a>
+  <h4 id="AeroDB_SingleStreamProjection_2__ctor" data-uid="AeroDB.SingleStreamProjection`2.#ctor">SingleStreamProjection()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected SingleStreamProjection()</code></pre>
+  </div>
+  <h3 id="methods">Methods
+</h3>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/SingleStreamProjectionOf2.cs">View Source</a>
+  </span>
+  <a id="AeroDB_SingleStreamProjection_2_ApplyEvents_" data-uid="AeroDB.SingleStreamProjection`2.ApplyEvents*"></a>
+  <h4 id="AeroDB_SingleStreamProjection_2_ApplyEvents__0_System_Collections_Generic_IReadOnlyList_System_Object__System_Threading_CancellationToken_" data-uid="AeroDB.SingleStreamProjection`2.ApplyEvents(`0,System.Collections.Generic.IReadOnlyList{System.Object},System.Threading.CancellationToken)">ApplyEvents(TDoc?, IReadOnlyList&lt;object&gt;, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Apply events to the aggregate. Searches for static Create(EventType) and
+static Apply(EventType, TDoc) Marten conventions, falling through to the
+base InlineProjection.ApplyEvents for AeroDB instance conventions.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override TDoc? ApplyEvents(TDoc? aggregate, IReadOnlyList&lt;object&gt; events, CancellationToken ct)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TDoc</span></td>
+        <td><span class="parametername">aggregate</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;</td>
+        <td><span class="parametername">events</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">ct</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TDoc</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="AeroDB.InlineProjection-1.html#AeroDB_InlineProjection_1_ApplyEvents__0_System_Collections_Generic_IReadOnlyList_System_Object__System_Threading_CancellationToken_">InlineProjection&lt;TDoc&gt;.ApplyEvents(TDoc, IReadOnlyList&lt;object&gt;, CancellationToken)</a></div>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/SingleStreamProjectionOf2.cs">View Source</a>
+  </span>
+  <a id="AeroDB_SingleStreamProjection_2_GetDocumentId_" data-uid="AeroDB.SingleStreamProjection`2.GetDocumentId*"></a>
+  <h4 id="AeroDB_SingleStreamProjection_2_GetDocumentId_System_Collections_Generic_IReadOnlyList_System_Object__" data-uid="AeroDB.SingleStreamProjection`2.GetDocumentId(System.Collections.Generic.IReadOnlyList{System.Object})">GetDocumentId(IReadOnlyList&lt;object&gt;)</h4>
+  <div class="markdown level1 summary"><p>Determines the document identity from the events (e.g., stream ID).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override object GetDocumentId(IReadOnlyList&lt;object&gt; events)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;</td>
+        <td><span class="parametername">events</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="AeroDB.InlineProjection-1.html#AeroDB_InlineProjection_1_GetDocumentId_System_Collections_Generic_IReadOnlyList_System_Object__">InlineProjection&lt;TDoc&gt;.GetDocumentId(IReadOnlyList&lt;object&gt;)</a></div>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/SingleStreamProjectionOf2.cs">View Source</a>
+  </span>
+  <a id="AeroDB_SingleStreamProjection_2_GetDocumentIdTyped_" data-uid="AeroDB.SingleStreamProjection`2.GetDocumentIdTyped*"></a>
+  <h4 id="AeroDB_SingleStreamProjection_2_GetDocumentIdTyped_System_Collections_Generic_IReadOnlyList_System_Object__" data-uid="AeroDB.SingleStreamProjection`2.GetDocumentIdTyped(System.Collections.Generic.IReadOnlyList{System.Object})">GetDocumentIdTyped(IReadOnlyList&lt;object&gt;)</h4>
+  <div class="markdown level1 summary"><p>Extracts the stream identity as a typed <code class="typeparamref">TId</code> from the events.
+Default: uses <a class="xref" href="AeroDB.IEvent.html#AeroDB_IEvent_StreamKey">StreamKey</a> for Guid, <a class="xref" href="AeroDB.IEvent.html#AeroDB_IEvent_StreamId">StreamId</a> for string,
+or parses <a class="xref" href="AeroDB.IEvent.html#AeroDB_IEvent_StreamId">StreamId</a> for numeric types.
+Override for custom identity derivation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual TId GetDocumentIdTyped(IReadOnlyList&lt;object&gt; events)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;</td>
+        <td><span class="parametername">events</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TId</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="AeroDB.IProjection.html">IProjection</a>
+  </div>
+
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/SingleStreamProjectionOf2.cs" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In this article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      AeroDB Documentation
+      
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.min.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

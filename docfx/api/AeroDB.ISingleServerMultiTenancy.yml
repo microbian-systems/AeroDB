@@ -1,0 +1,132 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.ISingleServerMultiTenancy
+  commentId: T:AeroDB.ISingleServerMultiTenancy
+  id: ISingleServerMultiTenancy
+  parent: AeroDB
+  children:
+  - AeroDB.ISingleServerMultiTenancy.WithTenant(System.String,System.String)
+  - AeroDB.ISingleServerMultiTenancy.WithTenant(System.String,System.String,System.String)
+  langs:
+  - csharp
+  - vb
+  name: ISingleServerMultiTenancy
+  nameWithType: ISingleServerMultiTenancy
+  fullName: AeroDB.ISingleServerMultiTenancy
+  type: Interface
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Tenancy/IAeroDBMultiTenancy.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Fluent interface for configuring a single-server multi-tenancy strategy
+
+    where each tenant maps to a separate database on the same SurrealDB server.
+  example: []
+  syntax:
+    content: public interface ISingleServerMultiTenancy
+    content.vb: Public Interface ISingleServerMultiTenancy
+- uid: AeroDB.ISingleServerMultiTenancy.WithTenant(System.String,System.String)
+  commentId: M:AeroDB.ISingleServerMultiTenancy.WithTenant(System.String,System.String)
+  id: WithTenant(System.String,System.String)
+  parent: AeroDB.ISingleServerMultiTenancy
+  langs:
+  - csharp
+  - vb
+  name: WithTenant(string, string)
+  nameWithType: ISingleServerMultiTenancy.WithTenant(string, string)
+  fullName: AeroDB.ISingleServerMultiTenancy.WithTenant(string, string)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Tenancy/IAeroDBMultiTenancy.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: ISingleServerMultiTenancy WithTenant(string tenantId, string database)
+    parameters:
+    - id: tenantId
+      type: System.String
+    - id: database
+      type: System.String
+    return:
+      type: AeroDB.ISingleServerMultiTenancy
+    content.vb: Function WithTenant(tenantId As String, database As String) As ISingleServerMultiTenancy
+  overload: AeroDB.ISingleServerMultiTenancy.WithTenant*
+  nameWithType.vb: ISingleServerMultiTenancy.WithTenant(String, String)
+  fullName.vb: AeroDB.ISingleServerMultiTenancy.WithTenant(String, String)
+  name.vb: WithTenant(String, String)
+- uid: AeroDB.ISingleServerMultiTenancy.WithTenant(System.String,System.String,System.String)
+  commentId: M:AeroDB.ISingleServerMultiTenancy.WithTenant(System.String,System.String,System.String)
+  id: WithTenant(System.String,System.String,System.String)
+  parent: AeroDB.ISingleServerMultiTenancy
+  langs:
+  - csharp
+  - vb
+  name: WithTenant(string, string, string)
+  nameWithType: ISingleServerMultiTenancy.WithTenant(string, string, string)
+  fullName: AeroDB.ISingleServerMultiTenancy.WithTenant(string, string, string)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Tenancy/IAeroDBMultiTenancy.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: ISingleServerMultiTenancy WithTenant(string tenantId, string database, string namespace_)
+    parameters:
+    - id: tenantId
+      type: System.String
+    - id: database
+      type: System.String
+    - id: namespace_
+      type: System.String
+    return:
+      type: AeroDB.ISingleServerMultiTenancy
+    content.vb: Function WithTenant(tenantId As String, database As String, namespace_ As String) As ISingleServerMultiTenancy
+  overload: AeroDB.ISingleServerMultiTenancy.WithTenant*
+  nameWithType.vb: ISingleServerMultiTenancy.WithTenant(String, String, String)
+  fullName.vb: AeroDB.ISingleServerMultiTenancy.WithTenant(String, String, String)
+  name.vb: WithTenant(String, String, String)
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: AeroDB.ISingleServerMultiTenancy.WithTenant*
+  commentId: Overload:AeroDB.ISingleServerMultiTenancy.WithTenant
+  isExternal: true
+  href: AeroDB.ISingleServerMultiTenancy.html#AeroDB_ISingleServerMultiTenancy_WithTenant_System_String_System_String_
+  name: WithTenant
+  nameWithType: ISingleServerMultiTenancy.WithTenant
+  fullName: AeroDB.ISingleServerMultiTenancy.WithTenant
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: AeroDB.ISingleServerMultiTenancy
+  commentId: T:AeroDB.ISingleServerMultiTenancy
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.ISingleServerMultiTenancy.html
+  name: ISingleServerMultiTenancy
+  nameWithType: ISingleServerMultiTenancy
+  fullName: AeroDB.ISingleServerMultiTenancy
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System

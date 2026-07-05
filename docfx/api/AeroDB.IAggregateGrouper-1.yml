@@ -1,0 +1,448 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.IAggregateGrouper`1
+  commentId: T:AeroDB.IAggregateGrouper`1
+  id: IAggregateGrouper`1
+  parent: AeroDB
+  children:
+  - AeroDB.IAggregateGrouper`1.Group(AeroDB.IQuerySession,System.Collections.Generic.IReadOnlyList{AeroDB.IEvent},AeroDB.ITenantSliceGroup{`0})
+  - AeroDB.IAggregateGrouper`1.GroupAsync(AeroDB.IQuerySession,System.Collections.Generic.IReadOnlyList{AeroDB.IEvent},System.Threading.CancellationToken)
+  langs:
+  - csharp
+  - vb
+  name: IAggregateGrouper<TId>
+  nameWithType: IAggregateGrouper<TId>
+  fullName: AeroDB.IAggregateGrouper<TId>
+  type: Interface
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/IAggregateGrouper.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Groups events into aggregate groups for multi-stream projections.
+
+    Each group produces one projected document.
+  example: []
+  syntax:
+    content: 'public interface IAggregateGrouper<TId> where TId : notnull'
+    typeParameters:
+    - id: TId
+      description: The aggregate identifier type.
+    content.vb: Public Interface IAggregateGrouper(Of TId)
+  nameWithType.vb: IAggregateGrouper(Of TId)
+  fullName.vb: AeroDB.IAggregateGrouper(Of TId)
+  name.vb: IAggregateGrouper(Of TId)
+- uid: AeroDB.IAggregateGrouper`1.Group(AeroDB.IQuerySession,System.Collections.Generic.IReadOnlyList{AeroDB.IEvent},AeroDB.ITenantSliceGroup{`0})
+  commentId: M:AeroDB.IAggregateGrouper`1.Group(AeroDB.IQuerySession,System.Collections.Generic.IReadOnlyList{AeroDB.IEvent},AeroDB.ITenantSliceGroup{`0})
+  id: Group(AeroDB.IQuerySession,System.Collections.Generic.IReadOnlyList{AeroDB.IEvent},AeroDB.ITenantSliceGroup{`0})
+  parent: AeroDB.IAggregateGrouper`1
+  langs:
+  - csharp
+  - vb
+  name: Group(IQuerySession, IReadOnlyList<IEvent>, ITenantSliceGroup<TId>)
+  nameWithType: IAggregateGrouper<TId>.Group(IQuerySession, IReadOnlyList<IEvent>, ITenantSliceGroup<TId>)
+  fullName: AeroDB.IAggregateGrouper<TId>.Group(AeroDB.IQuerySession, System.Collections.Generic.IReadOnlyList<AeroDB.IEvent>, AeroDB.ITenantSliceGroup<TId>)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/IAggregateGrouper.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Marten-compatible grouping hook. Implementers may add events to the supplied grouping.
+  example: []
+  syntax:
+    content: Task Group(IQuerySession session, IReadOnlyList<IEvent> events, ITenantSliceGroup<TId> grouping)
+    parameters:
+    - id: session
+      type: AeroDB.IQuerySession
+    - id: events
+      type: System.Collections.Generic.IReadOnlyList{AeroDB.IEvent}
+    - id: grouping
+      type: AeroDB.ITenantSliceGroup{{TId}}
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Function Group(session As IQuerySession, events As IReadOnlyList(Of IEvent), grouping As ITenantSliceGroup(Of TId)) As Task
+  overload: AeroDB.IAggregateGrouper`1.Group*
+  nameWithType.vb: IAggregateGrouper(Of TId).Group(IQuerySession, IReadOnlyList(Of IEvent), ITenantSliceGroup(Of TId))
+  fullName.vb: AeroDB.IAggregateGrouper(Of TId).Group(AeroDB.IQuerySession, System.Collections.Generic.IReadOnlyList(Of AeroDB.IEvent), AeroDB.ITenantSliceGroup(Of TId))
+  name.vb: Group(IQuerySession, IReadOnlyList(Of IEvent), ITenantSliceGroup(Of TId))
+- uid: AeroDB.IAggregateGrouper`1.GroupAsync(AeroDB.IQuerySession,System.Collections.Generic.IReadOnlyList{AeroDB.IEvent},System.Threading.CancellationToken)
+  commentId: M:AeroDB.IAggregateGrouper`1.GroupAsync(AeroDB.IQuerySession,System.Collections.Generic.IReadOnlyList{AeroDB.IEvent},System.Threading.CancellationToken)
+  id: GroupAsync(AeroDB.IQuerySession,System.Collections.Generic.IReadOnlyList{AeroDB.IEvent},System.Threading.CancellationToken)
+  parent: AeroDB.IAggregateGrouper`1
+  langs:
+  - csharp
+  - vb
+  name: GroupAsync(IQuerySession, IReadOnlyList<IEvent>, CancellationToken)
+  nameWithType: IAggregateGrouper<TId>.GroupAsync(IQuerySession, IReadOnlyList<IEvent>, CancellationToken)
+  fullName: AeroDB.IAggregateGrouper<TId>.GroupAsync(AeroDB.IQuerySession, System.Collections.Generic.IReadOnlyList<AeroDB.IEvent>, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/IAggregateGrouper.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Given a slice of events, produce event groups keyed by aggregate ID.
+
+    Each group maps to one projected document.
+  example: []
+  syntax:
+    content: Task<IEventGrouping<TId>> GroupAsync(IQuerySession session, IReadOnlyList<IEvent> events, CancellationToken ct)
+    parameters:
+    - id: session
+      type: AeroDB.IQuerySession
+    - id: events
+      type: System.Collections.Generic.IReadOnlyList{AeroDB.IEvent}
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task{AeroDB.IEventGrouping{{TId}}}
+    content.vb: Function GroupAsync(session As IQuerySession, events As IReadOnlyList(Of IEvent), ct As CancellationToken) As Task(Of IEventGrouping(Of TId))
+  overload: AeroDB.IAggregateGrouper`1.GroupAsync*
+  nameWithType.vb: IAggregateGrouper(Of TId).GroupAsync(IQuerySession, IReadOnlyList(Of IEvent), CancellationToken)
+  fullName.vb: AeroDB.IAggregateGrouper(Of TId).GroupAsync(AeroDB.IQuerySession, System.Collections.Generic.IReadOnlyList(Of AeroDB.IEvent), System.Threading.CancellationToken)
+  name.vb: GroupAsync(IQuerySession, IReadOnlyList(Of IEvent), CancellationToken)
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: AeroDB.IAggregateGrouper`1.Group*
+  commentId: Overload:AeroDB.IAggregateGrouper`1.Group
+  isExternal: true
+  href: AeroDB.IAggregateGrouper-1.html#AeroDB_IAggregateGrouper_1_Group_AeroDB_IQuerySession_System_Collections_Generic_IReadOnlyList_AeroDB_IEvent__AeroDB_ITenantSliceGroup__0__
+  name: Group
+  nameWithType: IAggregateGrouper<TId>.Group
+  fullName: AeroDB.IAggregateGrouper<TId>.Group
+  nameWithType.vb: IAggregateGrouper(Of TId).Group
+  fullName.vb: AeroDB.IAggregateGrouper(Of TId).Group
+- uid: AeroDB.IQuerySession
+  commentId: T:AeroDB.IQuerySession
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IQuerySession.html
+  name: IQuerySession
+  nameWithType: IQuerySession
+  fullName: AeroDB.IQuerySession
+- uid: System.Collections.Generic.IReadOnlyList{AeroDB.IEvent}
+  commentId: T:System.Collections.Generic.IReadOnlyList{AeroDB.IEvent}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyList`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<IEvent>
+  nameWithType: IReadOnlyList<IEvent>
+  fullName: System.Collections.Generic.IReadOnlyList<AeroDB.IEvent>
+  nameWithType.vb: IReadOnlyList(Of IEvent)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of AeroDB.IEvent)
+  name.vb: IReadOnlyList(Of IEvent)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - uid: AeroDB.IEvent
+    name: IEvent
+    isExternal: true
+    href: AeroDB.IEvent.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.IEvent
+    name: IEvent
+    isExternal: true
+    href: AeroDB.IEvent.html
+  - name: )
+- uid: AeroDB.ITenantSliceGroup{{TId}}
+  commentId: T:AeroDB.ITenantSliceGroup{`0}
+  parent: AeroDB
+  definition: AeroDB.ITenantSliceGroup`1
+  href: AeroDB.ITenantSliceGroup-1.html
+  name: ITenantSliceGroup<TId>
+  nameWithType: ITenantSliceGroup<TId>
+  fullName: AeroDB.ITenantSliceGroup<TId>
+  nameWithType.vb: ITenantSliceGroup(Of TId)
+  fullName.vb: AeroDB.ITenantSliceGroup(Of TId)
+  name.vb: ITenantSliceGroup(Of TId)
+  spec.csharp:
+  - uid: AeroDB.ITenantSliceGroup`1
+    name: ITenantSliceGroup
+    isExternal: true
+    href: AeroDB.ITenantSliceGroup-1.html
+  - name: <
+  - name: TId
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.ITenantSliceGroup`1
+    name: ITenantSliceGroup
+    isExternal: true
+    href: AeroDB.ITenantSliceGroup-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TId
+  - name: )
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: System.Collections.Generic.IReadOnlyList`1
+  commentId: T:System.Collections.Generic.IReadOnlyList`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<T>
+  nameWithType: IReadOnlyList<T>
+  fullName: System.Collections.Generic.IReadOnlyList<T>
+  nameWithType.vb: IReadOnlyList(Of T)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of T)
+  name.vb: IReadOnlyList(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: AeroDB.ITenantSliceGroup`1
+  commentId: T:AeroDB.ITenantSliceGroup`1
+  isExternal: true
+  href: AeroDB.ITenantSliceGroup-1.html
+  name: ITenantSliceGroup<TId>
+  nameWithType: ITenantSliceGroup<TId>
+  fullName: AeroDB.ITenantSliceGroup<TId>
+  nameWithType.vb: ITenantSliceGroup(Of TId)
+  fullName.vb: AeroDB.ITenantSliceGroup(Of TId)
+  name.vb: ITenantSliceGroup(Of TId)
+  spec.csharp:
+  - uid: AeroDB.ITenantSliceGroup`1
+    name: ITenantSliceGroup
+    isExternal: true
+    href: AeroDB.ITenantSliceGroup-1.html
+  - name: <
+  - name: TId
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.ITenantSliceGroup`1
+    name: ITenantSliceGroup
+    isExternal: true
+    href: AeroDB.ITenantSliceGroup-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TId
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: AeroDB.IAggregateGrouper`1.GroupAsync*
+  commentId: Overload:AeroDB.IAggregateGrouper`1.GroupAsync
+  isExternal: true
+  href: AeroDB.IAggregateGrouper-1.html#AeroDB_IAggregateGrouper_1_GroupAsync_AeroDB_IQuerySession_System_Collections_Generic_IReadOnlyList_AeroDB_IEvent__System_Threading_CancellationToken_
+  name: GroupAsync
+  nameWithType: IAggregateGrouper<TId>.GroupAsync
+  fullName: AeroDB.IAggregateGrouper<TId>.GroupAsync
+  nameWithType.vb: IAggregateGrouper(Of TId).GroupAsync
+  fullName.vb: AeroDB.IAggregateGrouper(Of TId).GroupAsync
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task{AeroDB.IEventGrouping{{TId}}}
+  commentId: T:System.Threading.Tasks.Task{AeroDB.IEventGrouping{`0}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<IEventGrouping<TId>>
+  nameWithType: Task<IEventGrouping<TId>>
+  fullName: System.Threading.Tasks.Task<AeroDB.IEventGrouping<TId>>
+  nameWithType.vb: Task(Of IEventGrouping(Of TId))
+  fullName.vb: System.Threading.Tasks.Task(Of AeroDB.IEventGrouping(Of TId))
+  name.vb: Task(Of IEventGrouping(Of TId))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: AeroDB.IEventGrouping`1
+    name: IEventGrouping
+    isExternal: true
+    href: AeroDB.IEventGrouping-1.html
+  - name: <
+  - name: TId
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.IEventGrouping`1
+    name: IEventGrouping
+    isExternal: true
+    href: AeroDB.IEventGrouping-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TId
+  - name: )
+  - name: )
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )

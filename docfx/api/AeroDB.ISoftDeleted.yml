@@ -1,0 +1,176 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.ISoftDeleted
+  commentId: T:AeroDB.ISoftDeleted
+  id: ISoftDeleted
+  parent: AeroDB
+  children:
+  - AeroDB.ISoftDeleted.Deleted
+  - AeroDB.ISoftDeleted.DeletedAt
+  langs:
+  - csharp
+  - vb
+  name: ISoftDeleted
+  nameWithType: ISoftDeleted
+  fullName: AeroDB.ISoftDeleted
+  type: Interface
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/SoftDelete/ISoftDeleted.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Marks an entity as soft-deletable. AeroDB uses these properties directly on the entity
+
+    (unlike Marten which uses shadow columns <code>mt_deleted</code> and <code>mt_deleted_at</code>).
+
+    Queries on <xref href="AeroDB.ISoftDeleted" data-throw-if-not-resolved="false"></xref> types automatically exclude entities where <code>Deleted == true</code>.
+  example: []
+  syntax:
+    content: public interface ISoftDeleted
+    content.vb: Public Interface ISoftDeleted
+- uid: AeroDB.ISoftDeleted.DeletedAt
+  commentId: P:AeroDB.ISoftDeleted.DeletedAt
+  id: DeletedAt
+  parent: AeroDB.ISoftDeleted
+  langs:
+  - csharp
+  - vb
+  name: DeletedAt
+  nameWithType: ISoftDeleted.DeletedAt
+  fullName: AeroDB.ISoftDeleted.DeletedAt
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/SoftDelete/ISoftDeleted.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Timestamp indicating when the document was soft-deleted, or null if not deleted.
+  example: []
+  syntax:
+    content: DateTimeOffset? DeletedAt { get; set; }
+    parameters: []
+    return:
+      type: System.Nullable{System.DateTimeOffset}
+    content.vb: Property DeletedAt As DateTimeOffset?
+  overload: AeroDB.ISoftDeleted.DeletedAt*
+- uid: AeroDB.ISoftDeleted.Deleted
+  commentId: P:AeroDB.ISoftDeleted.Deleted
+  id: Deleted
+  parent: AeroDB.ISoftDeleted
+  langs:
+  - csharp
+  - vb
+  name: Deleted
+  nameWithType: ISoftDeleted.Deleted
+  fullName: AeroDB.ISoftDeleted.Deleted
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/SoftDelete/ISoftDeleted.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Whether the document is soft-deleted.
+  example: []
+  syntax:
+    content: bool Deleted { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Property Deleted As Boolean
+  overload: AeroDB.ISoftDeleted.Deleted*
+references:
+- uid: AeroDB.ISoftDeleted
+  commentId: T:AeroDB.ISoftDeleted
+  isExternal: true
+  href: AeroDB.ISoftDeleted.html
+  name: ISoftDeleted
+  nameWithType: ISoftDeleted
+  fullName: AeroDB.ISoftDeleted
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: AeroDB.ISoftDeleted.DeletedAt*
+  commentId: Overload:AeroDB.ISoftDeleted.DeletedAt
+  isExternal: true
+  href: AeroDB.ISoftDeleted.html#AeroDB_ISoftDeleted_DeletedAt
+  name: DeletedAt
+  nameWithType: ISoftDeleted.DeletedAt
+  fullName: AeroDB.ISoftDeleted.DeletedAt
+- uid: System.Nullable{System.DateTimeOffset}
+  commentId: T:System.Nullable{System.DateTimeOffset}
+  parent: System
+  definition: System.Nullable`1
+  href: https://learn.microsoft.com/dotnet/api/system.datetimeoffset
+  name: DateTimeOffset?
+  nameWithType: DateTimeOffset?
+  fullName: System.DateTimeOffset?
+  spec.csharp:
+  - uid: System.DateTimeOffset
+    name: DateTimeOffset
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.datetimeoffset
+  - name: '?'
+  spec.vb:
+  - uid: System.DateTimeOffset
+    name: DateTimeOffset
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.datetimeoffset
+  - name: '?'
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AeroDB.ISoftDeleted.Deleted*
+  commentId: Overload:AeroDB.ISoftDeleted.Deleted
+  isExternal: true
+  href: AeroDB.ISoftDeleted.html#AeroDB_ISoftDeleted_Deleted
+  name: Deleted
+  nameWithType: ISoftDeleted.Deleted
+  fullName: AeroDB.ISoftDeleted.Deleted
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean

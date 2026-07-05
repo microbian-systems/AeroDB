@@ -1,0 +1,785 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.LoadManyExtensions
+  commentId: T:AeroDB.LoadManyExtensions
+  id: LoadManyExtensions
+  parent: AeroDB
+  children:
+  - AeroDB.LoadManyExtensions.LoadManyAsync``1(AeroDB.IQuerySession,System.Collections.Generic.IEnumerable{SurrealDb.Net.Models.RecordId},System.Threading.CancellationToken)
+  - AeroDB.LoadManyExtensions.LoadManyAsync``1(AeroDB.IQuerySession,System.Collections.Generic.IEnumerable{System.String},System.Threading.CancellationToken)
+  - AeroDB.LoadManyExtensions.LoadManyAsync``1(AeroDB.IQuerySession,System.String,System.Collections.Generic.IEnumerable{System.Int64},System.Threading.CancellationToken)
+  langs:
+  - csharp
+  - vb
+  name: LoadManyExtensions
+  nameWithType: LoadManyExtensions
+  fullName: AeroDB.LoadManyExtensions
+  type: Class
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/LoadManyExtensions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Batch document loading extensions for <xref href="AeroDB.IQuerySession" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: public static class LoadManyExtensions
+    content.vb: Public Module LoadManyExtensions
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+- uid: AeroDB.LoadManyExtensions.LoadManyAsync``1(AeroDB.IQuerySession,System.Collections.Generic.IEnumerable{System.String},System.Threading.CancellationToken)
+  commentId: M:AeroDB.LoadManyExtensions.LoadManyAsync``1(AeroDB.IQuerySession,System.Collections.Generic.IEnumerable{System.String},System.Threading.CancellationToken)
+  id: LoadManyAsync``1(AeroDB.IQuerySession,System.Collections.Generic.IEnumerable{System.String},System.Threading.CancellationToken)
+  isExtensionMethod: true
+  parent: AeroDB.LoadManyExtensions
+  langs:
+  - csharp
+  - vb
+  name: LoadManyAsync<T>(IQuerySession, IEnumerable<string>, CancellationToken)
+  nameWithType: LoadManyExtensions.LoadManyAsync<T>(IQuerySession, IEnumerable<string>, CancellationToken)
+  fullName: AeroDB.LoadManyExtensions.LoadManyAsync<T>(AeroDB.IQuerySession, System.Collections.Generic.IEnumerable<string>, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/LoadManyExtensions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Load multiple documents by their string record IDs in a single round-trip.
+  example: []
+  syntax:
+    content: 'public static Task<IReadOnlyList<T>> LoadManyAsync<T>(this IQuerySession session, IEnumerable<string> ids, CancellationToken ct = default) where T : class'
+    parameters:
+    - id: session
+      type: AeroDB.IQuerySession
+      description: The query session.
+    - id: ids
+      type: System.Collections.Generic.IEnumerable{System.String}
+      description: String record IDs to load.
+    - id: ct
+      type: System.Threading.CancellationToken
+      description: Cancellation token.
+    typeParameters:
+    - id: T
+      description: Document type.
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{{T}}}
+      description: Loaded documents in the order they were returned by the database.
+    content.vb: Public Shared Function LoadManyAsync(Of T As Class)(session As IQuerySession, ids As IEnumerable(Of String), ct As CancellationToken = Nothing) As Task(Of IReadOnlyList(Of T))
+  overload: AeroDB.LoadManyExtensions.LoadManyAsync*
+  nameWithType.vb: LoadManyExtensions.LoadManyAsync(Of T)(IQuerySession, IEnumerable(Of String), CancellationToken)
+  fullName.vb: AeroDB.LoadManyExtensions.LoadManyAsync(Of T)(AeroDB.IQuerySession, System.Collections.Generic.IEnumerable(Of String), System.Threading.CancellationToken)
+  name.vb: LoadManyAsync(Of T)(IQuerySession, IEnumerable(Of String), CancellationToken)
+- uid: AeroDB.LoadManyExtensions.LoadManyAsync``1(AeroDB.IQuerySession,System.Collections.Generic.IEnumerable{SurrealDb.Net.Models.RecordId},System.Threading.CancellationToken)
+  commentId: M:AeroDB.LoadManyExtensions.LoadManyAsync``1(AeroDB.IQuerySession,System.Collections.Generic.IEnumerable{SurrealDb.Net.Models.RecordId},System.Threading.CancellationToken)
+  id: LoadManyAsync``1(AeroDB.IQuerySession,System.Collections.Generic.IEnumerable{SurrealDb.Net.Models.RecordId},System.Threading.CancellationToken)
+  isExtensionMethod: true
+  parent: AeroDB.LoadManyExtensions
+  langs:
+  - csharp
+  - vb
+  name: LoadManyAsync<T>(IQuerySession, IEnumerable<RecordId>, CancellationToken)
+  nameWithType: LoadManyExtensions.LoadManyAsync<T>(IQuerySession, IEnumerable<RecordId>, CancellationToken)
+  fullName: AeroDB.LoadManyExtensions.LoadManyAsync<T>(AeroDB.IQuerySession, System.Collections.Generic.IEnumerable<SurrealDb.Net.Models.RecordId>, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/LoadManyExtensions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Load multiple documents by their <xref href="SurrealDb.Net.Models.RecordId" data-throw-if-not-resolved="false"></xref> values.
+  example: []
+  syntax:
+    content: 'public static Task<IReadOnlyList<T>> LoadManyAsync<T>(this IQuerySession session, IEnumerable<RecordId> ids, CancellationToken ct = default) where T : class'
+    parameters:
+    - id: session
+      type: AeroDB.IQuerySession
+      description: The query session.
+    - id: ids
+      type: System.Collections.Generic.IEnumerable{SurrealDb.Net.Models.RecordId}
+      description: Record IDs to load.
+    - id: ct
+      type: System.Threading.CancellationToken
+      description: Cancellation token.
+    typeParameters:
+    - id: T
+      description: Document type.
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{{T}}}
+      description: Loaded documents in the order they were returned by the database.
+    content.vb: Public Shared Function LoadManyAsync(Of T As Class)(session As IQuerySession, ids As IEnumerable(Of RecordId), ct As CancellationToken = Nothing) As Task(Of IReadOnlyList(Of T))
+  overload: AeroDB.LoadManyExtensions.LoadManyAsync*
+  nameWithType.vb: LoadManyExtensions.LoadManyAsync(Of T)(IQuerySession, IEnumerable(Of RecordId), CancellationToken)
+  fullName.vb: AeroDB.LoadManyExtensions.LoadManyAsync(Of T)(AeroDB.IQuerySession, System.Collections.Generic.IEnumerable(Of SurrealDb.Net.Models.RecordId), System.Threading.CancellationToken)
+  name.vb: LoadManyAsync(Of T)(IQuerySession, IEnumerable(Of RecordId), CancellationToken)
+- uid: AeroDB.LoadManyExtensions.LoadManyAsync``1(AeroDB.IQuerySession,System.String,System.Collections.Generic.IEnumerable{System.Int64},System.Threading.CancellationToken)
+  commentId: M:AeroDB.LoadManyExtensions.LoadManyAsync``1(AeroDB.IQuerySession,System.String,System.Collections.Generic.IEnumerable{System.Int64},System.Threading.CancellationToken)
+  id: LoadManyAsync``1(AeroDB.IQuerySession,System.String,System.Collections.Generic.IEnumerable{System.Int64},System.Threading.CancellationToken)
+  isExtensionMethod: true
+  parent: AeroDB.LoadManyExtensions
+  langs:
+  - csharp
+  - vb
+  name: LoadManyAsync<T>(IQuerySession, string, IEnumerable<long>, CancellationToken)
+  nameWithType: LoadManyExtensions.LoadManyAsync<T>(IQuerySession, string, IEnumerable<long>, CancellationToken)
+  fullName: AeroDB.LoadManyExtensions.LoadManyAsync<T>(AeroDB.IQuerySession, string, System.Collections.Generic.IEnumerable<long>, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/LoadManyExtensions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Load multiple documents by numeric IDs (e.g., Snowflake IDs) scoped to a specific table.
+  example: []
+  syntax:
+    content: 'public static Task<IReadOnlyList<T>> LoadManyAsync<T>(this IQuerySession session, string tableName, IEnumerable<long> numericIds, CancellationToken ct = default) where T : class'
+    parameters:
+    - id: session
+      type: AeroDB.IQuerySession
+      description: The query session.
+    - id: tableName
+      type: System.String
+      description: The target table name.
+    - id: numericIds
+      type: System.Collections.Generic.IEnumerable{System.Int64}
+      description: Numeric IDs to load.
+    - id: ct
+      type: System.Threading.CancellationToken
+      description: Cancellation token.
+    typeParameters:
+    - id: T
+      description: Document type.
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{{T}}}
+      description: Loaded documents in the order they were returned by the database.
+    content.vb: Public Shared Function LoadManyAsync(Of T As Class)(session As IQuerySession, tableName As String, numericIds As IEnumerable(Of Long), ct As CancellationToken = Nothing) As Task(Of IReadOnlyList(Of T))
+  overload: AeroDB.LoadManyExtensions.LoadManyAsync*
+  nameWithType.vb: LoadManyExtensions.LoadManyAsync(Of T)(IQuerySession, String, IEnumerable(Of Long), CancellationToken)
+  fullName.vb: AeroDB.LoadManyExtensions.LoadManyAsync(Of T)(AeroDB.IQuerySession, String, System.Collections.Generic.IEnumerable(Of Long), System.Threading.CancellationToken)
+  name.vb: LoadManyAsync(Of T)(IQuerySession, String, IEnumerable(Of Long), CancellationToken)
+references:
+- uid: AeroDB.IQuerySession
+  commentId: T:AeroDB.IQuerySession
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IQuerySession.html
+  name: IQuerySession
+  nameWithType: IQuerySession
+  fullName: AeroDB.IQuerySession
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AeroDB.LoadManyExtensions.LoadManyAsync*
+  commentId: Overload:AeroDB.LoadManyExtensions.LoadManyAsync
+  isExternal: true
+  href: AeroDB.LoadManyExtensions.html#AeroDB_LoadManyExtensions_LoadManyAsync__1_AeroDB_IQuerySession_System_Collections_Generic_IEnumerable_System_String__System_Threading_CancellationToken_
+  name: LoadManyAsync
+  nameWithType: LoadManyExtensions.LoadManyAsync
+  fullName: AeroDB.LoadManyExtensions.LoadManyAsync
+- uid: System.Collections.Generic.IEnumerable{System.String}
+  commentId: T:System.Collections.Generic.IEnumerable{System.String}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<string>
+  nameWithType: IEnumerable<string>
+  fullName: System.Collections.Generic.IEnumerable<string>
+  nameWithType.vb: IEnumerable(Of String)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of String)
+  name.vb: IEnumerable(Of String)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{{T}}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{``0}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<IReadOnlyList<T>>
+  nameWithType: Task<IReadOnlyList<T>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.IReadOnlyList<T>>
+  nameWithType.vb: Task(Of IReadOnlyList(Of T))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.IReadOnlyList(Of T))
+  name.vb: Task(Of IReadOnlyList(Of T))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - name: T
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: SurrealDb.Net.Models.RecordId
+  commentId: T:SurrealDb.Net.Models.RecordId
+  parent: SurrealDb.Net.Models
+  isExternal: true
+  name: RecordId
+  nameWithType: RecordId
+  fullName: SurrealDb.Net.Models.RecordId
+- uid: System.Collections.Generic.IEnumerable{SurrealDb.Net.Models.RecordId}
+  commentId: T:System.Collections.Generic.IEnumerable{SurrealDb.Net.Models.RecordId}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<RecordId>
+  nameWithType: IEnumerable<RecordId>
+  fullName: System.Collections.Generic.IEnumerable<SurrealDb.Net.Models.RecordId>
+  nameWithType.vb: IEnumerable(Of RecordId)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of SurrealDb.Net.Models.RecordId)
+  name.vb: IEnumerable(Of RecordId)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: SurrealDb.Net.Models.RecordId
+    name: RecordId
+    isExternal: true
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: SurrealDb.Net.Models.RecordId
+    name: RecordId
+    isExternal: true
+  - name: )
+- uid: SurrealDb.Net.Models
+  commentId: N:SurrealDb.Net.Models
+  isExternal: true
+  name: SurrealDb.Net.Models
+  nameWithType: SurrealDb.Net.Models
+  fullName: SurrealDb.Net.Models
+  spec.csharp:
+  - uid: SurrealDb
+    name: SurrealDb
+    isExternal: true
+  - name: .
+  - uid: SurrealDb.Net
+    name: Net
+    isExternal: true
+  - name: .
+  - uid: SurrealDb.Net.Models
+    name: Models
+    isExternal: true
+  spec.vb:
+  - uid: SurrealDb
+    name: SurrealDb
+    isExternal: true
+  - name: .
+  - uid: SurrealDb.Net
+    name: Net
+    isExternal: true
+  - name: .
+  - uid: SurrealDb.Net.Models
+    name: Models
+    isExternal: true
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Collections.Generic.IEnumerable{System.Int64}
+  commentId: T:System.Collections.Generic.IEnumerable{System.Int64}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<long>
+  nameWithType: IEnumerable<long>
+  fullName: System.Collections.Generic.IEnumerable<long>
+  nameWithType.vb: IEnumerable(Of Long)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of Long)
+  name.vb: IEnumerable(Of Long)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: System.Int64
+    name: long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Int64
+    name: Long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: )

@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Class AeroDBEnvelope | AeroDB API Reference </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="Class AeroDBEnvelope | AeroDB API Reference ">
+    
+    <meta name="description" content="SurrealDB record type for Wolverine message envelopes. Maps to wolverine_incoming_envelopes and wolverine_outgoing_envelopes tables. The body is stored as Base64 string (SurrealDB CBOR byte[] round-trip may be unreliable).">
+      <link rel="shortcut icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../styles/docfx.css">
+      <link rel="stylesheet" href="../styles/main.css">
+      <meta property="docfx:navrel" content="../toc.html">
+      <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="AeroDB">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="AeroDB.WolverineFx.AeroDBEnvelope">
+
+
+
+  <h1 id="AeroDB_WolverineFx_AeroDBEnvelope" data-uid="AeroDB.WolverineFx.AeroDBEnvelope" class="text-break">Class AeroDBEnvelope</h1>
+  <div class="markdown level0 summary"><p>SurrealDB record type for Wolverine message envelopes.
+Maps to wolverine_incoming_envelopes and wolverine_outgoing_envelopes tables.
+The body is stored as Base64 string (SurrealDB CBOR byte[] round-trip may be unreliable).</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+    <div class="level1"><span class="xref">Record</span></div>
+    <div class="level2"><span class="xref">AeroDBEnvelope</span></div>
+  </div>
+  <div class="implements">
+    <h5>Implements</h5>
+    <div><span class="xref">IRecord</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="AeroDB.html">AeroDB</a>.<a class="xref" href="AeroDB.WolverineFx.html">WolverineFx</a></h6>
+  <h6><strong>Assembly</strong>: AeroDB.WolverineFx.dll</h6>
+  <h5 id="AeroDB_WolverineFx_AeroDBEnvelope_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public sealed class AeroDBEnvelope : Record, IRecord</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+</h3>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBEnvelope.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBEnvelope__ctor_" data-uid="AeroDB.WolverineFx.AeroDBEnvelope.#ctor*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBEnvelope__ctor" data-uid="AeroDB.WolverineFx.AeroDBEnvelope.#ctor">AeroDBEnvelope()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public AeroDBEnvelope()</code></pre>
+  </div>
+  <h3 id="properties">Properties
+</h3>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBEnvelope.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBEnvelope_Attempts_" data-uid="AeroDB.WolverineFx.AeroDBEnvelope.Attempts*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBEnvelope_Attempts" data-uid="AeroDB.WolverineFx.AeroDBEnvelope.Attempts">Attempts</h4>
+  <div class="markdown level1 summary"><p>Number of delivery attempts.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int Attempts { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBEnvelope.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBEnvelope_Body_" data-uid="AeroDB.WolverineFx.AeroDBEnvelope.Body*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBEnvelope_Body" data-uid="AeroDB.WolverineFx.AeroDBEnvelope.Body">Body</h4>
+  <div class="markdown level1 summary"><p>Serialized message body (Base64-encoded bytes).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string Body { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBEnvelope.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBEnvelope_ContentType_" data-uid="AeroDB.WolverineFx.AeroDBEnvelope.ContentType*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBEnvelope_ContentType" data-uid="AeroDB.WolverineFx.AeroDBEnvelope.ContentType">ContentType</h4>
+  <div class="markdown level1 summary"><p>Message content type.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string? ContentType { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBEnvelope.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBEnvelope_ConversationId_" data-uid="AeroDB.WolverineFx.AeroDBEnvelope.ConversationId*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBEnvelope_ConversationId" data-uid="AeroDB.WolverineFx.AeroDBEnvelope.ConversationId">ConversationId</h4>
+  <div class="markdown level1 summary"><p>Conversation ID for correlation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string? ConversationId { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBEnvelope.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBEnvelope_CorrelationId_" data-uid="AeroDB.WolverineFx.AeroDBEnvelope.CorrelationId*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBEnvelope_CorrelationId" data-uid="AeroDB.WolverineFx.AeroDBEnvelope.CorrelationId">CorrelationId</h4>
+  <div class="markdown level1 summary"><p>Correlation ID.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string? CorrelationId { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBEnvelope.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBEnvelope_DeliverBy_" data-uid="AeroDB.WolverineFx.AeroDBEnvelope.DeliverBy*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBEnvelope_DeliverBy" data-uid="AeroDB.WolverineFx.AeroDBEnvelope.DeliverBy">DeliverBy</h4>
+  <div class="markdown level1 summary"><p>Deliver-by deadline.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DateTimeOffset? DeliverBy { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.datetimeoffset">DateTimeOffset</a>?</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBEnvelope.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBEnvelope_Destination_" data-uid="AeroDB.WolverineFx.AeroDBEnvelope.Destination*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBEnvelope_Destination" data-uid="AeroDB.WolverineFx.AeroDBEnvelope.Destination">Destination</h4>
+  <div class="markdown level1 summary"><p>Destination URI.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string? Destination { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBEnvelope.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBEnvelope_ExceptionMessage_" data-uid="AeroDB.WolverineFx.AeroDBEnvelope.ExceptionMessage*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBEnvelope_ExceptionMessage" data-uid="AeroDB.WolverineFx.AeroDBEnvelope.ExceptionMessage">ExceptionMessage</h4>
+  <div class="markdown level1 summary"><p>Exception message (dead letters only).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string? ExceptionMessage { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBEnvelope.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBEnvelope_ExceptionType_" data-uid="AeroDB.WolverineFx.AeroDBEnvelope.ExceptionType*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBEnvelope_ExceptionType" data-uid="AeroDB.WolverineFx.AeroDBEnvelope.ExceptionType">ExceptionType</h4>
+  <div class="markdown level1 summary"><p>Exception type name (dead letters only).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string? ExceptionType { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBEnvelope.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBEnvelope_ExecutionTime_" data-uid="AeroDB.WolverineFx.AeroDBEnvelope.ExecutionTime*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBEnvelope_ExecutionTime" data-uid="AeroDB.WolverineFx.AeroDBEnvelope.ExecutionTime">ExecutionTime</h4>
+  <div class="markdown level1 summary"><p>Execution time as DateTimeOffset.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DateTimeOffset ExecutionTime { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.datetimeoffset">DateTimeOffset</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBEnvelope.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBEnvelope_Id_" data-uid="AeroDB.WolverineFx.AeroDBEnvelope.Id*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBEnvelope_Id" data-uid="AeroDB.WolverineFx.AeroDBEnvelope.Id">Id</h4>
+  <div class="markdown level1 summary"><p>Wolverine envelope ID (Guid as string).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string Id { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBEnvelope.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBEnvelope_KeepUntil_" data-uid="AeroDB.WolverineFx.AeroDBEnvelope.KeepUntil*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBEnvelope_KeepUntil" data-uid="AeroDB.WolverineFx.AeroDBEnvelope.KeepUntil">KeepUntil</h4>
+  <div class="markdown level1 summary"><p>Keep-until expiry.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DateTimeOffset? KeepUntil { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.datetimeoffset">DateTimeOffset</a>?</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBEnvelope.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBEnvelope_MessageType_" data-uid="AeroDB.WolverineFx.AeroDBEnvelope.MessageType*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBEnvelope_MessageType" data-uid="AeroDB.WolverineFx.AeroDBEnvelope.MessageType">MessageType</h4>
+  <div class="markdown level1 summary"><p>Message type name.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string MessageType { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBEnvelope.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBEnvelope_OwnerId_" data-uid="AeroDB.WolverineFx.AeroDBEnvelope.OwnerId*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBEnvelope_OwnerId" data-uid="AeroDB.WolverineFx.AeroDBEnvelope.OwnerId">OwnerId</h4>
+  <div class="markdown level1 summary"><p>Owner node ID (int).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int OwnerId { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBEnvelope.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBEnvelope_ReceivedAt_" data-uid="AeroDB.WolverineFx.AeroDBEnvelope.ReceivedAt*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBEnvelope_ReceivedAt" data-uid="AeroDB.WolverineFx.AeroDBEnvelope.ReceivedAt">ReceivedAt</h4>
+  <div class="markdown level1 summary"><p>The received-at URI (listener address).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string? ReceivedAt { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBEnvelope.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBEnvelope_Replayable_" data-uid="AeroDB.WolverineFx.AeroDBEnvelope.Replayable*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBEnvelope_Replayable" data-uid="AeroDB.WolverineFx.AeroDBEnvelope.Replayable">Replayable</h4>
+  <div class="markdown level1 summary"><p>Whether this dead letter is replayable.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool? Replayable { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>?</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBEnvelope.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBEnvelope_ReplyUri_" data-uid="AeroDB.WolverineFx.AeroDBEnvelope.ReplyUri*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBEnvelope_ReplyUri" data-uid="AeroDB.WolverineFx.AeroDBEnvelope.ReplyUri">ReplyUri</h4>
+  <div class="markdown level1 summary"><p>Reply URI for request/reply.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string? ReplyUri { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBEnvelope.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBEnvelope_SagaId_" data-uid="AeroDB.WolverineFx.AeroDBEnvelope.SagaId*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBEnvelope_SagaId" data-uid="AeroDB.WolverineFx.AeroDBEnvelope.SagaId">SagaId</h4>
+  <div class="markdown level1 summary"><p>Saga ID if part of a saga.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string? SagaId { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBEnvelope.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBEnvelope_SentAt_" data-uid="AeroDB.WolverineFx.AeroDBEnvelope.SentAt*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBEnvelope_SentAt" data-uid="AeroDB.WolverineFx.AeroDBEnvelope.SentAt">SentAt</h4>
+  <div class="markdown level1 summary"><p>Sent at timestamp.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DateTimeOffset? SentAt { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.datetimeoffset">DateTimeOffset</a>?</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBEnvelope.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBEnvelope_Source_" data-uid="AeroDB.WolverineFx.AeroDBEnvelope.Source*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBEnvelope_Source" data-uid="AeroDB.WolverineFx.AeroDBEnvelope.Source">Source</h4>
+  <div class="markdown level1 summary"><p>Source URI.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string? Source { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBEnvelope.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBEnvelope_Status_" data-uid="AeroDB.WolverineFx.AeroDBEnvelope.Status*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBEnvelope_Status" data-uid="AeroDB.WolverineFx.AeroDBEnvelope.Status">Status</h4>
+  <div class="markdown level1 summary"><p>Envelope status: Incoming, Outgoing, Handled, Scheduled, etc.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string Status { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBEnvelope.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBEnvelope_TenantId_" data-uid="AeroDB.WolverineFx.AeroDBEnvelope.TenantId*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBEnvelope_TenantId" data-uid="AeroDB.WolverineFx.AeroDBEnvelope.TenantId">TenantId</h4>
+  <div class="markdown level1 summary"><p>Tenant ID (for multi-tenancy).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string? TenantId { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+</h3>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBEnvelope.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBEnvelope_FromEnvelope_" data-uid="AeroDB.WolverineFx.AeroDBEnvelope.FromEnvelope*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBEnvelope_FromEnvelope_Wolverine_Envelope_System_Int32_" data-uid="AeroDB.WolverineFx.AeroDBEnvelope.FromEnvelope(Wolverine.Envelope,System.Int32)">FromEnvelope(Envelope, int)</h4>
+  <div class="markdown level1 summary"><p>Map from Wolverine Envelope to AeroDBEnvelope (for incoming).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static AeroDBEnvelope FromEnvelope(Envelope env, int ownerId)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Envelope</span></td>
+        <td><span class="parametername">env</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><span class="parametername">ownerId</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.WolverineFx.AeroDBEnvelope.html">AeroDBEnvelope</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBEnvelope.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBEnvelope_FromOutgoingEnvelope_" data-uid="AeroDB.WolverineFx.AeroDBEnvelope.FromOutgoingEnvelope*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBEnvelope_FromOutgoingEnvelope_Wolverine_Envelope_System_Int32_" data-uid="AeroDB.WolverineFx.AeroDBEnvelope.FromOutgoingEnvelope(Wolverine.Envelope,System.Int32)">FromOutgoingEnvelope(Envelope, int)</h4>
+  <div class="markdown level1 summary"><p>Map from Wolverine Envelope to AeroDBEnvelope (for outgoing).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static AeroDBEnvelope FromOutgoingEnvelope(Envelope env, int ownerId)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Envelope</span></td>
+        <td><span class="parametername">env</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><span class="parametername">ownerId</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.WolverineFx.AeroDBEnvelope.html">AeroDBEnvelope</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBEnvelope.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBEnvelope_ToEnvelope_" data-uid="AeroDB.WolverineFx.AeroDBEnvelope.ToEnvelope*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBEnvelope_ToEnvelope" data-uid="AeroDB.WolverineFx.AeroDBEnvelope.ToEnvelope">ToEnvelope()</h4>
+  <div class="markdown level1 summary"><p>Convert back to Wolverine Envelope.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Envelope ToEnvelope()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Envelope</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <span class="xref">SurrealDb.Net.Models.IRecord</span>
+  </div>
+
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBEnvelope.cs" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In this article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      AeroDB Documentation
+      
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.min.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

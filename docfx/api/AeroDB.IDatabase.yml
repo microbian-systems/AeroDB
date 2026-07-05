@@ -1,0 +1,116 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.IDatabase
+  commentId: T:AeroDB.IDatabase
+  id: IDatabase
+  parent: AeroDB
+  children:
+  - AeroDB.IDatabase.Name
+  - AeroDB.IDatabase.Namespace
+  langs:
+  - csharp
+  - vb
+  name: IDatabase
+  nameWithType: IDatabase
+  fullName: AeroDB.IDatabase
+  type: Interface
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDatabase.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Metadata about the database this session is connected to.
+  example: []
+  syntax:
+    content: public interface IDatabase
+    content.vb: Public Interface IDatabase
+- uid: AeroDB.IDatabase.Name
+  commentId: P:AeroDB.IDatabase.Name
+  id: Name
+  parent: AeroDB.IDatabase
+  langs:
+  - csharp
+  - vb
+  name: Name
+  nameWithType: IDatabase.Name
+  fullName: AeroDB.IDatabase.Name
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDatabase.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: The database name.
+  example: []
+  syntax:
+    content: string Name { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: ReadOnly Property Name As String
+  overload: AeroDB.IDatabase.Name*
+- uid: AeroDB.IDatabase.Namespace
+  commentId: P:AeroDB.IDatabase.Namespace
+  id: Namespace
+  parent: AeroDB.IDatabase
+  langs:
+  - csharp
+  - vb
+  name: Namespace
+  nameWithType: IDatabase.Namespace
+  fullName: AeroDB.IDatabase.Namespace
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDatabase.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: The namespace this database belongs to.
+  example: []
+  syntax:
+    content: string? Namespace { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: ReadOnly Property [Namespace] As String
+  overload: AeroDB.IDatabase.Namespace*
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: AeroDB.IDatabase.Name*
+  commentId: Overload:AeroDB.IDatabase.Name
+  isExternal: true
+  href: AeroDB.IDatabase.html#AeroDB_IDatabase_Name
+  name: Name
+  nameWithType: IDatabase.Name
+  fullName: AeroDB.IDatabase.Name
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AeroDB.IDatabase.Namespace*
+  commentId: Overload:AeroDB.IDatabase.Namespace
+  isExternal: true
+  href: AeroDB.IDatabase.html#AeroDB_IDatabase_Namespace
+  name: Namespace
+  nameWithType: IDatabase.Namespace
+  fullName: AeroDB.IDatabase.Namespace

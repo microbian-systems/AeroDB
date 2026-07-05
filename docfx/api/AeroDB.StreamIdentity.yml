@@ -1,0 +1,82 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.StreamIdentity
+  commentId: T:AeroDB.StreamIdentity
+  id: StreamIdentity
+  parent: AeroDB
+  children:
+  - AeroDB.StreamIdentity.AsGuid
+  - AeroDB.StreamIdentity.AsString
+  langs:
+  - csharp
+  - vb
+  name: StreamIdentity
+  nameWithType: StreamIdentity
+  fullName: AeroDB.StreamIdentity
+  type: Enum
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Stream identity strategy for event store streams.
+  example: []
+  syntax:
+    content: public enum StreamIdentity
+    content.vb: Public Enum StreamIdentity
+- uid: AeroDB.StreamIdentity.AsGuid
+  commentId: F:AeroDB.StreamIdentity.AsGuid
+  id: AsGuid
+  parent: AeroDB.StreamIdentity
+  langs:
+  - csharp
+  - vb
+  name: AsGuid
+  nameWithType: StreamIdentity.AsGuid
+  fullName: AeroDB.StreamIdentity.AsGuid
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: AsGuid = 0
+    return:
+      type: AeroDB.StreamIdentity
+- uid: AeroDB.StreamIdentity.AsString
+  commentId: F:AeroDB.StreamIdentity.AsString
+  id: AsString
+  parent: AeroDB.StreamIdentity
+  langs:
+  - csharp
+  - vb
+  name: AsString
+  nameWithType: StreamIdentity.AsString
+  fullName: AeroDB.StreamIdentity.AsString
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: AsString = 1
+    return:
+      type: AeroDB.StreamIdentity
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: AeroDB.StreamIdentity
+  commentId: T:AeroDB.StreamIdentity
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.StreamIdentity.html
+  name: StreamIdentity
+  nameWithType: StreamIdentity
+  fullName: AeroDB.StreamIdentity

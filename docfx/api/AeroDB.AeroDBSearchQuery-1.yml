@@ -1,0 +1,2921 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.AeroDBSearchQuery`1
+  commentId: T:AeroDB.AeroDBSearchQuery`1
+  id: AeroDBSearchQuery`1
+  parent: AeroDB
+  children:
+  - AeroDB.AeroDBSearchQuery`1.Candidates(System.Int32)
+  - AeroDB.AeroDBSearchQuery`1.FuseAsync(System.Int32,System.Int32,System.Threading.CancellationToken)
+  - AeroDB.AeroDBSearchQuery`1.MatchText(System.Collections.Generic.IReadOnlyList{System.ValueTuple{System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Double}},System.String)
+  - AeroDB.AeroDBSearchQuery`1.MatchText(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Double,System.String)
+  - AeroDB.AeroDBSearchQuery`1.MatchText(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.String)
+  - AeroDB.AeroDBSearchQuery`1.OrderBy``1(System.Linq.Expressions.Expression{System.Func{`0,``0}},System.Boolean)
+  - AeroDB.AeroDBSearchQuery`1.Skip(System.Int32)
+  - AeroDB.AeroDBSearchQuery`1.Take(System.Int32)
+  - AeroDB.AeroDBSearchQuery`1.ToListAsync(System.Threading.CancellationToken)
+  - AeroDB.AeroDBSearchQuery`1.Where(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})
+  - AeroDB.AeroDBSearchQuery`1.WithVector(System.Linq.Expressions.Expression{System.Func{`0,System.Single[]}},System.Single[])
+  langs:
+  - csharp
+  - vb
+  name: AeroDBSearchQuery<T>
+  nameWithType: AeroDBSearchQuery<T>
+  fullName: AeroDB.AeroDBSearchQuery<T>
+  type: Class
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SearchQuery.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Fluent search query builder for SurrealDB. Not intended for direct construction;
+
+    use <code>session.Search&lt;T&gt;()</code> instead.
+  example: []
+  syntax:
+    content: 'public sealed class AeroDBSearchQuery<T> : ISearchQuery<T> where T : class'
+    typeParameters:
+    - id: T
+    content.vb: Public NotInheritable Class AeroDBSearchQuery(Of T As Class) Implements ISearchQuery(Of T)
+  inheritance:
+  - System.Object
+  implements:
+  - AeroDB.ISearchQuery{{T}}
+  inheritedMembers:
+  - System.Object.GetType
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  nameWithType.vb: AeroDBSearchQuery(Of T)
+  fullName.vb: AeroDB.AeroDBSearchQuery(Of T)
+  name.vb: AeroDBSearchQuery(Of T)
+- uid: AeroDB.AeroDBSearchQuery`1.MatchText(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Double,System.String)
+  commentId: M:AeroDB.AeroDBSearchQuery`1.MatchText(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Double,System.String)
+  id: MatchText(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Double,System.String)
+  parent: AeroDB.AeroDBSearchQuery`1
+  langs:
+  - csharp
+  - vb
+  name: MatchText(Expression<Func<T, object>>, double, string)
+  nameWithType: AeroDBSearchQuery<T>.MatchText(Expression<Func<T, object>>, double, string)
+  fullName: AeroDB.AeroDBSearchQuery<T>.MatchText(System.Linq.Expressions.Expression<System.Func<T, object>>, double, string)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SearchQuery.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Adds a full-text search condition on a single field with a given weight.
+
+    Weight determines relevance scoring; higher = more important.
+  example: []
+  syntax:
+    content: public ISearchQuery<T> MatchText(Expression<Func<T, object>> fieldSelector, double weight, string query)
+    parameters:
+    - id: fieldSelector
+      type: System.Linq.Expressions.Expression{System.Func{{T},System.Object}}
+    - id: weight
+      type: System.Double
+    - id: query
+      type: System.String
+    return:
+      type: AeroDB.ISearchQuery{{T}}
+    content.vb: Public Function MatchText(fieldSelector As Expression(Of Func(Of T, Object)), weight As Double, query As String) As ISearchQuery(Of T)
+  overload: AeroDB.AeroDBSearchQuery`1.MatchText*
+  implements:
+  - AeroDB.ISearchQuery{{T}}.MatchText(System.Linq.Expressions.Expression{System.Func{{T},System.Object}},System.Double,System.String)
+  nameWithType.vb: AeroDBSearchQuery(Of T).MatchText(Expression(Of Func(Of T, Object)), Double, String)
+  fullName.vb: AeroDB.AeroDBSearchQuery(Of T).MatchText(System.Linq.Expressions.Expression(Of System.Func(Of T, Object)), Double, String)
+  name.vb: MatchText(Expression(Of Func(Of T, Object)), Double, String)
+- uid: AeroDB.AeroDBSearchQuery`1.MatchText(System.Collections.Generic.IReadOnlyList{System.ValueTuple{System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Double}},System.String)
+  commentId: M:AeroDB.AeroDBSearchQuery`1.MatchText(System.Collections.Generic.IReadOnlyList{System.ValueTuple{System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Double}},System.String)
+  id: MatchText(System.Collections.Generic.IReadOnlyList{System.ValueTuple{System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Double}},System.String)
+  parent: AeroDB.AeroDBSearchQuery`1
+  langs:
+  - csharp
+  - vb
+  name: MatchText(IReadOnlyList<(Expression<Func<T, object>> FieldSelector, double Weight)>, string)
+  nameWithType: AeroDBSearchQuery<T>.MatchText(IReadOnlyList<(Expression<Func<T, object>> FieldSelector, double Weight)>, string)
+  fullName: AeroDB.AeroDBSearchQuery<T>.MatchText(System.Collections.Generic.IReadOnlyList<(System.Linq.Expressions.Expression<System.Func<T, object>> FieldSelector, double Weight)>, string)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SearchQuery.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Adds a full-text search condition across multiple weighted fields.
+  example: []
+  syntax:
+    content: public ISearchQuery<T> MatchText(IReadOnlyList<(Expression<Func<T, object>> FieldSelector, double Weight)> fields, string query)
+    parameters:
+    - id: fields
+      type: System.Collections.Generic.IReadOnlyList{System.ValueTuple{System.Linq.Expressions.Expression{System.Func{{T},System.Object}},System.Double}}
+    - id: query
+      type: System.String
+    return:
+      type: AeroDB.ISearchQuery{{T}}
+    content.vb: Public Function MatchText(fields As IReadOnlyList(Of (FieldSelector As Expression(Of Func(Of T, Object)), Weight As Double)), query As String) As ISearchQuery(Of T)
+  overload: AeroDB.AeroDBSearchQuery`1.MatchText*
+  implements:
+  - AeroDB.ISearchQuery{{T}}.MatchText(System.Collections.Generic.IReadOnlyList{System.ValueTuple{System.Linq.Expressions.Expression{System.Func{{T},System.Object}},System.Double}},System.String)
+  nameWithType.vb: AeroDBSearchQuery(Of T).MatchText(IReadOnlyList(Of (FieldSelector As Expression(Of Func(Of T, Object)), Weight As Double)), String)
+  fullName.vb: AeroDB.AeroDBSearchQuery(Of T).MatchText(System.Collections.Generic.IReadOnlyList(Of (FieldSelector As System.Linq.Expressions.Expression(Of System.Func(Of T, Object)), Weight As Double)), String)
+  name.vb: MatchText(IReadOnlyList(Of (FieldSelector As Expression(Of Func(Of T, Object)), Weight As Double)), String)
+- uid: AeroDB.AeroDBSearchQuery`1.MatchText(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.String)
+  commentId: M:AeroDB.AeroDBSearchQuery`1.MatchText(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.String)
+  id: MatchText(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.String)
+  parent: AeroDB.AeroDBSearchQuery`1
+  langs:
+  - csharp
+  - vb
+  name: MatchText(Expression<Func<T, object>>, string)
+  nameWithType: AeroDBSearchQuery<T>.MatchText(Expression<Func<T, object>>, string)
+  fullName: AeroDB.AeroDBSearchQuery<T>.MatchText(System.Linq.Expressions.Expression<System.Func<T, object>>, string)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SearchQuery.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: 'Convenience: single-field full-text search with weight 1.0.'
+  example: []
+  syntax:
+    content: public ISearchQuery<T> MatchText(Expression<Func<T, object>> fieldSelector, string query)
+    parameters:
+    - id: fieldSelector
+      type: System.Linq.Expressions.Expression{System.Func{{T},System.Object}}
+    - id: query
+      type: System.String
+    return:
+      type: AeroDB.ISearchQuery{{T}}
+    content.vb: Public Function MatchText(fieldSelector As Expression(Of Func(Of T, Object)), query As String) As ISearchQuery(Of T)
+  overload: AeroDB.AeroDBSearchQuery`1.MatchText*
+  implements:
+  - AeroDB.ISearchQuery{{T}}.MatchText(System.Linq.Expressions.Expression{System.Func{{T},System.Object}},System.String)
+  nameWithType.vb: AeroDBSearchQuery(Of T).MatchText(Expression(Of Func(Of T, Object)), String)
+  fullName.vb: AeroDB.AeroDBSearchQuery(Of T).MatchText(System.Linq.Expressions.Expression(Of System.Func(Of T, Object)), String)
+  name.vb: MatchText(Expression(Of Func(Of T, Object)), String)
+- uid: AeroDB.AeroDBSearchQuery`1.WithVector(System.Linq.Expressions.Expression{System.Func{`0,System.Single[]}},System.Single[])
+  commentId: M:AeroDB.AeroDBSearchQuery`1.WithVector(System.Linq.Expressions.Expression{System.Func{`0,System.Single[]}},System.Single[])
+  id: WithVector(System.Linq.Expressions.Expression{System.Func{`0,System.Single[]}},System.Single[])
+  parent: AeroDB.AeroDBSearchQuery`1
+  langs:
+  - csharp
+  - vb
+  name: WithVector(Expression<Func<T, float[]>>, float[])
+  nameWithType: AeroDBSearchQuery<T>.WithVector(Expression<Func<T, float[]>>, float[])
+  fullName: AeroDB.AeroDBSearchQuery<T>.WithVector(System.Linq.Expressions.Expression<System.Func<T, float[]>>, float[])
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SearchQuery.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Sets the vector (embedding) for KNN vector search.
+
+    Requires an HNSW index on the field.
+  example: []
+  syntax:
+    content: public ISearchQuery<T> WithVector(Expression<Func<T, float[]>> fieldSelector, float[] queryVector)
+    parameters:
+    - id: fieldSelector
+      type: System.Linq.Expressions.Expression{System.Func{{T},System.Single[]}}
+    - id: queryVector
+      type: System.Single[]
+    return:
+      type: AeroDB.ISearchQuery{{T}}
+    content.vb: Public Function WithVector(fieldSelector As Expression(Of Func(Of T, Single())), queryVector As Single()) As ISearchQuery(Of T)
+  overload: AeroDB.AeroDBSearchQuery`1.WithVector*
+  implements:
+  - AeroDB.ISearchQuery{{T}}.WithVector(System.Linq.Expressions.Expression{System.Func{{T},System.Single[]}},System.Single[])
+  nameWithType.vb: AeroDBSearchQuery(Of T).WithVector(Expression(Of Func(Of T, Single())), Single())
+  fullName.vb: AeroDB.AeroDBSearchQuery(Of T).WithVector(System.Linq.Expressions.Expression(Of System.Func(Of T, Single())), Single())
+  name.vb: WithVector(Expression(Of Func(Of T, Single())), Single())
+- uid: AeroDB.AeroDBSearchQuery`1.Take(System.Int32)
+  commentId: M:AeroDB.AeroDBSearchQuery`1.Take(System.Int32)
+  id: Take(System.Int32)
+  parent: AeroDB.AeroDBSearchQuery`1
+  langs:
+  - csharp
+  - vb
+  name: Take(int)
+  nameWithType: AeroDBSearchQuery<T>.Take(int)
+  fullName: AeroDB.AeroDBSearchQuery<T>.Take(int)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SearchQuery.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Limits the number of results returned.
+  example: []
+  syntax:
+    content: public ISearchQuery<T> Take(int limit)
+    parameters:
+    - id: limit
+      type: System.Int32
+    return:
+      type: AeroDB.ISearchQuery{{T}}
+    content.vb: Public Function Take(limit As Integer) As ISearchQuery(Of T)
+  overload: AeroDB.AeroDBSearchQuery`1.Take*
+  implements:
+  - AeroDB.ISearchQuery{{T}}.Take(System.Int32)
+  nameWithType.vb: AeroDBSearchQuery(Of T).Take(Integer)
+  fullName.vb: AeroDB.AeroDBSearchQuery(Of T).Take(Integer)
+  name.vb: Take(Integer)
+- uid: AeroDB.AeroDBSearchQuery`1.Candidates(System.Int32)
+  commentId: M:AeroDB.AeroDBSearchQuery`1.Candidates(System.Int32)
+  id: Candidates(System.Int32)
+  parent: AeroDB.AeroDBSearchQuery`1
+  langs:
+  - csharp
+  - vb
+  name: Candidates(int)
+  nameWithType: AeroDBSearchQuery<T>.Candidates(int)
+  fullName: AeroDB.AeroDBSearchQuery<T>.Candidates(int)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SearchQuery.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Sets the number of KNN candidates to explore (default 100).
+
+    Higher values increase accuracy at the cost of performance.
+  example: []
+  syntax:
+    content: public ISearchQuery<T> Candidates(int count)
+    parameters:
+    - id: count
+      type: System.Int32
+    return:
+      type: AeroDB.ISearchQuery{{T}}
+    content.vb: Public Function Candidates(count As Integer) As ISearchQuery(Of T)
+  overload: AeroDB.AeroDBSearchQuery`1.Candidates*
+  implements:
+  - AeroDB.ISearchQuery{{T}}.Candidates(System.Int32)
+  nameWithType.vb: AeroDBSearchQuery(Of T).Candidates(Integer)
+  fullName.vb: AeroDB.AeroDBSearchQuery(Of T).Candidates(Integer)
+  name.vb: Candidates(Integer)
+- uid: AeroDB.AeroDBSearchQuery`1.Where(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})
+  commentId: M:AeroDB.AeroDBSearchQuery`1.Where(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})
+  id: Where(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})
+  parent: AeroDB.AeroDBSearchQuery`1
+  langs:
+  - csharp
+  - vb
+  name: Where(Expression<Func<T, bool>>)
+  nameWithType: AeroDBSearchQuery<T>.Where(Expression<Func<T, bool>>)
+  fullName: AeroDB.AeroDBSearchQuery<T>.Where(System.Linq.Expressions.Expression<System.Func<T, bool>>)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SearchQuery.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Applies a filter condition to the search results.
+
+    The expression is translated to a SurrealQL WHERE clause
+
+    using the existing SurrealExpressionVisitor.
+  example: []
+  syntax:
+    content: public ISearchQuery<T> Where(Expression<Func<T, bool>> predicate)
+    parameters:
+    - id: predicate
+      type: System.Linq.Expressions.Expression{System.Func{{T},System.Boolean}}
+    return:
+      type: AeroDB.ISearchQuery{{T}}
+    content.vb: Public Function Where(predicate As Expression(Of Func(Of T, Boolean))) As ISearchQuery(Of T)
+  overload: AeroDB.AeroDBSearchQuery`1.Where*
+  implements:
+  - AeroDB.ISearchQuery{{T}}.Where(System.Linq.Expressions.Expression{System.Func{{T},System.Boolean}})
+  nameWithType.vb: AeroDBSearchQuery(Of T).Where(Expression(Of Func(Of T, Boolean)))
+  fullName.vb: AeroDB.AeroDBSearchQuery(Of T).Where(System.Linq.Expressions.Expression(Of System.Func(Of T, Boolean)))
+  name.vb: Where(Expression(Of Func(Of T, Boolean)))
+- uid: AeroDB.AeroDBSearchQuery`1.OrderBy``1(System.Linq.Expressions.Expression{System.Func{`0,``0}},System.Boolean)
+  commentId: M:AeroDB.AeroDBSearchQuery`1.OrderBy``1(System.Linq.Expressions.Expression{System.Func{`0,``0}},System.Boolean)
+  id: OrderBy``1(System.Linq.Expressions.Expression{System.Func{`0,``0}},System.Boolean)
+  parent: AeroDB.AeroDBSearchQuery`1
+  langs:
+  - csharp
+  - vb
+  name: OrderBy<TKey>(Expression<Func<T, TKey>>, bool)
+  nameWithType: AeroDBSearchQuery<T>.OrderBy<TKey>(Expression<Func<T, TKey>>, bool)
+  fullName: AeroDB.AeroDBSearchQuery<T>.OrderBy<TKey>(System.Linq.Expressions.Expression<System.Func<T, TKey>>, bool)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SearchQuery.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Orders the search results by the specified property.
+
+    Supports ascending and descending.
+  example: []
+  syntax:
+    content: public ISearchQuery<T> OrderBy<TKey>(Expression<Func<T, TKey>> keySelector, bool descending = false)
+    parameters:
+    - id: keySelector
+      type: System.Linq.Expressions.Expression{System.Func{{T},{TKey}}}
+    - id: descending
+      type: System.Boolean
+    typeParameters:
+    - id: TKey
+    return:
+      type: AeroDB.ISearchQuery{{T}}
+    content.vb: Public Function OrderBy(Of TKey)(keySelector As Expression(Of Func(Of T, TKey)), descending As Boolean = False) As ISearchQuery(Of T)
+  overload: AeroDB.AeroDBSearchQuery`1.OrderBy*
+  implements:
+  - AeroDB.ISearchQuery{{T}}.OrderBy``1(System.Linq.Expressions.Expression{System.Func{{T},{TKey}}},System.Boolean)
+  nameWithType.vb: AeroDBSearchQuery(Of T).OrderBy(Of TKey)(Expression(Of Func(Of T, TKey)), Boolean)
+  fullName.vb: AeroDB.AeroDBSearchQuery(Of T).OrderBy(Of TKey)(System.Linq.Expressions.Expression(Of System.Func(Of T, TKey)), Boolean)
+  name.vb: OrderBy(Of TKey)(Expression(Of Func(Of T, TKey)), Boolean)
+- uid: AeroDB.AeroDBSearchQuery`1.Skip(System.Int32)
+  commentId: M:AeroDB.AeroDBSearchQuery`1.Skip(System.Int32)
+  id: Skip(System.Int32)
+  parent: AeroDB.AeroDBSearchQuery`1
+  langs:
+  - csharp
+  - vb
+  name: Skip(int)
+  nameWithType: AeroDBSearchQuery<T>.Skip(int)
+  fullName: AeroDB.AeroDBSearchQuery<T>.Skip(int)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SearchQuery.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Skips the specified number of results (for pagination).
+  example: []
+  syntax:
+    content: public ISearchQuery<T> Skip(int count)
+    parameters:
+    - id: count
+      type: System.Int32
+    return:
+      type: AeroDB.ISearchQuery{{T}}
+    content.vb: Public Function Skip(count As Integer) As ISearchQuery(Of T)
+  overload: AeroDB.AeroDBSearchQuery`1.Skip*
+  implements:
+  - AeroDB.ISearchQuery{{T}}.Skip(System.Int32)
+  nameWithType.vb: AeroDBSearchQuery(Of T).Skip(Integer)
+  fullName.vb: AeroDB.AeroDBSearchQuery(Of T).Skip(Integer)
+  name.vb: Skip(Integer)
+- uid: AeroDB.AeroDBSearchQuery`1.ToListAsync(System.Threading.CancellationToken)
+  commentId: M:AeroDB.AeroDBSearchQuery`1.ToListAsync(System.Threading.CancellationToken)
+  id: ToListAsync(System.Threading.CancellationToken)
+  parent: AeroDB.AeroDBSearchQuery`1
+  langs:
+  - csharp
+  - vb
+  name: ToListAsync(CancellationToken)
+  nameWithType: AeroDBSearchQuery<T>.ToListAsync(CancellationToken)
+  fullName: AeroDB.AeroDBSearchQuery<T>.ToListAsync(System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SearchQuery.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Executes the search and returns results.
+
+    For text-only or vector-only searches, runs a single query.
+
+    For hybrid (text + vector), runs separate sub-queries and fuses via RRF.
+  example: []
+  syntax:
+    content: public Task<List<T>> ToListAsync(CancellationToken ct = default)
+    parameters:
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.List{{T}}}
+    content.vb: Public Function ToListAsync(ct As CancellationToken = Nothing) As Task(Of List(Of T))
+  overload: AeroDB.AeroDBSearchQuery`1.ToListAsync*
+  implements:
+  - AeroDB.ISearchQuery{{T}}.ToListAsync(System.Threading.CancellationToken)
+  nameWithType.vb: AeroDBSearchQuery(Of T).ToListAsync(CancellationToken)
+  fullName.vb: AeroDB.AeroDBSearchQuery(Of T).ToListAsync(System.Threading.CancellationToken)
+- uid: AeroDB.AeroDBSearchQuery`1.FuseAsync(System.Int32,System.Int32,System.Threading.CancellationToken)
+  commentId: M:AeroDB.AeroDBSearchQuery`1.FuseAsync(System.Int32,System.Int32,System.Threading.CancellationToken)
+  id: FuseAsync(System.Int32,System.Int32,System.Threading.CancellationToken)
+  parent: AeroDB.AeroDBSearchQuery`1
+  langs:
+  - csharp
+  - vb
+  name: FuseAsync(int, int, CancellationToken)
+  nameWithType: AeroDBSearchQuery<T>.FuseAsync(int, int, CancellationToken)
+  fullName: AeroDB.AeroDBSearchQuery<T>.FuseAsync(int, int, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SearchQuery.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Executes hybrid search by fusing full-text and vector results
+
+    using SurrealDB's Reciprocal Rank Fusion (search::rrf).
+
+    Only valid when both MatchText and WithVector have been configured.
+  example: []
+  syntax:
+    content: public Task<List<T>> FuseAsync(int rrfK = 60, int rrfLimit = 80, CancellationToken ct = default)
+    parameters:
+    - id: rrfK
+      type: System.Int32
+      description: RRF smoothness constant (k). Default 60.
+    - id: rrfLimit
+      type: System.Int32
+      description: Maximum candidates per sub-query for RRF fusion. Default 80.
+    - id: ct
+      type: System.Threading.CancellationToken
+      description: Cancellation token.
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.List{{T}}}
+    content.vb: Public Function FuseAsync(rrfK As Integer = 60, rrfLimit As Integer = 80, ct As CancellationToken = Nothing) As Task(Of List(Of T))
+  overload: AeroDB.AeroDBSearchQuery`1.FuseAsync*
+  implements:
+  - AeroDB.ISearchQuery{{T}}.FuseAsync(System.Int32,System.Int32,System.Threading.CancellationToken)
+  nameWithType.vb: AeroDBSearchQuery(Of T).FuseAsync(Integer, Integer, CancellationToken)
+  fullName.vb: AeroDB.AeroDBSearchQuery(Of T).FuseAsync(Integer, Integer, System.Threading.CancellationToken)
+  name.vb: FuseAsync(Integer, Integer, CancellationToken)
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: AeroDB.ISearchQuery{{T}}
+  commentId: T:AeroDB.ISearchQuery{`0}
+  parent: AeroDB
+  definition: AeroDB.ISearchQuery`1
+  href: AeroDB.ISearchQuery-1.html
+  name: ISearchQuery<T>
+  nameWithType: ISearchQuery<T>
+  fullName: AeroDB.ISearchQuery<T>
+  nameWithType.vb: ISearchQuery(Of T)
+  fullName.vb: AeroDB.ISearchQuery(Of T)
+  name.vb: ISearchQuery(Of T)
+  spec.csharp:
+  - uid: AeroDB.ISearchQuery`1
+    name: ISearchQuery
+    isExternal: true
+    href: AeroDB.ISearchQuery-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.ISearchQuery`1
+    name: ISearchQuery
+    isExternal: true
+    href: AeroDB.ISearchQuery-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AeroDB.ISearchQuery`1
+  commentId: T:AeroDB.ISearchQuery`1
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.ISearchQuery-1.html
+  name: ISearchQuery<T>
+  nameWithType: ISearchQuery<T>
+  fullName: AeroDB.ISearchQuery<T>
+  nameWithType.vb: ISearchQuery(Of T)
+  fullName.vb: AeroDB.ISearchQuery(Of T)
+  name.vb: ISearchQuery(Of T)
+  spec.csharp:
+  - uid: AeroDB.ISearchQuery`1
+    name: ISearchQuery
+    isExternal: true
+    href: AeroDB.ISearchQuery-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.ISearchQuery`1
+    name: ISearchQuery
+    isExternal: true
+    href: AeroDB.ISearchQuery-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.AeroDBSearchQuery`1.MatchText*
+  commentId: Overload:AeroDB.AeroDBSearchQuery`1.MatchText
+  isExternal: true
+  href: AeroDB.AeroDBSearchQuery-1.html#AeroDB_AeroDBSearchQuery_1_MatchText_System_Linq_Expressions_Expression_System_Func__0_System_Object___System_Double_System_String_
+  name: MatchText
+  nameWithType: AeroDBSearchQuery<T>.MatchText
+  fullName: AeroDB.AeroDBSearchQuery<T>.MatchText
+  nameWithType.vb: AeroDBSearchQuery(Of T).MatchText
+  fullName.vb: AeroDB.AeroDBSearchQuery(Of T).MatchText
+- uid: AeroDB.ISearchQuery{{T}}.MatchText(System.Linq.Expressions.Expression{System.Func{{T},System.Object}},System.Double,System.String)
+  commentId: M:AeroDB.ISearchQuery{`0}.MatchText(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Double,System.String)
+  parent: AeroDB.ISearchQuery{{T}}
+  definition: AeroDB.ISearchQuery`1.MatchText(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Double,System.String)
+  href: AeroDB.ISearchQuery-1.html#AeroDB_ISearchQuery_1_MatchText_System_Linq_Expressions_Expression_System_Func__0_System_Object___System_Double_System_String_
+  name: MatchText(Expression<Func<T, object>>, double, string)
+  nameWithType: ISearchQuery<T>.MatchText(Expression<Func<T, object>>, double, string)
+  fullName: AeroDB.ISearchQuery<T>.MatchText(System.Linq.Expressions.Expression<System.Func<T, object>>, double, string)
+  nameWithType.vb: ISearchQuery(Of T).MatchText(Expression(Of Func(Of T, Object)), Double, String)
+  fullName.vb: AeroDB.ISearchQuery(Of T).MatchText(System.Linq.Expressions.Expression(Of System.Func(Of T, Object)), Double, String)
+  name.vb: MatchText(Expression(Of Func(Of T, Object)), Double, String)
+  spec.csharp:
+  - uid: AeroDB.ISearchQuery{`0}.MatchText(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Double,System.String)
+    name: MatchText
+    isExternal: true
+    href: AeroDB.ISearchQuery-1.html#AeroDB_ISearchQuery_1_MatchText_System_Linq_Expressions_Expression_System_Func__0_System_Object___System_Double_System_String_
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: AeroDB.ISearchQuery{`0}.MatchText(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Double,System.String)
+    name: MatchText
+    isExternal: true
+    href: AeroDB.ISearchQuery-1.html#AeroDB_ISearchQuery_1_MatchText_System_Linq_Expressions_Expression_System_Func__0_System_Object___System_Double_System_String_
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Linq.Expressions.Expression{System.Func{{T},System.Object}}
+  commentId: T:System.Linq.Expressions.Expression{System.Func{`0,System.Object}}
+  parent: System.Linq.Expressions
+  definition: System.Linq.Expressions.Expression`1
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  name: Expression<Func<T, object>>
+  nameWithType: Expression<Func<T, object>>
+  fullName: System.Linq.Expressions.Expression<System.Func<T, object>>
+  nameWithType.vb: Expression(Of Func(Of T, Object))
+  fullName.vb: System.Linq.Expressions.Expression(Of System.Func(Of T, Object))
+  name.vb: Expression(Of Func(Of T, Object))
+  spec.csharp:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  - name: )
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double
+  nameWithType: double
+  fullName: double
+  nameWithType.vb: Double
+  fullName.vb: Double
+  name.vb: Double
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: AeroDB.ISearchQuery`1.MatchText(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Double,System.String)
+  commentId: M:AeroDB.ISearchQuery`1.MatchText(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Double,System.String)
+  isExternal: true
+  href: AeroDB.ISearchQuery-1.html#AeroDB_ISearchQuery_1_MatchText_System_Linq_Expressions_Expression_System_Func__0_System_Object___System_Double_System_String_
+  name: MatchText(Expression<Func<T, object>>, double, string)
+  nameWithType: ISearchQuery<T>.MatchText(Expression<Func<T, object>>, double, string)
+  fullName: AeroDB.ISearchQuery<T>.MatchText(System.Linq.Expressions.Expression<System.Func<T, object>>, double, string)
+  nameWithType.vb: ISearchQuery(Of T).MatchText(Expression(Of Func(Of T, Object)), Double, String)
+  fullName.vb: AeroDB.ISearchQuery(Of T).MatchText(System.Linq.Expressions.Expression(Of System.Func(Of T, Object)), Double, String)
+  name.vb: MatchText(Expression(Of Func(Of T, Object)), Double, String)
+  spec.csharp:
+  - uid: AeroDB.ISearchQuery`1.MatchText(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Double,System.String)
+    name: MatchText
+    isExternal: true
+    href: AeroDB.ISearchQuery-1.html#AeroDB_ISearchQuery_1_MatchText_System_Linq_Expressions_Expression_System_Func__0_System_Object___System_Double_System_String_
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: AeroDB.ISearchQuery`1.MatchText(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Double,System.String)
+    name: MatchText
+    isExternal: true
+    href: AeroDB.ISearchQuery-1.html#AeroDB_ISearchQuery_1_MatchText_System_Linq_Expressions_Expression_System_Func__0_System_Object___System_Double_System_String_
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Linq.Expressions.Expression`1
+  commentId: T:System.Linq.Expressions.Expression`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  name: Expression<TDelegate>
+  nameWithType: Expression<TDelegate>
+  fullName: System.Linq.Expressions.Expression<TDelegate>
+  nameWithType.vb: Expression(Of TDelegate)
+  fullName.vb: System.Linq.Expressions.Expression(Of TDelegate)
+  name.vb: Expression(Of TDelegate)
+  spec.csharp:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - name: TDelegate
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TDelegate
+  - name: )
+- uid: System.Linq.Expressions
+  commentId: N:System.Linq.Expressions
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Linq.Expressions
+  nameWithType: System.Linq.Expressions
+  fullName: System.Linq.Expressions
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Linq
+    name: Linq
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq
+  - name: .
+  - uid: System.Linq.Expressions
+    name: Expressions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Linq
+    name: Linq
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq
+  - name: .
+  - uid: System.Linq.Expressions
+    name: Expressions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions
+- uid: AeroDB.ISearchQuery{{T}}.MatchText(System.Collections.Generic.IReadOnlyList{System.ValueTuple{System.Linq.Expressions.Expression{System.Func{{T},System.Object}},System.Double}},System.String)
+  commentId: M:AeroDB.ISearchQuery{`0}.MatchText(System.Collections.Generic.IReadOnlyList{System.ValueTuple{System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Double}},System.String)
+  parent: AeroDB.ISearchQuery{{T}}
+  definition: AeroDB.ISearchQuery`1.MatchText(System.Collections.Generic.IReadOnlyList{System.ValueTuple{System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Double}},System.String)
+  href: AeroDB.ISearchQuery-1.html#AeroDB_ISearchQuery_1_MatchText_System_Collections_Generic_IReadOnlyList_System_ValueTuple_System_Linq_Expressions_Expression_System_Func__0_System_Object___System_Double___System_String_
+  name: MatchText(IReadOnlyList<(Expression<Func<T, object>> FieldSelector, double Weight)>, string)
+  nameWithType: ISearchQuery<T>.MatchText(IReadOnlyList<(Expression<Func<T, object>> FieldSelector, double Weight)>, string)
+  fullName: AeroDB.ISearchQuery<T>.MatchText(System.Collections.Generic.IReadOnlyList<(System.Linq.Expressions.Expression<System.Func<T, object>> FieldSelector, double Weight)>, string)
+  nameWithType.vb: ISearchQuery(Of T).MatchText(IReadOnlyList(Of (FieldSelector As Expression(Of Func(Of T, Object)), Weight As Double)), String)
+  fullName.vb: AeroDB.ISearchQuery(Of T).MatchText(System.Collections.Generic.IReadOnlyList(Of (FieldSelector As System.Linq.Expressions.Expression(Of System.Func(Of T, Object)), Weight As Double)), String)
+  name.vb: MatchText(IReadOnlyList(Of (FieldSelector As Expression(Of Func(Of T, Object)), Weight As Double)), String)
+  spec.csharp:
+  - uid: AeroDB.ISearchQuery{`0}.MatchText(System.Collections.Generic.IReadOnlyList{System.ValueTuple{System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Double}},System.String)
+    name: MatchText
+    isExternal: true
+    href: AeroDB.ISearchQuery-1.html#AeroDB_ISearchQuery_1_MatchText_System_Collections_Generic_IReadOnlyList_System_ValueTuple_System_Linq_Expressions_Expression_System_Func__0_System_Object___System_Double___System_String_
+  - name: (
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
+  - name: '>'
+  - name: " "
+  - uid: System.ValueTuple{System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Double}.FieldSelector
+    name: FieldSelector
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.linq.expressions.expression-system.func--0,system.object--,system.double-.fieldselector
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: " "
+  - uid: System.ValueTuple{System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Double}.Weight
+    name: Weight
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.linq.expressions.expression-system.func--0,system.object--,system.double-.weight
+  - name: )
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: AeroDB.ISearchQuery{`0}.MatchText(System.Collections.Generic.IReadOnlyList{System.ValueTuple{System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Double}},System.String)
+    name: MatchText
+    isExternal: true
+    href: AeroDB.ISearchQuery-1.html#AeroDB_ISearchQuery_1_MatchText_System_Collections_Generic_IReadOnlyList_System_ValueTuple_System_Linq_Expressions_Expression_System_Func__0_System_Object___System_Double___System_String_
+  - name: (
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: (
+  - uid: System.ValueTuple{System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Double}.FieldSelector
+    name: FieldSelector
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.linq.expressions.expression-system.func--0,system.object--,system.double-.fieldselector
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.ValueTuple{System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Double}.Weight
+    name: Weight
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.linq.expressions.expression-system.func--0,system.object--,system.double-.weight
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Collections.Generic.IReadOnlyList{System.ValueTuple{System.Linq.Expressions.Expression{System.Func{{T},System.Object}},System.Double}}
+  commentId: T:System.Collections.Generic.IReadOnlyList{System.ValueTuple{System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Double}}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyList`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<(Expression<Func<T, object>> FieldSelector, double Weight)>
+  nameWithType: IReadOnlyList<(Expression<Func<T, object>> FieldSelector, double Weight)>
+  fullName: System.Collections.Generic.IReadOnlyList<(System.Linq.Expressions.Expression<System.Func<T, object>> FieldSelector, double Weight)>
+  nameWithType.vb: IReadOnlyList(Of (FieldSelector As Expression(Of Func(Of T, Object)), Weight As Double))
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of (FieldSelector As System.Linq.Expressions.Expression(Of System.Func(Of T, Object)), Weight As Double))
+  name.vb: IReadOnlyList(Of (FieldSelector As Expression(Of Func(Of T, Object)), Weight As Double))
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
+  - name: '>'
+  - name: " "
+  - uid: System.ValueTuple{System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Double}.FieldSelector
+    name: FieldSelector
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.linq.expressions.expression-system.func--0,system.object--,system.double-.fieldselector
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: " "
+  - uid: System.ValueTuple{System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Double}.Weight
+    name: Weight
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.linq.expressions.expression-system.func--0,system.object--,system.double-.weight
+  - name: )
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: (
+  - uid: System.ValueTuple{System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Double}.FieldSelector
+    name: FieldSelector
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.linq.expressions.expression-system.func--0,system.object--,system.double-.fieldselector
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.ValueTuple{System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Double}.Weight
+    name: Weight
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.linq.expressions.expression-system.func--0,system.object--,system.double-.weight
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+  - name: )
+- uid: AeroDB.ISearchQuery`1.MatchText(System.Collections.Generic.IReadOnlyList{System.ValueTuple{System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Double}},System.String)
+  commentId: M:AeroDB.ISearchQuery`1.MatchText(System.Collections.Generic.IReadOnlyList{System.ValueTuple{System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Double}},System.String)
+  isExternal: true
+  href: AeroDB.ISearchQuery-1.html#AeroDB_ISearchQuery_1_MatchText_System_Collections_Generic_IReadOnlyList_System_ValueTuple_System_Linq_Expressions_Expression_System_Func__0_System_Object___System_Double___System_String_
+  name: MatchText(IReadOnlyList<(Expression<Func<T, object>> FieldSelector, double Weight)>, string)
+  nameWithType: ISearchQuery<T>.MatchText(IReadOnlyList<(Expression<Func<T, object>> FieldSelector, double Weight)>, string)
+  fullName: AeroDB.ISearchQuery<T>.MatchText(System.Collections.Generic.IReadOnlyList<(System.Linq.Expressions.Expression<System.Func<T, object>> FieldSelector, double Weight)>, string)
+  nameWithType.vb: ISearchQuery(Of T).MatchText(IReadOnlyList(Of (FieldSelector As Expression(Of Func(Of T, Object)), Weight As Double)), String)
+  fullName.vb: AeroDB.ISearchQuery(Of T).MatchText(System.Collections.Generic.IReadOnlyList(Of (FieldSelector As System.Linq.Expressions.Expression(Of System.Func(Of T, Object)), Weight As Double)), String)
+  name.vb: MatchText(IReadOnlyList(Of (FieldSelector As Expression(Of Func(Of T, Object)), Weight As Double)), String)
+  spec.csharp:
+  - uid: AeroDB.ISearchQuery`1.MatchText(System.Collections.Generic.IReadOnlyList{System.ValueTuple{System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Double}},System.String)
+    name: MatchText
+    isExternal: true
+    href: AeroDB.ISearchQuery-1.html#AeroDB_ISearchQuery_1_MatchText_System_Collections_Generic_IReadOnlyList_System_ValueTuple_System_Linq_Expressions_Expression_System_Func__0_System_Object___System_Double___System_String_
+  - name: (
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
+  - name: '>'
+  - name: " "
+  - uid: System.ValueTuple{System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Double}.FieldSelector
+    name: FieldSelector
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.linq.expressions.expression-system.func--0,system.object--,system.double-.fieldselector
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: " "
+  - uid: System.ValueTuple{System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Double}.Weight
+    name: Weight
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.linq.expressions.expression-system.func--0,system.object--,system.double-.weight
+  - name: )
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: AeroDB.ISearchQuery`1.MatchText(System.Collections.Generic.IReadOnlyList{System.ValueTuple{System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Double}},System.String)
+    name: MatchText
+    isExternal: true
+    href: AeroDB.ISearchQuery-1.html#AeroDB_ISearchQuery_1_MatchText_System_Collections_Generic_IReadOnlyList_System_ValueTuple_System_Linq_Expressions_Expression_System_Func__0_System_Object___System_Double___System_String_
+  - name: (
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: (
+  - uid: System.ValueTuple{System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Double}.FieldSelector
+    name: FieldSelector
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.linq.expressions.expression-system.func--0,system.object--,system.double-.fieldselector
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.ValueTuple{System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Double}.Weight
+    name: Weight
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.linq.expressions.expression-system.func--0,system.object--,system.double-.weight
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Collections.Generic.IReadOnlyList`1
+  commentId: T:System.Collections.Generic.IReadOnlyList`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<T>
+  nameWithType: IReadOnlyList<T>
+  fullName: System.Collections.Generic.IReadOnlyList<T>
+  nameWithType.vb: IReadOnlyList(Of T)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of T)
+  name.vb: IReadOnlyList(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: AeroDB.ISearchQuery{{T}}.MatchText(System.Linq.Expressions.Expression{System.Func{{T},System.Object}},System.String)
+  commentId: M:AeroDB.ISearchQuery{`0}.MatchText(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.String)
+  parent: AeroDB.ISearchQuery{{T}}
+  definition: AeroDB.ISearchQuery`1.MatchText(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.String)
+  href: AeroDB.ISearchQuery-1.html#AeroDB_ISearchQuery_1_MatchText_System_Linq_Expressions_Expression_System_Func__0_System_Object___System_String_
+  name: MatchText(Expression<Func<T, object>>, string)
+  nameWithType: ISearchQuery<T>.MatchText(Expression<Func<T, object>>, string)
+  fullName: AeroDB.ISearchQuery<T>.MatchText(System.Linq.Expressions.Expression<System.Func<T, object>>, string)
+  nameWithType.vb: ISearchQuery(Of T).MatchText(Expression(Of Func(Of T, Object)), String)
+  fullName.vb: AeroDB.ISearchQuery(Of T).MatchText(System.Linq.Expressions.Expression(Of System.Func(Of T, Object)), String)
+  name.vb: MatchText(Expression(Of Func(Of T, Object)), String)
+  spec.csharp:
+  - uid: AeroDB.ISearchQuery{`0}.MatchText(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.String)
+    name: MatchText
+    isExternal: true
+    href: AeroDB.ISearchQuery-1.html#AeroDB_ISearchQuery_1_MatchText_System_Linq_Expressions_Expression_System_Func__0_System_Object___System_String_
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: AeroDB.ISearchQuery{`0}.MatchText(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.String)
+    name: MatchText
+    isExternal: true
+    href: AeroDB.ISearchQuery-1.html#AeroDB_ISearchQuery_1_MatchText_System_Linq_Expressions_Expression_System_Func__0_System_Object___System_String_
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: AeroDB.ISearchQuery`1.MatchText(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.String)
+  commentId: M:AeroDB.ISearchQuery`1.MatchText(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.String)
+  isExternal: true
+  href: AeroDB.ISearchQuery-1.html#AeroDB_ISearchQuery_1_MatchText_System_Linq_Expressions_Expression_System_Func__0_System_Object___System_String_
+  name: MatchText(Expression<Func<T, object>>, string)
+  nameWithType: ISearchQuery<T>.MatchText(Expression<Func<T, object>>, string)
+  fullName: AeroDB.ISearchQuery<T>.MatchText(System.Linq.Expressions.Expression<System.Func<T, object>>, string)
+  nameWithType.vb: ISearchQuery(Of T).MatchText(Expression(Of Func(Of T, Object)), String)
+  fullName.vb: AeroDB.ISearchQuery(Of T).MatchText(System.Linq.Expressions.Expression(Of System.Func(Of T, Object)), String)
+  name.vb: MatchText(Expression(Of Func(Of T, Object)), String)
+  spec.csharp:
+  - uid: AeroDB.ISearchQuery`1.MatchText(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.String)
+    name: MatchText
+    isExternal: true
+    href: AeroDB.ISearchQuery-1.html#AeroDB_ISearchQuery_1_MatchText_System_Linq_Expressions_Expression_System_Func__0_System_Object___System_String_
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: AeroDB.ISearchQuery`1.MatchText(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.String)
+    name: MatchText
+    isExternal: true
+    href: AeroDB.ISearchQuery-1.html#AeroDB_ISearchQuery_1_MatchText_System_Linq_Expressions_Expression_System_Func__0_System_Object___System_String_
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: AeroDB.AeroDBSearchQuery`1.WithVector*
+  commentId: Overload:AeroDB.AeroDBSearchQuery`1.WithVector
+  isExternal: true
+  href: AeroDB.AeroDBSearchQuery-1.html#AeroDB_AeroDBSearchQuery_1_WithVector_System_Linq_Expressions_Expression_System_Func__0_System_Single_____System_Single___
+  name: WithVector
+  nameWithType: AeroDBSearchQuery<T>.WithVector
+  fullName: AeroDB.AeroDBSearchQuery<T>.WithVector
+  nameWithType.vb: AeroDBSearchQuery(Of T).WithVector
+  fullName.vb: AeroDB.AeroDBSearchQuery(Of T).WithVector
+- uid: AeroDB.ISearchQuery{{T}}.WithVector(System.Linq.Expressions.Expression{System.Func{{T},System.Single[]}},System.Single[])
+  commentId: M:AeroDB.ISearchQuery{`0}.WithVector(System.Linq.Expressions.Expression{System.Func{`0,System.Single[]}},System.Single[])
+  parent: AeroDB.ISearchQuery{{T}}
+  definition: AeroDB.ISearchQuery`1.WithVector(System.Linq.Expressions.Expression{System.Func{`0,System.Single[]}},System.Single[])
+  href: AeroDB.ISearchQuery-1.html#AeroDB_ISearchQuery_1_WithVector_System_Linq_Expressions_Expression_System_Func__0_System_Single_____System_Single___
+  name: WithVector(Expression<Func<T, float[]>>, float[])
+  nameWithType: ISearchQuery<T>.WithVector(Expression<Func<T, float[]>>, float[])
+  fullName: AeroDB.ISearchQuery<T>.WithVector(System.Linq.Expressions.Expression<System.Func<T, float[]>>, float[])
+  nameWithType.vb: ISearchQuery(Of T).WithVector(Expression(Of Func(Of T, Single())), Single())
+  fullName.vb: AeroDB.ISearchQuery(Of T).WithVector(System.Linq.Expressions.Expression(Of System.Func(Of T, Single())), Single())
+  name.vb: WithVector(Expression(Of Func(Of T, Single())), Single())
+  spec.csharp:
+  - uid: AeroDB.ISearchQuery{`0}.WithVector(System.Linq.Expressions.Expression{System.Func{`0,System.Single[]}},System.Single[])
+    name: WithVector
+    isExternal: true
+    href: AeroDB.ISearchQuery-1.html#AeroDB_ISearchQuery_1_WithVector_System_Linq_Expressions_Expression_System_Func__0_System_Single_____System_Single___
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: '['
+  - name: ']'
+  - name: '>'
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: '['
+  - name: ']'
+  - name: )
+  spec.vb:
+  - uid: AeroDB.ISearchQuery{`0}.WithVector(System.Linq.Expressions.Expression{System.Func{`0,System.Single[]}},System.Single[])
+    name: WithVector
+    isExternal: true
+    href: AeroDB.ISearchQuery-1.html#AeroDB_ISearchQuery_1_WithVector_System_Linq_Expressions_Expression_System_Func__0_System_Single_____System_Single___
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: (
+  - name: )
+  - name: )
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: (
+  - name: )
+  - name: )
+- uid: System.Linq.Expressions.Expression{System.Func{{T},System.Single[]}}
+  commentId: T:System.Linq.Expressions.Expression{System.Func{``0,System.Single[]}}
+  parent: System.Linq.Expressions
+  definition: System.Linq.Expressions.Expression`1
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  name: Expression<Func<T, float[]>>
+  nameWithType: Expression<Func<T, float[]>>
+  fullName: System.Linq.Expressions.Expression<System.Func<T, float[]>>
+  nameWithType.vb: Expression(Of Func(Of T, Single()))
+  fullName.vb: System.Linq.Expressions.Expression(Of System.Func(Of T, Single()))
+  name.vb: Expression(Of Func(Of T, Single()))
+  spec.csharp:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: '['
+  - name: ']'
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: (
+  - name: )
+  - name: )
+  - name: )
+- uid: System.Single[]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.single
+  name: float[]
+  nameWithType: float[]
+  fullName: float[]
+  nameWithType.vb: Single()
+  fullName.vb: Single()
+  name.vb: Single()
+  spec.csharp:
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: (
+  - name: )
+- uid: AeroDB.ISearchQuery`1.WithVector(System.Linq.Expressions.Expression{System.Func{`0,System.Single[]}},System.Single[])
+  commentId: M:AeroDB.ISearchQuery`1.WithVector(System.Linq.Expressions.Expression{System.Func{`0,System.Single[]}},System.Single[])
+  isExternal: true
+  href: AeroDB.ISearchQuery-1.html#AeroDB_ISearchQuery_1_WithVector_System_Linq_Expressions_Expression_System_Func__0_System_Single_____System_Single___
+  name: WithVector(Expression<Func<T, float[]>>, float[])
+  nameWithType: ISearchQuery<T>.WithVector(Expression<Func<T, float[]>>, float[])
+  fullName: AeroDB.ISearchQuery<T>.WithVector(System.Linq.Expressions.Expression<System.Func<T, float[]>>, float[])
+  nameWithType.vb: ISearchQuery(Of T).WithVector(Expression(Of Func(Of T, Single())), Single())
+  fullName.vb: AeroDB.ISearchQuery(Of T).WithVector(System.Linq.Expressions.Expression(Of System.Func(Of T, Single())), Single())
+  name.vb: WithVector(Expression(Of Func(Of T, Single())), Single())
+  spec.csharp:
+  - uid: AeroDB.ISearchQuery`1.WithVector(System.Linq.Expressions.Expression{System.Func{`0,System.Single[]}},System.Single[])
+    name: WithVector
+    isExternal: true
+    href: AeroDB.ISearchQuery-1.html#AeroDB_ISearchQuery_1_WithVector_System_Linq_Expressions_Expression_System_Func__0_System_Single_____System_Single___
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: '['
+  - name: ']'
+  - name: '>'
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: '['
+  - name: ']'
+  - name: )
+  spec.vb:
+  - uid: AeroDB.ISearchQuery`1.WithVector(System.Linq.Expressions.Expression{System.Func{`0,System.Single[]}},System.Single[])
+    name: WithVector
+    isExternal: true
+    href: AeroDB.ISearchQuery-1.html#AeroDB_ISearchQuery_1_WithVector_System_Linq_Expressions_Expression_System_Func__0_System_Single_____System_Single___
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: (
+  - name: )
+  - name: )
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: (
+  - name: )
+  - name: )
+- uid: AeroDB.AeroDBSearchQuery`1.Take*
+  commentId: Overload:AeroDB.AeroDBSearchQuery`1.Take
+  isExternal: true
+  href: AeroDB.AeroDBSearchQuery-1.html#AeroDB_AeroDBSearchQuery_1_Take_System_Int32_
+  name: Take
+  nameWithType: AeroDBSearchQuery<T>.Take
+  fullName: AeroDB.AeroDBSearchQuery<T>.Take
+  nameWithType.vb: AeroDBSearchQuery(Of T).Take
+  fullName.vb: AeroDB.AeroDBSearchQuery(Of T).Take
+- uid: AeroDB.ISearchQuery{{T}}.Take(System.Int32)
+  commentId: M:AeroDB.ISearchQuery{`0}.Take(System.Int32)
+  parent: AeroDB.ISearchQuery{{T}}
+  definition: AeroDB.ISearchQuery`1.Take(System.Int32)
+  href: AeroDB.ISearchQuery-1.html#AeroDB_ISearchQuery_1_Take_System_Int32_
+  name: Take(int)
+  nameWithType: ISearchQuery<T>.Take(int)
+  fullName: AeroDB.ISearchQuery<T>.Take(int)
+  nameWithType.vb: ISearchQuery(Of T).Take(Integer)
+  fullName.vb: AeroDB.ISearchQuery(Of T).Take(Integer)
+  name.vb: Take(Integer)
+  spec.csharp:
+  - uid: AeroDB.ISearchQuery{`0}.Take(System.Int32)
+    name: Take
+    isExternal: true
+    href: AeroDB.ISearchQuery-1.html#AeroDB_ISearchQuery_1_Take_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: AeroDB.ISearchQuery{`0}.Take(System.Int32)
+    name: Take
+    isExternal: true
+    href: AeroDB.ISearchQuery-1.html#AeroDB_ISearchQuery_1_Take_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: AeroDB.ISearchQuery`1.Take(System.Int32)
+  commentId: M:AeroDB.ISearchQuery`1.Take(System.Int32)
+  isExternal: true
+  href: AeroDB.ISearchQuery-1.html#AeroDB_ISearchQuery_1_Take_System_Int32_
+  name: Take(int)
+  nameWithType: ISearchQuery<T>.Take(int)
+  fullName: AeroDB.ISearchQuery<T>.Take(int)
+  nameWithType.vb: ISearchQuery(Of T).Take(Integer)
+  fullName.vb: AeroDB.ISearchQuery(Of T).Take(Integer)
+  name.vb: Take(Integer)
+  spec.csharp:
+  - uid: AeroDB.ISearchQuery`1.Take(System.Int32)
+    name: Take
+    isExternal: true
+    href: AeroDB.ISearchQuery-1.html#AeroDB_ISearchQuery_1_Take_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: AeroDB.ISearchQuery`1.Take(System.Int32)
+    name: Take
+    isExternal: true
+    href: AeroDB.ISearchQuery-1.html#AeroDB_ISearchQuery_1_Take_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: AeroDB.AeroDBSearchQuery`1.Candidates*
+  commentId: Overload:AeroDB.AeroDBSearchQuery`1.Candidates
+  isExternal: true
+  href: AeroDB.AeroDBSearchQuery-1.html#AeroDB_AeroDBSearchQuery_1_Candidates_System_Int32_
+  name: Candidates
+  nameWithType: AeroDBSearchQuery<T>.Candidates
+  fullName: AeroDB.AeroDBSearchQuery<T>.Candidates
+  nameWithType.vb: AeroDBSearchQuery(Of T).Candidates
+  fullName.vb: AeroDB.AeroDBSearchQuery(Of T).Candidates
+- uid: AeroDB.ISearchQuery{{T}}.Candidates(System.Int32)
+  commentId: M:AeroDB.ISearchQuery{`0}.Candidates(System.Int32)
+  parent: AeroDB.ISearchQuery{{T}}
+  definition: AeroDB.ISearchQuery`1.Candidates(System.Int32)
+  href: AeroDB.ISearchQuery-1.html#AeroDB_ISearchQuery_1_Candidates_System_Int32_
+  name: Candidates(int)
+  nameWithType: ISearchQuery<T>.Candidates(int)
+  fullName: AeroDB.ISearchQuery<T>.Candidates(int)
+  nameWithType.vb: ISearchQuery(Of T).Candidates(Integer)
+  fullName.vb: AeroDB.ISearchQuery(Of T).Candidates(Integer)
+  name.vb: Candidates(Integer)
+  spec.csharp:
+  - uid: AeroDB.ISearchQuery{`0}.Candidates(System.Int32)
+    name: Candidates
+    isExternal: true
+    href: AeroDB.ISearchQuery-1.html#AeroDB_ISearchQuery_1_Candidates_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: AeroDB.ISearchQuery{`0}.Candidates(System.Int32)
+    name: Candidates
+    isExternal: true
+    href: AeroDB.ISearchQuery-1.html#AeroDB_ISearchQuery_1_Candidates_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: AeroDB.ISearchQuery`1.Candidates(System.Int32)
+  commentId: M:AeroDB.ISearchQuery`1.Candidates(System.Int32)
+  isExternal: true
+  href: AeroDB.ISearchQuery-1.html#AeroDB_ISearchQuery_1_Candidates_System_Int32_
+  name: Candidates(int)
+  nameWithType: ISearchQuery<T>.Candidates(int)
+  fullName: AeroDB.ISearchQuery<T>.Candidates(int)
+  nameWithType.vb: ISearchQuery(Of T).Candidates(Integer)
+  fullName.vb: AeroDB.ISearchQuery(Of T).Candidates(Integer)
+  name.vb: Candidates(Integer)
+  spec.csharp:
+  - uid: AeroDB.ISearchQuery`1.Candidates(System.Int32)
+    name: Candidates
+    isExternal: true
+    href: AeroDB.ISearchQuery-1.html#AeroDB_ISearchQuery_1_Candidates_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: AeroDB.ISearchQuery`1.Candidates(System.Int32)
+    name: Candidates
+    isExternal: true
+    href: AeroDB.ISearchQuery-1.html#AeroDB_ISearchQuery_1_Candidates_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: AeroDB.AeroDBSearchQuery`1.Where*
+  commentId: Overload:AeroDB.AeroDBSearchQuery`1.Where
+  isExternal: true
+  href: AeroDB.AeroDBSearchQuery-1.html#AeroDB_AeroDBSearchQuery_1_Where_System_Linq_Expressions_Expression_System_Func__0_System_Boolean___
+  name: Where
+  nameWithType: AeroDBSearchQuery<T>.Where
+  fullName: AeroDB.AeroDBSearchQuery<T>.Where
+  nameWithType.vb: AeroDBSearchQuery(Of T).Where
+  fullName.vb: AeroDB.AeroDBSearchQuery(Of T).Where
+- uid: AeroDB.ISearchQuery{{T}}.Where(System.Linq.Expressions.Expression{System.Func{{T},System.Boolean}})
+  commentId: M:AeroDB.ISearchQuery{`0}.Where(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})
+  parent: AeroDB.ISearchQuery{{T}}
+  definition: AeroDB.ISearchQuery`1.Where(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})
+  href: AeroDB.ISearchQuery-1.html#AeroDB_ISearchQuery_1_Where_System_Linq_Expressions_Expression_System_Func__0_System_Boolean___
+  name: Where(Expression<Func<T, bool>>)
+  nameWithType: ISearchQuery<T>.Where(Expression<Func<T, bool>>)
+  fullName: AeroDB.ISearchQuery<T>.Where(System.Linq.Expressions.Expression<System.Func<T, bool>>)
+  nameWithType.vb: ISearchQuery(Of T).Where(Expression(Of Func(Of T, Boolean)))
+  fullName.vb: AeroDB.ISearchQuery(Of T).Where(System.Linq.Expressions.Expression(Of System.Func(Of T, Boolean)))
+  name.vb: Where(Expression(Of Func(Of T, Boolean)))
+  spec.csharp:
+  - uid: AeroDB.ISearchQuery{`0}.Where(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})
+    name: Where
+    isExternal: true
+    href: AeroDB.ISearchQuery-1.html#AeroDB_ISearchQuery_1_Where_System_Linq_Expressions_Expression_System_Func__0_System_Boolean___
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: AeroDB.ISearchQuery{`0}.Where(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})
+    name: Where
+    isExternal: true
+    href: AeroDB.ISearchQuery-1.html#AeroDB_ISearchQuery_1_Where_System_Linq_Expressions_Expression_System_Func__0_System_Boolean___
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  - name: )
+  - name: )
+- uid: System.Linq.Expressions.Expression{System.Func{{T},System.Boolean}}
+  commentId: T:System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}}
+  parent: System.Linq.Expressions
+  definition: System.Linq.Expressions.Expression`1
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  name: Expression<Func<T, bool>>
+  nameWithType: Expression<Func<T, bool>>
+  fullName: System.Linq.Expressions.Expression<System.Func<T, bool>>
+  nameWithType.vb: Expression(Of Func(Of T, Boolean))
+  fullName.vb: System.Linq.Expressions.Expression(Of System.Func(Of T, Boolean))
+  name.vb: Expression(Of Func(Of T, Boolean))
+  spec.csharp:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  - name: )
+- uid: AeroDB.ISearchQuery`1.Where(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})
+  commentId: M:AeroDB.ISearchQuery`1.Where(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})
+  isExternal: true
+  href: AeroDB.ISearchQuery-1.html#AeroDB_ISearchQuery_1_Where_System_Linq_Expressions_Expression_System_Func__0_System_Boolean___
+  name: Where(Expression<Func<T, bool>>)
+  nameWithType: ISearchQuery<T>.Where(Expression<Func<T, bool>>)
+  fullName: AeroDB.ISearchQuery<T>.Where(System.Linq.Expressions.Expression<System.Func<T, bool>>)
+  nameWithType.vb: ISearchQuery(Of T).Where(Expression(Of Func(Of T, Boolean)))
+  fullName.vb: AeroDB.ISearchQuery(Of T).Where(System.Linq.Expressions.Expression(Of System.Func(Of T, Boolean)))
+  name.vb: Where(Expression(Of Func(Of T, Boolean)))
+  spec.csharp:
+  - uid: AeroDB.ISearchQuery`1.Where(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})
+    name: Where
+    isExternal: true
+    href: AeroDB.ISearchQuery-1.html#AeroDB_ISearchQuery_1_Where_System_Linq_Expressions_Expression_System_Func__0_System_Boolean___
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: AeroDB.ISearchQuery`1.Where(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})
+    name: Where
+    isExternal: true
+    href: AeroDB.ISearchQuery-1.html#AeroDB_ISearchQuery_1_Where_System_Linq_Expressions_Expression_System_Func__0_System_Boolean___
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  - name: )
+  - name: )
+- uid: AeroDB.AeroDBSearchQuery`1.OrderBy*
+  commentId: Overload:AeroDB.AeroDBSearchQuery`1.OrderBy
+  isExternal: true
+  href: AeroDB.AeroDBSearchQuery-1.html#AeroDB_AeroDBSearchQuery_1_OrderBy__1_System_Linq_Expressions_Expression_System_Func__0___0___System_Boolean_
+  name: OrderBy
+  nameWithType: AeroDBSearchQuery<T>.OrderBy
+  fullName: AeroDB.AeroDBSearchQuery<T>.OrderBy
+  nameWithType.vb: AeroDBSearchQuery(Of T).OrderBy
+  fullName.vb: AeroDB.AeroDBSearchQuery(Of T).OrderBy
+- uid: AeroDB.ISearchQuery{{T}}.OrderBy``1(System.Linq.Expressions.Expression{System.Func{{T},{TKey}}},System.Boolean)
+  commentId: M:AeroDB.ISearchQuery{`0}.OrderBy``1(System.Linq.Expressions.Expression{System.Func{`0,``0}},System.Boolean)
+  parent: AeroDB.ISearchQuery{{T}}
+  definition: AeroDB.ISearchQuery`1.OrderBy``1(System.Linq.Expressions.Expression{System.Func{`0,``0}},System.Boolean)
+  href: AeroDB.ISearchQuery-1.html#AeroDB_ISearchQuery_1_OrderBy__1_System_Linq_Expressions_Expression_System_Func__0___0___System_Boolean_
+  name: OrderBy<TKey>(Expression<Func<T, TKey>>, bool)
+  nameWithType: ISearchQuery<T>.OrderBy<TKey>(Expression<Func<T, TKey>>, bool)
+  fullName: AeroDB.ISearchQuery<T>.OrderBy<TKey>(System.Linq.Expressions.Expression<System.Func<T, TKey>>, bool)
+  nameWithType.vb: ISearchQuery(Of T).OrderBy(Of TKey)(Expression(Of Func(Of T, TKey)), Boolean)
+  fullName.vb: AeroDB.ISearchQuery(Of T).OrderBy(Of TKey)(System.Linq.Expressions.Expression(Of System.Func(Of T, TKey)), Boolean)
+  name.vb: OrderBy(Of TKey)(Expression(Of Func(Of T, TKey)), Boolean)
+  spec.csharp:
+  - uid: AeroDB.ISearchQuery{`0}.OrderBy``1(System.Linq.Expressions.Expression{System.Func{`0,``0}},System.Boolean)
+    name: OrderBy
+    isExternal: true
+    href: AeroDB.ISearchQuery-1.html#AeroDB_ISearchQuery_1_OrderBy__1_System_Linq_Expressions_Expression_System_Func__0___0___System_Boolean_
+  - name: <
+  - name: TKey
+  - name: '>'
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TKey
+  - name: '>'
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AeroDB.ISearchQuery{`0}.OrderBy``1(System.Linq.Expressions.Expression{System.Func{`0,``0}},System.Boolean)
+    name: OrderBy
+    isExternal: true
+    href: AeroDB.ISearchQuery-1.html#AeroDB_ISearchQuery_1_OrderBy__1_System_Linq_Expressions_Expression_System_Func__0___0___System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TKey
+  - name: )
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TKey
+  - name: )
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Linq.Expressions.Expression{System.Func{{T},{TKey}}}
+  commentId: T:System.Linq.Expressions.Expression{System.Func{`0,``0}}
+  parent: System.Linq.Expressions
+  definition: System.Linq.Expressions.Expression`1
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  name: Expression<Func<T, TKey>>
+  nameWithType: Expression<Func<T, TKey>>
+  fullName: System.Linq.Expressions.Expression<System.Func<T, TKey>>
+  nameWithType.vb: Expression(Of Func(Of T, TKey))
+  fullName.vb: System.Linq.Expressions.Expression(Of System.Func(Of T, TKey))
+  name.vb: Expression(Of Func(Of T, TKey))
+  spec.csharp:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TKey
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TKey
+  - name: )
+  - name: )
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: AeroDB.ISearchQuery`1.OrderBy``1(System.Linq.Expressions.Expression{System.Func{`0,``0}},System.Boolean)
+  commentId: M:AeroDB.ISearchQuery`1.OrderBy``1(System.Linq.Expressions.Expression{System.Func{`0,``0}},System.Boolean)
+  isExternal: true
+  href: AeroDB.ISearchQuery-1.html#AeroDB_ISearchQuery_1_OrderBy__1_System_Linq_Expressions_Expression_System_Func__0___0___System_Boolean_
+  name: OrderBy<TKey>(Expression<Func<T, TKey>>, bool)
+  nameWithType: ISearchQuery<T>.OrderBy<TKey>(Expression<Func<T, TKey>>, bool)
+  fullName: AeroDB.ISearchQuery<T>.OrderBy<TKey>(System.Linq.Expressions.Expression<System.Func<T, TKey>>, bool)
+  nameWithType.vb: ISearchQuery(Of T).OrderBy(Of TKey)(Expression(Of Func(Of T, TKey)), Boolean)
+  fullName.vb: AeroDB.ISearchQuery(Of T).OrderBy(Of TKey)(System.Linq.Expressions.Expression(Of System.Func(Of T, TKey)), Boolean)
+  name.vb: OrderBy(Of TKey)(Expression(Of Func(Of T, TKey)), Boolean)
+  spec.csharp:
+  - uid: AeroDB.ISearchQuery`1.OrderBy``1(System.Linq.Expressions.Expression{System.Func{`0,``0}},System.Boolean)
+    name: OrderBy
+    isExternal: true
+    href: AeroDB.ISearchQuery-1.html#AeroDB_ISearchQuery_1_OrderBy__1_System_Linq_Expressions_Expression_System_Func__0___0___System_Boolean_
+  - name: <
+  - name: TKey
+  - name: '>'
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TKey
+  - name: '>'
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AeroDB.ISearchQuery`1.OrderBy``1(System.Linq.Expressions.Expression{System.Func{`0,``0}},System.Boolean)
+    name: OrderBy
+    isExternal: true
+    href: AeroDB.ISearchQuery-1.html#AeroDB_ISearchQuery_1_OrderBy__1_System_Linq_Expressions_Expression_System_Func__0___0___System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TKey
+  - name: )
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TKey
+  - name: )
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: AeroDB.AeroDBSearchQuery`1.Skip*
+  commentId: Overload:AeroDB.AeroDBSearchQuery`1.Skip
+  isExternal: true
+  href: AeroDB.AeroDBSearchQuery-1.html#AeroDB_AeroDBSearchQuery_1_Skip_System_Int32_
+  name: Skip
+  nameWithType: AeroDBSearchQuery<T>.Skip
+  fullName: AeroDB.AeroDBSearchQuery<T>.Skip
+  nameWithType.vb: AeroDBSearchQuery(Of T).Skip
+  fullName.vb: AeroDB.AeroDBSearchQuery(Of T).Skip
+- uid: AeroDB.ISearchQuery{{T}}.Skip(System.Int32)
+  commentId: M:AeroDB.ISearchQuery{`0}.Skip(System.Int32)
+  parent: AeroDB.ISearchQuery{{T}}
+  definition: AeroDB.ISearchQuery`1.Skip(System.Int32)
+  href: AeroDB.ISearchQuery-1.html#AeroDB_ISearchQuery_1_Skip_System_Int32_
+  name: Skip(int)
+  nameWithType: ISearchQuery<T>.Skip(int)
+  fullName: AeroDB.ISearchQuery<T>.Skip(int)
+  nameWithType.vb: ISearchQuery(Of T).Skip(Integer)
+  fullName.vb: AeroDB.ISearchQuery(Of T).Skip(Integer)
+  name.vb: Skip(Integer)
+  spec.csharp:
+  - uid: AeroDB.ISearchQuery{`0}.Skip(System.Int32)
+    name: Skip
+    isExternal: true
+    href: AeroDB.ISearchQuery-1.html#AeroDB_ISearchQuery_1_Skip_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: AeroDB.ISearchQuery{`0}.Skip(System.Int32)
+    name: Skip
+    isExternal: true
+    href: AeroDB.ISearchQuery-1.html#AeroDB_ISearchQuery_1_Skip_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: AeroDB.ISearchQuery`1.Skip(System.Int32)
+  commentId: M:AeroDB.ISearchQuery`1.Skip(System.Int32)
+  isExternal: true
+  href: AeroDB.ISearchQuery-1.html#AeroDB_ISearchQuery_1_Skip_System_Int32_
+  name: Skip(int)
+  nameWithType: ISearchQuery<T>.Skip(int)
+  fullName: AeroDB.ISearchQuery<T>.Skip(int)
+  nameWithType.vb: ISearchQuery(Of T).Skip(Integer)
+  fullName.vb: AeroDB.ISearchQuery(Of T).Skip(Integer)
+  name.vb: Skip(Integer)
+  spec.csharp:
+  - uid: AeroDB.ISearchQuery`1.Skip(System.Int32)
+    name: Skip
+    isExternal: true
+    href: AeroDB.ISearchQuery-1.html#AeroDB_ISearchQuery_1_Skip_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: AeroDB.ISearchQuery`1.Skip(System.Int32)
+    name: Skip
+    isExternal: true
+    href: AeroDB.ISearchQuery-1.html#AeroDB_ISearchQuery_1_Skip_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: AeroDB.AeroDBSearchQuery`1.ToListAsync*
+  commentId: Overload:AeroDB.AeroDBSearchQuery`1.ToListAsync
+  isExternal: true
+  href: AeroDB.AeroDBSearchQuery-1.html#AeroDB_AeroDBSearchQuery_1_ToListAsync_System_Threading_CancellationToken_
+  name: ToListAsync
+  nameWithType: AeroDBSearchQuery<T>.ToListAsync
+  fullName: AeroDB.AeroDBSearchQuery<T>.ToListAsync
+  nameWithType.vb: AeroDBSearchQuery(Of T).ToListAsync
+  fullName.vb: AeroDB.AeroDBSearchQuery(Of T).ToListAsync
+- uid: AeroDB.ISearchQuery{{T}}.ToListAsync(System.Threading.CancellationToken)
+  commentId: M:AeroDB.ISearchQuery{`0}.ToListAsync(System.Threading.CancellationToken)
+  parent: AeroDB.ISearchQuery{{T}}
+  definition: AeroDB.ISearchQuery`1.ToListAsync(System.Threading.CancellationToken)
+  href: AeroDB.ISearchQuery-1.html#AeroDB_ISearchQuery_1_ToListAsync_System_Threading_CancellationToken_
+  name: ToListAsync(CancellationToken)
+  nameWithType: ISearchQuery<T>.ToListAsync(CancellationToken)
+  fullName: AeroDB.ISearchQuery<T>.ToListAsync(System.Threading.CancellationToken)
+  nameWithType.vb: ISearchQuery(Of T).ToListAsync(CancellationToken)
+  fullName.vb: AeroDB.ISearchQuery(Of T).ToListAsync(System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: AeroDB.ISearchQuery{`0}.ToListAsync(System.Threading.CancellationToken)
+    name: ToListAsync
+    isExternal: true
+    href: AeroDB.ISearchQuery-1.html#AeroDB_ISearchQuery_1_ToListAsync_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: AeroDB.ISearchQuery{`0}.ToListAsync(System.Threading.CancellationToken)
+    name: ToListAsync
+    isExternal: true
+    href: AeroDB.ISearchQuery-1.html#AeroDB_ISearchQuery_1_ToListAsync_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.List{{T}}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.List{``0}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<List<T>>
+  nameWithType: Task<List<T>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.List<T>>
+  nameWithType.vb: Task(Of List(Of T))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.List(Of T))
+  name.vb: Task(Of List(Of T))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - name: T
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+- uid: AeroDB.ISearchQuery`1.ToListAsync(System.Threading.CancellationToken)
+  commentId: M:AeroDB.ISearchQuery`1.ToListAsync(System.Threading.CancellationToken)
+  isExternal: true
+  href: AeroDB.ISearchQuery-1.html#AeroDB_ISearchQuery_1_ToListAsync_System_Threading_CancellationToken_
+  name: ToListAsync(CancellationToken)
+  nameWithType: ISearchQuery<T>.ToListAsync(CancellationToken)
+  fullName: AeroDB.ISearchQuery<T>.ToListAsync(System.Threading.CancellationToken)
+  nameWithType.vb: ISearchQuery(Of T).ToListAsync(CancellationToken)
+  fullName.vb: AeroDB.ISearchQuery(Of T).ToListAsync(System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: AeroDB.ISearchQuery`1.ToListAsync(System.Threading.CancellationToken)
+    name: ToListAsync
+    isExternal: true
+    href: AeroDB.ISearchQuery-1.html#AeroDB_ISearchQuery_1_ToListAsync_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: AeroDB.ISearchQuery`1.ToListAsync(System.Threading.CancellationToken)
+    name: ToListAsync
+    isExternal: true
+    href: AeroDB.ISearchQuery-1.html#AeroDB_ISearchQuery_1_ToListAsync_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: AeroDB.AeroDBSearchQuery`1.FuseAsync*
+  commentId: Overload:AeroDB.AeroDBSearchQuery`1.FuseAsync
+  isExternal: true
+  href: AeroDB.AeroDBSearchQuery-1.html#AeroDB_AeroDBSearchQuery_1_FuseAsync_System_Int32_System_Int32_System_Threading_CancellationToken_
+  name: FuseAsync
+  nameWithType: AeroDBSearchQuery<T>.FuseAsync
+  fullName: AeroDB.AeroDBSearchQuery<T>.FuseAsync
+  nameWithType.vb: AeroDBSearchQuery(Of T).FuseAsync
+  fullName.vb: AeroDB.AeroDBSearchQuery(Of T).FuseAsync
+- uid: AeroDB.ISearchQuery{{T}}.FuseAsync(System.Int32,System.Int32,System.Threading.CancellationToken)
+  commentId: M:AeroDB.ISearchQuery{`0}.FuseAsync(System.Int32,System.Int32,System.Threading.CancellationToken)
+  parent: AeroDB.ISearchQuery{{T}}
+  definition: AeroDB.ISearchQuery`1.FuseAsync(System.Int32,System.Int32,System.Threading.CancellationToken)
+  href: AeroDB.ISearchQuery-1.html#AeroDB_ISearchQuery_1_FuseAsync_System_Int32_System_Int32_System_Threading_CancellationToken_
+  name: FuseAsync(int, int, CancellationToken)
+  nameWithType: ISearchQuery<T>.FuseAsync(int, int, CancellationToken)
+  fullName: AeroDB.ISearchQuery<T>.FuseAsync(int, int, System.Threading.CancellationToken)
+  nameWithType.vb: ISearchQuery(Of T).FuseAsync(Integer, Integer, CancellationToken)
+  fullName.vb: AeroDB.ISearchQuery(Of T).FuseAsync(Integer, Integer, System.Threading.CancellationToken)
+  name.vb: FuseAsync(Integer, Integer, CancellationToken)
+  spec.csharp:
+  - uid: AeroDB.ISearchQuery{`0}.FuseAsync(System.Int32,System.Int32,System.Threading.CancellationToken)
+    name: FuseAsync
+    isExternal: true
+    href: AeroDB.ISearchQuery-1.html#AeroDB_ISearchQuery_1_FuseAsync_System_Int32_System_Int32_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: AeroDB.ISearchQuery{`0}.FuseAsync(System.Int32,System.Int32,System.Threading.CancellationToken)
+    name: FuseAsync
+    isExternal: true
+    href: AeroDB.ISearchQuery-1.html#AeroDB_ISearchQuery_1_FuseAsync_System_Int32_System_Int32_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: AeroDB.ISearchQuery`1.FuseAsync(System.Int32,System.Int32,System.Threading.CancellationToken)
+  commentId: M:AeroDB.ISearchQuery`1.FuseAsync(System.Int32,System.Int32,System.Threading.CancellationToken)
+  isExternal: true
+  href: AeroDB.ISearchQuery-1.html#AeroDB_ISearchQuery_1_FuseAsync_System_Int32_System_Int32_System_Threading_CancellationToken_
+  name: FuseAsync(int, int, CancellationToken)
+  nameWithType: ISearchQuery<T>.FuseAsync(int, int, CancellationToken)
+  fullName: AeroDB.ISearchQuery<T>.FuseAsync(int, int, System.Threading.CancellationToken)
+  nameWithType.vb: ISearchQuery(Of T).FuseAsync(Integer, Integer, CancellationToken)
+  fullName.vb: AeroDB.ISearchQuery(Of T).FuseAsync(Integer, Integer, System.Threading.CancellationToken)
+  name.vb: FuseAsync(Integer, Integer, CancellationToken)
+  spec.csharp:
+  - uid: AeroDB.ISearchQuery`1.FuseAsync(System.Int32,System.Int32,System.Threading.CancellationToken)
+    name: FuseAsync
+    isExternal: true
+    href: AeroDB.ISearchQuery-1.html#AeroDB_ISearchQuery_1_FuseAsync_System_Int32_System_Int32_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: AeroDB.ISearchQuery`1.FuseAsync(System.Int32,System.Int32,System.Threading.CancellationToken)
+    name: FuseAsync
+    isExternal: true
+    href: AeroDB.ISearchQuery-1.html#AeroDB_ISearchQuery_1_FuseAsync_System_Int32_System_Int32_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )

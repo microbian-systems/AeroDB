@@ -1,0 +1,98 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.ConcurrencyChecks
+  commentId: T:AeroDB.ConcurrencyChecks
+  id: ConcurrencyChecks
+  parent: AeroDB
+  children:
+  - AeroDB.ConcurrencyChecks.Disabled
+  - AeroDB.ConcurrencyChecks.Enabled
+  langs:
+  - csharp
+  - vb
+  name: ConcurrencyChecks
+  nameWithType: ConcurrencyChecks
+  fullName: AeroDB.ConcurrencyChecks
+  type: Enum
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/ConcurrencyChecks.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Per-session concurrency detection mode. When set to <xref href="AeroDB.ConcurrencyChecks.Disabled" data-throw-if-not-resolved="false"></xref>,
+
+    optimistic concurrency checks are skipped even if the store has
+
+    <code>UseOptimisticConcurrency = true</code>.
+  example: []
+  syntax:
+    content: public enum ConcurrencyChecks
+    content.vb: Public Enum ConcurrencyChecks
+- uid: AeroDB.ConcurrencyChecks.Disabled
+  commentId: F:AeroDB.ConcurrencyChecks.Disabled
+  id: Disabled
+  parent: AeroDB.ConcurrencyChecks
+  langs:
+  - csharp
+  - vb
+  name: Disabled
+  nameWithType: ConcurrencyChecks.Disabled
+  fullName: AeroDB.ConcurrencyChecks.Disabled
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/ConcurrencyChecks.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Disable optimistic concurrency checks for this session.
+  example: []
+  syntax:
+    content: Disabled = 0
+    return:
+      type: AeroDB.ConcurrencyChecks
+- uid: AeroDB.ConcurrencyChecks.Enabled
+  commentId: F:AeroDB.ConcurrencyChecks.Enabled
+  id: Enabled
+  parent: AeroDB.ConcurrencyChecks
+  langs:
+  - csharp
+  - vb
+  name: Enabled
+  nameWithType: ConcurrencyChecks.Enabled
+  fullName: AeroDB.ConcurrencyChecks.Enabled
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/ConcurrencyChecks.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Enable optimistic concurrency checks for this session (store default).
+  example: []
+  syntax:
+    content: Enabled = 1
+    return:
+      type: AeroDB.ConcurrencyChecks
+references:
+- uid: AeroDB.ConcurrencyChecks.Disabled
+  commentId: F:AeroDB.ConcurrencyChecks.Disabled
+  isExternal: true
+  href: AeroDB.ConcurrencyChecks.html#AeroDB_ConcurrencyChecks_Disabled
+  name: Disabled
+  nameWithType: ConcurrencyChecks.Disabled
+  fullName: AeroDB.ConcurrencyChecks.Disabled
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: AeroDB.ConcurrencyChecks
+  commentId: T:AeroDB.ConcurrencyChecks
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.ConcurrencyChecks.html
+  name: ConcurrencyChecks
+  nameWithType: ConcurrencyChecks
+  fullName: AeroDB.ConcurrencyChecks

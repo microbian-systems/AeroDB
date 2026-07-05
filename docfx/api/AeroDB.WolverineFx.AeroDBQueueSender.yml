@@ -1,0 +1,703 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.WolverineFx.AeroDBQueueSender
+  commentId: T:AeroDB.WolverineFx.AeroDBQueueSender
+  id: AeroDBQueueSender
+  parent: AeroDB.WolverineFx
+  children:
+  - AeroDB.WolverineFx.AeroDBQueueSender.#ctor(AeroDB.WolverineFx.AeroDBMessageStore,System.Uri)
+  - AeroDB.WolverineFx.AeroDBQueueSender.Destination
+  - AeroDB.WolverineFx.AeroDBQueueSender.PingAsync
+  - AeroDB.WolverineFx.AeroDBQueueSender.SendAsync(Wolverine.Envelope)
+  - AeroDB.WolverineFx.AeroDBQueueSender.SupportsNativeScheduledSend
+  langs:
+  - csharp
+  - vb
+  name: AeroDBQueueSender
+  nameWithType: AeroDBQueueSender
+  fullName: AeroDB.WolverineFx.AeroDBQueueSender
+  type: Class
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBQueueSender.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  summary: >-
+    Sends outgoing messages by inserting them into the SurrealDB
+
+    wolverine_outgoing_envelopes table via AeroDBMessageStore.
+  example: []
+  syntax:
+    content: 'public sealed class AeroDBQueueSender : ISender'
+    content.vb: Public NotInheritable Class AeroDBQueueSender Implements ISender
+  inheritance:
+  - System.Object
+  implements:
+  - Wolverine.Transports.Sending.ISender
+  inheritedMembers:
+  - System.Object.GetType
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+- uid: AeroDB.WolverineFx.AeroDBQueueSender.#ctor(AeroDB.WolverineFx.AeroDBMessageStore,System.Uri)
+  commentId: M:AeroDB.WolverineFx.AeroDBQueueSender.#ctor(AeroDB.WolverineFx.AeroDBMessageStore,System.Uri)
+  id: '#ctor(AeroDB.WolverineFx.AeroDBMessageStore,System.Uri)'
+  parent: AeroDB.WolverineFx.AeroDBQueueSender
+  langs:
+  - csharp
+  - vb
+  name: AeroDBQueueSender(AeroDBMessageStore, Uri)
+  nameWithType: AeroDBQueueSender.AeroDBQueueSender(AeroDBMessageStore, Uri)
+  fullName: AeroDB.WolverineFx.AeroDBQueueSender.AeroDBQueueSender(AeroDB.WolverineFx.AeroDBMessageStore, System.Uri)
+  type: Constructor
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBQueueSender.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  summary: Create a new sender with the given store and destination.
+  example: []
+  syntax:
+    content: public AeroDBQueueSender(AeroDBMessageStore store, Uri destination)
+    parameters:
+    - id: store
+      type: AeroDB.WolverineFx.AeroDBMessageStore
+    - id: destination
+      type: System.Uri
+    content.vb: Public Sub New(store As AeroDBMessageStore, destination As Uri)
+  overload: AeroDB.WolverineFx.AeroDBQueueSender.#ctor*
+  nameWithType.vb: AeroDBQueueSender.New(AeroDBMessageStore, Uri)
+  fullName.vb: AeroDB.WolverineFx.AeroDBQueueSender.New(AeroDB.WolverineFx.AeroDBMessageStore, System.Uri)
+  name.vb: New(AeroDBMessageStore, Uri)
+- uid: AeroDB.WolverineFx.AeroDBQueueSender.PingAsync
+  commentId: M:AeroDB.WolverineFx.AeroDBQueueSender.PingAsync
+  id: PingAsync
+  parent: AeroDB.WolverineFx.AeroDBQueueSender
+  langs:
+  - csharp
+  - vb
+  name: PingAsync()
+  nameWithType: AeroDBQueueSender.PingAsync()
+  fullName: AeroDB.WolverineFx.AeroDBQueueSender.PingAsync()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBQueueSender.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  summary: Ping to check if the store is reachable.
+  example: []
+  syntax:
+    content: public Task<bool> PingAsync()
+    return:
+      type: System.Threading.Tasks.Task{System.Boolean}
+    content.vb: Public Function PingAsync() As Task(Of Boolean)
+  overload: AeroDB.WolverineFx.AeroDBQueueSender.PingAsync*
+  implements:
+  - Wolverine.Transports.Sending.ISender.PingAsync
+- uid: AeroDB.WolverineFx.AeroDBQueueSender.SendAsync(Wolverine.Envelope)
+  commentId: M:AeroDB.WolverineFx.AeroDBQueueSender.SendAsync(Wolverine.Envelope)
+  id: SendAsync(Wolverine.Envelope)
+  parent: AeroDB.WolverineFx.AeroDBQueueSender
+  langs:
+  - csharp
+  - vb
+  name: SendAsync(Envelope)
+  nameWithType: AeroDBQueueSender.SendAsync(Envelope)
+  fullName: AeroDB.WolverineFx.AeroDBQueueSender.SendAsync(Wolverine.Envelope)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBQueueSender.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  summary: Send an envelope by storing it in the outgoing table.
+  example: []
+  syntax:
+    content: public ValueTask SendAsync(Envelope envelope)
+    parameters:
+    - id: envelope
+      type: Wolverine.Envelope
+    return:
+      type: System.Threading.Tasks.ValueTask
+    content.vb: Public Function SendAsync(envelope As Envelope) As ValueTask
+  overload: AeroDB.WolverineFx.AeroDBQueueSender.SendAsync*
+  implements:
+  - Wolverine.Transports.Sending.ISender.SendAsync(Wolverine.Envelope)
+- uid: AeroDB.WolverineFx.AeroDBQueueSender.SupportsNativeScheduledSend
+  commentId: P:AeroDB.WolverineFx.AeroDBQueueSender.SupportsNativeScheduledSend
+  id: SupportsNativeScheduledSend
+  parent: AeroDB.WolverineFx.AeroDBQueueSender
+  langs:
+  - csharp
+  - vb
+  name: SupportsNativeScheduledSend
+  nameWithType: AeroDBQueueSender.SupportsNativeScheduledSend
+  fullName: AeroDB.WolverineFx.AeroDBQueueSender.SupportsNativeScheduledSend
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBQueueSender.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  summary: This transport does not support native scheduled send.
+  example: []
+  syntax:
+    content: public bool SupportsNativeScheduledSend { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public ReadOnly Property SupportsNativeScheduledSend As Boolean
+  overload: AeroDB.WolverineFx.AeroDBQueueSender.SupportsNativeScheduledSend*
+  implements:
+  - Wolverine.Transports.Sending.ISender.SupportsNativeScheduledSend
+- uid: AeroDB.WolverineFx.AeroDBQueueSender.Destination
+  commentId: P:AeroDB.WolverineFx.AeroDBQueueSender.Destination
+  id: Destination
+  parent: AeroDB.WolverineFx.AeroDBQueueSender
+  langs:
+  - csharp
+  - vb
+  name: Destination
+  nameWithType: AeroDBQueueSender.Destination
+  fullName: AeroDB.WolverineFx.AeroDBQueueSender.Destination
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBQueueSender.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  summary: The destination URI for this sender.
+  example: []
+  syntax:
+    content: public Uri Destination { get; }
+    parameters: []
+    return:
+      type: System.Uri
+    content.vb: Public ReadOnly Property Destination As Uri
+  overload: AeroDB.WolverineFx.AeroDBQueueSender.Destination*
+  implements:
+  - Wolverine.Transports.Sending.ISender.Destination
+references:
+- uid: AeroDB.WolverineFx
+  commentId: N:AeroDB.WolverineFx
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB.WolverineFx
+  nameWithType: AeroDB.WolverineFx
+  fullName: AeroDB.WolverineFx
+  spec.csharp:
+  - uid: AeroDB
+    name: AeroDB
+    isExternal: true
+    href: AeroDB.html
+  - name: .
+  - uid: AeroDB.WolverineFx
+    name: WolverineFx
+    isExternal: true
+    href: AeroDB.WolverineFx.html
+  spec.vb:
+  - uid: AeroDB
+    name: AeroDB
+    isExternal: true
+    href: AeroDB.html
+  - name: .
+  - uid: AeroDB.WolverineFx
+    name: WolverineFx
+    isExternal: true
+    href: AeroDB.WolverineFx.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: Wolverine.Transports.Sending.ISender
+  commentId: T:Wolverine.Transports.Sending.ISender
+  parent: Wolverine.Transports.Sending
+  isExternal: true
+  name: ISender
+  nameWithType: ISender
+  fullName: Wolverine.Transports.Sending.ISender
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Wolverine.Transports.Sending
+  commentId: N:Wolverine.Transports.Sending
+  isExternal: true
+  name: Wolverine.Transports.Sending
+  nameWithType: Wolverine.Transports.Sending
+  fullName: Wolverine.Transports.Sending
+  spec.csharp:
+  - uid: Wolverine
+    name: Wolverine
+    isExternal: true
+  - name: .
+  - uid: Wolverine.Transports
+    name: Transports
+    isExternal: true
+  - name: .
+  - uid: Wolverine.Transports.Sending
+    name: Sending
+    isExternal: true
+  spec.vb:
+  - uid: Wolverine
+    name: Wolverine
+    isExternal: true
+  - name: .
+  - uid: Wolverine.Transports
+    name: Transports
+    isExternal: true
+  - name: .
+  - uid: Wolverine.Transports.Sending
+    name: Sending
+    isExternal: true
+- uid: AeroDB.WolverineFx.AeroDBQueueSender.#ctor*
+  commentId: Overload:AeroDB.WolverineFx.AeroDBQueueSender.#ctor
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBQueueSender.html#AeroDB_WolverineFx_AeroDBQueueSender__ctor_AeroDB_WolverineFx_AeroDBMessageStore_System_Uri_
+  name: AeroDBQueueSender
+  nameWithType: AeroDBQueueSender.AeroDBQueueSender
+  fullName: AeroDB.WolverineFx.AeroDBQueueSender.AeroDBQueueSender
+  nameWithType.vb: AeroDBQueueSender.New
+  fullName.vb: AeroDB.WolverineFx.AeroDBQueueSender.New
+  name.vb: New
+- uid: AeroDB.WolverineFx.AeroDBMessageStore
+  commentId: T:AeroDB.WolverineFx.AeroDBMessageStore
+  parent: AeroDB.WolverineFx
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBMessageStore.html
+  name: AeroDBMessageStore
+  nameWithType: AeroDBMessageStore
+  fullName: AeroDB.WolverineFx.AeroDBMessageStore
+- uid: System.Uri
+  commentId: T:System.Uri
+  parent: System
+  isExternal: true
+  name: Uri
+  nameWithType: Uri
+  fullName: System.Uri
+- uid: AeroDB.WolverineFx.AeroDBQueueSender.PingAsync*
+  commentId: Overload:AeroDB.WolverineFx.AeroDBQueueSender.PingAsync
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBQueueSender.html#AeroDB_WolverineFx_AeroDBQueueSender_PingAsync
+  name: PingAsync
+  nameWithType: AeroDBQueueSender.PingAsync
+  fullName: AeroDB.WolverineFx.AeroDBQueueSender.PingAsync
+- uid: Wolverine.Transports.Sending.ISender.PingAsync
+  commentId: M:Wolverine.Transports.Sending.ISender.PingAsync
+  parent: Wolverine.Transports.Sending.ISender
+  isExternal: true
+  name: PingAsync()
+  nameWithType: ISender.PingAsync()
+  fullName: Wolverine.Transports.Sending.ISender.PingAsync()
+  spec.csharp:
+  - uid: Wolverine.Transports.Sending.ISender.PingAsync
+    name: PingAsync
+    isExternal: true
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Wolverine.Transports.Sending.ISender.PingAsync
+    name: PingAsync
+    isExternal: true
+  - name: (
+  - name: )
+- uid: System.Threading.Tasks.Task{System.Boolean}
+  commentId: T:System.Threading.Tasks.Task{System.Boolean}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<bool>
+  nameWithType: Task<bool>
+  fullName: System.Threading.Tasks.Task<bool>
+  nameWithType.vb: Task(Of Boolean)
+  fullName.vb: System.Threading.Tasks.Task(Of Boolean)
+  name.vb: Task(Of Boolean)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: AeroDB.WolverineFx.AeroDBQueueSender.SendAsync*
+  commentId: Overload:AeroDB.WolverineFx.AeroDBQueueSender.SendAsync
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBQueueSender.html#AeroDB_WolverineFx_AeroDBQueueSender_SendAsync_Wolverine_Envelope_
+  name: SendAsync
+  nameWithType: AeroDBQueueSender.SendAsync
+  fullName: AeroDB.WolverineFx.AeroDBQueueSender.SendAsync
+- uid: Wolverine.Transports.Sending.ISender.SendAsync(Wolverine.Envelope)
+  commentId: M:Wolverine.Transports.Sending.ISender.SendAsync(Wolverine.Envelope)
+  parent: Wolverine.Transports.Sending.ISender
+  isExternal: true
+  name: SendAsync(Envelope)
+  nameWithType: ISender.SendAsync(Envelope)
+  fullName: Wolverine.Transports.Sending.ISender.SendAsync(Wolverine.Envelope)
+  spec.csharp:
+  - uid: Wolverine.Transports.Sending.ISender.SendAsync(Wolverine.Envelope)
+    name: SendAsync
+    isExternal: true
+  - name: (
+  - uid: Wolverine.Envelope
+    name: Envelope
+    isExternal: true
+  - name: )
+  spec.vb:
+  - uid: Wolverine.Transports.Sending.ISender.SendAsync(Wolverine.Envelope)
+    name: SendAsync
+    isExternal: true
+  - name: (
+  - uid: Wolverine.Envelope
+    name: Envelope
+    isExternal: true
+  - name: )
+- uid: Wolverine.Envelope
+  commentId: T:Wolverine.Envelope
+  parent: Wolverine
+  isExternal: true
+  name: Envelope
+  nameWithType: Envelope
+  fullName: Wolverine.Envelope
+- uid: System.Threading.Tasks.ValueTask
+  commentId: T:System.Threading.Tasks.ValueTask
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask
+  name: ValueTask
+  nameWithType: ValueTask
+  fullName: System.Threading.Tasks.ValueTask
+- uid: Wolverine
+  commentId: N:Wolverine
+  isExternal: true
+  name: Wolverine
+  nameWithType: Wolverine
+  fullName: Wolverine
+- uid: AeroDB.WolverineFx.AeroDBQueueSender.SupportsNativeScheduledSend*
+  commentId: Overload:AeroDB.WolverineFx.AeroDBQueueSender.SupportsNativeScheduledSend
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBQueueSender.html#AeroDB_WolverineFx_AeroDBQueueSender_SupportsNativeScheduledSend
+  name: SupportsNativeScheduledSend
+  nameWithType: AeroDBQueueSender.SupportsNativeScheduledSend
+  fullName: AeroDB.WolverineFx.AeroDBQueueSender.SupportsNativeScheduledSend
+- uid: Wolverine.Transports.Sending.ISender.SupportsNativeScheduledSend
+  commentId: P:Wolverine.Transports.Sending.ISender.SupportsNativeScheduledSend
+  parent: Wolverine.Transports.Sending.ISender
+  isExternal: true
+  name: SupportsNativeScheduledSend
+  nameWithType: ISender.SupportsNativeScheduledSend
+  fullName: Wolverine.Transports.Sending.ISender.SupportsNativeScheduledSend
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: AeroDB.WolverineFx.AeroDBQueueSender.Destination*
+  commentId: Overload:AeroDB.WolverineFx.AeroDBQueueSender.Destination
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBQueueSender.html#AeroDB_WolverineFx_AeroDBQueueSender_Destination
+  name: Destination
+  nameWithType: AeroDBQueueSender.Destination
+  fullName: AeroDB.WolverineFx.AeroDBQueueSender.Destination
+- uid: Wolverine.Transports.Sending.ISender.Destination
+  commentId: P:Wolverine.Transports.Sending.ISender.Destination
+  parent: Wolverine.Transports.Sending.ISender
+  isExternal: true
+  name: Destination
+  nameWithType: ISender.Destination
+  fullName: Wolverine.Transports.Sending.ISender.Destination

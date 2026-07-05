@@ -1,0 +1,208 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.IInitialData
+  commentId: T:AeroDB.IInitialData
+  id: IInitialData
+  parent: AeroDB
+  children:
+  - AeroDB.IInitialData.PopulateAsync(AeroDB.IDocumentSession,System.Threading.CancellationToken)
+  langs:
+  - csharp
+  - vb
+  name: IInitialData
+  nameWithType: IInitialData
+  fullName: AeroDB.IInitialData
+  type: Interface
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IInitialData.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Populates initial data during <xref href="AeroDB.DocumentStore.InitializeAsync(System.Threading.CancellationToken)" data-throw-if-not-resolved="false"></xref>.
+
+    Register implementations via <xref href="AeroDB.StoreOptions.InitialData" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: public interface IInitialData
+    content.vb: Public Interface IInitialData
+- uid: AeroDB.IInitialData.PopulateAsync(AeroDB.IDocumentSession,System.Threading.CancellationToken)
+  commentId: M:AeroDB.IInitialData.PopulateAsync(AeroDB.IDocumentSession,System.Threading.CancellationToken)
+  id: PopulateAsync(AeroDB.IDocumentSession,System.Threading.CancellationToken)
+  parent: AeroDB.IInitialData
+  langs:
+  - csharp
+  - vb
+  name: PopulateAsync(IDocumentSession, CancellationToken)
+  nameWithType: IInitialData.PopulateAsync(IDocumentSession, CancellationToken)
+  fullName: AeroDB.IInitialData.PopulateAsync(AeroDB.IDocumentSession, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IInitialData.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Called during store initialization. Use the session to populate seed data.
+
+    The session is a lightweight write session. SaveChangesAsync is called after all
+
+    <xref href="AeroDB.IInitialData" data-throw-if-not-resolved="false"></xref> implementations run.
+  example: []
+  syntax:
+    content: Task PopulateAsync(IDocumentSession session, CancellationToken ct)
+    parameters:
+    - id: session
+      type: AeroDB.IDocumentSession
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Function PopulateAsync(session As IDocumentSession, ct As CancellationToken) As Task
+  overload: AeroDB.IInitialData.PopulateAsync*
+references:
+- uid: AeroDB.DocumentStore.InitializeAsync(System.Threading.CancellationToken)
+  commentId: M:AeroDB.DocumentStore.InitializeAsync(System.Threading.CancellationToken)
+  isExternal: true
+  href: AeroDB.DocumentStore.html#AeroDB_DocumentStore_InitializeAsync_System_Threading_CancellationToken_
+  name: InitializeAsync(CancellationToken)
+  nameWithType: DocumentStore.InitializeAsync(CancellationToken)
+  fullName: AeroDB.DocumentStore.InitializeAsync(System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: AeroDB.DocumentStore.InitializeAsync(System.Threading.CancellationToken)
+    name: InitializeAsync
+    isExternal: true
+    href: AeroDB.DocumentStore.html#AeroDB_DocumentStore_InitializeAsync_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: AeroDB.DocumentStore.InitializeAsync(System.Threading.CancellationToken)
+    name: InitializeAsync
+    isExternal: true
+    href: AeroDB.DocumentStore.html#AeroDB_DocumentStore_InitializeAsync_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: AeroDB.StoreOptions.InitialData
+  commentId: P:AeroDB.StoreOptions.InitialData
+  isExternal: true
+  href: AeroDB.StoreOptions.html#AeroDB_StoreOptions_InitialData
+  name: InitialData
+  nameWithType: StoreOptions.InitialData
+  fullName: AeroDB.StoreOptions.InitialData
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: AeroDB.IInitialData
+  commentId: T:AeroDB.IInitialData
+  isExternal: true
+  href: AeroDB.IInitialData.html
+  name: IInitialData
+  nameWithType: IInitialData
+  fullName: AeroDB.IInitialData
+- uid: AeroDB.IInitialData.PopulateAsync*
+  commentId: Overload:AeroDB.IInitialData.PopulateAsync
+  isExternal: true
+  href: AeroDB.IInitialData.html#AeroDB_IInitialData_PopulateAsync_AeroDB_IDocumentSession_System_Threading_CancellationToken_
+  name: PopulateAsync
+  nameWithType: IInitialData.PopulateAsync
+  fullName: AeroDB.IInitialData.PopulateAsync
+- uid: AeroDB.IDocumentSession
+  commentId: T:AeroDB.IDocumentSession
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IDocumentSession.html
+  name: IDocumentSession
+  nameWithType: IDocumentSession
+  fullName: AeroDB.IDocumentSession
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks

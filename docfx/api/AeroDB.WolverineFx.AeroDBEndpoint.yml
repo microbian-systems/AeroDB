@@ -1,0 +1,1325 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.WolverineFx.AeroDBEndpoint
+  commentId: T:AeroDB.WolverineFx.AeroDBEndpoint
+  id: AeroDBEndpoint
+  parent: AeroDB.WolverineFx
+  children:
+  - AeroDB.WolverineFx.AeroDBEndpoint.#ctor(System.Uri)
+  - AeroDB.WolverineFx.AeroDBEndpoint.BuildListenerAsync(Wolverine.Runtime.IWolverineRuntime,Wolverine.Transports.IReceiver)
+  - AeroDB.WolverineFx.AeroDBEndpoint.CreateSender(Wolverine.Runtime.IWolverineRuntime)
+  - AeroDB.WolverineFx.AeroDBEndpoint.supportsMode(Wolverine.Configuration.EndpointMode)
+  langs:
+  - csharp
+  - vb
+  name: AeroDBEndpoint
+  nameWithType: AeroDBEndpoint
+  fullName: AeroDB.WolverineFx.AeroDBEndpoint
+  type: Class
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBEndpoint.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  summary: >-
+    AeroDB endpoint backed by SurrealDB message storage.
+
+    Creates <xref href="AeroDB.WolverineFx.AeroDBQueueListener" data-throw-if-not-resolved="false"></xref> and <xref href="AeroDB.WolverineFx.AeroDBQueueSender" data-throw-if-not-resolved="false"></xref>
+
+    for message processing.
+  example: []
+  syntax:
+    content: 'public sealed class AeroDBEndpoint : Endpoint, ICircuitParameters, IDescribesProperties'
+    content.vb: Public NotInheritable Class AeroDBEndpoint Inherits Endpoint Implements ICircuitParameters, IDescribesProperties
+  inheritance:
+  - System.Object
+  - Wolverine.Configuration.Endpoint
+  implements:
+  - Wolverine.Configuration.ICircuitParameters
+  - JasperFx.CommandLine.Descriptions.IDescribesProperties
+  inheritedMembers:
+  - Wolverine.Configuration.Endpoint.DescribeProperties
+  - Wolverine.Configuration.Endpoint.Compile(Wolverine.Runtime.IWolverineRuntime)
+  - Wolverine.Configuration.Endpoint.SupportsMode(Wolverine.Configuration.EndpointMode)
+  - Wolverine.Configuration.Endpoint.AutoStartSendingAgent
+  - Wolverine.Configuration.Endpoint.RegisterSerializer(Wolverine.Runtime.Serialization.IMessageSerializer)
+  - Wolverine.Configuration.Endpoint.ShouldEnforceBackPressure
+  - Wolverine.Configuration.Endpoint.InitializeAsync(Microsoft.Extensions.Logging.ILogger)
+  - Wolverine.Configuration.Endpoint.TryBuildDeadLetterSender(Wolverine.Runtime.IWolverineRuntime,Wolverine.Transports.Sending.ISender@)
+  - Wolverine.Configuration.Endpoint.BuildCloudEventsMapper(Wolverine.Runtime.IWolverineRuntime,System.Text.Json.JsonSerializerOptions)
+  - Wolverine.Configuration.Endpoint.BrokerRole
+  - Wolverine.Configuration.Endpoint.MaxDegreeOfParallelism
+  - Wolverine.Configuration.Endpoint.GroupShardingSlotNumber
+  - Wolverine.Configuration.Endpoint.StickyHandlers
+  - Wolverine.Configuration.Endpoint.TenancyBehavior
+  - Wolverine.Configuration.Endpoint.ListenerScope
+  - Wolverine.Configuration.Endpoint.TelemetryEnabled
+  - Wolverine.Configuration.Endpoint.ProcessInlineWhileDraining
+  - Wolverine.Configuration.Endpoint.Role
+  - Wolverine.Configuration.Endpoint.BufferingLimits
+  - Wolverine.Configuration.Endpoint.CircuitBreakerOptions
+  - Wolverine.Configuration.Endpoint.Subscriptions
+  - Wolverine.Configuration.Endpoint.MessageBatchSize
+  - Wolverine.Configuration.Endpoint.MessageBatchMaxDegreeOfParallelism
+  - Wolverine.Configuration.Endpoint.MessageBatchTimeout
+  - Wolverine.Configuration.Endpoint.Mode
+  - Wolverine.Configuration.Endpoint.RoutingType
+  - Wolverine.Configuration.Endpoint.DefaultSerializer
+  - Wolverine.Configuration.Endpoint.EndpointName
+  - Wolverine.Configuration.Endpoint.Uri
+  - Wolverine.Configuration.Endpoint.IsListener
+  - Wolverine.Configuration.Endpoint.IsUsedForReplies
+  - Wolverine.Configuration.Endpoint.OutgoingRules
+  - Wolverine.Configuration.Endpoint.IncomingRules
+  - Wolverine.Configuration.Endpoint.TenantId
+  - Wolverine.Configuration.Endpoint.MessageType
+  - Wolverine.Configuration.Endpoint.ListenerCount
+  - Wolverine.Configuration.Endpoint.PingIntervalForCircuitResume
+  - Wolverine.Configuration.Endpoint.FailuresBeforeCircuitBreaks
+  - Wolverine.Configuration.Endpoint.MaximumEnvelopeRetryStorage
+  - Wolverine.Configuration.Endpoint.SendingFailure
+  - Wolverine.Configuration.Endpoint.DeadLetterStorage
+  - System.Object.GetType
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+- uid: AeroDB.WolverineFx.AeroDBEndpoint.#ctor(System.Uri)
+  commentId: M:AeroDB.WolverineFx.AeroDBEndpoint.#ctor(System.Uri)
+  id: '#ctor(System.Uri)'
+  parent: AeroDB.WolverineFx.AeroDBEndpoint
+  langs:
+  - csharp
+  - vb
+  name: AeroDBEndpoint(Uri)
+  nameWithType: AeroDBEndpoint.AeroDBEndpoint(Uri)
+  fullName: AeroDB.WolverineFx.AeroDBEndpoint.AeroDBEndpoint(System.Uri)
+  type: Constructor
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBEndpoint.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  summary: Configure the endpoint with the given URI.
+  example: []
+  syntax:
+    content: public AeroDBEndpoint(Uri uri)
+    parameters:
+    - id: uri
+      type: System.Uri
+    content.vb: Public Sub New(uri As Uri)
+  overload: AeroDB.WolverineFx.AeroDBEndpoint.#ctor*
+  nameWithType.vb: AeroDBEndpoint.New(Uri)
+  fullName.vb: AeroDB.WolverineFx.AeroDBEndpoint.New(System.Uri)
+  name.vb: New(Uri)
+- uid: AeroDB.WolverineFx.AeroDBEndpoint.BuildListenerAsync(Wolverine.Runtime.IWolverineRuntime,Wolverine.Transports.IReceiver)
+  commentId: M:AeroDB.WolverineFx.AeroDBEndpoint.BuildListenerAsync(Wolverine.Runtime.IWolverineRuntime,Wolverine.Transports.IReceiver)
+  id: BuildListenerAsync(Wolverine.Runtime.IWolverineRuntime,Wolverine.Transports.IReceiver)
+  parent: AeroDB.WolverineFx.AeroDBEndpoint
+  langs:
+  - csharp
+  - vb
+  name: BuildListenerAsync(IWolverineRuntime, IReceiver)
+  nameWithType: AeroDBEndpoint.BuildListenerAsync(IWolverineRuntime, IReceiver)
+  fullName: AeroDB.WolverineFx.AeroDBEndpoint.BuildListenerAsync(Wolverine.Runtime.IWolverineRuntime, Wolverine.Transports.IReceiver)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBEndpoint.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  summary: Create a listener for this endpoint.
+  example: []
+  syntax:
+    content: public override ValueTask<IListener> BuildListenerAsync(IWolverineRuntime runtime, IReceiver receiver)
+    parameters:
+    - id: runtime
+      type: Wolverine.Runtime.IWolverineRuntime
+    - id: receiver
+      type: Wolverine.Transports.IReceiver
+    return:
+      type: System.Threading.Tasks.ValueTask{Wolverine.Transports.IListener}
+    content.vb: Public Overrides Function BuildListenerAsync(runtime As IWolverineRuntime, receiver As IReceiver) As ValueTask(Of IListener)
+  overridden: Wolverine.Configuration.Endpoint.BuildListenerAsync(Wolverine.Runtime.IWolverineRuntime,Wolverine.Transports.IReceiver)
+  overload: AeroDB.WolverineFx.AeroDBEndpoint.BuildListenerAsync*
+- uid: AeroDB.WolverineFx.AeroDBEndpoint.CreateSender(Wolverine.Runtime.IWolverineRuntime)
+  commentId: M:AeroDB.WolverineFx.AeroDBEndpoint.CreateSender(Wolverine.Runtime.IWolverineRuntime)
+  id: CreateSender(Wolverine.Runtime.IWolverineRuntime)
+  parent: AeroDB.WolverineFx.AeroDBEndpoint
+  langs:
+  - csharp
+  - vb
+  name: CreateSender(IWolverineRuntime)
+  nameWithType: AeroDBEndpoint.CreateSender(IWolverineRuntime)
+  fullName: AeroDB.WolverineFx.AeroDBEndpoint.CreateSender(Wolverine.Runtime.IWolverineRuntime)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBEndpoint.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  summary: Create a sender for this endpoint.
+  example: []
+  syntax:
+    content: protected override ISender CreateSender(IWolverineRuntime runtime)
+    parameters:
+    - id: runtime
+      type: Wolverine.Runtime.IWolverineRuntime
+    return:
+      type: Wolverine.Transports.Sending.ISender
+    content.vb: Protected Overrides Function CreateSender(runtime As IWolverineRuntime) As ISender
+  overridden: Wolverine.Configuration.Endpoint.CreateSender(Wolverine.Runtime.IWolverineRuntime)
+  overload: AeroDB.WolverineFx.AeroDBEndpoint.CreateSender*
+- uid: AeroDB.WolverineFx.AeroDBEndpoint.supportsMode(Wolverine.Configuration.EndpointMode)
+  commentId: M:AeroDB.WolverineFx.AeroDBEndpoint.supportsMode(Wolverine.Configuration.EndpointMode)
+  id: supportsMode(Wolverine.Configuration.EndpointMode)
+  parent: AeroDB.WolverineFx.AeroDBEndpoint
+  langs:
+  - csharp
+  - vb
+  name: supportsMode(EndpointMode)
+  nameWithType: AeroDBEndpoint.supportsMode(EndpointMode)
+  fullName: AeroDB.WolverineFx.AeroDBEndpoint.supportsMode(Wolverine.Configuration.EndpointMode)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBEndpoint.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  summary: Supports both Durable and Buffered modes.
+  example: []
+  syntax:
+    content: protected override bool supportsMode(EndpointMode mode)
+    parameters:
+    - id: mode
+      type: Wolverine.Configuration.EndpointMode
+    return:
+      type: System.Boolean
+    content.vb: Protected Overrides Function supportsMode(mode As EndpointMode) As Boolean
+  overridden: Wolverine.Configuration.Endpoint.supportsMode(Wolverine.Configuration.EndpointMode)
+  overload: AeroDB.WolverineFx.AeroDBEndpoint.supportsMode*
+references:
+- uid: AeroDB.WolverineFx.AeroDBQueueListener
+  commentId: T:AeroDB.WolverineFx.AeroDBQueueListener
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBQueueListener.html
+  name: AeroDBQueueListener
+  nameWithType: AeroDBQueueListener
+  fullName: AeroDB.WolverineFx.AeroDBQueueListener
+- uid: AeroDB.WolverineFx.AeroDBQueueSender
+  commentId: T:AeroDB.WolverineFx.AeroDBQueueSender
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBQueueSender.html
+  name: AeroDBQueueSender
+  nameWithType: AeroDBQueueSender
+  fullName: AeroDB.WolverineFx.AeroDBQueueSender
+- uid: AeroDB.WolverineFx
+  commentId: N:AeroDB.WolverineFx
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB.WolverineFx
+  nameWithType: AeroDB.WolverineFx
+  fullName: AeroDB.WolverineFx
+  spec.csharp:
+  - uid: AeroDB
+    name: AeroDB
+    isExternal: true
+    href: AeroDB.html
+  - name: .
+  - uid: AeroDB.WolverineFx
+    name: WolverineFx
+    isExternal: true
+    href: AeroDB.WolverineFx.html
+  spec.vb:
+  - uid: AeroDB
+    name: AeroDB
+    isExternal: true
+    href: AeroDB.html
+  - name: .
+  - uid: AeroDB.WolverineFx
+    name: WolverineFx
+    isExternal: true
+    href: AeroDB.WolverineFx.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: Wolverine.Configuration.Endpoint
+  commentId: T:Wolverine.Configuration.Endpoint
+  parent: Wolverine.Configuration
+  isExternal: true
+  name: Endpoint
+  nameWithType: Endpoint
+  fullName: Wolverine.Configuration.Endpoint
+- uid: Wolverine.Configuration.ICircuitParameters
+  commentId: T:Wolverine.Configuration.ICircuitParameters
+  parent: Wolverine.Configuration
+  isExternal: true
+  name: ICircuitParameters
+  nameWithType: ICircuitParameters
+  fullName: Wolverine.Configuration.ICircuitParameters
+- uid: JasperFx.CommandLine.Descriptions.IDescribesProperties
+  commentId: T:JasperFx.CommandLine.Descriptions.IDescribesProperties
+  parent: JasperFx.CommandLine.Descriptions
+  isExternal: true
+  name: IDescribesProperties
+  nameWithType: IDescribesProperties
+  fullName: JasperFx.CommandLine.Descriptions.IDescribesProperties
+- uid: Wolverine.Configuration.Endpoint.DescribeProperties
+  commentId: M:Wolverine.Configuration.Endpoint.DescribeProperties
+  parent: Wolverine.Configuration.Endpoint
+  isExternal: true
+  name: DescribeProperties()
+  nameWithType: Endpoint.DescribeProperties()
+  fullName: Wolverine.Configuration.Endpoint.DescribeProperties()
+  spec.csharp:
+  - uid: Wolverine.Configuration.Endpoint.DescribeProperties
+    name: DescribeProperties
+    isExternal: true
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Wolverine.Configuration.Endpoint.DescribeProperties
+    name: DescribeProperties
+    isExternal: true
+  - name: (
+  - name: )
+- uid: Wolverine.Configuration.Endpoint.Compile(Wolverine.Runtime.IWolverineRuntime)
+  commentId: M:Wolverine.Configuration.Endpoint.Compile(Wolverine.Runtime.IWolverineRuntime)
+  parent: Wolverine.Configuration.Endpoint
+  isExternal: true
+  name: Compile(IWolverineRuntime)
+  nameWithType: Endpoint.Compile(IWolverineRuntime)
+  fullName: Wolverine.Configuration.Endpoint.Compile(Wolverine.Runtime.IWolverineRuntime)
+  spec.csharp:
+  - uid: Wolverine.Configuration.Endpoint.Compile(Wolverine.Runtime.IWolverineRuntime)
+    name: Compile
+    isExternal: true
+  - name: (
+  - uid: Wolverine.Runtime.IWolverineRuntime
+    name: IWolverineRuntime
+    isExternal: true
+  - name: )
+  spec.vb:
+  - uid: Wolverine.Configuration.Endpoint.Compile(Wolverine.Runtime.IWolverineRuntime)
+    name: Compile
+    isExternal: true
+  - name: (
+  - uid: Wolverine.Runtime.IWolverineRuntime
+    name: IWolverineRuntime
+    isExternal: true
+  - name: )
+- uid: Wolverine.Configuration.Endpoint.SupportsMode(Wolverine.Configuration.EndpointMode)
+  commentId: M:Wolverine.Configuration.Endpoint.SupportsMode(Wolverine.Configuration.EndpointMode)
+  parent: Wolverine.Configuration.Endpoint
+  isExternal: true
+  name: SupportsMode(EndpointMode)
+  nameWithType: Endpoint.SupportsMode(EndpointMode)
+  fullName: Wolverine.Configuration.Endpoint.SupportsMode(Wolverine.Configuration.EndpointMode)
+  spec.csharp:
+  - uid: Wolverine.Configuration.Endpoint.SupportsMode(Wolverine.Configuration.EndpointMode)
+    name: SupportsMode
+    isExternal: true
+  - name: (
+  - uid: Wolverine.Configuration.EndpointMode
+    name: EndpointMode
+    isExternal: true
+  - name: )
+  spec.vb:
+  - uid: Wolverine.Configuration.Endpoint.SupportsMode(Wolverine.Configuration.EndpointMode)
+    name: SupportsMode
+    isExternal: true
+  - name: (
+  - uid: Wolverine.Configuration.EndpointMode
+    name: EndpointMode
+    isExternal: true
+  - name: )
+- uid: Wolverine.Configuration.Endpoint.AutoStartSendingAgent
+  commentId: M:Wolverine.Configuration.Endpoint.AutoStartSendingAgent
+  parent: Wolverine.Configuration.Endpoint
+  isExternal: true
+  name: AutoStartSendingAgent()
+  nameWithType: Endpoint.AutoStartSendingAgent()
+  fullName: Wolverine.Configuration.Endpoint.AutoStartSendingAgent()
+  spec.csharp:
+  - uid: Wolverine.Configuration.Endpoint.AutoStartSendingAgent
+    name: AutoStartSendingAgent
+    isExternal: true
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Wolverine.Configuration.Endpoint.AutoStartSendingAgent
+    name: AutoStartSendingAgent
+    isExternal: true
+  - name: (
+  - name: )
+- uid: Wolverine.Configuration.Endpoint.RegisterSerializer(Wolverine.Runtime.Serialization.IMessageSerializer)
+  commentId: M:Wolverine.Configuration.Endpoint.RegisterSerializer(Wolverine.Runtime.Serialization.IMessageSerializer)
+  parent: Wolverine.Configuration.Endpoint
+  isExternal: true
+  name: RegisterSerializer(IMessageSerializer)
+  nameWithType: Endpoint.RegisterSerializer(IMessageSerializer)
+  fullName: Wolverine.Configuration.Endpoint.RegisterSerializer(Wolverine.Runtime.Serialization.IMessageSerializer)
+  spec.csharp:
+  - uid: Wolverine.Configuration.Endpoint.RegisterSerializer(Wolverine.Runtime.Serialization.IMessageSerializer)
+    name: RegisterSerializer
+    isExternal: true
+  - name: (
+  - uid: Wolverine.Runtime.Serialization.IMessageSerializer
+    name: IMessageSerializer
+    isExternal: true
+  - name: )
+  spec.vb:
+  - uid: Wolverine.Configuration.Endpoint.RegisterSerializer(Wolverine.Runtime.Serialization.IMessageSerializer)
+    name: RegisterSerializer
+    isExternal: true
+  - name: (
+  - uid: Wolverine.Runtime.Serialization.IMessageSerializer
+    name: IMessageSerializer
+    isExternal: true
+  - name: )
+- uid: Wolverine.Configuration.Endpoint.ShouldEnforceBackPressure
+  commentId: M:Wolverine.Configuration.Endpoint.ShouldEnforceBackPressure
+  parent: Wolverine.Configuration.Endpoint
+  isExternal: true
+  name: ShouldEnforceBackPressure()
+  nameWithType: Endpoint.ShouldEnforceBackPressure()
+  fullName: Wolverine.Configuration.Endpoint.ShouldEnforceBackPressure()
+  spec.csharp:
+  - uid: Wolverine.Configuration.Endpoint.ShouldEnforceBackPressure
+    name: ShouldEnforceBackPressure
+    isExternal: true
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Wolverine.Configuration.Endpoint.ShouldEnforceBackPressure
+    name: ShouldEnforceBackPressure
+    isExternal: true
+  - name: (
+  - name: )
+- uid: Wolverine.Configuration.Endpoint.InitializeAsync(Microsoft.Extensions.Logging.ILogger)
+  commentId: M:Wolverine.Configuration.Endpoint.InitializeAsync(Microsoft.Extensions.Logging.ILogger)
+  parent: Wolverine.Configuration.Endpoint
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger
+  name: InitializeAsync(ILogger)
+  nameWithType: Endpoint.InitializeAsync(ILogger)
+  fullName: Wolverine.Configuration.Endpoint.InitializeAsync(Microsoft.Extensions.Logging.ILogger)
+  spec.csharp:
+  - uid: Wolverine.Configuration.Endpoint.InitializeAsync(Microsoft.Extensions.Logging.ILogger)
+    name: InitializeAsync
+    isExternal: true
+  - name: (
+  - uid: Microsoft.Extensions.Logging.ILogger
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger
+  - name: )
+  spec.vb:
+  - uid: Wolverine.Configuration.Endpoint.InitializeAsync(Microsoft.Extensions.Logging.ILogger)
+    name: InitializeAsync
+    isExternal: true
+  - name: (
+  - uid: Microsoft.Extensions.Logging.ILogger
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger
+  - name: )
+- uid: Wolverine.Configuration.Endpoint.TryBuildDeadLetterSender(Wolverine.Runtime.IWolverineRuntime,Wolverine.Transports.Sending.ISender@)
+  commentId: M:Wolverine.Configuration.Endpoint.TryBuildDeadLetterSender(Wolverine.Runtime.IWolverineRuntime,Wolverine.Transports.Sending.ISender@)
+  parent: Wolverine.Configuration.Endpoint
+  isExternal: true
+  name: TryBuildDeadLetterSender(IWolverineRuntime, out ISender)
+  nameWithType: Endpoint.TryBuildDeadLetterSender(IWolverineRuntime, out ISender)
+  fullName: Wolverine.Configuration.Endpoint.TryBuildDeadLetterSender(Wolverine.Runtime.IWolverineRuntime, out Wolverine.Transports.Sending.ISender)
+  nameWithType.vb: Endpoint.TryBuildDeadLetterSender(IWolverineRuntime, ISender)
+  fullName.vb: Wolverine.Configuration.Endpoint.TryBuildDeadLetterSender(Wolverine.Runtime.IWolverineRuntime, Wolverine.Transports.Sending.ISender)
+  name.vb: TryBuildDeadLetterSender(IWolverineRuntime, ISender)
+  spec.csharp:
+  - uid: Wolverine.Configuration.Endpoint.TryBuildDeadLetterSender(Wolverine.Runtime.IWolverineRuntime,Wolverine.Transports.Sending.ISender@)
+    name: TryBuildDeadLetterSender
+    isExternal: true
+  - name: (
+  - uid: Wolverine.Runtime.IWolverineRuntime
+    name: IWolverineRuntime
+    isExternal: true
+  - name: ','
+  - name: " "
+  - name: out
+  - name: " "
+  - uid: Wolverine.Transports.Sending.ISender
+    name: ISender
+    isExternal: true
+  - name: )
+  spec.vb:
+  - uid: Wolverine.Configuration.Endpoint.TryBuildDeadLetterSender(Wolverine.Runtime.IWolverineRuntime,Wolverine.Transports.Sending.ISender@)
+    name: TryBuildDeadLetterSender
+    isExternal: true
+  - name: (
+  - uid: Wolverine.Runtime.IWolverineRuntime
+    name: IWolverineRuntime
+    isExternal: true
+  - name: ','
+  - name: " "
+  - uid: Wolverine.Transports.Sending.ISender
+    name: ISender
+    isExternal: true
+  - name: )
+- uid: Wolverine.Configuration.Endpoint.BuildCloudEventsMapper(Wolverine.Runtime.IWolverineRuntime,System.Text.Json.JsonSerializerOptions)
+  commentId: M:Wolverine.Configuration.Endpoint.BuildCloudEventsMapper(Wolverine.Runtime.IWolverineRuntime,System.Text.Json.JsonSerializerOptions)
+  parent: Wolverine.Configuration.Endpoint
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.text.json.jsonserializeroptions
+  name: BuildCloudEventsMapper(IWolverineRuntime, JsonSerializerOptions)
+  nameWithType: Endpoint.BuildCloudEventsMapper(IWolverineRuntime, JsonSerializerOptions)
+  fullName: Wolverine.Configuration.Endpoint.BuildCloudEventsMapper(Wolverine.Runtime.IWolverineRuntime, System.Text.Json.JsonSerializerOptions)
+  spec.csharp:
+  - uid: Wolverine.Configuration.Endpoint.BuildCloudEventsMapper(Wolverine.Runtime.IWolverineRuntime,System.Text.Json.JsonSerializerOptions)
+    name: BuildCloudEventsMapper
+    isExternal: true
+  - name: (
+  - uid: Wolverine.Runtime.IWolverineRuntime
+    name: IWolverineRuntime
+    isExternal: true
+  - name: ','
+  - name: " "
+  - uid: System.Text.Json.JsonSerializerOptions
+    name: JsonSerializerOptions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json.jsonserializeroptions
+  - name: )
+  spec.vb:
+  - uid: Wolverine.Configuration.Endpoint.BuildCloudEventsMapper(Wolverine.Runtime.IWolverineRuntime,System.Text.Json.JsonSerializerOptions)
+    name: BuildCloudEventsMapper
+    isExternal: true
+  - name: (
+  - uid: Wolverine.Runtime.IWolverineRuntime
+    name: IWolverineRuntime
+    isExternal: true
+  - name: ','
+  - name: " "
+  - uid: System.Text.Json.JsonSerializerOptions
+    name: JsonSerializerOptions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json.jsonserializeroptions
+  - name: )
+- uid: Wolverine.Configuration.Endpoint.BrokerRole
+  commentId: P:Wolverine.Configuration.Endpoint.BrokerRole
+  parent: Wolverine.Configuration.Endpoint
+  isExternal: true
+  name: BrokerRole
+  nameWithType: Endpoint.BrokerRole
+  fullName: Wolverine.Configuration.Endpoint.BrokerRole
+- uid: Wolverine.Configuration.Endpoint.MaxDegreeOfParallelism
+  commentId: P:Wolverine.Configuration.Endpoint.MaxDegreeOfParallelism
+  parent: Wolverine.Configuration.Endpoint
+  isExternal: true
+  name: MaxDegreeOfParallelism
+  nameWithType: Endpoint.MaxDegreeOfParallelism
+  fullName: Wolverine.Configuration.Endpoint.MaxDegreeOfParallelism
+- uid: Wolverine.Configuration.Endpoint.GroupShardingSlotNumber
+  commentId: P:Wolverine.Configuration.Endpoint.GroupShardingSlotNumber
+  parent: Wolverine.Configuration.Endpoint
+  isExternal: true
+  name: GroupShardingSlotNumber
+  nameWithType: Endpoint.GroupShardingSlotNumber
+  fullName: Wolverine.Configuration.Endpoint.GroupShardingSlotNumber
+- uid: Wolverine.Configuration.Endpoint.StickyHandlers
+  commentId: P:Wolverine.Configuration.Endpoint.StickyHandlers
+  parent: Wolverine.Configuration.Endpoint
+  isExternal: true
+  name: StickyHandlers
+  nameWithType: Endpoint.StickyHandlers
+  fullName: Wolverine.Configuration.Endpoint.StickyHandlers
+- uid: Wolverine.Configuration.Endpoint.TenancyBehavior
+  commentId: P:Wolverine.Configuration.Endpoint.TenancyBehavior
+  parent: Wolverine.Configuration.Endpoint
+  isExternal: true
+  name: TenancyBehavior
+  nameWithType: Endpoint.TenancyBehavior
+  fullName: Wolverine.Configuration.Endpoint.TenancyBehavior
+- uid: Wolverine.Configuration.Endpoint.ListenerScope
+  commentId: P:Wolverine.Configuration.Endpoint.ListenerScope
+  parent: Wolverine.Configuration.Endpoint
+  isExternal: true
+  name: ListenerScope
+  nameWithType: Endpoint.ListenerScope
+  fullName: Wolverine.Configuration.Endpoint.ListenerScope
+- uid: Wolverine.Configuration.Endpoint.TelemetryEnabled
+  commentId: P:Wolverine.Configuration.Endpoint.TelemetryEnabled
+  parent: Wolverine.Configuration.Endpoint
+  isExternal: true
+  name: TelemetryEnabled
+  nameWithType: Endpoint.TelemetryEnabled
+  fullName: Wolverine.Configuration.Endpoint.TelemetryEnabled
+- uid: Wolverine.Configuration.Endpoint.ProcessInlineWhileDraining
+  commentId: P:Wolverine.Configuration.Endpoint.ProcessInlineWhileDraining
+  parent: Wolverine.Configuration.Endpoint
+  isExternal: true
+  name: ProcessInlineWhileDraining
+  nameWithType: Endpoint.ProcessInlineWhileDraining
+  fullName: Wolverine.Configuration.Endpoint.ProcessInlineWhileDraining
+- uid: Wolverine.Configuration.Endpoint.Role
+  commentId: P:Wolverine.Configuration.Endpoint.Role
+  parent: Wolverine.Configuration.Endpoint
+  isExternal: true
+  name: Role
+  nameWithType: Endpoint.Role
+  fullName: Wolverine.Configuration.Endpoint.Role
+- uid: Wolverine.Configuration.Endpoint.BufferingLimits
+  commentId: P:Wolverine.Configuration.Endpoint.BufferingLimits
+  parent: Wolverine.Configuration.Endpoint
+  isExternal: true
+  name: BufferingLimits
+  nameWithType: Endpoint.BufferingLimits
+  fullName: Wolverine.Configuration.Endpoint.BufferingLimits
+- uid: Wolverine.Configuration.Endpoint.CircuitBreakerOptions
+  commentId: P:Wolverine.Configuration.Endpoint.CircuitBreakerOptions
+  parent: Wolverine.Configuration.Endpoint
+  isExternal: true
+  name: CircuitBreakerOptions
+  nameWithType: Endpoint.CircuitBreakerOptions
+  fullName: Wolverine.Configuration.Endpoint.CircuitBreakerOptions
+- uid: Wolverine.Configuration.Endpoint.Subscriptions
+  commentId: P:Wolverine.Configuration.Endpoint.Subscriptions
+  parent: Wolverine.Configuration.Endpoint
+  isExternal: true
+  name: Subscriptions
+  nameWithType: Endpoint.Subscriptions
+  fullName: Wolverine.Configuration.Endpoint.Subscriptions
+- uid: Wolverine.Configuration.Endpoint.MessageBatchSize
+  commentId: P:Wolverine.Configuration.Endpoint.MessageBatchSize
+  parent: Wolverine.Configuration.Endpoint
+  isExternal: true
+  name: MessageBatchSize
+  nameWithType: Endpoint.MessageBatchSize
+  fullName: Wolverine.Configuration.Endpoint.MessageBatchSize
+- uid: Wolverine.Configuration.Endpoint.MessageBatchMaxDegreeOfParallelism
+  commentId: P:Wolverine.Configuration.Endpoint.MessageBatchMaxDegreeOfParallelism
+  parent: Wolverine.Configuration.Endpoint
+  isExternal: true
+  name: MessageBatchMaxDegreeOfParallelism
+  nameWithType: Endpoint.MessageBatchMaxDegreeOfParallelism
+  fullName: Wolverine.Configuration.Endpoint.MessageBatchMaxDegreeOfParallelism
+- uid: Wolverine.Configuration.Endpoint.MessageBatchTimeout
+  commentId: P:Wolverine.Configuration.Endpoint.MessageBatchTimeout
+  parent: Wolverine.Configuration.Endpoint
+  isExternal: true
+  name: MessageBatchTimeout
+  nameWithType: Endpoint.MessageBatchTimeout
+  fullName: Wolverine.Configuration.Endpoint.MessageBatchTimeout
+- uid: Wolverine.Configuration.Endpoint.Mode
+  commentId: P:Wolverine.Configuration.Endpoint.Mode
+  parent: Wolverine.Configuration.Endpoint
+  isExternal: true
+  name: Mode
+  nameWithType: Endpoint.Mode
+  fullName: Wolverine.Configuration.Endpoint.Mode
+- uid: Wolverine.Configuration.Endpoint.RoutingType
+  commentId: P:Wolverine.Configuration.Endpoint.RoutingType
+  parent: Wolverine.Configuration.Endpoint
+  isExternal: true
+  name: RoutingType
+  nameWithType: Endpoint.RoutingType
+  fullName: Wolverine.Configuration.Endpoint.RoutingType
+- uid: Wolverine.Configuration.Endpoint.DefaultSerializer
+  commentId: P:Wolverine.Configuration.Endpoint.DefaultSerializer
+  parent: Wolverine.Configuration.Endpoint
+  isExternal: true
+  name: DefaultSerializer
+  nameWithType: Endpoint.DefaultSerializer
+  fullName: Wolverine.Configuration.Endpoint.DefaultSerializer
+- uid: Wolverine.Configuration.Endpoint.EndpointName
+  commentId: P:Wolverine.Configuration.Endpoint.EndpointName
+  parent: Wolverine.Configuration.Endpoint
+  isExternal: true
+  name: EndpointName
+  nameWithType: Endpoint.EndpointName
+  fullName: Wolverine.Configuration.Endpoint.EndpointName
+- uid: Wolverine.Configuration.Endpoint.Uri
+  commentId: P:Wolverine.Configuration.Endpoint.Uri
+  parent: Wolverine.Configuration.Endpoint
+  isExternal: true
+  name: Uri
+  nameWithType: Endpoint.Uri
+  fullName: Wolverine.Configuration.Endpoint.Uri
+- uid: Wolverine.Configuration.Endpoint.IsListener
+  commentId: P:Wolverine.Configuration.Endpoint.IsListener
+  parent: Wolverine.Configuration.Endpoint
+  isExternal: true
+  name: IsListener
+  nameWithType: Endpoint.IsListener
+  fullName: Wolverine.Configuration.Endpoint.IsListener
+- uid: Wolverine.Configuration.Endpoint.IsUsedForReplies
+  commentId: P:Wolverine.Configuration.Endpoint.IsUsedForReplies
+  parent: Wolverine.Configuration.Endpoint
+  isExternal: true
+  name: IsUsedForReplies
+  nameWithType: Endpoint.IsUsedForReplies
+  fullName: Wolverine.Configuration.Endpoint.IsUsedForReplies
+- uid: Wolverine.Configuration.Endpoint.OutgoingRules
+  commentId: P:Wolverine.Configuration.Endpoint.OutgoingRules
+  parent: Wolverine.Configuration.Endpoint
+  isExternal: true
+  name: OutgoingRules
+  nameWithType: Endpoint.OutgoingRules
+  fullName: Wolverine.Configuration.Endpoint.OutgoingRules
+- uid: Wolverine.Configuration.Endpoint.IncomingRules
+  commentId: P:Wolverine.Configuration.Endpoint.IncomingRules
+  parent: Wolverine.Configuration.Endpoint
+  isExternal: true
+  name: IncomingRules
+  nameWithType: Endpoint.IncomingRules
+  fullName: Wolverine.Configuration.Endpoint.IncomingRules
+- uid: Wolverine.Configuration.Endpoint.TenantId
+  commentId: P:Wolverine.Configuration.Endpoint.TenantId
+  parent: Wolverine.Configuration.Endpoint
+  isExternal: true
+  name: TenantId
+  nameWithType: Endpoint.TenantId
+  fullName: Wolverine.Configuration.Endpoint.TenantId
+- uid: Wolverine.Configuration.Endpoint.MessageType
+  commentId: P:Wolverine.Configuration.Endpoint.MessageType
+  parent: Wolverine.Configuration.Endpoint
+  isExternal: true
+  name: MessageType
+  nameWithType: Endpoint.MessageType
+  fullName: Wolverine.Configuration.Endpoint.MessageType
+- uid: Wolverine.Configuration.Endpoint.ListenerCount
+  commentId: P:Wolverine.Configuration.Endpoint.ListenerCount
+  parent: Wolverine.Configuration.Endpoint
+  isExternal: true
+  name: ListenerCount
+  nameWithType: Endpoint.ListenerCount
+  fullName: Wolverine.Configuration.Endpoint.ListenerCount
+- uid: Wolverine.Configuration.Endpoint.PingIntervalForCircuitResume
+  commentId: P:Wolverine.Configuration.Endpoint.PingIntervalForCircuitResume
+  parent: Wolverine.Configuration.Endpoint
+  isExternal: true
+  name: PingIntervalForCircuitResume
+  nameWithType: Endpoint.PingIntervalForCircuitResume
+  fullName: Wolverine.Configuration.Endpoint.PingIntervalForCircuitResume
+- uid: Wolverine.Configuration.Endpoint.FailuresBeforeCircuitBreaks
+  commentId: P:Wolverine.Configuration.Endpoint.FailuresBeforeCircuitBreaks
+  parent: Wolverine.Configuration.Endpoint
+  isExternal: true
+  name: FailuresBeforeCircuitBreaks
+  nameWithType: Endpoint.FailuresBeforeCircuitBreaks
+  fullName: Wolverine.Configuration.Endpoint.FailuresBeforeCircuitBreaks
+- uid: Wolverine.Configuration.Endpoint.MaximumEnvelopeRetryStorage
+  commentId: P:Wolverine.Configuration.Endpoint.MaximumEnvelopeRetryStorage
+  parent: Wolverine.Configuration.Endpoint
+  isExternal: true
+  name: MaximumEnvelopeRetryStorage
+  nameWithType: Endpoint.MaximumEnvelopeRetryStorage
+  fullName: Wolverine.Configuration.Endpoint.MaximumEnvelopeRetryStorage
+- uid: Wolverine.Configuration.Endpoint.SendingFailure
+  commentId: P:Wolverine.Configuration.Endpoint.SendingFailure
+  parent: Wolverine.Configuration.Endpoint
+  isExternal: true
+  name: SendingFailure
+  nameWithType: Endpoint.SendingFailure
+  fullName: Wolverine.Configuration.Endpoint.SendingFailure
+- uid: Wolverine.Configuration.Endpoint.DeadLetterStorage
+  commentId: P:Wolverine.Configuration.Endpoint.DeadLetterStorage
+  parent: Wolverine.Configuration.Endpoint
+  isExternal: true
+  name: DeadLetterStorage
+  nameWithType: Endpoint.DeadLetterStorage
+  fullName: Wolverine.Configuration.Endpoint.DeadLetterStorage
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Wolverine.Configuration
+  commentId: N:Wolverine.Configuration
+  isExternal: true
+  name: Wolverine.Configuration
+  nameWithType: Wolverine.Configuration
+  fullName: Wolverine.Configuration
+  spec.csharp:
+  - uid: Wolverine
+    name: Wolverine
+    isExternal: true
+  - name: .
+  - uid: Wolverine.Configuration
+    name: Configuration
+    isExternal: true
+  spec.vb:
+  - uid: Wolverine
+    name: Wolverine
+    isExternal: true
+  - name: .
+  - uid: Wolverine.Configuration
+    name: Configuration
+    isExternal: true
+- uid: JasperFx.CommandLine.Descriptions
+  commentId: N:JasperFx.CommandLine.Descriptions
+  isExternal: true
+  name: JasperFx.CommandLine.Descriptions
+  nameWithType: JasperFx.CommandLine.Descriptions
+  fullName: JasperFx.CommandLine.Descriptions
+  spec.csharp:
+  - uid: JasperFx
+    name: JasperFx
+    isExternal: true
+  - name: .
+  - uid: JasperFx.CommandLine
+    name: CommandLine
+    isExternal: true
+  - name: .
+  - uid: JasperFx.CommandLine.Descriptions
+    name: Descriptions
+    isExternal: true
+  spec.vb:
+  - uid: JasperFx
+    name: JasperFx
+    isExternal: true
+  - name: .
+  - uid: JasperFx.CommandLine
+    name: CommandLine
+    isExternal: true
+  - name: .
+  - uid: JasperFx.CommandLine.Descriptions
+    name: Descriptions
+    isExternal: true
+- uid: AeroDB.WolverineFx.AeroDBEndpoint.#ctor*
+  commentId: Overload:AeroDB.WolverineFx.AeroDBEndpoint.#ctor
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBEndpoint.html#AeroDB_WolverineFx_AeroDBEndpoint__ctor_System_Uri_
+  name: AeroDBEndpoint
+  nameWithType: AeroDBEndpoint.AeroDBEndpoint
+  fullName: AeroDB.WolverineFx.AeroDBEndpoint.AeroDBEndpoint
+  nameWithType.vb: AeroDBEndpoint.New
+  fullName.vb: AeroDB.WolverineFx.AeroDBEndpoint.New
+  name.vb: New
+- uid: System.Uri
+  commentId: T:System.Uri
+  parent: System
+  isExternal: true
+  name: Uri
+  nameWithType: Uri
+  fullName: System.Uri
+- uid: Wolverine.Configuration.Endpoint.BuildListenerAsync(Wolverine.Runtime.IWolverineRuntime,Wolverine.Transports.IReceiver)
+  commentId: M:Wolverine.Configuration.Endpoint.BuildListenerAsync(Wolverine.Runtime.IWolverineRuntime,Wolverine.Transports.IReceiver)
+  parent: Wolverine.Configuration.Endpoint
+  isExternal: true
+  name: BuildListenerAsync(IWolverineRuntime, IReceiver)
+  nameWithType: Endpoint.BuildListenerAsync(IWolverineRuntime, IReceiver)
+  fullName: Wolverine.Configuration.Endpoint.BuildListenerAsync(Wolverine.Runtime.IWolverineRuntime, Wolverine.Transports.IReceiver)
+  spec.csharp:
+  - uid: Wolverine.Configuration.Endpoint.BuildListenerAsync(Wolverine.Runtime.IWolverineRuntime,Wolverine.Transports.IReceiver)
+    name: BuildListenerAsync
+    isExternal: true
+  - name: (
+  - uid: Wolverine.Runtime.IWolverineRuntime
+    name: IWolverineRuntime
+    isExternal: true
+  - name: ','
+  - name: " "
+  - uid: Wolverine.Transports.IReceiver
+    name: IReceiver
+    isExternal: true
+  - name: )
+  spec.vb:
+  - uid: Wolverine.Configuration.Endpoint.BuildListenerAsync(Wolverine.Runtime.IWolverineRuntime,Wolverine.Transports.IReceiver)
+    name: BuildListenerAsync
+    isExternal: true
+  - name: (
+  - uid: Wolverine.Runtime.IWolverineRuntime
+    name: IWolverineRuntime
+    isExternal: true
+  - name: ','
+  - name: " "
+  - uid: Wolverine.Transports.IReceiver
+    name: IReceiver
+    isExternal: true
+  - name: )
+- uid: AeroDB.WolverineFx.AeroDBEndpoint.BuildListenerAsync*
+  commentId: Overload:AeroDB.WolverineFx.AeroDBEndpoint.BuildListenerAsync
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBEndpoint.html#AeroDB_WolverineFx_AeroDBEndpoint_BuildListenerAsync_Wolverine_Runtime_IWolverineRuntime_Wolverine_Transports_IReceiver_
+  name: BuildListenerAsync
+  nameWithType: AeroDBEndpoint.BuildListenerAsync
+  fullName: AeroDB.WolverineFx.AeroDBEndpoint.BuildListenerAsync
+- uid: Wolverine.Runtime.IWolverineRuntime
+  commentId: T:Wolverine.Runtime.IWolverineRuntime
+  parent: Wolverine.Runtime
+  isExternal: true
+  name: IWolverineRuntime
+  nameWithType: IWolverineRuntime
+  fullName: Wolverine.Runtime.IWolverineRuntime
+- uid: Wolverine.Transports.IReceiver
+  commentId: T:Wolverine.Transports.IReceiver
+  parent: Wolverine.Transports
+  isExternal: true
+  name: IReceiver
+  nameWithType: IReceiver
+  fullName: Wolverine.Transports.IReceiver
+- uid: System.Threading.Tasks.ValueTask{Wolverine.Transports.IListener}
+  commentId: T:System.Threading.Tasks.ValueTask{Wolverine.Transports.IListener}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.ValueTask`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask-1
+  name: ValueTask<IListener>
+  nameWithType: ValueTask<IListener>
+  fullName: System.Threading.Tasks.ValueTask<Wolverine.Transports.IListener>
+  nameWithType.vb: ValueTask(Of IListener)
+  fullName.vb: System.Threading.Tasks.ValueTask(Of Wolverine.Transports.IListener)
+  name.vb: ValueTask(Of IListener)
+  spec.csharp:
+  - uid: System.Threading.Tasks.ValueTask`1
+    name: ValueTask
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask-1
+  - name: <
+  - uid: Wolverine.Transports.IListener
+    name: IListener
+    isExternal: true
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.ValueTask`1
+    name: ValueTask
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Wolverine.Transports.IListener
+    name: IListener
+    isExternal: true
+  - name: )
+- uid: Wolverine.Runtime
+  commentId: N:Wolverine.Runtime
+  isExternal: true
+  name: Wolverine.Runtime
+  nameWithType: Wolverine.Runtime
+  fullName: Wolverine.Runtime
+  spec.csharp:
+  - uid: Wolverine
+    name: Wolverine
+    isExternal: true
+  - name: .
+  - uid: Wolverine.Runtime
+    name: Runtime
+    isExternal: true
+  spec.vb:
+  - uid: Wolverine
+    name: Wolverine
+    isExternal: true
+  - name: .
+  - uid: Wolverine.Runtime
+    name: Runtime
+    isExternal: true
+- uid: Wolverine.Transports
+  commentId: N:Wolverine.Transports
+  isExternal: true
+  name: Wolverine.Transports
+  nameWithType: Wolverine.Transports
+  fullName: Wolverine.Transports
+  spec.csharp:
+  - uid: Wolverine
+    name: Wolverine
+    isExternal: true
+  - name: .
+  - uid: Wolverine.Transports
+    name: Transports
+    isExternal: true
+  spec.vb:
+  - uid: Wolverine
+    name: Wolverine
+    isExternal: true
+  - name: .
+  - uid: Wolverine.Transports
+    name: Transports
+    isExternal: true
+- uid: System.Threading.Tasks.ValueTask`1
+  commentId: T:System.Threading.Tasks.ValueTask`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask-1
+  name: ValueTask<TResult>
+  nameWithType: ValueTask<TResult>
+  fullName: System.Threading.Tasks.ValueTask<TResult>
+  nameWithType.vb: ValueTask(Of TResult)
+  fullName.vb: System.Threading.Tasks.ValueTask(Of TResult)
+  name.vb: ValueTask(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.ValueTask`1
+    name: ValueTask
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.ValueTask`1
+    name: ValueTask
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: Wolverine.Configuration.Endpoint.CreateSender(Wolverine.Runtime.IWolverineRuntime)
+  commentId: M:Wolverine.Configuration.Endpoint.CreateSender(Wolverine.Runtime.IWolverineRuntime)
+  parent: Wolverine.Configuration.Endpoint
+  isExternal: true
+  name: CreateSender(IWolverineRuntime)
+  nameWithType: Endpoint.CreateSender(IWolverineRuntime)
+  fullName: Wolverine.Configuration.Endpoint.CreateSender(Wolverine.Runtime.IWolverineRuntime)
+  spec.csharp:
+  - uid: Wolverine.Configuration.Endpoint.CreateSender(Wolverine.Runtime.IWolverineRuntime)
+    name: CreateSender
+    isExternal: true
+  - name: (
+  - uid: Wolverine.Runtime.IWolverineRuntime
+    name: IWolverineRuntime
+    isExternal: true
+  - name: )
+  spec.vb:
+  - uid: Wolverine.Configuration.Endpoint.CreateSender(Wolverine.Runtime.IWolverineRuntime)
+    name: CreateSender
+    isExternal: true
+  - name: (
+  - uid: Wolverine.Runtime.IWolverineRuntime
+    name: IWolverineRuntime
+    isExternal: true
+  - name: )
+- uid: AeroDB.WolverineFx.AeroDBEndpoint.CreateSender*
+  commentId: Overload:AeroDB.WolverineFx.AeroDBEndpoint.CreateSender
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBEndpoint.html#AeroDB_WolverineFx_AeroDBEndpoint_CreateSender_Wolverine_Runtime_IWolverineRuntime_
+  name: CreateSender
+  nameWithType: AeroDBEndpoint.CreateSender
+  fullName: AeroDB.WolverineFx.AeroDBEndpoint.CreateSender
+- uid: Wolverine.Transports.Sending.ISender
+  commentId: T:Wolverine.Transports.Sending.ISender
+  parent: Wolverine.Transports.Sending
+  isExternal: true
+  name: ISender
+  nameWithType: ISender
+  fullName: Wolverine.Transports.Sending.ISender
+- uid: Wolverine.Transports.Sending
+  commentId: N:Wolverine.Transports.Sending
+  isExternal: true
+  name: Wolverine.Transports.Sending
+  nameWithType: Wolverine.Transports.Sending
+  fullName: Wolverine.Transports.Sending
+  spec.csharp:
+  - uid: Wolverine
+    name: Wolverine
+    isExternal: true
+  - name: .
+  - uid: Wolverine.Transports
+    name: Transports
+    isExternal: true
+  - name: .
+  - uid: Wolverine.Transports.Sending
+    name: Sending
+    isExternal: true
+  spec.vb:
+  - uid: Wolverine
+    name: Wolverine
+    isExternal: true
+  - name: .
+  - uid: Wolverine.Transports
+    name: Transports
+    isExternal: true
+  - name: .
+  - uid: Wolverine.Transports.Sending
+    name: Sending
+    isExternal: true
+- uid: Wolverine.Configuration.Endpoint.supportsMode(Wolverine.Configuration.EndpointMode)
+  commentId: M:Wolverine.Configuration.Endpoint.supportsMode(Wolverine.Configuration.EndpointMode)
+  parent: Wolverine.Configuration.Endpoint
+  isExternal: true
+  name: supportsMode(EndpointMode)
+  nameWithType: Endpoint.supportsMode(EndpointMode)
+  fullName: Wolverine.Configuration.Endpoint.supportsMode(Wolverine.Configuration.EndpointMode)
+  spec.csharp:
+  - uid: Wolverine.Configuration.Endpoint.supportsMode(Wolverine.Configuration.EndpointMode)
+    name: supportsMode
+    isExternal: true
+  - name: (
+  - uid: Wolverine.Configuration.EndpointMode
+    name: EndpointMode
+    isExternal: true
+  - name: )
+  spec.vb:
+  - uid: Wolverine.Configuration.Endpoint.supportsMode(Wolverine.Configuration.EndpointMode)
+    name: supportsMode
+    isExternal: true
+  - name: (
+  - uid: Wolverine.Configuration.EndpointMode
+    name: EndpointMode
+    isExternal: true
+  - name: )
+- uid: AeroDB.WolverineFx.AeroDBEndpoint.supportsMode*
+  commentId: Overload:AeroDB.WolverineFx.AeroDBEndpoint.supportsMode
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBEndpoint.html#AeroDB_WolverineFx_AeroDBEndpoint_supportsMode_Wolverine_Configuration_EndpointMode_
+  name: supportsMode
+  nameWithType: AeroDBEndpoint.supportsMode
+  fullName: AeroDB.WolverineFx.AeroDBEndpoint.supportsMode
+- uid: Wolverine.Configuration.EndpointMode
+  commentId: T:Wolverine.Configuration.EndpointMode
+  parent: Wolverine.Configuration
+  isExternal: true
+  name: EndpointMode
+  nameWithType: EndpointMode
+  fullName: Wolverine.Configuration.EndpointMode
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean

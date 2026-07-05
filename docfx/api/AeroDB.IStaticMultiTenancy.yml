@@ -1,0 +1,134 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.IStaticMultiTenancy
+  commentId: T:AeroDB.IStaticMultiTenancy
+  id: IStaticMultiTenancy
+  parent: AeroDB
+  children:
+  - AeroDB.IStaticMultiTenancy.WithTenant(System.String,System.String)
+  - AeroDB.IStaticMultiTenancy.WithTenant(System.String,System.String,System.String,System.String)
+  langs:
+  - csharp
+  - vb
+  name: IStaticMultiTenancy
+  nameWithType: IStaticMultiTenancy
+  fullName: AeroDB.IStaticMultiTenancy
+  type: Interface
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Tenancy/IAeroDBMultiTenancy.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Fluent interface for configuring static multi-tenancy where each tenant
+
+    maps to an explicit connection string or endpoint/ns/db triple.
+  example: []
+  syntax:
+    content: public interface IStaticMultiTenancy
+    content.vb: Public Interface IStaticMultiTenancy
+- uid: AeroDB.IStaticMultiTenancy.WithTenant(System.String,System.String)
+  commentId: M:AeroDB.IStaticMultiTenancy.WithTenant(System.String,System.String)
+  id: WithTenant(System.String,System.String)
+  parent: AeroDB.IStaticMultiTenancy
+  langs:
+  - csharp
+  - vb
+  name: WithTenant(string, string)
+  nameWithType: IStaticMultiTenancy.WithTenant(string, string)
+  fullName: AeroDB.IStaticMultiTenancy.WithTenant(string, string)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Tenancy/IAeroDBMultiTenancy.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: IStaticMultiTenancy WithTenant(string tenantId, string connectionString)
+    parameters:
+    - id: tenantId
+      type: System.String
+    - id: connectionString
+      type: System.String
+    return:
+      type: AeroDB.IStaticMultiTenancy
+    content.vb: Function WithTenant(tenantId As String, connectionString As String) As IStaticMultiTenancy
+  overload: AeroDB.IStaticMultiTenancy.WithTenant*
+  nameWithType.vb: IStaticMultiTenancy.WithTenant(String, String)
+  fullName.vb: AeroDB.IStaticMultiTenancy.WithTenant(String, String)
+  name.vb: WithTenant(String, String)
+- uid: AeroDB.IStaticMultiTenancy.WithTenant(System.String,System.String,System.String,System.String)
+  commentId: M:AeroDB.IStaticMultiTenancy.WithTenant(System.String,System.String,System.String,System.String)
+  id: WithTenant(System.String,System.String,System.String,System.String)
+  parent: AeroDB.IStaticMultiTenancy
+  langs:
+  - csharp
+  - vb
+  name: WithTenant(string, string, string, string)
+  nameWithType: IStaticMultiTenancy.WithTenant(string, string, string, string)
+  fullName: AeroDB.IStaticMultiTenancy.WithTenant(string, string, string, string)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Tenancy/IAeroDBMultiTenancy.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: IStaticMultiTenancy WithTenant(string tenantId, string endpoint, string ns, string db)
+    parameters:
+    - id: tenantId
+      type: System.String
+    - id: endpoint
+      type: System.String
+    - id: ns
+      type: System.String
+    - id: db
+      type: System.String
+    return:
+      type: AeroDB.IStaticMultiTenancy
+    content.vb: Function WithTenant(tenantId As String, endpoint As String, ns As String, db As String) As IStaticMultiTenancy
+  overload: AeroDB.IStaticMultiTenancy.WithTenant*
+  nameWithType.vb: IStaticMultiTenancy.WithTenant(String, String, String, String)
+  fullName.vb: AeroDB.IStaticMultiTenancy.WithTenant(String, String, String, String)
+  name.vb: WithTenant(String, String, String, String)
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: AeroDB.IStaticMultiTenancy.WithTenant*
+  commentId: Overload:AeroDB.IStaticMultiTenancy.WithTenant
+  isExternal: true
+  href: AeroDB.IStaticMultiTenancy.html#AeroDB_IStaticMultiTenancy_WithTenant_System_String_System_String_
+  name: WithTenant
+  nameWithType: IStaticMultiTenancy.WithTenant
+  fullName: AeroDB.IStaticMultiTenancy.WithTenant
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: AeroDB.IStaticMultiTenancy
+  commentId: T:AeroDB.IStaticMultiTenancy
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IStaticMultiTenancy.html
+  name: IStaticMultiTenancy
+  nameWithType: IStaticMultiTenancy
+  fullName: AeroDB.IStaticMultiTenancy
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System

@@ -1,0 +1,632 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.IJsonLoader
+  commentId: T:AeroDB.IJsonLoader
+  id: IJsonLoader
+  parent: AeroDB
+  children:
+  - AeroDB.IJsonLoader.LoadByIdAsync``1(System.String,System.Threading.CancellationToken)
+  - AeroDB.IJsonLoader.LoadDocumentByIdAsync``1(System.String,System.Threading.CancellationToken)
+  - AeroDB.IJsonLoader.WriteArray``1(Microsoft.AspNetCore.Http.HttpContext,System.Threading.CancellationToken)
+  - AeroDB.IJsonLoader.WriteById``1(System.Guid,Microsoft.AspNetCore.Http.HttpContext,System.Threading.CancellationToken)
+  - AeroDB.IJsonLoader.WriteById``1(System.Int32,Microsoft.AspNetCore.Http.HttpContext,System.Threading.CancellationToken)
+  - AeroDB.IJsonLoader.WriteById``1(System.Int64,Microsoft.AspNetCore.Http.HttpContext,System.Threading.CancellationToken)
+  - AeroDB.IJsonLoader.WriteById``1(System.Object,Microsoft.AspNetCore.Http.HttpContext,System.Threading.CancellationToken)
+  - AeroDB.IJsonLoader.WriteById``1(System.String,Microsoft.AspNetCore.Http.HttpContext,System.Threading.CancellationToken)
+  langs:
+  - csharp
+  - vb
+  name: IJsonLoader
+  nameWithType: IJsonLoader
+  fullName: AeroDB.IJsonLoader
+  type: Interface
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IJsonLoader.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Raw JSON document loading without deserialization.
+  example: []
+  syntax:
+    content: public interface IJsonLoader
+    content.vb: Public Interface IJsonLoader
+- uid: AeroDB.IJsonLoader.LoadByIdAsync``1(System.String,System.Threading.CancellationToken)
+  commentId: M:AeroDB.IJsonLoader.LoadByIdAsync``1(System.String,System.Threading.CancellationToken)
+  id: LoadByIdAsync``1(System.String,System.Threading.CancellationToken)
+  parent: AeroDB.IJsonLoader
+  langs:
+  - csharp
+  - vb
+  name: LoadByIdAsync<T>(string, CancellationToken)
+  nameWithType: IJsonLoader.LoadByIdAsync<T>(string, CancellationToken)
+  fullName: AeroDB.IJsonLoader.LoadByIdAsync<T>(string, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IJsonLoader.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Load a document as a raw JSON string by ID.
+  example: []
+  syntax:
+    content: 'Task<string?> LoadByIdAsync<T>(string id, CancellationToken ct = default) where T : class'
+    parameters:
+    - id: id
+      type: System.String
+    - id: ct
+      type: System.Threading.CancellationToken
+    typeParameters:
+    - id: T
+    return:
+      type: System.Threading.Tasks.Task{System.String}
+    content.vb: Function LoadByIdAsync(Of T As Class)(id As String, ct As CancellationToken = Nothing) As Task(Of String)
+  overload: AeroDB.IJsonLoader.LoadByIdAsync*
+  nameWithType.vb: IJsonLoader.LoadByIdAsync(Of T)(String, CancellationToken)
+  fullName.vb: AeroDB.IJsonLoader.LoadByIdAsync(Of T)(String, System.Threading.CancellationToken)
+  name.vb: LoadByIdAsync(Of T)(String, CancellationToken)
+- uid: AeroDB.IJsonLoader.LoadDocumentByIdAsync``1(System.String,System.Threading.CancellationToken)
+  commentId: M:AeroDB.IJsonLoader.LoadDocumentByIdAsync``1(System.String,System.Threading.CancellationToken)
+  id: LoadDocumentByIdAsync``1(System.String,System.Threading.CancellationToken)
+  parent: AeroDB.IJsonLoader
+  langs:
+  - csharp
+  - vb
+  name: LoadDocumentByIdAsync<T>(string, CancellationToken)
+  nameWithType: IJsonLoader.LoadDocumentByIdAsync<T>(string, CancellationToken)
+  fullName: AeroDB.IJsonLoader.LoadDocumentByIdAsync<T>(string, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IJsonLoader.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Load a document as a raw JSON object by ID.
+  example: []
+  syntax:
+    content: 'Task<JsonDocument?> LoadDocumentByIdAsync<T>(string id, CancellationToken ct = default) where T : class'
+    parameters:
+    - id: id
+      type: System.String
+    - id: ct
+      type: System.Threading.CancellationToken
+    typeParameters:
+    - id: T
+    return:
+      type: System.Threading.Tasks.Task{System.Text.Json.JsonDocument}
+    content.vb: Function LoadDocumentByIdAsync(Of T As Class)(id As String, ct As CancellationToken = Nothing) As Task(Of JsonDocument)
+  overload: AeroDB.IJsonLoader.LoadDocumentByIdAsync*
+  nameWithType.vb: IJsonLoader.LoadDocumentByIdAsync(Of T)(String, CancellationToken)
+  fullName.vb: AeroDB.IJsonLoader.LoadDocumentByIdAsync(Of T)(String, System.Threading.CancellationToken)
+  name.vb: LoadDocumentByIdAsync(Of T)(String, CancellationToken)
+- uid: AeroDB.IJsonLoader.WriteById``1(System.Object,Microsoft.AspNetCore.Http.HttpContext,System.Threading.CancellationToken)
+  commentId: M:AeroDB.IJsonLoader.WriteById``1(System.Object,Microsoft.AspNetCore.Http.HttpContext,System.Threading.CancellationToken)
+  id: WriteById``1(System.Object,Microsoft.AspNetCore.Http.HttpContext,System.Threading.CancellationToken)
+  parent: AeroDB.IJsonLoader
+  langs:
+  - csharp
+  - vb
+  name: WriteById<T>(object, HttpContext, CancellationToken)
+  nameWithType: IJsonLoader.WriteById<T>(object, HttpContext, CancellationToken)
+  fullName: AeroDB.IJsonLoader.WriteById<T>(object, Microsoft.AspNetCore.Http.HttpContext, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IJsonLoader.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Write a single document by its object ID to the HTTP response.
+  example: []
+  syntax:
+    content: 'Task WriteById<T>(object id, HttpContext httpContext, CancellationToken ct = default) where T : class'
+    parameters:
+    - id: id
+      type: System.Object
+    - id: httpContext
+      type: Microsoft.AspNetCore.Http.HttpContext
+    - id: ct
+      type: System.Threading.CancellationToken
+    typeParameters:
+    - id: T
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Function WriteById(Of T As Class)(id As Object, httpContext As HttpContext, ct As CancellationToken = Nothing) As Task
+  overload: AeroDB.IJsonLoader.WriteById*
+  nameWithType.vb: IJsonLoader.WriteById(Of T)(Object, HttpContext, CancellationToken)
+  fullName.vb: AeroDB.IJsonLoader.WriteById(Of T)(Object, Microsoft.AspNetCore.Http.HttpContext, System.Threading.CancellationToken)
+  name.vb: WriteById(Of T)(Object, HttpContext, CancellationToken)
+- uid: AeroDB.IJsonLoader.WriteById``1(System.String,Microsoft.AspNetCore.Http.HttpContext,System.Threading.CancellationToken)
+  commentId: M:AeroDB.IJsonLoader.WriteById``1(System.String,Microsoft.AspNetCore.Http.HttpContext,System.Threading.CancellationToken)
+  id: WriteById``1(System.String,Microsoft.AspNetCore.Http.HttpContext,System.Threading.CancellationToken)
+  parent: AeroDB.IJsonLoader
+  langs:
+  - csharp
+  - vb
+  name: WriteById<T>(string, HttpContext, CancellationToken)
+  nameWithType: IJsonLoader.WriteById<T>(string, HttpContext, CancellationToken)
+  fullName: AeroDB.IJsonLoader.WriteById<T>(string, Microsoft.AspNetCore.Http.HttpContext, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IJsonLoader.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Write a single document by its string ID to the HTTP response.
+  example: []
+  syntax:
+    content: 'Task WriteById<T>(string id, HttpContext httpContext, CancellationToken ct = default) where T : class'
+    parameters:
+    - id: id
+      type: System.String
+    - id: httpContext
+      type: Microsoft.AspNetCore.Http.HttpContext
+    - id: ct
+      type: System.Threading.CancellationToken
+    typeParameters:
+    - id: T
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Function WriteById(Of T As Class)(id As String, httpContext As HttpContext, ct As CancellationToken = Nothing) As Task
+  overload: AeroDB.IJsonLoader.WriteById*
+  nameWithType.vb: IJsonLoader.WriteById(Of T)(String, HttpContext, CancellationToken)
+  fullName.vb: AeroDB.IJsonLoader.WriteById(Of T)(String, Microsoft.AspNetCore.Http.HttpContext, System.Threading.CancellationToken)
+  name.vb: WriteById(Of T)(String, HttpContext, CancellationToken)
+- uid: AeroDB.IJsonLoader.WriteById``1(System.Int32,Microsoft.AspNetCore.Http.HttpContext,System.Threading.CancellationToken)
+  commentId: M:AeroDB.IJsonLoader.WriteById``1(System.Int32,Microsoft.AspNetCore.Http.HttpContext,System.Threading.CancellationToken)
+  id: WriteById``1(System.Int32,Microsoft.AspNetCore.Http.HttpContext,System.Threading.CancellationToken)
+  parent: AeroDB.IJsonLoader
+  langs:
+  - csharp
+  - vb
+  name: WriteById<T>(int, HttpContext, CancellationToken)
+  nameWithType: IJsonLoader.WriteById<T>(int, HttpContext, CancellationToken)
+  fullName: AeroDB.IJsonLoader.WriteById<T>(int, Microsoft.AspNetCore.Http.HttpContext, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IJsonLoader.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Write a single document by its integer ID to the HTTP response.
+  example: []
+  syntax:
+    content: 'Task WriteById<T>(int id, HttpContext httpContext, CancellationToken ct = default) where T : class'
+    parameters:
+    - id: id
+      type: System.Int32
+    - id: httpContext
+      type: Microsoft.AspNetCore.Http.HttpContext
+    - id: ct
+      type: System.Threading.CancellationToken
+    typeParameters:
+    - id: T
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Function WriteById(Of T As Class)(id As Integer, httpContext As HttpContext, ct As CancellationToken = Nothing) As Task
+  overload: AeroDB.IJsonLoader.WriteById*
+  nameWithType.vb: IJsonLoader.WriteById(Of T)(Integer, HttpContext, CancellationToken)
+  fullName.vb: AeroDB.IJsonLoader.WriteById(Of T)(Integer, Microsoft.AspNetCore.Http.HttpContext, System.Threading.CancellationToken)
+  name.vb: WriteById(Of T)(Integer, HttpContext, CancellationToken)
+- uid: AeroDB.IJsonLoader.WriteById``1(System.Int64,Microsoft.AspNetCore.Http.HttpContext,System.Threading.CancellationToken)
+  commentId: M:AeroDB.IJsonLoader.WriteById``1(System.Int64,Microsoft.AspNetCore.Http.HttpContext,System.Threading.CancellationToken)
+  id: WriteById``1(System.Int64,Microsoft.AspNetCore.Http.HttpContext,System.Threading.CancellationToken)
+  parent: AeroDB.IJsonLoader
+  langs:
+  - csharp
+  - vb
+  name: WriteById<T>(long, HttpContext, CancellationToken)
+  nameWithType: IJsonLoader.WriteById<T>(long, HttpContext, CancellationToken)
+  fullName: AeroDB.IJsonLoader.WriteById<T>(long, Microsoft.AspNetCore.Http.HttpContext, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IJsonLoader.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Write a single document by its long ID to the HTTP response.
+  example: []
+  syntax:
+    content: 'Task WriteById<T>(long id, HttpContext httpContext, CancellationToken ct = default) where T : class'
+    parameters:
+    - id: id
+      type: System.Int64
+    - id: httpContext
+      type: Microsoft.AspNetCore.Http.HttpContext
+    - id: ct
+      type: System.Threading.CancellationToken
+    typeParameters:
+    - id: T
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Function WriteById(Of T As Class)(id As Long, httpContext As HttpContext, ct As CancellationToken = Nothing) As Task
+  overload: AeroDB.IJsonLoader.WriteById*
+  nameWithType.vb: IJsonLoader.WriteById(Of T)(Long, HttpContext, CancellationToken)
+  fullName.vb: AeroDB.IJsonLoader.WriteById(Of T)(Long, Microsoft.AspNetCore.Http.HttpContext, System.Threading.CancellationToken)
+  name.vb: WriteById(Of T)(Long, HttpContext, CancellationToken)
+- uid: AeroDB.IJsonLoader.WriteById``1(System.Guid,Microsoft.AspNetCore.Http.HttpContext,System.Threading.CancellationToken)
+  commentId: M:AeroDB.IJsonLoader.WriteById``1(System.Guid,Microsoft.AspNetCore.Http.HttpContext,System.Threading.CancellationToken)
+  id: WriteById``1(System.Guid,Microsoft.AspNetCore.Http.HttpContext,System.Threading.CancellationToken)
+  parent: AeroDB.IJsonLoader
+  langs:
+  - csharp
+  - vb
+  name: WriteById<T>(Guid, HttpContext, CancellationToken)
+  nameWithType: IJsonLoader.WriteById<T>(Guid, HttpContext, CancellationToken)
+  fullName: AeroDB.IJsonLoader.WriteById<T>(System.Guid, Microsoft.AspNetCore.Http.HttpContext, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IJsonLoader.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Write a single document by its Guid ID to the HTTP response.
+  example: []
+  syntax:
+    content: 'Task WriteById<T>(Guid id, HttpContext httpContext, CancellationToken ct = default) where T : class'
+    parameters:
+    - id: id
+      type: System.Guid
+    - id: httpContext
+      type: Microsoft.AspNetCore.Http.HttpContext
+    - id: ct
+      type: System.Threading.CancellationToken
+    typeParameters:
+    - id: T
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Function WriteById(Of T As Class)(id As Guid, httpContext As HttpContext, ct As CancellationToken = Nothing) As Task
+  overload: AeroDB.IJsonLoader.WriteById*
+  nameWithType.vb: IJsonLoader.WriteById(Of T)(Guid, HttpContext, CancellationToken)
+  fullName.vb: AeroDB.IJsonLoader.WriteById(Of T)(System.Guid, Microsoft.AspNetCore.Http.HttpContext, System.Threading.CancellationToken)
+  name.vb: WriteById(Of T)(Guid, HttpContext, CancellationToken)
+- uid: AeroDB.IJsonLoader.WriteArray``1(Microsoft.AspNetCore.Http.HttpContext,System.Threading.CancellationToken)
+  commentId: M:AeroDB.IJsonLoader.WriteArray``1(Microsoft.AspNetCore.Http.HttpContext,System.Threading.CancellationToken)
+  id: WriteArray``1(Microsoft.AspNetCore.Http.HttpContext,System.Threading.CancellationToken)
+  parent: AeroDB.IJsonLoader
+  langs:
+  - csharp
+  - vb
+  name: WriteArray<T>(HttpContext, CancellationToken)
+  nameWithType: IJsonLoader.WriteArray<T>(HttpContext, CancellationToken)
+  fullName: AeroDB.IJsonLoader.WriteArray<T>(Microsoft.AspNetCore.Http.HttpContext, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IJsonLoader.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Query all documents of type T and write them as a JSON array to the HTTP response.
+  example: []
+  syntax:
+    content: 'Task WriteArray<T>(HttpContext httpContext, CancellationToken ct = default) where T : class'
+    parameters:
+    - id: httpContext
+      type: Microsoft.AspNetCore.Http.HttpContext
+    - id: ct
+      type: System.Threading.CancellationToken
+    typeParameters:
+    - id: T
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Function WriteArray(Of T As Class)(httpContext As HttpContext, ct As CancellationToken = Nothing) As Task
+  overload: AeroDB.IJsonLoader.WriteArray*
+  nameWithType.vb: IJsonLoader.WriteArray(Of T)(HttpContext, CancellationToken)
+  fullName.vb: AeroDB.IJsonLoader.WriteArray(Of T)(Microsoft.AspNetCore.Http.HttpContext, System.Threading.CancellationToken)
+  name.vb: WriteArray(Of T)(HttpContext, CancellationToken)
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: AeroDB.IJsonLoader.LoadByIdAsync*
+  commentId: Overload:AeroDB.IJsonLoader.LoadByIdAsync
+  isExternal: true
+  href: AeroDB.IJsonLoader.html#AeroDB_IJsonLoader_LoadByIdAsync__1_System_String_System_Threading_CancellationToken_
+  name: LoadByIdAsync
+  nameWithType: IJsonLoader.LoadByIdAsync
+  fullName: AeroDB.IJsonLoader.LoadByIdAsync
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task{System.String}
+  commentId: T:System.Threading.Tasks.Task{System.String}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<string>
+  nameWithType: Task<string>
+  fullName: System.Threading.Tasks.Task<string>
+  nameWithType.vb: Task(Of String)
+  fullName.vb: System.Threading.Tasks.Task(Of String)
+  name.vb: Task(Of String)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: AeroDB.IJsonLoader.LoadDocumentByIdAsync*
+  commentId: Overload:AeroDB.IJsonLoader.LoadDocumentByIdAsync
+  isExternal: true
+  href: AeroDB.IJsonLoader.html#AeroDB_IJsonLoader_LoadDocumentByIdAsync__1_System_String_System_Threading_CancellationToken_
+  name: LoadDocumentByIdAsync
+  nameWithType: IJsonLoader.LoadDocumentByIdAsync
+  fullName: AeroDB.IJsonLoader.LoadDocumentByIdAsync
+- uid: System.Threading.Tasks.Task{System.Text.Json.JsonDocument}
+  commentId: T:System.Threading.Tasks.Task{System.Text.Json.JsonDocument}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<JsonDocument>
+  nameWithType: Task<JsonDocument>
+  fullName: System.Threading.Tasks.Task<System.Text.Json.JsonDocument>
+  nameWithType.vb: Task(Of JsonDocument)
+  fullName.vb: System.Threading.Tasks.Task(Of System.Text.Json.JsonDocument)
+  name.vb: Task(Of JsonDocument)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Text.Json.JsonDocument
+    name: JsonDocument
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json.jsondocument
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Text.Json.JsonDocument
+    name: JsonDocument
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json.jsondocument
+  - name: )
+- uid: AeroDB.IJsonLoader.WriteById*
+  commentId: Overload:AeroDB.IJsonLoader.WriteById
+  isExternal: true
+  href: AeroDB.IJsonLoader.html#AeroDB_IJsonLoader_WriteById__1_System_Object_Microsoft_AspNetCore_Http_HttpContext_System_Threading_CancellationToken_
+  name: WriteById
+  nameWithType: IJsonLoader.WriteById
+  fullName: AeroDB.IJsonLoader.WriteById
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: Microsoft.AspNetCore.Http.HttpContext
+  commentId: T:Microsoft.AspNetCore.Http.HttpContext
+  parent: Microsoft.AspNetCore.Http
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.http.httpcontext
+  name: HttpContext
+  nameWithType: HttpContext
+  fullName: Microsoft.AspNetCore.Http.HttpContext
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: Microsoft.AspNetCore.Http
+  commentId: N:Microsoft.AspNetCore.Http
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.AspNetCore.Http
+  nameWithType: Microsoft.AspNetCore.Http
+  fullName: Microsoft.AspNetCore.Http
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.AspNetCore
+    name: AspNetCore
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore
+  - name: .
+  - uid: Microsoft.AspNetCore.Http
+    name: Http
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.http
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.AspNetCore
+    name: AspNetCore
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore
+  - name: .
+  - uid: Microsoft.AspNetCore.Http
+    name: Http
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.http
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
+- uid: System.Guid
+  commentId: T:System.Guid
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: Guid
+  nameWithType: Guid
+  fullName: System.Guid
+- uid: AeroDB.IJsonLoader.WriteArray*
+  commentId: Overload:AeroDB.IJsonLoader.WriteArray
+  isExternal: true
+  href: AeroDB.IJsonLoader.html#AeroDB_IJsonLoader_WriteArray__1_Microsoft_AspNetCore_Http_HttpContext_System_Threading_CancellationToken_
+  name: WriteArray
+  nameWithType: IJsonLoader.WriteArray
+  fullName: AeroDB.IJsonLoader.WriteArray

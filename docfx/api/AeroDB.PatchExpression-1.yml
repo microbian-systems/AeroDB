@@ -1,0 +1,4346 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.PatchExpression`1
+  commentId: T:AeroDB.PatchExpression`1
+  id: PatchExpression`1
+  parent: AeroDB
+  children:
+  - AeroDB.PatchExpression`1.AppendIfNotExists``1(System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IEnumerable{``0}}},``0)
+  - AeroDB.PatchExpression`1.Append``1(System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IEnumerable{``0}}},``0)
+  - AeroDB.PatchExpression`1.ApplyAsync(System.Threading.CancellationToken)
+  - AeroDB.PatchExpression`1.Delete``1(System.Linq.Expressions.Expression{System.Func{`0,``0}})
+  - AeroDB.PatchExpression`1.Duplicate``1(System.Linq.Expressions.Expression{System.Func{`0,``0}},System.Linq.Expressions.Expression{System.Func{`0,``0}}[])
+  - AeroDB.PatchExpression`1.Increment(System.Linq.Expressions.Expression{System.Func{`0,System.Decimal}},System.Decimal)
+  - AeroDB.PatchExpression`1.Increment(System.Linq.Expressions.Expression{System.Func{`0,System.Double}},System.Double)
+  - AeroDB.PatchExpression`1.Increment(System.Linq.Expressions.Expression{System.Func{`0,System.Int32}},System.Int32)
+  - AeroDB.PatchExpression`1.Increment(System.Linq.Expressions.Expression{System.Func{`0,System.Int64}},System.Int64)
+  - AeroDB.PatchExpression`1.Increment(System.Linq.Expressions.Expression{System.Func{`0,System.Single}},System.Single)
+  - AeroDB.PatchExpression`1.InsertIfNotExists``1(System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IEnumerable{``0}}},``0,System.Nullable{System.Int32})
+  - AeroDB.PatchExpression`1.Insert``1(System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IEnumerable{``0}}},``0,System.Nullable{System.Int32})
+  - AeroDB.PatchExpression`1.Remove``1(System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IEnumerable{``0}}},``0)
+  - AeroDB.PatchExpression`1.Rename(System.String,System.Linq.Expressions.Expression{System.Func{`0,System.Object}})
+  - AeroDB.PatchExpression`1.SetAll``1(``0)
+  - AeroDB.PatchExpression`1.Set``1(System.Linq.Expressions.Expression{System.Func{`0,``0}},``0)
+  langs:
+  - csharp
+  - vb
+  name: PatchExpression<T>
+  nameWithType: PatchExpression<T>
+  fullName: AeroDB.PatchExpression<T>
+  type: Class
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Patching/PatchExpression.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Fluent builder for partial document updates (patch operations).
+
+    Collects SET/INCREMENT/APPEND/DELETE operations and generates a SurrealQL
+
+    UPDATE statement when <xref href="AeroDB.PatchExpression%601.ApplyAsync(System.Threading.CancellationToken)" data-throw-if-not-resolved="false"></xref> is called.
+  example: []
+  syntax:
+    content: 'public class PatchExpression<T> : IPatchExpression<T> where T : class'
+    typeParameters:
+    - id: T
+      description: The document type (must extend <code>Record</code> from SurrealDb.Net.Models).
+    content.vb: Public Class PatchExpression(Of T As Class) Implements IPatchExpression(Of T)
+  inheritance:
+  - System.Object
+  implements:
+  - AeroDB.IPatchExpression{{T}}
+  inheritedMembers:
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  nameWithType.vb: PatchExpression(Of T)
+  fullName.vb: AeroDB.PatchExpression(Of T)
+  name.vb: PatchExpression(Of T)
+- uid: AeroDB.PatchExpression`1.Set``1(System.Linq.Expressions.Expression{System.Func{`0,``0}},``0)
+  commentId: M:AeroDB.PatchExpression`1.Set``1(System.Linq.Expressions.Expression{System.Func{`0,``0}},``0)
+  id: Set``1(System.Linq.Expressions.Expression{System.Func{`0,``0}},``0)
+  parent: AeroDB.PatchExpression`1
+  langs:
+  - csharp
+  - vb
+  name: Set<TValue>(Expression<Func<T, TValue>>, TValue)
+  nameWithType: PatchExpression<T>.Set<TValue>(Expression<Func<T, TValue>>, TValue)
+  fullName: AeroDB.PatchExpression<T>.Set<TValue>(System.Linq.Expressions.Expression<System.Func<T, TValue>>, TValue)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Patching/PatchExpression.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  example: []
+  syntax:
+    content: public IPatchExpression<T> Set<TValue>(Expression<Func<T, TValue>> property, TValue value)
+    parameters:
+    - id: property
+      type: System.Linq.Expressions.Expression{System.Func{{T},{TValue}}}
+    - id: value
+      type: '{TValue}'
+    typeParameters:
+    - id: TValue
+    return:
+      type: AeroDB.IPatchExpression{{T}}
+    content.vb: Public Function [Set](Of TValue)([property] As Expression(Of Func(Of T, TValue)), value As TValue) As IPatchExpression(Of T)
+  overload: AeroDB.PatchExpression`1.Set*
+  implements:
+  - AeroDB.IPatchExpression{{T}}.Set``1(System.Linq.Expressions.Expression{System.Func{{T},{TValue}}},{TValue})
+  nameWithType.vb: PatchExpression(Of T).Set(Of TValue)(Expression(Of Func(Of T, TValue)), TValue)
+  fullName.vb: AeroDB.PatchExpression(Of T).Set(Of TValue)(System.Linq.Expressions.Expression(Of System.Func(Of T, TValue)), TValue)
+  name.vb: Set(Of TValue)(Expression(Of Func(Of T, TValue)), TValue)
+- uid: AeroDB.PatchExpression`1.Increment(System.Linq.Expressions.Expression{System.Func{`0,System.Int32}},System.Int32)
+  commentId: M:AeroDB.PatchExpression`1.Increment(System.Linq.Expressions.Expression{System.Func{`0,System.Int32}},System.Int32)
+  id: Increment(System.Linq.Expressions.Expression{System.Func{`0,System.Int32}},System.Int32)
+  parent: AeroDB.PatchExpression`1
+  langs:
+  - csharp
+  - vb
+  name: Increment(Expression<Func<T, int>>, int)
+  nameWithType: PatchExpression<T>.Increment(Expression<Func<T, int>>, int)
+  fullName: AeroDB.PatchExpression<T>.Increment(System.Linq.Expressions.Expression<System.Func<T, int>>, int)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Patching/PatchExpression.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  example: []
+  syntax:
+    content: public IPatchExpression<T> Increment(Expression<Func<T, int>> property, int amount = 1)
+    parameters:
+    - id: property
+      type: System.Linq.Expressions.Expression{System.Func{{T},System.Int32}}
+    - id: amount
+      type: System.Int32
+    return:
+      type: AeroDB.IPatchExpression{{T}}
+    content.vb: Public Function Increment([property] As Expression(Of Func(Of T, Integer)), amount As Integer = 1) As IPatchExpression(Of T)
+  overload: AeroDB.PatchExpression`1.Increment*
+  implements:
+  - AeroDB.IPatchExpression{{T}}.Increment(System.Linq.Expressions.Expression{System.Func{{T},System.Int32}},System.Int32)
+  nameWithType.vb: PatchExpression(Of T).Increment(Expression(Of Func(Of T, Integer)), Integer)
+  fullName.vb: AeroDB.PatchExpression(Of T).Increment(System.Linq.Expressions.Expression(Of System.Func(Of T, Integer)), Integer)
+  name.vb: Increment(Expression(Of Func(Of T, Integer)), Integer)
+- uid: AeroDB.PatchExpression`1.Increment(System.Linq.Expressions.Expression{System.Func{`0,System.Int64}},System.Int64)
+  commentId: M:AeroDB.PatchExpression`1.Increment(System.Linq.Expressions.Expression{System.Func{`0,System.Int64}},System.Int64)
+  id: Increment(System.Linq.Expressions.Expression{System.Func{`0,System.Int64}},System.Int64)
+  parent: AeroDB.PatchExpression`1
+  langs:
+  - csharp
+  - vb
+  name: Increment(Expression<Func<T, long>>, long)
+  nameWithType: PatchExpression<T>.Increment(Expression<Func<T, long>>, long)
+  fullName: AeroDB.PatchExpression<T>.Increment(System.Linq.Expressions.Expression<System.Func<T, long>>, long)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Patching/PatchExpression.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  example: []
+  syntax:
+    content: public IPatchExpression<T> Increment(Expression<Func<T, long>> property, long amount = 1)
+    parameters:
+    - id: property
+      type: System.Linq.Expressions.Expression{System.Func{{T},System.Int64}}
+    - id: amount
+      type: System.Int64
+    return:
+      type: AeroDB.IPatchExpression{{T}}
+    content.vb: Public Function Increment([property] As Expression(Of Func(Of T, Long)), amount As Long = 1) As IPatchExpression(Of T)
+  overload: AeroDB.PatchExpression`1.Increment*
+  implements:
+  - AeroDB.IPatchExpression{{T}}.Increment(System.Linq.Expressions.Expression{System.Func{{T},System.Int64}},System.Int64)
+  nameWithType.vb: PatchExpression(Of T).Increment(Expression(Of Func(Of T, Long)), Long)
+  fullName.vb: AeroDB.PatchExpression(Of T).Increment(System.Linq.Expressions.Expression(Of System.Func(Of T, Long)), Long)
+  name.vb: Increment(Expression(Of Func(Of T, Long)), Long)
+- uid: AeroDB.PatchExpression`1.Increment(System.Linq.Expressions.Expression{System.Func{`0,System.Double}},System.Double)
+  commentId: M:AeroDB.PatchExpression`1.Increment(System.Linq.Expressions.Expression{System.Func{`0,System.Double}},System.Double)
+  id: Increment(System.Linq.Expressions.Expression{System.Func{`0,System.Double}},System.Double)
+  parent: AeroDB.PatchExpression`1
+  langs:
+  - csharp
+  - vb
+  name: Increment(Expression<Func<T, double>>, double)
+  nameWithType: PatchExpression<T>.Increment(Expression<Func<T, double>>, double)
+  fullName: AeroDB.PatchExpression<T>.Increment(System.Linq.Expressions.Expression<System.Func<T, double>>, double)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Patching/PatchExpression.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  example: []
+  syntax:
+    content: public IPatchExpression<T> Increment(Expression<Func<T, double>> property, double amount = 1)
+    parameters:
+    - id: property
+      type: System.Linq.Expressions.Expression{System.Func{{T},System.Double}}
+    - id: amount
+      type: System.Double
+    return:
+      type: AeroDB.IPatchExpression{{T}}
+    content.vb: Public Function Increment([property] As Expression(Of Func(Of T, Double)), amount As Double = 1) As IPatchExpression(Of T)
+  overload: AeroDB.PatchExpression`1.Increment*
+  implements:
+  - AeroDB.IPatchExpression{{T}}.Increment(System.Linq.Expressions.Expression{System.Func{{T},System.Double}},System.Double)
+  nameWithType.vb: PatchExpression(Of T).Increment(Expression(Of Func(Of T, Double)), Double)
+  fullName.vb: AeroDB.PatchExpression(Of T).Increment(System.Linq.Expressions.Expression(Of System.Func(Of T, Double)), Double)
+  name.vb: Increment(Expression(Of Func(Of T, Double)), Double)
+- uid: AeroDB.PatchExpression`1.Increment(System.Linq.Expressions.Expression{System.Func{`0,System.Single}},System.Single)
+  commentId: M:AeroDB.PatchExpression`1.Increment(System.Linq.Expressions.Expression{System.Func{`0,System.Single}},System.Single)
+  id: Increment(System.Linq.Expressions.Expression{System.Func{`0,System.Single}},System.Single)
+  parent: AeroDB.PatchExpression`1
+  langs:
+  - csharp
+  - vb
+  name: Increment(Expression<Func<T, float>>, float)
+  nameWithType: PatchExpression<T>.Increment(Expression<Func<T, float>>, float)
+  fullName: AeroDB.PatchExpression<T>.Increment(System.Linq.Expressions.Expression<System.Func<T, float>>, float)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Patching/PatchExpression.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  example: []
+  syntax:
+    content: public IPatchExpression<T> Increment(Expression<Func<T, float>> property, float amount = 1)
+    parameters:
+    - id: property
+      type: System.Linq.Expressions.Expression{System.Func{{T},System.Single}}
+    - id: amount
+      type: System.Single
+    return:
+      type: AeroDB.IPatchExpression{{T}}
+    content.vb: Public Function Increment([property] As Expression(Of Func(Of T, Single)), amount As Single = 1) As IPatchExpression(Of T)
+  overload: AeroDB.PatchExpression`1.Increment*
+  implements:
+  - AeroDB.IPatchExpression{{T}}.Increment(System.Linq.Expressions.Expression{System.Func{{T},System.Single}},System.Single)
+  nameWithType.vb: PatchExpression(Of T).Increment(Expression(Of Func(Of T, Single)), Single)
+  fullName.vb: AeroDB.PatchExpression(Of T).Increment(System.Linq.Expressions.Expression(Of System.Func(Of T, Single)), Single)
+  name.vb: Increment(Expression(Of Func(Of T, Single)), Single)
+- uid: AeroDB.PatchExpression`1.Increment(System.Linq.Expressions.Expression{System.Func{`0,System.Decimal}},System.Decimal)
+  commentId: M:AeroDB.PatchExpression`1.Increment(System.Linq.Expressions.Expression{System.Func{`0,System.Decimal}},System.Decimal)
+  id: Increment(System.Linq.Expressions.Expression{System.Func{`0,System.Decimal}},System.Decimal)
+  parent: AeroDB.PatchExpression`1
+  langs:
+  - csharp
+  - vb
+  name: Increment(Expression<Func<T, decimal>>, decimal)
+  nameWithType: PatchExpression<T>.Increment(Expression<Func<T, decimal>>, decimal)
+  fullName: AeroDB.PatchExpression<T>.Increment(System.Linq.Expressions.Expression<System.Func<T, decimal>>, decimal)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Patching/PatchExpression.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  example: []
+  syntax:
+    content: public IPatchExpression<T> Increment(Expression<Func<T, decimal>> property, decimal amount = 1)
+    parameters:
+    - id: property
+      type: System.Linq.Expressions.Expression{System.Func{{T},System.Decimal}}
+    - id: amount
+      type: System.Decimal
+    return:
+      type: AeroDB.IPatchExpression{{T}}
+    content.vb: Public Function Increment([property] As Expression(Of Func(Of T, Decimal)), amount As Decimal = 1) As IPatchExpression(Of T)
+  overload: AeroDB.PatchExpression`1.Increment*
+  implements:
+  - AeroDB.IPatchExpression{{T}}.Increment(System.Linq.Expressions.Expression{System.Func{{T},System.Decimal}},System.Decimal)
+  nameWithType.vb: PatchExpression(Of T).Increment(Expression(Of Func(Of T, Decimal)), Decimal)
+  fullName.vb: AeroDB.PatchExpression(Of T).Increment(System.Linq.Expressions.Expression(Of System.Func(Of T, Decimal)), Decimal)
+  name.vb: Increment(Expression(Of Func(Of T, Decimal)), Decimal)
+- uid: AeroDB.PatchExpression`1.Append``1(System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IEnumerable{``0}}},``0)
+  commentId: M:AeroDB.PatchExpression`1.Append``1(System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IEnumerable{``0}}},``0)
+  id: Append``1(System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IEnumerable{``0}}},``0)
+  parent: AeroDB.PatchExpression`1
+  langs:
+  - csharp
+  - vb
+  name: Append<TElement>(Expression<Func<T, IEnumerable<TElement>>>, TElement)
+  nameWithType: PatchExpression<T>.Append<TElement>(Expression<Func<T, IEnumerable<TElement>>>, TElement)
+  fullName: AeroDB.PatchExpression<T>.Append<TElement>(System.Linq.Expressions.Expression<System.Func<T, System.Collections.Generic.IEnumerable<TElement>>>, TElement)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Patching/PatchExpression.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  example: []
+  syntax:
+    content: public IPatchExpression<T> Append<TElement>(Expression<Func<T, IEnumerable<TElement>>> property, TElement element)
+    parameters:
+    - id: property
+      type: System.Linq.Expressions.Expression{System.Func{{T},System.Collections.Generic.IEnumerable{{TElement}}}}
+    - id: element
+      type: '{TElement}'
+    typeParameters:
+    - id: TElement
+    return:
+      type: AeroDB.IPatchExpression{{T}}
+    content.vb: Public Function Append(Of TElement)([property] As Expression(Of Func(Of T, IEnumerable(Of TElement))), element As TElement) As IPatchExpression(Of T)
+  overload: AeroDB.PatchExpression`1.Append*
+  implements:
+  - AeroDB.IPatchExpression{{T}}.Append``1(System.Linq.Expressions.Expression{System.Func{{T},System.Collections.Generic.IEnumerable{{TElement}}}},{TElement})
+  nameWithType.vb: PatchExpression(Of T).Append(Of TElement)(Expression(Of Func(Of T, IEnumerable(Of TElement))), TElement)
+  fullName.vb: AeroDB.PatchExpression(Of T).Append(Of TElement)(System.Linq.Expressions.Expression(Of System.Func(Of T, System.Collections.Generic.IEnumerable(Of TElement))), TElement)
+  name.vb: Append(Of TElement)(Expression(Of Func(Of T, IEnumerable(Of TElement))), TElement)
+- uid: AeroDB.PatchExpression`1.AppendIfNotExists``1(System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IEnumerable{``0}}},``0)
+  commentId: M:AeroDB.PatchExpression`1.AppendIfNotExists``1(System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IEnumerable{``0}}},``0)
+  id: AppendIfNotExists``1(System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IEnumerable{``0}}},``0)
+  parent: AeroDB.PatchExpression`1
+  langs:
+  - csharp
+  - vb
+  name: AppendIfNotExists<TElement>(Expression<Func<T, IEnumerable<TElement>>>, TElement)
+  nameWithType: PatchExpression<T>.AppendIfNotExists<TElement>(Expression<Func<T, IEnumerable<TElement>>>, TElement)
+  fullName: AeroDB.PatchExpression<T>.AppendIfNotExists<TElement>(System.Linq.Expressions.Expression<System.Func<T, System.Collections.Generic.IEnumerable<TElement>>>, TElement)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Patching/PatchExpression.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  example: []
+  syntax:
+    content: public IPatchExpression<T> AppendIfNotExists<TElement>(Expression<Func<T, IEnumerable<TElement>>> property, TElement element)
+    parameters:
+    - id: property
+      type: System.Linq.Expressions.Expression{System.Func{{T},System.Collections.Generic.IEnumerable{{TElement}}}}
+    - id: element
+      type: '{TElement}'
+    typeParameters:
+    - id: TElement
+    return:
+      type: AeroDB.IPatchExpression{{T}}
+    content.vb: Public Function AppendIfNotExists(Of TElement)([property] As Expression(Of Func(Of T, IEnumerable(Of TElement))), element As TElement) As IPatchExpression(Of T)
+  overload: AeroDB.PatchExpression`1.AppendIfNotExists*
+  implements:
+  - AeroDB.IPatchExpression{{T}}.AppendIfNotExists``1(System.Linq.Expressions.Expression{System.Func{{T},System.Collections.Generic.IEnumerable{{TElement}}}},{TElement})
+  nameWithType.vb: PatchExpression(Of T).AppendIfNotExists(Of TElement)(Expression(Of Func(Of T, IEnumerable(Of TElement))), TElement)
+  fullName.vb: AeroDB.PatchExpression(Of T).AppendIfNotExists(Of TElement)(System.Linq.Expressions.Expression(Of System.Func(Of T, System.Collections.Generic.IEnumerable(Of TElement))), TElement)
+  name.vb: AppendIfNotExists(Of TElement)(Expression(Of Func(Of T, IEnumerable(Of TElement))), TElement)
+- uid: AeroDB.PatchExpression`1.Insert``1(System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IEnumerable{``0}}},``0,System.Nullable{System.Int32})
+  commentId: M:AeroDB.PatchExpression`1.Insert``1(System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IEnumerable{``0}}},``0,System.Nullable{System.Int32})
+  id: Insert``1(System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IEnumerable{``0}}},``0,System.Nullable{System.Int32})
+  parent: AeroDB.PatchExpression`1
+  langs:
+  - csharp
+  - vb
+  name: Insert<TElement>(Expression<Func<T, IEnumerable<TElement>>>, TElement, int?)
+  nameWithType: PatchExpression<T>.Insert<TElement>(Expression<Func<T, IEnumerable<TElement>>>, TElement, int?)
+  fullName: AeroDB.PatchExpression<T>.Insert<TElement>(System.Linq.Expressions.Expression<System.Func<T, System.Collections.Generic.IEnumerable<TElement>>>, TElement, int?)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Patching/PatchExpression.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  example: []
+  syntax:
+    content: public IPatchExpression<T> Insert<TElement>(Expression<Func<T, IEnumerable<TElement>>> property, TElement element, int? index = null)
+    parameters:
+    - id: property
+      type: System.Linq.Expressions.Expression{System.Func{{T},System.Collections.Generic.IEnumerable{{TElement}}}}
+    - id: element
+      type: '{TElement}'
+    - id: index
+      type: System.Nullable{System.Int32}
+    typeParameters:
+    - id: TElement
+    return:
+      type: AeroDB.IPatchExpression{{T}}
+    content.vb: Public Function Insert(Of TElement)([property] As Expression(Of Func(Of T, IEnumerable(Of TElement))), element As TElement, index As Integer? = Nothing) As IPatchExpression(Of T)
+  overload: AeroDB.PatchExpression`1.Insert*
+  implements:
+  - AeroDB.IPatchExpression{{T}}.Insert``1(System.Linq.Expressions.Expression{System.Func{{T},System.Collections.Generic.IEnumerable{{TElement}}}},{TElement},System.Nullable{System.Int32})
+  nameWithType.vb: PatchExpression(Of T).Insert(Of TElement)(Expression(Of Func(Of T, IEnumerable(Of TElement))), TElement, Integer?)
+  fullName.vb: AeroDB.PatchExpression(Of T).Insert(Of TElement)(System.Linq.Expressions.Expression(Of System.Func(Of T, System.Collections.Generic.IEnumerable(Of TElement))), TElement, Integer?)
+  name.vb: Insert(Of TElement)(Expression(Of Func(Of T, IEnumerable(Of TElement))), TElement, Integer?)
+- uid: AeroDB.PatchExpression`1.InsertIfNotExists``1(System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IEnumerable{``0}}},``0,System.Nullable{System.Int32})
+  commentId: M:AeroDB.PatchExpression`1.InsertIfNotExists``1(System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IEnumerable{``0}}},``0,System.Nullable{System.Int32})
+  id: InsertIfNotExists``1(System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IEnumerable{``0}}},``0,System.Nullable{System.Int32})
+  parent: AeroDB.PatchExpression`1
+  langs:
+  - csharp
+  - vb
+  name: InsertIfNotExists<TElement>(Expression<Func<T, IEnumerable<TElement>>>, TElement, int?)
+  nameWithType: PatchExpression<T>.InsertIfNotExists<TElement>(Expression<Func<T, IEnumerable<TElement>>>, TElement, int?)
+  fullName: AeroDB.PatchExpression<T>.InsertIfNotExists<TElement>(System.Linq.Expressions.Expression<System.Func<T, System.Collections.Generic.IEnumerable<TElement>>>, TElement, int?)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Patching/PatchExpression.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  example: []
+  syntax:
+    content: public IPatchExpression<T> InsertIfNotExists<TElement>(Expression<Func<T, IEnumerable<TElement>>> property, TElement element, int? index = null)
+    parameters:
+    - id: property
+      type: System.Linq.Expressions.Expression{System.Func{{T},System.Collections.Generic.IEnumerable{{TElement}}}}
+    - id: element
+      type: '{TElement}'
+    - id: index
+      type: System.Nullable{System.Int32}
+    typeParameters:
+    - id: TElement
+    return:
+      type: AeroDB.IPatchExpression{{T}}
+    content.vb: Public Function InsertIfNotExists(Of TElement)([property] As Expression(Of Func(Of T, IEnumerable(Of TElement))), element As TElement, index As Integer? = Nothing) As IPatchExpression(Of T)
+  overload: AeroDB.PatchExpression`1.InsertIfNotExists*
+  implements:
+  - AeroDB.IPatchExpression{{T}}.InsertIfNotExists``1(System.Linq.Expressions.Expression{System.Func{{T},System.Collections.Generic.IEnumerable{{TElement}}}},{TElement},System.Nullable{System.Int32})
+  nameWithType.vb: PatchExpression(Of T).InsertIfNotExists(Of TElement)(Expression(Of Func(Of T, IEnumerable(Of TElement))), TElement, Integer?)
+  fullName.vb: AeroDB.PatchExpression(Of T).InsertIfNotExists(Of TElement)(System.Linq.Expressions.Expression(Of System.Func(Of T, System.Collections.Generic.IEnumerable(Of TElement))), TElement, Integer?)
+  name.vb: InsertIfNotExists(Of TElement)(Expression(Of Func(Of T, IEnumerable(Of TElement))), TElement, Integer?)
+- uid: AeroDB.PatchExpression`1.Remove``1(System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IEnumerable{``0}}},``0)
+  commentId: M:AeroDB.PatchExpression`1.Remove``1(System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IEnumerable{``0}}},``0)
+  id: Remove``1(System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IEnumerable{``0}}},``0)
+  parent: AeroDB.PatchExpression`1
+  langs:
+  - csharp
+  - vb
+  name: Remove<TElement>(Expression<Func<T, IEnumerable<TElement>>>, TElement)
+  nameWithType: PatchExpression<T>.Remove<TElement>(Expression<Func<T, IEnumerable<TElement>>>, TElement)
+  fullName: AeroDB.PatchExpression<T>.Remove<TElement>(System.Linq.Expressions.Expression<System.Func<T, System.Collections.Generic.IEnumerable<TElement>>>, TElement)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Patching/PatchExpression.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  example: []
+  syntax:
+    content: public IPatchExpression<T> Remove<TElement>(Expression<Func<T, IEnumerable<TElement>>> property, TElement element)
+    parameters:
+    - id: property
+      type: System.Linq.Expressions.Expression{System.Func{{T},System.Collections.Generic.IEnumerable{{TElement}}}}
+    - id: element
+      type: '{TElement}'
+    typeParameters:
+    - id: TElement
+    return:
+      type: AeroDB.IPatchExpression{{T}}
+    content.vb: Public Function Remove(Of TElement)([property] As Expression(Of Func(Of T, IEnumerable(Of TElement))), element As TElement) As IPatchExpression(Of T)
+  overload: AeroDB.PatchExpression`1.Remove*
+  implements:
+  - AeroDB.IPatchExpression{{T}}.Remove``1(System.Linq.Expressions.Expression{System.Func{{T},System.Collections.Generic.IEnumerable{{TElement}}}},{TElement})
+  nameWithType.vb: PatchExpression(Of T).Remove(Of TElement)(Expression(Of Func(Of T, IEnumerable(Of TElement))), TElement)
+  fullName.vb: AeroDB.PatchExpression(Of T).Remove(Of TElement)(System.Linq.Expressions.Expression(Of System.Func(Of T, System.Collections.Generic.IEnumerable(Of TElement))), TElement)
+  name.vb: Remove(Of TElement)(Expression(Of Func(Of T, IEnumerable(Of TElement))), TElement)
+- uid: AeroDB.PatchExpression`1.Duplicate``1(System.Linq.Expressions.Expression{System.Func{`0,``0}},System.Linq.Expressions.Expression{System.Func{`0,``0}}[])
+  commentId: M:AeroDB.PatchExpression`1.Duplicate``1(System.Linq.Expressions.Expression{System.Func{`0,``0}},System.Linq.Expressions.Expression{System.Func{`0,``0}}[])
+  id: Duplicate``1(System.Linq.Expressions.Expression{System.Func{`0,``0}},System.Linq.Expressions.Expression{System.Func{`0,``0}}[])
+  parent: AeroDB.PatchExpression`1
+  langs:
+  - csharp
+  - vb
+  name: Duplicate<TElement>(Expression<Func<T, TElement>>, params Expression<Func<T, TElement>>[])
+  nameWithType: PatchExpression<T>.Duplicate<TElement>(Expression<Func<T, TElement>>, params Expression<Func<T, TElement>>[])
+  fullName: AeroDB.PatchExpression<T>.Duplicate<TElement>(System.Linq.Expressions.Expression<System.Func<T, TElement>>, params System.Linq.Expressions.Expression<System.Func<T, TElement>>[])
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Patching/PatchExpression.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  example: []
+  syntax:
+    content: public IPatchExpression<T> Duplicate<TElement>(Expression<Func<T, TElement>> source, params Expression<Func<T, TElement>>[] destinations)
+    parameters:
+    - id: source
+      type: System.Linq.Expressions.Expression{System.Func{{T},{TElement}}}
+    - id: destinations
+      type: System.Linq.Expressions.Expression{System.Func{{T},{TElement}}}[]
+    typeParameters:
+    - id: TElement
+    return:
+      type: AeroDB.IPatchExpression{{T}}
+    content.vb: Public Function Duplicate(Of TElement)(source As Expression(Of Func(Of T, TElement)), ParamArray destinations As Expression(Of Func(Of T, TElement))()) As IPatchExpression(Of T)
+  overload: AeroDB.PatchExpression`1.Duplicate*
+  implements:
+  - AeroDB.IPatchExpression{{T}}.Duplicate``1(System.Linq.Expressions.Expression{System.Func{{T},{TElement}}},System.Linq.Expressions.Expression{System.Func{{T},{TElement}}}[])
+  nameWithType.vb: PatchExpression(Of T).Duplicate(Of TElement)(Expression(Of Func(Of T, TElement)), ParamArray Expression(Of Func(Of T, TElement))())
+  fullName.vb: AeroDB.PatchExpression(Of T).Duplicate(Of TElement)(System.Linq.Expressions.Expression(Of System.Func(Of T, TElement)), ParamArray System.Linq.Expressions.Expression(Of System.Func(Of T, TElement))())
+  name.vb: Duplicate(Of TElement)(Expression(Of Func(Of T, TElement)), ParamArray Expression(Of Func(Of T, TElement))())
+- uid: AeroDB.PatchExpression`1.Rename(System.String,System.Linq.Expressions.Expression{System.Func{`0,System.Object}})
+  commentId: M:AeroDB.PatchExpression`1.Rename(System.String,System.Linq.Expressions.Expression{System.Func{`0,System.Object}})
+  id: Rename(System.String,System.Linq.Expressions.Expression{System.Func{`0,System.Object}})
+  parent: AeroDB.PatchExpression`1
+  langs:
+  - csharp
+  - vb
+  name: Rename(string, Expression<Func<T, object?>>)
+  nameWithType: PatchExpression<T>.Rename(string, Expression<Func<T, object?>>)
+  fullName: AeroDB.PatchExpression<T>.Rename(string, System.Linq.Expressions.Expression<System.Func<T, object?>>)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Patching/PatchExpression.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  example: []
+  syntax:
+    content: public IPatchExpression<T> Rename(string oldName, Expression<Func<T, object?>> target)
+    parameters:
+    - id: oldName
+      type: System.String
+    - id: target
+      type: System.Linq.Expressions.Expression{System.Func{{T},System.Object}}
+    return:
+      type: AeroDB.IPatchExpression{{T}}
+    content.vb: Public Function Rename(oldName As String, target As Expression(Of Func(Of T, Object))) As IPatchExpression(Of T)
+  overload: AeroDB.PatchExpression`1.Rename*
+  implements:
+  - AeroDB.IPatchExpression{{T}}.Rename(System.String,System.Linq.Expressions.Expression{System.Func{{T},System.Object}})
+  nameWithType.vb: PatchExpression(Of T).Rename(String, Expression(Of Func(Of T, Object)))
+  fullName.vb: AeroDB.PatchExpression(Of T).Rename(String, System.Linq.Expressions.Expression(Of System.Func(Of T, Object)))
+  name.vb: Rename(String, Expression(Of Func(Of T, Object)))
+- uid: AeroDB.PatchExpression`1.Delete``1(System.Linq.Expressions.Expression{System.Func{`0,``0}})
+  commentId: M:AeroDB.PatchExpression`1.Delete``1(System.Linq.Expressions.Expression{System.Func{`0,``0}})
+  id: Delete``1(System.Linq.Expressions.Expression{System.Func{`0,``0}})
+  parent: AeroDB.PatchExpression`1
+  langs:
+  - csharp
+  - vb
+  name: Delete<TValue>(Expression<Func<T, TValue>>)
+  nameWithType: PatchExpression<T>.Delete<TValue>(Expression<Func<T, TValue>>)
+  fullName: AeroDB.PatchExpression<T>.Delete<TValue>(System.Linq.Expressions.Expression<System.Func<T, TValue>>)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Patching/PatchExpression.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  example: []
+  syntax:
+    content: public IPatchExpression<T> Delete<TValue>(Expression<Func<T, TValue>> property)
+    parameters:
+    - id: property
+      type: System.Linq.Expressions.Expression{System.Func{{T},{TValue}}}
+    typeParameters:
+    - id: TValue
+    return:
+      type: AeroDB.IPatchExpression{{T}}
+    content.vb: Public Function Delete(Of TValue)([property] As Expression(Of Func(Of T, TValue))) As IPatchExpression(Of T)
+  overload: AeroDB.PatchExpression`1.Delete*
+  implements:
+  - AeroDB.IPatchExpression{{T}}.Delete``1(System.Linq.Expressions.Expression{System.Func{{T},{TValue}}})
+  nameWithType.vb: PatchExpression(Of T).Delete(Of TValue)(Expression(Of Func(Of T, TValue)))
+  fullName.vb: AeroDB.PatchExpression(Of T).Delete(Of TValue)(System.Linq.Expressions.Expression(Of System.Func(Of T, TValue)))
+  name.vb: Delete(Of TValue)(Expression(Of Func(Of T, TValue)))
+- uid: AeroDB.PatchExpression`1.SetAll``1(``0)
+  commentId: M:AeroDB.PatchExpression`1.SetAll``1(``0)
+  id: SetAll``1(``0)
+  parent: AeroDB.PatchExpression`1
+  langs:
+  - csharp
+  - vb
+  name: SetAll<TValue>(TValue)
+  nameWithType: PatchExpression<T>.SetAll<TValue>(TValue)
+  fullName: AeroDB.PatchExpression<T>.SetAll<TValue>(TValue)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Patching/PatchExpression.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Set all writable properties of the matching type to the given value.
+  example: []
+  syntax:
+    content: public IPatchExpression<T> SetAll<TValue>(TValue value)
+    parameters:
+    - id: value
+      type: '{TValue}'
+    typeParameters:
+    - id: TValue
+    return:
+      type: AeroDB.IPatchExpression{{T}}
+    content.vb: Public Function SetAll(Of TValue)(value As TValue) As IPatchExpression(Of T)
+  overload: AeroDB.PatchExpression`1.SetAll*
+  implements:
+  - AeroDB.IPatchExpression{{T}}.SetAll``1({TValue})
+  nameWithType.vb: PatchExpression(Of T).SetAll(Of TValue)(TValue)
+  fullName.vb: AeroDB.PatchExpression(Of T).SetAll(Of TValue)(TValue)
+  name.vb: SetAll(Of TValue)(TValue)
+- uid: AeroDB.PatchExpression`1.ApplyAsync(System.Threading.CancellationToken)
+  commentId: M:AeroDB.PatchExpression`1.ApplyAsync(System.Threading.CancellationToken)
+  id: ApplyAsync(System.Threading.CancellationToken)
+  parent: AeroDB.PatchExpression`1
+  langs:
+  - csharp
+  - vb
+  name: ApplyAsync(CancellationToken)
+  nameWithType: PatchExpression<T>.ApplyAsync(CancellationToken)
+  fullName: AeroDB.PatchExpression<T>.ApplyAsync(System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Patching/PatchExpression.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Backward-compatible public method that immediately applies the patch.
+
+    Delegates to the deferred execution path.
+  example: []
+  syntax:
+    content: public Task ApplyAsync(CancellationToken ct = default)
+    parameters:
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Function ApplyAsync(ct As CancellationToken = Nothing) As Task
+  overload: AeroDB.PatchExpression`1.ApplyAsync*
+  nameWithType.vb: PatchExpression(Of T).ApplyAsync(CancellationToken)
+  fullName.vb: AeroDB.PatchExpression(Of T).ApplyAsync(System.Threading.CancellationToken)
+references:
+- uid: AeroDB.PatchExpression`1.ApplyAsync(System.Threading.CancellationToken)
+  commentId: M:AeroDB.PatchExpression`1.ApplyAsync(System.Threading.CancellationToken)
+  isExternal: true
+  href: AeroDB.PatchExpression-1.html#AeroDB_PatchExpression_1_ApplyAsync_System_Threading_CancellationToken_
+  name: ApplyAsync(CancellationToken)
+  nameWithType: PatchExpression<T>.ApplyAsync(CancellationToken)
+  fullName: AeroDB.PatchExpression<T>.ApplyAsync(System.Threading.CancellationToken)
+  nameWithType.vb: PatchExpression(Of T).ApplyAsync(CancellationToken)
+  fullName.vb: AeroDB.PatchExpression(Of T).ApplyAsync(System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: AeroDB.PatchExpression`1.ApplyAsync(System.Threading.CancellationToken)
+    name: ApplyAsync
+    isExternal: true
+    href: AeroDB.PatchExpression-1.html#AeroDB_PatchExpression_1_ApplyAsync_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: AeroDB.PatchExpression`1.ApplyAsync(System.Threading.CancellationToken)
+    name: ApplyAsync
+    isExternal: true
+    href: AeroDB.PatchExpression-1.html#AeroDB_PatchExpression_1_ApplyAsync_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: AeroDB.IPatchExpression{{T}}
+  commentId: T:AeroDB.IPatchExpression{`0}
+  parent: AeroDB
+  definition: AeroDB.IPatchExpression`1
+  href: AeroDB.IPatchExpression-1.html
+  name: IPatchExpression<T>
+  nameWithType: IPatchExpression<T>
+  fullName: AeroDB.IPatchExpression<T>
+  nameWithType.vb: IPatchExpression(Of T)
+  fullName.vb: AeroDB.IPatchExpression(Of T)
+  name.vb: IPatchExpression(Of T)
+  spec.csharp:
+  - uid: AeroDB.IPatchExpression`1
+    name: IPatchExpression
+    isExternal: true
+    href: AeroDB.IPatchExpression-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.IPatchExpression`1
+    name: IPatchExpression
+    isExternal: true
+    href: AeroDB.IPatchExpression-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AeroDB.IPatchExpression`1
+  commentId: T:AeroDB.IPatchExpression`1
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IPatchExpression-1.html
+  name: IPatchExpression<T>
+  nameWithType: IPatchExpression<T>
+  fullName: AeroDB.IPatchExpression<T>
+  nameWithType.vb: IPatchExpression(Of T)
+  fullName.vb: AeroDB.IPatchExpression(Of T)
+  name.vb: IPatchExpression(Of T)
+  spec.csharp:
+  - uid: AeroDB.IPatchExpression`1
+    name: IPatchExpression
+    isExternal: true
+    href: AeroDB.IPatchExpression-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.IPatchExpression`1
+    name: IPatchExpression
+    isExternal: true
+    href: AeroDB.IPatchExpression-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.PatchExpression`1.Set*
+  commentId: Overload:AeroDB.PatchExpression`1.Set
+  isExternal: true
+  href: AeroDB.PatchExpression-1.html#AeroDB_PatchExpression_1_Set__1_System_Linq_Expressions_Expression_System_Func__0___0_____0_
+  name: Set
+  nameWithType: PatchExpression<T>.Set
+  fullName: AeroDB.PatchExpression<T>.Set
+  nameWithType.vb: PatchExpression(Of T).Set
+  fullName.vb: AeroDB.PatchExpression(Of T).Set
+- uid: AeroDB.IPatchExpression{{T}}.Set``1(System.Linq.Expressions.Expression{System.Func{{T},{TValue}}},{TValue})
+  commentId: M:AeroDB.IPatchExpression{`0}.Set``1(System.Linq.Expressions.Expression{System.Func{`0,``0}},``0)
+  parent: AeroDB.IPatchExpression{{T}}
+  definition: AeroDB.IPatchExpression`1.Set``1(System.Linq.Expressions.Expression{System.Func{`0,``0}},``0)
+  href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_Set__1_System_Linq_Expressions_Expression_System_Func__0___0_____0_
+  name: Set<TValue>(Expression<Func<T, TValue>>, TValue)
+  nameWithType: IPatchExpression<T>.Set<TValue>(Expression<Func<T, TValue>>, TValue)
+  fullName: AeroDB.IPatchExpression<T>.Set<TValue>(System.Linq.Expressions.Expression<System.Func<T, TValue>>, TValue)
+  nameWithType.vb: IPatchExpression(Of T).Set(Of TValue)(Expression(Of Func(Of T, TValue)), TValue)
+  fullName.vb: AeroDB.IPatchExpression(Of T).Set(Of TValue)(System.Linq.Expressions.Expression(Of System.Func(Of T, TValue)), TValue)
+  name.vb: Set(Of TValue)(Expression(Of Func(Of T, TValue)), TValue)
+  spec.csharp:
+  - uid: AeroDB.IPatchExpression{`0}.Set``1(System.Linq.Expressions.Expression{System.Func{`0,``0}},``0)
+    name: Set
+    isExternal: true
+    href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_Set__1_System_Linq_Expressions_Expression_System_Func__0___0_____0_
+  - name: <
+  - name: TValue
+  - name: '>'
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  - name: '>'
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+  spec.vb:
+  - uid: AeroDB.IPatchExpression{`0}.Set``1(System.Linq.Expressions.Expression{System.Func{`0,``0}},``0)
+    name: Set
+    isExternal: true
+    href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_Set__1_System_Linq_Expressions_Expression_System_Func__0___0_____0_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TValue
+  - name: )
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+  - name: )
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+- uid: System.Linq.Expressions.Expression{System.Func{{T},{TValue}}}
+  commentId: T:System.Linq.Expressions.Expression{System.Func{`0,``0}}
+  parent: System.Linq.Expressions
+  definition: System.Linq.Expressions.Expression`1
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  name: Expression<Func<T, TValue>>
+  nameWithType: Expression<Func<T, TValue>>
+  fullName: System.Linq.Expressions.Expression<System.Func<T, TValue>>
+  nameWithType.vb: Expression(Of Func(Of T, TValue))
+  fullName.vb: System.Linq.Expressions.Expression(Of System.Func(Of T, TValue))
+  name.vb: Expression(Of Func(Of T, TValue))
+  spec.csharp:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+  - name: )
+- uid: '{TValue}'
+  commentId: '!:TValue'
+  definition: TValue
+  name: TValue
+  nameWithType: TValue
+  fullName: TValue
+- uid: AeroDB.IPatchExpression`1.Set``1(System.Linq.Expressions.Expression{System.Func{`0,``0}},``0)
+  commentId: M:AeroDB.IPatchExpression`1.Set``1(System.Linq.Expressions.Expression{System.Func{`0,``0}},``0)
+  isExternal: true
+  href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_Set__1_System_Linq_Expressions_Expression_System_Func__0___0_____0_
+  name: Set<TValue>(Expression<Func<T, TValue>>, TValue)
+  nameWithType: IPatchExpression<T>.Set<TValue>(Expression<Func<T, TValue>>, TValue)
+  fullName: AeroDB.IPatchExpression<T>.Set<TValue>(System.Linq.Expressions.Expression<System.Func<T, TValue>>, TValue)
+  nameWithType.vb: IPatchExpression(Of T).Set(Of TValue)(Expression(Of Func(Of T, TValue)), TValue)
+  fullName.vb: AeroDB.IPatchExpression(Of T).Set(Of TValue)(System.Linq.Expressions.Expression(Of System.Func(Of T, TValue)), TValue)
+  name.vb: Set(Of TValue)(Expression(Of Func(Of T, TValue)), TValue)
+  spec.csharp:
+  - uid: AeroDB.IPatchExpression`1.Set``1(System.Linq.Expressions.Expression{System.Func{`0,``0}},``0)
+    name: Set
+    isExternal: true
+    href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_Set__1_System_Linq_Expressions_Expression_System_Func__0___0_____0_
+  - name: <
+  - name: TValue
+  - name: '>'
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  - name: '>'
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+  spec.vb:
+  - uid: AeroDB.IPatchExpression`1.Set``1(System.Linq.Expressions.Expression{System.Func{`0,``0}},``0)
+    name: Set
+    isExternal: true
+    href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_Set__1_System_Linq_Expressions_Expression_System_Func__0___0_____0_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TValue
+  - name: )
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+  - name: )
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+- uid: System.Linq.Expressions.Expression`1
+  commentId: T:System.Linq.Expressions.Expression`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  name: Expression<TDelegate>
+  nameWithType: Expression<TDelegate>
+  fullName: System.Linq.Expressions.Expression<TDelegate>
+  nameWithType.vb: Expression(Of TDelegate)
+  fullName.vb: System.Linq.Expressions.Expression(Of TDelegate)
+  name.vb: Expression(Of TDelegate)
+  spec.csharp:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - name: TDelegate
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TDelegate
+  - name: )
+- uid: System.Linq.Expressions
+  commentId: N:System.Linq.Expressions
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Linq.Expressions
+  nameWithType: System.Linq.Expressions
+  fullName: System.Linq.Expressions
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Linq
+    name: Linq
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq
+  - name: .
+  - uid: System.Linq.Expressions
+    name: Expressions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Linq
+    name: Linq
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq
+  - name: .
+  - uid: System.Linq.Expressions
+    name: Expressions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions
+- uid: TValue
+  name: TValue
+  nameWithType: TValue
+  fullName: TValue
+- uid: AeroDB.PatchExpression`1.Increment*
+  commentId: Overload:AeroDB.PatchExpression`1.Increment
+  isExternal: true
+  href: AeroDB.PatchExpression-1.html#AeroDB_PatchExpression_1_Increment_System_Linq_Expressions_Expression_System_Func__0_System_Int32___System_Int32_
+  name: Increment
+  nameWithType: PatchExpression<T>.Increment
+  fullName: AeroDB.PatchExpression<T>.Increment
+  nameWithType.vb: PatchExpression(Of T).Increment
+  fullName.vb: AeroDB.PatchExpression(Of T).Increment
+- uid: AeroDB.IPatchExpression{{T}}.Increment(System.Linq.Expressions.Expression{System.Func{{T},System.Int32}},System.Int32)
+  commentId: M:AeroDB.IPatchExpression{`0}.Increment(System.Linq.Expressions.Expression{System.Func{`0,System.Int32}},System.Int32)
+  parent: AeroDB.IPatchExpression{{T}}
+  definition: AeroDB.IPatchExpression`1.Increment(System.Linq.Expressions.Expression{System.Func{`0,System.Int32}},System.Int32)
+  href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_Increment_System_Linq_Expressions_Expression_System_Func__0_System_Int32___System_Int32_
+  name: Increment(Expression<Func<T, int>>, int)
+  nameWithType: IPatchExpression<T>.Increment(Expression<Func<T, int>>, int)
+  fullName: AeroDB.IPatchExpression<T>.Increment(System.Linq.Expressions.Expression<System.Func<T, int>>, int)
+  nameWithType.vb: IPatchExpression(Of T).Increment(Expression(Of Func(Of T, Integer)), Integer)
+  fullName.vb: AeroDB.IPatchExpression(Of T).Increment(System.Linq.Expressions.Expression(Of System.Func(Of T, Integer)), Integer)
+  name.vb: Increment(Expression(Of Func(Of T, Integer)), Integer)
+  spec.csharp:
+  - uid: AeroDB.IPatchExpression{`0}.Increment(System.Linq.Expressions.Expression{System.Func{`0,System.Int32}},System.Int32)
+    name: Increment
+    isExternal: true
+    href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_Increment_System_Linq_Expressions_Expression_System_Func__0_System_Int32___System_Int32_
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '>'
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: AeroDB.IPatchExpression{`0}.Increment(System.Linq.Expressions.Expression{System.Func{`0,System.Int32}},System.Int32)
+    name: Increment
+    isExternal: true
+    href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_Increment_System_Linq_Expressions_Expression_System_Func__0_System_Int32___System_Int32_
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: System.Linq.Expressions.Expression{System.Func{{T},System.Int32}}
+  commentId: T:System.Linq.Expressions.Expression{System.Func{`0,System.Int32}}
+  parent: System.Linq.Expressions
+  definition: System.Linq.Expressions.Expression`1
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  name: Expression<Func<T, int>>
+  nameWithType: Expression<Func<T, int>>
+  fullName: System.Linq.Expressions.Expression<System.Func<T, int>>
+  nameWithType.vb: Expression(Of Func(Of T, Integer))
+  fullName.vb: System.Linq.Expressions.Expression(Of System.Func(Of T, Integer))
+  name.vb: Expression(Of Func(Of T, Integer))
+  spec.csharp:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  - name: )
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: AeroDB.IPatchExpression`1.Increment(System.Linq.Expressions.Expression{System.Func{`0,System.Int32}},System.Int32)
+  commentId: M:AeroDB.IPatchExpression`1.Increment(System.Linq.Expressions.Expression{System.Func{`0,System.Int32}},System.Int32)
+  isExternal: true
+  href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_Increment_System_Linq_Expressions_Expression_System_Func__0_System_Int32___System_Int32_
+  name: Increment(Expression<Func<T, int>>, int)
+  nameWithType: IPatchExpression<T>.Increment(Expression<Func<T, int>>, int)
+  fullName: AeroDB.IPatchExpression<T>.Increment(System.Linq.Expressions.Expression<System.Func<T, int>>, int)
+  nameWithType.vb: IPatchExpression(Of T).Increment(Expression(Of Func(Of T, Integer)), Integer)
+  fullName.vb: AeroDB.IPatchExpression(Of T).Increment(System.Linq.Expressions.Expression(Of System.Func(Of T, Integer)), Integer)
+  name.vb: Increment(Expression(Of Func(Of T, Integer)), Integer)
+  spec.csharp:
+  - uid: AeroDB.IPatchExpression`1.Increment(System.Linq.Expressions.Expression{System.Func{`0,System.Int32}},System.Int32)
+    name: Increment
+    isExternal: true
+    href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_Increment_System_Linq_Expressions_Expression_System_Func__0_System_Int32___System_Int32_
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '>'
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: AeroDB.IPatchExpression`1.Increment(System.Linq.Expressions.Expression{System.Func{`0,System.Int32}},System.Int32)
+    name: Increment
+    isExternal: true
+    href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_Increment_System_Linq_Expressions_Expression_System_Func__0_System_Int32___System_Int32_
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: AeroDB.IPatchExpression{{T}}.Increment(System.Linq.Expressions.Expression{System.Func{{T},System.Int64}},System.Int64)
+  commentId: M:AeroDB.IPatchExpression{`0}.Increment(System.Linq.Expressions.Expression{System.Func{`0,System.Int64}},System.Int64)
+  parent: AeroDB.IPatchExpression{{T}}
+  definition: AeroDB.IPatchExpression`1.Increment(System.Linq.Expressions.Expression{System.Func{`0,System.Int64}},System.Int64)
+  href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_Increment_System_Linq_Expressions_Expression_System_Func__0_System_Int64___System_Int64_
+  name: Increment(Expression<Func<T, long>>, long)
+  nameWithType: IPatchExpression<T>.Increment(Expression<Func<T, long>>, long)
+  fullName: AeroDB.IPatchExpression<T>.Increment(System.Linq.Expressions.Expression<System.Func<T, long>>, long)
+  nameWithType.vb: IPatchExpression(Of T).Increment(Expression(Of Func(Of T, Long)), Long)
+  fullName.vb: AeroDB.IPatchExpression(Of T).Increment(System.Linq.Expressions.Expression(Of System.Func(Of T, Long)), Long)
+  name.vb: Increment(Expression(Of Func(Of T, Long)), Long)
+  spec.csharp:
+  - uid: AeroDB.IPatchExpression{`0}.Increment(System.Linq.Expressions.Expression{System.Func{`0,System.Int64}},System.Int64)
+    name: Increment
+    isExternal: true
+    href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_Increment_System_Linq_Expressions_Expression_System_Func__0_System_Int64___System_Int64_
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Int64
+    name: long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: '>'
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Int64
+    name: long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: )
+  spec.vb:
+  - uid: AeroDB.IPatchExpression{`0}.Increment(System.Linq.Expressions.Expression{System.Func{`0,System.Int64}},System.Int64)
+    name: Increment
+    isExternal: true
+    href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_Increment_System_Linq_Expressions_Expression_System_Func__0_System_Int64___System_Int64_
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Int64
+    name: Long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: )
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Int64
+    name: Long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: )
+- uid: System.Linq.Expressions.Expression{System.Func{{T},System.Int64}}
+  commentId: T:System.Linq.Expressions.Expression{System.Func{`0,System.Int64}}
+  parent: System.Linq.Expressions
+  definition: System.Linq.Expressions.Expression`1
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  name: Expression<Func<T, long>>
+  nameWithType: Expression<Func<T, long>>
+  fullName: System.Linq.Expressions.Expression<System.Func<T, long>>
+  nameWithType.vb: Expression(Of Func(Of T, Long))
+  fullName.vb: System.Linq.Expressions.Expression(Of System.Func(Of T, Long))
+  name.vb: Expression(Of Func(Of T, Long))
+  spec.csharp:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Int64
+    name: long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Int64
+    name: Long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: )
+  - name: )
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
+- uid: AeroDB.IPatchExpression`1.Increment(System.Linq.Expressions.Expression{System.Func{`0,System.Int64}},System.Int64)
+  commentId: M:AeroDB.IPatchExpression`1.Increment(System.Linq.Expressions.Expression{System.Func{`0,System.Int64}},System.Int64)
+  isExternal: true
+  href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_Increment_System_Linq_Expressions_Expression_System_Func__0_System_Int64___System_Int64_
+  name: Increment(Expression<Func<T, long>>, long)
+  nameWithType: IPatchExpression<T>.Increment(Expression<Func<T, long>>, long)
+  fullName: AeroDB.IPatchExpression<T>.Increment(System.Linq.Expressions.Expression<System.Func<T, long>>, long)
+  nameWithType.vb: IPatchExpression(Of T).Increment(Expression(Of Func(Of T, Long)), Long)
+  fullName.vb: AeroDB.IPatchExpression(Of T).Increment(System.Linq.Expressions.Expression(Of System.Func(Of T, Long)), Long)
+  name.vb: Increment(Expression(Of Func(Of T, Long)), Long)
+  spec.csharp:
+  - uid: AeroDB.IPatchExpression`1.Increment(System.Linq.Expressions.Expression{System.Func{`0,System.Int64}},System.Int64)
+    name: Increment
+    isExternal: true
+    href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_Increment_System_Linq_Expressions_Expression_System_Func__0_System_Int64___System_Int64_
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Int64
+    name: long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: '>'
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Int64
+    name: long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: )
+  spec.vb:
+  - uid: AeroDB.IPatchExpression`1.Increment(System.Linq.Expressions.Expression{System.Func{`0,System.Int64}},System.Int64)
+    name: Increment
+    isExternal: true
+    href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_Increment_System_Linq_Expressions_Expression_System_Func__0_System_Int64___System_Int64_
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Int64
+    name: Long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: )
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Int64
+    name: Long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: )
+- uid: AeroDB.IPatchExpression{{T}}.Increment(System.Linq.Expressions.Expression{System.Func{{T},System.Double}},System.Double)
+  commentId: M:AeroDB.IPatchExpression{`0}.Increment(System.Linq.Expressions.Expression{System.Func{`0,System.Double}},System.Double)
+  parent: AeroDB.IPatchExpression{{T}}
+  definition: AeroDB.IPatchExpression`1.Increment(System.Linq.Expressions.Expression{System.Func{`0,System.Double}},System.Double)
+  href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_Increment_System_Linq_Expressions_Expression_System_Func__0_System_Double___System_Double_
+  name: Increment(Expression<Func<T, double>>, double)
+  nameWithType: IPatchExpression<T>.Increment(Expression<Func<T, double>>, double)
+  fullName: AeroDB.IPatchExpression<T>.Increment(System.Linq.Expressions.Expression<System.Func<T, double>>, double)
+  nameWithType.vb: IPatchExpression(Of T).Increment(Expression(Of Func(Of T, Double)), Double)
+  fullName.vb: AeroDB.IPatchExpression(Of T).Increment(System.Linq.Expressions.Expression(Of System.Func(Of T, Double)), Double)
+  name.vb: Increment(Expression(Of Func(Of T, Double)), Double)
+  spec.csharp:
+  - uid: AeroDB.IPatchExpression{`0}.Increment(System.Linq.Expressions.Expression{System.Func{`0,System.Double}},System.Double)
+    name: Increment
+    isExternal: true
+    href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_Increment_System_Linq_Expressions_Expression_System_Func__0_System_Double___System_Double_
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: '>'
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+  spec.vb:
+  - uid: AeroDB.IPatchExpression{`0}.Increment(System.Linq.Expressions.Expression{System.Func{`0,System.Double}},System.Double)
+    name: Increment
+    isExternal: true
+    href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_Increment_System_Linq_Expressions_Expression_System_Func__0_System_Double___System_Double_
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+- uid: System.Linq.Expressions.Expression{System.Func{{T},System.Double}}
+  commentId: T:System.Linq.Expressions.Expression{System.Func{`0,System.Double}}
+  parent: System.Linq.Expressions
+  definition: System.Linq.Expressions.Expression`1
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  name: Expression<Func<T, double>>
+  nameWithType: Expression<Func<T, double>>
+  fullName: System.Linq.Expressions.Expression<System.Func<T, double>>
+  nameWithType.vb: Expression(Of Func(Of T, Double))
+  fullName.vb: System.Linq.Expressions.Expression(Of System.Func(Of T, Double))
+  name.vb: Expression(Of Func(Of T, Double))
+  spec.csharp:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+  - name: )
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double
+  nameWithType: double
+  fullName: double
+  nameWithType.vb: Double
+  fullName.vb: Double
+  name.vb: Double
+- uid: AeroDB.IPatchExpression`1.Increment(System.Linq.Expressions.Expression{System.Func{`0,System.Double}},System.Double)
+  commentId: M:AeroDB.IPatchExpression`1.Increment(System.Linq.Expressions.Expression{System.Func{`0,System.Double}},System.Double)
+  isExternal: true
+  href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_Increment_System_Linq_Expressions_Expression_System_Func__0_System_Double___System_Double_
+  name: Increment(Expression<Func<T, double>>, double)
+  nameWithType: IPatchExpression<T>.Increment(Expression<Func<T, double>>, double)
+  fullName: AeroDB.IPatchExpression<T>.Increment(System.Linq.Expressions.Expression<System.Func<T, double>>, double)
+  nameWithType.vb: IPatchExpression(Of T).Increment(Expression(Of Func(Of T, Double)), Double)
+  fullName.vb: AeroDB.IPatchExpression(Of T).Increment(System.Linq.Expressions.Expression(Of System.Func(Of T, Double)), Double)
+  name.vb: Increment(Expression(Of Func(Of T, Double)), Double)
+  spec.csharp:
+  - uid: AeroDB.IPatchExpression`1.Increment(System.Linq.Expressions.Expression{System.Func{`0,System.Double}},System.Double)
+    name: Increment
+    isExternal: true
+    href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_Increment_System_Linq_Expressions_Expression_System_Func__0_System_Double___System_Double_
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: '>'
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+  spec.vb:
+  - uid: AeroDB.IPatchExpression`1.Increment(System.Linq.Expressions.Expression{System.Func{`0,System.Double}},System.Double)
+    name: Increment
+    isExternal: true
+    href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_Increment_System_Linq_Expressions_Expression_System_Func__0_System_Double___System_Double_
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+- uid: AeroDB.IPatchExpression{{T}}.Increment(System.Linq.Expressions.Expression{System.Func{{T},System.Single}},System.Single)
+  commentId: M:AeroDB.IPatchExpression{`0}.Increment(System.Linq.Expressions.Expression{System.Func{`0,System.Single}},System.Single)
+  parent: AeroDB.IPatchExpression{{T}}
+  definition: AeroDB.IPatchExpression`1.Increment(System.Linq.Expressions.Expression{System.Func{`0,System.Single}},System.Single)
+  href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_Increment_System_Linq_Expressions_Expression_System_Func__0_System_Single___System_Single_
+  name: Increment(Expression<Func<T, float>>, float)
+  nameWithType: IPatchExpression<T>.Increment(Expression<Func<T, float>>, float)
+  fullName: AeroDB.IPatchExpression<T>.Increment(System.Linq.Expressions.Expression<System.Func<T, float>>, float)
+  nameWithType.vb: IPatchExpression(Of T).Increment(Expression(Of Func(Of T, Single)), Single)
+  fullName.vb: AeroDB.IPatchExpression(Of T).Increment(System.Linq.Expressions.Expression(Of System.Func(Of T, Single)), Single)
+  name.vb: Increment(Expression(Of Func(Of T, Single)), Single)
+  spec.csharp:
+  - uid: AeroDB.IPatchExpression{`0}.Increment(System.Linq.Expressions.Expression{System.Func{`0,System.Single}},System.Single)
+    name: Increment
+    isExternal: true
+    href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_Increment_System_Linq_Expressions_Expression_System_Func__0_System_Single___System_Single_
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: '>'
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+  spec.vb:
+  - uid: AeroDB.IPatchExpression{`0}.Increment(System.Linq.Expressions.Expression{System.Func{`0,System.Single}},System.Single)
+    name: Increment
+    isExternal: true
+    href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_Increment_System_Linq_Expressions_Expression_System_Func__0_System_Single___System_Single_
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+- uid: System.Linq.Expressions.Expression{System.Func{{T},System.Single}}
+  commentId: T:System.Linq.Expressions.Expression{System.Func{`0,System.Single}}
+  parent: System.Linq.Expressions
+  definition: System.Linq.Expressions.Expression`1
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  name: Expression<Func<T, float>>
+  nameWithType: Expression<Func<T, float>>
+  fullName: System.Linq.Expressions.Expression<System.Func<T, float>>
+  nameWithType.vb: Expression(Of Func(Of T, Single))
+  fullName.vb: System.Linq.Expressions.Expression(Of System.Func(Of T, Single))
+  name.vb: Expression(Of Func(Of T, Single))
+  spec.csharp:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+  - name: )
+- uid: System.Single
+  commentId: T:System.Single
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.single
+  name: float
+  nameWithType: float
+  fullName: float
+  nameWithType.vb: Single
+  fullName.vb: Single
+  name.vb: Single
+- uid: AeroDB.IPatchExpression`1.Increment(System.Linq.Expressions.Expression{System.Func{`0,System.Single}},System.Single)
+  commentId: M:AeroDB.IPatchExpression`1.Increment(System.Linq.Expressions.Expression{System.Func{`0,System.Single}},System.Single)
+  isExternal: true
+  href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_Increment_System_Linq_Expressions_Expression_System_Func__0_System_Single___System_Single_
+  name: Increment(Expression<Func<T, float>>, float)
+  nameWithType: IPatchExpression<T>.Increment(Expression<Func<T, float>>, float)
+  fullName: AeroDB.IPatchExpression<T>.Increment(System.Linq.Expressions.Expression<System.Func<T, float>>, float)
+  nameWithType.vb: IPatchExpression(Of T).Increment(Expression(Of Func(Of T, Single)), Single)
+  fullName.vb: AeroDB.IPatchExpression(Of T).Increment(System.Linq.Expressions.Expression(Of System.Func(Of T, Single)), Single)
+  name.vb: Increment(Expression(Of Func(Of T, Single)), Single)
+  spec.csharp:
+  - uid: AeroDB.IPatchExpression`1.Increment(System.Linq.Expressions.Expression{System.Func{`0,System.Single}},System.Single)
+    name: Increment
+    isExternal: true
+    href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_Increment_System_Linq_Expressions_Expression_System_Func__0_System_Single___System_Single_
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: '>'
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+  spec.vb:
+  - uid: AeroDB.IPatchExpression`1.Increment(System.Linq.Expressions.Expression{System.Func{`0,System.Single}},System.Single)
+    name: Increment
+    isExternal: true
+    href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_Increment_System_Linq_Expressions_Expression_System_Func__0_System_Single___System_Single_
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+- uid: AeroDB.IPatchExpression{{T}}.Increment(System.Linq.Expressions.Expression{System.Func{{T},System.Decimal}},System.Decimal)
+  commentId: M:AeroDB.IPatchExpression{`0}.Increment(System.Linq.Expressions.Expression{System.Func{`0,System.Decimal}},System.Decimal)
+  parent: AeroDB.IPatchExpression{{T}}
+  definition: AeroDB.IPatchExpression`1.Increment(System.Linq.Expressions.Expression{System.Func{`0,System.Decimal}},System.Decimal)
+  href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_Increment_System_Linq_Expressions_Expression_System_Func__0_System_Decimal___System_Decimal_
+  name: Increment(Expression<Func<T, decimal>>, decimal)
+  nameWithType: IPatchExpression<T>.Increment(Expression<Func<T, decimal>>, decimal)
+  fullName: AeroDB.IPatchExpression<T>.Increment(System.Linq.Expressions.Expression<System.Func<T, decimal>>, decimal)
+  nameWithType.vb: IPatchExpression(Of T).Increment(Expression(Of Func(Of T, Decimal)), Decimal)
+  fullName.vb: AeroDB.IPatchExpression(Of T).Increment(System.Linq.Expressions.Expression(Of System.Func(Of T, Decimal)), Decimal)
+  name.vb: Increment(Expression(Of Func(Of T, Decimal)), Decimal)
+  spec.csharp:
+  - uid: AeroDB.IPatchExpression{`0}.Increment(System.Linq.Expressions.Expression{System.Func{`0,System.Decimal}},System.Decimal)
+    name: Increment
+    isExternal: true
+    href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_Increment_System_Linq_Expressions_Expression_System_Func__0_System_Decimal___System_Decimal_
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Decimal
+    name: decimal
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.decimal
+  - name: '>'
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Decimal
+    name: decimal
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.decimal
+  - name: )
+  spec.vb:
+  - uid: AeroDB.IPatchExpression{`0}.Increment(System.Linq.Expressions.Expression{System.Func{`0,System.Decimal}},System.Decimal)
+    name: Increment
+    isExternal: true
+    href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_Increment_System_Linq_Expressions_Expression_System_Func__0_System_Decimal___System_Decimal_
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Decimal
+    name: Decimal
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.decimal
+  - name: )
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Decimal
+    name: Decimal
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.decimal
+  - name: )
+- uid: System.Linq.Expressions.Expression{System.Func{{T},System.Decimal}}
+  commentId: T:System.Linq.Expressions.Expression{System.Func{`0,System.Decimal}}
+  parent: System.Linq.Expressions
+  definition: System.Linq.Expressions.Expression`1
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  name: Expression<Func<T, decimal>>
+  nameWithType: Expression<Func<T, decimal>>
+  fullName: System.Linq.Expressions.Expression<System.Func<T, decimal>>
+  nameWithType.vb: Expression(Of Func(Of T, Decimal))
+  fullName.vb: System.Linq.Expressions.Expression(Of System.Func(Of T, Decimal))
+  name.vb: Expression(Of Func(Of T, Decimal))
+  spec.csharp:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Decimal
+    name: decimal
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.decimal
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Decimal
+    name: Decimal
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.decimal
+  - name: )
+  - name: )
+- uid: System.Decimal
+  commentId: T:System.Decimal
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.decimal
+  name: decimal
+  nameWithType: decimal
+  fullName: decimal
+  nameWithType.vb: Decimal
+  fullName.vb: Decimal
+  name.vb: Decimal
+- uid: AeroDB.IPatchExpression`1.Increment(System.Linq.Expressions.Expression{System.Func{`0,System.Decimal}},System.Decimal)
+  commentId: M:AeroDB.IPatchExpression`1.Increment(System.Linq.Expressions.Expression{System.Func{`0,System.Decimal}},System.Decimal)
+  isExternal: true
+  href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_Increment_System_Linq_Expressions_Expression_System_Func__0_System_Decimal___System_Decimal_
+  name: Increment(Expression<Func<T, decimal>>, decimal)
+  nameWithType: IPatchExpression<T>.Increment(Expression<Func<T, decimal>>, decimal)
+  fullName: AeroDB.IPatchExpression<T>.Increment(System.Linq.Expressions.Expression<System.Func<T, decimal>>, decimal)
+  nameWithType.vb: IPatchExpression(Of T).Increment(Expression(Of Func(Of T, Decimal)), Decimal)
+  fullName.vb: AeroDB.IPatchExpression(Of T).Increment(System.Linq.Expressions.Expression(Of System.Func(Of T, Decimal)), Decimal)
+  name.vb: Increment(Expression(Of Func(Of T, Decimal)), Decimal)
+  spec.csharp:
+  - uid: AeroDB.IPatchExpression`1.Increment(System.Linq.Expressions.Expression{System.Func{`0,System.Decimal}},System.Decimal)
+    name: Increment
+    isExternal: true
+    href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_Increment_System_Linq_Expressions_Expression_System_Func__0_System_Decimal___System_Decimal_
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Decimal
+    name: decimal
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.decimal
+  - name: '>'
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Decimal
+    name: decimal
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.decimal
+  - name: )
+  spec.vb:
+  - uid: AeroDB.IPatchExpression`1.Increment(System.Linq.Expressions.Expression{System.Func{`0,System.Decimal}},System.Decimal)
+    name: Increment
+    isExternal: true
+    href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_Increment_System_Linq_Expressions_Expression_System_Func__0_System_Decimal___System_Decimal_
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Decimal
+    name: Decimal
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.decimal
+  - name: )
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Decimal
+    name: Decimal
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.decimal
+  - name: )
+- uid: AeroDB.PatchExpression`1.Append*
+  commentId: Overload:AeroDB.PatchExpression`1.Append
+  isExternal: true
+  href: AeroDB.PatchExpression-1.html#AeroDB_PatchExpression_1_Append__1_System_Linq_Expressions_Expression_System_Func__0_System_Collections_Generic_IEnumerable___0______0_
+  name: Append
+  nameWithType: PatchExpression<T>.Append
+  fullName: AeroDB.PatchExpression<T>.Append
+  nameWithType.vb: PatchExpression(Of T).Append
+  fullName.vb: AeroDB.PatchExpression(Of T).Append
+- uid: AeroDB.IPatchExpression{{T}}.Append``1(System.Linq.Expressions.Expression{System.Func{{T},System.Collections.Generic.IEnumerable{{TElement}}}},{TElement})
+  commentId: M:AeroDB.IPatchExpression{`0}.Append``1(System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IEnumerable{``0}}},``0)
+  parent: AeroDB.IPatchExpression{{T}}
+  definition: AeroDB.IPatchExpression`1.Append``1(System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IEnumerable{``0}}},``0)
+  href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_Append__1_System_Linq_Expressions_Expression_System_Func__0_System_Collections_Generic_IEnumerable___0______0_
+  name: Append<TElement>(Expression<Func<T, IEnumerable<TElement>>>, TElement)
+  nameWithType: IPatchExpression<T>.Append<TElement>(Expression<Func<T, IEnumerable<TElement>>>, TElement)
+  fullName: AeroDB.IPatchExpression<T>.Append<TElement>(System.Linq.Expressions.Expression<System.Func<T, System.Collections.Generic.IEnumerable<TElement>>>, TElement)
+  nameWithType.vb: IPatchExpression(Of T).Append(Of TElement)(Expression(Of Func(Of T, IEnumerable(Of TElement))), TElement)
+  fullName.vb: AeroDB.IPatchExpression(Of T).Append(Of TElement)(System.Linq.Expressions.Expression(Of System.Func(Of T, System.Collections.Generic.IEnumerable(Of TElement))), TElement)
+  name.vb: Append(Of TElement)(Expression(Of Func(Of T, IEnumerable(Of TElement))), TElement)
+  spec.csharp:
+  - uid: AeroDB.IPatchExpression{`0}.Append``1(System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IEnumerable{``0}}},``0)
+    name: Append
+    isExternal: true
+    href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_Append__1_System_Linq_Expressions_Expression_System_Func__0_System_Collections_Generic_IEnumerable___0______0_
+  - name: <
+  - name: TElement
+  - name: '>'
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: TElement
+  - name: '>'
+  - name: '>'
+  - name: '>'
+  - name: ','
+  - name: " "
+  - name: TElement
+  - name: )
+  spec.vb:
+  - uid: AeroDB.IPatchExpression{`0}.Append``1(System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IEnumerable{``0}}},``0)
+    name: Append
+    isExternal: true
+    href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_Append__1_System_Linq_Expressions_Expression_System_Func__0_System_Collections_Generic_IEnumerable___0______0_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TElement
+  - name: )
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TElement
+  - name: )
+  - name: )
+  - name: )
+  - name: ','
+  - name: " "
+  - name: TElement
+  - name: )
+- uid: System.Linq.Expressions.Expression{System.Func{{T},System.Collections.Generic.IEnumerable{{TElement}}}}
+  commentId: T:System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IEnumerable{``0}}}
+  parent: System.Linq.Expressions
+  definition: System.Linq.Expressions.Expression`1
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  name: Expression<Func<T, IEnumerable<TElement>>>
+  nameWithType: Expression<Func<T, IEnumerable<TElement>>>
+  fullName: System.Linq.Expressions.Expression<System.Func<T, System.Collections.Generic.IEnumerable<TElement>>>
+  nameWithType.vb: Expression(Of Func(Of T, IEnumerable(Of TElement)))
+  fullName.vb: System.Linq.Expressions.Expression(Of System.Func(Of T, System.Collections.Generic.IEnumerable(Of TElement)))
+  name.vb: Expression(Of Func(Of T, IEnumerable(Of TElement)))
+  spec.csharp:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: TElement
+  - name: '>'
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TElement
+  - name: )
+  - name: )
+  - name: )
+- uid: '{TElement}'
+  commentId: '!:TElement'
+  definition: TElement
+  name: TElement
+  nameWithType: TElement
+  fullName: TElement
+- uid: AeroDB.IPatchExpression`1.Append``1(System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IEnumerable{``0}}},``0)
+  commentId: M:AeroDB.IPatchExpression`1.Append``1(System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IEnumerable{``0}}},``0)
+  isExternal: true
+  href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_Append__1_System_Linq_Expressions_Expression_System_Func__0_System_Collections_Generic_IEnumerable___0______0_
+  name: Append<TElement>(Expression<Func<T, IEnumerable<TElement>>>, TElement)
+  nameWithType: IPatchExpression<T>.Append<TElement>(Expression<Func<T, IEnumerable<TElement>>>, TElement)
+  fullName: AeroDB.IPatchExpression<T>.Append<TElement>(System.Linq.Expressions.Expression<System.Func<T, System.Collections.Generic.IEnumerable<TElement>>>, TElement)
+  nameWithType.vb: IPatchExpression(Of T).Append(Of TElement)(Expression(Of Func(Of T, IEnumerable(Of TElement))), TElement)
+  fullName.vb: AeroDB.IPatchExpression(Of T).Append(Of TElement)(System.Linq.Expressions.Expression(Of System.Func(Of T, System.Collections.Generic.IEnumerable(Of TElement))), TElement)
+  name.vb: Append(Of TElement)(Expression(Of Func(Of T, IEnumerable(Of TElement))), TElement)
+  spec.csharp:
+  - uid: AeroDB.IPatchExpression`1.Append``1(System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IEnumerable{``0}}},``0)
+    name: Append
+    isExternal: true
+    href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_Append__1_System_Linq_Expressions_Expression_System_Func__0_System_Collections_Generic_IEnumerable___0______0_
+  - name: <
+  - name: TElement
+  - name: '>'
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: TElement
+  - name: '>'
+  - name: '>'
+  - name: '>'
+  - name: ','
+  - name: " "
+  - name: TElement
+  - name: )
+  spec.vb:
+  - uid: AeroDB.IPatchExpression`1.Append``1(System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IEnumerable{``0}}},``0)
+    name: Append
+    isExternal: true
+    href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_Append__1_System_Linq_Expressions_Expression_System_Func__0_System_Collections_Generic_IEnumerable___0______0_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TElement
+  - name: )
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TElement
+  - name: )
+  - name: )
+  - name: )
+  - name: ','
+  - name: " "
+  - name: TElement
+  - name: )
+- uid: TElement
+  name: TElement
+  nameWithType: TElement
+  fullName: TElement
+- uid: AeroDB.PatchExpression`1.AppendIfNotExists*
+  commentId: Overload:AeroDB.PatchExpression`1.AppendIfNotExists
+  isExternal: true
+  href: AeroDB.PatchExpression-1.html#AeroDB_PatchExpression_1_AppendIfNotExists__1_System_Linq_Expressions_Expression_System_Func__0_System_Collections_Generic_IEnumerable___0______0_
+  name: AppendIfNotExists
+  nameWithType: PatchExpression<T>.AppendIfNotExists
+  fullName: AeroDB.PatchExpression<T>.AppendIfNotExists
+  nameWithType.vb: PatchExpression(Of T).AppendIfNotExists
+  fullName.vb: AeroDB.PatchExpression(Of T).AppendIfNotExists
+- uid: AeroDB.IPatchExpression{{T}}.AppendIfNotExists``1(System.Linq.Expressions.Expression{System.Func{{T},System.Collections.Generic.IEnumerable{{TElement}}}},{TElement})
+  commentId: M:AeroDB.IPatchExpression{`0}.AppendIfNotExists``1(System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IEnumerable{``0}}},``0)
+  parent: AeroDB.IPatchExpression{{T}}
+  definition: AeroDB.IPatchExpression`1.AppendIfNotExists``1(System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IEnumerable{``0}}},``0)
+  href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_AppendIfNotExists__1_System_Linq_Expressions_Expression_System_Func__0_System_Collections_Generic_IEnumerable___0______0_
+  name: AppendIfNotExists<TElement>(Expression<Func<T, IEnumerable<TElement>>>, TElement)
+  nameWithType: IPatchExpression<T>.AppendIfNotExists<TElement>(Expression<Func<T, IEnumerable<TElement>>>, TElement)
+  fullName: AeroDB.IPatchExpression<T>.AppendIfNotExists<TElement>(System.Linq.Expressions.Expression<System.Func<T, System.Collections.Generic.IEnumerable<TElement>>>, TElement)
+  nameWithType.vb: IPatchExpression(Of T).AppendIfNotExists(Of TElement)(Expression(Of Func(Of T, IEnumerable(Of TElement))), TElement)
+  fullName.vb: AeroDB.IPatchExpression(Of T).AppendIfNotExists(Of TElement)(System.Linq.Expressions.Expression(Of System.Func(Of T, System.Collections.Generic.IEnumerable(Of TElement))), TElement)
+  name.vb: AppendIfNotExists(Of TElement)(Expression(Of Func(Of T, IEnumerable(Of TElement))), TElement)
+  spec.csharp:
+  - uid: AeroDB.IPatchExpression{`0}.AppendIfNotExists``1(System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IEnumerable{``0}}},``0)
+    name: AppendIfNotExists
+    isExternal: true
+    href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_AppendIfNotExists__1_System_Linq_Expressions_Expression_System_Func__0_System_Collections_Generic_IEnumerable___0______0_
+  - name: <
+  - name: TElement
+  - name: '>'
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: TElement
+  - name: '>'
+  - name: '>'
+  - name: '>'
+  - name: ','
+  - name: " "
+  - name: TElement
+  - name: )
+  spec.vb:
+  - uid: AeroDB.IPatchExpression{`0}.AppendIfNotExists``1(System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IEnumerable{``0}}},``0)
+    name: AppendIfNotExists
+    isExternal: true
+    href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_AppendIfNotExists__1_System_Linq_Expressions_Expression_System_Func__0_System_Collections_Generic_IEnumerable___0______0_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TElement
+  - name: )
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TElement
+  - name: )
+  - name: )
+  - name: )
+  - name: ','
+  - name: " "
+  - name: TElement
+  - name: )
+- uid: AeroDB.IPatchExpression`1.AppendIfNotExists``1(System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IEnumerable{``0}}},``0)
+  commentId: M:AeroDB.IPatchExpression`1.AppendIfNotExists``1(System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IEnumerable{``0}}},``0)
+  isExternal: true
+  href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_AppendIfNotExists__1_System_Linq_Expressions_Expression_System_Func__0_System_Collections_Generic_IEnumerable___0______0_
+  name: AppendIfNotExists<TElement>(Expression<Func<T, IEnumerable<TElement>>>, TElement)
+  nameWithType: IPatchExpression<T>.AppendIfNotExists<TElement>(Expression<Func<T, IEnumerable<TElement>>>, TElement)
+  fullName: AeroDB.IPatchExpression<T>.AppendIfNotExists<TElement>(System.Linq.Expressions.Expression<System.Func<T, System.Collections.Generic.IEnumerable<TElement>>>, TElement)
+  nameWithType.vb: IPatchExpression(Of T).AppendIfNotExists(Of TElement)(Expression(Of Func(Of T, IEnumerable(Of TElement))), TElement)
+  fullName.vb: AeroDB.IPatchExpression(Of T).AppendIfNotExists(Of TElement)(System.Linq.Expressions.Expression(Of System.Func(Of T, System.Collections.Generic.IEnumerable(Of TElement))), TElement)
+  name.vb: AppendIfNotExists(Of TElement)(Expression(Of Func(Of T, IEnumerable(Of TElement))), TElement)
+  spec.csharp:
+  - uid: AeroDB.IPatchExpression`1.AppendIfNotExists``1(System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IEnumerable{``0}}},``0)
+    name: AppendIfNotExists
+    isExternal: true
+    href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_AppendIfNotExists__1_System_Linq_Expressions_Expression_System_Func__0_System_Collections_Generic_IEnumerable___0______0_
+  - name: <
+  - name: TElement
+  - name: '>'
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: TElement
+  - name: '>'
+  - name: '>'
+  - name: '>'
+  - name: ','
+  - name: " "
+  - name: TElement
+  - name: )
+  spec.vb:
+  - uid: AeroDB.IPatchExpression`1.AppendIfNotExists``1(System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IEnumerable{``0}}},``0)
+    name: AppendIfNotExists
+    isExternal: true
+    href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_AppendIfNotExists__1_System_Linq_Expressions_Expression_System_Func__0_System_Collections_Generic_IEnumerable___0______0_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TElement
+  - name: )
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TElement
+  - name: )
+  - name: )
+  - name: )
+  - name: ','
+  - name: " "
+  - name: TElement
+  - name: )
+- uid: AeroDB.PatchExpression`1.Insert*
+  commentId: Overload:AeroDB.PatchExpression`1.Insert
+  isExternal: true
+  href: AeroDB.PatchExpression-1.html#AeroDB_PatchExpression_1_Insert__1_System_Linq_Expressions_Expression_System_Func__0_System_Collections_Generic_IEnumerable___0______0_System_Nullable_System_Int32__
+  name: Insert
+  nameWithType: PatchExpression<T>.Insert
+  fullName: AeroDB.PatchExpression<T>.Insert
+  nameWithType.vb: PatchExpression(Of T).Insert
+  fullName.vb: AeroDB.PatchExpression(Of T).Insert
+- uid: AeroDB.IPatchExpression{{T}}.Insert``1(System.Linq.Expressions.Expression{System.Func{{T},System.Collections.Generic.IEnumerable{{TElement}}}},{TElement},System.Nullable{System.Int32})
+  commentId: M:AeroDB.IPatchExpression{`0}.Insert``1(System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IEnumerable{``0}}},``0,System.Nullable{System.Int32})
+  parent: AeroDB.IPatchExpression{{T}}
+  definition: AeroDB.IPatchExpression`1.Insert``1(System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IEnumerable{``0}}},``0,System.Nullable{System.Int32})
+  href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_Insert__1_System_Linq_Expressions_Expression_System_Func__0_System_Collections_Generic_IEnumerable___0______0_System_Nullable_System_Int32__
+  name: Insert<TElement>(Expression<Func<T, IEnumerable<TElement>>>, TElement, int?)
+  nameWithType: IPatchExpression<T>.Insert<TElement>(Expression<Func<T, IEnumerable<TElement>>>, TElement, int?)
+  fullName: AeroDB.IPatchExpression<T>.Insert<TElement>(System.Linq.Expressions.Expression<System.Func<T, System.Collections.Generic.IEnumerable<TElement>>>, TElement, int?)
+  nameWithType.vb: IPatchExpression(Of T).Insert(Of TElement)(Expression(Of Func(Of T, IEnumerable(Of TElement))), TElement, Integer?)
+  fullName.vb: AeroDB.IPatchExpression(Of T).Insert(Of TElement)(System.Linq.Expressions.Expression(Of System.Func(Of T, System.Collections.Generic.IEnumerable(Of TElement))), TElement, Integer?)
+  name.vb: Insert(Of TElement)(Expression(Of Func(Of T, IEnumerable(Of TElement))), TElement, Integer?)
+  spec.csharp:
+  - uid: AeroDB.IPatchExpression{`0}.Insert``1(System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IEnumerable{``0}}},``0,System.Nullable{System.Int32})
+    name: Insert
+    isExternal: true
+    href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_Insert__1_System_Linq_Expressions_Expression_System_Func__0_System_Collections_Generic_IEnumerable___0______0_System_Nullable_System_Int32__
+  - name: <
+  - name: TElement
+  - name: '>'
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: TElement
+  - name: '>'
+  - name: '>'
+  - name: '>'
+  - name: ','
+  - name: " "
+  - name: TElement
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '?'
+  - name: )
+  spec.vb:
+  - uid: AeroDB.IPatchExpression{`0}.Insert``1(System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IEnumerable{``0}}},``0,System.Nullable{System.Int32})
+    name: Insert
+    isExternal: true
+    href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_Insert__1_System_Linq_Expressions_Expression_System_Func__0_System_Collections_Generic_IEnumerable___0______0_System_Nullable_System_Int32__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TElement
+  - name: )
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TElement
+  - name: )
+  - name: )
+  - name: )
+  - name: ','
+  - name: " "
+  - name: TElement
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '?'
+  - name: )
+- uid: System.Nullable{System.Int32}
+  commentId: T:System.Nullable{System.Int32}
+  parent: System
+  definition: System.Nullable`1
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int?
+  nameWithType: int?
+  fullName: int?
+  nameWithType.vb: Integer?
+  fullName.vb: Integer?
+  name.vb: Integer?
+  spec.csharp:
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '?'
+  spec.vb:
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '?'
+- uid: AeroDB.IPatchExpression`1.Insert``1(System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IEnumerable{``0}}},``0,System.Nullable{System.Int32})
+  commentId: M:AeroDB.IPatchExpression`1.Insert``1(System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IEnumerable{``0}}},``0,System.Nullable{System.Int32})
+  isExternal: true
+  href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_Insert__1_System_Linq_Expressions_Expression_System_Func__0_System_Collections_Generic_IEnumerable___0______0_System_Nullable_System_Int32__
+  name: Insert<TElement>(Expression<Func<T, IEnumerable<TElement>>>, TElement, int?)
+  nameWithType: IPatchExpression<T>.Insert<TElement>(Expression<Func<T, IEnumerable<TElement>>>, TElement, int?)
+  fullName: AeroDB.IPatchExpression<T>.Insert<TElement>(System.Linq.Expressions.Expression<System.Func<T, System.Collections.Generic.IEnumerable<TElement>>>, TElement, int?)
+  nameWithType.vb: IPatchExpression(Of T).Insert(Of TElement)(Expression(Of Func(Of T, IEnumerable(Of TElement))), TElement, Integer?)
+  fullName.vb: AeroDB.IPatchExpression(Of T).Insert(Of TElement)(System.Linq.Expressions.Expression(Of System.Func(Of T, System.Collections.Generic.IEnumerable(Of TElement))), TElement, Integer?)
+  name.vb: Insert(Of TElement)(Expression(Of Func(Of T, IEnumerable(Of TElement))), TElement, Integer?)
+  spec.csharp:
+  - uid: AeroDB.IPatchExpression`1.Insert``1(System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IEnumerable{``0}}},``0,System.Nullable{System.Int32})
+    name: Insert
+    isExternal: true
+    href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_Insert__1_System_Linq_Expressions_Expression_System_Func__0_System_Collections_Generic_IEnumerable___0______0_System_Nullable_System_Int32__
+  - name: <
+  - name: TElement
+  - name: '>'
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: TElement
+  - name: '>'
+  - name: '>'
+  - name: '>'
+  - name: ','
+  - name: " "
+  - name: TElement
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '?'
+  - name: )
+  spec.vb:
+  - uid: AeroDB.IPatchExpression`1.Insert``1(System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IEnumerable{``0}}},``0,System.Nullable{System.Int32})
+    name: Insert
+    isExternal: true
+    href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_Insert__1_System_Linq_Expressions_Expression_System_Func__0_System_Collections_Generic_IEnumerable___0______0_System_Nullable_System_Int32__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TElement
+  - name: )
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TElement
+  - name: )
+  - name: )
+  - name: )
+  - name: ','
+  - name: " "
+  - name: TElement
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '?'
+  - name: )
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.PatchExpression`1.InsertIfNotExists*
+  commentId: Overload:AeroDB.PatchExpression`1.InsertIfNotExists
+  isExternal: true
+  href: AeroDB.PatchExpression-1.html#AeroDB_PatchExpression_1_InsertIfNotExists__1_System_Linq_Expressions_Expression_System_Func__0_System_Collections_Generic_IEnumerable___0______0_System_Nullable_System_Int32__
+  name: InsertIfNotExists
+  nameWithType: PatchExpression<T>.InsertIfNotExists
+  fullName: AeroDB.PatchExpression<T>.InsertIfNotExists
+  nameWithType.vb: PatchExpression(Of T).InsertIfNotExists
+  fullName.vb: AeroDB.PatchExpression(Of T).InsertIfNotExists
+- uid: AeroDB.IPatchExpression{{T}}.InsertIfNotExists``1(System.Linq.Expressions.Expression{System.Func{{T},System.Collections.Generic.IEnumerable{{TElement}}}},{TElement},System.Nullable{System.Int32})
+  commentId: M:AeroDB.IPatchExpression{`0}.InsertIfNotExists``1(System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IEnumerable{``0}}},``0,System.Nullable{System.Int32})
+  parent: AeroDB.IPatchExpression{{T}}
+  definition: AeroDB.IPatchExpression`1.InsertIfNotExists``1(System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IEnumerable{``0}}},``0,System.Nullable{System.Int32})
+  href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_InsertIfNotExists__1_System_Linq_Expressions_Expression_System_Func__0_System_Collections_Generic_IEnumerable___0______0_System_Nullable_System_Int32__
+  name: InsertIfNotExists<TElement>(Expression<Func<T, IEnumerable<TElement>>>, TElement, int?)
+  nameWithType: IPatchExpression<T>.InsertIfNotExists<TElement>(Expression<Func<T, IEnumerable<TElement>>>, TElement, int?)
+  fullName: AeroDB.IPatchExpression<T>.InsertIfNotExists<TElement>(System.Linq.Expressions.Expression<System.Func<T, System.Collections.Generic.IEnumerable<TElement>>>, TElement, int?)
+  nameWithType.vb: IPatchExpression(Of T).InsertIfNotExists(Of TElement)(Expression(Of Func(Of T, IEnumerable(Of TElement))), TElement, Integer?)
+  fullName.vb: AeroDB.IPatchExpression(Of T).InsertIfNotExists(Of TElement)(System.Linq.Expressions.Expression(Of System.Func(Of T, System.Collections.Generic.IEnumerable(Of TElement))), TElement, Integer?)
+  name.vb: InsertIfNotExists(Of TElement)(Expression(Of Func(Of T, IEnumerable(Of TElement))), TElement, Integer?)
+  spec.csharp:
+  - uid: AeroDB.IPatchExpression{`0}.InsertIfNotExists``1(System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IEnumerable{``0}}},``0,System.Nullable{System.Int32})
+    name: InsertIfNotExists
+    isExternal: true
+    href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_InsertIfNotExists__1_System_Linq_Expressions_Expression_System_Func__0_System_Collections_Generic_IEnumerable___0______0_System_Nullable_System_Int32__
+  - name: <
+  - name: TElement
+  - name: '>'
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: TElement
+  - name: '>'
+  - name: '>'
+  - name: '>'
+  - name: ','
+  - name: " "
+  - name: TElement
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '?'
+  - name: )
+  spec.vb:
+  - uid: AeroDB.IPatchExpression{`0}.InsertIfNotExists``1(System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IEnumerable{``0}}},``0,System.Nullable{System.Int32})
+    name: InsertIfNotExists
+    isExternal: true
+    href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_InsertIfNotExists__1_System_Linq_Expressions_Expression_System_Func__0_System_Collections_Generic_IEnumerable___0______0_System_Nullable_System_Int32__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TElement
+  - name: )
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TElement
+  - name: )
+  - name: )
+  - name: )
+  - name: ','
+  - name: " "
+  - name: TElement
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '?'
+  - name: )
+- uid: AeroDB.IPatchExpression`1.InsertIfNotExists``1(System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IEnumerable{``0}}},``0,System.Nullable{System.Int32})
+  commentId: M:AeroDB.IPatchExpression`1.InsertIfNotExists``1(System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IEnumerable{``0}}},``0,System.Nullable{System.Int32})
+  isExternal: true
+  href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_InsertIfNotExists__1_System_Linq_Expressions_Expression_System_Func__0_System_Collections_Generic_IEnumerable___0______0_System_Nullable_System_Int32__
+  name: InsertIfNotExists<TElement>(Expression<Func<T, IEnumerable<TElement>>>, TElement, int?)
+  nameWithType: IPatchExpression<T>.InsertIfNotExists<TElement>(Expression<Func<T, IEnumerable<TElement>>>, TElement, int?)
+  fullName: AeroDB.IPatchExpression<T>.InsertIfNotExists<TElement>(System.Linq.Expressions.Expression<System.Func<T, System.Collections.Generic.IEnumerable<TElement>>>, TElement, int?)
+  nameWithType.vb: IPatchExpression(Of T).InsertIfNotExists(Of TElement)(Expression(Of Func(Of T, IEnumerable(Of TElement))), TElement, Integer?)
+  fullName.vb: AeroDB.IPatchExpression(Of T).InsertIfNotExists(Of TElement)(System.Linq.Expressions.Expression(Of System.Func(Of T, System.Collections.Generic.IEnumerable(Of TElement))), TElement, Integer?)
+  name.vb: InsertIfNotExists(Of TElement)(Expression(Of Func(Of T, IEnumerable(Of TElement))), TElement, Integer?)
+  spec.csharp:
+  - uid: AeroDB.IPatchExpression`1.InsertIfNotExists``1(System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IEnumerable{``0}}},``0,System.Nullable{System.Int32})
+    name: InsertIfNotExists
+    isExternal: true
+    href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_InsertIfNotExists__1_System_Linq_Expressions_Expression_System_Func__0_System_Collections_Generic_IEnumerable___0______0_System_Nullable_System_Int32__
+  - name: <
+  - name: TElement
+  - name: '>'
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: TElement
+  - name: '>'
+  - name: '>'
+  - name: '>'
+  - name: ','
+  - name: " "
+  - name: TElement
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '?'
+  - name: )
+  spec.vb:
+  - uid: AeroDB.IPatchExpression`1.InsertIfNotExists``1(System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IEnumerable{``0}}},``0,System.Nullable{System.Int32})
+    name: InsertIfNotExists
+    isExternal: true
+    href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_InsertIfNotExists__1_System_Linq_Expressions_Expression_System_Func__0_System_Collections_Generic_IEnumerable___0______0_System_Nullable_System_Int32__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TElement
+  - name: )
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TElement
+  - name: )
+  - name: )
+  - name: )
+  - name: ','
+  - name: " "
+  - name: TElement
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '?'
+  - name: )
+- uid: AeroDB.PatchExpression`1.Remove*
+  commentId: Overload:AeroDB.PatchExpression`1.Remove
+  isExternal: true
+  href: AeroDB.PatchExpression-1.html#AeroDB_PatchExpression_1_Remove__1_System_Linq_Expressions_Expression_System_Func__0_System_Collections_Generic_IEnumerable___0______0_
+  name: Remove
+  nameWithType: PatchExpression<T>.Remove
+  fullName: AeroDB.PatchExpression<T>.Remove
+  nameWithType.vb: PatchExpression(Of T).Remove
+  fullName.vb: AeroDB.PatchExpression(Of T).Remove
+- uid: AeroDB.IPatchExpression{{T}}.Remove``1(System.Linq.Expressions.Expression{System.Func{{T},System.Collections.Generic.IEnumerable{{TElement}}}},{TElement})
+  commentId: M:AeroDB.IPatchExpression{`0}.Remove``1(System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IEnumerable{``0}}},``0)
+  parent: AeroDB.IPatchExpression{{T}}
+  definition: AeroDB.IPatchExpression`1.Remove``1(System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IEnumerable{``0}}},``0)
+  href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_Remove__1_System_Linq_Expressions_Expression_System_Func__0_System_Collections_Generic_IEnumerable___0______0_
+  name: Remove<TElement>(Expression<Func<T, IEnumerable<TElement>>>, TElement)
+  nameWithType: IPatchExpression<T>.Remove<TElement>(Expression<Func<T, IEnumerable<TElement>>>, TElement)
+  fullName: AeroDB.IPatchExpression<T>.Remove<TElement>(System.Linq.Expressions.Expression<System.Func<T, System.Collections.Generic.IEnumerable<TElement>>>, TElement)
+  nameWithType.vb: IPatchExpression(Of T).Remove(Of TElement)(Expression(Of Func(Of T, IEnumerable(Of TElement))), TElement)
+  fullName.vb: AeroDB.IPatchExpression(Of T).Remove(Of TElement)(System.Linq.Expressions.Expression(Of System.Func(Of T, System.Collections.Generic.IEnumerable(Of TElement))), TElement)
+  name.vb: Remove(Of TElement)(Expression(Of Func(Of T, IEnumerable(Of TElement))), TElement)
+  spec.csharp:
+  - uid: AeroDB.IPatchExpression{`0}.Remove``1(System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IEnumerable{``0}}},``0)
+    name: Remove
+    isExternal: true
+    href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_Remove__1_System_Linq_Expressions_Expression_System_Func__0_System_Collections_Generic_IEnumerable___0______0_
+  - name: <
+  - name: TElement
+  - name: '>'
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: TElement
+  - name: '>'
+  - name: '>'
+  - name: '>'
+  - name: ','
+  - name: " "
+  - name: TElement
+  - name: )
+  spec.vb:
+  - uid: AeroDB.IPatchExpression{`0}.Remove``1(System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IEnumerable{``0}}},``0)
+    name: Remove
+    isExternal: true
+    href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_Remove__1_System_Linq_Expressions_Expression_System_Func__0_System_Collections_Generic_IEnumerable___0______0_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TElement
+  - name: )
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TElement
+  - name: )
+  - name: )
+  - name: )
+  - name: ','
+  - name: " "
+  - name: TElement
+  - name: )
+- uid: AeroDB.IPatchExpression`1.Remove``1(System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IEnumerable{``0}}},``0)
+  commentId: M:AeroDB.IPatchExpression`1.Remove``1(System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IEnumerable{``0}}},``0)
+  isExternal: true
+  href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_Remove__1_System_Linq_Expressions_Expression_System_Func__0_System_Collections_Generic_IEnumerable___0______0_
+  name: Remove<TElement>(Expression<Func<T, IEnumerable<TElement>>>, TElement)
+  nameWithType: IPatchExpression<T>.Remove<TElement>(Expression<Func<T, IEnumerable<TElement>>>, TElement)
+  fullName: AeroDB.IPatchExpression<T>.Remove<TElement>(System.Linq.Expressions.Expression<System.Func<T, System.Collections.Generic.IEnumerable<TElement>>>, TElement)
+  nameWithType.vb: IPatchExpression(Of T).Remove(Of TElement)(Expression(Of Func(Of T, IEnumerable(Of TElement))), TElement)
+  fullName.vb: AeroDB.IPatchExpression(Of T).Remove(Of TElement)(System.Linq.Expressions.Expression(Of System.Func(Of T, System.Collections.Generic.IEnumerable(Of TElement))), TElement)
+  name.vb: Remove(Of TElement)(Expression(Of Func(Of T, IEnumerable(Of TElement))), TElement)
+  spec.csharp:
+  - uid: AeroDB.IPatchExpression`1.Remove``1(System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IEnumerable{``0}}},``0)
+    name: Remove
+    isExternal: true
+    href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_Remove__1_System_Linq_Expressions_Expression_System_Func__0_System_Collections_Generic_IEnumerable___0______0_
+  - name: <
+  - name: TElement
+  - name: '>'
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: TElement
+  - name: '>'
+  - name: '>'
+  - name: '>'
+  - name: ','
+  - name: " "
+  - name: TElement
+  - name: )
+  spec.vb:
+  - uid: AeroDB.IPatchExpression`1.Remove``1(System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IEnumerable{``0}}},``0)
+    name: Remove
+    isExternal: true
+    href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_Remove__1_System_Linq_Expressions_Expression_System_Func__0_System_Collections_Generic_IEnumerable___0______0_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TElement
+  - name: )
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TElement
+  - name: )
+  - name: )
+  - name: )
+  - name: ','
+  - name: " "
+  - name: TElement
+  - name: )
+- uid: AeroDB.PatchExpression`1.Duplicate*
+  commentId: Overload:AeroDB.PatchExpression`1.Duplicate
+  isExternal: true
+  href: AeroDB.PatchExpression-1.html#AeroDB_PatchExpression_1_Duplicate__1_System_Linq_Expressions_Expression_System_Func__0___0___System_Linq_Expressions_Expression_System_Func__0___0_____
+  name: Duplicate
+  nameWithType: PatchExpression<T>.Duplicate
+  fullName: AeroDB.PatchExpression<T>.Duplicate
+  nameWithType.vb: PatchExpression(Of T).Duplicate
+  fullName.vb: AeroDB.PatchExpression(Of T).Duplicate
+- uid: AeroDB.IPatchExpression{{T}}.Duplicate``1(System.Linq.Expressions.Expression{System.Func{{T},{TElement}}},System.Linq.Expressions.Expression{System.Func{{T},{TElement}}}[])
+  commentId: M:AeroDB.IPatchExpression{`0}.Duplicate``1(System.Linq.Expressions.Expression{System.Func{`0,``0}},System.Linq.Expressions.Expression{System.Func{`0,``0}}[])
+  parent: AeroDB.IPatchExpression{{T}}
+  definition: AeroDB.IPatchExpression`1.Duplicate``1(System.Linq.Expressions.Expression{System.Func{`0,``0}},System.Linq.Expressions.Expression{System.Func{`0,``0}}[])
+  href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_Duplicate__1_System_Linq_Expressions_Expression_System_Func__0___0___System_Linq_Expressions_Expression_System_Func__0___0_____
+  name: Duplicate<TElement>(Expression<Func<T, TElement>>, params Expression<Func<T, TElement>>[])
+  nameWithType: IPatchExpression<T>.Duplicate<TElement>(Expression<Func<T, TElement>>, params Expression<Func<T, TElement>>[])
+  fullName: AeroDB.IPatchExpression<T>.Duplicate<TElement>(System.Linq.Expressions.Expression<System.Func<T, TElement>>, params System.Linq.Expressions.Expression<System.Func<T, TElement>>[])
+  nameWithType.vb: IPatchExpression(Of T).Duplicate(Of TElement)(Expression(Of Func(Of T, TElement)), ParamArray Expression(Of Func(Of T, TElement))())
+  fullName.vb: AeroDB.IPatchExpression(Of T).Duplicate(Of TElement)(System.Linq.Expressions.Expression(Of System.Func(Of T, TElement)), ParamArray System.Linq.Expressions.Expression(Of System.Func(Of T, TElement))())
+  name.vb: Duplicate(Of TElement)(Expression(Of Func(Of T, TElement)), ParamArray Expression(Of Func(Of T, TElement))())
+  spec.csharp:
+  - uid: AeroDB.IPatchExpression{`0}.Duplicate``1(System.Linq.Expressions.Expression{System.Func{`0,``0}},System.Linq.Expressions.Expression{System.Func{`0,``0}}[])
+    name: Duplicate
+    isExternal: true
+    href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_Duplicate__1_System_Linq_Expressions_Expression_System_Func__0___0___System_Linq_Expressions_Expression_System_Func__0___0_____
+  - name: <
+  - name: TElement
+  - name: '>'
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TElement
+  - name: '>'
+  - name: '>'
+  - name: ','
+  - name: " "
+  - name: params
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TElement
+  - name: '>'
+  - name: '>'
+  - name: '['
+  - name: ']'
+  - name: )
+  spec.vb:
+  - uid: AeroDB.IPatchExpression{`0}.Duplicate``1(System.Linq.Expressions.Expression{System.Func{`0,``0}},System.Linq.Expressions.Expression{System.Func{`0,``0}}[])
+    name: Duplicate
+    isExternal: true
+    href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_Duplicate__1_System_Linq_Expressions_Expression_System_Func__0___0___System_Linq_Expressions_Expression_System_Func__0___0_____
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TElement
+  - name: )
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TElement
+  - name: )
+  - name: )
+  - name: ','
+  - name: " "
+  - name: ParamArray
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TElement
+  - name: )
+  - name: )
+  - name: (
+  - name: )
+  - name: )
+- uid: System.Linq.Expressions.Expression{System.Func{{T},{TElement}}}
+  commentId: T:System.Linq.Expressions.Expression{System.Func{`0,``0}}
+  parent: System.Linq.Expressions
+  definition: System.Linq.Expressions.Expression`1
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  name: Expression<Func<T, TElement>>
+  nameWithType: Expression<Func<T, TElement>>
+  fullName: System.Linq.Expressions.Expression<System.Func<T, TElement>>
+  nameWithType.vb: Expression(Of Func(Of T, TElement))
+  fullName.vb: System.Linq.Expressions.Expression(Of System.Func(Of T, TElement))
+  name.vb: Expression(Of Func(Of T, TElement))
+  spec.csharp:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TElement
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TElement
+  - name: )
+  - name: )
+- uid: System.Linq.Expressions.Expression{System.Func{{T},{TElement}}}[]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  name: Expression<Func<T, TElement>>[]
+  nameWithType: Expression<Func<T, TElement>>[]
+  fullName: System.Linq.Expressions.Expression<System.Func<T, TElement>>[]
+  nameWithType.vb: Expression(Of Func(Of T, TElement))()
+  fullName.vb: System.Linq.Expressions.Expression(Of System.Func(Of T, TElement))()
+  name.vb: Expression(Of Func(Of T, TElement))()
+  spec.csharp:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TElement
+  - name: '>'
+  - name: '>'
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TElement
+  - name: )
+  - name: )
+  - name: (
+  - name: )
+- uid: AeroDB.IPatchExpression`1.Duplicate``1(System.Linq.Expressions.Expression{System.Func{`0,``0}},System.Linq.Expressions.Expression{System.Func{`0,``0}}[])
+  commentId: M:AeroDB.IPatchExpression`1.Duplicate``1(System.Linq.Expressions.Expression{System.Func{`0,``0}},System.Linq.Expressions.Expression{System.Func{`0,``0}}[])
+  isExternal: true
+  href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_Duplicate__1_System_Linq_Expressions_Expression_System_Func__0___0___System_Linq_Expressions_Expression_System_Func__0___0_____
+  name: Duplicate<TElement>(Expression<Func<T, TElement>>, params Expression<Func<T, TElement>>[])
+  nameWithType: IPatchExpression<T>.Duplicate<TElement>(Expression<Func<T, TElement>>, params Expression<Func<T, TElement>>[])
+  fullName: AeroDB.IPatchExpression<T>.Duplicate<TElement>(System.Linq.Expressions.Expression<System.Func<T, TElement>>, params System.Linq.Expressions.Expression<System.Func<T, TElement>>[])
+  nameWithType.vb: IPatchExpression(Of T).Duplicate(Of TElement)(Expression(Of Func(Of T, TElement)), ParamArray Expression(Of Func(Of T, TElement))())
+  fullName.vb: AeroDB.IPatchExpression(Of T).Duplicate(Of TElement)(System.Linq.Expressions.Expression(Of System.Func(Of T, TElement)), ParamArray System.Linq.Expressions.Expression(Of System.Func(Of T, TElement))())
+  name.vb: Duplicate(Of TElement)(Expression(Of Func(Of T, TElement)), ParamArray Expression(Of Func(Of T, TElement))())
+  spec.csharp:
+  - uid: AeroDB.IPatchExpression`1.Duplicate``1(System.Linq.Expressions.Expression{System.Func{`0,``0}},System.Linq.Expressions.Expression{System.Func{`0,``0}}[])
+    name: Duplicate
+    isExternal: true
+    href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_Duplicate__1_System_Linq_Expressions_Expression_System_Func__0___0___System_Linq_Expressions_Expression_System_Func__0___0_____
+  - name: <
+  - name: TElement
+  - name: '>'
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TElement
+  - name: '>'
+  - name: '>'
+  - name: ','
+  - name: " "
+  - name: params
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TElement
+  - name: '>'
+  - name: '>'
+  - name: '['
+  - name: ']'
+  - name: )
+  spec.vb:
+  - uid: AeroDB.IPatchExpression`1.Duplicate``1(System.Linq.Expressions.Expression{System.Func{`0,``0}},System.Linq.Expressions.Expression{System.Func{`0,``0}}[])
+    name: Duplicate
+    isExternal: true
+    href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_Duplicate__1_System_Linq_Expressions_Expression_System_Func__0___0___System_Linq_Expressions_Expression_System_Func__0___0_____
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TElement
+  - name: )
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TElement
+  - name: )
+  - name: )
+  - name: ','
+  - name: " "
+  - name: ParamArray
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TElement
+  - name: )
+  - name: )
+  - name: (
+  - name: )
+  - name: )
+- uid: AeroDB.PatchExpression`1.Rename*
+  commentId: Overload:AeroDB.PatchExpression`1.Rename
+  isExternal: true
+  href: AeroDB.PatchExpression-1.html#AeroDB_PatchExpression_1_Rename_System_String_System_Linq_Expressions_Expression_System_Func__0_System_Object___
+  name: Rename
+  nameWithType: PatchExpression<T>.Rename
+  fullName: AeroDB.PatchExpression<T>.Rename
+  nameWithType.vb: PatchExpression(Of T).Rename
+  fullName.vb: AeroDB.PatchExpression(Of T).Rename
+- uid: AeroDB.IPatchExpression{{T}}.Rename(System.String,System.Linq.Expressions.Expression{System.Func{{T},System.Object}})
+  commentId: M:AeroDB.IPatchExpression{`0}.Rename(System.String,System.Linq.Expressions.Expression{System.Func{`0,System.Object}})
+  parent: AeroDB.IPatchExpression{{T}}
+  definition: AeroDB.IPatchExpression`1.Rename(System.String,System.Linq.Expressions.Expression{System.Func{`0,System.Object}})
+  href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_Rename_System_String_System_Linq_Expressions_Expression_System_Func__0_System_Object___
+  name: Rename(string, Expression<Func<T, object>>)
+  nameWithType: IPatchExpression<T>.Rename(string, Expression<Func<T, object>>)
+  fullName: AeroDB.IPatchExpression<T>.Rename(string, System.Linq.Expressions.Expression<System.Func<T, object>>)
+  nameWithType.vb: IPatchExpression(Of T).Rename(String, Expression(Of Func(Of T, Object)))
+  fullName.vb: AeroDB.IPatchExpression(Of T).Rename(String, System.Linq.Expressions.Expression(Of System.Func(Of T, Object)))
+  name.vb: Rename(String, Expression(Of Func(Of T, Object)))
+  spec.csharp:
+  - uid: AeroDB.IPatchExpression{`0}.Rename(System.String,System.Linq.Expressions.Expression{System.Func{`0,System.Object}})
+    name: Rename
+    isExternal: true
+    href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_Rename_System_String_System_Linq_Expressions_Expression_System_Func__0_System_Object___
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: AeroDB.IPatchExpression{`0}.Rename(System.String,System.Linq.Expressions.Expression{System.Func{`0,System.Object}})
+    name: Rename
+    isExternal: true
+    href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_Rename_System_String_System_Linq_Expressions_Expression_System_Func__0_System_Object___
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  - name: )
+  - name: )
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Linq.Expressions.Expression{System.Func{{T},System.Object}}
+  commentId: T:System.Linq.Expressions.Expression{System.Func{`0,System.Object}}
+  parent: System.Linq.Expressions
+  definition: System.Linq.Expressions.Expression`1
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  name: Expression<Func<T, object>>
+  nameWithType: Expression<Func<T, object>>
+  fullName: System.Linq.Expressions.Expression<System.Func<T, object>>
+  nameWithType.vb: Expression(Of Func(Of T, Object))
+  fullName.vb: System.Linq.Expressions.Expression(Of System.Func(Of T, Object))
+  name.vb: Expression(Of Func(Of T, Object))
+  spec.csharp:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  - name: )
+- uid: AeroDB.IPatchExpression`1.Rename(System.String,System.Linq.Expressions.Expression{System.Func{`0,System.Object}})
+  commentId: M:AeroDB.IPatchExpression`1.Rename(System.String,System.Linq.Expressions.Expression{System.Func{`0,System.Object}})
+  isExternal: true
+  href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_Rename_System_String_System_Linq_Expressions_Expression_System_Func__0_System_Object___
+  name: Rename(string, Expression<Func<T, object>>)
+  nameWithType: IPatchExpression<T>.Rename(string, Expression<Func<T, object>>)
+  fullName: AeroDB.IPatchExpression<T>.Rename(string, System.Linq.Expressions.Expression<System.Func<T, object>>)
+  nameWithType.vb: IPatchExpression(Of T).Rename(String, Expression(Of Func(Of T, Object)))
+  fullName.vb: AeroDB.IPatchExpression(Of T).Rename(String, System.Linq.Expressions.Expression(Of System.Func(Of T, Object)))
+  name.vb: Rename(String, Expression(Of Func(Of T, Object)))
+  spec.csharp:
+  - uid: AeroDB.IPatchExpression`1.Rename(System.String,System.Linq.Expressions.Expression{System.Func{`0,System.Object}})
+    name: Rename
+    isExternal: true
+    href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_Rename_System_String_System_Linq_Expressions_Expression_System_Func__0_System_Object___
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: AeroDB.IPatchExpression`1.Rename(System.String,System.Linq.Expressions.Expression{System.Func{`0,System.Object}})
+    name: Rename
+    isExternal: true
+    href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_Rename_System_String_System_Linq_Expressions_Expression_System_Func__0_System_Object___
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  - name: )
+  - name: )
+- uid: AeroDB.PatchExpression`1.Delete*
+  commentId: Overload:AeroDB.PatchExpression`1.Delete
+  isExternal: true
+  href: AeroDB.PatchExpression-1.html#AeroDB_PatchExpression_1_Delete__1_System_Linq_Expressions_Expression_System_Func__0___0___
+  name: Delete
+  nameWithType: PatchExpression<T>.Delete
+  fullName: AeroDB.PatchExpression<T>.Delete
+  nameWithType.vb: PatchExpression(Of T).Delete
+  fullName.vb: AeroDB.PatchExpression(Of T).Delete
+- uid: AeroDB.IPatchExpression{{T}}.Delete``1(System.Linq.Expressions.Expression{System.Func{{T},{TValue}}})
+  commentId: M:AeroDB.IPatchExpression{`0}.Delete``1(System.Linq.Expressions.Expression{System.Func{`0,``0}})
+  parent: AeroDB.IPatchExpression{{T}}
+  definition: AeroDB.IPatchExpression`1.Delete``1(System.Linq.Expressions.Expression{System.Func{`0,``0}})
+  href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_Delete__1_System_Linq_Expressions_Expression_System_Func__0___0___
+  name: Delete<TValue>(Expression<Func<T, TValue>>)
+  nameWithType: IPatchExpression<T>.Delete<TValue>(Expression<Func<T, TValue>>)
+  fullName: AeroDB.IPatchExpression<T>.Delete<TValue>(System.Linq.Expressions.Expression<System.Func<T, TValue>>)
+  nameWithType.vb: IPatchExpression(Of T).Delete(Of TValue)(Expression(Of Func(Of T, TValue)))
+  fullName.vb: AeroDB.IPatchExpression(Of T).Delete(Of TValue)(System.Linq.Expressions.Expression(Of System.Func(Of T, TValue)))
+  name.vb: Delete(Of TValue)(Expression(Of Func(Of T, TValue)))
+  spec.csharp:
+  - uid: AeroDB.IPatchExpression{`0}.Delete``1(System.Linq.Expressions.Expression{System.Func{`0,``0}})
+    name: Delete
+    isExternal: true
+    href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_Delete__1_System_Linq_Expressions_Expression_System_Func__0___0___
+  - name: <
+  - name: TValue
+  - name: '>'
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: AeroDB.IPatchExpression{`0}.Delete``1(System.Linq.Expressions.Expression{System.Func{`0,``0}})
+    name: Delete
+    isExternal: true
+    href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_Delete__1_System_Linq_Expressions_Expression_System_Func__0___0___
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TValue
+  - name: )
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+  - name: )
+  - name: )
+- uid: AeroDB.IPatchExpression`1.Delete``1(System.Linq.Expressions.Expression{System.Func{`0,``0}})
+  commentId: M:AeroDB.IPatchExpression`1.Delete``1(System.Linq.Expressions.Expression{System.Func{`0,``0}})
+  isExternal: true
+  href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_Delete__1_System_Linq_Expressions_Expression_System_Func__0___0___
+  name: Delete<TValue>(Expression<Func<T, TValue>>)
+  nameWithType: IPatchExpression<T>.Delete<TValue>(Expression<Func<T, TValue>>)
+  fullName: AeroDB.IPatchExpression<T>.Delete<TValue>(System.Linq.Expressions.Expression<System.Func<T, TValue>>)
+  nameWithType.vb: IPatchExpression(Of T).Delete(Of TValue)(Expression(Of Func(Of T, TValue)))
+  fullName.vb: AeroDB.IPatchExpression(Of T).Delete(Of TValue)(System.Linq.Expressions.Expression(Of System.Func(Of T, TValue)))
+  name.vb: Delete(Of TValue)(Expression(Of Func(Of T, TValue)))
+  spec.csharp:
+  - uid: AeroDB.IPatchExpression`1.Delete``1(System.Linq.Expressions.Expression{System.Func{`0,``0}})
+    name: Delete
+    isExternal: true
+    href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_Delete__1_System_Linq_Expressions_Expression_System_Func__0___0___
+  - name: <
+  - name: TValue
+  - name: '>'
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: AeroDB.IPatchExpression`1.Delete``1(System.Linq.Expressions.Expression{System.Func{`0,``0}})
+    name: Delete
+    isExternal: true
+    href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_Delete__1_System_Linq_Expressions_Expression_System_Func__0___0___
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TValue
+  - name: )
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+  - name: )
+  - name: )
+- uid: AeroDB.PatchExpression`1.SetAll*
+  commentId: Overload:AeroDB.PatchExpression`1.SetAll
+  isExternal: true
+  href: AeroDB.PatchExpression-1.html#AeroDB_PatchExpression_1_SetAll__1___0_
+  name: SetAll
+  nameWithType: PatchExpression<T>.SetAll
+  fullName: AeroDB.PatchExpression<T>.SetAll
+  nameWithType.vb: PatchExpression(Of T).SetAll
+  fullName.vb: AeroDB.PatchExpression(Of T).SetAll
+- uid: AeroDB.IPatchExpression{{T}}.SetAll``1({TValue})
+  commentId: M:AeroDB.IPatchExpression{`0}.SetAll``1(``0)
+  parent: AeroDB.IPatchExpression{{T}}
+  definition: AeroDB.IPatchExpression`1.SetAll``1(``0)
+  href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_SetAll__1___0_
+  name: SetAll<TValue>(TValue)
+  nameWithType: IPatchExpression<T>.SetAll<TValue>(TValue)
+  fullName: AeroDB.IPatchExpression<T>.SetAll<TValue>(TValue)
+  nameWithType.vb: IPatchExpression(Of T).SetAll(Of TValue)(TValue)
+  fullName.vb: AeroDB.IPatchExpression(Of T).SetAll(Of TValue)(TValue)
+  name.vb: SetAll(Of TValue)(TValue)
+  spec.csharp:
+  - uid: AeroDB.IPatchExpression{`0}.SetAll``1(``0)
+    name: SetAll
+    isExternal: true
+    href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_SetAll__1___0_
+  - name: <
+  - name: TValue
+  - name: '>'
+  - name: (
+  - name: TValue
+  - name: )
+  spec.vb:
+  - uid: AeroDB.IPatchExpression{`0}.SetAll``1(``0)
+    name: SetAll
+    isExternal: true
+    href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_SetAll__1___0_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TValue
+  - name: )
+  - name: (
+  - name: TValue
+  - name: )
+- uid: AeroDB.IPatchExpression`1.SetAll``1(``0)
+  commentId: M:AeroDB.IPatchExpression`1.SetAll``1(``0)
+  isExternal: true
+  href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_SetAll__1___0_
+  name: SetAll<TValue>(TValue)
+  nameWithType: IPatchExpression<T>.SetAll<TValue>(TValue)
+  fullName: AeroDB.IPatchExpression<T>.SetAll<TValue>(TValue)
+  nameWithType.vb: IPatchExpression(Of T).SetAll(Of TValue)(TValue)
+  fullName.vb: AeroDB.IPatchExpression(Of T).SetAll(Of TValue)(TValue)
+  name.vb: SetAll(Of TValue)(TValue)
+  spec.csharp:
+  - uid: AeroDB.IPatchExpression`1.SetAll``1(``0)
+    name: SetAll
+    isExternal: true
+    href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_SetAll__1___0_
+  - name: <
+  - name: TValue
+  - name: '>'
+  - name: (
+  - name: TValue
+  - name: )
+  spec.vb:
+  - uid: AeroDB.IPatchExpression`1.SetAll``1(``0)
+    name: SetAll
+    isExternal: true
+    href: AeroDB.IPatchExpression-1.html#AeroDB_IPatchExpression_1_SetAll__1___0_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TValue
+  - name: )
+  - name: (
+  - name: TValue
+  - name: )
+- uid: AeroDB.PatchExpression`1.ApplyAsync*
+  commentId: Overload:AeroDB.PatchExpression`1.ApplyAsync
+  isExternal: true
+  href: AeroDB.PatchExpression-1.html#AeroDB_PatchExpression_1_ApplyAsync_System_Threading_CancellationToken_
+  name: ApplyAsync
+  nameWithType: PatchExpression<T>.ApplyAsync
+  fullName: AeroDB.PatchExpression<T>.ApplyAsync
+  nameWithType.vb: PatchExpression(Of T).ApplyAsync
+  fullName.vb: AeroDB.PatchExpression(Of T).ApplyAsync
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks

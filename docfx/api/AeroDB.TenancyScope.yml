@@ -1,0 +1,82 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.TenancyScope
+  commentId: T:AeroDB.TenancyScope
+  id: TenancyScope
+  parent: AeroDB
+  children:
+  - AeroDB.TenancyScope.Global
+  - AeroDB.TenancyScope.PerTenant
+  langs:
+  - csharp
+  - vb
+  name: TenancyScope
+  nameWithType: TenancyScope
+  fullName: AeroDB.TenancyScope
+  type: Enum
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentIndex.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: No-op stub for Marten portability. SurrealDB does not use tenancy-scoped indexes.
+  example: []
+  syntax:
+    content: public enum TenancyScope
+    content.vb: Public Enum TenancyScope
+- uid: AeroDB.TenancyScope.Global
+  commentId: F:AeroDB.TenancyScope.Global
+  id: Global
+  parent: AeroDB.TenancyScope
+  langs:
+  - csharp
+  - vb
+  name: Global
+  nameWithType: TenancyScope.Global
+  fullName: AeroDB.TenancyScope.Global
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentIndex.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: Global = 0
+    return:
+      type: AeroDB.TenancyScope
+- uid: AeroDB.TenancyScope.PerTenant
+  commentId: F:AeroDB.TenancyScope.PerTenant
+  id: PerTenant
+  parent: AeroDB.TenancyScope
+  langs:
+  - csharp
+  - vb
+  name: PerTenant
+  nameWithType: TenancyScope.PerTenant
+  fullName: AeroDB.TenancyScope.PerTenant
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentIndex.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: PerTenant = 1
+    return:
+      type: AeroDB.TenancyScope
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: AeroDB.TenancyScope
+  commentId: T:AeroDB.TenancyScope
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.TenancyScope.html
+  name: TenancyScope
+  nameWithType: TenancyScope
+  fullName: AeroDB.TenancyScope

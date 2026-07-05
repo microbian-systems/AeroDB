@@ -1,0 +1,2676 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.IEvents
+  commentId: T:AeroDB.IEvents
+  id: IEvents
+  parent: AeroDB
+  children:
+  - AeroDB.IEvents.AggregateStreamAsync``1(System.String,System.Nullable{System.Int64},System.Nullable{System.DateTimeOffset},``0,System.Nullable{System.Int64},System.Threading.CancellationToken)
+  - AeroDB.IEvents.AggregateStreamToLastKnownAsync``1(System.String,System.Threading.CancellationToken)
+  - AeroDB.IEvents.Append(System.String,System.Collections.Generic.IEnumerable{System.Object},System.Collections.Generic.Dictionary{System.String,System.String},System.Threading.CancellationToken)
+  - AeroDB.IEvents.Append(System.String,System.Int64,System.Collections.Generic.IEnumerable{System.Object},System.Threading.CancellationToken)
+  - AeroDB.IEvents.AppendExclusive(System.Guid,System.Collections.Generic.IEnumerable{System.Object},System.Threading.CancellationToken)
+  - AeroDB.IEvents.AppendExclusive(System.String,System.Collections.Generic.IEnumerable{System.Object},System.Threading.CancellationToken)
+  - AeroDB.IEvents.AppendOptimistic(System.Guid,System.Int64,System.Collections.Generic.IEnumerable{System.Object},System.Threading.CancellationToken)
+  - AeroDB.IEvents.AppendOptimistic(System.String,System.Int64,System.Collections.Generic.IEnumerable{System.Object},System.Threading.CancellationToken)
+  - AeroDB.IEvents.ArchiveStream(System.Guid,System.Threading.CancellationToken)
+  - AeroDB.IEvents.ArchiveStream(System.String,System.Threading.CancellationToken)
+  - AeroDB.IEvents.BuildEvent(System.Object)
+  - AeroDB.IEvents.BulkInsertEventsAsync(System.Collections.Generic.IEnumerable{System.ValueTuple{System.String,System.Collections.Generic.IEnumerable{System.Object}}},System.Int32,System.Threading.CancellationToken)
+  - AeroDB.IEvents.CompactStreamAsync``1(System.String,System.Action{AeroDB.CompactStreamOptions},System.Threading.CancellationToken)
+  - AeroDB.IEvents.DeleteSingleEventAsync(System.String,System.Int64,System.Threading.CancellationToken)
+  - AeroDB.IEvents.EventsExistAsync(AeroDB.EventTagQuery,System.Threading.CancellationToken)
+  - AeroDB.IEvents.FetchAllAfterSequence(System.Int64,System.Threading.CancellationToken)
+  - AeroDB.IEvents.FetchForExclusiveWriting``1(System.String,System.Threading.CancellationToken)
+  - AeroDB.IEvents.FetchForWritingAsync``1(System.String,System.Threading.CancellationToken)
+  - AeroDB.IEvents.FetchStream(System.String,System.Threading.CancellationToken)
+  - AeroDB.IEvents.FetchStreamAsync(System.String,System.Nullable{System.Int64},System.Nullable{System.DateTimeOffset},System.Nullable{System.Int64},System.Threading.CancellationToken)
+  - AeroDB.IEvents.FetchStreamStateAsync(System.Guid,System.Threading.CancellationToken)
+  - AeroDB.IEvents.FetchStreamStateAsync(System.String,System.Threading.CancellationToken)
+  - AeroDB.IEvents.OverwriteEventAsync(AeroDB.IEvent,System.Threading.CancellationToken)
+  - AeroDB.IEvents.QueryAllRawEvents
+  - AeroDB.IEvents.QueryRawEventDataOnly``1
+  - AeroDB.IEvents.StartStream(System.String,System.Collections.Generic.IEnumerable{System.Object},System.Threading.CancellationToken)
+  - AeroDB.IEvents.StartStream``1(System.Guid,System.Collections.Generic.IEnumerable{System.Object},System.Threading.CancellationToken)
+  - AeroDB.IEvents.StartStream``1(System.Guid,System.Object,System.Threading.CancellationToken)
+  - AeroDB.IEvents.StartStream``1(System.String,System.Collections.Generic.IEnumerable{System.Object},System.Threading.CancellationToken)
+  - AeroDB.IEvents.WriteToAggregate``1(System.Guid,System.Int32,System.Action{AeroDB.FetchForWritingResult{``0}},System.Threading.CancellationToken)
+  - AeroDB.IEvents.WriteTombstone(System.String,System.Int64,System.Threading.CancellationToken)
+  langs:
+  - csharp
+  - vb
+  name: IEvents
+  nameWithType: IEvents
+  fullName: AeroDB.IEvents
+  type: Interface
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/IEvents.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: The event sourcing API surface. Provides methods for appending events, starting streams, fetching streams, applying optimistic concurrency, archiving streams, and writing tombstone events.
+  example: []
+  syntax:
+    content: public interface IEvents
+    content.vb: Public Interface IEvents
+  derivedClasses:
+  - AeroDB.EventStore
+  extensionMethods:
+  - AeroDB.IEvents.AeroDB.LiveStreamAggregation.AggregateAsync``1(System.Guid,System.Threading.CancellationToken)
+  - AeroDB.IEvents.AeroDB.LiveStreamAggregation.AggregateAsync``1(System.String,System.Threading.CancellationToken)
+- uid: AeroDB.IEvents.FetchStream(System.String,System.Threading.CancellationToken)
+  commentId: M:AeroDB.IEvents.FetchStream(System.String,System.Threading.CancellationToken)
+  id: FetchStream(System.String,System.Threading.CancellationToken)
+  parent: AeroDB.IEvents
+  langs:
+  - csharp
+  - vb
+  name: FetchStream(string, CancellationToken)
+  nameWithType: IEvents.FetchStream(string, CancellationToken)
+  fullName: AeroDB.IEvents.FetchStream(string, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/IEvents.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Fetches all events for a stream, wrapped in <xref href="AeroDB.IEvent" data-throw-if-not-resolved="false"></xref> envelopes
+
+    with full metadata (version, sequence, timestamp, stream identity).
+  example: []
+  syntax:
+    content: Task<IReadOnlyList<IEvent>> FetchStream(string streamId, CancellationToken ct = default)
+    parameters:
+    - id: streamId
+      type: System.String
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{AeroDB.IEvent}}
+    content.vb: Function FetchStream(streamId As String, ct As CancellationToken = Nothing) As Task(Of IReadOnlyList(Of IEvent))
+  overload: AeroDB.IEvents.FetchStream*
+  nameWithType.vb: IEvents.FetchStream(String, CancellationToken)
+  fullName.vb: AeroDB.IEvents.FetchStream(String, System.Threading.CancellationToken)
+  name.vb: FetchStream(String, CancellationToken)
+- uid: AeroDB.IEvents.Append(System.String,System.Collections.Generic.IEnumerable{System.Object},System.Collections.Generic.Dictionary{System.String,System.String},System.Threading.CancellationToken)
+  commentId: M:AeroDB.IEvents.Append(System.String,System.Collections.Generic.IEnumerable{System.Object},System.Collections.Generic.Dictionary{System.String,System.String},System.Threading.CancellationToken)
+  id: Append(System.String,System.Collections.Generic.IEnumerable{System.Object},System.Collections.Generic.Dictionary{System.String,System.String},System.Threading.CancellationToken)
+  parent: AeroDB.IEvents
+  langs:
+  - csharp
+  - vb
+  name: Append(string, IEnumerable<object>, Dictionary<string, string>?, CancellationToken)
+  nameWithType: IEvents.Append(string, IEnumerable<object>, Dictionary<string, string>?, CancellationToken)
+  fullName: AeroDB.IEvents.Append(string, System.Collections.Generic.IEnumerable<object>, System.Collections.Generic.Dictionary<string, string>?, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/IEvents.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Appends events to a stream and returns the wrapped <xref href="AeroDB.IEvent" data-throw-if-not-resolved="false"></xref> envelopes
+
+    with assigned version, sequence, and stream key metadata.
+
+    Optional <code class="paramref">headers</code> are persisted as event metadata for tracing causality chains.
+  example: []
+  syntax:
+    content: Task<IReadOnlyList<IEvent>> Append(string streamId, IEnumerable<object> events, Dictionary<string, string>? headers = null, CancellationToken ct = default)
+    parameters:
+    - id: streamId
+      type: System.String
+    - id: events
+      type: System.Collections.Generic.IEnumerable{System.Object}
+    - id: headers
+      type: System.Collections.Generic.Dictionary{System.String,System.String}
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{AeroDB.IEvent}}
+    content.vb: Function Append(streamId As String, events As IEnumerable(Of Object), headers As Dictionary(Of String, String) = Nothing, ct As CancellationToken = Nothing) As Task(Of IReadOnlyList(Of IEvent))
+  overload: AeroDB.IEvents.Append*
+  nameWithType.vb: IEvents.Append(String, IEnumerable(Of Object), Dictionary(Of String, String), CancellationToken)
+  fullName.vb: AeroDB.IEvents.Append(String, System.Collections.Generic.IEnumerable(Of Object), System.Collections.Generic.Dictionary(Of String, String), System.Threading.CancellationToken)
+  name.vb: Append(String, IEnumerable(Of Object), Dictionary(Of String, String), CancellationToken)
+- uid: AeroDB.IEvents.Append(System.String,System.Int64,System.Collections.Generic.IEnumerable{System.Object},System.Threading.CancellationToken)
+  commentId: M:AeroDB.IEvents.Append(System.String,System.Int64,System.Collections.Generic.IEnumerable{System.Object},System.Threading.CancellationToken)
+  id: Append(System.String,System.Int64,System.Collections.Generic.IEnumerable{System.Object},System.Threading.CancellationToken)
+  parent: AeroDB.IEvents
+  langs:
+  - csharp
+  - vb
+  name: Append(string, long, IEnumerable<object>, CancellationToken)
+  nameWithType: IEvents.Append(string, long, IEnumerable<object>, CancellationToken)
+  fullName: AeroDB.IEvents.Append(string, long, System.Collections.Generic.IEnumerable<object>, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/IEvents.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Appends events to a stream with optimistic concurrency. Throws <xref href="AeroDB.ConcurrencyException" data-throw-if-not-resolved="false"></xref>
+
+    if the stream's current version does not match <code class="paramref">expectedVersion</code>.
+  example: []
+  syntax:
+    content: Task<IReadOnlyList<IEvent>> Append(string streamId, long expectedVersion, IEnumerable<object> events, CancellationToken ct = default)
+    parameters:
+    - id: streamId
+      type: System.String
+    - id: expectedVersion
+      type: System.Int64
+    - id: events
+      type: System.Collections.Generic.IEnumerable{System.Object}
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{AeroDB.IEvent}}
+    content.vb: Function Append(streamId As String, expectedVersion As Long, events As IEnumerable(Of Object), ct As CancellationToken = Nothing) As Task(Of IReadOnlyList(Of IEvent))
+  overload: AeroDB.IEvents.Append*
+  nameWithType.vb: IEvents.Append(String, Long, IEnumerable(Of Object), CancellationToken)
+  fullName.vb: AeroDB.IEvents.Append(String, Long, System.Collections.Generic.IEnumerable(Of Object), System.Threading.CancellationToken)
+  name.vb: Append(String, Long, IEnumerable(Of Object), CancellationToken)
+- uid: AeroDB.IEvents.AppendOptimistic(System.String,System.Int64,System.Collections.Generic.IEnumerable{System.Object},System.Threading.CancellationToken)
+  commentId: M:AeroDB.IEvents.AppendOptimistic(System.String,System.Int64,System.Collections.Generic.IEnumerable{System.Object},System.Threading.CancellationToken)
+  id: AppendOptimistic(System.String,System.Int64,System.Collections.Generic.IEnumerable{System.Object},System.Threading.CancellationToken)
+  parent: AeroDB.IEvents
+  langs:
+  - csharp
+  - vb
+  name: AppendOptimistic(string, long, IEnumerable<object>, CancellationToken)
+  nameWithType: IEvents.AppendOptimistic(string, long, IEnumerable<object>, CancellationToken)
+  fullName: AeroDB.IEvents.AppendOptimistic(string, long, System.Collections.Generic.IEnumerable<object>, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/IEvents.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Append events with optimistic concurrency. The expected version is auto-derived
+
+    from the latest version in the stream at the time events were loaded.
+
+    Equivalent to <code>Append(streamId, lastKnownVersion, events)</code>.
+  example: []
+  syntax:
+    content: Task<IReadOnlyList<IEvent>> AppendOptimistic(string streamId, long lastKnownVersion, IEnumerable<object> events, CancellationToken ct = default)
+    parameters:
+    - id: streamId
+      type: System.String
+    - id: lastKnownVersion
+      type: System.Int64
+    - id: events
+      type: System.Collections.Generic.IEnumerable{System.Object}
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{AeroDB.IEvent}}
+    content.vb: Function AppendOptimistic(streamId As String, lastKnownVersion As Long, events As IEnumerable(Of Object), ct As CancellationToken = Nothing) As Task(Of IReadOnlyList(Of IEvent))
+  overload: AeroDB.IEvents.AppendOptimistic*
+  nameWithType.vb: IEvents.AppendOptimistic(String, Long, IEnumerable(Of Object), CancellationToken)
+  fullName.vb: AeroDB.IEvents.AppendOptimistic(String, Long, System.Collections.Generic.IEnumerable(Of Object), System.Threading.CancellationToken)
+  name.vb: AppendOptimistic(String, Long, IEnumerable(Of Object), CancellationToken)
+- uid: AeroDB.IEvents.AppendExclusive(System.String,System.Collections.Generic.IEnumerable{System.Object},System.Threading.CancellationToken)
+  commentId: M:AeroDB.IEvents.AppendExclusive(System.String,System.Collections.Generic.IEnumerable{System.Object},System.Threading.CancellationToken)
+  id: AppendExclusive(System.String,System.Collections.Generic.IEnumerable{System.Object},System.Threading.CancellationToken)
+  parent: AeroDB.IEvents
+  langs:
+  - csharp
+  - vb
+  name: AppendExclusive(string, IEnumerable<object>, CancellationToken)
+  nameWithType: IEvents.AppendExclusive(string, IEnumerable<object>, CancellationToken)
+  fullName: AeroDB.IEvents.AppendExclusive(string, System.Collections.Generic.IEnumerable<object>, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/IEvents.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Append events with exclusive locking. Ensures no events exist in the stream yet.
+
+    Equivalent to <code>Append(streamId, 0, events)</code>.
+  example: []
+  syntax:
+    content: Task<IReadOnlyList<IEvent>> AppendExclusive(string streamId, IEnumerable<object> events, CancellationToken ct = default)
+    parameters:
+    - id: streamId
+      type: System.String
+    - id: events
+      type: System.Collections.Generic.IEnumerable{System.Object}
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{AeroDB.IEvent}}
+    content.vb: Function AppendExclusive(streamId As String, events As IEnumerable(Of Object), ct As CancellationToken = Nothing) As Task(Of IReadOnlyList(Of IEvent))
+  overload: AeroDB.IEvents.AppendExclusive*
+  nameWithType.vb: IEvents.AppendExclusive(String, IEnumerable(Of Object), CancellationToken)
+  fullName.vb: AeroDB.IEvents.AppendExclusive(String, System.Collections.Generic.IEnumerable(Of Object), System.Threading.CancellationToken)
+  name.vb: AppendExclusive(String, IEnumerable(Of Object), CancellationToken)
+- uid: AeroDB.IEvents.AppendOptimistic(System.Guid,System.Int64,System.Collections.Generic.IEnumerable{System.Object},System.Threading.CancellationToken)
+  commentId: M:AeroDB.IEvents.AppendOptimistic(System.Guid,System.Int64,System.Collections.Generic.IEnumerable{System.Object},System.Threading.CancellationToken)
+  id: AppendOptimistic(System.Guid,System.Int64,System.Collections.Generic.IEnumerable{System.Object},System.Threading.CancellationToken)
+  parent: AeroDB.IEvents
+  langs:
+  - csharp
+  - vb
+  name: AppendOptimistic(Guid, long, IEnumerable<object>, CancellationToken)
+  nameWithType: IEvents.AppendOptimistic(Guid, long, IEnumerable<object>, CancellationToken)
+  fullName: AeroDB.IEvents.AppendOptimistic(System.Guid, long, System.Collections.Generic.IEnumerable<object>, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/IEvents.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Guid variant of <code>AppendOptimistic</code>.
+  example: []
+  syntax:
+    content: Task<IReadOnlyList<IEvent>> AppendOptimistic(Guid streamId, long lastKnownVersion, IEnumerable<object> events, CancellationToken ct = default)
+    parameters:
+    - id: streamId
+      type: System.Guid
+    - id: lastKnownVersion
+      type: System.Int64
+    - id: events
+      type: System.Collections.Generic.IEnumerable{System.Object}
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{AeroDB.IEvent}}
+    content.vb: Function AppendOptimistic(streamId As Guid, lastKnownVersion As Long, events As IEnumerable(Of Object), ct As CancellationToken = Nothing) As Task(Of IReadOnlyList(Of IEvent))
+  overload: AeroDB.IEvents.AppendOptimistic*
+  nameWithType.vb: IEvents.AppendOptimistic(Guid, Long, IEnumerable(Of Object), CancellationToken)
+  fullName.vb: AeroDB.IEvents.AppendOptimistic(System.Guid, Long, System.Collections.Generic.IEnumerable(Of Object), System.Threading.CancellationToken)
+  name.vb: AppendOptimistic(Guid, Long, IEnumerable(Of Object), CancellationToken)
+- uid: AeroDB.IEvents.AppendExclusive(System.Guid,System.Collections.Generic.IEnumerable{System.Object},System.Threading.CancellationToken)
+  commentId: M:AeroDB.IEvents.AppendExclusive(System.Guid,System.Collections.Generic.IEnumerable{System.Object},System.Threading.CancellationToken)
+  id: AppendExclusive(System.Guid,System.Collections.Generic.IEnumerable{System.Object},System.Threading.CancellationToken)
+  parent: AeroDB.IEvents
+  langs:
+  - csharp
+  - vb
+  name: AppendExclusive(Guid, IEnumerable<object>, CancellationToken)
+  nameWithType: IEvents.AppendExclusive(Guid, IEnumerable<object>, CancellationToken)
+  fullName: AeroDB.IEvents.AppendExclusive(System.Guid, System.Collections.Generic.IEnumerable<object>, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/IEvents.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Guid variant of <code>AppendExclusive</code>.
+  example: []
+  syntax:
+    content: Task<IReadOnlyList<IEvent>> AppendExclusive(Guid streamId, IEnumerable<object> events, CancellationToken ct = default)
+    parameters:
+    - id: streamId
+      type: System.Guid
+    - id: events
+      type: System.Collections.Generic.IEnumerable{System.Object}
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{AeroDB.IEvent}}
+    content.vb: Function AppendExclusive(streamId As Guid, events As IEnumerable(Of Object), ct As CancellationToken = Nothing) As Task(Of IReadOnlyList(Of IEvent))
+  overload: AeroDB.IEvents.AppendExclusive*
+  nameWithType.vb: IEvents.AppendExclusive(Guid, IEnumerable(Of Object), CancellationToken)
+  fullName.vb: AeroDB.IEvents.AppendExclusive(System.Guid, System.Collections.Generic.IEnumerable(Of Object), System.Threading.CancellationToken)
+  name.vb: AppendExclusive(Guid, IEnumerable(Of Object), CancellationToken)
+- uid: AeroDB.IEvents.StartStream(System.String,System.Collections.Generic.IEnumerable{System.Object},System.Threading.CancellationToken)
+  commentId: M:AeroDB.IEvents.StartStream(System.String,System.Collections.Generic.IEnumerable{System.Object},System.Threading.CancellationToken)
+  id: StartStream(System.String,System.Collections.Generic.IEnumerable{System.Object},System.Threading.CancellationToken)
+  parent: AeroDB.IEvents
+  langs:
+  - csharp
+  - vb
+  name: StartStream(string, IEnumerable<object>, CancellationToken)
+  nameWithType: IEvents.StartStream(string, IEnumerable<object>, CancellationToken)
+  fullName: AeroDB.IEvents.StartStream(string, System.Collections.Generic.IEnumerable<object>, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/IEvents.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Starts a new stream by appending the initial events.
+
+    Returns the stream ID on success.
+  example: []
+  syntax:
+    content: Task<string> StartStream(string streamId, IEnumerable<object> events, CancellationToken ct = default)
+    parameters:
+    - id: streamId
+      type: System.String
+    - id: events
+      type: System.Collections.Generic.IEnumerable{System.Object}
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task{System.String}
+    content.vb: Function StartStream(streamId As String, events As IEnumerable(Of Object), ct As CancellationToken = Nothing) As Task(Of String)
+  overload: AeroDB.IEvents.StartStream*
+  nameWithType.vb: IEvents.StartStream(String, IEnumerable(Of Object), CancellationToken)
+  fullName.vb: AeroDB.IEvents.StartStream(String, System.Collections.Generic.IEnumerable(Of Object), System.Threading.CancellationToken)
+  name.vb: StartStream(String, IEnumerable(Of Object), CancellationToken)
+- uid: AeroDB.IEvents.StartStream``1(System.Guid,System.Object,System.Threading.CancellationToken)
+  commentId: M:AeroDB.IEvents.StartStream``1(System.Guid,System.Object,System.Threading.CancellationToken)
+  id: StartStream``1(System.Guid,System.Object,System.Threading.CancellationToken)
+  parent: AeroDB.IEvents
+  langs:
+  - csharp
+  - vb
+  name: StartStream<T>(Guid, object, CancellationToken)
+  nameWithType: IEvents.StartStream<T>(Guid, object, CancellationToken)
+  fullName: AeroDB.IEvents.StartStream<T>(System.Guid, object, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/IEvents.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Marten-compatible single-event start stream overload.
+  example: []
+  syntax:
+    content: Task<string> StartStream<T>(Guid streamId, object @event, CancellationToken ct = default)
+    parameters:
+    - id: streamId
+      type: System.Guid
+    - id: event
+      type: System.Object
+    - id: ct
+      type: System.Threading.CancellationToken
+    typeParameters:
+    - id: T
+    return:
+      type: System.Threading.Tasks.Task{System.String}
+    content.vb: Function StartStream(Of T)(streamId As Guid, [event] As Object, ct As CancellationToken = Nothing) As Task(Of String)
+  overload: AeroDB.IEvents.StartStream*
+  nameWithType.vb: IEvents.StartStream(Of T)(Guid, Object, CancellationToken)
+  fullName.vb: AeroDB.IEvents.StartStream(Of T)(System.Guid, Object, System.Threading.CancellationToken)
+  name.vb: StartStream(Of T)(Guid, Object, CancellationToken)
+- uid: AeroDB.IEvents.StartStream``1(System.String,System.Collections.Generic.IEnumerable{System.Object},System.Threading.CancellationToken)
+  commentId: M:AeroDB.IEvents.StartStream``1(System.String,System.Collections.Generic.IEnumerable{System.Object},System.Threading.CancellationToken)
+  id: StartStream``1(System.String,System.Collections.Generic.IEnumerable{System.Object},System.Threading.CancellationToken)
+  parent: AeroDB.IEvents
+  langs:
+  - csharp
+  - vb
+  name: StartStream<T>(string, IEnumerable<object>, CancellationToken)
+  nameWithType: IEvents.StartStream<T>(string, IEnumerable<object>, CancellationToken)
+  fullName: AeroDB.IEvents.StartStream<T>(string, System.Collections.Generic.IEnumerable<object>, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/IEvents.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Start a new stream with typed stream identity.
+  example: []
+  syntax:
+    content: Task<string> StartStream<T>(string streamId, IEnumerable<object> events, CancellationToken ct = default)
+    parameters:
+    - id: streamId
+      type: System.String
+    - id: events
+      type: System.Collections.Generic.IEnumerable{System.Object}
+    - id: ct
+      type: System.Threading.CancellationToken
+    typeParameters:
+    - id: T
+    return:
+      type: System.Threading.Tasks.Task{System.String}
+    content.vb: Function StartStream(Of T)(streamId As String, events As IEnumerable(Of Object), ct As CancellationToken = Nothing) As Task(Of String)
+  overload: AeroDB.IEvents.StartStream*
+  nameWithType.vb: IEvents.StartStream(Of T)(String, IEnumerable(Of Object), CancellationToken)
+  fullName.vb: AeroDB.IEvents.StartStream(Of T)(String, System.Collections.Generic.IEnumerable(Of Object), System.Threading.CancellationToken)
+  name.vb: StartStream(Of T)(String, IEnumerable(Of Object), CancellationToken)
+- uid: AeroDB.IEvents.StartStream``1(System.Guid,System.Collections.Generic.IEnumerable{System.Object},System.Threading.CancellationToken)
+  commentId: M:AeroDB.IEvents.StartStream``1(System.Guid,System.Collections.Generic.IEnumerable{System.Object},System.Threading.CancellationToken)
+  id: StartStream``1(System.Guid,System.Collections.Generic.IEnumerable{System.Object},System.Threading.CancellationToken)
+  parent: AeroDB.IEvents
+  langs:
+  - csharp
+  - vb
+  name: StartStream<T>(Guid, IEnumerable<object>, CancellationToken)
+  nameWithType: IEvents.StartStream<T>(Guid, IEnumerable<object>, CancellationToken)
+  fullName: AeroDB.IEvents.StartStream<T>(System.Guid, System.Collections.Generic.IEnumerable<object>, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/IEvents.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Guid variant with typed stream identity.
+  example: []
+  syntax:
+    content: Task<string> StartStream<T>(Guid streamId, IEnumerable<object> events, CancellationToken ct = default)
+    parameters:
+    - id: streamId
+      type: System.Guid
+    - id: events
+      type: System.Collections.Generic.IEnumerable{System.Object}
+    - id: ct
+      type: System.Threading.CancellationToken
+    typeParameters:
+    - id: T
+    return:
+      type: System.Threading.Tasks.Task{System.String}
+    content.vb: Function StartStream(Of T)(streamId As Guid, events As IEnumerable(Of Object), ct As CancellationToken = Nothing) As Task(Of String)
+  overload: AeroDB.IEvents.StartStream*
+  nameWithType.vb: IEvents.StartStream(Of T)(Guid, IEnumerable(Of Object), CancellationToken)
+  fullName.vb: AeroDB.IEvents.StartStream(Of T)(System.Guid, System.Collections.Generic.IEnumerable(Of Object), System.Threading.CancellationToken)
+  name.vb: StartStream(Of T)(Guid, IEnumerable(Of Object), CancellationToken)
+- uid: AeroDB.IEvents.WriteToAggregate``1(System.Guid,System.Int32,System.Action{AeroDB.FetchForWritingResult{``0}},System.Threading.CancellationToken)
+  commentId: M:AeroDB.IEvents.WriteToAggregate``1(System.Guid,System.Int32,System.Action{AeroDB.FetchForWritingResult{``0}},System.Threading.CancellationToken)
+  id: WriteToAggregate``1(System.Guid,System.Int32,System.Action{AeroDB.FetchForWritingResult{``0}},System.Threading.CancellationToken)
+  parent: AeroDB.IEvents
+  langs:
+  - csharp
+  - vb
+  name: WriteToAggregate<T>(Guid, int, Action<FetchForWritingResult<T>>, CancellationToken)
+  nameWithType: IEvents.WriteToAggregate<T>(Guid, int, Action<FetchForWritingResult<T>>, CancellationToken)
+  fullName: AeroDB.IEvents.WriteToAggregate<T>(System.Guid, int, System.Action<AeroDB.FetchForWritingResult<T>>, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/IEvents.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Marten-compatible aggregate write workflow.
+  example: []
+  syntax:
+    content: 'Task WriteToAggregate<T>(Guid streamId, int version, Action<FetchForWritingResult<T>> handler, CancellationToken ct = default) where T : class'
+    parameters:
+    - id: streamId
+      type: System.Guid
+    - id: version
+      type: System.Int32
+    - id: handler
+      type: System.Action{AeroDB.FetchForWritingResult{{T}}}
+    - id: ct
+      type: System.Threading.CancellationToken
+    typeParameters:
+    - id: T
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Function WriteToAggregate(Of T As Class)(streamId As Guid, version As Integer, handler As Action(Of FetchForWritingResult(Of T)), ct As CancellationToken = Nothing) As Task
+  overload: AeroDB.IEvents.WriteToAggregate*
+  nameWithType.vb: IEvents.WriteToAggregate(Of T)(Guid, Integer, Action(Of FetchForWritingResult(Of T)), CancellationToken)
+  fullName.vb: AeroDB.IEvents.WriteToAggregate(Of T)(System.Guid, Integer, System.Action(Of AeroDB.FetchForWritingResult(Of T)), System.Threading.CancellationToken)
+  name.vb: WriteToAggregate(Of T)(Guid, Integer, Action(Of FetchForWritingResult(Of T)), CancellationToken)
+- uid: AeroDB.IEvents.FetchAllAfterSequence(System.Int64,System.Threading.CancellationToken)
+  commentId: M:AeroDB.IEvents.FetchAllAfterSequence(System.Int64,System.Threading.CancellationToken)
+  id: FetchAllAfterSequence(System.Int64,System.Threading.CancellationToken)
+  parent: AeroDB.IEvents
+  langs:
+  - csharp
+  - vb
+  name: FetchAllAfterSequence(long, CancellationToken)
+  nameWithType: IEvents.FetchAllAfterSequence(long, CancellationToken)
+  fullName: AeroDB.IEvents.FetchAllAfterSequence(long, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/IEvents.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Fetches all events after a given global sequence number (for async projections / polling).
+
+    Uses the global <xref href="AeroDB.IEvent.Sequence" data-throw-if-not-resolved="false"></xref> (not per-stream version) for ordering
+
+    to avoid skipping low-volume streams.
+
+    Returns events wrapped in <xref href="AeroDB.IEvent" data-throw-if-not-resolved="false"></xref> envelopes.
+  example: []
+  syntax:
+    content: Task<IReadOnlyList<IEvent>> FetchAllAfterSequence(long sequence, CancellationToken ct = default)
+    parameters:
+    - id: sequence
+      type: System.Int64
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{AeroDB.IEvent}}
+    content.vb: Function FetchAllAfterSequence(sequence As Long, ct As CancellationToken = Nothing) As Task(Of IReadOnlyList(Of IEvent))
+  overload: AeroDB.IEvents.FetchAllAfterSequence*
+  nameWithType.vb: IEvents.FetchAllAfterSequence(Long, CancellationToken)
+  fullName.vb: AeroDB.IEvents.FetchAllAfterSequence(Long, System.Threading.CancellationToken)
+  name.vb: FetchAllAfterSequence(Long, CancellationToken)
+- uid: AeroDB.IEvents.ArchiveStream(System.String,System.Threading.CancellationToken)
+  commentId: M:AeroDB.IEvents.ArchiveStream(System.String,System.Threading.CancellationToken)
+  id: ArchiveStream(System.String,System.Threading.CancellationToken)
+  parent: AeroDB.IEvents
+  langs:
+  - csharp
+  - vb
+  name: ArchiveStream(string, CancellationToken)
+  nameWithType: IEvents.ArchiveStream(string, CancellationToken)
+  fullName: AeroDB.IEvents.ArchiveStream(string, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/IEvents.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Archive a stream — moves events to the archive table.
+
+    After archiving, the stream cannot receive new events.
+  example: []
+  syntax:
+    content: Task ArchiveStream(string streamId, CancellationToken ct = default)
+    parameters:
+    - id: streamId
+      type: System.String
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Function ArchiveStream(streamId As String, ct As CancellationToken = Nothing) As Task
+  overload: AeroDB.IEvents.ArchiveStream*
+  nameWithType.vb: IEvents.ArchiveStream(String, CancellationToken)
+  fullName.vb: AeroDB.IEvents.ArchiveStream(String, System.Threading.CancellationToken)
+  name.vb: ArchiveStream(String, CancellationToken)
+- uid: AeroDB.IEvents.ArchiveStream(System.Guid,System.Threading.CancellationToken)
+  commentId: M:AeroDB.IEvents.ArchiveStream(System.Guid,System.Threading.CancellationToken)
+  id: ArchiveStream(System.Guid,System.Threading.CancellationToken)
+  parent: AeroDB.IEvents
+  langs:
+  - csharp
+  - vb
+  name: ArchiveStream(Guid, CancellationToken)
+  nameWithType: IEvents.ArchiveStream(Guid, CancellationToken)
+  fullName: AeroDB.IEvents.ArchiveStream(System.Guid, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/IEvents.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Guid variant.
+  example: []
+  syntax:
+    content: Task ArchiveStream(Guid streamId, CancellationToken ct = default)
+    parameters:
+    - id: streamId
+      type: System.Guid
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Function ArchiveStream(streamId As Guid, ct As CancellationToken = Nothing) As Task
+  overload: AeroDB.IEvents.ArchiveStream*
+- uid: AeroDB.IEvents.FetchForWritingAsync``1(System.String,System.Threading.CancellationToken)
+  commentId: M:AeroDB.IEvents.FetchForWritingAsync``1(System.String,System.Threading.CancellationToken)
+  id: FetchForWritingAsync``1(System.String,System.Threading.CancellationToken)
+  parent: AeroDB.IEvents
+  langs:
+  - csharp
+  - vb
+  name: FetchForWritingAsync<T>(string, CancellationToken)
+  nameWithType: IEvents.FetchForWritingAsync<T>(string, CancellationToken)
+  fullName: AeroDB.IEvents.FetchForWritingAsync<T>(string, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/IEvents.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Fetches an aggregate for write-model operations. The returned result tracks
+
+    the expected stream version; SaveChangesAsync will throw ConcurrencyException
+
+    if another process has appended to the stream since this fetch.
+  example: []
+  syntax:
+    content: 'Task<FetchForWritingResult<T>> FetchForWritingAsync<T>(string streamId, CancellationToken ct = default) where T : class'
+    parameters:
+    - id: streamId
+      type: System.String
+    - id: ct
+      type: System.Threading.CancellationToken
+    typeParameters:
+    - id: T
+    return:
+      type: System.Threading.Tasks.Task{AeroDB.FetchForWritingResult{{T}}}
+    content.vb: Function FetchForWritingAsync(Of T As Class)(streamId As String, ct As CancellationToken = Nothing) As Task(Of FetchForWritingResult(Of T))
+  overload: AeroDB.IEvents.FetchForWritingAsync*
+  nameWithType.vb: IEvents.FetchForWritingAsync(Of T)(String, CancellationToken)
+  fullName.vb: AeroDB.IEvents.FetchForWritingAsync(Of T)(String, System.Threading.CancellationToken)
+  name.vb: FetchForWritingAsync(Of T)(String, CancellationToken)
+- uid: AeroDB.IEvents.FetchStreamStateAsync(System.String,System.Threading.CancellationToken)
+  commentId: M:AeroDB.IEvents.FetchStreamStateAsync(System.String,System.Threading.CancellationToken)
+  id: FetchStreamStateAsync(System.String,System.Threading.CancellationToken)
+  parent: AeroDB.IEvents
+  langs:
+  - csharp
+  - vb
+  name: FetchStreamStateAsync(string, CancellationToken)
+  nameWithType: IEvents.FetchStreamStateAsync(string, CancellationToken)
+  fullName: AeroDB.IEvents.FetchStreamStateAsync(string, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/IEvents.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Fetch stream state metadata without loading events.
+  example: []
+  syntax:
+    content: Task<StreamState?> FetchStreamStateAsync(string streamId, CancellationToken ct = default)
+    parameters:
+    - id: streamId
+      type: System.String
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task{AeroDB.StreamState}
+    content.vb: Function FetchStreamStateAsync(streamId As String, ct As CancellationToken = Nothing) As Task(Of StreamState)
+  overload: AeroDB.IEvents.FetchStreamStateAsync*
+  nameWithType.vb: IEvents.FetchStreamStateAsync(String, CancellationToken)
+  fullName.vb: AeroDB.IEvents.FetchStreamStateAsync(String, System.Threading.CancellationToken)
+  name.vb: FetchStreamStateAsync(String, CancellationToken)
+- uid: AeroDB.IEvents.FetchStreamStateAsync(System.Guid,System.Threading.CancellationToken)
+  commentId: M:AeroDB.IEvents.FetchStreamStateAsync(System.Guid,System.Threading.CancellationToken)
+  id: FetchStreamStateAsync(System.Guid,System.Threading.CancellationToken)
+  parent: AeroDB.IEvents
+  langs:
+  - csharp
+  - vb
+  name: FetchStreamStateAsync(Guid, CancellationToken)
+  nameWithType: IEvents.FetchStreamStateAsync(Guid, CancellationToken)
+  fullName: AeroDB.IEvents.FetchStreamStateAsync(System.Guid, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/IEvents.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Guid variant of <xref href="AeroDB.IEvents.FetchStreamStateAsync(System.String%2cSystem.Threading.CancellationToken)" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: Task<StreamState?> FetchStreamStateAsync(Guid streamId, CancellationToken ct = default)
+    parameters:
+    - id: streamId
+      type: System.Guid
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task{AeroDB.StreamState}
+    content.vb: Function FetchStreamStateAsync(streamId As Guid, ct As CancellationToken = Nothing) As Task(Of StreamState)
+  overload: AeroDB.IEvents.FetchStreamStateAsync*
+- uid: AeroDB.IEvents.FetchStreamAsync(System.String,System.Nullable{System.Int64},System.Nullable{System.DateTimeOffset},System.Nullable{System.Int64},System.Threading.CancellationToken)
+  commentId: M:AeroDB.IEvents.FetchStreamAsync(System.String,System.Nullable{System.Int64},System.Nullable{System.DateTimeOffset},System.Nullable{System.Int64},System.Threading.CancellationToken)
+  id: FetchStreamAsync(System.String,System.Nullable{System.Int64},System.Nullable{System.DateTimeOffset},System.Nullable{System.Int64},System.Threading.CancellationToken)
+  parent: AeroDB.IEvents
+  langs:
+  - csharp
+  - vb
+  name: FetchStreamAsync(string, long?, DateTimeOffset?, long?, CancellationToken)
+  nameWithType: IEvents.FetchStreamAsync(string, long?, DateTimeOffset?, long?, CancellationToken)
+  fullName: AeroDB.IEvents.FetchStreamAsync(string, long?, System.DateTimeOffset?, long?, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/IEvents.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Fetch events from a stream with optional version/timestamp filtering.
+  example: []
+  syntax:
+    content: Task<IReadOnlyList<IEvent>> FetchStreamAsync(string streamId, long? version = null, DateTimeOffset? timestamp = null, long? fromVersion = null, CancellationToken ct = default)
+    parameters:
+    - id: streamId
+      type: System.String
+      description: The stream identifier.
+    - id: version
+      type: System.Nullable{System.Int64}
+      description: Exact version filter (optional).
+    - id: timestamp
+      type: System.Nullable{System.DateTimeOffset}
+      description: Only include events at or after this timestamp (optional).
+    - id: fromVersion
+      type: System.Nullable{System.Int64}
+      description: Only include events at or after this version (optional).
+    - id: ct
+      type: System.Threading.CancellationToken
+      description: Cancellation token.
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{AeroDB.IEvent}}
+    content.vb: Function FetchStreamAsync(streamId As String, version As Long? = Nothing, timestamp As DateTimeOffset? = Nothing, fromVersion As Long? = Nothing, ct As CancellationToken = Nothing) As Task(Of IReadOnlyList(Of IEvent))
+  overload: AeroDB.IEvents.FetchStreamAsync*
+  nameWithType.vb: IEvents.FetchStreamAsync(String, Long?, DateTimeOffset?, Long?, CancellationToken)
+  fullName.vb: AeroDB.IEvents.FetchStreamAsync(String, Long?, System.DateTimeOffset?, Long?, System.Threading.CancellationToken)
+  name.vb: FetchStreamAsync(String, Long?, DateTimeOffset?, Long?, CancellationToken)
+- uid: AeroDB.IEvents.AggregateStreamAsync``1(System.String,System.Nullable{System.Int64},System.Nullable{System.DateTimeOffset},``0,System.Nullable{System.Int64},System.Threading.CancellationToken)
+  commentId: M:AeroDB.IEvents.AggregateStreamAsync``1(System.String,System.Nullable{System.Int64},System.Nullable{System.DateTimeOffset},``0,System.Nullable{System.Int64},System.Threading.CancellationToken)
+  id: AggregateStreamAsync``1(System.String,System.Nullable{System.Int64},System.Nullable{System.DateTimeOffset},``0,System.Nullable{System.Int64},System.Threading.CancellationToken)
+  parent: AeroDB.IEvents
+  langs:
+  - csharp
+  - vb
+  name: AggregateStreamAsync<T>(string, long?, DateTimeOffset?, T?, long?, CancellationToken)
+  nameWithType: IEvents.AggregateStreamAsync<T>(string, long?, DateTimeOffset?, T?, long?, CancellationToken)
+  fullName: AeroDB.IEvents.AggregateStreamAsync<T>(string, long?, System.DateTimeOffset?, T?, long?, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/IEvents.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Fetches and aggregates a stream into type T. Returns default(T) if stream is empty.
+                When <code class="paramref">state</code> is provided, events are applied to it instead of creating a new instance.
+  example: []
+  syntax:
+    content: 'Task<T?> AggregateStreamAsync<T>(string streamId, long? version = null, DateTimeOffset? timestamp = null, T? state = null, long? fromVersion = null, CancellationToken ct = default) where T : class'
+    parameters:
+    - id: streamId
+      type: System.String
+      description: The stream identifier.
+    - id: version
+      type: System.Nullable{System.Int64}
+      description: Exact version filter (optional).
+    - id: timestamp
+      type: System.Nullable{System.DateTimeOffset}
+      description: Only include events at or after this timestamp (optional).
+    - id: state
+      type: '{T}'
+      description: Optional pre-existing aggregate state to apply events onto.
+    - id: fromVersion
+      type: System.Nullable{System.Int64}
+      description: Only include events at or after this version (optional).
+    - id: ct
+      type: System.Threading.CancellationToken
+      description: Cancellation token.
+    typeParameters:
+    - id: T
+    return:
+      type: System.Threading.Tasks.Task{{T}}
+    content.vb: Function AggregateStreamAsync(Of T As Class)(streamId As String, version As Long? = Nothing, timestamp As DateTimeOffset? = Nothing, state As T = Nothing, fromVersion As Long? = Nothing, ct As CancellationToken = Nothing) As Task(Of T)
+  overload: AeroDB.IEvents.AggregateStreamAsync*
+  nameWithType.vb: IEvents.AggregateStreamAsync(Of T)(String, Long?, DateTimeOffset?, T, Long?, CancellationToken)
+  fullName.vb: AeroDB.IEvents.AggregateStreamAsync(Of T)(String, Long?, System.DateTimeOffset?, T, Long?, System.Threading.CancellationToken)
+  name.vb: AggregateStreamAsync(Of T)(String, Long?, DateTimeOffset?, T, Long?, CancellationToken)
+- uid: AeroDB.IEvents.WriteTombstone(System.String,System.Int64,System.Threading.CancellationToken)
+  commentId: M:AeroDB.IEvents.WriteTombstone(System.String,System.Int64,System.Threading.CancellationToken)
+  id: WriteTombstone(System.String,System.Int64,System.Threading.CancellationToken)
+  parent: AeroDB.IEvents
+  langs:
+  - csharp
+  - vb
+  name: WriteTombstone(string, long, CancellationToken)
+  nameWithType: IEvents.WriteTombstone(string, long, CancellationToken)
+  fullName: AeroDB.IEvents.WriteTombstone(string, long, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/IEvents.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Write a tombstone event to fill a gap caused by a failed transaction.
+
+    Use this for idempotent retry scenarios.
+  example: []
+  syntax:
+    content: Task<IReadOnlyList<IEvent>> WriteTombstone(string streamId, long version, CancellationToken ct = default)
+    parameters:
+    - id: streamId
+      type: System.String
+    - id: version
+      type: System.Int64
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{AeroDB.IEvent}}
+    content.vb: Function WriteTombstone(streamId As String, version As Long, ct As CancellationToken = Nothing) As Task(Of IReadOnlyList(Of IEvent))
+  overload: AeroDB.IEvents.WriteTombstone*
+  nameWithType.vb: IEvents.WriteTombstone(String, Long, CancellationToken)
+  fullName.vb: AeroDB.IEvents.WriteTombstone(String, Long, System.Threading.CancellationToken)
+  name.vb: WriteTombstone(String, Long, CancellationToken)
+- uid: AeroDB.IEvents.BulkInsertEventsAsync(System.Collections.Generic.IEnumerable{System.ValueTuple{System.String,System.Collections.Generic.IEnumerable{System.Object}}},System.Int32,System.Threading.CancellationToken)
+  commentId: M:AeroDB.IEvents.BulkInsertEventsAsync(System.Collections.Generic.IEnumerable{System.ValueTuple{System.String,System.Collections.Generic.IEnumerable{System.Object}}},System.Int32,System.Threading.CancellationToken)
+  id: BulkInsertEventsAsync(System.Collections.Generic.IEnumerable{System.ValueTuple{System.String,System.Collections.Generic.IEnumerable{System.Object}}},System.Int32,System.Threading.CancellationToken)
+  parent: AeroDB.IEvents
+  langs:
+  - csharp
+  - vb
+  name: BulkInsertEventsAsync(IEnumerable<(string StreamId, IEnumerable<object> Events)>, int, CancellationToken)
+  nameWithType: IEvents.BulkInsertEventsAsync(IEnumerable<(string StreamId, IEnumerable<object> Events)>, int, CancellationToken)
+  fullName: AeroDB.IEvents.BulkInsertEventsAsync(System.Collections.Generic.IEnumerable<(string StreamId, System.Collections.Generic.IEnumerable<object> Events)>, int, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/IEvents.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Bulk-inserts events across multiple streams in batches for performance.
+
+    All events in a batch are inserted atomically via a single SurrealQL statement.
+  example: []
+  syntax:
+    content: Task<int> BulkInsertEventsAsync(IEnumerable<(string StreamId, IEnumerable<object> Events)> streams, int batchSize = 100, CancellationToken ct = default)
+    parameters:
+    - id: streams
+      type: System.Collections.Generic.IEnumerable{System.ValueTuple{System.String,System.Collections.Generic.IEnumerable{System.Object}}}
+    - id: batchSize
+      type: System.Int32
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task{System.Int32}
+    content.vb: Function BulkInsertEventsAsync(streams As IEnumerable(Of (StreamId As String, Events As IEnumerable(Of Object))), batchSize As Integer = 100, ct As CancellationToken = Nothing) As Task(Of Integer)
+  overload: AeroDB.IEvents.BulkInsertEventsAsync*
+  nameWithType.vb: IEvents.BulkInsertEventsAsync(IEnumerable(Of (StreamId As String, Events As IEnumerable(Of Object))), Integer, CancellationToken)
+  fullName.vb: AeroDB.IEvents.BulkInsertEventsAsync(System.Collections.Generic.IEnumerable(Of (StreamId As String, Events As System.Collections.Generic.IEnumerable(Of Object))), Integer, System.Threading.CancellationToken)
+  name.vb: BulkInsertEventsAsync(IEnumerable(Of (StreamId As String, Events As IEnumerable(Of Object))), Integer, CancellationToken)
+- uid: AeroDB.IEvents.AggregateStreamToLastKnownAsync``1(System.String,System.Threading.CancellationToken)
+  commentId: M:AeroDB.IEvents.AggregateStreamToLastKnownAsync``1(System.String,System.Threading.CancellationToken)
+  id: AggregateStreamToLastKnownAsync``1(System.String,System.Threading.CancellationToken)
+  parent: AeroDB.IEvents
+  langs:
+  - csharp
+  - vb
+  name: AggregateStreamToLastKnownAsync<T>(string, CancellationToken)
+  nameWithType: IEvents.AggregateStreamToLastKnownAsync<T>(string, CancellationToken)
+  fullName: AeroDB.IEvents.AggregateStreamToLastKnownAsync<T>(string, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/IEvents.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Aggregate a stream using the last known state from the projection table.
+                Falls back to full stream aggregation if no cached state exists.
+  example: []
+  syntax:
+    content: 'Task<T?> AggregateStreamToLastKnownAsync<T>(string streamId, CancellationToken ct = default) where T : class'
+    parameters:
+    - id: streamId
+      type: System.String
+    - id: ct
+      type: System.Threading.CancellationToken
+    typeParameters:
+    - id: T
+    return:
+      type: System.Threading.Tasks.Task{{T}}
+    content.vb: Function AggregateStreamToLastKnownAsync(Of T As Class)(streamId As String, ct As CancellationToken = Nothing) As Task(Of T)
+  overload: AeroDB.IEvents.AggregateStreamToLastKnownAsync*
+  nameWithType.vb: IEvents.AggregateStreamToLastKnownAsync(Of T)(String, CancellationToken)
+  fullName.vb: AeroDB.IEvents.AggregateStreamToLastKnownAsync(Of T)(String, System.Threading.CancellationToken)
+  name.vb: AggregateStreamToLastKnownAsync(Of T)(String, CancellationToken)
+- uid: AeroDB.IEvents.CompactStreamAsync``1(System.String,System.Action{AeroDB.CompactStreamOptions},System.Threading.CancellationToken)
+  commentId: M:AeroDB.IEvents.CompactStreamAsync``1(System.String,System.Action{AeroDB.CompactStreamOptions},System.Threading.CancellationToken)
+  id: CompactStreamAsync``1(System.String,System.Action{AeroDB.CompactStreamOptions},System.Threading.CancellationToken)
+  parent: AeroDB.IEvents
+  langs:
+  - csharp
+  - vb
+  name: CompactStreamAsync<T>(string, Action<CompactStreamOptions>?, CancellationToken)
+  nameWithType: IEvents.CompactStreamAsync<T>(string, Action<CompactStreamOptions>?, CancellationToken)
+  fullName: AeroDB.IEvents.CompactStreamAsync<T>(string, System.Action<AeroDB.CompactStreamOptions>?, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/IEvents.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Compact an event stream: replaces all events with a single snapshot event
+                representing the current aggregate state, then deletes old events.
+  example: []
+  syntax:
+    content: 'Task CompactStreamAsync<T>(string streamId, Action<CompactStreamOptions>? configure = null, CancellationToken ct = default) where T : class'
+    parameters:
+    - id: streamId
+      type: System.String
+    - id: configure
+      type: System.Action{AeroDB.CompactStreamOptions}
+    - id: ct
+      type: System.Threading.CancellationToken
+    typeParameters:
+    - id: T
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Function CompactStreamAsync(Of T As Class)(streamId As String, configure As Action(Of CompactStreamOptions) = Nothing, ct As CancellationToken = Nothing) As Task
+  overload: AeroDB.IEvents.CompactStreamAsync*
+  nameWithType.vb: IEvents.CompactStreamAsync(Of T)(String, Action(Of CompactStreamOptions), CancellationToken)
+  fullName.vb: AeroDB.IEvents.CompactStreamAsync(Of T)(String, System.Action(Of AeroDB.CompactStreamOptions), System.Threading.CancellationToken)
+  name.vb: CompactStreamAsync(Of T)(String, Action(Of CompactStreamOptions), CancellationToken)
+- uid: AeroDB.IEvents.FetchForExclusiveWriting``1(System.String,System.Threading.CancellationToken)
+  commentId: M:AeroDB.IEvents.FetchForExclusiveWriting``1(System.String,System.Threading.CancellationToken)
+  id: FetchForExclusiveWriting``1(System.String,System.Threading.CancellationToken)
+  parent: AeroDB.IEvents
+  langs:
+  - csharp
+  - vb
+  name: FetchForExclusiveWriting<T>(string, CancellationToken)
+  nameWithType: IEvents.FetchForExclusiveWriting<T>(string, CancellationToken)
+  fullName: AeroDB.IEvents.FetchForExclusiveWriting<T>(string, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/IEvents.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Fetch stream for writing with an exclusive lock (prevents concurrent appends).
+  example: []
+  syntax:
+    content: 'Task<FetchForWritingResult<T>?> FetchForExclusiveWriting<T>(string streamId, CancellationToken ct = default) where T : class'
+    parameters:
+    - id: streamId
+      type: System.String
+    - id: ct
+      type: System.Threading.CancellationToken
+    typeParameters:
+    - id: T
+    return:
+      type: System.Threading.Tasks.Task{AeroDB.FetchForWritingResult{{T}}}
+    content.vb: Function FetchForExclusiveWriting(Of T As Class)(streamId As String, ct As CancellationToken = Nothing) As Task(Of FetchForWritingResult(Of T))
+  overload: AeroDB.IEvents.FetchForExclusiveWriting*
+  nameWithType.vb: IEvents.FetchForExclusiveWriting(Of T)(String, CancellationToken)
+  fullName.vb: AeroDB.IEvents.FetchForExclusiveWriting(Of T)(String, System.Threading.CancellationToken)
+  name.vb: FetchForExclusiveWriting(Of T)(String, CancellationToken)
+- uid: AeroDB.IEvents.QueryRawEventDataOnly``1
+  commentId: M:AeroDB.IEvents.QueryRawEventDataOnly``1
+  id: QueryRawEventDataOnly``1
+  parent: AeroDB.IEvents
+  langs:
+  - csharp
+  - vb
+  name: QueryRawEventDataOnly<T>()
+  nameWithType: IEvents.QueryRawEventDataOnly<T>()
+  fullName: AeroDB.IEvents.QueryRawEventDataOnly<T>()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/IEvents.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Query raw event data of a specific type across all streams.
+  example: []
+  syntax:
+    content: 'ISurrealDbQueryable<T> QueryRawEventDataOnly<T>() where T : class'
+    typeParameters:
+    - id: T
+    return:
+      type: AeroDB.ISurrealDbQueryable{{T}}
+    content.vb: Function QueryRawEventDataOnly(Of T As Class)() As ISurrealDbQueryable(Of T)
+  overload: AeroDB.IEvents.QueryRawEventDataOnly*
+  nameWithType.vb: IEvents.QueryRawEventDataOnly(Of T)()
+  fullName.vb: AeroDB.IEvents.QueryRawEventDataOnly(Of T)()
+  name.vb: QueryRawEventDataOnly(Of T)()
+- uid: AeroDB.IEvents.QueryAllRawEvents
+  commentId: M:AeroDB.IEvents.QueryAllRawEvents
+  id: QueryAllRawEvents
+  parent: AeroDB.IEvents
+  langs:
+  - csharp
+  - vb
+  name: QueryAllRawEvents()
+  nameWithType: IEvents.QueryAllRawEvents()
+  fullName: AeroDB.IEvents.QueryAllRawEvents()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/IEvents.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Query all raw events across all streams.
+  example: []
+  syntax:
+    content: ISurrealDbQueryable<IEvent> QueryAllRawEvents()
+    return:
+      type: AeroDB.ISurrealDbQueryable{AeroDB.IEvent}
+    content.vb: Function QueryAllRawEvents() As ISurrealDbQueryable(Of IEvent)
+  overload: AeroDB.IEvents.QueryAllRawEvents*
+- uid: AeroDB.IEvents.BuildEvent(System.Object)
+  commentId: M:AeroDB.IEvents.BuildEvent(System.Object)
+  id: BuildEvent(System.Object)
+  parent: AeroDB.IEvents
+  langs:
+  - csharp
+  - vb
+  name: BuildEvent(object)
+  nameWithType: IEvents.BuildEvent(object)
+  fullName: AeroDB.IEvents.BuildEvent(object)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/IEvents.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Build an <xref href="AeroDB.IEvent" data-throw-if-not-resolved="false"></xref> envelope from raw event data without persisting it.
+
+    The returned event carries the current timestamp but no version/sequence/stream identity.
+  example: []
+  syntax:
+    content: IEvent BuildEvent(object data)
+    parameters:
+    - id: data
+      type: System.Object
+      description: The raw event data object.
+    return:
+      type: AeroDB.IEvent
+    content.vb: Function BuildEvent(data As Object) As IEvent
+  overload: AeroDB.IEvents.BuildEvent*
+  nameWithType.vb: IEvents.BuildEvent(Object)
+  fullName.vb: AeroDB.IEvents.BuildEvent(Object)
+  name.vb: BuildEvent(Object)
+- uid: AeroDB.IEvents.OverwriteEventAsync(AeroDB.IEvent,System.Threading.CancellationToken)
+  commentId: M:AeroDB.IEvents.OverwriteEventAsync(AeroDB.IEvent,System.Threading.CancellationToken)
+  id: OverwriteEventAsync(AeroDB.IEvent,System.Threading.CancellationToken)
+  parent: AeroDB.IEvents
+  langs:
+  - csharp
+  - vb
+  name: OverwriteEventAsync(IEvent, CancellationToken)
+  nameWithType: IEvents.OverwriteEventAsync(IEvent, CancellationToken)
+  fullName: AeroDB.IEvents.OverwriteEventAsync(AeroDB.IEvent, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/IEvents.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Overwrite an existing event's data. Updates the event in the database,
+
+    replacing the stored data with the new serialized payload.
+  example: []
+  syntax:
+    content: Task OverwriteEventAsync(IEvent e, CancellationToken ct = default)
+    parameters:
+    - id: e
+      type: AeroDB.IEvent
+      description: The event envelope containing the new data.
+    - id: ct
+      type: System.Threading.CancellationToken
+      description: Cancellation token.
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Function OverwriteEventAsync(e As IEvent, ct As CancellationToken = Nothing) As Task
+  overload: AeroDB.IEvents.OverwriteEventAsync*
+- uid: AeroDB.IEvents.DeleteSingleEventAsync(System.String,System.Int64,System.Threading.CancellationToken)
+  commentId: M:AeroDB.IEvents.DeleteSingleEventAsync(System.String,System.Int64,System.Threading.CancellationToken)
+  id: DeleteSingleEventAsync(System.String,System.Int64,System.Threading.CancellationToken)
+  parent: AeroDB.IEvents
+  langs:
+  - csharp
+  - vb
+  name: DeleteSingleEventAsync(string, long, CancellationToken)
+  nameWithType: IEvents.DeleteSingleEventAsync(string, long, CancellationToken)
+  fullName: AeroDB.IEvents.DeleteSingleEventAsync(string, long, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/IEvents.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Soft-delete a single event by clearing its data payload.
+
+    Preserves event metadata (version, sequence, timestamp) for stream integrity.
+
+    Does NOT physically remove the event record.
+  example: []
+  syntax:
+    content: Task DeleteSingleEventAsync(string streamId, long eventSequence, CancellationToken ct = default)
+    parameters:
+    - id: streamId
+      type: System.String
+      description: The stream identifier.
+    - id: eventSequence
+      type: System.Int64
+      description: The global sequence number of the event to delete.
+    - id: ct
+      type: System.Threading.CancellationToken
+      description: Cancellation token.
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Function DeleteSingleEventAsync(streamId As String, eventSequence As Long, ct As CancellationToken = Nothing) As Task
+  overload: AeroDB.IEvents.DeleteSingleEventAsync*
+  nameWithType.vb: IEvents.DeleteSingleEventAsync(String, Long, CancellationToken)
+  fullName.vb: AeroDB.IEvents.DeleteSingleEventAsync(String, Long, System.Threading.CancellationToken)
+  name.vb: DeleteSingleEventAsync(String, Long, CancellationToken)
+- uid: AeroDB.IEvents.EventsExistAsync(AeroDB.EventTagQuery,System.Threading.CancellationToken)
+  commentId: M:AeroDB.IEvents.EventsExistAsync(AeroDB.EventTagQuery,System.Threading.CancellationToken)
+  id: EventsExistAsync(AeroDB.EventTagQuery,System.Threading.CancellationToken)
+  parent: AeroDB.IEvents
+  langs:
+  - csharp
+  - vb
+  name: EventsExistAsync(EventTagQuery, CancellationToken)
+  nameWithType: IEvents.EventsExistAsync(EventTagQuery, CancellationToken)
+  fullName: AeroDB.IEvents.EventsExistAsync(AeroDB.EventTagQuery, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/IEvents.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Check if any events exist matching the given tag query.
+
+    Used by the async daemon to determine if there are events to project for DCB tags.
+  example: []
+  syntax:
+    content: Task<bool> EventsExistAsync(EventTagQuery query, CancellationToken ct = default)
+    parameters:
+    - id: query
+      type: AeroDB.EventTagQuery
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task{System.Boolean}
+    content.vb: Function EventsExistAsync(query As EventTagQuery, ct As CancellationToken = Nothing) As Task(Of Boolean)
+  overload: AeroDB.IEvents.EventsExistAsync*
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: AeroDB.IEvents.AeroDB.LiveStreamAggregation.AggregateAsync``1(System.Guid,System.Threading.CancellationToken)
+  commentId: M:AeroDB.LiveStreamAggregation.AggregateAsync``1(AeroDB.IEvents,System.Guid,System.Threading.CancellationToken)
+  parent: AeroDB.LiveStreamAggregation
+  definition: AeroDB.LiveStreamAggregation.AggregateAsync``1(AeroDB.IEvents,System.Guid,System.Threading.CancellationToken)
+  href: AeroDB.LiveStreamAggregation.html#AeroDB_LiveStreamAggregation_AggregateAsync__1_AeroDB_IEvents_System_Guid_System_Threading_CancellationToken_
+  name: AggregateAsync<T>(IEvents, Guid, CancellationToken)
+  nameWithType: LiveStreamAggregation.AggregateAsync<T>(IEvents, Guid, CancellationToken)
+  fullName: AeroDB.LiveStreamAggregation.AggregateAsync<T>(AeroDB.IEvents, System.Guid, System.Threading.CancellationToken)
+  nameWithType.vb: LiveStreamAggregation.AggregateAsync(Of T)(IEvents, Guid, CancellationToken)
+  fullName.vb: AeroDB.LiveStreamAggregation.AggregateAsync(Of T)(AeroDB.IEvents, System.Guid, System.Threading.CancellationToken)
+  name.vb: AggregateAsync(Of T)(IEvents, Guid, CancellationToken)
+  spec.csharp:
+  - uid: AeroDB.LiveStreamAggregation.AggregateAsync``1(AeroDB.IEvents,System.Guid,System.Threading.CancellationToken)
+    name: AggregateAsync
+    isExternal: true
+    href: AeroDB.LiveStreamAggregation.html#AeroDB_LiveStreamAggregation_AggregateAsync__1_AeroDB_IEvents_System_Guid_System_Threading_CancellationToken_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: AeroDB.IEvents
+    name: IEvents
+    isExternal: true
+    href: AeroDB.IEvents.html
+  - name: ','
+  - name: " "
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: AeroDB.LiveStreamAggregation.AggregateAsync``1(AeroDB.IEvents,System.Guid,System.Threading.CancellationToken)
+    name: AggregateAsync
+    isExternal: true
+    href: AeroDB.LiveStreamAggregation.html#AeroDB_LiveStreamAggregation_AggregateAsync__1_AeroDB_IEvents_System_Guid_System_Threading_CancellationToken_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: AeroDB.IEvents
+    name: IEvents
+    isExternal: true
+    href: AeroDB.IEvents.html
+  - name: ','
+  - name: " "
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: AeroDB.IEvents.AeroDB.LiveStreamAggregation.AggregateAsync``1(System.String,System.Threading.CancellationToken)
+  commentId: M:AeroDB.LiveStreamAggregation.AggregateAsync``1(AeroDB.IEvents,System.String,System.Threading.CancellationToken)
+  parent: AeroDB.LiveStreamAggregation
+  definition: AeroDB.LiveStreamAggregation.AggregateAsync``1(AeroDB.IEvents,System.String,System.Threading.CancellationToken)
+  href: AeroDB.LiveStreamAggregation.html#AeroDB_LiveStreamAggregation_AggregateAsync__1_AeroDB_IEvents_System_String_System_Threading_CancellationToken_
+  name: AggregateAsync<T>(IEvents, string, CancellationToken)
+  nameWithType: LiveStreamAggregation.AggregateAsync<T>(IEvents, string, CancellationToken)
+  fullName: AeroDB.LiveStreamAggregation.AggregateAsync<T>(AeroDB.IEvents, string, System.Threading.CancellationToken)
+  nameWithType.vb: LiveStreamAggregation.AggregateAsync(Of T)(IEvents, String, CancellationToken)
+  fullName.vb: AeroDB.LiveStreamAggregation.AggregateAsync(Of T)(AeroDB.IEvents, String, System.Threading.CancellationToken)
+  name.vb: AggregateAsync(Of T)(IEvents, String, CancellationToken)
+  spec.csharp:
+  - uid: AeroDB.LiveStreamAggregation.AggregateAsync``1(AeroDB.IEvents,System.String,System.Threading.CancellationToken)
+    name: AggregateAsync
+    isExternal: true
+    href: AeroDB.LiveStreamAggregation.html#AeroDB_LiveStreamAggregation_AggregateAsync__1_AeroDB_IEvents_System_String_System_Threading_CancellationToken_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: AeroDB.IEvents
+    name: IEvents
+    isExternal: true
+    href: AeroDB.IEvents.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: AeroDB.LiveStreamAggregation.AggregateAsync``1(AeroDB.IEvents,System.String,System.Threading.CancellationToken)
+    name: AggregateAsync
+    isExternal: true
+    href: AeroDB.LiveStreamAggregation.html#AeroDB_LiveStreamAggregation_AggregateAsync__1_AeroDB_IEvents_System_String_System_Threading_CancellationToken_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: AeroDB.IEvents
+    name: IEvents
+    isExternal: true
+    href: AeroDB.IEvents.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: AeroDB.LiveStreamAggregation.AggregateAsync``1(AeroDB.IEvents,System.Guid,System.Threading.CancellationToken)
+  commentId: M:AeroDB.LiveStreamAggregation.AggregateAsync``1(AeroDB.IEvents,System.Guid,System.Threading.CancellationToken)
+  isExternal: true
+  href: AeroDB.LiveStreamAggregation.html#AeroDB_LiveStreamAggregation_AggregateAsync__1_AeroDB_IEvents_System_Guid_System_Threading_CancellationToken_
+  name: AggregateAsync<T>(IEvents, Guid, CancellationToken)
+  nameWithType: LiveStreamAggregation.AggregateAsync<T>(IEvents, Guid, CancellationToken)
+  fullName: AeroDB.LiveStreamAggregation.AggregateAsync<T>(AeroDB.IEvents, System.Guid, System.Threading.CancellationToken)
+  nameWithType.vb: LiveStreamAggregation.AggregateAsync(Of T)(IEvents, Guid, CancellationToken)
+  fullName.vb: AeroDB.LiveStreamAggregation.AggregateAsync(Of T)(AeroDB.IEvents, System.Guid, System.Threading.CancellationToken)
+  name.vb: AggregateAsync(Of T)(IEvents, Guid, CancellationToken)
+  spec.csharp:
+  - uid: AeroDB.LiveStreamAggregation.AggregateAsync``1(AeroDB.IEvents,System.Guid,System.Threading.CancellationToken)
+    name: AggregateAsync
+    isExternal: true
+    href: AeroDB.LiveStreamAggregation.html#AeroDB_LiveStreamAggregation_AggregateAsync__1_AeroDB_IEvents_System_Guid_System_Threading_CancellationToken_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: AeroDB.IEvents
+    name: IEvents
+    isExternal: true
+    href: AeroDB.IEvents.html
+  - name: ','
+  - name: " "
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: AeroDB.LiveStreamAggregation.AggregateAsync``1(AeroDB.IEvents,System.Guid,System.Threading.CancellationToken)
+    name: AggregateAsync
+    isExternal: true
+    href: AeroDB.LiveStreamAggregation.html#AeroDB_LiveStreamAggregation_AggregateAsync__1_AeroDB_IEvents_System_Guid_System_Threading_CancellationToken_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: AeroDB.IEvents
+    name: IEvents
+    isExternal: true
+    href: AeroDB.IEvents.html
+  - name: ','
+  - name: " "
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: AeroDB.LiveStreamAggregation
+  commentId: T:AeroDB.LiveStreamAggregation
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.LiveStreamAggregation.html
+  name: LiveStreamAggregation
+  nameWithType: LiveStreamAggregation
+  fullName: AeroDB.LiveStreamAggregation
+- uid: AeroDB.LiveStreamAggregation.AggregateAsync``1(AeroDB.IEvents,System.String,System.Threading.CancellationToken)
+  commentId: M:AeroDB.LiveStreamAggregation.AggregateAsync``1(AeroDB.IEvents,System.String,System.Threading.CancellationToken)
+  isExternal: true
+  href: AeroDB.LiveStreamAggregation.html#AeroDB_LiveStreamAggregation_AggregateAsync__1_AeroDB_IEvents_System_String_System_Threading_CancellationToken_
+  name: AggregateAsync<T>(IEvents, string, CancellationToken)
+  nameWithType: LiveStreamAggregation.AggregateAsync<T>(IEvents, string, CancellationToken)
+  fullName: AeroDB.LiveStreamAggregation.AggregateAsync<T>(AeroDB.IEvents, string, System.Threading.CancellationToken)
+  nameWithType.vb: LiveStreamAggregation.AggregateAsync(Of T)(IEvents, String, CancellationToken)
+  fullName.vb: AeroDB.LiveStreamAggregation.AggregateAsync(Of T)(AeroDB.IEvents, String, System.Threading.CancellationToken)
+  name.vb: AggregateAsync(Of T)(IEvents, String, CancellationToken)
+  spec.csharp:
+  - uid: AeroDB.LiveStreamAggregation.AggregateAsync``1(AeroDB.IEvents,System.String,System.Threading.CancellationToken)
+    name: AggregateAsync
+    isExternal: true
+    href: AeroDB.LiveStreamAggregation.html#AeroDB_LiveStreamAggregation_AggregateAsync__1_AeroDB_IEvents_System_String_System_Threading_CancellationToken_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: AeroDB.IEvents
+    name: IEvents
+    isExternal: true
+    href: AeroDB.IEvents.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: AeroDB.LiveStreamAggregation.AggregateAsync``1(AeroDB.IEvents,System.String,System.Threading.CancellationToken)
+    name: AggregateAsync
+    isExternal: true
+    href: AeroDB.LiveStreamAggregation.html#AeroDB_LiveStreamAggregation_AggregateAsync__1_AeroDB_IEvents_System_String_System_Threading_CancellationToken_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: AeroDB.IEvents
+    name: IEvents
+    isExternal: true
+    href: AeroDB.IEvents.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: AeroDB.IEvent
+  commentId: T:AeroDB.IEvent
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IEvent.html
+  name: IEvent
+  nameWithType: IEvent
+  fullName: AeroDB.IEvent
+- uid: AeroDB.IEvents.FetchStream*
+  commentId: Overload:AeroDB.IEvents.FetchStream
+  isExternal: true
+  href: AeroDB.IEvents.html#AeroDB_IEvents_FetchStream_System_String_System_Threading_CancellationToken_
+  name: FetchStream
+  nameWithType: IEvents.FetchStream
+  fullName: AeroDB.IEvents.FetchStream
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{AeroDB.IEvent}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{AeroDB.IEvent}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<IReadOnlyList<IEvent>>
+  nameWithType: Task<IReadOnlyList<IEvent>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.IReadOnlyList<AeroDB.IEvent>>
+  nameWithType.vb: Task(Of IReadOnlyList(Of IEvent))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.IReadOnlyList(Of AeroDB.IEvent))
+  name.vb: Task(Of IReadOnlyList(Of IEvent))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - uid: AeroDB.IEvent
+    name: IEvent
+    isExternal: true
+    href: AeroDB.IEvent.html
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.IEvent
+    name: IEvent
+    isExternal: true
+    href: AeroDB.IEvent.html
+  - name: )
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: AeroDB.IEvents.Append*
+  commentId: Overload:AeroDB.IEvents.Append
+  isExternal: true
+  href: AeroDB.IEvents.html#AeroDB_IEvents_Append_System_String_System_Collections_Generic_IEnumerable_System_Object__System_Collections_Generic_Dictionary_System_String_System_String__System_Threading_CancellationToken_
+  name: Append
+  nameWithType: IEvents.Append
+  fullName: AeroDB.IEvents.Append
+- uid: System.Collections.Generic.IEnumerable{System.Object}
+  commentId: T:System.Collections.Generic.IEnumerable{System.Object}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<object>
+  nameWithType: IEnumerable<object>
+  fullName: System.Collections.Generic.IEnumerable<object>
+  nameWithType.vb: IEnumerable(Of Object)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of Object)
+  name.vb: IEnumerable(Of Object)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Collections.Generic.Dictionary{System.String,System.String}
+  commentId: T:System.Collections.Generic.Dictionary{System.String,System.String}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.Dictionary`2
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  name: Dictionary<string, string>
+  nameWithType: Dictionary<string, string>
+  fullName: System.Collections.Generic.Dictionary<string, string>
+  nameWithType.vb: Dictionary(Of String, String)
+  fullName.vb: System.Collections.Generic.Dictionary(Of String, String)
+  name.vb: Dictionary(Of String, String)
+  spec.csharp:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: System.Collections.Generic.Dictionary`2
+  commentId: T:System.Collections.Generic.Dictionary`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  name: Dictionary<TKey, TValue>
+  nameWithType: Dictionary<TKey, TValue>
+  fullName: System.Collections.Generic.Dictionary<TKey, TValue>
+  nameWithType.vb: Dictionary(Of TKey, TValue)
+  fullName.vb: System.Collections.Generic.Dictionary(Of TKey, TValue)
+  name.vb: Dictionary(Of TKey, TValue)
+  spec.csharp:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: <
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+- uid: AeroDB.ConcurrencyException
+  commentId: T:AeroDB.ConcurrencyException
+  isExternal: true
+  href: AeroDB.ConcurrencyException.html
+  name: ConcurrencyException
+  nameWithType: ConcurrencyException
+  fullName: AeroDB.ConcurrencyException
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
+- uid: AeroDB.IEvents.AppendOptimistic*
+  commentId: Overload:AeroDB.IEvents.AppendOptimistic
+  isExternal: true
+  href: AeroDB.IEvents.html#AeroDB_IEvents_AppendOptimistic_System_String_System_Int64_System_Collections_Generic_IEnumerable_System_Object__System_Threading_CancellationToken_
+  name: AppendOptimistic
+  nameWithType: IEvents.AppendOptimistic
+  fullName: AeroDB.IEvents.AppendOptimistic
+- uid: AeroDB.IEvents.AppendExclusive*
+  commentId: Overload:AeroDB.IEvents.AppendExclusive
+  isExternal: true
+  href: AeroDB.IEvents.html#AeroDB_IEvents_AppendExclusive_System_String_System_Collections_Generic_IEnumerable_System_Object__System_Threading_CancellationToken_
+  name: AppendExclusive
+  nameWithType: IEvents.AppendExclusive
+  fullName: AeroDB.IEvents.AppendExclusive
+- uid: System.Guid
+  commentId: T:System.Guid
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: Guid
+  nameWithType: Guid
+  fullName: System.Guid
+- uid: AeroDB.IEvents.StartStream*
+  commentId: Overload:AeroDB.IEvents.StartStream
+  isExternal: true
+  href: AeroDB.IEvents.html#AeroDB_IEvents_StartStream_System_String_System_Collections_Generic_IEnumerable_System_Object__System_Threading_CancellationToken_
+  name: StartStream
+  nameWithType: IEvents.StartStream
+  fullName: AeroDB.IEvents.StartStream
+- uid: System.Threading.Tasks.Task{System.String}
+  commentId: T:System.Threading.Tasks.Task{System.String}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<string>
+  nameWithType: Task<string>
+  fullName: System.Threading.Tasks.Task<string>
+  nameWithType.vb: Task(Of String)
+  fullName.vb: System.Threading.Tasks.Task(Of String)
+  name.vb: Task(Of String)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: AeroDB.IEvents.WriteToAggregate*
+  commentId: Overload:AeroDB.IEvents.WriteToAggregate
+  isExternal: true
+  href: AeroDB.IEvents.html#AeroDB_IEvents_WriteToAggregate__1_System_Guid_System_Int32_System_Action_AeroDB_FetchForWritingResult___0___System_Threading_CancellationToken_
+  name: WriteToAggregate
+  nameWithType: IEvents.WriteToAggregate
+  fullName: AeroDB.IEvents.WriteToAggregate
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System.Action{AeroDB.FetchForWritingResult{{T}}}
+  commentId: T:System.Action{AeroDB.FetchForWritingResult{``0}}
+  parent: System
+  definition: System.Action`1
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<FetchForWritingResult<T>>
+  nameWithType: Action<FetchForWritingResult<T>>
+  fullName: System.Action<AeroDB.FetchForWritingResult<T>>
+  nameWithType.vb: Action(Of FetchForWritingResult(Of T))
+  fullName.vb: System.Action(Of AeroDB.FetchForWritingResult(Of T))
+  name.vb: Action(Of FetchForWritingResult(Of T))
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: AeroDB.FetchForWritingResult`1
+    name: FetchForWritingResult
+    isExternal: true
+    href: AeroDB.FetchForWritingResult-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.FetchForWritingResult`1
+    name: FetchForWritingResult
+    isExternal: true
+    href: AeroDB.FetchForWritingResult-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: System.Action`1
+  commentId: T:System.Action`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<T>
+  nameWithType: Action<T>
+  fullName: System.Action<T>
+  nameWithType.vb: Action(Of T)
+  fullName.vb: System.Action(Of T)
+  name.vb: Action(Of T)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.IEvent.Sequence
+  commentId: P:AeroDB.IEvent.Sequence
+  parent: AeroDB.IEvent
+  isExternal: true
+  href: AeroDB.IEvent.html#AeroDB_IEvent_Sequence
+  name: Sequence
+  nameWithType: IEvent.Sequence
+  fullName: AeroDB.IEvent.Sequence
+- uid: AeroDB.IEvents.FetchAllAfterSequence*
+  commentId: Overload:AeroDB.IEvents.FetchAllAfterSequence
+  isExternal: true
+  href: AeroDB.IEvents.html#AeroDB_IEvents_FetchAllAfterSequence_System_Int64_System_Threading_CancellationToken_
+  name: FetchAllAfterSequence
+  nameWithType: IEvents.FetchAllAfterSequence
+  fullName: AeroDB.IEvents.FetchAllAfterSequence
+- uid: AeroDB.IEvents.ArchiveStream*
+  commentId: Overload:AeroDB.IEvents.ArchiveStream
+  isExternal: true
+  href: AeroDB.IEvents.html#AeroDB_IEvents_ArchiveStream_System_String_System_Threading_CancellationToken_
+  name: ArchiveStream
+  nameWithType: IEvents.ArchiveStream
+  fullName: AeroDB.IEvents.ArchiveStream
+- uid: AeroDB.IEvents.FetchForWritingAsync*
+  commentId: Overload:AeroDB.IEvents.FetchForWritingAsync
+  isExternal: true
+  href: AeroDB.IEvents.html#AeroDB_IEvents_FetchForWritingAsync__1_System_String_System_Threading_CancellationToken_
+  name: FetchForWritingAsync
+  nameWithType: IEvents.FetchForWritingAsync
+  fullName: AeroDB.IEvents.FetchForWritingAsync
+- uid: System.Threading.Tasks.Task{AeroDB.FetchForWritingResult{{T}}}
+  commentId: T:System.Threading.Tasks.Task{AeroDB.FetchForWritingResult{``0}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<FetchForWritingResult<T>>
+  nameWithType: Task<FetchForWritingResult<T>>
+  fullName: System.Threading.Tasks.Task<AeroDB.FetchForWritingResult<T>>
+  nameWithType.vb: Task(Of FetchForWritingResult(Of T))
+  fullName.vb: System.Threading.Tasks.Task(Of AeroDB.FetchForWritingResult(Of T))
+  name.vb: Task(Of FetchForWritingResult(Of T))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: AeroDB.FetchForWritingResult`1
+    name: FetchForWritingResult
+    isExternal: true
+    href: AeroDB.FetchForWritingResult-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.FetchForWritingResult`1
+    name: FetchForWritingResult
+    isExternal: true
+    href: AeroDB.FetchForWritingResult-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+- uid: AeroDB.IEvents.FetchStreamStateAsync*
+  commentId: Overload:AeroDB.IEvents.FetchStreamStateAsync
+  isExternal: true
+  href: AeroDB.IEvents.html#AeroDB_IEvents_FetchStreamStateAsync_System_String_System_Threading_CancellationToken_
+  name: FetchStreamStateAsync
+  nameWithType: IEvents.FetchStreamStateAsync
+  fullName: AeroDB.IEvents.FetchStreamStateAsync
+- uid: System.Threading.Tasks.Task{AeroDB.StreamState}
+  commentId: T:System.Threading.Tasks.Task{AeroDB.StreamState}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<StreamState>
+  nameWithType: Task<StreamState>
+  fullName: System.Threading.Tasks.Task<AeroDB.StreamState>
+  nameWithType.vb: Task(Of StreamState)
+  fullName.vb: System.Threading.Tasks.Task(Of AeroDB.StreamState)
+  name.vb: Task(Of StreamState)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: AeroDB.StreamState
+    name: StreamState
+    isExternal: true
+    href: AeroDB.StreamState.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.StreamState
+    name: StreamState
+    isExternal: true
+    href: AeroDB.StreamState.html
+  - name: )
+- uid: AeroDB.IEvents.FetchStreamStateAsync(System.String,System.Threading.CancellationToken)
+  commentId: M:AeroDB.IEvents.FetchStreamStateAsync(System.String,System.Threading.CancellationToken)
+  parent: AeroDB.IEvents
+  isExternal: true
+  href: AeroDB.IEvents.html#AeroDB_IEvents_FetchStreamStateAsync_System_String_System_Threading_CancellationToken_
+  name: FetchStreamStateAsync(string, CancellationToken)
+  nameWithType: IEvents.FetchStreamStateAsync(string, CancellationToken)
+  fullName: AeroDB.IEvents.FetchStreamStateAsync(string, System.Threading.CancellationToken)
+  nameWithType.vb: IEvents.FetchStreamStateAsync(String, CancellationToken)
+  fullName.vb: AeroDB.IEvents.FetchStreamStateAsync(String, System.Threading.CancellationToken)
+  name.vb: FetchStreamStateAsync(String, CancellationToken)
+  spec.csharp:
+  - uid: AeroDB.IEvents.FetchStreamStateAsync(System.String,System.Threading.CancellationToken)
+    name: FetchStreamStateAsync
+    isExternal: true
+    href: AeroDB.IEvents.html#AeroDB_IEvents_FetchStreamStateAsync_System_String_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: AeroDB.IEvents.FetchStreamStateAsync(System.String,System.Threading.CancellationToken)
+    name: FetchStreamStateAsync
+    isExternal: true
+    href: AeroDB.IEvents.html#AeroDB_IEvents_FetchStreamStateAsync_System_String_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: AeroDB.IEvents
+  commentId: T:AeroDB.IEvents
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IEvents.html
+  name: IEvents
+  nameWithType: IEvents
+  fullName: AeroDB.IEvents
+- uid: AeroDB.IEvents.FetchStreamAsync*
+  commentId: Overload:AeroDB.IEvents.FetchStreamAsync
+  isExternal: true
+  href: AeroDB.IEvents.html#AeroDB_IEvents_FetchStreamAsync_System_String_System_Nullable_System_Int64__System_Nullable_System_DateTimeOffset__System_Nullable_System_Int64__System_Threading_CancellationToken_
+  name: FetchStreamAsync
+  nameWithType: IEvents.FetchStreamAsync
+  fullName: AeroDB.IEvents.FetchStreamAsync
+- uid: System.Nullable{System.Int64}
+  commentId: T:System.Nullable{System.Int64}
+  parent: System
+  definition: System.Nullable`1
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long?
+  nameWithType: long?
+  fullName: long?
+  nameWithType.vb: Long?
+  fullName.vb: Long?
+  name.vb: Long?
+  spec.csharp:
+  - uid: System.Int64
+    name: long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: '?'
+  spec.vb:
+  - uid: System.Int64
+    name: Long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: '?'
+- uid: System.Nullable{System.DateTimeOffset}
+  commentId: T:System.Nullable{System.DateTimeOffset}
+  parent: System
+  definition: System.Nullable`1
+  href: https://learn.microsoft.com/dotnet/api/system.datetimeoffset
+  name: DateTimeOffset?
+  nameWithType: DateTimeOffset?
+  fullName: System.DateTimeOffset?
+  spec.csharp:
+  - uid: System.DateTimeOffset
+    name: DateTimeOffset
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.datetimeoffset
+  - name: '?'
+  spec.vb:
+  - uid: System.DateTimeOffset
+    name: DateTimeOffset
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.datetimeoffset
+  - name: '?'
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.IEvents.AggregateStreamAsync*
+  commentId: Overload:AeroDB.IEvents.AggregateStreamAsync
+  isExternal: true
+  href: AeroDB.IEvents.html#AeroDB_IEvents_AggregateStreamAsync__1_System_String_System_Nullable_System_Int64__System_Nullable_System_DateTimeOffset____0_System_Nullable_System_Int64__System_Threading_CancellationToken_
+  name: AggregateStreamAsync
+  nameWithType: IEvents.AggregateStreamAsync
+  fullName: AeroDB.IEvents.AggregateStreamAsync
+- uid: '{T}'
+  commentId: '!:T'
+  definition: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: System.Threading.Tasks.Task{{T}}
+  commentId: T:System.Threading.Tasks.Task{``0}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<T>
+  nameWithType: Task<T>
+  fullName: System.Threading.Tasks.Task<T>
+  nameWithType.vb: Task(Of T)
+  fullName.vb: System.Threading.Tasks.Task(Of T)
+  name.vb: Task(Of T)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: AeroDB.IEvents.WriteTombstone*
+  commentId: Overload:AeroDB.IEvents.WriteTombstone
+  isExternal: true
+  href: AeroDB.IEvents.html#AeroDB_IEvents_WriteTombstone_System_String_System_Int64_System_Threading_CancellationToken_
+  name: WriteTombstone
+  nameWithType: IEvents.WriteTombstone
+  fullName: AeroDB.IEvents.WriteTombstone
+- uid: AeroDB.IEvents.BulkInsertEventsAsync*
+  commentId: Overload:AeroDB.IEvents.BulkInsertEventsAsync
+  isExternal: true
+  href: AeroDB.IEvents.html#AeroDB_IEvents_BulkInsertEventsAsync_System_Collections_Generic_IEnumerable_System_ValueTuple_System_String_System_Collections_Generic_IEnumerable_System_Object____System_Int32_System_Threading_CancellationToken_
+  name: BulkInsertEventsAsync
+  nameWithType: IEvents.BulkInsertEventsAsync
+  fullName: AeroDB.IEvents.BulkInsertEventsAsync
+- uid: System.Collections.Generic.IEnumerable{System.ValueTuple{System.String,System.Collections.Generic.IEnumerable{System.Object}}}
+  commentId: T:System.Collections.Generic.IEnumerable{System.ValueTuple{System.String,System.Collections.Generic.IEnumerable{System.Object}}}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<(string StreamId, IEnumerable<object> Events)>
+  nameWithType: IEnumerable<(string StreamId, IEnumerable<object> Events)>
+  fullName: System.Collections.Generic.IEnumerable<(string StreamId, System.Collections.Generic.IEnumerable<object> Events)>
+  nameWithType.vb: IEnumerable(Of (StreamId As String, Events As IEnumerable(Of Object)))
+  fullName.vb: System.Collections.Generic.IEnumerable(Of (StreamId As String, Events As System.Collections.Generic.IEnumerable(Of Object)))
+  name.vb: IEnumerable(Of (StreamId As String, Events As IEnumerable(Of Object)))
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: " "
+  - uid: System.ValueTuple{System.String,System.Collections.Generic.IEnumerable{System.Object}}.StreamId
+    name: StreamId
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.string,system.collections.generic.ienumerable-system.object--.streamid
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
+  - name: " "
+  - uid: System.ValueTuple{System.String,System.Collections.Generic.IEnumerable{System.Object}}.Events
+    name: Events
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.string,system.collections.generic.ienumerable-system.object--.events
+  - name: )
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: (
+  - uid: System.ValueTuple{System.String,System.Collections.Generic.IEnumerable{System.Object}}.StreamId
+    name: StreamId
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.string,system.collections.generic.ienumerable-system.object--.streamid
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.ValueTuple{System.String,System.Collections.Generic.IEnumerable{System.Object}}.Events
+    name: Events
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.string,system.collections.generic.ienumerable-system.object--.events
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  - name: )
+  - name: )
+- uid: System.Threading.Tasks.Task{System.Int32}
+  commentId: T:System.Threading.Tasks.Task{System.Int32}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<int>
+  nameWithType: Task<int>
+  fullName: System.Threading.Tasks.Task<int>
+  nameWithType.vb: Task(Of Integer)
+  fullName.vb: System.Threading.Tasks.Task(Of Integer)
+  name.vb: Task(Of Integer)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: AeroDB.IEvents.AggregateStreamToLastKnownAsync*
+  commentId: Overload:AeroDB.IEvents.AggregateStreamToLastKnownAsync
+  isExternal: true
+  href: AeroDB.IEvents.html#AeroDB_IEvents_AggregateStreamToLastKnownAsync__1_System_String_System_Threading_CancellationToken_
+  name: AggregateStreamToLastKnownAsync
+  nameWithType: IEvents.AggregateStreamToLastKnownAsync
+  fullName: AeroDB.IEvents.AggregateStreamToLastKnownAsync
+- uid: AeroDB.IEvents.CompactStreamAsync*
+  commentId: Overload:AeroDB.IEvents.CompactStreamAsync
+  isExternal: true
+  href: AeroDB.IEvents.html#AeroDB_IEvents_CompactStreamAsync__1_System_String_System_Action_AeroDB_CompactStreamOptions__System_Threading_CancellationToken_
+  name: CompactStreamAsync
+  nameWithType: IEvents.CompactStreamAsync
+  fullName: AeroDB.IEvents.CompactStreamAsync
+- uid: System.Action{AeroDB.CompactStreamOptions}
+  commentId: T:System.Action{AeroDB.CompactStreamOptions}
+  parent: System
+  definition: System.Action`1
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<CompactStreamOptions>
+  nameWithType: Action<CompactStreamOptions>
+  fullName: System.Action<AeroDB.CompactStreamOptions>
+  nameWithType.vb: Action(Of CompactStreamOptions)
+  fullName.vb: System.Action(Of AeroDB.CompactStreamOptions)
+  name.vb: Action(Of CompactStreamOptions)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: AeroDB.CompactStreamOptions
+    name: CompactStreamOptions
+    isExternal: true
+    href: AeroDB.CompactStreamOptions.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.CompactStreamOptions
+    name: CompactStreamOptions
+    isExternal: true
+    href: AeroDB.CompactStreamOptions.html
+  - name: )
+- uid: AeroDB.IEvents.FetchForExclusiveWriting*
+  commentId: Overload:AeroDB.IEvents.FetchForExclusiveWriting
+  isExternal: true
+  href: AeroDB.IEvents.html#AeroDB_IEvents_FetchForExclusiveWriting__1_System_String_System_Threading_CancellationToken_
+  name: FetchForExclusiveWriting
+  nameWithType: IEvents.FetchForExclusiveWriting
+  fullName: AeroDB.IEvents.FetchForExclusiveWriting
+- uid: AeroDB.IEvents.QueryRawEventDataOnly*
+  commentId: Overload:AeroDB.IEvents.QueryRawEventDataOnly
+  isExternal: true
+  href: AeroDB.IEvents.html#AeroDB_IEvents_QueryRawEventDataOnly__1
+  name: QueryRawEventDataOnly
+  nameWithType: IEvents.QueryRawEventDataOnly
+  fullName: AeroDB.IEvents.QueryRawEventDataOnly
+- uid: AeroDB.ISurrealDbQueryable{{T}}
+  commentId: T:AeroDB.ISurrealDbQueryable{``0}
+  parent: AeroDB
+  definition: AeroDB.ISurrealDbQueryable`1
+  href: AeroDB.ISurrealDbQueryable-1.html
+  name: ISurrealDbQueryable<T>
+  nameWithType: ISurrealDbQueryable<T>
+  fullName: AeroDB.ISurrealDbQueryable<T>
+  nameWithType.vb: ISurrealDbQueryable(Of T)
+  fullName.vb: AeroDB.ISurrealDbQueryable(Of T)
+  name.vb: ISurrealDbQueryable(Of T)
+  spec.csharp:
+  - uid: AeroDB.ISurrealDbQueryable`1
+    name: ISurrealDbQueryable
+    isExternal: true
+    href: AeroDB.ISurrealDbQueryable-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.ISurrealDbQueryable`1
+    name: ISurrealDbQueryable
+    isExternal: true
+    href: AeroDB.ISurrealDbQueryable-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.ISurrealDbQueryable`1
+  commentId: T:AeroDB.ISurrealDbQueryable`1
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.ISurrealDbQueryable-1.html
+  name: ISurrealDbQueryable<T>
+  nameWithType: ISurrealDbQueryable<T>
+  fullName: AeroDB.ISurrealDbQueryable<T>
+  nameWithType.vb: ISurrealDbQueryable(Of T)
+  fullName.vb: AeroDB.ISurrealDbQueryable(Of T)
+  name.vb: ISurrealDbQueryable(Of T)
+  spec.csharp:
+  - uid: AeroDB.ISurrealDbQueryable`1
+    name: ISurrealDbQueryable
+    isExternal: true
+    href: AeroDB.ISurrealDbQueryable-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.ISurrealDbQueryable`1
+    name: ISurrealDbQueryable
+    isExternal: true
+    href: AeroDB.ISurrealDbQueryable-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.IEvents.QueryAllRawEvents*
+  commentId: Overload:AeroDB.IEvents.QueryAllRawEvents
+  isExternal: true
+  href: AeroDB.IEvents.html#AeroDB_IEvents_QueryAllRawEvents
+  name: QueryAllRawEvents
+  nameWithType: IEvents.QueryAllRawEvents
+  fullName: AeroDB.IEvents.QueryAllRawEvents
+- uid: AeroDB.ISurrealDbQueryable{AeroDB.IEvent}
+  commentId: T:AeroDB.ISurrealDbQueryable{AeroDB.IEvent}
+  parent: AeroDB
+  definition: AeroDB.ISurrealDbQueryable`1
+  href: AeroDB.ISurrealDbQueryable-1.html
+  name: ISurrealDbQueryable<IEvent>
+  nameWithType: ISurrealDbQueryable<IEvent>
+  fullName: AeroDB.ISurrealDbQueryable<AeroDB.IEvent>
+  nameWithType.vb: ISurrealDbQueryable(Of IEvent)
+  fullName.vb: AeroDB.ISurrealDbQueryable(Of AeroDB.IEvent)
+  name.vb: ISurrealDbQueryable(Of IEvent)
+  spec.csharp:
+  - uid: AeroDB.ISurrealDbQueryable`1
+    name: ISurrealDbQueryable
+    isExternal: true
+    href: AeroDB.ISurrealDbQueryable-1.html
+  - name: <
+  - uid: AeroDB.IEvent
+    name: IEvent
+    isExternal: true
+    href: AeroDB.IEvent.html
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.ISurrealDbQueryable`1
+    name: ISurrealDbQueryable
+    isExternal: true
+    href: AeroDB.ISurrealDbQueryable-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.IEvent
+    name: IEvent
+    isExternal: true
+    href: AeroDB.IEvent.html
+  - name: )
+- uid: AeroDB.IEvents.BuildEvent*
+  commentId: Overload:AeroDB.IEvents.BuildEvent
+  isExternal: true
+  href: AeroDB.IEvents.html#AeroDB_IEvents_BuildEvent_System_Object_
+  name: BuildEvent
+  nameWithType: IEvents.BuildEvent
+  fullName: AeroDB.IEvents.BuildEvent
+- uid: AeroDB.IEvents.OverwriteEventAsync*
+  commentId: Overload:AeroDB.IEvents.OverwriteEventAsync
+  isExternal: true
+  href: AeroDB.IEvents.html#AeroDB_IEvents_OverwriteEventAsync_AeroDB_IEvent_System_Threading_CancellationToken_
+  name: OverwriteEventAsync
+  nameWithType: IEvents.OverwriteEventAsync
+  fullName: AeroDB.IEvents.OverwriteEventAsync
+- uid: AeroDB.IEvents.DeleteSingleEventAsync*
+  commentId: Overload:AeroDB.IEvents.DeleteSingleEventAsync
+  isExternal: true
+  href: AeroDB.IEvents.html#AeroDB_IEvents_DeleteSingleEventAsync_System_String_System_Int64_System_Threading_CancellationToken_
+  name: DeleteSingleEventAsync
+  nameWithType: IEvents.DeleteSingleEventAsync
+  fullName: AeroDB.IEvents.DeleteSingleEventAsync
+- uid: AeroDB.IEvents.EventsExistAsync*
+  commentId: Overload:AeroDB.IEvents.EventsExistAsync
+  isExternal: true
+  href: AeroDB.IEvents.html#AeroDB_IEvents_EventsExistAsync_AeroDB_EventTagQuery_System_Threading_CancellationToken_
+  name: EventsExistAsync
+  nameWithType: IEvents.EventsExistAsync
+  fullName: AeroDB.IEvents.EventsExistAsync
+- uid: AeroDB.EventTagQuery
+  commentId: T:AeroDB.EventTagQuery
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.EventTagQuery.html
+  name: EventTagQuery
+  nameWithType: EventTagQuery
+  fullName: AeroDB.EventTagQuery
+- uid: System.Threading.Tasks.Task{System.Boolean}
+  commentId: T:System.Threading.Tasks.Task{System.Boolean}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<bool>
+  nameWithType: Task<bool>
+  fullName: System.Threading.Tasks.Task<bool>
+  nameWithType.vb: Task(Of Boolean)
+  fullName.vb: System.Threading.Tasks.Task(Of Boolean)
+  name.vb: Task(Of Boolean)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )

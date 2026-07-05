@@ -1,0 +1,1008 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.DaemonHealthState
+  commentId: T:AeroDB.DaemonHealthState
+  id: DaemonHealthState
+  parent: AeroDB
+  children:
+  - AeroDB.DaemonHealthState.#ctor(System.Boolean,System.Nullable{System.DateTimeOffset},System.Nullable{System.DateTimeOffset},System.Int64,System.Int32,System.String)
+  - AeroDB.DaemonHealthState.Deconstruct(System.Boolean@,System.Nullable{System.DateTimeOffset}@,System.Nullable{System.DateTimeOffset}@,System.Int64@,System.Int32@,System.String@)
+  - AeroDB.DaemonHealthState.Equals(AeroDB.DaemonHealthState)
+  - AeroDB.DaemonHealthState.Equals(System.Object)
+  - AeroDB.DaemonHealthState.GetHashCode
+  - AeroDB.DaemonHealthState.HighWaterSequence
+  - AeroDB.DaemonHealthState.IsRunning
+  - AeroDB.DaemonHealthState.LagCount
+  - AeroDB.DaemonHealthState.LastError
+  - AeroDB.DaemonHealthState.LastException
+  - AeroDB.DaemonHealthState.LastSuccess
+  - AeroDB.DaemonHealthState.ToString
+  - AeroDB.DaemonHealthState.op_Equality(AeroDB.DaemonHealthState,AeroDB.DaemonHealthState)
+  - AeroDB.DaemonHealthState.op_Inequality(AeroDB.DaemonHealthState,AeroDB.DaemonHealthState)
+  langs:
+  - csharp
+  - vb
+  name: DaemonHealthState
+  nameWithType: DaemonHealthState
+  fullName: AeroDB.DaemonHealthState
+  type: Class
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/DaemonHealthState.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Health state snapshot of the <xref href="AeroDB.AsyncDaemon" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: 'public sealed record DaemonHealthState : IEquatable<DaemonHealthState>'
+    content.vb: Public NotInheritable Class DaemonHealthState Implements IEquatable(Of DaemonHealthState)
+  inheritance:
+  - System.Object
+  implements:
+  - System.IEquatable{AeroDB.DaemonHealthState}
+  inheritedMembers:
+  - System.Object.GetType
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+- uid: AeroDB.DaemonHealthState.#ctor(System.Boolean,System.Nullable{System.DateTimeOffset},System.Nullable{System.DateTimeOffset},System.Int64,System.Int32,System.String)
+  commentId: M:AeroDB.DaemonHealthState.#ctor(System.Boolean,System.Nullable{System.DateTimeOffset},System.Nullable{System.DateTimeOffset},System.Int64,System.Int32,System.String)
+  id: '#ctor(System.Boolean,System.Nullable{System.DateTimeOffset},System.Nullable{System.DateTimeOffset},System.Int64,System.Int32,System.String)'
+  parent: AeroDB.DaemonHealthState
+  langs:
+  - csharp
+  - vb
+  name: DaemonHealthState(bool, DateTimeOffset?, DateTimeOffset?, long, int, string?)
+  nameWithType: DaemonHealthState.DaemonHealthState(bool, DateTimeOffset?, DateTimeOffset?, long, int, string?)
+  fullName: AeroDB.DaemonHealthState.DaemonHealthState(bool, System.DateTimeOffset?, System.DateTimeOffset?, long, int, string?)
+  type: Constructor
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/DaemonHealthState.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Health state snapshot of the <xref href="AeroDB.AsyncDaemon" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: public DaemonHealthState(bool IsRunning, DateTimeOffset? LastSuccess, DateTimeOffset? LastError, long HighWaterSequence, int LagCount, string? LastException)
+    parameters:
+    - id: IsRunning
+      type: System.Boolean
+      description: Whether the daemon is currently running.
+    - id: LastSuccess
+      type: System.Nullable{System.DateTimeOffset}
+      description: Timestamp of the last successful poll cycle.
+    - id: LastError
+      type: System.Nullable{System.DateTimeOffset}
+      description: Timestamp of the last failed poll cycle.
+    - id: HighWaterSequence
+      type: System.Int64
+      description: The global sequence number of the latest processed event.
+    - id: LagCount
+      type: System.Int32
+      description: Number of unprocessed events behind the current sequence.
+    - id: LastException
+      type: System.String
+      description: The exception from the last failed cycle, if any.
+    content.vb: Public Sub New(IsRunning As Boolean, LastSuccess As DateTimeOffset?, LastError As DateTimeOffset?, HighWaterSequence As Long, LagCount As Integer, LastException As String)
+  overload: AeroDB.DaemonHealthState.#ctor*
+  nameWithType.vb: DaemonHealthState.New(Boolean, DateTimeOffset?, DateTimeOffset?, Long, Integer, String)
+  fullName.vb: AeroDB.DaemonHealthState.New(Boolean, System.DateTimeOffset?, System.DateTimeOffset?, Long, Integer, String)
+  name.vb: New(Boolean, DateTimeOffset?, DateTimeOffset?, Long, Integer, String)
+- uid: AeroDB.DaemonHealthState.ToString
+  commentId: M:AeroDB.DaemonHealthState.ToString
+  id: ToString
+  parent: AeroDB.DaemonHealthState
+  langs:
+  - csharp
+  - vb
+  name: ToString()
+  nameWithType: DaemonHealthState.ToString()
+  fullName: AeroDB.DaemonHealthState.ToString()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/DaemonHealthState.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  example: []
+  syntax:
+    content: public override string ToString()
+    return:
+      type: System.String
+    content.vb: Public Overrides Function ToString() As String
+  overridden: System.Object.ToString
+  overload: AeroDB.DaemonHealthState.ToString*
+- uid: AeroDB.DaemonHealthState.op_Inequality(AeroDB.DaemonHealthState,AeroDB.DaemonHealthState)
+  commentId: M:AeroDB.DaemonHealthState.op_Inequality(AeroDB.DaemonHealthState,AeroDB.DaemonHealthState)
+  id: op_Inequality(AeroDB.DaemonHealthState,AeroDB.DaemonHealthState)
+  parent: AeroDB.DaemonHealthState
+  langs:
+  - csharp
+  - vb
+  name: operator !=(DaemonHealthState?, DaemonHealthState?)
+  nameWithType: DaemonHealthState.operator !=(DaemonHealthState?, DaemonHealthState?)
+  fullName: AeroDB.DaemonHealthState.operator !=(AeroDB.DaemonHealthState?, AeroDB.DaemonHealthState?)
+  type: Operator
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/DaemonHealthState.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public static bool operator !=(DaemonHealthState? left, DaemonHealthState? right)
+    parameters:
+    - id: left
+      type: AeroDB.DaemonHealthState
+    - id: right
+      type: AeroDB.DaemonHealthState
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Operator <>(left As DaemonHealthState, right As DaemonHealthState) As Boolean
+  overload: AeroDB.DaemonHealthState.op_Inequality*
+  nameWithType.vb: DaemonHealthState.<>(DaemonHealthState, DaemonHealthState)
+  fullName.vb: AeroDB.DaemonHealthState.<>(AeroDB.DaemonHealthState, AeroDB.DaemonHealthState)
+  name.vb: <>(DaemonHealthState, DaemonHealthState)
+- uid: AeroDB.DaemonHealthState.op_Equality(AeroDB.DaemonHealthState,AeroDB.DaemonHealthState)
+  commentId: M:AeroDB.DaemonHealthState.op_Equality(AeroDB.DaemonHealthState,AeroDB.DaemonHealthState)
+  id: op_Equality(AeroDB.DaemonHealthState,AeroDB.DaemonHealthState)
+  parent: AeroDB.DaemonHealthState
+  langs:
+  - csharp
+  - vb
+  name: operator ==(DaemonHealthState?, DaemonHealthState?)
+  nameWithType: DaemonHealthState.operator ==(DaemonHealthState?, DaemonHealthState?)
+  fullName: AeroDB.DaemonHealthState.operator ==(AeroDB.DaemonHealthState?, AeroDB.DaemonHealthState?)
+  type: Operator
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/DaemonHealthState.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public static bool operator ==(DaemonHealthState? left, DaemonHealthState? right)
+    parameters:
+    - id: left
+      type: AeroDB.DaemonHealthState
+    - id: right
+      type: AeroDB.DaemonHealthState
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Operator =(left As DaemonHealthState, right As DaemonHealthState) As Boolean
+  overload: AeroDB.DaemonHealthState.op_Equality*
+  nameWithType.vb: DaemonHealthState.=(DaemonHealthState, DaemonHealthState)
+  fullName.vb: AeroDB.DaemonHealthState.=(AeroDB.DaemonHealthState, AeroDB.DaemonHealthState)
+  name.vb: =(DaemonHealthState, DaemonHealthState)
+- uid: AeroDB.DaemonHealthState.GetHashCode
+  commentId: M:AeroDB.DaemonHealthState.GetHashCode
+  id: GetHashCode
+  parent: AeroDB.DaemonHealthState
+  langs:
+  - csharp
+  - vb
+  name: GetHashCode()
+  nameWithType: DaemonHealthState.GetHashCode()
+  fullName: AeroDB.DaemonHealthState.GetHashCode()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/DaemonHealthState.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  example: []
+  syntax:
+    content: public override int GetHashCode()
+    return:
+      type: System.Int32
+    content.vb: Public Overrides Function GetHashCode() As Integer
+  overridden: System.Object.GetHashCode
+  overload: AeroDB.DaemonHealthState.GetHashCode*
+- uid: AeroDB.DaemonHealthState.Equals(System.Object)
+  commentId: M:AeroDB.DaemonHealthState.Equals(System.Object)
+  id: Equals(System.Object)
+  parent: AeroDB.DaemonHealthState
+  langs:
+  - csharp
+  - vb
+  name: Equals(object?)
+  nameWithType: DaemonHealthState.Equals(object?)
+  fullName: AeroDB.DaemonHealthState.Equals(object?)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/DaemonHealthState.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  example: []
+  syntax:
+    content: public override bool Equals(object? obj)
+    parameters:
+    - id: obj
+      type: System.Object
+    return:
+      type: System.Boolean
+    content.vb: Public Overrides Function Equals(obj As Object) As Boolean
+  overridden: System.Object.Equals(System.Object)
+  overload: AeroDB.DaemonHealthState.Equals*
+  nameWithType.vb: DaemonHealthState.Equals(Object)
+  fullName.vb: AeroDB.DaemonHealthState.Equals(Object)
+  name.vb: Equals(Object)
+- uid: AeroDB.DaemonHealthState.Equals(AeroDB.DaemonHealthState)
+  commentId: M:AeroDB.DaemonHealthState.Equals(AeroDB.DaemonHealthState)
+  id: Equals(AeroDB.DaemonHealthState)
+  parent: AeroDB.DaemonHealthState
+  langs:
+  - csharp
+  - vb
+  name: Equals(DaemonHealthState?)
+  nameWithType: DaemonHealthState.Equals(DaemonHealthState?)
+  fullName: AeroDB.DaemonHealthState.Equals(AeroDB.DaemonHealthState?)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/DaemonHealthState.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  example: []
+  syntax:
+    content: public bool Equals(DaemonHealthState? other)
+    parameters:
+    - id: other
+      type: AeroDB.DaemonHealthState
+    return:
+      type: System.Boolean
+    content.vb: Public Function Equals(other As DaemonHealthState) As Boolean
+  overload: AeroDB.DaemonHealthState.Equals*
+  implements:
+  - System.IEquatable{AeroDB.DaemonHealthState}.Equals(AeroDB.DaemonHealthState)
+  nameWithType.vb: DaemonHealthState.Equals(DaemonHealthState)
+  fullName.vb: AeroDB.DaemonHealthState.Equals(AeroDB.DaemonHealthState)
+  name.vb: Equals(DaemonHealthState)
+- uid: AeroDB.DaemonHealthState.Deconstruct(System.Boolean@,System.Nullable{System.DateTimeOffset}@,System.Nullable{System.DateTimeOffset}@,System.Int64@,System.Int32@,System.String@)
+  commentId: M:AeroDB.DaemonHealthState.Deconstruct(System.Boolean@,System.Nullable{System.DateTimeOffset}@,System.Nullable{System.DateTimeOffset}@,System.Int64@,System.Int32@,System.String@)
+  id: Deconstruct(System.Boolean@,System.Nullable{System.DateTimeOffset}@,System.Nullable{System.DateTimeOffset}@,System.Int64@,System.Int32@,System.String@)
+  parent: AeroDB.DaemonHealthState
+  langs:
+  - csharp
+  - vb
+  name: Deconstruct(out bool, out DateTimeOffset?, out DateTimeOffset?, out long, out int, out string?)
+  nameWithType: DaemonHealthState.Deconstruct(out bool, out DateTimeOffset?, out DateTimeOffset?, out long, out int, out string?)
+  fullName: AeroDB.DaemonHealthState.Deconstruct(out bool, out System.DateTimeOffset?, out System.DateTimeOffset?, out long, out int, out string?)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/DaemonHealthState.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public void Deconstruct(out bool IsRunning, out DateTimeOffset? LastSuccess, out DateTimeOffset? LastError, out long HighWaterSequence, out int LagCount, out string? LastException)
+    parameters:
+    - id: IsRunning
+      type: System.Boolean
+    - id: LastSuccess
+      type: System.Nullable{System.DateTimeOffset}
+    - id: LastError
+      type: System.Nullable{System.DateTimeOffset}
+    - id: HighWaterSequence
+      type: System.Int64
+    - id: LagCount
+      type: System.Int32
+    - id: LastException
+      type: System.String
+    content.vb: Public Sub Deconstruct(IsRunning As Boolean, LastSuccess As DateTimeOffset?, LastError As DateTimeOffset?, HighWaterSequence As Long, LagCount As Integer, LastException As String)
+  overload: AeroDB.DaemonHealthState.Deconstruct*
+  nameWithType.vb: DaemonHealthState.Deconstruct(Boolean, DateTimeOffset?, DateTimeOffset?, Long, Integer, String)
+  fullName.vb: AeroDB.DaemonHealthState.Deconstruct(Boolean, System.DateTimeOffset?, System.DateTimeOffset?, Long, Integer, String)
+  name.vb: Deconstruct(Boolean, DateTimeOffset?, DateTimeOffset?, Long, Integer, String)
+- uid: AeroDB.DaemonHealthState.IsRunning
+  commentId: P:AeroDB.DaemonHealthState.IsRunning
+  id: IsRunning
+  parent: AeroDB.DaemonHealthState
+  langs:
+  - csharp
+  - vb
+  name: IsRunning
+  nameWithType: DaemonHealthState.IsRunning
+  fullName: AeroDB.DaemonHealthState.IsRunning
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/DaemonHealthState.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Whether the daemon is currently running.
+  example: []
+  syntax:
+    content: public bool IsRunning { get; init; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property IsRunning As Boolean
+  overload: AeroDB.DaemonHealthState.IsRunning*
+- uid: AeroDB.DaemonHealthState.LastSuccess
+  commentId: P:AeroDB.DaemonHealthState.LastSuccess
+  id: LastSuccess
+  parent: AeroDB.DaemonHealthState
+  langs:
+  - csharp
+  - vb
+  name: LastSuccess
+  nameWithType: DaemonHealthState.LastSuccess
+  fullName: AeroDB.DaemonHealthState.LastSuccess
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/DaemonHealthState.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Timestamp of the last successful poll cycle.
+  example: []
+  syntax:
+    content: public DateTimeOffset? LastSuccess { get; init; }
+    parameters: []
+    return:
+      type: System.Nullable{System.DateTimeOffset}
+    content.vb: Public Property LastSuccess As DateTimeOffset?
+  overload: AeroDB.DaemonHealthState.LastSuccess*
+- uid: AeroDB.DaemonHealthState.LastError
+  commentId: P:AeroDB.DaemonHealthState.LastError
+  id: LastError
+  parent: AeroDB.DaemonHealthState
+  langs:
+  - csharp
+  - vb
+  name: LastError
+  nameWithType: DaemonHealthState.LastError
+  fullName: AeroDB.DaemonHealthState.LastError
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/DaemonHealthState.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Timestamp of the last failed poll cycle.
+  example: []
+  syntax:
+    content: public DateTimeOffset? LastError { get; init; }
+    parameters: []
+    return:
+      type: System.Nullable{System.DateTimeOffset}
+    content.vb: Public Property LastError As DateTimeOffset?
+  overload: AeroDB.DaemonHealthState.LastError*
+- uid: AeroDB.DaemonHealthState.HighWaterSequence
+  commentId: P:AeroDB.DaemonHealthState.HighWaterSequence
+  id: HighWaterSequence
+  parent: AeroDB.DaemonHealthState
+  langs:
+  - csharp
+  - vb
+  name: HighWaterSequence
+  nameWithType: DaemonHealthState.HighWaterSequence
+  fullName: AeroDB.DaemonHealthState.HighWaterSequence
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/DaemonHealthState.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: The global sequence number of the latest processed event.
+  example: []
+  syntax:
+    content: public long HighWaterSequence { get; init; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: Public Property HighWaterSequence As Long
+  overload: AeroDB.DaemonHealthState.HighWaterSequence*
+- uid: AeroDB.DaemonHealthState.LagCount
+  commentId: P:AeroDB.DaemonHealthState.LagCount
+  id: LagCount
+  parent: AeroDB.DaemonHealthState
+  langs:
+  - csharp
+  - vb
+  name: LagCount
+  nameWithType: DaemonHealthState.LagCount
+  fullName: AeroDB.DaemonHealthState.LagCount
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/DaemonHealthState.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Number of unprocessed events behind the current sequence.
+  example: []
+  syntax:
+    content: public int LagCount { get; init; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property LagCount As Integer
+  overload: AeroDB.DaemonHealthState.LagCount*
+- uid: AeroDB.DaemonHealthState.LastException
+  commentId: P:AeroDB.DaemonHealthState.LastException
+  id: LastException
+  parent: AeroDB.DaemonHealthState
+  langs:
+  - csharp
+  - vb
+  name: LastException
+  nameWithType: DaemonHealthState.LastException
+  fullName: AeroDB.DaemonHealthState.LastException
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/DaemonHealthState.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: The exception from the last failed cycle, if any.
+  example: []
+  syntax:
+    content: public string? LastException { get; init; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property LastException As String
+  overload: AeroDB.DaemonHealthState.LastException*
+references:
+- uid: AeroDB.AsyncDaemon
+  commentId: T:AeroDB.AsyncDaemon
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.AsyncDaemon.html
+  name: AsyncDaemon
+  nameWithType: AsyncDaemon
+  fullName: AeroDB.AsyncDaemon
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.IEquatable{AeroDB.DaemonHealthState}
+  commentId: T:System.IEquatable{AeroDB.DaemonHealthState}
+  parent: System
+  definition: System.IEquatable`1
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<DaemonHealthState>
+  nameWithType: IEquatable<DaemonHealthState>
+  fullName: System.IEquatable<AeroDB.DaemonHealthState>
+  nameWithType.vb: IEquatable(Of DaemonHealthState)
+  fullName.vb: System.IEquatable(Of AeroDB.DaemonHealthState)
+  name.vb: IEquatable(Of DaemonHealthState)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - uid: AeroDB.DaemonHealthState
+    name: DaemonHealthState
+    isExternal: true
+    href: AeroDB.DaemonHealthState.html
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.DaemonHealthState
+    name: DaemonHealthState
+    isExternal: true
+    href: AeroDB.DaemonHealthState.html
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.IEquatable`1
+  commentId: T:System.IEquatable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<T>
+  nameWithType: IEquatable<T>
+  fullName: System.IEquatable<T>
+  nameWithType.vb: IEquatable(Of T)
+  fullName.vb: System.IEquatable(Of T)
+  name.vb: IEquatable(Of T)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.DaemonHealthState.#ctor*
+  commentId: Overload:AeroDB.DaemonHealthState.#ctor
+  isExternal: true
+  href: AeroDB.DaemonHealthState.html#AeroDB_DaemonHealthState__ctor_System_Boolean_System_Nullable_System_DateTimeOffset__System_Nullable_System_DateTimeOffset__System_Int64_System_Int32_System_String_
+  name: DaemonHealthState
+  nameWithType: DaemonHealthState.DaemonHealthState
+  fullName: AeroDB.DaemonHealthState.DaemonHealthState
+  nameWithType.vb: DaemonHealthState.New
+  fullName.vb: AeroDB.DaemonHealthState.New
+  name.vb: New
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: System.Nullable{System.DateTimeOffset}
+  commentId: T:System.Nullable{System.DateTimeOffset}
+  parent: System
+  definition: System.Nullable`1
+  href: https://learn.microsoft.com/dotnet/api/system.datetimeoffset
+  name: DateTimeOffset?
+  nameWithType: DateTimeOffset?
+  fullName: System.DateTimeOffset?
+  spec.csharp:
+  - uid: System.DateTimeOffset
+    name: DateTimeOffset
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.datetimeoffset
+  - name: '?'
+  spec.vb:
+  - uid: System.DateTimeOffset
+    name: DateTimeOffset
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.datetimeoffset
+  - name: '?'
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: AeroDB.DaemonHealthState.ToString*
+  commentId: Overload:AeroDB.DaemonHealthState.ToString
+  isExternal: true
+  href: AeroDB.DaemonHealthState.html#AeroDB_DaemonHealthState_ToString
+  name: ToString
+  nameWithType: DaemonHealthState.ToString
+  fullName: AeroDB.DaemonHealthState.ToString
+- uid: AeroDB.DaemonHealthState.op_Inequality*
+  commentId: Overload:AeroDB.DaemonHealthState.op_Inequality
+  isExternal: true
+  href: AeroDB.DaemonHealthState.html#AeroDB_DaemonHealthState_op_Inequality_AeroDB_DaemonHealthState_AeroDB_DaemonHealthState_
+  name: operator !=
+  nameWithType: DaemonHealthState.operator !=
+  fullName: AeroDB.DaemonHealthState.operator !=
+  nameWithType.vb: DaemonHealthState.<>
+  fullName.vb: AeroDB.DaemonHealthState.<>
+  name.vb: <>
+  spec.csharp:
+  - name: operator
+  - name: " "
+  - uid: AeroDB.DaemonHealthState.op_Inequality*
+    name: '!='
+    isExternal: true
+    href: AeroDB.DaemonHealthState.html#AeroDB_DaemonHealthState_op_Inequality_AeroDB_DaemonHealthState_AeroDB_DaemonHealthState_
+- uid: AeroDB.DaemonHealthState
+  commentId: T:AeroDB.DaemonHealthState
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.DaemonHealthState.html
+  name: DaemonHealthState
+  nameWithType: DaemonHealthState
+  fullName: AeroDB.DaemonHealthState
+- uid: AeroDB.DaemonHealthState.op_Equality*
+  commentId: Overload:AeroDB.DaemonHealthState.op_Equality
+  isExternal: true
+  href: AeroDB.DaemonHealthState.html#AeroDB_DaemonHealthState_op_Equality_AeroDB_DaemonHealthState_AeroDB_DaemonHealthState_
+  name: operator ==
+  nameWithType: DaemonHealthState.operator ==
+  fullName: AeroDB.DaemonHealthState.operator ==
+  nameWithType.vb: DaemonHealthState.=
+  fullName.vb: AeroDB.DaemonHealthState.=
+  name.vb: =
+  spec.csharp:
+  - name: operator
+  - name: " "
+  - uid: AeroDB.DaemonHealthState.op_Equality*
+    name: ==
+    isExternal: true
+    href: AeroDB.DaemonHealthState.html#AeroDB_DaemonHealthState_op_Equality_AeroDB_DaemonHealthState_AeroDB_DaemonHealthState_
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: AeroDB.DaemonHealthState.GetHashCode*
+  commentId: Overload:AeroDB.DaemonHealthState.GetHashCode
+  isExternal: true
+  href: AeroDB.DaemonHealthState.html#AeroDB_DaemonHealthState_GetHashCode
+  name: GetHashCode
+  nameWithType: DaemonHealthState.GetHashCode
+  fullName: AeroDB.DaemonHealthState.GetHashCode
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: AeroDB.DaemonHealthState.Equals*
+  commentId: Overload:AeroDB.DaemonHealthState.Equals
+  isExternal: true
+  href: AeroDB.DaemonHealthState.html#AeroDB_DaemonHealthState_Equals_System_Object_
+  name: Equals
+  nameWithType: DaemonHealthState.Equals
+  fullName: AeroDB.DaemonHealthState.Equals
+- uid: System.IEquatable{AeroDB.DaemonHealthState}.Equals(AeroDB.DaemonHealthState)
+  commentId: M:System.IEquatable{AeroDB.DaemonHealthState}.Equals(AeroDB.DaemonHealthState)
+  parent: System.IEquatable{AeroDB.DaemonHealthState}
+  definition: System.IEquatable`1.Equals(`0)
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1.equals
+  name: Equals(DaemonHealthState)
+  nameWithType: IEquatable<DaemonHealthState>.Equals(DaemonHealthState)
+  fullName: System.IEquatable<AeroDB.DaemonHealthState>.Equals(AeroDB.DaemonHealthState)
+  nameWithType.vb: IEquatable(Of DaemonHealthState).Equals(DaemonHealthState)
+  fullName.vb: System.IEquatable(Of AeroDB.DaemonHealthState).Equals(AeroDB.DaemonHealthState)
+  spec.csharp:
+  - uid: System.IEquatable{AeroDB.DaemonHealthState}.Equals(AeroDB.DaemonHealthState)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1.equals
+  - name: (
+  - uid: AeroDB.DaemonHealthState
+    name: DaemonHealthState
+    isExternal: true
+    href: AeroDB.DaemonHealthState.html
+  - name: )
+  spec.vb:
+  - uid: System.IEquatable{AeroDB.DaemonHealthState}.Equals(AeroDB.DaemonHealthState)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1.equals
+  - name: (
+  - uid: AeroDB.DaemonHealthState
+    name: DaemonHealthState
+    isExternal: true
+    href: AeroDB.DaemonHealthState.html
+  - name: )
+- uid: System.IEquatable`1.Equals(`0)
+  commentId: M:System.IEquatable`1.Equals(`0)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1.equals
+  name: Equals(T)
+  nameWithType: IEquatable<T>.Equals(T)
+  fullName: System.IEquatable<T>.Equals(T)
+  nameWithType.vb: IEquatable(Of T).Equals(T)
+  fullName.vb: System.IEquatable(Of T).Equals(T)
+  spec.csharp:
+  - uid: System.IEquatable`1.Equals(`0)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1.equals
+  - name: (
+  - name: T
+  - name: )
+  spec.vb:
+  - uid: System.IEquatable`1.Equals(`0)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1.equals
+  - name: (
+  - name: T
+  - name: )
+- uid: AeroDB.DaemonHealthState.Deconstruct*
+  commentId: Overload:AeroDB.DaemonHealthState.Deconstruct
+  isExternal: true
+  href: AeroDB.DaemonHealthState.html#AeroDB_DaemonHealthState_Deconstruct_System_Boolean__System_Nullable_System_DateTimeOffset___System_Nullable_System_DateTimeOffset___System_Int64__System_Int32__System_String__
+  name: Deconstruct
+  nameWithType: DaemonHealthState.Deconstruct
+  fullName: AeroDB.DaemonHealthState.Deconstruct
+- uid: AeroDB.DaemonHealthState.IsRunning*
+  commentId: Overload:AeroDB.DaemonHealthState.IsRunning
+  isExternal: true
+  href: AeroDB.DaemonHealthState.html#AeroDB_DaemonHealthState_IsRunning
+  name: IsRunning
+  nameWithType: DaemonHealthState.IsRunning
+  fullName: AeroDB.DaemonHealthState.IsRunning
+- uid: AeroDB.DaemonHealthState.LastSuccess*
+  commentId: Overload:AeroDB.DaemonHealthState.LastSuccess
+  isExternal: true
+  href: AeroDB.DaemonHealthState.html#AeroDB_DaemonHealthState_LastSuccess
+  name: LastSuccess
+  nameWithType: DaemonHealthState.LastSuccess
+  fullName: AeroDB.DaemonHealthState.LastSuccess
+- uid: AeroDB.DaemonHealthState.LastError*
+  commentId: Overload:AeroDB.DaemonHealthState.LastError
+  isExternal: true
+  href: AeroDB.DaemonHealthState.html#AeroDB_DaemonHealthState_LastError
+  name: LastError
+  nameWithType: DaemonHealthState.LastError
+  fullName: AeroDB.DaemonHealthState.LastError
+- uid: AeroDB.DaemonHealthState.HighWaterSequence*
+  commentId: Overload:AeroDB.DaemonHealthState.HighWaterSequence
+  isExternal: true
+  href: AeroDB.DaemonHealthState.html#AeroDB_DaemonHealthState_HighWaterSequence
+  name: HighWaterSequence
+  nameWithType: DaemonHealthState.HighWaterSequence
+  fullName: AeroDB.DaemonHealthState.HighWaterSequence
+- uid: AeroDB.DaemonHealthState.LagCount*
+  commentId: Overload:AeroDB.DaemonHealthState.LagCount
+  isExternal: true
+  href: AeroDB.DaemonHealthState.html#AeroDB_DaemonHealthState_LagCount
+  name: LagCount
+  nameWithType: DaemonHealthState.LagCount
+  fullName: AeroDB.DaemonHealthState.LagCount
+- uid: AeroDB.DaemonHealthState.LastException*
+  commentId: Overload:AeroDB.DaemonHealthState.LastException
+  isExternal: true
+  href: AeroDB.DaemonHealthState.html#AeroDB_DaemonHealthState_LastException
+  name: LastException
+  nameWithType: DaemonHealthState.LastException
+  fullName: AeroDB.DaemonHealthState.LastException

@@ -1,0 +1,87 @@
+{
+  "$schema": "https://dotnet.github.io/docfx/schemas/docfx.schema.json",
+  "metadata": [
+    {
+      "src": [
+        {
+          "files": [
+            "AeroDB.dll",
+            "AeroDB.AspNetIdentity.dll",
+            "AeroDB.EntityFrameworkCore.dll",
+            "AeroDB.ML.dll",
+            "AeroDB.Reactive.dll",
+            "AeroDB.Snowflake.dll",
+            "AeroDB.WolverineFx.dll"
+          ],
+          "src": "../src/AeroDB/bin/Release/net10.0"
+        },
+        {
+          "files": [
+            "AeroDB.AspNetIdentity.dll"
+          ],
+          "src": "../src/AeroDB.AspNetIdentity/bin/Release/net10.0"
+        },
+        {
+          "files": [
+            "AeroDB.EntityFrameworkCore.dll"
+          ],
+          "src": "../src/AeroDB.EntityFrameworkCore/bin/Release/net10.0"
+        },
+        {
+          "files": [
+            "AeroDB.ML.dll"
+          ],
+          "src": "../src/AeroDB.ML/bin/Release/net10.0"
+        },
+        {
+          "files": [
+            "AeroDB.Reactive.dll"
+          ],
+          "src": "../src/AeroDB.Reactive/bin/Release/net10.0"
+        },
+        {
+          "files": [
+            "AeroDB.Snowflake.dll"
+          ],
+          "src": "../src/AeroDB.Snowflake/bin/Release/net10.0"
+        },
+        {
+          "files": [
+            "AeroDB.WolverineFx.dll"
+          ],
+          "src": "../src/AeroDB.WolverineFx/bin/Release/net10.0"
+        }
+      ],
+      "dest": "api",
+      "disableGitFeatures": false,
+      "properties": {
+        "TargetFramework": "net10.0"
+      }
+    }
+  ],
+  "build": {
+    "content": [
+      {
+        "files": [
+          "api/**.yml",
+          "api/index.md",
+          "index.md",
+          "toc.yml"
+        ]
+      }
+    ],
+    "resource": [
+      {
+        "files": [
+          "images/**"
+        ]
+      }
+    ],
+    "dest": "../docs/src/content/api",
+    "globalMetadata": {
+      "_appTitle": "AeroDB API Reference",
+      "_appFooter": "AeroDB Documentation",
+      "_appName": "AeroDB"
+    }
+  }
+}

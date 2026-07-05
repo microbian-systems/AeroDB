@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Class AeroDBEndpoint | AeroDB API Reference </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="Class AeroDBEndpoint | AeroDB API Reference ">
+    
+    <meta name="description" content="AeroDB endpoint backed by SurrealDB message storage. Creates  and  for message processing.">
+      <link rel="shortcut icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../styles/docfx.css">
+      <link rel="stylesheet" href="../styles/main.css">
+      <meta property="docfx:navrel" content="../toc.html">
+      <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="AeroDB">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="AeroDB.WolverineFx.AeroDBEndpoint">
+
+
+
+  <h1 id="AeroDB_WolverineFx_AeroDBEndpoint" data-uid="AeroDB.WolverineFx.AeroDBEndpoint" class="text-break">Class AeroDBEndpoint</h1>
+  <div class="markdown level0 summary"><p>AeroDB endpoint backed by SurrealDB message storage.
+Creates <a class="xref" href="AeroDB.WolverineFx.AeroDBQueueListener.html">AeroDBQueueListener</a> and <a class="xref" href="AeroDB.WolverineFx.AeroDBQueueSender.html">AeroDBQueueSender</a>
+for message processing.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+    <div class="level1"><span class="xref">Endpoint</span></div>
+    <div class="level2"><span class="xref">AeroDBEndpoint</span></div>
+  </div>
+  <div class="implements">
+    <h5>Implements</h5>
+    <div><span class="xref">ICircuitParameters</span></div>
+    <div><span class="xref">IDescribesProperties</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">Endpoint.DescribeProperties()</span>
+    </div>
+    <div>
+      <span class="xref">Endpoint.Compile(IWolverineRuntime)</span>
+    </div>
+    <div>
+      <span class="xref">Endpoint.SupportsMode(EndpointMode)</span>
+    </div>
+    <div>
+      <span class="xref">Endpoint.AutoStartSendingAgent()</span>
+    </div>
+    <div>
+      <span class="xref">Endpoint.RegisterSerializer(IMessageSerializer)</span>
+    </div>
+    <div>
+      <span class="xref">Endpoint.ShouldEnforceBackPressure()</span>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger">Endpoint.InitializeAsync(ILogger)</a>
+    </div>
+    <div>
+      <span class="xref">Endpoint.TryBuildDeadLetterSender(IWolverineRuntime, out ISender)</span>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.text.json.jsonserializeroptions">Endpoint.BuildCloudEventsMapper(IWolverineRuntime, JsonSerializerOptions)</a>
+    </div>
+    <div>
+      <span class="xref">Endpoint.BrokerRole</span>
+    </div>
+    <div>
+      <span class="xref">Endpoint.MaxDegreeOfParallelism</span>
+    </div>
+    <div>
+      <span class="xref">Endpoint.GroupShardingSlotNumber</span>
+    </div>
+    <div>
+      <span class="xref">Endpoint.StickyHandlers</span>
+    </div>
+    <div>
+      <span class="xref">Endpoint.TenancyBehavior</span>
+    </div>
+    <div>
+      <span class="xref">Endpoint.ListenerScope</span>
+    </div>
+    <div>
+      <span class="xref">Endpoint.TelemetryEnabled</span>
+    </div>
+    <div>
+      <span class="xref">Endpoint.ProcessInlineWhileDraining</span>
+    </div>
+    <div>
+      <span class="xref">Endpoint.Role</span>
+    </div>
+    <div>
+      <span class="xref">Endpoint.BufferingLimits</span>
+    </div>
+    <div>
+      <span class="xref">Endpoint.CircuitBreakerOptions</span>
+    </div>
+    <div>
+      <span class="xref">Endpoint.Subscriptions</span>
+    </div>
+    <div>
+      <span class="xref">Endpoint.MessageBatchSize</span>
+    </div>
+    <div>
+      <span class="xref">Endpoint.MessageBatchMaxDegreeOfParallelism</span>
+    </div>
+    <div>
+      <span class="xref">Endpoint.MessageBatchTimeout</span>
+    </div>
+    <div>
+      <span class="xref">Endpoint.Mode</span>
+    </div>
+    <div>
+      <span class="xref">Endpoint.RoutingType</span>
+    </div>
+    <div>
+      <span class="xref">Endpoint.DefaultSerializer</span>
+    </div>
+    <div>
+      <span class="xref">Endpoint.EndpointName</span>
+    </div>
+    <div>
+      <span class="xref">Endpoint.Uri</span>
+    </div>
+    <div>
+      <span class="xref">Endpoint.IsListener</span>
+    </div>
+    <div>
+      <span class="xref">Endpoint.IsUsedForReplies</span>
+    </div>
+    <div>
+      <span class="xref">Endpoint.OutgoingRules</span>
+    </div>
+    <div>
+      <span class="xref">Endpoint.IncomingRules</span>
+    </div>
+    <div>
+      <span class="xref">Endpoint.TenantId</span>
+    </div>
+    <div>
+      <span class="xref">Endpoint.MessageType</span>
+    </div>
+    <div>
+      <span class="xref">Endpoint.ListenerCount</span>
+    </div>
+    <div>
+      <span class="xref">Endpoint.PingIntervalForCircuitResume</span>
+    </div>
+    <div>
+      <span class="xref">Endpoint.FailuresBeforeCircuitBreaks</span>
+    </div>
+    <div>
+      <span class="xref">Endpoint.MaximumEnvelopeRetryStorage</span>
+    </div>
+    <div>
+      <span class="xref">Endpoint.SendingFailure</span>
+    </div>
+    <div>
+      <span class="xref">Endpoint.DeadLetterStorage</span>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="AeroDB.html">AeroDB</a>.<a class="xref" href="AeroDB.WolverineFx.html">WolverineFx</a></h6>
+  <h6><strong>Assembly</strong>: AeroDB.WolverineFx.dll</h6>
+  <h5 id="AeroDB_WolverineFx_AeroDBEndpoint_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public sealed class AeroDBEndpoint : Endpoint, ICircuitParameters, IDescribesProperties</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+</h3>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBEndpoint.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBEndpoint__ctor_" data-uid="AeroDB.WolverineFx.AeroDBEndpoint.#ctor*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBEndpoint__ctor_System_Uri_" data-uid="AeroDB.WolverineFx.AeroDBEndpoint.#ctor(System.Uri)">AeroDBEndpoint(Uri)</h4>
+  <div class="markdown level1 summary"><p>Configure the endpoint with the given URI.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public AeroDBEndpoint(Uri uri)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Uri</span></td>
+        <td><span class="parametername">uri</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+</h3>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBEndpoint.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBEndpoint_BuildListenerAsync_" data-uid="AeroDB.WolverineFx.AeroDBEndpoint.BuildListenerAsync*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBEndpoint_BuildListenerAsync_Wolverine_Runtime_IWolverineRuntime_Wolverine_Transports_IReceiver_" data-uid="AeroDB.WolverineFx.AeroDBEndpoint.BuildListenerAsync(Wolverine.Runtime.IWolverineRuntime,Wolverine.Transports.IReceiver)">BuildListenerAsync(IWolverineRuntime, IReceiver)</h4>
+  <div class="markdown level1 summary"><p>Create a listener for this endpoint.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override ValueTask&lt;IListener&gt; BuildListenerAsync(IWolverineRuntime runtime, IReceiver receiver)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IWolverineRuntime</span></td>
+        <td><span class="parametername">runtime</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">IReceiver</span></td>
+        <td><span class="parametername">receiver</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask-1">ValueTask</a>&lt;<span class="xref">IListener</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">Wolverine.Configuration.Endpoint.BuildListenerAsync(Wolverine.Runtime.IWolverineRuntime, Wolverine.Transports.IReceiver)</span></div>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBEndpoint.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBEndpoint_CreateSender_" data-uid="AeroDB.WolverineFx.AeroDBEndpoint.CreateSender*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBEndpoint_CreateSender_Wolverine_Runtime_IWolverineRuntime_" data-uid="AeroDB.WolverineFx.AeroDBEndpoint.CreateSender(Wolverine.Runtime.IWolverineRuntime)">CreateSender(IWolverineRuntime)</h4>
+  <div class="markdown level1 summary"><p>Create a sender for this endpoint.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override ISender CreateSender(IWolverineRuntime runtime)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IWolverineRuntime</span></td>
+        <td><span class="parametername">runtime</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ISender</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">Wolverine.Configuration.Endpoint.CreateSender(Wolverine.Runtime.IWolverineRuntime)</span></div>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBEndpoint.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBEndpoint_supportsMode_" data-uid="AeroDB.WolverineFx.AeroDBEndpoint.supportsMode*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBEndpoint_supportsMode_Wolverine_Configuration_EndpointMode_" data-uid="AeroDB.WolverineFx.AeroDBEndpoint.supportsMode(Wolverine.Configuration.EndpointMode)">supportsMode(EndpointMode)</h4>
+  <div class="markdown level1 summary"><p>Supports both Durable and Buffered modes.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override bool supportsMode(EndpointMode mode)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">EndpointMode</span></td>
+        <td><span class="parametername">mode</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">Wolverine.Configuration.Endpoint.supportsMode(Wolverine.Configuration.EndpointMode)</span></div>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <span class="xref">Wolverine.Configuration.ICircuitParameters</span>
+  </div>
+  <div>
+      <span class="xref">JasperFx.CommandLine.Descriptions.IDescribesProperties</span>
+  </div>
+
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBEndpoint.cs" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In this article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      AeroDB Documentation
+      
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.min.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

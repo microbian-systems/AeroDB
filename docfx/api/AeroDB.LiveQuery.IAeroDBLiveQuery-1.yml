@@ -1,0 +1,684 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.LiveQuery.IAeroDBLiveQuery`1
+  commentId: T:AeroDB.LiveQuery.IAeroDBLiveQuery`1
+  id: IAeroDBLiveQuery`1
+  parent: AeroDB.LiveQuery
+  children:
+  - AeroDB.LiveQuery.IAeroDBLiveQuery`1.Changes(System.Threading.CancellationToken)
+  - AeroDB.LiveQuery.IAeroDBLiveQuery`1.GetCreatedRecords(System.Threading.CancellationToken)
+  - AeroDB.LiveQuery.IAeroDBLiveQuery`1.GetDeletedRecords(System.Threading.CancellationToken)
+  - AeroDB.LiveQuery.IAeroDBLiveQuery`1.GetResults(System.Threading.CancellationToken)
+  - AeroDB.LiveQuery.IAeroDBLiveQuery`1.GetUpdatedRecords(System.Threading.CancellationToken)
+  - AeroDB.LiveQuery.IAeroDBLiveQuery`1.Reader
+  - AeroDB.LiveQuery.IAeroDBLiveQuery`1.StopAsync(System.Threading.CancellationToken)
+  langs:
+  - csharp
+  - vb
+  name: IAeroDBLiveQuery<T>
+  nameWithType: IAeroDBLiveQuery<T>
+  fullName: AeroDB.LiveQuery.IAeroDBLiveQuery<T>
+  type: Interface
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/LiveQuery/IAeroDBLiveQuery.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB.LiveQuery
+  syntax:
+    content: 'public interface IAeroDBLiveQuery<T> : IAsyncDisposable'
+    typeParameters:
+    - id: T
+    content.vb: Public Interface IAeroDBLiveQuery(Of T) Inherits IAsyncDisposable
+  inheritedMembers:
+  - System.IAsyncDisposable.DisposeAsync
+  nameWithType.vb: IAeroDBLiveQuery(Of T)
+  fullName.vb: AeroDB.LiveQuery.IAeroDBLiveQuery(Of T)
+  name.vb: IAeroDBLiveQuery(Of T)
+- uid: AeroDB.LiveQuery.IAeroDBLiveQuery`1.Changes(System.Threading.CancellationToken)
+  commentId: M:AeroDB.LiveQuery.IAeroDBLiveQuery`1.Changes(System.Threading.CancellationToken)
+  id: Changes(System.Threading.CancellationToken)
+  parent: AeroDB.LiveQuery.IAeroDBLiveQuery`1
+  langs:
+  - csharp
+  - vb
+  name: Changes(CancellationToken)
+  nameWithType: IAeroDBLiveQuery<T>.Changes(CancellationToken)
+  fullName: AeroDB.LiveQuery.IAeroDBLiveQuery<T>.Changes(System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/LiveQuery/IAeroDBLiveQuery.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB.LiveQuery
+  syntax:
+    content: IAsyncEnumerable<AeroDBLiveChange<T>> Changes(CancellationToken ct = default)
+    parameters:
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Collections.Generic.IAsyncEnumerable{AeroDB.LiveQuery.AeroDBLiveChange{{T}}}
+    content.vb: Function Changes(ct As CancellationToken = Nothing) As IAsyncEnumerable(Of AeroDBLiveChange(Of T))
+  overload: AeroDB.LiveQuery.IAeroDBLiveQuery`1.Changes*
+  nameWithType.vb: IAeroDBLiveQuery(Of T).Changes(CancellationToken)
+  fullName.vb: AeroDB.LiveQuery.IAeroDBLiveQuery(Of T).Changes(System.Threading.CancellationToken)
+- uid: AeroDB.LiveQuery.IAeroDBLiveQuery`1.GetResults(System.Threading.CancellationToken)
+  commentId: M:AeroDB.LiveQuery.IAeroDBLiveQuery`1.GetResults(System.Threading.CancellationToken)
+  id: GetResults(System.Threading.CancellationToken)
+  parent: AeroDB.LiveQuery.IAeroDBLiveQuery`1
+  langs:
+  - csharp
+  - vb
+  name: GetResults(CancellationToken)
+  nameWithType: IAeroDBLiveQuery<T>.GetResults(CancellationToken)
+  fullName: AeroDB.LiveQuery.IAeroDBLiveQuery<T>.GetResults(System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/LiveQuery/IAeroDBLiveQuery.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB.LiveQuery
+  summary: All create, update, and delete results — excludes Open and Close events.
+  example: []
+  syntax:
+    content: IAsyncEnumerable<AeroDBLiveChange<T>> GetResults(CancellationToken ct = default)
+    parameters:
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Collections.Generic.IAsyncEnumerable{AeroDB.LiveQuery.AeroDBLiveChange{{T}}}
+    content.vb: Function GetResults(ct As CancellationToken = Nothing) As IAsyncEnumerable(Of AeroDBLiveChange(Of T))
+  overload: AeroDB.LiveQuery.IAeroDBLiveQuery`1.GetResults*
+  nameWithType.vb: IAeroDBLiveQuery(Of T).GetResults(CancellationToken)
+  fullName.vb: AeroDB.LiveQuery.IAeroDBLiveQuery(Of T).GetResults(System.Threading.CancellationToken)
+- uid: AeroDB.LiveQuery.IAeroDBLiveQuery`1.GetCreatedRecords(System.Threading.CancellationToken)
+  commentId: M:AeroDB.LiveQuery.IAeroDBLiveQuery`1.GetCreatedRecords(System.Threading.CancellationToken)
+  id: GetCreatedRecords(System.Threading.CancellationToken)
+  parent: AeroDB.LiveQuery.IAeroDBLiveQuery`1
+  langs:
+  - csharp
+  - vb
+  name: GetCreatedRecords(CancellationToken)
+  nameWithType: IAeroDBLiveQuery<T>.GetCreatedRecords(CancellationToken)
+  fullName: AeroDB.LiveQuery.IAeroDBLiveQuery<T>.GetCreatedRecords(System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/LiveQuery/IAeroDBLiveQuery.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB.LiveQuery
+  summary: Only created records (documents only, not the change wrapper).
+  example: []
+  syntax:
+    content: IAsyncEnumerable<T> GetCreatedRecords(CancellationToken ct = default)
+    parameters:
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Collections.Generic.IAsyncEnumerable{{T}}
+    content.vb: Function GetCreatedRecords(ct As CancellationToken = Nothing) As IAsyncEnumerable(Of T)
+  overload: AeroDB.LiveQuery.IAeroDBLiveQuery`1.GetCreatedRecords*
+  nameWithType.vb: IAeroDBLiveQuery(Of T).GetCreatedRecords(CancellationToken)
+  fullName.vb: AeroDB.LiveQuery.IAeroDBLiveQuery(Of T).GetCreatedRecords(System.Threading.CancellationToken)
+- uid: AeroDB.LiveQuery.IAeroDBLiveQuery`1.GetUpdatedRecords(System.Threading.CancellationToken)
+  commentId: M:AeroDB.LiveQuery.IAeroDBLiveQuery`1.GetUpdatedRecords(System.Threading.CancellationToken)
+  id: GetUpdatedRecords(System.Threading.CancellationToken)
+  parent: AeroDB.LiveQuery.IAeroDBLiveQuery`1
+  langs:
+  - csharp
+  - vb
+  name: GetUpdatedRecords(CancellationToken)
+  nameWithType: IAeroDBLiveQuery<T>.GetUpdatedRecords(CancellationToken)
+  fullName: AeroDB.LiveQuery.IAeroDBLiveQuery<T>.GetUpdatedRecords(System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/LiveQuery/IAeroDBLiveQuery.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB.LiveQuery
+  summary: Only updated records (documents only, not the change wrapper).
+  example: []
+  syntax:
+    content: IAsyncEnumerable<T> GetUpdatedRecords(CancellationToken ct = default)
+    parameters:
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Collections.Generic.IAsyncEnumerable{{T}}
+    content.vb: Function GetUpdatedRecords(ct As CancellationToken = Nothing) As IAsyncEnumerable(Of T)
+  overload: AeroDB.LiveQuery.IAeroDBLiveQuery`1.GetUpdatedRecords*
+  nameWithType.vb: IAeroDBLiveQuery(Of T).GetUpdatedRecords(CancellationToken)
+  fullName.vb: AeroDB.LiveQuery.IAeroDBLiveQuery(Of T).GetUpdatedRecords(System.Threading.CancellationToken)
+- uid: AeroDB.LiveQuery.IAeroDBLiveQuery`1.GetDeletedRecords(System.Threading.CancellationToken)
+  commentId: M:AeroDB.LiveQuery.IAeroDBLiveQuery`1.GetDeletedRecords(System.Threading.CancellationToken)
+  id: GetDeletedRecords(System.Threading.CancellationToken)
+  parent: AeroDB.LiveQuery.IAeroDBLiveQuery`1
+  langs:
+  - csharp
+  - vb
+  name: GetDeletedRecords(CancellationToken)
+  nameWithType: IAeroDBLiveQuery<T>.GetDeletedRecords(CancellationToken)
+  fullName: AeroDB.LiveQuery.IAeroDBLiveQuery<T>.GetDeletedRecords(System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/LiveQuery/IAeroDBLiveQuery.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB.LiveQuery
+  summary: Only deleted records (documents only, not the change wrapper).
+  example: []
+  syntax:
+    content: IAsyncEnumerable<T> GetDeletedRecords(CancellationToken ct = default)
+    parameters:
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Collections.Generic.IAsyncEnumerable{{T}}
+    content.vb: Function GetDeletedRecords(ct As CancellationToken = Nothing) As IAsyncEnumerable(Of T)
+  overload: AeroDB.LiveQuery.IAeroDBLiveQuery`1.GetDeletedRecords*
+  nameWithType.vb: IAeroDBLiveQuery(Of T).GetDeletedRecords(CancellationToken)
+  fullName.vb: AeroDB.LiveQuery.IAeroDBLiveQuery(Of T).GetDeletedRecords(System.Threading.CancellationToken)
+- uid: AeroDB.LiveQuery.IAeroDBLiveQuery`1.StopAsync(System.Threading.CancellationToken)
+  commentId: M:AeroDB.LiveQuery.IAeroDBLiveQuery`1.StopAsync(System.Threading.CancellationToken)
+  id: StopAsync(System.Threading.CancellationToken)
+  parent: AeroDB.LiveQuery.IAeroDBLiveQuery`1
+  langs:
+  - csharp
+  - vb
+  name: StopAsync(CancellationToken)
+  nameWithType: IAeroDBLiveQuery<T>.StopAsync(CancellationToken)
+  fullName: AeroDB.LiveQuery.IAeroDBLiveQuery<T>.StopAsync(System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/LiveQuery/IAeroDBLiveQuery.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB.LiveQuery
+  syntax:
+    content: Task StopAsync(CancellationToken ct = default)
+    parameters:
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Function StopAsync(ct As CancellationToken = Nothing) As Task
+  overload: AeroDB.LiveQuery.IAeroDBLiveQuery`1.StopAsync*
+  nameWithType.vb: IAeroDBLiveQuery(Of T).StopAsync(CancellationToken)
+  fullName.vb: AeroDB.LiveQuery.IAeroDBLiveQuery(Of T).StopAsync(System.Threading.CancellationToken)
+- uid: AeroDB.LiveQuery.IAeroDBLiveQuery`1.Reader
+  commentId: P:AeroDB.LiveQuery.IAeroDBLiveQuery`1.Reader
+  id: Reader
+  parent: AeroDB.LiveQuery.IAeroDBLiveQuery`1
+  langs:
+  - csharp
+  - vb
+  name: Reader
+  nameWithType: IAeroDBLiveQuery<T>.Reader
+  fullName: AeroDB.LiveQuery.IAeroDBLiveQuery<T>.Reader
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/LiveQuery/IAeroDBLiveQuery.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB.LiveQuery
+  syntax:
+    content: ChannelReader<AeroDBLiveChange<T>>? Reader { get; }
+    parameters: []
+    return:
+      type: System.Threading.Channels.ChannelReader{AeroDB.LiveQuery.AeroDBLiveChange{{T}}}
+    content.vb: ReadOnly Property Reader As ChannelReader(Of AeroDBLiveChange(Of T))
+  overload: AeroDB.LiveQuery.IAeroDBLiveQuery`1.Reader*
+  nameWithType.vb: IAeroDBLiveQuery(Of T).Reader
+  fullName.vb: AeroDB.LiveQuery.IAeroDBLiveQuery(Of T).Reader
+references:
+- uid: AeroDB.LiveQuery
+  commentId: N:AeroDB.LiveQuery
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB.LiveQuery
+  nameWithType: AeroDB.LiveQuery
+  fullName: AeroDB.LiveQuery
+  spec.csharp:
+  - uid: AeroDB
+    name: AeroDB
+    isExternal: true
+    href: AeroDB.html
+  - name: .
+  - uid: AeroDB.LiveQuery
+    name: LiveQuery
+    isExternal: true
+    href: AeroDB.LiveQuery.html
+  spec.vb:
+  - uid: AeroDB
+    name: AeroDB
+    isExternal: true
+    href: AeroDB.html
+  - name: .
+  - uid: AeroDB.LiveQuery
+    name: LiveQuery
+    isExternal: true
+    href: AeroDB.LiveQuery.html
+- uid: System.IAsyncDisposable.DisposeAsync
+  commentId: M:System.IAsyncDisposable.DisposeAsync
+  parent: System.IAsyncDisposable
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iasyncdisposable.disposeasync
+  name: DisposeAsync()
+  nameWithType: IAsyncDisposable.DisposeAsync()
+  fullName: System.IAsyncDisposable.DisposeAsync()
+  spec.csharp:
+  - uid: System.IAsyncDisposable.DisposeAsync
+    name: DisposeAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iasyncdisposable.disposeasync
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.IAsyncDisposable.DisposeAsync
+    name: DisposeAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iasyncdisposable.disposeasync
+  - name: (
+  - name: )
+- uid: System.IAsyncDisposable
+  commentId: T:System.IAsyncDisposable
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iasyncdisposable
+  name: IAsyncDisposable
+  nameWithType: IAsyncDisposable
+  fullName: System.IAsyncDisposable
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AeroDB.LiveQuery.IAeroDBLiveQuery`1.Changes*
+  commentId: Overload:AeroDB.LiveQuery.IAeroDBLiveQuery`1.Changes
+  isExternal: true
+  href: AeroDB.LiveQuery.IAeroDBLiveQuery-1.html#AeroDB_LiveQuery_IAeroDBLiveQuery_1_Changes_System_Threading_CancellationToken_
+  name: Changes
+  nameWithType: IAeroDBLiveQuery<T>.Changes
+  fullName: AeroDB.LiveQuery.IAeroDBLiveQuery<T>.Changes
+  nameWithType.vb: IAeroDBLiveQuery(Of T).Changes
+  fullName.vb: AeroDB.LiveQuery.IAeroDBLiveQuery(Of T).Changes
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Collections.Generic.IAsyncEnumerable{AeroDB.LiveQuery.AeroDBLiveChange{{T}}}
+  commentId: T:System.Collections.Generic.IAsyncEnumerable{AeroDB.LiveQuery.AeroDBLiveChange{`0}}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IAsyncEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.iasyncenumerable-1
+  name: IAsyncEnumerable<AeroDBLiveChange<T>>
+  nameWithType: IAsyncEnumerable<AeroDBLiveChange<T>>
+  fullName: System.Collections.Generic.IAsyncEnumerable<AeroDB.LiveQuery.AeroDBLiveChange<T>>
+  nameWithType.vb: IAsyncEnumerable(Of AeroDBLiveChange(Of T))
+  fullName.vb: System.Collections.Generic.IAsyncEnumerable(Of AeroDB.LiveQuery.AeroDBLiveChange(Of T))
+  name.vb: IAsyncEnumerable(Of AeroDBLiveChange(Of T))
+  spec.csharp:
+  - uid: System.Collections.Generic.IAsyncEnumerable`1
+    name: IAsyncEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.iasyncenumerable-1
+  - name: <
+  - uid: AeroDB.LiveQuery.AeroDBLiveChange`1
+    name: AeroDBLiveChange
+    isExternal: true
+    href: AeroDB.LiveQuery.AeroDBLiveChange-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IAsyncEnumerable`1
+    name: IAsyncEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.iasyncenumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.LiveQuery.AeroDBLiveChange`1
+    name: AeroDBLiveChange
+    isExternal: true
+    href: AeroDB.LiveQuery.AeroDBLiveChange-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Collections.Generic.IAsyncEnumerable`1
+  commentId: T:System.Collections.Generic.IAsyncEnumerable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.iasyncenumerable-1
+  name: IAsyncEnumerable<T>
+  nameWithType: IAsyncEnumerable<T>
+  fullName: System.Collections.Generic.IAsyncEnumerable<T>
+  nameWithType.vb: IAsyncEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IAsyncEnumerable(Of T)
+  name.vb: IAsyncEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IAsyncEnumerable`1
+    name: IAsyncEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.iasyncenumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IAsyncEnumerable`1
+    name: IAsyncEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.iasyncenumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: AeroDB.LiveQuery.IAeroDBLiveQuery`1.GetResults*
+  commentId: Overload:AeroDB.LiveQuery.IAeroDBLiveQuery`1.GetResults
+  isExternal: true
+  href: AeroDB.LiveQuery.IAeroDBLiveQuery-1.html#AeroDB_LiveQuery_IAeroDBLiveQuery_1_GetResults_System_Threading_CancellationToken_
+  name: GetResults
+  nameWithType: IAeroDBLiveQuery<T>.GetResults
+  fullName: AeroDB.LiveQuery.IAeroDBLiveQuery<T>.GetResults
+  nameWithType.vb: IAeroDBLiveQuery(Of T).GetResults
+  fullName.vb: AeroDB.LiveQuery.IAeroDBLiveQuery(Of T).GetResults
+- uid: AeroDB.LiveQuery.IAeroDBLiveQuery`1.GetCreatedRecords*
+  commentId: Overload:AeroDB.LiveQuery.IAeroDBLiveQuery`1.GetCreatedRecords
+  isExternal: true
+  href: AeroDB.LiveQuery.IAeroDBLiveQuery-1.html#AeroDB_LiveQuery_IAeroDBLiveQuery_1_GetCreatedRecords_System_Threading_CancellationToken_
+  name: GetCreatedRecords
+  nameWithType: IAeroDBLiveQuery<T>.GetCreatedRecords
+  fullName: AeroDB.LiveQuery.IAeroDBLiveQuery<T>.GetCreatedRecords
+  nameWithType.vb: IAeroDBLiveQuery(Of T).GetCreatedRecords
+  fullName.vb: AeroDB.LiveQuery.IAeroDBLiveQuery(Of T).GetCreatedRecords
+- uid: System.Collections.Generic.IAsyncEnumerable{{T}}
+  commentId: T:System.Collections.Generic.IAsyncEnumerable{``0}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IAsyncEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.iasyncenumerable-1
+  name: IAsyncEnumerable<T>
+  nameWithType: IAsyncEnumerable<T>
+  fullName: System.Collections.Generic.IAsyncEnumerable<T>
+  nameWithType.vb: IAsyncEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IAsyncEnumerable(Of T)
+  name.vb: IAsyncEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IAsyncEnumerable`1
+    name: IAsyncEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.iasyncenumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IAsyncEnumerable`1
+    name: IAsyncEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.iasyncenumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.LiveQuery.IAeroDBLiveQuery`1.GetUpdatedRecords*
+  commentId: Overload:AeroDB.LiveQuery.IAeroDBLiveQuery`1.GetUpdatedRecords
+  isExternal: true
+  href: AeroDB.LiveQuery.IAeroDBLiveQuery-1.html#AeroDB_LiveQuery_IAeroDBLiveQuery_1_GetUpdatedRecords_System_Threading_CancellationToken_
+  name: GetUpdatedRecords
+  nameWithType: IAeroDBLiveQuery<T>.GetUpdatedRecords
+  fullName: AeroDB.LiveQuery.IAeroDBLiveQuery<T>.GetUpdatedRecords
+  nameWithType.vb: IAeroDBLiveQuery(Of T).GetUpdatedRecords
+  fullName.vb: AeroDB.LiveQuery.IAeroDBLiveQuery(Of T).GetUpdatedRecords
+- uid: AeroDB.LiveQuery.IAeroDBLiveQuery`1.GetDeletedRecords*
+  commentId: Overload:AeroDB.LiveQuery.IAeroDBLiveQuery`1.GetDeletedRecords
+  isExternal: true
+  href: AeroDB.LiveQuery.IAeroDBLiveQuery-1.html#AeroDB_LiveQuery_IAeroDBLiveQuery_1_GetDeletedRecords_System_Threading_CancellationToken_
+  name: GetDeletedRecords
+  nameWithType: IAeroDBLiveQuery<T>.GetDeletedRecords
+  fullName: AeroDB.LiveQuery.IAeroDBLiveQuery<T>.GetDeletedRecords
+  nameWithType.vb: IAeroDBLiveQuery(Of T).GetDeletedRecords
+  fullName.vb: AeroDB.LiveQuery.IAeroDBLiveQuery(Of T).GetDeletedRecords
+- uid: AeroDB.LiveQuery.IAeroDBLiveQuery`1.StopAsync*
+  commentId: Overload:AeroDB.LiveQuery.IAeroDBLiveQuery`1.StopAsync
+  isExternal: true
+  href: AeroDB.LiveQuery.IAeroDBLiveQuery-1.html#AeroDB_LiveQuery_IAeroDBLiveQuery_1_StopAsync_System_Threading_CancellationToken_
+  name: StopAsync
+  nameWithType: IAeroDBLiveQuery<T>.StopAsync
+  fullName: AeroDB.LiveQuery.IAeroDBLiveQuery<T>.StopAsync
+  nameWithType.vb: IAeroDBLiveQuery(Of T).StopAsync
+  fullName.vb: AeroDB.LiveQuery.IAeroDBLiveQuery(Of T).StopAsync
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: AeroDB.LiveQuery.IAeroDBLiveQuery`1.Reader*
+  commentId: Overload:AeroDB.LiveQuery.IAeroDBLiveQuery`1.Reader
+  isExternal: true
+  href: AeroDB.LiveQuery.IAeroDBLiveQuery-1.html#AeroDB_LiveQuery_IAeroDBLiveQuery_1_Reader
+  name: Reader
+  nameWithType: IAeroDBLiveQuery<T>.Reader
+  fullName: AeroDB.LiveQuery.IAeroDBLiveQuery<T>.Reader
+  nameWithType.vb: IAeroDBLiveQuery(Of T).Reader
+  fullName.vb: AeroDB.LiveQuery.IAeroDBLiveQuery(Of T).Reader
+- uid: System.Threading.Channels.ChannelReader{AeroDB.LiveQuery.AeroDBLiveChange{{T}}}
+  commentId: T:System.Threading.Channels.ChannelReader{AeroDB.LiveQuery.AeroDBLiveChange{`0}}
+  parent: System.Threading.Channels
+  definition: System.Threading.Channels.ChannelReader`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.channels.channelreader-1
+  name: ChannelReader<AeroDBLiveChange<T>>
+  nameWithType: ChannelReader<AeroDBLiveChange<T>>
+  fullName: System.Threading.Channels.ChannelReader<AeroDB.LiveQuery.AeroDBLiveChange<T>>
+  nameWithType.vb: ChannelReader(Of AeroDBLiveChange(Of T))
+  fullName.vb: System.Threading.Channels.ChannelReader(Of AeroDB.LiveQuery.AeroDBLiveChange(Of T))
+  name.vb: ChannelReader(Of AeroDBLiveChange(Of T))
+  spec.csharp:
+  - uid: System.Threading.Channels.ChannelReader`1
+    name: ChannelReader
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.channels.channelreader-1
+  - name: <
+  - uid: AeroDB.LiveQuery.AeroDBLiveChange`1
+    name: AeroDBLiveChange
+    isExternal: true
+    href: AeroDB.LiveQuery.AeroDBLiveChange-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Channels.ChannelReader`1
+    name: ChannelReader
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.channels.channelreader-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.LiveQuery.AeroDBLiveChange`1
+    name: AeroDBLiveChange
+    isExternal: true
+    href: AeroDB.LiveQuery.AeroDBLiveChange-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+- uid: System.Threading.Channels.ChannelReader`1
+  commentId: T:System.Threading.Channels.ChannelReader`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.channels.channelreader-1
+  name: ChannelReader<T>
+  nameWithType: ChannelReader<T>
+  fullName: System.Threading.Channels.ChannelReader<T>
+  nameWithType.vb: ChannelReader(Of T)
+  fullName.vb: System.Threading.Channels.ChannelReader(Of T)
+  name.vb: ChannelReader(Of T)
+  spec.csharp:
+  - uid: System.Threading.Channels.ChannelReader`1
+    name: ChannelReader
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.channels.channelreader-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Channels.ChannelReader`1
+    name: ChannelReader
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.channels.channelreader-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Threading.Channels
+  commentId: N:System.Threading.Channels
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Channels
+  nameWithType: System.Threading.Channels
+  fullName: System.Threading.Channels
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Channels
+    name: Channels
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.channels
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Channels
+    name: Channels
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.channels

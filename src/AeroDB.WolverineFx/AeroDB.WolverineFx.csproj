@@ -3,6 +3,7 @@
         <Description>SurrealDB-backed message persistence and transport for WolverineFx</Description>
         <PackageId>AeroDB.WolverineFx</PackageId>
         <PackageTags>wolverine surrealdb messaging durability</PackageTags>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
     <ItemGroup>
         <InternalsVisibleTo Include="AeroDB.Tests" />

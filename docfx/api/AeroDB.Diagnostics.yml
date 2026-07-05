@@ -1,0 +1,24 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.Diagnostics
+  commentId: N:AeroDB.Diagnostics
+  id: AeroDB.Diagnostics
+  children:
+  - AeroDB.Diagnostics.DocumentMetadataListener
+  langs:
+  - csharp
+  - vb
+  name: AeroDB.Diagnostics
+  nameWithType: AeroDB.Diagnostics
+  fullName: AeroDB.Diagnostics
+  type: Namespace
+  assemblies:
+  - AeroDB
+references:
+- uid: AeroDB.Diagnostics.DocumentMetadataListener
+  commentId: T:AeroDB.Diagnostics.DocumentMetadataListener
+  isExternal: true
+  href: AeroDB.Diagnostics.DocumentMetadataListener.html
+  name: DocumentMetadataListener
+  nameWithType: DocumentMetadataListener
+  fullName: AeroDB.Diagnostics.DocumentMetadataListener

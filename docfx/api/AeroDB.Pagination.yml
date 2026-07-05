@@ -1,0 +1,110 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.Pagination
+  commentId: N:AeroDB.Pagination
+  id: AeroDB.Pagination
+  children:
+  - AeroDB.Pagination.IPagedList`1
+  - AeroDB.Pagination.PagedListQueryableExtensions
+  - AeroDB.Pagination.PagedList`1
+  langs:
+  - csharp
+  - vb
+  name: AeroDB.Pagination
+  nameWithType: AeroDB.Pagination
+  fullName: AeroDB.Pagination
+  type: Namespace
+  assemblies:
+  - AeroDB
+references:
+- uid: AeroDB.Pagination.IPagedList`1
+  commentId: T:AeroDB.Pagination.IPagedList`1
+  isExternal: true
+  href: AeroDB.Pagination.IPagedList-1.html
+  name: IPagedList<T>
+  nameWithType: IPagedList<T>
+  fullName: AeroDB.Pagination.IPagedList<T>
+  nameWithType.vb: IPagedList(Of T)
+  fullName.vb: AeroDB.Pagination.IPagedList(Of T)
+  name.vb: IPagedList(Of T)
+  spec.csharp:
+  - uid: AeroDB.Pagination.IPagedList`1
+    name: IPagedList
+    isExternal: true
+    href: AeroDB.Pagination.IPagedList-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.Pagination.IPagedList`1
+    name: IPagedList
+    isExternal: true
+    href: AeroDB.Pagination.IPagedList-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.Pagination.PagedList`1
+  commentId: T:AeroDB.Pagination.PagedList`1
+  isExternal: true
+  href: AeroDB.Pagination.PagedList-1.html
+  name: PagedList<T>
+  nameWithType: PagedList<T>
+  fullName: AeroDB.Pagination.PagedList<T>
+  nameWithType.vb: PagedList(Of T)
+  fullName.vb: AeroDB.Pagination.PagedList(Of T)
+  name.vb: PagedList(Of T)
+  spec.csharp:
+  - uid: AeroDB.Pagination.PagedList`1
+    name: PagedList
+    isExternal: true
+    href: AeroDB.Pagination.PagedList-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.Pagination.PagedList`1
+    name: PagedList
+    isExternal: true
+    href: AeroDB.Pagination.PagedList-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.Pagination.PagedListQueryableExtensions
+  commentId: T:AeroDB.Pagination.PagedListQueryableExtensions
+  parent: AeroDB.Pagination
+  isExternal: true
+  href: AeroDB.Pagination.PagedListQueryableExtensions.html
+  name: PagedListQueryableExtensions
+  nameWithType: PagedListQueryableExtensions
+  fullName: AeroDB.Pagination.PagedListQueryableExtensions
+- uid: AeroDB.Pagination
+  commentId: N:AeroDB.Pagination
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB.Pagination
+  nameWithType: AeroDB.Pagination
+  fullName: AeroDB.Pagination
+  spec.csharp:
+  - uid: AeroDB
+    name: AeroDB
+    isExternal: true
+    href: AeroDB.html
+  - name: .
+  - uid: AeroDB.Pagination
+    name: Pagination
+    isExternal: true
+    href: AeroDB.Pagination.html
+  spec.vb:
+  - uid: AeroDB
+    name: AeroDB
+    isExternal: true
+    href: AeroDB.html
+  - name: .
+  - uid: AeroDB.Pagination
+    name: Pagination
+    isExternal: true
+    href: AeroDB.Pagination.html

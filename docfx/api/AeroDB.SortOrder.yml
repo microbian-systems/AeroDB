@@ -1,0 +1,82 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.SortOrder
+  commentId: T:AeroDB.SortOrder
+  id: SortOrder
+  parent: AeroDB
+  children:
+  - AeroDB.SortOrder.Asc
+  - AeroDB.SortOrder.Desc
+  langs:
+  - csharp
+  - vb
+  name: SortOrder
+  nameWithType: SortOrder
+  fullName: AeroDB.SortOrder
+  type: Enum
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentIndex.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: No-op stub for Marten portability. SurrealDB does not use index sort orders.
+  example: []
+  syntax:
+    content: public enum SortOrder
+    content.vb: Public Enum SortOrder
+- uid: AeroDB.SortOrder.Asc
+  commentId: F:AeroDB.SortOrder.Asc
+  id: Asc
+  parent: AeroDB.SortOrder
+  langs:
+  - csharp
+  - vb
+  name: Asc
+  nameWithType: SortOrder.Asc
+  fullName: AeroDB.SortOrder.Asc
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentIndex.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: Asc = 0
+    return:
+      type: AeroDB.SortOrder
+- uid: AeroDB.SortOrder.Desc
+  commentId: F:AeroDB.SortOrder.Desc
+  id: Desc
+  parent: AeroDB.SortOrder
+  langs:
+  - csharp
+  - vb
+  name: Desc
+  nameWithType: SortOrder.Desc
+  fullName: AeroDB.SortOrder.Desc
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentIndex.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: Desc = 1
+    return:
+      type: AeroDB.SortOrder
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: AeroDB.SortOrder
+  commentId: T:AeroDB.SortOrder
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.SortOrder.html
+  name: SortOrder
+  nameWithType: SortOrder
+  fullName: AeroDB.SortOrder

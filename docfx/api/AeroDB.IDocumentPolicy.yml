@@ -1,0 +1,73 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.IDocumentPolicy
+  commentId: T:AeroDB.IDocumentPolicy
+  id: IDocumentPolicy
+  parent: AeroDB
+  children:
+  - AeroDB.IDocumentPolicy.Apply(AeroDB.DocumentMapping)
+  langs:
+  - csharp
+  - vb
+  name: IDocumentPolicy
+  nameWithType: IDocumentPolicy
+  fullName: AeroDB.IDocumentPolicy
+  type: Interface
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/IDocumentPolicy.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Plugin interface for global document mapping conventions.
+  example: []
+  syntax:
+    content: public interface IDocumentPolicy
+    content.vb: Public Interface IDocumentPolicy
+- uid: AeroDB.IDocumentPolicy.Apply(AeroDB.DocumentMapping)
+  commentId: M:AeroDB.IDocumentPolicy.Apply(AeroDB.DocumentMapping)
+  id: Apply(AeroDB.DocumentMapping)
+  parent: AeroDB.IDocumentPolicy
+  langs:
+  - csharp
+  - vb
+  name: Apply(DocumentMapping)
+  nameWithType: IDocumentPolicy.Apply(DocumentMapping)
+  fullName: AeroDB.IDocumentPolicy.Apply(AeroDB.DocumentMapping)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/IDocumentPolicy.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Apply this policy to a document mapping during store initialization.
+  example: []
+  syntax:
+    content: void Apply(DocumentMapping mapping)
+    parameters:
+    - id: mapping
+      type: AeroDB.DocumentMapping
+    content.vb: Sub Apply(mapping As DocumentMapping)
+  overload: AeroDB.IDocumentPolicy.Apply*
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: AeroDB.IDocumentPolicy.Apply*
+  commentId: Overload:AeroDB.IDocumentPolicy.Apply
+  isExternal: true
+  href: AeroDB.IDocumentPolicy.html#AeroDB_IDocumentPolicy_Apply_AeroDB_DocumentMapping_
+  name: Apply
+  nameWithType: IDocumentPolicy.Apply
+  fullName: AeroDB.IDocumentPolicy.Apply
+- uid: AeroDB.DocumentMapping
+  commentId: T:AeroDB.DocumentMapping
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.DocumentMapping.html
+  name: DocumentMapping
+  nameWithType: DocumentMapping
+  fullName: AeroDB.DocumentMapping

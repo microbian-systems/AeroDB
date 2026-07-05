@@ -1,0 +1,488 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.Search.Filter
+  commentId: T:AeroDB.Search.Filter
+  id: Search.Filter
+  parent: AeroDB
+  children:
+  - AeroDB.Search.Filter.Ascii
+  - AeroDB.Search.Filter.Lowercase
+  - AeroDB.Search.Filter.Ngram2
+  - AeroDB.Search.Filter.Ngram3
+  - AeroDB.Search.Filter.SnowballEnglish
+  - AeroDB.Search.Filter.SnowballFrench
+  - AeroDB.Search.Filter.SnowballGerman
+  - AeroDB.Search.Filter.SnowballSpanish
+  - AeroDB.Search.Filter.Uppercase
+  langs:
+  - csharp
+  - vb
+  name: Search.Filter
+  nameWithType: Search.Filter
+  fullName: AeroDB.Search.Filter
+  type: Class
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/SearchConstants.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Full-text token filters for DEFINE ANALYZER.
+  example: []
+  syntax:
+    content: public static class Search.Filter
+    content.vb: Public Module Search.Filter
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+- uid: AeroDB.Search.Filter.SnowballEnglish
+  commentId: F:AeroDB.Search.Filter.SnowballEnglish
+  id: SnowballEnglish
+  parent: AeroDB.Search.Filter
+  langs:
+  - csharp
+  - vb
+  name: SnowballEnglish
+  nameWithType: Search.Filter.SnowballEnglish
+  fullName: AeroDB.Search.Filter.SnowballEnglish
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/SearchConstants.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public const string SnowballEnglish = "SNOWBALL(en)"
+    return:
+      type: System.String
+    content.vb: Public Const SnowballEnglish As String = "SNOWBALL(en)"
+- uid: AeroDB.Search.Filter.SnowballFrench
+  commentId: F:AeroDB.Search.Filter.SnowballFrench
+  id: SnowballFrench
+  parent: AeroDB.Search.Filter
+  langs:
+  - csharp
+  - vb
+  name: SnowballFrench
+  nameWithType: Search.Filter.SnowballFrench
+  fullName: AeroDB.Search.Filter.SnowballFrench
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/SearchConstants.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public const string SnowballFrench = "SNOWBALL(fr)"
+    return:
+      type: System.String
+    content.vb: Public Const SnowballFrench As String = "SNOWBALL(fr)"
+- uid: AeroDB.Search.Filter.SnowballGerman
+  commentId: F:AeroDB.Search.Filter.SnowballGerman
+  id: SnowballGerman
+  parent: AeroDB.Search.Filter
+  langs:
+  - csharp
+  - vb
+  name: SnowballGerman
+  nameWithType: Search.Filter.SnowballGerman
+  fullName: AeroDB.Search.Filter.SnowballGerman
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/SearchConstants.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public const string SnowballGerman = "SNOWBALL(de)"
+    return:
+      type: System.String
+    content.vb: Public Const SnowballGerman As String = "SNOWBALL(de)"
+- uid: AeroDB.Search.Filter.SnowballSpanish
+  commentId: F:AeroDB.Search.Filter.SnowballSpanish
+  id: SnowballSpanish
+  parent: AeroDB.Search.Filter
+  langs:
+  - csharp
+  - vb
+  name: SnowballSpanish
+  nameWithType: Search.Filter.SnowballSpanish
+  fullName: AeroDB.Search.Filter.SnowballSpanish
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/SearchConstants.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public const string SnowballSpanish = "SNOWBALL(es)"
+    return:
+      type: System.String
+    content.vb: Public Const SnowballSpanish As String = "SNOWBALL(es)"
+- uid: AeroDB.Search.Filter.Lowercase
+  commentId: F:AeroDB.Search.Filter.Lowercase
+  id: Lowercase
+  parent: AeroDB.Search.Filter
+  langs:
+  - csharp
+  - vb
+  name: Lowercase
+  nameWithType: Search.Filter.Lowercase
+  fullName: AeroDB.Search.Filter.Lowercase
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/SearchConstants.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public const string Lowercase = "LOWERCASE"
+    return:
+      type: System.String
+    content.vb: Public Const Lowercase As String = "LOWERCASE"
+- uid: AeroDB.Search.Filter.Uppercase
+  commentId: F:AeroDB.Search.Filter.Uppercase
+  id: Uppercase
+  parent: AeroDB.Search.Filter
+  langs:
+  - csharp
+  - vb
+  name: Uppercase
+  nameWithType: Search.Filter.Uppercase
+  fullName: AeroDB.Search.Filter.Uppercase
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/SearchConstants.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public const string Uppercase = "UPPERCASE"
+    return:
+      type: System.String
+    content.vb: Public Const Uppercase As String = "UPPERCASE"
+- uid: AeroDB.Search.Filter.Ascii
+  commentId: F:AeroDB.Search.Filter.Ascii
+  id: Ascii
+  parent: AeroDB.Search.Filter
+  langs:
+  - csharp
+  - vb
+  name: Ascii
+  nameWithType: Search.Filter.Ascii
+  fullName: AeroDB.Search.Filter.Ascii
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/SearchConstants.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public const string Ascii = "ASCII"
+    return:
+      type: System.String
+    content.vb: Public Const Ascii As String = "ASCII"
+- uid: AeroDB.Search.Filter.Ngram2
+  commentId: F:AeroDB.Search.Filter.Ngram2
+  id: Ngram2
+  parent: AeroDB.Search.Filter
+  langs:
+  - csharp
+  - vb
+  name: Ngram2
+  nameWithType: Search.Filter.Ngram2
+  fullName: AeroDB.Search.Filter.Ngram2
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/SearchConstants.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public const string Ngram2 = "NGRAMS(2)"
+    return:
+      type: System.String
+    content.vb: Public Const Ngram2 As String = "NGRAMS(2)"
+- uid: AeroDB.Search.Filter.Ngram3
+  commentId: F:AeroDB.Search.Filter.Ngram3
+  id: Ngram3
+  parent: AeroDB.Search.Filter
+  langs:
+  - csharp
+  - vb
+  name: Ngram3
+  nameWithType: Search.Filter.Ngram3
+  fullName: AeroDB.Search.Filter.Ngram3
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/SearchConstants.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public const string Ngram3 = "NGRAMS(3)"
+    return:
+      type: System.String
+    content.vb: Public Const Ngram3 As String = "NGRAMS(3)"
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String

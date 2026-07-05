@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Interface IDocumentStore | AeroDB API Reference </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="Interface IDocumentStore | AeroDB API Reference ">
+    
+    <meta name="description" content="The primary entry point for the AeroDB document store. Provides access to query sessions, document sessions, event store, background daemon, and advanced SDK features.">
+      <link rel="shortcut icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../styles/docfx.css">
+      <link rel="stylesheet" href="../styles/main.css">
+      <meta property="docfx:navrel" content="../toc.html">
+      <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="AeroDB">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="AeroDB.IDocumentStore">
+
+
+
+  <h1 id="AeroDB_IDocumentStore" data-uid="AeroDB.IDocumentStore" class="text-break">Interface IDocumentStore</h1>
+  <div class="markdown level0 summary"><p>The primary entry point for the AeroDB document store. Provides access to query sessions, document sessions, event store, background daemon, and advanced SDK features.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iasyncdisposable.disposeasync">IAsyncDisposable.DisposeAsync()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="AeroDB.html">AeroDB</a></h6>
+  <h6><strong>Assembly</strong>: AeroDB.dll</h6>
+  <h5 id="AeroDB_IDocumentStore_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public interface IDocumentStore : IAsyncDisposable</code></pre>
+  </div>
+  <h3 id="properties">Properties
+</h3>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDocumentStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_IDocumentStore_Advanced_" data-uid="AeroDB.IDocumentStore.Advanced*"></a>
+  <h4 id="AeroDB_IDocumentStore_Advanced" data-uid="AeroDB.IDocumentStore.Advanced">Advanced</h4>
+  <div class="markdown level1 summary"><p>Advanced/low-level SDK access for scenarios AeroDB doesn't abstract.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IAeroDBAdvanced Advanced { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.IAeroDBAdvanced.html">IAeroDBAdvanced</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDocumentStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_IDocumentStore_Client_" data-uid="AeroDB.IDocumentStore.Client*"></a>
+  <h4 id="AeroDB_IDocumentStore_Client" data-uid="AeroDB.IDocumentStore.Client">Client</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">ISurrealDbClient Client { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ISurrealDbClient</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDocumentStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_IDocumentStore_Daemon_" data-uid="AeroDB.IDocumentStore.Daemon*"></a>
+  <h4 id="AeroDB_IDocumentStore_Daemon" data-uid="AeroDB.IDocumentStore.Daemon">Daemon</h4>
+  <div class="markdown level1 summary"><p>Async daemon for background projection processing, if events are enabled
+and an <a class="xref" href="AeroDB.AsyncDaemon.html">AsyncDaemon</a> has been started.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">AsyncDaemon? Daemon { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.AsyncDaemon.html">AsyncDaemon</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDocumentStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_IDocumentStore_Options_" data-uid="AeroDB.IDocumentStore.Options*"></a>
+  <h4 id="AeroDB_IDocumentStore_Options" data-uid="AeroDB.IDocumentStore.Options">Options</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">StoreOptions Options { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.StoreOptions.html">StoreOptions</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+</h3>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDocumentStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_IDocumentStore_BulkInsertAsync_" data-uid="AeroDB.IDocumentStore.BulkInsertAsync*"></a>
+  <h4 id="AeroDB_IDocumentStore_BulkInsertAsync__1_System_String_System_Collections_Generic_IEnumerable___0__AeroDB_BulkInsertMode_System_Int32_System_Threading_CancellationToken_" data-uid="AeroDB.IDocumentStore.BulkInsertAsync``1(System.String,System.Collections.Generic.IEnumerable{``0},AeroDB.BulkInsertMode,System.Int32,System.Threading.CancellationToken)">BulkInsertAsync&lt;T&gt;(string, IEnumerable&lt;T&gt;, BulkInsertMode, int, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Bulk insert typed documents for a specific tenant.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task BulkInsertAsync&lt;T&gt;(string tenantId, IEnumerable&lt;T&gt; documents, BulkInsertMode mode = BulkInsertMode.InsertsOnly, int batchSize = 1000, CancellationToken ct = default) where T : class</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">tenantId</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;T&gt;</td>
+        <td><span class="parametername">documents</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="AeroDB.BulkInsertMode.html">BulkInsertMode</a></td>
+        <td><span class="parametername">mode</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><span class="parametername">batchSize</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">ct</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDocumentStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_IDocumentStore_BulkInsertDocumentsAsync_" data-uid="AeroDB.IDocumentStore.BulkInsertDocumentsAsync*"></a>
+  <h4 id="AeroDB_IDocumentStore_BulkInsertDocumentsAsync_System_Collections_Generic_IEnumerable_System_Object__AeroDB_BulkInsertMode_System_Int32_System_Threading_CancellationToken_" data-uid="AeroDB.IDocumentStore.BulkInsertDocumentsAsync(System.Collections.Generic.IEnumerable{System.Object},AeroDB.BulkInsertMode,System.Int32,System.Threading.CancellationToken)">BulkInsertDocumentsAsync(IEnumerable&lt;object&gt;, BulkInsertMode, int, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Bulk insert mixed-type documents (non-tenant-scoped).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task BulkInsertDocumentsAsync(IEnumerable&lt;object&gt; documents, BulkInsertMode mode = BulkInsertMode.InsertsOnly, int batchSize = 1000, CancellationToken ct = default)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;</td>
+        <td><span class="parametername">documents</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="AeroDB.BulkInsertMode.html">BulkInsertMode</a></td>
+        <td><span class="parametername">mode</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><span class="parametername">batchSize</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">ct</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDocumentStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_IDocumentStore_BulkInsertDocumentsAsync_" data-uid="AeroDB.IDocumentStore.BulkInsertDocumentsAsync*"></a>
+  <h4 id="AeroDB_IDocumentStore_BulkInsertDocumentsAsync_System_String_System_Collections_Generic_IEnumerable_System_Object__AeroDB_BulkInsertMode_System_Int32_System_Threading_CancellationToken_" data-uid="AeroDB.IDocumentStore.BulkInsertDocumentsAsync(System.String,System.Collections.Generic.IEnumerable{System.Object},AeroDB.BulkInsertMode,System.Int32,System.Threading.CancellationToken)">BulkInsertDocumentsAsync(string, IEnumerable&lt;object&gt;, BulkInsertMode, int, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Bulk insert mixed-type documents for a specific tenant.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task BulkInsertDocumentsAsync(string tenantId, IEnumerable&lt;object&gt; documents, BulkInsertMode mode = BulkInsertMode.InsertsOnly, int batchSize = 1000, CancellationToken ct = default)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">tenantId</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;</td>
+        <td><span class="parametername">documents</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="AeroDB.BulkInsertMode.html">BulkInsertMode</a></td>
+        <td><span class="parametername">mode</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><span class="parametername">batchSize</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">ct</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDocumentStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_IDocumentStore_BulkInsertEventsAsync_" data-uid="AeroDB.IDocumentStore.BulkInsertEventsAsync*"></a>
+  <h4 id="AeroDB_IDocumentStore_BulkInsertEventsAsync_System_String_System_Collections_Generic_IEnumerable_System_ValueTuple_System_String_System_Collections_Generic_IEnumerable_System_Object____System_Int32_System_Threading_CancellationToken_" data-uid="AeroDB.IDocumentStore.BulkInsertEventsAsync(System.String,System.Collections.Generic.IEnumerable{System.ValueTuple{System.String,System.Collections.Generic.IEnumerable{System.Object}}},System.Int32,System.Threading.CancellationToken)">BulkInsertEventsAsync(string, IEnumerable&lt;(string StreamId, IEnumerable&lt;object&gt; Events)&gt;, int, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Bulk insert events across multiple streams for a specific tenant.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task BulkInsertEventsAsync(string tenantId, IEnumerable&lt;(string StreamId, IEnumerable&lt;object&gt; Events)&gt; streams, int batchSize = 1000, CancellationToken ct = default)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">tenantId</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;(<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.valuetuple-system.string,system.collections.generic.ienumerable-system.object--.streamid">StreamId</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt; <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.valuetuple-system.string,system.collections.generic.ienumerable-system.object--.events">Events</a>)&gt;</td>
+        <td><span class="parametername">streams</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><span class="parametername">batchSize</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">ct</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDocumentStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_IDocumentStore_CleanDeletedDocumentsAsync_" data-uid="AeroDB.IDocumentStore.CleanDeletedDocumentsAsync*"></a>
+  <h4 id="AeroDB_IDocumentStore_CleanDeletedDocumentsAsync_System_TimeSpan_System_Threading_CancellationToken_" data-uid="AeroDB.IDocumentStore.CleanDeletedDocumentsAsync(System.TimeSpan,System.Threading.CancellationToken)">CleanDeletedDocumentsAsync(TimeSpan, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Permanently deletes soft-deleted documents older than the specified age.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task&lt;long&gt; CleanDeletedDocumentsAsync(TimeSpan olderThan, CancellationToken ct = default)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.timespan">TimeSpan</a></td>
+        <td><span class="parametername">olderThan</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">ct</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">long</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDocumentStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_IDocumentStore_DirtyTrackedSessionAsync_" data-uid="AeroDB.IDocumentStore.DirtyTrackedSessionAsync*"></a>
+  <h4 id="AeroDB_IDocumentStore_DirtyTrackedSessionAsync_System_String_System_Threading_CancellationToken_" data-uid="AeroDB.IDocumentStore.DirtyTrackedSessionAsync(System.String,System.Threading.CancellationToken)">DirtyTrackedSessionAsync(string, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Open a dirty-tracked session scoped to a tenant.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task&lt;IDocumentSession&gt; DirtyTrackedSessionAsync(string tenantId, CancellationToken ct = default)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">tenantId</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">ct</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="AeroDB.IDocumentSession.html">IDocumentSession</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDocumentStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_IDocumentStore_DocumentSessionAsync_" data-uid="AeroDB.IDocumentStore.DocumentSessionAsync*"></a>
+  <h4 id="AeroDB_IDocumentStore_DocumentSessionAsync_System_Threading_CancellationToken_" data-uid="AeroDB.IDocumentStore.DocumentSessionAsync(System.Threading.CancellationToken)">DocumentSessionAsync(CancellationToken)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.IdentityOnly }) instead.&quot;)]
+Task&lt;IDocumentSession&gt; DocumentSessionAsync(CancellationToken ct = default)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">ct</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="AeroDB.IDocumentSession.html">IDocumentSession</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDocumentStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_IDocumentStore_GetVersionAsync_" data-uid="AeroDB.IDocumentStore.GetVersionAsync*"></a>
+  <h4 id="AeroDB_IDocumentStore_GetVersionAsync_System_Threading_CancellationToken_" data-uid="AeroDB.IDocumentStore.GetVersionAsync(System.Threading.CancellationToken)">GetVersionAsync(CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Get the SurrealDB server version string (e.g., &quot;surrealdb-3.1.0&quot;).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task&lt;string?&gt; GetVersionAsync(CancellationToken ct = default)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">ct</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDocumentStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_IDocumentStore_Graph_" data-uid="AeroDB.IDocumentStore.Graph*"></a>
+  <h4 id="AeroDB_IDocumentStore_Graph__1" data-uid="AeroDB.IDocumentStore.Graph``1">Graph&lt;T&gt;()</h4>
+  <div class="markdown level1 summary"><p>Start a graph traversal query. Opens an ephemeral session internally.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IGraphQuery&lt;T&gt; Graph&lt;T&gt;() where T : class</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.IGraphQuery-1.html">IGraphQuery</a>&lt;T&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDocumentStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_IDocumentStore_IdentitySessionAsync_" data-uid="AeroDB.IDocumentStore.IdentitySessionAsync*"></a>
+  <h4 id="AeroDB_IDocumentStore_IdentitySessionAsync_System_String_System_Threading_CancellationToken_" data-uid="AeroDB.IDocumentStore.IdentitySessionAsync(System.String,System.Threading.CancellationToken)">IdentitySessionAsync(string, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Open an identity-tracking session scoped to a tenant.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task&lt;IDocumentSession&gt; IdentitySessionAsync(string tenantId, CancellationToken ct = default)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">tenantId</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">ct</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="AeroDB.IDocumentSession.html">IDocumentSession</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDocumentStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_IDocumentStore_InitializeAsync_" data-uid="AeroDB.IDocumentStore.InitializeAsync*"></a>
+  <h4 id="AeroDB_IDocumentStore_InitializeAsync_System_Threading_CancellationToken_" data-uid="AeroDB.IDocumentStore.InitializeAsync(System.Threading.CancellationToken)">InitializeAsync(CancellationToken)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task InitializeAsync(CancellationToken ct = default)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">ct</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDocumentStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_IDocumentStore_LightweightSessionAsync_" data-uid="AeroDB.IDocumentStore.LightweightSessionAsync*"></a>
+  <h4 id="AeroDB_IDocumentStore_LightweightSessionAsync_System_Threading_CancellationToken_" data-uid="AeroDB.IDocumentStore.LightweightSessionAsync(System.Threading.CancellationToken)">LightweightSessionAsync(CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Opens a lightweight document session with no identity map or change tracking
+(<a class="xref" href="AeroDB.DocumentTracking.html#AeroDB_DocumentTracking_None">None</a>). Equivalent to
+<code>OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }, ct)</code>.
+This is the recommended default for most read/write operations, matching Marten's
+<code>LightweightSession()</code> pattern.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task&lt;IDocumentSession&gt; LightweightSessionAsync(CancellationToken ct = default)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">ct</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="AeroDB.IDocumentSession.html">IDocumentSession</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDocumentStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_IDocumentStore_LiveQuerySessionAsync_" data-uid="AeroDB.IDocumentStore.LiveQuerySessionAsync*"></a>
+  <h4 id="AeroDB_IDocumentStore_LiveQuerySessionAsync_System_Threading_CancellationToken_" data-uid="AeroDB.IDocumentStore.LiveQuerySessionAsync(System.Threading.CancellationToken)">LiveQuerySessionAsync(CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Opens a session dedicated to live queries (SurrealDB WebSocket required).
+Returns a fluent builder for typed, expression-based subscriptions.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task&lt;ILiveQuerySession&gt; LiveQuerySessionAsync(CancellationToken ct = default)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">ct</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="AeroDB.LiveQuery.ILiveQuerySession.html">ILiveQuerySession</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDocumentStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_IDocumentStore_OpenSessionAsync_" data-uid="AeroDB.IDocumentStore.OpenSessionAsync*"></a>
+  <h4 id="AeroDB_IDocumentStore_OpenSessionAsync_AeroDB_SessionOptions_System_Threading_CancellationToken_" data-uid="AeroDB.IDocumentStore.OpenSessionAsync(AeroDB.SessionOptions,System.Threading.CancellationToken)">OpenSessionAsync(SessionOptions, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Open a session with full configuration control.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task&lt;IDocumentSession&gt; OpenSessionAsync(SessionOptions options, CancellationToken ct = default)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.SessionOptions.html">SessionOptions</a></td>
+        <td><span class="parametername">options</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">ct</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="AeroDB.IDocumentSession.html">IDocumentSession</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDocumentStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_IDocumentStore_QueryAsync_" data-uid="AeroDB.IDocumentStore.QueryAsync*"></a>
+  <h4 id="AeroDB_IDocumentStore_QueryAsync__2_AeroDB_ICompiledQuery___0___1__System_Threading_CancellationToken_" data-uid="AeroDB.IDocumentStore.QueryAsync``2(AeroDB.ICompiledQuery{``0,``1},System.Threading.CancellationToken)">QueryAsync&lt;TDoc, TOut&gt;(ICompiledQuery&lt;TDoc, TOut&gt;, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Execute a compiled query against a lightweight session.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task&lt;TOut&gt; QueryAsync&lt;TDoc, TOut&gt;(ICompiledQuery&lt;TDoc, TOut&gt; query, CancellationToken ct = default) where TDoc : class</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.ICompiledQuery-2.html">ICompiledQuery</a>&lt;TDoc, TOut&gt;</td>
+        <td><span class="parametername">query</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">ct</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;TOut&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TDoc</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="parametername">TOut</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDocumentStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_IDocumentStore_QuerySessionAsync_" data-uid="AeroDB.IDocumentStore.QuerySessionAsync*"></a>
+  <h4 id="AeroDB_IDocumentStore_QuerySessionAsync_System_Threading_CancellationToken_" data-uid="AeroDB.IDocumentStore.QuerySessionAsync(System.Threading.CancellationToken)">QuerySessionAsync(CancellationToken)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task&lt;IQuerySession&gt; QuerySessionAsync(CancellationToken ct = default)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">ct</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="AeroDB.IQuerySession.html">IQuerySession</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDocumentStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_IDocumentStore_WithTenant_" data-uid="AeroDB.IDocumentStore.WithTenant*"></a>
+  <h4 id="AeroDB_IDocumentStore_WithTenant_System_String_" data-uid="AeroDB.IDocumentStore.WithTenant(System.String)">WithTenant(string)</h4>
+  <div class="markdown level1 summary"><p>Sets the tenant ID for the next session created from this store (DatabasePerTenant mode).
+The tenant ID is consumed on the next call to <code>QuerySessionAsync</code>,
+<code>OpenSessionAsync</code>, or <code>OpenSessionAsync</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IDocumentStore WithTenant(string tenantId)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">tenantId</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.IDocumentStore.html">IDocumentStore</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="AeroDB.CompiledQueryExtensions.html#AeroDB_CompiledQueryExtensions_CompileQuery__1_AeroDB_IDocumentStore_System_Linq_Expressions_Expression_System_Func_System_Linq_IQueryable___0__System_Linq_IQueryable___0____">CompiledQueryExtensions.CompileQuery&lt;T&gt;(IDocumentStore, Expression&lt;Func&lt;IQueryable&lt;T&gt;, IQueryable&lt;T&gt;&gt;&gt;)</a>
+  </div>
+
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDocumentStore.cs" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In this article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      AeroDB Documentation
+      
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.min.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

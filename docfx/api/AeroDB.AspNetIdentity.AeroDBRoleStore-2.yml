@@ -1,0 +1,2416 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.AspNetIdentity.AeroDBRoleStore`2
+  commentId: T:AeroDB.AspNetIdentity.AeroDBRoleStore`2
+  id: AeroDBRoleStore`2
+  parent: AeroDB.AspNetIdentity
+  children:
+  - AeroDB.AspNetIdentity.AeroDBRoleStore`2.#ctor(AeroDB.IDocumentStore,Microsoft.Extensions.Logging.ILogger,Microsoft.AspNetCore.Identity.IdentityErrorDescriber)
+  - AeroDB.AspNetIdentity.AeroDBRoleStore`2.#ctor(AeroDB.IDocumentStore,Microsoft.Extensions.Logging.ILogger{AeroDB.AspNetIdentity.AeroDBRoleStore{`0,`1}},Microsoft.AspNetCore.Identity.IdentityErrorDescriber)
+  - AeroDB.AspNetIdentity.AeroDBRoleStore`2.CreateAsync(`0,System.Threading.CancellationToken)
+  - AeroDB.AspNetIdentity.AeroDBRoleStore`2.DeleteAsync(`0,System.Threading.CancellationToken)
+  - AeroDB.AspNetIdentity.AeroDBRoleStore`2.Dispose
+  - AeroDB.AspNetIdentity.AeroDBRoleStore`2.FindByIdAsync(System.String,System.Threading.CancellationToken)
+  - AeroDB.AspNetIdentity.AeroDBRoleStore`2.FindByNameAsync(System.String,System.Threading.CancellationToken)
+  - AeroDB.AspNetIdentity.AeroDBRoleStore`2.GetNormalizedRoleNameAsync(`0,System.Threading.CancellationToken)
+  - AeroDB.AspNetIdentity.AeroDBRoleStore`2.GetRoleIdAsync(`0,System.Threading.CancellationToken)
+  - AeroDB.AspNetIdentity.AeroDBRoleStore`2.GetRoleNameAsync(`0,System.Threading.CancellationToken)
+  - AeroDB.AspNetIdentity.AeroDBRoleStore`2.Roles
+  - AeroDB.AspNetIdentity.AeroDBRoleStore`2.SetNormalizedRoleNameAsync(`0,System.String,System.Threading.CancellationToken)
+  - AeroDB.AspNetIdentity.AeroDBRoleStore`2.SetRoleNameAsync(`0,System.String,System.Threading.CancellationToken)
+  - AeroDB.AspNetIdentity.AeroDBRoleStore`2.UpdateAsync(`0,System.Threading.CancellationToken)
+  langs:
+  - csharp
+  - vb
+  name: AeroDBRoleStore<TRole, TKey>
+  nameWithType: AeroDBRoleStore<TRole, TKey>
+  fullName: AeroDB.AspNetIdentity.AeroDBRoleStore<TRole, TKey>
+  type: Class
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.AspNetIdentity/AeroDBRoleStore.cs
+  assemblies:
+  - AeroDB.AspNetIdentity
+  namespace: AeroDB.AspNetIdentity
+  summary: >-
+    SurrealDB-backed store for <code class="typeparamref">TRole</code> roles,
+
+    implementing <xref href="Microsoft.AspNetCore.Identity.IRoleStore%601" data-throw-if-not-resolved="false"></xref> and <xref href="Microsoft.AspNetCore.Identity.IQueryableRoleStore%601" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: 'public class AeroDBRoleStore<TRole, TKey> : IQueryableRoleStore<TRole>, IRoleStore<TRole>, IDisposable where TRole : IdentityRole<TKey> where TKey : IEquatable<TKey>'
+    typeParameters:
+    - id: TRole
+      description: The role type, must inherit from <xref href="Microsoft.AspNetCore.Identity.IdentityRole" data-throw-if-not-resolved="false"></xref>.
+    - id: TKey
+      description: The identity key type.
+    content.vb: Public Class AeroDBRoleStore(Of TRole As IdentityRole(Of TKey), TKey As IEquatable(Of TKey)) Implements IQueryableRoleStore(Of TRole), IRoleStore(Of TRole), IDisposable
+  inheritance:
+  - System.Object
+  derivedClasses:
+  - AeroDB.AspNetIdentity.AeroDBRoleStore`1
+  implements:
+  - Microsoft.AspNetCore.Identity.IQueryableRoleStore{{TRole}}
+  - Microsoft.AspNetCore.Identity.IRoleStore{{TRole}}
+  - System.IDisposable
+  inheritedMembers:
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  nameWithType.vb: AeroDBRoleStore(Of TRole, TKey)
+  fullName.vb: AeroDB.AspNetIdentity.AeroDBRoleStore(Of TRole, TKey)
+  name.vb: AeroDBRoleStore(Of TRole, TKey)
+- uid: AeroDB.AspNetIdentity.AeroDBRoleStore`2.#ctor(AeroDB.IDocumentStore,Microsoft.Extensions.Logging.ILogger{AeroDB.AspNetIdentity.AeroDBRoleStore{`0,`1}},Microsoft.AspNetCore.Identity.IdentityErrorDescriber)
+  commentId: M:AeroDB.AspNetIdentity.AeroDBRoleStore`2.#ctor(AeroDB.IDocumentStore,Microsoft.Extensions.Logging.ILogger{AeroDB.AspNetIdentity.AeroDBRoleStore{`0,`1}},Microsoft.AspNetCore.Identity.IdentityErrorDescriber)
+  id: '#ctor(AeroDB.IDocumentStore,Microsoft.Extensions.Logging.ILogger{AeroDB.AspNetIdentity.AeroDBRoleStore{`0,`1}},Microsoft.AspNetCore.Identity.IdentityErrorDescriber)'
+  parent: AeroDB.AspNetIdentity.AeroDBRoleStore`2
+  langs:
+  - csharp
+  - vb
+  name: AeroDBRoleStore(IDocumentStore, ILogger<AeroDBRoleStore<TRole, TKey>>, IdentityErrorDescriber?)
+  nameWithType: AeroDBRoleStore<TRole, TKey>.AeroDBRoleStore(IDocumentStore, ILogger<AeroDBRoleStore<TRole, TKey>>, IdentityErrorDescriber?)
+  fullName: AeroDB.AspNetIdentity.AeroDBRoleStore<TRole, TKey>.AeroDBRoleStore(AeroDB.IDocumentStore, Microsoft.Extensions.Logging.ILogger<AeroDB.AspNetIdentity.AeroDBRoleStore<TRole, TKey>>, Microsoft.AspNetCore.Identity.IdentityErrorDescriber?)
+  type: Constructor
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.AspNetIdentity/AeroDBRoleStore.cs
+  assemblies:
+  - AeroDB.AspNetIdentity
+  namespace: AeroDB.AspNetIdentity
+  summary: Initializes a new instance of <xref href="AeroDB.AspNetIdentity.AeroDBRoleStore%601" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: public AeroDBRoleStore(IDocumentStore store, ILogger<AeroDBRoleStore<TRole, TKey>> logger, IdentityErrorDescriber? describer = null)
+    parameters:
+    - id: store
+      type: AeroDB.IDocumentStore
+      description: The AeroDB document store.
+    - id: logger
+      type: Microsoft.Extensions.Logging.ILogger{AeroDB.AspNetIdentity.AeroDBRoleStore`2}
+      description: Logger instance.
+    - id: describer
+      type: Microsoft.AspNetCore.Identity.IdentityErrorDescriber
+      description: Identity error describer.
+    content.vb: Public Sub New(store As IDocumentStore, logger As ILogger(Of AeroDBRoleStore(Of TRole, TKey)), describer As IdentityErrorDescriber = Nothing)
+  overload: AeroDB.AspNetIdentity.AeroDBRoleStore`2.#ctor*
+  nameWithType.vb: AeroDBRoleStore(Of TRole, TKey).New(IDocumentStore, ILogger(Of AeroDBRoleStore(Of TRole, TKey)), IdentityErrorDescriber)
+  fullName.vb: AeroDB.AspNetIdentity.AeroDBRoleStore(Of TRole, TKey).New(AeroDB.IDocumentStore, Microsoft.Extensions.Logging.ILogger(Of AeroDB.AspNetIdentity.AeroDBRoleStore(Of TRole, TKey)), Microsoft.AspNetCore.Identity.IdentityErrorDescriber)
+  name.vb: New(IDocumentStore, ILogger(Of AeroDBRoleStore(Of TRole, TKey)), IdentityErrorDescriber)
+- uid: AeroDB.AspNetIdentity.AeroDBRoleStore`2.#ctor(AeroDB.IDocumentStore,Microsoft.Extensions.Logging.ILogger,Microsoft.AspNetCore.Identity.IdentityErrorDescriber)
+  commentId: M:AeroDB.AspNetIdentity.AeroDBRoleStore`2.#ctor(AeroDB.IDocumentStore,Microsoft.Extensions.Logging.ILogger,Microsoft.AspNetCore.Identity.IdentityErrorDescriber)
+  id: '#ctor(AeroDB.IDocumentStore,Microsoft.Extensions.Logging.ILogger,Microsoft.AspNetCore.Identity.IdentityErrorDescriber)'
+  parent: AeroDB.AspNetIdentity.AeroDBRoleStore`2
+  langs:
+  - csharp
+  - vb
+  name: AeroDBRoleStore(IDocumentStore, ILogger, IdentityErrorDescriber?)
+  nameWithType: AeroDBRoleStore<TRole, TKey>.AeroDBRoleStore(IDocumentStore, ILogger, IdentityErrorDescriber?)
+  fullName: AeroDB.AspNetIdentity.AeroDBRoleStore<TRole, TKey>.AeroDBRoleStore(AeroDB.IDocumentStore, Microsoft.Extensions.Logging.ILogger, Microsoft.AspNetCore.Identity.IdentityErrorDescriber?)
+  type: Constructor
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.AspNetIdentity/AeroDBRoleStore.cs
+  assemblies:
+  - AeroDB.AspNetIdentity
+  namespace: AeroDB.AspNetIdentity
+  syntax:
+    content: protected AeroDBRoleStore(IDocumentStore store, ILogger logger, IdentityErrorDescriber? describer = null)
+    parameters:
+    - id: store
+      type: AeroDB.IDocumentStore
+    - id: logger
+      type: Microsoft.Extensions.Logging.ILogger
+    - id: describer
+      type: Microsoft.AspNetCore.Identity.IdentityErrorDescriber
+    content.vb: Protected Sub New(store As IDocumentStore, logger As ILogger, describer As IdentityErrorDescriber = Nothing)
+  overload: AeroDB.AspNetIdentity.AeroDBRoleStore`2.#ctor*
+  nameWithType.vb: AeroDBRoleStore(Of TRole, TKey).New(IDocumentStore, ILogger, IdentityErrorDescriber)
+  fullName.vb: AeroDB.AspNetIdentity.AeroDBRoleStore(Of TRole, TKey).New(AeroDB.IDocumentStore, Microsoft.Extensions.Logging.ILogger, Microsoft.AspNetCore.Identity.IdentityErrorDescriber)
+  name.vb: New(IDocumentStore, ILogger, IdentityErrorDescriber)
+- uid: AeroDB.AspNetIdentity.AeroDBRoleStore`2.CreateAsync(`0,System.Threading.CancellationToken)
+  commentId: M:AeroDB.AspNetIdentity.AeroDBRoleStore`2.CreateAsync(`0,System.Threading.CancellationToken)
+  id: CreateAsync(`0,System.Threading.CancellationToken)
+  parent: AeroDB.AspNetIdentity.AeroDBRoleStore`2
+  langs:
+  - csharp
+  - vb
+  name: CreateAsync(TRole, CancellationToken)
+  nameWithType: AeroDBRoleStore<TRole, TKey>.CreateAsync(TRole, CancellationToken)
+  fullName: AeroDB.AspNetIdentity.AeroDBRoleStore<TRole, TKey>.CreateAsync(TRole, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.AspNetIdentity/AeroDBRoleStore.cs
+  assemblies:
+  - AeroDB.AspNetIdentity
+  namespace: AeroDB.AspNetIdentity
+  example: []
+  syntax:
+    content: public Task<IdentityResult> CreateAsync(TRole role, CancellationToken cancellationToken)
+    parameters:
+    - id: role
+      type: '{TRole}'
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task{Microsoft.AspNetCore.Identity.IdentityResult}
+    content.vb: Public Function CreateAsync(role As TRole, cancellationToken As CancellationToken) As Task(Of IdentityResult)
+  overload: AeroDB.AspNetIdentity.AeroDBRoleStore`2.CreateAsync*
+  implements:
+  - Microsoft.AspNetCore.Identity.IRoleStore{{TRole}}.CreateAsync({TRole},System.Threading.CancellationToken)
+  nameWithType.vb: AeroDBRoleStore(Of TRole, TKey).CreateAsync(TRole, CancellationToken)
+  fullName.vb: AeroDB.AspNetIdentity.AeroDBRoleStore(Of TRole, TKey).CreateAsync(TRole, System.Threading.CancellationToken)
+- uid: AeroDB.AspNetIdentity.AeroDBRoleStore`2.UpdateAsync(`0,System.Threading.CancellationToken)
+  commentId: M:AeroDB.AspNetIdentity.AeroDBRoleStore`2.UpdateAsync(`0,System.Threading.CancellationToken)
+  id: UpdateAsync(`0,System.Threading.CancellationToken)
+  parent: AeroDB.AspNetIdentity.AeroDBRoleStore`2
+  langs:
+  - csharp
+  - vb
+  name: UpdateAsync(TRole, CancellationToken)
+  nameWithType: AeroDBRoleStore<TRole, TKey>.UpdateAsync(TRole, CancellationToken)
+  fullName: AeroDB.AspNetIdentity.AeroDBRoleStore<TRole, TKey>.UpdateAsync(TRole, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.AspNetIdentity/AeroDBRoleStore.cs
+  assemblies:
+  - AeroDB.AspNetIdentity
+  namespace: AeroDB.AspNetIdentity
+  example: []
+  syntax:
+    content: public Task<IdentityResult> UpdateAsync(TRole role, CancellationToken cancellationToken)
+    parameters:
+    - id: role
+      type: '{TRole}'
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task{Microsoft.AspNetCore.Identity.IdentityResult}
+    content.vb: Public Function UpdateAsync(role As TRole, cancellationToken As CancellationToken) As Task(Of IdentityResult)
+  overload: AeroDB.AspNetIdentity.AeroDBRoleStore`2.UpdateAsync*
+  implements:
+  - Microsoft.AspNetCore.Identity.IRoleStore{{TRole}}.UpdateAsync({TRole},System.Threading.CancellationToken)
+  nameWithType.vb: AeroDBRoleStore(Of TRole, TKey).UpdateAsync(TRole, CancellationToken)
+  fullName.vb: AeroDB.AspNetIdentity.AeroDBRoleStore(Of TRole, TKey).UpdateAsync(TRole, System.Threading.CancellationToken)
+- uid: AeroDB.AspNetIdentity.AeroDBRoleStore`2.DeleteAsync(`0,System.Threading.CancellationToken)
+  commentId: M:AeroDB.AspNetIdentity.AeroDBRoleStore`2.DeleteAsync(`0,System.Threading.CancellationToken)
+  id: DeleteAsync(`0,System.Threading.CancellationToken)
+  parent: AeroDB.AspNetIdentity.AeroDBRoleStore`2
+  langs:
+  - csharp
+  - vb
+  name: DeleteAsync(TRole, CancellationToken)
+  nameWithType: AeroDBRoleStore<TRole, TKey>.DeleteAsync(TRole, CancellationToken)
+  fullName: AeroDB.AspNetIdentity.AeroDBRoleStore<TRole, TKey>.DeleteAsync(TRole, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.AspNetIdentity/AeroDBRoleStore.cs
+  assemblies:
+  - AeroDB.AspNetIdentity
+  namespace: AeroDB.AspNetIdentity
+  example: []
+  syntax:
+    content: public Task<IdentityResult> DeleteAsync(TRole role, CancellationToken cancellationToken)
+    parameters:
+    - id: role
+      type: '{TRole}'
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task{Microsoft.AspNetCore.Identity.IdentityResult}
+    content.vb: Public Function DeleteAsync(role As TRole, cancellationToken As CancellationToken) As Task(Of IdentityResult)
+  overload: AeroDB.AspNetIdentity.AeroDBRoleStore`2.DeleteAsync*
+  implements:
+  - Microsoft.AspNetCore.Identity.IRoleStore{{TRole}}.DeleteAsync({TRole},System.Threading.CancellationToken)
+  nameWithType.vb: AeroDBRoleStore(Of TRole, TKey).DeleteAsync(TRole, CancellationToken)
+  fullName.vb: AeroDB.AspNetIdentity.AeroDBRoleStore(Of TRole, TKey).DeleteAsync(TRole, System.Threading.CancellationToken)
+- uid: AeroDB.AspNetIdentity.AeroDBRoleStore`2.FindByIdAsync(System.String,System.Threading.CancellationToken)
+  commentId: M:AeroDB.AspNetIdentity.AeroDBRoleStore`2.FindByIdAsync(System.String,System.Threading.CancellationToken)
+  id: FindByIdAsync(System.String,System.Threading.CancellationToken)
+  parent: AeroDB.AspNetIdentity.AeroDBRoleStore`2
+  langs:
+  - csharp
+  - vb
+  name: FindByIdAsync(string, CancellationToken)
+  nameWithType: AeroDBRoleStore<TRole, TKey>.FindByIdAsync(string, CancellationToken)
+  fullName: AeroDB.AspNetIdentity.AeroDBRoleStore<TRole, TKey>.FindByIdAsync(string, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.AspNetIdentity/AeroDBRoleStore.cs
+  assemblies:
+  - AeroDB.AspNetIdentity
+  namespace: AeroDB.AspNetIdentity
+  example: []
+  syntax:
+    content: public Task<TRole?> FindByIdAsync(string roleId, CancellationToken cancellationToken)
+    parameters:
+    - id: roleId
+      type: System.String
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task{{TRole}}
+    content.vb: Public Function FindByIdAsync(roleId As String, cancellationToken As CancellationToken) As Task(Of TRole)
+  overload: AeroDB.AspNetIdentity.AeroDBRoleStore`2.FindByIdAsync*
+  implements:
+  - Microsoft.AspNetCore.Identity.IRoleStore{{TRole}}.FindByIdAsync(System.String,System.Threading.CancellationToken)
+  nameWithType.vb: AeroDBRoleStore(Of TRole, TKey).FindByIdAsync(String, CancellationToken)
+  fullName.vb: AeroDB.AspNetIdentity.AeroDBRoleStore(Of TRole, TKey).FindByIdAsync(String, System.Threading.CancellationToken)
+  name.vb: FindByIdAsync(String, CancellationToken)
+- uid: AeroDB.AspNetIdentity.AeroDBRoleStore`2.FindByNameAsync(System.String,System.Threading.CancellationToken)
+  commentId: M:AeroDB.AspNetIdentity.AeroDBRoleStore`2.FindByNameAsync(System.String,System.Threading.CancellationToken)
+  id: FindByNameAsync(System.String,System.Threading.CancellationToken)
+  parent: AeroDB.AspNetIdentity.AeroDBRoleStore`2
+  langs:
+  - csharp
+  - vb
+  name: FindByNameAsync(string, CancellationToken)
+  nameWithType: AeroDBRoleStore<TRole, TKey>.FindByNameAsync(string, CancellationToken)
+  fullName: AeroDB.AspNetIdentity.AeroDBRoleStore<TRole, TKey>.FindByNameAsync(string, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.AspNetIdentity/AeroDBRoleStore.cs
+  assemblies:
+  - AeroDB.AspNetIdentity
+  namespace: AeroDB.AspNetIdentity
+  example: []
+  syntax:
+    content: public Task<TRole?> FindByNameAsync(string normalizedRoleName, CancellationToken cancellationToken)
+    parameters:
+    - id: normalizedRoleName
+      type: System.String
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task{{TRole}}
+    content.vb: Public Function FindByNameAsync(normalizedRoleName As String, cancellationToken As CancellationToken) As Task(Of TRole)
+  overload: AeroDB.AspNetIdentity.AeroDBRoleStore`2.FindByNameAsync*
+  implements:
+  - Microsoft.AspNetCore.Identity.IRoleStore{{TRole}}.FindByNameAsync(System.String,System.Threading.CancellationToken)
+  nameWithType.vb: AeroDBRoleStore(Of TRole, TKey).FindByNameAsync(String, CancellationToken)
+  fullName.vb: AeroDB.AspNetIdentity.AeroDBRoleStore(Of TRole, TKey).FindByNameAsync(String, System.Threading.CancellationToken)
+  name.vb: FindByNameAsync(String, CancellationToken)
+- uid: AeroDB.AspNetIdentity.AeroDBRoleStore`2.GetRoleIdAsync(`0,System.Threading.CancellationToken)
+  commentId: M:AeroDB.AspNetIdentity.AeroDBRoleStore`2.GetRoleIdAsync(`0,System.Threading.CancellationToken)
+  id: GetRoleIdAsync(`0,System.Threading.CancellationToken)
+  parent: AeroDB.AspNetIdentity.AeroDBRoleStore`2
+  langs:
+  - csharp
+  - vb
+  name: GetRoleIdAsync(TRole, CancellationToken)
+  nameWithType: AeroDBRoleStore<TRole, TKey>.GetRoleIdAsync(TRole, CancellationToken)
+  fullName: AeroDB.AspNetIdentity.AeroDBRoleStore<TRole, TKey>.GetRoleIdAsync(TRole, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.AspNetIdentity/AeroDBRoleStore.cs
+  assemblies:
+  - AeroDB.AspNetIdentity
+  namespace: AeroDB.AspNetIdentity
+  example: []
+  syntax:
+    content: public Task<string> GetRoleIdAsync(TRole role, CancellationToken cancellationToken)
+    parameters:
+    - id: role
+      type: '{TRole}'
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task{System.String}
+    content.vb: Public Function GetRoleIdAsync(role As TRole, cancellationToken As CancellationToken) As Task(Of String)
+  overload: AeroDB.AspNetIdentity.AeroDBRoleStore`2.GetRoleIdAsync*
+  implements:
+  - Microsoft.AspNetCore.Identity.IRoleStore{{TRole}}.GetRoleIdAsync({TRole},System.Threading.CancellationToken)
+  nameWithType.vb: AeroDBRoleStore(Of TRole, TKey).GetRoleIdAsync(TRole, CancellationToken)
+  fullName.vb: AeroDB.AspNetIdentity.AeroDBRoleStore(Of TRole, TKey).GetRoleIdAsync(TRole, System.Threading.CancellationToken)
+- uid: AeroDB.AspNetIdentity.AeroDBRoleStore`2.GetRoleNameAsync(`0,System.Threading.CancellationToken)
+  commentId: M:AeroDB.AspNetIdentity.AeroDBRoleStore`2.GetRoleNameAsync(`0,System.Threading.CancellationToken)
+  id: GetRoleNameAsync(`0,System.Threading.CancellationToken)
+  parent: AeroDB.AspNetIdentity.AeroDBRoleStore`2
+  langs:
+  - csharp
+  - vb
+  name: GetRoleNameAsync(TRole, CancellationToken)
+  nameWithType: AeroDBRoleStore<TRole, TKey>.GetRoleNameAsync(TRole, CancellationToken)
+  fullName: AeroDB.AspNetIdentity.AeroDBRoleStore<TRole, TKey>.GetRoleNameAsync(TRole, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.AspNetIdentity/AeroDBRoleStore.cs
+  assemblies:
+  - AeroDB.AspNetIdentity
+  namespace: AeroDB.AspNetIdentity
+  example: []
+  syntax:
+    content: public Task<string?> GetRoleNameAsync(TRole role, CancellationToken cancellationToken)
+    parameters:
+    - id: role
+      type: '{TRole}'
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task{System.String}
+    content.vb: Public Function GetRoleNameAsync(role As TRole, cancellationToken As CancellationToken) As Task(Of String)
+  overload: AeroDB.AspNetIdentity.AeroDBRoleStore`2.GetRoleNameAsync*
+  implements:
+  - Microsoft.AspNetCore.Identity.IRoleStore{{TRole}}.GetRoleNameAsync({TRole},System.Threading.CancellationToken)
+  nameWithType.vb: AeroDBRoleStore(Of TRole, TKey).GetRoleNameAsync(TRole, CancellationToken)
+  fullName.vb: AeroDB.AspNetIdentity.AeroDBRoleStore(Of TRole, TKey).GetRoleNameAsync(TRole, System.Threading.CancellationToken)
+- uid: AeroDB.AspNetIdentity.AeroDBRoleStore`2.SetRoleNameAsync(`0,System.String,System.Threading.CancellationToken)
+  commentId: M:AeroDB.AspNetIdentity.AeroDBRoleStore`2.SetRoleNameAsync(`0,System.String,System.Threading.CancellationToken)
+  id: SetRoleNameAsync(`0,System.String,System.Threading.CancellationToken)
+  parent: AeroDB.AspNetIdentity.AeroDBRoleStore`2
+  langs:
+  - csharp
+  - vb
+  name: SetRoleNameAsync(TRole, string?, CancellationToken)
+  nameWithType: AeroDBRoleStore<TRole, TKey>.SetRoleNameAsync(TRole, string?, CancellationToken)
+  fullName: AeroDB.AspNetIdentity.AeroDBRoleStore<TRole, TKey>.SetRoleNameAsync(TRole, string?, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.AspNetIdentity/AeroDBRoleStore.cs
+  assemblies:
+  - AeroDB.AspNetIdentity
+  namespace: AeroDB.AspNetIdentity
+  example: []
+  syntax:
+    content: public Task SetRoleNameAsync(TRole role, string? roleName, CancellationToken cancellationToken)
+    parameters:
+    - id: role
+      type: '{TRole}'
+    - id: roleName
+      type: System.String
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Function SetRoleNameAsync(role As TRole, roleName As String, cancellationToken As CancellationToken) As Task
+  overload: AeroDB.AspNetIdentity.AeroDBRoleStore`2.SetRoleNameAsync*
+  implements:
+  - Microsoft.AspNetCore.Identity.IRoleStore{{TRole}}.SetRoleNameAsync({TRole},System.String,System.Threading.CancellationToken)
+  nameWithType.vb: AeroDBRoleStore(Of TRole, TKey).SetRoleNameAsync(TRole, String, CancellationToken)
+  fullName.vb: AeroDB.AspNetIdentity.AeroDBRoleStore(Of TRole, TKey).SetRoleNameAsync(TRole, String, System.Threading.CancellationToken)
+  name.vb: SetRoleNameAsync(TRole, String, CancellationToken)
+- uid: AeroDB.AspNetIdentity.AeroDBRoleStore`2.GetNormalizedRoleNameAsync(`0,System.Threading.CancellationToken)
+  commentId: M:AeroDB.AspNetIdentity.AeroDBRoleStore`2.GetNormalizedRoleNameAsync(`0,System.Threading.CancellationToken)
+  id: GetNormalizedRoleNameAsync(`0,System.Threading.CancellationToken)
+  parent: AeroDB.AspNetIdentity.AeroDBRoleStore`2
+  langs:
+  - csharp
+  - vb
+  name: GetNormalizedRoleNameAsync(TRole, CancellationToken)
+  nameWithType: AeroDBRoleStore<TRole, TKey>.GetNormalizedRoleNameAsync(TRole, CancellationToken)
+  fullName: AeroDB.AspNetIdentity.AeroDBRoleStore<TRole, TKey>.GetNormalizedRoleNameAsync(TRole, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.AspNetIdentity/AeroDBRoleStore.cs
+  assemblies:
+  - AeroDB.AspNetIdentity
+  namespace: AeroDB.AspNetIdentity
+  example: []
+  syntax:
+    content: public Task<string?> GetNormalizedRoleNameAsync(TRole role, CancellationToken cancellationToken)
+    parameters:
+    - id: role
+      type: '{TRole}'
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task{System.String}
+    content.vb: Public Function GetNormalizedRoleNameAsync(role As TRole, cancellationToken As CancellationToken) As Task(Of String)
+  overload: AeroDB.AspNetIdentity.AeroDBRoleStore`2.GetNormalizedRoleNameAsync*
+  implements:
+  - Microsoft.AspNetCore.Identity.IRoleStore{{TRole}}.GetNormalizedRoleNameAsync({TRole},System.Threading.CancellationToken)
+  nameWithType.vb: AeroDBRoleStore(Of TRole, TKey).GetNormalizedRoleNameAsync(TRole, CancellationToken)
+  fullName.vb: AeroDB.AspNetIdentity.AeroDBRoleStore(Of TRole, TKey).GetNormalizedRoleNameAsync(TRole, System.Threading.CancellationToken)
+- uid: AeroDB.AspNetIdentity.AeroDBRoleStore`2.SetNormalizedRoleNameAsync(`0,System.String,System.Threading.CancellationToken)
+  commentId: M:AeroDB.AspNetIdentity.AeroDBRoleStore`2.SetNormalizedRoleNameAsync(`0,System.String,System.Threading.CancellationToken)
+  id: SetNormalizedRoleNameAsync(`0,System.String,System.Threading.CancellationToken)
+  parent: AeroDB.AspNetIdentity.AeroDBRoleStore`2
+  langs:
+  - csharp
+  - vb
+  name: SetNormalizedRoleNameAsync(TRole, string?, CancellationToken)
+  nameWithType: AeroDBRoleStore<TRole, TKey>.SetNormalizedRoleNameAsync(TRole, string?, CancellationToken)
+  fullName: AeroDB.AspNetIdentity.AeroDBRoleStore<TRole, TKey>.SetNormalizedRoleNameAsync(TRole, string?, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.AspNetIdentity/AeroDBRoleStore.cs
+  assemblies:
+  - AeroDB.AspNetIdentity
+  namespace: AeroDB.AspNetIdentity
+  example: []
+  syntax:
+    content: public Task SetNormalizedRoleNameAsync(TRole role, string? normalizedName, CancellationToken cancellationToken)
+    parameters:
+    - id: role
+      type: '{TRole}'
+    - id: normalizedName
+      type: System.String
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Function SetNormalizedRoleNameAsync(role As TRole, normalizedName As String, cancellationToken As CancellationToken) As Task
+  overload: AeroDB.AspNetIdentity.AeroDBRoleStore`2.SetNormalizedRoleNameAsync*
+  implements:
+  - Microsoft.AspNetCore.Identity.IRoleStore{{TRole}}.SetNormalizedRoleNameAsync({TRole},System.String,System.Threading.CancellationToken)
+  nameWithType.vb: AeroDBRoleStore(Of TRole, TKey).SetNormalizedRoleNameAsync(TRole, String, CancellationToken)
+  fullName.vb: AeroDB.AspNetIdentity.AeroDBRoleStore(Of TRole, TKey).SetNormalizedRoleNameAsync(TRole, String, System.Threading.CancellationToken)
+  name.vb: SetNormalizedRoleNameAsync(TRole, String, CancellationToken)
+- uid: AeroDB.AspNetIdentity.AeroDBRoleStore`2.Dispose
+  commentId: M:AeroDB.AspNetIdentity.AeroDBRoleStore`2.Dispose
+  id: Dispose
+  parent: AeroDB.AspNetIdentity.AeroDBRoleStore`2
+  langs:
+  - csharp
+  - vb
+  name: Dispose()
+  nameWithType: AeroDBRoleStore<TRole, TKey>.Dispose()
+  fullName: AeroDB.AspNetIdentity.AeroDBRoleStore<TRole, TKey>.Dispose()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.AspNetIdentity/AeroDBRoleStore.cs
+  assemblies:
+  - AeroDB.AspNetIdentity
+  namespace: AeroDB.AspNetIdentity
+  example: []
+  syntax:
+    content: public void Dispose()
+    content.vb: Public Sub Dispose()
+  overload: AeroDB.AspNetIdentity.AeroDBRoleStore`2.Dispose*
+  implements:
+  - System.IDisposable.Dispose
+  nameWithType.vb: AeroDBRoleStore(Of TRole, TKey).Dispose()
+  fullName.vb: AeroDB.AspNetIdentity.AeroDBRoleStore(Of TRole, TKey).Dispose()
+- uid: AeroDB.AspNetIdentity.AeroDBRoleStore`2.Roles
+  commentId: P:AeroDB.AspNetIdentity.AeroDBRoleStore`2.Roles
+  id: Roles
+  parent: AeroDB.AspNetIdentity.AeroDBRoleStore`2
+  langs:
+  - csharp
+  - vb
+  name: Roles
+  nameWithType: AeroDBRoleStore<TRole, TKey>.Roles
+  fullName: AeroDB.AspNetIdentity.AeroDBRoleStore<TRole, TKey>.Roles
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.AspNetIdentity/AeroDBRoleStore.cs
+  assemblies:
+  - AeroDB.AspNetIdentity
+  namespace: AeroDB.AspNetIdentity
+  example: []
+  syntax:
+    content: public IQueryable<TRole> Roles { get; }
+    parameters: []
+    return:
+      type: System.Linq.IQueryable{{TRole}}
+    content.vb: Public ReadOnly Property Roles As IQueryable(Of TRole)
+  overload: AeroDB.AspNetIdentity.AeroDBRoleStore`2.Roles*
+  implements:
+  - Microsoft.AspNetCore.Identity.IQueryableRoleStore{{TRole}}.Roles
+  nameWithType.vb: AeroDBRoleStore(Of TRole, TKey).Roles
+  fullName.vb: AeroDB.AspNetIdentity.AeroDBRoleStore(Of TRole, TKey).Roles
+references:
+- uid: Microsoft.AspNetCore.Identity.IRoleStore`1
+  commentId: T:Microsoft.AspNetCore.Identity.IRoleStore`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.irolestore-1
+  name: IRoleStore<TRole>
+  nameWithType: IRoleStore<TRole>
+  fullName: Microsoft.AspNetCore.Identity.IRoleStore<TRole>
+  nameWithType.vb: IRoleStore(Of TRole)
+  fullName.vb: Microsoft.AspNetCore.Identity.IRoleStore(Of TRole)
+  name.vb: IRoleStore(Of TRole)
+  spec.csharp:
+  - uid: Microsoft.AspNetCore.Identity.IRoleStore`1
+    name: IRoleStore
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.irolestore-1
+  - name: <
+  - name: TRole
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.AspNetCore.Identity.IRoleStore`1
+    name: IRoleStore
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.irolestore-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TRole
+  - name: )
+- uid: Microsoft.AspNetCore.Identity.IQueryableRoleStore`1
+  commentId: T:Microsoft.AspNetCore.Identity.IQueryableRoleStore`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.iqueryablerolestore-1
+  name: IQueryableRoleStore<TRole>
+  nameWithType: IQueryableRoleStore<TRole>
+  fullName: Microsoft.AspNetCore.Identity.IQueryableRoleStore<TRole>
+  nameWithType.vb: IQueryableRoleStore(Of TRole)
+  fullName.vb: Microsoft.AspNetCore.Identity.IQueryableRoleStore(Of TRole)
+  name.vb: IQueryableRoleStore(Of TRole)
+  spec.csharp:
+  - uid: Microsoft.AspNetCore.Identity.IQueryableRoleStore`1
+    name: IQueryableRoleStore
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.iqueryablerolestore-1
+  - name: <
+  - name: TRole
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.AspNetCore.Identity.IQueryableRoleStore`1
+    name: IQueryableRoleStore
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.iqueryablerolestore-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TRole
+  - name: )
+- uid: Microsoft.AspNetCore.Identity.IdentityRole
+  commentId: T:Microsoft.AspNetCore.Identity.IdentityRole
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.identityrole
+  name: IdentityRole
+  nameWithType: IdentityRole
+  fullName: Microsoft.AspNetCore.Identity.IdentityRole
+- uid: AeroDB.AspNetIdentity
+  commentId: N:AeroDB.AspNetIdentity
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB.AspNetIdentity
+  nameWithType: AeroDB.AspNetIdentity
+  fullName: AeroDB.AspNetIdentity
+  spec.csharp:
+  - uid: AeroDB
+    name: AeroDB
+    isExternal: true
+    href: AeroDB.html
+  - name: .
+  - uid: AeroDB.AspNetIdentity
+    name: AspNetIdentity
+    isExternal: true
+    href: AeroDB.AspNetIdentity.html
+  spec.vb:
+  - uid: AeroDB
+    name: AeroDB
+    isExternal: true
+    href: AeroDB.html
+  - name: .
+  - uid: AeroDB.AspNetIdentity
+    name: AspNetIdentity
+    isExternal: true
+    href: AeroDB.AspNetIdentity.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: Microsoft.AspNetCore.Identity.IQueryableRoleStore{{TRole}}
+  commentId: T:Microsoft.AspNetCore.Identity.IQueryableRoleStore{`0}
+  parent: Microsoft.AspNetCore.Identity
+  definition: Microsoft.AspNetCore.Identity.IQueryableRoleStore`1
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.iqueryablerolestore-1
+  name: IQueryableRoleStore<TRole>
+  nameWithType: IQueryableRoleStore<TRole>
+  fullName: Microsoft.AspNetCore.Identity.IQueryableRoleStore<TRole>
+  nameWithType.vb: IQueryableRoleStore(Of TRole)
+  fullName.vb: Microsoft.AspNetCore.Identity.IQueryableRoleStore(Of TRole)
+  name.vb: IQueryableRoleStore(Of TRole)
+  spec.csharp:
+  - uid: Microsoft.AspNetCore.Identity.IQueryableRoleStore`1
+    name: IQueryableRoleStore
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.iqueryablerolestore-1
+  - name: <
+  - name: TRole
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.AspNetCore.Identity.IQueryableRoleStore`1
+    name: IQueryableRoleStore
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.iqueryablerolestore-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TRole
+  - name: )
+- uid: Microsoft.AspNetCore.Identity.IRoleStore{{TRole}}
+  commentId: T:Microsoft.AspNetCore.Identity.IRoleStore{`0}
+  parent: Microsoft.AspNetCore.Identity
+  definition: Microsoft.AspNetCore.Identity.IRoleStore`1
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.irolestore-1
+  name: IRoleStore<TRole>
+  nameWithType: IRoleStore<TRole>
+  fullName: Microsoft.AspNetCore.Identity.IRoleStore<TRole>
+  nameWithType.vb: IRoleStore(Of TRole)
+  fullName.vb: Microsoft.AspNetCore.Identity.IRoleStore(Of TRole)
+  name.vb: IRoleStore(Of TRole)
+  spec.csharp:
+  - uid: Microsoft.AspNetCore.Identity.IRoleStore`1
+    name: IRoleStore
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.irolestore-1
+  - name: <
+  - name: TRole
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.AspNetCore.Identity.IRoleStore`1
+    name: IRoleStore
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.irolestore-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TRole
+  - name: )
+- uid: System.IDisposable
+  commentId: T:System.IDisposable
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable
+  name: IDisposable
+  nameWithType: IDisposable
+  fullName: System.IDisposable
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Microsoft.AspNetCore.Identity
+  commentId: N:Microsoft.AspNetCore.Identity
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.AspNetCore.Identity
+  nameWithType: Microsoft.AspNetCore.Identity
+  fullName: Microsoft.AspNetCore.Identity
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.AspNetCore
+    name: AspNetCore
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore
+  - name: .
+  - uid: Microsoft.AspNetCore.Identity
+    name: Identity
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.AspNetCore
+    name: AspNetCore
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore
+  - name: .
+  - uid: Microsoft.AspNetCore.Identity
+    name: Identity
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity
+- uid: AeroDB.AspNetIdentity.AeroDBRoleStore`1
+  commentId: T:AeroDB.AspNetIdentity.AeroDBRoleStore`1
+  isExternal: true
+  href: AeroDB.AspNetIdentity.AeroDBRoleStore-1.html
+  name: AeroDBRoleStore<TRole>
+  nameWithType: AeroDBRoleStore<TRole>
+  fullName: AeroDB.AspNetIdentity.AeroDBRoleStore<TRole>
+  nameWithType.vb: AeroDBRoleStore(Of TRole)
+  fullName.vb: AeroDB.AspNetIdentity.AeroDBRoleStore(Of TRole)
+  name.vb: AeroDBRoleStore(Of TRole)
+  spec.csharp:
+  - uid: AeroDB.AspNetIdentity.AeroDBRoleStore`1
+    name: AeroDBRoleStore
+    isExternal: true
+    href: AeroDB.AspNetIdentity.AeroDBRoleStore-1.html
+  - name: <
+  - name: TRole
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.AspNetIdentity.AeroDBRoleStore`1
+    name: AeroDBRoleStore
+    isExternal: true
+    href: AeroDB.AspNetIdentity.AeroDBRoleStore-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TRole
+  - name: )
+- uid: AeroDB.AspNetIdentity.AeroDBRoleStore`2.#ctor*
+  commentId: Overload:AeroDB.AspNetIdentity.AeroDBRoleStore`2.#ctor
+  isExternal: true
+  href: AeroDB.AspNetIdentity.AeroDBRoleStore-2.html#AeroDB_AspNetIdentity_AeroDBRoleStore_2__ctor_AeroDB_IDocumentStore_Microsoft_Extensions_Logging_ILogger_AeroDB_AspNetIdentity_AeroDBRoleStore__0__1___Microsoft_AspNetCore_Identity_IdentityErrorDescriber_
+  name: AeroDBRoleStore
+  nameWithType: AeroDBRoleStore<TRole, TKey>.AeroDBRoleStore
+  fullName: AeroDB.AspNetIdentity.AeroDBRoleStore<TRole, TKey>.AeroDBRoleStore
+  nameWithType.vb: AeroDBRoleStore(Of TRole, TKey).New
+  fullName.vb: AeroDB.AspNetIdentity.AeroDBRoleStore(Of TRole, TKey).New
+  name.vb: New
+- uid: AeroDB.IDocumentStore
+  commentId: T:AeroDB.IDocumentStore
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IDocumentStore.html
+  name: IDocumentStore
+  nameWithType: IDocumentStore
+  fullName: AeroDB.IDocumentStore
+- uid: Microsoft.Extensions.Logging.ILogger{AeroDB.AspNetIdentity.AeroDBRoleStore`2}
+  commentId: T:Microsoft.Extensions.Logging.ILogger{AeroDB.AspNetIdentity.AeroDBRoleStore`2}
+  parent: Microsoft.Extensions.Logging
+  definition: Microsoft.Extensions.Logging.ILogger`1
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<AeroDBRoleStore<TRole, TKey>>
+  nameWithType: ILogger<AeroDBRoleStore<TRole, TKey>>
+  fullName: Microsoft.Extensions.Logging.ILogger<AeroDB.AspNetIdentity.AeroDBRoleStore<TRole, TKey>>
+  nameWithType.vb: ILogger(Of AeroDBRoleStore(Of TRole, TKey))
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of AeroDB.AspNetIdentity.AeroDBRoleStore(Of TRole, TKey))
+  name.vb: ILogger(Of AeroDBRoleStore(Of TRole, TKey))
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - uid: AeroDB.AspNetIdentity.AeroDBRoleStore`2
+    name: AeroDBRoleStore
+    isExternal: true
+    href: AeroDB.AspNetIdentity.AeroDBRoleStore-2.html
+  - name: <
+  - name: TRole
+  - name: ','
+  - name: " "
+  - name: TKey
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.AspNetIdentity.AeroDBRoleStore`2
+    name: AeroDBRoleStore
+    isExternal: true
+    href: AeroDB.AspNetIdentity.AeroDBRoleStore-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TRole
+  - name: ','
+  - name: " "
+  - name: TKey
+  - name: )
+  - name: )
+- uid: Microsoft.AspNetCore.Identity.IdentityErrorDescriber
+  commentId: T:Microsoft.AspNetCore.Identity.IdentityErrorDescriber
+  parent: Microsoft.AspNetCore.Identity
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.identityerrordescriber
+  name: IdentityErrorDescriber
+  nameWithType: IdentityErrorDescriber
+  fullName: Microsoft.AspNetCore.Identity.IdentityErrorDescriber
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: Microsoft.Extensions.Logging.ILogger`1
+  commentId: T:Microsoft.Extensions.Logging.ILogger`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<TCategoryName>
+  nameWithType: ILogger<TCategoryName>
+  fullName: Microsoft.Extensions.Logging.ILogger<TCategoryName>
+  nameWithType.vb: ILogger(Of TCategoryName)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of TCategoryName)
+  name.vb: ILogger(Of TCategoryName)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - name: TCategoryName
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TCategoryName
+  - name: )
+- uid: Microsoft.Extensions.Logging
+  commentId: N:Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.Logging
+  nameWithType: Microsoft.Extensions.Logging
+  fullName: Microsoft.Extensions.Logging
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+- uid: Microsoft.Extensions.Logging.ILogger
+  commentId: T:Microsoft.Extensions.Logging.ILogger
+  parent: Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger
+  name: ILogger
+  nameWithType: ILogger
+  fullName: Microsoft.Extensions.Logging.ILogger
+- uid: AeroDB.AspNetIdentity.AeroDBRoleStore`2.CreateAsync*
+  commentId: Overload:AeroDB.AspNetIdentity.AeroDBRoleStore`2.CreateAsync
+  isExternal: true
+  href: AeroDB.AspNetIdentity.AeroDBRoleStore-2.html#AeroDB_AspNetIdentity_AeroDBRoleStore_2_CreateAsync__0_System_Threading_CancellationToken_
+  name: CreateAsync
+  nameWithType: AeroDBRoleStore<TRole, TKey>.CreateAsync
+  fullName: AeroDB.AspNetIdentity.AeroDBRoleStore<TRole, TKey>.CreateAsync
+  nameWithType.vb: AeroDBRoleStore(Of TRole, TKey).CreateAsync
+  fullName.vb: AeroDB.AspNetIdentity.AeroDBRoleStore(Of TRole, TKey).CreateAsync
+- uid: Microsoft.AspNetCore.Identity.IRoleStore{{TRole}}.CreateAsync({TRole},System.Threading.CancellationToken)
+  commentId: M:Microsoft.AspNetCore.Identity.IRoleStore{`0}.CreateAsync(`0,System.Threading.CancellationToken)
+  parent: Microsoft.AspNetCore.Identity.IRoleStore{{TRole}}
+  definition: Microsoft.AspNetCore.Identity.IRoleStore`1.CreateAsync(`0,System.Threading.CancellationToken)
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.irolestore-1.createasync
+  name: CreateAsync(TRole, CancellationToken)
+  nameWithType: IRoleStore<TRole>.CreateAsync(TRole, CancellationToken)
+  fullName: Microsoft.AspNetCore.Identity.IRoleStore<TRole>.CreateAsync(TRole, System.Threading.CancellationToken)
+  nameWithType.vb: IRoleStore(Of TRole).CreateAsync(TRole, CancellationToken)
+  fullName.vb: Microsoft.AspNetCore.Identity.IRoleStore(Of TRole).CreateAsync(TRole, System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: Microsoft.AspNetCore.Identity.IRoleStore{`0}.CreateAsync(`0,System.Threading.CancellationToken)
+    name: CreateAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.irolestore-1.createasync
+  - name: (
+  - name: TRole
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Microsoft.AspNetCore.Identity.IRoleStore{`0}.CreateAsync(`0,System.Threading.CancellationToken)
+    name: CreateAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.irolestore-1.createasync
+  - name: (
+  - name: TRole
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: '{TRole}'
+  commentId: '!:TRole'
+  definition: TRole
+  name: TRole
+  nameWithType: TRole
+  fullName: TRole
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task{Microsoft.AspNetCore.Identity.IdentityResult}
+  commentId: T:System.Threading.Tasks.Task{Microsoft.AspNetCore.Identity.IdentityResult}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<IdentityResult>
+  nameWithType: Task<IdentityResult>
+  fullName: System.Threading.Tasks.Task<Microsoft.AspNetCore.Identity.IdentityResult>
+  nameWithType.vb: Task(Of IdentityResult)
+  fullName.vb: System.Threading.Tasks.Task(Of Microsoft.AspNetCore.Identity.IdentityResult)
+  name.vb: Task(Of IdentityResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: Microsoft.AspNetCore.Identity.IdentityResult
+    name: IdentityResult
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.identityresult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Microsoft.AspNetCore.Identity.IdentityResult
+    name: IdentityResult
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.identityresult
+  - name: )
+- uid: Microsoft.AspNetCore.Identity.IRoleStore`1.CreateAsync(`0,System.Threading.CancellationToken)
+  commentId: M:Microsoft.AspNetCore.Identity.IRoleStore`1.CreateAsync(`0,System.Threading.CancellationToken)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.irolestore-1.createasync
+  name: CreateAsync(TRole, CancellationToken)
+  nameWithType: IRoleStore<TRole>.CreateAsync(TRole, CancellationToken)
+  fullName: Microsoft.AspNetCore.Identity.IRoleStore<TRole>.CreateAsync(TRole, System.Threading.CancellationToken)
+  nameWithType.vb: IRoleStore(Of TRole).CreateAsync(TRole, CancellationToken)
+  fullName.vb: Microsoft.AspNetCore.Identity.IRoleStore(Of TRole).CreateAsync(TRole, System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: Microsoft.AspNetCore.Identity.IRoleStore`1.CreateAsync(`0,System.Threading.CancellationToken)
+    name: CreateAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.irolestore-1.createasync
+  - name: (
+  - name: TRole
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Microsoft.AspNetCore.Identity.IRoleStore`1.CreateAsync(`0,System.Threading.CancellationToken)
+    name: CreateAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.irolestore-1.createasync
+  - name: (
+  - name: TRole
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: TRole
+  name: TRole
+  nameWithType: TRole
+  fullName: TRole
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: AeroDB.AspNetIdentity.AeroDBRoleStore`2.UpdateAsync*
+  commentId: Overload:AeroDB.AspNetIdentity.AeroDBRoleStore`2.UpdateAsync
+  isExternal: true
+  href: AeroDB.AspNetIdentity.AeroDBRoleStore-2.html#AeroDB_AspNetIdentity_AeroDBRoleStore_2_UpdateAsync__0_System_Threading_CancellationToken_
+  name: UpdateAsync
+  nameWithType: AeroDBRoleStore<TRole, TKey>.UpdateAsync
+  fullName: AeroDB.AspNetIdentity.AeroDBRoleStore<TRole, TKey>.UpdateAsync
+  nameWithType.vb: AeroDBRoleStore(Of TRole, TKey).UpdateAsync
+  fullName.vb: AeroDB.AspNetIdentity.AeroDBRoleStore(Of TRole, TKey).UpdateAsync
+- uid: Microsoft.AspNetCore.Identity.IRoleStore{{TRole}}.UpdateAsync({TRole},System.Threading.CancellationToken)
+  commentId: M:Microsoft.AspNetCore.Identity.IRoleStore{`0}.UpdateAsync(`0,System.Threading.CancellationToken)
+  parent: Microsoft.AspNetCore.Identity.IRoleStore{{TRole}}
+  definition: Microsoft.AspNetCore.Identity.IRoleStore`1.UpdateAsync(`0,System.Threading.CancellationToken)
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.irolestore-1.updateasync
+  name: UpdateAsync(TRole, CancellationToken)
+  nameWithType: IRoleStore<TRole>.UpdateAsync(TRole, CancellationToken)
+  fullName: Microsoft.AspNetCore.Identity.IRoleStore<TRole>.UpdateAsync(TRole, System.Threading.CancellationToken)
+  nameWithType.vb: IRoleStore(Of TRole).UpdateAsync(TRole, CancellationToken)
+  fullName.vb: Microsoft.AspNetCore.Identity.IRoleStore(Of TRole).UpdateAsync(TRole, System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: Microsoft.AspNetCore.Identity.IRoleStore{`0}.UpdateAsync(`0,System.Threading.CancellationToken)
+    name: UpdateAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.irolestore-1.updateasync
+  - name: (
+  - name: TRole
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Microsoft.AspNetCore.Identity.IRoleStore{`0}.UpdateAsync(`0,System.Threading.CancellationToken)
+    name: UpdateAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.irolestore-1.updateasync
+  - name: (
+  - name: TRole
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: Microsoft.AspNetCore.Identity.IRoleStore`1.UpdateAsync(`0,System.Threading.CancellationToken)
+  commentId: M:Microsoft.AspNetCore.Identity.IRoleStore`1.UpdateAsync(`0,System.Threading.CancellationToken)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.irolestore-1.updateasync
+  name: UpdateAsync(TRole, CancellationToken)
+  nameWithType: IRoleStore<TRole>.UpdateAsync(TRole, CancellationToken)
+  fullName: Microsoft.AspNetCore.Identity.IRoleStore<TRole>.UpdateAsync(TRole, System.Threading.CancellationToken)
+  nameWithType.vb: IRoleStore(Of TRole).UpdateAsync(TRole, CancellationToken)
+  fullName.vb: Microsoft.AspNetCore.Identity.IRoleStore(Of TRole).UpdateAsync(TRole, System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: Microsoft.AspNetCore.Identity.IRoleStore`1.UpdateAsync(`0,System.Threading.CancellationToken)
+    name: UpdateAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.irolestore-1.updateasync
+  - name: (
+  - name: TRole
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Microsoft.AspNetCore.Identity.IRoleStore`1.UpdateAsync(`0,System.Threading.CancellationToken)
+    name: UpdateAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.irolestore-1.updateasync
+  - name: (
+  - name: TRole
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: AeroDB.AspNetIdentity.AeroDBRoleStore`2.DeleteAsync*
+  commentId: Overload:AeroDB.AspNetIdentity.AeroDBRoleStore`2.DeleteAsync
+  isExternal: true
+  href: AeroDB.AspNetIdentity.AeroDBRoleStore-2.html#AeroDB_AspNetIdentity_AeroDBRoleStore_2_DeleteAsync__0_System_Threading_CancellationToken_
+  name: DeleteAsync
+  nameWithType: AeroDBRoleStore<TRole, TKey>.DeleteAsync
+  fullName: AeroDB.AspNetIdentity.AeroDBRoleStore<TRole, TKey>.DeleteAsync
+  nameWithType.vb: AeroDBRoleStore(Of TRole, TKey).DeleteAsync
+  fullName.vb: AeroDB.AspNetIdentity.AeroDBRoleStore(Of TRole, TKey).DeleteAsync
+- uid: Microsoft.AspNetCore.Identity.IRoleStore{{TRole}}.DeleteAsync({TRole},System.Threading.CancellationToken)
+  commentId: M:Microsoft.AspNetCore.Identity.IRoleStore{`0}.DeleteAsync(`0,System.Threading.CancellationToken)
+  parent: Microsoft.AspNetCore.Identity.IRoleStore{{TRole}}
+  definition: Microsoft.AspNetCore.Identity.IRoleStore`1.DeleteAsync(`0,System.Threading.CancellationToken)
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.irolestore-1.deleteasync
+  name: DeleteAsync(TRole, CancellationToken)
+  nameWithType: IRoleStore<TRole>.DeleteAsync(TRole, CancellationToken)
+  fullName: Microsoft.AspNetCore.Identity.IRoleStore<TRole>.DeleteAsync(TRole, System.Threading.CancellationToken)
+  nameWithType.vb: IRoleStore(Of TRole).DeleteAsync(TRole, CancellationToken)
+  fullName.vb: Microsoft.AspNetCore.Identity.IRoleStore(Of TRole).DeleteAsync(TRole, System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: Microsoft.AspNetCore.Identity.IRoleStore{`0}.DeleteAsync(`0,System.Threading.CancellationToken)
+    name: DeleteAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.irolestore-1.deleteasync
+  - name: (
+  - name: TRole
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Microsoft.AspNetCore.Identity.IRoleStore{`0}.DeleteAsync(`0,System.Threading.CancellationToken)
+    name: DeleteAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.irolestore-1.deleteasync
+  - name: (
+  - name: TRole
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: Microsoft.AspNetCore.Identity.IRoleStore`1.DeleteAsync(`0,System.Threading.CancellationToken)
+  commentId: M:Microsoft.AspNetCore.Identity.IRoleStore`1.DeleteAsync(`0,System.Threading.CancellationToken)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.irolestore-1.deleteasync
+  name: DeleteAsync(TRole, CancellationToken)
+  nameWithType: IRoleStore<TRole>.DeleteAsync(TRole, CancellationToken)
+  fullName: Microsoft.AspNetCore.Identity.IRoleStore<TRole>.DeleteAsync(TRole, System.Threading.CancellationToken)
+  nameWithType.vb: IRoleStore(Of TRole).DeleteAsync(TRole, CancellationToken)
+  fullName.vb: Microsoft.AspNetCore.Identity.IRoleStore(Of TRole).DeleteAsync(TRole, System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: Microsoft.AspNetCore.Identity.IRoleStore`1.DeleteAsync(`0,System.Threading.CancellationToken)
+    name: DeleteAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.irolestore-1.deleteasync
+  - name: (
+  - name: TRole
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Microsoft.AspNetCore.Identity.IRoleStore`1.DeleteAsync(`0,System.Threading.CancellationToken)
+    name: DeleteAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.irolestore-1.deleteasync
+  - name: (
+  - name: TRole
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: AeroDB.AspNetIdentity.AeroDBRoleStore`2.FindByIdAsync*
+  commentId: Overload:AeroDB.AspNetIdentity.AeroDBRoleStore`2.FindByIdAsync
+  isExternal: true
+  href: AeroDB.AspNetIdentity.AeroDBRoleStore-2.html#AeroDB_AspNetIdentity_AeroDBRoleStore_2_FindByIdAsync_System_String_System_Threading_CancellationToken_
+  name: FindByIdAsync
+  nameWithType: AeroDBRoleStore<TRole, TKey>.FindByIdAsync
+  fullName: AeroDB.AspNetIdentity.AeroDBRoleStore<TRole, TKey>.FindByIdAsync
+  nameWithType.vb: AeroDBRoleStore(Of TRole, TKey).FindByIdAsync
+  fullName.vb: AeroDB.AspNetIdentity.AeroDBRoleStore(Of TRole, TKey).FindByIdAsync
+- uid: Microsoft.AspNetCore.Identity.IRoleStore{{TRole}}.FindByIdAsync(System.String,System.Threading.CancellationToken)
+  commentId: M:Microsoft.AspNetCore.Identity.IRoleStore{`0}.FindByIdAsync(System.String,System.Threading.CancellationToken)
+  parent: Microsoft.AspNetCore.Identity.IRoleStore{{TRole}}
+  definition: Microsoft.AspNetCore.Identity.IRoleStore`1.FindByIdAsync(System.String,System.Threading.CancellationToken)
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.irolestore-1.findbyidasync
+  name: FindByIdAsync(string, CancellationToken)
+  nameWithType: IRoleStore<TRole>.FindByIdAsync(string, CancellationToken)
+  fullName: Microsoft.AspNetCore.Identity.IRoleStore<TRole>.FindByIdAsync(string, System.Threading.CancellationToken)
+  nameWithType.vb: IRoleStore(Of TRole).FindByIdAsync(String, CancellationToken)
+  fullName.vb: Microsoft.AspNetCore.Identity.IRoleStore(Of TRole).FindByIdAsync(String, System.Threading.CancellationToken)
+  name.vb: FindByIdAsync(String, CancellationToken)
+  spec.csharp:
+  - uid: Microsoft.AspNetCore.Identity.IRoleStore{`0}.FindByIdAsync(System.String,System.Threading.CancellationToken)
+    name: FindByIdAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.irolestore-1.findbyidasync
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Microsoft.AspNetCore.Identity.IRoleStore{`0}.FindByIdAsync(System.String,System.Threading.CancellationToken)
+    name: FindByIdAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.irolestore-1.findbyidasync
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Threading.Tasks.Task{{TRole}}
+  commentId: T:System.Threading.Tasks.Task{`0}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TRole>
+  nameWithType: Task<TRole>
+  fullName: System.Threading.Tasks.Task<TRole>
+  nameWithType.vb: Task(Of TRole)
+  fullName.vb: System.Threading.Tasks.Task(Of TRole)
+  name.vb: Task(Of TRole)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TRole
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TRole
+  - name: )
+- uid: Microsoft.AspNetCore.Identity.IRoleStore`1.FindByIdAsync(System.String,System.Threading.CancellationToken)
+  commentId: M:Microsoft.AspNetCore.Identity.IRoleStore`1.FindByIdAsync(System.String,System.Threading.CancellationToken)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.irolestore-1.findbyidasync
+  name: FindByIdAsync(string, CancellationToken)
+  nameWithType: IRoleStore<TRole>.FindByIdAsync(string, CancellationToken)
+  fullName: Microsoft.AspNetCore.Identity.IRoleStore<TRole>.FindByIdAsync(string, System.Threading.CancellationToken)
+  nameWithType.vb: IRoleStore(Of TRole).FindByIdAsync(String, CancellationToken)
+  fullName.vb: Microsoft.AspNetCore.Identity.IRoleStore(Of TRole).FindByIdAsync(String, System.Threading.CancellationToken)
+  name.vb: FindByIdAsync(String, CancellationToken)
+  spec.csharp:
+  - uid: Microsoft.AspNetCore.Identity.IRoleStore`1.FindByIdAsync(System.String,System.Threading.CancellationToken)
+    name: FindByIdAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.irolestore-1.findbyidasync
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Microsoft.AspNetCore.Identity.IRoleStore`1.FindByIdAsync(System.String,System.Threading.CancellationToken)
+    name: FindByIdAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.irolestore-1.findbyidasync
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: AeroDB.AspNetIdentity.AeroDBRoleStore`2.FindByNameAsync*
+  commentId: Overload:AeroDB.AspNetIdentity.AeroDBRoleStore`2.FindByNameAsync
+  isExternal: true
+  href: AeroDB.AspNetIdentity.AeroDBRoleStore-2.html#AeroDB_AspNetIdentity_AeroDBRoleStore_2_FindByNameAsync_System_String_System_Threading_CancellationToken_
+  name: FindByNameAsync
+  nameWithType: AeroDBRoleStore<TRole, TKey>.FindByNameAsync
+  fullName: AeroDB.AspNetIdentity.AeroDBRoleStore<TRole, TKey>.FindByNameAsync
+  nameWithType.vb: AeroDBRoleStore(Of TRole, TKey).FindByNameAsync
+  fullName.vb: AeroDB.AspNetIdentity.AeroDBRoleStore(Of TRole, TKey).FindByNameAsync
+- uid: Microsoft.AspNetCore.Identity.IRoleStore{{TRole}}.FindByNameAsync(System.String,System.Threading.CancellationToken)
+  commentId: M:Microsoft.AspNetCore.Identity.IRoleStore{`0}.FindByNameAsync(System.String,System.Threading.CancellationToken)
+  parent: Microsoft.AspNetCore.Identity.IRoleStore{{TRole}}
+  definition: Microsoft.AspNetCore.Identity.IRoleStore`1.FindByNameAsync(System.String,System.Threading.CancellationToken)
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.irolestore-1.findbynameasync
+  name: FindByNameAsync(string, CancellationToken)
+  nameWithType: IRoleStore<TRole>.FindByNameAsync(string, CancellationToken)
+  fullName: Microsoft.AspNetCore.Identity.IRoleStore<TRole>.FindByNameAsync(string, System.Threading.CancellationToken)
+  nameWithType.vb: IRoleStore(Of TRole).FindByNameAsync(String, CancellationToken)
+  fullName.vb: Microsoft.AspNetCore.Identity.IRoleStore(Of TRole).FindByNameAsync(String, System.Threading.CancellationToken)
+  name.vb: FindByNameAsync(String, CancellationToken)
+  spec.csharp:
+  - uid: Microsoft.AspNetCore.Identity.IRoleStore{`0}.FindByNameAsync(System.String,System.Threading.CancellationToken)
+    name: FindByNameAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.irolestore-1.findbynameasync
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Microsoft.AspNetCore.Identity.IRoleStore{`0}.FindByNameAsync(System.String,System.Threading.CancellationToken)
+    name: FindByNameAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.irolestore-1.findbynameasync
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: Microsoft.AspNetCore.Identity.IRoleStore`1.FindByNameAsync(System.String,System.Threading.CancellationToken)
+  commentId: M:Microsoft.AspNetCore.Identity.IRoleStore`1.FindByNameAsync(System.String,System.Threading.CancellationToken)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.irolestore-1.findbynameasync
+  name: FindByNameAsync(string, CancellationToken)
+  nameWithType: IRoleStore<TRole>.FindByNameAsync(string, CancellationToken)
+  fullName: Microsoft.AspNetCore.Identity.IRoleStore<TRole>.FindByNameAsync(string, System.Threading.CancellationToken)
+  nameWithType.vb: IRoleStore(Of TRole).FindByNameAsync(String, CancellationToken)
+  fullName.vb: Microsoft.AspNetCore.Identity.IRoleStore(Of TRole).FindByNameAsync(String, System.Threading.CancellationToken)
+  name.vb: FindByNameAsync(String, CancellationToken)
+  spec.csharp:
+  - uid: Microsoft.AspNetCore.Identity.IRoleStore`1.FindByNameAsync(System.String,System.Threading.CancellationToken)
+    name: FindByNameAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.irolestore-1.findbynameasync
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Microsoft.AspNetCore.Identity.IRoleStore`1.FindByNameAsync(System.String,System.Threading.CancellationToken)
+    name: FindByNameAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.irolestore-1.findbynameasync
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: AeroDB.AspNetIdentity.AeroDBRoleStore`2.GetRoleIdAsync*
+  commentId: Overload:AeroDB.AspNetIdentity.AeroDBRoleStore`2.GetRoleIdAsync
+  isExternal: true
+  href: AeroDB.AspNetIdentity.AeroDBRoleStore-2.html#AeroDB_AspNetIdentity_AeroDBRoleStore_2_GetRoleIdAsync__0_System_Threading_CancellationToken_
+  name: GetRoleIdAsync
+  nameWithType: AeroDBRoleStore<TRole, TKey>.GetRoleIdAsync
+  fullName: AeroDB.AspNetIdentity.AeroDBRoleStore<TRole, TKey>.GetRoleIdAsync
+  nameWithType.vb: AeroDBRoleStore(Of TRole, TKey).GetRoleIdAsync
+  fullName.vb: AeroDB.AspNetIdentity.AeroDBRoleStore(Of TRole, TKey).GetRoleIdAsync
+- uid: Microsoft.AspNetCore.Identity.IRoleStore{{TRole}}.GetRoleIdAsync({TRole},System.Threading.CancellationToken)
+  commentId: M:Microsoft.AspNetCore.Identity.IRoleStore{`0}.GetRoleIdAsync(`0,System.Threading.CancellationToken)
+  parent: Microsoft.AspNetCore.Identity.IRoleStore{{TRole}}
+  definition: Microsoft.AspNetCore.Identity.IRoleStore`1.GetRoleIdAsync(`0,System.Threading.CancellationToken)
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.irolestore-1.getroleidasync
+  name: GetRoleIdAsync(TRole, CancellationToken)
+  nameWithType: IRoleStore<TRole>.GetRoleIdAsync(TRole, CancellationToken)
+  fullName: Microsoft.AspNetCore.Identity.IRoleStore<TRole>.GetRoleIdAsync(TRole, System.Threading.CancellationToken)
+  nameWithType.vb: IRoleStore(Of TRole).GetRoleIdAsync(TRole, CancellationToken)
+  fullName.vb: Microsoft.AspNetCore.Identity.IRoleStore(Of TRole).GetRoleIdAsync(TRole, System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: Microsoft.AspNetCore.Identity.IRoleStore{`0}.GetRoleIdAsync(`0,System.Threading.CancellationToken)
+    name: GetRoleIdAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.irolestore-1.getroleidasync
+  - name: (
+  - name: TRole
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Microsoft.AspNetCore.Identity.IRoleStore{`0}.GetRoleIdAsync(`0,System.Threading.CancellationToken)
+    name: GetRoleIdAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.irolestore-1.getroleidasync
+  - name: (
+  - name: TRole
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: System.Threading.Tasks.Task{System.String}
+  commentId: T:System.Threading.Tasks.Task{System.String}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<string>
+  nameWithType: Task<string>
+  fullName: System.Threading.Tasks.Task<string>
+  nameWithType.vb: Task(Of String)
+  fullName.vb: System.Threading.Tasks.Task(Of String)
+  name.vb: Task(Of String)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: Microsoft.AspNetCore.Identity.IRoleStore`1.GetRoleIdAsync(`0,System.Threading.CancellationToken)
+  commentId: M:Microsoft.AspNetCore.Identity.IRoleStore`1.GetRoleIdAsync(`0,System.Threading.CancellationToken)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.irolestore-1.getroleidasync
+  name: GetRoleIdAsync(TRole, CancellationToken)
+  nameWithType: IRoleStore<TRole>.GetRoleIdAsync(TRole, CancellationToken)
+  fullName: Microsoft.AspNetCore.Identity.IRoleStore<TRole>.GetRoleIdAsync(TRole, System.Threading.CancellationToken)
+  nameWithType.vb: IRoleStore(Of TRole).GetRoleIdAsync(TRole, CancellationToken)
+  fullName.vb: Microsoft.AspNetCore.Identity.IRoleStore(Of TRole).GetRoleIdAsync(TRole, System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: Microsoft.AspNetCore.Identity.IRoleStore`1.GetRoleIdAsync(`0,System.Threading.CancellationToken)
+    name: GetRoleIdAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.irolestore-1.getroleidasync
+  - name: (
+  - name: TRole
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Microsoft.AspNetCore.Identity.IRoleStore`1.GetRoleIdAsync(`0,System.Threading.CancellationToken)
+    name: GetRoleIdAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.irolestore-1.getroleidasync
+  - name: (
+  - name: TRole
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: AeroDB.AspNetIdentity.AeroDBRoleStore`2.GetRoleNameAsync*
+  commentId: Overload:AeroDB.AspNetIdentity.AeroDBRoleStore`2.GetRoleNameAsync
+  isExternal: true
+  href: AeroDB.AspNetIdentity.AeroDBRoleStore-2.html#AeroDB_AspNetIdentity_AeroDBRoleStore_2_GetRoleNameAsync__0_System_Threading_CancellationToken_
+  name: GetRoleNameAsync
+  nameWithType: AeroDBRoleStore<TRole, TKey>.GetRoleNameAsync
+  fullName: AeroDB.AspNetIdentity.AeroDBRoleStore<TRole, TKey>.GetRoleNameAsync
+  nameWithType.vb: AeroDBRoleStore(Of TRole, TKey).GetRoleNameAsync
+  fullName.vb: AeroDB.AspNetIdentity.AeroDBRoleStore(Of TRole, TKey).GetRoleNameAsync
+- uid: Microsoft.AspNetCore.Identity.IRoleStore{{TRole}}.GetRoleNameAsync({TRole},System.Threading.CancellationToken)
+  commentId: M:Microsoft.AspNetCore.Identity.IRoleStore{`0}.GetRoleNameAsync(`0,System.Threading.CancellationToken)
+  parent: Microsoft.AspNetCore.Identity.IRoleStore{{TRole}}
+  definition: Microsoft.AspNetCore.Identity.IRoleStore`1.GetRoleNameAsync(`0,System.Threading.CancellationToken)
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.irolestore-1.getrolenameasync
+  name: GetRoleNameAsync(TRole, CancellationToken)
+  nameWithType: IRoleStore<TRole>.GetRoleNameAsync(TRole, CancellationToken)
+  fullName: Microsoft.AspNetCore.Identity.IRoleStore<TRole>.GetRoleNameAsync(TRole, System.Threading.CancellationToken)
+  nameWithType.vb: IRoleStore(Of TRole).GetRoleNameAsync(TRole, CancellationToken)
+  fullName.vb: Microsoft.AspNetCore.Identity.IRoleStore(Of TRole).GetRoleNameAsync(TRole, System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: Microsoft.AspNetCore.Identity.IRoleStore{`0}.GetRoleNameAsync(`0,System.Threading.CancellationToken)
+    name: GetRoleNameAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.irolestore-1.getrolenameasync
+  - name: (
+  - name: TRole
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Microsoft.AspNetCore.Identity.IRoleStore{`0}.GetRoleNameAsync(`0,System.Threading.CancellationToken)
+    name: GetRoleNameAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.irolestore-1.getrolenameasync
+  - name: (
+  - name: TRole
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: Microsoft.AspNetCore.Identity.IRoleStore`1.GetRoleNameAsync(`0,System.Threading.CancellationToken)
+  commentId: M:Microsoft.AspNetCore.Identity.IRoleStore`1.GetRoleNameAsync(`0,System.Threading.CancellationToken)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.irolestore-1.getrolenameasync
+  name: GetRoleNameAsync(TRole, CancellationToken)
+  nameWithType: IRoleStore<TRole>.GetRoleNameAsync(TRole, CancellationToken)
+  fullName: Microsoft.AspNetCore.Identity.IRoleStore<TRole>.GetRoleNameAsync(TRole, System.Threading.CancellationToken)
+  nameWithType.vb: IRoleStore(Of TRole).GetRoleNameAsync(TRole, CancellationToken)
+  fullName.vb: Microsoft.AspNetCore.Identity.IRoleStore(Of TRole).GetRoleNameAsync(TRole, System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: Microsoft.AspNetCore.Identity.IRoleStore`1.GetRoleNameAsync(`0,System.Threading.CancellationToken)
+    name: GetRoleNameAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.irolestore-1.getrolenameasync
+  - name: (
+  - name: TRole
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Microsoft.AspNetCore.Identity.IRoleStore`1.GetRoleNameAsync(`0,System.Threading.CancellationToken)
+    name: GetRoleNameAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.irolestore-1.getrolenameasync
+  - name: (
+  - name: TRole
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: AeroDB.AspNetIdentity.AeroDBRoleStore`2.SetRoleNameAsync*
+  commentId: Overload:AeroDB.AspNetIdentity.AeroDBRoleStore`2.SetRoleNameAsync
+  isExternal: true
+  href: AeroDB.AspNetIdentity.AeroDBRoleStore-2.html#AeroDB_AspNetIdentity_AeroDBRoleStore_2_SetRoleNameAsync__0_System_String_System_Threading_CancellationToken_
+  name: SetRoleNameAsync
+  nameWithType: AeroDBRoleStore<TRole, TKey>.SetRoleNameAsync
+  fullName: AeroDB.AspNetIdentity.AeroDBRoleStore<TRole, TKey>.SetRoleNameAsync
+  nameWithType.vb: AeroDBRoleStore(Of TRole, TKey).SetRoleNameAsync
+  fullName.vb: AeroDB.AspNetIdentity.AeroDBRoleStore(Of TRole, TKey).SetRoleNameAsync
+- uid: Microsoft.AspNetCore.Identity.IRoleStore{{TRole}}.SetRoleNameAsync({TRole},System.String,System.Threading.CancellationToken)
+  commentId: M:Microsoft.AspNetCore.Identity.IRoleStore{`0}.SetRoleNameAsync(`0,System.String,System.Threading.CancellationToken)
+  parent: Microsoft.AspNetCore.Identity.IRoleStore{{TRole}}
+  definition: Microsoft.AspNetCore.Identity.IRoleStore`1.SetRoleNameAsync(`0,System.String,System.Threading.CancellationToken)
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.irolestore-1.setrolenameasync
+  name: SetRoleNameAsync(TRole, string, CancellationToken)
+  nameWithType: IRoleStore<TRole>.SetRoleNameAsync(TRole, string, CancellationToken)
+  fullName: Microsoft.AspNetCore.Identity.IRoleStore<TRole>.SetRoleNameAsync(TRole, string, System.Threading.CancellationToken)
+  nameWithType.vb: IRoleStore(Of TRole).SetRoleNameAsync(TRole, String, CancellationToken)
+  fullName.vb: Microsoft.AspNetCore.Identity.IRoleStore(Of TRole).SetRoleNameAsync(TRole, String, System.Threading.CancellationToken)
+  name.vb: SetRoleNameAsync(TRole, String, CancellationToken)
+  spec.csharp:
+  - uid: Microsoft.AspNetCore.Identity.IRoleStore{`0}.SetRoleNameAsync(`0,System.String,System.Threading.CancellationToken)
+    name: SetRoleNameAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.irolestore-1.setrolenameasync
+  - name: (
+  - name: TRole
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Microsoft.AspNetCore.Identity.IRoleStore{`0}.SetRoleNameAsync(`0,System.String,System.Threading.CancellationToken)
+    name: SetRoleNameAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.irolestore-1.setrolenameasync
+  - name: (
+  - name: TRole
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: Microsoft.AspNetCore.Identity.IRoleStore`1.SetRoleNameAsync(`0,System.String,System.Threading.CancellationToken)
+  commentId: M:Microsoft.AspNetCore.Identity.IRoleStore`1.SetRoleNameAsync(`0,System.String,System.Threading.CancellationToken)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.irolestore-1.setrolenameasync
+  name: SetRoleNameAsync(TRole, string, CancellationToken)
+  nameWithType: IRoleStore<TRole>.SetRoleNameAsync(TRole, string, CancellationToken)
+  fullName: Microsoft.AspNetCore.Identity.IRoleStore<TRole>.SetRoleNameAsync(TRole, string, System.Threading.CancellationToken)
+  nameWithType.vb: IRoleStore(Of TRole).SetRoleNameAsync(TRole, String, CancellationToken)
+  fullName.vb: Microsoft.AspNetCore.Identity.IRoleStore(Of TRole).SetRoleNameAsync(TRole, String, System.Threading.CancellationToken)
+  name.vb: SetRoleNameAsync(TRole, String, CancellationToken)
+  spec.csharp:
+  - uid: Microsoft.AspNetCore.Identity.IRoleStore`1.SetRoleNameAsync(`0,System.String,System.Threading.CancellationToken)
+    name: SetRoleNameAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.irolestore-1.setrolenameasync
+  - name: (
+  - name: TRole
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Microsoft.AspNetCore.Identity.IRoleStore`1.SetRoleNameAsync(`0,System.String,System.Threading.CancellationToken)
+    name: SetRoleNameAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.irolestore-1.setrolenameasync
+  - name: (
+  - name: TRole
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: AeroDB.AspNetIdentity.AeroDBRoleStore`2.GetNormalizedRoleNameAsync*
+  commentId: Overload:AeroDB.AspNetIdentity.AeroDBRoleStore`2.GetNormalizedRoleNameAsync
+  isExternal: true
+  href: AeroDB.AspNetIdentity.AeroDBRoleStore-2.html#AeroDB_AspNetIdentity_AeroDBRoleStore_2_GetNormalizedRoleNameAsync__0_System_Threading_CancellationToken_
+  name: GetNormalizedRoleNameAsync
+  nameWithType: AeroDBRoleStore<TRole, TKey>.GetNormalizedRoleNameAsync
+  fullName: AeroDB.AspNetIdentity.AeroDBRoleStore<TRole, TKey>.GetNormalizedRoleNameAsync
+  nameWithType.vb: AeroDBRoleStore(Of TRole, TKey).GetNormalizedRoleNameAsync
+  fullName.vb: AeroDB.AspNetIdentity.AeroDBRoleStore(Of TRole, TKey).GetNormalizedRoleNameAsync
+- uid: Microsoft.AspNetCore.Identity.IRoleStore{{TRole}}.GetNormalizedRoleNameAsync({TRole},System.Threading.CancellationToken)
+  commentId: M:Microsoft.AspNetCore.Identity.IRoleStore{`0}.GetNormalizedRoleNameAsync(`0,System.Threading.CancellationToken)
+  parent: Microsoft.AspNetCore.Identity.IRoleStore{{TRole}}
+  definition: Microsoft.AspNetCore.Identity.IRoleStore`1.GetNormalizedRoleNameAsync(`0,System.Threading.CancellationToken)
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.irolestore-1.getnormalizedrolenameasync
+  name: GetNormalizedRoleNameAsync(TRole, CancellationToken)
+  nameWithType: IRoleStore<TRole>.GetNormalizedRoleNameAsync(TRole, CancellationToken)
+  fullName: Microsoft.AspNetCore.Identity.IRoleStore<TRole>.GetNormalizedRoleNameAsync(TRole, System.Threading.CancellationToken)
+  nameWithType.vb: IRoleStore(Of TRole).GetNormalizedRoleNameAsync(TRole, CancellationToken)
+  fullName.vb: Microsoft.AspNetCore.Identity.IRoleStore(Of TRole).GetNormalizedRoleNameAsync(TRole, System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: Microsoft.AspNetCore.Identity.IRoleStore{`0}.GetNormalizedRoleNameAsync(`0,System.Threading.CancellationToken)
+    name: GetNormalizedRoleNameAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.irolestore-1.getnormalizedrolenameasync
+  - name: (
+  - name: TRole
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Microsoft.AspNetCore.Identity.IRoleStore{`0}.GetNormalizedRoleNameAsync(`0,System.Threading.CancellationToken)
+    name: GetNormalizedRoleNameAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.irolestore-1.getnormalizedrolenameasync
+  - name: (
+  - name: TRole
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: Microsoft.AspNetCore.Identity.IRoleStore`1.GetNormalizedRoleNameAsync(`0,System.Threading.CancellationToken)
+  commentId: M:Microsoft.AspNetCore.Identity.IRoleStore`1.GetNormalizedRoleNameAsync(`0,System.Threading.CancellationToken)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.irolestore-1.getnormalizedrolenameasync
+  name: GetNormalizedRoleNameAsync(TRole, CancellationToken)
+  nameWithType: IRoleStore<TRole>.GetNormalizedRoleNameAsync(TRole, CancellationToken)
+  fullName: Microsoft.AspNetCore.Identity.IRoleStore<TRole>.GetNormalizedRoleNameAsync(TRole, System.Threading.CancellationToken)
+  nameWithType.vb: IRoleStore(Of TRole).GetNormalizedRoleNameAsync(TRole, CancellationToken)
+  fullName.vb: Microsoft.AspNetCore.Identity.IRoleStore(Of TRole).GetNormalizedRoleNameAsync(TRole, System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: Microsoft.AspNetCore.Identity.IRoleStore`1.GetNormalizedRoleNameAsync(`0,System.Threading.CancellationToken)
+    name: GetNormalizedRoleNameAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.irolestore-1.getnormalizedrolenameasync
+  - name: (
+  - name: TRole
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Microsoft.AspNetCore.Identity.IRoleStore`1.GetNormalizedRoleNameAsync(`0,System.Threading.CancellationToken)
+    name: GetNormalizedRoleNameAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.irolestore-1.getnormalizedrolenameasync
+  - name: (
+  - name: TRole
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: AeroDB.AspNetIdentity.AeroDBRoleStore`2.SetNormalizedRoleNameAsync*
+  commentId: Overload:AeroDB.AspNetIdentity.AeroDBRoleStore`2.SetNormalizedRoleNameAsync
+  isExternal: true
+  href: AeroDB.AspNetIdentity.AeroDBRoleStore-2.html#AeroDB_AspNetIdentity_AeroDBRoleStore_2_SetNormalizedRoleNameAsync__0_System_String_System_Threading_CancellationToken_
+  name: SetNormalizedRoleNameAsync
+  nameWithType: AeroDBRoleStore<TRole, TKey>.SetNormalizedRoleNameAsync
+  fullName: AeroDB.AspNetIdentity.AeroDBRoleStore<TRole, TKey>.SetNormalizedRoleNameAsync
+  nameWithType.vb: AeroDBRoleStore(Of TRole, TKey).SetNormalizedRoleNameAsync
+  fullName.vb: AeroDB.AspNetIdentity.AeroDBRoleStore(Of TRole, TKey).SetNormalizedRoleNameAsync
+- uid: Microsoft.AspNetCore.Identity.IRoleStore{{TRole}}.SetNormalizedRoleNameAsync({TRole},System.String,System.Threading.CancellationToken)
+  commentId: M:Microsoft.AspNetCore.Identity.IRoleStore{`0}.SetNormalizedRoleNameAsync(`0,System.String,System.Threading.CancellationToken)
+  parent: Microsoft.AspNetCore.Identity.IRoleStore{{TRole}}
+  definition: Microsoft.AspNetCore.Identity.IRoleStore`1.SetNormalizedRoleNameAsync(`0,System.String,System.Threading.CancellationToken)
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.irolestore-1.setnormalizedrolenameasync
+  name: SetNormalizedRoleNameAsync(TRole, string, CancellationToken)
+  nameWithType: IRoleStore<TRole>.SetNormalizedRoleNameAsync(TRole, string, CancellationToken)
+  fullName: Microsoft.AspNetCore.Identity.IRoleStore<TRole>.SetNormalizedRoleNameAsync(TRole, string, System.Threading.CancellationToken)
+  nameWithType.vb: IRoleStore(Of TRole).SetNormalizedRoleNameAsync(TRole, String, CancellationToken)
+  fullName.vb: Microsoft.AspNetCore.Identity.IRoleStore(Of TRole).SetNormalizedRoleNameAsync(TRole, String, System.Threading.CancellationToken)
+  name.vb: SetNormalizedRoleNameAsync(TRole, String, CancellationToken)
+  spec.csharp:
+  - uid: Microsoft.AspNetCore.Identity.IRoleStore{`0}.SetNormalizedRoleNameAsync(`0,System.String,System.Threading.CancellationToken)
+    name: SetNormalizedRoleNameAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.irolestore-1.setnormalizedrolenameasync
+  - name: (
+  - name: TRole
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Microsoft.AspNetCore.Identity.IRoleStore{`0}.SetNormalizedRoleNameAsync(`0,System.String,System.Threading.CancellationToken)
+    name: SetNormalizedRoleNameAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.irolestore-1.setnormalizedrolenameasync
+  - name: (
+  - name: TRole
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: Microsoft.AspNetCore.Identity.IRoleStore`1.SetNormalizedRoleNameAsync(`0,System.String,System.Threading.CancellationToken)
+  commentId: M:Microsoft.AspNetCore.Identity.IRoleStore`1.SetNormalizedRoleNameAsync(`0,System.String,System.Threading.CancellationToken)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.irolestore-1.setnormalizedrolenameasync
+  name: SetNormalizedRoleNameAsync(TRole, string, CancellationToken)
+  nameWithType: IRoleStore<TRole>.SetNormalizedRoleNameAsync(TRole, string, CancellationToken)
+  fullName: Microsoft.AspNetCore.Identity.IRoleStore<TRole>.SetNormalizedRoleNameAsync(TRole, string, System.Threading.CancellationToken)
+  nameWithType.vb: IRoleStore(Of TRole).SetNormalizedRoleNameAsync(TRole, String, CancellationToken)
+  fullName.vb: Microsoft.AspNetCore.Identity.IRoleStore(Of TRole).SetNormalizedRoleNameAsync(TRole, String, System.Threading.CancellationToken)
+  name.vb: SetNormalizedRoleNameAsync(TRole, String, CancellationToken)
+  spec.csharp:
+  - uid: Microsoft.AspNetCore.Identity.IRoleStore`1.SetNormalizedRoleNameAsync(`0,System.String,System.Threading.CancellationToken)
+    name: SetNormalizedRoleNameAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.irolestore-1.setnormalizedrolenameasync
+  - name: (
+  - name: TRole
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Microsoft.AspNetCore.Identity.IRoleStore`1.SetNormalizedRoleNameAsync(`0,System.String,System.Threading.CancellationToken)
+    name: SetNormalizedRoleNameAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.irolestore-1.setnormalizedrolenameasync
+  - name: (
+  - name: TRole
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: AeroDB.AspNetIdentity.AeroDBRoleStore`2.Dispose*
+  commentId: Overload:AeroDB.AspNetIdentity.AeroDBRoleStore`2.Dispose
+  isExternal: true
+  href: AeroDB.AspNetIdentity.AeroDBRoleStore-2.html#AeroDB_AspNetIdentity_AeroDBRoleStore_2_Dispose
+  name: Dispose
+  nameWithType: AeroDBRoleStore<TRole, TKey>.Dispose
+  fullName: AeroDB.AspNetIdentity.AeroDBRoleStore<TRole, TKey>.Dispose
+  nameWithType.vb: AeroDBRoleStore(Of TRole, TKey).Dispose
+  fullName.vb: AeroDB.AspNetIdentity.AeroDBRoleStore(Of TRole, TKey).Dispose
+- uid: System.IDisposable.Dispose
+  commentId: M:System.IDisposable.Dispose
+  parent: System.IDisposable
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  name: Dispose()
+  nameWithType: IDisposable.Dispose()
+  fullName: System.IDisposable.Dispose()
+  spec.csharp:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  - name: (
+  - name: )
+- uid: AeroDB.AspNetIdentity.AeroDBRoleStore`2.Roles*
+  commentId: Overload:AeroDB.AspNetIdentity.AeroDBRoleStore`2.Roles
+  isExternal: true
+  href: AeroDB.AspNetIdentity.AeroDBRoleStore-2.html#AeroDB_AspNetIdentity_AeroDBRoleStore_2_Roles
+  name: Roles
+  nameWithType: AeroDBRoleStore<TRole, TKey>.Roles
+  fullName: AeroDB.AspNetIdentity.AeroDBRoleStore<TRole, TKey>.Roles
+  nameWithType.vb: AeroDBRoleStore(Of TRole, TKey).Roles
+  fullName.vb: AeroDB.AspNetIdentity.AeroDBRoleStore(Of TRole, TKey).Roles
+- uid: Microsoft.AspNetCore.Identity.IQueryableRoleStore{{TRole}}.Roles
+  commentId: P:Microsoft.AspNetCore.Identity.IQueryableRoleStore{`0}.Roles
+  parent: Microsoft.AspNetCore.Identity.IQueryableRoleStore{{TRole}}
+  definition: Microsoft.AspNetCore.Identity.IQueryableRoleStore`1.Roles
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.iqueryablerolestore-1.roles
+  name: Roles
+  nameWithType: IQueryableRoleStore<TRole>.Roles
+  fullName: Microsoft.AspNetCore.Identity.IQueryableRoleStore<TRole>.Roles
+  nameWithType.vb: IQueryableRoleStore(Of TRole).Roles
+  fullName.vb: Microsoft.AspNetCore.Identity.IQueryableRoleStore(Of TRole).Roles
+- uid: System.Linq.IQueryable{{TRole}}
+  commentId: T:System.Linq.IQueryable{`0}
+  parent: System.Linq
+  definition: System.Linq.IQueryable`1
+  href: https://learn.microsoft.com/dotnet/api/system.linq.iqueryable-1
+  name: IQueryable<TRole>
+  nameWithType: IQueryable<TRole>
+  fullName: System.Linq.IQueryable<TRole>
+  nameWithType.vb: IQueryable(Of TRole)
+  fullName.vb: System.Linq.IQueryable(Of TRole)
+  name.vb: IQueryable(Of TRole)
+  spec.csharp:
+  - uid: System.Linq.IQueryable`1
+    name: IQueryable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.iqueryable-1
+  - name: <
+  - name: TRole
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.IQueryable`1
+    name: IQueryable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.iqueryable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TRole
+  - name: )
+- uid: Microsoft.AspNetCore.Identity.IQueryableRoleStore`1.Roles
+  commentId: P:Microsoft.AspNetCore.Identity.IQueryableRoleStore`1.Roles
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.iqueryablerolestore-1.roles
+  name: Roles
+  nameWithType: IQueryableRoleStore<TRole>.Roles
+  fullName: Microsoft.AspNetCore.Identity.IQueryableRoleStore<TRole>.Roles
+  nameWithType.vb: IQueryableRoleStore(Of TRole).Roles
+  fullName.vb: Microsoft.AspNetCore.Identity.IQueryableRoleStore(Of TRole).Roles
+- uid: System.Linq.IQueryable`1
+  commentId: T:System.Linq.IQueryable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.iqueryable-1
+  name: IQueryable<T>
+  nameWithType: IQueryable<T>
+  fullName: System.Linq.IQueryable<T>
+  nameWithType.vb: IQueryable(Of T)
+  fullName.vb: System.Linq.IQueryable(Of T)
+  name.vb: IQueryable(Of T)
+  spec.csharp:
+  - uid: System.Linq.IQueryable`1
+    name: IQueryable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.iqueryable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.IQueryable`1
+    name: IQueryable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.iqueryable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Linq
+  commentId: N:System.Linq
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Linq
+  nameWithType: System.Linq
+  fullName: System.Linq
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Linq
+    name: Linq
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Linq
+    name: Linq
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq

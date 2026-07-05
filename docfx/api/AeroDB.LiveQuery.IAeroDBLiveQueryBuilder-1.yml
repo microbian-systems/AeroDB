@@ -1,0 +1,803 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder`1
+  commentId: T:AeroDB.LiveQuery.IAeroDBLiveQueryBuilder`1
+  id: IAeroDBLiveQueryBuilder`1
+  parent: AeroDB.LiveQuery
+  children:
+  - AeroDB.LiveQuery.IAeroDBLiveQueryBuilder`1.ChannelCapacity(System.Int32)
+  - AeroDB.LiveQuery.IAeroDBLiveQueryBuilder`1.OnCreated(System.Action{`0})
+  - AeroDB.LiveQuery.IAeroDBLiveQueryBuilder`1.OnDeleted(System.Action{`0})
+  - AeroDB.LiveQuery.IAeroDBLiveQueryBuilder`1.OnOpen(System.Action)
+  - AeroDB.LiveQuery.IAeroDBLiveQueryBuilder`1.OnUpdated(System.Action{`0})
+  - AeroDB.LiveQuery.IAeroDBLiveQueryBuilder`1.Select(System.Linq.Expressions.Expression{System.Func{`0,System.Object}}[])
+  - AeroDB.LiveQuery.IAeroDBLiveQueryBuilder`1.SubscribeAsync(System.Threading.CancellationToken)
+  - AeroDB.LiveQuery.IAeroDBLiveQueryBuilder`1.Where(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})
+  langs:
+  - csharp
+  - vb
+  name: IAeroDBLiveQueryBuilder<T>
+  nameWithType: IAeroDBLiveQueryBuilder<T>
+  fullName: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder<T>
+  type: Interface
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/LiveQuery/IAeroDBLiveQueryBuilder.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB.LiveQuery
+  syntax:
+    content: 'public interface IAeroDBLiveQueryBuilder<T> where T : class'
+    typeParameters:
+    - id: T
+    content.vb: Public Interface IAeroDBLiveQueryBuilder(Of T As Class)
+  nameWithType.vb: IAeroDBLiveQueryBuilder(Of T)
+  fullName.vb: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder(Of T)
+  name.vb: IAeroDBLiveQueryBuilder(Of T)
+- uid: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder`1.Where(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})
+  commentId: M:AeroDB.LiveQuery.IAeroDBLiveQueryBuilder`1.Where(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})
+  id: Where(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})
+  parent: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder`1
+  langs:
+  - csharp
+  - vb
+  name: Where(Expression<Func<T, bool>>)
+  nameWithType: IAeroDBLiveQueryBuilder<T>.Where(Expression<Func<T, bool>>)
+  fullName: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder<T>.Where(System.Linq.Expressions.Expression<System.Func<T, bool>>)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/LiveQuery/IAeroDBLiveQueryBuilder.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB.LiveQuery
+  syntax:
+    content: IAeroDBLiveQueryBuilder<T> Where(Expression<Func<T, bool>> predicate)
+    parameters:
+    - id: predicate
+      type: System.Linq.Expressions.Expression{System.Func{{T},System.Boolean}}
+    return:
+      type: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder`1
+    content.vb: Function Where(predicate As Expression(Of Func(Of T, Boolean))) As IAeroDBLiveQueryBuilder(Of T)
+  overload: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder`1.Where*
+  nameWithType.vb: IAeroDBLiveQueryBuilder(Of T).Where(Expression(Of Func(Of T, Boolean)))
+  fullName.vb: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder(Of T).Where(System.Linq.Expressions.Expression(Of System.Func(Of T, Boolean)))
+  name.vb: Where(Expression(Of Func(Of T, Boolean)))
+- uid: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder`1.Select(System.Linq.Expressions.Expression{System.Func{`0,System.Object}}[])
+  commentId: M:AeroDB.LiveQuery.IAeroDBLiveQueryBuilder`1.Select(System.Linq.Expressions.Expression{System.Func{`0,System.Object}}[])
+  id: Select(System.Linq.Expressions.Expression{System.Func{`0,System.Object}}[])
+  parent: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder`1
+  langs:
+  - csharp
+  - vb
+  name: Select(params Expression<Func<T, object>>[])
+  nameWithType: IAeroDBLiveQueryBuilder<T>.Select(params Expression<Func<T, object>>[])
+  fullName: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder<T>.Select(params System.Linq.Expressions.Expression<System.Func<T, object>>[])
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/LiveQuery/IAeroDBLiveQueryBuilder.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB.LiveQuery
+  syntax:
+    content: IAeroDBLiveQueryBuilder<T> Select(params Expression<Func<T, object>>[] fields)
+    parameters:
+    - id: fields
+      type: System.Linq.Expressions.Expression{System.Func{{T},System.Object}}[]
+    return:
+      type: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder`1
+    content.vb: Function [Select](ParamArray fields As Expression(Of Func(Of T, Object))()) As IAeroDBLiveQueryBuilder(Of T)
+  overload: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder`1.Select*
+  nameWithType.vb: IAeroDBLiveQueryBuilder(Of T).Select(ParamArray Expression(Of Func(Of T, Object))())
+  fullName.vb: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder(Of T).Select(ParamArray System.Linq.Expressions.Expression(Of System.Func(Of T, Object))())
+  name.vb: Select(ParamArray Expression(Of Func(Of T, Object))())
+- uid: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder`1.OnCreated(System.Action{`0})
+  commentId: M:AeroDB.LiveQuery.IAeroDBLiveQueryBuilder`1.OnCreated(System.Action{`0})
+  id: OnCreated(System.Action{`0})
+  parent: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder`1
+  langs:
+  - csharp
+  - vb
+  name: OnCreated(Action<T>)
+  nameWithType: IAeroDBLiveQueryBuilder<T>.OnCreated(Action<T>)
+  fullName: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder<T>.OnCreated(System.Action<T>)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/LiveQuery/IAeroDBLiveQueryBuilder.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB.LiveQuery
+  syntax:
+    content: IAeroDBLiveQueryBuilder<T> OnCreated(Action<T> handler)
+    parameters:
+    - id: handler
+      type: System.Action{{T}}
+    return:
+      type: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder`1
+    content.vb: Function OnCreated(handler As Action(Of T)) As IAeroDBLiveQueryBuilder(Of T)
+  overload: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder`1.OnCreated*
+  nameWithType.vb: IAeroDBLiveQueryBuilder(Of T).OnCreated(Action(Of T))
+  fullName.vb: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder(Of T).OnCreated(System.Action(Of T))
+  name.vb: OnCreated(Action(Of T))
+- uid: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder`1.OnUpdated(System.Action{`0})
+  commentId: M:AeroDB.LiveQuery.IAeroDBLiveQueryBuilder`1.OnUpdated(System.Action{`0})
+  id: OnUpdated(System.Action{`0})
+  parent: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder`1
+  langs:
+  - csharp
+  - vb
+  name: OnUpdated(Action<T>)
+  nameWithType: IAeroDBLiveQueryBuilder<T>.OnUpdated(Action<T>)
+  fullName: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder<T>.OnUpdated(System.Action<T>)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/LiveQuery/IAeroDBLiveQueryBuilder.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB.LiveQuery
+  syntax:
+    content: IAeroDBLiveQueryBuilder<T> OnUpdated(Action<T> handler)
+    parameters:
+    - id: handler
+      type: System.Action{{T}}
+    return:
+      type: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder`1
+    content.vb: Function OnUpdated(handler As Action(Of T)) As IAeroDBLiveQueryBuilder(Of T)
+  overload: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder`1.OnUpdated*
+  nameWithType.vb: IAeroDBLiveQueryBuilder(Of T).OnUpdated(Action(Of T))
+  fullName.vb: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder(Of T).OnUpdated(System.Action(Of T))
+  name.vb: OnUpdated(Action(Of T))
+- uid: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder`1.OnDeleted(System.Action{`0})
+  commentId: M:AeroDB.LiveQuery.IAeroDBLiveQueryBuilder`1.OnDeleted(System.Action{`0})
+  id: OnDeleted(System.Action{`0})
+  parent: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder`1
+  langs:
+  - csharp
+  - vb
+  name: OnDeleted(Action<T>)
+  nameWithType: IAeroDBLiveQueryBuilder<T>.OnDeleted(Action<T>)
+  fullName: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder<T>.OnDeleted(System.Action<T>)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/LiveQuery/IAeroDBLiveQueryBuilder.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB.LiveQuery
+  syntax:
+    content: IAeroDBLiveQueryBuilder<T> OnDeleted(Action<T> handler)
+    parameters:
+    - id: handler
+      type: System.Action{{T}}
+    return:
+      type: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder`1
+    content.vb: Function OnDeleted(handler As Action(Of T)) As IAeroDBLiveQueryBuilder(Of T)
+  overload: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder`1.OnDeleted*
+  nameWithType.vb: IAeroDBLiveQueryBuilder(Of T).OnDeleted(Action(Of T))
+  fullName.vb: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder(Of T).OnDeleted(System.Action(Of T))
+  name.vb: OnDeleted(Action(Of T))
+- uid: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder`1.OnOpen(System.Action)
+  commentId: M:AeroDB.LiveQuery.IAeroDBLiveQueryBuilder`1.OnOpen(System.Action)
+  id: OnOpen(System.Action)
+  parent: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder`1
+  langs:
+  - csharp
+  - vb
+  name: OnOpen(Action)
+  nameWithType: IAeroDBLiveQueryBuilder<T>.OnOpen(Action)
+  fullName: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder<T>.OnOpen(System.Action)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/LiveQuery/IAeroDBLiveQueryBuilder.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB.LiveQuery
+  summary: 'M3: Fires when the live query WebSocket connection opens.'
+  example: []
+  syntax:
+    content: IAeroDBLiveQueryBuilder<T> OnOpen(Action handler)
+    parameters:
+    - id: handler
+      type: System.Action
+    return:
+      type: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder`1
+    content.vb: Function OnOpen(handler As Action) As IAeroDBLiveQueryBuilder(Of T)
+  overload: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder`1.OnOpen*
+  nameWithType.vb: IAeroDBLiveQueryBuilder(Of T).OnOpen(Action)
+  fullName.vb: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder(Of T).OnOpen(System.Action)
+- uid: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder`1.ChannelCapacity(System.Int32)
+  commentId: M:AeroDB.LiveQuery.IAeroDBLiveQueryBuilder`1.ChannelCapacity(System.Int32)
+  id: ChannelCapacity(System.Int32)
+  parent: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder`1
+  langs:
+  - csharp
+  - vb
+  name: ChannelCapacity(int)
+  nameWithType: IAeroDBLiveQueryBuilder<T>.ChannelCapacity(int)
+  fullName: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder<T>.ChannelCapacity(int)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/LiveQuery/IAeroDBLiveQueryBuilder.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB.LiveQuery
+  summary: >-
+    M2: Override the per-subscription channel capacity.
+
+    Default: <xref href="AeroDB.StoreOptions.LiveQueryChannelCapacity" data-throw-if-not-resolved="false"></xref> (4096).
+  example: []
+  syntax:
+    content: IAeroDBLiveQueryBuilder<T> ChannelCapacity(int capacity)
+    parameters:
+    - id: capacity
+      type: System.Int32
+    return:
+      type: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder`1
+    content.vb: Function ChannelCapacity(capacity As Integer) As IAeroDBLiveQueryBuilder(Of T)
+  overload: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder`1.ChannelCapacity*
+  nameWithType.vb: IAeroDBLiveQueryBuilder(Of T).ChannelCapacity(Integer)
+  fullName.vb: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder(Of T).ChannelCapacity(Integer)
+  name.vb: ChannelCapacity(Integer)
+- uid: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder`1.SubscribeAsync(System.Threading.CancellationToken)
+  commentId: M:AeroDB.LiveQuery.IAeroDBLiveQueryBuilder`1.SubscribeAsync(System.Threading.CancellationToken)
+  id: SubscribeAsync(System.Threading.CancellationToken)
+  parent: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder`1
+  langs:
+  - csharp
+  - vb
+  name: SubscribeAsync(CancellationToken)
+  nameWithType: IAeroDBLiveQueryBuilder<T>.SubscribeAsync(CancellationToken)
+  fullName: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder<T>.SubscribeAsync(System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/LiveQuery/IAeroDBLiveQueryBuilder.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB.LiveQuery
+  syntax:
+    content: Task<IAeroDBLiveQuery<T>> SubscribeAsync(CancellationToken ct = default)
+    parameters:
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task{AeroDB.LiveQuery.IAeroDBLiveQuery{{T}}}
+    content.vb: Function SubscribeAsync(ct As CancellationToken = Nothing) As Task(Of IAeroDBLiveQuery(Of T))
+  overload: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder`1.SubscribeAsync*
+  nameWithType.vb: IAeroDBLiveQueryBuilder(Of T).SubscribeAsync(CancellationToken)
+  fullName.vb: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder(Of T).SubscribeAsync(System.Threading.CancellationToken)
+references:
+- uid: AeroDB.LiveQuery
+  commentId: N:AeroDB.LiveQuery
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB.LiveQuery
+  nameWithType: AeroDB.LiveQuery
+  fullName: AeroDB.LiveQuery
+  spec.csharp:
+  - uid: AeroDB
+    name: AeroDB
+    isExternal: true
+    href: AeroDB.html
+  - name: .
+  - uid: AeroDB.LiveQuery
+    name: LiveQuery
+    isExternal: true
+    href: AeroDB.LiveQuery.html
+  spec.vb:
+  - uid: AeroDB
+    name: AeroDB
+    isExternal: true
+    href: AeroDB.html
+  - name: .
+  - uid: AeroDB.LiveQuery
+    name: LiveQuery
+    isExternal: true
+    href: AeroDB.LiveQuery.html
+- uid: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder`1.Where*
+  commentId: Overload:AeroDB.LiveQuery.IAeroDBLiveQueryBuilder`1.Where
+  isExternal: true
+  href: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder-1.html#AeroDB_LiveQuery_IAeroDBLiveQueryBuilder_1_Where_System_Linq_Expressions_Expression_System_Func__0_System_Boolean___
+  name: Where
+  nameWithType: IAeroDBLiveQueryBuilder<T>.Where
+  fullName: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder<T>.Where
+  nameWithType.vb: IAeroDBLiveQueryBuilder(Of T).Where
+  fullName.vb: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder(Of T).Where
+- uid: System.Linq.Expressions.Expression{System.Func{{T},System.Boolean}}
+  commentId: T:System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}}
+  parent: System.Linq.Expressions
+  definition: System.Linq.Expressions.Expression`1
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  name: Expression<Func<T, bool>>
+  nameWithType: Expression<Func<T, bool>>
+  fullName: System.Linq.Expressions.Expression<System.Func<T, bool>>
+  nameWithType.vb: Expression(Of Func(Of T, Boolean))
+  fullName.vb: System.Linq.Expressions.Expression(Of System.Func(Of T, Boolean))
+  name.vb: Expression(Of Func(Of T, Boolean))
+  spec.csharp:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  - name: )
+- uid: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder`1
+  commentId: T:AeroDB.LiveQuery.IAeroDBLiveQueryBuilder`1
+  parent: AeroDB.LiveQuery
+  isExternal: true
+  href: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder-1.html
+  name: IAeroDBLiveQueryBuilder<T>
+  nameWithType: IAeroDBLiveQueryBuilder<T>
+  fullName: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder<T>
+  nameWithType.vb: IAeroDBLiveQueryBuilder(Of T)
+  fullName.vb: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder(Of T)
+  name.vb: IAeroDBLiveQueryBuilder(Of T)
+  spec.csharp:
+  - uid: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder`1
+    name: IAeroDBLiveQueryBuilder
+    isExternal: true
+    href: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder`1
+    name: IAeroDBLiveQueryBuilder
+    isExternal: true
+    href: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Linq.Expressions.Expression`1
+  commentId: T:System.Linq.Expressions.Expression`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  name: Expression<TDelegate>
+  nameWithType: Expression<TDelegate>
+  fullName: System.Linq.Expressions.Expression<TDelegate>
+  nameWithType.vb: Expression(Of TDelegate)
+  fullName.vb: System.Linq.Expressions.Expression(Of TDelegate)
+  name.vb: Expression(Of TDelegate)
+  spec.csharp:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - name: TDelegate
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TDelegate
+  - name: )
+- uid: System.Linq.Expressions
+  commentId: N:System.Linq.Expressions
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Linq.Expressions
+  nameWithType: System.Linq.Expressions
+  fullName: System.Linq.Expressions
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Linq
+    name: Linq
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq
+  - name: .
+  - uid: System.Linq.Expressions
+    name: Expressions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Linq
+    name: Linq
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq
+  - name: .
+  - uid: System.Linq.Expressions
+    name: Expressions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions
+- uid: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder`1.Select*
+  commentId: Overload:AeroDB.LiveQuery.IAeroDBLiveQueryBuilder`1.Select
+  isExternal: true
+  href: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder-1.html#AeroDB_LiveQuery_IAeroDBLiveQueryBuilder_1_Select_System_Linq_Expressions_Expression_System_Func__0_System_Object_____
+  name: Select
+  nameWithType: IAeroDBLiveQueryBuilder<T>.Select
+  fullName: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder<T>.Select
+  nameWithType.vb: IAeroDBLiveQueryBuilder(Of T).Select
+  fullName.vb: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder(Of T).Select
+- uid: System.Linq.Expressions.Expression{System.Func{{T},System.Object}}[]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  name: Expression<Func<T, object>>[]
+  nameWithType: Expression<Func<T, object>>[]
+  fullName: System.Linq.Expressions.Expression<System.Func<T, object>>[]
+  nameWithType.vb: Expression(Of Func(Of T, Object))()
+  fullName.vb: System.Linq.Expressions.Expression(Of System.Func(Of T, Object))()
+  name.vb: Expression(Of Func(Of T, Object))()
+  spec.csharp:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
+  - name: '>'
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  - name: )
+  - name: (
+  - name: )
+- uid: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder`1.OnCreated*
+  commentId: Overload:AeroDB.LiveQuery.IAeroDBLiveQueryBuilder`1.OnCreated
+  isExternal: true
+  href: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder-1.html#AeroDB_LiveQuery_IAeroDBLiveQueryBuilder_1_OnCreated_System_Action__0__
+  name: OnCreated
+  nameWithType: IAeroDBLiveQueryBuilder<T>.OnCreated
+  fullName: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder<T>.OnCreated
+  nameWithType.vb: IAeroDBLiveQueryBuilder(Of T).OnCreated
+  fullName.vb: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder(Of T).OnCreated
+- uid: System.Action{{T}}
+  commentId: T:System.Action{`0}
+  parent: System
+  definition: System.Action`1
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<T>
+  nameWithType: Action<T>
+  fullName: System.Action<T>
+  nameWithType.vb: Action(Of T)
+  fullName.vb: System.Action(Of T)
+  name.vb: Action(Of T)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Action`1
+  commentId: T:System.Action`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<T>
+  nameWithType: Action<T>
+  fullName: System.Action<T>
+  nameWithType.vb: Action(Of T)
+  fullName.vb: System.Action(Of T)
+  name.vb: Action(Of T)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder`1.OnUpdated*
+  commentId: Overload:AeroDB.LiveQuery.IAeroDBLiveQueryBuilder`1.OnUpdated
+  isExternal: true
+  href: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder-1.html#AeroDB_LiveQuery_IAeroDBLiveQueryBuilder_1_OnUpdated_System_Action__0__
+  name: OnUpdated
+  nameWithType: IAeroDBLiveQueryBuilder<T>.OnUpdated
+  fullName: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder<T>.OnUpdated
+  nameWithType.vb: IAeroDBLiveQueryBuilder(Of T).OnUpdated
+  fullName.vb: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder(Of T).OnUpdated
+- uid: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder`1.OnDeleted*
+  commentId: Overload:AeroDB.LiveQuery.IAeroDBLiveQueryBuilder`1.OnDeleted
+  isExternal: true
+  href: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder-1.html#AeroDB_LiveQuery_IAeroDBLiveQueryBuilder_1_OnDeleted_System_Action__0__
+  name: OnDeleted
+  nameWithType: IAeroDBLiveQueryBuilder<T>.OnDeleted
+  fullName: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder<T>.OnDeleted
+  nameWithType.vb: IAeroDBLiveQueryBuilder(Of T).OnDeleted
+  fullName.vb: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder(Of T).OnDeleted
+- uid: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder`1.OnOpen*
+  commentId: Overload:AeroDB.LiveQuery.IAeroDBLiveQueryBuilder`1.OnOpen
+  isExternal: true
+  href: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder-1.html#AeroDB_LiveQuery_IAeroDBLiveQueryBuilder_1_OnOpen_System_Action_
+  name: OnOpen
+  nameWithType: IAeroDBLiveQueryBuilder<T>.OnOpen
+  fullName: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder<T>.OnOpen
+  nameWithType.vb: IAeroDBLiveQueryBuilder(Of T).OnOpen
+  fullName.vb: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder(Of T).OnOpen
+- uid: System.Action
+  commentId: T:System.Action
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.action
+  name: Action
+  nameWithType: Action
+  fullName: System.Action
+- uid: AeroDB.StoreOptions.LiveQueryChannelCapacity
+  commentId: P:AeroDB.StoreOptions.LiveQueryChannelCapacity
+  isExternal: true
+  href: AeroDB.StoreOptions.html#AeroDB_StoreOptions_LiveQueryChannelCapacity
+  name: LiveQueryChannelCapacity
+  nameWithType: StoreOptions.LiveQueryChannelCapacity
+  fullName: AeroDB.StoreOptions.LiveQueryChannelCapacity
+- uid: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder`1.ChannelCapacity*
+  commentId: Overload:AeroDB.LiveQuery.IAeroDBLiveQueryBuilder`1.ChannelCapacity
+  isExternal: true
+  href: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder-1.html#AeroDB_LiveQuery_IAeroDBLiveQueryBuilder_1_ChannelCapacity_System_Int32_
+  name: ChannelCapacity
+  nameWithType: IAeroDBLiveQueryBuilder<T>.ChannelCapacity
+  fullName: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder<T>.ChannelCapacity
+  nameWithType.vb: IAeroDBLiveQueryBuilder(Of T).ChannelCapacity
+  fullName.vb: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder(Of T).ChannelCapacity
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder`1.SubscribeAsync*
+  commentId: Overload:AeroDB.LiveQuery.IAeroDBLiveQueryBuilder`1.SubscribeAsync
+  isExternal: true
+  href: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder-1.html#AeroDB_LiveQuery_IAeroDBLiveQueryBuilder_1_SubscribeAsync_System_Threading_CancellationToken_
+  name: SubscribeAsync
+  nameWithType: IAeroDBLiveQueryBuilder<T>.SubscribeAsync
+  fullName: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder<T>.SubscribeAsync
+  nameWithType.vb: IAeroDBLiveQueryBuilder(Of T).SubscribeAsync
+  fullName.vb: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder(Of T).SubscribeAsync
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task{AeroDB.LiveQuery.IAeroDBLiveQuery{{T}}}
+  commentId: T:System.Threading.Tasks.Task{AeroDB.LiveQuery.IAeroDBLiveQuery{`0}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<IAeroDBLiveQuery<T>>
+  nameWithType: Task<IAeroDBLiveQuery<T>>
+  fullName: System.Threading.Tasks.Task<AeroDB.LiveQuery.IAeroDBLiveQuery<T>>
+  nameWithType.vb: Task(Of IAeroDBLiveQuery(Of T))
+  fullName.vb: System.Threading.Tasks.Task(Of AeroDB.LiveQuery.IAeroDBLiveQuery(Of T))
+  name.vb: Task(Of IAeroDBLiveQuery(Of T))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: AeroDB.LiveQuery.IAeroDBLiveQuery`1
+    name: IAeroDBLiveQuery
+    isExternal: true
+    href: AeroDB.LiveQuery.IAeroDBLiveQuery-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.LiveQuery.IAeroDBLiveQuery`1
+    name: IAeroDBLiveQuery
+    isExternal: true
+    href: AeroDB.LiveQuery.IAeroDBLiveQuery-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks

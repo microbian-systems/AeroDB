@@ -1,0 +1,549 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.SurrealSessionFunctions
+  commentId: T:AeroDB.SurrealSessionFunctions
+  id: SurrealSessionFunctions
+  parent: AeroDB
+  children:
+  - AeroDB.SurrealSessionFunctions.Db
+  - AeroDB.SurrealSessionFunctions.Id
+  - AeroDB.SurrealSessionFunctions.Ip
+  - AeroDB.SurrealSessionFunctions.Ns
+  - AeroDB.SurrealSessionFunctions.Origin
+  - AeroDB.SurrealSessionFunctions.Sc
+  - AeroDB.SurrealSessionFunctions.Tk
+  - AeroDB.SurrealSessionFunctions.User
+  langs:
+  - csharp
+  - vb
+  name: SurrealSessionFunctions
+  nameWithType: SurrealSessionFunctions
+  fullName: AeroDB.SurrealSessionFunctions
+  type: Class
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealSessionFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    SurrealDB session functions for use in LINQ expressions.
+
+    These methods are NOT callable at runtime — they exist for expression-tree translation only.
+  example: []
+  syntax:
+    content: public static class SurrealSessionFunctions
+    content.vb: Public Module SurrealSessionFunctions
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+- uid: AeroDB.SurrealSessionFunctions.Id
+  commentId: M:AeroDB.SurrealSessionFunctions.Id
+  id: Id
+  parent: AeroDB.SurrealSessionFunctions
+  langs:
+  - csharp
+  - vb
+  name: Id()
+  nameWithType: SurrealSessionFunctions.Id()
+  fullName: AeroDB.SurrealSessionFunctions.Id()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealSessionFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Returns the current session ID. Maps to <code>session::id()</code>.
+  example: []
+  syntax:
+    content: public static string Id()
+    return:
+      type: System.String
+    content.vb: Public Shared Function Id() As String
+  overload: AeroDB.SurrealSessionFunctions.Id*
+- uid: AeroDB.SurrealSessionFunctions.Ip
+  commentId: M:AeroDB.SurrealSessionFunctions.Ip
+  id: Ip
+  parent: AeroDB.SurrealSessionFunctions
+  langs:
+  - csharp
+  - vb
+  name: Ip()
+  nameWithType: SurrealSessionFunctions.Ip()
+  fullName: AeroDB.SurrealSessionFunctions.Ip()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealSessionFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Returns the current session IP. Maps to <code>session::ip()</code>.
+  example: []
+  syntax:
+    content: public static string Ip()
+    return:
+      type: System.String
+    content.vb: Public Shared Function Ip() As String
+  overload: AeroDB.SurrealSessionFunctions.Ip*
+- uid: AeroDB.SurrealSessionFunctions.Origin
+  commentId: M:AeroDB.SurrealSessionFunctions.Origin
+  id: Origin
+  parent: AeroDB.SurrealSessionFunctions
+  langs:
+  - csharp
+  - vb
+  name: Origin()
+  nameWithType: SurrealSessionFunctions.Origin()
+  fullName: AeroDB.SurrealSessionFunctions.Origin()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealSessionFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Returns the current session origin. Maps to <code>session::origin()</code>.
+  example: []
+  syntax:
+    content: public static string Origin()
+    return:
+      type: System.String
+    content.vb: Public Shared Function Origin() As String
+  overload: AeroDB.SurrealSessionFunctions.Origin*
+- uid: AeroDB.SurrealSessionFunctions.Ns
+  commentId: M:AeroDB.SurrealSessionFunctions.Ns
+  id: Ns
+  parent: AeroDB.SurrealSessionFunctions
+  langs:
+  - csharp
+  - vb
+  name: Ns()
+  nameWithType: SurrealSessionFunctions.Ns()
+  fullName: AeroDB.SurrealSessionFunctions.Ns()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealSessionFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Returns the current namespace. Maps to <code>session::ns()</code>.
+  example: []
+  syntax:
+    content: public static string Ns()
+    return:
+      type: System.String
+    content.vb: Public Shared Function Ns() As String
+  overload: AeroDB.SurrealSessionFunctions.Ns*
+- uid: AeroDB.SurrealSessionFunctions.Db
+  commentId: M:AeroDB.SurrealSessionFunctions.Db
+  id: Db
+  parent: AeroDB.SurrealSessionFunctions
+  langs:
+  - csharp
+  - vb
+  name: Db()
+  nameWithType: SurrealSessionFunctions.Db()
+  fullName: AeroDB.SurrealSessionFunctions.Db()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealSessionFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Returns the current database. Maps to <code>session::db()</code>.
+  example: []
+  syntax:
+    content: public static string Db()
+    return:
+      type: System.String
+    content.vb: Public Shared Function Db() As String
+  overload: AeroDB.SurrealSessionFunctions.Db*
+- uid: AeroDB.SurrealSessionFunctions.Sc
+  commentId: M:AeroDB.SurrealSessionFunctions.Sc
+  id: Sc
+  parent: AeroDB.SurrealSessionFunctions
+  langs:
+  - csharp
+  - vb
+  name: Sc()
+  nameWithType: SurrealSessionFunctions.Sc()
+  fullName: AeroDB.SurrealSessionFunctions.Sc()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealSessionFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Returns the current scope. Maps to <code>session::sc()</code>.
+  example: []
+  syntax:
+    content: public static string Sc()
+    return:
+      type: System.String
+    content.vb: Public Shared Function Sc() As String
+  overload: AeroDB.SurrealSessionFunctions.Sc*
+- uid: AeroDB.SurrealSessionFunctions.Tk
+  commentId: M:AeroDB.SurrealSessionFunctions.Tk
+  id: Tk
+  parent: AeroDB.SurrealSessionFunctions
+  langs:
+  - csharp
+  - vb
+  name: Tk()
+  nameWithType: SurrealSessionFunctions.Tk()
+  fullName: AeroDB.SurrealSessionFunctions.Tk()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealSessionFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Returns the current token. Maps to <code>session::tk()</code>.
+  example: []
+  syntax:
+    content: public static string Tk()
+    return:
+      type: System.String
+    content.vb: Public Shared Function Tk() As String
+  overload: AeroDB.SurrealSessionFunctions.Tk*
+- uid: AeroDB.SurrealSessionFunctions.User
+  commentId: M:AeroDB.SurrealSessionFunctions.User
+  id: User
+  parent: AeroDB.SurrealSessionFunctions
+  langs:
+  - csharp
+  - vb
+  name: User()
+  nameWithType: SurrealSessionFunctions.User()
+  fullName: AeroDB.SurrealSessionFunctions.User()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealSessionFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Returns the current authenticated user. The most useful session function for auth-gated LINQ queries. Maps to <code>session::user()</code>.
+  example: []
+  syntax:
+    content: public static string User()
+    return:
+      type: System.String
+    content.vb: Public Shared Function User() As String
+  overload: AeroDB.SurrealSessionFunctions.User*
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AeroDB.SurrealSessionFunctions.Id*
+  commentId: Overload:AeroDB.SurrealSessionFunctions.Id
+  isExternal: true
+  href: AeroDB.SurrealSessionFunctions.html#AeroDB_SurrealSessionFunctions_Id
+  name: Id
+  nameWithType: SurrealSessionFunctions.Id
+  fullName: AeroDB.SurrealSessionFunctions.Id
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: AeroDB.SurrealSessionFunctions.Ip*
+  commentId: Overload:AeroDB.SurrealSessionFunctions.Ip
+  isExternal: true
+  href: AeroDB.SurrealSessionFunctions.html#AeroDB_SurrealSessionFunctions_Ip
+  name: Ip
+  nameWithType: SurrealSessionFunctions.Ip
+  fullName: AeroDB.SurrealSessionFunctions.Ip
+- uid: AeroDB.SurrealSessionFunctions.Origin*
+  commentId: Overload:AeroDB.SurrealSessionFunctions.Origin
+  isExternal: true
+  href: AeroDB.SurrealSessionFunctions.html#AeroDB_SurrealSessionFunctions_Origin
+  name: Origin
+  nameWithType: SurrealSessionFunctions.Origin
+  fullName: AeroDB.SurrealSessionFunctions.Origin
+- uid: AeroDB.SurrealSessionFunctions.Ns*
+  commentId: Overload:AeroDB.SurrealSessionFunctions.Ns
+  isExternal: true
+  href: AeroDB.SurrealSessionFunctions.html#AeroDB_SurrealSessionFunctions_Ns
+  name: Ns
+  nameWithType: SurrealSessionFunctions.Ns
+  fullName: AeroDB.SurrealSessionFunctions.Ns
+- uid: AeroDB.SurrealSessionFunctions.Db*
+  commentId: Overload:AeroDB.SurrealSessionFunctions.Db
+  isExternal: true
+  href: AeroDB.SurrealSessionFunctions.html#AeroDB_SurrealSessionFunctions_Db
+  name: Db
+  nameWithType: SurrealSessionFunctions.Db
+  fullName: AeroDB.SurrealSessionFunctions.Db
+- uid: AeroDB.SurrealSessionFunctions.Sc*
+  commentId: Overload:AeroDB.SurrealSessionFunctions.Sc
+  isExternal: true
+  href: AeroDB.SurrealSessionFunctions.html#AeroDB_SurrealSessionFunctions_Sc
+  name: Sc
+  nameWithType: SurrealSessionFunctions.Sc
+  fullName: AeroDB.SurrealSessionFunctions.Sc
+- uid: AeroDB.SurrealSessionFunctions.Tk*
+  commentId: Overload:AeroDB.SurrealSessionFunctions.Tk
+  isExternal: true
+  href: AeroDB.SurrealSessionFunctions.html#AeroDB_SurrealSessionFunctions_Tk
+  name: Tk
+  nameWithType: SurrealSessionFunctions.Tk
+  fullName: AeroDB.SurrealSessionFunctions.Tk
+- uid: AeroDB.SurrealSessionFunctions.User*
+  commentId: Overload:AeroDB.SurrealSessionFunctions.User
+  isExternal: true
+  href: AeroDB.SurrealSessionFunctions.html#AeroDB_SurrealSessionFunctions_User
+  name: User
+  nameWithType: SurrealSessionFunctions.User
+  fullName: AeroDB.SurrealSessionFunctions.User

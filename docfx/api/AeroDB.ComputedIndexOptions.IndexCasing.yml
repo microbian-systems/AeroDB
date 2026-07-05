@@ -1,0 +1,121 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.ComputedIndexOptions.IndexCasing
+  commentId: T:AeroDB.ComputedIndexOptions.IndexCasing
+  id: ComputedIndexOptions.IndexCasing
+  parent: AeroDB
+  children:
+  - AeroDB.ComputedIndexOptions.IndexCasing.Default
+  - AeroDB.ComputedIndexOptions.IndexCasing.Lower
+  - AeroDB.ComputedIndexOptions.IndexCasing.Upper
+  langs:
+  - csharp
+  - vb
+  name: ComputedIndexOptions.IndexCasing
+  nameWithType: ComputedIndexOptions.IndexCasing
+  fullName: AeroDB.ComputedIndexOptions.IndexCasing
+  type: Enum
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/IndexDefinition.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public enum ComputedIndexOptions.IndexCasing
+    content.vb: Public Enum ComputedIndexOptions.IndexCasing
+- uid: AeroDB.ComputedIndexOptions.IndexCasing.Default
+  commentId: F:AeroDB.ComputedIndexOptions.IndexCasing.Default
+  id: Default
+  parent: AeroDB.ComputedIndexOptions.IndexCasing
+  langs:
+  - csharp
+  - vb
+  name: Default
+  nameWithType: ComputedIndexOptions.IndexCasing.Default
+  fullName: AeroDB.ComputedIndexOptions.IndexCasing.Default
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/IndexDefinition.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: Default = 0
+    return:
+      type: AeroDB.ComputedIndexOptions.IndexCasing
+- uid: AeroDB.ComputedIndexOptions.IndexCasing.Lower
+  commentId: F:AeroDB.ComputedIndexOptions.IndexCasing.Lower
+  id: Lower
+  parent: AeroDB.ComputedIndexOptions.IndexCasing
+  langs:
+  - csharp
+  - vb
+  name: Lower
+  nameWithType: ComputedIndexOptions.IndexCasing.Lower
+  fullName: AeroDB.ComputedIndexOptions.IndexCasing.Lower
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/IndexDefinition.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: Lower = 1
+    return:
+      type: AeroDB.ComputedIndexOptions.IndexCasing
+- uid: AeroDB.ComputedIndexOptions.IndexCasing.Upper
+  commentId: F:AeroDB.ComputedIndexOptions.IndexCasing.Upper
+  id: Upper
+  parent: AeroDB.ComputedIndexOptions.IndexCasing
+  langs:
+  - csharp
+  - vb
+  name: Upper
+  nameWithType: ComputedIndexOptions.IndexCasing.Upper
+  fullName: AeroDB.ComputedIndexOptions.IndexCasing.Upper
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/IndexDefinition.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: Upper = 2
+    return:
+      type: AeroDB.ComputedIndexOptions.IndexCasing
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: AeroDB.ComputedIndexOptions.IndexCasing
+  commentId: T:AeroDB.ComputedIndexOptions.IndexCasing
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.ComputedIndexOptions.html
+  name: ComputedIndexOptions.IndexCasing
+  nameWithType: ComputedIndexOptions.IndexCasing
+  fullName: AeroDB.ComputedIndexOptions.IndexCasing
+  spec.csharp:
+  - uid: AeroDB.ComputedIndexOptions
+    name: ComputedIndexOptions
+    isExternal: true
+    href: AeroDB.ComputedIndexOptions.html
+  - name: .
+  - uid: AeroDB.ComputedIndexOptions.IndexCasing
+    name: IndexCasing
+    isExternal: true
+    href: AeroDB.ComputedIndexOptions.IndexCasing.html
+  spec.vb:
+  - uid: AeroDB.ComputedIndexOptions
+    name: ComputedIndexOptions
+    isExternal: true
+    href: AeroDB.ComputedIndexOptions.html
+  - name: .
+  - uid: AeroDB.ComputedIndexOptions.IndexCasing
+    name: IndexCasing
+    isExternal: true
+    href: AeroDB.ComputedIndexOptions.IndexCasing.html

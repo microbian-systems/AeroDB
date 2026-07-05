@@ -2,6 +2,7 @@
   <PropertyGroup>
     <Description>.NET Transactional Document DB and Event Store on SurrealDB</Description>
     <PackageTags>surrealdb documentdb eventstore nosql</PackageTags>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <InternalsVisibleTo Include="AeroDB.Tests" />

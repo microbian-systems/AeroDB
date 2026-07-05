@@ -1,0 +1,1077 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.SearchExtensions
+  commentId: T:AeroDB.SearchExtensions
+  id: SearchExtensions
+  parent: AeroDB
+  children:
+  - AeroDB.SearchExtensions.HybridSearchAsync``1(AeroDB.ISurrealDbQueryable{``0},AeroDB.HybridSearchConfig,System.Threading.CancellationToken)
+  - AeroDB.SearchExtensions.MatchKnnAsync``1(AeroDB.ISurrealDbQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Single[]}},System.Single[],System.Int32,System.Int32,System.Threading.CancellationToken)
+  - AeroDB.SearchExtensions.MatchTextAsync``1(AeroDB.ISurrealDbQueryable{``0},System.Collections.Generic.IReadOnlyList{System.ValueTuple{System.Linq.Expressions.Expression{System.Func{``0,System.String}},System.Double}},System.String,System.Int32,System.Threading.CancellationToken)
+  - AeroDB.SearchExtensions.MatchTextAsync``1(AeroDB.ISurrealDbQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.String}},System.String,System.Int32,System.Threading.CancellationToken)
+  langs:
+  - csharp
+  - vb
+  name: SearchExtensions
+  nameWithType: SearchExtensions
+  fullName: AeroDB.SearchExtensions
+  type: Class
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SearchExtensions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public static class SearchExtensions
+    content.vb: Public Module SearchExtensions
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+- uid: AeroDB.SearchExtensions.MatchTextAsync``1(AeroDB.ISurrealDbQueryable{``0},System.Collections.Generic.IReadOnlyList{System.ValueTuple{System.Linq.Expressions.Expression{System.Func{``0,System.String}},System.Double}},System.String,System.Int32,System.Threading.CancellationToken)
+  commentId: M:AeroDB.SearchExtensions.MatchTextAsync``1(AeroDB.ISurrealDbQueryable{``0},System.Collections.Generic.IReadOnlyList{System.ValueTuple{System.Linq.Expressions.Expression{System.Func{``0,System.String}},System.Double}},System.String,System.Int32,System.Threading.CancellationToken)
+  id: MatchTextAsync``1(AeroDB.ISurrealDbQueryable{``0},System.Collections.Generic.IReadOnlyList{System.ValueTuple{System.Linq.Expressions.Expression{System.Func{``0,System.String}},System.Double}},System.String,System.Int32,System.Threading.CancellationToken)
+  isExtensionMethod: true
+  parent: AeroDB.SearchExtensions
+  langs:
+  - csharp
+  - vb
+  name: MatchTextAsync<T>(ISurrealDbQueryable<T>, IReadOnlyList<(Expression<Func<T, string>> FieldSelector, double Weight)>, string, int, CancellationToken)
+  nameWithType: SearchExtensions.MatchTextAsync<T>(ISurrealDbQueryable<T>, IReadOnlyList<(Expression<Func<T, string>> FieldSelector, double Weight)>, string, int, CancellationToken)
+  fullName: AeroDB.SearchExtensions.MatchTextAsync<T>(AeroDB.ISurrealDbQueryable<T>, System.Collections.Generic.IReadOnlyList<(System.Linq.Expressions.Expression<System.Func<T, string>> FieldSelector, double Weight)>, string, int, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SearchExtensions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Full-text search using the @@ operator. Requires a FULLTEXT ANALYZER index on the field.
+
+    Supports weighted multi-field queries (e.g., title: 25, body: 10).
+  example: []
+  syntax:
+    content: 'public static Task<List<T>> MatchTextAsync<T>(this ISurrealDbQueryable<T> source, IReadOnlyList<(Expression<Func<T, string>> FieldSelector, double Weight)> fields, string query, int limit = 30, CancellationToken ct = default) where T : class'
+    parameters:
+    - id: source
+      type: AeroDB.ISurrealDbQueryable{{T}}
+    - id: fields
+      type: System.Collections.Generic.IReadOnlyList{System.ValueTuple{System.Linq.Expressions.Expression{System.Func{{T},System.String}},System.Double}}
+    - id: query
+      type: System.String
+    - id: limit
+      type: System.Int32
+    - id: ct
+      type: System.Threading.CancellationToken
+    typeParameters:
+    - id: T
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.List{{T}}}
+    content.vb: Public Shared Function MatchTextAsync(Of T As Class)(source As ISurrealDbQueryable(Of T), fields As IReadOnlyList(Of (FieldSelector As Expression(Of Func(Of T, String)), Weight As Double)), query As String, limit As Integer = 30, ct As CancellationToken = Nothing) As Task(Of List(Of T))
+  overload: AeroDB.SearchExtensions.MatchTextAsync*
+  nameWithType.vb: SearchExtensions.MatchTextAsync(Of T)(ISurrealDbQueryable(Of T), IReadOnlyList(Of (FieldSelector As Expression(Of Func(Of T, String)), Weight As Double)), String, Integer, CancellationToken)
+  fullName.vb: AeroDB.SearchExtensions.MatchTextAsync(Of T)(AeroDB.ISurrealDbQueryable(Of T), System.Collections.Generic.IReadOnlyList(Of (FieldSelector As System.Linq.Expressions.Expression(Of System.Func(Of T, String)), Weight As Double)), String, Integer, System.Threading.CancellationToken)
+  name.vb: MatchTextAsync(Of T)(ISurrealDbQueryable(Of T), IReadOnlyList(Of (FieldSelector As Expression(Of Func(Of T, String)), Weight As Double)), String, Integer, CancellationToken)
+- uid: AeroDB.SearchExtensions.MatchTextAsync``1(AeroDB.ISurrealDbQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.String}},System.String,System.Int32,System.Threading.CancellationToken)
+  commentId: M:AeroDB.SearchExtensions.MatchTextAsync``1(AeroDB.ISurrealDbQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.String}},System.String,System.Int32,System.Threading.CancellationToken)
+  id: MatchTextAsync``1(AeroDB.ISurrealDbQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.String}},System.String,System.Int32,System.Threading.CancellationToken)
+  isExtensionMethod: true
+  parent: AeroDB.SearchExtensions
+  langs:
+  - csharp
+  - vb
+  name: MatchTextAsync<T>(ISurrealDbQueryable<T>, Expression<Func<T, string>>, string, int, CancellationToken)
+  nameWithType: SearchExtensions.MatchTextAsync<T>(ISurrealDbQueryable<T>, Expression<Func<T, string>>, string, int, CancellationToken)
+  fullName: AeroDB.SearchExtensions.MatchTextAsync<T>(AeroDB.ISurrealDbQueryable<T>, System.Linq.Expressions.Expression<System.Func<T, string>>, string, int, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SearchExtensions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Single-field full-text search. Convenience overload for the most common case.
+  example: []
+  syntax:
+    content: 'public static Task<List<T>> MatchTextAsync<T>(this ISurrealDbQueryable<T> source, Expression<Func<T, string>> fieldSelector, string query, int limit = 30, CancellationToken ct = default) where T : class'
+    parameters:
+    - id: source
+      type: AeroDB.ISurrealDbQueryable{{T}}
+    - id: fieldSelector
+      type: System.Linq.Expressions.Expression{System.Func{{T},System.String}}
+    - id: query
+      type: System.String
+    - id: limit
+      type: System.Int32
+    - id: ct
+      type: System.Threading.CancellationToken
+    typeParameters:
+    - id: T
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.List{{T}}}
+    content.vb: Public Shared Function MatchTextAsync(Of T As Class)(source As ISurrealDbQueryable(Of T), fieldSelector As Expression(Of Func(Of T, String)), query As String, limit As Integer = 30, ct As CancellationToken = Nothing) As Task(Of List(Of T))
+  overload: AeroDB.SearchExtensions.MatchTextAsync*
+  nameWithType.vb: SearchExtensions.MatchTextAsync(Of T)(ISurrealDbQueryable(Of T), Expression(Of Func(Of T, String)), String, Integer, CancellationToken)
+  fullName.vb: AeroDB.SearchExtensions.MatchTextAsync(Of T)(AeroDB.ISurrealDbQueryable(Of T), System.Linq.Expressions.Expression(Of System.Func(Of T, String)), String, Integer, System.Threading.CancellationToken)
+  name.vb: MatchTextAsync(Of T)(ISurrealDbQueryable(Of T), Expression(Of Func(Of T, String)), String, Integer, CancellationToken)
+- uid: AeroDB.SearchExtensions.MatchKnnAsync``1(AeroDB.ISurrealDbQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Single[]}},System.Single[],System.Int32,System.Int32,System.Threading.CancellationToken)
+  commentId: M:AeroDB.SearchExtensions.MatchKnnAsync``1(AeroDB.ISurrealDbQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Single[]}},System.Single[],System.Int32,System.Int32,System.Threading.CancellationToken)
+  id: MatchKnnAsync``1(AeroDB.ISurrealDbQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Single[]}},System.Single[],System.Int32,System.Int32,System.Threading.CancellationToken)
+  isExtensionMethod: true
+  parent: AeroDB.SearchExtensions
+  langs:
+  - csharp
+  - vb
+  name: MatchKnnAsync<T>(ISurrealDbQueryable<T>, Expression<Func<T, float[]>>, float[], int, int, CancellationToken)
+  nameWithType: SearchExtensions.MatchKnnAsync<T>(ISurrealDbQueryable<T>, Expression<Func<T, float[]>>, float[], int, int, CancellationToken)
+  fullName: AeroDB.SearchExtensions.MatchKnnAsync<T>(AeroDB.ISurrealDbQueryable<T>, System.Linq.Expressions.Expression<System.Func<T, float[]>>, float[], int, int, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SearchExtensions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: KNN vector search using the &lt;||&gt; operator. Requires an HNSW index on the field.
+  example: []
+  syntax:
+    content: 'public static Task<List<T>> MatchKnnAsync<T>(this ISurrealDbQueryable<T> source, Expression<Func<T, float[]>> fieldSelector, float[] queryVector, int limit = 30, int candidates = 100, CancellationToken ct = default) where T : class'
+    parameters:
+    - id: source
+      type: AeroDB.ISurrealDbQueryable{{T}}
+    - id: fieldSelector
+      type: System.Linq.Expressions.Expression{System.Func{{T},System.Single[]}}
+    - id: queryVector
+      type: System.Single[]
+    - id: limit
+      type: System.Int32
+    - id: candidates
+      type: System.Int32
+    - id: ct
+      type: System.Threading.CancellationToken
+    typeParameters:
+    - id: T
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.List{{T}}}
+    content.vb: Public Shared Function MatchKnnAsync(Of T As Class)(source As ISurrealDbQueryable(Of T), fieldSelector As Expression(Of Func(Of T, Single())), queryVector As Single(), limit As Integer = 30, candidates As Integer = 100, ct As CancellationToken = Nothing) As Task(Of List(Of T))
+  overload: AeroDB.SearchExtensions.MatchKnnAsync*
+  nameWithType.vb: SearchExtensions.MatchKnnAsync(Of T)(ISurrealDbQueryable(Of T), Expression(Of Func(Of T, Single())), Single(), Integer, Integer, CancellationToken)
+  fullName.vb: AeroDB.SearchExtensions.MatchKnnAsync(Of T)(AeroDB.ISurrealDbQueryable(Of T), System.Linq.Expressions.Expression(Of System.Func(Of T, Single())), Single(), Integer, Integer, System.Threading.CancellationToken)
+  name.vb: MatchKnnAsync(Of T)(ISurrealDbQueryable(Of T), Expression(Of Func(Of T, Single())), Single(), Integer, Integer, CancellationToken)
+- uid: AeroDB.SearchExtensions.HybridSearchAsync``1(AeroDB.ISurrealDbQueryable{``0},AeroDB.HybridSearchConfig,System.Threading.CancellationToken)
+  commentId: M:AeroDB.SearchExtensions.HybridSearchAsync``1(AeroDB.ISurrealDbQueryable{``0},AeroDB.HybridSearchConfig,System.Threading.CancellationToken)
+  id: HybridSearchAsync``1(AeroDB.ISurrealDbQueryable{``0},AeroDB.HybridSearchConfig,System.Threading.CancellationToken)
+  isExtensionMethod: true
+  parent: AeroDB.SearchExtensions
+  langs:
+  - csharp
+  - vb
+  name: HybridSearchAsync<T>(ISurrealDbQueryable<T>, HybridSearchConfig, CancellationToken)
+  nameWithType: SearchExtensions.HybridSearchAsync<T>(ISurrealDbQueryable<T>, HybridSearchConfig, CancellationToken)
+  fullName: AeroDB.SearchExtensions.HybridSearchAsync<T>(AeroDB.ISurrealDbQueryable<T>, AeroDB.HybridSearchConfig, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SearchExtensions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Hybrid search combining full-text + vector results via Reciprocal Rank Fusion.
+
+    Requires FULLTEXT + HNSW indexes. Fuses results using search::rrf().
+  example: []
+  syntax:
+    content: 'public static Task<List<T>> HybridSearchAsync<T>(this ISurrealDbQueryable<T> source, HybridSearchConfig config, CancellationToken ct = default) where T : class'
+    parameters:
+    - id: source
+      type: AeroDB.ISurrealDbQueryable{{T}}
+    - id: config
+      type: AeroDB.HybridSearchConfig
+    - id: ct
+      type: System.Threading.CancellationToken
+    typeParameters:
+    - id: T
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.List{{T}}}
+    content.vb: Public Shared Function HybridSearchAsync(Of T As Class)(source As ISurrealDbQueryable(Of T), config As HybridSearchConfig, ct As CancellationToken = Nothing) As Task(Of List(Of T))
+  overload: AeroDB.SearchExtensions.HybridSearchAsync*
+  nameWithType.vb: SearchExtensions.HybridSearchAsync(Of T)(ISurrealDbQueryable(Of T), HybridSearchConfig, CancellationToken)
+  fullName.vb: AeroDB.SearchExtensions.HybridSearchAsync(Of T)(AeroDB.ISurrealDbQueryable(Of T), AeroDB.HybridSearchConfig, System.Threading.CancellationToken)
+  name.vb: HybridSearchAsync(Of T)(ISurrealDbQueryable(Of T), HybridSearchConfig, CancellationToken)
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AeroDB.SearchExtensions.MatchTextAsync*
+  commentId: Overload:AeroDB.SearchExtensions.MatchTextAsync
+  isExternal: true
+  href: AeroDB.SearchExtensions.html#AeroDB_SearchExtensions_MatchTextAsync__1_AeroDB_ISurrealDbQueryable___0__System_Collections_Generic_IReadOnlyList_System_ValueTuple_System_Linq_Expressions_Expression_System_Func___0_System_String___System_Double___System_String_System_Int32_System_Threading_CancellationToken_
+  name: MatchTextAsync
+  nameWithType: SearchExtensions.MatchTextAsync
+  fullName: AeroDB.SearchExtensions.MatchTextAsync
+- uid: AeroDB.ISurrealDbQueryable{{T}}
+  commentId: T:AeroDB.ISurrealDbQueryable{``0}
+  parent: AeroDB
+  definition: AeroDB.ISurrealDbQueryable`1
+  href: AeroDB.ISurrealDbQueryable-1.html
+  name: ISurrealDbQueryable<T>
+  nameWithType: ISurrealDbQueryable<T>
+  fullName: AeroDB.ISurrealDbQueryable<T>
+  nameWithType.vb: ISurrealDbQueryable(Of T)
+  fullName.vb: AeroDB.ISurrealDbQueryable(Of T)
+  name.vb: ISurrealDbQueryable(Of T)
+  spec.csharp:
+  - uid: AeroDB.ISurrealDbQueryable`1
+    name: ISurrealDbQueryable
+    isExternal: true
+    href: AeroDB.ISurrealDbQueryable-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.ISurrealDbQueryable`1
+    name: ISurrealDbQueryable
+    isExternal: true
+    href: AeroDB.ISurrealDbQueryable-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic.IReadOnlyList{System.ValueTuple{System.Linq.Expressions.Expression{System.Func{{T},System.String}},System.Double}}
+  commentId: T:System.Collections.Generic.IReadOnlyList{System.ValueTuple{System.Linq.Expressions.Expression{System.Func{``0,System.String}},System.Double}}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyList`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<(Expression<Func<T, string>> FieldSelector, double Weight)>
+  nameWithType: IReadOnlyList<(Expression<Func<T, string>> FieldSelector, double Weight)>
+  fullName: System.Collections.Generic.IReadOnlyList<(System.Linq.Expressions.Expression<System.Func<T, string>> FieldSelector, double Weight)>
+  nameWithType.vb: IReadOnlyList(Of (FieldSelector As Expression(Of Func(Of T, String)), Weight As Double))
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of (FieldSelector As System.Linq.Expressions.Expression(Of System.Func(Of T, String)), Weight As Double))
+  name.vb: IReadOnlyList(Of (FieldSelector As Expression(Of Func(Of T, String)), Weight As Double))
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: '>'
+  - name: " "
+  - uid: System.ValueTuple{System.Linq.Expressions.Expression{System.Func{``0,System.String}},System.Double}.FieldSelector
+    name: FieldSelector
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.linq.expressions.expression-system.func---0,system.string--,system.double-.fieldselector
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: " "
+  - uid: System.ValueTuple{System.Linq.Expressions.Expression{System.Func{``0,System.String}},System.Double}.Weight
+    name: Weight
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.linq.expressions.expression-system.func---0,system.string--,system.double-.weight
+  - name: )
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: (
+  - uid: System.ValueTuple{System.Linq.Expressions.Expression{System.Func{``0,System.String}},System.Double}.FieldSelector
+    name: FieldSelector
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.linq.expressions.expression-system.func---0,system.string--,system.double-.fieldselector
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.ValueTuple{System.Linq.Expressions.Expression{System.Func{``0,System.String}},System.Double}.Weight
+    name: Weight
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.linq.expressions.expression-system.func---0,system.string--,system.double-.weight
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+  - name: )
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.List{{T}}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.List{``0}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<List<T>>
+  nameWithType: Task<List<T>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.List<T>>
+  nameWithType.vb: Task(Of List(Of T))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.List(Of T))
+  name.vb: Task(Of List(Of T))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - name: T
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+- uid: AeroDB.ISurrealDbQueryable`1
+  commentId: T:AeroDB.ISurrealDbQueryable`1
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.ISurrealDbQueryable-1.html
+  name: ISurrealDbQueryable<T>
+  nameWithType: ISurrealDbQueryable<T>
+  fullName: AeroDB.ISurrealDbQueryable<T>
+  nameWithType.vb: ISurrealDbQueryable(Of T)
+  fullName.vb: AeroDB.ISurrealDbQueryable(Of T)
+  name.vb: ISurrealDbQueryable(Of T)
+  spec.csharp:
+  - uid: AeroDB.ISurrealDbQueryable`1
+    name: ISurrealDbQueryable
+    isExternal: true
+    href: AeroDB.ISurrealDbQueryable-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.ISurrealDbQueryable`1
+    name: ISurrealDbQueryable
+    isExternal: true
+    href: AeroDB.ISurrealDbQueryable-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic.IReadOnlyList`1
+  commentId: T:System.Collections.Generic.IReadOnlyList`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<T>
+  nameWithType: IReadOnlyList<T>
+  fullName: System.Collections.Generic.IReadOnlyList<T>
+  nameWithType.vb: IReadOnlyList(Of T)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of T)
+  name.vb: IReadOnlyList(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: System.Linq.Expressions.Expression{System.Func{{T},System.String}}
+  commentId: T:System.Linq.Expressions.Expression{System.Func{``0,System.String}}
+  parent: System.Linq.Expressions
+  definition: System.Linq.Expressions.Expression`1
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  name: Expression<Func<T, string>>
+  nameWithType: Expression<Func<T, string>>
+  fullName: System.Linq.Expressions.Expression<System.Func<T, string>>
+  nameWithType.vb: Expression(Of Func(Of T, String))
+  fullName.vb: System.Linq.Expressions.Expression(Of System.Func(Of T, String))
+  name.vb: Expression(Of Func(Of T, String))
+  spec.csharp:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: System.Linq.Expressions.Expression`1
+  commentId: T:System.Linq.Expressions.Expression`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  name: Expression<TDelegate>
+  nameWithType: Expression<TDelegate>
+  fullName: System.Linq.Expressions.Expression<TDelegate>
+  nameWithType.vb: Expression(Of TDelegate)
+  fullName.vb: System.Linq.Expressions.Expression(Of TDelegate)
+  name.vb: Expression(Of TDelegate)
+  spec.csharp:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - name: TDelegate
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TDelegate
+  - name: )
+- uid: System.Linq.Expressions
+  commentId: N:System.Linq.Expressions
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Linq.Expressions
+  nameWithType: System.Linq.Expressions
+  fullName: System.Linq.Expressions
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Linq
+    name: Linq
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq
+  - name: .
+  - uid: System.Linq.Expressions
+    name: Expressions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Linq
+    name: Linq
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq
+  - name: .
+  - uid: System.Linq.Expressions
+    name: Expressions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions
+- uid: AeroDB.SearchExtensions.MatchKnnAsync*
+  commentId: Overload:AeroDB.SearchExtensions.MatchKnnAsync
+  isExternal: true
+  href: AeroDB.SearchExtensions.html#AeroDB_SearchExtensions_MatchKnnAsync__1_AeroDB_ISurrealDbQueryable___0__System_Linq_Expressions_Expression_System_Func___0_System_Single_____System_Single___System_Int32_System_Int32_System_Threading_CancellationToken_
+  name: MatchKnnAsync
+  nameWithType: SearchExtensions.MatchKnnAsync
+  fullName: AeroDB.SearchExtensions.MatchKnnAsync
+- uid: System.Linq.Expressions.Expression{System.Func{{T},System.Single[]}}
+  commentId: T:System.Linq.Expressions.Expression{System.Func{``0,System.Single[]}}
+  parent: System.Linq.Expressions
+  definition: System.Linq.Expressions.Expression`1
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  name: Expression<Func<T, float[]>>
+  nameWithType: Expression<Func<T, float[]>>
+  fullName: System.Linq.Expressions.Expression<System.Func<T, float[]>>
+  nameWithType.vb: Expression(Of Func(Of T, Single()))
+  fullName.vb: System.Linq.Expressions.Expression(Of System.Func(Of T, Single()))
+  name.vb: Expression(Of Func(Of T, Single()))
+  spec.csharp:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: '['
+  - name: ']'
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: (
+  - name: )
+  - name: )
+  - name: )
+- uid: System.Single[]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.single
+  name: float[]
+  nameWithType: float[]
+  fullName: float[]
+  nameWithType.vb: Single()
+  fullName.vb: Single()
+  name.vb: Single()
+  spec.csharp:
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: (
+  - name: )
+- uid: AeroDB.SearchExtensions.HybridSearchAsync*
+  commentId: Overload:AeroDB.SearchExtensions.HybridSearchAsync
+  isExternal: true
+  href: AeroDB.SearchExtensions.html#AeroDB_SearchExtensions_HybridSearchAsync__1_AeroDB_ISurrealDbQueryable___0__AeroDB_HybridSearchConfig_System_Threading_CancellationToken_
+  name: HybridSearchAsync
+  nameWithType: SearchExtensions.HybridSearchAsync
+  fullName: AeroDB.SearchExtensions.HybridSearchAsync
+- uid: AeroDB.HybridSearchConfig
+  commentId: T:AeroDB.HybridSearchConfig
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.HybridSearchConfig.html
+  name: HybridSearchConfig
+  nameWithType: HybridSearchConfig
+  fullName: AeroDB.HybridSearchConfig

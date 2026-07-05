@@ -1,0 +1,149 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.LiveQuery
+  commentId: N:AeroDB.LiveQuery
+  id: AeroDB.LiveQuery
+  children:
+  - AeroDB.LiveQuery.AeroDBLiveAction
+  - AeroDB.LiveQuery.AeroDBLiveChange`1
+  - AeroDB.LiveQuery.IAeroDBLiveQueryBuilder`1
+  - AeroDB.LiveQuery.IAeroDBLiveQuery`1
+  - AeroDB.LiveQuery.ILiveQuerySession
+  langs:
+  - csharp
+  - vb
+  name: AeroDB.LiveQuery
+  nameWithType: AeroDB.LiveQuery
+  fullName: AeroDB.LiveQuery
+  type: Namespace
+  assemblies:
+  - AeroDB
+references:
+- uid: AeroDB.LiveQuery.AeroDBLiveAction
+  commentId: T:AeroDB.LiveQuery.AeroDBLiveAction
+  parent: AeroDB.LiveQuery
+  isExternal: true
+  href: AeroDB.LiveQuery.AeroDBLiveAction.html
+  name: AeroDBLiveAction
+  nameWithType: AeroDBLiveAction
+  fullName: AeroDB.LiveQuery.AeroDBLiveAction
+- uid: AeroDB.LiveQuery.AeroDBLiveChange`1
+  commentId: T:AeroDB.LiveQuery.AeroDBLiveChange`1
+  parent: AeroDB.LiveQuery
+  isExternal: true
+  href: AeroDB.LiveQuery.AeroDBLiveChange-1.html
+  name: AeroDBLiveChange<T>
+  nameWithType: AeroDBLiveChange<T>
+  fullName: AeroDB.LiveQuery.AeroDBLiveChange<T>
+  nameWithType.vb: AeroDBLiveChange(Of T)
+  fullName.vb: AeroDB.LiveQuery.AeroDBLiveChange(Of T)
+  name.vb: AeroDBLiveChange(Of T)
+  spec.csharp:
+  - uid: AeroDB.LiveQuery.AeroDBLiveChange`1
+    name: AeroDBLiveChange
+    isExternal: true
+    href: AeroDB.LiveQuery.AeroDBLiveChange-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.LiveQuery.AeroDBLiveChange`1
+    name: AeroDBLiveChange
+    isExternal: true
+    href: AeroDB.LiveQuery.AeroDBLiveChange-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.LiveQuery.IAeroDBLiveQuery`1
+  commentId: T:AeroDB.LiveQuery.IAeroDBLiveQuery`1
+  isExternal: true
+  href: AeroDB.LiveQuery.IAeroDBLiveQuery-1.html
+  name: IAeroDBLiveQuery<T>
+  nameWithType: IAeroDBLiveQuery<T>
+  fullName: AeroDB.LiveQuery.IAeroDBLiveQuery<T>
+  nameWithType.vb: IAeroDBLiveQuery(Of T)
+  fullName.vb: AeroDB.LiveQuery.IAeroDBLiveQuery(Of T)
+  name.vb: IAeroDBLiveQuery(Of T)
+  spec.csharp:
+  - uid: AeroDB.LiveQuery.IAeroDBLiveQuery`1
+    name: IAeroDBLiveQuery
+    isExternal: true
+    href: AeroDB.LiveQuery.IAeroDBLiveQuery-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.LiveQuery.IAeroDBLiveQuery`1
+    name: IAeroDBLiveQuery
+    isExternal: true
+    href: AeroDB.LiveQuery.IAeroDBLiveQuery-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder`1
+  commentId: T:AeroDB.LiveQuery.IAeroDBLiveQueryBuilder`1
+  parent: AeroDB.LiveQuery
+  isExternal: true
+  href: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder-1.html
+  name: IAeroDBLiveQueryBuilder<T>
+  nameWithType: IAeroDBLiveQueryBuilder<T>
+  fullName: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder<T>
+  nameWithType.vb: IAeroDBLiveQueryBuilder(Of T)
+  fullName.vb: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder(Of T)
+  name.vb: IAeroDBLiveQueryBuilder(Of T)
+  spec.csharp:
+  - uid: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder`1
+    name: IAeroDBLiveQueryBuilder
+    isExternal: true
+    href: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder`1
+    name: IAeroDBLiveQueryBuilder
+    isExternal: true
+    href: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.LiveQuery.ILiveQuerySession
+  commentId: T:AeroDB.LiveQuery.ILiveQuerySession
+  isExternal: true
+  href: AeroDB.LiveQuery.ILiveQuerySession.html
+  name: ILiveQuerySession
+  nameWithType: ILiveQuerySession
+  fullName: AeroDB.LiveQuery.ILiveQuerySession
+- uid: AeroDB.LiveQuery
+  commentId: N:AeroDB.LiveQuery
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB.LiveQuery
+  nameWithType: AeroDB.LiveQuery
+  fullName: AeroDB.LiveQuery
+  spec.csharp:
+  - uid: AeroDB
+    name: AeroDB
+    isExternal: true
+    href: AeroDB.html
+  - name: .
+  - uid: AeroDB.LiveQuery
+    name: LiveQuery
+    isExternal: true
+    href: AeroDB.LiveQuery.html
+  spec.vb:
+  - uid: AeroDB
+    name: AeroDB
+    isExternal: true
+    href: AeroDB.html
+  - name: .
+  - uid: AeroDB.LiveQuery
+    name: LiveQuery
+    isExternal: true
+    href: AeroDB.LiveQuery.html

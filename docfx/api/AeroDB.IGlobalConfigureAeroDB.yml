@@ -1,0 +1,135 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.IGlobalConfigureAeroDB
+  commentId: T:AeroDB.IGlobalConfigureAeroDB
+  id: IGlobalConfigureAeroDB
+  parent: AeroDB
+  children: []
+  langs:
+  - csharp
+  - vb
+  name: IGlobalConfigureAeroDB
+  nameWithType: IGlobalConfigureAeroDB
+  fullName: AeroDB.IGlobalConfigureAeroDB
+  type: Interface
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Configuration/IGlobalConfigureAeroDB.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Marker interface for <xref href="AeroDB.IConfigureAeroDB" data-throw-if-not-resolved="false"></xref> implementations that apply
+
+    globally to all store types (primary and secondary). Mimics Marten's
+
+    <code>IGlobalConfigureMarten</code>.
+  remarks: >-
+    Configurators implementing only <xref href="AeroDB.IConfigureAeroDB" data-throw-if-not-resolved="false"></xref> are applied to
+
+    the primary store only. Implement <xref href="AeroDB.IGlobalConfigureAeroDB" data-throw-if-not-resolved="false"></xref> (in addition
+
+    to <xref href="AeroDB.IConfigureAeroDB" data-throw-if-not-resolved="false"></xref>) to have the configurator applied to secondary
+
+    stores as well.
+  example: []
+  syntax:
+    content: 'public interface IGlobalConfigureAeroDB : IConfigureAeroDB'
+    content.vb: Public Interface IGlobalConfigureAeroDB Inherits IConfigureAeroDB
+  inheritedMembers:
+  - AeroDB.IConfigureAeroDB.Configure(AeroDB.StoreOptions)
+  - AeroDB.IConfigureAeroDB.Configure(System.IServiceProvider,AeroDB.StoreOptions)
+references:
+- uid: AeroDB.IConfigureAeroDB
+  commentId: T:AeroDB.IConfigureAeroDB
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IConfigureAeroDB.html
+  name: IConfigureAeroDB
+  nameWithType: IConfigureAeroDB
+  fullName: AeroDB.IConfigureAeroDB
+- uid: AeroDB.IGlobalConfigureAeroDB
+  commentId: T:AeroDB.IGlobalConfigureAeroDB
+  isExternal: true
+  href: AeroDB.IGlobalConfigureAeroDB.html
+  name: IGlobalConfigureAeroDB
+  nameWithType: IGlobalConfigureAeroDB
+  fullName: AeroDB.IGlobalConfigureAeroDB
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: AeroDB.IConfigureAeroDB.Configure(AeroDB.StoreOptions)
+  commentId: M:AeroDB.IConfigureAeroDB.Configure(AeroDB.StoreOptions)
+  parent: AeroDB.IConfigureAeroDB
+  isExternal: true
+  href: AeroDB.IConfigureAeroDB.html#AeroDB_IConfigureAeroDB_Configure_AeroDB_StoreOptions_
+  name: Configure(StoreOptions)
+  nameWithType: IConfigureAeroDB.Configure(StoreOptions)
+  fullName: AeroDB.IConfigureAeroDB.Configure(AeroDB.StoreOptions)
+  spec.csharp:
+  - uid: AeroDB.IConfigureAeroDB.Configure(AeroDB.StoreOptions)
+    name: Configure
+    isExternal: true
+    href: AeroDB.IConfigureAeroDB.html#AeroDB_IConfigureAeroDB_Configure_AeroDB_StoreOptions_
+  - name: (
+  - uid: AeroDB.StoreOptions
+    name: StoreOptions
+    isExternal: true
+    href: AeroDB.StoreOptions.html
+  - name: )
+  spec.vb:
+  - uid: AeroDB.IConfigureAeroDB.Configure(AeroDB.StoreOptions)
+    name: Configure
+    isExternal: true
+    href: AeroDB.IConfigureAeroDB.html#AeroDB_IConfigureAeroDB_Configure_AeroDB_StoreOptions_
+  - name: (
+  - uid: AeroDB.StoreOptions
+    name: StoreOptions
+    isExternal: true
+    href: AeroDB.StoreOptions.html
+  - name: )
+- uid: AeroDB.IConfigureAeroDB.Configure(System.IServiceProvider,AeroDB.StoreOptions)
+  commentId: M:AeroDB.IConfigureAeroDB.Configure(System.IServiceProvider,AeroDB.StoreOptions)
+  parent: AeroDB.IConfigureAeroDB
+  isExternal: true
+  href: AeroDB.IConfigureAeroDB.html#AeroDB_IConfigureAeroDB_Configure_System_IServiceProvider_AeroDB_StoreOptions_
+  name: Configure(IServiceProvider, StoreOptions)
+  nameWithType: IConfigureAeroDB.Configure(IServiceProvider, StoreOptions)
+  fullName: AeroDB.IConfigureAeroDB.Configure(System.IServiceProvider, AeroDB.StoreOptions)
+  spec.csharp:
+  - uid: AeroDB.IConfigureAeroDB.Configure(System.IServiceProvider,AeroDB.StoreOptions)
+    name: Configure
+    isExternal: true
+    href: AeroDB.IConfigureAeroDB.html#AeroDB_IConfigureAeroDB_Configure_System_IServiceProvider_AeroDB_StoreOptions_
+  - name: (
+  - uid: System.IServiceProvider
+    name: IServiceProvider
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iserviceprovider
+  - name: ','
+  - name: " "
+  - uid: AeroDB.StoreOptions
+    name: StoreOptions
+    isExternal: true
+    href: AeroDB.StoreOptions.html
+  - name: )
+  spec.vb:
+  - uid: AeroDB.IConfigureAeroDB.Configure(System.IServiceProvider,AeroDB.StoreOptions)
+    name: Configure
+    isExternal: true
+    href: AeroDB.IConfigureAeroDB.html#AeroDB_IConfigureAeroDB_Configure_System_IServiceProvider_AeroDB_StoreOptions_
+  - name: (
+  - uid: System.IServiceProvider
+    name: IServiceProvider
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iserviceprovider
+  - name: ','
+  - name: " "
+  - uid: AeroDB.StoreOptions
+    name: StoreOptions
+    isExternal: true
+    href: AeroDB.StoreOptions.html
+  - name: )

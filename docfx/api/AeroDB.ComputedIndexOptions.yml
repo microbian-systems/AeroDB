@@ -1,0 +1,576 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.ComputedIndexOptions
+  commentId: T:AeroDB.ComputedIndexOptions
+  id: ComputedIndexOptions
+  parent: AeroDB
+  children:
+  - AeroDB.ComputedIndexOptions.#ctor
+  - AeroDB.ComputedIndexOptions.Casing
+  - AeroDB.ComputedIndexOptions.Method
+  - AeroDB.ComputedIndexOptions.Order
+  - AeroDB.ComputedIndexOptions.Predicate
+  langs:
+  - csharp
+  - vb
+  name: ComputedIndexOptions
+  nameWithType: ComputedIndexOptions
+  fullName: AeroDB.ComputedIndexOptions
+  type: Class
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/IndexDefinition.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Options for computed/expression-based indexes. Controls index method,
+
+    casing, sort order, and optional predicate filtering.
+  example: []
+  syntax:
+    content: public class ComputedIndexOptions
+    content.vb: Public Class ComputedIndexOptions
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+- uid: AeroDB.ComputedIndexOptions.#ctor
+  commentId: M:AeroDB.ComputedIndexOptions.#ctor
+  id: '#ctor'
+  parent: AeroDB.ComputedIndexOptions
+  langs:
+  - csharp
+  - vb
+  name: ComputedIndexOptions()
+  nameWithType: ComputedIndexOptions.ComputedIndexOptions()
+  fullName: AeroDB.ComputedIndexOptions.ComputedIndexOptions()
+  type: Constructor
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/IndexDefinition.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public ComputedIndexOptions()
+    content.vb: Public Sub New()
+  overload: AeroDB.ComputedIndexOptions.#ctor*
+  nameWithType.vb: ComputedIndexOptions.New()
+  fullName.vb: AeroDB.ComputedIndexOptions.New()
+  name.vb: New()
+- uid: AeroDB.ComputedIndexOptions.Method
+  commentId: P:AeroDB.ComputedIndexOptions.Method
+  id: Method
+  parent: AeroDB.ComputedIndexOptions
+  langs:
+  - csharp
+  - vb
+  name: Method
+  nameWithType: ComputedIndexOptions.Method
+  fullName: AeroDB.ComputedIndexOptions.Method
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/IndexDefinition.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Index method. Default is BTree.
+  example: []
+  syntax:
+    content: public ComputedIndexOptions.IndexMethod Method { get; set; }
+    parameters: []
+    return:
+      type: AeroDB.ComputedIndexOptions.IndexMethod
+    content.vb: Public Property Method As ComputedIndexOptions.IndexMethod
+  overload: AeroDB.ComputedIndexOptions.Method*
+- uid: AeroDB.ComputedIndexOptions.Casing
+  commentId: P:AeroDB.ComputedIndexOptions.Casing
+  id: Casing
+  parent: AeroDB.ComputedIndexOptions
+  langs:
+  - csharp
+  - vb
+  name: Casing
+  nameWithType: ComputedIndexOptions.Casing
+  fullName: AeroDB.ComputedIndexOptions.Casing
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/IndexDefinition.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Field casing. Default is platform-default.
+  example: []
+  syntax:
+    content: public ComputedIndexOptions.IndexCasing Casing { get; set; }
+    parameters: []
+    return:
+      type: AeroDB.ComputedIndexOptions.IndexCasing
+    content.vb: Public Property Casing As ComputedIndexOptions.IndexCasing
+  overload: AeroDB.ComputedIndexOptions.Casing*
+- uid: AeroDB.ComputedIndexOptions.Order
+  commentId: P:AeroDB.ComputedIndexOptions.Order
+  id: Order
+  parent: AeroDB.ComputedIndexOptions
+  langs:
+  - csharp
+  - vb
+  name: Order
+  nameWithType: ComputedIndexOptions.Order
+  fullName: AeroDB.ComputedIndexOptions.Order
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/IndexDefinition.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Sort order. Default is Ascending.
+  example: []
+  syntax:
+    content: public ComputedIndexOptions.SortOrder? Order { get; set; }
+    parameters: []
+    return:
+      type: System.Nullable{AeroDB.ComputedIndexOptions.SortOrder}
+    content.vb: Public Property Order As ComputedIndexOptions.SortOrder?
+  overload: AeroDB.ComputedIndexOptions.Order*
+- uid: AeroDB.ComputedIndexOptions.Predicate
+  commentId: P:AeroDB.ComputedIndexOptions.Predicate
+  id: Predicate
+  parent: AeroDB.ComputedIndexOptions
+  langs:
+  - csharp
+  - vb
+  name: Predicate
+  nameWithType: ComputedIndexOptions.Predicate
+  fullName: AeroDB.ComputedIndexOptions.Predicate
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/IndexDefinition.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Optional predicate for partial indexes (e.g., "WHERE published = true").
+
+    Only applied when the target database supports it.
+  example: []
+  syntax:
+    content: public string? Predicate { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property Predicate As String
+  overload: AeroDB.ComputedIndexOptions.Predicate*
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AeroDB.ComputedIndexOptions.#ctor*
+  commentId: Overload:AeroDB.ComputedIndexOptions.#ctor
+  isExternal: true
+  href: AeroDB.ComputedIndexOptions.html#AeroDB_ComputedIndexOptions__ctor
+  name: ComputedIndexOptions
+  nameWithType: ComputedIndexOptions.ComputedIndexOptions
+  fullName: AeroDB.ComputedIndexOptions.ComputedIndexOptions
+  nameWithType.vb: ComputedIndexOptions.New
+  fullName.vb: AeroDB.ComputedIndexOptions.New
+  name.vb: New
+- uid: AeroDB.ComputedIndexOptions.Method*
+  commentId: Overload:AeroDB.ComputedIndexOptions.Method
+  isExternal: true
+  href: AeroDB.ComputedIndexOptions.html#AeroDB_ComputedIndexOptions_Method
+  name: Method
+  nameWithType: ComputedIndexOptions.Method
+  fullName: AeroDB.ComputedIndexOptions.Method
+- uid: AeroDB.ComputedIndexOptions.IndexMethod
+  commentId: T:AeroDB.ComputedIndexOptions.IndexMethod
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.ComputedIndexOptions.html
+  name: ComputedIndexOptions.IndexMethod
+  nameWithType: ComputedIndexOptions.IndexMethod
+  fullName: AeroDB.ComputedIndexOptions.IndexMethod
+  spec.csharp:
+  - uid: AeroDB.ComputedIndexOptions
+    name: ComputedIndexOptions
+    isExternal: true
+    href: AeroDB.ComputedIndexOptions.html
+  - name: .
+  - uid: AeroDB.ComputedIndexOptions.IndexMethod
+    name: IndexMethod
+    isExternal: true
+    href: AeroDB.ComputedIndexOptions.IndexMethod.html
+  spec.vb:
+  - uid: AeroDB.ComputedIndexOptions
+    name: ComputedIndexOptions
+    isExternal: true
+    href: AeroDB.ComputedIndexOptions.html
+  - name: .
+  - uid: AeroDB.ComputedIndexOptions.IndexMethod
+    name: IndexMethod
+    isExternal: true
+    href: AeroDB.ComputedIndexOptions.IndexMethod.html
+- uid: AeroDB.ComputedIndexOptions.Casing*
+  commentId: Overload:AeroDB.ComputedIndexOptions.Casing
+  isExternal: true
+  href: AeroDB.ComputedIndexOptions.html#AeroDB_ComputedIndexOptions_Casing
+  name: Casing
+  nameWithType: ComputedIndexOptions.Casing
+  fullName: AeroDB.ComputedIndexOptions.Casing
+- uid: AeroDB.ComputedIndexOptions.IndexCasing
+  commentId: T:AeroDB.ComputedIndexOptions.IndexCasing
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.ComputedIndexOptions.html
+  name: ComputedIndexOptions.IndexCasing
+  nameWithType: ComputedIndexOptions.IndexCasing
+  fullName: AeroDB.ComputedIndexOptions.IndexCasing
+  spec.csharp:
+  - uid: AeroDB.ComputedIndexOptions
+    name: ComputedIndexOptions
+    isExternal: true
+    href: AeroDB.ComputedIndexOptions.html
+  - name: .
+  - uid: AeroDB.ComputedIndexOptions.IndexCasing
+    name: IndexCasing
+    isExternal: true
+    href: AeroDB.ComputedIndexOptions.IndexCasing.html
+  spec.vb:
+  - uid: AeroDB.ComputedIndexOptions
+    name: ComputedIndexOptions
+    isExternal: true
+    href: AeroDB.ComputedIndexOptions.html
+  - name: .
+  - uid: AeroDB.ComputedIndexOptions.IndexCasing
+    name: IndexCasing
+    isExternal: true
+    href: AeroDB.ComputedIndexOptions.IndexCasing.html
+- uid: AeroDB.ComputedIndexOptions.Order*
+  commentId: Overload:AeroDB.ComputedIndexOptions.Order
+  isExternal: true
+  href: AeroDB.ComputedIndexOptions.html#AeroDB_ComputedIndexOptions_Order
+  name: Order
+  nameWithType: ComputedIndexOptions.Order
+  fullName: AeroDB.ComputedIndexOptions.Order
+- uid: System.Nullable{AeroDB.ComputedIndexOptions.SortOrder}
+  commentId: T:System.Nullable{AeroDB.ComputedIndexOptions.SortOrder}
+  parent: System
+  definition: System.Nullable`1
+  href: AeroDB.ComputedIndexOptions.html
+  name: ComputedIndexOptions.SortOrder?
+  nameWithType: ComputedIndexOptions.SortOrder?
+  fullName: AeroDB.ComputedIndexOptions.SortOrder?
+  spec.csharp:
+  - uid: AeroDB.ComputedIndexOptions
+    name: ComputedIndexOptions
+    isExternal: true
+    href: AeroDB.ComputedIndexOptions.html
+  - name: .
+  - uid: AeroDB.ComputedIndexOptions.SortOrder
+    name: SortOrder
+    isExternal: true
+    href: AeroDB.ComputedIndexOptions.SortOrder.html
+  - name: '?'
+  spec.vb:
+  - uid: AeroDB.ComputedIndexOptions
+    name: ComputedIndexOptions
+    isExternal: true
+    href: AeroDB.ComputedIndexOptions.html
+  - name: .
+  - uid: AeroDB.ComputedIndexOptions.SortOrder
+    name: SortOrder
+    isExternal: true
+    href: AeroDB.ComputedIndexOptions.SortOrder.html
+  - name: '?'
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.ComputedIndexOptions.Predicate*
+  commentId: Overload:AeroDB.ComputedIndexOptions.Predicate
+  isExternal: true
+  href: AeroDB.ComputedIndexOptions.html#AeroDB_ComputedIndexOptions_Predicate
+  name: Predicate
+  nameWithType: ComputedIndexOptions.Predicate
+  fullName: AeroDB.ComputedIndexOptions.Predicate
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String

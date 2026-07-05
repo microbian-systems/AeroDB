@@ -1,0 +1,86 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.BulkInsertMode
+  commentId: T:AeroDB.BulkInsertMode
+  id: BulkInsertMode
+  parent: AeroDB
+  children:
+  - AeroDB.BulkInsertMode.InsertsOnly
+  - AeroDB.BulkInsertMode.OverwriteExisting
+  langs:
+  - csharp
+  - vb
+  name: BulkInsertMode
+  nameWithType: BulkInsertMode
+  fullName: AeroDB.BulkInsertMode
+  type: Enum
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/BulkInsertMode.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Controls bulk insert behavior for document storage.
+  example: []
+  syntax:
+    content: public enum BulkInsertMode
+    content.vb: Public Enum BulkInsertMode
+- uid: AeroDB.BulkInsertMode.InsertsOnly
+  commentId: F:AeroDB.BulkInsertMode.InsertsOnly
+  id: InsertsOnly
+  parent: AeroDB.BulkInsertMode
+  langs:
+  - csharp
+  - vb
+  name: InsertsOnly
+  nameWithType: BulkInsertMode.InsertsOnly
+  fullName: AeroDB.BulkInsertMode.InsertsOnly
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/BulkInsertMode.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Only insert new documents; skip existing ones.
+  example: []
+  syntax:
+    content: InsertsOnly = 0
+    return:
+      type: AeroDB.BulkInsertMode
+- uid: AeroDB.BulkInsertMode.OverwriteExisting
+  commentId: F:AeroDB.BulkInsertMode.OverwriteExisting
+  id: OverwriteExisting
+  parent: AeroDB.BulkInsertMode
+  langs:
+  - csharp
+  - vb
+  name: OverwriteExisting
+  nameWithType: BulkInsertMode.OverwriteExisting
+  fullName: AeroDB.BulkInsertMode.OverwriteExisting
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/BulkInsertMode.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Overwrite existing documents with the same ID.
+  example: []
+  syntax:
+    content: OverwriteExisting = 1
+    return:
+      type: AeroDB.BulkInsertMode
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: AeroDB.BulkInsertMode
+  commentId: T:AeroDB.BulkInsertMode
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.BulkInsertMode.html
+  name: BulkInsertMode
+  nameWithType: BulkInsertMode
+  fullName: AeroDB.BulkInsertMode
