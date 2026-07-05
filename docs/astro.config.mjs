@@ -7,10 +7,10 @@ export default defineConfig({
   base: '/',
   integrations: [
     starlight({
-      title: 'AeroDB v0.0.8-alpha',
+      title: 'AeroDB v0.0.8.1-alpha',
       plugins: [
         starlightVersions({
-          versions: [{ slug: '0.0.8-alpha', label: 'v0.0.8 (alpha)' }],
+          versions: [{ slug: '0.0.8.1-alpha', label: 'v0.0.8.1 (alpha)' }],
         }),
       ],
       description: 'Fast, multi-model document database for .NET — built on SurrealDB',
