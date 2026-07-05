@@ -1,0 +1,214 @@
+{
+  "sidebar": [
+    {
+      "label": "Getting Started",
+      "items": [
+        {
+          "label": "Introduction",
+          "slug": ""
+        },
+        {
+          "label": "Installation",
+          "slug": "getting-started/installation"
+        },
+        {
+          "label": "Quick Start",
+          "slug": "getting-started/quick-start"
+        },
+        {
+          "label": "Configuration",
+          "slug": "getting-started/configuration"
+        }
+      ]
+    },
+    {
+      "label": "Concepts",
+      "items": [
+        {
+          "label": "Architecture",
+          "slug": "concepts/architecture"
+        },
+        {
+          "label": "Documents",
+          "slug": "concepts/documents"
+        },
+        {
+          "label": "Events",
+          "slug": "concepts/events"
+        },
+        {
+          "label": "Projections",
+          "slug": "concepts/projections"
+        },
+        {
+          "label": "Multi-Tenancy",
+          "slug": "concepts/multi-tenancy"
+        }
+      ]
+    },
+    {
+      "label": "Guides",
+      "items": [
+        {
+          "label": "CRUD Operations",
+          "slug": "guides/crud"
+        },
+        {
+          "label": "Querying",
+          "slug": "guides/querying"
+        },
+        {
+          "label": "LINQ",
+          "slug": "guides/linq"
+        },
+        {
+          "label": "Raw SurrealQL",
+          "slug": "guides/surrealql"
+        },
+        {
+          "label": "Event Sourcing",
+          "slug": "guides/event-sourcing"
+        },
+        {
+          "label": "Live Queries",
+          "slug": "guides/live-queries"
+        }
+      ]
+    },
+    {
+      "label": "Integrations",
+      "items": [
+        {
+          "label": "ASP.NET Identity",
+          "slug": "integrations/aspnet-identity"
+        },
+        {
+          "label": "Entity Framework Core",
+          "slug": "integrations/efcore"
+        },
+        {
+          "label": "Wolverine",
+          "slug": "integrations/wolverine"
+        },
+        {
+          "label": "Health Checks",
+          "slug": "integrations/health-checks"
+        }
+      ]
+    },
+    {
+      "label": "Recipes",
+      "items": [
+        {
+          "label": "Create a Database",
+          "slug": "recipes/create-a-database"
+        },
+        {
+          "label": "Run a LINQ Query",
+          "slug": "recipes/run-a-linq-query"
+        },
+        {
+          "label": "Create an Index",
+          "slug": "recipes/create-an-index"
+        },
+        {
+          "label": "Optimistic Concurrency",
+          "slug": "recipes/implement-optimistic-concurrency"
+        },
+        {
+          "label": "Backup and Restore",
+          "slug": "recipes/backup-and-restore"
+        },
+        {
+          "label": "Multi-Tenancy",
+          "slug": "recipes/configure-multi-tenancy"
+        },
+        {
+          "label": "Register in DI",
+          "slug": "recipes/register-in-di"
+        },
+        {
+          "label": "Live Queries",
+          "slug": "recipes/use-live-queries"
+        }
+      ]
+    },
+    {
+      "label": "Examples",
+      "items": [
+        {
+          "label": "Overview",
+          "slug": "examples/overview"
+        },
+        {
+          "label": "Configuration",
+          "slug": "examples/configuration"
+        },
+        {
+          "label": "Querying",
+          "slug": "examples/querying"
+        },
+        {
+          "label": "Graph",
+          "slug": "examples/graph"
+        },
+        {
+          "label": "Time Series",
+          "slug": "examples/timeseries"
+        },
+        {
+          "label": "Live Queries",
+          "slug": "examples/live-queries"
+        },
+        {
+          "label": "Event Sourcing",
+          "slug": "examples/event-sourcing"
+        },
+        {
+          "label": "Full-Text Search",
+          "slug": "examples/fulltext-search"
+        }
+      ]
+    },
+    {
+      "label": "Advanced",
+      "items": [
+        {
+          "label": "Performance",
+          "slug": "advanced/performance"
+        },
+        {
+          "label": "Schema Management",
+          "slug": "advanced/schema"
+        },
+        {
+          "label": "Search",
+          "slug": "advanced/search"
+        },
+        {
+          "label": "Custom Serialization",
+          "slug": "advanced/serialization"
+        },
+        {
+          "label": "Snowflake IDs",
+          "slug": "advanced/snowflake"
+        }
+      ]
+    },
+    {
+      "label": "API Reference",
+      "collapsed": true,
+      "autogenerate": {
+        "directory": "api"
+      }
+    },
+    {
+      "label": "FAQ",
+      "slug": "faq"
+    },
+    {
+      "label": "Roadmap",
+      "slug": "roadmap"
+    }
+  ]
+}

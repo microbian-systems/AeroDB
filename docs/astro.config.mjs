@@ -1,5 +1,6 @@
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
+import starlightVersions from 'starlight-versions';
 
 export default defineConfig({
   site: 'https://docs.aerodb.io',
@@ -7,6 +8,11 @@ export default defineConfig({
   integrations: [
     starlight({
       title: 'AeroDB v0.0.8-alpha',
+      plugins: [
+        starlightVersions({
+          versions: [{ slug: '0.0.8-alpha', label: 'v0.0.8 (alpha)' }],
+        }),
+      ],
       description: 'Fast, multi-model document database for .NET — built on SurrealDB',
       social: [
         { icon: 'github', label: 'GitHub', href: 'https://github.com/microbians/AeroDB' },

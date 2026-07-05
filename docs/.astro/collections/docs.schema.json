@@ -296,6 +296,10 @@
                           "npm",
                           "sourcehut",
                           "substack",
+                          "chrome",
+                          "edge",
+                          "firefox",
+                          "safari",
                           "seti:folder",
                           "seti:bsl",
                           "seti:mdo",
@@ -600,6 +604,9 @@
                   },
                   {
                     "not": {}
+                  },
+                  {
+                    "type": "null"
                   }
                 ]
               },
