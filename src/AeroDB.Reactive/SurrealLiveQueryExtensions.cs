@@ -68,36 +68,36 @@ public static class SurrealLiveQueryExtensions
     }
 
     /// <summary>
-    /// Shortcut: <c>builder.ToObservable(ct).SelectCreatedRecords()</c>.
+    /// Shortcut: <c>builder.ToObservable(ct).SelectOnCreate()</c>.
     /// Returns an observable of created documents only.
     /// </summary>
-    public static IObservable<T> CreatedRecords<T>(
+    public static IObservable<T> OnCreate<T>(
         this IAeroDBLiveQueryBuilder<T> builder,
         CancellationToken ct = default) where T : class
     {
-        return builder.ToObservable(ct).SelectCreatedRecords();
+        return builder.ToObservable(ct).SelectOnCreate();
     }
 
     /// <summary>
-    /// Shortcut: <c>builder.ToObservable(ct).SelectUpdatedRecords()</c>.
+    /// Shortcut: <c>builder.ToObservable(ct).SelectOnUpdate()</c>.
     /// Returns an observable of updated documents only.
     /// </summary>
-    public static IObservable<T> UpdatedRecords<T>(
+    public static IObservable<T> OnUpdate<T>(
         this IAeroDBLiveQueryBuilder<T> builder,
         CancellationToken ct = default) where T : class
     {
-        return builder.ToObservable(ct).SelectUpdatedRecords();
+        return builder.ToObservable(ct).SelectOnUpdate();
     }
 
     /// <summary>
-    /// Shortcut: <c>builder.ToObservable(ct).SelectDeletedRecords()</c>.
+    /// Shortcut: <c>builder.ToObservable(ct).SelectOnDelete()</c>.
     /// Returns an observable of deleted documents only.
     /// </summary>
-    public static IObservable<T> DeletedRecords<T>(
+    public static IObservable<T> OnDelete<T>(
         this IAeroDBLiveQueryBuilder<T> builder,
         CancellationToken ct = default) where T : class
     {
-        return builder.ToObservable(ct).SelectDeletedRecords();
+        return builder.ToObservable(ct).SelectOnDelete();
     }
 
     /// <summary>

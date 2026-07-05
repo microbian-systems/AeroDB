@@ -126,21 +126,21 @@ Bridge live queries into Rx.NET `IObservable<T>` streams for declarative event p
 ```csharp
 // Shortcut: filter by action directly on the builder
 var created = session.LiveQuery<User>()
-    .CreatedRecords()
+    .OnCreate()
     .Subscribe(user => Console.WriteLine($"New user: {user.Name}"));
 
 var updated = session.LiveQuery<User>()
-    .UpdatedRecords()
+    .OnUpdate()
     .Subscribe(user => Console.WriteLine($"Updated: {user.Name}"));
 
 var deleted = session.LiveQuery<User>()
-    .DeletedRecords()
+    .OnDelete()
     .Subscribe(id => Console.WriteLine($"Deleted: {id}"));
 
 // Or pipe through Rx.NET for custom composition
 var creations = session.LiveQuery<User>()
     .ToObservable()
-    .SelectCreatedRecords()
+    .SelectOnCreate()
     .Subscribe(user => Console.WriteLine($"New user: {user.Name}"));
 
 // Accumulate state from a live stream

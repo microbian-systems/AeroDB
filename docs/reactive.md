@@ -1,30 +1,30 @@
-# Dali.Reactive — Push-Based Live Query Extensions
+# AeroDB.Reactive — Push-Based Live Query Extensions
 
 ## Overview
 
-`Dali.Reactive` is a thin `System.Reactive` (Rx.NET) wrapper around Dali's live query subsystem. It mirrors the pattern established by `SurrealDb.Reactive` — a separate, additive package that bridges from Dali's channel-based `IAsyncEnumerable<T>` pull model to Rx's `IObservable<T>` push model.
+`AeroDB.Reactive` is a thin `System.Reactive` (Rx.NET) wrapper around AeroDB's live query subsystem. It mirrors the pattern established by `SurrealDb.Reactive` — a separate, additive package that bridges from AeroDB's channel-based `IAsyncEnumerable<T>` pull model to Rx's `IObservable<T>` push model.
 
-**Principle:** additive, non-breaking. The existing `ILiveQuerySession`, `IDaliLiveQuery<T>`, `IDaliLiveQueryBuilder<T>`, and Marten-compatible `WatchTableAsync` paths are untouched.
+**Principle:** additive, non-breaking. The existing `ILiveQuerySession`, `IAeroDBLiveQuery<T>`, `IAeroDBLiveQueryBuilder<T>`, and Marten-compatible `WatchTableAsync` paths are untouched.
 
 ## Architecture
 
 ```
-                    ┌─────────────────────────────────┐
-                    │     Dali.Reactive (new)          │
-                    │                                 │
-  IDaliLiveQuery    │  ToObservable()  ──────────────►│  IObservable<DaliLiveChange<T>>
-  Builder<T> ───────┤                                 │       │
-  .SubscribeAsync() │  SelectResults()                │       ▼
-                    │  SelectCreatedRecords<T>()       │  .Where(action != Closed)
-                    │  SelectUpdatedRecords<T>()       │  .OfType(change).Select(doc)
-                    │  SelectDeletedRecords<T>()       │  .OfType(change).Select(doc)
-                    │                                 │
-  IDaliLiveQuery<T> │  AggregateRecords<T>(seed)       │  .Aggregate(seed, accumulator)
-  .Changes() ───────┤  ScanRecords<T>(seed)           │  .Scan(seed, accumulator)
-       │            │                                 │
-       ▼            └─────────────────────────────────┘
-  IAsyncEnumerable<DaliLiveChange<T>>
-  (Channel-based, pull)
+                     ┌─────────────────────────────────┐
+                     │     AeroDB.Reactive (new)         │
+                     │                                 │
+   IAeroDBLiveQuery   │  ToObservable()  ──────────────►│  IObservable<AeroDBLiveChange<T>>
+   Builder<T> ───────┤                                 │       │
+   .SubscribeAsync() │  SelectResults()                │       ▼
+                     │  SelectOnCreate<T>()             │  .Where(action != Closed)
+                     │  SelectOnUpdate<T>()             │  .OfType(change).Select(doc)
+                     │  SelectOnDelete<T>()             │  .OfType(change).Select(doc)
+                     │                                 │
+   IAeroDBLiveQuery<T> │  AggregateRecords<T>(seed)       │  .Aggregate(seed, accumulator)
+   .Changes() ───────┤  ScanRecords<T>(seed)           │  .Scan(seed, accumulator)
+        │            │                                 │
+        ▼            └─────────────────────────────────┘
+   IAsyncEnumerable<AeroDBLiveChange<T>>
+   (Channel-based, pull)
 ```
 
 ### Deferred Execution
@@ -45,22 +45,22 @@ var sub = obs.Subscribe(change => Console.WriteLine(change));
 
 ## API Surface
 
-### `SurrealLiveQueryExtensions` (on `IDaliLiveQueryBuilder<T>`)
+### `SurrealLiveQueryExtensions` (on `IAeroDBLiveQueryBuilder<T>`)
 
 | Method | Description |
 |--------|-------------|
-| `ToObservable(CancellationToken ct)` | Bridges builder's `SubscribeAsync()` → `IObservable<DaliLiveChange<T>>`. Deferred execution — query starts on first subscribe. |
+| `ToObservable(CancellationToken ct)` | Bridges builder's `SubscribeAsync()` → `IObservable<AeroDBLiveChange<T>>`. Deferred execution — query starts on first subscribe. |
 
-### `ReactiveLinqExtensions` (on `IObservable<DaliLiveChange<T>>`)
+### `ReactiveLinqExtensions` (on `IObservable<AeroDBLiveChange<T>>`)
 
 | Method | Returns | Description |
 |--------|---------|-------------|
-| `SelectResults()` | `IObservable<DaliLiveChange<T>>` | Excludes CLOSE notifications |
-| `SelectCreatedRecords()` | `IObservable<T>` | Projects only CREATE events' documents |
-| `SelectUpdatedRecords()` | `IObservable<T>` | Projects only UPDATE events' documents |
-| `SelectDeletedRecords()` | `IObservable<T>` | Projects only DELETE events' documents |
+| `SelectResults()` | `IObservable<AeroDBLiveChange<T>>` | Excludes CLOSE notifications |
+| `SelectOnCreate()` | `IObservable<T>` | Projects only CREATE events' documents |
+| `SelectOnUpdate()` | `IObservable<T>` | Projects only UPDATE events' documents |
+| `SelectOnDelete()` | `IObservable<T>` | Projects only DELETE events' documents |
 
-### `StateAccumulatorExtensions` (on `IObservable<DaliLiveChange<T>>`)
+### `StateAccumulatorExtensions` (on `IObservable<AeroDBLiveChange<T>>`)
 
 | Method | Returns | Description |
 |--------|---------|-------------|
@@ -72,21 +72,21 @@ Where `T : Record` for state accumulators (need `.Id` for dictionary key).
 ## Project Structure
 
 ```
-src/Dali.Reactive/
-  Dali.Reactive.csproj              ← References Dali + SurrealDb.Reactive
+src/AeroDB.Reactive/
+  AeroDB.Reactive.csproj              ← References AeroDB + SurrealDb.Reactive
   SurrealLiveQueryExtensions.cs     ← ToObservable() on builder
-  ReactiveLinqExtensions.cs         ← SelectResults, SelectCreated/Updated/Deleted
+  ReactiveLinqExtensions.cs         ← SelectResults, SelectOnCreate/SelectOnUpdate/SelectOnDelete
   StateAccumulatorExtensions.cs     ← AggregateRecords, ScanRecords
 
-tests/Dali.Tests/
+tests/AeroDB.Tests/
   ReactiveExtensionsTests.cs        ← Unit tests via test constructor path
 ```
 
 ## Dependencies
 
-- `Dali` (project reference)
+- `AeroDB` (project reference)
 - `SurrealDb.Reactive` → transitively brings `System.Reactive` (no direct reference needed)
-- .NET 10 (same TFMs as `Dali`)
+- .NET 10 (same TFMs as `AeroDB`)
 
 ## Usage Examples
 
@@ -112,7 +112,7 @@ await session.SaveChangesAsync();
 var obs = session.LiveQuerySession()
     .Live<Person>()
     .ToObservable()
-    .SelectCreatedRecords();  // only newly created Persons
+    .SelectOnCreate();  // only newly created Persons
 
 obs.Subscribe(person => Console.WriteLine($"New person: {person.Name}"));
 ```
@@ -141,23 +141,23 @@ store.LiveQuerySession()
 
 ## Constraints
 
-- `SurrealDaliLiveQuery<T>` is `internal` — the reactive layer only uses public `IDaliLiveQuery<T>` and `IDaliLiveQueryBuilder<T>` interfaces
+- `SurrealAeroDBLiveQuery<T>` is `internal` — the reactive layer only uses public `IAeroDBLiveQuery<T>` and `IAeroDBLiveQueryBuilder<T>` interfaces
 - `StateAccumulatorExtensions` requires `T : Record` for the `.Id` property access
 - No `InternalsVisibleTo` required — all bridge points are public
-- Subscription disposal kills the server-side query via `IDaliLiveQuery.StopAsync()`
+- Subscription disposal kills the server-side query via `IAeroDBLiveQuery.StopAsync()`
 
 ## Parity with SurrealDb.Reactive
 
-| Feature | SurrealDb.Reactive | Dali.Reactive |
+| Feature | SurrealDb.Reactive | AeroDB.Reactive |
 |---------|-------------------|---------------|
-| `ObserveQuery<T>()` | On `ISurrealDbClient` | On `IDaliLiveQueryBuilder<T>.ToObservable()` |
+| `ObserveQuery<T>()` | On `ISurrealDbClient` | On `IAeroDBLiveQueryBuilder<T>.ToObservable()` |
 | `ObserveTable<T>()` | On `ISurrealDbClient` | `Live<T>().ToObservable()` |
 | `SelectResults()` | ✅ | ✅ |
-| `SelectCreatedRecords<T>()` | ✅ | ✅ |
-| `SelectUpdatedRecords<T>()` | ✅ | ✅ |
-| `SelectDeletedRecords<T>()` | ✅ | ✅ |
+| `SelectOnCreate<T>()` | ✅ | ✅ |
+| `SelectOnUpdate<T>()` | ✅ | ✅ |
+| `SelectOnDelete<T>()` | ✅ | ✅ |
 | `AggregateRecords<T>()` | ✅ | ✅ |
 | `ScanRecords<T>()` | ✅ | ✅ |
 | Deferred subscription | `Observable.Defer` | `Observable.Defer` |
-| Fluent builder (Where/Select) | ❌ | ✅ (via Dali's `IDaliLiveQueryBuilder<T>`) |
+| Fluent builder (Where/Select) | ❌ | ✅ (via AeroDB's `IAeroDBLiveQueryBuilder<T>`) |
 | Marten API parity | ❌ | ✅ (untouched `WatchTableAsync`) |

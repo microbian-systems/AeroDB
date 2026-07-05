@@ -14,7 +14,7 @@ public static class ReactiveLinqExtensions
     }
 
     /// <summary>Projects only CREATE events' documents.</summary>
-    public static IObservable<T> SelectCreatedRecords<T>(
+    public static IObservable<T> SelectOnCreate<T>(
         this IObservable<AeroDBLiveChange<T>> source) where T : class
     {
         ArgumentNullException.ThrowIfNull(source);
@@ -24,7 +24,7 @@ public static class ReactiveLinqExtensions
     }
 
     /// <summary>Projects only UPDATE events' documents.</summary>
-    public static IObservable<T> SelectUpdatedRecords<T>(
+    public static IObservable<T> SelectOnUpdate<T>(
         this IObservable<AeroDBLiveChange<T>> source) where T : class
     {
         ArgumentNullException.ThrowIfNull(source);
@@ -34,7 +34,7 @@ public static class ReactiveLinqExtensions
     }
 
     /// <summary>Projects only DELETE events' documents.</summary>
-    public static IObservable<T> SelectDeletedRecords<T>(
+    public static IObservable<T> SelectOnDelete<T>(
         this IObservable<AeroDBLiveChange<T>> source) where T : class
     {
         ArgumentNullException.ThrowIfNull(source);

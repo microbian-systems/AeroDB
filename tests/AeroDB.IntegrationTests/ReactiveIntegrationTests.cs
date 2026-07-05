@@ -384,7 +384,7 @@ public class ReactiveIntegrationTests
     // ── Fluent-chain integration tests ────────────────────────────
 
     [Test]
-    public async Task FluentChain_Where_ToObservable_SelectCreatedRecords()
+    public async Task FluentChain_Where_ToObservable_SelectOnCreate()
     {
         if (!await TestHarness.IsAvailableAsync())
             return;
@@ -403,11 +403,11 @@ public class ReactiveIntegrationTests
             });
             liveSession = await store.LiveQuerySessionAsync();
 
-            // Build the fluent chain: Where(p => p.Age > 18) → ToObservable → SelectCreatedRecords
+            // Build the fluent chain: Where(p => p.Age > 18) → ToObservable → SelectOnCreate
             var obs = liveSession.Live<TestPerson>()
                 .Where(p => p.Age > 18)
                 .ToObservable()
-                .SelectCreatedRecords();
+                .SelectOnCreate();
 
             var createdPersons = new List<TestPerson>();
             using var sub = obs.Subscribe(createdPersons.Add);
@@ -447,7 +447,7 @@ public class ReactiveIntegrationTests
     }
 
     [Test]
-    public async Task FluentChain_CreatedRecords_Shortcut()
+    public async Task FluentChain_OnCreate_Shortcut()
     {
         if (!await TestHarness.IsAvailableAsync())
             return;
@@ -466,8 +466,8 @@ public class ReactiveIntegrationTests
             });
             liveSession = await store.LiveQuerySessionAsync();
 
-            // Use the CreatedRecords shortcut extension on the builder
-            var obs = liveSession.Live<TestPerson>().CreatedRecords();
+            // Use the OnCreate shortcut extension on the builder
+            var obs = liveSession.Live<TestPerson>().OnCreate();
 
             var createdPersons = new List<TestPerson>();
             using var sub = obs.Subscribe(createdPersons.Add);
@@ -505,7 +505,7 @@ public class ReactiveIntegrationTests
     }
 
     [Test]
-    public async Task FluentChain_UpdatedRecords_Shortcut()
+    public async Task FluentChain_OnUpdate_Shortcut()
     {
         if (!await TestHarness.IsAvailableAsync())
             return;
@@ -524,8 +524,8 @@ public class ReactiveIntegrationTests
             });
             liveSession = await store.LiveQuerySessionAsync();
 
-            // Use the UpdatedRecords shortcut extension on the builder
-            var obs = liveSession.Live<TestPerson>().UpdatedRecords();
+            // Use the OnUpdate shortcut extension on the builder
+            var obs = liveSession.Live<TestPerson>().OnUpdate();
 
             var updatedPersons = new List<TestPerson>();
             using var sub = obs.Subscribe(updatedPersons.Add);
@@ -554,7 +554,7 @@ public class ReactiveIntegrationTests
             liveSession = null;
             await Task.Delay(TimeSpan.FromMilliseconds(300));
 
-            // Assert — only the update event should be received (UpdatedRecords filters)
+            // Assert — only the update event should be received (OnUpdate filters)
             updatedPersons.Count.ShouldBe(1);
             updatedPersons[0].Name.ShouldBe("Updated Name");
         }
@@ -718,7 +718,7 @@ public class ReactiveIntegrationTests
     }
 
     [Test]
-    public async Task FluentChain_Where_ToObservable_SelectUpdatedRecords()
+    public async Task FluentChain_Where_ToObservable_SelectOnUpdate()
     {
         if (!await TestHarness.IsAvailableAsync())
             return;
@@ -737,11 +737,11 @@ public class ReactiveIntegrationTests
             });
             liveSession = await store.LiveQuerySessionAsync();
 
-            // Build the fluent chain: Where(p => p.Age > 18) → ToObservable → SelectUpdatedRecords
+            // Build the fluent chain: Where(p => p.Age > 18) → ToObservable → SelectOnUpdate
             var obs = liveSession.Live<TestPerson>()
                 .Where(p => p.Age > 18)
                 .ToObservable()
-                .SelectUpdatedRecords();
+                .SelectOnUpdate();
 
             var updatedPersons = new List<TestPerson>();
             using var sub = obs.Subscribe(updatedPersons.Add);
@@ -756,7 +756,7 @@ public class ReactiveIntegrationTests
             writeSession.Store(child);
             await writeSession.SaveChangesAsync();
 
-            // Wait for create events to pass through (we don't capture them with SelectUpdatedRecords)
+            // Wait for create events to pass through (we don't capture them with SelectOnUpdate)
             await Task.Delay(TimeSpan.FromMilliseconds(500));
 
             // Act — Update the Target person
@@ -788,7 +788,7 @@ public class ReactiveIntegrationTests
     }
 
     [Test]
-    public async Task FluentChain_Where_ToObservable_SelectDeletedRecords()
+    public async Task FluentChain_Where_ToObservable_SelectOnDelete()
     {
         if (!await TestHarness.IsAvailableAsync())
             return;
@@ -804,11 +804,11 @@ public class ReactiveIntegrationTests
             writeSession = await store.LightweightSessionAsync();
             liveSession = await store.LiveQuerySessionAsync();
 
-            // Build the fluent chain: Where(p => p.Age > 18) → ToObservable → SelectDeletedRecords
+            // Build the fluent chain: Where(p => p.Age > 18) → ToObservable → SelectOnDelete
             var obs = liveSession.Live<TestPerson>()
                 .Where(p => p.Age > 18)
                 .ToObservable()
-                .SelectDeletedRecords();
+                .SelectOnDelete();
 
             var deletedPersons = new List<TestPerson>();
             using var sub = obs.Subscribe(deletedPersons.Add);

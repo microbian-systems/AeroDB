@@ -115,7 +115,7 @@ public class ReactiveExtensionsTests
     // ── LINQ Filter Tests (pure Rx) ────────────────────────────
 
     [Test]
-    public async Task SelectCreatedRecords_FiltersOnlyCreated()
+    public async Task SelectOnCreate_FiltersOnlyCreated()
     {
         var alice = new Person { Id = RecordId.From("person", "alice"), Name = "Alice" };
         var bob = new Person { Id = RecordId.From("person", "bob"), Name = "Bob" };
@@ -127,14 +127,14 @@ public class ReactiveExtensionsTests
             CreateDeleted(charlie), CreateClosed()
         }.ToObservable();
 
-        var results = await ToListAsync(source.SelectCreatedRecords());
+        var results = await ToListAsync(source.SelectOnCreate());
 
         results.Count.ShouldBe(1);
         results[0].Name.ShouldBe("Alice");
     }
 
     [Test]
-    public async Task SelectUpdatedRecords_FiltersOnlyUpdated()
+    public async Task SelectOnUpdate_FiltersOnlyUpdated()
     {
         var alice = new Person { Id = RecordId.From("person", "alice"), Name = "Alice" };
         var bob = new Person { Id = RecordId.From("person", "bob"), Name = "Bob" };
@@ -146,14 +146,14 @@ public class ReactiveExtensionsTests
             CreateDeleted(charlie), CreateClosed()
         }.ToObservable();
 
-        var results = await ToListAsync(source.SelectUpdatedRecords());
+        var results = await ToListAsync(source.SelectOnUpdate());
 
         results.Count.ShouldBe(1);
         results[0].Name.ShouldBe("Bob");
     }
 
     [Test]
-    public async Task SelectDeletedRecords_FiltersOnlyDeleted()
+    public async Task SelectOnDelete_FiltersOnlyDeleted()
     {
         var alice = new Person { Id = RecordId.From("person", "alice"), Name = "Alice" };
         var bob = new Person { Id = RecordId.From("person", "bob"), Name = "Bob" };
@@ -165,7 +165,7 @@ public class ReactiveExtensionsTests
             CreateDeleted(charlie), CreateClosed()
         }.ToObservable();
 
-        var results = await ToListAsync(source.SelectDeletedRecords());
+        var results = await ToListAsync(source.SelectOnDelete());
 
         results.Count.ShouldBe(1);
         results[0].Name.ShouldBe("Charlie");
@@ -546,7 +546,7 @@ public class ReactiveExtensionsTests
     }
 
     [Test]
-    public async Task CreatedRecords_ReturnsOnlyCreatedDocuments()
+    public async Task OnCreate_ReturnsOnlyCreatedDocuments()
     {
         var changes = new[]
         {
@@ -565,7 +565,7 @@ public class ReactiveExtensionsTests
         var mockBuilder = Substitute.For<IAeroDBLiveQueryBuilder<Person>>();
         mockBuilder.SubscribeAsync(Arg.Any<CancellationToken>()).Returns(Task.FromResult(mockQuery));
 
-        var obs = mockBuilder.CreatedRecords();
+        var obs = mockBuilder.OnCreate();
         var results = await CollectAsync(obs);
 
         results.Count.ShouldBe(1);
@@ -573,7 +573,7 @@ public class ReactiveExtensionsTests
     }
 
     [Test]
-    public async Task UpdatedRecords_ReturnsOnlyUpdatedDocuments()
+    public async Task OnUpdate_ReturnsOnlyUpdatedDocuments()
     {
         var changes = new[]
         {
@@ -592,7 +592,7 @@ public class ReactiveExtensionsTests
         var mockBuilder = Substitute.For<IAeroDBLiveQueryBuilder<Person>>();
         mockBuilder.SubscribeAsync(Arg.Any<CancellationToken>()).Returns(Task.FromResult(mockQuery));
 
-        var obs = mockBuilder.UpdatedRecords();
+        var obs = mockBuilder.OnUpdate();
         var results = await CollectAsync(obs);
 
         results.Count.ShouldBe(1);
@@ -600,7 +600,7 @@ public class ReactiveExtensionsTests
     }
 
     [Test]
-    public async Task DeletedRecords_ReturnsOnlyDeletedDocuments()
+    public async Task OnDelete_ReturnsOnlyDeletedDocuments()
     {
         var changes = new[]
         {
@@ -619,7 +619,7 @@ public class ReactiveExtensionsTests
         var mockBuilder = Substitute.For<IAeroDBLiveQueryBuilder<Person>>();
         mockBuilder.SubscribeAsync(Arg.Any<CancellationToken>()).Returns(Task.FromResult(mockQuery));
 
-        var obs = mockBuilder.DeletedRecords();
+        var obs = mockBuilder.OnDelete();
         var results = await CollectAsync(obs);
 
         results.Count.ShouldBe(1);
@@ -683,7 +683,7 @@ public class ReactiveExtensionsTests
     }
 
     [Test]
-    public async Task CreatedRecords_MultipleCreates_EmitsAllDocuments()
+    public async Task OnCreate_MultipleCreates_EmitsAllDocuments()
     {
         var changes = new[]
         {
@@ -701,7 +701,7 @@ public class ReactiveExtensionsTests
         var mockBuilder = Substitute.For<IAeroDBLiveQueryBuilder<Person>>();
         mockBuilder.SubscribeAsync(Arg.Any<CancellationToken>()).Returns(Task.FromResult(mockQuery));
 
-        var obs = mockBuilder.CreatedRecords();
+        var obs = mockBuilder.OnCreate();
         var results = await CollectAsync(obs);
 
         results.Count.ShouldBe(3);
@@ -711,7 +711,7 @@ public class ReactiveExtensionsTests
     }
 
     [Test]
-    public async Task CreatedRecords_WhenNoCreatedEvents_ReturnsEmpty()
+    public async Task OnCreate_WhenNoCreatedEvents_ReturnsEmpty()
     {
         var changes = new[]
         {
@@ -729,21 +729,21 @@ public class ReactiveExtensionsTests
         var mockBuilder = Substitute.For<IAeroDBLiveQueryBuilder<Person>>();
         mockBuilder.SubscribeAsync(Arg.Any<CancellationToken>()).Returns(Task.FromResult(mockQuery));
 
-        var obs = mockBuilder.CreatedRecords();
+        var obs = mockBuilder.OnCreate();
         var results = await CollectAsync(obs);
 
         results.ShouldBeEmpty();
     }
 
     [Test]
-    public async Task UpdatedRecords_WhenSubscribeAsyncThrows_PropagatesError()
+    public async Task OnUpdate_WhenSubscribeAsyncThrows_PropagatesError()
     {
         var mockBuilder = Substitute.For<IAeroDBLiveQueryBuilder<Person>>();
         mockBuilder.SubscribeAsync(Arg.Any<CancellationToken>())
             .Returns(Task.FromException<IAeroDBLiveQuery<Person>>(
                 new InvalidOperationException("Connection failed")));
 
-        var obs = mockBuilder.UpdatedRecords();
+        var obs = mockBuilder.OnUpdate();
         var tcs = new TaskCompletionSource<Exception>();
         obs.Subscribe(_ => { }, ex => tcs.TrySetResult(ex), () => { });
 
@@ -858,7 +858,7 @@ public class ReactiveExtensionsTests
     }
 
     [Test]
-    public async Task FluentChain_Where_ToObservable_SelectCreatedRecords_FlowsData()
+    public async Task FluentChain_Where_ToObservable_SelectOnCreate_FlowsData()
     {
         var (mockBuilder, _) = CreateFluentMock();
 
@@ -868,7 +868,7 @@ public class ReactiveExtensionsTests
         mockBuilder
             .Where(p => p.Age > 18)
             .ToObservable()
-            .SelectCreatedRecords()
+            .SelectOnCreate()
             .Subscribe(
                 results.Add,
                 ex => tcs.TrySetException(ex),
@@ -881,11 +881,11 @@ public class ReactiveExtensionsTests
     }
 
     [Test]
-    public async Task FluentChain_CreatedRecords_Shortcut_FlowsData()
+    public async Task FluentChain_OnCreate_Shortcut_FlowsData()
     {
         var (mockBuilder, _) = CreateFluentMock();
 
-        var obs = mockBuilder.Where(p => p.Age > 18).CreatedRecords();
+        var obs = mockBuilder.Where(p => p.Age > 18).OnCreate();
         var results = await CollectAsync(obs);
 
         results.Count.ShouldBe(1);
@@ -893,11 +893,11 @@ public class ReactiveExtensionsTests
     }
 
     [Test]
-    public async Task FluentChain_UpdatedRecords_Shortcut_FlowsData()
+    public async Task FluentChain_OnUpdate_Shortcut_FlowsData()
     {
         var (mockBuilder, _) = CreateFluentMock();
 
-        var obs = mockBuilder.Where(p => p.Age > 18).UpdatedRecords();
+        var obs = mockBuilder.Where(p => p.Age > 18).OnUpdate();
         var results = await CollectAsync(obs);
 
         results.Count.ShouldBe(1);
@@ -905,11 +905,11 @@ public class ReactiveExtensionsTests
     }
 
     [Test]
-    public async Task FluentChain_DeletedRecords_Shortcut_FlowsData()
+    public async Task FluentChain_OnDelete_Shortcut_FlowsData()
     {
         var (mockBuilder, _) = CreateFluentMock();
 
-        var obs = mockBuilder.Where(p => p.Age > 18).DeletedRecords();
+        var obs = mockBuilder.Where(p => p.Age > 18).OnDelete();
         var results = await CollectAsync(obs);
 
         results.Count.ShouldBe(1);
