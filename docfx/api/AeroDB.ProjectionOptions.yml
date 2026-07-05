@@ -1,0 +1,702 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.ProjectionOptions
+  commentId: T:AeroDB.ProjectionOptions
+  id: ProjectionOptions
+  parent: AeroDB
+  children:
+  - AeroDB.ProjectionOptions.CompositeProjectionFor(System.String,System.Action{AeroDB.CompositeProjection})
+  - AeroDB.ProjectionOptions.EnsureStateTable
+  - AeroDB.ProjectionOptions.RebuildOnStartup
+  - AeroDB.ProjectionOptions.RebuildProjectionNames
+  - AeroDB.ProjectionOptions.Snapshot``1(AeroDB.ProjectionLifecycle,System.Action{AeroDB.SnapshotOptions})
+  langs:
+  - csharp
+  - vb
+  name: ProjectionOptions
+  nameWithType: ProjectionOptions
+  fullName: AeroDB.ProjectionOptions
+  type: Class
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Configuration for event projections. Controls which projections are registered, rebuild options (<code>RebuildOnStartup</code>/<code>RebuildProjectionNames</code>), and projection lifecycle strategies.
+  example: []
+  syntax:
+    content: public class ProjectionOptions
+    content.vb: Public Class ProjectionOptions
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+- uid: AeroDB.ProjectionOptions.CompositeProjectionFor(System.String,System.Action{AeroDB.CompositeProjection})
+  commentId: M:AeroDB.ProjectionOptions.CompositeProjectionFor(System.String,System.Action{AeroDB.CompositeProjection})
+  id: CompositeProjectionFor(System.String,System.Action{AeroDB.CompositeProjection})
+  parent: AeroDB.ProjectionOptions
+  langs:
+  - csharp
+  - vb
+  name: CompositeProjectionFor(string, Action<CompositeProjection>)
+  nameWithType: ProjectionOptions.CompositeProjectionFor(string, Action<CompositeProjection>)
+  fullName: AeroDB.ProjectionOptions.CompositeProjectionFor(string, System.Action<AeroDB.CompositeProjection>)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Register a composite projection that chains multiple sub-projections.
+  example: []
+  syntax:
+    content: public CompositeProjection CompositeProjectionFor(string name, Action<CompositeProjection> configure)
+    parameters:
+    - id: name
+      type: System.String
+    - id: configure
+      type: System.Action{AeroDB.CompositeProjection}
+    return:
+      type: AeroDB.CompositeProjection
+    content.vb: Public Function CompositeProjectionFor(name As String, configure As Action(Of CompositeProjection)) As CompositeProjection
+  overload: AeroDB.ProjectionOptions.CompositeProjectionFor*
+  nameWithType.vb: ProjectionOptions.CompositeProjectionFor(String, Action(Of CompositeProjection))
+  fullName.vb: AeroDB.ProjectionOptions.CompositeProjectionFor(String, System.Action(Of AeroDB.CompositeProjection))
+  name.vb: CompositeProjectionFor(String, Action(Of CompositeProjection))
+- uid: AeroDB.ProjectionOptions.Snapshot``1(AeroDB.ProjectionLifecycle,System.Action{AeroDB.SnapshotOptions})
+  commentId: M:AeroDB.ProjectionOptions.Snapshot``1(AeroDB.ProjectionLifecycle,System.Action{AeroDB.SnapshotOptions})
+  id: Snapshot``1(AeroDB.ProjectionLifecycle,System.Action{AeroDB.SnapshotOptions})
+  parent: AeroDB.ProjectionOptions
+  langs:
+  - csharp
+  - vb
+  name: Snapshot<T>(ProjectionLifecycle, Action<SnapshotOptions>?)
+  nameWithType: ProjectionOptions.Snapshot<T>(ProjectionLifecycle, Action<SnapshotOptions>?)
+  fullName: AeroDB.ProjectionOptions.Snapshot<T>(AeroDB.ProjectionLifecycle, System.Action<AeroDB.SnapshotOptions>?)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Register a self-aggregating snapshot projection for T with the given lifecycle.
+
+    Returns the document mapping for chaining (1:1 Marten parity).
+  example: []
+  syntax:
+    content: 'public DocumentMapping<T> Snapshot<T>(ProjectionLifecycle lifecycle, Action<SnapshotOptions>? configure = null) where T : Record, new()'
+    parameters:
+    - id: lifecycle
+      type: AeroDB.ProjectionLifecycle
+    - id: configure
+      type: System.Action{AeroDB.SnapshotOptions}
+    typeParameters:
+    - id: T
+    return:
+      type: AeroDB.DocumentMapping{{T}}
+    content.vb: Public Function Snapshot(Of T As {Record, New})(lifecycle As ProjectionLifecycle, configure As Action(Of SnapshotOptions) = Nothing) As DocumentMapping(Of T)
+  overload: AeroDB.ProjectionOptions.Snapshot*
+  nameWithType.vb: ProjectionOptions.Snapshot(Of T)(ProjectionLifecycle, Action(Of SnapshotOptions))
+  fullName.vb: AeroDB.ProjectionOptions.Snapshot(Of T)(AeroDB.ProjectionLifecycle, System.Action(Of AeroDB.SnapshotOptions))
+  name.vb: Snapshot(Of T)(ProjectionLifecycle, Action(Of SnapshotOptions))
+- uid: AeroDB.ProjectionOptions.RebuildOnStartup
+  commentId: P:AeroDB.ProjectionOptions.RebuildOnStartup
+  id: RebuildOnStartup
+  parent: AeroDB.ProjectionOptions
+  langs:
+  - csharp
+  - vb
+  name: RebuildOnStartup
+  nameWithType: ProjectionOptions.RebuildOnStartup
+  fullName: AeroDB.ProjectionOptions.RebuildOnStartup
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Whether to rebuild all projections during DocumentStore initialization.
+
+    When true, each registered projection's RebuildAsync is called on startup.
+
+    Useful for development or recovering from projection data loss.
+  example: []
+  syntax:
+    content: public bool RebuildOnStartup { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property RebuildOnStartup As Boolean
+  overload: AeroDB.ProjectionOptions.RebuildOnStartup*
+- uid: AeroDB.ProjectionOptions.RebuildProjectionNames
+  commentId: P:AeroDB.ProjectionOptions.RebuildProjectionNames
+  id: RebuildProjectionNames
+  parent: AeroDB.ProjectionOptions
+  langs:
+  - csharp
+  - vb
+  name: RebuildProjectionNames
+  nameWithType: ProjectionOptions.RebuildProjectionNames
+  fullName: AeroDB.ProjectionOptions.RebuildProjectionNames
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Array of projection names to rebuild on startup.
+
+    When empty (default), all projections are rebuilt if <xref href="AeroDB.ProjectionOptions.RebuildOnStartup" data-throw-if-not-resolved="false"></xref> is true.
+
+    When specified, only the named projections are rebuilt.
+
+    Names should match IProjection EventTypes or a user-defined projection name.
+  example: []
+  syntax:
+    content: public string[] RebuildProjectionNames { get; set; }
+    parameters: []
+    return:
+      type: System.String[]
+    content.vb: Public Property RebuildProjectionNames As String()
+  overload: AeroDB.ProjectionOptions.RebuildProjectionNames*
+- uid: AeroDB.ProjectionOptions.EnsureStateTable
+  commentId: P:AeroDB.ProjectionOptions.EnsureStateTable
+  id: EnsureStateTable
+  parent: AeroDB.ProjectionOptions
+  langs:
+  - csharp
+  - vb
+  name: EnsureStateTable
+  nameWithType: ProjectionOptions.EnsureStateTable
+  fullName: AeroDB.ProjectionOptions.EnsureStateTable
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Whether to ensure the projection progress state table exists.
+
+    Creates mt_projection_progress if not present.
+  example: []
+  syntax:
+    content: public bool EnsureStateTable { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property EnsureStateTable As Boolean
+  overload: AeroDB.ProjectionOptions.EnsureStateTable*
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AeroDB.ProjectionOptions.CompositeProjectionFor*
+  commentId: Overload:AeroDB.ProjectionOptions.CompositeProjectionFor
+  isExternal: true
+  href: AeroDB.ProjectionOptions.html#AeroDB_ProjectionOptions_CompositeProjectionFor_System_String_System_Action_AeroDB_CompositeProjection__
+  name: CompositeProjectionFor
+  nameWithType: ProjectionOptions.CompositeProjectionFor
+  fullName: AeroDB.ProjectionOptions.CompositeProjectionFor
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Action{AeroDB.CompositeProjection}
+  commentId: T:System.Action{AeroDB.CompositeProjection}
+  parent: System
+  definition: System.Action`1
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<CompositeProjection>
+  nameWithType: Action<CompositeProjection>
+  fullName: System.Action<AeroDB.CompositeProjection>
+  nameWithType.vb: Action(Of CompositeProjection)
+  fullName.vb: System.Action(Of AeroDB.CompositeProjection)
+  name.vb: Action(Of CompositeProjection)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: AeroDB.CompositeProjection
+    name: CompositeProjection
+    isExternal: true
+    href: AeroDB.CompositeProjection.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.CompositeProjection
+    name: CompositeProjection
+    isExternal: true
+    href: AeroDB.CompositeProjection.html
+  - name: )
+- uid: AeroDB.CompositeProjection
+  commentId: T:AeroDB.CompositeProjection
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.CompositeProjection.html
+  name: CompositeProjection
+  nameWithType: CompositeProjection
+  fullName: AeroDB.CompositeProjection
+- uid: System.Action`1
+  commentId: T:System.Action`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<T>
+  nameWithType: Action<T>
+  fullName: System.Action<T>
+  nameWithType.vb: Action(Of T)
+  fullName.vb: System.Action(Of T)
+  name.vb: Action(Of T)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.ProjectionOptions.Snapshot*
+  commentId: Overload:AeroDB.ProjectionOptions.Snapshot
+  isExternal: true
+  href: AeroDB.ProjectionOptions.html#AeroDB_ProjectionOptions_Snapshot__1_AeroDB_ProjectionLifecycle_System_Action_AeroDB_SnapshotOptions__
+  name: Snapshot
+  nameWithType: ProjectionOptions.Snapshot
+  fullName: AeroDB.ProjectionOptions.Snapshot
+- uid: AeroDB.ProjectionLifecycle
+  commentId: T:AeroDB.ProjectionLifecycle
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.ProjectionLifecycle.html
+  name: ProjectionLifecycle
+  nameWithType: ProjectionLifecycle
+  fullName: AeroDB.ProjectionLifecycle
+- uid: System.Action{AeroDB.SnapshotOptions}
+  commentId: T:System.Action{AeroDB.SnapshotOptions}
+  parent: System
+  definition: System.Action`1
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<SnapshotOptions>
+  nameWithType: Action<SnapshotOptions>
+  fullName: System.Action<AeroDB.SnapshotOptions>
+  nameWithType.vb: Action(Of SnapshotOptions)
+  fullName.vb: System.Action(Of AeroDB.SnapshotOptions)
+  name.vb: Action(Of SnapshotOptions)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: AeroDB.SnapshotOptions
+    name: SnapshotOptions
+    isExternal: true
+    href: AeroDB.SnapshotOptions.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.SnapshotOptions
+    name: SnapshotOptions
+    isExternal: true
+    href: AeroDB.SnapshotOptions.html
+  - name: )
+- uid: AeroDB.DocumentMapping{{T}}
+  commentId: T:AeroDB.DocumentMapping{``0}
+  parent: AeroDB
+  definition: AeroDB.DocumentMapping`1
+  href: AeroDB.DocumentMapping-1.html
+  name: DocumentMapping<T>
+  nameWithType: DocumentMapping<T>
+  fullName: AeroDB.DocumentMapping<T>
+  nameWithType.vb: DocumentMapping(Of T)
+  fullName.vb: AeroDB.DocumentMapping(Of T)
+  name.vb: DocumentMapping(Of T)
+  spec.csharp:
+  - uid: AeroDB.DocumentMapping`1
+    name: DocumentMapping
+    isExternal: true
+    href: AeroDB.DocumentMapping-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.DocumentMapping`1
+    name: DocumentMapping
+    isExternal: true
+    href: AeroDB.DocumentMapping-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.DocumentMapping`1
+  commentId: T:AeroDB.DocumentMapping`1
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.DocumentMapping-1.html
+  name: DocumentMapping<T>
+  nameWithType: DocumentMapping<T>
+  fullName: AeroDB.DocumentMapping<T>
+  nameWithType.vb: DocumentMapping(Of T)
+  fullName.vb: AeroDB.DocumentMapping(Of T)
+  name.vb: DocumentMapping(Of T)
+  spec.csharp:
+  - uid: AeroDB.DocumentMapping`1
+    name: DocumentMapping
+    isExternal: true
+    href: AeroDB.DocumentMapping-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.DocumentMapping`1
+    name: DocumentMapping
+    isExternal: true
+    href: AeroDB.DocumentMapping-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.ProjectionOptions.RebuildOnStartup*
+  commentId: Overload:AeroDB.ProjectionOptions.RebuildOnStartup
+  isExternal: true
+  href: AeroDB.ProjectionOptions.html#AeroDB_ProjectionOptions_RebuildOnStartup
+  name: RebuildOnStartup
+  nameWithType: ProjectionOptions.RebuildOnStartup
+  fullName: AeroDB.ProjectionOptions.RebuildOnStartup
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: AeroDB.ProjectionOptions.RebuildOnStartup
+  commentId: P:AeroDB.ProjectionOptions.RebuildOnStartup
+  isExternal: true
+  href: AeroDB.ProjectionOptions.html#AeroDB_ProjectionOptions_RebuildOnStartup
+  name: RebuildOnStartup
+  nameWithType: ProjectionOptions.RebuildOnStartup
+  fullName: AeroDB.ProjectionOptions.RebuildOnStartup
+- uid: AeroDB.ProjectionOptions.RebuildProjectionNames*
+  commentId: Overload:AeroDB.ProjectionOptions.RebuildProjectionNames
+  isExternal: true
+  href: AeroDB.ProjectionOptions.html#AeroDB_ProjectionOptions_RebuildProjectionNames
+  name: RebuildProjectionNames
+  nameWithType: ProjectionOptions.RebuildProjectionNames
+  fullName: AeroDB.ProjectionOptions.RebuildProjectionNames
+- uid: System.String[]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string[]
+  nameWithType: string[]
+  fullName: string[]
+  nameWithType.vb: String()
+  fullName.vb: String()
+  name.vb: String()
+  spec.csharp:
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: (
+  - name: )
+- uid: AeroDB.ProjectionOptions.EnsureStateTable*
+  commentId: Overload:AeroDB.ProjectionOptions.EnsureStateTable
+  isExternal: true
+  href: AeroDB.ProjectionOptions.html#AeroDB_ProjectionOptions_EnsureStateTable
+  name: EnsureStateTable
+  nameWithType: ProjectionOptions.EnsureStateTable
+  fullName: AeroDB.ProjectionOptions.EnsureStateTable

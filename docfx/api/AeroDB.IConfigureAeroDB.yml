@@ -1,0 +1,256 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.IConfigureAeroDB
+  commentId: T:AeroDB.IConfigureAeroDB
+  id: IConfigureAeroDB
+  parent: AeroDB
+  children:
+  - AeroDB.IConfigureAeroDB.Configure(AeroDB.StoreOptions)
+  - AeroDB.IConfigureAeroDB.Configure(System.IServiceProvider,AeroDB.StoreOptions)
+  langs:
+  - csharp
+  - vb
+  name: IConfigureAeroDB
+  nameWithType: IConfigureAeroDB
+  fullName: AeroDB.IConfigureAeroDB
+  type: Interface
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Configuration/IConfigureAeroDB.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    DI-registered (or directly added) AeroDB configuration module.
+
+    Implementations are applied during <xref href="AeroDB.DocumentStore.InitializeAsync(System.Threading.CancellationToken)" data-throw-if-not-resolved="false"></xref>.
+
+
+    <p>
+
+    Implementers may override either overload:
+
+
+    <ul><li><xref href="AeroDB.IConfigureAeroDB.Configure(AeroDB.StoreOptions)" data-throw-if-not-resolved="false"></xref> — simple configuration (backward-compatible).</li><li><xref href="AeroDB.IConfigureAeroDB.Configure(System.IServiceProvider%2cAeroDB.StoreOptions)" data-throw-if-not-resolved="false"></xref> — configuration with DI service access.</li></ul>
+
+
+    The two-parameter overload has a default implementation that delegates to the single-parameter
+
+    overload, so existing implementations need no changes.
+
+    </p>
+  example: []
+  syntax:
+    content: public interface IConfigureAeroDB
+    content.vb: Public Interface IConfigureAeroDB
+  derivedClasses:
+  - AeroDB.WolverineFx.WolverineEnvelopeSchemas
+- uid: AeroDB.IConfigureAeroDB.Configure(AeroDB.StoreOptions)
+  commentId: M:AeroDB.IConfigureAeroDB.Configure(AeroDB.StoreOptions)
+  id: Configure(AeroDB.StoreOptions)
+  parent: AeroDB.IConfigureAeroDB
+  langs:
+  - csharp
+  - vb
+  name: Configure(StoreOptions)
+  nameWithType: IConfigureAeroDB.Configure(StoreOptions)
+  fullName: AeroDB.IConfigureAeroDB.Configure(AeroDB.StoreOptions)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Configuration/IConfigureAeroDB.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Called during <code>DocumentStore.InitializeAsync</code> to apply document-level
+
+    schema configuration (indices, tenancy policy, etc.).
+  example: []
+  syntax:
+    content: void Configure(StoreOptions options)
+    parameters:
+    - id: options
+      type: AeroDB.StoreOptions
+    content.vb: Sub Configure(options As StoreOptions)
+  overload: AeroDB.IConfigureAeroDB.Configure*
+- uid: AeroDB.IConfigureAeroDB.Configure(System.IServiceProvider,AeroDB.StoreOptions)
+  commentId: M:AeroDB.IConfigureAeroDB.Configure(System.IServiceProvider,AeroDB.StoreOptions)
+  id: Configure(System.IServiceProvider,AeroDB.StoreOptions)
+  parent: AeroDB.IConfigureAeroDB
+  langs:
+  - csharp
+  - vb
+  name: Configure(IServiceProvider?, StoreOptions)
+  nameWithType: IConfigureAeroDB.Configure(IServiceProvider?, StoreOptions)
+  fullName: AeroDB.IConfigureAeroDB.Configure(System.IServiceProvider?, AeroDB.StoreOptions)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Configuration/IConfigureAeroDB.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Called during <code>DocumentStore.InitializeAsync</code> with optional
+
+    <xref href="System.IServiceProvider" data-throw-if-not-resolved="false"></xref> for DI-resolved services.
+
+    Default implementation delegates to <xref href="AeroDB.IConfigureAeroDB.Configure(AeroDB.StoreOptions)" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: void Configure(IServiceProvider? services, StoreOptions options)
+    parameters:
+    - id: services
+      type: System.IServiceProvider
+    - id: options
+      type: AeroDB.StoreOptions
+    content.vb: Sub Configure(services As IServiceProvider, options As StoreOptions)
+  overload: AeroDB.IConfigureAeroDB.Configure*
+  nameWithType.vb: IConfigureAeroDB.Configure(IServiceProvider, StoreOptions)
+  fullName.vb: AeroDB.IConfigureAeroDB.Configure(System.IServiceProvider, AeroDB.StoreOptions)
+  name.vb: Configure(IServiceProvider, StoreOptions)
+references:
+- uid: AeroDB.DocumentStore.InitializeAsync(System.Threading.CancellationToken)
+  commentId: M:AeroDB.DocumentStore.InitializeAsync(System.Threading.CancellationToken)
+  isExternal: true
+  href: AeroDB.DocumentStore.html#AeroDB_DocumentStore_InitializeAsync_System_Threading_CancellationToken_
+  name: InitializeAsync(CancellationToken)
+  nameWithType: DocumentStore.InitializeAsync(CancellationToken)
+  fullName: AeroDB.DocumentStore.InitializeAsync(System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: AeroDB.DocumentStore.InitializeAsync(System.Threading.CancellationToken)
+    name: InitializeAsync
+    isExternal: true
+    href: AeroDB.DocumentStore.html#AeroDB_DocumentStore_InitializeAsync_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: AeroDB.DocumentStore.InitializeAsync(System.Threading.CancellationToken)
+    name: InitializeAsync
+    isExternal: true
+    href: AeroDB.DocumentStore.html#AeroDB_DocumentStore_InitializeAsync_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: AeroDB.IConfigureAeroDB.Configure(AeroDB.StoreOptions)
+  commentId: M:AeroDB.IConfigureAeroDB.Configure(AeroDB.StoreOptions)
+  parent: AeroDB.IConfigureAeroDB
+  isExternal: true
+  href: AeroDB.IConfigureAeroDB.html#AeroDB_IConfigureAeroDB_Configure_AeroDB_StoreOptions_
+  name: Configure(StoreOptions)
+  nameWithType: IConfigureAeroDB.Configure(StoreOptions)
+  fullName: AeroDB.IConfigureAeroDB.Configure(AeroDB.StoreOptions)
+  spec.csharp:
+  - uid: AeroDB.IConfigureAeroDB.Configure(AeroDB.StoreOptions)
+    name: Configure
+    isExternal: true
+    href: AeroDB.IConfigureAeroDB.html#AeroDB_IConfigureAeroDB_Configure_AeroDB_StoreOptions_
+  - name: (
+  - uid: AeroDB.StoreOptions
+    name: StoreOptions
+    isExternal: true
+    href: AeroDB.StoreOptions.html
+  - name: )
+  spec.vb:
+  - uid: AeroDB.IConfigureAeroDB.Configure(AeroDB.StoreOptions)
+    name: Configure
+    isExternal: true
+    href: AeroDB.IConfigureAeroDB.html#AeroDB_IConfigureAeroDB_Configure_AeroDB_StoreOptions_
+  - name: (
+  - uid: AeroDB.StoreOptions
+    name: StoreOptions
+    isExternal: true
+    href: AeroDB.StoreOptions.html
+  - name: )
+- uid: AeroDB.IConfigureAeroDB.Configure(System.IServiceProvider,AeroDB.StoreOptions)
+  commentId: M:AeroDB.IConfigureAeroDB.Configure(System.IServiceProvider,AeroDB.StoreOptions)
+  parent: AeroDB.IConfigureAeroDB
+  isExternal: true
+  href: AeroDB.IConfigureAeroDB.html#AeroDB_IConfigureAeroDB_Configure_System_IServiceProvider_AeroDB_StoreOptions_
+  name: Configure(IServiceProvider, StoreOptions)
+  nameWithType: IConfigureAeroDB.Configure(IServiceProvider, StoreOptions)
+  fullName: AeroDB.IConfigureAeroDB.Configure(System.IServiceProvider, AeroDB.StoreOptions)
+  spec.csharp:
+  - uid: AeroDB.IConfigureAeroDB.Configure(System.IServiceProvider,AeroDB.StoreOptions)
+    name: Configure
+    isExternal: true
+    href: AeroDB.IConfigureAeroDB.html#AeroDB_IConfigureAeroDB_Configure_System_IServiceProvider_AeroDB_StoreOptions_
+  - name: (
+  - uid: System.IServiceProvider
+    name: IServiceProvider
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iserviceprovider
+  - name: ','
+  - name: " "
+  - uid: AeroDB.StoreOptions
+    name: StoreOptions
+    isExternal: true
+    href: AeroDB.StoreOptions.html
+  - name: )
+  spec.vb:
+  - uid: AeroDB.IConfigureAeroDB.Configure(System.IServiceProvider,AeroDB.StoreOptions)
+    name: Configure
+    isExternal: true
+    href: AeroDB.IConfigureAeroDB.html#AeroDB_IConfigureAeroDB_Configure_System_IServiceProvider_AeroDB_StoreOptions_
+  - name: (
+  - uid: System.IServiceProvider
+    name: IServiceProvider
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iserviceprovider
+  - name: ','
+  - name: " "
+  - uid: AeroDB.StoreOptions
+    name: StoreOptions
+    isExternal: true
+    href: AeroDB.StoreOptions.html
+  - name: )
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: AeroDB.IConfigureAeroDB
+  commentId: T:AeroDB.IConfigureAeroDB
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IConfigureAeroDB.html
+  name: IConfigureAeroDB
+  nameWithType: IConfigureAeroDB
+  fullName: AeroDB.IConfigureAeroDB
+- uid: AeroDB.IConfigureAeroDB.Configure*
+  commentId: Overload:AeroDB.IConfigureAeroDB.Configure
+  isExternal: true
+  href: AeroDB.IConfigureAeroDB.html#AeroDB_IConfigureAeroDB_Configure_AeroDB_StoreOptions_
+  name: Configure
+  nameWithType: IConfigureAeroDB.Configure
+  fullName: AeroDB.IConfigureAeroDB.Configure
+- uid: AeroDB.StoreOptions
+  commentId: T:AeroDB.StoreOptions
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.StoreOptions.html
+  name: StoreOptions
+  nameWithType: StoreOptions
+  fullName: AeroDB.StoreOptions
+- uid: System.IServiceProvider
+  commentId: T:System.IServiceProvider
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iserviceprovider
+  name: IServiceProvider
+  nameWithType: IServiceProvider
+  fullName: System.IServiceProvider
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System

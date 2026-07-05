@@ -1,0 +1,32 @@
+{
+  "$schema": "https://context7.com/schema/context7.json",
+  "projectTitle": "AeroDB",
+  "description": "High-performance multi-model document database for .NET 10, built on SurrealDB. Supports documents, graph edges, event sourcing, live queries, full-text search, time-series, and spatial queries.",
+  "folders": [
+    "docs/src/content/docs"
+  ],
+  "excludeFolders": [
+    "tests",
+    ".docs",
+    "marten",
+    "wolverine",
+    "surrealdb.net",
+    "samples/DocSamples/bin",
+    "samples/DocSamples/obj"
+  ],
+  "excludeFiles": [
+    "CHANGELOG.md"
+  ],
+  "rules": [
+    "Always use async APIs (QuerySessionAsync, SaveChangesAsync) — AeroDB is async-first.",
+    "Prefer LINQ queries over raw SurrealQL when possible for type safety.",
+    "Use await using for sessions — they implement IAsyncDisposable.",
+    "Show complete, runnable examples with DocumentStore.For() configuration callback.",
+    "Do not reference AeroDB.Internal.* or AeroDB.Generated.* namespaces.",
+    "Use Snowflake IDs (long) for primary keys via Snowflake.NewId() from AeroDB.Snowflake.",
+    "Target .NET 10. Use System.Text.Json, not Newtonsoft.Json.",
+    "For ASP.NET Identity integration, use AddAeroDBStores() extension method.",
+    "For Wolverine integration, use WolverineOptionsAeroDBExtensions.",
+    "Use Store() for inserts/updates, Delete() for removals — all changes flush on SaveChangesAsync()."
+  ]
+}

@@ -1,0 +1,3034 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.DocumentMapping`1
+  commentId: T:AeroDB.DocumentMapping`1
+  id: DocumentMapping`1
+  parent: AeroDB
+  children:
+  - AeroDB.DocumentMapping`1.AddSubClass``1
+  - AeroDB.DocumentMapping`1.BTreeIndex``1(System.Linq.Expressions.Expression{System.Func{`0,``0}},System.Action{AeroDB.IndexOptions})
+  - AeroDB.DocumentMapping`1.CompositeIndex(System.Action{AeroDB.IndexOptions},System.Linq.Expressions.Expression{System.Func{`0,System.Object}}[])
+  - AeroDB.DocumentMapping`1.CompositeIndex(System.Linq.Expressions.Expression{System.Func{`0,System.Object}}[])
+  - AeroDB.DocumentMapping`1.ComputedIndex(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Action{AeroDB.ComputedIndexOptions})
+  - AeroDB.DocumentMapping`1.DiskannIndex``1(System.Linq.Expressions.Expression{System.Func{`0,``0}},System.Int32,System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Double},System.Boolean)
+  - AeroDB.DocumentMapping`1.Duplicate(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.String,System.Object,System.Action{AeroDB.DocumentIndex},System.Boolean)
+  - AeroDB.DocumentMapping`1.Duplicate``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}},System.String,System.Object,System.Action{AeroDB.DocumentIndex},System.Boolean)
+  - AeroDB.DocumentMapping`1.Field(System.String,System.Action{AeroDB.FieldDefinition})
+  - AeroDB.DocumentMapping`1.FieldDefinitions
+  - AeroDB.DocumentMapping`1.ForeignKey``1(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Action{AeroDB.ForeignKeyDefinition})
+  - AeroDB.DocumentMapping`1.ForeignKeys
+  - AeroDB.DocumentMapping`1.FullTextIndex(System.String,System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Linq.Expressions.Expression{System.Func{`0,System.Object}}[])
+  - AeroDB.DocumentMapping`1.FullTextIndex``1(System.Linq.Expressions.Expression{System.Func{`0,``0}},System.String,System.Nullable{System.ValueTuple{System.Double,System.Double}})
+  - AeroDB.DocumentMapping`1.HnswIndex``1(System.Linq.Expressions.Expression{System.Func{`0,``0}},System.Int32,System.String)
+  - AeroDB.DocumentMapping`1.HybridSearch(System.Collections.Generic.IReadOnlyList{System.ValueTuple{System.String,System.Double}},System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Int32,System.String,System.String)
+  - AeroDB.DocumentMapping`1.Identity``1(System.Linq.Expressions.Expression{System.Func{`0,``0}})
+  - AeroDB.DocumentMapping`1.IgnoreIndex(System.String)
+  - AeroDB.DocumentMapping`1.IgnoredIndexes
+  - AeroDB.DocumentMapping`1.Index(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Action{AeroDB.IndexOptions})
+  - AeroDB.DocumentMapping`1.Index``1(System.Linq.Expressions.Expression{System.Func{`0,``0}},System.Action{AeroDB.IndexOptions})
+  - AeroDB.DocumentMapping`1.MultiTenanted
+  - AeroDB.DocumentMapping`1.Schema(System.String)
+  - AeroDB.DocumentMapping`1.SetSchemaMode(AeroDB.SchemaMode)
+  - AeroDB.DocumentMapping`1.SoftDeleted
+  - AeroDB.DocumentMapping`1.SpatialIndex``1(System.Linq.Expressions.Expression{System.Func{`0,``0}})
+  - AeroDB.DocumentMapping`1.SubClasses
+  - AeroDB.DocumentMapping`1.UniqueCompositeIndex(System.Action{AeroDB.IndexOptions},System.Linq.Expressions.Expression{System.Func{`0,System.Object}}[])
+  - AeroDB.DocumentMapping`1.UniqueCompositeIndex(System.Linq.Expressions.Expression{System.Func{`0,System.Object}}[])
+  - AeroDB.DocumentMapping`1.UniqueIndex``1(System.Linq.Expressions.Expression{System.Func{`0,``0}})
+  langs:
+  - csharp
+  - vb
+  name: DocumentMapping<T>
+  nameWithType: DocumentMapping<T>
+  fullName: AeroDB.DocumentMapping<T>
+  type: Class
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentMapping.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Fluent API for document-level schema configuration (indices, tenancy policy, etc.).
+
+    Accessed via <code>StoreOptions.Schema.For&lt;T&gt;()</code>.
+  example: []
+  syntax:
+    content: 'public class DocumentMapping<T> : DocumentMapping'
+    typeParameters:
+    - id: T
+    content.vb: Public Class DocumentMapping(Of T) Inherits DocumentMapping
+  inheritance:
+  - System.Object
+  - AeroDB.DocumentMapping
+  inheritedMembers:
+  - AeroDB.DocumentMapping.DocumentType
+  - AeroDB.DocumentMapping.TenancyStyle
+  - AeroDB.DocumentMapping.IsSoftDeleted
+  - AeroDB.DocumentMapping.UseOptimisticConcurrency
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  nameWithType.vb: DocumentMapping(Of T)
+  fullName.vb: AeroDB.DocumentMapping(Of T)
+  name.vb: DocumentMapping(Of T)
+- uid: AeroDB.DocumentMapping`1.AddSubClass``1
+  commentId: M:AeroDB.DocumentMapping`1.AddSubClass``1
+  id: AddSubClass``1
+  parent: AeroDB.DocumentMapping`1
+  langs:
+  - csharp
+  - vb
+  name: AddSubClass<TDerived>()
+  nameWithType: DocumentMapping<T>.AddSubClass<TDerived>()
+  fullName: AeroDB.DocumentMapping<T>.AddSubClass<TDerived>()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentMapping.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Register a derived type for polymorphic querying.
+  example: []
+  syntax:
+    content: 'public DocumentMapping<T> AddSubClass<TDerived>() where TDerived : T'
+    typeParameters:
+    - id: TDerived
+    return:
+      type: AeroDB.DocumentMapping`1
+    content.vb: Public Function AddSubClass(Of TDerived As T)() As DocumentMapping(Of T)
+  overload: AeroDB.DocumentMapping`1.AddSubClass*
+  nameWithType.vb: DocumentMapping(Of T).AddSubClass(Of TDerived)()
+  fullName.vb: AeroDB.DocumentMapping(Of T).AddSubClass(Of TDerived)()
+  name.vb: AddSubClass(Of TDerived)()
+- uid: AeroDB.DocumentMapping`1.IgnoreIndex(System.String)
+  commentId: M:AeroDB.DocumentMapping`1.IgnoreIndex(System.String)
+  id: IgnoreIndex(System.String)
+  parent: AeroDB.DocumentMapping`1
+  langs:
+  - csharp
+  - vb
+  name: IgnoreIndex(string)
+  nameWithType: DocumentMapping<T>.IgnoreIndex(string)
+  fullName: AeroDB.DocumentMapping<T>.IgnoreIndex(string)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentMapping.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Prevent the schema manager from creating a specific index.
+  example: []
+  syntax:
+    content: public DocumentMapping<T> IgnoreIndex(string indexName)
+    parameters:
+    - id: indexName
+      type: System.String
+    return:
+      type: AeroDB.DocumentMapping`1
+    content.vb: Public Function IgnoreIndex(indexName As String) As DocumentMapping(Of T)
+  overload: AeroDB.DocumentMapping`1.IgnoreIndex*
+  nameWithType.vb: DocumentMapping(Of T).IgnoreIndex(String)
+  fullName.vb: AeroDB.DocumentMapping(Of T).IgnoreIndex(String)
+  name.vb: IgnoreIndex(String)
+- uid: AeroDB.DocumentMapping`1.ForeignKey``1(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Action{AeroDB.ForeignKeyDefinition})
+  commentId: M:AeroDB.DocumentMapping`1.ForeignKey``1(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Action{AeroDB.ForeignKeyDefinition})
+  id: ForeignKey``1(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Action{AeroDB.ForeignKeyDefinition})
+  parent: AeroDB.DocumentMapping`1
+  langs:
+  - csharp
+  - vb
+  name: ForeignKey<TChild>(Expression<Func<T, object>>, Action<ForeignKeyDefinition>?)
+  nameWithType: DocumentMapping<T>.ForeignKey<TChild>(Expression<Func<T, object>>, Action<ForeignKeyDefinition>?)
+  fullName: AeroDB.DocumentMapping<T>.ForeignKey<TChild>(System.Linq.Expressions.Expression<System.Func<T, object>>, System.Action<AeroDB.ForeignKeyDefinition>?)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentMapping.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Declare a foreign key relationship for informational/validation purposes.
+
+    In SurrealDB, graph edges replace FK cascades — this metadata is stored
+
+    for tooling and documentation only.
+  example: []
+  syntax:
+    content: public DocumentMapping<T> ForeignKey<TChild>(Expression<Func<T, object>> property, Action<ForeignKeyDefinition>? configure = null)
+    parameters:
+    - id: property
+      type: System.Linq.Expressions.Expression{System.Func{{T},System.Object}}
+    - id: configure
+      type: System.Action{AeroDB.ForeignKeyDefinition}
+    typeParameters:
+    - id: TChild
+    return:
+      type: AeroDB.DocumentMapping`1
+    content.vb: Public Function ForeignKey(Of TChild)([property] As Expression(Of Func(Of T, Object)), configure As Action(Of ForeignKeyDefinition) = Nothing) As DocumentMapping(Of T)
+  overload: AeroDB.DocumentMapping`1.ForeignKey*
+  nameWithType.vb: DocumentMapping(Of T).ForeignKey(Of TChild)(Expression(Of Func(Of T, Object)), Action(Of ForeignKeyDefinition))
+  fullName.vb: AeroDB.DocumentMapping(Of T).ForeignKey(Of TChild)(System.Linq.Expressions.Expression(Of System.Func(Of T, Object)), System.Action(Of AeroDB.ForeignKeyDefinition))
+  name.vb: ForeignKey(Of TChild)(Expression(Of Func(Of T, Object)), Action(Of ForeignKeyDefinition))
+- uid: AeroDB.DocumentMapping`1.Field(System.String,System.Action{AeroDB.FieldDefinition})
+  commentId: M:AeroDB.DocumentMapping`1.Field(System.String,System.Action{AeroDB.FieldDefinition})
+  id: Field(System.String,System.Action{AeroDB.FieldDefinition})
+  parent: AeroDB.DocumentMapping`1
+  langs:
+  - csharp
+  - vb
+  name: Field(string, Action<FieldDefinition>?)
+  nameWithType: DocumentMapping<T>.Field(string, Action<FieldDefinition>?)
+  fullName: AeroDB.DocumentMapping<T>.Field(string, System.Action<AeroDB.FieldDefinition>?)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentMapping.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Define a field with optional type, default, assertion, and permissions.
+
+    These are emitted as additional DEFINE FIELD statements by the schema manager.
+  example: []
+  syntax:
+    content: public DocumentMapping<T> Field(string fieldName, Action<FieldDefinition>? configure = null)
+    parameters:
+    - id: fieldName
+      type: System.String
+    - id: configure
+      type: System.Action{AeroDB.FieldDefinition}
+    return:
+      type: AeroDB.DocumentMapping`1
+    content.vb: Public Function Field(fieldName As String, configure As Action(Of FieldDefinition) = Nothing) As DocumentMapping(Of T)
+  overload: AeroDB.DocumentMapping`1.Field*
+  nameWithType.vb: DocumentMapping(Of T).Field(String, Action(Of FieldDefinition))
+  fullName.vb: AeroDB.DocumentMapping(Of T).Field(String, System.Action(Of AeroDB.FieldDefinition))
+  name.vb: Field(String, Action(Of FieldDefinition))
+- uid: AeroDB.DocumentMapping`1.ComputedIndex(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Action{AeroDB.ComputedIndexOptions})
+  commentId: M:AeroDB.DocumentMapping`1.ComputedIndex(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Action{AeroDB.ComputedIndexOptions})
+  id: ComputedIndex(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Action{AeroDB.ComputedIndexOptions})
+  parent: AeroDB.DocumentMapping`1
+  langs:
+  - csharp
+  - vb
+  name: ComputedIndex(Expression<Func<T, object>>, Action<ComputedIndexOptions>)
+  nameWithType: DocumentMapping<T>.ComputedIndex(Expression<Func<T, object>>, Action<ComputedIndexOptions>)
+  fullName: AeroDB.DocumentMapping<T>.ComputedIndex(System.Linq.Expressions.Expression<System.Func<T, object>>, System.Action<AeroDB.ComputedIndexOptions>)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentMapping.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Defines a computed/expression-based index with configurable options
+
+    (index method, casing, sort order, predicate).
+  example: []
+  syntax:
+    content: public DocumentMapping<T> ComputedIndex(Expression<Func<T, object>> expression, Action<ComputedIndexOptions> configure)
+    parameters:
+    - id: expression
+      type: System.Linq.Expressions.Expression{System.Func{{T},System.Object}}
+    - id: configure
+      type: System.Action{AeroDB.ComputedIndexOptions}
+    return:
+      type: AeroDB.DocumentMapping`1
+    content.vb: Public Function ComputedIndex(expression As Expression(Of Func(Of T, Object)), configure As Action(Of ComputedIndexOptions)) As DocumentMapping(Of T)
+  overload: AeroDB.DocumentMapping`1.ComputedIndex*
+  nameWithType.vb: DocumentMapping(Of T).ComputedIndex(Expression(Of Func(Of T, Object)), Action(Of ComputedIndexOptions))
+  fullName.vb: AeroDB.DocumentMapping(Of T).ComputedIndex(System.Linq.Expressions.Expression(Of System.Func(Of T, Object)), System.Action(Of AeroDB.ComputedIndexOptions))
+  name.vb: ComputedIndex(Expression(Of Func(Of T, Object)), Action(Of ComputedIndexOptions))
+- uid: AeroDB.DocumentMapping`1.SetSchemaMode(AeroDB.SchemaMode)
+  commentId: M:AeroDB.DocumentMapping`1.SetSchemaMode(AeroDB.SchemaMode)
+  id: SetSchemaMode(AeroDB.SchemaMode)
+  parent: AeroDB.DocumentMapping`1
+  langs:
+  - csharp
+  - vb
+  name: SetSchemaMode(SchemaMode)
+  nameWithType: DocumentMapping<T>.SetSchemaMode(SchemaMode)
+  fullName: AeroDB.DocumentMapping<T>.SetSchemaMode(AeroDB.SchemaMode)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentMapping.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Sets the schema mode for this document type (SCHEMAFULL vs SCHEMALESS).
+
+    Default is <xref href="AeroDB.SchemaMode.Strict" data-throw-if-not-resolved="false"></xref> (SCHEMAFULL).
+  example: []
+  syntax:
+    content: public DocumentMapping<T> SetSchemaMode(SchemaMode mode)
+    parameters:
+    - id: mode
+      type: AeroDB.SchemaMode
+    return:
+      type: AeroDB.DocumentMapping`1
+    content.vb: Public Function SetSchemaMode(mode As SchemaMode) As DocumentMapping(Of T)
+  overload: AeroDB.DocumentMapping`1.SetSchemaMode*
+  nameWithType.vb: DocumentMapping(Of T).SetSchemaMode(SchemaMode)
+  fullName.vb: AeroDB.DocumentMapping(Of T).SetSchemaMode(AeroDB.SchemaMode)
+- uid: AeroDB.DocumentMapping`1.Identity``1(System.Linq.Expressions.Expression{System.Func{`0,``0}})
+  commentId: M:AeroDB.DocumentMapping`1.Identity``1(System.Linq.Expressions.Expression{System.Func{`0,``0}})
+  id: Identity``1(System.Linq.Expressions.Expression{System.Func{`0,``0}})
+  parent: AeroDB.DocumentMapping`1
+  langs:
+  - csharp
+  - vb
+  name: Identity<TProp>(Expression<Func<T, TProp>>)
+  nameWithType: DocumentMapping<T>.Identity<TProp>(Expression<Func<T, TProp>>)
+  fullName: AeroDB.DocumentMapping<T>.Identity<TProp>(System.Linq.Expressions.Expression<System.Func<T, TProp>>)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentMapping.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Designates the primary key property explicitly for documentation purposes.
+
+    For <xref href="SurrealDb.Net.Models.IRecord" data-throw-if-not-resolved="false"></xref> types, the Id property
+
+    (<xref href="SurrealDb.Net.Models.RecordId" data-throw-if-not-resolved="false"></xref>) is always the primary key.
+
+    This method is present for API consistency and future extensibility.
+  example: []
+  syntax:
+    content: public DocumentMapping<T> Identity<TProp>(Expression<Func<T, TProp>> property)
+    parameters:
+    - id: property
+      type: System.Linq.Expressions.Expression{System.Func{{T},{TProp}}}
+    typeParameters:
+    - id: TProp
+    return:
+      type: AeroDB.DocumentMapping`1
+    content.vb: Public Function Identity(Of TProp)([property] As Expression(Of Func(Of T, TProp))) As DocumentMapping(Of T)
+  overload: AeroDB.DocumentMapping`1.Identity*
+  nameWithType.vb: DocumentMapping(Of T).Identity(Of TProp)(Expression(Of Func(Of T, TProp)))
+  fullName.vb: AeroDB.DocumentMapping(Of T).Identity(Of TProp)(System.Linq.Expressions.Expression(Of System.Func(Of T, TProp)))
+  name.vb: Identity(Of TProp)(Expression(Of Func(Of T, TProp)))
+- uid: AeroDB.DocumentMapping`1.Schema(System.String)
+  commentId: M:AeroDB.DocumentMapping`1.Schema(System.String)
+  id: Schema(System.String)
+  parent: AeroDB.DocumentMapping`1
+  langs:
+  - csharp
+  - vb
+  name: Schema(string?)
+  nameWithType: DocumentMapping<T>.Schema(string?)
+  fullName: AeroDB.DocumentMapping<T>.Schema(string?)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentMapping.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Maps this document type to a specific SurrealDB database (schema).
+
+    When null (default), the entity uses the default database from <code>StoreOptions.Database</code>.
+  example: []
+  syntax:
+    content: public DocumentMapping<T> Schema(string? schemaName)
+    parameters:
+    - id: schemaName
+      type: System.String
+      description: The SurrealDB database name, or null for the default.
+    return:
+      type: AeroDB.DocumentMapping`1
+    content.vb: Public Function Schema(schemaName As String) As DocumentMapping(Of T)
+  overload: AeroDB.DocumentMapping`1.Schema*
+  nameWithType.vb: DocumentMapping(Of T).Schema(String)
+  fullName.vb: AeroDB.DocumentMapping(Of T).Schema(String)
+  name.vb: Schema(String)
+- uid: AeroDB.DocumentMapping`1.Index``1(System.Linq.Expressions.Expression{System.Func{`0,``0}},System.Action{AeroDB.IndexOptions})
+  commentId: M:AeroDB.DocumentMapping`1.Index``1(System.Linq.Expressions.Expression{System.Func{`0,``0}},System.Action{AeroDB.IndexOptions})
+  id: Index``1(System.Linq.Expressions.Expression{System.Func{`0,``0}},System.Action{AeroDB.IndexOptions})
+  parent: AeroDB.DocumentMapping`1
+  langs:
+  - csharp
+  - vb
+  name: Index<TProp>(Expression<Func<T, TProp>>, Action<IndexOptions>?)
+  nameWithType: DocumentMapping<T>.Index<TProp>(Expression<Func<T, TProp>>, Action<IndexOptions>?)
+  fullName: AeroDB.DocumentMapping<T>.Index<TProp>(System.Linq.Expressions.Expression<System.Func<T, TProp>>, System.Action<AeroDB.IndexOptions>?)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentMapping.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Defines a simple index on the specified property.
+
+    SurrealDB's default index type is btree, so this is equivalent to <xref href="AeroDB.DocumentMapping%601.BTreeIndex%60%601(System.Linq.Expressions.Expression%7bSystem.Func%7b%600%2c%60%600%7d%7d%2cSystem.Action%7bAeroDB.IndexOptions%7d)" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: public DocumentMapping<T> Index<TProp>(Expression<Func<T, TProp>> property, Action<IndexOptions>? configure = null)
+    parameters:
+    - id: property
+      type: System.Linq.Expressions.Expression{System.Func{{T},{TProp}}}
+    - id: configure
+      type: System.Action{AeroDB.IndexOptions}
+    typeParameters:
+    - id: TProp
+    return:
+      type: AeroDB.DocumentMapping`1
+    content.vb: Public Function Index(Of TProp)([property] As Expression(Of Func(Of T, TProp)), configure As Action(Of IndexOptions) = Nothing) As DocumentMapping(Of T)
+  overload: AeroDB.DocumentMapping`1.Index*
+  nameWithType.vb: DocumentMapping(Of T).Index(Of TProp)(Expression(Of Func(Of T, TProp)), Action(Of IndexOptions))
+  fullName.vb: AeroDB.DocumentMapping(Of T).Index(Of TProp)(System.Linq.Expressions.Expression(Of System.Func(Of T, TProp)), System.Action(Of AeroDB.IndexOptions))
+  name.vb: Index(Of TProp)(Expression(Of Func(Of T, TProp)), Action(Of IndexOptions))
+- uid: AeroDB.DocumentMapping`1.Index(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Action{AeroDB.IndexOptions})
+  commentId: M:AeroDB.DocumentMapping`1.Index(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Action{AeroDB.IndexOptions})
+  id: Index(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Action{AeroDB.IndexOptions})
+  parent: AeroDB.DocumentMapping`1
+  langs:
+  - csharp
+  - vb
+  name: Index(Expression<Func<T, object>>, Action<IndexOptions>?)
+  nameWithType: DocumentMapping<T>.Index(Expression<Func<T, object>>, Action<IndexOptions>?)
+  fullName: AeroDB.DocumentMapping<T>.Index(System.Linq.Expressions.Expression<System.Func<T, object>>, System.Action<AeroDB.IndexOptions>?)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentMapping.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Defines a computed index. Supports single-property and multi-property
+
+    anonymous-type expressions (<code>x =&gt; new { x.FirstName, x.LastName }</code>).
+
+    For strongly-typed single-property access, prefer <xref href="AeroDB.DocumentMapping%601.Index%60%601(System.Linq.Expressions.Expression%7bSystem.Func%7b%600%2c%60%600%7d%7d%2cSystem.Action%7bAeroDB.IndexOptions%7d)" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: public DocumentMapping<T> Index(Expression<Func<T, object>> expression, Action<IndexOptions>? configure = null)
+    parameters:
+    - id: expression
+      type: System.Linq.Expressions.Expression{System.Func{{T},System.Object}}
+    - id: configure
+      type: System.Action{AeroDB.IndexOptions}
+    return:
+      type: AeroDB.DocumentMapping`1
+    content.vb: Public Function Index(expression As Expression(Of Func(Of T, Object)), configure As Action(Of IndexOptions) = Nothing) As DocumentMapping(Of T)
+  overload: AeroDB.DocumentMapping`1.Index*
+  nameWithType.vb: DocumentMapping(Of T).Index(Expression(Of Func(Of T, Object)), Action(Of IndexOptions))
+  fullName.vb: AeroDB.DocumentMapping(Of T).Index(System.Linq.Expressions.Expression(Of System.Func(Of T, Object)), System.Action(Of AeroDB.IndexOptions))
+  name.vb: Index(Expression(Of Func(Of T, Object)), Action(Of IndexOptions))
+- uid: AeroDB.DocumentMapping`1.BTreeIndex``1(System.Linq.Expressions.Expression{System.Func{`0,``0}},System.Action{AeroDB.IndexOptions})
+  commentId: M:AeroDB.DocumentMapping`1.BTreeIndex``1(System.Linq.Expressions.Expression{System.Func{`0,``0}},System.Action{AeroDB.IndexOptions})
+  id: BTreeIndex``1(System.Linq.Expressions.Expression{System.Func{`0,``0}},System.Action{AeroDB.IndexOptions})
+  parent: AeroDB.DocumentMapping`1
+  langs:
+  - csharp
+  - vb
+  name: BTreeIndex<TProp>(Expression<Func<T, TProp>>, Action<IndexOptions>?)
+  nameWithType: DocumentMapping<T>.BTreeIndex<TProp>(Expression<Func<T, TProp>>, Action<IndexOptions>?)
+  fullName: AeroDB.DocumentMapping<T>.BTreeIndex<TProp>(System.Linq.Expressions.Expression<System.Func<T, TProp>>, System.Action<AeroDB.IndexOptions>?)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentMapping.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Defines a btree index on the specified property.
+
+    Equivalent to <code>Index()</code> — SurrealDB's default index type is btree.
+
+    This explicit alias exists for clarity when SurrealDB-native naming is preferred.
+  example: []
+  syntax:
+    content: public DocumentMapping<T> BTreeIndex<TProp>(Expression<Func<T, TProp>> property, Action<IndexOptions>? configure = null)
+    parameters:
+    - id: property
+      type: System.Linq.Expressions.Expression{System.Func{{T},{TProp}}}
+    - id: configure
+      type: System.Action{AeroDB.IndexOptions}
+    typeParameters:
+    - id: TProp
+    return:
+      type: AeroDB.DocumentMapping`1
+    content.vb: Public Function BTreeIndex(Of TProp)([property] As Expression(Of Func(Of T, TProp)), configure As Action(Of IndexOptions) = Nothing) As DocumentMapping(Of T)
+  overload: AeroDB.DocumentMapping`1.BTreeIndex*
+  nameWithType.vb: DocumentMapping(Of T).BTreeIndex(Of TProp)(Expression(Of Func(Of T, TProp)), Action(Of IndexOptions))
+  fullName.vb: AeroDB.DocumentMapping(Of T).BTreeIndex(Of TProp)(System.Linq.Expressions.Expression(Of System.Func(Of T, TProp)), System.Action(Of AeroDB.IndexOptions))
+  name.vb: BTreeIndex(Of TProp)(Expression(Of Func(Of T, TProp)), Action(Of IndexOptions))
+- uid: AeroDB.DocumentMapping`1.UniqueIndex``1(System.Linq.Expressions.Expression{System.Func{`0,``0}})
+  commentId: M:AeroDB.DocumentMapping`1.UniqueIndex``1(System.Linq.Expressions.Expression{System.Func{`0,``0}})
+  id: UniqueIndex``1(System.Linq.Expressions.Expression{System.Func{`0,``0}})
+  parent: AeroDB.DocumentMapping`1
+  langs:
+  - csharp
+  - vb
+  name: UniqueIndex<TProp>(Expression<Func<T, TProp>>)
+  nameWithType: DocumentMapping<T>.UniqueIndex<TProp>(Expression<Func<T, TProp>>)
+  fullName: AeroDB.DocumentMapping<T>.UniqueIndex<TProp>(System.Linq.Expressions.Expression<System.Func<T, TProp>>)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentMapping.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Defines a unique index on the specified property.
+  example: []
+  syntax:
+    content: public DocumentMapping<T> UniqueIndex<TProp>(Expression<Func<T, TProp>> property)
+    parameters:
+    - id: property
+      type: System.Linq.Expressions.Expression{System.Func{{T},{TProp}}}
+    typeParameters:
+    - id: TProp
+    return:
+      type: AeroDB.DocumentMapping`1
+    content.vb: Public Function UniqueIndex(Of TProp)([property] As Expression(Of Func(Of T, TProp))) As DocumentMapping(Of T)
+  overload: AeroDB.DocumentMapping`1.UniqueIndex*
+  nameWithType.vb: DocumentMapping(Of T).UniqueIndex(Of TProp)(Expression(Of Func(Of T, TProp)))
+  fullName.vb: AeroDB.DocumentMapping(Of T).UniqueIndex(Of TProp)(System.Linq.Expressions.Expression(Of System.Func(Of T, TProp)))
+  name.vb: UniqueIndex(Of TProp)(Expression(Of Func(Of T, TProp)))
+- uid: AeroDB.DocumentMapping`1.CompositeIndex(System.Linq.Expressions.Expression{System.Func{`0,System.Object}}[])
+  commentId: M:AeroDB.DocumentMapping`1.CompositeIndex(System.Linq.Expressions.Expression{System.Func{`0,System.Object}}[])
+  id: CompositeIndex(System.Linq.Expressions.Expression{System.Func{`0,System.Object}}[])
+  parent: AeroDB.DocumentMapping`1
+  langs:
+  - csharp
+  - vb
+  name: CompositeIndex(params Expression<Func<T, object>>[])
+  nameWithType: DocumentMapping<T>.CompositeIndex(params Expression<Func<T, object>>[])
+  fullName: AeroDB.DocumentMapping<T>.CompositeIndex(params System.Linq.Expressions.Expression<System.Func<T, object>>[])
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentMapping.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Defines a composite index on the specified properties.
+
+    Prefer <xref href="AeroDB.DocumentMapping%601.Index(System.Linq.Expressions.Expression%7bSystem.Func%7b%600%2cSystem.Object%7d%7d%2cSystem.Action%7bAeroDB.IndexOptions%7d)" data-throw-if-not-resolved="false"></xref> with an anonymous type expression.
+  example: []
+  syntax:
+    content: >-
+      [Obsolete("Use Index(x => new { x.Prop1, x.Prop2 }, configure) instead.")]
+
+      public DocumentMapping<T> CompositeIndex(params Expression<Func<T, object>>[] properties)
+    parameters:
+    - id: properties
+      type: System.Linq.Expressions.Expression{System.Func{{T},System.Object}}[]
+    return:
+      type: AeroDB.DocumentMapping`1
+    content.vb: >-
+      <Obsolete("Use Index(x => new { x.Prop1, x.Prop2 }, configure) instead.")>
+
+      Public Function CompositeIndex(ParamArray properties As Expression(Of Func(Of T, Object))()) As DocumentMapping(Of T)
+  overload: AeroDB.DocumentMapping`1.CompositeIndex*
+  attributes:
+  - type: System.ObsoleteAttribute
+    ctor: System.ObsoleteAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: Use Index(x => new { x.Prop1, x.Prop2 }, configure) instead.
+  nameWithType.vb: DocumentMapping(Of T).CompositeIndex(ParamArray Expression(Of Func(Of T, Object))())
+  fullName.vb: AeroDB.DocumentMapping(Of T).CompositeIndex(ParamArray System.Linq.Expressions.Expression(Of System.Func(Of T, Object))())
+  name.vb: CompositeIndex(ParamArray Expression(Of Func(Of T, Object))())
+- uid: AeroDB.DocumentMapping`1.CompositeIndex(System.Action{AeroDB.IndexOptions},System.Linq.Expressions.Expression{System.Func{`0,System.Object}}[])
+  commentId: M:AeroDB.DocumentMapping`1.CompositeIndex(System.Action{AeroDB.IndexOptions},System.Linq.Expressions.Expression{System.Func{`0,System.Object}}[])
+  id: CompositeIndex(System.Action{AeroDB.IndexOptions},System.Linq.Expressions.Expression{System.Func{`0,System.Object}}[])
+  parent: AeroDB.DocumentMapping`1
+  langs:
+  - csharp
+  - vb
+  name: CompositeIndex(Action<IndexOptions>?, params Expression<Func<T, object>>[])
+  nameWithType: DocumentMapping<T>.CompositeIndex(Action<IndexOptions>?, params Expression<Func<T, object>>[])
+  fullName: AeroDB.DocumentMapping<T>.CompositeIndex(System.Action<AeroDB.IndexOptions>?, params System.Linq.Expressions.Expression<System.Func<T, object>>[])
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentMapping.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Defines a composite index on the specified properties with configuration.
+
+    Prefer <xref href="AeroDB.DocumentMapping%601.Index(System.Linq.Expressions.Expression%7bSystem.Func%7b%600%2cSystem.Object%7d%7d%2cSystem.Action%7bAeroDB.IndexOptions%7d)" data-throw-if-not-resolved="false"></xref> with an anonymous type expression.
+  example: []
+  syntax:
+    content: >-
+      [Obsolete("Use Index(x => new { x.Prop1, x.Prop2 }, configure) instead.")]
+
+      public DocumentMapping<T> CompositeIndex(Action<IndexOptions>? configure, params Expression<Func<T, object>>[] properties)
+    parameters:
+    - id: configure
+      type: System.Action{AeroDB.IndexOptions}
+    - id: properties
+      type: System.Linq.Expressions.Expression{System.Func{{T},System.Object}}[]
+    return:
+      type: AeroDB.DocumentMapping`1
+    content.vb: >-
+      <Obsolete("Use Index(x => new { x.Prop1, x.Prop2 }, configure) instead.")>
+
+      Public Function CompositeIndex(configure As Action(Of IndexOptions), ParamArray properties As Expression(Of Func(Of T, Object))()) As DocumentMapping(Of T)
+  overload: AeroDB.DocumentMapping`1.CompositeIndex*
+  attributes:
+  - type: System.ObsoleteAttribute
+    ctor: System.ObsoleteAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: Use Index(x => new { x.Prop1, x.Prop2 }, configure) instead.
+  nameWithType.vb: DocumentMapping(Of T).CompositeIndex(Action(Of IndexOptions), ParamArray Expression(Of Func(Of T, Object))())
+  fullName.vb: AeroDB.DocumentMapping(Of T).CompositeIndex(System.Action(Of AeroDB.IndexOptions), ParamArray System.Linq.Expressions.Expression(Of System.Func(Of T, Object))())
+  name.vb: CompositeIndex(Action(Of IndexOptions), ParamArray Expression(Of Func(Of T, Object))())
+- uid: AeroDB.DocumentMapping`1.UniqueCompositeIndex(System.Linq.Expressions.Expression{System.Func{`0,System.Object}}[])
+  commentId: M:AeroDB.DocumentMapping`1.UniqueCompositeIndex(System.Linq.Expressions.Expression{System.Func{`0,System.Object}}[])
+  id: UniqueCompositeIndex(System.Linq.Expressions.Expression{System.Func{`0,System.Object}}[])
+  parent: AeroDB.DocumentMapping`1
+  langs:
+  - csharp
+  - vb
+  name: UniqueCompositeIndex(params Expression<Func<T, object>>[])
+  nameWithType: DocumentMapping<T>.UniqueCompositeIndex(params Expression<Func<T, object>>[])
+  fullName: AeroDB.DocumentMapping<T>.UniqueCompositeIndex(params System.Linq.Expressions.Expression<System.Func<T, object>>[])
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentMapping.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Defines a composite unique index.
+
+    Prefer <xref href="AeroDB.DocumentMapping%601.Index(System.Linq.Expressions.Expression%7bSystem.Func%7b%600%2cSystem.Object%7d%7d%2cSystem.Action%7bAeroDB.IndexOptions%7d)" data-throw-if-not-resolved="false"></xref> with <code>configure =&gt; configure.IsUnique()</code>.
+  example: []
+  syntax:
+    content: >-
+      [Obsolete("Use Index(x => new { x.Prop1, x.Prop2 }, c => c.IsUnique()) instead.")]
+
+      public DocumentMapping<T> UniqueCompositeIndex(params Expression<Func<T, object>>[] properties)
+    parameters:
+    - id: properties
+      type: System.Linq.Expressions.Expression{System.Func{{T},System.Object}}[]
+    return:
+      type: AeroDB.DocumentMapping`1
+    content.vb: >-
+      <Obsolete("Use Index(x => new { x.Prop1, x.Prop2 }, c => c.IsUnique()) instead.")>
+
+      Public Function UniqueCompositeIndex(ParamArray properties As Expression(Of Func(Of T, Object))()) As DocumentMapping(Of T)
+  overload: AeroDB.DocumentMapping`1.UniqueCompositeIndex*
+  attributes:
+  - type: System.ObsoleteAttribute
+    ctor: System.ObsoleteAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: Use Index(x => new { x.Prop1, x.Prop2 }, c => c.IsUnique()) instead.
+  nameWithType.vb: DocumentMapping(Of T).UniqueCompositeIndex(ParamArray Expression(Of Func(Of T, Object))())
+  fullName.vb: AeroDB.DocumentMapping(Of T).UniqueCompositeIndex(ParamArray System.Linq.Expressions.Expression(Of System.Func(Of T, Object))())
+  name.vb: UniqueCompositeIndex(ParamArray Expression(Of Func(Of T, Object))())
+- uid: AeroDB.DocumentMapping`1.UniqueCompositeIndex(System.Action{AeroDB.IndexOptions},System.Linq.Expressions.Expression{System.Func{`0,System.Object}}[])
+  commentId: M:AeroDB.DocumentMapping`1.UniqueCompositeIndex(System.Action{AeroDB.IndexOptions},System.Linq.Expressions.Expression{System.Func{`0,System.Object}}[])
+  id: UniqueCompositeIndex(System.Action{AeroDB.IndexOptions},System.Linq.Expressions.Expression{System.Func{`0,System.Object}}[])
+  parent: AeroDB.DocumentMapping`1
+  langs:
+  - csharp
+  - vb
+  name: UniqueCompositeIndex(Action<IndexOptions>?, params Expression<Func<T, object>>[])
+  nameWithType: DocumentMapping<T>.UniqueCompositeIndex(Action<IndexOptions>?, params Expression<Func<T, object>>[])
+  fullName: AeroDB.DocumentMapping<T>.UniqueCompositeIndex(System.Action<AeroDB.IndexOptions>?, params System.Linq.Expressions.Expression<System.Func<T, object>>[])
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentMapping.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Defines a composite unique index with configuration.
+
+    Prefer <xref href="AeroDB.DocumentMapping%601.Index(System.Linq.Expressions.Expression%7bSystem.Func%7b%600%2cSystem.Object%7d%7d%2cSystem.Action%7bAeroDB.IndexOptions%7d)" data-throw-if-not-resolved="false"></xref> with <code>configure =&gt; configure.IsUnique()</code>.
+  example: []
+  syntax:
+    content: >-
+      [Obsolete("Use Index(x => new { x.Prop1, x.Prop2 }, c => c.IsUnique()) instead.")]
+
+      public DocumentMapping<T> UniqueCompositeIndex(Action<IndexOptions>? configure, params Expression<Func<T, object>>[] properties)
+    parameters:
+    - id: configure
+      type: System.Action{AeroDB.IndexOptions}
+    - id: properties
+      type: System.Linq.Expressions.Expression{System.Func{{T},System.Object}}[]
+    return:
+      type: AeroDB.DocumentMapping`1
+    content.vb: >-
+      <Obsolete("Use Index(x => new { x.Prop1, x.Prop2 }, c => c.IsUnique()) instead.")>
+
+      Public Function UniqueCompositeIndex(configure As Action(Of IndexOptions), ParamArray properties As Expression(Of Func(Of T, Object))()) As DocumentMapping(Of T)
+  overload: AeroDB.DocumentMapping`1.UniqueCompositeIndex*
+  attributes:
+  - type: System.ObsoleteAttribute
+    ctor: System.ObsoleteAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: Use Index(x => new { x.Prop1, x.Prop2 }, c => c.IsUnique()) instead.
+  nameWithType.vb: DocumentMapping(Of T).UniqueCompositeIndex(Action(Of IndexOptions), ParamArray Expression(Of Func(Of T, Object))())
+  fullName.vb: AeroDB.DocumentMapping(Of T).UniqueCompositeIndex(System.Action(Of AeroDB.IndexOptions), ParamArray System.Linq.Expressions.Expression(Of System.Func(Of T, Object))())
+  name.vb: UniqueCompositeIndex(Action(Of IndexOptions), ParamArray Expression(Of Func(Of T, Object))())
+- uid: AeroDB.DocumentMapping`1.FullTextIndex``1(System.Linq.Expressions.Expression{System.Func{`0,``0}},System.String,System.Nullable{System.ValueTuple{System.Double,System.Double}})
+  commentId: M:AeroDB.DocumentMapping`1.FullTextIndex``1(System.Linq.Expressions.Expression{System.Func{`0,``0}},System.String,System.Nullable{System.ValueTuple{System.Double,System.Double}})
+  id: FullTextIndex``1(System.Linq.Expressions.Expression{System.Func{`0,``0}},System.String,System.Nullable{System.ValueTuple{System.Double,System.Double}})
+  parent: AeroDB.DocumentMapping`1
+  langs:
+  - csharp
+  - vb
+  name: FullTextIndex<TProp>(Expression<Func<T, TProp>>, string, (double K1, double B)?)
+  nameWithType: DocumentMapping<T>.FullTextIndex<TProp>(Expression<Func<T, TProp>>, string, (double K1, double B)?)
+  fullName: AeroDB.DocumentMapping<T>.FullTextIndex<TProp>(System.Linq.Expressions.Expression<System.Func<T, TProp>>, string, (double K1, double B)?)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentMapping.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Defines a full-text search index on the specified property.
+
+    Requires an analyzer to be defined via <code>SchemaOptions.DefineAnalyzer()</code> or pre-existing in the database.
+  example: []
+  syntax:
+    content: public DocumentMapping<T> FullTextIndex<TProp>(Expression<Func<T, TProp>> property, string analyzer, (double K1, double B)? bm25 = null)
+    parameters:
+    - id: property
+      type: System.Linq.Expressions.Expression{System.Func{{T},{TProp}}}
+      description: The property to index.
+    - id: analyzer
+      type: System.String
+      description: The SurrealDB analyzer name (e.g. "simple").
+    - id: bm25
+      type: System.Nullable{System.ValueTuple{System.Double,System.Double}}
+      description: Optional BM25 scoring parameters (k1, b).
+    typeParameters:
+    - id: TProp
+    return:
+      type: AeroDB.DocumentMapping`1
+    content.vb: Public Function FullTextIndex(Of TProp)([property] As Expression(Of Func(Of T, TProp)), analyzer As String, bm25 As (K1 As Double, B As Double)? = Nothing) As DocumentMapping(Of T)
+  overload: AeroDB.DocumentMapping`1.FullTextIndex*
+  nameWithType.vb: DocumentMapping(Of T).FullTextIndex(Of TProp)(Expression(Of Func(Of T, TProp)), String, (K1 As Double, B As Double)?)
+  fullName.vb: AeroDB.DocumentMapping(Of T).FullTextIndex(Of TProp)(System.Linq.Expressions.Expression(Of System.Func(Of T, TProp)), String, (K1 As Double, B As Double)?)
+  name.vb: FullTextIndex(Of TProp)(Expression(Of Func(Of T, TProp)), String, (K1 As Double, B As Double)?)
+- uid: AeroDB.DocumentMapping`1.FullTextIndex(System.String,System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Linq.Expressions.Expression{System.Func{`0,System.Object}}[])
+  commentId: M:AeroDB.DocumentMapping`1.FullTextIndex(System.String,System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Linq.Expressions.Expression{System.Func{`0,System.Object}}[])
+  id: FullTextIndex(System.String,System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Linq.Expressions.Expression{System.Func{`0,System.Object}}[])
+  parent: AeroDB.DocumentMapping`1
+  langs:
+  - csharp
+  - vb
+  name: FullTextIndex(string, Expression<Func<T, object>>, Expression<Func<T, object>>, params Expression<Func<T, object>>[])
+  nameWithType: DocumentMapping<T>.FullTextIndex(string, Expression<Func<T, object>>, Expression<Func<T, object>>, params Expression<Func<T, object>>[])
+  fullName: AeroDB.DocumentMapping<T>.FullTextIndex(string, System.Linq.Expressions.Expression<System.Func<T, object>>, System.Linq.Expressions.Expression<System.Func<T, object>>, params System.Linq.Expressions.Expression<System.Func<T, object>>[])
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentMapping.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Defines a multi-field full-text search index on the specified properties.
+
+    SurrealDB indexes all specified columns together in a single FTS index
+
+    using <code>DEFINE INDEX ... FIELDS col1, col2, ... FULLTEXT ANALYZER ...</code>.
+  example: []
+  syntax:
+    content: public DocumentMapping<T> FullTextIndex(string analyzer, Expression<Func<T, object>> property1, Expression<Func<T, object>> property2, params Expression<Func<T, object>>[] additionalProperties)
+    parameters:
+    - id: analyzer
+      type: System.String
+      description: The SurrealDB analyzer name (e.g. "english").
+    - id: property1
+      type: System.Linq.Expressions.Expression{System.Func{{T},System.Object}}
+      description: First property to include in the FTS index.
+    - id: property2
+      type: System.Linq.Expressions.Expression{System.Func{{T},System.Object}}
+      description: Second property to include in the FTS index.
+    - id: additionalProperties
+      type: System.Linq.Expressions.Expression{System.Func{{T},System.Object}}[]
+      description: Additional properties to include.
+    return:
+      type: AeroDB.DocumentMapping`1
+    content.vb: Public Function FullTextIndex(analyzer As String, property1 As Expression(Of Func(Of T, Object)), property2 As Expression(Of Func(Of T, Object)), ParamArray additionalProperties As Expression(Of Func(Of T, Object))()) As DocumentMapping(Of T)
+  overload: AeroDB.DocumentMapping`1.FullTextIndex*
+  nameWithType.vb: DocumentMapping(Of T).FullTextIndex(String, Expression(Of Func(Of T, Object)), Expression(Of Func(Of T, Object)), ParamArray Expression(Of Func(Of T, Object))())
+  fullName.vb: AeroDB.DocumentMapping(Of T).FullTextIndex(String, System.Linq.Expressions.Expression(Of System.Func(Of T, Object)), System.Linq.Expressions.Expression(Of System.Func(Of T, Object)), ParamArray System.Linq.Expressions.Expression(Of System.Func(Of T, Object))())
+  name.vb: FullTextIndex(String, Expression(Of Func(Of T, Object)), Expression(Of Func(Of T, Object)), ParamArray Expression(Of Func(Of T, Object))())
+- uid: AeroDB.DocumentMapping`1.HnswIndex``1(System.Linq.Expressions.Expression{System.Func{`0,``0}},System.Int32,System.String)
+  commentId: M:AeroDB.DocumentMapping`1.HnswIndex``1(System.Linq.Expressions.Expression{System.Func{`0,``0}},System.Int32,System.String)
+  id: HnswIndex``1(System.Linq.Expressions.Expression{System.Func{`0,``0}},System.Int32,System.String)
+  parent: AeroDB.DocumentMapping`1
+  langs:
+  - csharp
+  - vb
+  name: HnswIndex<TProp>(Expression<Func<T, TProp>>, int, string)
+  nameWithType: DocumentMapping<T>.HnswIndex<TProp>(Expression<Func<T, TProp>>, int, string)
+  fullName: AeroDB.DocumentMapping<T>.HnswIndex<TProp>(System.Linq.Expressions.Expression<System.Func<T, TProp>>, int, string)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentMapping.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Uses the HNSW algorithm for fast approximate vector similarity queries.
+
+    Best for large datasets where speed matters more than exact results.
+  example: []
+  syntax:
+    content: public DocumentMapping<T> HnswIndex<TProp>(Expression<Func<T, TProp>> property, int dimension, string distance = "COSINE")
+    parameters:
+    - id: property
+      type: System.Linq.Expressions.Expression{System.Func{{T},{TProp}}}
+      description: The property storing the vector embedding.
+    - id: dimension
+      type: System.Int32
+      description: The dimensionality of the vector (e.g. 1536 for OpenAI ada-002).
+    - id: distance
+      type: System.String
+      description: 'The distance function: COSINE (default), EUCLIDEAN, or MANHATTAN.'
+    typeParameters:
+    - id: TProp
+    return:
+      type: AeroDB.DocumentMapping`1
+    content.vb: Public Function HnswIndex(Of TProp)([property] As Expression(Of Func(Of T, TProp)), dimension As Integer, distance As String = "COSINE") As DocumentMapping(Of T)
+  overload: AeroDB.DocumentMapping`1.HnswIndex*
+  nameWithType.vb: DocumentMapping(Of T).HnswIndex(Of TProp)(Expression(Of Func(Of T, TProp)), Integer, String)
+  fullName.vb: AeroDB.DocumentMapping(Of T).HnswIndex(Of TProp)(System.Linq.Expressions.Expression(Of System.Func(Of T, TProp)), Integer, String)
+  name.vb: HnswIndex(Of TProp)(Expression(Of Func(Of T, TProp)), Integer, String)
+- uid: AeroDB.DocumentMapping`1.DiskannIndex``1(System.Linq.Expressions.Expression{System.Func{`0,``0}},System.Int32,System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Double},System.Boolean)
+  commentId: M:AeroDB.DocumentMapping`1.DiskannIndex``1(System.Linq.Expressions.Expression{System.Func{`0,``0}},System.Int32,System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Double},System.Boolean)
+  id: DiskannIndex``1(System.Linq.Expressions.Expression{System.Func{`0,``0}},System.Int32,System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Double},System.Boolean)
+  parent: AeroDB.DocumentMapping`1
+  langs:
+  - csharp
+  - vb
+  name: DiskannIndex<TProp>(Expression<Func<T, TProp>>, int, string, string, int?, int?, double?, bool)
+  nameWithType: DocumentMapping<T>.DiskannIndex<TProp>(Expression<Func<T, TProp>>, int, string, string, int?, int?, double?, bool)
+  fullName: AeroDB.DocumentMapping<T>.DiskannIndex<TProp>(System.Linq.Expressions.Expression<System.Func<T, TProp>>, int, string, string, int?, int?, double?, bool)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentMapping.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Defines a DISKANN vector index on the specified property.
+
+    DiskANN is a disk-based approximate nearest-neighbour index for very large
+
+    embedding sets. Uses the same &lt;|K, EF|&gt; query operator as HNSW.
+
+    Available since SurrealDB 3.1. Best when the working set exceeds available RAM.
+  example: []
+  syntax:
+    content: public DocumentMapping<T> DiskannIndex<TProp>(Expression<Func<T, TProp>> property, int dimension, string vectorType = "F32", string distance = "COSINE", int? degree = null, int? lBuild = null, double? alpha = null, bool hashedVector = false)
+    parameters:
+    - id: property
+      type: System.Linq.Expressions.Expression{System.Func{{T},{TProp}}}
+      description: The property storing the vector embedding.
+    - id: dimension
+      type: System.Int32
+      description: The dimensionality of the vector.
+    - id: vectorType
+      type: System.String
+      description: 'Element type: F32 (default), F16, I8, or U8.'
+    - id: distance
+      type: System.String
+      description: 'The distance function: COSINE (default), EUCLIDEAN, INNER_PRODUCT, or COSINE_NORMALIZED.'
+    - id: degree
+      type: System.Nullable{System.Int32}
+      description: DiskANN graph degree (default 64). Higher values improve accuracy at cost of memory.
+    - id: lBuild
+      type: System.Nullable{System.Int32}
+      description: Construction search-list size (default 100).
+    - id: alpha
+      type: System.Nullable{System.Double}
+      description: DiskANN pruning parameter (default 1.2).
+    - id: hashedVector
+      type: System.Boolean
+      description: Whether to use hash-stabilized vector keys.
+    typeParameters:
+    - id: TProp
+    return:
+      type: AeroDB.DocumentMapping`1
+    content.vb: Public Function DiskannIndex(Of TProp)([property] As Expression(Of Func(Of T, TProp)), dimension As Integer, vectorType As String = "F32", distance As String = "COSINE", degree As Integer? = Nothing, lBuild As Integer? = Nothing, alpha As Double? = Nothing, hashedVector As Boolean = False) As DocumentMapping(Of T)
+  overload: AeroDB.DocumentMapping`1.DiskannIndex*
+  nameWithType.vb: DocumentMapping(Of T).DiskannIndex(Of TProp)(Expression(Of Func(Of T, TProp)), Integer, String, String, Integer?, Integer?, Double?, Boolean)
+  fullName.vb: AeroDB.DocumentMapping(Of T).DiskannIndex(Of TProp)(System.Linq.Expressions.Expression(Of System.Func(Of T, TProp)), Integer, String, String, Integer?, Integer?, Double?, Boolean)
+  name.vb: DiskannIndex(Of TProp)(Expression(Of Func(Of T, TProp)), Integer, String, String, Integer?, Integer?, Double?, Boolean)
+- uid: AeroDB.DocumentMapping`1.SpatialIndex``1(System.Linq.Expressions.Expression{System.Func{`0,``0}})
+  commentId: M:AeroDB.DocumentMapping`1.SpatialIndex``1(System.Linq.Expressions.Expression{System.Func{`0,``0}})
+  id: SpatialIndex``1(System.Linq.Expressions.Expression{System.Func{`0,``0}})
+  parent: AeroDB.DocumentMapping`1
+  langs:
+  - csharp
+  - vb
+  name: SpatialIndex<TProp>(Expression<Func<T, TProp>>)
+  nameWithType: DocumentMapping<T>.SpatialIndex<TProp>(Expression<Func<T, TProp>>)
+  fullName: AeroDB.DocumentMapping<T>.SpatialIndex<TProp>(System.Linq.Expressions.Expression<System.Func<T, TProp>>)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentMapping.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Defines a geo-spatial index marker on the specified geometry property.
+
+    SurrealDB uses a standard btree under the hood; spatial queries use
+
+    bounding-box pre-filters and geo::DISTANCE post-filters.
+  example: []
+  syntax:
+    content: public DocumentMapping<T> SpatialIndex<TProp>(Expression<Func<T, TProp>> property)
+    parameters:
+    - id: property
+      type: System.Linq.Expressions.Expression{System.Func{{T},{TProp}}}
+      description: The property storing the geometry (GeometryPoint or GeometryPolygon).
+    typeParameters:
+    - id: TProp
+    return:
+      type: AeroDB.DocumentMapping`1
+    content.vb: Public Function SpatialIndex(Of TProp)([property] As Expression(Of Func(Of T, TProp))) As DocumentMapping(Of T)
+  overload: AeroDB.DocumentMapping`1.SpatialIndex*
+  nameWithType.vb: DocumentMapping(Of T).SpatialIndex(Of TProp)(Expression(Of Func(Of T, TProp)))
+  fullName.vb: AeroDB.DocumentMapping(Of T).SpatialIndex(Of TProp)(System.Linq.Expressions.Expression(Of System.Func(Of T, TProp)))
+  name.vb: SpatialIndex(Of TProp)(Expression(Of Func(Of T, TProp)))
+- uid: AeroDB.DocumentMapping`1.HybridSearch(System.Collections.Generic.IReadOnlyList{System.ValueTuple{System.String,System.Double}},System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Int32,System.String,System.String)
+  commentId: M:AeroDB.DocumentMapping`1.HybridSearch(System.Collections.Generic.IReadOnlyList{System.ValueTuple{System.String,System.Double}},System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Int32,System.String,System.String)
+  id: HybridSearch(System.Collections.Generic.IReadOnlyList{System.ValueTuple{System.String,System.Double}},System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Int32,System.String,System.String)
+  parent: AeroDB.DocumentMapping`1
+  langs:
+  - csharp
+  - vb
+  name: HybridSearch(IReadOnlyList<(string FieldName, double Weight)>, Expression<Func<T, object>>, int, string, string)
+  nameWithType: DocumentMapping<T>.HybridSearch(IReadOnlyList<(string FieldName, double Weight)>, Expression<Func<T, object>>, int, string, string)
+  fullName: AeroDB.DocumentMapping<T>.HybridSearch(System.Collections.Generic.IReadOnlyList<(string FieldName, double Weight)>, System.Linq.Expressions.Expression<System.Func<T, object>>, int, string, string)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentMapping.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Convenience: creates both full-text and HNSW indexes for hybrid search.
+
+    Sets up full-text indexes on each of the specified text fields.
+  example: []
+  syntax:
+    content: public DocumentMapping<T> HybridSearch(IReadOnlyList<(string FieldName, double Weight)> textFields, Expression<Func<T, object>> vectorField, int dimension, string analyzer, string distance = "COSINE")
+    parameters:
+    - id: textFields
+      type: System.Collections.Generic.IReadOnlyList{System.ValueTuple{System.String,System.Double}}
+      description: Pairs of (field name, weight) for full-text search fields.
+    - id: vectorField
+      type: System.Linq.Expressions.Expression{System.Func{{T},System.Object}}
+      description: The property storing the vector embedding.
+    - id: dimension
+      type: System.Int32
+      description: The dimensionality of the vector.
+    - id: analyzer
+      type: System.String
+      description: The SurrealDB analyzer name for full-text fields.
+    - id: distance
+      type: System.String
+      description: The distance function for HNSW.
+    return:
+      type: AeroDB.DocumentMapping`1
+    content.vb: Public Function HybridSearch(textFields As IReadOnlyList(Of (FieldName As String, Weight As Double)), vectorField As Expression(Of Func(Of T, Object)), dimension As Integer, analyzer As String, distance As String = "COSINE") As DocumentMapping(Of T)
+  overload: AeroDB.DocumentMapping`1.HybridSearch*
+  nameWithType.vb: DocumentMapping(Of T).HybridSearch(IReadOnlyList(Of (FieldName As String, Weight As Double)), Expression(Of Func(Of T, Object)), Integer, String, String)
+  fullName.vb: AeroDB.DocumentMapping(Of T).HybridSearch(System.Collections.Generic.IReadOnlyList(Of (FieldName As String, Weight As Double)), System.Linq.Expressions.Expression(Of System.Func(Of T, Object)), Integer, String, String)
+  name.vb: HybridSearch(IReadOnlyList(Of (FieldName As String, Weight As Double)), Expression(Of Func(Of T, Object)), Integer, String, String)
+- uid: AeroDB.DocumentMapping`1.MultiTenanted
+  commentId: M:AeroDB.DocumentMapping`1.MultiTenanted
+  id: MultiTenanted
+  parent: AeroDB.DocumentMapping`1
+  langs:
+  - csharp
+  - vb
+  name: MultiTenanted()
+  nameWithType: DocumentMapping<T>.MultiTenanted()
+  fullName: AeroDB.DocumentMapping<T>.MultiTenanted()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentMapping.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Marks this document type as multi-tenanted (tenant_id filter applied).
+  example: []
+  syntax:
+    content: public DocumentMapping<T> MultiTenanted()
+    return:
+      type: AeroDB.DocumentMapping`1
+    content.vb: Public Function MultiTenanted() As DocumentMapping(Of T)
+  overload: AeroDB.DocumentMapping`1.MultiTenanted*
+  nameWithType.vb: DocumentMapping(Of T).MultiTenanted()
+  fullName.vb: AeroDB.DocumentMapping(Of T).MultiTenanted()
+- uid: AeroDB.DocumentMapping`1.SoftDeleted
+  commentId: M:AeroDB.DocumentMapping`1.SoftDeleted
+  id: SoftDeleted
+  parent: AeroDB.DocumentMapping`1
+  langs:
+  - csharp
+  - vb
+  name: SoftDeleted()
+  nameWithType: DocumentMapping<T>.SoftDeleted()
+  fullName: AeroDB.DocumentMapping<T>.SoftDeleted()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentMapping.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Enable soft-delete for documents of this type. Soft-deleted documents
+
+    are automatically filtered from queries and can be restored.
+  example: []
+  syntax:
+    content: public DocumentMapping<T> SoftDeleted()
+    return:
+      type: AeroDB.DocumentMapping`1
+    content.vb: Public Function SoftDeleted() As DocumentMapping(Of T)
+  overload: AeroDB.DocumentMapping`1.SoftDeleted*
+  nameWithType.vb: DocumentMapping(Of T).SoftDeleted()
+  fullName.vb: AeroDB.DocumentMapping(Of T).SoftDeleted()
+- uid: AeroDB.DocumentMapping`1.Duplicate(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.String,System.Object,System.Action{AeroDB.DocumentIndex},System.Boolean)
+  commentId: M:AeroDB.DocumentMapping`1.Duplicate(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.String,System.Object,System.Action{AeroDB.DocumentIndex},System.Boolean)
+  id: Duplicate(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.String,System.Object,System.Action{AeroDB.DocumentIndex},System.Boolean)
+  parent: AeroDB.DocumentMapping`1
+  langs:
+  - csharp
+  - vb
+  name: Duplicate(Expression<Func<T, object?>>, string?, object?, Action<DocumentIndex>?, bool)
+  nameWithType: DocumentMapping<T>.Duplicate(Expression<Func<T, object?>>, string?, object?, Action<DocumentIndex>?, bool)
+  fullName: AeroDB.DocumentMapping<T>.Duplicate(System.Linq.Expressions.Expression<System.Func<T, object?>>, string?, object?, System.Action<AeroDB.DocumentIndex>?, bool)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentMapping.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: No-op. Exists only for Marten portability — SurrealDB does not need duplicated fields.
+  example: []
+  syntax:
+    content: public DocumentMapping<T> Duplicate(Expression<Func<T, object?>> expression, string? pgType = null, object? dbType = null, Action<DocumentIndex>? configure = null, bool notNull = false)
+    parameters:
+    - id: expression
+      type: System.Linq.Expressions.Expression{System.Func{{T},System.Object}}
+    - id: pgType
+      type: System.String
+    - id: dbType
+      type: System.Object
+    - id: configure
+      type: System.Action{AeroDB.DocumentIndex}
+    - id: notNull
+      type: System.Boolean
+    return:
+      type: AeroDB.DocumentMapping`1
+    content.vb: Public Function Duplicate(expression As Expression(Of Func(Of T, Object)), pgType As String = Nothing, dbType As Object = Nothing, configure As Action(Of DocumentIndex) = Nothing, notNull As Boolean = False) As DocumentMapping(Of T)
+  overload: AeroDB.DocumentMapping`1.Duplicate*
+  nameWithType.vb: DocumentMapping(Of T).Duplicate(Expression(Of Func(Of T, Object)), String, Object, Action(Of DocumentIndex), Boolean)
+  fullName.vb: AeroDB.DocumentMapping(Of T).Duplicate(System.Linq.Expressions.Expression(Of System.Func(Of T, Object)), String, Object, System.Action(Of AeroDB.DocumentIndex), Boolean)
+  name.vb: Duplicate(Expression(Of Func(Of T, Object)), String, Object, Action(Of DocumentIndex), Boolean)
+- uid: AeroDB.DocumentMapping`1.Duplicate``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}},System.String,System.Object,System.Action{AeroDB.DocumentIndex},System.Boolean)
+  commentId: M:AeroDB.DocumentMapping`1.Duplicate``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}},System.String,System.Object,System.Action{AeroDB.DocumentIndex},System.Boolean)
+  id: Duplicate``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}},System.String,System.Object,System.Action{AeroDB.DocumentIndex},System.Boolean)
+  parent: AeroDB.DocumentMapping`1
+  langs:
+  - csharp
+  - vb
+  name: Duplicate<TSub>(Expression<Func<TSub, object?>>, string?, object?, Action<DocumentIndex>?, bool)
+  nameWithType: DocumentMapping<T>.Duplicate<TSub>(Expression<Func<TSub, object?>>, string?, object?, Action<DocumentIndex>?, bool)
+  fullName: AeroDB.DocumentMapping<T>.Duplicate<TSub>(System.Linq.Expressions.Expression<System.Func<TSub, object?>>, string?, object?, System.Action<AeroDB.DocumentIndex>?, bool)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentMapping.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: No-op. Exists only for Marten portability — SurrealDB does not need duplicated fields.
+  example: []
+  syntax:
+    content: 'public DocumentMapping<T> Duplicate<TSub>(Expression<Func<TSub, object?>> expression, string? pgType = null, object? dbType = null, Action<DocumentIndex>? configure = null, bool notNull = false) where TSub : T'
+    parameters:
+    - id: expression
+      type: System.Linq.Expressions.Expression{System.Func{{TSub},System.Object}}
+    - id: pgType
+      type: System.String
+    - id: dbType
+      type: System.Object
+    - id: configure
+      type: System.Action{AeroDB.DocumentIndex}
+    - id: notNull
+      type: System.Boolean
+    typeParameters:
+    - id: TSub
+    return:
+      type: AeroDB.DocumentMapping`1
+    content.vb: Public Function Duplicate(Of TSub As T)(expression As Expression(Of Func(Of TSub, Object)), pgType As String = Nothing, dbType As Object = Nothing, configure As Action(Of DocumentIndex) = Nothing, notNull As Boolean = False) As DocumentMapping(Of T)
+  overload: AeroDB.DocumentMapping`1.Duplicate*
+  nameWithType.vb: DocumentMapping(Of T).Duplicate(Of TSub)(Expression(Of Func(Of TSub, Object)), String, Object, Action(Of DocumentIndex), Boolean)
+  fullName.vb: AeroDB.DocumentMapping(Of T).Duplicate(Of TSub)(System.Linq.Expressions.Expression(Of System.Func(Of TSub, Object)), String, Object, System.Action(Of AeroDB.DocumentIndex), Boolean)
+  name.vb: Duplicate(Of TSub)(Expression(Of Func(Of TSub, Object)), String, Object, Action(Of DocumentIndex), Boolean)
+- uid: AeroDB.DocumentMapping`1.SubClasses
+  commentId: P:AeroDB.DocumentMapping`1.SubClasses
+  id: SubClasses
+  parent: AeroDB.DocumentMapping`1
+  langs:
+  - csharp
+  - vb
+  name: SubClasses
+  nameWithType: DocumentMapping<T>.SubClasses
+  fullName: AeroDB.DocumentMapping<T>.SubClasses
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentMapping.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Registered derived types for this document type.
+  example: []
+  syntax:
+    content: public IReadOnlyList<Type> SubClasses { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IReadOnlyList{System.Type}
+    content.vb: Public ReadOnly Property SubClasses As IReadOnlyList(Of Type)
+  overload: AeroDB.DocumentMapping`1.SubClasses*
+  nameWithType.vb: DocumentMapping(Of T).SubClasses
+  fullName.vb: AeroDB.DocumentMapping(Of T).SubClasses
+- uid: AeroDB.DocumentMapping`1.IgnoredIndexes
+  commentId: P:AeroDB.DocumentMapping`1.IgnoredIndexes
+  id: IgnoredIndexes
+  parent: AeroDB.DocumentMapping`1
+  langs:
+  - csharp
+  - vb
+  name: IgnoredIndexes
+  nameWithType: DocumentMapping<T>.IgnoredIndexes
+  fullName: AeroDB.DocumentMapping<T>.IgnoredIndexes
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentMapping.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Index names that should not be created by EnsureSchema.
+  example: []
+  syntax:
+    content: public IReadOnlyCollection<string> IgnoredIndexes { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IReadOnlyCollection{System.String}
+    content.vb: Public ReadOnly Property IgnoredIndexes As IReadOnlyCollection(Of String)
+  overload: AeroDB.DocumentMapping`1.IgnoredIndexes*
+  nameWithType.vb: DocumentMapping(Of T).IgnoredIndexes
+  fullName.vb: AeroDB.DocumentMapping(Of T).IgnoredIndexes
+- uid: AeroDB.DocumentMapping`1.ForeignKeys
+  commentId: P:AeroDB.DocumentMapping`1.ForeignKeys
+  id: ForeignKeys
+  parent: AeroDB.DocumentMapping`1
+  langs:
+  - csharp
+  - vb
+  name: ForeignKeys
+  nameWithType: DocumentMapping<T>.ForeignKeys
+  fullName: AeroDB.DocumentMapping<T>.ForeignKeys
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentMapping.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Registered foreign key definitions.
+  example: []
+  syntax:
+    content: public IReadOnlyList<ForeignKeyDefinition> ForeignKeys { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IReadOnlyList{AeroDB.ForeignKeyDefinition}
+    content.vb: Public ReadOnly Property ForeignKeys As IReadOnlyList(Of ForeignKeyDefinition)
+  overload: AeroDB.DocumentMapping`1.ForeignKeys*
+  nameWithType.vb: DocumentMapping(Of T).ForeignKeys
+  fullName.vb: AeroDB.DocumentMapping(Of T).ForeignKeys
+- uid: AeroDB.DocumentMapping`1.FieldDefinitions
+  commentId: P:AeroDB.DocumentMapping`1.FieldDefinitions
+  id: FieldDefinitions
+  parent: AeroDB.DocumentMapping`1
+  langs:
+  - csharp
+  - vb
+  name: FieldDefinitions
+  nameWithType: DocumentMapping<T>.FieldDefinitions
+  fullName: AeroDB.DocumentMapping<T>.FieldDefinitions
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentMapping.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Custom field definitions for this document type.
+  example: []
+  syntax:
+    content: public IReadOnlyList<FieldDefinition> FieldDefinitions { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IReadOnlyList{AeroDB.FieldDefinition}
+    content.vb: Public ReadOnly Property FieldDefinitions As IReadOnlyList(Of FieldDefinition)
+  overload: AeroDB.DocumentMapping`1.FieldDefinitions*
+  nameWithType.vb: DocumentMapping(Of T).FieldDefinitions
+  fullName.vb: AeroDB.DocumentMapping(Of T).FieldDefinitions
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: AeroDB.DocumentMapping
+  commentId: T:AeroDB.DocumentMapping
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.DocumentMapping.html
+  name: DocumentMapping
+  nameWithType: DocumentMapping
+  fullName: AeroDB.DocumentMapping
+- uid: AeroDB.DocumentMapping.DocumentType
+  commentId: P:AeroDB.DocumentMapping.DocumentType
+  parent: AeroDB.DocumentMapping
+  isExternal: true
+  href: AeroDB.DocumentMapping.html#AeroDB_DocumentMapping_DocumentType
+  name: DocumentType
+  nameWithType: DocumentMapping.DocumentType
+  fullName: AeroDB.DocumentMapping.DocumentType
+- uid: AeroDB.DocumentMapping.TenancyStyle
+  commentId: P:AeroDB.DocumentMapping.TenancyStyle
+  parent: AeroDB.DocumentMapping
+  isExternal: true
+  href: AeroDB.DocumentMapping.html#AeroDB_DocumentMapping_TenancyStyle
+  name: TenancyStyle
+  nameWithType: DocumentMapping.TenancyStyle
+  fullName: AeroDB.DocumentMapping.TenancyStyle
+- uid: AeroDB.DocumentMapping.IsSoftDeleted
+  commentId: P:AeroDB.DocumentMapping.IsSoftDeleted
+  parent: AeroDB.DocumentMapping
+  isExternal: true
+  href: AeroDB.DocumentMapping.html#AeroDB_DocumentMapping_IsSoftDeleted
+  name: IsSoftDeleted
+  nameWithType: DocumentMapping.IsSoftDeleted
+  fullName: AeroDB.DocumentMapping.IsSoftDeleted
+- uid: AeroDB.DocumentMapping.UseOptimisticConcurrency
+  commentId: P:AeroDB.DocumentMapping.UseOptimisticConcurrency
+  parent: AeroDB.DocumentMapping
+  isExternal: true
+  href: AeroDB.DocumentMapping.html#AeroDB_DocumentMapping_UseOptimisticConcurrency
+  name: UseOptimisticConcurrency
+  nameWithType: DocumentMapping.UseOptimisticConcurrency
+  fullName: AeroDB.DocumentMapping.UseOptimisticConcurrency
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AeroDB.DocumentMapping`1.AddSubClass*
+  commentId: Overload:AeroDB.DocumentMapping`1.AddSubClass
+  isExternal: true
+  href: AeroDB.DocumentMapping-1.html#AeroDB_DocumentMapping_1_AddSubClass__1
+  name: AddSubClass
+  nameWithType: DocumentMapping<T>.AddSubClass
+  fullName: AeroDB.DocumentMapping<T>.AddSubClass
+  nameWithType.vb: DocumentMapping(Of T).AddSubClass
+  fullName.vb: AeroDB.DocumentMapping(Of T).AddSubClass
+- uid: AeroDB.DocumentMapping`1
+  commentId: T:AeroDB.DocumentMapping`1
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.DocumentMapping-1.html
+  name: DocumentMapping<T>
+  nameWithType: DocumentMapping<T>
+  fullName: AeroDB.DocumentMapping<T>
+  nameWithType.vb: DocumentMapping(Of T)
+  fullName.vb: AeroDB.DocumentMapping(Of T)
+  name.vb: DocumentMapping(Of T)
+  spec.csharp:
+  - uid: AeroDB.DocumentMapping`1
+    name: DocumentMapping
+    isExternal: true
+    href: AeroDB.DocumentMapping-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.DocumentMapping`1
+    name: DocumentMapping
+    isExternal: true
+    href: AeroDB.DocumentMapping-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.DocumentMapping`1.IgnoreIndex*
+  commentId: Overload:AeroDB.DocumentMapping`1.IgnoreIndex
+  isExternal: true
+  href: AeroDB.DocumentMapping-1.html#AeroDB_DocumentMapping_1_IgnoreIndex_System_String_
+  name: IgnoreIndex
+  nameWithType: DocumentMapping<T>.IgnoreIndex
+  fullName: AeroDB.DocumentMapping<T>.IgnoreIndex
+  nameWithType.vb: DocumentMapping(Of T).IgnoreIndex
+  fullName.vb: AeroDB.DocumentMapping(Of T).IgnoreIndex
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: AeroDB.DocumentMapping`1.ForeignKey*
+  commentId: Overload:AeroDB.DocumentMapping`1.ForeignKey
+  isExternal: true
+  href: AeroDB.DocumentMapping-1.html#AeroDB_DocumentMapping_1_ForeignKey__1_System_Linq_Expressions_Expression_System_Func__0_System_Object___System_Action_AeroDB_ForeignKeyDefinition__
+  name: ForeignKey
+  nameWithType: DocumentMapping<T>.ForeignKey
+  fullName: AeroDB.DocumentMapping<T>.ForeignKey
+  nameWithType.vb: DocumentMapping(Of T).ForeignKey
+  fullName.vb: AeroDB.DocumentMapping(Of T).ForeignKey
+- uid: System.Linq.Expressions.Expression{System.Func{{T},System.Object}}
+  commentId: T:System.Linq.Expressions.Expression{System.Func{`0,System.Object}}
+  parent: System.Linq.Expressions
+  definition: System.Linq.Expressions.Expression`1
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  name: Expression<Func<T, object>>
+  nameWithType: Expression<Func<T, object>>
+  fullName: System.Linq.Expressions.Expression<System.Func<T, object>>
+  nameWithType.vb: Expression(Of Func(Of T, Object))
+  fullName.vb: System.Linq.Expressions.Expression(Of System.Func(Of T, Object))
+  name.vb: Expression(Of Func(Of T, Object))
+  spec.csharp:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  - name: )
+- uid: System.Action{AeroDB.ForeignKeyDefinition}
+  commentId: T:System.Action{AeroDB.ForeignKeyDefinition}
+  parent: System
+  definition: System.Action`1
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<ForeignKeyDefinition>
+  nameWithType: Action<ForeignKeyDefinition>
+  fullName: System.Action<AeroDB.ForeignKeyDefinition>
+  nameWithType.vb: Action(Of ForeignKeyDefinition)
+  fullName.vb: System.Action(Of AeroDB.ForeignKeyDefinition)
+  name.vb: Action(Of ForeignKeyDefinition)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: AeroDB.ForeignKeyDefinition
+    name: ForeignKeyDefinition
+    isExternal: true
+    href: AeroDB.ForeignKeyDefinition.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.ForeignKeyDefinition
+    name: ForeignKeyDefinition
+    isExternal: true
+    href: AeroDB.ForeignKeyDefinition.html
+  - name: )
+- uid: System.Linq.Expressions.Expression`1
+  commentId: T:System.Linq.Expressions.Expression`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  name: Expression<TDelegate>
+  nameWithType: Expression<TDelegate>
+  fullName: System.Linq.Expressions.Expression<TDelegate>
+  nameWithType.vb: Expression(Of TDelegate)
+  fullName.vb: System.Linq.Expressions.Expression(Of TDelegate)
+  name.vb: Expression(Of TDelegate)
+  spec.csharp:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - name: TDelegate
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TDelegate
+  - name: )
+- uid: System.Linq.Expressions
+  commentId: N:System.Linq.Expressions
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Linq.Expressions
+  nameWithType: System.Linq.Expressions
+  fullName: System.Linq.Expressions
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Linq
+    name: Linq
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq
+  - name: .
+  - uid: System.Linq.Expressions
+    name: Expressions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Linq
+    name: Linq
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq
+  - name: .
+  - uid: System.Linq.Expressions
+    name: Expressions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions
+- uid: System.Action`1
+  commentId: T:System.Action`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<T>
+  nameWithType: Action<T>
+  fullName: System.Action<T>
+  nameWithType.vb: Action(Of T)
+  fullName.vb: System.Action(Of T)
+  name.vb: Action(Of T)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.DocumentMapping`1.Field*
+  commentId: Overload:AeroDB.DocumentMapping`1.Field
+  isExternal: true
+  href: AeroDB.DocumentMapping-1.html#AeroDB_DocumentMapping_1_Field_System_String_System_Action_AeroDB_FieldDefinition__
+  name: Field
+  nameWithType: DocumentMapping<T>.Field
+  fullName: AeroDB.DocumentMapping<T>.Field
+  nameWithType.vb: DocumentMapping(Of T).Field
+  fullName.vb: AeroDB.DocumentMapping(Of T).Field
+- uid: System.Action{AeroDB.FieldDefinition}
+  commentId: T:System.Action{AeroDB.FieldDefinition}
+  parent: System
+  definition: System.Action`1
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<FieldDefinition>
+  nameWithType: Action<FieldDefinition>
+  fullName: System.Action<AeroDB.FieldDefinition>
+  nameWithType.vb: Action(Of FieldDefinition)
+  fullName.vb: System.Action(Of AeroDB.FieldDefinition)
+  name.vb: Action(Of FieldDefinition)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: AeroDB.FieldDefinition
+    name: FieldDefinition
+    isExternal: true
+    href: AeroDB.FieldDefinition.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.FieldDefinition
+    name: FieldDefinition
+    isExternal: true
+    href: AeroDB.FieldDefinition.html
+  - name: )
+- uid: AeroDB.DocumentMapping`1.ComputedIndex*
+  commentId: Overload:AeroDB.DocumentMapping`1.ComputedIndex
+  isExternal: true
+  href: AeroDB.DocumentMapping-1.html#AeroDB_DocumentMapping_1_ComputedIndex_System_Linq_Expressions_Expression_System_Func__0_System_Object___System_Action_AeroDB_ComputedIndexOptions__
+  name: ComputedIndex
+  nameWithType: DocumentMapping<T>.ComputedIndex
+  fullName: AeroDB.DocumentMapping<T>.ComputedIndex
+  nameWithType.vb: DocumentMapping(Of T).ComputedIndex
+  fullName.vb: AeroDB.DocumentMapping(Of T).ComputedIndex
+- uid: System.Action{AeroDB.ComputedIndexOptions}
+  commentId: T:System.Action{AeroDB.ComputedIndexOptions}
+  parent: System
+  definition: System.Action`1
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<ComputedIndexOptions>
+  nameWithType: Action<ComputedIndexOptions>
+  fullName: System.Action<AeroDB.ComputedIndexOptions>
+  nameWithType.vb: Action(Of ComputedIndexOptions)
+  fullName.vb: System.Action(Of AeroDB.ComputedIndexOptions)
+  name.vb: Action(Of ComputedIndexOptions)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: AeroDB.ComputedIndexOptions
+    name: ComputedIndexOptions
+    isExternal: true
+    href: AeroDB.ComputedIndexOptions.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.ComputedIndexOptions
+    name: ComputedIndexOptions
+    isExternal: true
+    href: AeroDB.ComputedIndexOptions.html
+  - name: )
+- uid: AeroDB.SchemaMode.Strict
+  commentId: F:AeroDB.SchemaMode.Strict
+  isExternal: true
+  href: AeroDB.SchemaMode.html#AeroDB_SchemaMode_Strict
+  name: Strict
+  nameWithType: SchemaMode.Strict
+  fullName: AeroDB.SchemaMode.Strict
+- uid: AeroDB.DocumentMapping`1.SetSchemaMode*
+  commentId: Overload:AeroDB.DocumentMapping`1.SetSchemaMode
+  isExternal: true
+  href: AeroDB.DocumentMapping-1.html#AeroDB_DocumentMapping_1_SetSchemaMode_AeroDB_SchemaMode_
+  name: SetSchemaMode
+  nameWithType: DocumentMapping<T>.SetSchemaMode
+  fullName: AeroDB.DocumentMapping<T>.SetSchemaMode
+  nameWithType.vb: DocumentMapping(Of T).SetSchemaMode
+  fullName.vb: AeroDB.DocumentMapping(Of T).SetSchemaMode
+- uid: AeroDB.SchemaMode
+  commentId: T:AeroDB.SchemaMode
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.SchemaMode.html
+  name: SchemaMode
+  nameWithType: SchemaMode
+  fullName: AeroDB.SchemaMode
+- uid: SurrealDb.Net.Models.IRecord
+  commentId: T:SurrealDb.Net.Models.IRecord
+  parent: SurrealDb.Net.Models
+  isExternal: true
+  name: IRecord
+  nameWithType: IRecord
+  fullName: SurrealDb.Net.Models.IRecord
+- uid: SurrealDb.Net.Models.RecordId
+  commentId: T:SurrealDb.Net.Models.RecordId
+  parent: SurrealDb.Net.Models
+  isExternal: true
+  name: RecordId
+  nameWithType: RecordId
+  fullName: SurrealDb.Net.Models.RecordId
+- uid: AeroDB.DocumentMapping`1.Identity*
+  commentId: Overload:AeroDB.DocumentMapping`1.Identity
+  isExternal: true
+  href: AeroDB.DocumentMapping-1.html#AeroDB_DocumentMapping_1_Identity__1_System_Linq_Expressions_Expression_System_Func__0___0___
+  name: Identity
+  nameWithType: DocumentMapping<T>.Identity
+  fullName: AeroDB.DocumentMapping<T>.Identity
+  nameWithType.vb: DocumentMapping(Of T).Identity
+  fullName.vb: AeroDB.DocumentMapping(Of T).Identity
+- uid: System.Linq.Expressions.Expression{System.Func{{T},{TProp}}}
+  commentId: T:System.Linq.Expressions.Expression{System.Func{`0,``0}}
+  parent: System.Linq.Expressions
+  definition: System.Linq.Expressions.Expression`1
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  name: Expression<Func<T, TProp>>
+  nameWithType: Expression<Func<T, TProp>>
+  fullName: System.Linq.Expressions.Expression<System.Func<T, TProp>>
+  nameWithType.vb: Expression(Of Func(Of T, TProp))
+  fullName.vb: System.Linq.Expressions.Expression(Of System.Func(Of T, TProp))
+  name.vb: Expression(Of Func(Of T, TProp))
+  spec.csharp:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TProp
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TProp
+  - name: )
+  - name: )
+- uid: SurrealDb.Net.Models
+  commentId: N:SurrealDb.Net.Models
+  isExternal: true
+  name: SurrealDb.Net.Models
+  nameWithType: SurrealDb.Net.Models
+  fullName: SurrealDb.Net.Models
+  spec.csharp:
+  - uid: SurrealDb
+    name: SurrealDb
+    isExternal: true
+  - name: .
+  - uid: SurrealDb.Net
+    name: Net
+    isExternal: true
+  - name: .
+  - uid: SurrealDb.Net.Models
+    name: Models
+    isExternal: true
+  spec.vb:
+  - uid: SurrealDb
+    name: SurrealDb
+    isExternal: true
+  - name: .
+  - uid: SurrealDb.Net
+    name: Net
+    isExternal: true
+  - name: .
+  - uid: SurrealDb.Net.Models
+    name: Models
+    isExternal: true
+- uid: AeroDB.DocumentMapping`1.Schema*
+  commentId: Overload:AeroDB.DocumentMapping`1.Schema
+  isExternal: true
+  href: AeroDB.DocumentMapping-1.html#AeroDB_DocumentMapping_1_Schema_System_String_
+  name: Schema
+  nameWithType: DocumentMapping<T>.Schema
+  fullName: AeroDB.DocumentMapping<T>.Schema
+  nameWithType.vb: DocumentMapping(Of T).Schema
+  fullName.vb: AeroDB.DocumentMapping(Of T).Schema
+- uid: AeroDB.DocumentMapping`1.BTreeIndex``1(System.Linq.Expressions.Expression{System.Func{`0,``0}},System.Action{AeroDB.IndexOptions})
+  commentId: M:AeroDB.DocumentMapping`1.BTreeIndex``1(System.Linq.Expressions.Expression{System.Func{`0,``0}},System.Action{AeroDB.IndexOptions})
+  isExternal: true
+  href: AeroDB.DocumentMapping-1.html#AeroDB_DocumentMapping_1_BTreeIndex__1_System_Linq_Expressions_Expression_System_Func__0___0___System_Action_AeroDB_IndexOptions__
+  name: BTreeIndex<TProp>(Expression<Func<T, TProp>>, Action<IndexOptions>)
+  nameWithType: DocumentMapping<T>.BTreeIndex<TProp>(Expression<Func<T, TProp>>, Action<IndexOptions>)
+  fullName: AeroDB.DocumentMapping<T>.BTreeIndex<TProp>(System.Linq.Expressions.Expression<System.Func<T, TProp>>, System.Action<AeroDB.IndexOptions>)
+  nameWithType.vb: DocumentMapping(Of T).BTreeIndex(Of TProp)(Expression(Of Func(Of T, TProp)), Action(Of IndexOptions))
+  fullName.vb: AeroDB.DocumentMapping(Of T).BTreeIndex(Of TProp)(System.Linq.Expressions.Expression(Of System.Func(Of T, TProp)), System.Action(Of AeroDB.IndexOptions))
+  name.vb: BTreeIndex(Of TProp)(Expression(Of Func(Of T, TProp)), Action(Of IndexOptions))
+  spec.csharp:
+  - uid: AeroDB.DocumentMapping`1.BTreeIndex``1(System.Linq.Expressions.Expression{System.Func{`0,``0}},System.Action{AeroDB.IndexOptions})
+    name: BTreeIndex
+    isExternal: true
+    href: AeroDB.DocumentMapping-1.html#AeroDB_DocumentMapping_1_BTreeIndex__1_System_Linq_Expressions_Expression_System_Func__0___0___System_Action_AeroDB_IndexOptions__
+  - name: <
+  - name: TProp
+  - name: '>'
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TProp
+  - name: '>'
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: AeroDB.IndexOptions
+    name: IndexOptions
+    isExternal: true
+    href: AeroDB.IndexOptions.html
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: AeroDB.DocumentMapping`1.BTreeIndex``1(System.Linq.Expressions.Expression{System.Func{`0,``0}},System.Action{AeroDB.IndexOptions})
+    name: BTreeIndex
+    isExternal: true
+    href: AeroDB.DocumentMapping-1.html#AeroDB_DocumentMapping_1_BTreeIndex__1_System_Linq_Expressions_Expression_System_Func__0___0___System_Action_AeroDB_IndexOptions__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TProp
+  - name: )
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TProp
+  - name: )
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.IndexOptions
+    name: IndexOptions
+    isExternal: true
+    href: AeroDB.IndexOptions.html
+  - name: )
+  - name: )
+- uid: AeroDB.DocumentMapping`1.Index*
+  commentId: Overload:AeroDB.DocumentMapping`1.Index
+  isExternal: true
+  href: AeroDB.DocumentMapping-1.html#AeroDB_DocumentMapping_1_Index__1_System_Linq_Expressions_Expression_System_Func__0___0___System_Action_AeroDB_IndexOptions__
+  name: Index
+  nameWithType: DocumentMapping<T>.Index
+  fullName: AeroDB.DocumentMapping<T>.Index
+  nameWithType.vb: DocumentMapping(Of T).Index
+  fullName.vb: AeroDB.DocumentMapping(Of T).Index
+- uid: System.Action{AeroDB.IndexOptions}
+  commentId: T:System.Action{AeroDB.IndexOptions}
+  parent: System
+  definition: System.Action`1
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<IndexOptions>
+  nameWithType: Action<IndexOptions>
+  fullName: System.Action<AeroDB.IndexOptions>
+  nameWithType.vb: Action(Of IndexOptions)
+  fullName.vb: System.Action(Of AeroDB.IndexOptions)
+  name.vb: Action(Of IndexOptions)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: AeroDB.IndexOptions
+    name: IndexOptions
+    isExternal: true
+    href: AeroDB.IndexOptions.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.IndexOptions
+    name: IndexOptions
+    isExternal: true
+    href: AeroDB.IndexOptions.html
+  - name: )
+- uid: AeroDB.DocumentMapping`1.Index``1(System.Linq.Expressions.Expression{System.Func{`0,``0}},System.Action{AeroDB.IndexOptions})
+  commentId: M:AeroDB.DocumentMapping`1.Index``1(System.Linq.Expressions.Expression{System.Func{`0,``0}},System.Action{AeroDB.IndexOptions})
+  isExternal: true
+  href: AeroDB.DocumentMapping-1.html#AeroDB_DocumentMapping_1_Index__1_System_Linq_Expressions_Expression_System_Func__0___0___System_Action_AeroDB_IndexOptions__
+  name: Index<TProp>(Expression<Func<T, TProp>>, Action<IndexOptions>)
+  nameWithType: DocumentMapping<T>.Index<TProp>(Expression<Func<T, TProp>>, Action<IndexOptions>)
+  fullName: AeroDB.DocumentMapping<T>.Index<TProp>(System.Linq.Expressions.Expression<System.Func<T, TProp>>, System.Action<AeroDB.IndexOptions>)
+  nameWithType.vb: DocumentMapping(Of T).Index(Of TProp)(Expression(Of Func(Of T, TProp)), Action(Of IndexOptions))
+  fullName.vb: AeroDB.DocumentMapping(Of T).Index(Of TProp)(System.Linq.Expressions.Expression(Of System.Func(Of T, TProp)), System.Action(Of AeroDB.IndexOptions))
+  name.vb: Index(Of TProp)(Expression(Of Func(Of T, TProp)), Action(Of IndexOptions))
+  spec.csharp:
+  - uid: AeroDB.DocumentMapping`1.Index``1(System.Linq.Expressions.Expression{System.Func{`0,``0}},System.Action{AeroDB.IndexOptions})
+    name: Index
+    isExternal: true
+    href: AeroDB.DocumentMapping-1.html#AeroDB_DocumentMapping_1_Index__1_System_Linq_Expressions_Expression_System_Func__0___0___System_Action_AeroDB_IndexOptions__
+  - name: <
+  - name: TProp
+  - name: '>'
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TProp
+  - name: '>'
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: AeroDB.IndexOptions
+    name: IndexOptions
+    isExternal: true
+    href: AeroDB.IndexOptions.html
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: AeroDB.DocumentMapping`1.Index``1(System.Linq.Expressions.Expression{System.Func{`0,``0}},System.Action{AeroDB.IndexOptions})
+    name: Index
+    isExternal: true
+    href: AeroDB.DocumentMapping-1.html#AeroDB_DocumentMapping_1_Index__1_System_Linq_Expressions_Expression_System_Func__0___0___System_Action_AeroDB_IndexOptions__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TProp
+  - name: )
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TProp
+  - name: )
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.IndexOptions
+    name: IndexOptions
+    isExternal: true
+    href: AeroDB.IndexOptions.html
+  - name: )
+  - name: )
+- uid: AeroDB.DocumentMapping`1.BTreeIndex*
+  commentId: Overload:AeroDB.DocumentMapping`1.BTreeIndex
+  isExternal: true
+  href: AeroDB.DocumentMapping-1.html#AeroDB_DocumentMapping_1_BTreeIndex__1_System_Linq_Expressions_Expression_System_Func__0___0___System_Action_AeroDB_IndexOptions__
+  name: BTreeIndex
+  nameWithType: DocumentMapping<T>.BTreeIndex
+  fullName: AeroDB.DocumentMapping<T>.BTreeIndex
+  nameWithType.vb: DocumentMapping(Of T).BTreeIndex
+  fullName.vb: AeroDB.DocumentMapping(Of T).BTreeIndex
+- uid: AeroDB.DocumentMapping`1.UniqueIndex*
+  commentId: Overload:AeroDB.DocumentMapping`1.UniqueIndex
+  isExternal: true
+  href: AeroDB.DocumentMapping-1.html#AeroDB_DocumentMapping_1_UniqueIndex__1_System_Linq_Expressions_Expression_System_Func__0___0___
+  name: UniqueIndex
+  nameWithType: DocumentMapping<T>.UniqueIndex
+  fullName: AeroDB.DocumentMapping<T>.UniqueIndex
+  nameWithType.vb: DocumentMapping(Of T).UniqueIndex
+  fullName.vb: AeroDB.DocumentMapping(Of T).UniqueIndex
+- uid: AeroDB.DocumentMapping`1.Index(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Action{AeroDB.IndexOptions})
+  commentId: M:AeroDB.DocumentMapping`1.Index(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Action{AeroDB.IndexOptions})
+  isExternal: true
+  href: AeroDB.DocumentMapping-1.html#AeroDB_DocumentMapping_1_Index_System_Linq_Expressions_Expression_System_Func__0_System_Object___System_Action_AeroDB_IndexOptions__
+  name: Index(Expression<Func<T, object>>, Action<IndexOptions>)
+  nameWithType: DocumentMapping<T>.Index(Expression<Func<T, object>>, Action<IndexOptions>)
+  fullName: AeroDB.DocumentMapping<T>.Index(System.Linq.Expressions.Expression<System.Func<T, object>>, System.Action<AeroDB.IndexOptions>)
+  nameWithType.vb: DocumentMapping(Of T).Index(Expression(Of Func(Of T, Object)), Action(Of IndexOptions))
+  fullName.vb: AeroDB.DocumentMapping(Of T).Index(System.Linq.Expressions.Expression(Of System.Func(Of T, Object)), System.Action(Of AeroDB.IndexOptions))
+  name.vb: Index(Expression(Of Func(Of T, Object)), Action(Of IndexOptions))
+  spec.csharp:
+  - uid: AeroDB.DocumentMapping`1.Index(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Action{AeroDB.IndexOptions})
+    name: Index
+    isExternal: true
+    href: AeroDB.DocumentMapping-1.html#AeroDB_DocumentMapping_1_Index_System_Linq_Expressions_Expression_System_Func__0_System_Object___System_Action_AeroDB_IndexOptions__
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: AeroDB.IndexOptions
+    name: IndexOptions
+    isExternal: true
+    href: AeroDB.IndexOptions.html
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: AeroDB.DocumentMapping`1.Index(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Action{AeroDB.IndexOptions})
+    name: Index
+    isExternal: true
+    href: AeroDB.DocumentMapping-1.html#AeroDB_DocumentMapping_1_Index_System_Linq_Expressions_Expression_System_Func__0_System_Object___System_Action_AeroDB_IndexOptions__
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.IndexOptions
+    name: IndexOptions
+    isExternal: true
+    href: AeroDB.IndexOptions.html
+  - name: )
+  - name: )
+- uid: AeroDB.DocumentMapping`1.CompositeIndex*
+  commentId: Overload:AeroDB.DocumentMapping`1.CompositeIndex
+  isExternal: true
+  href: AeroDB.DocumentMapping-1.html#AeroDB_DocumentMapping_1_CompositeIndex_System_Linq_Expressions_Expression_System_Func__0_System_Object_____
+  name: CompositeIndex
+  nameWithType: DocumentMapping<T>.CompositeIndex
+  fullName: AeroDB.DocumentMapping<T>.CompositeIndex
+  nameWithType.vb: DocumentMapping(Of T).CompositeIndex
+  fullName.vb: AeroDB.DocumentMapping(Of T).CompositeIndex
+- uid: System.Linq.Expressions.Expression{System.Func{{T},System.Object}}[]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  name: Expression<Func<T, object>>[]
+  nameWithType: Expression<Func<T, object>>[]
+  fullName: System.Linq.Expressions.Expression<System.Func<T, object>>[]
+  nameWithType.vb: Expression(Of Func(Of T, Object))()
+  fullName.vb: System.Linq.Expressions.Expression(Of System.Func(Of T, Object))()
+  name.vb: Expression(Of Func(Of T, Object))()
+  spec.csharp:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
+  - name: '>'
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  - name: )
+  - name: (
+  - name: )
+- uid: AeroDB.DocumentMapping`1.UniqueCompositeIndex*
+  commentId: Overload:AeroDB.DocumentMapping`1.UniqueCompositeIndex
+  isExternal: true
+  href: AeroDB.DocumentMapping-1.html#AeroDB_DocumentMapping_1_UniqueCompositeIndex_System_Linq_Expressions_Expression_System_Func__0_System_Object_____
+  name: UniqueCompositeIndex
+  nameWithType: DocumentMapping<T>.UniqueCompositeIndex
+  fullName: AeroDB.DocumentMapping<T>.UniqueCompositeIndex
+  nameWithType.vb: DocumentMapping(Of T).UniqueCompositeIndex
+  fullName.vb: AeroDB.DocumentMapping(Of T).UniqueCompositeIndex
+- uid: AeroDB.DocumentMapping`1.FullTextIndex*
+  commentId: Overload:AeroDB.DocumentMapping`1.FullTextIndex
+  isExternal: true
+  href: AeroDB.DocumentMapping-1.html#AeroDB_DocumentMapping_1_FullTextIndex__1_System_Linq_Expressions_Expression_System_Func__0___0___System_String_System_Nullable_System_ValueTuple_System_Double_System_Double___
+  name: FullTextIndex
+  nameWithType: DocumentMapping<T>.FullTextIndex
+  fullName: AeroDB.DocumentMapping<T>.FullTextIndex
+  nameWithType.vb: DocumentMapping(Of T).FullTextIndex
+  fullName.vb: AeroDB.DocumentMapping(Of T).FullTextIndex
+- uid: System.Nullable{System.ValueTuple{System.Double,System.Double}}
+  commentId: T:System.Nullable{System.ValueTuple{System.Double,System.Double}}
+  parent: System
+  definition: System.Nullable`1
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: (double K1, double B)?
+  nameWithType: (double K1, double B)?
+  fullName: (double K1, double B)?
+  nameWithType.vb: (K1 As Double, B As Double)?
+  fullName.vb: (K1 As Double, B As Double)?
+  name.vb: (K1 As Double, B As Double)?
+  spec.csharp:
+  - name: (
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: " "
+  - uid: System.ValueTuple{System.Double,System.Double}.K1
+    name: K1
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.double,system.double-.k1
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: " "
+  - uid: System.ValueTuple{System.Double,System.Double}.B
+    name: B
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.double,system.double-.b
+  - name: )
+  - name: '?'
+  spec.vb:
+  - name: (
+  - uid: System.ValueTuple{System.Double,System.Double}.K1
+    name: K1
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.double,system.double-.k1
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.ValueTuple{System.Double,System.Double}.B
+    name: B
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.double,system.double-.b
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+  - name: '?'
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.DocumentMapping`1.HnswIndex*
+  commentId: Overload:AeroDB.DocumentMapping`1.HnswIndex
+  isExternal: true
+  href: AeroDB.DocumentMapping-1.html#AeroDB_DocumentMapping_1_HnswIndex__1_System_Linq_Expressions_Expression_System_Func__0___0___System_Int32_System_String_
+  name: HnswIndex
+  nameWithType: DocumentMapping<T>.HnswIndex
+  fullName: AeroDB.DocumentMapping<T>.HnswIndex
+  nameWithType.vb: DocumentMapping(Of T).HnswIndex
+  fullName.vb: AeroDB.DocumentMapping(Of T).HnswIndex
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: AeroDB.DocumentMapping`1.DiskannIndex*
+  commentId: Overload:AeroDB.DocumentMapping`1.DiskannIndex
+  isExternal: true
+  href: AeroDB.DocumentMapping-1.html#AeroDB_DocumentMapping_1_DiskannIndex__1_System_Linq_Expressions_Expression_System_Func__0___0___System_Int32_System_String_System_String_System_Nullable_System_Int32__System_Nullable_System_Int32__System_Nullable_System_Double__System_Boolean_
+  name: DiskannIndex
+  nameWithType: DocumentMapping<T>.DiskannIndex
+  fullName: AeroDB.DocumentMapping<T>.DiskannIndex
+  nameWithType.vb: DocumentMapping(Of T).DiskannIndex
+  fullName.vb: AeroDB.DocumentMapping(Of T).DiskannIndex
+- uid: System.Nullable{System.Int32}
+  commentId: T:System.Nullable{System.Int32}
+  parent: System
+  definition: System.Nullable`1
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int?
+  nameWithType: int?
+  fullName: int?
+  nameWithType.vb: Integer?
+  fullName.vb: Integer?
+  name.vb: Integer?
+  spec.csharp:
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '?'
+  spec.vb:
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '?'
+- uid: System.Nullable{System.Double}
+  commentId: T:System.Nullable{System.Double}
+  parent: System
+  definition: System.Nullable`1
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double?
+  nameWithType: double?
+  fullName: double?
+  nameWithType.vb: Double?
+  fullName.vb: Double?
+  name.vb: Double?
+  spec.csharp:
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: '?'
+  spec.vb:
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: '?'
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: AeroDB.DocumentMapping`1.SpatialIndex*
+  commentId: Overload:AeroDB.DocumentMapping`1.SpatialIndex
+  isExternal: true
+  href: AeroDB.DocumentMapping-1.html#AeroDB_DocumentMapping_1_SpatialIndex__1_System_Linq_Expressions_Expression_System_Func__0___0___
+  name: SpatialIndex
+  nameWithType: DocumentMapping<T>.SpatialIndex
+  fullName: AeroDB.DocumentMapping<T>.SpatialIndex
+  nameWithType.vb: DocumentMapping(Of T).SpatialIndex
+  fullName.vb: AeroDB.DocumentMapping(Of T).SpatialIndex
+- uid: AeroDB.DocumentMapping`1.HybridSearch*
+  commentId: Overload:AeroDB.DocumentMapping`1.HybridSearch
+  isExternal: true
+  href: AeroDB.DocumentMapping-1.html#AeroDB_DocumentMapping_1_HybridSearch_System_Collections_Generic_IReadOnlyList_System_ValueTuple_System_String_System_Double___System_Linq_Expressions_Expression_System_Func__0_System_Object___System_Int32_System_String_System_String_
+  name: HybridSearch
+  nameWithType: DocumentMapping<T>.HybridSearch
+  fullName: AeroDB.DocumentMapping<T>.HybridSearch
+  nameWithType.vb: DocumentMapping(Of T).HybridSearch
+  fullName.vb: AeroDB.DocumentMapping(Of T).HybridSearch
+- uid: System.Collections.Generic.IReadOnlyList{System.ValueTuple{System.String,System.Double}}
+  commentId: T:System.Collections.Generic.IReadOnlyList{System.ValueTuple{System.String,System.Double}}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyList`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<(string FieldName, double Weight)>
+  nameWithType: IReadOnlyList<(string FieldName, double Weight)>
+  fullName: System.Collections.Generic.IReadOnlyList<(string FieldName, double Weight)>
+  nameWithType.vb: IReadOnlyList(Of (FieldName As String, Weight As Double))
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of (FieldName As String, Weight As Double))
+  name.vb: IReadOnlyList(Of (FieldName As String, Weight As Double))
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: " "
+  - uid: System.ValueTuple{System.String,System.Double}.FieldName
+    name: FieldName
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.string,system.double-.fieldname
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: " "
+  - uid: System.ValueTuple{System.String,System.Double}.Weight
+    name: Weight
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.string,system.double-.weight
+  - name: )
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: (
+  - uid: System.ValueTuple{System.String,System.Double}.FieldName
+    name: FieldName
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.string,system.double-.fieldname
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.ValueTuple{System.String,System.Double}.Weight
+    name: Weight
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.string,system.double-.weight
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+  - name: )
+- uid: System.Collections.Generic.IReadOnlyList`1
+  commentId: T:System.Collections.Generic.IReadOnlyList`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<T>
+  nameWithType: IReadOnlyList<T>
+  fullName: System.Collections.Generic.IReadOnlyList<T>
+  nameWithType.vb: IReadOnlyList(Of T)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of T)
+  name.vb: IReadOnlyList(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: AeroDB.DocumentMapping`1.MultiTenanted*
+  commentId: Overload:AeroDB.DocumentMapping`1.MultiTenanted
+  isExternal: true
+  href: AeroDB.DocumentMapping-1.html#AeroDB_DocumentMapping_1_MultiTenanted
+  name: MultiTenanted
+  nameWithType: DocumentMapping<T>.MultiTenanted
+  fullName: AeroDB.DocumentMapping<T>.MultiTenanted
+  nameWithType.vb: DocumentMapping(Of T).MultiTenanted
+  fullName.vb: AeroDB.DocumentMapping(Of T).MultiTenanted
+- uid: AeroDB.DocumentMapping`1.SoftDeleted*
+  commentId: Overload:AeroDB.DocumentMapping`1.SoftDeleted
+  isExternal: true
+  href: AeroDB.DocumentMapping-1.html#AeroDB_DocumentMapping_1_SoftDeleted
+  name: SoftDeleted
+  nameWithType: DocumentMapping<T>.SoftDeleted
+  fullName: AeroDB.DocumentMapping<T>.SoftDeleted
+  nameWithType.vb: DocumentMapping(Of T).SoftDeleted
+  fullName.vb: AeroDB.DocumentMapping(Of T).SoftDeleted
+- uid: AeroDB.DocumentMapping`1.Duplicate*
+  commentId: Overload:AeroDB.DocumentMapping`1.Duplicate
+  isExternal: true
+  href: AeroDB.DocumentMapping-1.html#AeroDB_DocumentMapping_1_Duplicate_System_Linq_Expressions_Expression_System_Func__0_System_Object___System_String_System_Object_System_Action_AeroDB_DocumentIndex__System_Boolean_
+  name: Duplicate
+  nameWithType: DocumentMapping<T>.Duplicate
+  fullName: AeroDB.DocumentMapping<T>.Duplicate
+  nameWithType.vb: DocumentMapping(Of T).Duplicate
+  fullName.vb: AeroDB.DocumentMapping(Of T).Duplicate
+- uid: System.Action{AeroDB.DocumentIndex}
+  commentId: T:System.Action{AeroDB.DocumentIndex}
+  parent: System
+  definition: System.Action`1
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<DocumentIndex>
+  nameWithType: Action<DocumentIndex>
+  fullName: System.Action<AeroDB.DocumentIndex>
+  nameWithType.vb: Action(Of DocumentIndex)
+  fullName.vb: System.Action(Of AeroDB.DocumentIndex)
+  name.vb: Action(Of DocumentIndex)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: AeroDB.DocumentIndex
+    name: DocumentIndex
+    isExternal: true
+    href: AeroDB.DocumentIndex.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.DocumentIndex
+    name: DocumentIndex
+    isExternal: true
+    href: AeroDB.DocumentIndex.html
+  - name: )
+- uid: System.Linq.Expressions.Expression{System.Func{{TSub},System.Object}}
+  commentId: T:System.Linq.Expressions.Expression{System.Func{``0,System.Object}}
+  parent: System.Linq.Expressions
+  definition: System.Linq.Expressions.Expression`1
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  name: Expression<Func<TSub, object>>
+  nameWithType: Expression<Func<TSub, object>>
+  fullName: System.Linq.Expressions.Expression<System.Func<TSub, object>>
+  nameWithType.vb: Expression(Of Func(Of TSub, Object))
+  fullName.vb: System.Linq.Expressions.Expression(Of System.Func(Of TSub, Object))
+  name.vb: Expression(Of Func(Of TSub, Object))
+  spec.csharp:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: TSub
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TSub
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  - name: )
+- uid: AeroDB.DocumentMapping`1.SubClasses*
+  commentId: Overload:AeroDB.DocumentMapping`1.SubClasses
+  isExternal: true
+  href: AeroDB.DocumentMapping-1.html#AeroDB_DocumentMapping_1_SubClasses
+  name: SubClasses
+  nameWithType: DocumentMapping<T>.SubClasses
+  fullName: AeroDB.DocumentMapping<T>.SubClasses
+  nameWithType.vb: DocumentMapping(Of T).SubClasses
+  fullName.vb: AeroDB.DocumentMapping(Of T).SubClasses
+- uid: System.Collections.Generic.IReadOnlyList{System.Type}
+  commentId: T:System.Collections.Generic.IReadOnlyList{System.Type}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyList`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<Type>
+  nameWithType: IReadOnlyList<Type>
+  fullName: System.Collections.Generic.IReadOnlyList<System.Type>
+  nameWithType.vb: IReadOnlyList(Of Type)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of System.Type)
+  name.vb: IReadOnlyList(Of Type)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+- uid: AeroDB.DocumentMapping`1.IgnoredIndexes*
+  commentId: Overload:AeroDB.DocumentMapping`1.IgnoredIndexes
+  isExternal: true
+  href: AeroDB.DocumentMapping-1.html#AeroDB_DocumentMapping_1_IgnoredIndexes
+  name: IgnoredIndexes
+  nameWithType: DocumentMapping<T>.IgnoredIndexes
+  fullName: AeroDB.DocumentMapping<T>.IgnoredIndexes
+  nameWithType.vb: DocumentMapping(Of T).IgnoredIndexes
+  fullName.vb: AeroDB.DocumentMapping(Of T).IgnoredIndexes
+- uid: System.Collections.Generic.IReadOnlyCollection{System.String}
+  commentId: T:System.Collections.Generic.IReadOnlyCollection{System.String}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyCollection`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1
+  name: IReadOnlyCollection<string>
+  nameWithType: IReadOnlyCollection<string>
+  fullName: System.Collections.Generic.IReadOnlyCollection<string>
+  nameWithType.vb: IReadOnlyCollection(Of String)
+  fullName.vb: System.Collections.Generic.IReadOnlyCollection(Of String)
+  name.vb: IReadOnlyCollection(Of String)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyCollection`1
+    name: IReadOnlyCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyCollection`1
+    name: IReadOnlyCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Collections.Generic.IReadOnlyCollection`1
+  commentId: T:System.Collections.Generic.IReadOnlyCollection`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1
+  name: IReadOnlyCollection<T>
+  nameWithType: IReadOnlyCollection<T>
+  fullName: System.Collections.Generic.IReadOnlyCollection<T>
+  nameWithType.vb: IReadOnlyCollection(Of T)
+  fullName.vb: System.Collections.Generic.IReadOnlyCollection(Of T)
+  name.vb: IReadOnlyCollection(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyCollection`1
+    name: IReadOnlyCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyCollection`1
+    name: IReadOnlyCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.DocumentMapping`1.ForeignKeys*
+  commentId: Overload:AeroDB.DocumentMapping`1.ForeignKeys
+  isExternal: true
+  href: AeroDB.DocumentMapping-1.html#AeroDB_DocumentMapping_1_ForeignKeys
+  name: ForeignKeys
+  nameWithType: DocumentMapping<T>.ForeignKeys
+  fullName: AeroDB.DocumentMapping<T>.ForeignKeys
+  nameWithType.vb: DocumentMapping(Of T).ForeignKeys
+  fullName.vb: AeroDB.DocumentMapping(Of T).ForeignKeys
+- uid: System.Collections.Generic.IReadOnlyList{AeroDB.ForeignKeyDefinition}
+  commentId: T:System.Collections.Generic.IReadOnlyList{AeroDB.ForeignKeyDefinition}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyList`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<ForeignKeyDefinition>
+  nameWithType: IReadOnlyList<ForeignKeyDefinition>
+  fullName: System.Collections.Generic.IReadOnlyList<AeroDB.ForeignKeyDefinition>
+  nameWithType.vb: IReadOnlyList(Of ForeignKeyDefinition)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of AeroDB.ForeignKeyDefinition)
+  name.vb: IReadOnlyList(Of ForeignKeyDefinition)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - uid: AeroDB.ForeignKeyDefinition
+    name: ForeignKeyDefinition
+    isExternal: true
+    href: AeroDB.ForeignKeyDefinition.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.ForeignKeyDefinition
+    name: ForeignKeyDefinition
+    isExternal: true
+    href: AeroDB.ForeignKeyDefinition.html
+  - name: )
+- uid: AeroDB.DocumentMapping`1.FieldDefinitions*
+  commentId: Overload:AeroDB.DocumentMapping`1.FieldDefinitions
+  isExternal: true
+  href: AeroDB.DocumentMapping-1.html#AeroDB_DocumentMapping_1_FieldDefinitions
+  name: FieldDefinitions
+  nameWithType: DocumentMapping<T>.FieldDefinitions
+  fullName: AeroDB.DocumentMapping<T>.FieldDefinitions
+  nameWithType.vb: DocumentMapping(Of T).FieldDefinitions
+  fullName.vb: AeroDB.DocumentMapping(Of T).FieldDefinitions
+- uid: System.Collections.Generic.IReadOnlyList{AeroDB.FieldDefinition}
+  commentId: T:System.Collections.Generic.IReadOnlyList{AeroDB.FieldDefinition}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyList`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<FieldDefinition>
+  nameWithType: IReadOnlyList<FieldDefinition>
+  fullName: System.Collections.Generic.IReadOnlyList<AeroDB.FieldDefinition>
+  nameWithType.vb: IReadOnlyList(Of FieldDefinition)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of AeroDB.FieldDefinition)
+  name.vb: IReadOnlyList(Of FieldDefinition)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - uid: AeroDB.FieldDefinition
+    name: FieldDefinition
+    isExternal: true
+    href: AeroDB.FieldDefinition.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.FieldDefinition
+    name: FieldDefinition
+    isExternal: true
+    href: AeroDB.FieldDefinition.html
+  - name: )

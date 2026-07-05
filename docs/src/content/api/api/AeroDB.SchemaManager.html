@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Class SchemaManager | AeroDB v0.0.5-alpha — API Reference </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="Class SchemaManager | AeroDB v0.0.5-alpha — API Reference ">
+    
+    
+      <link rel="shortcut icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../styles/docfx.css">
+      <link rel="stylesheet" href="../styles/main.css">
+      <meta property="docfx:navrel" content="../toc.html">
+      <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="AeroDB">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="AeroDB.SchemaManager">
+
+
+
+  <h1 id="AeroDB_SchemaManager" data-uid="AeroDB.SchemaManager" class="text-break">Class SchemaManager</h1>
+  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+    <div class="level1"><span class="xref">SchemaManager</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="AeroDB.html">AeroDB</a></h6>
+  <h6><strong>Assembly</strong>: AeroDB.dll</h6>
+  <h5 id="AeroDB_SchemaManager_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class SchemaManager</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+</h3>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/SchemaManager.cs">View Source</a>
+  </span>
+  <a id="AeroDB_SchemaManager__ctor_" data-uid="AeroDB.SchemaManager.#ctor*"></a>
+  <h4 id="AeroDB_SchemaManager__ctor_Microsoft_Extensions_Logging_ILoggerFactory_" data-uid="AeroDB.SchemaManager.#ctor(Microsoft.Extensions.Logging.ILoggerFactory)">SchemaManager(ILoggerFactory?)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public SchemaManager(ILoggerFactory? loggerFactory = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.iloggerfactory">ILoggerFactory</a></td>
+        <td><span class="parametername">loggerFactory</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+</h3>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/SchemaManager.cs">View Source</a>
+  </span>
+  <a id="AeroDB_SchemaManager_DropTableAsync_" data-uid="AeroDB.SchemaManager.DropTableAsync*"></a>
+  <h4 id="AeroDB_SchemaManager_DropTableAsync_SurrealDb_Net_ISurrealDbSession_System_String_System_Threading_CancellationToken_" data-uid="AeroDB.SchemaManager.DropTableAsync(SurrealDb.Net.ISurrealDbSession,System.String,System.Threading.CancellationToken)">DropTableAsync(ISurrealDbSession, string, CancellationToken)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task DropTableAsync(ISurrealDbSession session, string tableName, CancellationToken ct = default)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ISurrealDbSession</span></td>
+        <td><span class="parametername">session</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">tableName</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">ct</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/SchemaManager.cs">View Source</a>
+  </span>
+  <a id="AeroDB_SchemaManager_EnsureAccessesAsync_" data-uid="AeroDB.SchemaManager.EnsureAccessesAsync*"></a>
+  <h4 id="AeroDB_SchemaManager_EnsureAccessesAsync_SurrealDb_Net_ISurrealDbSession_System_Collections_Generic_List_AeroDB_AccessDefinition__System_Threading_CancellationToken_" data-uid="AeroDB.SchemaManager.EnsureAccessesAsync(SurrealDb.Net.ISurrealDbSession,System.Collections.Generic.List{AeroDB.AccessDefinition},System.Threading.CancellationToken)">EnsureAccessesAsync(ISurrealDbSession, List&lt;AccessDefinition&gt;, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Issues DEFINE ACCESS for configured access definitions (SurrealDB v3+).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task EnsureAccessesAsync(ISurrealDbSession session, List&lt;AccessDefinition&gt; accesses, CancellationToken ct = default)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ISurrealDbSession</span></td>
+        <td><span class="parametername">session</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="AeroDB.AccessDefinition.html">AccessDefinition</a>&gt;</td>
+        <td><span class="parametername">accesses</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">ct</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/SchemaManager.cs">View Source</a>
+  </span>
+  <a id="AeroDB_SchemaManager_EnsureAnalyzerAsync_" data-uid="AeroDB.SchemaManager.EnsureAnalyzerAsync*"></a>
+  <h4 id="AeroDB_SchemaManager_EnsureAnalyzerAsync_SurrealDb_Net_ISurrealDbSession_AeroDB_AnalyzerDefinition_System_Threading_CancellationToken_" data-uid="AeroDB.SchemaManager.EnsureAnalyzerAsync(SurrealDb.Net.ISurrealDbSession,AeroDB.AnalyzerDefinition,System.Threading.CancellationToken)">EnsureAnalyzerAsync(ISurrealDbSession, AnalyzerDefinition, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Ensures a single analyzer exists in the database.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task EnsureAnalyzerAsync(ISurrealDbSession session, AnalyzerDefinition analyzer, CancellationToken ct = default)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ISurrealDbSession</span></td>
+        <td><span class="parametername">session</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="AeroDB.AnalyzerDefinition.html">AnalyzerDefinition</a></td>
+        <td><span class="parametername">analyzer</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">ct</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/SchemaManager.cs">View Source</a>
+  </span>
+  <a id="AeroDB_SchemaManager_EnsureAnalyzersAsync_" data-uid="AeroDB.SchemaManager.EnsureAnalyzersAsync*"></a>
+  <h4 id="AeroDB_SchemaManager_EnsureAnalyzersAsync_SurrealDb_Net_ISurrealDbSession_AeroDB_AnalyzerOptions_System_Threading_CancellationToken_" data-uid="AeroDB.SchemaManager.EnsureAnalyzersAsync(SurrealDb.Net.ISurrealDbSession,AeroDB.AnalyzerOptions,System.Threading.CancellationToken)">EnsureAnalyzersAsync(ISurrealDbSession, AnalyzerOptions, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Ensures all configured analyzers exist in the database.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task EnsureAnalyzersAsync(ISurrealDbSession session, AnalyzerOptions options, CancellationToken ct = default)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ISurrealDbSession</span></td>
+        <td><span class="parametername">session</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="AeroDB.AnalyzerOptions.html">AnalyzerOptions</a></td>
+        <td><span class="parametername">options</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">ct</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/SchemaManager.cs">View Source</a>
+  </span>
+  <a id="AeroDB_SchemaManager_EnsureDatabaseAsync_" data-uid="AeroDB.SchemaManager.EnsureDatabaseAsync*"></a>
+  <h4 id="AeroDB_SchemaManager_EnsureDatabaseAsync_SurrealDb_Net_ISurrealDbSession_System_String_System_Threading_CancellationToken_" data-uid="AeroDB.SchemaManager.EnsureDatabaseAsync(SurrealDb.Net.ISurrealDbSession,System.String,System.Threading.CancellationToken)">EnsureDatabaseAsync(ISurrealDbSession, string, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Ensures a SurrealDB database exists by executing <code>DEFINE DATABASE IF NOT EXISTS</code>.
+The session must already be connected to the correct namespace.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task EnsureDatabaseAsync(ISurrealDbSession session, string databaseName, CancellationToken ct = default)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ISurrealDbSession</span></td>
+        <td><span class="parametername">session</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">databaseName</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">ct</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/SchemaManager.cs">View Source</a>
+  </span>
+  <a id="AeroDB_SchemaManager_EnsureDocumentSchemaAsync_" data-uid="AeroDB.SchemaManager.EnsureDocumentSchemaAsync*"></a>
+  <h4 id="AeroDB_SchemaManager_EnsureDocumentSchemaAsync__1_SurrealDb_Net_ISurrealDbSession_AeroDB_SchemaMode_System_Threading_CancellationToken_" data-uid="AeroDB.SchemaManager.EnsureDocumentSchemaAsync``1(SurrealDb.Net.ISurrealDbSession,AeroDB.SchemaMode,System.Threading.CancellationToken)">EnsureDocumentSchemaAsync&lt;T&gt;(ISurrealDbSession, SchemaMode, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Ensures a document table exists with the specified schema mode.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task EnsureDocumentSchemaAsync&lt;T&gt;(ISurrealDbSession session, SchemaMode mode, CancellationToken ct = default) where T : class</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ISurrealDbSession</span></td>
+        <td><span class="parametername">session</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="AeroDB.SchemaMode.html">SchemaMode</a></td>
+        <td><span class="parametername">mode</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">ct</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/SchemaManager.cs">View Source</a>
+  </span>
+  <a id="AeroDB_SchemaManager_EnsureDocumentSchemaAsync_" data-uid="AeroDB.SchemaManager.EnsureDocumentSchemaAsync*"></a>
+  <h4 id="AeroDB_SchemaManager_EnsureDocumentSchemaAsync__1_SurrealDb_Net_ISurrealDbSession_System_Threading_CancellationToken_" data-uid="AeroDB.SchemaManager.EnsureDocumentSchemaAsync``1(SurrealDb.Net.ISurrealDbSession,System.Threading.CancellationToken)">EnsureDocumentSchemaAsync&lt;T&gt;(ISurrealDbSession, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Ensures a document table exists with the configured schema mode and defines fields for all
+public readable/writable properties on T (except Id).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task EnsureDocumentSchemaAsync&lt;T&gt;(ISurrealDbSession session, CancellationToken ct = default) where T : class</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ISurrealDbSession</span></td>
+        <td><span class="parametername">session</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">ct</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/SchemaManager.cs">View Source</a>
+  </span>
+  <a id="AeroDB_SchemaManager_EnsureEdgeSchemaAsync_" data-uid="AeroDB.SchemaManager.EnsureEdgeSchemaAsync*"></a>
+  <h4 id="AeroDB_SchemaManager_EnsureEdgeSchemaAsync__1_SurrealDb_Net_ISurrealDbSession_AeroDB_EdgeMapping___0__System_Threading_CancellationToken_" data-uid="AeroDB.SchemaManager.EnsureEdgeSchemaAsync``1(SurrealDb.Net.ISurrealDbSession,AeroDB.EdgeMapping{``0},System.Threading.CancellationToken)">EnsureEdgeSchemaAsync&lt;TEdge&gt;(ISurrealDbSession, EdgeMapping&lt;TEdge&gt;, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Ensures an edge (relation) table schema exists in the database.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task EnsureEdgeSchemaAsync&lt;TEdge&gt;(ISurrealDbSession session, EdgeMapping&lt;TEdge&gt; mapping, CancellationToken ct = default) where TEdge : EdgeRecord</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ISurrealDbSession</span></td>
+        <td><span class="parametername">session</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="AeroDB.EdgeMapping-1.html">EdgeMapping</a>&lt;TEdge&gt;</td>
+        <td><span class="parametername">mapping</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">ct</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TEdge</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/SchemaManager.cs">View Source</a>
+  </span>
+  <a id="AeroDB_SchemaManager_EnsureEventSchemaAsync_" data-uid="AeroDB.SchemaManager.EnsureEventSchemaAsync*"></a>
+  <h4 id="AeroDB_SchemaManager_EnsureEventSchemaAsync_SurrealDb_Net_ISurrealDbSession_System_Threading_CancellationToken_" data-uid="AeroDB.SchemaManager.EnsureEventSchemaAsync(SurrealDb.Net.ISurrealDbSession,System.Threading.CancellationToken)">EnsureEventSchemaAsync(ISurrealDbSession, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Ensures the mt_events table exists with the required schema for event sourcing.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task EnsureEventSchemaAsync(ISurrealDbSession session, CancellationToken ct = default)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ISurrealDbSession</span></td>
+        <td><span class="parametername">session</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">ct</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/SchemaManager.cs">View Source</a>
+  </span>
+  <a id="AeroDB_SchemaManager_EnsureFieldDefinitionsAsync_" data-uid="AeroDB.SchemaManager.EnsureFieldDefinitionsAsync*"></a>
+  <h4 id="AeroDB_SchemaManager_EnsureFieldDefinitionsAsync_SurrealDb_Net_ISurrealDbSession_System_String_System_Collections_Generic_IReadOnlyList_AeroDB_FieldDefinition__System_Threading_CancellationToken_" data-uid="AeroDB.SchemaManager.EnsureFieldDefinitionsAsync(SurrealDb.Net.ISurrealDbSession,System.String,System.Collections.Generic.IReadOnlyList{AeroDB.FieldDefinition},System.Threading.CancellationToken)">EnsureFieldDefinitionsAsync(ISurrealDbSession, string, IReadOnlyList&lt;FieldDefinition&gt;, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Issues DEFINE FIELD for custom field definitions (assertions, defaults, permissions).
+Called after the base field definitions from <span class="xref">AeroDB.SchemaManager.EnsureDocumentSchemaAsync(System.Type,SurrealDb.Net.ISurrealDbSession,AeroDB.SchemaMode,System.Collections.Generic.IReadOnlyList{AeroDB.FieldDefinition},System.Threading.CancellationToken)</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task EnsureFieldDefinitionsAsync(ISurrealDbSession session, string tableName, IReadOnlyList&lt;FieldDefinition&gt; fields, CancellationToken ct = default)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ISurrealDbSession</span></td>
+        <td><span class="parametername">session</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">tableName</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<a class="xref" href="AeroDB.FieldDefinition.html">FieldDefinition</a>&gt;</td>
+        <td><span class="parametername">fields</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">ct</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/SchemaManager.cs">View Source</a>
+  </span>
+  <a id="AeroDB_SchemaManager_EnsureIndexAsync_" data-uid="AeroDB.SchemaManager.EnsureIndexAsync*"></a>
+  <h4 id="AeroDB_SchemaManager_EnsureIndexAsync_SurrealDb_Net_ISurrealDbSession_System_String_AeroDB_IndexDefinition_System_Threading_CancellationToken_" data-uid="AeroDB.SchemaManager.EnsureIndexAsync(SurrealDb.Net.ISurrealDbSession,System.String,AeroDB.IndexDefinition,System.Threading.CancellationToken)">EnsureIndexAsync(ISurrealDbSession, string, IndexDefinition, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Ensures the specified index exists on the given table.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task EnsureIndexAsync(ISurrealDbSession session, string tableName, IndexDefinition index, CancellationToken ct = default)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ISurrealDbSession</span></td>
+        <td><span class="parametername">session</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">tableName</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="AeroDB.IndexDefinition.html">IndexDefinition</a></td>
+        <td><span class="parametername">index</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">ct</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/SchemaManager.cs">View Source</a>
+  </span>
+  <a id="AeroDB_SchemaManager_EnsureProjectionStateTableAsync_" data-uid="AeroDB.SchemaManager.EnsureProjectionStateTableAsync*"></a>
+  <h4 id="AeroDB_SchemaManager_EnsureProjectionStateTableAsync_SurrealDb_Net_ISurrealDbSession_System_Threading_CancellationToken_" data-uid="AeroDB.SchemaManager.EnsureProjectionStateTableAsync(SurrealDb.Net.ISurrealDbSession,System.Threading.CancellationToken)">EnsureProjectionStateTableAsync(ISurrealDbSession, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Ensures the mt_projection_progress table exists for tracking projection rebuild state.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task EnsureProjectionStateTableAsync(ISurrealDbSession session, CancellationToken ct = default)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ISurrealDbSession</span></td>
+        <td><span class="parametername">session</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">ct</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/SchemaManager.cs">View Source</a>
+  </span>
+  <a id="AeroDB_SchemaManager_EnsureSchemaAsync_" data-uid="AeroDB.SchemaManager.EnsureSchemaAsync*"></a>
+  <h4 id="AeroDB_SchemaManager_EnsureSchemaAsync__1_SurrealDb_Net_ISurrealDbSession_System_String_AeroDB_SchemaMode_System_Threading_CancellationToken_" data-uid="AeroDB.SchemaManager.EnsureSchemaAsync``1(SurrealDb.Net.ISurrealDbSession,System.String,AeroDB.SchemaMode,System.Threading.CancellationToken)">EnsureSchemaAsync&lt;T&gt;(ISurrealDbSession, string, SchemaMode, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Legacy method: ensures a schema for the given type using explicit table name.
+Kept for backward compatibility.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task EnsureSchemaAsync&lt;T&gt;(ISurrealDbSession session, string tableName, SchemaMode mode = SchemaMode.Strict, CancellationToken ct = default)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ISurrealDbSession</span></td>
+        <td><span class="parametername">session</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">tableName</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="AeroDB.SchemaMode.html">SchemaMode</a></td>
+        <td><span class="parametername">mode</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">ct</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/SchemaManager.cs">View Source</a>
+  </span>
+  <a id="AeroDB_SchemaManager_EnsureScopesAsync_" data-uid="AeroDB.SchemaManager.EnsureScopesAsync*"></a>
+  <h4 id="AeroDB_SchemaManager_EnsureScopesAsync_SurrealDb_Net_ISurrealDbSession_System_Collections_Generic_List_AeroDB_ScopeDefinition__System_Threading_CancellationToken_" data-uid="AeroDB.SchemaManager.EnsureScopesAsync(SurrealDb.Net.ISurrealDbSession,System.Collections.Generic.List{AeroDB.ScopeDefinition},System.Threading.CancellationToken)">EnsureScopesAsync(ISurrealDbSession, List&lt;ScopeDefinition&gt;, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Issues DEFINE SCOPE for configured scope definitions (user signup/signin).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task EnsureScopesAsync(ISurrealDbSession session, List&lt;ScopeDefinition&gt; scopes, CancellationToken ct = default)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ISurrealDbSession</span></td>
+        <td><span class="parametername">session</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="AeroDB.ScopeDefinition.html">ScopeDefinition</a>&gt;</td>
+        <td><span class="parametername">scopes</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">ct</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/SchemaManager.cs">View Source</a>
+  </span>
+  <a id="AeroDB_SchemaManager_EnsureTokensAsync_" data-uid="AeroDB.SchemaManager.EnsureTokensAsync*"></a>
+  <h4 id="AeroDB_SchemaManager_EnsureTokensAsync_SurrealDb_Net_ISurrealDbSession_System_Collections_Generic_List_AeroDB_TokenDefinition__System_Threading_CancellationToken_" data-uid="AeroDB.SchemaManager.EnsureTokensAsync(SurrealDb.Net.ISurrealDbSession,System.Collections.Generic.List{AeroDB.TokenDefinition},System.Threading.CancellationToken)">EnsureTokensAsync(ISurrealDbSession, List&lt;TokenDefinition&gt;, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Issues DEFINE TOKEN for configured JWT/HMAC token definitions.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task EnsureTokensAsync(ISurrealDbSession session, List&lt;TokenDefinition&gt; tokens, CancellationToken ct = default)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ISurrealDbSession</span></td>
+        <td><span class="parametername">session</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="AeroDB.TokenDefinition.html">TokenDefinition</a>&gt;</td>
+        <td><span class="parametername">tokens</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">ct</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/SchemaManager.cs">View Source</a>
+  </span>
+  <a id="AeroDB_SchemaManager_EnsureViewAsync_" data-uid="AeroDB.SchemaManager.EnsureViewAsync*"></a>
+  <h4 id="AeroDB_SchemaManager_EnsureViewAsync__1_SurrealDb_Net_ISurrealDbSession_AeroDB_ViewDefinition___0__System_Threading_CancellationToken_" data-uid="AeroDB.SchemaManager.EnsureViewAsync``1(SurrealDb.Net.ISurrealDbSession,AeroDB.ViewDefinition{``0},System.Threading.CancellationToken)">EnsureViewAsync&lt;T&gt;(ISurrealDbSession, ViewDefinition&lt;T&gt;, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Ensures a SurrealDB pre-computed/aggregate view exists by executing
+<code>DEFINE TABLE IF NOT EXISTS view_name AS SELECT ...</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task EnsureViewAsync&lt;T&gt;(ISurrealDbSession session, ViewDefinition&lt;T&gt; view, CancellationToken ct = default) where T : class</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ISurrealDbSession</span></td>
+        <td><span class="parametername">session</span></td>
+        <td><p>The SurrealDB session to execute against.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="AeroDB.ViewDefinition-1.html">ViewDefinition</a>&lt;T&gt;</td>
+        <td><span class="parametername">view</span></td>
+        <td><p>The view definition to ensure.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">ct</span></td>
+        <td><p>Cancellation token.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The entity type representing the view's result shape.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/SchemaManager.cs" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In this article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      Made with 💜 by Microbians — Copyright © 2026 — https://microbians.io/
+      
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.min.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

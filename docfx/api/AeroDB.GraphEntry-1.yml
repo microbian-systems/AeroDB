@@ -1,0 +1,511 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.GraphEntry`1
+  commentId: T:AeroDB.GraphEntry`1
+  id: GraphEntry`1
+  parent: AeroDB
+  children:
+  - AeroDB.GraphEntry`1.In``1
+  - AeroDB.GraphEntry`1.In``1(System.String)
+  - AeroDB.GraphEntry`1.Out``1
+  - AeroDB.GraphEntry`1.Out``1(System.String)
+  langs:
+  - csharp
+  - vb
+  name: GraphEntry<TSource>
+  nameWithType: GraphEntry<TSource>
+  fullName: AeroDB.GraphEntry<TSource>
+  type: Class
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/ViewSelectBuilder.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Entry point for a graph traversal chain within a view SELECT column.
+
+    Provides .Out() and .In() steps that each produce a typed <xref href="AeroDB.ViewGraphSelectBuilder%602" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: 'public class GraphEntry<TSource> where TSource : class'
+    typeParameters:
+    - id: TSource
+    content.vb: Public Class GraphEntry(Of TSource As Class)
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  nameWithType.vb: GraphEntry(Of TSource)
+  fullName.vb: AeroDB.GraphEntry(Of TSource)
+  name.vb: GraphEntry(Of TSource)
+- uid: AeroDB.GraphEntry`1.Out``1(System.String)
+  commentId: M:AeroDB.GraphEntry`1.Out``1(System.String)
+  id: Out``1(System.String)
+  parent: AeroDB.GraphEntry`1
+  langs:
+  - csharp
+  - vb
+  name: Out<TTarget>(string)
+  nameWithType: GraphEntry<TSource>.Out<TTarget>(string)
+  fullName: AeroDB.GraphEntry<TSource>.Out<TTarget>(string)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/ViewSelectBuilder.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: 'Forward traversal with a named edge: -&gt;edge_type-&gt;target_table.'
+  example: []
+  syntax:
+    content: 'public ViewGraphSelectBuilder<TSource, TTarget> Out<TTarget>(string edgeType) where TTarget : class'
+    parameters:
+    - id: edgeType
+      type: System.String
+    typeParameters:
+    - id: TTarget
+    return:
+      type: AeroDB.ViewGraphSelectBuilder{{TSource},{TTarget}}
+    content.vb: Public Function Out(Of TTarget As Class)(edgeType As String) As ViewGraphSelectBuilder(Of TSource, TTarget)
+  overload: AeroDB.GraphEntry`1.Out*
+  nameWithType.vb: GraphEntry(Of TSource).Out(Of TTarget)(String)
+  fullName.vb: AeroDB.GraphEntry(Of TSource).Out(Of TTarget)(String)
+  name.vb: Out(Of TTarget)(String)
+- uid: AeroDB.GraphEntry`1.In``1(System.String)
+  commentId: M:AeroDB.GraphEntry`1.In``1(System.String)
+  id: In``1(System.String)
+  parent: AeroDB.GraphEntry`1
+  langs:
+  - csharp
+  - vb
+  name: In<TTarget>(string)
+  nameWithType: GraphEntry<TSource>.In<TTarget>(string)
+  fullName: AeroDB.GraphEntry<TSource>.In<TTarget>(string)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/ViewSelectBuilder.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: 'Backward traversal with a named edge: &lt;-edge_type&lt;-target_table.'
+  example: []
+  syntax:
+    content: 'public ViewGraphSelectBuilder<TSource, TTarget> In<TTarget>(string edgeType) where TTarget : class'
+    parameters:
+    - id: edgeType
+      type: System.String
+    typeParameters:
+    - id: TTarget
+    return:
+      type: AeroDB.ViewGraphSelectBuilder{{TSource},{TTarget}}
+    content.vb: Public Function [In](Of TTarget As Class)(edgeType As String) As ViewGraphSelectBuilder(Of TSource, TTarget)
+  overload: AeroDB.GraphEntry`1.In*
+  nameWithType.vb: GraphEntry(Of TSource).In(Of TTarget)(String)
+  fullName.vb: AeroDB.GraphEntry(Of TSource).In(Of TTarget)(String)
+  name.vb: In(Of TTarget)(String)
+- uid: AeroDB.GraphEntry`1.Out``1
+  commentId: M:AeroDB.GraphEntry`1.Out``1
+  id: Out``1
+  parent: AeroDB.GraphEntry`1
+  langs:
+  - csharp
+  - vb
+  name: Out<TTarget>()
+  nameWithType: GraphEntry<TSource>.Out<TTarget>()
+  fullName: AeroDB.GraphEntry<TSource>.Out<TTarget>()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/ViewSelectBuilder.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: 'Forward traversal with a wildcard edge: -&gt;?-&gt;target_table.'
+  example: []
+  syntax:
+    content: 'public ViewGraphSelectBuilder<TSource, TTarget> Out<TTarget>() where TTarget : class'
+    typeParameters:
+    - id: TTarget
+    return:
+      type: AeroDB.ViewGraphSelectBuilder{{TSource},{TTarget}}
+    content.vb: Public Function Out(Of TTarget As Class)() As ViewGraphSelectBuilder(Of TSource, TTarget)
+  overload: AeroDB.GraphEntry`1.Out*
+  nameWithType.vb: GraphEntry(Of TSource).Out(Of TTarget)()
+  fullName.vb: AeroDB.GraphEntry(Of TSource).Out(Of TTarget)()
+  name.vb: Out(Of TTarget)()
+- uid: AeroDB.GraphEntry`1.In``1
+  commentId: M:AeroDB.GraphEntry`1.In``1
+  id: In``1
+  parent: AeroDB.GraphEntry`1
+  langs:
+  - csharp
+  - vb
+  name: In<TTarget>()
+  nameWithType: GraphEntry<TSource>.In<TTarget>()
+  fullName: AeroDB.GraphEntry<TSource>.In<TTarget>()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/ViewSelectBuilder.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: 'Backward traversal with a wildcard edge: &lt;-?&lt;-target_table.'
+  example: []
+  syntax:
+    content: 'public ViewGraphSelectBuilder<TSource, TTarget> In<TTarget>() where TTarget : class'
+    typeParameters:
+    - id: TTarget
+    return:
+      type: AeroDB.ViewGraphSelectBuilder{{TSource},{TTarget}}
+    content.vb: Public Function [In](Of TTarget As Class)() As ViewGraphSelectBuilder(Of TSource, TTarget)
+  overload: AeroDB.GraphEntry`1.In*
+  nameWithType.vb: GraphEntry(Of TSource).In(Of TTarget)()
+  fullName.vb: AeroDB.GraphEntry(Of TSource).In(Of TTarget)()
+  name.vb: In(Of TTarget)()
+references:
+- uid: AeroDB.ViewGraphSelectBuilder`2
+  commentId: T:AeroDB.ViewGraphSelectBuilder`2
+  isExternal: true
+  href: AeroDB.ViewGraphSelectBuilder-2.html
+  name: ViewGraphSelectBuilder<TSource, TTarget>
+  nameWithType: ViewGraphSelectBuilder<TSource, TTarget>
+  fullName: AeroDB.ViewGraphSelectBuilder<TSource, TTarget>
+  nameWithType.vb: ViewGraphSelectBuilder(Of TSource, TTarget)
+  fullName.vb: AeroDB.ViewGraphSelectBuilder(Of TSource, TTarget)
+  name.vb: ViewGraphSelectBuilder(Of TSource, TTarget)
+  spec.csharp:
+  - uid: AeroDB.ViewGraphSelectBuilder`2
+    name: ViewGraphSelectBuilder
+    isExternal: true
+    href: AeroDB.ViewGraphSelectBuilder-2.html
+  - name: <
+  - name: TSource
+  - name: ','
+  - name: " "
+  - name: TTarget
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.ViewGraphSelectBuilder`2
+    name: ViewGraphSelectBuilder
+    isExternal: true
+    href: AeroDB.ViewGraphSelectBuilder-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TSource
+  - name: ','
+  - name: " "
+  - name: TTarget
+  - name: )
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AeroDB.GraphEntry`1.Out*
+  commentId: Overload:AeroDB.GraphEntry`1.Out
+  isExternal: true
+  href: AeroDB.GraphEntry-1.html#AeroDB_GraphEntry_1_Out__1_System_String_
+  name: Out
+  nameWithType: GraphEntry<TSource>.Out
+  fullName: AeroDB.GraphEntry<TSource>.Out
+  nameWithType.vb: GraphEntry(Of TSource).Out
+  fullName.vb: AeroDB.GraphEntry(Of TSource).Out
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: AeroDB.ViewGraphSelectBuilder{{TSource},{TTarget}}
+  commentId: T:AeroDB.ViewGraphSelectBuilder{`0,``0}
+  parent: AeroDB
+  definition: AeroDB.ViewGraphSelectBuilder`2
+  href: AeroDB.ViewGraphSelectBuilder-2.html
+  name: ViewGraphSelectBuilder<TSource, TTarget>
+  nameWithType: ViewGraphSelectBuilder<TSource, TTarget>
+  fullName: AeroDB.ViewGraphSelectBuilder<TSource, TTarget>
+  nameWithType.vb: ViewGraphSelectBuilder(Of TSource, TTarget)
+  fullName.vb: AeroDB.ViewGraphSelectBuilder(Of TSource, TTarget)
+  name.vb: ViewGraphSelectBuilder(Of TSource, TTarget)
+  spec.csharp:
+  - uid: AeroDB.ViewGraphSelectBuilder`2
+    name: ViewGraphSelectBuilder
+    isExternal: true
+    href: AeroDB.ViewGraphSelectBuilder-2.html
+  - name: <
+  - name: TSource
+  - name: ','
+  - name: " "
+  - name: TTarget
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.ViewGraphSelectBuilder`2
+    name: ViewGraphSelectBuilder
+    isExternal: true
+    href: AeroDB.ViewGraphSelectBuilder-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TSource
+  - name: ','
+  - name: " "
+  - name: TTarget
+  - name: )
+- uid: AeroDB.GraphEntry`1.In*
+  commentId: Overload:AeroDB.GraphEntry`1.In
+  isExternal: true
+  href: AeroDB.GraphEntry-1.html#AeroDB_GraphEntry_1_In__1_System_String_
+  name: In
+  nameWithType: GraphEntry<TSource>.In
+  fullName: AeroDB.GraphEntry<TSource>.In
+  nameWithType.vb: GraphEntry(Of TSource).In
+  fullName.vb: AeroDB.GraphEntry(Of TSource).In

@@ -1,0 +1,163 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.LiveQuery.AeroDBLiveAction
+  commentId: T:AeroDB.LiveQuery.AeroDBLiveAction
+  id: AeroDBLiveAction
+  parent: AeroDB.LiveQuery
+  children:
+  - AeroDB.LiveQuery.AeroDBLiveAction.Closed
+  - AeroDB.LiveQuery.AeroDBLiveAction.Created
+  - AeroDB.LiveQuery.AeroDBLiveAction.Deleted
+  - AeroDB.LiveQuery.AeroDBLiveAction.Open
+  - AeroDB.LiveQuery.AeroDBLiveAction.Updated
+  langs:
+  - csharp
+  - vb
+  name: AeroDBLiveAction
+  nameWithType: AeroDBLiveAction
+  fullName: AeroDB.LiveQuery.AeroDBLiveAction
+  type: Enum
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/LiveQuery/AeroDBLiveAction.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB.LiveQuery
+  syntax:
+    content: public enum AeroDBLiveAction
+    content.vb: Public Enum AeroDBLiveAction
+- uid: AeroDB.LiveQuery.AeroDBLiveAction.Open
+  commentId: F:AeroDB.LiveQuery.AeroDBLiveAction.Open
+  id: Open
+  parent: AeroDB.LiveQuery.AeroDBLiveAction
+  langs:
+  - csharp
+  - vb
+  name: Open
+  nameWithType: AeroDBLiveAction.Open
+  fullName: AeroDB.LiveQuery.AeroDBLiveAction.Open
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/LiveQuery/AeroDBLiveAction.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB.LiveQuery
+  syntax:
+    content: Open = 0
+    return:
+      type: AeroDB.LiveQuery.AeroDBLiveAction
+- uid: AeroDB.LiveQuery.AeroDBLiveAction.Created
+  commentId: F:AeroDB.LiveQuery.AeroDBLiveAction.Created
+  id: Created
+  parent: AeroDB.LiveQuery.AeroDBLiveAction
+  langs:
+  - csharp
+  - vb
+  name: Created
+  nameWithType: AeroDBLiveAction.Created
+  fullName: AeroDB.LiveQuery.AeroDBLiveAction.Created
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/LiveQuery/AeroDBLiveAction.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB.LiveQuery
+  syntax:
+    content: Created = 1
+    return:
+      type: AeroDB.LiveQuery.AeroDBLiveAction
+- uid: AeroDB.LiveQuery.AeroDBLiveAction.Updated
+  commentId: F:AeroDB.LiveQuery.AeroDBLiveAction.Updated
+  id: Updated
+  parent: AeroDB.LiveQuery.AeroDBLiveAction
+  langs:
+  - csharp
+  - vb
+  name: Updated
+  nameWithType: AeroDBLiveAction.Updated
+  fullName: AeroDB.LiveQuery.AeroDBLiveAction.Updated
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/LiveQuery/AeroDBLiveAction.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB.LiveQuery
+  syntax:
+    content: Updated = 2
+    return:
+      type: AeroDB.LiveQuery.AeroDBLiveAction
+- uid: AeroDB.LiveQuery.AeroDBLiveAction.Deleted
+  commentId: F:AeroDB.LiveQuery.AeroDBLiveAction.Deleted
+  id: Deleted
+  parent: AeroDB.LiveQuery.AeroDBLiveAction
+  langs:
+  - csharp
+  - vb
+  name: Deleted
+  nameWithType: AeroDBLiveAction.Deleted
+  fullName: AeroDB.LiveQuery.AeroDBLiveAction.Deleted
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/LiveQuery/AeroDBLiveAction.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB.LiveQuery
+  syntax:
+    content: Deleted = 3
+    return:
+      type: AeroDB.LiveQuery.AeroDBLiveAction
+- uid: AeroDB.LiveQuery.AeroDBLiveAction.Closed
+  commentId: F:AeroDB.LiveQuery.AeroDBLiveAction.Closed
+  id: Closed
+  parent: AeroDB.LiveQuery.AeroDBLiveAction
+  langs:
+  - csharp
+  - vb
+  name: Closed
+  nameWithType: AeroDBLiveAction.Closed
+  fullName: AeroDB.LiveQuery.AeroDBLiveAction.Closed
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/LiveQuery/AeroDBLiveAction.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB.LiveQuery
+  syntax:
+    content: Closed = 4
+    return:
+      type: AeroDB.LiveQuery.AeroDBLiveAction
+references:
+- uid: AeroDB.LiveQuery
+  commentId: N:AeroDB.LiveQuery
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB.LiveQuery
+  nameWithType: AeroDB.LiveQuery
+  fullName: AeroDB.LiveQuery
+  spec.csharp:
+  - uid: AeroDB
+    name: AeroDB
+    isExternal: true
+    href: AeroDB.html
+  - name: .
+  - uid: AeroDB.LiveQuery
+    name: LiveQuery
+    isExternal: true
+    href: AeroDB.LiveQuery.html
+  spec.vb:
+  - uid: AeroDB
+    name: AeroDB
+    isExternal: true
+    href: AeroDB.html
+  - name: .
+  - uid: AeroDB.LiveQuery
+    name: LiveQuery
+    isExternal: true
+    href: AeroDB.LiveQuery.html
+- uid: AeroDB.LiveQuery.AeroDBLiveAction
+  commentId: T:AeroDB.LiveQuery.AeroDBLiveAction
+  parent: AeroDB.LiveQuery
+  isExternal: true
+  href: AeroDB.LiveQuery.AeroDBLiveAction.html
+  name: AeroDBLiveAction
+  nameWithType: AeroDBLiveAction
+  fullName: AeroDB.LiveQuery.AeroDBLiveAction

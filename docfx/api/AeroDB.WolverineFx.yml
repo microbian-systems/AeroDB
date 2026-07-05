@@ -1,0 +1,210 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.WolverineFx
+  commentId: N:AeroDB.WolverineFx
+  id: AeroDB.WolverineFx
+  children:
+  - AeroDB.WolverineFx.AeroDBEndpoint
+  - AeroDB.WolverineFx.AeroDBEnvelope
+  - AeroDB.WolverineFx.AeroDBIntegration
+  - AeroDB.WolverineFx.AeroDBMessageStore
+  - AeroDB.WolverineFx.AeroDBOps
+  - AeroDB.WolverineFx.AeroDBOutboxedSessionFactory
+  - AeroDB.WolverineFx.AeroDBQueueListener
+  - AeroDB.WolverineFx.AeroDBQueueSender
+  - AeroDB.WolverineFx.AeroDBSagaStorage`2
+  - AeroDB.WolverineFx.AeroDBTransport
+  - AeroDB.WolverineFx.AeroDBTransportOptions
+  - AeroDB.WolverineFx.AeroDBWolverineOptionsEventExtensions
+  - AeroDB.WolverineFx.IAeroDBOp
+  - AeroDB.WolverineFx.ScopedDocumentSessionHolder
+  - AeroDB.WolverineFx.WolverineEnvelopeSchemas
+  - AeroDB.WolverineFx.WolverineOptionsAeroDBExtensions
+  - AeroDB.WolverineFx.WolverineOptionsSubscriptionExtensions
+  langs:
+  - csharp
+  - vb
+  name: AeroDB.WolverineFx
+  nameWithType: AeroDB.WolverineFx
+  fullName: AeroDB.WolverineFx
+  type: Namespace
+  assemblies:
+  - AeroDB.WolverineFx
+references:
+- uid: AeroDB.WolverineFx.AeroDBEndpoint
+  commentId: T:AeroDB.WolverineFx.AeroDBEndpoint
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBEndpoint.html
+  name: AeroDBEndpoint
+  nameWithType: AeroDBEndpoint
+  fullName: AeroDB.WolverineFx.AeroDBEndpoint
+- uid: AeroDB.WolverineFx.AeroDBEnvelope
+  commentId: T:AeroDB.WolverineFx.AeroDBEnvelope
+  parent: AeroDB.WolverineFx
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBEnvelope.html
+  name: AeroDBEnvelope
+  nameWithType: AeroDBEnvelope
+  fullName: AeroDB.WolverineFx.AeroDBEnvelope
+- uid: AeroDB.WolverineFx.AeroDBIntegration
+  commentId: T:AeroDB.WolverineFx.AeroDBIntegration
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBIntegration.html
+  name: AeroDBIntegration
+  nameWithType: AeroDBIntegration
+  fullName: AeroDB.WolverineFx.AeroDBIntegration
+- uid: AeroDB.WolverineFx.AeroDBMessageStore
+  commentId: T:AeroDB.WolverineFx.AeroDBMessageStore
+  parent: AeroDB.WolverineFx
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBMessageStore.html
+  name: AeroDBMessageStore
+  nameWithType: AeroDBMessageStore
+  fullName: AeroDB.WolverineFx.AeroDBMessageStore
+- uid: AeroDB.WolverineFx.AeroDBOutboxedSessionFactory
+  commentId: T:AeroDB.WolverineFx.AeroDBOutboxedSessionFactory
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBOutboxedSessionFactory.html
+  name: AeroDBOutboxedSessionFactory
+  nameWithType: AeroDBOutboxedSessionFactory
+  fullName: AeroDB.WolverineFx.AeroDBOutboxedSessionFactory
+- uid: AeroDB.WolverineFx.AeroDBQueueListener
+  commentId: T:AeroDB.WolverineFx.AeroDBQueueListener
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBQueueListener.html
+  name: AeroDBQueueListener
+  nameWithType: AeroDBQueueListener
+  fullName: AeroDB.WolverineFx.AeroDBQueueListener
+- uid: AeroDB.WolverineFx.AeroDBQueueSender
+  commentId: T:AeroDB.WolverineFx.AeroDBQueueSender
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBQueueSender.html
+  name: AeroDBQueueSender
+  nameWithType: AeroDBQueueSender
+  fullName: AeroDB.WolverineFx.AeroDBQueueSender
+- uid: AeroDB.WolverineFx.AeroDBSagaStorage`2
+  commentId: T:AeroDB.WolverineFx.AeroDBSagaStorage`2
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBSagaStorage-2.html
+  name: AeroDBSagaStorage<TId, TSaga>
+  nameWithType: AeroDBSagaStorage<TId, TSaga>
+  fullName: AeroDB.WolverineFx.AeroDBSagaStorage<TId, TSaga>
+  nameWithType.vb: AeroDBSagaStorage(Of TId, TSaga)
+  fullName.vb: AeroDB.WolverineFx.AeroDBSagaStorage(Of TId, TSaga)
+  name.vb: AeroDBSagaStorage(Of TId, TSaga)
+  spec.csharp:
+  - uid: AeroDB.WolverineFx.AeroDBSagaStorage`2
+    name: AeroDBSagaStorage
+    isExternal: true
+    href: AeroDB.WolverineFx.AeroDBSagaStorage-2.html
+  - name: <
+  - name: TId
+  - name: ','
+  - name: " "
+  - name: TSaga
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.WolverineFx.AeroDBSagaStorage`2
+    name: AeroDBSagaStorage
+    isExternal: true
+    href: AeroDB.WolverineFx.AeroDBSagaStorage-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TId
+  - name: ','
+  - name: " "
+  - name: TSaga
+  - name: )
+- uid: AeroDB.WolverineFx.AeroDBTransport
+  commentId: T:AeroDB.WolverineFx.AeroDBTransport
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBTransport.html
+  name: AeroDBTransport
+  nameWithType: AeroDBTransport
+  fullName: AeroDB.WolverineFx.AeroDBTransport
+- uid: AeroDB.WolverineFx.AeroDBTransportOptions
+  commentId: T:AeroDB.WolverineFx.AeroDBTransportOptions
+  parent: AeroDB.WolverineFx
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBTransportOptions.html
+  name: AeroDBTransportOptions
+  nameWithType: AeroDBTransportOptions
+  fullName: AeroDB.WolverineFx.AeroDBTransportOptions
+- uid: AeroDB.WolverineFx.AeroDBWolverineOptionsEventExtensions
+  commentId: T:AeroDB.WolverineFx.AeroDBWolverineOptionsEventExtensions
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBWolverineOptionsEventExtensions.html
+  name: AeroDBWolverineOptionsEventExtensions
+  nameWithType: AeroDBWolverineOptionsEventExtensions
+  fullName: AeroDB.WolverineFx.AeroDBWolverineOptionsEventExtensions
+- uid: AeroDB.WolverineFx.IAeroDBOp
+  commentId: T:AeroDB.WolverineFx.IAeroDBOp
+  parent: AeroDB.WolverineFx
+  isExternal: true
+  href: AeroDB.WolverineFx.IAeroDBOp.html
+  name: IAeroDBOp
+  nameWithType: IAeroDBOp
+  fullName: AeroDB.WolverineFx.IAeroDBOp
+- uid: AeroDB.WolverineFx.AeroDBOps
+  commentId: T:AeroDB.WolverineFx.AeroDBOps
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBOps.html
+  name: AeroDBOps
+  nameWithType: AeroDBOps
+  fullName: AeroDB.WolverineFx.AeroDBOps
+- uid: AeroDB.WolverineFx.ScopedDocumentSessionHolder
+  commentId: T:AeroDB.WolverineFx.ScopedDocumentSessionHolder
+  isExternal: true
+  href: AeroDB.WolverineFx.ScopedDocumentSessionHolder.html
+  name: ScopedDocumentSessionHolder
+  nameWithType: ScopedDocumentSessionHolder
+  fullName: AeroDB.WolverineFx.ScopedDocumentSessionHolder
+- uid: AeroDB.WolverineFx.WolverineEnvelopeSchemas
+  commentId: T:AeroDB.WolverineFx.WolverineEnvelopeSchemas
+  isExternal: true
+  href: AeroDB.WolverineFx.WolverineEnvelopeSchemas.html
+  name: WolverineEnvelopeSchemas
+  nameWithType: WolverineEnvelopeSchemas
+  fullName: AeroDB.WolverineFx.WolverineEnvelopeSchemas
+- uid: AeroDB.WolverineFx.WolverineOptionsAeroDBExtensions
+  commentId: T:AeroDB.WolverineFx.WolverineOptionsAeroDBExtensions
+  isExternal: true
+  href: AeroDB.WolverineFx.WolverineOptionsAeroDBExtensions.html
+  name: WolverineOptionsAeroDBExtensions
+  nameWithType: WolverineOptionsAeroDBExtensions
+  fullName: AeroDB.WolverineFx.WolverineOptionsAeroDBExtensions
+- uid: AeroDB.WolverineFx.WolverineOptionsSubscriptionExtensions
+  commentId: T:AeroDB.WolverineFx.WolverineOptionsSubscriptionExtensions
+  isExternal: true
+  href: AeroDB.WolverineFx.WolverineOptionsSubscriptionExtensions.html
+  name: WolverineOptionsSubscriptionExtensions
+  nameWithType: WolverineOptionsSubscriptionExtensions
+  fullName: AeroDB.WolverineFx.WolverineOptionsSubscriptionExtensions
+- uid: AeroDB.WolverineFx
+  commentId: N:AeroDB.WolverineFx
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB.WolverineFx
+  nameWithType: AeroDB.WolverineFx
+  fullName: AeroDB.WolverineFx
+  spec.csharp:
+  - uid: AeroDB
+    name: AeroDB
+    isExternal: true
+    href: AeroDB.html
+  - name: .
+  - uid: AeroDB.WolverineFx
+    name: WolverineFx
+    isExternal: true
+    href: AeroDB.WolverineFx.html
+  spec.vb:
+  - uid: AeroDB
+    name: AeroDB
+    isExternal: true
+    href: AeroDB.html
+  - name: .
+  - uid: AeroDB.WolverineFx
+    name: WolverineFx
+    isExternal: true
+    href: AeroDB.WolverineFx.html

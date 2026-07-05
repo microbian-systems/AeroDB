@@ -1,0 +1,124 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.TenancyStyle
+  commentId: T:AeroDB.TenancyStyle
+  id: TenancyStyle
+  parent: AeroDB
+  children:
+  - AeroDB.TenancyStyle.Conjoined
+  - AeroDB.TenancyStyle.DatabasePerTenant
+  - AeroDB.TenancyStyle.None
+  - AeroDB.TenancyStyle.Single
+  langs:
+  - csharp
+  - vb
+  name: TenancyStyle
+  nameWithType: TenancyStyle
+  fullName: AeroDB.TenancyStyle
+  type: Enum
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Defines the multi-tenancy strategy. <code>Single</code> for single-tenant; <code>Conjoined</code> uses a <code>tenant_id</code> field within a single database; <code>DatabasePerTenant</code> routes each tenant to a separate database.
+  example: []
+  syntax:
+    content: public enum TenancyStyle
+    content.vb: Public Enum TenancyStyle
+- uid: AeroDB.TenancyStyle.Single
+  commentId: F:AeroDB.TenancyStyle.Single
+  id: Single
+  parent: AeroDB.TenancyStyle
+  langs:
+  - csharp
+  - vb
+  name: Single
+  nameWithType: TenancyStyle.Single
+  fullName: AeroDB.TenancyStyle.Single
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: Single = 0
+    return:
+      type: AeroDB.TenancyStyle
+- uid: AeroDB.TenancyStyle.None
+  commentId: F:AeroDB.TenancyStyle.None
+  id: None
+  parent: AeroDB.TenancyStyle
+  langs:
+  - csharp
+  - vb
+  name: None
+  nameWithType: TenancyStyle.None
+  fullName: AeroDB.TenancyStyle.None
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: None = 1
+    return:
+      type: AeroDB.TenancyStyle
+- uid: AeroDB.TenancyStyle.Conjoined
+  commentId: F:AeroDB.TenancyStyle.Conjoined
+  id: Conjoined
+  parent: AeroDB.TenancyStyle
+  langs:
+  - csharp
+  - vb
+  name: Conjoined
+  nameWithType: TenancyStyle.Conjoined
+  fullName: AeroDB.TenancyStyle.Conjoined
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: Conjoined = 2
+    return:
+      type: AeroDB.TenancyStyle
+- uid: AeroDB.TenancyStyle.DatabasePerTenant
+  commentId: F:AeroDB.TenancyStyle.DatabasePerTenant
+  id: DatabasePerTenant
+  parent: AeroDB.TenancyStyle
+  langs:
+  - csharp
+  - vb
+  name: DatabasePerTenant
+  nameWithType: TenancyStyle.DatabasePerTenant
+  fullName: AeroDB.TenancyStyle.DatabasePerTenant
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: DatabasePerTenant = 3
+    return:
+      type: AeroDB.TenancyStyle
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: AeroDB.TenancyStyle
+  commentId: T:AeroDB.TenancyStyle
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.TenancyStyle.html
+  name: TenancyStyle
+  nameWithType: TenancyStyle
+  fullName: AeroDB.TenancyStyle

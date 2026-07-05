@@ -1,0 +1,239 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.ICompiledQuery`2
+  commentId: T:AeroDB.ICompiledQuery`2
+  id: ICompiledQuery`2
+  parent: AeroDB
+  children:
+  - AeroDB.ICompiledQuery`2.QueryIs
+  langs:
+  - csharp
+  - vb
+  name: ICompiledQuery<TDoc, TOut>
+  nameWithType: ICompiledQuery<TDoc, TOut>
+  fullName: AeroDB.ICompiledQuery<TDoc, TOut>
+  type: Interface
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Compiled/CompiledQueryInterfaces.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Core compiled query interface. The query type has properties that serve as
+
+    parameters, and <xref href="AeroDB.ICompiledQuery%602.QueryIs" data-throw-if-not-resolved="false"></xref> returns an expression tree that
+
+    translates those parameters into a LINQ query.
+  example: []
+  syntax:
+    content: 'public interface ICompiledQuery<TDoc, TOut> : ICompiledQueryMarker where TDoc : class'
+    typeParameters:
+    - id: TDoc
+      description: The document type being queried.
+    - id: TOut
+      description: >-
+        The result type (single element for scalar queries,
+                    <code>IEnumerable&lt;TOut&gt;</code> for list queries).
+    content.vb: Public Interface ICompiledQuery(Of TDoc As Class, TOut) Inherits ICompiledQueryMarker
+  nameWithType.vb: ICompiledQuery(Of TDoc, TOut)
+  fullName.vb: AeroDB.ICompiledQuery(Of TDoc, TOut)
+  name.vb: ICompiledQuery(Of TDoc, TOut)
+- uid: AeroDB.ICompiledQuery`2.QueryIs
+  commentId: M:AeroDB.ICompiledQuery`2.QueryIs
+  id: QueryIs
+  parent: AeroDB.ICompiledQuery`2
+  langs:
+  - csharp
+  - vb
+  name: QueryIs()
+  nameWithType: ICompiledQuery<TDoc, TOut>.QueryIs()
+  fullName: AeroDB.ICompiledQuery<TDoc, TOut>.QueryIs()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Compiled/CompiledQueryInterfaces.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Returns the LINQ expression that defines the query.
+
+    The query object's property values are captured in the expression tree
+
+    and replaced with parameterized SurrealQL at plan-build time.
+  example: []
+  syntax:
+    content: Expression<Func<ISurrealDbQueryable<TDoc>, TOut>> QueryIs()
+    return:
+      type: System.Linq.Expressions.Expression{System.Func{AeroDB.ISurrealDbQueryable{{TDoc}},{TOut}}}
+    content.vb: Function QueryIs() As Expression(Of Func(Of ISurrealDbQueryable(Of TDoc), TOut))
+  overload: AeroDB.ICompiledQuery`2.QueryIs*
+  nameWithType.vb: ICompiledQuery(Of TDoc, TOut).QueryIs()
+  fullName.vb: AeroDB.ICompiledQuery(Of TDoc, TOut).QueryIs()
+references:
+- uid: AeroDB.ICompiledQuery`2.QueryIs
+  commentId: M:AeroDB.ICompiledQuery`2.QueryIs
+  isExternal: true
+  href: AeroDB.ICompiledQuery-2.html#AeroDB_ICompiledQuery_2_QueryIs
+  name: QueryIs()
+  nameWithType: ICompiledQuery<TDoc, TOut>.QueryIs()
+  fullName: AeroDB.ICompiledQuery<TDoc, TOut>.QueryIs()
+  nameWithType.vb: ICompiledQuery(Of TDoc, TOut).QueryIs()
+  fullName.vb: AeroDB.ICompiledQuery(Of TDoc, TOut).QueryIs()
+  spec.csharp:
+  - uid: AeroDB.ICompiledQuery`2.QueryIs
+    name: QueryIs
+    isExternal: true
+    href: AeroDB.ICompiledQuery-2.html#AeroDB_ICompiledQuery_2_QueryIs
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AeroDB.ICompiledQuery`2.QueryIs
+    name: QueryIs
+    isExternal: true
+    href: AeroDB.ICompiledQuery-2.html#AeroDB_ICompiledQuery_2_QueryIs
+  - name: (
+  - name: )
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: AeroDB.ICompiledQuery`2.QueryIs*
+  commentId: Overload:AeroDB.ICompiledQuery`2.QueryIs
+  isExternal: true
+  href: AeroDB.ICompiledQuery-2.html#AeroDB_ICompiledQuery_2_QueryIs
+  name: QueryIs
+  nameWithType: ICompiledQuery<TDoc, TOut>.QueryIs
+  fullName: AeroDB.ICompiledQuery<TDoc, TOut>.QueryIs
+  nameWithType.vb: ICompiledQuery(Of TDoc, TOut).QueryIs
+  fullName.vb: AeroDB.ICompiledQuery(Of TDoc, TOut).QueryIs
+- uid: System.Linq.Expressions.Expression{System.Func{AeroDB.ISurrealDbQueryable{{TDoc}},{TOut}}}
+  commentId: T:System.Linq.Expressions.Expression{System.Func{AeroDB.ISurrealDbQueryable{`0},`1}}
+  parent: System.Linq.Expressions
+  definition: System.Linq.Expressions.Expression`1
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  name: Expression<Func<ISurrealDbQueryable<TDoc>, TOut>>
+  nameWithType: Expression<Func<ISurrealDbQueryable<TDoc>, TOut>>
+  fullName: System.Linq.Expressions.Expression<System.Func<AeroDB.ISurrealDbQueryable<TDoc>, TOut>>
+  nameWithType.vb: Expression(Of Func(Of ISurrealDbQueryable(Of TDoc), TOut))
+  fullName.vb: System.Linq.Expressions.Expression(Of System.Func(Of AeroDB.ISurrealDbQueryable(Of TDoc), TOut))
+  name.vb: Expression(Of Func(Of ISurrealDbQueryable(Of TDoc), TOut))
+  spec.csharp:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: AeroDB.ISurrealDbQueryable`1
+    name: ISurrealDbQueryable
+    isExternal: true
+    href: AeroDB.ISurrealDbQueryable-1.html
+  - name: <
+  - name: TDoc
+  - name: '>'
+  - name: ','
+  - name: " "
+  - name: TOut
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.ISurrealDbQueryable`1
+    name: ISurrealDbQueryable
+    isExternal: true
+    href: AeroDB.ISurrealDbQueryable-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TDoc
+  - name: )
+  - name: ','
+  - name: " "
+  - name: TOut
+  - name: )
+  - name: )
+- uid: System.Linq.Expressions.Expression`1
+  commentId: T:System.Linq.Expressions.Expression`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  name: Expression<TDelegate>
+  nameWithType: Expression<TDelegate>
+  fullName: System.Linq.Expressions.Expression<TDelegate>
+  nameWithType.vb: Expression(Of TDelegate)
+  fullName.vb: System.Linq.Expressions.Expression(Of TDelegate)
+  name.vb: Expression(Of TDelegate)
+  spec.csharp:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - name: TDelegate
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TDelegate
+  - name: )
+- uid: System.Linq.Expressions
+  commentId: N:System.Linq.Expressions
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Linq.Expressions
+  nameWithType: System.Linq.Expressions
+  fullName: System.Linq.Expressions
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Linq
+    name: Linq
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq
+  - name: .
+  - uid: System.Linq.Expressions
+    name: Expressions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Linq
+    name: Linq
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq
+  - name: .
+  - uid: System.Linq.Expressions
+    name: Expressions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions

@@ -1,0 +1,34 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.IProjectionSideEffect
+  commentId: T:AeroDB.IProjectionSideEffect
+  id: IProjectionSideEffect
+  parent: AeroDB
+  children: []
+  langs:
+  - csharp
+  - vb
+  name: IProjectionSideEffect
+  nameWithType: IProjectionSideEffect
+  fullName: AeroDB.IProjectionSideEffect
+  type: Interface
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/SideEffects.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Marker interface for side effects raised during projection processing.
+  example: []
+  syntax:
+    content: public interface IProjectionSideEffect
+    content.vb: Public Interface IProjectionSideEffect
+  derivedClasses:
+  - AeroDB.AppendEventSideEffect
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB

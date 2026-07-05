@@ -1,0 +1,1476 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.Event`1
+  commentId: T:AeroDB.Event`1
+  id: Event`1
+  parent: AeroDB
+  children:
+  - AeroDB.Event`1.#ctor(`0,System.Int64,System.Int64,System.DateTimeOffset,System.String,System.Guid,System.Collections.Generic.Dictionary{System.String,System.String})
+  - AeroDB.Event`1.Data
+  - AeroDB.Event`1.Deconstruct(`0@,System.Int64@,System.Int64@,System.DateTimeOffset@,System.String@,System.Guid@,System.Collections.Generic.Dictionary{System.String,System.String}@)
+  - AeroDB.Event`1.Equals(AeroDB.Event{`0})
+  - AeroDB.Event`1.Equals(System.Object)
+  - AeroDB.Event`1.GetHashCode
+  - AeroDB.Event`1.Headers
+  - AeroDB.Event`1.Sequence
+  - AeroDB.Event`1.StreamId
+  - AeroDB.Event`1.StreamKey
+  - AeroDB.Event`1.Timestamp
+  - AeroDB.Event`1.ToString
+  - AeroDB.Event`1.Version
+  - AeroDB.Event`1.op_Equality(AeroDB.Event{`0},AeroDB.Event{`0})
+  - AeroDB.Event`1.op_Inequality(AeroDB.Event{`0},AeroDB.Event{`0})
+  langs:
+  - csharp
+  - vb
+  name: Event<T>
+  nameWithType: Event<T>
+  fullName: AeroDB.Event<T>
+  type: Class
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/Event.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Default implementation of <xref href="AeroDB.IEvent%601" data-throw-if-not-resolved="false"></xref> and <xref href="AeroDB.IEvent" data-throw-if-not-resolved="false"></xref>.
+
+    Immutable record — create via <xref href="AeroDB.EventStore" data-throw-if-not-resolved="false"></xref>, never mutate.
+  example: []
+  syntax:
+    content: 'public sealed record Event<T> : IEvent<T>, IEvent, IEquatable<Event<T>>'
+    typeParameters:
+    - id: T
+    content.vb: Public NotInheritable Class [Event](Of T) Implements IEvent(Of T), IEvent, IEquatable(Of Event(Of T))
+  inheritance:
+  - System.Object
+  implements:
+  - AeroDB.IEvent{{T}}
+  - AeroDB.IEvent
+  - System.IEquatable{AeroDB.Event`1}
+  inheritedMembers:
+  - System.Object.GetType
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  nameWithType.vb: Event(Of T)
+  fullName.vb: AeroDB.Event(Of T)
+  name.vb: Event(Of T)
+- uid: AeroDB.Event`1.#ctor(`0,System.Int64,System.Int64,System.DateTimeOffset,System.String,System.Guid,System.Collections.Generic.Dictionary{System.String,System.String})
+  commentId: M:AeroDB.Event`1.#ctor(`0,System.Int64,System.Int64,System.DateTimeOffset,System.String,System.Guid,System.Collections.Generic.Dictionary{System.String,System.String})
+  id: '#ctor(`0,System.Int64,System.Int64,System.DateTimeOffset,System.String,System.Guid,System.Collections.Generic.Dictionary{System.String,System.String})'
+  parent: AeroDB.Event`1
+  langs:
+  - csharp
+  - vb
+  name: Event(T, long, long, DateTimeOffset, string, Guid, Dictionary<string, string>?)
+  nameWithType: Event<T>.Event(T, long, long, DateTimeOffset, string, Guid, Dictionary<string, string>?)
+  fullName: AeroDB.Event<T>.Event(T, long, long, System.DateTimeOffset, string, System.Guid, System.Collections.Generic.Dictionary<string, string>?)
+  type: Constructor
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/Event.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Default implementation of <xref href="AeroDB.IEvent%601" data-throw-if-not-resolved="false"></xref> and <xref href="AeroDB.IEvent" data-throw-if-not-resolved="false"></xref>.
+
+    Immutable record — create via <xref href="AeroDB.EventStore" data-throw-if-not-resolved="false"></xref>, never mutate.
+  example: []
+  syntax:
+    content: public Event(T Data, long Version, long Sequence, DateTimeOffset Timestamp, string StreamId, Guid StreamKey, Dictionary<string, string>? Headers = null)
+    parameters:
+    - id: Data
+      type: '{T}'
+    - id: Version
+      type: System.Int64
+    - id: Sequence
+      type: System.Int64
+    - id: Timestamp
+      type: System.DateTimeOffset
+    - id: StreamId
+      type: System.String
+    - id: StreamKey
+      type: System.Guid
+    - id: Headers
+      type: System.Collections.Generic.Dictionary{System.String,System.String}
+    content.vb: Public Sub New(Data As T, Version As Long, Sequence As Long, Timestamp As DateTimeOffset, StreamId As String, StreamKey As Guid, Headers As Dictionary(Of String, String) = Nothing)
+  overload: AeroDB.Event`1.#ctor*
+  nameWithType.vb: Event(Of T).New(T, Long, Long, DateTimeOffset, String, Guid, Dictionary(Of String, String))
+  fullName.vb: AeroDB.Event(Of T).New(T, Long, Long, System.DateTimeOffset, String, System.Guid, System.Collections.Generic.Dictionary(Of String, String))
+  name.vb: New(T, Long, Long, DateTimeOffset, String, Guid, Dictionary(Of String, String))
+- uid: AeroDB.Event`1.ToString
+  commentId: M:AeroDB.Event`1.ToString
+  id: ToString
+  parent: AeroDB.Event`1
+  langs:
+  - csharp
+  - vb
+  name: ToString()
+  nameWithType: Event<T>.ToString()
+  fullName: AeroDB.Event<T>.ToString()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/Event.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  example: []
+  syntax:
+    content: public override string ToString()
+    return:
+      type: System.String
+    content.vb: Public Overrides Function ToString() As String
+  overridden: System.Object.ToString
+  overload: AeroDB.Event`1.ToString*
+  nameWithType.vb: Event(Of T).ToString()
+  fullName.vb: AeroDB.Event(Of T).ToString()
+- uid: AeroDB.Event`1.op_Inequality(AeroDB.Event{`0},AeroDB.Event{`0})
+  commentId: M:AeroDB.Event`1.op_Inequality(AeroDB.Event{`0},AeroDB.Event{`0})
+  id: op_Inequality(AeroDB.Event{`0},AeroDB.Event{`0})
+  parent: AeroDB.Event`1
+  langs:
+  - csharp
+  - vb
+  name: operator !=(Event<T>?, Event<T>?)
+  nameWithType: Event<T>.operator !=(Event<T>?, Event<T>?)
+  fullName: AeroDB.Event<T>.operator !=(AeroDB.Event<T>?, AeroDB.Event<T>?)
+  type: Operator
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/Event.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public static bool operator !=(Event<T>? left, Event<T>? right)
+    parameters:
+    - id: left
+      type: AeroDB.Event`1
+    - id: right
+      type: AeroDB.Event`1
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Operator <>(left As [Event](Of T), right As [Event](Of T)) As Boolean
+  overload: AeroDB.Event`1.op_Inequality*
+  nameWithType.vb: Event(Of T).<>(Event(Of T), Event(Of T))
+  fullName.vb: AeroDB.Event(Of T).<>(AeroDB.Event(Of T), AeroDB.Event(Of T))
+  name.vb: <>(Event(Of T), Event(Of T))
+- uid: AeroDB.Event`1.op_Equality(AeroDB.Event{`0},AeroDB.Event{`0})
+  commentId: M:AeroDB.Event`1.op_Equality(AeroDB.Event{`0},AeroDB.Event{`0})
+  id: op_Equality(AeroDB.Event{`0},AeroDB.Event{`0})
+  parent: AeroDB.Event`1
+  langs:
+  - csharp
+  - vb
+  name: operator ==(Event<T>?, Event<T>?)
+  nameWithType: Event<T>.operator ==(Event<T>?, Event<T>?)
+  fullName: AeroDB.Event<T>.operator ==(AeroDB.Event<T>?, AeroDB.Event<T>?)
+  type: Operator
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/Event.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public static bool operator ==(Event<T>? left, Event<T>? right)
+    parameters:
+    - id: left
+      type: AeroDB.Event`1
+    - id: right
+      type: AeroDB.Event`1
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Operator =(left As [Event](Of T), right As [Event](Of T)) As Boolean
+  overload: AeroDB.Event`1.op_Equality*
+  nameWithType.vb: Event(Of T).=(Event(Of T), Event(Of T))
+  fullName.vb: AeroDB.Event(Of T).=(AeroDB.Event(Of T), AeroDB.Event(Of T))
+  name.vb: =(Event(Of T), Event(Of T))
+- uid: AeroDB.Event`1.GetHashCode
+  commentId: M:AeroDB.Event`1.GetHashCode
+  id: GetHashCode
+  parent: AeroDB.Event`1
+  langs:
+  - csharp
+  - vb
+  name: GetHashCode()
+  nameWithType: Event<T>.GetHashCode()
+  fullName: AeroDB.Event<T>.GetHashCode()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/Event.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  example: []
+  syntax:
+    content: public override int GetHashCode()
+    return:
+      type: System.Int32
+    content.vb: Public Overrides Function GetHashCode() As Integer
+  overridden: System.Object.GetHashCode
+  overload: AeroDB.Event`1.GetHashCode*
+  nameWithType.vb: Event(Of T).GetHashCode()
+  fullName.vb: AeroDB.Event(Of T).GetHashCode()
+- uid: AeroDB.Event`1.Equals(System.Object)
+  commentId: M:AeroDB.Event`1.Equals(System.Object)
+  id: Equals(System.Object)
+  parent: AeroDB.Event`1
+  langs:
+  - csharp
+  - vb
+  name: Equals(object?)
+  nameWithType: Event<T>.Equals(object?)
+  fullName: AeroDB.Event<T>.Equals(object?)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/Event.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  example: []
+  syntax:
+    content: public override bool Equals(object? obj)
+    parameters:
+    - id: obj
+      type: System.Object
+    return:
+      type: System.Boolean
+    content.vb: Public Overrides Function Equals(obj As Object) As Boolean
+  overridden: System.Object.Equals(System.Object)
+  overload: AeroDB.Event`1.Equals*
+  nameWithType.vb: Event(Of T).Equals(Object)
+  fullName.vb: AeroDB.Event(Of T).Equals(Object)
+  name.vb: Equals(Object)
+- uid: AeroDB.Event`1.Equals(AeroDB.Event{`0})
+  commentId: M:AeroDB.Event`1.Equals(AeroDB.Event{`0})
+  id: Equals(AeroDB.Event{`0})
+  parent: AeroDB.Event`1
+  langs:
+  - csharp
+  - vb
+  name: Equals(Event<T>?)
+  nameWithType: Event<T>.Equals(Event<T>?)
+  fullName: AeroDB.Event<T>.Equals(AeroDB.Event<T>?)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/Event.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  example: []
+  syntax:
+    content: public bool Equals(Event<T>? other)
+    parameters:
+    - id: other
+      type: AeroDB.Event`1
+    return:
+      type: System.Boolean
+    content.vb: Public Function Equals(other As [Event](Of T)) As Boolean
+  overload: AeroDB.Event`1.Equals*
+  implements:
+  - System.IEquatable{AeroDB.Event`1}.Equals(AeroDB.Event{{T}})
+  nameWithType.vb: Event(Of T).Equals(Event(Of T))
+  fullName.vb: AeroDB.Event(Of T).Equals(AeroDB.Event(Of T))
+  name.vb: Equals(Event(Of T))
+- uid: AeroDB.Event`1.Deconstruct(`0@,System.Int64@,System.Int64@,System.DateTimeOffset@,System.String@,System.Guid@,System.Collections.Generic.Dictionary{System.String,System.String}@)
+  commentId: M:AeroDB.Event`1.Deconstruct(`0@,System.Int64@,System.Int64@,System.DateTimeOffset@,System.String@,System.Guid@,System.Collections.Generic.Dictionary{System.String,System.String}@)
+  id: Deconstruct(`0@,System.Int64@,System.Int64@,System.DateTimeOffset@,System.String@,System.Guid@,System.Collections.Generic.Dictionary{System.String,System.String}@)
+  parent: AeroDB.Event`1
+  langs:
+  - csharp
+  - vb
+  name: Deconstruct(out T, out long, out long, out DateTimeOffset, out string, out Guid, out Dictionary<string, string>?)
+  nameWithType: Event<T>.Deconstruct(out T, out long, out long, out DateTimeOffset, out string, out Guid, out Dictionary<string, string>?)
+  fullName: AeroDB.Event<T>.Deconstruct(out T, out long, out long, out System.DateTimeOffset, out string, out System.Guid, out System.Collections.Generic.Dictionary<string, string>?)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/Event.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public void Deconstruct(out T Data, out long Version, out long Sequence, out DateTimeOffset Timestamp, out string StreamId, out Guid StreamKey, out Dictionary<string, string>? Headers)
+    parameters:
+    - id: Data
+      type: '{T}'
+    - id: Version
+      type: System.Int64
+    - id: Sequence
+      type: System.Int64
+    - id: Timestamp
+      type: System.DateTimeOffset
+    - id: StreamId
+      type: System.String
+    - id: StreamKey
+      type: System.Guid
+    - id: Headers
+      type: System.Collections.Generic.Dictionary{System.String,System.String}
+    content.vb: Public Sub Deconstruct(Data As T, Version As Long, Sequence As Long, Timestamp As DateTimeOffset, StreamId As String, StreamKey As Guid, Headers As Dictionary(Of String, String))
+  overload: AeroDB.Event`1.Deconstruct*
+  nameWithType.vb: Event(Of T).Deconstruct(T, Long, Long, DateTimeOffset, String, Guid, Dictionary(Of String, String))
+  fullName.vb: AeroDB.Event(Of T).Deconstruct(T, Long, Long, System.DateTimeOffset, String, System.Guid, System.Collections.Generic.Dictionary(Of String, String))
+  name.vb: Deconstruct(T, Long, Long, DateTimeOffset, String, Guid, Dictionary(Of String, String))
+- uid: AeroDB.Event`1.Data
+  commentId: P:AeroDB.Event`1.Data
+  id: Data
+  parent: AeroDB.Event`1
+  langs:
+  - csharp
+  - vb
+  name: Data
+  nameWithType: Event<T>.Data
+  fullName: AeroDB.Event<T>.Data
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/Event.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  example: []
+  syntax:
+    content: public T Data { get; init; }
+    parameters: []
+    return:
+      type: '{T}'
+    content.vb: Public Property Data As T
+  overload: AeroDB.Event`1.Data*
+  implements:
+  - AeroDB.IEvent{{T}}.Data
+  nameWithType.vb: Event(Of T).Data
+  fullName.vb: AeroDB.Event(Of T).Data
+- uid: AeroDB.Event`1.Version
+  commentId: P:AeroDB.Event`1.Version
+  id: Version
+  parent: AeroDB.Event`1
+  langs:
+  - csharp
+  - vb
+  name: Version
+  nameWithType: Event<T>.Version
+  fullName: AeroDB.Event<T>.Version
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/Event.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  example: []
+  syntax:
+    content: public long Version { get; init; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: Public Property Version As Long
+  overload: AeroDB.Event`1.Version*
+  implements:
+  - AeroDB.IEvent{{T}}.Version
+  - AeroDB.IEvent.Version
+  nameWithType.vb: Event(Of T).Version
+  fullName.vb: AeroDB.Event(Of T).Version
+- uid: AeroDB.Event`1.Sequence
+  commentId: P:AeroDB.Event`1.Sequence
+  id: Sequence
+  parent: AeroDB.Event`1
+  langs:
+  - csharp
+  - vb
+  name: Sequence
+  nameWithType: Event<T>.Sequence
+  fullName: AeroDB.Event<T>.Sequence
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/Event.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  example: []
+  syntax:
+    content: public long Sequence { get; init; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: Public Property Sequence As Long
+  overload: AeroDB.Event`1.Sequence*
+  implements:
+  - AeroDB.IEvent{{T}}.Sequence
+  - AeroDB.IEvent.Sequence
+  nameWithType.vb: Event(Of T).Sequence
+  fullName.vb: AeroDB.Event(Of T).Sequence
+- uid: AeroDB.Event`1.Timestamp
+  commentId: P:AeroDB.Event`1.Timestamp
+  id: Timestamp
+  parent: AeroDB.Event`1
+  langs:
+  - csharp
+  - vb
+  name: Timestamp
+  nameWithType: Event<T>.Timestamp
+  fullName: AeroDB.Event<T>.Timestamp
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/Event.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  example: []
+  syntax:
+    content: public DateTimeOffset Timestamp { get; init; }
+    parameters: []
+    return:
+      type: System.DateTimeOffset
+    content.vb: Public Property Timestamp As DateTimeOffset
+  overload: AeroDB.Event`1.Timestamp*
+  implements:
+  - AeroDB.IEvent{{T}}.Timestamp
+  - AeroDB.IEvent.Timestamp
+  nameWithType.vb: Event(Of T).Timestamp
+  fullName.vb: AeroDB.Event(Of T).Timestamp
+- uid: AeroDB.Event`1.StreamId
+  commentId: P:AeroDB.Event`1.StreamId
+  id: StreamId
+  parent: AeroDB.Event`1
+  langs:
+  - csharp
+  - vb
+  name: StreamId
+  nameWithType: Event<T>.StreamId
+  fullName: AeroDB.Event<T>.StreamId
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/Event.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  example: []
+  syntax:
+    content: public string StreamId { get; init; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property StreamId As String
+  overload: AeroDB.Event`1.StreamId*
+  implements:
+  - AeroDB.IEvent{{T}}.StreamId
+  nameWithType.vb: Event(Of T).StreamId
+  fullName.vb: AeroDB.Event(Of T).StreamId
+- uid: AeroDB.Event`1.StreamKey
+  commentId: P:AeroDB.Event`1.StreamKey
+  id: StreamKey
+  parent: AeroDB.Event`1
+  langs:
+  - csharp
+  - vb
+  name: StreamKey
+  nameWithType: Event<T>.StreamKey
+  fullName: AeroDB.Event<T>.StreamKey
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/Event.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  example: []
+  syntax:
+    content: public Guid StreamKey { get; init; }
+    parameters: []
+    return:
+      type: System.Guid
+    content.vb: Public Property StreamKey As Guid
+  overload: AeroDB.Event`1.StreamKey*
+  implements:
+  - AeroDB.IEvent{{T}}.StreamKey
+  - AeroDB.IEvent.StreamKey
+  nameWithType.vb: Event(Of T).StreamKey
+  fullName.vb: AeroDB.Event(Of T).StreamKey
+- uid: AeroDB.Event`1.Headers
+  commentId: P:AeroDB.Event`1.Headers
+  id: Headers
+  parent: AeroDB.Event`1
+  langs:
+  - csharp
+  - vb
+  name: Headers
+  nameWithType: Event<T>.Headers
+  fullName: AeroDB.Event<T>.Headers
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/Event.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Opaque headers dictionary for event metadata (causation, correlation, etc.).
+  example: []
+  syntax:
+    content: public Dictionary<string, string>? Headers { get; init; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.Dictionary{System.String,System.String}
+    content.vb: Public Property Headers As Dictionary(Of String, String)
+  overload: AeroDB.Event`1.Headers*
+  implements:
+  - AeroDB.IEvent{{T}}.Headers
+  - AeroDB.IEvent.Headers
+  nameWithType.vb: Event(Of T).Headers
+  fullName.vb: AeroDB.Event(Of T).Headers
+references:
+- uid: AeroDB.IEvent`1
+  commentId: T:AeroDB.IEvent`1
+  isExternal: true
+  href: AeroDB.IEvent-1.html
+  name: IEvent<T>
+  nameWithType: IEvent<T>
+  fullName: AeroDB.IEvent<T>
+  nameWithType.vb: IEvent(Of T)
+  fullName.vb: AeroDB.IEvent(Of T)
+  name.vb: IEvent(Of T)
+  spec.csharp:
+  - uid: AeroDB.IEvent`1
+    name: IEvent
+    isExternal: true
+    href: AeroDB.IEvent-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.IEvent`1
+    name: IEvent
+    isExternal: true
+    href: AeroDB.IEvent-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.IEvent
+  commentId: T:AeroDB.IEvent
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IEvent.html
+  name: IEvent
+  nameWithType: IEvent
+  fullName: AeroDB.IEvent
+- uid: AeroDB.EventStore
+  commentId: T:AeroDB.EventStore
+  isExternal: true
+  href: AeroDB.EventStore.html
+  name: EventStore
+  nameWithType: EventStore
+  fullName: AeroDB.EventStore
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: AeroDB.IEvent{{T}}
+  commentId: T:AeroDB.IEvent{`0}
+  parent: AeroDB
+  definition: AeroDB.IEvent`1
+  href: AeroDB.IEvent-1.html
+  name: IEvent<T>
+  nameWithType: IEvent<T>
+  fullName: AeroDB.IEvent<T>
+  nameWithType.vb: IEvent(Of T)
+  fullName.vb: AeroDB.IEvent(Of T)
+  name.vb: IEvent(Of T)
+  spec.csharp:
+  - uid: AeroDB.IEvent`1
+    name: IEvent
+    isExternal: true
+    href: AeroDB.IEvent-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.IEvent`1
+    name: IEvent
+    isExternal: true
+    href: AeroDB.IEvent-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.IEquatable{AeroDB.Event`1}
+  commentId: T:System.IEquatable{AeroDB.Event`1}
+  parent: System
+  definition: System.IEquatable`1
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<Event<T>>
+  nameWithType: IEquatable<Event<T>>
+  fullName: System.IEquatable<AeroDB.Event<T>>
+  nameWithType.vb: IEquatable(Of Event(Of T))
+  fullName.vb: System.IEquatable(Of AeroDB.Event(Of T))
+  name.vb: IEquatable(Of Event(Of T))
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - uid: AeroDB.Event`1
+    name: Event
+    isExternal: true
+    href: AeroDB.Event-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.Event`1
+    name: Event
+    isExternal: true
+    href: AeroDB.Event-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.IEquatable`1
+  commentId: T:System.IEquatable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<T>
+  nameWithType: IEquatable<T>
+  fullName: System.IEquatable<T>
+  nameWithType.vb: IEquatable(Of T)
+  fullName.vb: System.IEquatable(Of T)
+  name.vb: IEquatable(Of T)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.Event`1.#ctor*
+  commentId: Overload:AeroDB.Event`1.#ctor
+  isExternal: true
+  href: AeroDB.Event-1.html#AeroDB_Event_1__ctor__0_System_Int64_System_Int64_System_DateTimeOffset_System_String_System_Guid_System_Collections_Generic_Dictionary_System_String_System_String__
+  name: Event
+  nameWithType: Event<T>.Event
+  fullName: AeroDB.Event<T>.Event
+  nameWithType.vb: Event(Of T).New
+  fullName.vb: AeroDB.Event(Of T).New
+  name.vb: New
+- uid: '{T}'
+  commentId: '!:T'
+  definition: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
+- uid: System.DateTimeOffset
+  commentId: T:System.DateTimeOffset
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.datetimeoffset
+  name: DateTimeOffset
+  nameWithType: DateTimeOffset
+  fullName: System.DateTimeOffset
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Guid
+  commentId: T:System.Guid
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: Guid
+  nameWithType: Guid
+  fullName: System.Guid
+- uid: System.Collections.Generic.Dictionary{System.String,System.String}
+  commentId: T:System.Collections.Generic.Dictionary{System.String,System.String}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.Dictionary`2
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  name: Dictionary<string, string>
+  nameWithType: Dictionary<string, string>
+  fullName: System.Collections.Generic.Dictionary<string, string>
+  nameWithType.vb: Dictionary(Of String, String)
+  fullName.vb: System.Collections.Generic.Dictionary(Of String, String)
+  name.vb: Dictionary(Of String, String)
+  spec.csharp:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: System.Collections.Generic.Dictionary`2
+  commentId: T:System.Collections.Generic.Dictionary`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  name: Dictionary<TKey, TValue>
+  nameWithType: Dictionary<TKey, TValue>
+  fullName: System.Collections.Generic.Dictionary<TKey, TValue>
+  nameWithType.vb: Dictionary(Of TKey, TValue)
+  fullName.vb: System.Collections.Generic.Dictionary(Of TKey, TValue)
+  name.vb: Dictionary(Of TKey, TValue)
+  spec.csharp:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: <
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: AeroDB.Event`1.ToString*
+  commentId: Overload:AeroDB.Event`1.ToString
+  isExternal: true
+  href: AeroDB.Event-1.html#AeroDB_Event_1_ToString
+  name: ToString
+  nameWithType: Event<T>.ToString
+  fullName: AeroDB.Event<T>.ToString
+  nameWithType.vb: Event(Of T).ToString
+  fullName.vb: AeroDB.Event(Of T).ToString
+- uid: AeroDB.Event`1.op_Inequality*
+  commentId: Overload:AeroDB.Event`1.op_Inequality
+  isExternal: true
+  href: AeroDB.Event-1.html#AeroDB_Event_1_op_Inequality_AeroDB_Event__0__AeroDB_Event__0__
+  name: operator !=
+  nameWithType: Event<T>.operator !=
+  fullName: AeroDB.Event<T>.operator !=
+  nameWithType.vb: Event(Of T).<>
+  fullName.vb: AeroDB.Event(Of T).<>
+  name.vb: <>
+  spec.csharp:
+  - name: operator
+  - name: " "
+  - uid: AeroDB.Event`1.op_Inequality*
+    name: '!='
+    isExternal: true
+    href: AeroDB.Event-1.html#AeroDB_Event_1_op_Inequality_AeroDB_Event__0__AeroDB_Event__0__
+- uid: AeroDB.Event`1
+  commentId: T:AeroDB.Event`1
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.Event-1.html
+  name: Event<T>
+  nameWithType: Event<T>
+  fullName: AeroDB.Event<T>
+  nameWithType.vb: Event(Of T)
+  fullName.vb: AeroDB.Event(Of T)
+  name.vb: Event(Of T)
+  spec.csharp:
+  - uid: AeroDB.Event`1
+    name: Event
+    isExternal: true
+    href: AeroDB.Event-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.Event`1
+    name: Event
+    isExternal: true
+    href: AeroDB.Event-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: AeroDB.Event`1.op_Equality*
+  commentId: Overload:AeroDB.Event`1.op_Equality
+  isExternal: true
+  href: AeroDB.Event-1.html#AeroDB_Event_1_op_Equality_AeroDB_Event__0__AeroDB_Event__0__
+  name: operator ==
+  nameWithType: Event<T>.operator ==
+  fullName: AeroDB.Event<T>.operator ==
+  nameWithType.vb: Event(Of T).=
+  fullName.vb: AeroDB.Event(Of T).=
+  name.vb: =
+  spec.csharp:
+  - name: operator
+  - name: " "
+  - uid: AeroDB.Event`1.op_Equality*
+    name: ==
+    isExternal: true
+    href: AeroDB.Event-1.html#AeroDB_Event_1_op_Equality_AeroDB_Event__0__AeroDB_Event__0__
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: AeroDB.Event`1.GetHashCode*
+  commentId: Overload:AeroDB.Event`1.GetHashCode
+  isExternal: true
+  href: AeroDB.Event-1.html#AeroDB_Event_1_GetHashCode
+  name: GetHashCode
+  nameWithType: Event<T>.GetHashCode
+  fullName: AeroDB.Event<T>.GetHashCode
+  nameWithType.vb: Event(Of T).GetHashCode
+  fullName.vb: AeroDB.Event(Of T).GetHashCode
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: AeroDB.Event`1.Equals*
+  commentId: Overload:AeroDB.Event`1.Equals
+  isExternal: true
+  href: AeroDB.Event-1.html#AeroDB_Event_1_Equals_System_Object_
+  name: Equals
+  nameWithType: Event<T>.Equals
+  fullName: AeroDB.Event<T>.Equals
+  nameWithType.vb: Event(Of T).Equals
+  fullName.vb: AeroDB.Event(Of T).Equals
+- uid: System.IEquatable{AeroDB.Event`1}.Equals(AeroDB.Event{{T}})
+  commentId: M:System.IEquatable{AeroDB.Event`1}.Equals(AeroDB.Event{`0})
+  parent: System.IEquatable{AeroDB.Event`1}
+  definition: System.IEquatable`1.Equals(`0)
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1.equals
+  name: Equals(Event<T>)
+  nameWithType: IEquatable<Event<T>>.Equals(Event<T>)
+  fullName: System.IEquatable<AeroDB.Event<T>>.Equals(AeroDB.Event<T>)
+  nameWithType.vb: IEquatable(Of Event(Of T)).Equals(Event(Of T))
+  fullName.vb: System.IEquatable(Of AeroDB.Event(Of T)).Equals(AeroDB.Event(Of T))
+  name.vb: Equals(Event(Of T))
+  spec.csharp:
+  - uid: System.IEquatable{AeroDB.Event`1}.Equals(AeroDB.Event{`0})
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1.equals
+  - name: (
+  - uid: AeroDB.Event`1
+    name: Event
+    isExternal: true
+    href: AeroDB.Event-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: System.IEquatable{AeroDB.Event`1}.Equals(AeroDB.Event{`0})
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1.equals
+  - name: (
+  - uid: AeroDB.Event`1
+    name: Event
+    isExternal: true
+    href: AeroDB.Event-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+- uid: System.IEquatable`1.Equals(`0)
+  commentId: M:System.IEquatable`1.Equals(`0)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1.equals
+  name: Equals(T)
+  nameWithType: IEquatable<T>.Equals(T)
+  fullName: System.IEquatable<T>.Equals(T)
+  nameWithType.vb: IEquatable(Of T).Equals(T)
+  fullName.vb: System.IEquatable(Of T).Equals(T)
+  spec.csharp:
+  - uid: System.IEquatable`1.Equals(`0)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1.equals
+  - name: (
+  - name: T
+  - name: )
+  spec.vb:
+  - uid: System.IEquatable`1.Equals(`0)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1.equals
+  - name: (
+  - name: T
+  - name: )
+- uid: AeroDB.Event`1.Deconstruct*
+  commentId: Overload:AeroDB.Event`1.Deconstruct
+  isExternal: true
+  href: AeroDB.Event-1.html#AeroDB_Event_1_Deconstruct__0__System_Int64__System_Int64__System_DateTimeOffset__System_String__System_Guid__System_Collections_Generic_Dictionary_System_String_System_String___
+  name: Deconstruct
+  nameWithType: Event<T>.Deconstruct
+  fullName: AeroDB.Event<T>.Deconstruct
+  nameWithType.vb: Event(Of T).Deconstruct
+  fullName.vb: AeroDB.Event(Of T).Deconstruct
+- uid: AeroDB.Event`1.Data*
+  commentId: Overload:AeroDB.Event`1.Data
+  isExternal: true
+  href: AeroDB.Event-1.html#AeroDB_Event_1_Data
+  name: Data
+  nameWithType: Event<T>.Data
+  fullName: AeroDB.Event<T>.Data
+  nameWithType.vb: Event(Of T).Data
+  fullName.vb: AeroDB.Event(Of T).Data
+- uid: AeroDB.IEvent{{T}}.Data
+  commentId: P:AeroDB.IEvent{`0}.Data
+  parent: AeroDB.IEvent{{T}}
+  definition: AeroDB.IEvent`1.Data
+  href: AeroDB.IEvent-1.html#AeroDB_IEvent_1_Data
+  name: Data
+  nameWithType: IEvent<T>.Data
+  fullName: AeroDB.IEvent<T>.Data
+  nameWithType.vb: IEvent(Of T).Data
+  fullName.vb: AeroDB.IEvent(Of T).Data
+- uid: AeroDB.IEvent`1.Data
+  commentId: P:AeroDB.IEvent`1.Data
+  isExternal: true
+  href: AeroDB.IEvent-1.html#AeroDB_IEvent_1_Data
+  name: Data
+  nameWithType: IEvent<T>.Data
+  fullName: AeroDB.IEvent<T>.Data
+  nameWithType.vb: IEvent(Of T).Data
+  fullName.vb: AeroDB.IEvent(Of T).Data
+- uid: AeroDB.Event`1.Version*
+  commentId: Overload:AeroDB.Event`1.Version
+  isExternal: true
+  href: AeroDB.Event-1.html#AeroDB_Event_1_Version
+  name: Version
+  nameWithType: Event<T>.Version
+  fullName: AeroDB.Event<T>.Version
+  nameWithType.vb: Event(Of T).Version
+  fullName.vb: AeroDB.Event(Of T).Version
+- uid: AeroDB.IEvent{{T}}.Version
+  commentId: P:AeroDB.IEvent{`0}.Version
+  parent: AeroDB.IEvent{{T}}
+  definition: AeroDB.IEvent`1.Version
+  href: AeroDB.IEvent-1.html#AeroDB_IEvent_1_Version
+  name: Version
+  nameWithType: IEvent<T>.Version
+  fullName: AeroDB.IEvent<T>.Version
+  nameWithType.vb: IEvent(Of T).Version
+  fullName.vb: AeroDB.IEvent(Of T).Version
+- uid: AeroDB.IEvent.Version
+  commentId: P:AeroDB.IEvent.Version
+  parent: AeroDB.IEvent
+  isExternal: true
+  href: AeroDB.IEvent.html#AeroDB_IEvent_Version
+  name: Version
+  nameWithType: IEvent.Version
+  fullName: AeroDB.IEvent.Version
+- uid: AeroDB.IEvent`1.Version
+  commentId: P:AeroDB.IEvent`1.Version
+  isExternal: true
+  href: AeroDB.IEvent-1.html#AeroDB_IEvent_1_Version
+  name: Version
+  nameWithType: IEvent<T>.Version
+  fullName: AeroDB.IEvent<T>.Version
+  nameWithType.vb: IEvent(Of T).Version
+  fullName.vb: AeroDB.IEvent(Of T).Version
+- uid: AeroDB.Event`1.Sequence*
+  commentId: Overload:AeroDB.Event`1.Sequence
+  isExternal: true
+  href: AeroDB.Event-1.html#AeroDB_Event_1_Sequence
+  name: Sequence
+  nameWithType: Event<T>.Sequence
+  fullName: AeroDB.Event<T>.Sequence
+  nameWithType.vb: Event(Of T).Sequence
+  fullName.vb: AeroDB.Event(Of T).Sequence
+- uid: AeroDB.IEvent{{T}}.Sequence
+  commentId: P:AeroDB.IEvent{`0}.Sequence
+  parent: AeroDB.IEvent{{T}}
+  definition: AeroDB.IEvent`1.Sequence
+  href: AeroDB.IEvent-1.html#AeroDB_IEvent_1_Sequence
+  name: Sequence
+  nameWithType: IEvent<T>.Sequence
+  fullName: AeroDB.IEvent<T>.Sequence
+  nameWithType.vb: IEvent(Of T).Sequence
+  fullName.vb: AeroDB.IEvent(Of T).Sequence
+- uid: AeroDB.IEvent.Sequence
+  commentId: P:AeroDB.IEvent.Sequence
+  parent: AeroDB.IEvent
+  isExternal: true
+  href: AeroDB.IEvent.html#AeroDB_IEvent_Sequence
+  name: Sequence
+  nameWithType: IEvent.Sequence
+  fullName: AeroDB.IEvent.Sequence
+- uid: AeroDB.IEvent`1.Sequence
+  commentId: P:AeroDB.IEvent`1.Sequence
+  isExternal: true
+  href: AeroDB.IEvent-1.html#AeroDB_IEvent_1_Sequence
+  name: Sequence
+  nameWithType: IEvent<T>.Sequence
+  fullName: AeroDB.IEvent<T>.Sequence
+  nameWithType.vb: IEvent(Of T).Sequence
+  fullName.vb: AeroDB.IEvent(Of T).Sequence
+- uid: AeroDB.Event`1.Timestamp*
+  commentId: Overload:AeroDB.Event`1.Timestamp
+  isExternal: true
+  href: AeroDB.Event-1.html#AeroDB_Event_1_Timestamp
+  name: Timestamp
+  nameWithType: Event<T>.Timestamp
+  fullName: AeroDB.Event<T>.Timestamp
+  nameWithType.vb: Event(Of T).Timestamp
+  fullName.vb: AeroDB.Event(Of T).Timestamp
+- uid: AeroDB.IEvent{{T}}.Timestamp
+  commentId: P:AeroDB.IEvent{`0}.Timestamp
+  parent: AeroDB.IEvent{{T}}
+  definition: AeroDB.IEvent`1.Timestamp
+  href: AeroDB.IEvent-1.html#AeroDB_IEvent_1_Timestamp
+  name: Timestamp
+  nameWithType: IEvent<T>.Timestamp
+  fullName: AeroDB.IEvent<T>.Timestamp
+  nameWithType.vb: IEvent(Of T).Timestamp
+  fullName.vb: AeroDB.IEvent(Of T).Timestamp
+- uid: AeroDB.IEvent.Timestamp
+  commentId: P:AeroDB.IEvent.Timestamp
+  parent: AeroDB.IEvent
+  isExternal: true
+  href: AeroDB.IEvent.html#AeroDB_IEvent_Timestamp
+  name: Timestamp
+  nameWithType: IEvent.Timestamp
+  fullName: AeroDB.IEvent.Timestamp
+- uid: AeroDB.IEvent`1.Timestamp
+  commentId: P:AeroDB.IEvent`1.Timestamp
+  isExternal: true
+  href: AeroDB.IEvent-1.html#AeroDB_IEvent_1_Timestamp
+  name: Timestamp
+  nameWithType: IEvent<T>.Timestamp
+  fullName: AeroDB.IEvent<T>.Timestamp
+  nameWithType.vb: IEvent(Of T).Timestamp
+  fullName.vb: AeroDB.IEvent(Of T).Timestamp
+- uid: AeroDB.Event`1.StreamId*
+  commentId: Overload:AeroDB.Event`1.StreamId
+  isExternal: true
+  href: AeroDB.Event-1.html#AeroDB_Event_1_StreamId
+  name: StreamId
+  nameWithType: Event<T>.StreamId
+  fullName: AeroDB.Event<T>.StreamId
+  nameWithType.vb: Event(Of T).StreamId
+  fullName.vb: AeroDB.Event(Of T).StreamId
+- uid: AeroDB.IEvent{{T}}.StreamId
+  commentId: P:AeroDB.IEvent{`0}.StreamId
+  parent: AeroDB.IEvent{{T}}
+  definition: AeroDB.IEvent`1.StreamId
+  href: AeroDB.IEvent-1.html#AeroDB_IEvent_1_StreamId
+  name: StreamId
+  nameWithType: IEvent<T>.StreamId
+  fullName: AeroDB.IEvent<T>.StreamId
+  nameWithType.vb: IEvent(Of T).StreamId
+  fullName.vb: AeroDB.IEvent(Of T).StreamId
+- uid: AeroDB.IEvent`1.StreamId
+  commentId: P:AeroDB.IEvent`1.StreamId
+  isExternal: true
+  href: AeroDB.IEvent-1.html#AeroDB_IEvent_1_StreamId
+  name: StreamId
+  nameWithType: IEvent<T>.StreamId
+  fullName: AeroDB.IEvent<T>.StreamId
+  nameWithType.vb: IEvent(Of T).StreamId
+  fullName.vb: AeroDB.IEvent(Of T).StreamId
+- uid: AeroDB.Event`1.StreamKey*
+  commentId: Overload:AeroDB.Event`1.StreamKey
+  isExternal: true
+  href: AeroDB.Event-1.html#AeroDB_Event_1_StreamKey
+  name: StreamKey
+  nameWithType: Event<T>.StreamKey
+  fullName: AeroDB.Event<T>.StreamKey
+  nameWithType.vb: Event(Of T).StreamKey
+  fullName.vb: AeroDB.Event(Of T).StreamKey
+- uid: AeroDB.IEvent{{T}}.StreamKey
+  commentId: P:AeroDB.IEvent{`0}.StreamKey
+  parent: AeroDB.IEvent{{T}}
+  definition: AeroDB.IEvent`1.StreamKey
+  href: AeroDB.IEvent-1.html#AeroDB_IEvent_1_StreamKey
+  name: StreamKey
+  nameWithType: IEvent<T>.StreamKey
+  fullName: AeroDB.IEvent<T>.StreamKey
+  nameWithType.vb: IEvent(Of T).StreamKey
+  fullName.vb: AeroDB.IEvent(Of T).StreamKey
+- uid: AeroDB.IEvent.StreamKey
+  commentId: P:AeroDB.IEvent.StreamKey
+  parent: AeroDB.IEvent
+  isExternal: true
+  href: AeroDB.IEvent.html#AeroDB_IEvent_StreamKey
+  name: StreamKey
+  nameWithType: IEvent.StreamKey
+  fullName: AeroDB.IEvent.StreamKey
+- uid: AeroDB.IEvent`1.StreamKey
+  commentId: P:AeroDB.IEvent`1.StreamKey
+  isExternal: true
+  href: AeroDB.IEvent-1.html#AeroDB_IEvent_1_StreamKey
+  name: StreamKey
+  nameWithType: IEvent<T>.StreamKey
+  fullName: AeroDB.IEvent<T>.StreamKey
+  nameWithType.vb: IEvent(Of T).StreamKey
+  fullName.vb: AeroDB.IEvent(Of T).StreamKey
+- uid: AeroDB.Event`1.Headers*
+  commentId: Overload:AeroDB.Event`1.Headers
+  isExternal: true
+  href: AeroDB.Event-1.html#AeroDB_Event_1_Headers
+  name: Headers
+  nameWithType: Event<T>.Headers
+  fullName: AeroDB.Event<T>.Headers
+  nameWithType.vb: Event(Of T).Headers
+  fullName.vb: AeroDB.Event(Of T).Headers
+- uid: AeroDB.IEvent{{T}}.Headers
+  commentId: P:AeroDB.IEvent{`0}.Headers
+  parent: AeroDB.IEvent{{T}}
+  definition: AeroDB.IEvent`1.Headers
+  href: AeroDB.IEvent-1.html#AeroDB_IEvent_1_Headers
+  name: Headers
+  nameWithType: IEvent<T>.Headers
+  fullName: AeroDB.IEvent<T>.Headers
+  nameWithType.vb: IEvent(Of T).Headers
+  fullName.vb: AeroDB.IEvent(Of T).Headers
+- uid: AeroDB.IEvent.Headers
+  commentId: P:AeroDB.IEvent.Headers
+  parent: AeroDB.IEvent
+  isExternal: true
+  href: AeroDB.IEvent.html#AeroDB_IEvent_Headers
+  name: Headers
+  nameWithType: IEvent.Headers
+  fullName: AeroDB.IEvent.Headers
+- uid: AeroDB.IEvent`1.Headers
+  commentId: P:AeroDB.IEvent`1.Headers
+  isExternal: true
+  href: AeroDB.IEvent-1.html#AeroDB_IEvent_1_Headers
+  name: Headers
+  nameWithType: IEvent<T>.Headers
+  fullName: AeroDB.IEvent<T>.Headers
+  nameWithType.vb: IEvent(Of T).Headers
+  fullName.vb: AeroDB.IEvent(Of T).Headers

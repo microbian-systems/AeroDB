@@ -1,0 +1,114 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.ProjectionLifecycle
+  commentId: T:AeroDB.ProjectionLifecycle
+  id: ProjectionLifecycle
+  parent: AeroDB
+  children:
+  - AeroDB.ProjectionLifecycle.Async
+  - AeroDB.ProjectionLifecycle.Inline
+  - AeroDB.ProjectionLifecycle.Live
+  langs:
+  - csharp
+  - vb
+  name: ProjectionLifecycle
+  nameWithType: ProjectionLifecycle
+  fullName: AeroDB.ProjectionLifecycle
+  type: Enum
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/ProjectionLifecycle.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Defines when a projection is applied. <code>Inline</code> projections run synchronously during <code>SaveChanges</code>; <code>Async</code> projections are processed by the background daemon; <code>Live</code> projections are computed on-demand at read time.
+  example: []
+  syntax:
+    content: public enum ProjectionLifecycle
+    content.vb: Public Enum ProjectionLifecycle
+- uid: AeroDB.ProjectionLifecycle.Inline
+  commentId: F:AeroDB.ProjectionLifecycle.Inline
+  id: Inline
+  parent: AeroDB.ProjectionLifecycle
+  langs:
+  - csharp
+  - vb
+  name: Inline
+  nameWithType: ProjectionLifecycle.Inline
+  fullName: AeroDB.ProjectionLifecycle.Inline
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/ProjectionLifecycle.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  example: []
+  syntax:
+    content: Inline = 0
+    return:
+      type: AeroDB.ProjectionLifecycle
+- uid: AeroDB.ProjectionLifecycle.Async
+  commentId: F:AeroDB.ProjectionLifecycle.Async
+  id: Async
+  parent: AeroDB.ProjectionLifecycle
+  langs:
+  - csharp
+  - vb
+  name: Async
+  nameWithType: ProjectionLifecycle.Async
+  fullName: AeroDB.ProjectionLifecycle.Async
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/ProjectionLifecycle.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  example: []
+  syntax:
+    content: Async = 1
+    return:
+      type: AeroDB.ProjectionLifecycle
+- uid: AeroDB.ProjectionLifecycle.Live
+  commentId: F:AeroDB.ProjectionLifecycle.Live
+  id: Live
+  parent: AeroDB.ProjectionLifecycle
+  langs:
+  - csharp
+  - vb
+  name: Live
+  nameWithType: ProjectionLifecycle.Live
+  fullName: AeroDB.ProjectionLifecycle.Live
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/ProjectionLifecycle.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  example: []
+  syntax:
+    content: Live = 2
+    return:
+      type: AeroDB.ProjectionLifecycle
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: AeroDB.ProjectionLifecycle
+  commentId: T:AeroDB.ProjectionLifecycle
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.ProjectionLifecycle.html
+  name: ProjectionLifecycle
+  nameWithType: ProjectionLifecycle
+  fullName: AeroDB.ProjectionLifecycle
+- uid: AeroDB.LiveStreamAggregation
+  commentId: T:AeroDB.LiveStreamAggregation
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.LiveStreamAggregation.html
+  name: LiveStreamAggregation
+  nameWithType: LiveStreamAggregation
+  fullName: AeroDB.LiveStreamAggregation

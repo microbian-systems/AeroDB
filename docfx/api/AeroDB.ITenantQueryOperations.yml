@@ -1,0 +1,322 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.ITenantQueryOperations
+  commentId: T:AeroDB.ITenantQueryOperations
+  id: ITenantQueryOperations
+  parent: AeroDB
+  children:
+  - AeroDB.ITenantQueryOperations.QueryAsync(System.String,System.Threading.CancellationToken)
+  langs:
+  - csharp
+  - vb
+  name: ITenantQueryOperations
+  nameWithType: ITenantQueryOperations
+  fullName: AeroDB.ITenantQueryOperations
+  type: Interface
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Tenancy/ITenantOperations.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Tenant-scoped query operations. Provides document queries filtered by tenant.
+  remarks: >-
+    In AeroDB, <xref href="AeroDB.ITenantQueryOperations" data-throw-if-not-resolved="false"></xref> is implemented by the store
+
+    and delegates to the existing <xref href="AeroDB.IDocumentStore.WithTenant(System.String)" data-throw-if-not-resolved="false"></xref>
+
+    and session-level <xref href="AeroDB.IQuerySession.SetTenant(System.String)" data-throw-if-not-resolved="false"></xref> mechanisms.
+  example: []
+  syntax:
+    content: public interface ITenantQueryOperations
+    content.vb: Public Interface ITenantQueryOperations
+- uid: AeroDB.ITenantQueryOperations.QueryAsync(System.String,System.Threading.CancellationToken)
+  commentId: M:AeroDB.ITenantQueryOperations.QueryAsync(System.String,System.Threading.CancellationToken)
+  id: QueryAsync(System.String,System.Threading.CancellationToken)
+  parent: AeroDB.ITenantQueryOperations
+  langs:
+  - csharp
+  - vb
+  name: QueryAsync(string, CancellationToken)
+  nameWithType: ITenantQueryOperations.QueryAsync(string, CancellationToken)
+  fullName: AeroDB.ITenantQueryOperations.QueryAsync(string, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Tenancy/ITenantOperations.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Creates a tenant-scoped query session for read-only access.
+  example: []
+  syntax:
+    content: Task<IQuerySession> QueryAsync(string tenantId, CancellationToken ct = default)
+    parameters:
+    - id: tenantId
+      type: System.String
+      description: The tenant identifier.
+    - id: ct
+      type: System.Threading.CancellationToken
+      description: Cancellation token.
+    return:
+      type: System.Threading.Tasks.Task{AeroDB.IQuerySession}
+    content.vb: Function QueryAsync(tenantId As String, ct As CancellationToken = Nothing) As Task(Of IQuerySession)
+  overload: AeroDB.ITenantQueryOperations.QueryAsync*
+  nameWithType.vb: ITenantQueryOperations.QueryAsync(String, CancellationToken)
+  fullName.vb: AeroDB.ITenantQueryOperations.QueryAsync(String, System.Threading.CancellationToken)
+  name.vb: QueryAsync(String, CancellationToken)
+references:
+- uid: AeroDB.ITenantQueryOperations
+  commentId: T:AeroDB.ITenantQueryOperations
+  isExternal: true
+  href: AeroDB.ITenantQueryOperations.html
+  name: ITenantQueryOperations
+  nameWithType: ITenantQueryOperations
+  fullName: AeroDB.ITenantQueryOperations
+- uid: AeroDB.IDocumentStore.WithTenant(System.String)
+  commentId: M:AeroDB.IDocumentStore.WithTenant(System.String)
+  parent: AeroDB.IDocumentStore
+  isExternal: true
+  href: AeroDB.IDocumentStore.html#AeroDB_IDocumentStore_WithTenant_System_String_
+  name: WithTenant(string)
+  nameWithType: IDocumentStore.WithTenant(string)
+  fullName: AeroDB.IDocumentStore.WithTenant(string)
+  nameWithType.vb: IDocumentStore.WithTenant(String)
+  fullName.vb: AeroDB.IDocumentStore.WithTenant(String)
+  name.vb: WithTenant(String)
+  spec.csharp:
+  - uid: AeroDB.IDocumentStore.WithTenant(System.String)
+    name: WithTenant
+    isExternal: true
+    href: AeroDB.IDocumentStore.html#AeroDB_IDocumentStore_WithTenant_System_String_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: AeroDB.IDocumentStore.WithTenant(System.String)
+    name: WithTenant
+    isExternal: true
+    href: AeroDB.IDocumentStore.html#AeroDB_IDocumentStore_WithTenant_System_String_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: AeroDB.IQuerySession.SetTenant(System.String)
+  commentId: M:AeroDB.IQuerySession.SetTenant(System.String)
+  parent: AeroDB.IQuerySession
+  isExternal: true
+  href: AeroDB.IQuerySession.html#AeroDB_IQuerySession_SetTenant_System_String_
+  name: SetTenant(string)
+  nameWithType: IQuerySession.SetTenant(string)
+  fullName: AeroDB.IQuerySession.SetTenant(string)
+  nameWithType.vb: IQuerySession.SetTenant(String)
+  fullName.vb: AeroDB.IQuerySession.SetTenant(String)
+  name.vb: SetTenant(String)
+  spec.csharp:
+  - uid: AeroDB.IQuerySession.SetTenant(System.String)
+    name: SetTenant
+    isExternal: true
+    href: AeroDB.IQuerySession.html#AeroDB_IQuerySession_SetTenant_System_String_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: AeroDB.IQuerySession.SetTenant(System.String)
+    name: SetTenant
+    isExternal: true
+    href: AeroDB.IQuerySession.html#AeroDB_IQuerySession_SetTenant_System_String_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: AeroDB.IDocumentStore
+  commentId: T:AeroDB.IDocumentStore
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IDocumentStore.html
+  name: IDocumentStore
+  nameWithType: IDocumentStore
+  fullName: AeroDB.IDocumentStore
+- uid: AeroDB.IQuerySession
+  commentId: T:AeroDB.IQuerySession
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IQuerySession.html
+  name: IQuerySession
+  nameWithType: IQuerySession
+  fullName: AeroDB.IQuerySession
+- uid: AeroDB.ITenantQueryOperations.QueryAsync*
+  commentId: Overload:AeroDB.ITenantQueryOperations.QueryAsync
+  isExternal: true
+  href: AeroDB.ITenantQueryOperations.html#AeroDB_ITenantQueryOperations_QueryAsync_System_String_System_Threading_CancellationToken_
+  name: QueryAsync
+  nameWithType: ITenantQueryOperations.QueryAsync
+  fullName: AeroDB.ITenantQueryOperations.QueryAsync
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task{AeroDB.IQuerySession}
+  commentId: T:System.Threading.Tasks.Task{AeroDB.IQuerySession}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<IQuerySession>
+  nameWithType: Task<IQuerySession>
+  fullName: System.Threading.Tasks.Task<AeroDB.IQuerySession>
+  nameWithType.vb: Task(Of IQuerySession)
+  fullName.vb: System.Threading.Tasks.Task(Of AeroDB.IQuerySession)
+  name.vb: Task(Of IQuerySession)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: AeroDB.IQuerySession
+    name: IQuerySession
+    isExternal: true
+    href: AeroDB.IQuerySession.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.IQuerySession
+    name: IQuerySession
+    isExternal: true
+    href: AeroDB.IQuerySession.html
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks

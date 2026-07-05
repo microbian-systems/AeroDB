@@ -1,0 +1,266 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.IBatchEvents
+  commentId: T:AeroDB.IBatchEvents
+  id: IBatchEvents
+  parent: AeroDB
+  children:
+  - AeroDB.IBatchEvents.FetchAllAfterSequence(System.Int64,System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{AeroDB.IEvent}}@)
+  - AeroDB.IBatchEvents.FetchStream(System.String,System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{AeroDB.IEvent}}@)
+  langs:
+  - csharp
+  - vb
+  name: IBatchEvents
+  nameWithType: IBatchEvents
+  fullName: AeroDB.IBatchEvents
+  type: Interface
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Batching/IBatchedQuery.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Batch event operations that can be queued alongside document queries
+
+    for execution in a single round trip.
+  example: []
+  syntax:
+    content: public interface IBatchEvents
+    content.vb: Public Interface IBatchEvents
+- uid: AeroDB.IBatchEvents.FetchStream(System.String,System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{AeroDB.IEvent}}@)
+  commentId: M:AeroDB.IBatchEvents.FetchStream(System.String,System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{AeroDB.IEvent}}@)
+  id: FetchStream(System.String,System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{AeroDB.IEvent}}@)
+  parent: AeroDB.IBatchEvents
+  langs:
+  - csharp
+  - vb
+  name: FetchStream(string, out Task<IReadOnlyList<IEvent>>)
+  nameWithType: IBatchEvents.FetchStream(string, out Task<IReadOnlyList<IEvent>>)
+  fullName: AeroDB.IBatchEvents.FetchStream(string, out System.Threading.Tasks.Task<System.Collections.Generic.IReadOnlyList<AeroDB.IEvent>>)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Batching/IBatchedQuery.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Queue fetching all events for a stream.
+  example: []
+  syntax:
+    content: IBatchedQuery FetchStream(string streamId, out Task<IReadOnlyList<IEvent>> result)
+    parameters:
+    - id: streamId
+      type: System.String
+    - id: result
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{AeroDB.IEvent}}
+    return:
+      type: AeroDB.IBatchedQuery
+    content.vb: Function FetchStream(streamId As String, result As Task(Of IReadOnlyList(Of IEvent))) As IBatchedQuery
+  overload: AeroDB.IBatchEvents.FetchStream*
+  nameWithType.vb: IBatchEvents.FetchStream(String, Task(Of IReadOnlyList(Of IEvent)))
+  fullName.vb: AeroDB.IBatchEvents.FetchStream(String, System.Threading.Tasks.Task(Of System.Collections.Generic.IReadOnlyList(Of AeroDB.IEvent)))
+  name.vb: FetchStream(String, Task(Of IReadOnlyList(Of IEvent)))
+- uid: AeroDB.IBatchEvents.FetchAllAfterSequence(System.Int64,System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{AeroDB.IEvent}}@)
+  commentId: M:AeroDB.IBatchEvents.FetchAllAfterSequence(System.Int64,System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{AeroDB.IEvent}}@)
+  id: FetchAllAfterSequence(System.Int64,System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{AeroDB.IEvent}}@)
+  parent: AeroDB.IBatchEvents
+  langs:
+  - csharp
+  - vb
+  name: FetchAllAfterSequence(long, out Task<IReadOnlyList<IEvent>>)
+  nameWithType: IBatchEvents.FetchAllAfterSequence(long, out Task<IReadOnlyList<IEvent>>)
+  fullName: AeroDB.IBatchEvents.FetchAllAfterSequence(long, out System.Threading.Tasks.Task<System.Collections.Generic.IReadOnlyList<AeroDB.IEvent>>)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Batching/IBatchedQuery.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Queue fetching all events after a given global sequence number.
+  example: []
+  syntax:
+    content: IBatchedQuery FetchAllAfterSequence(long sequence, out Task<IReadOnlyList<IEvent>> result)
+    parameters:
+    - id: sequence
+      type: System.Int64
+    - id: result
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{AeroDB.IEvent}}
+    return:
+      type: AeroDB.IBatchedQuery
+    content.vb: Function FetchAllAfterSequence(sequence As Long, result As Task(Of IReadOnlyList(Of IEvent))) As IBatchedQuery
+  overload: AeroDB.IBatchEvents.FetchAllAfterSequence*
+  nameWithType.vb: IBatchEvents.FetchAllAfterSequence(Long, Task(Of IReadOnlyList(Of IEvent)))
+  fullName.vb: AeroDB.IBatchEvents.FetchAllAfterSequence(Long, System.Threading.Tasks.Task(Of System.Collections.Generic.IReadOnlyList(Of AeroDB.IEvent)))
+  name.vb: FetchAllAfterSequence(Long, Task(Of IReadOnlyList(Of IEvent)))
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: AeroDB.IBatchEvents.FetchStream*
+  commentId: Overload:AeroDB.IBatchEvents.FetchStream
+  isExternal: true
+  href: AeroDB.IBatchEvents.html#AeroDB_IBatchEvents_FetchStream_System_String_System_Threading_Tasks_Task_System_Collections_Generic_IReadOnlyList_AeroDB_IEvent____
+  name: FetchStream
+  nameWithType: IBatchEvents.FetchStream
+  fullName: AeroDB.IBatchEvents.FetchStream
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{AeroDB.IEvent}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{AeroDB.IEvent}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<IReadOnlyList<IEvent>>
+  nameWithType: Task<IReadOnlyList<IEvent>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.IReadOnlyList<AeroDB.IEvent>>
+  nameWithType.vb: Task(Of IReadOnlyList(Of IEvent))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.IReadOnlyList(Of AeroDB.IEvent))
+  name.vb: Task(Of IReadOnlyList(Of IEvent))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - uid: AeroDB.IEvent
+    name: IEvent
+    isExternal: true
+    href: AeroDB.IEvent.html
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.IEvent
+    name: IEvent
+    isExternal: true
+    href: AeroDB.IEvent.html
+  - name: )
+  - name: )
+- uid: AeroDB.IBatchedQuery
+  commentId: T:AeroDB.IBatchedQuery
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IBatchedQuery.html
+  name: IBatchedQuery
+  nameWithType: IBatchedQuery
+  fullName: AeroDB.IBatchedQuery
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: AeroDB.IBatchEvents.FetchAllAfterSequence*
+  commentId: Overload:AeroDB.IBatchEvents.FetchAllAfterSequence
+  isExternal: true
+  href: AeroDB.IBatchEvents.html#AeroDB_IBatchEvents_FetchAllAfterSequence_System_Int64_System_Threading_Tasks_Task_System_Collections_Generic_IReadOnlyList_AeroDB_IEvent____
+  name: FetchAllAfterSequence
+  nameWithType: IBatchEvents.FetchAllAfterSequence
+  fullName: AeroDB.IBatchEvents.FetchAllAfterSequence
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long

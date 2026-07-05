@@ -1,0 +1,81 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.IVersioned
+  commentId: T:AeroDB.IVersioned
+  id: IVersioned
+  parent: AeroDB
+  children:
+  - AeroDB.IVersioned.Version
+  langs:
+  - csharp
+  - vb
+  name: IVersioned
+  nameWithType: IVersioned
+  fullName: AeroDB.IVersioned
+  type: Interface
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Concurrency/IVersioned.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Marks a document as supporting optimistic concurrency via a version field.
+  example: []
+  syntax:
+    content: public interface IVersioned
+    content.vb: Public Interface IVersioned
+- uid: AeroDB.IVersioned.Version
+  commentId: P:AeroDB.IVersioned.Version
+  id: Version
+  parent: AeroDB.IVersioned
+  langs:
+  - csharp
+  - vb
+  name: Version
+  nameWithType: IVersioned.Version
+  fullName: AeroDB.IVersioned.Version
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Concurrency/IVersioned.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: long Version { get; set; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: Property Version As Long
+  overload: AeroDB.IVersioned.Version*
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: AeroDB.IVersioned.Version*
+  commentId: Overload:AeroDB.IVersioned.Version
+  isExternal: true
+  href: AeroDB.IVersioned.html#AeroDB_IVersioned_Version
+  name: Version
+  nameWithType: IVersioned.Version
+  fullName: AeroDB.IVersioned.Version
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System

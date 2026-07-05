@@ -1,0 +1,665 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.SurrealRandFunctions
+  commentId: T:AeroDB.SurrealRandFunctions
+  id: SurrealRandFunctions
+  parent: AeroDB
+  children:
+  - AeroDB.SurrealRandFunctions.Bool
+  - AeroDB.SurrealRandFunctions.Enum(System.String[])
+  - AeroDB.SurrealRandFunctions.Float(System.Double,System.Double)
+  - AeroDB.SurrealRandFunctions.Guid
+  - AeroDB.SurrealRandFunctions.Int(System.Int32,System.Int32)
+  - AeroDB.SurrealRandFunctions.String(System.Int32)
+  - AeroDB.SurrealRandFunctions.Ulid
+  - AeroDB.SurrealRandFunctions.UuidV4
+  - AeroDB.SurrealRandFunctions.UuidV7
+  langs:
+  - csharp
+  - vb
+  name: SurrealRandFunctions
+  nameWithType: SurrealRandFunctions
+  fullName: AeroDB.SurrealRandFunctions
+  type: Class
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealRandFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    SurrealDB rand functions for use in LINQ expressions.
+
+    These methods are NOT callable at runtime — they exist for expression-tree translation only.
+  example: []
+  syntax:
+    content: public static class SurrealRandFunctions
+    content.vb: Public Module SurrealRandFunctions
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+- uid: AeroDB.SurrealRandFunctions.UuidV4
+  commentId: M:AeroDB.SurrealRandFunctions.UuidV4
+  id: UuidV4
+  parent: AeroDB.SurrealRandFunctions
+  langs:
+  - csharp
+  - vb
+  name: UuidV4()
+  nameWithType: SurrealRandFunctions.UuidV4()
+  fullName: AeroDB.SurrealRandFunctions.UuidV4()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealRandFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Generates a random UUID v4. Maps to <code>rand::uuid::v4()</code>.
+  example: []
+  syntax:
+    content: public static string UuidV4()
+    return:
+      type: System.String
+    content.vb: Public Shared Function UuidV4() As String
+  overload: AeroDB.SurrealRandFunctions.UuidV4*
+- uid: AeroDB.SurrealRandFunctions.UuidV7
+  commentId: M:AeroDB.SurrealRandFunctions.UuidV7
+  id: UuidV7
+  parent: AeroDB.SurrealRandFunctions
+  langs:
+  - csharp
+  - vb
+  name: UuidV7()
+  nameWithType: SurrealRandFunctions.UuidV7()
+  fullName: AeroDB.SurrealRandFunctions.UuidV7()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealRandFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Generates a random UUID v7. Maps to <code>rand::uuid::v7()</code>.
+  example: []
+  syntax:
+    content: public static string UuidV7()
+    return:
+      type: System.String
+    content.vb: Public Shared Function UuidV7() As String
+  overload: AeroDB.SurrealRandFunctions.UuidV7*
+- uid: AeroDB.SurrealRandFunctions.Ulid
+  commentId: M:AeroDB.SurrealRandFunctions.Ulid
+  id: Ulid
+  parent: AeroDB.SurrealRandFunctions
+  langs:
+  - csharp
+  - vb
+  name: Ulid()
+  nameWithType: SurrealRandFunctions.Ulid()
+  fullName: AeroDB.SurrealRandFunctions.Ulid()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealRandFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Generates a random ULID. Maps to <code>rand::ulid()</code>.
+  example: []
+  syntax:
+    content: public static string Ulid()
+    return:
+      type: System.String
+    content.vb: Public Shared Function Ulid() As String
+  overload: AeroDB.SurrealRandFunctions.Ulid*
+- uid: AeroDB.SurrealRandFunctions.Int(System.Int32,System.Int32)
+  commentId: M:AeroDB.SurrealRandFunctions.Int(System.Int32,System.Int32)
+  id: Int(System.Int32,System.Int32)
+  parent: AeroDB.SurrealRandFunctions
+  langs:
+  - csharp
+  - vb
+  name: Int(int, int)
+  nameWithType: SurrealRandFunctions.Int(int, int)
+  fullName: AeroDB.SurrealRandFunctions.Int(int, int)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealRandFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Generates a random integer in [min, max]. Maps to <code>rand::int(min, max)</code>.
+  example: []
+  syntax:
+    content: public static int Int(int min, int max)
+    parameters:
+    - id: min
+      type: System.Int32
+    - id: max
+      type: System.Int32
+    return:
+      type: System.Int32
+    content.vb: Public Shared Function Int(min As Integer, max As Integer) As Integer
+  overload: AeroDB.SurrealRandFunctions.Int*
+  nameWithType.vb: SurrealRandFunctions.Int(Integer, Integer)
+  fullName.vb: AeroDB.SurrealRandFunctions.Int(Integer, Integer)
+  name.vb: Int(Integer, Integer)
+- uid: AeroDB.SurrealRandFunctions.Float(System.Double,System.Double)
+  commentId: M:AeroDB.SurrealRandFunctions.Float(System.Double,System.Double)
+  id: Float(System.Double,System.Double)
+  parent: AeroDB.SurrealRandFunctions
+  langs:
+  - csharp
+  - vb
+  name: Float(double, double)
+  nameWithType: SurrealRandFunctions.Float(double, double)
+  fullName: AeroDB.SurrealRandFunctions.Float(double, double)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealRandFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Generates a random float in [min, max]. Maps to <code>rand::float(min, max)</code>.
+  example: []
+  syntax:
+    content: public static double Float(double min, double max)
+    parameters:
+    - id: min
+      type: System.Double
+    - id: max
+      type: System.Double
+    return:
+      type: System.Double
+    content.vb: Public Shared Function Float(min As Double, max As Double) As Double
+  overload: AeroDB.SurrealRandFunctions.Float*
+  nameWithType.vb: SurrealRandFunctions.Float(Double, Double)
+  fullName.vb: AeroDB.SurrealRandFunctions.Float(Double, Double)
+  name.vb: Float(Double, Double)
+- uid: AeroDB.SurrealRandFunctions.String(System.Int32)
+  commentId: M:AeroDB.SurrealRandFunctions.String(System.Int32)
+  id: String(System.Int32)
+  parent: AeroDB.SurrealRandFunctions
+  langs:
+  - csharp
+  - vb
+  name: String(int)
+  nameWithType: SurrealRandFunctions.String(int)
+  fullName: AeroDB.SurrealRandFunctions.String(int)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealRandFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Generates a random string of given length. Maps to <code>rand::string(len)</code>.
+  example: []
+  syntax:
+    content: public static string String(int len)
+    parameters:
+    - id: len
+      type: System.Int32
+    return:
+      type: System.String
+    content.vb: Public Shared Function [String](len As Integer) As String
+  overload: AeroDB.SurrealRandFunctions.String*
+  nameWithType.vb: SurrealRandFunctions.String(Integer)
+  fullName.vb: AeroDB.SurrealRandFunctions.String(Integer)
+  name.vb: String(Integer)
+- uid: AeroDB.SurrealRandFunctions.Bool
+  commentId: M:AeroDB.SurrealRandFunctions.Bool
+  id: Bool
+  parent: AeroDB.SurrealRandFunctions
+  langs:
+  - csharp
+  - vb
+  name: Bool()
+  nameWithType: SurrealRandFunctions.Bool()
+  fullName: AeroDB.SurrealRandFunctions.Bool()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealRandFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Generates a random boolean. Maps to <code>rand::bool()</code>.
+  example: []
+  syntax:
+    content: public static bool Bool()
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function Bool() As Boolean
+  overload: AeroDB.SurrealRandFunctions.Bool*
+- uid: AeroDB.SurrealRandFunctions.Guid
+  commentId: M:AeroDB.SurrealRandFunctions.Guid
+  id: Guid
+  parent: AeroDB.SurrealRandFunctions
+  langs:
+  - csharp
+  - vb
+  name: Guid()
+  nameWithType: SurrealRandFunctions.Guid()
+  fullName: AeroDB.SurrealRandFunctions.Guid()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealRandFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Generates a random GUID. Maps to <code>rand::guid()</code>.
+  example: []
+  syntax:
+    content: public static string Guid()
+    return:
+      type: System.String
+    content.vb: Public Shared Function Guid() As String
+  overload: AeroDB.SurrealRandFunctions.Guid*
+- uid: AeroDB.SurrealRandFunctions.Enum(System.String[])
+  commentId: M:AeroDB.SurrealRandFunctions.Enum(System.String[])
+  id: Enum(System.String[])
+  parent: AeroDB.SurrealRandFunctions
+  langs:
+  - csharp
+  - vb
+  name: Enum(params string[])
+  nameWithType: SurrealRandFunctions.Enum(params string[])
+  fullName: AeroDB.SurrealRandFunctions.Enum(params string[])
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealRandFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Picks a random value from a list. Maps to <code>rand::enum(v1, v2, ...)</code>.
+  example: []
+  syntax:
+    content: public static string Enum(params string[] values)
+    parameters:
+    - id: values
+      type: System.String[]
+    return:
+      type: System.String
+    content.vb: Public Shared Function [Enum](ParamArray values As String()) As String
+  overload: AeroDB.SurrealRandFunctions.Enum*
+  nameWithType.vb: SurrealRandFunctions.Enum(ParamArray String())
+  fullName.vb: AeroDB.SurrealRandFunctions.Enum(ParamArray String())
+  name.vb: Enum(ParamArray String())
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AeroDB.SurrealRandFunctions.UuidV4*
+  commentId: Overload:AeroDB.SurrealRandFunctions.UuidV4
+  isExternal: true
+  href: AeroDB.SurrealRandFunctions.html#AeroDB_SurrealRandFunctions_UuidV4
+  name: UuidV4
+  nameWithType: SurrealRandFunctions.UuidV4
+  fullName: AeroDB.SurrealRandFunctions.UuidV4
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: AeroDB.SurrealRandFunctions.UuidV7*
+  commentId: Overload:AeroDB.SurrealRandFunctions.UuidV7
+  isExternal: true
+  href: AeroDB.SurrealRandFunctions.html#AeroDB_SurrealRandFunctions_UuidV7
+  name: UuidV7
+  nameWithType: SurrealRandFunctions.UuidV7
+  fullName: AeroDB.SurrealRandFunctions.UuidV7
+- uid: AeroDB.SurrealRandFunctions.Ulid*
+  commentId: Overload:AeroDB.SurrealRandFunctions.Ulid
+  isExternal: true
+  href: AeroDB.SurrealRandFunctions.html#AeroDB_SurrealRandFunctions_Ulid
+  name: Ulid
+  nameWithType: SurrealRandFunctions.Ulid
+  fullName: AeroDB.SurrealRandFunctions.Ulid
+- uid: AeroDB.SurrealRandFunctions.Int*
+  commentId: Overload:AeroDB.SurrealRandFunctions.Int
+  isExternal: true
+  href: AeroDB.SurrealRandFunctions.html#AeroDB_SurrealRandFunctions_Int_System_Int32_System_Int32_
+  name: Int
+  nameWithType: SurrealRandFunctions.Int
+  fullName: AeroDB.SurrealRandFunctions.Int
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: AeroDB.SurrealRandFunctions.Float*
+  commentId: Overload:AeroDB.SurrealRandFunctions.Float
+  isExternal: true
+  href: AeroDB.SurrealRandFunctions.html#AeroDB_SurrealRandFunctions_Float_System_Double_System_Double_
+  name: Float
+  nameWithType: SurrealRandFunctions.Float
+  fullName: AeroDB.SurrealRandFunctions.Float
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double
+  nameWithType: double
+  fullName: double
+  nameWithType.vb: Double
+  fullName.vb: Double
+  name.vb: Double
+- uid: AeroDB.SurrealRandFunctions.String*
+  commentId: Overload:AeroDB.SurrealRandFunctions.String
+  isExternal: true
+  href: AeroDB.SurrealRandFunctions.html#AeroDB_SurrealRandFunctions_String_System_Int32_
+  name: String
+  nameWithType: SurrealRandFunctions.String
+  fullName: AeroDB.SurrealRandFunctions.String
+- uid: AeroDB.SurrealRandFunctions.Bool*
+  commentId: Overload:AeroDB.SurrealRandFunctions.Bool
+  isExternal: true
+  href: AeroDB.SurrealRandFunctions.html#AeroDB_SurrealRandFunctions_Bool
+  name: Bool
+  nameWithType: SurrealRandFunctions.Bool
+  fullName: AeroDB.SurrealRandFunctions.Bool
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: AeroDB.SurrealRandFunctions.Guid*
+  commentId: Overload:AeroDB.SurrealRandFunctions.Guid
+  isExternal: true
+  href: AeroDB.SurrealRandFunctions.html#AeroDB_SurrealRandFunctions_Guid
+  name: Guid
+  nameWithType: SurrealRandFunctions.Guid
+  fullName: AeroDB.SurrealRandFunctions.Guid
+- uid: AeroDB.SurrealRandFunctions.Enum*
+  commentId: Overload:AeroDB.SurrealRandFunctions.Enum
+  isExternal: true
+  href: AeroDB.SurrealRandFunctions.html#AeroDB_SurrealRandFunctions_Enum_System_String___
+  name: Enum
+  nameWithType: SurrealRandFunctions.Enum
+  fullName: AeroDB.SurrealRandFunctions.Enum
+- uid: System.String[]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string[]
+  nameWithType: string[]
+  fullName: string[]
+  nameWithType.vb: String()
+  fullName.vb: String()
+  name.vb: String()
+  spec.csharp:
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: (
+  - name: )

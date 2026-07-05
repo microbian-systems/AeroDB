@@ -1,0 +1,492 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.FieldDefinition
+  commentId: T:AeroDB.FieldDefinition
+  id: FieldDefinition
+  parent: AeroDB
+  children:
+  - AeroDB.FieldDefinition.#ctor
+  - AeroDB.FieldDefinition.AssertExpression
+  - AeroDB.FieldDefinition.DefaultValue
+  - AeroDB.FieldDefinition.FieldName
+  - AeroDB.FieldDefinition.FieldType
+  - AeroDB.FieldDefinition.Permissions
+  langs:
+  - csharp
+  - vb
+  name: FieldDefinition
+  nameWithType: FieldDefinition
+  fullName: AeroDB.FieldDefinition
+  type: Class
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentMapping.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Defines a SurrealDB field with optional type, default, assertion, and permissions.
+
+    Emitted as DEFINE FIELD statements by the schema manager.
+  example: []
+  syntax:
+    content: public class FieldDefinition
+    content.vb: Public Class FieldDefinition
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+- uid: AeroDB.FieldDefinition.#ctor
+  commentId: M:AeroDB.FieldDefinition.#ctor
+  id: '#ctor'
+  parent: AeroDB.FieldDefinition
+  langs:
+  - csharp
+  - vb
+  name: FieldDefinition()
+  nameWithType: FieldDefinition.FieldDefinition()
+  fullName: AeroDB.FieldDefinition.FieldDefinition()
+  type: Constructor
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentMapping.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public FieldDefinition()
+    content.vb: Public Sub New()
+  overload: AeroDB.FieldDefinition.#ctor*
+  nameWithType.vb: FieldDefinition.New()
+  fullName.vb: AeroDB.FieldDefinition.New()
+  name.vb: New()
+- uid: AeroDB.FieldDefinition.FieldName
+  commentId: P:AeroDB.FieldDefinition.FieldName
+  id: FieldName
+  parent: AeroDB.FieldDefinition
+  langs:
+  - csharp
+  - vb
+  name: FieldName
+  nameWithType: FieldDefinition.FieldName
+  fullName: AeroDB.FieldDefinition.FieldName
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentMapping.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Field name in the SurrealDB table.
+  example: []
+  syntax:
+    content: public string FieldName { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property FieldName As String
+  overload: AeroDB.FieldDefinition.FieldName*
+- uid: AeroDB.FieldDefinition.FieldType
+  commentId: P:AeroDB.FieldDefinition.FieldType
+  id: FieldType
+  parent: AeroDB.FieldDefinition
+  langs:
+  - csharp
+  - vb
+  name: FieldType
+  nameWithType: FieldDefinition.FieldType
+  fullName: AeroDB.FieldDefinition.FieldType
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentMapping.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: SurrealDB type (e.g., "string", "int", "datetime", "option&lt;string&gt;").
+  example: []
+  syntax:
+    content: public string? FieldType { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property FieldType As String
+  overload: AeroDB.FieldDefinition.FieldType*
+- uid: AeroDB.FieldDefinition.DefaultValue
+  commentId: P:AeroDB.FieldDefinition.DefaultValue
+  id: DefaultValue
+  parent: AeroDB.FieldDefinition
+  langs:
+  - csharp
+  - vb
+  name: DefaultValue
+  nameWithType: FieldDefinition.DefaultValue
+  fullName: AeroDB.FieldDefinition.DefaultValue
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentMapping.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Default value expression (e.g., "0", "'default'", "time::now()").
+  example: []
+  syntax:
+    content: public string? DefaultValue { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property DefaultValue As String
+  overload: AeroDB.FieldDefinition.DefaultValue*
+- uid: AeroDB.FieldDefinition.AssertExpression
+  commentId: P:AeroDB.FieldDefinition.AssertExpression
+  id: AssertExpression
+  parent: AeroDB.FieldDefinition
+  langs:
+  - csharp
+  - vb
+  name: AssertExpression
+  nameWithType: FieldDefinition.AssertExpression
+  fullName: AeroDB.FieldDefinition.AssertExpression
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentMapping.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Assert expression for validation (e.g., "string::is::email($value)").
+  example: []
+  syntax:
+    content: public string? AssertExpression { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property AssertExpression As String
+  overload: AeroDB.FieldDefinition.AssertExpression*
+- uid: AeroDB.FieldDefinition.Permissions
+  commentId: P:AeroDB.FieldDefinition.Permissions
+  id: Permissions
+  parent: AeroDB.FieldDefinition
+  langs:
+  - csharp
+  - vb
+  name: Permissions
+  nameWithType: FieldDefinition.Permissions
+  fullName: AeroDB.FieldDefinition.Permissions
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentMapping.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Permissions clause (e.g., "WHERE $auth.role = 'admin'").
+  example: []
+  syntax:
+    content: public string? Permissions { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property Permissions As String
+  overload: AeroDB.FieldDefinition.Permissions*
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AeroDB.FieldDefinition.#ctor*
+  commentId: Overload:AeroDB.FieldDefinition.#ctor
+  isExternal: true
+  href: AeroDB.FieldDefinition.html#AeroDB_FieldDefinition__ctor
+  name: FieldDefinition
+  nameWithType: FieldDefinition.FieldDefinition
+  fullName: AeroDB.FieldDefinition.FieldDefinition
+  nameWithType.vb: FieldDefinition.New
+  fullName.vb: AeroDB.FieldDefinition.New
+  name.vb: New
+- uid: AeroDB.FieldDefinition.FieldName*
+  commentId: Overload:AeroDB.FieldDefinition.FieldName
+  isExternal: true
+  href: AeroDB.FieldDefinition.html#AeroDB_FieldDefinition_FieldName
+  name: FieldName
+  nameWithType: FieldDefinition.FieldName
+  fullName: AeroDB.FieldDefinition.FieldName
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: AeroDB.FieldDefinition.FieldType*
+  commentId: Overload:AeroDB.FieldDefinition.FieldType
+  isExternal: true
+  href: AeroDB.FieldDefinition.html#AeroDB_FieldDefinition_FieldType
+  name: FieldType
+  nameWithType: FieldDefinition.FieldType
+  fullName: AeroDB.FieldDefinition.FieldType
+- uid: AeroDB.FieldDefinition.DefaultValue*
+  commentId: Overload:AeroDB.FieldDefinition.DefaultValue
+  isExternal: true
+  href: AeroDB.FieldDefinition.html#AeroDB_FieldDefinition_DefaultValue
+  name: DefaultValue
+  nameWithType: FieldDefinition.DefaultValue
+  fullName: AeroDB.FieldDefinition.DefaultValue
+- uid: AeroDB.FieldDefinition.AssertExpression*
+  commentId: Overload:AeroDB.FieldDefinition.AssertExpression
+  isExternal: true
+  href: AeroDB.FieldDefinition.html#AeroDB_FieldDefinition_AssertExpression
+  name: AssertExpression
+  nameWithType: FieldDefinition.AssertExpression
+  fullName: AeroDB.FieldDefinition.AssertExpression
+- uid: AeroDB.FieldDefinition.Permissions*
+  commentId: Overload:AeroDB.FieldDefinition.Permissions
+  isExternal: true
+  href: AeroDB.FieldDefinition.html#AeroDB_FieldDefinition_Permissions
+  name: Permissions
+  nameWithType: FieldDefinition.Permissions
+  fullName: AeroDB.FieldDefinition.Permissions

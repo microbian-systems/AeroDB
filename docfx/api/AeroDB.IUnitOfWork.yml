@@ -1,0 +1,586 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.IUnitOfWork
+  commentId: T:AeroDB.IUnitOfWork
+  id: IUnitOfWork
+  parent: AeroDB
+  children:
+  - AeroDB.IUnitOfWork.AllChangedFor``1
+  - AeroDB.IUnitOfWork.Deletions
+  - AeroDB.IUnitOfWork.DeletionsFor``1
+  - AeroDB.IUnitOfWork.Inserts
+  - AeroDB.IUnitOfWork.InsertsFor``1
+  - AeroDB.IUnitOfWork.Operations
+  - AeroDB.IUnitOfWork.OperationsFor(System.Type)
+  - AeroDB.IUnitOfWork.OperationsFor``1
+  - AeroDB.IUnitOfWork.Streams
+  - AeroDB.IUnitOfWork.Updates
+  - AeroDB.IUnitOfWork.UpdatesFor``1
+  langs:
+  - csharp
+  - vb
+  name: IUnitOfWork
+  nameWithType: IUnitOfWork
+  fullName: AeroDB.IUnitOfWork
+  type: Interface
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Diagnostics/IUnitOfWork.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Exposes the pending unit-of-work operations before SaveChangesAsync.
+  example: []
+  syntax:
+    content: public interface IUnitOfWork
+    content.vb: Public Interface IUnitOfWork
+  derivedClasses:
+  - AeroDB.UnitOfWork
+- uid: AeroDB.IUnitOfWork.Deletions
+  commentId: M:AeroDB.IUnitOfWork.Deletions
+  id: Deletions
+  parent: AeroDB.IUnitOfWork
+  langs:
+  - csharp
+  - vb
+  name: Deletions()
+  nameWithType: IUnitOfWork.Deletions()
+  fullName: AeroDB.IUnitOfWork.Deletions()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Diagnostics/IUnitOfWork.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: All pending deletions.
+  example: []
+  syntax:
+    content: IReadOnlyList<object> Deletions()
+    return:
+      type: System.Collections.Generic.IReadOnlyList{System.Object}
+    content.vb: Function Deletions() As IReadOnlyList(Of Object)
+  overload: AeroDB.IUnitOfWork.Deletions*
+- uid: AeroDB.IUnitOfWork.DeletionsFor``1
+  commentId: M:AeroDB.IUnitOfWork.DeletionsFor``1
+  id: DeletionsFor``1
+  parent: AeroDB.IUnitOfWork
+  langs:
+  - csharp
+  - vb
+  name: DeletionsFor<T>()
+  nameWithType: IUnitOfWork.DeletionsFor<T>()
+  fullName: AeroDB.IUnitOfWork.DeletionsFor<T>()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Diagnostics/IUnitOfWork.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Pending deletions for type T.
+  example: []
+  syntax:
+    content: 'IReadOnlyList<T> DeletionsFor<T>() where T : class'
+    typeParameters:
+    - id: T
+    return:
+      type: System.Collections.Generic.IReadOnlyList{{T}}
+    content.vb: Function DeletionsFor(Of T As Class)() As IReadOnlyList(Of T)
+  overload: AeroDB.IUnitOfWork.DeletionsFor*
+  nameWithType.vb: IUnitOfWork.DeletionsFor(Of T)()
+  fullName.vb: AeroDB.IUnitOfWork.DeletionsFor(Of T)()
+  name.vb: DeletionsFor(Of T)()
+- uid: AeroDB.IUnitOfWork.Updates
+  commentId: M:AeroDB.IUnitOfWork.Updates
+  id: Updates
+  parent: AeroDB.IUnitOfWork
+  langs:
+  - csharp
+  - vb
+  name: Updates()
+  nameWithType: IUnitOfWork.Updates()
+  fullName: AeroDB.IUnitOfWork.Updates()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Diagnostics/IUnitOfWork.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: All pending updates.
+  example: []
+  syntax:
+    content: IReadOnlyList<object> Updates()
+    return:
+      type: System.Collections.Generic.IReadOnlyList{System.Object}
+    content.vb: Function Updates() As IReadOnlyList(Of Object)
+  overload: AeroDB.IUnitOfWork.Updates*
+- uid: AeroDB.IUnitOfWork.UpdatesFor``1
+  commentId: M:AeroDB.IUnitOfWork.UpdatesFor``1
+  id: UpdatesFor``1
+  parent: AeroDB.IUnitOfWork
+  langs:
+  - csharp
+  - vb
+  name: UpdatesFor<T>()
+  nameWithType: IUnitOfWork.UpdatesFor<T>()
+  fullName: AeroDB.IUnitOfWork.UpdatesFor<T>()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Diagnostics/IUnitOfWork.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Pending updates for type T.
+  example: []
+  syntax:
+    content: 'IReadOnlyList<T> UpdatesFor<T>() where T : class'
+    typeParameters:
+    - id: T
+    return:
+      type: System.Collections.Generic.IReadOnlyList{{T}}
+    content.vb: Function UpdatesFor(Of T As Class)() As IReadOnlyList(Of T)
+  overload: AeroDB.IUnitOfWork.UpdatesFor*
+  nameWithType.vb: IUnitOfWork.UpdatesFor(Of T)()
+  fullName.vb: AeroDB.IUnitOfWork.UpdatesFor(Of T)()
+  name.vb: UpdatesFor(Of T)()
+- uid: AeroDB.IUnitOfWork.Inserts
+  commentId: M:AeroDB.IUnitOfWork.Inserts
+  id: Inserts
+  parent: AeroDB.IUnitOfWork
+  langs:
+  - csharp
+  - vb
+  name: Inserts()
+  nameWithType: IUnitOfWork.Inserts()
+  fullName: AeroDB.IUnitOfWork.Inserts()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Diagnostics/IUnitOfWork.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: All pending inserts.
+  example: []
+  syntax:
+    content: IReadOnlyList<object> Inserts()
+    return:
+      type: System.Collections.Generic.IReadOnlyList{System.Object}
+    content.vb: Function Inserts() As IReadOnlyList(Of Object)
+  overload: AeroDB.IUnitOfWork.Inserts*
+- uid: AeroDB.IUnitOfWork.InsertsFor``1
+  commentId: M:AeroDB.IUnitOfWork.InsertsFor``1
+  id: InsertsFor``1
+  parent: AeroDB.IUnitOfWork
+  langs:
+  - csharp
+  - vb
+  name: InsertsFor<T>()
+  nameWithType: IUnitOfWork.InsertsFor<T>()
+  fullName: AeroDB.IUnitOfWork.InsertsFor<T>()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Diagnostics/IUnitOfWork.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Pending inserts for type T.
+  example: []
+  syntax:
+    content: 'IReadOnlyList<T> InsertsFor<T>() where T : class'
+    typeParameters:
+    - id: T
+    return:
+      type: System.Collections.Generic.IReadOnlyList{{T}}
+    content.vb: Function InsertsFor(Of T As Class)() As IReadOnlyList(Of T)
+  overload: AeroDB.IUnitOfWork.InsertsFor*
+  nameWithType.vb: IUnitOfWork.InsertsFor(Of T)()
+  fullName.vb: AeroDB.IUnitOfWork.InsertsFor(Of T)()
+  name.vb: InsertsFor(Of T)()
+- uid: AeroDB.IUnitOfWork.AllChangedFor``1
+  commentId: M:AeroDB.IUnitOfWork.AllChangedFor``1
+  id: AllChangedFor``1
+  parent: AeroDB.IUnitOfWork
+  langs:
+  - csharp
+  - vb
+  name: AllChangedFor<T>()
+  nameWithType: IUnitOfWork.AllChangedFor<T>()
+  fullName: AeroDB.IUnitOfWork.AllChangedFor<T>()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Diagnostics/IUnitOfWork.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: All changed documents (inserts + updates).
+  example: []
+  syntax:
+    content: 'IReadOnlyList<T> AllChangedFor<T>() where T : class'
+    typeParameters:
+    - id: T
+    return:
+      type: System.Collections.Generic.IReadOnlyList{{T}}
+    content.vb: Function AllChangedFor(Of T As Class)() As IReadOnlyList(Of T)
+  overload: AeroDB.IUnitOfWork.AllChangedFor*
+  nameWithType.vb: IUnitOfWork.AllChangedFor(Of T)()
+  fullName.vb: AeroDB.IUnitOfWork.AllChangedFor(Of T)()
+  name.vb: AllChangedFor(Of T)()
+- uid: AeroDB.IUnitOfWork.Operations
+  commentId: M:AeroDB.IUnitOfWork.Operations
+  id: Operations
+  parent: AeroDB.IUnitOfWork
+  langs:
+  - csharp
+  - vb
+  name: Operations()
+  nameWithType: IUnitOfWork.Operations()
+  fullName: AeroDB.IUnitOfWork.Operations()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Diagnostics/IUnitOfWork.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: All raw IStorageOperation instances.
+  example: []
+  syntax:
+    content: IReadOnlyList<object> Operations()
+    return:
+      type: System.Collections.Generic.IReadOnlyList{System.Object}
+    content.vb: Function Operations() As IReadOnlyList(Of Object)
+  overload: AeroDB.IUnitOfWork.Operations*
+- uid: AeroDB.IUnitOfWork.Streams
+  commentId: M:AeroDB.IUnitOfWork.Streams
+  id: Streams
+  parent: AeroDB.IUnitOfWork
+  langs:
+  - csharp
+  - vb
+  name: Streams()
+  nameWithType: IUnitOfWork.Streams()
+  fullName: AeroDB.IUnitOfWork.Streams()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Diagnostics/IUnitOfWork.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Event streams modified in this unit of work.
+  example: []
+  syntax:
+    content: IReadOnlyList<string> Streams()
+    return:
+      type: System.Collections.Generic.IReadOnlyList{System.String}
+    content.vb: Function Streams() As IReadOnlyList(Of String)
+  overload: AeroDB.IUnitOfWork.Streams*
+- uid: AeroDB.IUnitOfWork.OperationsFor``1
+  commentId: M:AeroDB.IUnitOfWork.OperationsFor``1
+  id: OperationsFor``1
+  parent: AeroDB.IUnitOfWork
+  langs:
+  - csharp
+  - vb
+  name: OperationsFor<T>()
+  nameWithType: IUnitOfWork.OperationsFor<T>()
+  fullName: AeroDB.IUnitOfWork.OperationsFor<T>()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Diagnostics/IUnitOfWork.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: All storage operations for a specific document type.
+  example: []
+  syntax:
+    content: 'IReadOnlyList<object> OperationsFor<T>() where T : class'
+    typeParameters:
+    - id: T
+    return:
+      type: System.Collections.Generic.IReadOnlyList{System.Object}
+    content.vb: Function OperationsFor(Of T As Class)() As IReadOnlyList(Of Object)
+  overload: AeroDB.IUnitOfWork.OperationsFor*
+  nameWithType.vb: IUnitOfWork.OperationsFor(Of T)()
+  fullName.vb: AeroDB.IUnitOfWork.OperationsFor(Of T)()
+  name.vb: OperationsFor(Of T)()
+- uid: AeroDB.IUnitOfWork.OperationsFor(System.Type)
+  commentId: M:AeroDB.IUnitOfWork.OperationsFor(System.Type)
+  id: OperationsFor(System.Type)
+  parent: AeroDB.IUnitOfWork
+  langs:
+  - csharp
+  - vb
+  name: OperationsFor(Type)
+  nameWithType: IUnitOfWork.OperationsFor(Type)
+  fullName: AeroDB.IUnitOfWork.OperationsFor(System.Type)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Diagnostics/IUnitOfWork.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: All storage operations for a specific document type (by Type).
+  example: []
+  syntax:
+    content: IReadOnlyList<object> OperationsFor(Type documentType)
+    parameters:
+    - id: documentType
+      type: System.Type
+    return:
+      type: System.Collections.Generic.IReadOnlyList{System.Object}
+    content.vb: Function OperationsFor(documentType As Type) As IReadOnlyList(Of Object)
+  overload: AeroDB.IUnitOfWork.OperationsFor*
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: AeroDB.IUnitOfWork.Deletions*
+  commentId: Overload:AeroDB.IUnitOfWork.Deletions
+  isExternal: true
+  href: AeroDB.IUnitOfWork.html#AeroDB_IUnitOfWork_Deletions
+  name: Deletions
+  nameWithType: IUnitOfWork.Deletions
+  fullName: AeroDB.IUnitOfWork.Deletions
+- uid: System.Collections.Generic.IReadOnlyList{System.Object}
+  commentId: T:System.Collections.Generic.IReadOnlyList{System.Object}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyList`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<object>
+  nameWithType: IReadOnlyList<object>
+  fullName: System.Collections.Generic.IReadOnlyList<object>
+  nameWithType.vb: IReadOnlyList(Of Object)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of Object)
+  name.vb: IReadOnlyList(Of Object)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Collections.Generic.IReadOnlyList`1
+  commentId: T:System.Collections.Generic.IReadOnlyList`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<T>
+  nameWithType: IReadOnlyList<T>
+  fullName: System.Collections.Generic.IReadOnlyList<T>
+  nameWithType.vb: IReadOnlyList(Of T)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of T)
+  name.vb: IReadOnlyList(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: AeroDB.IUnitOfWork.DeletionsFor*
+  commentId: Overload:AeroDB.IUnitOfWork.DeletionsFor
+  isExternal: true
+  href: AeroDB.IUnitOfWork.html#AeroDB_IUnitOfWork_DeletionsFor__1
+  name: DeletionsFor
+  nameWithType: IUnitOfWork.DeletionsFor
+  fullName: AeroDB.IUnitOfWork.DeletionsFor
+- uid: System.Collections.Generic.IReadOnlyList{{T}}
+  commentId: T:System.Collections.Generic.IReadOnlyList{``0}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyList`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<T>
+  nameWithType: IReadOnlyList<T>
+  fullName: System.Collections.Generic.IReadOnlyList<T>
+  nameWithType.vb: IReadOnlyList(Of T)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of T)
+  name.vb: IReadOnlyList(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.IUnitOfWork.Updates*
+  commentId: Overload:AeroDB.IUnitOfWork.Updates
+  isExternal: true
+  href: AeroDB.IUnitOfWork.html#AeroDB_IUnitOfWork_Updates
+  name: Updates
+  nameWithType: IUnitOfWork.Updates
+  fullName: AeroDB.IUnitOfWork.Updates
+- uid: AeroDB.IUnitOfWork.UpdatesFor*
+  commentId: Overload:AeroDB.IUnitOfWork.UpdatesFor
+  isExternal: true
+  href: AeroDB.IUnitOfWork.html#AeroDB_IUnitOfWork_UpdatesFor__1
+  name: UpdatesFor
+  nameWithType: IUnitOfWork.UpdatesFor
+  fullName: AeroDB.IUnitOfWork.UpdatesFor
+- uid: AeroDB.IUnitOfWork.Inserts*
+  commentId: Overload:AeroDB.IUnitOfWork.Inserts
+  isExternal: true
+  href: AeroDB.IUnitOfWork.html#AeroDB_IUnitOfWork_Inserts
+  name: Inserts
+  nameWithType: IUnitOfWork.Inserts
+  fullName: AeroDB.IUnitOfWork.Inserts
+- uid: AeroDB.IUnitOfWork.InsertsFor*
+  commentId: Overload:AeroDB.IUnitOfWork.InsertsFor
+  isExternal: true
+  href: AeroDB.IUnitOfWork.html#AeroDB_IUnitOfWork_InsertsFor__1
+  name: InsertsFor
+  nameWithType: IUnitOfWork.InsertsFor
+  fullName: AeroDB.IUnitOfWork.InsertsFor
+- uid: AeroDB.IUnitOfWork.AllChangedFor*
+  commentId: Overload:AeroDB.IUnitOfWork.AllChangedFor
+  isExternal: true
+  href: AeroDB.IUnitOfWork.html#AeroDB_IUnitOfWork_AllChangedFor__1
+  name: AllChangedFor
+  nameWithType: IUnitOfWork.AllChangedFor
+  fullName: AeroDB.IUnitOfWork.AllChangedFor
+- uid: AeroDB.IUnitOfWork.Operations*
+  commentId: Overload:AeroDB.IUnitOfWork.Operations
+  isExternal: true
+  href: AeroDB.IUnitOfWork.html#AeroDB_IUnitOfWork_Operations
+  name: Operations
+  nameWithType: IUnitOfWork.Operations
+  fullName: AeroDB.IUnitOfWork.Operations
+- uid: AeroDB.IUnitOfWork.Streams*
+  commentId: Overload:AeroDB.IUnitOfWork.Streams
+  isExternal: true
+  href: AeroDB.IUnitOfWork.html#AeroDB_IUnitOfWork_Streams
+  name: Streams
+  nameWithType: IUnitOfWork.Streams
+  fullName: AeroDB.IUnitOfWork.Streams
+- uid: System.Collections.Generic.IReadOnlyList{System.String}
+  commentId: T:System.Collections.Generic.IReadOnlyList{System.String}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyList`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<string>
+  nameWithType: IReadOnlyList<string>
+  fullName: System.Collections.Generic.IReadOnlyList<string>
+  nameWithType.vb: IReadOnlyList(Of String)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of String)
+  name.vb: IReadOnlyList(Of String)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: AeroDB.IUnitOfWork.OperationsFor*
+  commentId: Overload:AeroDB.IUnitOfWork.OperationsFor
+  isExternal: true
+  href: AeroDB.IUnitOfWork.html#AeroDB_IUnitOfWork_OperationsFor__1
+  name: OperationsFor
+  nameWithType: IUnitOfWork.OperationsFor
+  fullName: AeroDB.IUnitOfWork.OperationsFor
+- uid: System.Type
+  commentId: T:System.Type
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.type
+  name: Type
+  nameWithType: Type
+  fullName: System.Type
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System

@@ -1,0 +1,755 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.SessionOptions
+  commentId: T:AeroDB.SessionOptions
+  id: SessionOptions
+  parent: AeroDB
+  children:
+  - AeroDB.SessionOptions.#ctor
+  - AeroDB.SessionOptions.Listeners
+  - AeroDB.SessionOptions.Policies
+  - AeroDB.SessionOptions.Subscribers
+  - AeroDB.SessionOptions.TenantId
+  - AeroDB.SessionOptions.Timeout
+  - AeroDB.SessionOptions.Tracking
+  langs:
+  - csharp
+  - vb
+  name: SessionOptions
+  nameWithType: SessionOptions
+  fullName: AeroDB.SessionOptions
+  type: Class
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/SessionOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Configuration options for creating a document session.
+  example: []
+  syntax:
+    content: public class SessionOptions
+    content.vb: Public Class SessionOptions
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+- uid: AeroDB.SessionOptions.#ctor
+  commentId: M:AeroDB.SessionOptions.#ctor
+  id: '#ctor'
+  parent: AeroDB.SessionOptions
+  langs:
+  - csharp
+  - vb
+  name: SessionOptions()
+  nameWithType: SessionOptions.SessionOptions()
+  fullName: AeroDB.SessionOptions.SessionOptions()
+  type: Constructor
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/SessionOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public SessionOptions()
+    content.vb: Public Sub New()
+  overload: AeroDB.SessionOptions.#ctor*
+  nameWithType.vb: SessionOptions.New()
+  fullName.vb: AeroDB.SessionOptions.New()
+  name.vb: New()
+- uid: AeroDB.SessionOptions.Tracking
+  commentId: P:AeroDB.SessionOptions.Tracking
+  id: Tracking
+  parent: AeroDB.SessionOptions
+  langs:
+  - csharp
+  - vb
+  name: Tracking
+  nameWithType: SessionOptions.Tracking
+  fullName: AeroDB.SessionOptions.Tracking
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/SessionOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Document tracking mode. Defaults to <xref href="AeroDB.DocumentTracking.None" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: public DocumentTracking Tracking { get; set; }
+    parameters: []
+    return:
+      type: AeroDB.DocumentTracking
+    content.vb: Public Property Tracking As DocumentTracking
+  overload: AeroDB.SessionOptions.Tracking*
+- uid: AeroDB.SessionOptions.Timeout
+  commentId: P:AeroDB.SessionOptions.Timeout
+  id: Timeout
+  parent: AeroDB.SessionOptions
+  langs:
+  - csharp
+  - vb
+  name: Timeout
+  nameWithType: SessionOptions.Timeout
+  fullName: AeroDB.SessionOptions.Timeout
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/SessionOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Maximum execution time for this session's database operations.
+  example: []
+  syntax:
+    content: public TimeSpan? Timeout { get; set; }
+    parameters: []
+    return:
+      type: System.Nullable{System.TimeSpan}
+    content.vb: Public Property Timeout As TimeSpan?
+  overload: AeroDB.SessionOptions.Timeout*
+- uid: AeroDB.SessionOptions.Listeners
+  commentId: P:AeroDB.SessionOptions.Listeners
+  id: Listeners
+  parent: AeroDB.SessionOptions
+  langs:
+  - csharp
+  - vb
+  name: Listeners
+  nameWithType: SessionOptions.Listeners
+  fullName: AeroDB.SessionOptions.Listeners
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/SessionOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Session-scoped listeners applied only to this session.
+  example: []
+  syntax:
+    content: public List<IDocumentSessionListener> Listeners { get; set; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.List{AeroDB.IDocumentSessionListener}
+    content.vb: Public Property Listeners As List(Of IDocumentSessionListener)
+  overload: AeroDB.SessionOptions.Listeners*
+- uid: AeroDB.SessionOptions.TenantId
+  commentId: P:AeroDB.SessionOptions.TenantId
+  id: TenantId
+  parent: AeroDB.SessionOptions
+  langs:
+  - csharp
+  - vb
+  name: TenantId
+  nameWithType: SessionOptions.TenantId
+  fullName: AeroDB.SessionOptions.TenantId
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/SessionOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Overrides the tenant ID for this session.
+  example: []
+  syntax:
+    content: public string? TenantId { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property TenantId As String
+  overload: AeroDB.SessionOptions.TenantId*
+- uid: AeroDB.SessionOptions.Policies
+  commentId: P:AeroDB.SessionOptions.Policies
+  id: Policies
+  parent: AeroDB.SessionOptions
+  langs:
+  - csharp
+  - vb
+  name: Policies
+  nameWithType: SessionOptions.Policies
+  fullName: AeroDB.SessionOptions.Policies
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/SessionOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Per-session document policies applied on top of store-level policies.
+  example: []
+  syntax:
+    content: public List<IDocumentPolicy> Policies { get; set; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.List{AeroDB.IDocumentPolicy}
+    content.vb: Public Property Policies As List(Of IDocumentPolicy)
+  overload: AeroDB.SessionOptions.Policies*
+- uid: AeroDB.SessionOptions.Subscribers
+  commentId: P:AeroDB.SessionOptions.Subscribers
+  id: Subscribers
+  parent: AeroDB.SessionOptions
+  langs:
+  - csharp
+  - vb
+  name: Subscribers
+  nameWithType: SessionOptions.Subscribers
+  fullName: AeroDB.SessionOptions.Subscribers
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/SessionOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Per-session change subscribers notified on SaveChangesAsync.
+  example: []
+  syntax:
+    content: public List<object> Subscribers { get; set; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.List{System.Object}
+    content.vb: Public Property Subscribers As List(Of Object)
+  overload: AeroDB.SessionOptions.Subscribers*
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AeroDB.SessionOptions.#ctor*
+  commentId: Overload:AeroDB.SessionOptions.#ctor
+  isExternal: true
+  href: AeroDB.SessionOptions.html#AeroDB_SessionOptions__ctor
+  name: SessionOptions
+  nameWithType: SessionOptions.SessionOptions
+  fullName: AeroDB.SessionOptions.SessionOptions
+  nameWithType.vb: SessionOptions.New
+  fullName.vb: AeroDB.SessionOptions.New
+  name.vb: New
+- uid: AeroDB.DocumentTracking.None
+  commentId: F:AeroDB.DocumentTracking.None
+  isExternal: true
+  href: AeroDB.DocumentTracking.html#AeroDB_DocumentTracking_None
+  name: None
+  nameWithType: DocumentTracking.None
+  fullName: AeroDB.DocumentTracking.None
+- uid: AeroDB.SessionOptions.Tracking*
+  commentId: Overload:AeroDB.SessionOptions.Tracking
+  isExternal: true
+  href: AeroDB.SessionOptions.html#AeroDB_SessionOptions_Tracking
+  name: Tracking
+  nameWithType: SessionOptions.Tracking
+  fullName: AeroDB.SessionOptions.Tracking
+- uid: AeroDB.DocumentTracking
+  commentId: T:AeroDB.DocumentTracking
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.DocumentTracking.html
+  name: DocumentTracking
+  nameWithType: DocumentTracking
+  fullName: AeroDB.DocumentTracking
+- uid: AeroDB.SessionOptions.Timeout*
+  commentId: Overload:AeroDB.SessionOptions.Timeout
+  isExternal: true
+  href: AeroDB.SessionOptions.html#AeroDB_SessionOptions_Timeout
+  name: Timeout
+  nameWithType: SessionOptions.Timeout
+  fullName: AeroDB.SessionOptions.Timeout
+- uid: System.Nullable{System.TimeSpan}
+  commentId: T:System.Nullable{System.TimeSpan}
+  parent: System
+  definition: System.Nullable`1
+  href: https://learn.microsoft.com/dotnet/api/system.timespan
+  name: TimeSpan?
+  nameWithType: TimeSpan?
+  fullName: System.TimeSpan?
+  spec.csharp:
+  - uid: System.TimeSpan
+    name: TimeSpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.timespan
+  - name: '?'
+  spec.vb:
+  - uid: System.TimeSpan
+    name: TimeSpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.timespan
+  - name: '?'
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.SessionOptions.Listeners*
+  commentId: Overload:AeroDB.SessionOptions.Listeners
+  isExternal: true
+  href: AeroDB.SessionOptions.html#AeroDB_SessionOptions_Listeners
+  name: Listeners
+  nameWithType: SessionOptions.Listeners
+  fullName: AeroDB.SessionOptions.Listeners
+- uid: System.Collections.Generic.List{AeroDB.IDocumentSessionListener}
+  commentId: T:System.Collections.Generic.List{AeroDB.IDocumentSessionListener}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<IDocumentSessionListener>
+  nameWithType: List<IDocumentSessionListener>
+  fullName: System.Collections.Generic.List<AeroDB.IDocumentSessionListener>
+  nameWithType.vb: List(Of IDocumentSessionListener)
+  fullName.vb: System.Collections.Generic.List(Of AeroDB.IDocumentSessionListener)
+  name.vb: List(Of IDocumentSessionListener)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: AeroDB.IDocumentSessionListener
+    name: IDocumentSessionListener
+    isExternal: true
+    href: AeroDB.IDocumentSessionListener.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.IDocumentSessionListener
+    name: IDocumentSessionListener
+    isExternal: true
+    href: AeroDB.IDocumentSessionListener.html
+  - name: )
+- uid: System.Collections.Generic.List`1
+  commentId: T:System.Collections.Generic.List`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<T>
+  nameWithType: List<T>
+  fullName: System.Collections.Generic.List<T>
+  nameWithType.vb: List(Of T)
+  fullName.vb: System.Collections.Generic.List(Of T)
+  name.vb: List(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: AeroDB.SessionOptions.TenantId*
+  commentId: Overload:AeroDB.SessionOptions.TenantId
+  isExternal: true
+  href: AeroDB.SessionOptions.html#AeroDB_SessionOptions_TenantId
+  name: TenantId
+  nameWithType: SessionOptions.TenantId
+  fullName: AeroDB.SessionOptions.TenantId
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: AeroDB.SessionOptions.Policies*
+  commentId: Overload:AeroDB.SessionOptions.Policies
+  isExternal: true
+  href: AeroDB.SessionOptions.html#AeroDB_SessionOptions_Policies
+  name: Policies
+  nameWithType: SessionOptions.Policies
+  fullName: AeroDB.SessionOptions.Policies
+- uid: System.Collections.Generic.List{AeroDB.IDocumentPolicy}
+  commentId: T:System.Collections.Generic.List{AeroDB.IDocumentPolicy}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<IDocumentPolicy>
+  nameWithType: List<IDocumentPolicy>
+  fullName: System.Collections.Generic.List<AeroDB.IDocumentPolicy>
+  nameWithType.vb: List(Of IDocumentPolicy)
+  fullName.vb: System.Collections.Generic.List(Of AeroDB.IDocumentPolicy)
+  name.vb: List(Of IDocumentPolicy)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: AeroDB.IDocumentPolicy
+    name: IDocumentPolicy
+    isExternal: true
+    href: AeroDB.IDocumentPolicy.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.IDocumentPolicy
+    name: IDocumentPolicy
+    isExternal: true
+    href: AeroDB.IDocumentPolicy.html
+  - name: )
+- uid: AeroDB.SessionOptions.Subscribers*
+  commentId: Overload:AeroDB.SessionOptions.Subscribers
+  isExternal: true
+  href: AeroDB.SessionOptions.html#AeroDB_SessionOptions_Subscribers
+  name: Subscribers
+  nameWithType: SessionOptions.Subscribers
+  fullName: AeroDB.SessionOptions.Subscribers
+- uid: System.Collections.Generic.List{System.Object}
+  commentId: T:System.Collections.Generic.List{System.Object}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<object>
+  nameWithType: List<object>
+  fullName: System.Collections.Generic.List<object>
+  nameWithType.vb: List(Of Object)
+  fullName.vb: System.Collections.Generic.List(Of Object)
+  name.vb: List(Of Object)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )

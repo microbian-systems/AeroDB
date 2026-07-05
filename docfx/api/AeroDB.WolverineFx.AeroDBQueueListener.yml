@@ -1,0 +1,946 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.WolverineFx.AeroDBQueueListener
+  commentId: T:AeroDB.WolverineFx.AeroDBQueueListener
+  id: AeroDBQueueListener
+  parent: AeroDB.WolverineFx
+  children:
+  - AeroDB.WolverineFx.AeroDBQueueListener.#ctor(AeroDB.WolverineFx.AeroDBMessageStore,Wolverine.Transports.IReceiver,AeroDB.WolverineFx.AeroDBTransportOptions,Microsoft.Extensions.Logging.ILogger{AeroDB.WolverineFx.AeroDBQueueListener},System.Uri)
+  - AeroDB.WolverineFx.AeroDBQueueListener.Address
+  - AeroDB.WolverineFx.AeroDBQueueListener.CompleteAsync(Wolverine.Envelope)
+  - AeroDB.WolverineFx.AeroDBQueueListener.DeferAsync(Wolverine.Envelope)
+  - AeroDB.WolverineFx.AeroDBQueueListener.DisposeAsync
+  - AeroDB.WolverineFx.AeroDBQueueListener.Pipeline
+  - AeroDB.WolverineFx.AeroDBQueueListener.StartAsync
+  - AeroDB.WolverineFx.AeroDBQueueListener.StopAsync
+  langs:
+  - csharp
+  - vb
+  name: AeroDBQueueListener
+  nameWithType: AeroDBQueueListener
+  fullName: AeroDB.WolverineFx.AeroDBQueueListener
+  type: Class
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBQueueListener.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  summary: >-
+    Polling listener that claims and dispatches incoming messages from SurrealDB.
+
+    Uses the AeroDBMessageStore to load globally-owned incoming envelopes,
+
+    then dispatches them to the provided IReceiver.
+  example: []
+  syntax:
+    content: 'public sealed class AeroDBQueueListener : IListener, IChannelCallback, IAsyncDisposable'
+    content.vb: Public NotInheritable Class AeroDBQueueListener Implements IListener, IChannelCallback, IAsyncDisposable
+  inheritance:
+  - System.Object
+  implements:
+  - Wolverine.Transports.IListener
+  - Wolverine.Transports.IChannelCallback
+  - System.IAsyncDisposable
+  inheritedMembers:
+  - System.Object.GetType
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+- uid: AeroDB.WolverineFx.AeroDBQueueListener.#ctor(AeroDB.WolverineFx.AeroDBMessageStore,Wolverine.Transports.IReceiver,AeroDB.WolverineFx.AeroDBTransportOptions,Microsoft.Extensions.Logging.ILogger{AeroDB.WolverineFx.AeroDBQueueListener},System.Uri)
+  commentId: M:AeroDB.WolverineFx.AeroDBQueueListener.#ctor(AeroDB.WolverineFx.AeroDBMessageStore,Wolverine.Transports.IReceiver,AeroDB.WolverineFx.AeroDBTransportOptions,Microsoft.Extensions.Logging.ILogger{AeroDB.WolverineFx.AeroDBQueueListener},System.Uri)
+  id: '#ctor(AeroDB.WolverineFx.AeroDBMessageStore,Wolverine.Transports.IReceiver,AeroDB.WolverineFx.AeroDBTransportOptions,Microsoft.Extensions.Logging.ILogger{AeroDB.WolverineFx.AeroDBQueueListener},System.Uri)'
+  parent: AeroDB.WolverineFx.AeroDBQueueListener
+  langs:
+  - csharp
+  - vb
+  name: AeroDBQueueListener(AeroDBMessageStore, IReceiver, AeroDBTransportOptions, ILogger<AeroDBQueueListener>, Uri)
+  nameWithType: AeroDBQueueListener.AeroDBQueueListener(AeroDBMessageStore, IReceiver, AeroDBTransportOptions, ILogger<AeroDBQueueListener>, Uri)
+  fullName: AeroDB.WolverineFx.AeroDBQueueListener.AeroDBQueueListener(AeroDB.WolverineFx.AeroDBMessageStore, Wolverine.Transports.IReceiver, AeroDB.WolverineFx.AeroDBTransportOptions, Microsoft.Extensions.Logging.ILogger<AeroDB.WolverineFx.AeroDBQueueListener>, System.Uri)
+  type: Constructor
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBQueueListener.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  syntax:
+    content: public AeroDBQueueListener(AeroDBMessageStore store, IReceiver receiver, AeroDBTransportOptions options, ILogger<AeroDBQueueListener> logger, Uri address)
+    parameters:
+    - id: store
+      type: AeroDB.WolverineFx.AeroDBMessageStore
+    - id: receiver
+      type: Wolverine.Transports.IReceiver
+    - id: options
+      type: AeroDB.WolverineFx.AeroDBTransportOptions
+    - id: logger
+      type: Microsoft.Extensions.Logging.ILogger{AeroDB.WolverineFx.AeroDBQueueListener}
+    - id: address
+      type: System.Uri
+    content.vb: Public Sub New(store As AeroDBMessageStore, receiver As IReceiver, options As AeroDBTransportOptions, logger As ILogger(Of AeroDBQueueListener), address As Uri)
+  overload: AeroDB.WolverineFx.AeroDBQueueListener.#ctor*
+  nameWithType.vb: AeroDBQueueListener.New(AeroDBMessageStore, IReceiver, AeroDBTransportOptions, ILogger(Of AeroDBQueueListener), Uri)
+  fullName.vb: AeroDB.WolverineFx.AeroDBQueueListener.New(AeroDB.WolverineFx.AeroDBMessageStore, Wolverine.Transports.IReceiver, AeroDB.WolverineFx.AeroDBTransportOptions, Microsoft.Extensions.Logging.ILogger(Of AeroDB.WolverineFx.AeroDBQueueListener), System.Uri)
+  name.vb: New(AeroDBMessageStore, IReceiver, AeroDBTransportOptions, ILogger(Of AeroDBQueueListener), Uri)
+- uid: AeroDB.WolverineFx.AeroDBQueueListener.StartAsync
+  commentId: M:AeroDB.WolverineFx.AeroDBQueueListener.StartAsync
+  id: StartAsync
+  parent: AeroDB.WolverineFx.AeroDBQueueListener
+  langs:
+  - csharp
+  - vb
+  name: StartAsync()
+  nameWithType: AeroDBQueueListener.StartAsync()
+  fullName: AeroDB.WolverineFx.AeroDBQueueListener.StartAsync()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBQueueListener.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  summary: Start the polling loop.
+  example: []
+  syntax:
+    content: public Task StartAsync()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Function StartAsync() As Task
+  overload: AeroDB.WolverineFx.AeroDBQueueListener.StartAsync*
+- uid: AeroDB.WolverineFx.AeroDBQueueListener.CompleteAsync(Wolverine.Envelope)
+  commentId: M:AeroDB.WolverineFx.AeroDBQueueListener.CompleteAsync(Wolverine.Envelope)
+  id: CompleteAsync(Wolverine.Envelope)
+  parent: AeroDB.WolverineFx.AeroDBQueueListener
+  langs:
+  - csharp
+  - vb
+  name: CompleteAsync(Envelope)
+  nameWithType: AeroDBQueueListener.CompleteAsync(Envelope)
+  fullName: AeroDB.WolverineFx.AeroDBQueueListener.CompleteAsync(Wolverine.Envelope)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBQueueListener.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  summary: Complete an envelope (no-op for this listener — the store handles persistence).
+  example: []
+  syntax:
+    content: public ValueTask CompleteAsync(Envelope envelope)
+    parameters:
+    - id: envelope
+      type: Wolverine.Envelope
+    return:
+      type: System.Threading.Tasks.ValueTask
+    content.vb: Public Function CompleteAsync(envelope As Envelope) As ValueTask
+  overload: AeroDB.WolverineFx.AeroDBQueueListener.CompleteAsync*
+  implements:
+  - Wolverine.Transports.IChannelCallback.CompleteAsync(Wolverine.Envelope)
+- uid: AeroDB.WolverineFx.AeroDBQueueListener.DeferAsync(Wolverine.Envelope)
+  commentId: M:AeroDB.WolverineFx.AeroDBQueueListener.DeferAsync(Wolverine.Envelope)
+  id: DeferAsync(Wolverine.Envelope)
+  parent: AeroDB.WolverineFx.AeroDBQueueListener
+  langs:
+  - csharp
+  - vb
+  name: DeferAsync(Envelope)
+  nameWithType: AeroDBQueueListener.DeferAsync(Envelope)
+  fullName: AeroDB.WolverineFx.AeroDBQueueListener.DeferAsync(Wolverine.Envelope)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBQueueListener.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  summary: Defer an envelope back to the store for retry.
+  example: []
+  syntax:
+    content: public ValueTask DeferAsync(Envelope envelope)
+    parameters:
+    - id: envelope
+      type: Wolverine.Envelope
+    return:
+      type: System.Threading.Tasks.ValueTask
+    content.vb: Public Function DeferAsync(envelope As Envelope) As ValueTask
+  overload: AeroDB.WolverineFx.AeroDBQueueListener.DeferAsync*
+  implements:
+  - Wolverine.Transports.IChannelCallback.DeferAsync(Wolverine.Envelope)
+- uid: AeroDB.WolverineFx.AeroDBQueueListener.StopAsync
+  commentId: M:AeroDB.WolverineFx.AeroDBQueueListener.StopAsync
+  id: StopAsync
+  parent: AeroDB.WolverineFx.AeroDBQueueListener
+  langs:
+  - csharp
+  - vb
+  name: StopAsync()
+  nameWithType: AeroDBQueueListener.StopAsync()
+  fullName: AeroDB.WolverineFx.AeroDBQueueListener.StopAsync()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBQueueListener.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  summary: Stop the listener.
+  example: []
+  syntax:
+    content: public ValueTask StopAsync()
+    return:
+      type: System.Threading.Tasks.ValueTask
+    content.vb: Public Function StopAsync() As ValueTask
+  overload: AeroDB.WolverineFx.AeroDBQueueListener.StopAsync*
+  implements:
+  - Wolverine.Transports.IListener.StopAsync
+- uid: AeroDB.WolverineFx.AeroDBQueueListener.DisposeAsync
+  commentId: M:AeroDB.WolverineFx.AeroDBQueueListener.DisposeAsync
+  id: DisposeAsync
+  parent: AeroDB.WolverineFx.AeroDBQueueListener
+  langs:
+  - csharp
+  - vb
+  name: DisposeAsync()
+  nameWithType: AeroDBQueueListener.DisposeAsync()
+  fullName: AeroDB.WolverineFx.AeroDBQueueListener.DisposeAsync()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBQueueListener.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  summary: Dispose the listener.
+  example: []
+  syntax:
+    content: public ValueTask DisposeAsync()
+    return:
+      type: System.Threading.Tasks.ValueTask
+    content.vb: Public Function DisposeAsync() As ValueTask
+  overload: AeroDB.WolverineFx.AeroDBQueueListener.DisposeAsync*
+  implements:
+  - System.IAsyncDisposable.DisposeAsync
+- uid: AeroDB.WolverineFx.AeroDBQueueListener.Pipeline
+  commentId: P:AeroDB.WolverineFx.AeroDBQueueListener.Pipeline
+  id: Pipeline
+  parent: AeroDB.WolverineFx.AeroDBQueueListener
+  langs:
+  - csharp
+  - vb
+  name: Pipeline
+  nameWithType: AeroDBQueueListener.Pipeline
+  fullName: AeroDB.WolverineFx.AeroDBQueueListener.Pipeline
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBQueueListener.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  summary: Pipeline from the receiver.
+  example: []
+  syntax:
+    content: public IHandlerPipeline? Pipeline { get; }
+    parameters: []
+    return:
+      type: Wolverine.Runtime.IHandlerPipeline
+    content.vb: Public ReadOnly Property Pipeline As IHandlerPipeline
+  overload: AeroDB.WolverineFx.AeroDBQueueListener.Pipeline*
+  implements:
+  - Wolverine.Transports.IChannelCallback.Pipeline
+- uid: AeroDB.WolverineFx.AeroDBQueueListener.Address
+  commentId: P:AeroDB.WolverineFx.AeroDBQueueListener.Address
+  id: Address
+  parent: AeroDB.WolverineFx.AeroDBQueueListener
+  langs:
+  - csharp
+  - vb
+  name: Address
+  nameWithType: AeroDBQueueListener.Address
+  fullName: AeroDB.WolverineFx.AeroDBQueueListener.Address
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBQueueListener.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  summary: The listener address.
+  example: []
+  syntax:
+    content: public Uri Address { get; }
+    parameters: []
+    return:
+      type: System.Uri
+    content.vb: Public ReadOnly Property Address As Uri
+  overload: AeroDB.WolverineFx.AeroDBQueueListener.Address*
+  implements:
+  - Wolverine.Transports.IListener.Address
+references:
+- uid: AeroDB.WolverineFx
+  commentId: N:AeroDB.WolverineFx
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB.WolverineFx
+  nameWithType: AeroDB.WolverineFx
+  fullName: AeroDB.WolverineFx
+  spec.csharp:
+  - uid: AeroDB
+    name: AeroDB
+    isExternal: true
+    href: AeroDB.html
+  - name: .
+  - uid: AeroDB.WolverineFx
+    name: WolverineFx
+    isExternal: true
+    href: AeroDB.WolverineFx.html
+  spec.vb:
+  - uid: AeroDB
+    name: AeroDB
+    isExternal: true
+    href: AeroDB.html
+  - name: .
+  - uid: AeroDB.WolverineFx
+    name: WolverineFx
+    isExternal: true
+    href: AeroDB.WolverineFx.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: Wolverine.Transports.IListener
+  commentId: T:Wolverine.Transports.IListener
+  parent: Wolverine.Transports
+  isExternal: true
+  name: IListener
+  nameWithType: IListener
+  fullName: Wolverine.Transports.IListener
+- uid: Wolverine.Transports.IChannelCallback
+  commentId: T:Wolverine.Transports.IChannelCallback
+  parent: Wolverine.Transports
+  isExternal: true
+  name: IChannelCallback
+  nameWithType: IChannelCallback
+  fullName: Wolverine.Transports.IChannelCallback
+- uid: System.IAsyncDisposable
+  commentId: T:System.IAsyncDisposable
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iasyncdisposable
+  name: IAsyncDisposable
+  nameWithType: IAsyncDisposable
+  fullName: System.IAsyncDisposable
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Wolverine.Transports
+  commentId: N:Wolverine.Transports
+  isExternal: true
+  name: Wolverine.Transports
+  nameWithType: Wolverine.Transports
+  fullName: Wolverine.Transports
+  spec.csharp:
+  - uid: Wolverine
+    name: Wolverine
+    isExternal: true
+  - name: .
+  - uid: Wolverine.Transports
+    name: Transports
+    isExternal: true
+  spec.vb:
+  - uid: Wolverine
+    name: Wolverine
+    isExternal: true
+  - name: .
+  - uid: Wolverine.Transports
+    name: Transports
+    isExternal: true
+- uid: AeroDB.WolverineFx.AeroDBQueueListener.#ctor*
+  commentId: Overload:AeroDB.WolverineFx.AeroDBQueueListener.#ctor
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBQueueListener.html#AeroDB_WolverineFx_AeroDBQueueListener__ctor_AeroDB_WolverineFx_AeroDBMessageStore_Wolverine_Transports_IReceiver_AeroDB_WolverineFx_AeroDBTransportOptions_Microsoft_Extensions_Logging_ILogger_AeroDB_WolverineFx_AeroDBQueueListener__System_Uri_
+  name: AeroDBQueueListener
+  nameWithType: AeroDBQueueListener.AeroDBQueueListener
+  fullName: AeroDB.WolverineFx.AeroDBQueueListener.AeroDBQueueListener
+  nameWithType.vb: AeroDBQueueListener.New
+  fullName.vb: AeroDB.WolverineFx.AeroDBQueueListener.New
+  name.vb: New
+- uid: AeroDB.WolverineFx.AeroDBMessageStore
+  commentId: T:AeroDB.WolverineFx.AeroDBMessageStore
+  parent: AeroDB.WolverineFx
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBMessageStore.html
+  name: AeroDBMessageStore
+  nameWithType: AeroDBMessageStore
+  fullName: AeroDB.WolverineFx.AeroDBMessageStore
+- uid: Wolverine.Transports.IReceiver
+  commentId: T:Wolverine.Transports.IReceiver
+  parent: Wolverine.Transports
+  isExternal: true
+  name: IReceiver
+  nameWithType: IReceiver
+  fullName: Wolverine.Transports.IReceiver
+- uid: AeroDB.WolverineFx.AeroDBTransportOptions
+  commentId: T:AeroDB.WolverineFx.AeroDBTransportOptions
+  parent: AeroDB.WolverineFx
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBTransportOptions.html
+  name: AeroDBTransportOptions
+  nameWithType: AeroDBTransportOptions
+  fullName: AeroDB.WolverineFx.AeroDBTransportOptions
+- uid: Microsoft.Extensions.Logging.ILogger{AeroDB.WolverineFx.AeroDBQueueListener}
+  commentId: T:Microsoft.Extensions.Logging.ILogger{AeroDB.WolverineFx.AeroDBQueueListener}
+  parent: Microsoft.Extensions.Logging
+  definition: Microsoft.Extensions.Logging.ILogger`1
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<AeroDBQueueListener>
+  nameWithType: ILogger<AeroDBQueueListener>
+  fullName: Microsoft.Extensions.Logging.ILogger<AeroDB.WolverineFx.AeroDBQueueListener>
+  nameWithType.vb: ILogger(Of AeroDBQueueListener)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of AeroDB.WolverineFx.AeroDBQueueListener)
+  name.vb: ILogger(Of AeroDBQueueListener)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - uid: AeroDB.WolverineFx.AeroDBQueueListener
+    name: AeroDBQueueListener
+    isExternal: true
+    href: AeroDB.WolverineFx.AeroDBQueueListener.html
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.WolverineFx.AeroDBQueueListener
+    name: AeroDBQueueListener
+    isExternal: true
+    href: AeroDB.WolverineFx.AeroDBQueueListener.html
+  - name: )
+- uid: System.Uri
+  commentId: T:System.Uri
+  parent: System
+  isExternal: true
+  name: Uri
+  nameWithType: Uri
+  fullName: System.Uri
+- uid: Microsoft.Extensions.Logging.ILogger`1
+  commentId: T:Microsoft.Extensions.Logging.ILogger`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<TCategoryName>
+  nameWithType: ILogger<TCategoryName>
+  fullName: Microsoft.Extensions.Logging.ILogger<TCategoryName>
+  nameWithType.vb: ILogger(Of TCategoryName)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of TCategoryName)
+  name.vb: ILogger(Of TCategoryName)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - name: TCategoryName
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TCategoryName
+  - name: )
+- uid: Microsoft.Extensions.Logging
+  commentId: N:Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.Logging
+  nameWithType: Microsoft.Extensions.Logging
+  fullName: Microsoft.Extensions.Logging
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+- uid: AeroDB.WolverineFx.AeroDBQueueListener.StartAsync*
+  commentId: Overload:AeroDB.WolverineFx.AeroDBQueueListener.StartAsync
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBQueueListener.html#AeroDB_WolverineFx_AeroDBQueueListener_StartAsync
+  name: StartAsync
+  nameWithType: AeroDBQueueListener.StartAsync
+  fullName: AeroDB.WolverineFx.AeroDBQueueListener.StartAsync
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: AeroDB.WolverineFx.AeroDBQueueListener.CompleteAsync*
+  commentId: Overload:AeroDB.WolverineFx.AeroDBQueueListener.CompleteAsync
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBQueueListener.html#AeroDB_WolverineFx_AeroDBQueueListener_CompleteAsync_Wolverine_Envelope_
+  name: CompleteAsync
+  nameWithType: AeroDBQueueListener.CompleteAsync
+  fullName: AeroDB.WolverineFx.AeroDBQueueListener.CompleteAsync
+- uid: Wolverine.Transports.IChannelCallback.CompleteAsync(Wolverine.Envelope)
+  commentId: M:Wolverine.Transports.IChannelCallback.CompleteAsync(Wolverine.Envelope)
+  parent: Wolverine.Transports.IChannelCallback
+  isExternal: true
+  name: CompleteAsync(Envelope)
+  nameWithType: IChannelCallback.CompleteAsync(Envelope)
+  fullName: Wolverine.Transports.IChannelCallback.CompleteAsync(Wolverine.Envelope)
+  spec.csharp:
+  - uid: Wolverine.Transports.IChannelCallback.CompleteAsync(Wolverine.Envelope)
+    name: CompleteAsync
+    isExternal: true
+  - name: (
+  - uid: Wolverine.Envelope
+    name: Envelope
+    isExternal: true
+  - name: )
+  spec.vb:
+  - uid: Wolverine.Transports.IChannelCallback.CompleteAsync(Wolverine.Envelope)
+    name: CompleteAsync
+    isExternal: true
+  - name: (
+  - uid: Wolverine.Envelope
+    name: Envelope
+    isExternal: true
+  - name: )
+- uid: Wolverine.Envelope
+  commentId: T:Wolverine.Envelope
+  parent: Wolverine
+  isExternal: true
+  name: Envelope
+  nameWithType: Envelope
+  fullName: Wolverine.Envelope
+- uid: System.Threading.Tasks.ValueTask
+  commentId: T:System.Threading.Tasks.ValueTask
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask
+  name: ValueTask
+  nameWithType: ValueTask
+  fullName: System.Threading.Tasks.ValueTask
+- uid: Wolverine
+  commentId: N:Wolverine
+  isExternal: true
+  name: Wolverine
+  nameWithType: Wolverine
+  fullName: Wolverine
+- uid: AeroDB.WolverineFx.AeroDBQueueListener.DeferAsync*
+  commentId: Overload:AeroDB.WolverineFx.AeroDBQueueListener.DeferAsync
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBQueueListener.html#AeroDB_WolverineFx_AeroDBQueueListener_DeferAsync_Wolverine_Envelope_
+  name: DeferAsync
+  nameWithType: AeroDBQueueListener.DeferAsync
+  fullName: AeroDB.WolverineFx.AeroDBQueueListener.DeferAsync
+- uid: Wolverine.Transports.IChannelCallback.DeferAsync(Wolverine.Envelope)
+  commentId: M:Wolverine.Transports.IChannelCallback.DeferAsync(Wolverine.Envelope)
+  parent: Wolverine.Transports.IChannelCallback
+  isExternal: true
+  name: DeferAsync(Envelope)
+  nameWithType: IChannelCallback.DeferAsync(Envelope)
+  fullName: Wolverine.Transports.IChannelCallback.DeferAsync(Wolverine.Envelope)
+  spec.csharp:
+  - uid: Wolverine.Transports.IChannelCallback.DeferAsync(Wolverine.Envelope)
+    name: DeferAsync
+    isExternal: true
+  - name: (
+  - uid: Wolverine.Envelope
+    name: Envelope
+    isExternal: true
+  - name: )
+  spec.vb:
+  - uid: Wolverine.Transports.IChannelCallback.DeferAsync(Wolverine.Envelope)
+    name: DeferAsync
+    isExternal: true
+  - name: (
+  - uid: Wolverine.Envelope
+    name: Envelope
+    isExternal: true
+  - name: )
+- uid: AeroDB.WolverineFx.AeroDBQueueListener.StopAsync*
+  commentId: Overload:AeroDB.WolverineFx.AeroDBQueueListener.StopAsync
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBQueueListener.html#AeroDB_WolverineFx_AeroDBQueueListener_StopAsync
+  name: StopAsync
+  nameWithType: AeroDBQueueListener.StopAsync
+  fullName: AeroDB.WolverineFx.AeroDBQueueListener.StopAsync
+- uid: Wolverine.Transports.IListener.StopAsync
+  commentId: M:Wolverine.Transports.IListener.StopAsync
+  parent: Wolverine.Transports.IListener
+  isExternal: true
+  name: StopAsync()
+  nameWithType: IListener.StopAsync()
+  fullName: Wolverine.Transports.IListener.StopAsync()
+  spec.csharp:
+  - uid: Wolverine.Transports.IListener.StopAsync
+    name: StopAsync
+    isExternal: true
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Wolverine.Transports.IListener.StopAsync
+    name: StopAsync
+    isExternal: true
+  - name: (
+  - name: )
+- uid: AeroDB.WolverineFx.AeroDBQueueListener.DisposeAsync*
+  commentId: Overload:AeroDB.WolverineFx.AeroDBQueueListener.DisposeAsync
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBQueueListener.html#AeroDB_WolverineFx_AeroDBQueueListener_DisposeAsync
+  name: DisposeAsync
+  nameWithType: AeroDBQueueListener.DisposeAsync
+  fullName: AeroDB.WolverineFx.AeroDBQueueListener.DisposeAsync
+- uid: System.IAsyncDisposable.DisposeAsync
+  commentId: M:System.IAsyncDisposable.DisposeAsync
+  parent: System.IAsyncDisposable
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iasyncdisposable.disposeasync
+  name: DisposeAsync()
+  nameWithType: IAsyncDisposable.DisposeAsync()
+  fullName: System.IAsyncDisposable.DisposeAsync()
+  spec.csharp:
+  - uid: System.IAsyncDisposable.DisposeAsync
+    name: DisposeAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iasyncdisposable.disposeasync
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.IAsyncDisposable.DisposeAsync
+    name: DisposeAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iasyncdisposable.disposeasync
+  - name: (
+  - name: )
+- uid: AeroDB.WolverineFx.AeroDBQueueListener.Pipeline*
+  commentId: Overload:AeroDB.WolverineFx.AeroDBQueueListener.Pipeline
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBQueueListener.html#AeroDB_WolverineFx_AeroDBQueueListener_Pipeline
+  name: Pipeline
+  nameWithType: AeroDBQueueListener.Pipeline
+  fullName: AeroDB.WolverineFx.AeroDBQueueListener.Pipeline
+- uid: Wolverine.Transports.IChannelCallback.Pipeline
+  commentId: P:Wolverine.Transports.IChannelCallback.Pipeline
+  parent: Wolverine.Transports.IChannelCallback
+  isExternal: true
+  name: Pipeline
+  nameWithType: IChannelCallback.Pipeline
+  fullName: Wolverine.Transports.IChannelCallback.Pipeline
+- uid: Wolverine.Runtime.IHandlerPipeline
+  commentId: T:Wolverine.Runtime.IHandlerPipeline
+  parent: Wolverine.Runtime
+  isExternal: true
+  name: IHandlerPipeline
+  nameWithType: IHandlerPipeline
+  fullName: Wolverine.Runtime.IHandlerPipeline
+- uid: Wolverine.Runtime
+  commentId: N:Wolverine.Runtime
+  isExternal: true
+  name: Wolverine.Runtime
+  nameWithType: Wolverine.Runtime
+  fullName: Wolverine.Runtime
+  spec.csharp:
+  - uid: Wolverine
+    name: Wolverine
+    isExternal: true
+  - name: .
+  - uid: Wolverine.Runtime
+    name: Runtime
+    isExternal: true
+  spec.vb:
+  - uid: Wolverine
+    name: Wolverine
+    isExternal: true
+  - name: .
+  - uid: Wolverine.Runtime
+    name: Runtime
+    isExternal: true
+- uid: AeroDB.WolverineFx.AeroDBQueueListener.Address*
+  commentId: Overload:AeroDB.WolverineFx.AeroDBQueueListener.Address
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBQueueListener.html#AeroDB_WolverineFx_AeroDBQueueListener_Address
+  name: Address
+  nameWithType: AeroDBQueueListener.Address
+  fullName: AeroDB.WolverineFx.AeroDBQueueListener.Address
+- uid: Wolverine.Transports.IListener.Address
+  commentId: P:Wolverine.Transports.IListener.Address
+  parent: Wolverine.Transports.IListener
+  isExternal: true
+  name: Address
+  nameWithType: IListener.Address
+  fullName: Wolverine.Transports.IListener.Address

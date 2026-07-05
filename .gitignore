@@ -15,6 +15,7 @@
 .idea/
 .frolic*.json
 .playwright-mcp/
+.env.local
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs

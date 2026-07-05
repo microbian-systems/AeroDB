@@ -1,0 +1,950 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.Diagnostics.DocumentMetadataListener
+  commentId: T:AeroDB.Diagnostics.DocumentMetadataListener
+  id: DocumentMetadataListener
+  parent: AeroDB.Diagnostics
+  children:
+  - AeroDB.Diagnostics.DocumentMetadataListener.#ctor
+  - AeroDB.Diagnostics.DocumentMetadataListener.BeforeStoreAsync(AeroDB.IDocumentSession,System.Object,System.Threading.CancellationToken)
+  langs:
+  - csharp
+  - vb
+  name: DocumentMetadataListener
+  nameWithType: DocumentMetadataListener
+  fullName: AeroDB.Diagnostics.DocumentMetadataListener
+  type: Class
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Diagnostics/DocumentMetadataListener.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB.Diagnostics
+  summary: >-
+    Document session listener that auto-populates <xref href="AeroDB.Metadata.IDocumentMetadata" data-throw-if-not-resolved="false"></xref> properties
+
+    (<xref href="AeroDB.Metadata.IDocumentMetadata.CreatedAt" data-throw-if-not-resolved="false"></xref>, <xref href="AeroDB.Metadata.IDocumentMetadata.LastModified" data-throw-if-not-resolved="false"></xref>,
+
+    <xref href="AeroDB.Metadata.IDocumentMetadata.LastModifiedBy" data-throw-if-not-resolved="false"></xref>) during store operations.
+
+
+    <p>
+
+    Register via <code>StoreOptions.Listeners.Add(new DocumentMetadataListener())</code>
+
+    or use the convenience extension method <code>o.EnableDocumentMetadata()</code>.
+
+    </p>
+  example: []
+  syntax:
+    content: 'public class DocumentMetadataListener : DocumentSessionListenerBase, IDocumentSessionListener'
+    content.vb: Public Class DocumentMetadataListener Inherits DocumentSessionListenerBase Implements IDocumentSessionListener
+  inheritance:
+  - System.Object
+  - AeroDB.DocumentSessionListenerBase
+  implements:
+  - AeroDB.IDocumentSessionListener
+  inheritedMembers:
+  - AeroDB.DocumentSessionListenerBase.BeforeSaveChangesAsync(AeroDB.IDocumentSession,System.Threading.CancellationToken)
+  - AeroDB.DocumentSessionListenerBase.AfterSaveChangesAsync(AeroDB.IDocumentSession,System.Threading.CancellationToken)
+  - AeroDB.DocumentSessionListenerBase.AfterCommitAsync(AeroDB.IDocumentSession,AeroDB.IChangeSet,System.Threading.CancellationToken)
+  - AeroDB.DocumentSessionListenerBase.BeforeCommitAsync(AeroDB.IDocumentSession,System.Threading.CancellationToken)
+  - AeroDB.DocumentSessionListenerBase.AfterStoreAsync(AeroDB.IDocumentSession,System.Object,System.Threading.CancellationToken)
+  - AeroDB.DocumentSessionListenerBase.BeforeDeleteAsync(AeroDB.IDocumentSession,System.Object,System.Threading.CancellationToken)
+  - AeroDB.DocumentSessionListenerBase.AfterDeleteAsync(AeroDB.IDocumentSession,System.Object,System.Threading.CancellationToken)
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+- uid: AeroDB.Diagnostics.DocumentMetadataListener.BeforeStoreAsync(AeroDB.IDocumentSession,System.Object,System.Threading.CancellationToken)
+  commentId: M:AeroDB.Diagnostics.DocumentMetadataListener.BeforeStoreAsync(AeroDB.IDocumentSession,System.Object,System.Threading.CancellationToken)
+  id: BeforeStoreAsync(AeroDB.IDocumentSession,System.Object,System.Threading.CancellationToken)
+  parent: AeroDB.Diagnostics.DocumentMetadataListener
+  langs:
+  - csharp
+  - vb
+  name: BeforeStoreAsync(IDocumentSession, object, CancellationToken)
+  nameWithType: DocumentMetadataListener.BeforeStoreAsync(IDocumentSession, object, CancellationToken)
+  fullName: AeroDB.Diagnostics.DocumentMetadataListener.BeforeStoreAsync(AeroDB.IDocumentSession, object, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Diagnostics/DocumentMetadataListener.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB.Diagnostics
+  summary: >-
+    Called before each entity is stored. Sets audit metadata on entities
+
+    implementing <xref href="AeroDB.Metadata.IDocumentMetadata" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: public override Task BeforeStoreAsync(IDocumentSession session, object entity, CancellationToken ct)
+    parameters:
+    - id: session
+      type: AeroDB.IDocumentSession
+    - id: entity
+      type: System.Object
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Overrides Function BeforeStoreAsync(session As IDocumentSession, entity As Object, ct As CancellationToken) As Task
+  overridden: AeroDB.DocumentSessionListenerBase.BeforeStoreAsync(AeroDB.IDocumentSession,System.Object,System.Threading.CancellationToken)
+  overload: AeroDB.Diagnostics.DocumentMetadataListener.BeforeStoreAsync*
+  nameWithType.vb: DocumentMetadataListener.BeforeStoreAsync(IDocumentSession, Object, CancellationToken)
+  fullName.vb: AeroDB.Diagnostics.DocumentMetadataListener.BeforeStoreAsync(AeroDB.IDocumentSession, Object, System.Threading.CancellationToken)
+  name.vb: BeforeStoreAsync(IDocumentSession, Object, CancellationToken)
+- uid: AeroDB.Diagnostics.DocumentMetadataListener.#ctor
+  commentId: M:AeroDB.Diagnostics.DocumentMetadataListener.#ctor
+  id: '#ctor'
+  parent: AeroDB.Diagnostics.DocumentMetadataListener
+  langs:
+  - csharp
+  - vb
+  name: DocumentMetadataListener()
+  nameWithType: DocumentMetadataListener.DocumentMetadataListener()
+  fullName: AeroDB.Diagnostics.DocumentMetadataListener.DocumentMetadataListener()
+  type: Constructor
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Diagnostics/DocumentMetadataListener.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB.Diagnostics
+  syntax:
+    content: public DocumentMetadataListener()
+    content.vb: Public Sub New()
+  overload: AeroDB.Diagnostics.DocumentMetadataListener.#ctor*
+  nameWithType.vb: DocumentMetadataListener.New()
+  fullName.vb: AeroDB.Diagnostics.DocumentMetadataListener.New()
+  name.vb: New()
+references:
+- uid: AeroDB.Metadata.IDocumentMetadata
+  commentId: T:AeroDB.Metadata.IDocumentMetadata
+  isExternal: true
+  href: AeroDB.Metadata.IDocumentMetadata.html
+  name: IDocumentMetadata
+  nameWithType: IDocumentMetadata
+  fullName: AeroDB.Metadata.IDocumentMetadata
+- uid: AeroDB.Metadata.IDocumentMetadata.CreatedAt
+  commentId: P:AeroDB.Metadata.IDocumentMetadata.CreatedAt
+  isExternal: true
+  href: AeroDB.Metadata.IDocumentMetadata.html#AeroDB_Metadata_IDocumentMetadata_CreatedAt
+  name: CreatedAt
+  nameWithType: IDocumentMetadata.CreatedAt
+  fullName: AeroDB.Metadata.IDocumentMetadata.CreatedAt
+- uid: AeroDB.Metadata.IDocumentMetadata.LastModified
+  commentId: P:AeroDB.Metadata.IDocumentMetadata.LastModified
+  isExternal: true
+  href: AeroDB.Metadata.IDocumentMetadata.html#AeroDB_Metadata_IDocumentMetadata_LastModified
+  name: LastModified
+  nameWithType: IDocumentMetadata.LastModified
+  fullName: AeroDB.Metadata.IDocumentMetadata.LastModified
+- uid: AeroDB.Metadata.IDocumentMetadata.LastModifiedBy
+  commentId: P:AeroDB.Metadata.IDocumentMetadata.LastModifiedBy
+  isExternal: true
+  href: AeroDB.Metadata.IDocumentMetadata.html#AeroDB_Metadata_IDocumentMetadata_LastModifiedBy
+  name: LastModifiedBy
+  nameWithType: IDocumentMetadata.LastModifiedBy
+  fullName: AeroDB.Metadata.IDocumentMetadata.LastModifiedBy
+- uid: AeroDB.Diagnostics
+  commentId: N:AeroDB.Diagnostics
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB.Diagnostics
+  nameWithType: AeroDB.Diagnostics
+  fullName: AeroDB.Diagnostics
+  spec.csharp:
+  - uid: AeroDB
+    name: AeroDB
+    isExternal: true
+    href: AeroDB.html
+  - name: .
+  - uid: AeroDB.Diagnostics
+    name: Diagnostics
+    isExternal: true
+    href: AeroDB.Diagnostics.html
+  spec.vb:
+  - uid: AeroDB
+    name: AeroDB
+    isExternal: true
+    href: AeroDB.html
+  - name: .
+  - uid: AeroDB.Diagnostics
+    name: Diagnostics
+    isExternal: true
+    href: AeroDB.Diagnostics.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: AeroDB.DocumentSessionListenerBase
+  commentId: T:AeroDB.DocumentSessionListenerBase
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.DocumentSessionListenerBase.html
+  name: DocumentSessionListenerBase
+  nameWithType: DocumentSessionListenerBase
+  fullName: AeroDB.DocumentSessionListenerBase
+- uid: AeroDB.IDocumentSessionListener
+  commentId: T:AeroDB.IDocumentSessionListener
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IDocumentSessionListener.html
+  name: IDocumentSessionListener
+  nameWithType: IDocumentSessionListener
+  fullName: AeroDB.IDocumentSessionListener
+- uid: AeroDB.DocumentSessionListenerBase.BeforeSaveChangesAsync(AeroDB.IDocumentSession,System.Threading.CancellationToken)
+  commentId: M:AeroDB.DocumentSessionListenerBase.BeforeSaveChangesAsync(AeroDB.IDocumentSession,System.Threading.CancellationToken)
+  parent: AeroDB.DocumentSessionListenerBase
+  isExternal: true
+  href: AeroDB.DocumentSessionListenerBase.html#AeroDB_DocumentSessionListenerBase_BeforeSaveChangesAsync_AeroDB_IDocumentSession_System_Threading_CancellationToken_
+  name: BeforeSaveChangesAsync(IDocumentSession, CancellationToken)
+  nameWithType: DocumentSessionListenerBase.BeforeSaveChangesAsync(IDocumentSession, CancellationToken)
+  fullName: AeroDB.DocumentSessionListenerBase.BeforeSaveChangesAsync(AeroDB.IDocumentSession, System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: AeroDB.DocumentSessionListenerBase.BeforeSaveChangesAsync(AeroDB.IDocumentSession,System.Threading.CancellationToken)
+    name: BeforeSaveChangesAsync
+    isExternal: true
+    href: AeroDB.DocumentSessionListenerBase.html#AeroDB_DocumentSessionListenerBase_BeforeSaveChangesAsync_AeroDB_IDocumentSession_System_Threading_CancellationToken_
+  - name: (
+  - uid: AeroDB.IDocumentSession
+    name: IDocumentSession
+    isExternal: true
+    href: AeroDB.IDocumentSession.html
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: AeroDB.DocumentSessionListenerBase.BeforeSaveChangesAsync(AeroDB.IDocumentSession,System.Threading.CancellationToken)
+    name: BeforeSaveChangesAsync
+    isExternal: true
+    href: AeroDB.DocumentSessionListenerBase.html#AeroDB_DocumentSessionListenerBase_BeforeSaveChangesAsync_AeroDB_IDocumentSession_System_Threading_CancellationToken_
+  - name: (
+  - uid: AeroDB.IDocumentSession
+    name: IDocumentSession
+    isExternal: true
+    href: AeroDB.IDocumentSession.html
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: AeroDB.DocumentSessionListenerBase.AfterSaveChangesAsync(AeroDB.IDocumentSession,System.Threading.CancellationToken)
+  commentId: M:AeroDB.DocumentSessionListenerBase.AfterSaveChangesAsync(AeroDB.IDocumentSession,System.Threading.CancellationToken)
+  parent: AeroDB.DocumentSessionListenerBase
+  isExternal: true
+  href: AeroDB.DocumentSessionListenerBase.html#AeroDB_DocumentSessionListenerBase_AfterSaveChangesAsync_AeroDB_IDocumentSession_System_Threading_CancellationToken_
+  name: AfterSaveChangesAsync(IDocumentSession, CancellationToken)
+  nameWithType: DocumentSessionListenerBase.AfterSaveChangesAsync(IDocumentSession, CancellationToken)
+  fullName: AeroDB.DocumentSessionListenerBase.AfterSaveChangesAsync(AeroDB.IDocumentSession, System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: AeroDB.DocumentSessionListenerBase.AfterSaveChangesAsync(AeroDB.IDocumentSession,System.Threading.CancellationToken)
+    name: AfterSaveChangesAsync
+    isExternal: true
+    href: AeroDB.DocumentSessionListenerBase.html#AeroDB_DocumentSessionListenerBase_AfterSaveChangesAsync_AeroDB_IDocumentSession_System_Threading_CancellationToken_
+  - name: (
+  - uid: AeroDB.IDocumentSession
+    name: IDocumentSession
+    isExternal: true
+    href: AeroDB.IDocumentSession.html
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: AeroDB.DocumentSessionListenerBase.AfterSaveChangesAsync(AeroDB.IDocumentSession,System.Threading.CancellationToken)
+    name: AfterSaveChangesAsync
+    isExternal: true
+    href: AeroDB.DocumentSessionListenerBase.html#AeroDB_DocumentSessionListenerBase_AfterSaveChangesAsync_AeroDB_IDocumentSession_System_Threading_CancellationToken_
+  - name: (
+  - uid: AeroDB.IDocumentSession
+    name: IDocumentSession
+    isExternal: true
+    href: AeroDB.IDocumentSession.html
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: AeroDB.DocumentSessionListenerBase.AfterCommitAsync(AeroDB.IDocumentSession,AeroDB.IChangeSet,System.Threading.CancellationToken)
+  commentId: M:AeroDB.DocumentSessionListenerBase.AfterCommitAsync(AeroDB.IDocumentSession,AeroDB.IChangeSet,System.Threading.CancellationToken)
+  parent: AeroDB.DocumentSessionListenerBase
+  isExternal: true
+  href: AeroDB.DocumentSessionListenerBase.html#AeroDB_DocumentSessionListenerBase_AfterCommitAsync_AeroDB_IDocumentSession_AeroDB_IChangeSet_System_Threading_CancellationToken_
+  name: AfterCommitAsync(IDocumentSession, IChangeSet, CancellationToken)
+  nameWithType: DocumentSessionListenerBase.AfterCommitAsync(IDocumentSession, IChangeSet, CancellationToken)
+  fullName: AeroDB.DocumentSessionListenerBase.AfterCommitAsync(AeroDB.IDocumentSession, AeroDB.IChangeSet, System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: AeroDB.DocumentSessionListenerBase.AfterCommitAsync(AeroDB.IDocumentSession,AeroDB.IChangeSet,System.Threading.CancellationToken)
+    name: AfterCommitAsync
+    isExternal: true
+    href: AeroDB.DocumentSessionListenerBase.html#AeroDB_DocumentSessionListenerBase_AfterCommitAsync_AeroDB_IDocumentSession_AeroDB_IChangeSet_System_Threading_CancellationToken_
+  - name: (
+  - uid: AeroDB.IDocumentSession
+    name: IDocumentSession
+    isExternal: true
+    href: AeroDB.IDocumentSession.html
+  - name: ','
+  - name: " "
+  - uid: AeroDB.IChangeSet
+    name: IChangeSet
+    isExternal: true
+    href: AeroDB.IChangeSet.html
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: AeroDB.DocumentSessionListenerBase.AfterCommitAsync(AeroDB.IDocumentSession,AeroDB.IChangeSet,System.Threading.CancellationToken)
+    name: AfterCommitAsync
+    isExternal: true
+    href: AeroDB.DocumentSessionListenerBase.html#AeroDB_DocumentSessionListenerBase_AfterCommitAsync_AeroDB_IDocumentSession_AeroDB_IChangeSet_System_Threading_CancellationToken_
+  - name: (
+  - uid: AeroDB.IDocumentSession
+    name: IDocumentSession
+    isExternal: true
+    href: AeroDB.IDocumentSession.html
+  - name: ','
+  - name: " "
+  - uid: AeroDB.IChangeSet
+    name: IChangeSet
+    isExternal: true
+    href: AeroDB.IChangeSet.html
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: AeroDB.DocumentSessionListenerBase.BeforeCommitAsync(AeroDB.IDocumentSession,System.Threading.CancellationToken)
+  commentId: M:AeroDB.DocumentSessionListenerBase.BeforeCommitAsync(AeroDB.IDocumentSession,System.Threading.CancellationToken)
+  parent: AeroDB.DocumentSessionListenerBase
+  isExternal: true
+  href: AeroDB.DocumentSessionListenerBase.html#AeroDB_DocumentSessionListenerBase_BeforeCommitAsync_AeroDB_IDocumentSession_System_Threading_CancellationToken_
+  name: BeforeCommitAsync(IDocumentSession, CancellationToken)
+  nameWithType: DocumentSessionListenerBase.BeforeCommitAsync(IDocumentSession, CancellationToken)
+  fullName: AeroDB.DocumentSessionListenerBase.BeforeCommitAsync(AeroDB.IDocumentSession, System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: AeroDB.DocumentSessionListenerBase.BeforeCommitAsync(AeroDB.IDocumentSession,System.Threading.CancellationToken)
+    name: BeforeCommitAsync
+    isExternal: true
+    href: AeroDB.DocumentSessionListenerBase.html#AeroDB_DocumentSessionListenerBase_BeforeCommitAsync_AeroDB_IDocumentSession_System_Threading_CancellationToken_
+  - name: (
+  - uid: AeroDB.IDocumentSession
+    name: IDocumentSession
+    isExternal: true
+    href: AeroDB.IDocumentSession.html
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: AeroDB.DocumentSessionListenerBase.BeforeCommitAsync(AeroDB.IDocumentSession,System.Threading.CancellationToken)
+    name: BeforeCommitAsync
+    isExternal: true
+    href: AeroDB.DocumentSessionListenerBase.html#AeroDB_DocumentSessionListenerBase_BeforeCommitAsync_AeroDB_IDocumentSession_System_Threading_CancellationToken_
+  - name: (
+  - uid: AeroDB.IDocumentSession
+    name: IDocumentSession
+    isExternal: true
+    href: AeroDB.IDocumentSession.html
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: AeroDB.DocumentSessionListenerBase.AfterStoreAsync(AeroDB.IDocumentSession,System.Object,System.Threading.CancellationToken)
+  commentId: M:AeroDB.DocumentSessionListenerBase.AfterStoreAsync(AeroDB.IDocumentSession,System.Object,System.Threading.CancellationToken)
+  parent: AeroDB.DocumentSessionListenerBase
+  isExternal: true
+  href: AeroDB.DocumentSessionListenerBase.html#AeroDB_DocumentSessionListenerBase_AfterStoreAsync_AeroDB_IDocumentSession_System_Object_System_Threading_CancellationToken_
+  name: AfterStoreAsync(IDocumentSession, object, CancellationToken)
+  nameWithType: DocumentSessionListenerBase.AfterStoreAsync(IDocumentSession, object, CancellationToken)
+  fullName: AeroDB.DocumentSessionListenerBase.AfterStoreAsync(AeroDB.IDocumentSession, object, System.Threading.CancellationToken)
+  nameWithType.vb: DocumentSessionListenerBase.AfterStoreAsync(IDocumentSession, Object, CancellationToken)
+  fullName.vb: AeroDB.DocumentSessionListenerBase.AfterStoreAsync(AeroDB.IDocumentSession, Object, System.Threading.CancellationToken)
+  name.vb: AfterStoreAsync(IDocumentSession, Object, CancellationToken)
+  spec.csharp:
+  - uid: AeroDB.DocumentSessionListenerBase.AfterStoreAsync(AeroDB.IDocumentSession,System.Object,System.Threading.CancellationToken)
+    name: AfterStoreAsync
+    isExternal: true
+    href: AeroDB.DocumentSessionListenerBase.html#AeroDB_DocumentSessionListenerBase_AfterStoreAsync_AeroDB_IDocumentSession_System_Object_System_Threading_CancellationToken_
+  - name: (
+  - uid: AeroDB.IDocumentSession
+    name: IDocumentSession
+    isExternal: true
+    href: AeroDB.IDocumentSession.html
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: AeroDB.DocumentSessionListenerBase.AfterStoreAsync(AeroDB.IDocumentSession,System.Object,System.Threading.CancellationToken)
+    name: AfterStoreAsync
+    isExternal: true
+    href: AeroDB.DocumentSessionListenerBase.html#AeroDB_DocumentSessionListenerBase_AfterStoreAsync_AeroDB_IDocumentSession_System_Object_System_Threading_CancellationToken_
+  - name: (
+  - uid: AeroDB.IDocumentSession
+    name: IDocumentSession
+    isExternal: true
+    href: AeroDB.IDocumentSession.html
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: AeroDB.DocumentSessionListenerBase.BeforeDeleteAsync(AeroDB.IDocumentSession,System.Object,System.Threading.CancellationToken)
+  commentId: M:AeroDB.DocumentSessionListenerBase.BeforeDeleteAsync(AeroDB.IDocumentSession,System.Object,System.Threading.CancellationToken)
+  parent: AeroDB.DocumentSessionListenerBase
+  isExternal: true
+  href: AeroDB.DocumentSessionListenerBase.html#AeroDB_DocumentSessionListenerBase_BeforeDeleteAsync_AeroDB_IDocumentSession_System_Object_System_Threading_CancellationToken_
+  name: BeforeDeleteAsync(IDocumentSession, object, CancellationToken)
+  nameWithType: DocumentSessionListenerBase.BeforeDeleteAsync(IDocumentSession, object, CancellationToken)
+  fullName: AeroDB.DocumentSessionListenerBase.BeforeDeleteAsync(AeroDB.IDocumentSession, object, System.Threading.CancellationToken)
+  nameWithType.vb: DocumentSessionListenerBase.BeforeDeleteAsync(IDocumentSession, Object, CancellationToken)
+  fullName.vb: AeroDB.DocumentSessionListenerBase.BeforeDeleteAsync(AeroDB.IDocumentSession, Object, System.Threading.CancellationToken)
+  name.vb: BeforeDeleteAsync(IDocumentSession, Object, CancellationToken)
+  spec.csharp:
+  - uid: AeroDB.DocumentSessionListenerBase.BeforeDeleteAsync(AeroDB.IDocumentSession,System.Object,System.Threading.CancellationToken)
+    name: BeforeDeleteAsync
+    isExternal: true
+    href: AeroDB.DocumentSessionListenerBase.html#AeroDB_DocumentSessionListenerBase_BeforeDeleteAsync_AeroDB_IDocumentSession_System_Object_System_Threading_CancellationToken_
+  - name: (
+  - uid: AeroDB.IDocumentSession
+    name: IDocumentSession
+    isExternal: true
+    href: AeroDB.IDocumentSession.html
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: AeroDB.DocumentSessionListenerBase.BeforeDeleteAsync(AeroDB.IDocumentSession,System.Object,System.Threading.CancellationToken)
+    name: BeforeDeleteAsync
+    isExternal: true
+    href: AeroDB.DocumentSessionListenerBase.html#AeroDB_DocumentSessionListenerBase_BeforeDeleteAsync_AeroDB_IDocumentSession_System_Object_System_Threading_CancellationToken_
+  - name: (
+  - uid: AeroDB.IDocumentSession
+    name: IDocumentSession
+    isExternal: true
+    href: AeroDB.IDocumentSession.html
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: AeroDB.DocumentSessionListenerBase.AfterDeleteAsync(AeroDB.IDocumentSession,System.Object,System.Threading.CancellationToken)
+  commentId: M:AeroDB.DocumentSessionListenerBase.AfterDeleteAsync(AeroDB.IDocumentSession,System.Object,System.Threading.CancellationToken)
+  parent: AeroDB.DocumentSessionListenerBase
+  isExternal: true
+  href: AeroDB.DocumentSessionListenerBase.html#AeroDB_DocumentSessionListenerBase_AfterDeleteAsync_AeroDB_IDocumentSession_System_Object_System_Threading_CancellationToken_
+  name: AfterDeleteAsync(IDocumentSession, object, CancellationToken)
+  nameWithType: DocumentSessionListenerBase.AfterDeleteAsync(IDocumentSession, object, CancellationToken)
+  fullName: AeroDB.DocumentSessionListenerBase.AfterDeleteAsync(AeroDB.IDocumentSession, object, System.Threading.CancellationToken)
+  nameWithType.vb: DocumentSessionListenerBase.AfterDeleteAsync(IDocumentSession, Object, CancellationToken)
+  fullName.vb: AeroDB.DocumentSessionListenerBase.AfterDeleteAsync(AeroDB.IDocumentSession, Object, System.Threading.CancellationToken)
+  name.vb: AfterDeleteAsync(IDocumentSession, Object, CancellationToken)
+  spec.csharp:
+  - uid: AeroDB.DocumentSessionListenerBase.AfterDeleteAsync(AeroDB.IDocumentSession,System.Object,System.Threading.CancellationToken)
+    name: AfterDeleteAsync
+    isExternal: true
+    href: AeroDB.DocumentSessionListenerBase.html#AeroDB_DocumentSessionListenerBase_AfterDeleteAsync_AeroDB_IDocumentSession_System_Object_System_Threading_CancellationToken_
+  - name: (
+  - uid: AeroDB.IDocumentSession
+    name: IDocumentSession
+    isExternal: true
+    href: AeroDB.IDocumentSession.html
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: AeroDB.DocumentSessionListenerBase.AfterDeleteAsync(AeroDB.IDocumentSession,System.Object,System.Threading.CancellationToken)
+    name: AfterDeleteAsync
+    isExternal: true
+    href: AeroDB.DocumentSessionListenerBase.html#AeroDB_DocumentSessionListenerBase_AfterDeleteAsync_AeroDB_IDocumentSession_System_Object_System_Threading_CancellationToken_
+  - name: (
+  - uid: AeroDB.IDocumentSession
+    name: IDocumentSession
+    isExternal: true
+    href: AeroDB.IDocumentSession.html
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: AeroDB.DocumentSessionListenerBase.BeforeStoreAsync(AeroDB.IDocumentSession,System.Object,System.Threading.CancellationToken)
+  commentId: M:AeroDB.DocumentSessionListenerBase.BeforeStoreAsync(AeroDB.IDocumentSession,System.Object,System.Threading.CancellationToken)
+  parent: AeroDB.DocumentSessionListenerBase
+  isExternal: true
+  href: AeroDB.DocumentSessionListenerBase.html#AeroDB_DocumentSessionListenerBase_BeforeStoreAsync_AeroDB_IDocumentSession_System_Object_System_Threading_CancellationToken_
+  name: BeforeStoreAsync(IDocumentSession, object, CancellationToken)
+  nameWithType: DocumentSessionListenerBase.BeforeStoreAsync(IDocumentSession, object, CancellationToken)
+  fullName: AeroDB.DocumentSessionListenerBase.BeforeStoreAsync(AeroDB.IDocumentSession, object, System.Threading.CancellationToken)
+  nameWithType.vb: DocumentSessionListenerBase.BeforeStoreAsync(IDocumentSession, Object, CancellationToken)
+  fullName.vb: AeroDB.DocumentSessionListenerBase.BeforeStoreAsync(AeroDB.IDocumentSession, Object, System.Threading.CancellationToken)
+  name.vb: BeforeStoreAsync(IDocumentSession, Object, CancellationToken)
+  spec.csharp:
+  - uid: AeroDB.DocumentSessionListenerBase.BeforeStoreAsync(AeroDB.IDocumentSession,System.Object,System.Threading.CancellationToken)
+    name: BeforeStoreAsync
+    isExternal: true
+    href: AeroDB.DocumentSessionListenerBase.html#AeroDB_DocumentSessionListenerBase_BeforeStoreAsync_AeroDB_IDocumentSession_System_Object_System_Threading_CancellationToken_
+  - name: (
+  - uid: AeroDB.IDocumentSession
+    name: IDocumentSession
+    isExternal: true
+    href: AeroDB.IDocumentSession.html
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: AeroDB.DocumentSessionListenerBase.BeforeStoreAsync(AeroDB.IDocumentSession,System.Object,System.Threading.CancellationToken)
+    name: BeforeStoreAsync
+    isExternal: true
+    href: AeroDB.DocumentSessionListenerBase.html#AeroDB_DocumentSessionListenerBase_BeforeStoreAsync_AeroDB_IDocumentSession_System_Object_System_Threading_CancellationToken_
+  - name: (
+  - uid: AeroDB.IDocumentSession
+    name: IDocumentSession
+    isExternal: true
+    href: AeroDB.IDocumentSession.html
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: AeroDB.Diagnostics.DocumentMetadataListener.BeforeStoreAsync*
+  commentId: Overload:AeroDB.Diagnostics.DocumentMetadataListener.BeforeStoreAsync
+  isExternal: true
+  href: AeroDB.Diagnostics.DocumentMetadataListener.html#AeroDB_Diagnostics_DocumentMetadataListener_BeforeStoreAsync_AeroDB_IDocumentSession_System_Object_System_Threading_CancellationToken_
+  name: BeforeStoreAsync
+  nameWithType: DocumentMetadataListener.BeforeStoreAsync
+  fullName: AeroDB.Diagnostics.DocumentMetadataListener.BeforeStoreAsync
+- uid: AeroDB.IDocumentSession
+  commentId: T:AeroDB.IDocumentSession
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IDocumentSession.html
+  name: IDocumentSession
+  nameWithType: IDocumentSession
+  fullName: AeroDB.IDocumentSession
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: AeroDB.Diagnostics.DocumentMetadataListener.#ctor*
+  commentId: Overload:AeroDB.Diagnostics.DocumentMetadataListener.#ctor
+  isExternal: true
+  href: AeroDB.Diagnostics.DocumentMetadataListener.html#AeroDB_Diagnostics_DocumentMetadataListener__ctor
+  name: DocumentMetadataListener
+  nameWithType: DocumentMetadataListener.DocumentMetadataListener
+  fullName: AeroDB.Diagnostics.DocumentMetadataListener.DocumentMetadataListener
+  nameWithType.vb: DocumentMetadataListener.New
+  fullName.vb: AeroDB.Diagnostics.DocumentMetadataListener.New
+  name.vb: New

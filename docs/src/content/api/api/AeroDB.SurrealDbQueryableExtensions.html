@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Class SurrealDbQueryableExtensions | AeroDB v0.0.5-alpha — API Reference </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="Class SurrealDbQueryableExtensions | AeroDB v0.0.5-alpha — API Reference ">
+    
+    
+      <link rel="shortcut icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../styles/docfx.css">
+      <link rel="stylesheet" href="../styles/main.css">
+      <meta property="docfx:navrel" content="../toc.html">
+      <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="AeroDB">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="AeroDB.SurrealDbQueryableExtensions">
+
+
+
+  <h1 id="AeroDB_SurrealDbQueryableExtensions" data-uid="AeroDB.SurrealDbQueryableExtensions" class="text-break">Class SurrealDbQueryableExtensions</h1>
+  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+    <div class="level1"><span class="xref">SurrealDbQueryableExtensions</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="AeroDB.html">AeroDB</a></h6>
+  <h6><strong>Assembly</strong>: AeroDB.dll</h6>
+  <h5 id="AeroDB_SurrealDbQueryableExtensions_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static class SurrealDbQueryableExtensions</code></pre>
+  </div>
+  <h3 id="methods">Methods
+</h3>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/ISurrealDbQueryable.cs">View Source</a>
+  </span>
+  <a id="AeroDB_SurrealDbQueryableExtensions_FilterInclude_" data-uid="AeroDB.SurrealDbQueryableExtensions.FilterInclude*"></a>
+  <h4 id="AeroDB_SurrealDbQueryableExtensions_FilterInclude__2_AeroDB_ISurrealDbQueryable___0__System_Linq_Expressions_Expression_System_Func___0_System_Collections_Generic_IEnumerable___1____System_Linq_Expressions_Expression_System_Func_System_Collections_Generic_IEnumerable___1__System_Boolean___" data-uid="AeroDB.SurrealDbQueryableExtensions.FilterInclude``2(AeroDB.ISurrealDbQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Collections.Generic.IEnumerable{``1}}},System.Linq.Expressions.Expression{System.Func{System.Collections.Generic.IEnumerable{``1},System.Boolean}})">FilterInclude&lt;T, TChild&gt;(ISurrealDbQueryable&lt;T&gt;, Expression&lt;Func&lt;T, IEnumerable&lt;TChild&gt;&gt;&gt;, Expression&lt;Func&lt;IEnumerable&lt;TChild&gt;, bool&gt;&gt;)</h4>
+  <div class="markdown level1 summary"><p>Filters parent documents based on a predicate applied to their included
+child collection <b>in-memory</b>, after includes are fully loaded.</p>
+<p>Only parent documents whose child collection satisfies the predicate
+are returned. Unlike a WHERE clause, this filter runs on the client side
+and can use any LINQ expression on the child collection (e.g.,
+<code>.Any()</code>, <code>.All()</code>, <code>.Count()</code>).</p>
+<p>Must be used after <a class="xref" href="AeroDB.SurrealDbQueryableExtensions.html#AeroDB_SurrealDbQueryableExtensions_IncludeReverse__2_AeroDB_ISurrealDbQueryable___0__System_Linq_Expressions_Expression_System_Func___0_System_Collections_Generic_IEnumerable___1____System_String_">IncludeReverse&lt;T, TChild&gt;(ISurrealDbQueryable&lt;T&gt;, Expression&lt;Func&lt;T, IEnumerable&lt;TChild&gt;?&gt;&gt;, string)</a> on the same
+property to have effect. The filter does not affect which children are
+loaded — it only controls which parent documents are included in results.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ISurrealDbQueryable&lt;T&gt; FilterInclude&lt;T, TChild&gt;(this ISurrealDbQueryable&lt;T&gt; source, Expression&lt;Func&lt;T, IEnumerable&lt;TChild&gt;&gt;&gt; property, Expression&lt;Func&lt;IEnumerable&lt;TChild&gt;, bool&gt;&gt; filter) where T : class where TChild : class</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.ISurrealDbQueryable-1.html">ISurrealDbQueryable</a>&lt;T&gt;</td>
+        <td><span class="parametername">source</span></td>
+        <td><p>The queryable source.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;T, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;TChild&gt;&gt;&gt;</td>
+        <td><span class="parametername">property</span></td>
+        <td><p>A member expression selecting the collection property on T.
+Example: <code>o =&gt; o.Items</code></p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;TChild&gt;, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>&gt;&gt;</td>
+        <td><span class="parametername">filter</span></td>
+        <td><p>A predicate applied to the child collection. Returning <code>true</code> keeps
+the parent in the result set.
+Example: <code>items =&gt; items.Any(i =&gt; i.Price &gt; 50)</code></p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.ISurrealDbQueryable-1.html">ISurrealDbQueryable</a>&lt;T&gt;</td>
+        <td><p>The queryable for chaining.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The source entity type (must implement <code>IRecord</code>).</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">TChild</span></td>
+        <td><p>The child record type.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/ISurrealDbQueryable.cs">View Source</a>
+  </span>
+  <a id="AeroDB_SurrealDbQueryableExtensions_IncludeReverse_" data-uid="AeroDB.SurrealDbQueryableExtensions.IncludeReverse*"></a>
+  <h4 id="AeroDB_SurrealDbQueryableExtensions_IncludeReverse__2_AeroDB_ISurrealDbQueryable___0__System_Linq_Expressions_Expression_System_Func___0_System_Collections_Generic_IEnumerable___1____System_String_" data-uid="AeroDB.SurrealDbQueryableExtensions.IncludeReverse``2(AeroDB.ISurrealDbQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Collections.Generic.IEnumerable{``1}}},System.String)">IncludeReverse&lt;T, TChild&gt;(ISurrealDbQueryable&lt;T&gt;, Expression&lt;Func&lt;T, IEnumerable&lt;TChild&gt;?&gt;&gt;, string)</h4>
+  <div class="markdown level1 summary"><p>Eagerly loads a collection of child records where the child has a foreign key
+pointing back to the parent <code>T</code>. Uses SurrealDB's LET variable for
+<b>server-side batch loading in a single round trip</b>.</p>
+<p>Generated SurrealQL pattern:
+<code>LET $main = (SELECT * FROM source WHERE ...);
+SELECT * FROM $main;
+SELECT * FROM `child` WHERE `fkField` IN (SELECT VALUE [id|Id] FROM $main);</code>
+</p>
+<p>Unlike <code>Include&lt;T,TInclude&gt;</code>,
+which is forward (FK on parent), this is reverse (FK on child). The child records
+are collected into a <code>List&lt;TChild&gt;</code> and set on the collection property.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ISurrealDbQueryable&lt;T&gt; IncludeReverse&lt;T, TChild&gt;(this ISurrealDbQueryable&lt;T&gt; source, Expression&lt;Func&lt;T, IEnumerable&lt;TChild&gt;?&gt;&gt; property, string foreignKey) where T : class where TChild : class</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.ISurrealDbQueryable-1.html">ISurrealDbQueryable</a>&lt;T&gt;</td>
+        <td><span class="parametername">source</span></td>
+        <td><p>The queryable source.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;T, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;TChild&gt;&gt;&gt;</td>
+        <td><span class="parametername">property</span></td>
+        <td><p>A member expression selecting the collection property on T.
+Example: <code>o =&gt; o.Items</code></p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">foreignKey</span></td>
+        <td><p>The foreign key field on the child table (e.g., <code>&quot;order&quot;</code>).
+Both the C# property name and SurrealQL field name.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.ISurrealDbQueryable-1.html">ISurrealDbQueryable</a>&lt;T&gt;</td>
+        <td><p>The queryable for chaining.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The source entity type (must implement <code>IRecord</code> to have an Id).</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">TChild</span></td>
+        <td><p>The child record type.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/ISurrealDbQueryable.cs">View Source</a>
+  </span>
+  <a id="AeroDB_SurrealDbQueryableExtensions_Include_" data-uid="AeroDB.SurrealDbQueryableExtensions.Include*"></a>
+  <h4 id="AeroDB_SurrealDbQueryableExtensions_Include__2_AeroDB_ISurrealDbQueryable___0__System_Linq_Expressions_Expression_System_Func___0___1___" data-uid="AeroDB.SurrealDbQueryableExtensions.Include``2(AeroDB.ISurrealDbQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,``1}})">Include&lt;T, TInclude&gt;(ISurrealDbQueryable&lt;T&gt;, Expression&lt;Func&lt;T, TInclude?&gt;&gt;)</h4>
+  <div class="markdown level1 summary"><p>Eagerly loads a typed <code>record&lt;T&gt;</code> property via an inline subquery.
+The subquery is embedded in the SELECT clause, using <code>$parent</code> to reference
+the parent row's foreign key field.</p>
+<p>Generated SurrealQL pattern:
+<code>SELECT *, (SELECT * FROM `target` WHERE id = $parent.fk LIMIT 1)[0] AS Property FROM `source`</code>
+</p>
+<p>This is a single-round-trip operation — no separate queries are executed.
+Unlike <code>Fetch()</code>, this does not require the SurrealDB server to support
+the FETCH clause and works with typed <code>record&lt;T&gt;</code> properties.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ISurrealDbQueryable&lt;T&gt; Include&lt;T, TInclude&gt;(this ISurrealDbQueryable&lt;T&gt; source, Expression&lt;Func&lt;T, TInclude?&gt;&gt; property) where T : class where TInclude : class</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.ISurrealDbQueryable-1.html">ISurrealDbQueryable</a>&lt;T&gt;</td>
+        <td><span class="parametername">source</span></td>
+        <td><p>The queryable source.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;T, TInclude&gt;&gt;</td>
+        <td><span class="parametername">property</span></td>
+        <td><p>A member expression selecting the typed record property to include.
+Example: <code>o =&gt; o.Customer</code></p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.ISurrealDbQueryable-1.html">ISurrealDbQueryable</a>&lt;T&gt;</td>
+        <td><p>The queryable for chaining.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The source entity type.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">TInclude</span></td>
+        <td><p>The included document type (must inherit from <code>Record</code>).</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/ISurrealDbQueryable.cs">View Source</a>
+  </span>
+  <a id="AeroDB_SurrealDbQueryableExtensions_Select_" data-uid="AeroDB.SurrealDbQueryableExtensions.Select*"></a>
+  <h4 id="AeroDB_SurrealDbQueryableExtensions_Select__2_AeroDB_ISurrealDbQueryable___0__System_Linq_Expressions_Expression_System_Func___0___1___" data-uid="AeroDB.SurrealDbQueryableExtensions.Select``2(AeroDB.ISurrealDbQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,``1}})">Select&lt;T, TResult&gt;(ISurrealDbQueryable&lt;T&gt;, Expression&lt;Func&lt;T, TResult&gt;&gt;)</h4>
+  <div class="markdown level1 summary"><p>Projects each element of a sequence into a new form, preserving the
+<a class="xref" href="AeroDB.ISurrealDbQueryable-1.html">ISurrealDbQueryable&lt;T&gt;</a> type for further chaining (e.g., Fetch, Include).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ISurrealDbQueryable&lt;TResult&gt; Select&lt;T, TResult&gt;(this ISurrealDbQueryable&lt;T&gt; source, Expression&lt;Func&lt;T, TResult&gt;&gt; selector)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.ISurrealDbQueryable-1.html">ISurrealDbQueryable</a>&lt;T&gt;</td>
+        <td><span class="parametername">source</span></td>
+        <td><p>The queryable source.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;T, TResult&gt;&gt;</td>
+        <td><span class="parametername">selector</span></td>
+        <td><p>A projection function to apply to each element.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.ISurrealDbQueryable-1.html">ISurrealDbQueryable</a>&lt;TResult&gt;</td>
+        <td><p>An <a class="xref" href="AeroDB.ISurrealDbQueryable-1.html">ISurrealDbQueryable&lt;T&gt;</a> for further chaining.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The source entity type.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">TResult</span></td>
+        <td><p>The result element type of the projection.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/ISurrealDbQueryable.cs">View Source</a>
+  </span>
+  <a id="AeroDB_SurrealDbQueryableExtensions_Where_" data-uid="AeroDB.SurrealDbQueryableExtensions.Where*"></a>
+  <h4 id="AeroDB_SurrealDbQueryableExtensions_Where__1_AeroDB_ISurrealDbQueryable___0__System_Linq_Expressions_Expression_System_Func___0_System_Boolean___" data-uid="AeroDB.SurrealDbQueryableExtensions.Where``1(AeroDB.ISurrealDbQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})">Where&lt;T&gt;(ISurrealDbQueryable&lt;T&gt;, Expression&lt;Func&lt;T, bool&gt;&gt;)</h4>
+  <div class="markdown level1 summary"><p>Filters a sequence of values based on a predicate, preserving the
+<a class="xref" href="AeroDB.ISurrealDbQueryable-1.html">ISurrealDbQueryable&lt;T&gt;</a> type for further chaining (e.g., Fetch, Include, ToCommand).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ISurrealDbQueryable&lt;T&gt; Where&lt;T&gt;(this ISurrealDbQueryable&lt;T&gt; source, Expression&lt;Func&lt;T, bool&gt;&gt; predicate) where T : class</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.ISurrealDbQueryable-1.html">ISurrealDbQueryable</a>&lt;T&gt;</td>
+        <td><span class="parametername">source</span></td>
+        <td><p>The queryable source.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;T, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>&gt;&gt;</td>
+        <td><span class="parametername">predicate</span></td>
+        <td><p>A function to test each element for a condition.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.ISurrealDbQueryable-1.html">ISurrealDbQueryable</a>&lt;T&gt;</td>
+        <td><p>An <a class="xref" href="AeroDB.ISurrealDbQueryable-1.html">ISurrealDbQueryable&lt;T&gt;</a> for further chaining.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The entity type.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/ISurrealDbQueryable.cs" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In this article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      Made with 💜 by Microbians — Copyright © 2026 — https://microbians.io/
+      
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.min.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

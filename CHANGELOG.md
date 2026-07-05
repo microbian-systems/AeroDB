@@ -49,7 +49,7 @@ Applied in all three query paths: `ToListAsync`, `FirstOrDefaultAsync`, `SingleO
 
 #### Documentation
 
-- `docs/entity-feature-matrix.md` — complete table of Record vs Entity capabilities
+- `.docs/spec/entity-feature-matrix.md` — complete table of Record vs Entity capabilities
 - Updated IncludeReverse XML doc — reflects `[id|Id]` field selection
 
 ### Known Limitations

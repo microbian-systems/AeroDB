@@ -1,0 +1,1250 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.WolverineFx.AeroDBTransport
+  commentId: T:AeroDB.WolverineFx.AeroDBTransport
+  id: AeroDBTransport
+  parent: AeroDB.WolverineFx
+  children:
+  - AeroDB.WolverineFx.AeroDBTransport.#ctor
+  - AeroDB.WolverineFx.AeroDBTransport.BuildHealthCheck(Wolverine.Runtime.IWolverineRuntime)
+  - AeroDB.WolverineFx.AeroDBTransport.Endpoints
+  - AeroDB.WolverineFx.AeroDBTransport.GetOrCreateEndpoint(System.Uri)
+  - AeroDB.WolverineFx.AeroDBTransport.InitializeAsync(Wolverine.Runtime.IWolverineRuntime)
+  - AeroDB.WolverineFx.AeroDBTransport.Name
+  - AeroDB.WolverineFx.AeroDBTransport.Protocol
+  - AeroDB.WolverineFx.AeroDBTransport.ReplyEndpoint
+  - AeroDB.WolverineFx.AeroDBTransport.TryBuildBrokerUsage(Wolverine.Configuration.Capabilities.BrokerDescription@)
+  - AeroDB.WolverineFx.AeroDBTransport.TryBuildStatefulResource(Wolverine.Runtime.IWolverineRuntime,JasperFx.Resources.IStatefulResource@)
+  - AeroDB.WolverineFx.AeroDBTransport.TryGetEndpoint(System.Uri)
+  langs:
+  - csharp
+  - vb
+  name: AeroDBTransport
+  nameWithType: AeroDBTransport
+  fullName: AeroDB.WolverineFx.AeroDBTransport
+  type: Class
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBTransport.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  summary: >-
+    AeroDB-backed transport for Wolverine using SurrealDB as the message store.
+
+    Registers the "AeroDB://" protocol scheme and creates AeroDBEndpoint instances.
+  example: []
+  syntax:
+    content: 'public sealed class AeroDBTransport : ITransport'
+    content.vb: Public NotInheritable Class AeroDBTransport Implements ITransport
+  inheritance:
+  - System.Object
+  implements:
+  - Wolverine.Transports.ITransport
+  inheritedMembers:
+  - System.Object.GetType
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+- uid: AeroDB.WolverineFx.AeroDBTransport.ReplyEndpoint
+  commentId: M:AeroDB.WolverineFx.AeroDBTransport.ReplyEndpoint
+  id: ReplyEndpoint
+  parent: AeroDB.WolverineFx.AeroDBTransport
+  langs:
+  - csharp
+  - vb
+  name: ReplyEndpoint()
+  nameWithType: AeroDBTransport.ReplyEndpoint()
+  fullName: AeroDB.WolverineFx.AeroDBTransport.ReplyEndpoint()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBTransport.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  summary: No reply endpoint for this transport.
+  example: []
+  syntax:
+    content: public Endpoint? ReplyEndpoint()
+    return:
+      type: Wolverine.Configuration.Endpoint
+    content.vb: Public Function ReplyEndpoint() As Endpoint
+  overload: AeroDB.WolverineFx.AeroDBTransport.ReplyEndpoint*
+  implements:
+  - Wolverine.Transports.ITransport.ReplyEndpoint
+- uid: AeroDB.WolverineFx.AeroDBTransport.GetOrCreateEndpoint(System.Uri)
+  commentId: M:AeroDB.WolverineFx.AeroDBTransport.GetOrCreateEndpoint(System.Uri)
+  id: GetOrCreateEndpoint(System.Uri)
+  parent: AeroDB.WolverineFx.AeroDBTransport
+  langs:
+  - csharp
+  - vb
+  name: GetOrCreateEndpoint(Uri)
+  nameWithType: AeroDBTransport.GetOrCreateEndpoint(Uri)
+  fullName: AeroDB.WolverineFx.AeroDBTransport.GetOrCreateEndpoint(System.Uri)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBTransport.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  summary: Get or create a AeroDB endpoint for the given URI.
+  example: []
+  syntax:
+    content: public Endpoint GetOrCreateEndpoint(Uri uri)
+    parameters:
+    - id: uri
+      type: System.Uri
+    return:
+      type: Wolverine.Configuration.Endpoint
+    content.vb: Public Function GetOrCreateEndpoint(uri As Uri) As Endpoint
+  overload: AeroDB.WolverineFx.AeroDBTransport.GetOrCreateEndpoint*
+  implements:
+  - Wolverine.Transports.ITransport.GetOrCreateEndpoint(System.Uri)
+- uid: AeroDB.WolverineFx.AeroDBTransport.TryGetEndpoint(System.Uri)
+  commentId: M:AeroDB.WolverineFx.AeroDBTransport.TryGetEndpoint(System.Uri)
+  id: TryGetEndpoint(System.Uri)
+  parent: AeroDB.WolverineFx.AeroDBTransport
+  langs:
+  - csharp
+  - vb
+  name: TryGetEndpoint(Uri)
+  nameWithType: AeroDBTransport.TryGetEndpoint(Uri)
+  fullName: AeroDB.WolverineFx.AeroDBTransport.TryGetEndpoint(System.Uri)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBTransport.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  summary: Try to get an existing endpoint for the given URI.
+  example: []
+  syntax:
+    content: public Endpoint? TryGetEndpoint(Uri uri)
+    parameters:
+    - id: uri
+      type: System.Uri
+    return:
+      type: Wolverine.Configuration.Endpoint
+    content.vb: Public Function TryGetEndpoint(uri As Uri) As Endpoint
+  overload: AeroDB.WolverineFx.AeroDBTransport.TryGetEndpoint*
+  implements:
+  - Wolverine.Transports.ITransport.TryGetEndpoint(System.Uri)
+- uid: AeroDB.WolverineFx.AeroDBTransport.Endpoints
+  commentId: M:AeroDB.WolverineFx.AeroDBTransport.Endpoints
+  id: Endpoints
+  parent: AeroDB.WolverineFx.AeroDBTransport
+  langs:
+  - csharp
+  - vb
+  name: Endpoints()
+  nameWithType: AeroDBTransport.Endpoints()
+  fullName: AeroDB.WolverineFx.AeroDBTransport.Endpoints()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBTransport.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  summary: All registered endpoints.
+  example: []
+  syntax:
+    content: public IEnumerable<Endpoint> Endpoints()
+    return:
+      type: System.Collections.Generic.IEnumerable{Wolverine.Configuration.Endpoint}
+    content.vb: Public Function Endpoints() As IEnumerable(Of Endpoint)
+  overload: AeroDB.WolverineFx.AeroDBTransport.Endpoints*
+  implements:
+  - Wolverine.Transports.ITransport.Endpoints
+- uid: AeroDB.WolverineFx.AeroDBTransport.InitializeAsync(Wolverine.Runtime.IWolverineRuntime)
+  commentId: M:AeroDB.WolverineFx.AeroDBTransport.InitializeAsync(Wolverine.Runtime.IWolverineRuntime)
+  id: InitializeAsync(Wolverine.Runtime.IWolverineRuntime)
+  parent: AeroDB.WolverineFx.AeroDBTransport
+  langs:
+  - csharp
+  - vb
+  name: InitializeAsync(IWolverineRuntime)
+  nameWithType: AeroDBTransport.InitializeAsync(IWolverineRuntime)
+  fullName: AeroDB.WolverineFx.AeroDBTransport.InitializeAsync(Wolverine.Runtime.IWolverineRuntime)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBTransport.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  summary: Initialize the transport. Schema is managed by AeroDBMessageStore.
+  example: []
+  syntax:
+    content: public ValueTask InitializeAsync(IWolverineRuntime runtime)
+    parameters:
+    - id: runtime
+      type: Wolverine.Runtime.IWolverineRuntime
+    return:
+      type: System.Threading.Tasks.ValueTask
+    content.vb: Public Function InitializeAsync(runtime As IWolverineRuntime) As ValueTask
+  overload: AeroDB.WolverineFx.AeroDBTransport.InitializeAsync*
+  implements:
+  - Wolverine.Transports.ITransport.InitializeAsync(Wolverine.Runtime.IWolverineRuntime)
+- uid: AeroDB.WolverineFx.AeroDBTransport.BuildHealthCheck(Wolverine.Runtime.IWolverineRuntime)
+  commentId: M:AeroDB.WolverineFx.AeroDBTransport.BuildHealthCheck(Wolverine.Runtime.IWolverineRuntime)
+  id: BuildHealthCheck(Wolverine.Runtime.IWolverineRuntime)
+  parent: AeroDB.WolverineFx.AeroDBTransport
+  langs:
+  - csharp
+  - vb
+  name: BuildHealthCheck(IWolverineRuntime)
+  nameWithType: AeroDBTransport.BuildHealthCheck(IWolverineRuntime)
+  fullName: AeroDB.WolverineFx.AeroDBTransport.BuildHealthCheck(Wolverine.Runtime.IWolverineRuntime)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBTransport.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  summary: Build a health check that probes the SurrealDB connection via <xref href="AeroDB.IDocumentStore" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: public WolverineTransportHealthCheck? BuildHealthCheck(IWolverineRuntime runtime)
+    parameters:
+    - id: runtime
+      type: Wolverine.Runtime.IWolverineRuntime
+    return:
+      type: Wolverine.Transports.WolverineTransportHealthCheck
+    content.vb: Public Function BuildHealthCheck(runtime As IWolverineRuntime) As WolverineTransportHealthCheck
+  overload: AeroDB.WolverineFx.AeroDBTransport.BuildHealthCheck*
+  implements:
+  - Wolverine.Transports.ITransport.BuildHealthCheck(Wolverine.Runtime.IWolverineRuntime)
+- uid: AeroDB.WolverineFx.AeroDBTransport.TryBuildStatefulResource(Wolverine.Runtime.IWolverineRuntime,JasperFx.Resources.IStatefulResource@)
+  commentId: M:AeroDB.WolverineFx.AeroDBTransport.TryBuildStatefulResource(Wolverine.Runtime.IWolverineRuntime,JasperFx.Resources.IStatefulResource@)
+  id: TryBuildStatefulResource(Wolverine.Runtime.IWolverineRuntime,JasperFx.Resources.IStatefulResource@)
+  parent: AeroDB.WolverineFx.AeroDBTransport
+  langs:
+  - csharp
+  - vb
+  name: TryBuildStatefulResource(IWolverineRuntime, out IStatefulResource?)
+  nameWithType: AeroDBTransport.TryBuildStatefulResource(IWolverineRuntime, out IStatefulResource?)
+  fullName: AeroDB.WolverineFx.AeroDBTransport.TryBuildStatefulResource(Wolverine.Runtime.IWolverineRuntime, out JasperFx.Resources.IStatefulResource?)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBTransport.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  summary: No stateful resource to build.
+  example: []
+  syntax:
+    content: public bool TryBuildStatefulResource(IWolverineRuntime runtime, out IStatefulResource? resource)
+    parameters:
+    - id: runtime
+      type: Wolverine.Runtime.IWolverineRuntime
+    - id: resource
+      type: JasperFx.Resources.IStatefulResource
+    return:
+      type: System.Boolean
+    content.vb: Public Function TryBuildStatefulResource(runtime As IWolverineRuntime, resource As IStatefulResource) As Boolean
+  overload: AeroDB.WolverineFx.AeroDBTransport.TryBuildStatefulResource*
+  implements:
+  - Wolverine.Transports.ITransport.TryBuildStatefulResource(Wolverine.Runtime.IWolverineRuntime,JasperFx.Resources.IStatefulResource@)
+  nameWithType.vb: AeroDBTransport.TryBuildStatefulResource(IWolverineRuntime, IStatefulResource)
+  fullName.vb: AeroDB.WolverineFx.AeroDBTransport.TryBuildStatefulResource(Wolverine.Runtime.IWolverineRuntime, JasperFx.Resources.IStatefulResource)
+  name.vb: TryBuildStatefulResource(IWolverineRuntime, IStatefulResource)
+- uid: AeroDB.WolverineFx.AeroDBTransport.TryBuildBrokerUsage(Wolverine.Configuration.Capabilities.BrokerDescription@)
+  commentId: M:AeroDB.WolverineFx.AeroDBTransport.TryBuildBrokerUsage(Wolverine.Configuration.Capabilities.BrokerDescription@)
+  id: TryBuildBrokerUsage(Wolverine.Configuration.Capabilities.BrokerDescription@)
+  parent: AeroDB.WolverineFx.AeroDBTransport
+  langs:
+  - csharp
+  - vb
+  name: TryBuildBrokerUsage(out BrokerDescription)
+  nameWithType: AeroDBTransport.TryBuildBrokerUsage(out BrokerDescription)
+  fullName: AeroDB.WolverineFx.AeroDBTransport.TryBuildBrokerUsage(out Wolverine.Configuration.Capabilities.BrokerDescription)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBTransport.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  summary: No broker description.
+  example: []
+  syntax:
+    content: public bool TryBuildBrokerUsage(out BrokerDescription description)
+    parameters:
+    - id: description
+      type: Wolverine.Configuration.Capabilities.BrokerDescription
+    return:
+      type: System.Boolean
+    content.vb: Public Function TryBuildBrokerUsage(description As BrokerDescription) As Boolean
+  overload: AeroDB.WolverineFx.AeroDBTransport.TryBuildBrokerUsage*
+  implements:
+  - Wolverine.Transports.ITransport.TryBuildBrokerUsage(Wolverine.Configuration.Capabilities.BrokerDescription@)
+  nameWithType.vb: AeroDBTransport.TryBuildBrokerUsage(BrokerDescription)
+  fullName.vb: AeroDB.WolverineFx.AeroDBTransport.TryBuildBrokerUsage(Wolverine.Configuration.Capabilities.BrokerDescription)
+  name.vb: TryBuildBrokerUsage(BrokerDescription)
+- uid: AeroDB.WolverineFx.AeroDBTransport.#ctor
+  commentId: M:AeroDB.WolverineFx.AeroDBTransport.#ctor
+  id: '#ctor'
+  parent: AeroDB.WolverineFx.AeroDBTransport
+  langs:
+  - csharp
+  - vb
+  name: AeroDBTransport()
+  nameWithType: AeroDBTransport.AeroDBTransport()
+  fullName: AeroDB.WolverineFx.AeroDBTransport.AeroDBTransport()
+  type: Constructor
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBTransport.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  syntax:
+    content: public AeroDBTransport()
+    content.vb: Public Sub New()
+  overload: AeroDB.WolverineFx.AeroDBTransport.#ctor*
+  nameWithType.vb: AeroDBTransport.New()
+  fullName.vb: AeroDB.WolverineFx.AeroDBTransport.New()
+  name.vb: New()
+- uid: AeroDB.WolverineFx.AeroDBTransport.Protocol
+  commentId: P:AeroDB.WolverineFx.AeroDBTransport.Protocol
+  id: Protocol
+  parent: AeroDB.WolverineFx.AeroDBTransport
+  langs:
+  - csharp
+  - vb
+  name: Protocol
+  nameWithType: AeroDBTransport.Protocol
+  fullName: AeroDB.WolverineFx.AeroDBTransport.Protocol
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBTransport.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  summary: The protocol scheme for this transport.
+  example: []
+  syntax:
+    content: public string Protocol { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public ReadOnly Property Protocol As String
+  overload: AeroDB.WolverineFx.AeroDBTransport.Protocol*
+  implements:
+  - Wolverine.Transports.ITransport.Protocol
+- uid: AeroDB.WolverineFx.AeroDBTransport.Name
+  commentId: P:AeroDB.WolverineFx.AeroDBTransport.Name
+  id: Name
+  parent: AeroDB.WolverineFx.AeroDBTransport
+  langs:
+  - csharp
+  - vb
+  name: Name
+  nameWithType: AeroDBTransport.Name
+  fullName: AeroDB.WolverineFx.AeroDBTransport.Name
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBTransport.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  summary: Diagnostic name.
+  example: []
+  syntax:
+    content: public string Name { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public ReadOnly Property Name As String
+  overload: AeroDB.WolverineFx.AeroDBTransport.Name*
+  implements:
+  - Wolverine.Transports.ITransport.Name
+references:
+- uid: AeroDB.WolverineFx
+  commentId: N:AeroDB.WolverineFx
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB.WolverineFx
+  nameWithType: AeroDB.WolverineFx
+  fullName: AeroDB.WolverineFx
+  spec.csharp:
+  - uid: AeroDB
+    name: AeroDB
+    isExternal: true
+    href: AeroDB.html
+  - name: .
+  - uid: AeroDB.WolverineFx
+    name: WolverineFx
+    isExternal: true
+    href: AeroDB.WolverineFx.html
+  spec.vb:
+  - uid: AeroDB
+    name: AeroDB
+    isExternal: true
+    href: AeroDB.html
+  - name: .
+  - uid: AeroDB.WolverineFx
+    name: WolverineFx
+    isExternal: true
+    href: AeroDB.WolverineFx.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: Wolverine.Transports.ITransport
+  commentId: T:Wolverine.Transports.ITransport
+  parent: Wolverine.Transports
+  isExternal: true
+  name: ITransport
+  nameWithType: ITransport
+  fullName: Wolverine.Transports.ITransport
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Wolverine.Transports
+  commentId: N:Wolverine.Transports
+  isExternal: true
+  name: Wolverine.Transports
+  nameWithType: Wolverine.Transports
+  fullName: Wolverine.Transports
+  spec.csharp:
+  - uid: Wolverine
+    name: Wolverine
+    isExternal: true
+  - name: .
+  - uid: Wolverine.Transports
+    name: Transports
+    isExternal: true
+  spec.vb:
+  - uid: Wolverine
+    name: Wolverine
+    isExternal: true
+  - name: .
+  - uid: Wolverine.Transports
+    name: Transports
+    isExternal: true
+- uid: AeroDB.WolverineFx.AeroDBTransport.ReplyEndpoint*
+  commentId: Overload:AeroDB.WolverineFx.AeroDBTransport.ReplyEndpoint
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBTransport.html#AeroDB_WolverineFx_AeroDBTransport_ReplyEndpoint
+  name: ReplyEndpoint
+  nameWithType: AeroDBTransport.ReplyEndpoint
+  fullName: AeroDB.WolverineFx.AeroDBTransport.ReplyEndpoint
+- uid: Wolverine.Transports.ITransport.ReplyEndpoint
+  commentId: M:Wolverine.Transports.ITransport.ReplyEndpoint
+  parent: Wolverine.Transports.ITransport
+  isExternal: true
+  name: ReplyEndpoint()
+  nameWithType: ITransport.ReplyEndpoint()
+  fullName: Wolverine.Transports.ITransport.ReplyEndpoint()
+  spec.csharp:
+  - uid: Wolverine.Transports.ITransport.ReplyEndpoint
+    name: ReplyEndpoint
+    isExternal: true
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Wolverine.Transports.ITransport.ReplyEndpoint
+    name: ReplyEndpoint
+    isExternal: true
+  - name: (
+  - name: )
+- uid: Wolverine.Configuration.Endpoint
+  commentId: T:Wolverine.Configuration.Endpoint
+  parent: Wolverine.Configuration
+  isExternal: true
+  name: Endpoint
+  nameWithType: Endpoint
+  fullName: Wolverine.Configuration.Endpoint
+- uid: Wolverine.Configuration
+  commentId: N:Wolverine.Configuration
+  isExternal: true
+  name: Wolverine.Configuration
+  nameWithType: Wolverine.Configuration
+  fullName: Wolverine.Configuration
+  spec.csharp:
+  - uid: Wolverine
+    name: Wolverine
+    isExternal: true
+  - name: .
+  - uid: Wolverine.Configuration
+    name: Configuration
+    isExternal: true
+  spec.vb:
+  - uid: Wolverine
+    name: Wolverine
+    isExternal: true
+  - name: .
+  - uid: Wolverine.Configuration
+    name: Configuration
+    isExternal: true
+- uid: AeroDB.WolverineFx.AeroDBTransport.GetOrCreateEndpoint*
+  commentId: Overload:AeroDB.WolverineFx.AeroDBTransport.GetOrCreateEndpoint
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBTransport.html#AeroDB_WolverineFx_AeroDBTransport_GetOrCreateEndpoint_System_Uri_
+  name: GetOrCreateEndpoint
+  nameWithType: AeroDBTransport.GetOrCreateEndpoint
+  fullName: AeroDB.WolverineFx.AeroDBTransport.GetOrCreateEndpoint
+- uid: Wolverine.Transports.ITransport.GetOrCreateEndpoint(System.Uri)
+  commentId: M:Wolverine.Transports.ITransport.GetOrCreateEndpoint(System.Uri)
+  parent: Wolverine.Transports.ITransport
+  isExternal: true
+  name: GetOrCreateEndpoint(Uri)
+  nameWithType: ITransport.GetOrCreateEndpoint(Uri)
+  fullName: Wolverine.Transports.ITransport.GetOrCreateEndpoint(System.Uri)
+  spec.csharp:
+  - uid: Wolverine.Transports.ITransport.GetOrCreateEndpoint(System.Uri)
+    name: GetOrCreateEndpoint
+    isExternal: true
+  - name: (
+  - uid: System.Uri
+    name: Uri
+    isExternal: true
+  - name: )
+  spec.vb:
+  - uid: Wolverine.Transports.ITransport.GetOrCreateEndpoint(System.Uri)
+    name: GetOrCreateEndpoint
+    isExternal: true
+  - name: (
+  - uid: System.Uri
+    name: Uri
+    isExternal: true
+  - name: )
+- uid: System.Uri
+  commentId: T:System.Uri
+  parent: System
+  isExternal: true
+  name: Uri
+  nameWithType: Uri
+  fullName: System.Uri
+- uid: AeroDB.WolverineFx.AeroDBTransport.TryGetEndpoint*
+  commentId: Overload:AeroDB.WolverineFx.AeroDBTransport.TryGetEndpoint
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBTransport.html#AeroDB_WolverineFx_AeroDBTransport_TryGetEndpoint_System_Uri_
+  name: TryGetEndpoint
+  nameWithType: AeroDBTransport.TryGetEndpoint
+  fullName: AeroDB.WolverineFx.AeroDBTransport.TryGetEndpoint
+- uid: Wolverine.Transports.ITransport.TryGetEndpoint(System.Uri)
+  commentId: M:Wolverine.Transports.ITransport.TryGetEndpoint(System.Uri)
+  parent: Wolverine.Transports.ITransport
+  isExternal: true
+  name: TryGetEndpoint(Uri)
+  nameWithType: ITransport.TryGetEndpoint(Uri)
+  fullName: Wolverine.Transports.ITransport.TryGetEndpoint(System.Uri)
+  spec.csharp:
+  - uid: Wolverine.Transports.ITransport.TryGetEndpoint(System.Uri)
+    name: TryGetEndpoint
+    isExternal: true
+  - name: (
+  - uid: System.Uri
+    name: Uri
+    isExternal: true
+  - name: )
+  spec.vb:
+  - uid: Wolverine.Transports.ITransport.TryGetEndpoint(System.Uri)
+    name: TryGetEndpoint
+    isExternal: true
+  - name: (
+  - uid: System.Uri
+    name: Uri
+    isExternal: true
+  - name: )
+- uid: AeroDB.WolverineFx.AeroDBTransport.Endpoints*
+  commentId: Overload:AeroDB.WolverineFx.AeroDBTransport.Endpoints
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBTransport.html#AeroDB_WolverineFx_AeroDBTransport_Endpoints
+  name: Endpoints
+  nameWithType: AeroDBTransport.Endpoints
+  fullName: AeroDB.WolverineFx.AeroDBTransport.Endpoints
+- uid: Wolverine.Transports.ITransport.Endpoints
+  commentId: M:Wolverine.Transports.ITransport.Endpoints
+  parent: Wolverine.Transports.ITransport
+  isExternal: true
+  name: Endpoints()
+  nameWithType: ITransport.Endpoints()
+  fullName: Wolverine.Transports.ITransport.Endpoints()
+  spec.csharp:
+  - uid: Wolverine.Transports.ITransport.Endpoints
+    name: Endpoints
+    isExternal: true
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Wolverine.Transports.ITransport.Endpoints
+    name: Endpoints
+    isExternal: true
+  - name: (
+  - name: )
+- uid: System.Collections.Generic.IEnumerable{Wolverine.Configuration.Endpoint}
+  commentId: T:System.Collections.Generic.IEnumerable{Wolverine.Configuration.Endpoint}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<Endpoint>
+  nameWithType: IEnumerable<Endpoint>
+  fullName: System.Collections.Generic.IEnumerable<Wolverine.Configuration.Endpoint>
+  nameWithType.vb: IEnumerable(Of Endpoint)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of Wolverine.Configuration.Endpoint)
+  name.vb: IEnumerable(Of Endpoint)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: Wolverine.Configuration.Endpoint
+    name: Endpoint
+    isExternal: true
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Wolverine.Configuration.Endpoint
+    name: Endpoint
+    isExternal: true
+  - name: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: AeroDB.WolverineFx.AeroDBTransport.InitializeAsync*
+  commentId: Overload:AeroDB.WolverineFx.AeroDBTransport.InitializeAsync
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBTransport.html#AeroDB_WolverineFx_AeroDBTransport_InitializeAsync_Wolverine_Runtime_IWolverineRuntime_
+  name: InitializeAsync
+  nameWithType: AeroDBTransport.InitializeAsync
+  fullName: AeroDB.WolverineFx.AeroDBTransport.InitializeAsync
+- uid: Wolverine.Transports.ITransport.InitializeAsync(Wolverine.Runtime.IWolverineRuntime)
+  commentId: M:Wolverine.Transports.ITransport.InitializeAsync(Wolverine.Runtime.IWolverineRuntime)
+  parent: Wolverine.Transports.ITransport
+  isExternal: true
+  name: InitializeAsync(IWolverineRuntime)
+  nameWithType: ITransport.InitializeAsync(IWolverineRuntime)
+  fullName: Wolverine.Transports.ITransport.InitializeAsync(Wolverine.Runtime.IWolverineRuntime)
+  spec.csharp:
+  - uid: Wolverine.Transports.ITransport.InitializeAsync(Wolverine.Runtime.IWolverineRuntime)
+    name: InitializeAsync
+    isExternal: true
+  - name: (
+  - uid: Wolverine.Runtime.IWolverineRuntime
+    name: IWolverineRuntime
+    isExternal: true
+  - name: )
+  spec.vb:
+  - uid: Wolverine.Transports.ITransport.InitializeAsync(Wolverine.Runtime.IWolverineRuntime)
+    name: InitializeAsync
+    isExternal: true
+  - name: (
+  - uid: Wolverine.Runtime.IWolverineRuntime
+    name: IWolverineRuntime
+    isExternal: true
+  - name: )
+- uid: Wolverine.Runtime.IWolverineRuntime
+  commentId: T:Wolverine.Runtime.IWolverineRuntime
+  parent: Wolverine.Runtime
+  isExternal: true
+  name: IWolverineRuntime
+  nameWithType: IWolverineRuntime
+  fullName: Wolverine.Runtime.IWolverineRuntime
+- uid: System.Threading.Tasks.ValueTask
+  commentId: T:System.Threading.Tasks.ValueTask
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask
+  name: ValueTask
+  nameWithType: ValueTask
+  fullName: System.Threading.Tasks.ValueTask
+- uid: Wolverine.Runtime
+  commentId: N:Wolverine.Runtime
+  isExternal: true
+  name: Wolverine.Runtime
+  nameWithType: Wolverine.Runtime
+  fullName: Wolverine.Runtime
+  spec.csharp:
+  - uid: Wolverine
+    name: Wolverine
+    isExternal: true
+  - name: .
+  - uid: Wolverine.Runtime
+    name: Runtime
+    isExternal: true
+  spec.vb:
+  - uid: Wolverine
+    name: Wolverine
+    isExternal: true
+  - name: .
+  - uid: Wolverine.Runtime
+    name: Runtime
+    isExternal: true
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: AeroDB.IDocumentStore
+  commentId: T:AeroDB.IDocumentStore
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IDocumentStore.html
+  name: IDocumentStore
+  nameWithType: IDocumentStore
+  fullName: AeroDB.IDocumentStore
+- uid: AeroDB.WolverineFx.AeroDBTransport.BuildHealthCheck*
+  commentId: Overload:AeroDB.WolverineFx.AeroDBTransport.BuildHealthCheck
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBTransport.html#AeroDB_WolverineFx_AeroDBTransport_BuildHealthCheck_Wolverine_Runtime_IWolverineRuntime_
+  name: BuildHealthCheck
+  nameWithType: AeroDBTransport.BuildHealthCheck
+  fullName: AeroDB.WolverineFx.AeroDBTransport.BuildHealthCheck
+- uid: Wolverine.Transports.ITransport.BuildHealthCheck(Wolverine.Runtime.IWolverineRuntime)
+  commentId: M:Wolverine.Transports.ITransport.BuildHealthCheck(Wolverine.Runtime.IWolverineRuntime)
+  parent: Wolverine.Transports.ITransport
+  isExternal: true
+  name: BuildHealthCheck(IWolverineRuntime)
+  nameWithType: ITransport.BuildHealthCheck(IWolverineRuntime)
+  fullName: Wolverine.Transports.ITransport.BuildHealthCheck(Wolverine.Runtime.IWolverineRuntime)
+  spec.csharp:
+  - uid: Wolverine.Transports.ITransport.BuildHealthCheck(Wolverine.Runtime.IWolverineRuntime)
+    name: BuildHealthCheck
+    isExternal: true
+  - name: (
+  - uid: Wolverine.Runtime.IWolverineRuntime
+    name: IWolverineRuntime
+    isExternal: true
+  - name: )
+  spec.vb:
+  - uid: Wolverine.Transports.ITransport.BuildHealthCheck(Wolverine.Runtime.IWolverineRuntime)
+    name: BuildHealthCheck
+    isExternal: true
+  - name: (
+  - uid: Wolverine.Runtime.IWolverineRuntime
+    name: IWolverineRuntime
+    isExternal: true
+  - name: )
+- uid: Wolverine.Transports.WolverineTransportHealthCheck
+  commentId: T:Wolverine.Transports.WolverineTransportHealthCheck
+  parent: Wolverine.Transports
+  isExternal: true
+  name: WolverineTransportHealthCheck
+  nameWithType: WolverineTransportHealthCheck
+  fullName: Wolverine.Transports.WolverineTransportHealthCheck
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: AeroDB.WolverineFx.AeroDBTransport.TryBuildStatefulResource*
+  commentId: Overload:AeroDB.WolverineFx.AeroDBTransport.TryBuildStatefulResource
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBTransport.html#AeroDB_WolverineFx_AeroDBTransport_TryBuildStatefulResource_Wolverine_Runtime_IWolverineRuntime_JasperFx_Resources_IStatefulResource__
+  name: TryBuildStatefulResource
+  nameWithType: AeroDBTransport.TryBuildStatefulResource
+  fullName: AeroDB.WolverineFx.AeroDBTransport.TryBuildStatefulResource
+- uid: Wolverine.Transports.ITransport.TryBuildStatefulResource(Wolverine.Runtime.IWolverineRuntime,JasperFx.Resources.IStatefulResource@)
+  commentId: M:Wolverine.Transports.ITransport.TryBuildStatefulResource(Wolverine.Runtime.IWolverineRuntime,JasperFx.Resources.IStatefulResource@)
+  parent: Wolverine.Transports.ITransport
+  isExternal: true
+  name: TryBuildStatefulResource(IWolverineRuntime, out IStatefulResource)
+  nameWithType: ITransport.TryBuildStatefulResource(IWolverineRuntime, out IStatefulResource)
+  fullName: Wolverine.Transports.ITransport.TryBuildStatefulResource(Wolverine.Runtime.IWolverineRuntime, out JasperFx.Resources.IStatefulResource)
+  nameWithType.vb: ITransport.TryBuildStatefulResource(IWolverineRuntime, IStatefulResource)
+  fullName.vb: Wolverine.Transports.ITransport.TryBuildStatefulResource(Wolverine.Runtime.IWolverineRuntime, JasperFx.Resources.IStatefulResource)
+  name.vb: TryBuildStatefulResource(IWolverineRuntime, IStatefulResource)
+  spec.csharp:
+  - uid: Wolverine.Transports.ITransport.TryBuildStatefulResource(Wolverine.Runtime.IWolverineRuntime,JasperFx.Resources.IStatefulResource@)
+    name: TryBuildStatefulResource
+    isExternal: true
+  - name: (
+  - uid: Wolverine.Runtime.IWolverineRuntime
+    name: IWolverineRuntime
+    isExternal: true
+  - name: ','
+  - name: " "
+  - name: out
+  - name: " "
+  - uid: JasperFx.Resources.IStatefulResource
+    name: IStatefulResource
+    isExternal: true
+  - name: )
+  spec.vb:
+  - uid: Wolverine.Transports.ITransport.TryBuildStatefulResource(Wolverine.Runtime.IWolverineRuntime,JasperFx.Resources.IStatefulResource@)
+    name: TryBuildStatefulResource
+    isExternal: true
+  - name: (
+  - uid: Wolverine.Runtime.IWolverineRuntime
+    name: IWolverineRuntime
+    isExternal: true
+  - name: ','
+  - name: " "
+  - uid: JasperFx.Resources.IStatefulResource
+    name: IStatefulResource
+    isExternal: true
+  - name: )
+- uid: JasperFx.Resources.IStatefulResource
+  commentId: T:JasperFx.Resources.IStatefulResource
+  parent: JasperFx.Resources
+  isExternal: true
+  name: IStatefulResource
+  nameWithType: IStatefulResource
+  fullName: JasperFx.Resources.IStatefulResource
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: JasperFx.Resources
+  commentId: N:JasperFx.Resources
+  isExternal: true
+  name: JasperFx.Resources
+  nameWithType: JasperFx.Resources
+  fullName: JasperFx.Resources
+  spec.csharp:
+  - uid: JasperFx
+    name: JasperFx
+    isExternal: true
+  - name: .
+  - uid: JasperFx.Resources
+    name: Resources
+    isExternal: true
+  spec.vb:
+  - uid: JasperFx
+    name: JasperFx
+    isExternal: true
+  - name: .
+  - uid: JasperFx.Resources
+    name: Resources
+    isExternal: true
+- uid: AeroDB.WolverineFx.AeroDBTransport.TryBuildBrokerUsage*
+  commentId: Overload:AeroDB.WolverineFx.AeroDBTransport.TryBuildBrokerUsage
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBTransport.html#AeroDB_WolverineFx_AeroDBTransport_TryBuildBrokerUsage_Wolverine_Configuration_Capabilities_BrokerDescription__
+  name: TryBuildBrokerUsage
+  nameWithType: AeroDBTransport.TryBuildBrokerUsage
+  fullName: AeroDB.WolverineFx.AeroDBTransport.TryBuildBrokerUsage
+- uid: Wolverine.Transports.ITransport.TryBuildBrokerUsage(Wolverine.Configuration.Capabilities.BrokerDescription@)
+  commentId: M:Wolverine.Transports.ITransport.TryBuildBrokerUsage(Wolverine.Configuration.Capabilities.BrokerDescription@)
+  parent: Wolverine.Transports.ITransport
+  isExternal: true
+  name: TryBuildBrokerUsage(out BrokerDescription)
+  nameWithType: ITransport.TryBuildBrokerUsage(out BrokerDescription)
+  fullName: Wolverine.Transports.ITransport.TryBuildBrokerUsage(out Wolverine.Configuration.Capabilities.BrokerDescription)
+  nameWithType.vb: ITransport.TryBuildBrokerUsage(BrokerDescription)
+  fullName.vb: Wolverine.Transports.ITransport.TryBuildBrokerUsage(Wolverine.Configuration.Capabilities.BrokerDescription)
+  name.vb: TryBuildBrokerUsage(BrokerDescription)
+  spec.csharp:
+  - uid: Wolverine.Transports.ITransport.TryBuildBrokerUsage(Wolverine.Configuration.Capabilities.BrokerDescription@)
+    name: TryBuildBrokerUsage
+    isExternal: true
+  - name: (
+  - name: out
+  - name: " "
+  - uid: Wolverine.Configuration.Capabilities.BrokerDescription
+    name: BrokerDescription
+    isExternal: true
+  - name: )
+  spec.vb:
+  - uid: Wolverine.Transports.ITransport.TryBuildBrokerUsage(Wolverine.Configuration.Capabilities.BrokerDescription@)
+    name: TryBuildBrokerUsage
+    isExternal: true
+  - name: (
+  - uid: Wolverine.Configuration.Capabilities.BrokerDescription
+    name: BrokerDescription
+    isExternal: true
+  - name: )
+- uid: Wolverine.Configuration.Capabilities.BrokerDescription
+  commentId: T:Wolverine.Configuration.Capabilities.BrokerDescription
+  parent: Wolverine.Configuration.Capabilities
+  isExternal: true
+  name: BrokerDescription
+  nameWithType: BrokerDescription
+  fullName: Wolverine.Configuration.Capabilities.BrokerDescription
+- uid: Wolverine.Configuration.Capabilities
+  commentId: N:Wolverine.Configuration.Capabilities
+  isExternal: true
+  name: Wolverine.Configuration.Capabilities
+  nameWithType: Wolverine.Configuration.Capabilities
+  fullName: Wolverine.Configuration.Capabilities
+  spec.csharp:
+  - uid: Wolverine
+    name: Wolverine
+    isExternal: true
+  - name: .
+  - uid: Wolverine.Configuration
+    name: Configuration
+    isExternal: true
+  - name: .
+  - uid: Wolverine.Configuration.Capabilities
+    name: Capabilities
+    isExternal: true
+  spec.vb:
+  - uid: Wolverine
+    name: Wolverine
+    isExternal: true
+  - name: .
+  - uid: Wolverine.Configuration
+    name: Configuration
+    isExternal: true
+  - name: .
+  - uid: Wolverine.Configuration.Capabilities
+    name: Capabilities
+    isExternal: true
+- uid: AeroDB.WolverineFx.AeroDBTransport.#ctor*
+  commentId: Overload:AeroDB.WolverineFx.AeroDBTransport.#ctor
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBTransport.html#AeroDB_WolverineFx_AeroDBTransport__ctor
+  name: AeroDBTransport
+  nameWithType: AeroDBTransport.AeroDBTransport
+  fullName: AeroDB.WolverineFx.AeroDBTransport.AeroDBTransport
+  nameWithType.vb: AeroDBTransport.New
+  fullName.vb: AeroDB.WolverineFx.AeroDBTransport.New
+  name.vb: New
+- uid: AeroDB.WolverineFx.AeroDBTransport.Protocol*
+  commentId: Overload:AeroDB.WolverineFx.AeroDBTransport.Protocol
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBTransport.html#AeroDB_WolverineFx_AeroDBTransport_Protocol
+  name: Protocol
+  nameWithType: AeroDBTransport.Protocol
+  fullName: AeroDB.WolverineFx.AeroDBTransport.Protocol
+- uid: Wolverine.Transports.ITransport.Protocol
+  commentId: P:Wolverine.Transports.ITransport.Protocol
+  parent: Wolverine.Transports.ITransport
+  isExternal: true
+  name: Protocol
+  nameWithType: ITransport.Protocol
+  fullName: Wolverine.Transports.ITransport.Protocol
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: AeroDB.WolverineFx.AeroDBTransport.Name*
+  commentId: Overload:AeroDB.WolverineFx.AeroDBTransport.Name
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBTransport.html#AeroDB_WolverineFx_AeroDBTransport_Name
+  name: Name
+  nameWithType: AeroDBTransport.Name
+  fullName: AeroDB.WolverineFx.AeroDBTransport.Name
+- uid: Wolverine.Transports.ITransport.Name
+  commentId: P:Wolverine.Transports.ITransport.Name
+  parent: Wolverine.Transports.ITransport
+  isExternal: true
+  name: Name
+  nameWithType: ITransport.Name
+  fullName: Wolverine.Transports.ITransport.Name

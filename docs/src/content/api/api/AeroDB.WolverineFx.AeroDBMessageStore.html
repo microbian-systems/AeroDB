@@ -1,0 +1,3288 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Class AeroDBMessageStore | AeroDB v0.0.5-alpha — API Reference </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="Class AeroDBMessageStore | AeroDB v0.0.5-alpha — API Reference ">
+    
+    <meta name="description" content="SurrealDB (AeroDB) backed implementation of Wolverine&#39;s IMessageStore and all sub-interfaces. All operations use SurrealQL RawQuery with parameterized queries. Envelope bodies are stored as Base64 strings for reliable CBOR round-tripping. Schema initialization now delegates to the AeroDB  pipeline via typed POCOs (, etc.) instead of a hardcoded SurrealQL string.">
+      <link rel="shortcut icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../styles/docfx.css">
+      <link rel="stylesheet" href="../styles/main.css">
+      <meta property="docfx:navrel" content="../toc.html">
+      <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="AeroDB">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="AeroDB.WolverineFx.AeroDBMessageStore">
+
+
+
+  <h1 id="AeroDB_WolverineFx_AeroDBMessageStore" data-uid="AeroDB.WolverineFx.AeroDBMessageStore" class="text-break">Class AeroDBMessageStore</h1>
+  <div class="markdown level0 summary"><p>SurrealDB (AeroDB) backed implementation of Wolverine's IMessageStore and all sub-interfaces.
+All operations use SurrealQL RawQuery with parameterized queries.
+Envelope bodies are stored as Base64 strings for reliable CBOR round-tripping.</p>
+<p>Schema initialization now delegates to the AeroDB <a class="xref" href="AeroDB.SchemaManager.html">SchemaManager</a> pipeline
+via typed POCOs (<span class="xref">AeroDB.WolverineFx.WolverineIncomingEnvelope</span>, etc.) instead of
+a hardcoded SurrealQL string.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+    <div class="level1"><span class="xref">AeroDBMessageStore</span></div>
+  </div>
+  <div class="implements">
+    <h5>Implements</h5>
+    <div><span class="xref">IMessageStore</span></div>
+    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iasyncdisposable">IAsyncDisposable</a></div>
+    <div><span class="xref">IMessageInbox</span></div>
+    <div><span class="xref">IMessageOutbox</span></div>
+    <div><span class="xref">IDeadLetters</span></div>
+    <div><span class="xref">INodeAgentPersistence</span></div>
+    <div><span class="xref">IMessageStoreAdmin</span></div>
+    <div><span class="xref">IScheduledMessages</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="AeroDB.html">AeroDB</a>.<a class="xref" href="AeroDB.WolverineFx.html">WolverineFx</a></h6>
+  <h6><strong>Assembly</strong>: AeroDB.WolverineFx.dll</h6>
+  <h5 id="AeroDB_WolverineFx_AeroDBMessageStore_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public sealed class AeroDBMessageStore : IMessageStore, IAsyncDisposable, IMessageInbox, IMessageOutbox, IDeadLetters, INodeAgentPersistence, IMessageStoreAdmin, IScheduledMessages</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+</h3>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBMessageStore__ctor_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.#ctor*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBMessageStore__ctor_SurrealDb_Net_ISurrealDbClient_Microsoft_Extensions_Logging_ILogger_AeroDB_WolverineFx_AeroDBMessageStore__Microsoft_Extensions_Logging_ILoggerFactory_AeroDB_StoreOptions_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.#ctor(SurrealDb.Net.ISurrealDbClient,Microsoft.Extensions.Logging.ILogger{AeroDB.WolverineFx.AeroDBMessageStore},Microsoft.Extensions.Logging.ILoggerFactory,AeroDB.StoreOptions)">AeroDBMessageStore(ISurrealDbClient, ILogger&lt;AeroDBMessageStore&gt;, ILoggerFactory?, StoreOptions?)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public AeroDBMessageStore(ISurrealDbClient client, ILogger&lt;AeroDBMessageStore&gt; logger, ILoggerFactory? loggerFactory = null, StoreOptions? storeOptions = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ISurrealDbClient</span></td>
+        <td><span class="parametername">client</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1">ILogger</a>&lt;<a class="xref" href="AeroDB.WolverineFx.AeroDBMessageStore.html">AeroDBMessageStore</a>&gt;</td>
+        <td><span class="parametername">logger</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.iloggerfactory">ILoggerFactory</a></td>
+        <td><span class="parametername">loggerFactory</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="AeroDB.StoreOptions.html">StoreOptions</a></td>
+        <td><span class="parametername">storeOptions</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+</h3>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBMessageStore_Admin_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.Admin*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBMessageStore_Admin" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.Admin">Admin</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IMessageStoreAdmin Admin { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IMessageStoreAdmin</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBMessageStore_DeadLetters_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.DeadLetters*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBMessageStore_DeadLetters" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.DeadLetters">DeadLetters</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IDeadLetters DeadLetters { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IDeadLetters</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBMessageStore_HasDisposed_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.HasDisposed*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBMessageStore_HasDisposed" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.HasDisposed">HasDisposed</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool HasDisposed { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBMessageStore_Inbox_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.Inbox*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBMessageStore_Inbox" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.Inbox">Inbox</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IMessageInbox Inbox { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IMessageInbox</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBMessageStore_Listeners_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.Listeners*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBMessageStore_Listeners" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.Listeners">Listeners</h4>
+  <div class="markdown level1 summary"><p>Registry of dynamic, runtime-registered listener URIs. Backed by a
+transport-agnostic store (one URI per entry); each URI is turned into
+an actual listener at runtime by <code>DynamicListenerAgentFamily</code> via
+the appropriate transport. Opt-in via
+<span class="xref">Wolverine.DurabilitySettings.EnableDynamicListeners</span>; providers must
+return <span class="xref">Wolverine.Persistence.Durability.NullListenerStore.Instance</span> (and skip schema
+migrations for the listener table) when the flag is <code>false</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IListenerStore Listeners { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IListenerStore</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBMessageStore_Name_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.Name*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBMessageStore_Name" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.Name">Name</h4>
+  <div class="markdown level1 summary"><p>Descriptive name for cases of multiple message stores</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string Name { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBMessageStore_Nodes_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.Nodes*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBMessageStore_Nodes" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.Nodes">Nodes</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public INodeAgentPersistence Nodes { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">INodeAgentPersistence</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBMessageStore_Outbox_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.Outbox*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBMessageStore_Outbox" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.Outbox">Outbox</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IMessageOutbox Outbox { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IMessageOutbox</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBMessageStore_Role_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.Role*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBMessageStore_Role" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.Role">Role</h4>
+  <div class="markdown level1 summary"><p>What is the role of this message store within the application?</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public MessageStoreRole Role { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">MessageStoreRole</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBMessageStore_ScheduledMessages_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.ScheduledMessages*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBMessageStore_ScheduledMessages" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.ScheduledMessages">ScheduledMessages</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IScheduledMessages ScheduledMessages { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IScheduledMessages</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBMessageStore_TenantIds_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.TenantIds*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBMessageStore_TenantIds" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.TenantIds">TenantIds</h4>
+  <div class="markdown level1 summary"><p>In the case of multi-tenancy, this would hold one or more tenant ids</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public List&lt;string&gt; TenantIds { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBMessageStore_Uri_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.Uri*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBMessageStore_Uri" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.Uri">Uri</h4>
+  <div class="markdown level1 summary"><p>Unique identifier for a message store in case of systems that use multiple message
+store databases. Must use the &quot;messagedb&quot; scheme, and reflect the database connection</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Uri Uri { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Uri</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+</h3>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBMessageStore_AddAssignmentAsync_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.AddAssignmentAsync*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBMessageStore_AddAssignmentAsync_System_Guid_System_Uri_System_Threading_CancellationToken_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.AddAssignmentAsync(System.Guid,System.Uri,System.Threading.CancellationToken)">AddAssignmentAsync(Guid, Uri, CancellationToken)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task AddAssignmentAsync(Guid nodeId, Uri agentUri, CancellationToken ct)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a></td>
+        <td><span class="parametername">nodeId</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">Uri</span></td>
+        <td><span class="parametername">agentUri</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">ct</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBMessageStore_AllIncomingAsync_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.AllIncomingAsync*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBMessageStore_AllIncomingAsync" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.AllIncomingAsync">AllIncomingAsync()</h4>
+  <div class="markdown level1 summary"><p>Fetch all persisted incoming envelopes</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;IReadOnlyList&lt;Envelope&gt;&gt; AllIncomingAsync()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<span class="xref">Envelope</span>&gt;&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBMessageStore_AllOutgoingAsync_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.AllOutgoingAsync*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBMessageStore_AllOutgoingAsync" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.AllOutgoingAsync">AllOutgoingAsync()</h4>
+  <div class="markdown level1 summary"><p>Fetch all persisted, outgoing envelopes</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;IReadOnlyList&lt;Envelope&gt;&gt; AllOutgoingAsync()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<span class="xref">Envelope</span>&gt;&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBMessageStore_AssertStorageExistsAsync_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.AssertStorageExistsAsync*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBMessageStore_AssertStorageExistsAsync_System_Threading_CancellationToken_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.AssertStorageExistsAsync(System.Threading.CancellationToken)">AssertStorageExistsAsync(CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Verify that the durable envelope storage objects (schema/tables) actually exist and match the
+configured schema, throwing when they do not. Used by <code>resources check</code> so a missing or
+un-provisioned schema is reported as unhealthy rather than passing on connectivity alone.
+The default is a no-op for stores that don't support schema introspection.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task AssertStorageExistsAsync(CancellationToken token)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">token</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBMessageStore_AssignAgentsAsync_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.AssignAgentsAsync*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBMessageStore_AssignAgentsAsync_System_Guid_System_Collections_Generic_IReadOnlyList_System_Uri__System_Threading_CancellationToken_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.AssignAgentsAsync(System.Guid,System.Collections.Generic.IReadOnlyList{System.Uri},System.Threading.CancellationToken)">AssignAgentsAsync(Guid, IReadOnlyList&lt;Uri&gt;, CancellationToken)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task AssignAgentsAsync(Guid nodeId, IReadOnlyList&lt;Uri&gt; agents, CancellationToken ct)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a></td>
+        <td><span class="parametername">nodeId</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<span class="xref">Uri</span>&gt;</td>
+        <td><span class="parametername">agents</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">ct</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBMessageStore_CancelAsync_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.CancelAsync*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBMessageStore_CancelAsync_Wolverine_Persistence_Durability_ScheduledMessageManagement_ScheduledMessageQuery_System_Threading_CancellationToken_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.CancelAsync(Wolverine.Persistence.Durability.ScheduledMessageManagement.ScheduledMessageQuery,System.Threading.CancellationToken)">CancelAsync(ScheduledMessageQuery, CancellationToken)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task CancelAsync(ScheduledMessageQuery query, CancellationToken token)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ScheduledMessageQuery</span></td>
+        <td><span class="parametername">query</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">token</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBMessageStore_CheckConnectivityAsync_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.CheckConnectivityAsync*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBMessageStore_CheckConnectivityAsync_System_Threading_CancellationToken_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.CheckConnectivityAsync(System.Threading.CancellationToken)">CheckConnectivityAsync(CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Merely checks whether or not the system can connect to the durable envelope storage as an
+environment check</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task CheckConnectivityAsync(CancellationToken token)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">token</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBMessageStore_ClearAllAsync_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.ClearAllAsync*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBMessageStore_ClearAllAsync" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.ClearAllAsync">ClearAllAsync()</h4>
+  <div class="markdown level1 summary"><p>Clears out all persisted envelopes</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task ClearAllAsync()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBMessageStore_ClearAllAsync_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.ClearAllAsync*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBMessageStore_ClearAllAsync_System_Threading_CancellationToken_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.ClearAllAsync(System.Threading.CancellationToken)">ClearAllAsync(CancellationToken)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task ClearAllAsync(CancellationToken cancellationToken)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBMessageStore_DeadLetterEnvelopeByIdAsync_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.DeadLetterEnvelopeByIdAsync*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBMessageStore_DeadLetterEnvelopeByIdAsync_System_Guid_System_String_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.DeadLetterEnvelopeByIdAsync(System.Guid,System.String)">DeadLetterEnvelopeByIdAsync(Guid, string?)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;DeadLetterEnvelope?&gt; DeadLetterEnvelopeByIdAsync(Guid id, string? tenantId = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a></td>
+        <td><span class="parametername">id</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">tenantId</span></td>
+        <td><p>Leaving tenantId null will query all tenants</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<span class="xref">DeadLetterEnvelope</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBMessageStore_DeleteAllHandledAsync_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.DeleteAllHandledAsync*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBMessageStore_DeleteAllHandledAsync" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.DeleteAllHandledAsync">DeleteAllHandledAsync()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task DeleteAllHandledAsync()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBMessageStore_DeleteAsync_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.DeleteAsync*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBMessageStore_DeleteAsync_System_Guid_System_Int32_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.DeleteAsync(System.Guid,System.Int32)">DeleteAsync(Guid, int)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task DeleteAsync(Guid nodeId, int assignedNodeNumber)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a></td>
+        <td><span class="parametername">nodeId</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><span class="parametername">assignedNodeNumber</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBMessageStore_DeleteOldNodeRecordsAsync_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.DeleteOldNodeRecordsAsync*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBMessageStore_DeleteOldNodeRecordsAsync_System_Int32_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.DeleteOldNodeRecordsAsync(System.Int32)">DeleteOldNodeRecordsAsync(int)</h4>
+  <div class="markdown level1 summary"><p>Delete old node records, retaining only the most recent <code class="paramref">retainCount</code> records.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task DeleteOldNodeRecordsAsync(int retainCount)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><span class="parametername">retainCount</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBMessageStore_DeleteOutgoingAsync_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.DeleteOutgoingAsync*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBMessageStore_DeleteOutgoingAsync_Wolverine_Envelope_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.DeleteOutgoingAsync(Wolverine.Envelope)">DeleteOutgoingAsync(Envelope)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task DeleteOutgoingAsync(Envelope envelope)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Envelope</span></td>
+        <td><span class="parametername">envelope</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBMessageStore_DeleteOutgoingAsync_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.DeleteOutgoingAsync*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBMessageStore_DeleteOutgoingAsync_Wolverine_Envelope___" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.DeleteOutgoingAsync(Wolverine.Envelope[])">DeleteOutgoingAsync(Envelope[])</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task DeleteOutgoingAsync(Envelope[] envelopes)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Envelope</span>[]</td>
+        <td><span class="parametername">envelopes</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBMessageStore_DemoteToAncillary_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.DemoteToAncillary*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBMessageStore_DemoteToAncillary" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.DemoteToAncillary">DemoteToAncillary()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void DemoteToAncillary()</code></pre>
+  </div>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBMessageStore_Describe_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.Describe*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBMessageStore_Describe" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.Describe">Describe()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DatabaseDescriptor Describe()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">DatabaseDescriptor</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBMessageStore_DiscardAndReassignOutgoingAsync_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.DiscardAndReassignOutgoingAsync*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBMessageStore_DiscardAndReassignOutgoingAsync_Wolverine_Envelope___Wolverine_Envelope___System_Int32_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.DiscardAndReassignOutgoingAsync(Wolverine.Envelope[],Wolverine.Envelope[],System.Int32)">DiscardAndReassignOutgoingAsync(Envelope[], Envelope[], int)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task DiscardAndReassignOutgoingAsync(Envelope[] discards, Envelope[] reassigned, int nodeId)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Envelope</span>[]</td>
+        <td><span class="parametername">discards</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">Envelope</span>[]</td>
+        <td><span class="parametername">reassigned</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><span class="parametername">nodeId</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBMessageStore_DiscardAsync_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.DiscardAsync*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBMessageStore_DiscardAsync_Wolverine_Persistence_Durability_DeadLetterManagement_DeadLetterEnvelopeQuery_System_Threading_CancellationToken_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.DiscardAsync(Wolverine.Persistence.Durability.DeadLetterManagement.DeadLetterEnvelopeQuery,System.Threading.CancellationToken)">DiscardAsync(DeadLetterEnvelopeQuery, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Deletes all dead letter envelopes matching the query</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task DiscardAsync(DeadLetterEnvelopeQuery query, CancellationToken token)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">DeadLetterEnvelopeQuery</span></td>
+        <td><span class="parametername">query</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">token</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBMessageStore_DisposeAsync_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.DisposeAsync*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBMessageStore_DisposeAsync" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.DisposeAsync">DisposeAsync()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ValueTask DisposeAsync()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask">ValueTask</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBMessageStore_DrainAsync_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.DrainAsync*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBMessageStore_DrainAsync" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.DrainAsync">DrainAsync()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task DrainAsync()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBMessageStore_EditAndReplayAsync_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.EditAndReplayAsync*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBMessageStore_EditAndReplayAsync_System_Guid_System_Byte___System_Threading_CancellationToken_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.EditAndReplayAsync(System.Guid,System.Byte[],System.Threading.CancellationToken)">EditAndReplayAsync(Guid, byte[], CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Updates the body of a dead letter envelope and marks it as replayable</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task EditAndReplayAsync(Guid envelopeId, byte[] newBody, CancellationToken token)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a></td>
+        <td><span class="parametername">envelopeId</span></td>
+        <td><p>The envelope to edit</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a>[]</td>
+        <td><span class="parametername">newBody</span></td>
+        <td><p>The new serialized message body</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">token</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBMessageStore_ExistsAsync_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.ExistsAsync*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBMessageStore_ExistsAsync_Wolverine_Envelope_System_Threading_CancellationToken_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.ExistsAsync(Wolverine.Envelope,System.Threading.CancellationToken)">ExistsAsync(Envelope, CancellationToken)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;bool&gt; ExistsAsync(Envelope envelope, CancellationToken cancellation)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Envelope</span></td>
+        <td><span class="parametername">envelope</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">cancellation</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBMessageStore_FetchCountsAsync_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.FetchCountsAsync*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBMessageStore_FetchCountsAsync" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.FetchCountsAsync">FetchCountsAsync()</h4>
+  <div class="markdown level1 summary"><p>Access the current count of persisted envelopes</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;PersistedCounts&gt; FetchCountsAsync()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<span class="xref">PersistedCounts</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBMessageStore_FetchRecentRecordsAsync_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.FetchRecentRecordsAsync*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBMessageStore_FetchRecentRecordsAsync_System_Int32_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.FetchRecentRecordsAsync(System.Int32)">FetchRecentRecordsAsync(int)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;IReadOnlyList&lt;NodeRecord&gt;&gt; FetchRecentRecordsAsync(int count)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><span class="parametername">count</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<span class="xref">NodeRecord</span>&gt;&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBMessageStore_HasLeadershipLock_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.HasLeadershipLock*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBMessageStore_HasLeadershipLock" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.HasLeadershipLock">HasLeadershipLock()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool HasLeadershipLock()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBMessageStore_IncrementIncomingEnvelopeAttemptsAsync_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.IncrementIncomingEnvelopeAttemptsAsync*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBMessageStore_IncrementIncomingEnvelopeAttemptsAsync_Wolverine_Envelope_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.IncrementIncomingEnvelopeAttemptsAsync(Wolverine.Envelope)">IncrementIncomingEnvelopeAttemptsAsync(Envelope)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task IncrementIncomingEnvelopeAttemptsAsync(Envelope envelope)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Envelope</span></td>
+        <td><span class="parametername">envelope</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBMessageStore_Initialize_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.Initialize*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBMessageStore_Initialize_Wolverine_Runtime_IWolverineRuntime_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.Initialize(Wolverine.Runtime.IWolverineRuntime)">Initialize(IWolverineRuntime)</h4>
+  <div class="markdown level1 summary"><p>Called to initialize the Wolverine storage on application bootstrapping</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Initialize(IWolverineRuntime runtime)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IWolverineRuntime</span></td>
+        <td><span class="parametername">runtime</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBMessageStore_InitializeSchemaAsync_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.InitializeSchemaAsync*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBMessageStore_InitializeSchemaAsync" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.InitializeSchemaAsync">InitializeSchemaAsync()</h4>
+  <div class="markdown level1 summary"><p>Initialize the SurrealDB schema for all wolverine tables using the AeroDB schema pipeline.
+Creates tables, fields, and indexes via <a class="xref" href="AeroDB.SchemaManager.html">SchemaManager</a>.
+Called during store initialization. Idempotent — uses IF NOT EXISTS variants.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task InitializeSchemaAsync()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBMessageStore_LoadAllNodesAsync_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.LoadAllNodesAsync*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBMessageStore_LoadAllNodesAsync_System_Threading_CancellationToken_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.LoadAllNodesAsync(System.Threading.CancellationToken)">LoadAllNodesAsync(CancellationToken)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;IReadOnlyList&lt;WolverineNode&gt;&gt; LoadAllNodesAsync(CancellationToken cancellationToken)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<span class="xref">WolverineNode</span>&gt;&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBMessageStore_LoadNodeAgentStateAsync_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.LoadNodeAgentStateAsync*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBMessageStore_LoadNodeAgentStateAsync_System_Threading_CancellationToken_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.LoadNodeAgentStateAsync(System.Threading.CancellationToken)">LoadNodeAgentStateAsync(CancellationToken)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;NodeAgentState&gt; LoadNodeAgentStateAsync(CancellationToken cancellationToken)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<span class="xref">NodeAgentState</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBMessageStore_LoadNodeAsync_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.LoadNodeAsync*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBMessageStore_LoadNodeAsync_System_Guid_System_Threading_CancellationToken_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.LoadNodeAsync(System.Guid,System.Threading.CancellationToken)">LoadNodeAsync(Guid, CancellationToken)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;WolverineNode?&gt; LoadNodeAsync(Guid nodeId, CancellationToken cancellationToken)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a></td>
+        <td><span class="parametername">nodeId</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<span class="xref">WolverineNode</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBMessageStore_LoadOutgoingAsync_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.LoadOutgoingAsync*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBMessageStore_LoadOutgoingAsync_System_Uri_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.LoadOutgoingAsync(System.Uri)">LoadOutgoingAsync(Uri)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;IReadOnlyList&lt;Envelope&gt;&gt; LoadOutgoingAsync(Uri destination)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Uri</span></td>
+        <td><span class="parametername">destination</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<span class="xref">Envelope</span>&gt;&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBMessageStore_LoadPageOfGloballyOwnedIncomingAsync_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.LoadPageOfGloballyOwnedIncomingAsync*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBMessageStore_LoadPageOfGloballyOwnedIncomingAsync_System_Uri_System_Int32_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.LoadPageOfGloballyOwnedIncomingAsync(System.Uri,System.Int32)">LoadPageOfGloballyOwnedIncomingAsync(Uri, int)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;IReadOnlyList&lt;Envelope&gt;&gt; LoadPageOfGloballyOwnedIncomingAsync(Uri listenerAddress, int limit)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Uri</span></td>
+        <td><span class="parametername">listenerAddress</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><span class="parametername">limit</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<span class="xref">Envelope</span>&gt;&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBMessageStore_LogRecordsAsync_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.LogRecordsAsync*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBMessageStore_LogRecordsAsync_Wolverine_Runtime_Agents_NodeRecord___" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.LogRecordsAsync(Wolverine.Runtime.Agents.NodeRecord[])">LogRecordsAsync(params NodeRecord[])</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task LogRecordsAsync(params NodeRecord[] records)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">NodeRecord</span>[]</td>
+        <td><span class="parametername">records</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBMessageStore_MarkHealthCheckAsync_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.MarkHealthCheckAsync*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBMessageStore_MarkHealthCheckAsync_Wolverine_Runtime_Agents_WolverineNode_System_Threading_CancellationToken_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.MarkHealthCheckAsync(Wolverine.Runtime.Agents.WolverineNode,System.Threading.CancellationToken)">MarkHealthCheckAsync(WolverineNode, CancellationToken)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task MarkHealthCheckAsync(WolverineNode node, CancellationToken cancellationToken)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">WolverineNode</span></td>
+        <td><span class="parametername">node</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBMessageStore_MarkIncomingEnvelopeAsHandledAsync_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.MarkIncomingEnvelopeAsHandledAsync*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBMessageStore_MarkIncomingEnvelopeAsHandledAsync_System_Collections_Generic_IReadOnlyList_Wolverine_Envelope__" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.MarkIncomingEnvelopeAsHandledAsync(System.Collections.Generic.IReadOnlyList{Wolverine.Envelope})">MarkIncomingEnvelopeAsHandledAsync(IReadOnlyList&lt;Envelope&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task MarkIncomingEnvelopeAsHandledAsync(IReadOnlyList&lt;Envelope&gt; envelopes)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<span class="xref">Envelope</span>&gt;</td>
+        <td><span class="parametername">envelopes</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBMessageStore_MarkIncomingEnvelopeAsHandledAsync_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.MarkIncomingEnvelopeAsHandledAsync*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBMessageStore_MarkIncomingEnvelopeAsHandledAsync_Wolverine_Envelope_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.MarkIncomingEnvelopeAsHandledAsync(Wolverine.Envelope)">MarkIncomingEnvelopeAsHandledAsync(Envelope)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task MarkIncomingEnvelopeAsHandledAsync(Envelope envelope)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Envelope</span></td>
+        <td><span class="parametername">envelope</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBMessageStore_MigrateAsync_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.MigrateAsync*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBMessageStore_MigrateAsync" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.MigrateAsync">MigrateAsync()</h4>
+  <div class="markdown level1 summary"><p>Apply any necessary database migrations to bring the underlying envelope
+storage to the configured requirements of the Wolverine system</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task MigrateAsync()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBMessageStore_MoveToDeadLetterStorageAsync_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.MoveToDeadLetterStorageAsync*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBMessageStore_MoveToDeadLetterStorageAsync_Wolverine_Envelope_System_Exception_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.MoveToDeadLetterStorageAsync(Wolverine.Envelope,System.Exception)">MoveToDeadLetterStorageAsync(Envelope, Exception?)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task MoveToDeadLetterStorageAsync(Envelope envelope, Exception? exception)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Envelope</span></td>
+        <td><span class="parametername">envelope</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">Exception</a></td>
+        <td><span class="parametername">exception</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBMessageStore_OverwriteHealthCheckTimeAsync_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.OverwriteHealthCheckTimeAsync*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBMessageStore_OverwriteHealthCheckTimeAsync_System_Guid_System_DateTimeOffset_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.OverwriteHealthCheckTimeAsync(System.Guid,System.DateTimeOffset)">OverwriteHealthCheckTimeAsync(Guid, DateTimeOffset)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task OverwriteHealthCheckTimeAsync(Guid nodeId, DateTimeOffset lastHeartbeatTime)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a></td>
+        <td><span class="parametername">nodeId</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.datetimeoffset">DateTimeOffset</a></td>
+        <td><span class="parametername">lastHeartbeatTime</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBMessageStore_PersistAgentRestrictionsAsync_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.PersistAgentRestrictionsAsync*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBMessageStore_PersistAgentRestrictionsAsync_System_Collections_Generic_IReadOnlyList_Wolverine_Runtime_Agents_AgentRestriction__System_Threading_CancellationToken_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.PersistAgentRestrictionsAsync(System.Collections.Generic.IReadOnlyList{Wolverine.Runtime.Agents.AgentRestriction},System.Threading.CancellationToken)">PersistAgentRestrictionsAsync(IReadOnlyList&lt;AgentRestriction&gt;, CancellationToken)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task PersistAgentRestrictionsAsync(IReadOnlyList&lt;AgentRestriction&gt; restrictions, CancellationToken ct)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<span class="xref">AgentRestriction</span>&gt;</td>
+        <td><span class="parametername">restrictions</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">ct</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBMessageStore_PersistAsync_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.PersistAsync*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBMessageStore_PersistAsync_Wolverine_Runtime_Agents_WolverineNode_System_Threading_CancellationToken_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.PersistAsync(Wolverine.Runtime.Agents.WolverineNode,System.Threading.CancellationToken)">PersistAsync(WolverineNode, CancellationToken)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;int&gt; PersistAsync(WolverineNode node, CancellationToken cancellationToken)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">WolverineNode</span></td>
+        <td><span class="parametername">node</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBMessageStore_PromoteToMain_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.PromoteToMain*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBMessageStore_PromoteToMain_Wolverine_Runtime_IWolverineRuntime_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.PromoteToMain(Wolverine.Runtime.IWolverineRuntime)">PromoteToMain(IWolverineRuntime)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void PromoteToMain(IWolverineRuntime runtime)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IWolverineRuntime</span></td>
+        <td><span class="parametername">runtime</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBMessageStore_QueryAsync_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.QueryAsync*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBMessageStore_QueryAsync_Wolverine_Persistence_Durability_DeadLetterManagement_DeadLetterEnvelopeQuery_System_Threading_CancellationToken_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.QueryAsync(Wolverine.Persistence.Durability.DeadLetterManagement.DeadLetterEnvelopeQuery,System.Threading.CancellationToken)">QueryAsync(DeadLetterEnvelopeQuery, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Query for detailed results of dead letter queued envelopes matching the specified query</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;DeadLetterEnvelopeResults&gt; QueryAsync(DeadLetterEnvelopeQuery query, CancellationToken token)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">DeadLetterEnvelopeQuery</span></td>
+        <td><span class="parametername">query</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">token</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<span class="xref">DeadLetterEnvelopeResults</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBMessageStore_QueryAsync_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.QueryAsync*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBMessageStore_QueryAsync_Wolverine_Persistence_Durability_ScheduledMessageManagement_ScheduledMessageQuery_System_Threading_CancellationToken_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.QueryAsync(Wolverine.Persistence.Durability.ScheduledMessageManagement.ScheduledMessageQuery,System.Threading.CancellationToken)">QueryAsync(ScheduledMessageQuery, CancellationToken)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;ScheduledMessageResults&gt; QueryAsync(ScheduledMessageQuery query, CancellationToken token)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ScheduledMessageQuery</span></td>
+        <td><span class="parametername">query</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">token</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<span class="xref">ScheduledMessageResults</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBMessageStore_ReassignIncomingAsync_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.ReassignIncomingAsync*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBMessageStore_ReassignIncomingAsync_System_Int32_System_Collections_Generic_IReadOnlyList_Wolverine_Envelope__" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.ReassignIncomingAsync(System.Int32,System.Collections.Generic.IReadOnlyList{Wolverine.Envelope})">ReassignIncomingAsync(int, IReadOnlyList&lt;Envelope&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task ReassignIncomingAsync(int ownerId, IReadOnlyList&lt;Envelope&gt; incoming)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><span class="parametername">ownerId</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<span class="xref">Envelope</span>&gt;</td>
+        <td><span class="parametername">incoming</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBMessageStore_RebuildAsync_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.RebuildAsync*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBMessageStore_RebuildAsync" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.RebuildAsync">RebuildAsync()</h4>
+  <div class="markdown level1 summary"><p>Rebuilds the envelope storage and clears out any
+persisted state</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task RebuildAsync()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBMessageStore_ReleaseAllOwnershipAsync_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.ReleaseAllOwnershipAsync*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBMessageStore_ReleaseAllOwnershipAsync" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.ReleaseAllOwnershipAsync">ReleaseAllOwnershipAsync()</h4>
+  <div class="markdown level1 summary"><p>Release the node specific ownership of all persisted envelopes so they
+may be claimed by other nodes</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task ReleaseAllOwnershipAsync()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBMessageStore_ReleaseAllOwnershipAsync_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.ReleaseAllOwnershipAsync*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBMessageStore_ReleaseAllOwnershipAsync_System_Int32_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.ReleaseAllOwnershipAsync(System.Int32)">ReleaseAllOwnershipAsync(int)</h4>
+  <div class="markdown level1 summary"><p>Release the node specific ownership of all persisted envelopes for a specific node so they
+may be claimed by other nodes</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task ReleaseAllOwnershipAsync(int ownerId)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><span class="parametername">ownerId</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBMessageStore_ReleaseIncomingAsync_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.ReleaseIncomingAsync*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBMessageStore_ReleaseIncomingAsync_System_Int32_System_Uri_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.ReleaseIncomingAsync(System.Int32,System.Uri)">ReleaseIncomingAsync(int, Uri)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task ReleaseIncomingAsync(int ownerId, Uri receivedAt)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><span class="parametername">ownerId</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">Uri</span></td>
+        <td><span class="parametername">receivedAt</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBMessageStore_ReleaseLeadershipLockAsync_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.ReleaseLeadershipLockAsync*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBMessageStore_ReleaseLeadershipLockAsync" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.ReleaseLeadershipLockAsync">ReleaseLeadershipLockAsync()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task ReleaseLeadershipLockAsync()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBMessageStore_RemoveAssignmentAsync_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.RemoveAssignmentAsync*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBMessageStore_RemoveAssignmentAsync_System_Guid_System_Uri_System_Threading_CancellationToken_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.RemoveAssignmentAsync(System.Guid,System.Uri,System.Threading.CancellationToken)">RemoveAssignmentAsync(Guid, Uri, CancellationToken)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task RemoveAssignmentAsync(Guid nodeId, Uri agentUri, CancellationToken ct)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a></td>
+        <td><span class="parametername">nodeId</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">Uri</span></td>
+        <td><span class="parametername">agentUri</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">ct</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBMessageStore_ReplayAsync_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.ReplayAsync*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBMessageStore_ReplayAsync_Wolverine_Persistence_Durability_DeadLetterManagement_DeadLetterEnvelopeQuery_System_Threading_CancellationToken_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.ReplayAsync(Wolverine.Persistence.Durability.DeadLetterManagement.DeadLetterEnvelopeQuery,System.Threading.CancellationToken)">ReplayAsync(DeadLetterEnvelopeQuery, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Marks all dead letter envelopes matching the query as replayable</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task ReplayAsync(DeadLetterEnvelopeQuery query, CancellationToken token)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">DeadLetterEnvelopeQuery</span></td>
+        <td><span class="parametername">query</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">token</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBMessageStore_RescheduleAsync_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.RescheduleAsync*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBMessageStore_RescheduleAsync_System_Guid_System_DateTimeOffset_System_Threading_CancellationToken_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.RescheduleAsync(System.Guid,System.DateTimeOffset,System.Threading.CancellationToken)">RescheduleAsync(Guid, DateTimeOffset, CancellationToken)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task RescheduleAsync(Guid envelopeId, DateTimeOffset newExecutionTime, CancellationToken token)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a></td>
+        <td><span class="parametername">envelopeId</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.datetimeoffset">DateTimeOffset</a></td>
+        <td><span class="parametername">newExecutionTime</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">token</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBMessageStore_RescheduleExistingEnvelopeForRetryAsync_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.RescheduleExistingEnvelopeForRetryAsync*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBMessageStore_RescheduleExistingEnvelopeForRetryAsync_Wolverine_Envelope_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.RescheduleExistingEnvelopeForRetryAsync(Wolverine.Envelope)">RescheduleExistingEnvelopeForRetryAsync(Envelope)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task RescheduleExistingEnvelopeForRetryAsync(Envelope envelope)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Envelope</span></td>
+        <td><span class="parametername">envelope</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBMessageStore_ScheduleExecutionAsync_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.ScheduleExecutionAsync*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBMessageStore_ScheduleExecutionAsync_Wolverine_Envelope_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.ScheduleExecutionAsync(Wolverine.Envelope)">ScheduleExecutionAsync(Envelope)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task ScheduleExecutionAsync(Envelope envelope)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Envelope</span></td>
+        <td><span class="parametername">envelope</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBMessageStore_StartScheduledJobs_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.StartScheduledJobs*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBMessageStore_StartScheduledJobs_Wolverine_Runtime_IWolverineRuntime_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.StartScheduledJobs(Wolverine.Runtime.IWolverineRuntime)">StartScheduledJobs(IWolverineRuntime)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IAgent StartScheduledJobs(IWolverineRuntime runtime)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IWolverineRuntime</span></td>
+        <td><span class="parametername">runtime</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IAgent</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBMessageStore_StoreIncomingAsync_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.StoreIncomingAsync*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBMessageStore_StoreIncomingAsync_System_Collections_Generic_IReadOnlyList_Wolverine_Envelope__" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.StoreIncomingAsync(System.Collections.Generic.IReadOnlyList{Wolverine.Envelope})">StoreIncomingAsync(IReadOnlyList&lt;Envelope&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task StoreIncomingAsync(IReadOnlyList&lt;Envelope&gt; envelopes)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<span class="xref">Envelope</span>&gt;</td>
+        <td><span class="parametername">envelopes</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBMessageStore_StoreIncomingAsync_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.StoreIncomingAsync*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBMessageStore_StoreIncomingAsync_Wolverine_Envelope_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.StoreIncomingAsync(Wolverine.Envelope)">StoreIncomingAsync(Envelope)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task StoreIncomingAsync(Envelope envelope)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Envelope</span></td>
+        <td><span class="parametername">envelope</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBMessageStore_StoreOutgoingAsync_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.StoreOutgoingAsync*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBMessageStore_StoreOutgoingAsync_Wolverine_Envelope_System_Int32_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.StoreOutgoingAsync(Wolverine.Envelope,System.Int32)">StoreOutgoingAsync(Envelope, int)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task StoreOutgoingAsync(Envelope envelope, int ownerId)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Envelope</span></td>
+        <td><span class="parametername">envelope</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><span class="parametername">ownerId</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBMessageStore_SummarizeAllAsync_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.SummarizeAllAsync*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBMessageStore_SummarizeAllAsync_System_String_JasperFx_Core_TimeRange_System_Threading_CancellationToken_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.SummarizeAllAsync(System.String,JasperFx.Core.TimeRange,System.Threading.CancellationToken)">SummarizeAllAsync(string, TimeRange, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Fetch a summary of the persisted dead letter queue envelopes</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;IReadOnlyList&lt;DeadLetterQueueCount&gt;&gt; SummarizeAllAsync(string serviceName, TimeRange range, CancellationToken token)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">serviceName</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">TimeRange</span></td>
+        <td><span class="parametername">range</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">token</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<span class="xref">DeadLetterQueueCount</span>&gt;&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBMessageStore_SummarizeAsync_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.SummarizeAsync*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBMessageStore_SummarizeAsync_System_String_System_Threading_CancellationToken_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.SummarizeAsync(System.String,System.Threading.CancellationToken)">SummarizeAsync(string, CancellationToken)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;IReadOnlyList&lt;ScheduledMessageCount&gt;&gt; SummarizeAsync(string serviceName, CancellationToken token)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">serviceName</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">token</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<span class="xref">ScheduledMessageCount</span>&gt;&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs">View Source</a>
+  </span>
+  <a id="AeroDB_WolverineFx_AeroDBMessageStore_TryAttainLeadershipLockAsync_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.TryAttainLeadershipLockAsync*"></a>
+  <h4 id="AeroDB_WolverineFx_AeroDBMessageStore_TryAttainLeadershipLockAsync_System_Threading_CancellationToken_" data-uid="AeroDB.WolverineFx.AeroDBMessageStore.TryAttainLeadershipLockAsync(System.Threading.CancellationToken)">TryAttainLeadershipLockAsync(CancellationToken)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;bool&gt; TryAttainLeadershipLockAsync(CancellationToken token)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">token</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <span class="xref">Wolverine.Persistence.Durability.IMessageStore</span>
+  </div>
+  <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iasyncdisposable">IAsyncDisposable</a>
+  </div>
+  <div>
+      <span class="xref">Wolverine.Persistence.Durability.IMessageInbox</span>
+  </div>
+  <div>
+      <span class="xref">Wolverine.Persistence.Durability.IMessageOutbox</span>
+  </div>
+  <div>
+      <span class="xref">Wolverine.Persistence.Durability.IDeadLetters</span>
+  </div>
+  <div>
+      <span class="xref">Wolverine.Runtime.Agents.INodeAgentPersistence</span>
+  </div>
+  <div>
+      <span class="xref">Wolverine.Persistence.Durability.IMessageStoreAdmin</span>
+  </div>
+  <div>
+      <span class="xref">Wolverine.Persistence.Durability.ScheduledMessageManagement.IScheduledMessages</span>
+  </div>
+
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBMessageStore.cs" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In this article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      Made with 💜 by Microbians — Copyright © 2026 — https://microbians.io/
+      
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.min.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

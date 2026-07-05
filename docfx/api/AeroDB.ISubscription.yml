@@ -1,0 +1,485 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.ISubscription
+  commentId: T:AeroDB.ISubscription
+  id: ISubscription
+  parent: AeroDB
+  children:
+  - AeroDB.ISubscription.EventTypes
+  - AeroDB.ISubscription.ProcessEventsAsync(System.Collections.Generic.IReadOnlyList{AeroDB.IEvent},AeroDB.IDocumentOperations,System.Threading.CancellationToken)
+  - AeroDB.ISubscription.StartAsync(System.Threading.CancellationToken)
+  - AeroDB.ISubscription.StopAsync(System.Threading.CancellationToken)
+  - AeroDB.ISubscription.SubscriptionName
+  langs:
+  - csharp
+  - vb
+  name: ISubscription
+  nameWithType: ISubscription
+  fullName: AeroDB.ISubscription
+  type: Interface
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/ISubscription.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Event subscription for forwarding events to external handlers.
+
+    Implement this interface to receive and process events as they are appended
+
+    to streams. Subscriptions are managed by the async daemon and are tracked
+
+    by <xref href="AeroDB.ISubscription.SubscriptionName" data-throw-if-not-resolved="false"></xref> for progress checkpointing.
+
+    <br />
+
+    This is a simplified Marten-parity interface. For advanced subscriptions
+
+    with JasperFx types (<code>EventRange</code>,
+
+    <code>ISubscriptionController</code>),
+
+    use <xref href="AeroDB.IAeroDBSubscription" data-throw-if-not-resolved="false"></xref> instead.
+  example: []
+  syntax:
+    content: public interface ISubscription
+    content.vb: Public Interface ISubscription
+- uid: AeroDB.ISubscription.ProcessEventsAsync(System.Collections.Generic.IReadOnlyList{AeroDB.IEvent},AeroDB.IDocumentOperations,System.Threading.CancellationToken)
+  commentId: M:AeroDB.ISubscription.ProcessEventsAsync(System.Collections.Generic.IReadOnlyList{AeroDB.IEvent},AeroDB.IDocumentOperations,System.Threading.CancellationToken)
+  id: ProcessEventsAsync(System.Collections.Generic.IReadOnlyList{AeroDB.IEvent},AeroDB.IDocumentOperations,System.Threading.CancellationToken)
+  parent: AeroDB.ISubscription
+  langs:
+  - csharp
+  - vb
+  name: ProcessEventsAsync(IReadOnlyList<IEvent>, IDocumentOperations, CancellationToken)
+  nameWithType: ISubscription.ProcessEventsAsync(IReadOnlyList<IEvent>, IDocumentOperations, CancellationToken)
+  fullName: AeroDB.ISubscription.ProcessEventsAsync(System.Collections.Generic.IReadOnlyList<AeroDB.IEvent>, AeroDB.IDocumentOperations, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/ISubscription.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Called when new events are appended to a stream. The implementation
+
+    may use <code class="paramref">operations</code> for read/write access to the
+
+    document store within the same transactional boundary.
+  example: []
+  syntax:
+    content: Task ProcessEventsAsync(IReadOnlyList<IEvent> events, IDocumentOperations operations, CancellationToken ct)
+    parameters:
+    - id: events
+      type: System.Collections.Generic.IReadOnlyList{AeroDB.IEvent}
+      description: The batch of new events to process.
+    - id: operations
+      type: AeroDB.IDocumentOperations
+      description: Document operations for reading/writing within the session.
+    - id: ct
+      type: System.Threading.CancellationToken
+      description: Cancellation token.
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Function ProcessEventsAsync(events As IReadOnlyList(Of IEvent), operations As IDocumentOperations, ct As CancellationToken) As Task
+  overload: AeroDB.ISubscription.ProcessEventsAsync*
+  nameWithType.vb: ISubscription.ProcessEventsAsync(IReadOnlyList(Of IEvent), IDocumentOperations, CancellationToken)
+  fullName.vb: AeroDB.ISubscription.ProcessEventsAsync(System.Collections.Generic.IReadOnlyList(Of AeroDB.IEvent), AeroDB.IDocumentOperations, System.Threading.CancellationToken)
+  name.vb: ProcessEventsAsync(IReadOnlyList(Of IEvent), IDocumentOperations, CancellationToken)
+- uid: AeroDB.ISubscription.StartAsync(System.Threading.CancellationToken)
+  commentId: M:AeroDB.ISubscription.StartAsync(System.Threading.CancellationToken)
+  id: StartAsync(System.Threading.CancellationToken)
+  parent: AeroDB.ISubscription
+  langs:
+  - csharp
+  - vb
+  name: StartAsync(CancellationToken)
+  nameWithType: ISubscription.StartAsync(CancellationToken)
+  fullName: AeroDB.ISubscription.StartAsync(System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/ISubscription.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Called when the subscription is first started (e.g., daemon initialization).
+  example: []
+  syntax:
+    content: Task StartAsync(CancellationToken ct = default)
+    parameters:
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Function StartAsync(ct As CancellationToken = Nothing) As Task
+  overload: AeroDB.ISubscription.StartAsync*
+- uid: AeroDB.ISubscription.StopAsync(System.Threading.CancellationToken)
+  commentId: M:AeroDB.ISubscription.StopAsync(System.Threading.CancellationToken)
+  id: StopAsync(System.Threading.CancellationToken)
+  parent: AeroDB.ISubscription
+  langs:
+  - csharp
+  - vb
+  name: StopAsync(CancellationToken)
+  nameWithType: ISubscription.StopAsync(CancellationToken)
+  fullName: AeroDB.ISubscription.StopAsync(System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/ISubscription.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Called when the subscription is being shut down (e.g., daemon disposal).
+  example: []
+  syntax:
+    content: Task StopAsync(CancellationToken ct = default)
+    parameters:
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Function StopAsync(ct As CancellationToken = Nothing) As Task
+  overload: AeroDB.ISubscription.StopAsync*
+- uid: AeroDB.ISubscription.EventTypes
+  commentId: P:AeroDB.ISubscription.EventTypes
+  id: EventTypes
+  parent: AeroDB.ISubscription
+  langs:
+  - csharp
+  - vb
+  name: EventTypes
+  nameWithType: ISubscription.EventTypes
+  fullName: AeroDB.ISubscription.EventTypes
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/ISubscription.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Filter: only events of these types trigger this subscription.
+
+    When empty or null, all event types are processed.
+  example: []
+  syntax:
+    content: Type[] EventTypes { get; }
+    parameters: []
+    return:
+      type: System.Type[]
+    content.vb: ReadOnly Property EventTypes As Type()
+  overload: AeroDB.ISubscription.EventTypes*
+- uid: AeroDB.ISubscription.SubscriptionName
+  commentId: P:AeroDB.ISubscription.SubscriptionName
+  id: SubscriptionName
+  parent: AeroDB.ISubscription
+  langs:
+  - csharp
+  - vb
+  name: SubscriptionName
+  nameWithType: ISubscription.SubscriptionName
+  fullName: AeroDB.ISubscription.SubscriptionName
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/ISubscription.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Subscription name for diagnostics and progress tracking.
+
+    Must be unique within the store.
+  example: []
+  syntax:
+    content: string SubscriptionName { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: ReadOnly Property SubscriptionName As String
+  overload: AeroDB.ISubscription.SubscriptionName*
+references:
+- uid: AeroDB.ISubscription.SubscriptionName
+  commentId: P:AeroDB.ISubscription.SubscriptionName
+  isExternal: true
+  href: AeroDB.ISubscription.html#AeroDB_ISubscription_SubscriptionName
+  name: SubscriptionName
+  nameWithType: ISubscription.SubscriptionName
+  fullName: AeroDB.ISubscription.SubscriptionName
+- uid: AeroDB.IAeroDBSubscription
+  commentId: T:AeroDB.IAeroDBSubscription
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IAeroDBSubscription.html
+  name: IAeroDBSubscription
+  nameWithType: IAeroDBSubscription
+  fullName: AeroDB.IAeroDBSubscription
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: AeroDB.ISubscription.ProcessEventsAsync*
+  commentId: Overload:AeroDB.ISubscription.ProcessEventsAsync
+  isExternal: true
+  href: AeroDB.ISubscription.html#AeroDB_ISubscription_ProcessEventsAsync_System_Collections_Generic_IReadOnlyList_AeroDB_IEvent__AeroDB_IDocumentOperations_System_Threading_CancellationToken_
+  name: ProcessEventsAsync
+  nameWithType: ISubscription.ProcessEventsAsync
+  fullName: AeroDB.ISubscription.ProcessEventsAsync
+- uid: System.Collections.Generic.IReadOnlyList{AeroDB.IEvent}
+  commentId: T:System.Collections.Generic.IReadOnlyList{AeroDB.IEvent}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyList`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<IEvent>
+  nameWithType: IReadOnlyList<IEvent>
+  fullName: System.Collections.Generic.IReadOnlyList<AeroDB.IEvent>
+  nameWithType.vb: IReadOnlyList(Of IEvent)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of AeroDB.IEvent)
+  name.vb: IReadOnlyList(Of IEvent)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - uid: AeroDB.IEvent
+    name: IEvent
+    isExternal: true
+    href: AeroDB.IEvent.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.IEvent
+    name: IEvent
+    isExternal: true
+    href: AeroDB.IEvent.html
+  - name: )
+- uid: AeroDB.IDocumentOperations
+  commentId: T:AeroDB.IDocumentOperations
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IDocumentOperations.html
+  name: IDocumentOperations
+  nameWithType: IDocumentOperations
+  fullName: AeroDB.IDocumentOperations
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: System.Collections.Generic.IReadOnlyList`1
+  commentId: T:System.Collections.Generic.IReadOnlyList`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<T>
+  nameWithType: IReadOnlyList<T>
+  fullName: System.Collections.Generic.IReadOnlyList<T>
+  nameWithType.vb: IReadOnlyList(Of T)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of T)
+  name.vb: IReadOnlyList(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: AeroDB.ISubscription.StartAsync*
+  commentId: Overload:AeroDB.ISubscription.StartAsync
+  isExternal: true
+  href: AeroDB.ISubscription.html#AeroDB_ISubscription_StartAsync_System_Threading_CancellationToken_
+  name: StartAsync
+  nameWithType: ISubscription.StartAsync
+  fullName: AeroDB.ISubscription.StartAsync
+- uid: AeroDB.ISubscription.StopAsync*
+  commentId: Overload:AeroDB.ISubscription.StopAsync
+  isExternal: true
+  href: AeroDB.ISubscription.html#AeroDB_ISubscription_StopAsync_System_Threading_CancellationToken_
+  name: StopAsync
+  nameWithType: ISubscription.StopAsync
+  fullName: AeroDB.ISubscription.StopAsync
+- uid: AeroDB.ISubscription.EventTypes*
+  commentId: Overload:AeroDB.ISubscription.EventTypes
+  isExternal: true
+  href: AeroDB.ISubscription.html#AeroDB_ISubscription_EventTypes
+  name: EventTypes
+  nameWithType: ISubscription.EventTypes
+  fullName: AeroDB.ISubscription.EventTypes
+- uid: System.Type[]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.type
+  name: Type[]
+  nameWithType: Type[]
+  fullName: System.Type[]
+  nameWithType.vb: Type()
+  fullName.vb: System.Type()
+  name.vb: Type()
+  spec.csharp:
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: (
+  - name: )
+- uid: AeroDB.ISubscription.SubscriptionName*
+  commentId: Overload:AeroDB.ISubscription.SubscriptionName
+  isExternal: true
+  href: AeroDB.ISubscription.html#AeroDB_ISubscription_SubscriptionName
+  name: SubscriptionName
+  nameWithType: ISubscription.SubscriptionName
+  fullName: AeroDB.ISubscription.SubscriptionName
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System

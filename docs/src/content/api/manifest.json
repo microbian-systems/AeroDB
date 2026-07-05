@@ -1,0 +1,4485 @@
+{
+  "source_base_path": "D:/proj/microbians/AeroDB/docfx",
+  "xrefmap": "xrefmap.yml",
+  "files": [
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.AccessDefinition.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.AccessDefinition.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.AccessDefinition",
+      "Summary": "<p sourcefile=\"api/AeroDB.AccessDefinition.yml\" sourcestartlinenumber=\"1\">SurrealDB DEFINE ACCESS configuration (replaces DEFINE LOGIN in v3+).</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.ActionType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.ActionType.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.ActionType",
+      "Summary": "<p sourcefile=\"api/AeroDB.ActionType.yml\" sourcestartlinenumber=\"1\">Determines what action a projection should take after processing events.\nReturned by <xref href=\"AeroDB.InlineProjection%601.DetermineAction(%600%2cSystem.Collections.Generic.IReadOnlyList%7bAeroDB.IEvent%7d)\" data-throw-if-not-resolved=\"false\"></xref>.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.AdvancedOptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.AdvancedOptions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.AdvancedOptions",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.AeroDBAdvancedSql.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.AeroDBAdvancedSql.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.AeroDBAdvancedSql",
+      "Summary": "<p sourcefile=\"api/AeroDB.AeroDBAdvancedSql.yml\" sourcestartlinenumber=\"1\">Advanced SQL query API for multi-document tuple queries and result streaming.\nAccess via <code>session.AdvancedSql</code>.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.AeroDBAdvancedSqlExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.AeroDBAdvancedSqlExtensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.AeroDBAdvancedSqlExtensions",
+      "Summary": "<p sourcefile=\"api/AeroDB.AeroDBAdvancedSqlExtensions.yml\" sourcestartlinenumber=\"1\">Extensions to expose <xref href=\"AeroDB.AeroDBAdvancedSql\" data-throw-if-not-resolved=\"false\"></xref> on session types.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.AeroDBConfigurationServiceCollectionExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.AeroDBConfigurationServiceCollectionExtensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.AeroDBConfigurationServiceCollectionExtensions",
+      "Summary": "<p sourcefile=\"api/AeroDB.AeroDBConfigurationServiceCollectionExtensions.yml\" sourcestartlinenumber=\"1\">Extension methods for registering AeroDB configuration with the DI container.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.AeroDBDaemonHealthCheck.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.AeroDBDaemonHealthCheck.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.AeroDBDaemonHealthCheck",
+      "Summary": "<p sourcefile=\"api/AeroDB.AeroDBDaemonHealthCheck.yml\" sourcestartlinenumber=\"1\">ASP.NET Core health check for the AeroDB async daemon.\nReports Healthy/Degraded/Unhealthy based on daemon state.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.AeroDBEfCoreServiceCollectionExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.AeroDBEfCoreServiceCollectionExtensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.AeroDBEfCoreServiceCollectionExtensions",
+      "Summary": "<p sourcefile=\"api/AeroDB.AeroDBEfCoreServiceCollectionExtensions.yml\" sourcestartlinenumber=\"1\">DI registration extensions for AeroDB EF Core integration.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.AeroDBEfCoreTransaction.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.AeroDBEfCoreTransaction.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.AeroDBEfCoreTransaction",
+      "Summary": "<p sourcefile=\"api/AeroDB.AeroDBEfCoreTransaction.yml\" sourcestartlinenumber=\"1\">Wraps a AeroDB document session in an EF Core IDbContextTransaction,\nallowing simultaneous SurrealDB + EF Core operations.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.AeroDBEfCoreTransactionManager-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.AeroDBEfCoreTransactionManager-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.AeroDBEfCoreTransactionManager<TDbContext>",
+      "Summary": "<p sourcefile=\"api/AeroDB.AeroDBEfCoreTransactionManager-1.yml\" sourcestartlinenumber=\"1\">EF Core transaction manager that wraps AeroDB sessions.\nUse when both EF Core and AeroDB operations must be atomic.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.AeroDBHealthCheckExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.AeroDBHealthCheckExtensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.AeroDBHealthCheckExtensions",
+      "Summary": "<p sourcefile=\"api/AeroDB.AeroDBHealthCheckExtensions.yml\" sourcestartlinenumber=\"1\">Extension methods for registering AeroDB health checks with ASP.NET Core.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.AeroDBHttpExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.AeroDBHttpExtensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.AeroDBHttpExtensions",
+      "Summary": "<p sourcefile=\"api/AeroDB.AeroDBHttpExtensions.yml\" sourcestartlinenumber=\"1\">ASP.NET streaming helper extensions on <xref href=\"AeroDB.IQuerySession\" data-throw-if-not-resolved=\"false\"></xref>.\nProvides Marten-compatible <code>WriteById&lt;T&gt;</code> and <code>WriteArray&lt;T&gt;</code>\nmethods for writing documents directly to HTTP responses.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.AeroDBIgnoreAttribute.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.AeroDBIgnoreAttribute.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.AeroDBIgnoreAttribute",
+      "Summary": "<p sourcefile=\"api/AeroDB.AeroDBIgnoreAttribute.yml\" sourcestartlinenumber=\"1\">Marks a property on a compiled query class that should be ignored during\nparameter discovery. Properties decorated with this attribute are not\nmapped to SQL parameters.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.AeroDBMlQuery-2.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.AeroDBMlQuery-2.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.AeroDBMlQuery<TInput, TOutput>",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.AeroDBSearchQuery-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.AeroDBSearchQuery-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.AeroDBSearchQuery<T>",
+      "Summary": "<p sourcefile=\"api/AeroDB.AeroDBSearchQuery-1.yml\" sourcestartlinenumber=\"1\">Fluent search query builder for SurrealDB. Not intended for direct construction;\nuse <code>session.Search&lt;T&gt;()</code> instead.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.AeroDBServiceCollectionExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.AeroDBServiceCollectionExtensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.AeroDBServiceCollectionExtensions",
+      "Summary": "<p sourcefile=\"api/AeroDB.AeroDBServiceCollectionExtensions.yml\" sourcestartlinenumber=\"1\">Extension methods for registering AeroDB services with the DI container.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.AeroDBSpatialQuery-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.AeroDBSpatialQuery-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.AeroDBSpatialQuery<T>",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.AeroDBSubscriptionBase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.AeroDBSubscriptionBase.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.AeroDBSubscriptionBase",
+      "Summary": "<p sourcefile=\"api/AeroDB.AeroDBSubscriptionBase.yml\" sourcestartlinenumber=\"1\">Base class for AeroDB event subscriptions with built-in event type filtering.\nOverride <xref href=\"AeroDB.AeroDBSubscriptionBase.ProcessEventsAsync(JasperFx.Events.Projections.EventRange%2cJasperFx.Events.Daemon.ISubscriptionController%2cAeroDB.IDocumentSession%2cSystem.Threading.CancellationToken)\" data-throw-if-not-resolved=\"false\"></xref> to implement custom logic.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.AeroDBTimeSeriesQuery-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.AeroDBTimeSeriesQuery-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.AeroDBTimeSeriesQuery<T>",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.AggregateCache.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.AggregateCache.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.AggregateCache",
+      "Summary": "<p sourcefile=\"api/AeroDB.AggregateCache.yml\" sourcestartlinenumber=\"1\">LRU cache for projected aggregate documents.\nUsed by the async daemon to avoid reloading aggregates on every poll cycle.\nThread-safe for concurrent access.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.AggregateQueryBuilder-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.AggregateQueryBuilder-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.AggregateQueryBuilder<T>",
+      "Summary": "<p sourcefile=\"api/AeroDB.AggregateQueryBuilder-1.yml\" sourcestartlinenumber=\"1\">Fluent builder for ad-hoc aggregate queries against SurrealDB views and tables.\nSupports count/sum/min/max/average, field references, raw expressions, and GROUP BY.\nUse via <code>session.Query&lt;T&gt;().AggregateQuery(b =&gt; ...)</code>.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.AggregateQueryExecutor-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.AggregateQueryExecutor-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.AggregateQueryExecutor<T>",
+      "Summary": "<p sourcefile=\"api/AeroDB.AggregateQueryExecutor-1.yml\" sourcestartlinenumber=\"1\">Executes an ad-hoc aggregate query built with <xref href=\"AeroDB.AggregateQueryBuilder%601\" data-throw-if-not-resolved=\"false\"></xref>.\nTranslates the source expression for WHERE/ORDER BY, then overrides SELECT and GROUP BY\nwith the builder's values.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.AggregateQueryExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.AggregateQueryExtensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.AggregateQueryExtensions",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.AnalyzerDefinition.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.AnalyzerDefinition.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.AnalyzerDefinition",
+      "Summary": "<p sourcefile=\"api/AeroDB.AnalyzerDefinition.yml\" sourcestartlinenumber=\"1\">Defines a SurrealDB full-text analyzer (DEFINE ANALYZER).</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.AnalyzerOptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.AnalyzerOptions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.AnalyzerOptions",
+      "Summary": "<p sourcefile=\"api/AeroDB.AnalyzerOptions.yml\" sourcestartlinenumber=\"1\">Configuration for SurrealDB analyzers (DEFINE ANALYZER).\nAccessed via <code>StoreOptions.Schema.Analyzers</code>.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.AppendEventSideEffect.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.AppendEventSideEffect.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.AppendEventSideEffect",
+      "Summary": "<p sourcefile=\"api/AeroDB.AppendEventSideEffect.yml\" sourcestartlinenumber=\"1\">Side effect: append an event to a stream.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.AspNetIdentity.AeroDBRoleStore-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.AspNetIdentity.AeroDBRoleStore-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.AspNetIdentity.AeroDBRoleStore<TRole>",
+      "Summary": "<p sourcefile=\"api/AeroDB.AspNetIdentity.AeroDBRoleStore-1.yml\" sourcestartlinenumber=\"1\">String-key compatibility wrapper for the default ASP.NET Core Identity role type.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.AspNetIdentity.AeroDBRoleStore-2.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.AspNetIdentity.AeroDBRoleStore-2.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.AspNetIdentity.AeroDBRoleStore<TRole, TKey>",
+      "Summary": "<p sourcefile=\"api/AeroDB.AspNetIdentity.AeroDBRoleStore-2.yml\" sourcestartlinenumber=\"1\">SurrealDB-backed store for <code class=\"typeparamref\">TRole</code> roles,\nimplementing <xref href=\"Microsoft.AspNetCore.Identity.IRoleStore%601\" data-throw-if-not-resolved=\"false\"></xref> and <xref href=\"Microsoft.AspNetCore.Identity.IQueryableRoleStore%601\" data-throw-if-not-resolved=\"false\"></xref>.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.AspNetIdentity.AeroDBUserStore-2.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.AspNetIdentity.AeroDBUserStore-2.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.AspNetIdentity.AeroDBUserStore<TUser, TRole>",
+      "Summary": "<p sourcefile=\"api/AeroDB.AspNetIdentity.AeroDBUserStore-2.yml\" sourcestartlinenumber=\"1\">String-key compatibility wrapper for the default ASP.NET Core Identity user and role types.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.AspNetIdentity.AeroDBUserStore-3.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.AspNetIdentity.AeroDBUserStore-3.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.AspNetIdentity.AeroDBUserStore<TUser, TRole, TKey>",
+      "Summary": "<p sourcefile=\"api/AeroDB.AspNetIdentity.AeroDBUserStore-3.yml\" sourcestartlinenumber=\"1\">SurrealDB-backed store for <code class=\"typeparamref\">TUser</code> users,\nimplementing all standard ASP.NET Core Identity store interfaces including\npasskey (WebAuthn) support for .NET 10.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.AspNetIdentity.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.AspNetIdentity.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.AspNetIdentity",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.AsyncDaemon.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.AsyncDaemon.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.AsyncDaemon",
+      "Summary": "<p sourcefile=\"api/AeroDB.AsyncDaemon.yml\" sourcestartlinenumber=\"1\">Background worker that polls for new events and applies async projections.\nRuns each projection in its own shard with independent health and progress tracking,\nand persists per-projection watermarks to the mt_projection_progress table for restart resilience.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.BulkInsertMode.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.BulkInsertMode.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.BulkInsertMode",
+      "Summary": "<p sourcefile=\"api/AeroDB.BulkInsertMode.yml\" sourcestartlinenumber=\"1\">Controls bulk insert behavior for document storage.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.BulkOperations.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.BulkOperations.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.BulkOperations",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.CombGuidIdGeneration.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.CombGuidIdGeneration.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.CombGuidIdGeneration",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.CompactStreamOptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.CompactStreamOptions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.CompactStreamOptions",
+      "Summary": "<p sourcefile=\"api/AeroDB.CompactStreamOptions.yml\" sourcestartlinenumber=\"1\">Options for stream compaction. Controls whether an archived copy is retained\nand how many recent events to keep (if any).</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.CompiledPlan.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.CompiledPlan.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.CompiledPlan",
+      "Summary": "<p sourcefile=\"api/AeroDB.CompiledPlan.yml\" sourcestartlinenumber=\"1\">A cached plan for a compiled query type. Stores the SurrealQL skeleton\n(with sentinel parameter values) and the mappings needed to substitute\nlive property values at execution time.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.CompiledQuery-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.CompiledQuery-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.CompiledQuery<T>",
+      "Summary": "<p sourcefile=\"api/AeroDB.CompiledQuery-1.yml\" sourcestartlinenumber=\"1\">A pre-compiled LINQ query. Stores the parsed SurrealQL fragments\nso repeated executions skip expression tree walking.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.CompiledQueryExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.CompiledQueryExtensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.CompiledQueryExtensions",
+      "Summary": "<p sourcefile=\"api/AeroDB.CompiledQueryExtensions.yml\" sourcestartlinenumber=\"1\">Extension methods for compiling and executing compiled queries.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.CompiledQueryPlanner.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.CompiledQueryPlanner.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.CompiledQueryPlanner",
+      "Summary": "<p sourcefile=\"api/AeroDB.CompiledQueryPlanner.yml\" sourcestartlinenumber=\"1\">Static planner for interface-based compiled queries (Marten-compatible pattern).</p>\n<p sourcefile=\"api/AeroDB.CompiledQueryPlanner.yml\" sourcestartlinenumber=\"3\">For each unique compiled query type, the planner builds a <xref href=\"AeroDB.CompiledPlan\" data-throw-if-not-resolved=\"false\"></xref>\nonce and caches it. The plan stores:</p>\n<ul><li>The <xref href=\"AeroDB.SurrealQueryResult\" data-throw-if-not-resolved=\"false\"></xref> skeleton with sentinel parameter values.</li><li>A mapping from SurrealQL parameter keys ($p0, $p1, …) to query property names.</li><li>Which properties (if any) supply the LIMIT / START values.</li></ul>\n<p sourcefile=\"api/AeroDB.CompiledQueryPlanner.yml\" sourcestartlinenumber=\"8\">At execution time the skeleton is cloned, property values are read from the\nquery instance, parameters are substituted, and the query is executed.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.CompiledQueryProvider-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.CompiledQueryProvider-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.CompiledQueryProvider<T>",
+      "Summary": "<p sourcefile=\"api/AeroDB.CompiledQueryProvider-1.yml\" sourcestartlinenumber=\"1\">Query provider for compiled queries — uses pre-parsed SurrealQL from a <xref href=\"AeroDB.CompiledQuery%601\" data-throw-if-not-resolved=\"false\"></xref>\nwithout re-walking the LINQ expression tree.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.CompositeProjection.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.CompositeProjection.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.CompositeProjection",
+      "Summary": "<p sourcefile=\"api/AeroDB.CompositeProjection.yml\" sourcestartlinenumber=\"1\">A projection that composites multiple sub-projections into one logical projection.\nEvents are dispatched to all sub-projections; each sub-projection maintains\nits own document table. Equivalent to Marten's composite projections.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.ComputedIndexOptions.IndexCasing.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.ComputedIndexOptions.IndexCasing.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.ComputedIndexOptions.IndexCasing",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.ComputedIndexOptions.IndexMethod.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.ComputedIndexOptions.IndexMethod.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.ComputedIndexOptions.IndexMethod",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.ComputedIndexOptions.SortOrder.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.ComputedIndexOptions.SortOrder.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.ComputedIndexOptions.SortOrder",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.ComputedIndexOptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.ComputedIndexOptions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.ComputedIndexOptions",
+      "Summary": "<p sourcefile=\"api/AeroDB.ComputedIndexOptions.yml\" sourcestartlinenumber=\"1\">Options for computed/expression-based indexes. Controls index method,\ncasing, sort order, and optional predicate filtering.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.ConcurrencyChecks.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.ConcurrencyChecks.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.ConcurrencyChecks",
+      "Summary": "<p sourcefile=\"api/AeroDB.ConcurrencyChecks.yml\" sourcestartlinenumber=\"1\">Per-session concurrency detection mode. When set to <xref href=\"AeroDB.ConcurrencyChecks.Disabled\" data-throw-if-not-resolved=\"false\"></xref>,\noptimistic concurrency checks are skipped even if the store has\n<code>UseOptimisticConcurrency = true</code>.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.ConcurrencyException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.ConcurrencyException.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.ConcurrencyException",
+      "Summary": "<p sourcefile=\"api/AeroDB.ConcurrencyException.yml\" sourcestartlinenumber=\"1\">Thrown when an optimistic concurrency check fails —\nthe document was modified by another session between load and save.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.DaemonHealthState.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.DaemonHealthState.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.DaemonHealthState",
+      "Summary": "<p sourcefile=\"api/AeroDB.DaemonHealthState.yml\" sourcestartlinenumber=\"1\">Health state snapshot of the <xref href=\"AeroDB.AsyncDaemon\" data-throw-if-not-resolved=\"false\"></xref>.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.DatabaseEndpoint.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.DatabaseEndpoint.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.DatabaseEndpoint",
+      "Summary": "<p sourcefile=\"api/AeroDB.DatabaseEndpoint.yml\" sourcestartlinenumber=\"1\">Configuration for a single SurrealDB endpoint in a multi-host setup.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.DatabasePerTenantSelector.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.DatabasePerTenantSelector.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.DatabasePerTenantSelector",
+      "Summary": "<p sourcefile=\"api/AeroDB.DatabasePerTenantSelector.yml\" sourcestartlinenumber=\"1\">Creates and caches <xref href=\"SurrealDb.Net.ISurrealDbClient\" data-throw-if-not-resolved=\"false\"></xref> instances per tenant when\n<xref href=\"AeroDB.TenancyStyle.DatabasePerTenant\" data-throw-if-not-resolved=\"false\"></xref> is active. Each tenant gets its\nown database: <code>{namespace}_{tenantId}</code>.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.Diagnostics.DocumentMetadataListener.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.Diagnostics.DocumentMetadataListener.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.Diagnostics.DocumentMetadataListener",
+      "Summary": "<p sourcefile=\"api/AeroDB.Diagnostics.DocumentMetadataListener.yml\" sourcestartlinenumber=\"1\">Document session listener that auto-populates <xref href=\"AeroDB.Metadata.IDocumentMetadata\" data-throw-if-not-resolved=\"false\"></xref> properties\n(<xref href=\"AeroDB.Metadata.IDocumentMetadata.CreatedAt\" data-throw-if-not-resolved=\"false\"></xref>, <xref href=\"AeroDB.Metadata.IDocumentMetadata.LastModified\" data-throw-if-not-resolved=\"false\"></xref>,\n<xref href=\"AeroDB.Metadata.IDocumentMetadata.LastModifiedBy\" data-throw-if-not-resolved=\"false\"></xref>) during store operations.</p>\n<p>\nRegister via <code>StoreOptions.Listeners.Add(new DocumentMetadataListener())</code>\nor use the convenience extension method <code>o.EnableDocumentMetadata()</code>.\n</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.Diagnostics.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.Diagnostics.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.Diagnostics",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.DocumentHierarchy.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.DocumentHierarchy.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.DocumentHierarchy",
+      "Summary": "<p sourcefile=\"api/AeroDB.DocumentHierarchy.yml\" sourcestartlinenumber=\"1\">Configures polymorphic document hierarchies.\nMaps a base document type to its subclasses.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.DocumentIndex.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.DocumentIndex.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.DocumentIndex",
+      "Summary": "<p sourcefile=\"api/AeroDB.DocumentIndex.yml\" sourcestartlinenumber=\"1\">No-op stub for Marten portability. In Marten, this configures a database index\non a duplicated field. SurrealDB does not support duplicated fields, so all\nmembers are no-ops.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.DocumentMapping-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.DocumentMapping-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.DocumentMapping<T>",
+      "Summary": "<p sourcefile=\"api/AeroDB.DocumentMapping-1.yml\" sourcestartlinenumber=\"1\">Fluent API for document-level schema configuration (indices, tenancy policy, etc.).\nAccessed via <code>StoreOptions.Schema.For&lt;T&gt;()</code>.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.DocumentMapping.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.DocumentMapping.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.DocumentMapping",
+      "Summary": "<p sourcefile=\"api/AeroDB.DocumentMapping.yml\" sourcestartlinenumber=\"1\">Non-generic base for storing document mappings in <xref href=\"AeroDB.SchemaOptions.Mappings\" data-throw-if-not-resolved=\"false\"></xref>.\nPublic because <xref href=\"AeroDB.DocumentMapping%601\" data-throw-if-not-resolved=\"false\"></xref> inherits from it.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.DocumentPolicies.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.DocumentPolicies.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.DocumentPolicies",
+      "Summary": "<p sourcefile=\"api/AeroDB.DocumentPolicies.yml\" sourcestartlinenumber=\"1\">Global policy system for configuring all document mappings.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.DocumentSession.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.DocumentSession.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.DocumentSession",
+      "Summary": "<p sourcefile=\"api/AeroDB.DocumentSession.yml\" sourcestartlinenumber=\"1\">The concrete document session implementing <xref href=\"AeroDB.IDocumentSession\" data-throw-if-not-resolved=\"false\"></xref>. Manages a unit-of-work with automatic change tracking, identity map, event appending, and transactional save via SurrealDB.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.DocumentSessionListenerBase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.DocumentSessionListenerBase.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.DocumentSessionListenerBase",
+      "Summary": "<p sourcefile=\"api/AeroDB.DocumentSessionListenerBase.yml\" sourcestartlinenumber=\"1\">Base class for <xref href=\"AeroDB.IDocumentSessionListener\" data-throw-if-not-resolved=\"false\"></xref> that provides no-op\ndefault implementations for all hooks. Subclasses can override only the\nhooks they care about. Use pattern matching in overrides to handle specific entity types.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.DocumentStorage.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.DocumentStorage.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.DocumentStorage",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.DocumentStore.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.DocumentStore.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.DocumentStore",
+      "Summary": "<p sourcefile=\"api/AeroDB.DocumentStore.yml\" sourcestartlinenumber=\"1\">The concrete implementation of <xref href=\"AeroDB.IDocumentStore\" data-throw-if-not-resolved=\"false\"></xref>. Manages a SurrealDB connection, schema initialization, projection lifecycle, and session factory. Created via <xref href=\"AeroDB.Documents.For(System.Action%7bAeroDB.StoreOptions%7d)\" data-throw-if-not-resolved=\"false\"></xref> or the <code>AddAeroDB()</code> DI extension.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.DocumentTracking.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.DocumentTracking.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.DocumentTracking",
+      "Summary": "<p sourcefile=\"api/AeroDB.DocumentTracking.yml\" sourcestartlinenumber=\"1\">Controls the document tracking behavior for a session.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.Documents.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.Documents.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.Documents",
+      "Summary": "<p sourcefile=\"api/AeroDB.Documents.yml\" sourcestartlinenumber=\"1\">Static factory class for creating document stores. Use <code>Documents.For(configure)</code> for programmatic setup, or <code>services.AddAeroDB(configure)</code> for dependency injection integration.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.EdgeMapping-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.EdgeMapping-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.EdgeMapping<TEdge>",
+      "Summary": "<p sourcefile=\"api/AeroDB.EdgeMapping-1.yml\" sourcestartlinenumber=\"1\">Fluent configuration for a graph edge table.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.EdgeRecord.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.EdgeRecord.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.EdgeRecord",
+      "Summary": "<p sourcefile=\"api/AeroDB.EdgeRecord.yml\" sourcestartlinenumber=\"1\">Base class for graph edge types. Edges are SurrealDB records with In/Out direction.\nExtends SurrealDb.Net.Models.RelationRecord to gain IRelationRecord interface and CBOR compatibility.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.EfCoreEventProjection-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.EfCoreEventProjection-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.EfCoreEventProjection<TDbContext>",
+      "Summary": "<p sourcefile=\"api/AeroDB.EfCoreEventProjection-1.yml\" sourcestartlinenumber=\"1\">Projection that writes to EF Core alongside AeroDB in the same transaction.\nThe <code class=\"typeparamref\">TDbContext</code> provides the relational data access.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.Entity-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.Entity-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.Entity<TId>",
+      "Summary": "<p sourcefile=\"api/AeroDB.Entity-1.yml\" sourcestartlinenumber=\"1\">Abstract base class for entities with a typed primary key.\nImplements <xref href=\"AeroDB.IEntity%601\" data-throw-if-not-resolved=\"false\"></xref> with a simple auto-property.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.EntityGuid.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.EntityGuid.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.EntityGuid",
+      "Summary": "<p sourcefile=\"api/AeroDB.EntityGuid.yml\" sourcestartlinenumber=\"1\">Convenience alias for a <code>Guid</code> primary key entity\nusing a new random GUID.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.EntityInt.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.EntityInt.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.EntityInt",
+      "Summary": "<p sourcefile=\"api/AeroDB.EntityInt.yml\" sourcestartlinenumber=\"1\">Convenience alias for an <code>int</code> primary key entity\nusing a random integer.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.EntitySnowlake.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.EntitySnowlake.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.EntitySnowlake",
+      "Summary": "<p sourcefile=\"api/AeroDB.EntitySnowlake.yml\" sourcestartlinenumber=\"1\">Convenience alias for the most common case: a <code>long</code> primary key entity\nusing Snowflake ID generation.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.EntityString.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.EntityString.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.EntityString",
+      "Summary": "<p sourcefile=\"api/AeroDB.EntityString.yml\" sourcestartlinenumber=\"1\">Convenience alias for a <code>string</code> primary key entity\nusing Snowflake ID generation converted to string.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.EnumStorage.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.EnumStorage.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.EnumStorage",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.Event-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.Event-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.Event<T>",
+      "Summary": "<p sourcefile=\"api/AeroDB.Event-1.yml\" sourcestartlinenumber=\"1\">Default implementation of <xref href=\"AeroDB.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref> and <xref href=\"AeroDB.IEvent\" data-throw-if-not-resolved=\"false\"></xref>.\nImmutable record — create via <xref href=\"AeroDB.EventStore\" data-throw-if-not-resolved=\"false\"></xref>, never mutate.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.EventAppendMode.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.EventAppendMode.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.EventAppendMode",
+      "Summary": "<p sourcefile=\"api/AeroDB.EventAppendMode.yml\" sourcestartlinenumber=\"1\">Controls how events are appended to the event store.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.EventGrouping-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.EventGrouping-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.EventGrouping<TId>",
+      "Summary": "<p sourcefile=\"api/AeroDB.EventGrouping-1.yml\" sourcestartlinenumber=\"1\">Default implementation of <xref href=\"AeroDB.IEventGrouping%601\" data-throw-if-not-resolved=\"false\"></xref>.\nMaps aggregate IDs to their associated events.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.EventProjection-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.EventProjection-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.EventProjection<T>",
+      "Summary": "<p sourcefile=\"api/AeroDB.EventProjection-1.yml\" sourcestartlinenumber=\"1\">Projection base class with per-event-type dispatch. Subclasses declare\n<code>Create(EventType, IEvent&lt;EventType&gt;, CancellationToken)</code>,\n<code>Apply(EventType, T, IEvent&lt;EventType&gt;, CancellationToken)</code>, and\n<code>ShouldDelete(EventType, T, IEvent&lt;EventType&gt;, CancellationToken)</code>\nmethods. Dispatch is handled by the source generator or a runtime reflection fallback.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.EventProjection.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.EventProjection.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.EventProjection",
+      "Summary": "<p sourcefile=\"api/AeroDB.EventProjection.yml\" sourcestartlinenumber=\"1\">Non-generic &quot;do anything&quot; projection. Subclasses override\n<xref href=\"AeroDB.EventProjection.ApplyAsync(AeroDB.IDocumentOperations%2cAeroDB.IEvent%2cSystem.Threading.CancellationToken)\" data-throw-if-not-resolved=\"false\"></xref>\nto handle each event. Use the <code>operations</code> argument to store or delete\nany document type.</p>\n<p sourcefile=\"api/AeroDB.EventProjection.yml\" sourcestartlinenumber=\"6\">Equivalent to Marten's non-generic <code>EventProjection</code>.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.EventSerializationMode.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.EventSerializationMode.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.EventSerializationMode",
+      "Summary": "<p sourcefile=\"api/AeroDB.EventSerializationMode.yml\" sourcestartlinenumber=\"1\">Controls how event data is serialized in the event store.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.EventSlice-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.EventSlice-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.EventSlice<T>",
+      "Summary": "<p sourcefile=\"api/AeroDB.EventSlice-1.yml\" sourcestartlinenumber=\"1\">Concrete implementation of <xref href=\"AeroDB.IEventSlice%601\" data-throw-if-not-resolved=\"false\"></xref>.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.EventSourcingOptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.EventSourcingOptions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.EventSourcingOptions",
+      "Summary": "<p sourcefile=\"api/AeroDB.EventSourcingOptions.yml\" sourcestartlinenumber=\"1\">Configuration for AeroDB's event sourcing subsystem. Controls event storage tables, append mode (Rich/Quick), serialization mode (JSON/Binary), and event upcasting.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.EventStore.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.EventStore.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.EventStore",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.EventStreamIdentity.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.EventStreamIdentity.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.EventStreamIdentity",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.EventTagQuery.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.EventTagQuery.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.EventTagQuery",
+      "Summary": "<p sourcefile=\"api/AeroDB.EventTagQuery.yml\" sourcestartlinenumber=\"1\">A query to check if events exist with specific tags.\nUsed by the async daemon to determine if there are events to project.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.EventTriggerDefinition.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.EventTriggerDefinition.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.EventTriggerDefinition",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.EventTriggerManager.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.EventTriggerManager.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.EventTriggerManager",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.EventTriggerOptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.EventTriggerOptions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.EventTriggerOptions",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.ExperimentalOptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.ExperimentalOptions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.ExperimentalOptions",
+      "Summary": "<p sourcefile=\"api/AeroDB.ExperimentalOptions.yml\" sourcestartlinenumber=\"1\">Groups experimental feature flags. Access via <code>o.Experimental.ML.Enabled = true</code>.\nML support types live in <code>AeroDB.ML</code> project.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.FetchForWritingResult-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.FetchForWritingResult-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.FetchForWritingResult<T>",
+      "Summary": "<p sourcefile=\"api/AeroDB.FetchForWritingResult-1.yml\" sourcestartlinenumber=\"1\">Wraps a fetched aggregate for write-model operations. Tracks the expected\nstream version so SaveChangesAsync can detect concurrency conflicts.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.FetchLatestExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.FetchLatestExtensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.FetchLatestExtensions",
+      "Summary": "<p sourcefile=\"api/AeroDB.FetchLatestExtensions.yml\" sourcestartlinenumber=\"1\">Extension methods providing a <xref href=\"System.Guid\" data-throw-if-not-resolved=\"false\"></xref> overload for <xref href=\"AeroDB.IQuerySession.FetchLatest%60%601(System.String%2cSystem.Threading.CancellationToken)\" data-throw-if-not-resolved=\"false\"></xref>.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.FieldDefinition.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.FieldDefinition.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.FieldDefinition",
+      "Summary": "<p sourcefile=\"api/AeroDB.FieldDefinition.yml\" sourcestartlinenumber=\"1\">Defines a SurrealDB field with optional type, default, assertion, and permissions.\nEmitted as DEFINE FIELD statements by the schema manager.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.FlatTableProjection-2.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.FlatTableProjection-2.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.FlatTableProjection<TDoc, TId>",
+      "Summary": "<p sourcefile=\"api/AeroDB.FlatTableProjection-2.yml\" sourcestartlinenumber=\"1\">Declarative event → table column mapping projection.\nMaps event properties to table columns via LINQ expressions.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.ForeignKeyDefinition.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.ForeignKeyDefinition.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.ForeignKeyDefinition",
+      "Summary": "<p sourcefile=\"api/AeroDB.ForeignKeyDefinition.yml\" sourcestartlinenumber=\"1\">Defines a foreign key relationship for informational/validation purposes.\nSurrealDB uses graph edges instead of FK cascades, so this metadata is\nstored for tooling and documentation only — no DDL is generated.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.FunctionManager.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.FunctionManager.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.FunctionManager",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.FunctionOptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.FunctionOptions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.FunctionOptions",
+      "Summary": "<p sourcefile=\"api/AeroDB.FunctionOptions.yml\" sourcestartlinenumber=\"1\">Configuration for SurrealDB custom functions (<code>DEFINE FUNCTION</code>). Registers functions that run at the database level.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.Generated.AeroDBConfiguratorRegistrar.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.Generated.AeroDBConfiguratorRegistrar.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.Generated.AeroDBConfiguratorRegistrar",
+      "Summary": "<p sourcefile=\"api/AeroDB.Generated.AeroDBConfiguratorRegistrar.yml\" sourcestartlinenumber=\"1\">Source-generated registration helper for discovered IConfigureAeroDB / IGlobalConfigureAeroDB / IAsyncConfigureAeroDB implementations.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.Generated.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.Generated.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.Generated",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.GeometryPoint.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.GeometryPoint.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.GeometryPoint",
+      "Summary": "<p sourcefile=\"api/AeroDB.GeometryPoint.yml\" sourcestartlinenumber=\"1\">Represents a geographic point with longitude and latitude.\nSerializes to SurrealDB's native geometry type as a (lon, lat) tuple.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.GeometryPolygon.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.GeometryPolygon.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.GeometryPolygon",
+      "Summary": "<p sourcefile=\"api/AeroDB.GeometryPolygon.yml\" sourcestartlinenumber=\"1\">Represents a geographic polygon. Each ring is a list of (longitude, latitude) points.\nThe first ring is the exterior boundary; subsequent rings are interior holes.\nSerializes to SurrealDB GeoJSON format.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.Graph.Edge.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.Graph.Edge.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.Graph.Edge",
+      "Summary": "<p sourcefile=\"api/AeroDB.Graph.Edge.yml\" sourcestartlinenumber=\"1\">Edge relation table names.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.Graph.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.Graph.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.Graph",
+      "Summary": "<p sourcefile=\"api/AeroDB.Graph.yml\" sourcestartlinenumber=\"1\">Named constants for graph operations to avoid magic strings.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.GraphEdge.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.GraphEdge.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.GraphEdge",
+      "Summary": "<p sourcefile=\"api/AeroDB.GraphEdge.yml\" sourcestartlinenumber=\"1\">A graph edge result from wildcard or path traversal.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.GraphEntry-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.GraphEntry-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.GraphEntry<TSource>",
+      "Summary": "<p sourcefile=\"api/AeroDB.GraphEntry-1.yml\" sourcestartlinenumber=\"1\">Entry point for a graph traversal chain within a view SELECT column.\nProvides .Out() and .In() steps that each produce a typed <xref href=\"AeroDB.ViewGraphSelectBuilder%602\" data-throw-if-not-resolved=\"false\"></xref>.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.GraphNode.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.GraphNode.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.GraphNode",
+      "Summary": "<p sourcefile=\"api/AeroDB.GraphNode.yml\" sourcestartlinenumber=\"1\">A graph node result from wildcard or path traversal.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.GraphPath.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.GraphPath.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.GraphPath",
+      "Summary": "<p sourcefile=\"api/AeroDB.GraphPath.yml\" sourcestartlinenumber=\"1\">A full graph path with ordered nodes and edges.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.HybridSearchConfig.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.HybridSearchConfig.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.HybridSearchConfig",
+      "Summary": "<p sourcefile=\"api/AeroDB.HybridSearchConfig.yml\" sourcestartlinenumber=\"1\">Configuration for hybrid search combining full-text and vector results.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.IAeroDBAdvanced.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.IAeroDBAdvanced.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.IAeroDBAdvanced",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.IAeroDBSubscription.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.IAeroDBSubscription.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.IAeroDBSubscription",
+      "Summary": "<p sourcefile=\"api/AeroDB.IAeroDBSubscription.yml\" sourcestartlinenumber=\"1\">User-facing contract for subscribing to AeroDB events through the async daemon.\nImplement this to do custom processing against ordered event streams.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.IAeroDBTransaction.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.IAeroDBTransaction.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.IAeroDBTransaction",
+      "Summary": "<p sourcefile=\"api/AeroDB.IAeroDBTransaction.yml\" sourcestartlinenumber=\"1\">Represents an explicit SurrealDB transaction started by <xref href=\"AeroDB.IDocumentSession.BeginTransactionAsync(System.Threading.CancellationToken)\" data-throw-if-not-resolved=\"false\"></xref>\nor <xref href=\"AeroDB.IDocumentSession.BeginTransaction\" data-throw-if-not-resolved=\"false\"></xref>.\nSupports multiple <xref href=\"AeroDB.IDocumentSession.SaveChangesAsync(System.Threading.CancellationToken)\" data-throw-if-not-resolved=\"false\"></xref> calls within a single transaction.\nImplements <xref href=\"System.IAsyncDisposable\" data-throw-if-not-resolved=\"false\"></xref> — rolling back if not committed before disposal.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.IAggregateGrouper-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.IAggregateGrouper-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.IAggregateGrouper<TId>",
+      "Summary": "<p sourcefile=\"api/AeroDB.IAggregateGrouper-1.yml\" sourcestartlinenumber=\"1\">Groups events into aggregate groups for multi-stream projections.\nEach group produces one projected document.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.IAsyncConfigureAeroDB.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.IAsyncConfigureAeroDB.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.IAsyncConfigureAeroDB",
+      "Summary": "<p sourcefile=\"api/AeroDB.IAsyncConfigureAeroDB.yml\" sourcestartlinenumber=\"1\">Async DI-registered AeroDB configuration module.\nApplied during <xref href=\"AeroDB.DocumentStore.InitializeAsync(System.Threading.CancellationToken)\" data-throw-if-not-resolved=\"false\"></xref> after sync\n<xref href=\"AeroDB.IConfigureAeroDB\" data-throw-if-not-resolved=\"false\"></xref> configurators, but before schema initialization.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.IBatchEvents.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.IBatchEvents.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.IBatchEvents",
+      "Summary": "<p sourcefile=\"api/AeroDB.IBatchEvents.yml\" sourcestartlinenumber=\"1\">Batch event operations that can be queued alongside document queries\nfor execution in a single round trip.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.IBatchedQuery.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.IBatchedQuery.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.IBatchedQuery",
+      "Summary": "<p sourcefile=\"api/AeroDB.IBatchedQuery.yml\" sourcestartlinenumber=\"1\">A batch of compiled queries that are executed together in a single\nSurrealDB multi-statement round trip (Marten-compatible pattern).</p>\n<p sourcefile=\"api/AeroDB.IBatchedQuery.yml\" sourcestartlinenumber=\"4\">Usage:</p>\n<pre><code class=\"lang-csharp\">var batch = session.CreateBatchQuery();\nvar justin = batch.Query(new FindByFirstName { FirstName = \"Justin\" });\nvar tamba = batch.Query(new FindByFirstName { FirstName = \"Tamba\" });\nawait batch.Execute();\nvar user1 = await justin;\nvar user2 = await tamba;</code></pre>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.IChangeListener.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.IChangeListener.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.IChangeListener",
+      "Summary": "<p sourcefile=\"api/AeroDB.IChangeListener.yml\" sourcestartlinenumber=\"1\">Listener for projection change batches processed by the <xref href=\"AeroDB.AsyncDaemon\" data-throw-if-not-resolved=\"false\"></xref>.\nAnalogous to <xref href=\"AeroDB.IDocumentSessionListener\" data-throw-if-not-resolved=\"false\"></xref> but for daemon-level operations.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.IChangeSet.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.IChangeSet.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.IChangeSet",
+      "Summary": "<p sourcefile=\"api/AeroDB.IChangeSet.yml\" sourcestartlinenumber=\"1\">Summary of changes committed during a single <code>SaveChangesAsync</code> call.\nPassed to <xref href=\"AeroDB.IDocumentSessionListener.AfterCommitAsync(AeroDB.IDocumentSession%2cAeroDB.IChangeSet%2cSystem.Threading.CancellationToken)\" data-throw-if-not-resolved=\"false\"></xref>.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.ICompiledListQuery-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.ICompiledListQuery-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.ICompiledListQuery<TDoc>",
+      "Summary": "<p sourcefile=\"api/AeroDB.ICompiledListQuery-1.yml\" sourcestartlinenumber=\"1\">Compiled list query that returns whole documents (no Select).\nShorthand for <code>ICompiledListQuery&lt;TDoc, TDoc&gt;</code>.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.ICompiledListQuery-2.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.ICompiledListQuery-2.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.ICompiledListQuery<TDoc, TOut>",
+      "Summary": "<p sourcefile=\"api/AeroDB.ICompiledListQuery-2.yml\" sourcestartlinenumber=\"1\">Compiled list query that returns <code>IEnumerable&lt;TOut&gt;</code> with an\noptional <code>Select</code> transform.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.ICompiledQuery-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.ICompiledQuery-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.ICompiledQuery<TDoc>",
+      "Summary": "<p sourcefile=\"api/AeroDB.ICompiledQuery-1.yml\" sourcestartlinenumber=\"1\">Compiled query that returns a single document.\nShorthand for <code>ICompiledQuery&lt;TDoc, TDoc&gt;</code>.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.ICompiledQuery-2.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.ICompiledQuery-2.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.ICompiledQuery<TDoc, TOut>",
+      "Summary": "<p sourcefile=\"api/AeroDB.ICompiledQuery-2.yml\" sourcestartlinenumber=\"1\">Core compiled query interface. The query type has properties that serve as\nparameters, and <xref href=\"AeroDB.ICompiledQuery%602.QueryIs\" data-throw-if-not-resolved=\"false\"></xref> returns an expression tree that\ntranslates those parameters into a LINQ query.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.ICompiledQueryMarker.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.ICompiledQueryMarker.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.ICompiledQueryMarker",
+      "Summary": "<p sourcefile=\"api/AeroDB.ICompiledQueryMarker.yml\" sourcestartlinenumber=\"1\">Marker interface for all compiled query types.\nImplemented by <xref href=\"AeroDB.ICompiledQuery%602\" data-throw-if-not-resolved=\"false\"></xref> and its descendants.\nUsed for discovery and type checks.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.IConfigureAeroDB-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.IConfigureAeroDB-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.IConfigureAeroDB<TStore>",
+      "Summary": "<p sourcefile=\"api/AeroDB.IConfigureAeroDB-1.yml\" sourcestartlinenumber=\"1\">Typed variant of <xref href=\"AeroDB.IConfigureAeroDB\" data-throw-if-not-resolved=\"false\"></xref> for store-specific configuration.\nMimics Marten's <code>IConfigureMarten&lt;T&gt;</code>.\nWhen multiple store types exist, implementations of this interface are applied only\nto the matching store type (secondary store pattern).</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.IConfigureAeroDB.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.IConfigureAeroDB.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.IConfigureAeroDB",
+      "Summary": "<p sourcefile=\"api/AeroDB.IConfigureAeroDB.yml\" sourcestartlinenumber=\"1\">DI-registered (or directly added) AeroDB configuration module.\nImplementations are applied during <xref href=\"AeroDB.DocumentStore.InitializeAsync(System.Threading.CancellationToken)\" data-throw-if-not-resolved=\"false\"></xref>.</p>\n<p>\nImplementers may override either overload:\n<ul><li><xref href=\"AeroDB.IConfigureAeroDB.Configure(AeroDB.StoreOptions)\" data-throw-if-not-resolved=\"false\"></xref> — simple configuration (backward-compatible).</li><li><xref href=\"AeroDB.IConfigureAeroDB.Configure(System.IServiceProvider%2cAeroDB.StoreOptions)\" data-throw-if-not-resolved=\"false\"></xref> — configuration with DI service access.</li></ul>\n<p sourcefile=\"api/AeroDB.IConfigureAeroDB.yml\" sourcestartlinenumber=\"9\">The two-parameter overload has a default implementation that delegates to the single-parameter\noverload, so existing implementations need no changes.</p>\n\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.IDatabase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.IDatabase.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.IDatabase",
+      "Summary": "<p sourcefile=\"api/AeroDB.IDatabase.yml\" sourcestartlinenumber=\"1\">Metadata about the database this session is connected to.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.IDiagnostics.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.IDiagnostics.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.IDiagnostics",
+      "Summary": "<p sourcefile=\"api/AeroDB.IDiagnostics.yml\" sourcestartlinenumber=\"1\">Query diagnostics: preview generated SurrealQL and explain plans.\nAccess via <code>store.Advanced.Diagnostics</code>.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.IDocumentOperations.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.IDocumentOperations.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.IDocumentOperations",
+      "Summary": "<p sourcefile=\"api/AeroDB.IDocumentOperations.yml\" sourcestartlinenumber=\"1\">Document CRUD operations shared between <xref href=\"AeroDB.IDocumentSession\" data-throw-if-not-resolved=\"false\"></xref> and projection operations.\nProvides the raw document read/write surface without session lifecycle methods.\n<br>\nNote: <code>LoadAsync&lt;T&gt;(id)</code> is available via <code>IQuerySession</code> cast — intentionally omitted\nto avoid diamond ambiguity with <code>IQuerySession</code> in the <code>IDocumentSession</code> hierarchy.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.IDocumentPolicy.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.IDocumentPolicy.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.IDocumentPolicy",
+      "Summary": "<p sourcefile=\"api/AeroDB.IDocumentPolicy.yml\" sourcestartlinenumber=\"1\">Plugin interface for global document mapping conventions.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.IDocumentSession.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.IDocumentSession.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.IDocumentSession",
+      "Summary": "<p sourcefile=\"api/AeroDB.IDocumentSession.yml\" sourcestartlinenumber=\"1\">A read/write session that extends <xref href=\"AeroDB.IDocumentOperations\" data-throw-if-not-resolved=\"false\"></xref> and <xref href=\"AeroDB.IQuerySession\" data-throw-if-not-resolved=\"false\"></xref> with document storage (<code>Store</code>/<code>Delete</code>/<code>BulkInsert</code>), event sourcing (<code>Append</code>/<code>StartStream</code>), and unit-of-work change tracking.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.IDocumentSessionListener.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.IDocumentSessionListener.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.IDocumentSessionListener",
+      "Summary": "<p sourcefile=\"api/AeroDB.IDocumentSessionListener.yml\" sourcestartlinenumber=\"1\">Lifecycle hooks for document session events. Register via StoreOptions.\nMultiple listeners are called in registration order.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.IDocumentStore.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.IDocumentStore.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.IDocumentStore",
+      "Summary": "<p sourcefile=\"api/AeroDB.IDocumentStore.yml\" sourcestartlinenumber=\"1\">The primary entry point for the AeroDB document store. Provides access to query sessions, document sessions, event store, background daemon, and advanced SDK features.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.IEnrichProjection.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.IEnrichProjection.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.IEnrichProjection",
+      "Summary": "<p sourcefile=\"api/AeroDB.IEnrichProjection.yml\" sourcestartlinenumber=\"1\">Optional enrichment hook for projections. Called before each projection invocation.\nUse <xref href=\"AeroDB.IQuerySession\" data-throw-if-not-resolved=\"false\"></xref> to load reference data needed by the projection.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.IEntity-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.IEntity-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.IEntity<TId>",
+      "Summary": "<p sourcefile=\"api/AeroDB.IEntity-1.yml\" sourcestartlinenumber=\"1\">Interface for entities with a typed primary key.\nUse <xref href=\"AeroDB.Entity%601\" data-throw-if-not-resolved=\"false\"></xref> as a base class for default implementation.\nFor Snowflake-style long IDs, use <xref href=\"AeroDB.Entity%601\" data-throw-if-not-resolved=\"false\"></xref> with <code>long</code>.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.IEvent-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.IEvent-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.IEvent<T>",
+      "Summary": "<p sourcefile=\"api/AeroDB.IEvent-1.yml\" sourcestartlinenumber=\"1\">Typed event envelope carrying metadata (version, timestamp, sequence, stream identity)\nalongside the domain event data. Replaces bare <code>object</code> events throughout the pipeline.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.IEvent.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.IEvent.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.IEvent",
+      "Summary": "<p sourcefile=\"api/AeroDB.IEvent.yml\" sourcestartlinenumber=\"1\">Non-generic event envelope. <code>Event&lt;T&gt;</code> implements both <xref href=\"AeroDB.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref>\nand <xref href=\"AeroDB.IEvent\" data-throw-if-not-resolved=\"false\"></xref> for maximum compatibility.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.IEventGrouping-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.IEventGrouping-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.IEventGrouping<TId>",
+      "Summary": "<p sourcefile=\"api/AeroDB.IEventGrouping-1.yml\" sourcestartlinenumber=\"1\">Represents a grouping of events by aggregate identifier.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.IEventSlice-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.IEventSlice-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.IEventSlice<T>",
+      "Summary": "<p sourcefile=\"api/AeroDB.IEventSlice-1.yml\" sourcestartlinenumber=\"1\">A slice of events for a specific stream, with optional pre-loaded aggregate.\nEquivalent to Marten's <code>IEventSlice&lt;T&gt;</code>.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.IEventUpcaster.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.IEventUpcaster.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.IEventUpcaster",
+      "Summary": "<p sourcefile=\"api/AeroDB.IEventUpcaster.yml\" sourcestartlinenumber=\"1\">Transforms old event versions to new event types during deserialization.\nRegister upcasters via <xref href=\"AeroDB.EventSourcingOptions.Upcasters\" data-throw-if-not-resolved=\"false\"></xref>.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.IEvents.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.IEvents.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.IEvents",
+      "Summary": "<p sourcefile=\"api/AeroDB.IEvents.yml\" sourcestartlinenumber=\"1\">The event sourcing API surface. Provides methods for appending events, starting streams, fetching streams, applying optimistic concurrency, archiving streams, and writing tombstone events.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.IGlobalConfigureAeroDB.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.IGlobalConfigureAeroDB.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.IGlobalConfigureAeroDB",
+      "Summary": "<p sourcefile=\"api/AeroDB.IGlobalConfigureAeroDB.yml\" sourcestartlinenumber=\"1\">Marker interface for <xref href=\"AeroDB.IConfigureAeroDB\" data-throw-if-not-resolved=\"false\"></xref> implementations that apply\nglobally to all store types (primary and secondary). Mimics Marten's\n<code>IGlobalConfigureMarten</code>.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.IGraphQuery-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.IGraphQuery-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.IGraphQuery<TNode>",
+      "Summary": "<p sourcefile=\"api/AeroDB.IGraphQuery-1.yml\" sourcestartlinenumber=\"1\">Fluent graph query builder for SurrealDB traversal.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.IInitialData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.IInitialData.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.IInitialData",
+      "Summary": "<p sourcefile=\"api/AeroDB.IInitialData.yml\" sourcestartlinenumber=\"1\">Populates initial data during <xref href=\"AeroDB.DocumentStore.InitializeAsync(System.Threading.CancellationToken)\" data-throw-if-not-resolved=\"false\"></xref>.\nRegister implementations via <xref href=\"AeroDB.StoreOptions.InitialData\" data-throw-if-not-resolved=\"false\"></xref>.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.IJsonLoader.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.IJsonLoader.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.IJsonLoader",
+      "Summary": "<p sourcefile=\"api/AeroDB.IJsonLoader.yml\" sourcestartlinenumber=\"1\">Raw JSON document loading without deserialization.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.ILiveQuery-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.ILiveQuery-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.ILiveQuery<T>",
+      "Summary": "<p sourcefile=\"api/AeroDB.ILiveQuery-1.yml\" sourcestartlinenumber=\"1\">Marten API parity: legacy live query interface. Wraps <xref href=\"AeroDB.LiveQuery.IAeroDBLiveQuery%601\" data-throw-if-not-resolved=\"false\"></xref>\nfor backward compatibility with Marten's <code>IQuerySession.WatchTableAsync</code>,\n<code>WatchQueryAsync</code>, and <code>WatchStreamAsync</code> methods.\nPrefer <xref href=\"AeroDB.LiveQuery.ILiveQuerySession\" data-throw-if-not-resolved=\"false\"></xref> for new code.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.IMartenSessionLogger.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.IMartenSessionLogger.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.IMartenSessionLogger",
+      "Summary": "<p sourcefile=\"api/AeroDB.IMartenSessionLogger.yml\" sourcestartlinenumber=\"1\">Logger interface for recording session-level diagnostic information,\nmirroring the Marten <code>IMartenSessionLogger</code> contract.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.IMlQuery-2.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.IMlQuery-2.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.IMlQuery<TInput, TOutput>",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.IPatchExpression-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.IPatchExpression-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.IPatchExpression<T>",
+      "Summary": "<p sourcefile=\"api/AeroDB.IPatchExpression-1.yml\" sourcestartlinenumber=\"1\">Fluent interface for partial document updates (patching).\nEquivalent to Marten's <code>JasperFx.Events.IPatchExpression&lt;T&gt;</code>.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.IProjection.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.IProjection.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.IProjection",
+      "Summary": "<p sourcefile=\"api/AeroDB.IProjection.yml\" sourcestartlinenumber=\"1\">Defines a projection that builds read-side documents from events.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.IProjectionContext.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.IProjectionContext.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.IProjectionContext",
+      "Summary": "<p sourcefile=\"api/AeroDB.IProjectionContext.yml\" sourcestartlinenumber=\"1\">Context passed to <xref href=\"AeroDB.IProjection.ApplyAsync(AeroDB.IProjectionContext%2cSystem.Threading.CancellationToken)\" data-throw-if-not-resolved=\"false\"></xref> — provides access\nto the current document session and the events that triggered the projection.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.IProjectionCoordinator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.IProjectionCoordinator.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.IProjectionCoordinator",
+      "Summary": "<p sourcefile=\"api/AeroDB.IProjectionCoordinator.yml\" sourcestartlinenumber=\"1\">Manages the lifecycle of the async projection daemon.\nImplements <xref href=\"Microsoft.Extensions.Hosting.IHostedService\" data-throw-if-not-resolved=\"false\"></xref> for automatic start/stop with the application.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.IProjectionSideEffect.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.IProjectionSideEffect.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.IProjectionSideEffect",
+      "Summary": "<p sourcefile=\"api/AeroDB.IProjectionSideEffect.yml\" sourcestartlinenumber=\"1\">Marker interface for side effects raised during projection processing.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.IQueryPlanning.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.IQueryPlanning.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.IQueryPlanning",
+      "Summary": "<p sourcefile=\"api/AeroDB.IQueryPlanning.yml\" sourcestartlinenumber=\"1\">Optional interface that compiled queries can implement to provide custom\nsentinel values for each property during plan building. When implemented,\nthe planner calls <xref href=\"AeroDB.IQueryPlanning.SetUniqueValuesForQueryPlanning\" data-throw-if-not-resolved=\"false\"></xref> after\nsetting sentinel values on all public properties, allowing the query type\nto override or customize the sentinel values used for parameter mapping.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.IQuerySession.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.IQuerySession.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.IQuerySession",
+      "Summary": "<p sourcefile=\"api/AeroDB.IQuerySession.yml\" sourcestartlinenumber=\"1\">A read-only session for querying documents. Supports LINQ queries, raw SurrealQL, load-by-ID, compiled queries, batch queries, live notifications, and graph traversal.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.IReadOnlyStoreOptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.IReadOnlyStoreOptions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.IReadOnlyStoreOptions",
+      "Summary": "<p sourcefile=\"api/AeroDB.IReadOnlyStoreOptions.yml\" sourcestartlinenumber=\"1\">Read-only view of StoreOptions for metadata consumers.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.ISearchQuery-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.ISearchQuery-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.ISearchQuery<T>",
+      "Summary": "<p sourcefile=\"api/AeroDB.ISearchQuery-1.yml\" sourcestartlinenumber=\"1\">Fluent builder for SurrealDB search queries (full-text, vector KNN, hybrid RRF fusion).\nObtained via <code>session.Search&lt;T&gt;()</code>.\nBuilds SurrealQL with LET variables internally, matching the pattern used by\n<xref href=\"AeroDB.SearchExtensions\" data-throw-if-not-resolved=\"false\"></xref> for direct extension-method usage.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.ISessionFactory.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.ISessionFactory.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.ISessionFactory",
+      "Summary": "<p sourcefile=\"api/AeroDB.ISessionFactory.yml\" sourcestartlinenumber=\"1\">A pluggable session factory for creating query and document sessions from a store.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.ISingleServerMultiTenancy.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.ISingleServerMultiTenancy.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.ISingleServerMultiTenancy",
+      "Summary": "<p sourcefile=\"api/AeroDB.ISingleServerMultiTenancy.yml\" sourcestartlinenumber=\"1\">Fluent interface for configuring a single-server multi-tenancy strategy\nwhere each tenant maps to a separate database on the same SurrealDB server.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.ISoftDeleted.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.ISoftDeleted.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.ISoftDeleted",
+      "Summary": "<p sourcefile=\"api/AeroDB.ISoftDeleted.yml\" sourcestartlinenumber=\"1\">Marks an entity as soft-deletable. AeroDB uses these properties directly on the entity\n(unlike Marten which uses shadow columns <code>mt_deleted</code> and <code>mt_deleted_at</code>).\nQueries on <xref href=\"AeroDB.ISoftDeleted\" data-throw-if-not-resolved=\"false\"></xref> types automatically exclude entities where <code>Deleted == true</code>.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.ISpatialQuery-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.ISpatialQuery-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.ISpatialQuery<T>",
+      "Summary": "<p sourcefile=\"api/AeroDB.ISpatialQuery-1.yml\" sourcestartlinenumber=\"1\">Fluent builder for SurrealDB spatial (geo) queries.\nSupports Nearby, Within, OrderByDistance, filtering, sorting, and pagination.\nObtained via <code>session.Spatial&lt;T&gt;()</code>.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.IStaticMultiTenancy.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.IStaticMultiTenancy.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.IStaticMultiTenancy",
+      "Summary": "<p sourcefile=\"api/AeroDB.IStaticMultiTenancy.yml\" sourcestartlinenumber=\"1\">Fluent interface for configuring static multi-tenancy where each tenant\nmaps to an explicit connection string or endpoint/ns/db triple.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.IStorageOperation.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.IStorageOperation.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.IStorageOperation",
+      "Summary": "<p sourcefile=\"api/AeroDB.IStorageOperation.yml\" sourcestartlinenumber=\"1\">Represents a low-level storage operation that can be queued on a session\nand executed during <xref href=\"AeroDB.IDocumentSession.SaveChangesAsync(System.Threading.CancellationToken)\" data-throw-if-not-resolved=\"false\"></xref>.\nMarten parity: <code>session.QueueOperation(operation)</code>.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.ISubscriber-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.ISubscriber-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.ISubscriber<T>",
+      "Summary": "<p sourcefile=\"api/AeroDB.ISubscriber-1.yml\" sourcestartlinenumber=\"1\">Receives notifications when documents of type T are created, updated, or deleted.\nRegister on <xref href=\"AeroDB.SessionOptions.Subscribers\" data-throw-if-not-resolved=\"false\"></xref> for per-session subscriptions.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.ISubscription.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.ISubscription.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.ISubscription",
+      "Summary": "<p sourcefile=\"api/AeroDB.ISubscription.yml\" sourcestartlinenumber=\"1\">Event subscription for forwarding events to external handlers.\nImplement this interface to receive and process events as they are appended\nto streams. Subscriptions are managed by the async daemon and are tracked\nby <xref href=\"AeroDB.ISubscription.SubscriptionName\" data-throw-if-not-resolved=\"false\"></xref> for progress checkpointing.\n<br>\nThis is a simplified Marten-parity interface. For advanced subscriptions\nwith JasperFx types (<code>EventRange</code>,\n<code>ISubscriptionController</code>),\nuse <xref href=\"AeroDB.IAeroDBSubscription\" data-throw-if-not-resolved=\"false\"></xref> instead.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.ISurrealDbQueryable-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.ISurrealDbQueryable-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.ISurrealDbQueryable<T>",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.ITagTypeRegistration.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.ITagTypeRegistration.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.ITagTypeRegistration",
+      "Summary": "<p sourcefile=\"api/AeroDB.ITagTypeRegistration.yml\" sourcestartlinenumber=\"1\">Registration of a tag type for dynamic consistency boundary (DCB) projections.\nTags allow events across different streams to be grouped by a shared domain identity.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.ITenantOperations.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.ITenantOperations.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.ITenantOperations",
+      "Summary": "<p sourcefile=\"api/AeroDB.ITenantOperations.yml\" sourcestartlinenumber=\"1\">Cross-tenant document operations within a session.\nProvides access to per-tenant query sessions for multi-tenancy scenarios.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.ITenantQueryOperations.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.ITenantQueryOperations.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.ITenantQueryOperations",
+      "Summary": "<p sourcefile=\"api/AeroDB.ITenantQueryOperations.yml\" sourcestartlinenumber=\"1\">Tenant-scoped query operations. Provides document queries filtered by tenant.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.ITenantSliceGroup-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.ITenantSliceGroup-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.ITenantSliceGroup<TId>",
+      "Summary": "<p sourcefile=\"api/AeroDB.ITenantSliceGroup-1.yml\" sourcestartlinenumber=\"1\">Marten-compatible mutable grouping abstraction for multi-stream projections.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.ITimeSeriesQuery-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.ITimeSeriesQuery-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.ITimeSeriesQuery<T>",
+      "Summary": "<p sourcefile=\"api/AeroDB.ITimeSeriesQuery-1.yml\" sourcestartlinenumber=\"1\">Fluent builder for SurrealDB time-series queries with temporal bucketing and aggregation.\nObtained via <code>session.TimeSeries&lt;T&gt;()</code>.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.IUnitOfWork.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.IUnitOfWork.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.IUnitOfWork",
+      "Summary": "<p sourcefile=\"api/AeroDB.IUnitOfWork.yml\" sourcestartlinenumber=\"1\">Exposes the pending unit-of-work operations before SaveChangesAsync.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.IVersioned.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.IVersioned.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.IVersioned",
+      "Summary": "<p sourcefile=\"api/AeroDB.IVersioned.yml\" sourcestartlinenumber=\"1\">Marks a document as supporting optimistic concurrency via a version field.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.IdGeneration.IIdGenerator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.IdGeneration.IIdGenerator.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.IdGeneration.IIdGenerator",
+      "Summary": "<p sourcefile=\"api/AeroDB.IdGeneration.IIdGenerator.yml\" sourcestartlinenumber=\"1\">Defines a contract for generating unique, time-sortable long identifiers\n(e.g., Snowflake IDs).</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.IdGeneration.SnowflakeIdGenerator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.IdGeneration.SnowflakeIdGenerator.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.IdGeneration.SnowflakeIdGenerator",
+      "Summary": "<p sourcefile=\"api/AeroDB.IdGeneration.SnowflakeIdGenerator.yml\" sourcestartlinenumber=\"1\">Snowflake ID generator wrapping <xref href=\"Aero.Core.Snowflake.NewId\" data-throw-if-not-resolved=\"false\"></xref>.\nProduces unique, time-sortable long primary keys.\nUses the FlakeId algorithm underneath Aero.Core.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.IdGeneration.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.IdGeneration.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.IdGeneration",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.IndexDefinition.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.IndexDefinition.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.IndexDefinition",
+      "Summary": "<p sourcefile=\"api/AeroDB.IndexDefinition.yml\" sourcestartlinenumber=\"1\">Defines a SurrealDB index (simple, unique, composite, full-text, or vector).</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.IndexOptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.IndexOptions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.IndexOptions",
+      "Summary": "<p sourcefile=\"api/AeroDB.IndexOptions.yml\" sourcestartlinenumber=\"1\">Configures an index being built via the fluent <xref href=\"AeroDB.DocumentMapping%601\" data-throw-if-not-resolved=\"false\"></xref> API.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.IndexType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.IndexType.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.IndexType",
+      "Summary": "<p sourcefile=\"api/AeroDB.IndexType.yml\" sourcestartlinenumber=\"1\">The type of SurrealDB index to create.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.InlineProjection-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.InlineProjection-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.InlineProjection<T>",
+      "Summary": "<p sourcefile=\"api/AeroDB.InlineProjection-1.yml\" sourcestartlinenumber=\"1\">Base class for projections that run inline during <code>SaveChangesAsync</code>.\nSubclasses define which event types trigger them and how to build the projected document.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.InternalSessionBase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.InternalSessionBase.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.InternalSessionBase",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.LiveQuery.AeroDBLiveAction.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.LiveQuery.AeroDBLiveAction.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.LiveQuery.AeroDBLiveAction",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.LiveQuery.AeroDBLiveChange-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.LiveQuery.AeroDBLiveChange-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.LiveQuery.AeroDBLiveChange<T>",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.LiveQuery.IAeroDBLiveQuery-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.LiveQuery.IAeroDBLiveQuery-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.LiveQuery.IAeroDBLiveQuery<T>",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.LiveQuery.IAeroDBLiveQueryBuilder-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.LiveQuery.IAeroDBLiveQueryBuilder-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.LiveQuery.IAeroDBLiveQueryBuilder<T>",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.LiveQuery.ILiveQuerySession.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.LiveQuery.ILiveQuerySession.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.LiveQuery.ILiveQuerySession",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.LiveQuery.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.LiveQuery.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.LiveQuery",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.LiveStreamAggregation.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.LiveStreamAggregation.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.LiveStreamAggregation",
+      "Summary": "<p sourcefile=\"api/AeroDB.LiveStreamAggregation.yml\" sourcestartlinenumber=\"1\">Aggregates events from a stream into a result using convention-based Apply methods.\nUnlike <xref href=\"AeroDB.SnapshotProjection%601\" data-throw-if-not-resolved=\"false\"></xref>, this does not store the result — it is purely read-side.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.LoadManyExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.LoadManyExtensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.LoadManyExtensions",
+      "Summary": "<p sourcefile=\"api/AeroDB.LoadManyExtensions.yml\" sourcestartlinenumber=\"1\">Batch document loading extensions for <xref href=\"AeroDB.IQuerySession\" data-throw-if-not-resolved=\"false\"></xref>.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.MartenCompatibilityExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.MartenCompatibilityExtensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.MartenCompatibilityExtensions",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.Metadata.FieldSchema.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.Metadata.FieldSchema.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.Metadata.FieldSchema",
+      "Summary": "<p sourcefile=\"api/AeroDB.Metadata.FieldSchema.yml\" sourcestartlinenumber=\"1\">Compile-time schema for a document property, emitted by the AeroDB source generator.\nUsed by <code>SchemaManager</code> to emit DEFINE FIELD statements without reflection.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.Metadata.IDocumentMetadata.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.Metadata.IDocumentMetadata.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.Metadata.IDocumentMetadata",
+      "Summary": "<p sourcefile=\"api/AeroDB.Metadata.IDocumentMetadata.yml\" sourcestartlinenumber=\"1\">Marks a document as having auto-tracked audit metadata.\nProperties are populated automatically by <xref href=\"AeroDB.Diagnostics.DocumentMetadataListener\" data-throw-if-not-resolved=\"false\"></xref>\nduring <xref href=\"AeroDB.IDocumentSession.SaveChangesAsync(System.Threading.CancellationToken)\" data-throw-if-not-resolved=\"false\"></xref>.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.Metadata.ITypeMetadata-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.Metadata.ITypeMetadata-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.Metadata.ITypeMetadata<T>",
+      "Summary": "<p sourcefile=\"api/AeroDB.Metadata.ITypeMetadata-1.yml\" sourcestartlinenumber=\"1\">Typed metadata interface for a specific document type T.\nGenerated metadata classes implement this interface.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.Metadata.ITypeMetadata.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.Metadata.ITypeMetadata.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.Metadata.ITypeMetadata",
+      "Summary": "<p sourcefile=\"api/AeroDB.Metadata.ITypeMetadata.yml\" sourcestartlinenumber=\"1\">Generic metadata interface for a document type.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.Metadata.MetadataRegistry.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.Metadata.MetadataRegistry.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.Metadata.MetadataRegistry",
+      "Summary": "<p sourcefile=\"api/AeroDB.Metadata.MetadataRegistry.yml\" sourcestartlinenumber=\"1\">Central registry for per-type metadata generated by the AeroDB source generator.\nGenerated <code>{Type}Metadata</code> classes self-register in their static constructors.\nRuntime code queries the registry to avoid reflection in hot paths.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.Metadata.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.Metadata.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.Metadata",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.MetadataConfig.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.MetadataConfig.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.MetadataConfig",
+      "Summary": "<p sourcefile=\"api/AeroDB.MetadataConfig.yml\" sourcestartlinenumber=\"1\">Controls which metadata columns are enabled on stored events.\nConfigured via <code>StoreOptions.Events.MetadataConfig</code>.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.MlNotAvailableException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.MlNotAvailableException.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.MlNotAvailableException",
+      "Summary": "<p sourcefile=\"api/AeroDB.MlNotAvailableException.yml\" sourcestartlinenumber=\"1\">Thrown when SurrealML functions (<code>ml::</code>) are not available on the connected SurrealDB server.\nThis typically means the server was not compiled with the <code>--features ml</code> flag,\nor the <code>ml</code> function family is blocked by server capability rules.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.MlOptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.MlOptions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.MlOptions",
+      "Summary": "<p sourcefile=\"api/AeroDB.MlOptions.yml\" sourcestartlinenumber=\"1\">Experimental ML options. Feature-gated via <code>o.Experimental.ML.Enabled = true</code>.\nWhen enabled, probes SurrealDB for ML availability during store initialization.\nFull ML API lives in <code>AeroDB.ML</code> project.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.MlQueryExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.MlQueryExtensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.MlQueryExtensions",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.MultiStreamProjection-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.MultiStreamProjection-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.MultiStreamProjection<T>",
+      "Summary": "<p sourcefile=\"api/AeroDB.MultiStreamProjection-1.yml\" sourcestartlinenumber=\"1\">Creates/updates projected documents that span multiple event streams.\nThe document identity is defined by the subclass (e.g., from a correlation ID\nshared across streams).</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.MultiStreamProjection-2.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.MultiStreamProjection-2.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.MultiStreamProjection<T, TId>",
+      "Summary": "<p sourcefile=\"api/AeroDB.MultiStreamProjection-2.yml\" sourcestartlinenumber=\"1\">Marten-compatible multi-stream projection with a strongly typed aggregate identity.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.OpenTelemetryOptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.OpenTelemetryOptions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.OpenTelemetryOptions",
+      "Summary": "<p sourcefile=\"api/AeroDB.OpenTelemetryOptions.yml\" sourcestartlinenumber=\"1\">Configuration for OpenTelemetry instrumentation of AeroDB operations.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.Operation.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.Operation.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.Operation",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.OperationType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.OperationType.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.OperationType",
+      "Summary": "<p sourcefile=\"api/AeroDB.OperationType.yml\" sourcestartlinenumber=\"1\">Describes the type of change tracked in a document session's unit of work (<code>Added</code>, <code>Modified</code>, <code>Deleted</code>, <code>SoftDeleted</code>, <code>Insert</code>, <code>Update</code>).</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.PagedListCompatibilityExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.PagedListCompatibilityExtensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.PagedListCompatibilityExtensions",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.Pagination.IPagedList-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.Pagination.IPagedList-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.Pagination.IPagedList<T>",
+      "Summary": "<p sourcefile=\"api/AeroDB.Pagination.IPagedList-1.yml\" sourcestartlinenumber=\"1\">Interface for paged list results.\nEquivalent to Marten's <code>Marten.Pagination.IPagedList&lt;T&gt;</code>.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.Pagination.PagedList-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.Pagination.PagedList-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.Pagination.PagedList<T>",
+      "Summary": "<p sourcefile=\"api/AeroDB.Pagination.PagedList-1.yml\" sourcestartlinenumber=\"1\">Paged list implementation that adapts AeroDB's <xref href=\"AeroDB.QueryStatistics\" data-throw-if-not-resolved=\"false\"></xref>\nfor total row count (default, single round trip) or falls back to separate\n<code>LongCountAsync</code> when <code>useCountQuery</code> is set.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.Pagination.PagedListQueryableExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.Pagination.PagedListQueryableExtensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.Pagination.PagedListQueryableExtensions",
+      "Summary": "<p sourcefile=\"api/AeroDB.Pagination.PagedListQueryableExtensions.yml\" sourcestartlinenumber=\"1\">Extension methods on <xref href=\"AeroDB.ISurrealDbQueryable%601\" data-throw-if-not-resolved=\"false\"></xref> for paged queries.\nEquivalent to Marten's <code>Marten.Pagination.PagedListQueryableExtensions</code>.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.Pagination.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.Pagination.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.Pagination",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.PatchExpression-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.PatchExpression-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.PatchExpression<T>",
+      "Summary": "<p sourcefile=\"api/AeroDB.PatchExpression-1.yml\" sourcestartlinenumber=\"1\">Fluent builder for partial document updates (patch operations).\nCollects SET/INCREMENT/APPEND/DELETE operations and generates a SurrealQL\nUPDATE statement when <xref href=\"AeroDB.PatchExpression%601.ApplyAsync(System.Threading.CancellationToken)\" data-throw-if-not-resolved=\"false\"></xref> is called.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.PatchExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.PatchExtensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.PatchExtensions",
+      "Summary": "<p sourcefile=\"api/AeroDB.PatchExtensions.yml\" sourcestartlinenumber=\"1\">Extension methods on <xref href=\"AeroDB.IDocumentSession\" data-throw-if-not-resolved=\"false\"></xref> for partial document updates (patching).\nEquivalent to Marten's <code>Marten.Patching.PatchingExtensions</code>.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.ProjectionCollection.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.ProjectionCollection.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.ProjectionCollection",
+      "Summary": "<p sourcefile=\"api/AeroDB.ProjectionCollection.yml\" sourcestartlinenumber=\"1\">Fluent projection registration API. Replaces the raw <xref href=\"System.Collections.Generic.List%601\" data-throw-if-not-resolved=\"false\"></xref>\non <xref href=\"AeroDB.StoreOptions.Projections\" data-throw-if-not-resolved=\"false\"></xref>. Implements <xref href=\"System.Collections.Generic.IList%601\" data-throw-if-not-resolved=\"false\"></xref>\nfor backward compatibility.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.ProjectionContext.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.ProjectionContext.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.ProjectionContext",
+      "Summary": "<p sourcefile=\"api/AeroDB.ProjectionContext.yml\" sourcestartlinenumber=\"1\">Default implementation of <xref href=\"AeroDB.IProjectionContext\" data-throw-if-not-resolved=\"false\"></xref>.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.ProjectionCoordinator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.ProjectionCoordinator.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.ProjectionCoordinator",
+      "Summary": "<p sourcefile=\"api/AeroDB.ProjectionCoordinator.yml\" sourcestartlinenumber=\"1\">Wraps the <xref href=\"AeroDB.AsyncDaemon\" data-throw-if-not-resolved=\"false\"></xref> in an <xref href=\"Microsoft.Extensions.Hosting.IHostedService\" data-throw-if-not-resolved=\"false\"></xref>\nfor automatic lifecycle management. Registered in DI by <code>AddAeroDB()</code>.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.ProjectionLifecycle.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.ProjectionLifecycle.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.ProjectionLifecycle",
+      "Summary": "<p sourcefile=\"api/AeroDB.ProjectionLifecycle.yml\" sourcestartlinenumber=\"1\">Defines when a projection is applied. <code>Inline</code> projections run synchronously during <code>SaveChanges</code>; <code>Async</code> projections are processed by the background daemon; <code>Live</code> projections are computed on-demand at read time.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.ProjectionOptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.ProjectionOptions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.ProjectionOptions",
+      "Summary": "<p sourcefile=\"api/AeroDB.ProjectionOptions.yml\" sourcestartlinenumber=\"1\">Configuration for event projections. Controls which projections are registered, rebuild options (<code>RebuildOnStartup</code>/<code>RebuildProjectionNames</code>), and projection lifecycle strategies.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.ProjectionProgress.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.ProjectionProgress.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.ProjectionProgress",
+      "Summary": "<p sourcefile=\"api/AeroDB.ProjectionProgress.yml\" sourcestartlinenumber=\"1\">Tracks the last processed event sequence number for the async daemon,\npersisted in the mt_projection_progress table to prevent full event replay on restart.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.ProjectionRebuildProgressCallback.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.ProjectionRebuildProgressCallback.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.ProjectionRebuildProgressCallback",
+      "Summary": "<p sourcefile=\"api/AeroDB.ProjectionRebuildProgressCallback.yml\" sourcestartlinenumber=\"1\">Reports progress during projection rebuilds.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.ProjectionReentrancyException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.ProjectionReentrancyException.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.ProjectionReentrancyException",
+      "Summary": "<p sourcefile=\"api/AeroDB.ProjectionReentrancyException.yml\" sourcestartlinenumber=\"1\">Maximum side-effect processing depth to prevent infinite loops.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.ProjectionShard.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.ProjectionShard.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.ProjectionShard",
+      "Summary": "<p sourcefile=\"api/AeroDB.ProjectionShard.yml\" sourcestartlinenumber=\"1\">A projection shard — one worker that processes events for a specific projection.\nEach shard has independent progress tracking, health monitoring, and lifecycle.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.QuerySession.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.QuerySession.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.QuerySession",
+      "Summary": "<p sourcefile=\"api/AeroDB.QuerySession.yml\" sourcestartlinenumber=\"1\">The concrete query session implementing <xref href=\"AeroDB.IQuerySession\" data-throw-if-not-resolved=\"false\"></xref>. Provides read-only access to SurrealDB via LINQ, raw SQL, compiled queries, live notifications, and graph traversal.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.QueryStatistics.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.QueryStatistics.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.QueryStatistics",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.ReactiveLinqExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.ReactiveLinqExtensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.ReactiveLinqExtensions",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.ReadPreference.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.ReadPreference.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.ReadPreference",
+      "Summary": "<p sourcefile=\"api/AeroDB.ReadPreference.yml\" sourcestartlinenumber=\"1\">Controls which endpoint is used for read operations.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.SchemaDiff.DiffEntry.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.SchemaDiff.DiffEntry.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.SchemaDiff.DiffEntry",
+      "Summary": "<p sourcefile=\"api/AeroDB.SchemaDiff.DiffEntry.yml\" sourcestartlinenumber=\"1\">A single difference between expected and actual schema.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.SchemaDiff.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.SchemaDiff.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.SchemaDiff",
+      "Summary": "<p sourcefile=\"api/AeroDB.SchemaDiff.yml\" sourcestartlinenumber=\"1\">Compares expected schema (from DocumentMapping) against actual database state.\nGenerated by <xref href=\"AeroDB.SchemaDiffer\" data-throw-if-not-resolved=\"false\"></xref>.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.SchemaDiffer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.SchemaDiffer.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.SchemaDiffer",
+      "Summary": "<p sourcefile=\"api/AeroDB.SchemaDiffer.yml\" sourcestartlinenumber=\"1\">Computes schema differences between configured mappings and the live database.\nAccess via <code>store.Advanced.ComputeSchemaDiffAsync()</code>.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.SchemaManager.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.SchemaManager.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.SchemaManager",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.SchemaMode.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.SchemaMode.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.SchemaMode",
+      "Summary": "<p sourcefile=\"api/AeroDB.SchemaMode.yml\" sourcestartlinenumber=\"1\">Controls the SurrealDB table schema mode. <code>Schemaless</code> (Flexible) allows any fields; <code>Schemafull</code> (Strict) enforces a strict field definition.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.SchemaOptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.SchemaOptions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.SchemaOptions",
+      "Summary": "<p sourcefile=\"api/AeroDB.SchemaOptions.yml\" sourcestartlinenumber=\"1\">Configuration for SurrealDB schema management. Controls auto-create behavior, schema mode (<code>SCHEMAFULL</code>/<code>SCHEMALESS</code>), analyzers, views, and per-type document mappings.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.ScopeDefinition.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.ScopeDefinition.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.ScopeDefinition",
+      "Summary": "<p sourcefile=\"api/AeroDB.ScopeDefinition.yml\" sourcestartlinenumber=\"1\">SurrealDB DEFINE SCOPE configuration for user signup/signin flows.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.Search.Analyzer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.Search.Analyzer.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.Search.Analyzer",
+      "Summary": "<p sourcefile=\"api/AeroDB.Search.Analyzer.yml\" sourcestartlinenumber=\"1\">Pre-defined analyzer names.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.Search.Distance.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.Search.Distance.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.Search.Distance",
+      "Summary": "<p sourcefile=\"api/AeroDB.Search.Distance.yml\" sourcestartlinenumber=\"1\">Distance functions for vector indexes (HNSW, DISKANN).</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.Search.Filter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.Search.Filter.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.Search.Filter",
+      "Summary": "<p sourcefile=\"api/AeroDB.Search.Filter.yml\" sourcestartlinenumber=\"1\">Full-text token filters for DEFINE ANALYZER.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.Search.Tokenizer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.Search.Tokenizer.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.Search.Tokenizer",
+      "Summary": "<p sourcefile=\"api/AeroDB.Search.Tokenizer.yml\" sourcestartlinenumber=\"1\">Full-text tokenizers for DEFINE ANALYZER.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.Search.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.Search.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.Search",
+      "Summary": "<p sourcefile=\"api/AeroDB.Search.yml\" sourcestartlinenumber=\"1\">Well-known constants for SurrealDB search configuration.\nUse these instead of raw strings for type safety and IntelliSense.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.SearchExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.SearchExtensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.SearchExtensions",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.SearchQueryExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.SearchQueryExtensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.SearchQueryExtensions",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.SessionOptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.SessionOptions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.SessionOptions",
+      "Summary": "<p sourcefile=\"api/AeroDB.SessionOptions.yml\" sourcestartlinenumber=\"1\">Configuration options for creating a document session.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.SingleStreamProjection-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.SingleStreamProjection-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.SingleStreamProjection<T>",
+      "Summary": "<p sourcefile=\"api/AeroDB.SingleStreamProjection-1.yml\" sourcestartlinenumber=\"1\">Creates/updates one projected document per event stream.\nThe document identity is derived from the stream ID stored on the first event.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.SingleStreamProjection-2.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.SingleStreamProjection-2.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.SingleStreamProjection<TDoc, TId>",
+      "Summary": "<p sourcefile=\"api/AeroDB.SingleStreamProjection-2.yml\" sourcestartlinenumber=\"1\">Single-stream projection with a typed stream identity.\nSupports both Marten-style static Create/Apply convention methods\nand AeroDB's instance-based Create/Apply/ShouldDelete methods.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.SnapshotLifecycle.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.SnapshotLifecycle.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.SnapshotLifecycle",
+      "Summary": "<p sourcefile=\"api/AeroDB.SnapshotLifecycle.yml\" sourcestartlinenumber=\"1\">When a snapshot projection should be rebuilt/refreshed. Maps to Marten's SnapshotLifecycle.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.SnapshotOptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.SnapshotOptions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.SnapshotOptions",
+      "Summary": "<p sourcefile=\"api/AeroDB.SnapshotOptions.yml\" sourcestartlinenumber=\"1\">Configuration for <xref href=\"AeroDB.SnapshotProjection%601\" data-throw-if-not-resolved=\"false\"></xref>.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.SnapshotProjection-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.SnapshotProjection-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.SnapshotProjection<T>",
+      "Summary": "<p sourcefile=\"api/AeroDB.SnapshotProjection-1.yml\" sourcestartlinenumber=\"1\">Self-aggregating projection. The aggregate type <code class=\"typeparamref\">T</code> is also the projection.\nEvent handlers are convention-based: <code>Apply(EventType)</code> or <code>When(EventType)</code> methods\non the aggregate itself.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.SnowflakeGenerator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.SnowflakeGenerator.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.SnowflakeGenerator",
+      "Summary": "<p sourcefile=\"api/AeroDB.SnowflakeGenerator.yml\" sourcestartlinenumber=\"1\">Static helper for generating Snowflake IDs.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.SoftDeleteExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.SoftDeleteExtensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.SoftDeleteExtensions",
+      "Summary": "<p sourcefile=\"api/AeroDB.SoftDeleteExtensions.yml\" sourcestartlinenumber=\"1\">Extension methods for soft-deleting documents in SurrealDB.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.SortOrder.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.SortOrder.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.SortOrder",
+      "Summary": "<p sourcefile=\"api/AeroDB.SortOrder.yml\" sourcestartlinenumber=\"1\">No-op stub for Marten portability. SurrealDB does not use index sort orders.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.SpatialExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.SpatialExtensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.SpatialExtensions",
+      "Summary": "<p sourcefile=\"api/AeroDB.SpatialExtensions.yml\" sourcestartlinenumber=\"1\">Entry point for spatial (geo) queries against SurrealDB geometry fields.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.StaleDataMode.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.StaleDataMode.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.StaleDataMode",
+      "Summary": "<p sourcefile=\"api/AeroDB.StaleDataMode.yml\" sourcestartlinenumber=\"1\">Controls staleness tolerance for <code>QueryForNonStaleData&lt;T&gt;</code>.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.StateAccumulatorExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.StateAccumulatorExtensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.StateAccumulatorExtensions",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.StatsExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.StatsExtensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.StatsExtensions",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.StoreOptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.StoreOptions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.StoreOptions",
+      "Summary": "<p sourcefile=\"api/AeroDB.StoreOptions.yml\" sourcestartlinenumber=\"1\">The main configuration object for a AeroDB document store. Configures database connection settings, schema generation mode, projections, event sourcing, multi-tenancy, and all other store behaviors.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.StreamIdentity.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.StreamIdentity.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.StreamIdentity",
+      "Summary": "<p sourcefile=\"api/AeroDB.StreamIdentity.yml\" sourcestartlinenumber=\"1\">Stream identity strategy for event store streams.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.StreamState.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.StreamState.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.StreamState",
+      "Summary": "<p sourcefile=\"api/AeroDB.StreamState.yml\" sourcestartlinenumber=\"1\">Metadata about an event stream.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.SubscriptionOptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.SubscriptionOptions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.SubscriptionOptions",
+      "Summary": "<p sourcefile=\"api/AeroDB.SubscriptionOptions.yml\" sourcestartlinenumber=\"1\">Options for configuring event subscriptions.\nControls batch size, polling interval, and stream-level filtering.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.SurrealArrayFunctions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.SurrealArrayFunctions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.SurrealArrayFunctions",
+      "Summary": "<p sourcefile=\"api/AeroDB.SurrealArrayFunctions.yml\" sourcestartlinenumber=\"1\">SurrealDB array functions for use in LINQ expressions.\nThese methods are NOT callable at runtime — they exist for expression-tree translation only.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.SurrealAsyncQueryExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.SurrealAsyncQueryExtensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.SurrealAsyncQueryExtensions",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.SurrealBytesFunctions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.SurrealBytesFunctions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.SurrealBytesFunctions",
+      "Summary": "<p sourcefile=\"api/AeroDB.SurrealBytesFunctions.yml\" sourcestartlinenumber=\"1\">SurrealDB bytes functions for use in LINQ expressions.\nThese methods are NOT callable at runtime — they exist for expression-tree translation only.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.SurrealCommandBuilder.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.SurrealCommandBuilder.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.SurrealCommandBuilder",
+      "Summary": "<p sourcefile=\"api/AeroDB.SurrealCommandBuilder.yml\" sourcestartlinenumber=\"1\">Tracks parameterized query values. Each call to <xref href=\"AeroDB.SurrealCommandBuilder.Parameter(System.Object)\" data-throw-if-not-resolved=\"false\"></xref>\nreturns a unique $pN placeholder string and records the value for later\ntransmission alongside the SurrealQL string via <xref href=\"AeroDB.SurrealCommandBuilder.Parameters\" data-throw-if-not-resolved=\"false\"></xref>.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.SurrealCryptoFunctions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.SurrealCryptoFunctions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.SurrealCryptoFunctions",
+      "Summary": "<p sourcefile=\"api/AeroDB.SurrealCryptoFunctions.yml\" sourcestartlinenumber=\"1\">SurrealDB crypto functions for use in LINQ expressions.\nThese methods are NOT callable at runtime — they exist for expression-tree translation only.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.SurrealDbQueryable-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.SurrealDbQueryable-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.SurrealDbQueryable<T>",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.SurrealDbQueryableExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.SurrealDbQueryableExtensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.SurrealDbQueryableExtensions",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.SurrealDurationFunctions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.SurrealDurationFunctions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.SurrealDurationFunctions",
+      "Summary": "<p sourcefile=\"api/AeroDB.SurrealDurationFunctions.yml\" sourcestartlinenumber=\"1\">SurrealDB duration functions for use in LINQ expressions.\nThese methods are NOT callable at runtime — they exist for expression-tree translation only.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.SurrealExpressionVisitor.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.SurrealExpressionVisitor.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.SurrealExpressionVisitor",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.SurrealFunction.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.SurrealFunction.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.SurrealFunction",
+      "Summary": "<p sourcefile=\"api/AeroDB.SurrealFunction.yml\" sourcestartlinenumber=\"1\">Defines a SurrealDB user-defined function (DEFINE FUNCTION).</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.SurrealFunctionParameter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.SurrealFunctionParameter.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.SurrealFunctionParameter",
+      "Summary": "<p sourcefile=\"api/AeroDB.SurrealFunctionParameter.yml\" sourcestartlinenumber=\"1\">Typed parameter definition for a SurrealDB user-defined function.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.SurrealFunctions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.SurrealFunctions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.SurrealFunctions",
+      "Summary": "<p sourcefile=\"api/AeroDB.SurrealFunctions.yml\" sourcestartlinenumber=\"1\">SurrealQL search and vector functions for use in LINQ expressions.\nThese methods are NOT callable at runtime — they exist for expression-tree translation only.\nUse <code>MatchTextAsync&lt;T&gt;</code> and <xref href=\"AeroDB.SearchExtensions.MatchKnnAsync%60%601(AeroDB.ISurrealDbQueryable%7b%60%600%7d%2cSystem.Linq.Expressions.Expression%7bSystem.Func%7b%60%600%2cSystem.Single%5b%5d%7d%7d%2cSystem.Single%5b%5d%2cSystem.Int32%2cSystem.Int32%2cSystem.Threading.CancellationToken)\" data-throw-if-not-resolved=\"false\"></xref> for query execution.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.SurrealHttpFunctions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.SurrealHttpFunctions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.SurrealHttpFunctions",
+      "Summary": "<p sourcefile=\"api/AeroDB.SurrealHttpFunctions.yml\" sourcestartlinenumber=\"1\">SurrealDB http functions for use in LINQ expressions.\n<b>WARNING:</b> These functions execute synchronous HTTP requests from within SurrealDB\nduring query evaluation. Each invocation adds network latency. Using them in\n<code>Where()</code> predicates may cause one HTTP call per evaluated row.\nPrefer using these in <code>Select()</code> projections where the call count is bounded.\nThese methods are NOT callable at runtime — they exist for expression-tree translation only.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.SurrealLiveQueryExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.SurrealLiveQueryExtensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.SurrealLiveQueryExtensions",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.SurrealMetaFunctions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.SurrealMetaFunctions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.SurrealMetaFunctions",
+      "Summary": "<p sourcefile=\"api/AeroDB.SurrealMetaFunctions.yml\" sourcestartlinenumber=\"1\">SurrealDB meta functions for use in LINQ expressions.\nThese methods are NOT callable at runtime — they exist for expression-tree translation only.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.SurrealObjectFunctions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.SurrealObjectFunctions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.SurrealObjectFunctions",
+      "Summary": "<p sourcefile=\"api/AeroDB.SurrealObjectFunctions.yml\" sourcestartlinenumber=\"1\">SurrealDB object functions for use in LINQ expressions.\nThese methods are NOT callable at runtime — they exist for expression-tree translation only.\n<br>\nNote: <code>object::merge</code>, <code>object::omit</code>, <code>object::pick</code>, <code>object::set</code>\nare not available in the current SurrealDB version. Add these when a newer version confirms availability.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.SurrealQueryProvider.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.SurrealQueryProvider.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.SurrealQueryProvider",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.SurrealQueryResult.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.SurrealQueryResult.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.SurrealQueryResult",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.SurrealRandFunctions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.SurrealRandFunctions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.SurrealRandFunctions",
+      "Summary": "<p sourcefile=\"api/AeroDB.SurrealRandFunctions.yml\" sourcestartlinenumber=\"1\">SurrealDB rand functions for use in LINQ expressions.\nThese methods are NOT callable at runtime — they exist for expression-tree translation only.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.SurrealSeriesFunctions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.SurrealSeriesFunctions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.SurrealSeriesFunctions",
+      "Summary": "<p sourcefile=\"api/AeroDB.SurrealSeriesFunctions.yml\" sourcestartlinenumber=\"1\">Marker methods for SurrealDB series:: time-series functions.\nThese are never executed — they are intercepted by the LINQ expression visitor\nand translated to SurrealQL <code>series::*</code> function calls.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.SurrealSessionFunctions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.SurrealSessionFunctions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.SurrealSessionFunctions",
+      "Summary": "<p sourcefile=\"api/AeroDB.SurrealSessionFunctions.yml\" sourcestartlinenumber=\"1\">SurrealDB session functions for use in LINQ expressions.\nThese methods are NOT callable at runtime — they exist for expression-tree translation only.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.SurrealStringFunctions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.SurrealStringFunctions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.SurrealStringFunctions",
+      "Summary": "<p sourcefile=\"api/AeroDB.SurrealStringFunctions.yml\" sourcestartlinenumber=\"1\">SurrealDB string functions for use in LINQ expressions.\nThese methods are NOT callable at runtime — they exist for expression-tree translation only.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.SurrealTypeFunctions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.SurrealTypeFunctions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.SurrealTypeFunctions",
+      "Summary": "<p sourcefile=\"api/AeroDB.SurrealTypeFunctions.yml\" sourcestartlinenumber=\"1\">SurrealDB type conversion and type-check functions for use in LINQ expressions.\nThese methods are NOT callable at runtime — they exist for expression-tree translation only.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.TenancyScope.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.TenancyScope.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.TenancyScope",
+      "Summary": "<p sourcefile=\"api/AeroDB.TenancyScope.yml\" sourcestartlinenumber=\"1\">No-op stub for Marten portability. SurrealDB does not use tenancy-scoped indexes.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.TenancyStyle.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.TenancyStyle.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.TenancyStyle",
+      "Summary": "<p sourcefile=\"api/AeroDB.TenancyStyle.yml\" sourcestartlinenumber=\"1\">Defines the multi-tenancy strategy. <code>Single</code> for single-tenant; <code>Conjoined</code> uses a <code>tenant_id</code> field within a single database; <code>DatabasePerTenant</code> routes each tenant to a separate database.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.TenantIdStyle.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.TenantIdStyle.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.TenantIdStyle",
+      "Summary": "<p sourcefile=\"api/AeroDB.TenantIdStyle.yml\" sourcestartlinenumber=\"1\">Controls whether tenant IDs are treated as case-sensitive or case-insensitive\nwhen matching multi-tenanted documents.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.TimeBucket.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.TimeBucket.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.TimeBucket",
+      "Summary": "<p sourcefile=\"api/AeroDB.TimeBucket.yml\" sourcestartlinenumber=\"1\">Predefined time buckets for calendar-aligned grouping via <code>time::group()</code>.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.TimeSeriesExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.TimeSeriesExtensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.TimeSeriesExtensions",
+      "Summary": "<p sourcefile=\"api/AeroDB.TimeSeriesExtensions.yml\" sourcestartlinenumber=\"1\">Entry point for time-series queries with temporal bucketing and aggregation.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.TimeUnit.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.TimeUnit.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.TimeUnit",
+      "Summary": "<p sourcefile=\"api/AeroDB.TimeUnit.yml\" sourcestartlinenumber=\"1\">Time units for duration-based bucketing via <code>time::floor()</code>.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.TokenDefinition.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.TokenDefinition.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.TokenDefinition",
+      "Summary": "<p sourcefile=\"api/AeroDB.TokenDefinition.yml\" sourcestartlinenumber=\"1\">SurrealDB DEFINE TOKEN configuration for JWT/HS* token verification.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.TombstoneEvent.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.TombstoneEvent.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.TombstoneEvent",
+      "Summary": "<p sourcefile=\"api/AeroDB.TombstoneEvent.yml\" sourcestartlinenumber=\"1\">Marker event for gap-filling in event streams. Written by <code>WriteTombstone</code>.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.TriggerActionBuilder.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.TriggerActionBuilder.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.TriggerActionBuilder",
+      "Summary": "<p sourcefile=\"api/AeroDB.TriggerActionBuilder.yml\" sourcestartlinenumber=\"1\">Fluent builder for SurrealDB <code>DEFINE EVENT</code> trigger action bodies.\nSupports typed CREATE, UPDATE, DELETE, INSERT, and RELATE statements\nwith compile-time-safe field references via expression trees.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.TriggerCreateStatement-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.TriggerCreateStatement-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.TriggerCreateStatement<T>",
+      "Summary": "<p sourcefile=\"api/AeroDB.TriggerCreateStatement-1.yml\" sourcestartlinenumber=\"1\">Builder for CREATE statements within a trigger action.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.TriggerDeleteStatement-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.TriggerDeleteStatement-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.TriggerDeleteStatement<T>",
+      "Summary": "<p sourcefile=\"api/AeroDB.TriggerDeleteStatement-1.yml\" sourcestartlinenumber=\"1\">Builder for DELETE statements within a trigger action.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.TriggerRelateStatement.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.TriggerRelateStatement.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.TriggerRelateStatement",
+      "Summary": "<p sourcefile=\"api/AeroDB.TriggerRelateStatement.yml\" sourcestartlinenumber=\"1\">Builder for RELATE statements within a trigger action.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.TriggerUpdateStatement-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.TriggerUpdateStatement-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.TriggerUpdateStatement<T>",
+      "Summary": "<p sourcefile=\"api/AeroDB.TriggerUpdateStatement-1.yml\" sourcestartlinenumber=\"1\">Builder for UPDATE statements within a trigger action.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.UnitOfWork.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.UnitOfWork.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.UnitOfWork",
+      "Summary": "<p sourcefile=\"api/AeroDB.UnitOfWork.yml\" sourcestartlinenumber=\"1\">Tracks pending document operations for a document session. Implements <xref href=\"AeroDB.IUnitOfWork\" data-throw-if-not-resolved=\"false\"></xref> to expose pending changes for inspection.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.VersionAttribute.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.VersionAttribute.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.VersionAttribute",
+      "Summary": "<p sourcefile=\"api/AeroDB.VersionAttribute.yml\" sourcestartlinenumber=\"1\">Applied to a <code>long</code> property to indicate it is the concurrency version field.\nTakes precedence over <xref href=\"AeroDB.IVersioned\" data-throw-if-not-resolved=\"false\"></xref> when both are present on the same type.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.ViewDefinition-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.ViewDefinition-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.ViewDefinition<T>",
+      "Summary": "<p sourcefile=\"api/AeroDB.ViewDefinition-1.yml\" sourcestartlinenumber=\"1\">Fluent builder for SurrealDB pre-computed/aggregate views (DEFINE TABLE ... AS SELECT ...).\nViews are materialized, incrementally-updating tables backed by a SELECT query.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.ViewDefinition.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.ViewDefinition.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.ViewDefinition",
+      "Summary": "<p sourcefile=\"api/AeroDB.ViewDefinition.yml\" sourcestartlinenumber=\"1\">Non-generic base for view definitions. Used by <xref href=\"AeroDB.ViewOptions.ViewRegistration\" data-throw-if-not-resolved=\"false\"></xref>\nto enable schema-aware routing of views to per-schema databases.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.ViewGraphSelectBuilder-2.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.ViewGraphSelectBuilder-2.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.ViewGraphSelectBuilder<TSource, TTarget>",
+      "Summary": "<p sourcefile=\"api/AeroDB.ViewGraphSelectBuilder-2.yml\" sourcestartlinenumber=\"1\">Typed graph traversal builder within a view SELECT column.\n<code class=\"typeparamref\">TSource</code> is the view's source entity type.\n<code class=\"typeparamref\">TTarget</code> is the current traversal target type (used by <code>Select</code>).\nCall <code>Select</code> to close the chain and return to the parent <xref href=\"AeroDB.ViewSelectBuilder%601\" data-throw-if-not-resolved=\"false\"></xref>.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.ViewOptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.ViewOptions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.ViewOptions",
+      "Summary": "<p sourcefile=\"api/AeroDB.ViewOptions.yml\" sourcestartlinenumber=\"1\">Configuration root for SurrealDB pre-computed/aggregate views.\nViews are created during DocumentStore initialization.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.ViewQueryExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.ViewQueryExtensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.ViewQueryExtensions",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.ViewSelectBuilder-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.ViewSelectBuilder-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.ViewSelectBuilder<T>",
+      "Summary": "<p sourcefile=\"api/AeroDB.ViewSelectBuilder-1.yml\" sourcestartlinenumber=\"1\">Fluent builder for view SELECT columns. Supports aggregates (count/sum/min/max/average),\ncolumn references, graph traversal entries, and raw SurrealQL expressions.\nReturned from <code>ViewDefinition&lt;T&gt;.Select(cols =&gt; ...)</code>.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.WolverineFx.AeroDBEndpoint.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.WolverineFx.AeroDBEndpoint.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.WolverineFx.AeroDBEndpoint",
+      "Summary": "<p sourcefile=\"api/AeroDB.WolverineFx.AeroDBEndpoint.yml\" sourcestartlinenumber=\"1\">AeroDB endpoint backed by SurrealDB message storage.\nCreates <xref href=\"AeroDB.WolverineFx.AeroDBQueueListener\" data-throw-if-not-resolved=\"false\"></xref> and <xref href=\"AeroDB.WolverineFx.AeroDBQueueSender\" data-throw-if-not-resolved=\"false\"></xref>\nfor message processing.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.WolverineFx.AeroDBEnvelope.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.WolverineFx.AeroDBEnvelope.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.WolverineFx.AeroDBEnvelope",
+      "Summary": "<p sourcefile=\"api/AeroDB.WolverineFx.AeroDBEnvelope.yml\" sourcestartlinenumber=\"1\">SurrealDB record type for Wolverine message envelopes.\nMaps to wolverine_incoming_envelopes and wolverine_outgoing_envelopes tables.\nThe body is stored as Base64 string (SurrealDB CBOR byte[] round-trip may be unreliable).</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.WolverineFx.AeroDBIntegration.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.WolverineFx.AeroDBIntegration.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.WolverineFx.AeroDBIntegration",
+      "Summary": "<p sourcefile=\"api/AeroDB.WolverineFx.AeroDBIntegration.yml\" sourcestartlinenumber=\"1\">Wolverine extension that integrates AeroDB (SurrealDB) as the message persistence\nand saga storage provider. Registers codegen sources, persistence frame provider,\nand the AeroDB transport.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.WolverineFx.AeroDBMessageStore.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.WolverineFx.AeroDBMessageStore.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.WolverineFx.AeroDBMessageStore",
+      "Summary": "<p sourcefile=\"api/AeroDB.WolverineFx.AeroDBMessageStore.yml\" sourcestartlinenumber=\"1\">SurrealDB (AeroDB) backed implementation of Wolverine's IMessageStore and all sub-interfaces.\nAll operations use SurrealQL RawQuery with parameterized queries.\nEnvelope bodies are stored as Base64 strings for reliable CBOR round-tripping.</p>\n<p sourcefile=\"api/AeroDB.WolverineFx.AeroDBMessageStore.yml\" sourcestartlinenumber=\"5\">Schema initialization now delegates to the AeroDB <xref href=\"AeroDB.SchemaManager\" data-throw-if-not-resolved=\"false\"></xref> pipeline\nvia typed POCOs (<xref href=\"AeroDB.WolverineFx.WolverineIncomingEnvelope\" data-throw-if-not-resolved=\"false\"></xref>, etc.) instead of\na hardcoded SurrealQL string.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.WolverineFx.AeroDBOps.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.WolverineFx.AeroDBOps.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.WolverineFx.AeroDBOps",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.WolverineFx.AeroDBOutboxedSessionFactory.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.WolverineFx.AeroDBOutboxedSessionFactory.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.WolverineFx.AeroDBOutboxedSessionFactory",
+      "Summary": "<p sourcefile=\"api/AeroDB.WolverineFx.AeroDBOutboxedSessionFactory.yml\" sourcestartlinenumber=\"1\">Factory that creates <xref href=\"AeroDB.IDocumentSession\" data-throw-if-not-resolved=\"false\"></xref> instances pre-enrolled in\nWolverine's outbox. Mirrors the Wolverine.Marten <code>OutboxedSessionFactory</code> pattern.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.WolverineFx.AeroDBQueueListener.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.WolverineFx.AeroDBQueueListener.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.WolverineFx.AeroDBQueueListener",
+      "Summary": "<p sourcefile=\"api/AeroDB.WolverineFx.AeroDBQueueListener.yml\" sourcestartlinenumber=\"1\">Polling listener that claims and dispatches incoming messages from SurrealDB.\nUses the AeroDBMessageStore to load globally-owned incoming envelopes,\nthen dispatches them to the provided IReceiver.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.WolverineFx.AeroDBQueueSender.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.WolverineFx.AeroDBQueueSender.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.WolverineFx.AeroDBQueueSender",
+      "Summary": "<p sourcefile=\"api/AeroDB.WolverineFx.AeroDBQueueSender.yml\" sourcestartlinenumber=\"1\">Sends outgoing messages by inserting them into the SurrealDB\nwolverine_outgoing_envelopes table via AeroDBMessageStore.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.WolverineFx.AeroDBSagaStorage-2.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.WolverineFx.AeroDBSagaStorage-2.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.WolverineFx.AeroDBSagaStorage<TId, TSaga>",
+      "Summary": "<p sourcefile=\"api/AeroDB.WolverineFx.AeroDBSagaStorage-2.yml\" sourcestartlinenumber=\"1\">AeroDB-backed saga storage for Wolverine using SurrealDB as the document store.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.WolverineFx.AeroDBTransport.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.WolverineFx.AeroDBTransport.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.WolverineFx.AeroDBTransport",
+      "Summary": "<p sourcefile=\"api/AeroDB.WolverineFx.AeroDBTransport.yml\" sourcestartlinenumber=\"1\">AeroDB-backed transport for Wolverine using SurrealDB as the message store.\nRegisters the &quot;AeroDB://&quot; protocol scheme and creates AeroDBEndpoint instances.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.WolverineFx.AeroDBTransportOptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.WolverineFx.AeroDBTransportOptions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.WolverineFx.AeroDBTransportOptions",
+      "Summary": "<p sourcefile=\"api/AeroDB.WolverineFx.AeroDBTransportOptions.yml\" sourcestartlinenumber=\"1\">Configuration options for the AeroDB-backed transport.\nControls polling behavior and batch sizes for the SurrealDB message queue.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.WolverineFx.AeroDBWolverineOptionsEventExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.WolverineFx.AeroDBWolverineOptionsEventExtensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.WolverineFx.AeroDBWolverineOptionsEventExtensions",
+      "Summary": "<p sourcefile=\"api/AeroDB.WolverineFx.AeroDBWolverineOptionsEventExtensions.yml\" sourcestartlinenumber=\"1\">Extension methods for configuring AeroDB event forwarding through Wolverine.\nEvent forwarding is automatically wired when sessions are opened via\n<xref href=\"AeroDB.WolverineFx.AeroDBOutboxedSessionFactory\" data-throw-if-not-resolved=\"false\"></xref>. This method provides additional\nstore-level configuration for event-related options.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.WolverineFx.IAeroDBOp.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.WolverineFx.IAeroDBOp.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.WolverineFx.IAeroDBOp",
+      "Summary": "<p sourcefile=\"api/AeroDB.WolverineFx.IAeroDBOp.yml\" sourcestartlinenumber=\"1\">Side effect that executes against a AeroDB document session.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.WolverineFx.ScopedDocumentSessionHolder.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.WolverineFx.ScopedDocumentSessionHolder.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.WolverineFx.ScopedDocumentSessionHolder",
+      "Summary": "<p sourcefile=\"api/AeroDB.WolverineFx.ScopedDocumentSessionHolder.yml\" sourcestartlinenumber=\"1\">Scope-local carrier for the outbox-enrolled <xref href=\"AeroDB.IDocumentSession\" data-throw-if-not-resolved=\"false\"></xref> a handler is using.\nWhen a handler falls back to service location, Wolverine's generated code primes this holder\nso a service-located <xref href=\"AeroDB.IDocumentSession\" data-throw-if-not-resolved=\"false\"></xref> / <xref href=\"AeroDB.IQuerySession\" data-throw-if-not-resolved=\"false\"></xref> resolves\nto the SAME session enrolled with the active outbox. See GH-3001.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.WolverineFx.WolverineEnvelopeSchemas.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.WolverineFx.WolverineEnvelopeSchemas.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.WolverineFx.WolverineEnvelopeSchemas",
+      "Summary": "<p sourcefile=\"api/AeroDB.WolverineFx.WolverineEnvelopeSchemas.yml\" sourcestartlinenumber=\"1\">Registers Wolverine envelope table schemas on <xref href=\"AeroDB.StoreOptions.Schema\" data-throw-if-not-resolved=\"false\"></xref>\nduring <xref href=\"AeroDB.DocumentStore.InitializeAsync(System.Threading.CancellationToken)\" data-throw-if-not-resolved=\"false\"></xref> via the <xref href=\"AeroDB.IConfigureAeroDB\" data-throw-if-not-resolved=\"false\"></xref> hook.\nThis replaces the hardcoded 131-line SchemaScript string in <xref href=\"AeroDB.WolverineFx.AeroDBMessageStore\" data-throw-if-not-resolved=\"false\"></xref>\nwith proper typed POCOs and the AeroDB schema pipeline.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.WolverineFx.WolverineOptionsAeroDBExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.WolverineFx.WolverineOptionsAeroDBExtensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.WolverineFx.WolverineOptionsAeroDBExtensions",
+      "Summary": "<p sourcefile=\"api/AeroDB.WolverineFx.WolverineOptionsAeroDBExtensions.yml\" sourcestartlinenumber=\"1\">Extension methods for integrating Wolverine with AeroDB (SurrealDB) persistence.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.WolverineFx.WolverineOptionsSubscriptionExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.WolverineFx.WolverineOptionsSubscriptionExtensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.WolverineFx.WolverineOptionsSubscriptionExtensions",
+      "Summary": "<p sourcefile=\"api/AeroDB.WolverineFx.WolverineOptionsSubscriptionExtensions.yml\" sourcestartlinenumber=\"1\">Extension methods for registering AeroDB event subscriptions with Wolverine.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.WolverineFx.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.WolverineFx.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB.WolverineFx",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AeroDB.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AeroDB.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AeroDB",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Microsoft.Extensions.DependencyInjection.AeroDBIdentityExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.Extensions.DependencyInjection.AeroDBIdentityExtensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Microsoft.Extensions.DependencyInjection.AeroDBIdentityExtensions",
+      "Summary": "<p sourcefile=\"api/Microsoft.Extensions.DependencyInjection.AeroDBIdentityExtensions.yml\" sourcestartlinenumber=\"1\">Extension methods for registering AeroDB-backed ASP.NET Core Identity stores\nonto an <xref href=\"Microsoft.AspNetCore.Identity.IdentityBuilder\" data-throw-if-not-resolved=\"false\"></xref>.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Microsoft.Extensions.DependencyInjection.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.Extensions.DependencyInjection.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Microsoft.Extensions.DependencyInjection",
+      "Summary": null
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "api/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/toc.html"
+        },
+        ".json": {
+          "relative_path": "api/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "index.md",
+      "output": {
+        ".html": {
+          "relative_path": "index.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "toc.html"
+        },
+        ".json": {
+          "relative_path": "toc.json"
+        }
+      },
+      "version": ""
+    }
+  ],
+  "groups": [
+    {
+      "xrefmap": "xrefmap.yml"
+    }
+  ]
+}

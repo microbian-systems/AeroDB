@@ -1,0 +1,1320 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.WolverineFx.AeroDBEnvelope
+  commentId: T:AeroDB.WolverineFx.AeroDBEnvelope
+  id: AeroDBEnvelope
+  parent: AeroDB.WolverineFx
+  children:
+  - AeroDB.WolverineFx.AeroDBEnvelope.#ctor
+  - AeroDB.WolverineFx.AeroDBEnvelope.Attempts
+  - AeroDB.WolverineFx.AeroDBEnvelope.Body
+  - AeroDB.WolverineFx.AeroDBEnvelope.ContentType
+  - AeroDB.WolverineFx.AeroDBEnvelope.ConversationId
+  - AeroDB.WolverineFx.AeroDBEnvelope.CorrelationId
+  - AeroDB.WolverineFx.AeroDBEnvelope.DeliverBy
+  - AeroDB.WolverineFx.AeroDBEnvelope.Destination
+  - AeroDB.WolverineFx.AeroDBEnvelope.ExceptionMessage
+  - AeroDB.WolverineFx.AeroDBEnvelope.ExceptionType
+  - AeroDB.WolverineFx.AeroDBEnvelope.ExecutionTime
+  - AeroDB.WolverineFx.AeroDBEnvelope.FromEnvelope(Wolverine.Envelope,System.Int32)
+  - AeroDB.WolverineFx.AeroDBEnvelope.FromOutgoingEnvelope(Wolverine.Envelope,System.Int32)
+  - AeroDB.WolverineFx.AeroDBEnvelope.Id
+  - AeroDB.WolverineFx.AeroDBEnvelope.KeepUntil
+  - AeroDB.WolverineFx.AeroDBEnvelope.MessageType
+  - AeroDB.WolverineFx.AeroDBEnvelope.OwnerId
+  - AeroDB.WolverineFx.AeroDBEnvelope.ReceivedAt
+  - AeroDB.WolverineFx.AeroDBEnvelope.Replayable
+  - AeroDB.WolverineFx.AeroDBEnvelope.ReplyUri
+  - AeroDB.WolverineFx.AeroDBEnvelope.SagaId
+  - AeroDB.WolverineFx.AeroDBEnvelope.SentAt
+  - AeroDB.WolverineFx.AeroDBEnvelope.Source
+  - AeroDB.WolverineFx.AeroDBEnvelope.Status
+  - AeroDB.WolverineFx.AeroDBEnvelope.TenantId
+  - AeroDB.WolverineFx.AeroDBEnvelope.ToEnvelope
+  langs:
+  - csharp
+  - vb
+  name: AeroDBEnvelope
+  nameWithType: AeroDBEnvelope
+  fullName: AeroDB.WolverineFx.AeroDBEnvelope
+  type: Class
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBEnvelope.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  summary: >-
+    SurrealDB record type for Wolverine message envelopes.
+
+    Maps to wolverine_incoming_envelopes and wolverine_outgoing_envelopes tables.
+
+    The body is stored as Base64 string (SurrealDB CBOR byte[] round-trip may be unreliable).
+  example: []
+  syntax:
+    content: 'public sealed class AeroDBEnvelope : Record, IRecord'
+    content.vb: Public NotInheritable Class AeroDBEnvelope Inherits Record Implements IRecord
+  inheritance:
+  - System.Object
+  - SurrealDb.Net.Models.Record
+  implements:
+  - SurrealDb.Net.Models.IRecord
+  inheritedMembers:
+  - System.Object.GetType
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+- uid: AeroDB.WolverineFx.AeroDBEnvelope.FromEnvelope(Wolverine.Envelope,System.Int32)
+  commentId: M:AeroDB.WolverineFx.AeroDBEnvelope.FromEnvelope(Wolverine.Envelope,System.Int32)
+  id: FromEnvelope(Wolverine.Envelope,System.Int32)
+  parent: AeroDB.WolverineFx.AeroDBEnvelope
+  langs:
+  - csharp
+  - vb
+  name: FromEnvelope(Envelope, int)
+  nameWithType: AeroDBEnvelope.FromEnvelope(Envelope, int)
+  fullName: AeroDB.WolverineFx.AeroDBEnvelope.FromEnvelope(Wolverine.Envelope, int)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBEnvelope.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  summary: Map from Wolverine Envelope to AeroDBEnvelope (for incoming).
+  example: []
+  syntax:
+    content: public static AeroDBEnvelope FromEnvelope(Envelope env, int ownerId)
+    parameters:
+    - id: env
+      type: Wolverine.Envelope
+    - id: ownerId
+      type: System.Int32
+    return:
+      type: AeroDB.WolverineFx.AeroDBEnvelope
+    content.vb: Public Shared Function FromEnvelope(env As Envelope, ownerId As Integer) As AeroDBEnvelope
+  overload: AeroDB.WolverineFx.AeroDBEnvelope.FromEnvelope*
+  nameWithType.vb: AeroDBEnvelope.FromEnvelope(Envelope, Integer)
+  fullName.vb: AeroDB.WolverineFx.AeroDBEnvelope.FromEnvelope(Wolverine.Envelope, Integer)
+  name.vb: FromEnvelope(Envelope, Integer)
+- uid: AeroDB.WolverineFx.AeroDBEnvelope.FromOutgoingEnvelope(Wolverine.Envelope,System.Int32)
+  commentId: M:AeroDB.WolverineFx.AeroDBEnvelope.FromOutgoingEnvelope(Wolverine.Envelope,System.Int32)
+  id: FromOutgoingEnvelope(Wolverine.Envelope,System.Int32)
+  parent: AeroDB.WolverineFx.AeroDBEnvelope
+  langs:
+  - csharp
+  - vb
+  name: FromOutgoingEnvelope(Envelope, int)
+  nameWithType: AeroDBEnvelope.FromOutgoingEnvelope(Envelope, int)
+  fullName: AeroDB.WolverineFx.AeroDBEnvelope.FromOutgoingEnvelope(Wolverine.Envelope, int)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBEnvelope.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  summary: Map from Wolverine Envelope to AeroDBEnvelope (for outgoing).
+  example: []
+  syntax:
+    content: public static AeroDBEnvelope FromOutgoingEnvelope(Envelope env, int ownerId)
+    parameters:
+    - id: env
+      type: Wolverine.Envelope
+    - id: ownerId
+      type: System.Int32
+    return:
+      type: AeroDB.WolverineFx.AeroDBEnvelope
+    content.vb: Public Shared Function FromOutgoingEnvelope(env As Envelope, ownerId As Integer) As AeroDBEnvelope
+  overload: AeroDB.WolverineFx.AeroDBEnvelope.FromOutgoingEnvelope*
+  nameWithType.vb: AeroDBEnvelope.FromOutgoingEnvelope(Envelope, Integer)
+  fullName.vb: AeroDB.WolverineFx.AeroDBEnvelope.FromOutgoingEnvelope(Wolverine.Envelope, Integer)
+  name.vb: FromOutgoingEnvelope(Envelope, Integer)
+- uid: AeroDB.WolverineFx.AeroDBEnvelope.ToEnvelope
+  commentId: M:AeroDB.WolverineFx.AeroDBEnvelope.ToEnvelope
+  id: ToEnvelope
+  parent: AeroDB.WolverineFx.AeroDBEnvelope
+  langs:
+  - csharp
+  - vb
+  name: ToEnvelope()
+  nameWithType: AeroDBEnvelope.ToEnvelope()
+  fullName: AeroDB.WolverineFx.AeroDBEnvelope.ToEnvelope()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBEnvelope.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  summary: Convert back to Wolverine Envelope.
+  example: []
+  syntax:
+    content: public Envelope ToEnvelope()
+    return:
+      type: Wolverine.Envelope
+    content.vb: Public Function ToEnvelope() As Envelope
+  overload: AeroDB.WolverineFx.AeroDBEnvelope.ToEnvelope*
+- uid: AeroDB.WolverineFx.AeroDBEnvelope.#ctor
+  commentId: M:AeroDB.WolverineFx.AeroDBEnvelope.#ctor
+  id: '#ctor'
+  parent: AeroDB.WolverineFx.AeroDBEnvelope
+  langs:
+  - csharp
+  - vb
+  name: AeroDBEnvelope()
+  nameWithType: AeroDBEnvelope.AeroDBEnvelope()
+  fullName: AeroDB.WolverineFx.AeroDBEnvelope.AeroDBEnvelope()
+  type: Constructor
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBEnvelope.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  syntax:
+    content: public AeroDBEnvelope()
+    content.vb: Public Sub New()
+  overload: AeroDB.WolverineFx.AeroDBEnvelope.#ctor*
+  nameWithType.vb: AeroDBEnvelope.New()
+  fullName.vb: AeroDB.WolverineFx.AeroDBEnvelope.New()
+  name.vb: New()
+- uid: AeroDB.WolverineFx.AeroDBEnvelope.Id
+  commentId: P:AeroDB.WolverineFx.AeroDBEnvelope.Id
+  id: Id
+  parent: AeroDB.WolverineFx.AeroDBEnvelope
+  langs:
+  - csharp
+  - vb
+  name: Id
+  nameWithType: AeroDBEnvelope.Id
+  fullName: AeroDB.WolverineFx.AeroDBEnvelope.Id
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBEnvelope.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  summary: Wolverine envelope ID (Guid as string).
+  example: []
+  syntax:
+    content: public string Id { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property Id As String
+  overload: AeroDB.WolverineFx.AeroDBEnvelope.Id*
+- uid: AeroDB.WolverineFx.AeroDBEnvelope.Status
+  commentId: P:AeroDB.WolverineFx.AeroDBEnvelope.Status
+  id: Status
+  parent: AeroDB.WolverineFx.AeroDBEnvelope
+  langs:
+  - csharp
+  - vb
+  name: Status
+  nameWithType: AeroDBEnvelope.Status
+  fullName: AeroDB.WolverineFx.AeroDBEnvelope.Status
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBEnvelope.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  summary: 'Envelope status: Incoming, Outgoing, Handled, Scheduled, etc.'
+  example: []
+  syntax:
+    content: public string Status { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property Status As String
+  overload: AeroDB.WolverineFx.AeroDBEnvelope.Status*
+- uid: AeroDB.WolverineFx.AeroDBEnvelope.OwnerId
+  commentId: P:AeroDB.WolverineFx.AeroDBEnvelope.OwnerId
+  id: OwnerId
+  parent: AeroDB.WolverineFx.AeroDBEnvelope
+  langs:
+  - csharp
+  - vb
+  name: OwnerId
+  nameWithType: AeroDBEnvelope.OwnerId
+  fullName: AeroDB.WolverineFx.AeroDBEnvelope.OwnerId
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBEnvelope.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  summary: Owner node ID (int).
+  example: []
+  syntax:
+    content: public int OwnerId { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property OwnerId As Integer
+  overload: AeroDB.WolverineFx.AeroDBEnvelope.OwnerId*
+- uid: AeroDB.WolverineFx.AeroDBEnvelope.ExecutionTime
+  commentId: P:AeroDB.WolverineFx.AeroDBEnvelope.ExecutionTime
+  id: ExecutionTime
+  parent: AeroDB.WolverineFx.AeroDBEnvelope
+  langs:
+  - csharp
+  - vb
+  name: ExecutionTime
+  nameWithType: AeroDBEnvelope.ExecutionTime
+  fullName: AeroDB.WolverineFx.AeroDBEnvelope.ExecutionTime
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBEnvelope.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  summary: Execution time as DateTimeOffset.
+  example: []
+  syntax:
+    content: public DateTimeOffset ExecutionTime { get; set; }
+    parameters: []
+    return:
+      type: System.DateTimeOffset
+    content.vb: Public Property ExecutionTime As DateTimeOffset
+  overload: AeroDB.WolverineFx.AeroDBEnvelope.ExecutionTime*
+- uid: AeroDB.WolverineFx.AeroDBEnvelope.Attempts
+  commentId: P:AeroDB.WolverineFx.AeroDBEnvelope.Attempts
+  id: Attempts
+  parent: AeroDB.WolverineFx.AeroDBEnvelope
+  langs:
+  - csharp
+  - vb
+  name: Attempts
+  nameWithType: AeroDBEnvelope.Attempts
+  fullName: AeroDB.WolverineFx.AeroDBEnvelope.Attempts
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBEnvelope.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  summary: Number of delivery attempts.
+  example: []
+  syntax:
+    content: public int Attempts { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property Attempts As Integer
+  overload: AeroDB.WolverineFx.AeroDBEnvelope.Attempts*
+- uid: AeroDB.WolverineFx.AeroDBEnvelope.Body
+  commentId: P:AeroDB.WolverineFx.AeroDBEnvelope.Body
+  id: Body
+  parent: AeroDB.WolverineFx.AeroDBEnvelope
+  langs:
+  - csharp
+  - vb
+  name: Body
+  nameWithType: AeroDBEnvelope.Body
+  fullName: AeroDB.WolverineFx.AeroDBEnvelope.Body
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBEnvelope.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  summary: Serialized message body (Base64-encoded bytes).
+  example: []
+  syntax:
+    content: public string Body { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property Body As String
+  overload: AeroDB.WolverineFx.AeroDBEnvelope.Body*
+- uid: AeroDB.WolverineFx.AeroDBEnvelope.MessageType
+  commentId: P:AeroDB.WolverineFx.AeroDBEnvelope.MessageType
+  id: MessageType
+  parent: AeroDB.WolverineFx.AeroDBEnvelope
+  langs:
+  - csharp
+  - vb
+  name: MessageType
+  nameWithType: AeroDBEnvelope.MessageType
+  fullName: AeroDB.WolverineFx.AeroDBEnvelope.MessageType
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBEnvelope.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  summary: Message type name.
+  example: []
+  syntax:
+    content: public string MessageType { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property MessageType As String
+  overload: AeroDB.WolverineFx.AeroDBEnvelope.MessageType*
+- uid: AeroDB.WolverineFx.AeroDBEnvelope.Destination
+  commentId: P:AeroDB.WolverineFx.AeroDBEnvelope.Destination
+  id: Destination
+  parent: AeroDB.WolverineFx.AeroDBEnvelope
+  langs:
+  - csharp
+  - vb
+  name: Destination
+  nameWithType: AeroDBEnvelope.Destination
+  fullName: AeroDB.WolverineFx.AeroDBEnvelope.Destination
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBEnvelope.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  summary: Destination URI.
+  example: []
+  syntax:
+    content: public string? Destination { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property Destination As String
+  overload: AeroDB.WolverineFx.AeroDBEnvelope.Destination*
+- uid: AeroDB.WolverineFx.AeroDBEnvelope.DeliverBy
+  commentId: P:AeroDB.WolverineFx.AeroDBEnvelope.DeliverBy
+  id: DeliverBy
+  parent: AeroDB.WolverineFx.AeroDBEnvelope
+  langs:
+  - csharp
+  - vb
+  name: DeliverBy
+  nameWithType: AeroDBEnvelope.DeliverBy
+  fullName: AeroDB.WolverineFx.AeroDBEnvelope.DeliverBy
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBEnvelope.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  summary: Deliver-by deadline.
+  example: []
+  syntax:
+    content: public DateTimeOffset? DeliverBy { get; set; }
+    parameters: []
+    return:
+      type: System.Nullable{System.DateTimeOffset}
+    content.vb: Public Property DeliverBy As DateTimeOffset?
+  overload: AeroDB.WolverineFx.AeroDBEnvelope.DeliverBy*
+- uid: AeroDB.WolverineFx.AeroDBEnvelope.CorrelationId
+  commentId: P:AeroDB.WolverineFx.AeroDBEnvelope.CorrelationId
+  id: CorrelationId
+  parent: AeroDB.WolverineFx.AeroDBEnvelope
+  langs:
+  - csharp
+  - vb
+  name: CorrelationId
+  nameWithType: AeroDBEnvelope.CorrelationId
+  fullName: AeroDB.WolverineFx.AeroDBEnvelope.CorrelationId
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBEnvelope.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  summary: Correlation ID.
+  example: []
+  syntax:
+    content: public string? CorrelationId { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property CorrelationId As String
+  overload: AeroDB.WolverineFx.AeroDBEnvelope.CorrelationId*
+- uid: AeroDB.WolverineFx.AeroDBEnvelope.Source
+  commentId: P:AeroDB.WolverineFx.AeroDBEnvelope.Source
+  id: Source
+  parent: AeroDB.WolverineFx.AeroDBEnvelope
+  langs:
+  - csharp
+  - vb
+  name: Source
+  nameWithType: AeroDBEnvelope.Source
+  fullName: AeroDB.WolverineFx.AeroDBEnvelope.Source
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBEnvelope.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  summary: Source URI.
+  example: []
+  syntax:
+    content: public string? Source { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property Source As String
+  overload: AeroDB.WolverineFx.AeroDBEnvelope.Source*
+- uid: AeroDB.WolverineFx.AeroDBEnvelope.TenantId
+  commentId: P:AeroDB.WolverineFx.AeroDBEnvelope.TenantId
+  id: TenantId
+  parent: AeroDB.WolverineFx.AeroDBEnvelope
+  langs:
+  - csharp
+  - vb
+  name: TenantId
+  nameWithType: AeroDBEnvelope.TenantId
+  fullName: AeroDB.WolverineFx.AeroDBEnvelope.TenantId
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBEnvelope.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  summary: Tenant ID (for multi-tenancy).
+  example: []
+  syntax:
+    content: public string? TenantId { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property TenantId As String
+  overload: AeroDB.WolverineFx.AeroDBEnvelope.TenantId*
+- uid: AeroDB.WolverineFx.AeroDBEnvelope.KeepUntil
+  commentId: P:AeroDB.WolverineFx.AeroDBEnvelope.KeepUntil
+  id: KeepUntil
+  parent: AeroDB.WolverineFx.AeroDBEnvelope
+  langs:
+  - csharp
+  - vb
+  name: KeepUntil
+  nameWithType: AeroDBEnvelope.KeepUntil
+  fullName: AeroDB.WolverineFx.AeroDBEnvelope.KeepUntil
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBEnvelope.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  summary: Keep-until expiry.
+  example: []
+  syntax:
+    content: public DateTimeOffset? KeepUntil { get; set; }
+    parameters: []
+    return:
+      type: System.Nullable{System.DateTimeOffset}
+    content.vb: Public Property KeepUntil As DateTimeOffset?
+  overload: AeroDB.WolverineFx.AeroDBEnvelope.KeepUntil*
+- uid: AeroDB.WolverineFx.AeroDBEnvelope.ContentType
+  commentId: P:AeroDB.WolverineFx.AeroDBEnvelope.ContentType
+  id: ContentType
+  parent: AeroDB.WolverineFx.AeroDBEnvelope
+  langs:
+  - csharp
+  - vb
+  name: ContentType
+  nameWithType: AeroDBEnvelope.ContentType
+  fullName: AeroDB.WolverineFx.AeroDBEnvelope.ContentType
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBEnvelope.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  summary: Message content type.
+  example: []
+  syntax:
+    content: public string? ContentType { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property ContentType As String
+  overload: AeroDB.WolverineFx.AeroDBEnvelope.ContentType*
+- uid: AeroDB.WolverineFx.AeroDBEnvelope.ReceivedAt
+  commentId: P:AeroDB.WolverineFx.AeroDBEnvelope.ReceivedAt
+  id: ReceivedAt
+  parent: AeroDB.WolverineFx.AeroDBEnvelope
+  langs:
+  - csharp
+  - vb
+  name: ReceivedAt
+  nameWithType: AeroDBEnvelope.ReceivedAt
+  fullName: AeroDB.WolverineFx.AeroDBEnvelope.ReceivedAt
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBEnvelope.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  summary: The received-at URI (listener address).
+  example: []
+  syntax:
+    content: public string? ReceivedAt { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property ReceivedAt As String
+  overload: AeroDB.WolverineFx.AeroDBEnvelope.ReceivedAt*
+- uid: AeroDB.WolverineFx.AeroDBEnvelope.ReplyUri
+  commentId: P:AeroDB.WolverineFx.AeroDBEnvelope.ReplyUri
+  id: ReplyUri
+  parent: AeroDB.WolverineFx.AeroDBEnvelope
+  langs:
+  - csharp
+  - vb
+  name: ReplyUri
+  nameWithType: AeroDBEnvelope.ReplyUri
+  fullName: AeroDB.WolverineFx.AeroDBEnvelope.ReplyUri
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBEnvelope.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  summary: Reply URI for request/reply.
+  example: []
+  syntax:
+    content: public string? ReplyUri { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property ReplyUri As String
+  overload: AeroDB.WolverineFx.AeroDBEnvelope.ReplyUri*
+- uid: AeroDB.WolverineFx.AeroDBEnvelope.SagaId
+  commentId: P:AeroDB.WolverineFx.AeroDBEnvelope.SagaId
+  id: SagaId
+  parent: AeroDB.WolverineFx.AeroDBEnvelope
+  langs:
+  - csharp
+  - vb
+  name: SagaId
+  nameWithType: AeroDBEnvelope.SagaId
+  fullName: AeroDB.WolverineFx.AeroDBEnvelope.SagaId
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBEnvelope.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  summary: Saga ID if part of a saga.
+  example: []
+  syntax:
+    content: public string? SagaId { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property SagaId As String
+  overload: AeroDB.WolverineFx.AeroDBEnvelope.SagaId*
+- uid: AeroDB.WolverineFx.AeroDBEnvelope.ConversationId
+  commentId: P:AeroDB.WolverineFx.AeroDBEnvelope.ConversationId
+  id: ConversationId
+  parent: AeroDB.WolverineFx.AeroDBEnvelope
+  langs:
+  - csharp
+  - vb
+  name: ConversationId
+  nameWithType: AeroDBEnvelope.ConversationId
+  fullName: AeroDB.WolverineFx.AeroDBEnvelope.ConversationId
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBEnvelope.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  summary: Conversation ID for correlation.
+  example: []
+  syntax:
+    content: public string? ConversationId { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property ConversationId As String
+  overload: AeroDB.WolverineFx.AeroDBEnvelope.ConversationId*
+- uid: AeroDB.WolverineFx.AeroDBEnvelope.ExceptionType
+  commentId: P:AeroDB.WolverineFx.AeroDBEnvelope.ExceptionType
+  id: ExceptionType
+  parent: AeroDB.WolverineFx.AeroDBEnvelope
+  langs:
+  - csharp
+  - vb
+  name: ExceptionType
+  nameWithType: AeroDBEnvelope.ExceptionType
+  fullName: AeroDB.WolverineFx.AeroDBEnvelope.ExceptionType
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBEnvelope.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  summary: Exception type name (dead letters only).
+  example: []
+  syntax:
+    content: public string? ExceptionType { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property ExceptionType As String
+  overload: AeroDB.WolverineFx.AeroDBEnvelope.ExceptionType*
+- uid: AeroDB.WolverineFx.AeroDBEnvelope.ExceptionMessage
+  commentId: P:AeroDB.WolverineFx.AeroDBEnvelope.ExceptionMessage
+  id: ExceptionMessage
+  parent: AeroDB.WolverineFx.AeroDBEnvelope
+  langs:
+  - csharp
+  - vb
+  name: ExceptionMessage
+  nameWithType: AeroDBEnvelope.ExceptionMessage
+  fullName: AeroDB.WolverineFx.AeroDBEnvelope.ExceptionMessage
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBEnvelope.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  summary: Exception message (dead letters only).
+  example: []
+  syntax:
+    content: public string? ExceptionMessage { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property ExceptionMessage As String
+  overload: AeroDB.WolverineFx.AeroDBEnvelope.ExceptionMessage*
+- uid: AeroDB.WolverineFx.AeroDBEnvelope.SentAt
+  commentId: P:AeroDB.WolverineFx.AeroDBEnvelope.SentAt
+  id: SentAt
+  parent: AeroDB.WolverineFx.AeroDBEnvelope
+  langs:
+  - csharp
+  - vb
+  name: SentAt
+  nameWithType: AeroDBEnvelope.SentAt
+  fullName: AeroDB.WolverineFx.AeroDBEnvelope.SentAt
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBEnvelope.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  summary: Sent at timestamp.
+  example: []
+  syntax:
+    content: public DateTimeOffset? SentAt { get; set; }
+    parameters: []
+    return:
+      type: System.Nullable{System.DateTimeOffset}
+    content.vb: Public Property SentAt As DateTimeOffset?
+  overload: AeroDB.WolverineFx.AeroDBEnvelope.SentAt*
+- uid: AeroDB.WolverineFx.AeroDBEnvelope.Replayable
+  commentId: P:AeroDB.WolverineFx.AeroDBEnvelope.Replayable
+  id: Replayable
+  parent: AeroDB.WolverineFx.AeroDBEnvelope
+  langs:
+  - csharp
+  - vb
+  name: Replayable
+  nameWithType: AeroDBEnvelope.Replayable
+  fullName: AeroDB.WolverineFx.AeroDBEnvelope.Replayable
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBEnvelope.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  summary: Whether this dead letter is replayable.
+  example: []
+  syntax:
+    content: public bool? Replayable { get; set; }
+    parameters: []
+    return:
+      type: System.Nullable{System.Boolean}
+    content.vb: Public Property Replayable As Boolean?
+  overload: AeroDB.WolverineFx.AeroDBEnvelope.Replayable*
+references:
+- uid: AeroDB.WolverineFx
+  commentId: N:AeroDB.WolverineFx
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB.WolverineFx
+  nameWithType: AeroDB.WolverineFx
+  fullName: AeroDB.WolverineFx
+  spec.csharp:
+  - uid: AeroDB
+    name: AeroDB
+    isExternal: true
+    href: AeroDB.html
+  - name: .
+  - uid: AeroDB.WolverineFx
+    name: WolverineFx
+    isExternal: true
+    href: AeroDB.WolverineFx.html
+  spec.vb:
+  - uid: AeroDB
+    name: AeroDB
+    isExternal: true
+    href: AeroDB.html
+  - name: .
+  - uid: AeroDB.WolverineFx
+    name: WolverineFx
+    isExternal: true
+    href: AeroDB.WolverineFx.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: SurrealDb.Net.Models.Record
+  commentId: T:SurrealDb.Net.Models.Record
+  parent: SurrealDb.Net.Models
+  isExternal: true
+  name: Record
+  nameWithType: Record
+  fullName: SurrealDb.Net.Models.Record
+- uid: SurrealDb.Net.Models.IRecord
+  commentId: T:SurrealDb.Net.Models.IRecord
+  parent: SurrealDb.Net.Models
+  isExternal: true
+  name: IRecord
+  nameWithType: IRecord
+  fullName: SurrealDb.Net.Models.IRecord
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: SurrealDb.Net.Models
+  commentId: N:SurrealDb.Net.Models
+  isExternal: true
+  name: SurrealDb.Net.Models
+  nameWithType: SurrealDb.Net.Models
+  fullName: SurrealDb.Net.Models
+  spec.csharp:
+  - uid: SurrealDb
+    name: SurrealDb
+    isExternal: true
+  - name: .
+  - uid: SurrealDb.Net
+    name: Net
+    isExternal: true
+  - name: .
+  - uid: SurrealDb.Net.Models
+    name: Models
+    isExternal: true
+  spec.vb:
+  - uid: SurrealDb
+    name: SurrealDb
+    isExternal: true
+  - name: .
+  - uid: SurrealDb.Net
+    name: Net
+    isExternal: true
+  - name: .
+  - uid: SurrealDb.Net.Models
+    name: Models
+    isExternal: true
+- uid: AeroDB.WolverineFx.AeroDBEnvelope.FromEnvelope*
+  commentId: Overload:AeroDB.WolverineFx.AeroDBEnvelope.FromEnvelope
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBEnvelope.html#AeroDB_WolverineFx_AeroDBEnvelope_FromEnvelope_Wolverine_Envelope_System_Int32_
+  name: FromEnvelope
+  nameWithType: AeroDBEnvelope.FromEnvelope
+  fullName: AeroDB.WolverineFx.AeroDBEnvelope.FromEnvelope
+- uid: Wolverine.Envelope
+  commentId: T:Wolverine.Envelope
+  parent: Wolverine
+  isExternal: true
+  name: Envelope
+  nameWithType: Envelope
+  fullName: Wolverine.Envelope
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: AeroDB.WolverineFx.AeroDBEnvelope
+  commentId: T:AeroDB.WolverineFx.AeroDBEnvelope
+  parent: AeroDB.WolverineFx
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBEnvelope.html
+  name: AeroDBEnvelope
+  nameWithType: AeroDBEnvelope
+  fullName: AeroDB.WolverineFx.AeroDBEnvelope
+- uid: Wolverine
+  commentId: N:Wolverine
+  isExternal: true
+  name: Wolverine
+  nameWithType: Wolverine
+  fullName: Wolverine
+- uid: AeroDB.WolverineFx.AeroDBEnvelope.FromOutgoingEnvelope*
+  commentId: Overload:AeroDB.WolverineFx.AeroDBEnvelope.FromOutgoingEnvelope
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBEnvelope.html#AeroDB_WolverineFx_AeroDBEnvelope_FromOutgoingEnvelope_Wolverine_Envelope_System_Int32_
+  name: FromOutgoingEnvelope
+  nameWithType: AeroDBEnvelope.FromOutgoingEnvelope
+  fullName: AeroDB.WolverineFx.AeroDBEnvelope.FromOutgoingEnvelope
+- uid: AeroDB.WolverineFx.AeroDBEnvelope.ToEnvelope*
+  commentId: Overload:AeroDB.WolverineFx.AeroDBEnvelope.ToEnvelope
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBEnvelope.html#AeroDB_WolverineFx_AeroDBEnvelope_ToEnvelope
+  name: ToEnvelope
+  nameWithType: AeroDBEnvelope.ToEnvelope
+  fullName: AeroDB.WolverineFx.AeroDBEnvelope.ToEnvelope
+- uid: AeroDB.WolverineFx.AeroDBEnvelope.#ctor*
+  commentId: Overload:AeroDB.WolverineFx.AeroDBEnvelope.#ctor
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBEnvelope.html#AeroDB_WolverineFx_AeroDBEnvelope__ctor
+  name: AeroDBEnvelope
+  nameWithType: AeroDBEnvelope.AeroDBEnvelope
+  fullName: AeroDB.WolverineFx.AeroDBEnvelope.AeroDBEnvelope
+  nameWithType.vb: AeroDBEnvelope.New
+  fullName.vb: AeroDB.WolverineFx.AeroDBEnvelope.New
+  name.vb: New
+- uid: AeroDB.WolverineFx.AeroDBEnvelope.Id*
+  commentId: Overload:AeroDB.WolverineFx.AeroDBEnvelope.Id
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBEnvelope.html#AeroDB_WolverineFx_AeroDBEnvelope_Id
+  name: Id
+  nameWithType: AeroDBEnvelope.Id
+  fullName: AeroDB.WolverineFx.AeroDBEnvelope.Id
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: AeroDB.WolverineFx.AeroDBEnvelope.Status*
+  commentId: Overload:AeroDB.WolverineFx.AeroDBEnvelope.Status
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBEnvelope.html#AeroDB_WolverineFx_AeroDBEnvelope_Status
+  name: Status
+  nameWithType: AeroDBEnvelope.Status
+  fullName: AeroDB.WolverineFx.AeroDBEnvelope.Status
+- uid: AeroDB.WolverineFx.AeroDBEnvelope.OwnerId*
+  commentId: Overload:AeroDB.WolverineFx.AeroDBEnvelope.OwnerId
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBEnvelope.html#AeroDB_WolverineFx_AeroDBEnvelope_OwnerId
+  name: OwnerId
+  nameWithType: AeroDBEnvelope.OwnerId
+  fullName: AeroDB.WolverineFx.AeroDBEnvelope.OwnerId
+- uid: AeroDB.WolverineFx.AeroDBEnvelope.ExecutionTime*
+  commentId: Overload:AeroDB.WolverineFx.AeroDBEnvelope.ExecutionTime
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBEnvelope.html#AeroDB_WolverineFx_AeroDBEnvelope_ExecutionTime
+  name: ExecutionTime
+  nameWithType: AeroDBEnvelope.ExecutionTime
+  fullName: AeroDB.WolverineFx.AeroDBEnvelope.ExecutionTime
+- uid: System.DateTimeOffset
+  commentId: T:System.DateTimeOffset
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.datetimeoffset
+  name: DateTimeOffset
+  nameWithType: DateTimeOffset
+  fullName: System.DateTimeOffset
+- uid: AeroDB.WolverineFx.AeroDBEnvelope.Attempts*
+  commentId: Overload:AeroDB.WolverineFx.AeroDBEnvelope.Attempts
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBEnvelope.html#AeroDB_WolverineFx_AeroDBEnvelope_Attempts
+  name: Attempts
+  nameWithType: AeroDBEnvelope.Attempts
+  fullName: AeroDB.WolverineFx.AeroDBEnvelope.Attempts
+- uid: AeroDB.WolverineFx.AeroDBEnvelope.Body*
+  commentId: Overload:AeroDB.WolverineFx.AeroDBEnvelope.Body
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBEnvelope.html#AeroDB_WolverineFx_AeroDBEnvelope_Body
+  name: Body
+  nameWithType: AeroDBEnvelope.Body
+  fullName: AeroDB.WolverineFx.AeroDBEnvelope.Body
+- uid: AeroDB.WolverineFx.AeroDBEnvelope.MessageType*
+  commentId: Overload:AeroDB.WolverineFx.AeroDBEnvelope.MessageType
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBEnvelope.html#AeroDB_WolverineFx_AeroDBEnvelope_MessageType
+  name: MessageType
+  nameWithType: AeroDBEnvelope.MessageType
+  fullName: AeroDB.WolverineFx.AeroDBEnvelope.MessageType
+- uid: AeroDB.WolverineFx.AeroDBEnvelope.Destination*
+  commentId: Overload:AeroDB.WolverineFx.AeroDBEnvelope.Destination
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBEnvelope.html#AeroDB_WolverineFx_AeroDBEnvelope_Destination
+  name: Destination
+  nameWithType: AeroDBEnvelope.Destination
+  fullName: AeroDB.WolverineFx.AeroDBEnvelope.Destination
+- uid: AeroDB.WolverineFx.AeroDBEnvelope.DeliverBy*
+  commentId: Overload:AeroDB.WolverineFx.AeroDBEnvelope.DeliverBy
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBEnvelope.html#AeroDB_WolverineFx_AeroDBEnvelope_DeliverBy
+  name: DeliverBy
+  nameWithType: AeroDBEnvelope.DeliverBy
+  fullName: AeroDB.WolverineFx.AeroDBEnvelope.DeliverBy
+- uid: System.Nullable{System.DateTimeOffset}
+  commentId: T:System.Nullable{System.DateTimeOffset}
+  parent: System
+  definition: System.Nullable`1
+  href: https://learn.microsoft.com/dotnet/api/system.datetimeoffset
+  name: DateTimeOffset?
+  nameWithType: DateTimeOffset?
+  fullName: System.DateTimeOffset?
+  spec.csharp:
+  - uid: System.DateTimeOffset
+    name: DateTimeOffset
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.datetimeoffset
+  - name: '?'
+  spec.vb:
+  - uid: System.DateTimeOffset
+    name: DateTimeOffset
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.datetimeoffset
+  - name: '?'
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.WolverineFx.AeroDBEnvelope.CorrelationId*
+  commentId: Overload:AeroDB.WolverineFx.AeroDBEnvelope.CorrelationId
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBEnvelope.html#AeroDB_WolverineFx_AeroDBEnvelope_CorrelationId
+  name: CorrelationId
+  nameWithType: AeroDBEnvelope.CorrelationId
+  fullName: AeroDB.WolverineFx.AeroDBEnvelope.CorrelationId
+- uid: AeroDB.WolverineFx.AeroDBEnvelope.Source*
+  commentId: Overload:AeroDB.WolverineFx.AeroDBEnvelope.Source
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBEnvelope.html#AeroDB_WolverineFx_AeroDBEnvelope_Source
+  name: Source
+  nameWithType: AeroDBEnvelope.Source
+  fullName: AeroDB.WolverineFx.AeroDBEnvelope.Source
+- uid: AeroDB.WolverineFx.AeroDBEnvelope.TenantId*
+  commentId: Overload:AeroDB.WolverineFx.AeroDBEnvelope.TenantId
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBEnvelope.html#AeroDB_WolverineFx_AeroDBEnvelope_TenantId
+  name: TenantId
+  nameWithType: AeroDBEnvelope.TenantId
+  fullName: AeroDB.WolverineFx.AeroDBEnvelope.TenantId
+- uid: AeroDB.WolverineFx.AeroDBEnvelope.KeepUntil*
+  commentId: Overload:AeroDB.WolverineFx.AeroDBEnvelope.KeepUntil
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBEnvelope.html#AeroDB_WolverineFx_AeroDBEnvelope_KeepUntil
+  name: KeepUntil
+  nameWithType: AeroDBEnvelope.KeepUntil
+  fullName: AeroDB.WolverineFx.AeroDBEnvelope.KeepUntil
+- uid: AeroDB.WolverineFx.AeroDBEnvelope.ContentType*
+  commentId: Overload:AeroDB.WolverineFx.AeroDBEnvelope.ContentType
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBEnvelope.html#AeroDB_WolverineFx_AeroDBEnvelope_ContentType
+  name: ContentType
+  nameWithType: AeroDBEnvelope.ContentType
+  fullName: AeroDB.WolverineFx.AeroDBEnvelope.ContentType
+- uid: AeroDB.WolverineFx.AeroDBEnvelope.ReceivedAt*
+  commentId: Overload:AeroDB.WolverineFx.AeroDBEnvelope.ReceivedAt
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBEnvelope.html#AeroDB_WolverineFx_AeroDBEnvelope_ReceivedAt
+  name: ReceivedAt
+  nameWithType: AeroDBEnvelope.ReceivedAt
+  fullName: AeroDB.WolverineFx.AeroDBEnvelope.ReceivedAt
+- uid: AeroDB.WolverineFx.AeroDBEnvelope.ReplyUri*
+  commentId: Overload:AeroDB.WolverineFx.AeroDBEnvelope.ReplyUri
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBEnvelope.html#AeroDB_WolverineFx_AeroDBEnvelope_ReplyUri
+  name: ReplyUri
+  nameWithType: AeroDBEnvelope.ReplyUri
+  fullName: AeroDB.WolverineFx.AeroDBEnvelope.ReplyUri
+- uid: AeroDB.WolverineFx.AeroDBEnvelope.SagaId*
+  commentId: Overload:AeroDB.WolverineFx.AeroDBEnvelope.SagaId
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBEnvelope.html#AeroDB_WolverineFx_AeroDBEnvelope_SagaId
+  name: SagaId
+  nameWithType: AeroDBEnvelope.SagaId
+  fullName: AeroDB.WolverineFx.AeroDBEnvelope.SagaId
+- uid: AeroDB.WolverineFx.AeroDBEnvelope.ConversationId*
+  commentId: Overload:AeroDB.WolverineFx.AeroDBEnvelope.ConversationId
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBEnvelope.html#AeroDB_WolverineFx_AeroDBEnvelope_ConversationId
+  name: ConversationId
+  nameWithType: AeroDBEnvelope.ConversationId
+  fullName: AeroDB.WolverineFx.AeroDBEnvelope.ConversationId
+- uid: AeroDB.WolverineFx.AeroDBEnvelope.ExceptionType*
+  commentId: Overload:AeroDB.WolverineFx.AeroDBEnvelope.ExceptionType
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBEnvelope.html#AeroDB_WolverineFx_AeroDBEnvelope_ExceptionType
+  name: ExceptionType
+  nameWithType: AeroDBEnvelope.ExceptionType
+  fullName: AeroDB.WolverineFx.AeroDBEnvelope.ExceptionType
+- uid: AeroDB.WolverineFx.AeroDBEnvelope.ExceptionMessage*
+  commentId: Overload:AeroDB.WolverineFx.AeroDBEnvelope.ExceptionMessage
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBEnvelope.html#AeroDB_WolverineFx_AeroDBEnvelope_ExceptionMessage
+  name: ExceptionMessage
+  nameWithType: AeroDBEnvelope.ExceptionMessage
+  fullName: AeroDB.WolverineFx.AeroDBEnvelope.ExceptionMessage
+- uid: AeroDB.WolverineFx.AeroDBEnvelope.SentAt*
+  commentId: Overload:AeroDB.WolverineFx.AeroDBEnvelope.SentAt
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBEnvelope.html#AeroDB_WolverineFx_AeroDBEnvelope_SentAt
+  name: SentAt
+  nameWithType: AeroDBEnvelope.SentAt
+  fullName: AeroDB.WolverineFx.AeroDBEnvelope.SentAt
+- uid: AeroDB.WolverineFx.AeroDBEnvelope.Replayable*
+  commentId: Overload:AeroDB.WolverineFx.AeroDBEnvelope.Replayable
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBEnvelope.html#AeroDB_WolverineFx_AeroDBEnvelope_Replayable
+  name: Replayable
+  nameWithType: AeroDBEnvelope.Replayable
+  fullName: AeroDB.WolverineFx.AeroDBEnvelope.Replayable
+- uid: System.Nullable{System.Boolean}
+  commentId: T:System.Nullable{System.Boolean}
+  parent: System
+  definition: System.Nullable`1
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool?
+  nameWithType: bool?
+  fullName: bool?
+  nameWithType.vb: Boolean?
+  fullName.vb: Boolean?
+  name.vb: Boolean?
+  spec.csharp:
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '?'
+  spec.vb:
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '?'

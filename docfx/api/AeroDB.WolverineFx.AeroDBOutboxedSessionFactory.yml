@@ -1,0 +1,706 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.WolverineFx.AeroDBOutboxedSessionFactory
+  commentId: T:AeroDB.WolverineFx.AeroDBOutboxedSessionFactory
+  id: AeroDBOutboxedSessionFactory
+  parent: AeroDB.WolverineFx
+  children:
+  - AeroDB.WolverineFx.AeroDBOutboxedSessionFactory.#ctor(AeroDB.IDocumentStore,AeroDB.WolverineFx.AeroDBMessageStore,Microsoft.Extensions.Logging.ILogger{AeroDB.WolverineFx.AeroDBOutboxedSessionFactory})
+  - AeroDB.WolverineFx.AeroDBOutboxedSessionFactory.OpenSession(Wolverine.IMessageBus)
+  - AeroDB.WolverineFx.AeroDBOutboxedSessionFactory.OpenSession(Wolverine.Runtime.MessageContext)
+  - AeroDB.WolverineFx.AeroDBOutboxedSessionFactory.OpenSession(Wolverine.Runtime.MessageContext,System.String)
+  langs:
+  - csharp
+  - vb
+  name: AeroDBOutboxedSessionFactory
+  nameWithType: AeroDBOutboxedSessionFactory
+  fullName: AeroDB.WolverineFx.AeroDBOutboxedSessionFactory
+  type: Class
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBOutboxedSessionFactory.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  summary: >-
+    Factory that creates <xref href="AeroDB.IDocumentSession" data-throw-if-not-resolved="false"></xref> instances pre-enrolled in
+
+    Wolverine's outbox. Mirrors the Wolverine.Marten <code>OutboxedSessionFactory</code> pattern.
+  example: []
+  syntax:
+    content: public sealed class AeroDBOutboxedSessionFactory
+    content.vb: Public NotInheritable Class AeroDBOutboxedSessionFactory
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.GetType
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+- uid: AeroDB.WolverineFx.AeroDBOutboxedSessionFactory.#ctor(AeroDB.IDocumentStore,AeroDB.WolverineFx.AeroDBMessageStore,Microsoft.Extensions.Logging.ILogger{AeroDB.WolverineFx.AeroDBOutboxedSessionFactory})
+  commentId: M:AeroDB.WolverineFx.AeroDBOutboxedSessionFactory.#ctor(AeroDB.IDocumentStore,AeroDB.WolverineFx.AeroDBMessageStore,Microsoft.Extensions.Logging.ILogger{AeroDB.WolverineFx.AeroDBOutboxedSessionFactory})
+  id: '#ctor(AeroDB.IDocumentStore,AeroDB.WolverineFx.AeroDBMessageStore,Microsoft.Extensions.Logging.ILogger{AeroDB.WolverineFx.AeroDBOutboxedSessionFactory})'
+  parent: AeroDB.WolverineFx.AeroDBOutboxedSessionFactory
+  langs:
+  - csharp
+  - vb
+  name: AeroDBOutboxedSessionFactory(IDocumentStore, AeroDBMessageStore, ILogger<AeroDBOutboxedSessionFactory>)
+  nameWithType: AeroDBOutboxedSessionFactory.AeroDBOutboxedSessionFactory(IDocumentStore, AeroDBMessageStore, ILogger<AeroDBOutboxedSessionFactory>)
+  fullName: AeroDB.WolverineFx.AeroDBOutboxedSessionFactory.AeroDBOutboxedSessionFactory(AeroDB.IDocumentStore, AeroDB.WolverineFx.AeroDBMessageStore, Microsoft.Extensions.Logging.ILogger<AeroDB.WolverineFx.AeroDBOutboxedSessionFactory>)
+  type: Constructor
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBOutboxedSessionFactory.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  syntax:
+    content: public AeroDBOutboxedSessionFactory(IDocumentStore store, AeroDBMessageStore messageStore, ILogger<AeroDBOutboxedSessionFactory> logger)
+    parameters:
+    - id: store
+      type: AeroDB.IDocumentStore
+    - id: messageStore
+      type: AeroDB.WolverineFx.AeroDBMessageStore
+    - id: logger
+      type: Microsoft.Extensions.Logging.ILogger{AeroDB.WolverineFx.AeroDBOutboxedSessionFactory}
+    content.vb: Public Sub New(store As IDocumentStore, messageStore As AeroDBMessageStore, logger As ILogger(Of AeroDBOutboxedSessionFactory))
+  overload: AeroDB.WolverineFx.AeroDBOutboxedSessionFactory.#ctor*
+  nameWithType.vb: AeroDBOutboxedSessionFactory.New(IDocumentStore, AeroDBMessageStore, ILogger(Of AeroDBOutboxedSessionFactory))
+  fullName.vb: AeroDB.WolverineFx.AeroDBOutboxedSessionFactory.New(AeroDB.IDocumentStore, AeroDB.WolverineFx.AeroDBMessageStore, Microsoft.Extensions.Logging.ILogger(Of AeroDB.WolverineFx.AeroDBOutboxedSessionFactory))
+  name.vb: New(IDocumentStore, AeroDBMessageStore, ILogger(Of AeroDBOutboxedSessionFactory))
+- uid: AeroDB.WolverineFx.AeroDBOutboxedSessionFactory.OpenSession(Wolverine.Runtime.MessageContext)
+  commentId: M:AeroDB.WolverineFx.AeroDBOutboxedSessionFactory.OpenSession(Wolverine.Runtime.MessageContext)
+  id: OpenSession(Wolverine.Runtime.MessageContext)
+  parent: AeroDB.WolverineFx.AeroDBOutboxedSessionFactory
+  langs:
+  - csharp
+  - vb
+  name: OpenSession(MessageContext)
+  nameWithType: AeroDBOutboxedSessionFactory.OpenSession(MessageContext)
+  fullName: AeroDB.WolverineFx.AeroDBOutboxedSessionFactory.OpenSession(Wolverine.Runtime.MessageContext)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBOutboxedSessionFactory.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  summary: >-
+    Open a lightweight document session enrolled in the active Wolverine
+
+    message context's outbox. If the message context has a tenant ID,
+
+    the session is scoped to that tenant.
+  example: []
+  syntax:
+    content: public Task<IDocumentSession> OpenSession(MessageContext context)
+    parameters:
+    - id: context
+      type: Wolverine.Runtime.MessageContext
+    return:
+      type: System.Threading.Tasks.Task{AeroDB.IDocumentSession}
+    content.vb: Public Function OpenSession(context As MessageContext) As Task(Of IDocumentSession)
+  overload: AeroDB.WolverineFx.AeroDBOutboxedSessionFactory.OpenSession*
+- uid: AeroDB.WolverineFx.AeroDBOutboxedSessionFactory.OpenSession(Wolverine.Runtime.MessageContext,System.String)
+  commentId: M:AeroDB.WolverineFx.AeroDBOutboxedSessionFactory.OpenSession(Wolverine.Runtime.MessageContext,System.String)
+  id: OpenSession(Wolverine.Runtime.MessageContext,System.String)
+  parent: AeroDB.WolverineFx.AeroDBOutboxedSessionFactory
+  langs:
+  - csharp
+  - vb
+  name: OpenSession(MessageContext, string?)
+  nameWithType: AeroDBOutboxedSessionFactory.OpenSession(MessageContext, string?)
+  fullName: AeroDB.WolverineFx.AeroDBOutboxedSessionFactory.OpenSession(Wolverine.Runtime.MessageContext, string?)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBOutboxedSessionFactory.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  summary: >-
+    Open a lightweight document session with tenant isolation, enrolled
+
+    in the active Wolverine message context's outbox.
+  example: []
+  syntax:
+    content: public Task<IDocumentSession> OpenSession(MessageContext context, string? tenantId)
+    parameters:
+    - id: context
+      type: Wolverine.Runtime.MessageContext
+    - id: tenantId
+      type: System.String
+    return:
+      type: System.Threading.Tasks.Task{AeroDB.IDocumentSession}
+    content.vb: Public Function OpenSession(context As MessageContext, tenantId As String) As Task(Of IDocumentSession)
+  overload: AeroDB.WolverineFx.AeroDBOutboxedSessionFactory.OpenSession*
+  nameWithType.vb: AeroDBOutboxedSessionFactory.OpenSession(MessageContext, String)
+  fullName.vb: AeroDB.WolverineFx.AeroDBOutboxedSessionFactory.OpenSession(Wolverine.Runtime.MessageContext, String)
+  name.vb: OpenSession(MessageContext, String)
+- uid: AeroDB.WolverineFx.AeroDBOutboxedSessionFactory.OpenSession(Wolverine.IMessageBus)
+  commentId: M:AeroDB.WolverineFx.AeroDBOutboxedSessionFactory.OpenSession(Wolverine.IMessageBus)
+  id: OpenSession(Wolverine.IMessageBus)
+  parent: AeroDB.WolverineFx.AeroDBOutboxedSessionFactory
+  langs:
+  - csharp
+  - vb
+  name: OpenSession(IMessageBus)
+  nameWithType: AeroDBOutboxedSessionFactory.OpenSession(IMessageBus)
+  fullName: AeroDB.WolverineFx.AeroDBOutboxedSessionFactory.OpenSession(Wolverine.IMessageBus)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBOutboxedSessionFactory.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  summary: Open an outbox-enrolled session from an <xref href="Wolverine.IMessageBus" data-throw-if-not-resolved="false"></xref> reference.
+  example: []
+  syntax:
+    content: public Task<IDocumentSession> OpenSession(IMessageBus bus)
+    parameters:
+    - id: bus
+      type: Wolverine.IMessageBus
+    return:
+      type: System.Threading.Tasks.Task{AeroDB.IDocumentSession}
+    content.vb: Public Function OpenSession(bus As IMessageBus) As Task(Of IDocumentSession)
+  overload: AeroDB.WolverineFx.AeroDBOutboxedSessionFactory.OpenSession*
+references:
+- uid: AeroDB.IDocumentSession
+  commentId: T:AeroDB.IDocumentSession
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IDocumentSession.html
+  name: IDocumentSession
+  nameWithType: IDocumentSession
+  fullName: AeroDB.IDocumentSession
+- uid: AeroDB.WolverineFx
+  commentId: N:AeroDB.WolverineFx
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB.WolverineFx
+  nameWithType: AeroDB.WolverineFx
+  fullName: AeroDB.WolverineFx
+  spec.csharp:
+  - uid: AeroDB
+    name: AeroDB
+    isExternal: true
+    href: AeroDB.html
+  - name: .
+  - uid: AeroDB.WolverineFx
+    name: WolverineFx
+    isExternal: true
+    href: AeroDB.WolverineFx.html
+  spec.vb:
+  - uid: AeroDB
+    name: AeroDB
+    isExternal: true
+    href: AeroDB.html
+  - name: .
+  - uid: AeroDB.WolverineFx
+    name: WolverineFx
+    isExternal: true
+    href: AeroDB.WolverineFx.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AeroDB.WolverineFx.AeroDBOutboxedSessionFactory.#ctor*
+  commentId: Overload:AeroDB.WolverineFx.AeroDBOutboxedSessionFactory.#ctor
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBOutboxedSessionFactory.html#AeroDB_WolverineFx_AeroDBOutboxedSessionFactory__ctor_AeroDB_IDocumentStore_AeroDB_WolverineFx_AeroDBMessageStore_Microsoft_Extensions_Logging_ILogger_AeroDB_WolverineFx_AeroDBOutboxedSessionFactory__
+  name: AeroDBOutboxedSessionFactory
+  nameWithType: AeroDBOutboxedSessionFactory.AeroDBOutboxedSessionFactory
+  fullName: AeroDB.WolverineFx.AeroDBOutboxedSessionFactory.AeroDBOutboxedSessionFactory
+  nameWithType.vb: AeroDBOutboxedSessionFactory.New
+  fullName.vb: AeroDB.WolverineFx.AeroDBOutboxedSessionFactory.New
+  name.vb: New
+- uid: AeroDB.IDocumentStore
+  commentId: T:AeroDB.IDocumentStore
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IDocumentStore.html
+  name: IDocumentStore
+  nameWithType: IDocumentStore
+  fullName: AeroDB.IDocumentStore
+- uid: AeroDB.WolverineFx.AeroDBMessageStore
+  commentId: T:AeroDB.WolverineFx.AeroDBMessageStore
+  parent: AeroDB.WolverineFx
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBMessageStore.html
+  name: AeroDBMessageStore
+  nameWithType: AeroDBMessageStore
+  fullName: AeroDB.WolverineFx.AeroDBMessageStore
+- uid: Microsoft.Extensions.Logging.ILogger{AeroDB.WolverineFx.AeroDBOutboxedSessionFactory}
+  commentId: T:Microsoft.Extensions.Logging.ILogger{AeroDB.WolverineFx.AeroDBOutboxedSessionFactory}
+  parent: Microsoft.Extensions.Logging
+  definition: Microsoft.Extensions.Logging.ILogger`1
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<AeroDBOutboxedSessionFactory>
+  nameWithType: ILogger<AeroDBOutboxedSessionFactory>
+  fullName: Microsoft.Extensions.Logging.ILogger<AeroDB.WolverineFx.AeroDBOutboxedSessionFactory>
+  nameWithType.vb: ILogger(Of AeroDBOutboxedSessionFactory)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of AeroDB.WolverineFx.AeroDBOutboxedSessionFactory)
+  name.vb: ILogger(Of AeroDBOutboxedSessionFactory)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - uid: AeroDB.WolverineFx.AeroDBOutboxedSessionFactory
+    name: AeroDBOutboxedSessionFactory
+    isExternal: true
+    href: AeroDB.WolverineFx.AeroDBOutboxedSessionFactory.html
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.WolverineFx.AeroDBOutboxedSessionFactory
+    name: AeroDBOutboxedSessionFactory
+    isExternal: true
+    href: AeroDB.WolverineFx.AeroDBOutboxedSessionFactory.html
+  - name: )
+- uid: Microsoft.Extensions.Logging.ILogger`1
+  commentId: T:Microsoft.Extensions.Logging.ILogger`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<TCategoryName>
+  nameWithType: ILogger<TCategoryName>
+  fullName: Microsoft.Extensions.Logging.ILogger<TCategoryName>
+  nameWithType.vb: ILogger(Of TCategoryName)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of TCategoryName)
+  name.vb: ILogger(Of TCategoryName)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - name: TCategoryName
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TCategoryName
+  - name: )
+- uid: Microsoft.Extensions.Logging
+  commentId: N:Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.Logging
+  nameWithType: Microsoft.Extensions.Logging
+  fullName: Microsoft.Extensions.Logging
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+- uid: AeroDB.WolverineFx.AeroDBOutboxedSessionFactory.OpenSession*
+  commentId: Overload:AeroDB.WolverineFx.AeroDBOutboxedSessionFactory.OpenSession
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBOutboxedSessionFactory.html#AeroDB_WolverineFx_AeroDBOutboxedSessionFactory_OpenSession_Wolverine_Runtime_MessageContext_
+  name: OpenSession
+  nameWithType: AeroDBOutboxedSessionFactory.OpenSession
+  fullName: AeroDB.WolverineFx.AeroDBOutboxedSessionFactory.OpenSession
+- uid: Wolverine.Runtime.MessageContext
+  commentId: T:Wolverine.Runtime.MessageContext
+  parent: Wolverine.Runtime
+  isExternal: true
+  name: MessageContext
+  nameWithType: MessageContext
+  fullName: Wolverine.Runtime.MessageContext
+- uid: System.Threading.Tasks.Task{AeroDB.IDocumentSession}
+  commentId: T:System.Threading.Tasks.Task{AeroDB.IDocumentSession}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<IDocumentSession>
+  nameWithType: Task<IDocumentSession>
+  fullName: System.Threading.Tasks.Task<AeroDB.IDocumentSession>
+  nameWithType.vb: Task(Of IDocumentSession)
+  fullName.vb: System.Threading.Tasks.Task(Of AeroDB.IDocumentSession)
+  name.vb: Task(Of IDocumentSession)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: AeroDB.IDocumentSession
+    name: IDocumentSession
+    isExternal: true
+    href: AeroDB.IDocumentSession.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.IDocumentSession
+    name: IDocumentSession
+    isExternal: true
+    href: AeroDB.IDocumentSession.html
+  - name: )
+- uid: Wolverine.Runtime
+  commentId: N:Wolverine.Runtime
+  isExternal: true
+  name: Wolverine.Runtime
+  nameWithType: Wolverine.Runtime
+  fullName: Wolverine.Runtime
+  spec.csharp:
+  - uid: Wolverine
+    name: Wolverine
+    isExternal: true
+  - name: .
+  - uid: Wolverine.Runtime
+    name: Runtime
+    isExternal: true
+  spec.vb:
+  - uid: Wolverine
+    name: Wolverine
+    isExternal: true
+  - name: .
+  - uid: Wolverine.Runtime
+    name: Runtime
+    isExternal: true
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: Wolverine.IMessageBus
+  commentId: T:Wolverine.IMessageBus
+  parent: Wolverine
+  isExternal: true
+  name: IMessageBus
+  nameWithType: IMessageBus
+  fullName: Wolverine.IMessageBus
+- uid: Wolverine
+  commentId: N:Wolverine
+  isExternal: true
+  name: Wolverine
+  nameWithType: Wolverine
+  fullName: Wolverine

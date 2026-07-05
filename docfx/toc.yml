@@ -1,0 +1,11 @@
+- name: API Reference
+  href: index.md
+- name: Namespaces
+  items:
+    - name: AeroDB
+      href: api/AeroDB.yml
+      homepage: api/AeroDB.yml
+    - name: AeroDB.AspNetIdentity
+      href: api/AeroDB.AspNetIdentity.yml
+    - name: AeroDB.WolverineFx
+      href: api/AeroDB.WolverineFx.yml

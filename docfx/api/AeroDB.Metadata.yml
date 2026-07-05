@@ -1,0 +1,106 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.Metadata
+  commentId: N:AeroDB.Metadata
+  id: AeroDB.Metadata
+  children:
+  - AeroDB.Metadata.FieldSchema
+  - AeroDB.Metadata.IDocumentMetadata
+  - AeroDB.Metadata.ITypeMetadata
+  - AeroDB.Metadata.ITypeMetadata`1
+  - AeroDB.Metadata.MetadataRegistry
+  langs:
+  - csharp
+  - vb
+  name: AeroDB.Metadata
+  nameWithType: AeroDB.Metadata
+  fullName: AeroDB.Metadata
+  type: Namespace
+  assemblies:
+  - AeroDB
+references:
+- uid: AeroDB.Metadata.IDocumentMetadata
+  commentId: T:AeroDB.Metadata.IDocumentMetadata
+  isExternal: true
+  href: AeroDB.Metadata.IDocumentMetadata.html
+  name: IDocumentMetadata
+  nameWithType: IDocumentMetadata
+  fullName: AeroDB.Metadata.IDocumentMetadata
+- uid: AeroDB.Metadata.FieldSchema
+  commentId: T:AeroDB.Metadata.FieldSchema
+  parent: AeroDB.Metadata
+  isExternal: true
+  href: AeroDB.Metadata.FieldSchema.html
+  name: FieldSchema
+  nameWithType: FieldSchema
+  fullName: AeroDB.Metadata.FieldSchema
+- uid: AeroDB.Metadata.ITypeMetadata
+  commentId: T:AeroDB.Metadata.ITypeMetadata
+  parent: AeroDB.Metadata
+  isExternal: true
+  href: AeroDB.Metadata.ITypeMetadata.html
+  name: ITypeMetadata
+  nameWithType: ITypeMetadata
+  fullName: AeroDB.Metadata.ITypeMetadata
+- uid: AeroDB.Metadata.ITypeMetadata`1
+  commentId: T:AeroDB.Metadata.ITypeMetadata`1
+  isExternal: true
+  href: AeroDB.Metadata.ITypeMetadata-1.html
+  name: ITypeMetadata<T>
+  nameWithType: ITypeMetadata<T>
+  fullName: AeroDB.Metadata.ITypeMetadata<T>
+  nameWithType.vb: ITypeMetadata(Of T)
+  fullName.vb: AeroDB.Metadata.ITypeMetadata(Of T)
+  name.vb: ITypeMetadata(Of T)
+  spec.csharp:
+  - uid: AeroDB.Metadata.ITypeMetadata`1
+    name: ITypeMetadata
+    isExternal: true
+    href: AeroDB.Metadata.ITypeMetadata-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.Metadata.ITypeMetadata`1
+    name: ITypeMetadata
+    isExternal: true
+    href: AeroDB.Metadata.ITypeMetadata-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.Metadata.MetadataRegistry
+  commentId: T:AeroDB.Metadata.MetadataRegistry
+  isExternal: true
+  href: AeroDB.Metadata.MetadataRegistry.html
+  name: MetadataRegistry
+  nameWithType: MetadataRegistry
+  fullName: AeroDB.Metadata.MetadataRegistry
+- uid: AeroDB.Metadata
+  commentId: N:AeroDB.Metadata
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB.Metadata
+  nameWithType: AeroDB.Metadata
+  fullName: AeroDB.Metadata
+  spec.csharp:
+  - uid: AeroDB
+    name: AeroDB
+    isExternal: true
+    href: AeroDB.html
+  - name: .
+  - uid: AeroDB.Metadata
+    name: Metadata
+    isExternal: true
+    href: AeroDB.Metadata.html
+  spec.vb:
+  - uid: AeroDB
+    name: AeroDB
+    isExternal: true
+    href: AeroDB.html
+  - name: .
+  - uid: AeroDB.Metadata
+    name: Metadata
+    isExternal: true
+    href: AeroDB.Metadata.html

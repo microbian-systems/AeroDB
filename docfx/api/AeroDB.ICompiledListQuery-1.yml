@@ -1,0 +1,173 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.ICompiledListQuery`1
+  commentId: T:AeroDB.ICompiledListQuery`1
+  id: ICompiledListQuery`1
+  parent: AeroDB
+  children: []
+  langs:
+  - csharp
+  - vb
+  name: ICompiledListQuery<TDoc>
+  nameWithType: ICompiledListQuery<TDoc>
+  fullName: AeroDB.ICompiledListQuery<TDoc>
+  type: Interface
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Compiled/CompiledQueryInterfaces.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Compiled list query that returns whole documents (no Select).
+
+    Shorthand for <code>ICompiledListQuery&lt;TDoc, TDoc&gt;</code>.
+  example: []
+  syntax:
+    content: 'public interface ICompiledListQuery<TDoc> : ICompiledListQuery<TDoc, TDoc>, ICompiledQuery<TDoc, IEnumerable<TDoc>>, ICompiledQueryMarker where TDoc : class'
+    typeParameters:
+    - id: TDoc
+      description: The document type being queried and returned.
+    content.vb: Public Interface ICompiledListQuery(Of TDoc As Class) Inherits ICompiledListQuery(Of TDoc, TDoc), ICompiledQuery(Of TDoc, IEnumerable(Of TDoc)), ICompiledQueryMarker
+  inheritedMembers:
+  - AeroDB.ICompiledQuery{{TDoc},System.Collections.Generic.IEnumerable{{TDoc}}}.QueryIs
+  nameWithType.vb: ICompiledListQuery(Of TDoc)
+  fullName.vb: AeroDB.ICompiledListQuery(Of TDoc)
+  name.vb: ICompiledListQuery(Of TDoc)
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: AeroDB.ICompiledQuery{{TDoc},System.Collections.Generic.IEnumerable{{TDoc}}}.QueryIs
+  commentId: M:AeroDB.ICompiledQuery{`0,System.Collections.Generic.IEnumerable{`0}}.QueryIs
+  parent: AeroDB.ICompiledQuery{{TDoc},System.Collections.Generic.IEnumerable{{TDoc}}}
+  definition: AeroDB.ICompiledQuery`2.QueryIs
+  href: AeroDB.ICompiledQuery-2.html#AeroDB_ICompiledQuery_2_QueryIs
+  name: QueryIs()
+  nameWithType: ICompiledQuery<TDoc, IEnumerable<TDoc>>.QueryIs()
+  fullName: AeroDB.ICompiledQuery<TDoc, System.Collections.Generic.IEnumerable<TDoc>>.QueryIs()
+  nameWithType.vb: ICompiledQuery(Of TDoc, IEnumerable(Of TDoc)).QueryIs()
+  fullName.vb: AeroDB.ICompiledQuery(Of TDoc, System.Collections.Generic.IEnumerable(Of TDoc)).QueryIs()
+  spec.csharp:
+  - uid: AeroDB.ICompiledQuery{`0,System.Collections.Generic.IEnumerable{`0}}.QueryIs
+    name: QueryIs
+    isExternal: true
+    href: AeroDB.ICompiledQuery-2.html#AeroDB_ICompiledQuery_2_QueryIs
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AeroDB.ICompiledQuery{`0,System.Collections.Generic.IEnumerable{`0}}.QueryIs
+    name: QueryIs
+    isExternal: true
+    href: AeroDB.ICompiledQuery-2.html#AeroDB_ICompiledQuery_2_QueryIs
+  - name: (
+  - name: )
+- uid: AeroDB.ICompiledQuery`2.QueryIs
+  commentId: M:AeroDB.ICompiledQuery`2.QueryIs
+  isExternal: true
+  href: AeroDB.ICompiledQuery-2.html#AeroDB_ICompiledQuery_2_QueryIs
+  name: QueryIs()
+  nameWithType: ICompiledQuery<TDoc, TOut>.QueryIs()
+  fullName: AeroDB.ICompiledQuery<TDoc, TOut>.QueryIs()
+  nameWithType.vb: ICompiledQuery(Of TDoc, TOut).QueryIs()
+  fullName.vb: AeroDB.ICompiledQuery(Of TDoc, TOut).QueryIs()
+  spec.csharp:
+  - uid: AeroDB.ICompiledQuery`2.QueryIs
+    name: QueryIs
+    isExternal: true
+    href: AeroDB.ICompiledQuery-2.html#AeroDB_ICompiledQuery_2_QueryIs
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AeroDB.ICompiledQuery`2.QueryIs
+    name: QueryIs
+    isExternal: true
+    href: AeroDB.ICompiledQuery-2.html#AeroDB_ICompiledQuery_2_QueryIs
+  - name: (
+  - name: )
+- uid: AeroDB.ICompiledQuery{{TDoc},System.Collections.Generic.IEnumerable{{TDoc}}}
+  commentId: T:AeroDB.ICompiledQuery{`0,System.Collections.Generic.IEnumerable{`0}}
+  parent: AeroDB
+  definition: AeroDB.ICompiledQuery`2
+  href: AeroDB.ICompiledQuery-2.html
+  name: ICompiledQuery<TDoc, IEnumerable<TDoc>>
+  nameWithType: ICompiledQuery<TDoc, IEnumerable<TDoc>>
+  fullName: AeroDB.ICompiledQuery<TDoc, System.Collections.Generic.IEnumerable<TDoc>>
+  nameWithType.vb: ICompiledQuery(Of TDoc, IEnumerable(Of TDoc))
+  fullName.vb: AeroDB.ICompiledQuery(Of TDoc, System.Collections.Generic.IEnumerable(Of TDoc))
+  name.vb: ICompiledQuery(Of TDoc, IEnumerable(Of TDoc))
+  spec.csharp:
+  - uid: AeroDB.ICompiledQuery`2
+    name: ICompiledQuery
+    isExternal: true
+    href: AeroDB.ICompiledQuery-2.html
+  - name: <
+  - name: TDoc
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: TDoc
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.ICompiledQuery`2
+    name: ICompiledQuery
+    isExternal: true
+    href: AeroDB.ICompiledQuery-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TDoc
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TDoc
+  - name: )
+  - name: )
+- uid: AeroDB.ICompiledQuery`2
+  commentId: T:AeroDB.ICompiledQuery`2
+  isExternal: true
+  href: AeroDB.ICompiledQuery-2.html
+  name: ICompiledQuery<TDoc, TOut>
+  nameWithType: ICompiledQuery<TDoc, TOut>
+  fullName: AeroDB.ICompiledQuery<TDoc, TOut>
+  nameWithType.vb: ICompiledQuery(Of TDoc, TOut)
+  fullName.vb: AeroDB.ICompiledQuery(Of TDoc, TOut)
+  name.vb: ICompiledQuery(Of TDoc, TOut)
+  spec.csharp:
+  - uid: AeroDB.ICompiledQuery`2
+    name: ICompiledQuery
+    isExternal: true
+    href: AeroDB.ICompiledQuery-2.html
+  - name: <
+  - name: TDoc
+  - name: ','
+  - name: " "
+  - name: TOut
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.ICompiledQuery`2
+    name: ICompiledQuery
+    isExternal: true
+    href: AeroDB.ICompiledQuery-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TDoc
+  - name: ','
+  - name: " "
+  - name: TOut
+  - name: )

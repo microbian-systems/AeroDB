@@ -1,0 +1,2266 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.ProjectionCollection
+  commentId: T:AeroDB.ProjectionCollection
+  id: ProjectionCollection
+  parent: AeroDB
+  children:
+  - AeroDB.ProjectionCollection.#ctor
+  - AeroDB.ProjectionCollection.Add(AeroDB.IProjection)
+  - AeroDB.ProjectionCollection.Add(AeroDB.IProjection,AeroDB.ProjectionLifecycle)
+  - AeroDB.ProjectionCollection.Add``1(AeroDB.ProjectionLifecycle)
+  - AeroDB.ProjectionCollection.Clear
+  - AeroDB.ProjectionCollection.Contains(AeroDB.IProjection)
+  - AeroDB.ProjectionCollection.CopyTo(AeroDB.IProjection[],System.Int32)
+  - AeroDB.ProjectionCollection.Count
+  - AeroDB.ProjectionCollection.GetEnumerator
+  - AeroDB.ProjectionCollection.IndexOf(AeroDB.IProjection)
+  - AeroDB.ProjectionCollection.Insert(System.Int32,AeroDB.IProjection)
+  - AeroDB.ProjectionCollection.IsReadOnly
+  - AeroDB.ProjectionCollection.Item(System.Int32)
+  - AeroDB.ProjectionCollection.LiveStreamAggregation``1
+  - AeroDB.ProjectionCollection.Remove(AeroDB.IProjection)
+  - AeroDB.ProjectionCollection.RemoveAt(System.Int32)
+  - AeroDB.ProjectionCollection.Snapshot``1(AeroDB.SnapshotLifecycle,System.Action{AeroDB.SnapshotOptions})
+  langs:
+  - csharp
+  - vb
+  name: ProjectionCollection
+  nameWithType: ProjectionCollection
+  fullName: AeroDB.ProjectionCollection
+  type: Class
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/ProjectionCollection.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Fluent projection registration API. Replaces the raw <xref href="System.Collections.Generic.List%601" data-throw-if-not-resolved="false"></xref>
+
+    on <xref href="AeroDB.StoreOptions.Projections" data-throw-if-not-resolved="false"></xref>. Implements <xref href="System.Collections.Generic.IList%601" data-throw-if-not-resolved="false"></xref>
+
+    for backward compatibility.
+  example: []
+  syntax:
+    content: 'public class ProjectionCollection : IList<IProjection>, ICollection<IProjection>, IReadOnlyList<IProjection>, IReadOnlyCollection<IProjection>, IEnumerable<IProjection>, IEnumerable'
+    content.vb: Public Class ProjectionCollection Implements IList(Of IProjection), ICollection(Of IProjection), IReadOnlyList(Of IProjection), IReadOnlyCollection(Of IProjection), IEnumerable(Of IProjection), IEnumerable
+  inheritance:
+  - System.Object
+  implements:
+  - System.Collections.Generic.IList{AeroDB.IProjection}
+  - System.Collections.Generic.ICollection{AeroDB.IProjection}
+  - System.Collections.Generic.IReadOnlyList{AeroDB.IProjection}
+  - System.Collections.Generic.IReadOnlyCollection{AeroDB.IProjection}
+  - System.Collections.Generic.IEnumerable{AeroDB.IProjection}
+  - System.Collections.IEnumerable
+  inheritedMembers:
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+- uid: AeroDB.ProjectionCollection.GetEnumerator
+  commentId: M:AeroDB.ProjectionCollection.GetEnumerator
+  id: GetEnumerator
+  parent: AeroDB.ProjectionCollection
+  langs:
+  - csharp
+  - vb
+  name: GetEnumerator()
+  nameWithType: ProjectionCollection.GetEnumerator()
+  fullName: AeroDB.ProjectionCollection.GetEnumerator()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/ProjectionCollection.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  example: []
+  syntax:
+    content: public IEnumerator<IProjection> GetEnumerator()
+    return:
+      type: System.Collections.Generic.IEnumerator{AeroDB.IProjection}
+    content.vb: Public Function GetEnumerator() As IEnumerator(Of IProjection)
+  overload: AeroDB.ProjectionCollection.GetEnumerator*
+  implements:
+  - System.Collections.Generic.IEnumerable{AeroDB.IProjection}.GetEnumerator
+- uid: AeroDB.ProjectionCollection.Add(AeroDB.IProjection)
+  commentId: M:AeroDB.ProjectionCollection.Add(AeroDB.IProjection)
+  id: Add(AeroDB.IProjection)
+  parent: AeroDB.ProjectionCollection
+  langs:
+  - csharp
+  - vb
+  name: Add(IProjection)
+  nameWithType: ProjectionCollection.Add(IProjection)
+  fullName: AeroDB.ProjectionCollection.Add(AeroDB.IProjection)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/ProjectionCollection.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  example: []
+  syntax:
+    content: public void Add(IProjection item)
+    parameters:
+    - id: item
+      type: AeroDB.IProjection
+    content.vb: Public Sub Add(item As IProjection)
+  overload: AeroDB.ProjectionCollection.Add*
+  implements:
+  - System.Collections.Generic.ICollection{AeroDB.IProjection}.Add(AeroDB.IProjection)
+- uid: AeroDB.ProjectionCollection.Clear
+  commentId: M:AeroDB.ProjectionCollection.Clear
+  id: Clear
+  parent: AeroDB.ProjectionCollection
+  langs:
+  - csharp
+  - vb
+  name: Clear()
+  nameWithType: ProjectionCollection.Clear()
+  fullName: AeroDB.ProjectionCollection.Clear()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/ProjectionCollection.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  example: []
+  syntax:
+    content: public void Clear()
+    content.vb: Public Sub Clear()
+  overload: AeroDB.ProjectionCollection.Clear*
+  implements:
+  - System.Collections.Generic.ICollection{AeroDB.IProjection}.Clear
+- uid: AeroDB.ProjectionCollection.Contains(AeroDB.IProjection)
+  commentId: M:AeroDB.ProjectionCollection.Contains(AeroDB.IProjection)
+  id: Contains(AeroDB.IProjection)
+  parent: AeroDB.ProjectionCollection
+  langs:
+  - csharp
+  - vb
+  name: Contains(IProjection)
+  nameWithType: ProjectionCollection.Contains(IProjection)
+  fullName: AeroDB.ProjectionCollection.Contains(AeroDB.IProjection)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/ProjectionCollection.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  example: []
+  syntax:
+    content: public bool Contains(IProjection item)
+    parameters:
+    - id: item
+      type: AeroDB.IProjection
+    return:
+      type: System.Boolean
+    content.vb: Public Function Contains(item As IProjection) As Boolean
+  overload: AeroDB.ProjectionCollection.Contains*
+  implements:
+  - System.Collections.Generic.ICollection{AeroDB.IProjection}.Contains(AeroDB.IProjection)
+- uid: AeroDB.ProjectionCollection.CopyTo(AeroDB.IProjection[],System.Int32)
+  commentId: M:AeroDB.ProjectionCollection.CopyTo(AeroDB.IProjection[],System.Int32)
+  id: CopyTo(AeroDB.IProjection[],System.Int32)
+  parent: AeroDB.ProjectionCollection
+  langs:
+  - csharp
+  - vb
+  name: CopyTo(IProjection[], int)
+  nameWithType: ProjectionCollection.CopyTo(IProjection[], int)
+  fullName: AeroDB.ProjectionCollection.CopyTo(AeroDB.IProjection[], int)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/ProjectionCollection.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  example: []
+  syntax:
+    content: public void CopyTo(IProjection[] array, int arrayIndex)
+    parameters:
+    - id: array
+      type: AeroDB.IProjection[]
+    - id: arrayIndex
+      type: System.Int32
+    content.vb: Public Sub CopyTo(array As IProjection(), arrayIndex As Integer)
+  overload: AeroDB.ProjectionCollection.CopyTo*
+  implements:
+  - System.Collections.Generic.ICollection{AeroDB.IProjection}.CopyTo(AeroDB.IProjection[],System.Int32)
+  nameWithType.vb: ProjectionCollection.CopyTo(IProjection(), Integer)
+  fullName.vb: AeroDB.ProjectionCollection.CopyTo(AeroDB.IProjection(), Integer)
+  name.vb: CopyTo(IProjection(), Integer)
+- uid: AeroDB.ProjectionCollection.Remove(AeroDB.IProjection)
+  commentId: M:AeroDB.ProjectionCollection.Remove(AeroDB.IProjection)
+  id: Remove(AeroDB.IProjection)
+  parent: AeroDB.ProjectionCollection
+  langs:
+  - csharp
+  - vb
+  name: Remove(IProjection)
+  nameWithType: ProjectionCollection.Remove(IProjection)
+  fullName: AeroDB.ProjectionCollection.Remove(AeroDB.IProjection)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/ProjectionCollection.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  example: []
+  syntax:
+    content: public bool Remove(IProjection item)
+    parameters:
+    - id: item
+      type: AeroDB.IProjection
+    return:
+      type: System.Boolean
+    content.vb: Public Function Remove(item As IProjection) As Boolean
+  overload: AeroDB.ProjectionCollection.Remove*
+  implements:
+  - System.Collections.Generic.ICollection{AeroDB.IProjection}.Remove(AeroDB.IProjection)
+- uid: AeroDB.ProjectionCollection.IndexOf(AeroDB.IProjection)
+  commentId: M:AeroDB.ProjectionCollection.IndexOf(AeroDB.IProjection)
+  id: IndexOf(AeroDB.IProjection)
+  parent: AeroDB.ProjectionCollection
+  langs:
+  - csharp
+  - vb
+  name: IndexOf(IProjection)
+  nameWithType: ProjectionCollection.IndexOf(IProjection)
+  fullName: AeroDB.ProjectionCollection.IndexOf(AeroDB.IProjection)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/ProjectionCollection.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  example: []
+  syntax:
+    content: public int IndexOf(IProjection item)
+    parameters:
+    - id: item
+      type: AeroDB.IProjection
+    return:
+      type: System.Int32
+    content.vb: Public Function IndexOf(item As IProjection) As Integer
+  overload: AeroDB.ProjectionCollection.IndexOf*
+  implements:
+  - System.Collections.Generic.IList{AeroDB.IProjection}.IndexOf(AeroDB.IProjection)
+- uid: AeroDB.ProjectionCollection.Insert(System.Int32,AeroDB.IProjection)
+  commentId: M:AeroDB.ProjectionCollection.Insert(System.Int32,AeroDB.IProjection)
+  id: Insert(System.Int32,AeroDB.IProjection)
+  parent: AeroDB.ProjectionCollection
+  langs:
+  - csharp
+  - vb
+  name: Insert(int, IProjection)
+  nameWithType: ProjectionCollection.Insert(int, IProjection)
+  fullName: AeroDB.ProjectionCollection.Insert(int, AeroDB.IProjection)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/ProjectionCollection.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  example: []
+  syntax:
+    content: public void Insert(int index, IProjection item)
+    parameters:
+    - id: index
+      type: System.Int32
+    - id: item
+      type: AeroDB.IProjection
+    content.vb: Public Sub Insert(index As Integer, item As IProjection)
+  overload: AeroDB.ProjectionCollection.Insert*
+  implements:
+  - System.Collections.Generic.IList{AeroDB.IProjection}.Insert(System.Int32,AeroDB.IProjection)
+  nameWithType.vb: ProjectionCollection.Insert(Integer, IProjection)
+  fullName.vb: AeroDB.ProjectionCollection.Insert(Integer, AeroDB.IProjection)
+  name.vb: Insert(Integer, IProjection)
+- uid: AeroDB.ProjectionCollection.RemoveAt(System.Int32)
+  commentId: M:AeroDB.ProjectionCollection.RemoveAt(System.Int32)
+  id: RemoveAt(System.Int32)
+  parent: AeroDB.ProjectionCollection
+  langs:
+  - csharp
+  - vb
+  name: RemoveAt(int)
+  nameWithType: ProjectionCollection.RemoveAt(int)
+  fullName: AeroDB.ProjectionCollection.RemoveAt(int)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/ProjectionCollection.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  example: []
+  syntax:
+    content: public void RemoveAt(int index)
+    parameters:
+    - id: index
+      type: System.Int32
+    content.vb: Public Sub RemoveAt(index As Integer)
+  overload: AeroDB.ProjectionCollection.RemoveAt*
+  implements:
+  - System.Collections.Generic.IList{AeroDB.IProjection}.RemoveAt(System.Int32)
+  nameWithType.vb: ProjectionCollection.RemoveAt(Integer)
+  fullName.vb: AeroDB.ProjectionCollection.RemoveAt(Integer)
+  name.vb: RemoveAt(Integer)
+- uid: AeroDB.ProjectionCollection.Add``1(AeroDB.ProjectionLifecycle)
+  commentId: M:AeroDB.ProjectionCollection.Add``1(AeroDB.ProjectionLifecycle)
+  id: Add``1(AeroDB.ProjectionLifecycle)
+  parent: AeroDB.ProjectionCollection
+  langs:
+  - csharp
+  - vb
+  name: Add<T>(ProjectionLifecycle)
+  nameWithType: ProjectionCollection.Add<T>(ProjectionLifecycle)
+  fullName: AeroDB.ProjectionCollection.Add<T>(AeroDB.ProjectionLifecycle)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/ProjectionCollection.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Register a projection type with the given lifecycle. Instantiates
+
+    <code class="typeparamref">T</code> via its parameterless constructor and sets
+
+    <xref href="AeroDB.IProjection.Lifecycle" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: 'public void Add<T>(ProjectionLifecycle lifecycle) where T : IProjection, new()'
+    parameters:
+    - id: lifecycle
+      type: AeroDB.ProjectionLifecycle
+    typeParameters:
+    - id: T
+    content.vb: Public Sub Add(Of T As {IProjection, New})(lifecycle As ProjectionLifecycle)
+  overload: AeroDB.ProjectionCollection.Add*
+  nameWithType.vb: ProjectionCollection.Add(Of T)(ProjectionLifecycle)
+  fullName.vb: AeroDB.ProjectionCollection.Add(Of T)(AeroDB.ProjectionLifecycle)
+  name.vb: Add(Of T)(ProjectionLifecycle)
+- uid: AeroDB.ProjectionCollection.Add(AeroDB.IProjection,AeroDB.ProjectionLifecycle)
+  commentId: M:AeroDB.ProjectionCollection.Add(AeroDB.IProjection,AeroDB.ProjectionLifecycle)
+  id: Add(AeroDB.IProjection,AeroDB.ProjectionLifecycle)
+  parent: AeroDB.ProjectionCollection
+  langs:
+  - csharp
+  - vb
+  name: Add(IProjection, ProjectionLifecycle)
+  nameWithType: ProjectionCollection.Add(IProjection, ProjectionLifecycle)
+  fullName: AeroDB.ProjectionCollection.Add(AeroDB.IProjection, AeroDB.ProjectionLifecycle)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/ProjectionCollection.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Register an existing projection instance with the given lifecycle.
+  example: []
+  syntax:
+    content: public void Add(IProjection projection, ProjectionLifecycle lifecycle)
+    parameters:
+    - id: projection
+      type: AeroDB.IProjection
+    - id: lifecycle
+      type: AeroDB.ProjectionLifecycle
+    content.vb: Public Sub Add(projection As IProjection, lifecycle As ProjectionLifecycle)
+  overload: AeroDB.ProjectionCollection.Add*
+- uid: AeroDB.ProjectionCollection.Snapshot``1(AeroDB.SnapshotLifecycle,System.Action{AeroDB.SnapshotOptions})
+  commentId: M:AeroDB.ProjectionCollection.Snapshot``1(AeroDB.SnapshotLifecycle,System.Action{AeroDB.SnapshotOptions})
+  id: Snapshot``1(AeroDB.SnapshotLifecycle,System.Action{AeroDB.SnapshotOptions})
+  parent: AeroDB.ProjectionCollection
+  langs:
+  - csharp
+  - vb
+  name: Snapshot<T>(SnapshotLifecycle, Action<SnapshotOptions>?)
+  nameWithType: ProjectionCollection.Snapshot<T>(SnapshotLifecycle, Action<SnapshotOptions>?)
+  fullName: AeroDB.ProjectionCollection.Snapshot<T>(AeroDB.SnapshotLifecycle, System.Action<AeroDB.SnapshotOptions>?)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/ProjectionCollection.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Register a self-aggregating snapshot projection. The aggregate type
+
+    <code class="typeparamref">T</code> applies events to itself via <code>Apply(EventType)</code>
+
+    or <code>When(EventType)</code> methods.
+  example: []
+  syntax:
+    content: 'public void Snapshot<T>(SnapshotLifecycle lifecycle, Action<SnapshotOptions>? configure = null) where T : class, new()'
+    parameters:
+    - id: lifecycle
+      type: AeroDB.SnapshotLifecycle
+    - id: configure
+      type: System.Action{AeroDB.SnapshotOptions}
+    typeParameters:
+    - id: T
+    content.vb: Public Sub Snapshot(Of T As {Class, New})(lifecycle As SnapshotLifecycle, configure As Action(Of SnapshotOptions) = Nothing)
+  overload: AeroDB.ProjectionCollection.Snapshot*
+  nameWithType.vb: ProjectionCollection.Snapshot(Of T)(SnapshotLifecycle, Action(Of SnapshotOptions))
+  fullName.vb: AeroDB.ProjectionCollection.Snapshot(Of T)(AeroDB.SnapshotLifecycle, System.Action(Of AeroDB.SnapshotOptions))
+  name.vb: Snapshot(Of T)(SnapshotLifecycle, Action(Of SnapshotOptions))
+- uid: AeroDB.ProjectionCollection.LiveStreamAggregation``1
+  commentId: M:AeroDB.ProjectionCollection.LiveStreamAggregation``1
+  id: LiveStreamAggregation``1
+  parent: AeroDB.ProjectionCollection
+  langs:
+  - csharp
+  - vb
+  name: LiveStreamAggregation<T>()
+  nameWithType: ProjectionCollection.LiveStreamAggregation<T>()
+  fullName: AeroDB.ProjectionCollection.LiveStreamAggregation<T>()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/ProjectionCollection.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Register a live (on-the-fly) stream aggregation. No projection data is stored;
+
+    results are computed at read time by replaying stream events.
+  example: []
+  syntax:
+    content: 'public void LiveStreamAggregation<T>() where T : class'
+    typeParameters:
+    - id: T
+    content.vb: Public Sub LiveStreamAggregation(Of T As Class)()
+  overload: AeroDB.ProjectionCollection.LiveStreamAggregation*
+  nameWithType.vb: ProjectionCollection.LiveStreamAggregation(Of T)()
+  fullName.vb: AeroDB.ProjectionCollection.LiveStreamAggregation(Of T)()
+  name.vb: LiveStreamAggregation(Of T)()
+- uid: AeroDB.ProjectionCollection.#ctor
+  commentId: M:AeroDB.ProjectionCollection.#ctor
+  id: '#ctor'
+  parent: AeroDB.ProjectionCollection
+  langs:
+  - csharp
+  - vb
+  name: ProjectionCollection()
+  nameWithType: ProjectionCollection.ProjectionCollection()
+  fullName: AeroDB.ProjectionCollection.ProjectionCollection()
+  type: Constructor
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/ProjectionCollection.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public ProjectionCollection()
+    content.vb: Public Sub New()
+  overload: AeroDB.ProjectionCollection.#ctor*
+  nameWithType.vb: ProjectionCollection.New()
+  fullName.vb: AeroDB.ProjectionCollection.New()
+  name.vb: New()
+- uid: AeroDB.ProjectionCollection.Count
+  commentId: P:AeroDB.ProjectionCollection.Count
+  id: Count
+  parent: AeroDB.ProjectionCollection
+  langs:
+  - csharp
+  - vb
+  name: Count
+  nameWithType: ProjectionCollection.Count
+  fullName: AeroDB.ProjectionCollection.Count
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/ProjectionCollection.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  example: []
+  syntax:
+    content: public int Count { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public ReadOnly Property Count As Integer
+  overload: AeroDB.ProjectionCollection.Count*
+  implements:
+  - System.Collections.Generic.ICollection{AeroDB.IProjection}.Count
+  - System.Collections.Generic.IReadOnlyCollection{AeroDB.IProjection}.Count
+- uid: AeroDB.ProjectionCollection.IsReadOnly
+  commentId: P:AeroDB.ProjectionCollection.IsReadOnly
+  id: IsReadOnly
+  parent: AeroDB.ProjectionCollection
+  langs:
+  - csharp
+  - vb
+  name: IsReadOnly
+  nameWithType: ProjectionCollection.IsReadOnly
+  fullName: AeroDB.ProjectionCollection.IsReadOnly
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/ProjectionCollection.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  example: []
+  syntax:
+    content: public bool IsReadOnly { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public ReadOnly Property IsReadOnly As Boolean
+  overload: AeroDB.ProjectionCollection.IsReadOnly*
+  implements:
+  - System.Collections.Generic.ICollection{AeroDB.IProjection}.IsReadOnly
+- uid: AeroDB.ProjectionCollection.Item(System.Int32)
+  commentId: P:AeroDB.ProjectionCollection.Item(System.Int32)
+  id: Item(System.Int32)
+  parent: AeroDB.ProjectionCollection
+  langs:
+  - csharp
+  - vb
+  name: this[int]
+  nameWithType: ProjectionCollection.this[int]
+  fullName: AeroDB.ProjectionCollection.this[int]
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/ProjectionCollection.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  example: []
+  syntax:
+    content: public IProjection this[int index] { get; set; }
+    parameters:
+    - id: index
+      type: System.Int32
+    return:
+      type: AeroDB.IProjection
+    content.vb: Public Default Property this[](index As Integer) As IProjection
+  overload: AeroDB.ProjectionCollection.Item*
+  implements:
+  - System.Collections.Generic.IList{AeroDB.IProjection}.Item(System.Int32)
+  - System.Collections.Generic.IReadOnlyList{AeroDB.IProjection}.Item(System.Int32)
+  nameWithType.vb: ProjectionCollection.this[](Integer)
+  fullName.vb: AeroDB.ProjectionCollection.this[](Integer)
+  name.vb: this[](Integer)
+references:
+- uid: System.Collections.Generic.List`1
+  commentId: T:System.Collections.Generic.List`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<T>
+  nameWithType: List<T>
+  fullName: System.Collections.Generic.List<T>
+  nameWithType.vb: List(Of T)
+  fullName.vb: System.Collections.Generic.List(Of T)
+  name.vb: List(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.StoreOptions.Projections
+  commentId: P:AeroDB.StoreOptions.Projections
+  isExternal: true
+  href: AeroDB.StoreOptions.html#AeroDB_StoreOptions_Projections
+  name: Projections
+  nameWithType: StoreOptions.Projections
+  fullName: AeroDB.StoreOptions.Projections
+- uid: System.Collections.Generic.IList`1
+  commentId: T:System.Collections.Generic.IList`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1
+  name: IList<T>
+  nameWithType: IList<T>
+  fullName: System.Collections.Generic.IList<T>
+  nameWithType.vb: IList(Of T)
+  fullName.vb: System.Collections.Generic.IList(Of T)
+  name.vb: IList(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IList`1
+    name: IList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IList`1
+    name: IList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Collections.Generic.IList{AeroDB.IProjection}
+  commentId: T:System.Collections.Generic.IList{AeroDB.IProjection}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IList`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1
+  name: IList<IProjection>
+  nameWithType: IList<IProjection>
+  fullName: System.Collections.Generic.IList<AeroDB.IProjection>
+  nameWithType.vb: IList(Of IProjection)
+  fullName.vb: System.Collections.Generic.IList(Of AeroDB.IProjection)
+  name.vb: IList(Of IProjection)
+  spec.csharp:
+  - uid: System.Collections.Generic.IList`1
+    name: IList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1
+  - name: <
+  - uid: AeroDB.IProjection
+    name: IProjection
+    isExternal: true
+    href: AeroDB.IProjection.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IList`1
+    name: IList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.IProjection
+    name: IProjection
+    isExternal: true
+    href: AeroDB.IProjection.html
+  - name: )
+- uid: System.Collections.Generic.ICollection{AeroDB.IProjection}
+  commentId: T:System.Collections.Generic.ICollection{AeroDB.IProjection}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.ICollection`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1
+  name: ICollection<IProjection>
+  nameWithType: ICollection<IProjection>
+  fullName: System.Collections.Generic.ICollection<AeroDB.IProjection>
+  nameWithType.vb: ICollection(Of IProjection)
+  fullName.vb: System.Collections.Generic.ICollection(Of AeroDB.IProjection)
+  name.vb: ICollection(Of IProjection)
+  spec.csharp:
+  - uid: System.Collections.Generic.ICollection`1
+    name: ICollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1
+  - name: <
+  - uid: AeroDB.IProjection
+    name: IProjection
+    isExternal: true
+    href: AeroDB.IProjection.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.ICollection`1
+    name: ICollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.IProjection
+    name: IProjection
+    isExternal: true
+    href: AeroDB.IProjection.html
+  - name: )
+- uid: System.Collections.Generic.IReadOnlyList{AeroDB.IProjection}
+  commentId: T:System.Collections.Generic.IReadOnlyList{AeroDB.IProjection}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyList`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<IProjection>
+  nameWithType: IReadOnlyList<IProjection>
+  fullName: System.Collections.Generic.IReadOnlyList<AeroDB.IProjection>
+  nameWithType.vb: IReadOnlyList(Of IProjection)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of AeroDB.IProjection)
+  name.vb: IReadOnlyList(Of IProjection)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - uid: AeroDB.IProjection
+    name: IProjection
+    isExternal: true
+    href: AeroDB.IProjection.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.IProjection
+    name: IProjection
+    isExternal: true
+    href: AeroDB.IProjection.html
+  - name: )
+- uid: System.Collections.Generic.IReadOnlyCollection{AeroDB.IProjection}
+  commentId: T:System.Collections.Generic.IReadOnlyCollection{AeroDB.IProjection}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyCollection`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1
+  name: IReadOnlyCollection<IProjection>
+  nameWithType: IReadOnlyCollection<IProjection>
+  fullName: System.Collections.Generic.IReadOnlyCollection<AeroDB.IProjection>
+  nameWithType.vb: IReadOnlyCollection(Of IProjection)
+  fullName.vb: System.Collections.Generic.IReadOnlyCollection(Of AeroDB.IProjection)
+  name.vb: IReadOnlyCollection(Of IProjection)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyCollection`1
+    name: IReadOnlyCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1
+  - name: <
+  - uid: AeroDB.IProjection
+    name: IProjection
+    isExternal: true
+    href: AeroDB.IProjection.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyCollection`1
+    name: IReadOnlyCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.IProjection
+    name: IProjection
+    isExternal: true
+    href: AeroDB.IProjection.html
+  - name: )
+- uid: System.Collections.Generic.IEnumerable{AeroDB.IProjection}
+  commentId: T:System.Collections.Generic.IEnumerable{AeroDB.IProjection}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<IProjection>
+  nameWithType: IEnumerable<IProjection>
+  fullName: System.Collections.Generic.IEnumerable<AeroDB.IProjection>
+  nameWithType.vb: IEnumerable(Of IProjection)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of AeroDB.IProjection)
+  name.vb: IEnumerable(Of IProjection)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: AeroDB.IProjection
+    name: IProjection
+    isExternal: true
+    href: AeroDB.IProjection.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.IProjection
+    name: IProjection
+    isExternal: true
+    href: AeroDB.IProjection.html
+  - name: )
+- uid: System.Collections.IEnumerable
+  commentId: T:System.Collections.IEnumerable
+  parent: System.Collections
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.ienumerable
+  name: IEnumerable
+  nameWithType: IEnumerable
+  fullName: System.Collections.IEnumerable
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: System.Collections.Generic.ICollection`1
+  commentId: T:System.Collections.Generic.ICollection`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1
+  name: ICollection<T>
+  nameWithType: ICollection<T>
+  fullName: System.Collections.Generic.ICollection<T>
+  nameWithType.vb: ICollection(Of T)
+  fullName.vb: System.Collections.Generic.ICollection(Of T)
+  name.vb: ICollection(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.ICollection`1
+    name: ICollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.ICollection`1
+    name: ICollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic.IReadOnlyList`1
+  commentId: T:System.Collections.Generic.IReadOnlyList`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<T>
+  nameWithType: IReadOnlyList<T>
+  fullName: System.Collections.Generic.IReadOnlyList<T>
+  nameWithType.vb: IReadOnlyList(Of T)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of T)
+  name.vb: IReadOnlyList(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic.IReadOnlyCollection`1
+  commentId: T:System.Collections.Generic.IReadOnlyCollection`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1
+  name: IReadOnlyCollection<T>
+  nameWithType: IReadOnlyCollection<T>
+  fullName: System.Collections.Generic.IReadOnlyCollection<T>
+  nameWithType.vb: IReadOnlyCollection(Of T)
+  fullName.vb: System.Collections.Generic.IReadOnlyCollection(Of T)
+  name.vb: IReadOnlyCollection(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyCollection`1
+    name: IReadOnlyCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyCollection`1
+    name: IReadOnlyCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections
+  commentId: N:System.Collections
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections
+  nameWithType: System.Collections
+  fullName: System.Collections
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+- uid: AeroDB.ProjectionCollection.GetEnumerator*
+  commentId: Overload:AeroDB.ProjectionCollection.GetEnumerator
+  isExternal: true
+  href: AeroDB.ProjectionCollection.html#AeroDB_ProjectionCollection_GetEnumerator
+  name: GetEnumerator
+  nameWithType: ProjectionCollection.GetEnumerator
+  fullName: AeroDB.ProjectionCollection.GetEnumerator
+- uid: System.Collections.Generic.IEnumerable{AeroDB.IProjection}.GetEnumerator
+  commentId: M:System.Collections.Generic.IEnumerable{AeroDB.IProjection}.GetEnumerator
+  parent: System.Collections.Generic.IEnumerable{AeroDB.IProjection}
+  definition: System.Collections.Generic.IEnumerable`1.GetEnumerator
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1.getenumerator
+  name: GetEnumerator()
+  nameWithType: IEnumerable<IProjection>.GetEnumerator()
+  fullName: System.Collections.Generic.IEnumerable<AeroDB.IProjection>.GetEnumerator()
+  nameWithType.vb: IEnumerable(Of IProjection).GetEnumerator()
+  fullName.vb: System.Collections.Generic.IEnumerable(Of AeroDB.IProjection).GetEnumerator()
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable{AeroDB.IProjection}.GetEnumerator
+    name: GetEnumerator
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1.getenumerator
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable{AeroDB.IProjection}.GetEnumerator
+    name: GetEnumerator
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1.getenumerator
+  - name: (
+  - name: )
+- uid: System.Collections.Generic.IEnumerator{AeroDB.IProjection}
+  commentId: T:System.Collections.Generic.IEnumerator{AeroDB.IProjection}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerator`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerator-1
+  name: IEnumerator<IProjection>
+  nameWithType: IEnumerator<IProjection>
+  fullName: System.Collections.Generic.IEnumerator<AeroDB.IProjection>
+  nameWithType.vb: IEnumerator(Of IProjection)
+  fullName.vb: System.Collections.Generic.IEnumerator(Of AeroDB.IProjection)
+  name.vb: IEnumerator(Of IProjection)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerator`1
+    name: IEnumerator
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerator-1
+  - name: <
+  - uid: AeroDB.IProjection
+    name: IProjection
+    isExternal: true
+    href: AeroDB.IProjection.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerator`1
+    name: IEnumerator
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerator-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.IProjection
+    name: IProjection
+    isExternal: true
+    href: AeroDB.IProjection.html
+  - name: )
+- uid: System.Collections.Generic.IEnumerable`1.GetEnumerator
+  commentId: M:System.Collections.Generic.IEnumerable`1.GetEnumerator
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1.getenumerator
+  name: GetEnumerator()
+  nameWithType: IEnumerable<T>.GetEnumerator()
+  fullName: System.Collections.Generic.IEnumerable<T>.GetEnumerator()
+  nameWithType.vb: IEnumerable(Of T).GetEnumerator()
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T).GetEnumerator()
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1.GetEnumerator
+    name: GetEnumerator
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1.getenumerator
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1.GetEnumerator
+    name: GetEnumerator
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1.getenumerator
+  - name: (
+  - name: )
+- uid: System.Collections.Generic.IEnumerator`1
+  commentId: T:System.Collections.Generic.IEnumerator`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerator-1
+  name: IEnumerator<T>
+  nameWithType: IEnumerator<T>
+  fullName: System.Collections.Generic.IEnumerator<T>
+  nameWithType.vb: IEnumerator(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerator(Of T)
+  name.vb: IEnumerator(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerator`1
+    name: IEnumerator
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerator-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerator`1
+    name: IEnumerator
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerator-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.ProjectionCollection.Add*
+  commentId: Overload:AeroDB.ProjectionCollection.Add
+  isExternal: true
+  href: AeroDB.ProjectionCollection.html#AeroDB_ProjectionCollection_Add_AeroDB_IProjection_
+  name: Add
+  nameWithType: ProjectionCollection.Add
+  fullName: AeroDB.ProjectionCollection.Add
+- uid: System.Collections.Generic.ICollection{AeroDB.IProjection}.Add(AeroDB.IProjection)
+  commentId: M:System.Collections.Generic.ICollection{AeroDB.IProjection}.Add(AeroDB.IProjection)
+  parent: System.Collections.Generic.ICollection{AeroDB.IProjection}
+  definition: System.Collections.Generic.ICollection`1.Add(`0)
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1.add
+  name: Add(IProjection)
+  nameWithType: ICollection<IProjection>.Add(IProjection)
+  fullName: System.Collections.Generic.ICollection<AeroDB.IProjection>.Add(AeroDB.IProjection)
+  nameWithType.vb: ICollection(Of IProjection).Add(IProjection)
+  fullName.vb: System.Collections.Generic.ICollection(Of AeroDB.IProjection).Add(AeroDB.IProjection)
+  spec.csharp:
+  - uid: System.Collections.Generic.ICollection{AeroDB.IProjection}.Add(AeroDB.IProjection)
+    name: Add
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1.add
+  - name: (
+  - uid: AeroDB.IProjection
+    name: IProjection
+    isExternal: true
+    href: AeroDB.IProjection.html
+  - name: )
+  spec.vb:
+  - uid: System.Collections.Generic.ICollection{AeroDB.IProjection}.Add(AeroDB.IProjection)
+    name: Add
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1.add
+  - name: (
+  - uid: AeroDB.IProjection
+    name: IProjection
+    isExternal: true
+    href: AeroDB.IProjection.html
+  - name: )
+- uid: AeroDB.IProjection
+  commentId: T:AeroDB.IProjection
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IProjection.html
+  name: IProjection
+  nameWithType: IProjection
+  fullName: AeroDB.IProjection
+- uid: System.Collections.Generic.ICollection`1.Add(`0)
+  commentId: M:System.Collections.Generic.ICollection`1.Add(`0)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1.add
+  name: Add(T)
+  nameWithType: ICollection<T>.Add(T)
+  fullName: System.Collections.Generic.ICollection<T>.Add(T)
+  nameWithType.vb: ICollection(Of T).Add(T)
+  fullName.vb: System.Collections.Generic.ICollection(Of T).Add(T)
+  spec.csharp:
+  - uid: System.Collections.Generic.ICollection`1.Add(`0)
+    name: Add
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1.add
+  - name: (
+  - name: T
+  - name: )
+  spec.vb:
+  - uid: System.Collections.Generic.ICollection`1.Add(`0)
+    name: Add
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1.add
+  - name: (
+  - name: T
+  - name: )
+- uid: AeroDB.ProjectionCollection.Clear*
+  commentId: Overload:AeroDB.ProjectionCollection.Clear
+  isExternal: true
+  href: AeroDB.ProjectionCollection.html#AeroDB_ProjectionCollection_Clear
+  name: Clear
+  nameWithType: ProjectionCollection.Clear
+  fullName: AeroDB.ProjectionCollection.Clear
+- uid: System.Collections.Generic.ICollection{AeroDB.IProjection}.Clear
+  commentId: M:System.Collections.Generic.ICollection{AeroDB.IProjection}.Clear
+  parent: System.Collections.Generic.ICollection{AeroDB.IProjection}
+  definition: System.Collections.Generic.ICollection`1.Clear
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1.clear
+  name: Clear()
+  nameWithType: ICollection<IProjection>.Clear()
+  fullName: System.Collections.Generic.ICollection<AeroDB.IProjection>.Clear()
+  nameWithType.vb: ICollection(Of IProjection).Clear()
+  fullName.vb: System.Collections.Generic.ICollection(Of AeroDB.IProjection).Clear()
+  spec.csharp:
+  - uid: System.Collections.Generic.ICollection{AeroDB.IProjection}.Clear
+    name: Clear
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1.clear
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Collections.Generic.ICollection{AeroDB.IProjection}.Clear
+    name: Clear
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1.clear
+  - name: (
+  - name: )
+- uid: System.Collections.Generic.ICollection`1.Clear
+  commentId: M:System.Collections.Generic.ICollection`1.Clear
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1.clear
+  name: Clear()
+  nameWithType: ICollection<T>.Clear()
+  fullName: System.Collections.Generic.ICollection<T>.Clear()
+  nameWithType.vb: ICollection(Of T).Clear()
+  fullName.vb: System.Collections.Generic.ICollection(Of T).Clear()
+  spec.csharp:
+  - uid: System.Collections.Generic.ICollection`1.Clear
+    name: Clear
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1.clear
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Collections.Generic.ICollection`1.Clear
+    name: Clear
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1.clear
+  - name: (
+  - name: )
+- uid: AeroDB.ProjectionCollection.Contains*
+  commentId: Overload:AeroDB.ProjectionCollection.Contains
+  isExternal: true
+  href: AeroDB.ProjectionCollection.html#AeroDB_ProjectionCollection_Contains_AeroDB_IProjection_
+  name: Contains
+  nameWithType: ProjectionCollection.Contains
+  fullName: AeroDB.ProjectionCollection.Contains
+- uid: System.Collections.Generic.ICollection{AeroDB.IProjection}.Contains(AeroDB.IProjection)
+  commentId: M:System.Collections.Generic.ICollection{AeroDB.IProjection}.Contains(AeroDB.IProjection)
+  parent: System.Collections.Generic.ICollection{AeroDB.IProjection}
+  definition: System.Collections.Generic.ICollection`1.Contains(`0)
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1.contains
+  name: Contains(IProjection)
+  nameWithType: ICollection<IProjection>.Contains(IProjection)
+  fullName: System.Collections.Generic.ICollection<AeroDB.IProjection>.Contains(AeroDB.IProjection)
+  nameWithType.vb: ICollection(Of IProjection).Contains(IProjection)
+  fullName.vb: System.Collections.Generic.ICollection(Of AeroDB.IProjection).Contains(AeroDB.IProjection)
+  spec.csharp:
+  - uid: System.Collections.Generic.ICollection{AeroDB.IProjection}.Contains(AeroDB.IProjection)
+    name: Contains
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1.contains
+  - name: (
+  - uid: AeroDB.IProjection
+    name: IProjection
+    isExternal: true
+    href: AeroDB.IProjection.html
+  - name: )
+  spec.vb:
+  - uid: System.Collections.Generic.ICollection{AeroDB.IProjection}.Contains(AeroDB.IProjection)
+    name: Contains
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1.contains
+  - name: (
+  - uid: AeroDB.IProjection
+    name: IProjection
+    isExternal: true
+    href: AeroDB.IProjection.html
+  - name: )
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: System.Collections.Generic.ICollection`1.Contains(`0)
+  commentId: M:System.Collections.Generic.ICollection`1.Contains(`0)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1.contains
+  name: Contains(T)
+  nameWithType: ICollection<T>.Contains(T)
+  fullName: System.Collections.Generic.ICollection<T>.Contains(T)
+  nameWithType.vb: ICollection(Of T).Contains(T)
+  fullName.vb: System.Collections.Generic.ICollection(Of T).Contains(T)
+  spec.csharp:
+  - uid: System.Collections.Generic.ICollection`1.Contains(`0)
+    name: Contains
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1.contains
+  - name: (
+  - name: T
+  - name: )
+  spec.vb:
+  - uid: System.Collections.Generic.ICollection`1.Contains(`0)
+    name: Contains
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1.contains
+  - name: (
+  - name: T
+  - name: )
+- uid: AeroDB.ProjectionCollection.CopyTo*
+  commentId: Overload:AeroDB.ProjectionCollection.CopyTo
+  isExternal: true
+  href: AeroDB.ProjectionCollection.html#AeroDB_ProjectionCollection_CopyTo_AeroDB_IProjection___System_Int32_
+  name: CopyTo
+  nameWithType: ProjectionCollection.CopyTo
+  fullName: AeroDB.ProjectionCollection.CopyTo
+- uid: System.Collections.Generic.ICollection{AeroDB.IProjection}.CopyTo(AeroDB.IProjection[],System.Int32)
+  commentId: M:System.Collections.Generic.ICollection{AeroDB.IProjection}.CopyTo(AeroDB.IProjection[],System.Int32)
+  parent: System.Collections.Generic.ICollection{AeroDB.IProjection}
+  definition: System.Collections.Generic.ICollection`1.CopyTo(`0[],System.Int32)
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1.copyto
+  name: CopyTo(IProjection[], int)
+  nameWithType: ICollection<IProjection>.CopyTo(IProjection[], int)
+  fullName: System.Collections.Generic.ICollection<AeroDB.IProjection>.CopyTo(AeroDB.IProjection[], int)
+  nameWithType.vb: ICollection(Of IProjection).CopyTo(IProjection(), Integer)
+  fullName.vb: System.Collections.Generic.ICollection(Of AeroDB.IProjection).CopyTo(AeroDB.IProjection(), Integer)
+  name.vb: CopyTo(IProjection(), Integer)
+  spec.csharp:
+  - uid: System.Collections.Generic.ICollection{AeroDB.IProjection}.CopyTo(AeroDB.IProjection[],System.Int32)
+    name: CopyTo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1.copyto
+  - name: (
+  - uid: AeroDB.IProjection
+    name: IProjection
+    isExternal: true
+    href: AeroDB.IProjection.html
+  - name: '['
+  - name: ']'
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: System.Collections.Generic.ICollection{AeroDB.IProjection}.CopyTo(AeroDB.IProjection[],System.Int32)
+    name: CopyTo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1.copyto
+  - name: (
+  - uid: AeroDB.IProjection
+    name: IProjection
+    isExternal: true
+    href: AeroDB.IProjection.html
+  - name: (
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: AeroDB.IProjection[]
+  isExternal: true
+  href: AeroDB.IProjection.html
+  name: IProjection[]
+  nameWithType: IProjection[]
+  fullName: AeroDB.IProjection[]
+  nameWithType.vb: IProjection()
+  fullName.vb: AeroDB.IProjection()
+  name.vb: IProjection()
+  spec.csharp:
+  - uid: AeroDB.IProjection
+    name: IProjection
+    isExternal: true
+    href: AeroDB.IProjection.html
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: AeroDB.IProjection
+    name: IProjection
+    isExternal: true
+    href: AeroDB.IProjection.html
+  - name: (
+  - name: )
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System.Collections.Generic.ICollection`1.CopyTo(`0[],System.Int32)
+  commentId: M:System.Collections.Generic.ICollection`1.CopyTo(`0[],System.Int32)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1.copyto
+  name: CopyTo(T[], int)
+  nameWithType: ICollection<T>.CopyTo(T[], int)
+  fullName: System.Collections.Generic.ICollection<T>.CopyTo(T[], int)
+  nameWithType.vb: ICollection(Of T).CopyTo(T(), Integer)
+  fullName.vb: System.Collections.Generic.ICollection(Of T).CopyTo(T(), Integer)
+  name.vb: CopyTo(T(), Integer)
+  spec.csharp:
+  - uid: System.Collections.Generic.ICollection`1.CopyTo(`0[],System.Int32)
+    name: CopyTo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1.copyto
+  - name: (
+  - name: T
+  - name: '['
+  - name: ']'
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: System.Collections.Generic.ICollection`1.CopyTo(`0[],System.Int32)
+    name: CopyTo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1.copyto
+  - name: (
+  - name: T
+  - name: (
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: AeroDB.ProjectionCollection.Remove*
+  commentId: Overload:AeroDB.ProjectionCollection.Remove
+  isExternal: true
+  href: AeroDB.ProjectionCollection.html#AeroDB_ProjectionCollection_Remove_AeroDB_IProjection_
+  name: Remove
+  nameWithType: ProjectionCollection.Remove
+  fullName: AeroDB.ProjectionCollection.Remove
+- uid: System.Collections.Generic.ICollection{AeroDB.IProjection}.Remove(AeroDB.IProjection)
+  commentId: M:System.Collections.Generic.ICollection{AeroDB.IProjection}.Remove(AeroDB.IProjection)
+  parent: System.Collections.Generic.ICollection{AeroDB.IProjection}
+  definition: System.Collections.Generic.ICollection`1.Remove(`0)
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1.remove
+  name: Remove(IProjection)
+  nameWithType: ICollection<IProjection>.Remove(IProjection)
+  fullName: System.Collections.Generic.ICollection<AeroDB.IProjection>.Remove(AeroDB.IProjection)
+  nameWithType.vb: ICollection(Of IProjection).Remove(IProjection)
+  fullName.vb: System.Collections.Generic.ICollection(Of AeroDB.IProjection).Remove(AeroDB.IProjection)
+  spec.csharp:
+  - uid: System.Collections.Generic.ICollection{AeroDB.IProjection}.Remove(AeroDB.IProjection)
+    name: Remove
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1.remove
+  - name: (
+  - uid: AeroDB.IProjection
+    name: IProjection
+    isExternal: true
+    href: AeroDB.IProjection.html
+  - name: )
+  spec.vb:
+  - uid: System.Collections.Generic.ICollection{AeroDB.IProjection}.Remove(AeroDB.IProjection)
+    name: Remove
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1.remove
+  - name: (
+  - uid: AeroDB.IProjection
+    name: IProjection
+    isExternal: true
+    href: AeroDB.IProjection.html
+  - name: )
+- uid: System.Collections.Generic.ICollection`1.Remove(`0)
+  commentId: M:System.Collections.Generic.ICollection`1.Remove(`0)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1.remove
+  name: Remove(T)
+  nameWithType: ICollection<T>.Remove(T)
+  fullName: System.Collections.Generic.ICollection<T>.Remove(T)
+  nameWithType.vb: ICollection(Of T).Remove(T)
+  fullName.vb: System.Collections.Generic.ICollection(Of T).Remove(T)
+  spec.csharp:
+  - uid: System.Collections.Generic.ICollection`1.Remove(`0)
+    name: Remove
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1.remove
+  - name: (
+  - name: T
+  - name: )
+  spec.vb:
+  - uid: System.Collections.Generic.ICollection`1.Remove(`0)
+    name: Remove
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1.remove
+  - name: (
+  - name: T
+  - name: )
+- uid: AeroDB.ProjectionCollection.IndexOf*
+  commentId: Overload:AeroDB.ProjectionCollection.IndexOf
+  isExternal: true
+  href: AeroDB.ProjectionCollection.html#AeroDB_ProjectionCollection_IndexOf_AeroDB_IProjection_
+  name: IndexOf
+  nameWithType: ProjectionCollection.IndexOf
+  fullName: AeroDB.ProjectionCollection.IndexOf
+- uid: System.Collections.Generic.IList{AeroDB.IProjection}.IndexOf(AeroDB.IProjection)
+  commentId: M:System.Collections.Generic.IList{AeroDB.IProjection}.IndexOf(AeroDB.IProjection)
+  parent: System.Collections.Generic.IList{AeroDB.IProjection}
+  definition: System.Collections.Generic.IList`1.IndexOf(`0)
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1.indexof
+  name: IndexOf(IProjection)
+  nameWithType: IList<IProjection>.IndexOf(IProjection)
+  fullName: System.Collections.Generic.IList<AeroDB.IProjection>.IndexOf(AeroDB.IProjection)
+  nameWithType.vb: IList(Of IProjection).IndexOf(IProjection)
+  fullName.vb: System.Collections.Generic.IList(Of AeroDB.IProjection).IndexOf(AeroDB.IProjection)
+  spec.csharp:
+  - uid: System.Collections.Generic.IList{AeroDB.IProjection}.IndexOf(AeroDB.IProjection)
+    name: IndexOf
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1.indexof
+  - name: (
+  - uid: AeroDB.IProjection
+    name: IProjection
+    isExternal: true
+    href: AeroDB.IProjection.html
+  - name: )
+  spec.vb:
+  - uid: System.Collections.Generic.IList{AeroDB.IProjection}.IndexOf(AeroDB.IProjection)
+    name: IndexOf
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1.indexof
+  - name: (
+  - uid: AeroDB.IProjection
+    name: IProjection
+    isExternal: true
+    href: AeroDB.IProjection.html
+  - name: )
+- uid: System.Collections.Generic.IList`1.IndexOf(`0)
+  commentId: M:System.Collections.Generic.IList`1.IndexOf(`0)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1.indexof
+  name: IndexOf(T)
+  nameWithType: IList<T>.IndexOf(T)
+  fullName: System.Collections.Generic.IList<T>.IndexOf(T)
+  nameWithType.vb: IList(Of T).IndexOf(T)
+  fullName.vb: System.Collections.Generic.IList(Of T).IndexOf(T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IList`1.IndexOf(`0)
+    name: IndexOf
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1.indexof
+  - name: (
+  - name: T
+  - name: )
+  spec.vb:
+  - uid: System.Collections.Generic.IList`1.IndexOf(`0)
+    name: IndexOf
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1.indexof
+  - name: (
+  - name: T
+  - name: )
+- uid: AeroDB.ProjectionCollection.Insert*
+  commentId: Overload:AeroDB.ProjectionCollection.Insert
+  isExternal: true
+  href: AeroDB.ProjectionCollection.html#AeroDB_ProjectionCollection_Insert_System_Int32_AeroDB_IProjection_
+  name: Insert
+  nameWithType: ProjectionCollection.Insert
+  fullName: AeroDB.ProjectionCollection.Insert
+- uid: System.Collections.Generic.IList{AeroDB.IProjection}.Insert(System.Int32,AeroDB.IProjection)
+  commentId: M:System.Collections.Generic.IList{AeroDB.IProjection}.Insert(System.Int32,AeroDB.IProjection)
+  parent: System.Collections.Generic.IList{AeroDB.IProjection}
+  definition: System.Collections.Generic.IList`1.Insert(System.Int32,`0)
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1.insert
+  name: Insert(int, IProjection)
+  nameWithType: IList<IProjection>.Insert(int, IProjection)
+  fullName: System.Collections.Generic.IList<AeroDB.IProjection>.Insert(int, AeroDB.IProjection)
+  nameWithType.vb: IList(Of IProjection).Insert(Integer, IProjection)
+  fullName.vb: System.Collections.Generic.IList(Of AeroDB.IProjection).Insert(Integer, AeroDB.IProjection)
+  name.vb: Insert(Integer, IProjection)
+  spec.csharp:
+  - uid: System.Collections.Generic.IList{AeroDB.IProjection}.Insert(System.Int32,AeroDB.IProjection)
+    name: Insert
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1.insert
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: AeroDB.IProjection
+    name: IProjection
+    isExternal: true
+    href: AeroDB.IProjection.html
+  - name: )
+  spec.vb:
+  - uid: System.Collections.Generic.IList{AeroDB.IProjection}.Insert(System.Int32,AeroDB.IProjection)
+    name: Insert
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1.insert
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: AeroDB.IProjection
+    name: IProjection
+    isExternal: true
+    href: AeroDB.IProjection.html
+  - name: )
+- uid: System.Collections.Generic.IList`1.Insert(System.Int32,`0)
+  commentId: M:System.Collections.Generic.IList`1.Insert(System.Int32,`0)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1.insert
+  name: Insert(int, T)
+  nameWithType: IList<T>.Insert(int, T)
+  fullName: System.Collections.Generic.IList<T>.Insert(int, T)
+  nameWithType.vb: IList(Of T).Insert(Integer, T)
+  fullName.vb: System.Collections.Generic.IList(Of T).Insert(Integer, T)
+  name.vb: Insert(Integer, T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IList`1.Insert(System.Int32,`0)
+    name: Insert
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1.insert
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - name: T
+  - name: )
+  spec.vb:
+  - uid: System.Collections.Generic.IList`1.Insert(System.Int32,`0)
+    name: Insert
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1.insert
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.ProjectionCollection.RemoveAt*
+  commentId: Overload:AeroDB.ProjectionCollection.RemoveAt
+  isExternal: true
+  href: AeroDB.ProjectionCollection.html#AeroDB_ProjectionCollection_RemoveAt_System_Int32_
+  name: RemoveAt
+  nameWithType: ProjectionCollection.RemoveAt
+  fullName: AeroDB.ProjectionCollection.RemoveAt
+- uid: System.Collections.Generic.IList{AeroDB.IProjection}.RemoveAt(System.Int32)
+  commentId: M:System.Collections.Generic.IList{AeroDB.IProjection}.RemoveAt(System.Int32)
+  parent: System.Collections.Generic.IList{AeroDB.IProjection}
+  definition: System.Collections.Generic.IList`1.RemoveAt(System.Int32)
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1.removeat
+  name: RemoveAt(int)
+  nameWithType: IList<IProjection>.RemoveAt(int)
+  fullName: System.Collections.Generic.IList<AeroDB.IProjection>.RemoveAt(int)
+  nameWithType.vb: IList(Of IProjection).RemoveAt(Integer)
+  fullName.vb: System.Collections.Generic.IList(Of AeroDB.IProjection).RemoveAt(Integer)
+  name.vb: RemoveAt(Integer)
+  spec.csharp:
+  - uid: System.Collections.Generic.IList{AeroDB.IProjection}.RemoveAt(System.Int32)
+    name: RemoveAt
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1.removeat
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: System.Collections.Generic.IList{AeroDB.IProjection}.RemoveAt(System.Int32)
+    name: RemoveAt
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1.removeat
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: System.Collections.Generic.IList`1.RemoveAt(System.Int32)
+  commentId: M:System.Collections.Generic.IList`1.RemoveAt(System.Int32)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1.removeat
+  name: RemoveAt(int)
+  nameWithType: IList<T>.RemoveAt(int)
+  fullName: System.Collections.Generic.IList<T>.RemoveAt(int)
+  nameWithType.vb: IList(Of T).RemoveAt(Integer)
+  fullName.vb: System.Collections.Generic.IList(Of T).RemoveAt(Integer)
+  name.vb: RemoveAt(Integer)
+  spec.csharp:
+  - uid: System.Collections.Generic.IList`1.RemoveAt(System.Int32)
+    name: RemoveAt
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1.removeat
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: System.Collections.Generic.IList`1.RemoveAt(System.Int32)
+    name: RemoveAt
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1.removeat
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: AeroDB.IProjection.Lifecycle
+  commentId: P:AeroDB.IProjection.Lifecycle
+  parent: AeroDB.IProjection
+  isExternal: true
+  href: AeroDB.IProjection.html#AeroDB_IProjection_Lifecycle
+  name: Lifecycle
+  nameWithType: IProjection.Lifecycle
+  fullName: AeroDB.IProjection.Lifecycle
+- uid: AeroDB.ProjectionLifecycle
+  commentId: T:AeroDB.ProjectionLifecycle
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.ProjectionLifecycle.html
+  name: ProjectionLifecycle
+  nameWithType: ProjectionLifecycle
+  fullName: AeroDB.ProjectionLifecycle
+- uid: AeroDB.ProjectionCollection.Snapshot*
+  commentId: Overload:AeroDB.ProjectionCollection.Snapshot
+  isExternal: true
+  href: AeroDB.ProjectionCollection.html#AeroDB_ProjectionCollection_Snapshot__1_AeroDB_SnapshotLifecycle_System_Action_AeroDB_SnapshotOptions__
+  name: Snapshot
+  nameWithType: ProjectionCollection.Snapshot
+  fullName: AeroDB.ProjectionCollection.Snapshot
+- uid: AeroDB.SnapshotLifecycle
+  commentId: T:AeroDB.SnapshotLifecycle
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.SnapshotLifecycle.html
+  name: SnapshotLifecycle
+  nameWithType: SnapshotLifecycle
+  fullName: AeroDB.SnapshotLifecycle
+- uid: System.Action{AeroDB.SnapshotOptions}
+  commentId: T:System.Action{AeroDB.SnapshotOptions}
+  parent: System
+  definition: System.Action`1
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<SnapshotOptions>
+  nameWithType: Action<SnapshotOptions>
+  fullName: System.Action<AeroDB.SnapshotOptions>
+  nameWithType.vb: Action(Of SnapshotOptions)
+  fullName.vb: System.Action(Of AeroDB.SnapshotOptions)
+  name.vb: Action(Of SnapshotOptions)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: AeroDB.SnapshotOptions
+    name: SnapshotOptions
+    isExternal: true
+    href: AeroDB.SnapshotOptions.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.SnapshotOptions
+    name: SnapshotOptions
+    isExternal: true
+    href: AeroDB.SnapshotOptions.html
+  - name: )
+- uid: System.Action`1
+  commentId: T:System.Action`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<T>
+  nameWithType: Action<T>
+  fullName: System.Action<T>
+  nameWithType.vb: Action(Of T)
+  fullName.vb: System.Action(Of T)
+  name.vb: Action(Of T)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.ProjectionCollection.LiveStreamAggregation*
+  commentId: Overload:AeroDB.ProjectionCollection.LiveStreamAggregation
+  isExternal: true
+  href: AeroDB.ProjectionCollection.html#AeroDB_ProjectionCollection_LiveStreamAggregation__1
+  name: LiveStreamAggregation
+  nameWithType: ProjectionCollection.LiveStreamAggregation
+  fullName: AeroDB.ProjectionCollection.LiveStreamAggregation
+- uid: AeroDB.ProjectionCollection.#ctor*
+  commentId: Overload:AeroDB.ProjectionCollection.#ctor
+  isExternal: true
+  href: AeroDB.ProjectionCollection.html#AeroDB_ProjectionCollection__ctor
+  name: ProjectionCollection
+  nameWithType: ProjectionCollection.ProjectionCollection
+  fullName: AeroDB.ProjectionCollection.ProjectionCollection
+  nameWithType.vb: ProjectionCollection.New
+  fullName.vb: AeroDB.ProjectionCollection.New
+  name.vb: New
+- uid: AeroDB.ProjectionCollection.Count*
+  commentId: Overload:AeroDB.ProjectionCollection.Count
+  isExternal: true
+  href: AeroDB.ProjectionCollection.html#AeroDB_ProjectionCollection_Count
+  name: Count
+  nameWithType: ProjectionCollection.Count
+  fullName: AeroDB.ProjectionCollection.Count
+- uid: System.Collections.Generic.ICollection{AeroDB.IProjection}.Count
+  commentId: P:System.Collections.Generic.ICollection{AeroDB.IProjection}.Count
+  parent: System.Collections.Generic.ICollection{AeroDB.IProjection}
+  definition: System.Collections.Generic.ICollection`1.Count
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1.count
+  name: Count
+  nameWithType: ICollection<IProjection>.Count
+  fullName: System.Collections.Generic.ICollection<AeroDB.IProjection>.Count
+  nameWithType.vb: ICollection(Of IProjection).Count
+  fullName.vb: System.Collections.Generic.ICollection(Of AeroDB.IProjection).Count
+- uid: System.Collections.Generic.IReadOnlyCollection{AeroDB.IProjection}.Count
+  commentId: P:System.Collections.Generic.IReadOnlyCollection{AeroDB.IProjection}.Count
+  parent: System.Collections.Generic.IReadOnlyCollection{AeroDB.IProjection}
+  definition: System.Collections.Generic.IReadOnlyCollection`1.Count
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1.count
+  name: Count
+  nameWithType: IReadOnlyCollection<IProjection>.Count
+  fullName: System.Collections.Generic.IReadOnlyCollection<AeroDB.IProjection>.Count
+  nameWithType.vb: IReadOnlyCollection(Of IProjection).Count
+  fullName.vb: System.Collections.Generic.IReadOnlyCollection(Of AeroDB.IProjection).Count
+- uid: System.Collections.Generic.ICollection`1.Count
+  commentId: P:System.Collections.Generic.ICollection`1.Count
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1.count
+  name: Count
+  nameWithType: ICollection<T>.Count
+  fullName: System.Collections.Generic.ICollection<T>.Count
+  nameWithType.vb: ICollection(Of T).Count
+  fullName.vb: System.Collections.Generic.ICollection(Of T).Count
+- uid: System.Collections.Generic.IReadOnlyCollection`1.Count
+  commentId: P:System.Collections.Generic.IReadOnlyCollection`1.Count
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1.count
+  name: Count
+  nameWithType: IReadOnlyCollection<T>.Count
+  fullName: System.Collections.Generic.IReadOnlyCollection<T>.Count
+  nameWithType.vb: IReadOnlyCollection(Of T).Count
+  fullName.vb: System.Collections.Generic.IReadOnlyCollection(Of T).Count
+- uid: AeroDB.ProjectionCollection.IsReadOnly*
+  commentId: Overload:AeroDB.ProjectionCollection.IsReadOnly
+  isExternal: true
+  href: AeroDB.ProjectionCollection.html#AeroDB_ProjectionCollection_IsReadOnly
+  name: IsReadOnly
+  nameWithType: ProjectionCollection.IsReadOnly
+  fullName: AeroDB.ProjectionCollection.IsReadOnly
+- uid: System.Collections.Generic.ICollection{AeroDB.IProjection}.IsReadOnly
+  commentId: P:System.Collections.Generic.ICollection{AeroDB.IProjection}.IsReadOnly
+  parent: System.Collections.Generic.ICollection{AeroDB.IProjection}
+  definition: System.Collections.Generic.ICollection`1.IsReadOnly
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1.isreadonly
+  name: IsReadOnly
+  nameWithType: ICollection<IProjection>.IsReadOnly
+  fullName: System.Collections.Generic.ICollection<AeroDB.IProjection>.IsReadOnly
+  nameWithType.vb: ICollection(Of IProjection).IsReadOnly
+  fullName.vb: System.Collections.Generic.ICollection(Of AeroDB.IProjection).IsReadOnly
+- uid: System.Collections.Generic.ICollection`1.IsReadOnly
+  commentId: P:System.Collections.Generic.ICollection`1.IsReadOnly
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1.isreadonly
+  name: IsReadOnly
+  nameWithType: ICollection<T>.IsReadOnly
+  fullName: System.Collections.Generic.ICollection<T>.IsReadOnly
+  nameWithType.vb: ICollection(Of T).IsReadOnly
+  fullName.vb: System.Collections.Generic.ICollection(Of T).IsReadOnly
+- uid: AeroDB.ProjectionCollection.Item*
+  commentId: Overload:AeroDB.ProjectionCollection.Item
+  isExternal: true
+  href: AeroDB.ProjectionCollection.html#AeroDB_ProjectionCollection_Item_System_Int32_
+  name: this
+  nameWithType: ProjectionCollection.this
+  fullName: AeroDB.ProjectionCollection.this
+  nameWithType.vb: ProjectionCollection.this[]
+  fullName.vb: AeroDB.ProjectionCollection.this[]
+  name.vb: this[]
+- uid: System.Collections.Generic.IList{AeroDB.IProjection}.Item(System.Int32)
+  commentId: P:System.Collections.Generic.IList{AeroDB.IProjection}.Item(System.Int32)
+  parent: System.Collections.Generic.IList{AeroDB.IProjection}
+  definition: System.Collections.Generic.IList`1.Item(System.Int32)
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: this[int]
+  nameWithType: IList<IProjection>.this[int]
+  fullName: System.Collections.Generic.IList<AeroDB.IProjection>.this[int]
+  nameWithType.vb: IList(Of IProjection).this[](Integer)
+  fullName.vb: System.Collections.Generic.IList(Of AeroDB.IProjection).this[](Integer)
+  name.vb: this[](Integer)
+  spec.csharp:
+  - name: this
+  - name: '['
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ']'
+  spec.vb:
+  - uid: System.Collections.Generic.IList{AeroDB.IProjection}.Item(System.Int32)
+    name: this[]
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1.item
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: System.Collections.Generic.IReadOnlyList{AeroDB.IProjection}.Item(System.Int32)
+  commentId: P:System.Collections.Generic.IReadOnlyList{AeroDB.IProjection}.Item(System.Int32)
+  parent: System.Collections.Generic.IReadOnlyList{AeroDB.IProjection}
+  definition: System.Collections.Generic.IReadOnlyList`1.Item(System.Int32)
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: this[int]
+  nameWithType: IReadOnlyList<IProjection>.this[int]
+  fullName: System.Collections.Generic.IReadOnlyList<AeroDB.IProjection>.this[int]
+  nameWithType.vb: IReadOnlyList(Of IProjection).this[](Integer)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of AeroDB.IProjection).this[](Integer)
+  name.vb: this[](Integer)
+  spec.csharp:
+  - name: this
+  - name: '['
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ']'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList{AeroDB.IProjection}.Item(System.Int32)
+    name: this[]
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1.item
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: System.Collections.Generic.IList`1.Item(System.Int32)
+  commentId: P:System.Collections.Generic.IList`1.Item(System.Int32)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: this[int]
+  nameWithType: IList<T>.this[int]
+  fullName: System.Collections.Generic.IList<T>.this[int]
+  nameWithType.vb: IList(Of T).this[](Integer)
+  fullName.vb: System.Collections.Generic.IList(Of T).this[](Integer)
+  name.vb: this[](Integer)
+  spec.csharp:
+  - name: this
+  - name: '['
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ']'
+  spec.vb:
+  - uid: System.Collections.Generic.IList`1.Item(System.Int32)
+    name: this[]
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1.item
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: System.Collections.Generic.IReadOnlyList`1.Item(System.Int32)
+  commentId: P:System.Collections.Generic.IReadOnlyList`1.Item(System.Int32)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: this[int]
+  nameWithType: IReadOnlyList<T>.this[int]
+  fullName: System.Collections.Generic.IReadOnlyList<T>.this[int]
+  nameWithType.vb: IReadOnlyList(Of T).this[](Integer)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of T).this[](Integer)
+  name.vb: this[](Integer)
+  spec.csharp:
+  - name: this
+  - name: '['
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ']'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1.Item(System.Int32)
+    name: this[]
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1.item
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )

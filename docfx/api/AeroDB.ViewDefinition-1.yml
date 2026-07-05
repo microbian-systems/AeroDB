@@ -1,0 +1,1468 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.ViewDefinition`1
+  commentId: T:AeroDB.ViewDefinition`1
+  id: ViewDefinition`1
+  parent: AeroDB
+  children:
+  - AeroDB.ViewDefinition`1.Drop
+  - AeroDB.ViewDefinition`1.From(System.String)
+  - AeroDB.ViewDefinition`1.FromTable
+  - AeroDB.ViewDefinition`1.From``1
+  - AeroDB.ViewDefinition`1.GroupByColumns
+  - AeroDB.ViewDefinition`1.GroupBy``1(System.Linq.Expressions.Expression{System.Func{`0,``0}})
+  - AeroDB.ViewDefinition`1.IsDrop
+  - AeroDB.ViewDefinition`1.RawView(System.String)
+  - AeroDB.ViewDefinition`1.Schema(System.String)
+  - AeroDB.ViewDefinition`1.Select(System.Func{AeroDB.ViewSelectBuilder{`0},AeroDB.ViewSelectBuilder{`0}})
+  - AeroDB.ViewDefinition`1.SelectColumns
+  - AeroDB.ViewDefinition`1.Where(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})
+  - AeroDB.ViewDefinition`1.WhereClause
+  - AeroDB.ViewDefinition`1.WithSelect(System.String)
+  langs:
+  - csharp
+  - vb
+  name: ViewDefinition<T>
+  nameWithType: ViewDefinition<T>
+  fullName: AeroDB.ViewDefinition<T>
+  type: Class
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/ViewDefinition.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Fluent builder for SurrealDB pre-computed/aggregate views (DEFINE TABLE ... AS SELECT ...).
+
+    Views are materialized, incrementally-updating tables backed by a SELECT query.
+  example: []
+  syntax:
+    content: 'public class ViewDefinition<T> : ViewDefinition where T : class'
+    typeParameters:
+    - id: T
+      description: The entity type representing the view's result shape.
+    content.vb: Public Class ViewDefinition(Of T As Class) Inherits ViewDefinition
+  inheritance:
+  - System.Object
+  - AeroDB.ViewDefinition
+  inheritedMembers:
+  - AeroDB.ViewDefinition.ViewName
+  - AeroDB.ViewDefinition.SchemaName
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  nameWithType.vb: ViewDefinition(Of T)
+  fullName.vb: AeroDB.ViewDefinition(Of T)
+  name.vb: ViewDefinition(Of T)
+- uid: AeroDB.ViewDefinition`1.Schema(System.String)
+  commentId: M:AeroDB.ViewDefinition`1.Schema(System.String)
+  id: Schema(System.String)
+  parent: AeroDB.ViewDefinition`1
+  langs:
+  - csharp
+  - vb
+  name: Schema(string)
+  nameWithType: ViewDefinition<T>.Schema(string)
+  fullName: AeroDB.ViewDefinition<T>.Schema(string)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/ViewDefinition.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Assigns this view to a specific schema (database).
+
+    When set, the view is created in the specified schema database
+
+    instead of the default database.
+  example: []
+  syntax:
+    content: public ViewDefinition<T> Schema(string schemaName)
+    parameters:
+    - id: schemaName
+      type: System.String
+      description: The schema/database name.
+    return:
+      type: AeroDB.ViewDefinition`1
+    content.vb: Public Function Schema(schemaName As String) As ViewDefinition(Of T)
+  overload: AeroDB.ViewDefinition`1.Schema*
+  nameWithType.vb: ViewDefinition(Of T).Schema(String)
+  fullName.vb: AeroDB.ViewDefinition(Of T).Schema(String)
+  name.vb: Schema(String)
+- uid: AeroDB.ViewDefinition`1.RawView(System.String)
+  commentId: M:AeroDB.ViewDefinition`1.RawView(System.String)
+  id: RawView(System.String)
+  parent: AeroDB.ViewDefinition`1
+  langs:
+  - csharp
+  - vb
+  name: RawView(string)
+  nameWithType: ViewDefinition<T>.RawView(string)
+  fullName: AeroDB.ViewDefinition<T>.RawView(string)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/ViewDefinition.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Bypasses all builder methods and uses the provided SurrealQL SELECT verbatim.
+
+    Mutually exclusive with <xref href="AeroDB.ViewDefinition%601.From%60%601" data-throw-if-not-resolved="false"></xref>, <xref href="AeroDB.ViewDefinition%601.Where(System.Linq.Expressions.Expression%7bSystem.Func%7b%600%2cSystem.Boolean%7d%7d)" data-throw-if-not-resolved="false"></xref>,
+
+    <xref href="AeroDB.ViewDefinition%601.GroupBy%60%601(System.Linq.Expressions.Expression%7bSystem.Func%7b%600%2c%60%600%7d%7d)" data-throw-if-not-resolved="false"></xref>, <xref href="AeroDB.ViewDefinition%601.WithSelect(System.String)" data-throw-if-not-resolved="false"></xref>, and <xref href="AeroDB.ViewDefinition%601.Select(System.Func%7bAeroDB.ViewSelectBuilder%7b%600%7d%2cAeroDB.ViewSelectBuilder%7b%600%7d%7d)" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: public ViewDefinition<T> RawView(string selectSurql)
+    parameters:
+    - id: selectSurql
+      type: System.String
+      description: The complete SurrealQL SELECT statement (e.g., "SELECT count() AS n FROM my_table").
+    return:
+      type: AeroDB.ViewDefinition`1
+    content.vb: Public Function RawView(selectSurql As String) As ViewDefinition(Of T)
+  overload: AeroDB.ViewDefinition`1.RawView*
+  nameWithType.vb: ViewDefinition(Of T).RawView(String)
+  fullName.vb: AeroDB.ViewDefinition(Of T).RawView(String)
+  name.vb: RawView(String)
+- uid: AeroDB.ViewDefinition`1.From``1
+  commentId: M:AeroDB.ViewDefinition`1.From``1
+  id: From``1
+  parent: AeroDB.ViewDefinition`1
+  langs:
+  - csharp
+  - vb
+  name: From<TFrom>()
+  nameWithType: ViewDefinition<T>.From<TFrom>()
+  fullName: AeroDB.ViewDefinition<T>.From<TFrom>()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/ViewDefinition.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Sets the source table for the view SELECT.
+  example: []
+  syntax:
+    content: 'public ViewDefinition<T> From<TFrom>() where TFrom : class'
+    typeParameters:
+    - id: TFrom
+    return:
+      type: AeroDB.ViewDefinition`1
+    content.vb: Public Function From(Of TFrom As Class)() As ViewDefinition(Of T)
+  overload: AeroDB.ViewDefinition`1.From*
+  nameWithType.vb: ViewDefinition(Of T).From(Of TFrom)()
+  fullName.vb: AeroDB.ViewDefinition(Of T).From(Of TFrom)()
+  name.vb: From(Of TFrom)()
+- uid: AeroDB.ViewDefinition`1.From(System.String)
+  commentId: M:AeroDB.ViewDefinition`1.From(System.String)
+  id: From(System.String)
+  parent: AeroDB.ViewDefinition`1
+  langs:
+  - csharp
+  - vb
+  name: From(string)
+  nameWithType: ViewDefinition<T>.From(string)
+  fullName: AeroDB.ViewDefinition<T>.From(string)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/ViewDefinition.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Sets the source table for the view SELECT using the provided table name directly.
+
+    Useful when the source type is not registered in the metadata system.
+  example: []
+  syntax:
+    content: public ViewDefinition<T> From(string tableName)
+    parameters:
+    - id: tableName
+      type: System.String
+    return:
+      type: AeroDB.ViewDefinition`1
+    content.vb: Public Function From(tableName As String) As ViewDefinition(Of T)
+  overload: AeroDB.ViewDefinition`1.From*
+  nameWithType.vb: ViewDefinition(Of T).From(String)
+  fullName.vb: AeroDB.ViewDefinition(Of T).From(String)
+  name.vb: From(String)
+- uid: AeroDB.ViewDefinition`1.Where(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})
+  commentId: M:AeroDB.ViewDefinition`1.Where(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})
+  id: Where(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})
+  parent: AeroDB.ViewDefinition`1
+  langs:
+  - csharp
+  - vb
+  name: Where(Expression<Func<T, bool>>)
+  nameWithType: ViewDefinition<T>.Where(Expression<Func<T, bool>>)
+  fullName: AeroDB.ViewDefinition<T>.Where(System.Linq.Expressions.Expression<System.Func<T, bool>>)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/ViewDefinition.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Adds a WHERE clause to the view, filtering the source data.
+
+    The predicate is translated to SurrealQL using the same expression visitor
+
+    that powers LINQ queries. Values are inlined since view definitions are schema.
+  example: []
+  syntax:
+    content: public ViewDefinition<T> Where(Expression<Func<T, bool>> predicate)
+    parameters:
+    - id: predicate
+      type: System.Linq.Expressions.Expression{System.Func{{T},System.Boolean}}
+    return:
+      type: AeroDB.ViewDefinition`1
+    content.vb: Public Function Where(predicate As Expression(Of Func(Of T, Boolean))) As ViewDefinition(Of T)
+  overload: AeroDB.ViewDefinition`1.Where*
+  nameWithType.vb: ViewDefinition(Of T).Where(Expression(Of Func(Of T, Boolean)))
+  fullName.vb: AeroDB.ViewDefinition(Of T).Where(System.Linq.Expressions.Expression(Of System.Func(Of T, Boolean)))
+  name.vb: Where(Expression(Of Func(Of T, Boolean)))
+- uid: AeroDB.ViewDefinition`1.GroupBy``1(System.Linq.Expressions.Expression{System.Func{`0,``0}})
+  commentId: M:AeroDB.ViewDefinition`1.GroupBy``1(System.Linq.Expressions.Expression{System.Func{`0,``0}})
+  id: GroupBy``1(System.Linq.Expressions.Expression{System.Func{`0,``0}})
+  parent: AeroDB.ViewDefinition`1
+  langs:
+  - csharp
+  - vb
+  name: GroupBy<TKey>(Expression<Func<T, TKey>>)
+  nameWithType: ViewDefinition<T>.GroupBy<TKey>(Expression<Func<T, TKey>>)
+  fullName: AeroDB.ViewDefinition<T>.GroupBy<TKey>(System.Linq.Expressions.Expression<System.Func<T, TKey>>)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/ViewDefinition.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Adds a GROUP BY clause to the view, grouping results by the specified columns.
+  example: []
+  syntax:
+    content: public ViewDefinition<T> GroupBy<TKey>(Expression<Func<T, TKey>> keySelector)
+    parameters:
+    - id: keySelector
+      type: System.Linq.Expressions.Expression{System.Func{{T},{TKey}}}
+    typeParameters:
+    - id: TKey
+    return:
+      type: AeroDB.ViewDefinition`1
+    content.vb: Public Function GroupBy(Of TKey)(keySelector As Expression(Of Func(Of T, TKey))) As ViewDefinition(Of T)
+  overload: AeroDB.ViewDefinition`1.GroupBy*
+  nameWithType.vb: ViewDefinition(Of T).GroupBy(Of TKey)(Expression(Of Func(Of T, TKey)))
+  fullName.vb: AeroDB.ViewDefinition(Of T).GroupBy(Of TKey)(System.Linq.Expressions.Expression(Of System.Func(Of T, TKey)))
+  name.vb: GroupBy(Of TKey)(Expression(Of Func(Of T, TKey)))
+- uid: AeroDB.ViewDefinition`1.WithSelect(System.String)
+  commentId: M:AeroDB.ViewDefinition`1.WithSelect(System.String)
+  id: WithSelect(System.String)
+  parent: AeroDB.ViewDefinition`1
+  langs:
+  - csharp
+  - vb
+  name: WithSelect(string)
+  nameWithType: ViewDefinition<T>.WithSelect(string)
+  fullName: AeroDB.ViewDefinition<T>.WithSelect(string)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/ViewDefinition.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Specifies a custom SELECT column list for the view.
+
+    Use this for aggregate functions, graph traversal expressions, and custom projections.
+  example: []
+  syntax:
+    content: public ViewDefinition<T> WithSelect(string columns)
+    parameters:
+    - id: columns
+      type: System.String
+      description: The SurrealQL column expressions, e.g. "count() AS num, math::mean(rating) AS avg, -&gt;product.id AS product_id".
+    return:
+      type: AeroDB.ViewDefinition`1
+    content.vb: Public Function WithSelect(columns As String) As ViewDefinition(Of T)
+  overload: AeroDB.ViewDefinition`1.WithSelect*
+  nameWithType.vb: ViewDefinition(Of T).WithSelect(String)
+  fullName.vb: AeroDB.ViewDefinition(Of T).WithSelect(String)
+  name.vb: WithSelect(String)
+- uid: AeroDB.ViewDefinition`1.Select(System.Func{AeroDB.ViewSelectBuilder{`0},AeroDB.ViewSelectBuilder{`0}})
+  commentId: M:AeroDB.ViewDefinition`1.Select(System.Func{AeroDB.ViewSelectBuilder{`0},AeroDB.ViewSelectBuilder{`0}})
+  id: Select(System.Func{AeroDB.ViewSelectBuilder{`0},AeroDB.ViewSelectBuilder{`0}})
+  parent: AeroDB.ViewDefinition`1
+  langs:
+  - csharp
+  - vb
+  name: Select(Func<ViewSelectBuilder<T>, ViewSelectBuilder<T>>)
+  nameWithType: ViewDefinition<T>.Select(Func<ViewSelectBuilder<T>, ViewSelectBuilder<T>>)
+  fullName: AeroDB.ViewDefinition<T>.Select(System.Func<AeroDB.ViewSelectBuilder<T>, AeroDB.ViewSelectBuilder<T>>)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/ViewDefinition.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Defines the SELECT columns using a type-safe fluent builder.
+
+    Supports aggregates, column references, graph traversal, and raw SurrealQL expressions.
+
+    Preferred over <xref href="AeroDB.ViewDefinition%601.WithSelect(System.String)" data-throw-if-not-resolved="false"></xref> for structured projections.
+  example:
+  - >-
+    <pre><code class="lang-csharp">view.Select(cols =&gt; cols
+        .Count().As("total")
+        .Average(r =&gt; r.Rating).As("avg")
+        .Column(r =&gt; r.Title)
+        .Graph().Out&lt;Author&gt;("wrote").Select(a =&gt; a.Name).As("author")
+    );</code></pre>
+  syntax:
+    content: public ViewDefinition<T> Select(Func<ViewSelectBuilder<T>, ViewSelectBuilder<T>> build)
+    parameters:
+    - id: build
+      type: System.Func{AeroDB.ViewSelectBuilder{{T}},AeroDB.ViewSelectBuilder{{T}}}
+    return:
+      type: AeroDB.ViewDefinition`1
+    content.vb: Public Function [Select](build As Func(Of ViewSelectBuilder(Of T), ViewSelectBuilder(Of T))) As ViewDefinition(Of T)
+  overload: AeroDB.ViewDefinition`1.Select*
+  nameWithType.vb: ViewDefinition(Of T).Select(Func(Of ViewSelectBuilder(Of T), ViewSelectBuilder(Of T)))
+  fullName.vb: AeroDB.ViewDefinition(Of T).Select(System.Func(Of AeroDB.ViewSelectBuilder(Of T), AeroDB.ViewSelectBuilder(Of T)))
+  name.vb: Select(Func(Of ViewSelectBuilder(Of T), ViewSelectBuilder(Of T)))
+- uid: AeroDB.ViewDefinition`1.Drop
+  commentId: M:AeroDB.ViewDefinition`1.Drop
+  id: Drop
+  parent: AeroDB.ViewDefinition`1
+  langs:
+  - csharp
+  - vb
+  name: Drop()
+  nameWithType: ViewDefinition<T>.Drop()
+  fullName: AeroDB.ViewDefinition<T>.Drop()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/ViewDefinition.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Marks this view as a DROP table (DEFINE TABLE ... DROP).
+
+    Records are automatically deleted after event triggers fire.
+
+    Mutually exclusive with SelectColumns.
+  example: []
+  syntax:
+    content: public ViewDefinition<T> Drop()
+    return:
+      type: AeroDB.ViewDefinition`1
+    content.vb: Public Function Drop() As ViewDefinition(Of T)
+  overload: AeroDB.ViewDefinition`1.Drop*
+  nameWithType.vb: ViewDefinition(Of T).Drop()
+  fullName.vb: AeroDB.ViewDefinition(Of T).Drop()
+- uid: AeroDB.ViewDefinition`1.FromTable
+  commentId: P:AeroDB.ViewDefinition`1.FromTable
+  id: FromTable
+  parent: AeroDB.ViewDefinition`1
+  langs:
+  - csharp
+  - vb
+  name: FromTable
+  nameWithType: ViewDefinition<T>.FromTable
+  fullName: AeroDB.ViewDefinition<T>.FromTable
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/ViewDefinition.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public string? FromTable { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public ReadOnly Property FromTable As String
+  overload: AeroDB.ViewDefinition`1.FromTable*
+  nameWithType.vb: ViewDefinition(Of T).FromTable
+  fullName.vb: AeroDB.ViewDefinition(Of T).FromTable
+- uid: AeroDB.ViewDefinition`1.SelectColumns
+  commentId: P:AeroDB.ViewDefinition`1.SelectColumns
+  id: SelectColumns
+  parent: AeroDB.ViewDefinition`1
+  langs:
+  - csharp
+  - vb
+  name: SelectColumns
+  nameWithType: ViewDefinition<T>.SelectColumns
+  fullName: AeroDB.ViewDefinition<T>.SelectColumns
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/ViewDefinition.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public string? SelectColumns { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public ReadOnly Property SelectColumns As String
+  overload: AeroDB.ViewDefinition`1.SelectColumns*
+  nameWithType.vb: ViewDefinition(Of T).SelectColumns
+  fullName.vb: AeroDB.ViewDefinition(Of T).SelectColumns
+- uid: AeroDB.ViewDefinition`1.WhereClause
+  commentId: P:AeroDB.ViewDefinition`1.WhereClause
+  id: WhereClause
+  parent: AeroDB.ViewDefinition`1
+  langs:
+  - csharp
+  - vb
+  name: WhereClause
+  nameWithType: ViewDefinition<T>.WhereClause
+  fullName: AeroDB.ViewDefinition<T>.WhereClause
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/ViewDefinition.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public string? WhereClause { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public ReadOnly Property WhereClause As String
+  overload: AeroDB.ViewDefinition`1.WhereClause*
+  nameWithType.vb: ViewDefinition(Of T).WhereClause
+  fullName.vb: AeroDB.ViewDefinition(Of T).WhereClause
+- uid: AeroDB.ViewDefinition`1.GroupByColumns
+  commentId: P:AeroDB.ViewDefinition`1.GroupByColumns
+  id: GroupByColumns
+  parent: AeroDB.ViewDefinition`1
+  langs:
+  - csharp
+  - vb
+  name: GroupByColumns
+  nameWithType: ViewDefinition<T>.GroupByColumns
+  fullName: AeroDB.ViewDefinition<T>.GroupByColumns
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/ViewDefinition.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public string? GroupByColumns { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public ReadOnly Property GroupByColumns As String
+  overload: AeroDB.ViewDefinition`1.GroupByColumns*
+  nameWithType.vb: ViewDefinition(Of T).GroupByColumns
+  fullName.vb: AeroDB.ViewDefinition(Of T).GroupByColumns
+- uid: AeroDB.ViewDefinition`1.IsDrop
+  commentId: P:AeroDB.ViewDefinition`1.IsDrop
+  id: IsDrop
+  parent: AeroDB.ViewDefinition`1
+  langs:
+  - csharp
+  - vb
+  name: IsDrop
+  nameWithType: ViewDefinition<T>.IsDrop
+  fullName: AeroDB.ViewDefinition<T>.IsDrop
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/ViewDefinition.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public bool IsDrop { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public ReadOnly Property IsDrop As Boolean
+  overload: AeroDB.ViewDefinition`1.IsDrop*
+  nameWithType.vb: ViewDefinition(Of T).IsDrop
+  fullName.vb: AeroDB.ViewDefinition(Of T).IsDrop
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: AeroDB.ViewDefinition
+  commentId: T:AeroDB.ViewDefinition
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.ViewDefinition.html
+  name: ViewDefinition
+  nameWithType: ViewDefinition
+  fullName: AeroDB.ViewDefinition
+- uid: AeroDB.ViewDefinition.ViewName
+  commentId: P:AeroDB.ViewDefinition.ViewName
+  parent: AeroDB.ViewDefinition
+  isExternal: true
+  href: AeroDB.ViewDefinition.html#AeroDB_ViewDefinition_ViewName
+  name: ViewName
+  nameWithType: ViewDefinition.ViewName
+  fullName: AeroDB.ViewDefinition.ViewName
+- uid: AeroDB.ViewDefinition.SchemaName
+  commentId: P:AeroDB.ViewDefinition.SchemaName
+  parent: AeroDB.ViewDefinition
+  isExternal: true
+  href: AeroDB.ViewDefinition.html#AeroDB_ViewDefinition_SchemaName
+  name: SchemaName
+  nameWithType: ViewDefinition.SchemaName
+  fullName: AeroDB.ViewDefinition.SchemaName
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AeroDB.ViewDefinition`1.Schema*
+  commentId: Overload:AeroDB.ViewDefinition`1.Schema
+  isExternal: true
+  href: AeroDB.ViewDefinition-1.html#AeroDB_ViewDefinition_1_Schema_System_String_
+  name: Schema
+  nameWithType: ViewDefinition<T>.Schema
+  fullName: AeroDB.ViewDefinition<T>.Schema
+  nameWithType.vb: ViewDefinition(Of T).Schema
+  fullName.vb: AeroDB.ViewDefinition(Of T).Schema
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: AeroDB.ViewDefinition`1
+  commentId: T:AeroDB.ViewDefinition`1
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.ViewDefinition-1.html
+  name: ViewDefinition<T>
+  nameWithType: ViewDefinition<T>
+  fullName: AeroDB.ViewDefinition<T>
+  nameWithType.vb: ViewDefinition(Of T)
+  fullName.vb: AeroDB.ViewDefinition(Of T)
+  name.vb: ViewDefinition(Of T)
+  spec.csharp:
+  - uid: AeroDB.ViewDefinition`1
+    name: ViewDefinition
+    isExternal: true
+    href: AeroDB.ViewDefinition-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.ViewDefinition`1
+    name: ViewDefinition
+    isExternal: true
+    href: AeroDB.ViewDefinition-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.ViewDefinition`1.From``1
+  commentId: M:AeroDB.ViewDefinition`1.From``1
+  isExternal: true
+  href: AeroDB.ViewDefinition-1.html#AeroDB_ViewDefinition_1_From__1
+  name: From<TFrom>()
+  nameWithType: ViewDefinition<T>.From<TFrom>()
+  fullName: AeroDB.ViewDefinition<T>.From<TFrom>()
+  nameWithType.vb: ViewDefinition(Of T).From(Of TFrom)()
+  fullName.vb: AeroDB.ViewDefinition(Of T).From(Of TFrom)()
+  name.vb: From(Of TFrom)()
+  spec.csharp:
+  - uid: AeroDB.ViewDefinition`1.From``1
+    name: From
+    isExternal: true
+    href: AeroDB.ViewDefinition-1.html#AeroDB_ViewDefinition_1_From__1
+  - name: <
+  - name: TFrom
+  - name: '>'
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AeroDB.ViewDefinition`1.From``1
+    name: From
+    isExternal: true
+    href: AeroDB.ViewDefinition-1.html#AeroDB_ViewDefinition_1_From__1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TFrom
+  - name: )
+  - name: (
+  - name: )
+- uid: AeroDB.ViewDefinition`1.Where(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})
+  commentId: M:AeroDB.ViewDefinition`1.Where(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})
+  isExternal: true
+  href: AeroDB.ViewDefinition-1.html#AeroDB_ViewDefinition_1_Where_System_Linq_Expressions_Expression_System_Func__0_System_Boolean___
+  name: Where(Expression<Func<T, bool>>)
+  nameWithType: ViewDefinition<T>.Where(Expression<Func<T, bool>>)
+  fullName: AeroDB.ViewDefinition<T>.Where(System.Linq.Expressions.Expression<System.Func<T, bool>>)
+  nameWithType.vb: ViewDefinition(Of T).Where(Expression(Of Func(Of T, Boolean)))
+  fullName.vb: AeroDB.ViewDefinition(Of T).Where(System.Linq.Expressions.Expression(Of System.Func(Of T, Boolean)))
+  name.vb: Where(Expression(Of Func(Of T, Boolean)))
+  spec.csharp:
+  - uid: AeroDB.ViewDefinition`1.Where(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})
+    name: Where
+    isExternal: true
+    href: AeroDB.ViewDefinition-1.html#AeroDB_ViewDefinition_1_Where_System_Linq_Expressions_Expression_System_Func__0_System_Boolean___
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: AeroDB.ViewDefinition`1.Where(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})
+    name: Where
+    isExternal: true
+    href: AeroDB.ViewDefinition-1.html#AeroDB_ViewDefinition_1_Where_System_Linq_Expressions_Expression_System_Func__0_System_Boolean___
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  - name: )
+  - name: )
+- uid: AeroDB.ViewDefinition`1.GroupBy``1(System.Linq.Expressions.Expression{System.Func{`0,``0}})
+  commentId: M:AeroDB.ViewDefinition`1.GroupBy``1(System.Linq.Expressions.Expression{System.Func{`0,``0}})
+  isExternal: true
+  href: AeroDB.ViewDefinition-1.html#AeroDB_ViewDefinition_1_GroupBy__1_System_Linq_Expressions_Expression_System_Func__0___0___
+  name: GroupBy<TKey>(Expression<Func<T, TKey>>)
+  nameWithType: ViewDefinition<T>.GroupBy<TKey>(Expression<Func<T, TKey>>)
+  fullName: AeroDB.ViewDefinition<T>.GroupBy<TKey>(System.Linq.Expressions.Expression<System.Func<T, TKey>>)
+  nameWithType.vb: ViewDefinition(Of T).GroupBy(Of TKey)(Expression(Of Func(Of T, TKey)))
+  fullName.vb: AeroDB.ViewDefinition(Of T).GroupBy(Of TKey)(System.Linq.Expressions.Expression(Of System.Func(Of T, TKey)))
+  name.vb: GroupBy(Of TKey)(Expression(Of Func(Of T, TKey)))
+  spec.csharp:
+  - uid: AeroDB.ViewDefinition`1.GroupBy``1(System.Linq.Expressions.Expression{System.Func{`0,``0}})
+    name: GroupBy
+    isExternal: true
+    href: AeroDB.ViewDefinition-1.html#AeroDB_ViewDefinition_1_GroupBy__1_System_Linq_Expressions_Expression_System_Func__0___0___
+  - name: <
+  - name: TKey
+  - name: '>'
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TKey
+  - name: '>'
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: AeroDB.ViewDefinition`1.GroupBy``1(System.Linq.Expressions.Expression{System.Func{`0,``0}})
+    name: GroupBy
+    isExternal: true
+    href: AeroDB.ViewDefinition-1.html#AeroDB_ViewDefinition_1_GroupBy__1_System_Linq_Expressions_Expression_System_Func__0___0___
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TKey
+  - name: )
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TKey
+  - name: )
+  - name: )
+  - name: )
+- uid: AeroDB.ViewDefinition`1.WithSelect(System.String)
+  commentId: M:AeroDB.ViewDefinition`1.WithSelect(System.String)
+  isExternal: true
+  href: AeroDB.ViewDefinition-1.html#AeroDB_ViewDefinition_1_WithSelect_System_String_
+  name: WithSelect(string)
+  nameWithType: ViewDefinition<T>.WithSelect(string)
+  fullName: AeroDB.ViewDefinition<T>.WithSelect(string)
+  nameWithType.vb: ViewDefinition(Of T).WithSelect(String)
+  fullName.vb: AeroDB.ViewDefinition(Of T).WithSelect(String)
+  name.vb: WithSelect(String)
+  spec.csharp:
+  - uid: AeroDB.ViewDefinition`1.WithSelect(System.String)
+    name: WithSelect
+    isExternal: true
+    href: AeroDB.ViewDefinition-1.html#AeroDB_ViewDefinition_1_WithSelect_System_String_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: AeroDB.ViewDefinition`1.WithSelect(System.String)
+    name: WithSelect
+    isExternal: true
+    href: AeroDB.ViewDefinition-1.html#AeroDB_ViewDefinition_1_WithSelect_System_String_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: AeroDB.ViewDefinition`1.Select(System.Func{AeroDB.ViewSelectBuilder{`0},AeroDB.ViewSelectBuilder{`0}})
+  commentId: M:AeroDB.ViewDefinition`1.Select(System.Func{AeroDB.ViewSelectBuilder{`0},AeroDB.ViewSelectBuilder{`0}})
+  isExternal: true
+  href: AeroDB.ViewDefinition-1.html#AeroDB_ViewDefinition_1_Select_System_Func_AeroDB_ViewSelectBuilder__0__AeroDB_ViewSelectBuilder__0___
+  name: Select(Func<ViewSelectBuilder<T>, ViewSelectBuilder<T>>)
+  nameWithType: ViewDefinition<T>.Select(Func<ViewSelectBuilder<T>, ViewSelectBuilder<T>>)
+  fullName: AeroDB.ViewDefinition<T>.Select(System.Func<AeroDB.ViewSelectBuilder<T>, AeroDB.ViewSelectBuilder<T>>)
+  nameWithType.vb: ViewDefinition(Of T).Select(Func(Of ViewSelectBuilder(Of T), ViewSelectBuilder(Of T)))
+  fullName.vb: AeroDB.ViewDefinition(Of T).Select(System.Func(Of AeroDB.ViewSelectBuilder(Of T), AeroDB.ViewSelectBuilder(Of T)))
+  name.vb: Select(Func(Of ViewSelectBuilder(Of T), ViewSelectBuilder(Of T)))
+  spec.csharp:
+  - uid: AeroDB.ViewDefinition`1.Select(System.Func{AeroDB.ViewSelectBuilder{`0},AeroDB.ViewSelectBuilder{`0}})
+    name: Select
+    isExternal: true
+    href: AeroDB.ViewDefinition-1.html#AeroDB_ViewDefinition_1_Select_System_Func_AeroDB_ViewSelectBuilder__0__AeroDB_ViewSelectBuilder__0___
+  - name: (
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: AeroDB.ViewSelectBuilder`1
+    name: ViewSelectBuilder
+    isExternal: true
+    href: AeroDB.ViewSelectBuilder-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: AeroDB.ViewSelectBuilder`1
+    name: ViewSelectBuilder
+    isExternal: true
+    href: AeroDB.ViewSelectBuilder-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: AeroDB.ViewDefinition`1.Select(System.Func{AeroDB.ViewSelectBuilder{`0},AeroDB.ViewSelectBuilder{`0}})
+    name: Select
+    isExternal: true
+    href: AeroDB.ViewDefinition-1.html#AeroDB_ViewDefinition_1_Select_System_Func_AeroDB_ViewSelectBuilder__0__AeroDB_ViewSelectBuilder__0___
+  - name: (
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.ViewSelectBuilder`1
+    name: ViewSelectBuilder
+    isExternal: true
+    href: AeroDB.ViewSelectBuilder-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: AeroDB.ViewSelectBuilder`1
+    name: ViewSelectBuilder
+    isExternal: true
+    href: AeroDB.ViewSelectBuilder-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+  - name: )
+- uid: AeroDB.ViewDefinition`1.RawView*
+  commentId: Overload:AeroDB.ViewDefinition`1.RawView
+  isExternal: true
+  href: AeroDB.ViewDefinition-1.html#AeroDB_ViewDefinition_1_RawView_System_String_
+  name: RawView
+  nameWithType: ViewDefinition<T>.RawView
+  fullName: AeroDB.ViewDefinition<T>.RawView
+  nameWithType.vb: ViewDefinition(Of T).RawView
+  fullName.vb: AeroDB.ViewDefinition(Of T).RawView
+- uid: AeroDB.ViewDefinition`1.From*
+  commentId: Overload:AeroDB.ViewDefinition`1.From
+  isExternal: true
+  href: AeroDB.ViewDefinition-1.html#AeroDB_ViewDefinition_1_From__1
+  name: From
+  nameWithType: ViewDefinition<T>.From
+  fullName: AeroDB.ViewDefinition<T>.From
+  nameWithType.vb: ViewDefinition(Of T).From
+  fullName.vb: AeroDB.ViewDefinition(Of T).From
+- uid: AeroDB.ViewDefinition`1.Where*
+  commentId: Overload:AeroDB.ViewDefinition`1.Where
+  isExternal: true
+  href: AeroDB.ViewDefinition-1.html#AeroDB_ViewDefinition_1_Where_System_Linq_Expressions_Expression_System_Func__0_System_Boolean___
+  name: Where
+  nameWithType: ViewDefinition<T>.Where
+  fullName: AeroDB.ViewDefinition<T>.Where
+  nameWithType.vb: ViewDefinition(Of T).Where
+  fullName.vb: AeroDB.ViewDefinition(Of T).Where
+- uid: System.Linq.Expressions.Expression{System.Func{{T},System.Boolean}}
+  commentId: T:System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}}
+  parent: System.Linq.Expressions
+  definition: System.Linq.Expressions.Expression`1
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  name: Expression<Func<T, bool>>
+  nameWithType: Expression<Func<T, bool>>
+  fullName: System.Linq.Expressions.Expression<System.Func<T, bool>>
+  nameWithType.vb: Expression(Of Func(Of T, Boolean))
+  fullName.vb: System.Linq.Expressions.Expression(Of System.Func(Of T, Boolean))
+  name.vb: Expression(Of Func(Of T, Boolean))
+  spec.csharp:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  - name: )
+- uid: System.Linq.Expressions.Expression`1
+  commentId: T:System.Linq.Expressions.Expression`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  name: Expression<TDelegate>
+  nameWithType: Expression<TDelegate>
+  fullName: System.Linq.Expressions.Expression<TDelegate>
+  nameWithType.vb: Expression(Of TDelegate)
+  fullName.vb: System.Linq.Expressions.Expression(Of TDelegate)
+  name.vb: Expression(Of TDelegate)
+  spec.csharp:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - name: TDelegate
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TDelegate
+  - name: )
+- uid: System.Linq.Expressions
+  commentId: N:System.Linq.Expressions
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Linq.Expressions
+  nameWithType: System.Linq.Expressions
+  fullName: System.Linq.Expressions
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Linq
+    name: Linq
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq
+  - name: .
+  - uid: System.Linq.Expressions
+    name: Expressions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Linq
+    name: Linq
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq
+  - name: .
+  - uid: System.Linq.Expressions
+    name: Expressions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions
+- uid: AeroDB.ViewDefinition`1.GroupBy*
+  commentId: Overload:AeroDB.ViewDefinition`1.GroupBy
+  isExternal: true
+  href: AeroDB.ViewDefinition-1.html#AeroDB_ViewDefinition_1_GroupBy__1_System_Linq_Expressions_Expression_System_Func__0___0___
+  name: GroupBy
+  nameWithType: ViewDefinition<T>.GroupBy
+  fullName: AeroDB.ViewDefinition<T>.GroupBy
+  nameWithType.vb: ViewDefinition(Of T).GroupBy
+  fullName.vb: AeroDB.ViewDefinition(Of T).GroupBy
+- uid: System.Linq.Expressions.Expression{System.Func{{T},{TKey}}}
+  commentId: T:System.Linq.Expressions.Expression{System.Func{`0,``0}}
+  parent: System.Linq.Expressions
+  definition: System.Linq.Expressions.Expression`1
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  name: Expression<Func<T, TKey>>
+  nameWithType: Expression<Func<T, TKey>>
+  fullName: System.Linq.Expressions.Expression<System.Func<T, TKey>>
+  nameWithType.vb: Expression(Of Func(Of T, TKey))
+  fullName.vb: System.Linq.Expressions.Expression(Of System.Func(Of T, TKey))
+  name.vb: Expression(Of Func(Of T, TKey))
+  spec.csharp:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TKey
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TKey
+  - name: )
+  - name: )
+- uid: AeroDB.ViewDefinition`1.WithSelect*
+  commentId: Overload:AeroDB.ViewDefinition`1.WithSelect
+  isExternal: true
+  href: AeroDB.ViewDefinition-1.html#AeroDB_ViewDefinition_1_WithSelect_System_String_
+  name: WithSelect
+  nameWithType: ViewDefinition<T>.WithSelect
+  fullName: AeroDB.ViewDefinition<T>.WithSelect
+  nameWithType.vb: ViewDefinition(Of T).WithSelect
+  fullName.vb: AeroDB.ViewDefinition(Of T).WithSelect
+- uid: AeroDB.ViewDefinition`1.Select*
+  commentId: Overload:AeroDB.ViewDefinition`1.Select
+  isExternal: true
+  href: AeroDB.ViewDefinition-1.html#AeroDB_ViewDefinition_1_Select_System_Func_AeroDB_ViewSelectBuilder__0__AeroDB_ViewSelectBuilder__0___
+  name: Select
+  nameWithType: ViewDefinition<T>.Select
+  fullName: AeroDB.ViewDefinition<T>.Select
+  nameWithType.vb: ViewDefinition(Of T).Select
+  fullName.vb: AeroDB.ViewDefinition(Of T).Select
+- uid: System.Func{AeroDB.ViewSelectBuilder{{T}},AeroDB.ViewSelectBuilder{{T}}}
+  commentId: T:System.Func{AeroDB.ViewSelectBuilder{`0},AeroDB.ViewSelectBuilder{`0}}
+  parent: System
+  definition: System.Func`2
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<ViewSelectBuilder<T>, ViewSelectBuilder<T>>
+  nameWithType: Func<ViewSelectBuilder<T>, ViewSelectBuilder<T>>
+  fullName: System.Func<AeroDB.ViewSelectBuilder<T>, AeroDB.ViewSelectBuilder<T>>
+  nameWithType.vb: Func(Of ViewSelectBuilder(Of T), ViewSelectBuilder(Of T))
+  fullName.vb: System.Func(Of AeroDB.ViewSelectBuilder(Of T), AeroDB.ViewSelectBuilder(Of T))
+  name.vb: Func(Of ViewSelectBuilder(Of T), ViewSelectBuilder(Of T))
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: AeroDB.ViewSelectBuilder`1
+    name: ViewSelectBuilder
+    isExternal: true
+    href: AeroDB.ViewSelectBuilder-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: AeroDB.ViewSelectBuilder`1
+    name: ViewSelectBuilder
+    isExternal: true
+    href: AeroDB.ViewSelectBuilder-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.ViewSelectBuilder`1
+    name: ViewSelectBuilder
+    isExternal: true
+    href: AeroDB.ViewSelectBuilder-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: AeroDB.ViewSelectBuilder`1
+    name: ViewSelectBuilder
+    isExternal: true
+    href: AeroDB.ViewSelectBuilder-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+- uid: System.Func`2
+  commentId: T:System.Func`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<T, TResult>
+  nameWithType: Func<T, TResult>
+  fullName: System.Func<T, TResult>
+  nameWithType.vb: Func(Of T, TResult)
+  fullName.vb: System.Func(Of T, TResult)
+  name.vb: Func(Of T, TResult)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: AeroDB.ViewDefinition`1.Drop*
+  commentId: Overload:AeroDB.ViewDefinition`1.Drop
+  isExternal: true
+  href: AeroDB.ViewDefinition-1.html#AeroDB_ViewDefinition_1_Drop
+  name: Drop
+  nameWithType: ViewDefinition<T>.Drop
+  fullName: AeroDB.ViewDefinition<T>.Drop
+  nameWithType.vb: ViewDefinition(Of T).Drop
+  fullName.vb: AeroDB.ViewDefinition(Of T).Drop
+- uid: AeroDB.ViewDefinition`1.FromTable*
+  commentId: Overload:AeroDB.ViewDefinition`1.FromTable
+  isExternal: true
+  href: AeroDB.ViewDefinition-1.html#AeroDB_ViewDefinition_1_FromTable
+  name: FromTable
+  nameWithType: ViewDefinition<T>.FromTable
+  fullName: AeroDB.ViewDefinition<T>.FromTable
+  nameWithType.vb: ViewDefinition(Of T).FromTable
+  fullName.vb: AeroDB.ViewDefinition(Of T).FromTable
+- uid: AeroDB.ViewDefinition`1.SelectColumns*
+  commentId: Overload:AeroDB.ViewDefinition`1.SelectColumns
+  isExternal: true
+  href: AeroDB.ViewDefinition-1.html#AeroDB_ViewDefinition_1_SelectColumns
+  name: SelectColumns
+  nameWithType: ViewDefinition<T>.SelectColumns
+  fullName: AeroDB.ViewDefinition<T>.SelectColumns
+  nameWithType.vb: ViewDefinition(Of T).SelectColumns
+  fullName.vb: AeroDB.ViewDefinition(Of T).SelectColumns
+- uid: AeroDB.ViewDefinition`1.WhereClause*
+  commentId: Overload:AeroDB.ViewDefinition`1.WhereClause
+  isExternal: true
+  href: AeroDB.ViewDefinition-1.html#AeroDB_ViewDefinition_1_WhereClause
+  name: WhereClause
+  nameWithType: ViewDefinition<T>.WhereClause
+  fullName: AeroDB.ViewDefinition<T>.WhereClause
+  nameWithType.vb: ViewDefinition(Of T).WhereClause
+  fullName.vb: AeroDB.ViewDefinition(Of T).WhereClause
+- uid: AeroDB.ViewDefinition`1.GroupByColumns*
+  commentId: Overload:AeroDB.ViewDefinition`1.GroupByColumns
+  isExternal: true
+  href: AeroDB.ViewDefinition-1.html#AeroDB_ViewDefinition_1_GroupByColumns
+  name: GroupByColumns
+  nameWithType: ViewDefinition<T>.GroupByColumns
+  fullName: AeroDB.ViewDefinition<T>.GroupByColumns
+  nameWithType.vb: ViewDefinition(Of T).GroupByColumns
+  fullName.vb: AeroDB.ViewDefinition(Of T).GroupByColumns
+- uid: AeroDB.ViewDefinition`1.IsDrop*
+  commentId: Overload:AeroDB.ViewDefinition`1.IsDrop
+  isExternal: true
+  href: AeroDB.ViewDefinition-1.html#AeroDB_ViewDefinition_1_IsDrop
+  name: IsDrop
+  nameWithType: ViewDefinition<T>.IsDrop
+  fullName: AeroDB.ViewDefinition<T>.IsDrop
+  nameWithType.vb: ViewDefinition(Of T).IsDrop
+  fullName.vb: AeroDB.ViewDefinition(Of T).IsDrop
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean

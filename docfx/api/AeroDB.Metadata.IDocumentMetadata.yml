@@ -1,0 +1,309 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.Metadata.IDocumentMetadata
+  commentId: T:AeroDB.Metadata.IDocumentMetadata
+  id: IDocumentMetadata
+  parent: AeroDB.Metadata
+  children:
+  - AeroDB.Metadata.IDocumentMetadata.CreatedAt
+  - AeroDB.Metadata.IDocumentMetadata.LastModified
+  - AeroDB.Metadata.IDocumentMetadata.LastModifiedBy
+  langs:
+  - csharp
+  - vb
+  name: IDocumentMetadata
+  nameWithType: IDocumentMetadata
+  fullName: AeroDB.Metadata.IDocumentMetadata
+  type: Interface
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Metadata/IDocumentMetadata.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB.Metadata
+  summary: >-
+    Marks a document as having auto-tracked audit metadata.
+
+    Properties are populated automatically by <xref href="AeroDB.Diagnostics.DocumentMetadataListener" data-throw-if-not-resolved="false"></xref>
+
+    during <xref href="AeroDB.IDocumentSession.SaveChangesAsync(System.Threading.CancellationToken)" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: public interface IDocumentMetadata
+    content.vb: Public Interface IDocumentMetadata
+- uid: AeroDB.Metadata.IDocumentMetadata.CreatedAt
+  commentId: P:AeroDB.Metadata.IDocumentMetadata.CreatedAt
+  id: CreatedAt
+  parent: AeroDB.Metadata.IDocumentMetadata
+  langs:
+  - csharp
+  - vb
+  name: CreatedAt
+  nameWithType: IDocumentMetadata.CreatedAt
+  fullName: AeroDB.Metadata.IDocumentMetadata.CreatedAt
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Metadata/IDocumentMetadata.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB.Metadata
+  summary: >-
+    The UTC timestamp when this document was first created.
+
+    Set once on initial store and preserved on subsequent updates.
+  example: []
+  syntax:
+    content: DateTimeOffset CreatedAt { get; set; }
+    parameters: []
+    return:
+      type: System.DateTimeOffset
+    content.vb: Property CreatedAt As DateTimeOffset
+  overload: AeroDB.Metadata.IDocumentMetadata.CreatedAt*
+- uid: AeroDB.Metadata.IDocumentMetadata.LastModified
+  commentId: P:AeroDB.Metadata.IDocumentMetadata.LastModified
+  id: LastModified
+  parent: AeroDB.Metadata.IDocumentMetadata
+  langs:
+  - csharp
+  - vb
+  name: LastModified
+  nameWithType: IDocumentMetadata.LastModified
+  fullName: AeroDB.Metadata.IDocumentMetadata.LastModified
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Metadata/IDocumentMetadata.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB.Metadata
+  summary: >-
+    The UTC timestamp of the most recent update to this document.
+
+    Updated on every store operation (both insert and update).
+  example: []
+  syntax:
+    content: DateTimeOffset? LastModified { get; set; }
+    parameters: []
+    return:
+      type: System.Nullable{System.DateTimeOffset}
+    content.vb: Property LastModified As DateTimeOffset?
+  overload: AeroDB.Metadata.IDocumentMetadata.LastModified*
+- uid: AeroDB.Metadata.IDocumentMetadata.LastModifiedBy
+  commentId: P:AeroDB.Metadata.IDocumentMetadata.LastModifiedBy
+  id: LastModifiedBy
+  parent: AeroDB.Metadata.IDocumentMetadata
+  langs:
+  - csharp
+  - vb
+  name: LastModifiedBy
+  nameWithType: IDocumentMetadata.LastModifiedBy
+  fullName: AeroDB.Metadata.IDocumentMetadata.LastModifiedBy
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Metadata/IDocumentMetadata.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB.Metadata
+  summary: >-
+    Identity of the user who last modified this document.
+
+    Auto-populated by <xref href="AeroDB.Diagnostics.DocumentMetadataListener" data-throw-if-not-resolved="false"></xref> from
+
+    <xref href="AeroDB.InternalSessionBase.CurrentUser" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: string? LastModifiedBy { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Property LastModifiedBy As String
+  overload: AeroDB.Metadata.IDocumentMetadata.LastModifiedBy*
+references:
+- uid: AeroDB.Diagnostics.DocumentMetadataListener
+  commentId: T:AeroDB.Diagnostics.DocumentMetadataListener
+  isExternal: true
+  href: AeroDB.Diagnostics.DocumentMetadataListener.html
+  name: DocumentMetadataListener
+  nameWithType: DocumentMetadataListener
+  fullName: AeroDB.Diagnostics.DocumentMetadataListener
+- uid: AeroDB.IDocumentSession.SaveChangesAsync(System.Threading.CancellationToken)
+  commentId: M:AeroDB.IDocumentSession.SaveChangesAsync(System.Threading.CancellationToken)
+  parent: AeroDB.IDocumentSession
+  isExternal: true
+  href: AeroDB.IDocumentSession.html#AeroDB_IDocumentSession_SaveChangesAsync_System_Threading_CancellationToken_
+  name: SaveChangesAsync(CancellationToken)
+  nameWithType: IDocumentSession.SaveChangesAsync(CancellationToken)
+  fullName: AeroDB.IDocumentSession.SaveChangesAsync(System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: AeroDB.IDocumentSession.SaveChangesAsync(System.Threading.CancellationToken)
+    name: SaveChangesAsync
+    isExternal: true
+    href: AeroDB.IDocumentSession.html#AeroDB_IDocumentSession_SaveChangesAsync_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: AeroDB.IDocumentSession.SaveChangesAsync(System.Threading.CancellationToken)
+    name: SaveChangesAsync
+    isExternal: true
+    href: AeroDB.IDocumentSession.html#AeroDB_IDocumentSession_SaveChangesAsync_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: AeroDB.Metadata
+  commentId: N:AeroDB.Metadata
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB.Metadata
+  nameWithType: AeroDB.Metadata
+  fullName: AeroDB.Metadata
+  spec.csharp:
+  - uid: AeroDB
+    name: AeroDB
+    isExternal: true
+    href: AeroDB.html
+  - name: .
+  - uid: AeroDB.Metadata
+    name: Metadata
+    isExternal: true
+    href: AeroDB.Metadata.html
+  spec.vb:
+  - uid: AeroDB
+    name: AeroDB
+    isExternal: true
+    href: AeroDB.html
+  - name: .
+  - uid: AeroDB.Metadata
+    name: Metadata
+    isExternal: true
+    href: AeroDB.Metadata.html
+- uid: AeroDB.IDocumentSession
+  commentId: T:AeroDB.IDocumentSession
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IDocumentSession.html
+  name: IDocumentSession
+  nameWithType: IDocumentSession
+  fullName: AeroDB.IDocumentSession
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: AeroDB.Metadata.IDocumentMetadata.CreatedAt*
+  commentId: Overload:AeroDB.Metadata.IDocumentMetadata.CreatedAt
+  isExternal: true
+  href: AeroDB.Metadata.IDocumentMetadata.html#AeroDB_Metadata_IDocumentMetadata_CreatedAt
+  name: CreatedAt
+  nameWithType: IDocumentMetadata.CreatedAt
+  fullName: AeroDB.Metadata.IDocumentMetadata.CreatedAt
+- uid: System.DateTimeOffset
+  commentId: T:System.DateTimeOffset
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.datetimeoffset
+  name: DateTimeOffset
+  nameWithType: DateTimeOffset
+  fullName: System.DateTimeOffset
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AeroDB.Metadata.IDocumentMetadata.LastModified*
+  commentId: Overload:AeroDB.Metadata.IDocumentMetadata.LastModified
+  isExternal: true
+  href: AeroDB.Metadata.IDocumentMetadata.html#AeroDB_Metadata_IDocumentMetadata_LastModified
+  name: LastModified
+  nameWithType: IDocumentMetadata.LastModified
+  fullName: AeroDB.Metadata.IDocumentMetadata.LastModified
+- uid: System.Nullable{System.DateTimeOffset}
+  commentId: T:System.Nullable{System.DateTimeOffset}
+  parent: System
+  definition: System.Nullable`1
+  href: https://learn.microsoft.com/dotnet/api/system.datetimeoffset
+  name: DateTimeOffset?
+  nameWithType: DateTimeOffset?
+  fullName: System.DateTimeOffset?
+  spec.csharp:
+  - uid: System.DateTimeOffset
+    name: DateTimeOffset
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.datetimeoffset
+  - name: '?'
+  spec.vb:
+  - uid: System.DateTimeOffset
+    name: DateTimeOffset
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.datetimeoffset
+  - name: '?'
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.InternalSessionBase.CurrentUser
+  commentId: P:AeroDB.InternalSessionBase.CurrentUser
+  parent: AeroDB.InternalSessionBase
+  isExternal: true
+  href: AeroDB.InternalSessionBase.html#AeroDB_InternalSessionBase_CurrentUser
+  name: CurrentUser
+  nameWithType: InternalSessionBase.CurrentUser
+  fullName: AeroDB.InternalSessionBase.CurrentUser
+- uid: AeroDB.Metadata.IDocumentMetadata.LastModifiedBy*
+  commentId: Overload:AeroDB.Metadata.IDocumentMetadata.LastModifiedBy
+  isExternal: true
+  href: AeroDB.Metadata.IDocumentMetadata.html#AeroDB_Metadata_IDocumentMetadata_LastModifiedBy
+  name: LastModifiedBy
+  nameWithType: IDocumentMetadata.LastModifiedBy
+  fullName: AeroDB.Metadata.IDocumentMetadata.LastModifiedBy
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: AeroDB.InternalSessionBase
+  commentId: T:AeroDB.InternalSessionBase
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.InternalSessionBase.html
+  name: InternalSessionBase
+  nameWithType: InternalSessionBase
+  fullName: AeroDB.InternalSessionBase

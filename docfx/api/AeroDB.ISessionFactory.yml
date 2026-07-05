@@ -1,0 +1,312 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.ISessionFactory
+  commentId: T:AeroDB.ISessionFactory
+  id: ISessionFactory
+  parent: AeroDB
+  children:
+  - AeroDB.ISessionFactory.OpenSessionAsync(AeroDB.SessionOptions,System.Threading.CancellationToken)
+  - AeroDB.ISessionFactory.OpenSessionAsync(System.Threading.CancellationToken)
+  - AeroDB.ISessionFactory.QuerySessionAsync(System.Threading.CancellationToken)
+  langs:
+  - csharp
+  - vb
+  name: ISessionFactory
+  nameWithType: ISessionFactory
+  fullName: AeroDB.ISessionFactory
+  type: Interface
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/ISessionFactory.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: A pluggable session factory for creating query and document sessions from a store.
+  example: []
+  syntax:
+    content: public interface ISessionFactory
+    content.vb: Public Interface ISessionFactory
+  derivedClasses:
+  - AeroDB.DocumentStore
+- uid: AeroDB.ISessionFactory.QuerySessionAsync(System.Threading.CancellationToken)
+  commentId: M:AeroDB.ISessionFactory.QuerySessionAsync(System.Threading.CancellationToken)
+  id: QuerySessionAsync(System.Threading.CancellationToken)
+  parent: AeroDB.ISessionFactory
+  langs:
+  - csharp
+  - vb
+  name: QuerySessionAsync(CancellationToken)
+  nameWithType: ISessionFactory.QuerySessionAsync(CancellationToken)
+  fullName: AeroDB.ISessionFactory.QuerySessionAsync(System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/ISessionFactory.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Create a read-only query session.
+  example: []
+  syntax:
+    content: Task<IQuerySession> QuerySessionAsync(CancellationToken ct = default)
+    parameters:
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task{AeroDB.IQuerySession}
+    content.vb: Function QuerySessionAsync(ct As CancellationToken = Nothing) As Task(Of IQuerySession)
+  overload: AeroDB.ISessionFactory.QuerySessionAsync*
+- uid: AeroDB.ISessionFactory.OpenSessionAsync(System.Threading.CancellationToken)
+  commentId: M:AeroDB.ISessionFactory.OpenSessionAsync(System.Threading.CancellationToken)
+  id: OpenSessionAsync(System.Threading.CancellationToken)
+  parent: AeroDB.ISessionFactory
+  langs:
+  - csharp
+  - vb
+  name: OpenSessionAsync(CancellationToken)
+  nameWithType: ISessionFactory.OpenSessionAsync(CancellationToken)
+  fullName: AeroDB.ISessionFactory.OpenSessionAsync(System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/ISessionFactory.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Create a read/write document session.
+  example: []
+  syntax:
+    content: Task<IDocumentSession> OpenSessionAsync(CancellationToken ct = default)
+    parameters:
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task{AeroDB.IDocumentSession}
+    content.vb: Function OpenSessionAsync(ct As CancellationToken = Nothing) As Task(Of IDocumentSession)
+  overload: AeroDB.ISessionFactory.OpenSessionAsync*
+- uid: AeroDB.ISessionFactory.OpenSessionAsync(AeroDB.SessionOptions,System.Threading.CancellationToken)
+  commentId: M:AeroDB.ISessionFactory.OpenSessionAsync(AeroDB.SessionOptions,System.Threading.CancellationToken)
+  id: OpenSessionAsync(AeroDB.SessionOptions,System.Threading.CancellationToken)
+  parent: AeroDB.ISessionFactory
+  langs:
+  - csharp
+  - vb
+  name: OpenSessionAsync(SessionOptions, CancellationToken)
+  nameWithType: ISessionFactory.OpenSessionAsync(SessionOptions, CancellationToken)
+  fullName: AeroDB.ISessionFactory.OpenSessionAsync(AeroDB.SessionOptions, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/ISessionFactory.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Create a read/write document session with options.
+  example: []
+  syntax:
+    content: Task<IDocumentSession> OpenSessionAsync(SessionOptions options, CancellationToken ct = default)
+    parameters:
+    - id: options
+      type: AeroDB.SessionOptions
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task{AeroDB.IDocumentSession}
+    content.vb: Function OpenSessionAsync(options As SessionOptions, ct As CancellationToken = Nothing) As Task(Of IDocumentSession)
+  overload: AeroDB.ISessionFactory.OpenSessionAsync*
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: AeroDB.ISessionFactory.QuerySessionAsync*
+  commentId: Overload:AeroDB.ISessionFactory.QuerySessionAsync
+  isExternal: true
+  href: AeroDB.ISessionFactory.html#AeroDB_ISessionFactory_QuerySessionAsync_System_Threading_CancellationToken_
+  name: QuerySessionAsync
+  nameWithType: ISessionFactory.QuerySessionAsync
+  fullName: AeroDB.ISessionFactory.QuerySessionAsync
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task{AeroDB.IQuerySession}
+  commentId: T:System.Threading.Tasks.Task{AeroDB.IQuerySession}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<IQuerySession>
+  nameWithType: Task<IQuerySession>
+  fullName: System.Threading.Tasks.Task<AeroDB.IQuerySession>
+  nameWithType.vb: Task(Of IQuerySession)
+  fullName.vb: System.Threading.Tasks.Task(Of AeroDB.IQuerySession)
+  name.vb: Task(Of IQuerySession)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: AeroDB.IQuerySession
+    name: IQuerySession
+    isExternal: true
+    href: AeroDB.IQuerySession.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.IQuerySession
+    name: IQuerySession
+    isExternal: true
+    href: AeroDB.IQuerySession.html
+  - name: )
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: AeroDB.ISessionFactory.OpenSessionAsync*
+  commentId: Overload:AeroDB.ISessionFactory.OpenSessionAsync
+  isExternal: true
+  href: AeroDB.ISessionFactory.html#AeroDB_ISessionFactory_OpenSessionAsync_System_Threading_CancellationToken_
+  name: OpenSessionAsync
+  nameWithType: ISessionFactory.OpenSessionAsync
+  fullName: AeroDB.ISessionFactory.OpenSessionAsync
+- uid: System.Threading.Tasks.Task{AeroDB.IDocumentSession}
+  commentId: T:System.Threading.Tasks.Task{AeroDB.IDocumentSession}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<IDocumentSession>
+  nameWithType: Task<IDocumentSession>
+  fullName: System.Threading.Tasks.Task<AeroDB.IDocumentSession>
+  nameWithType.vb: Task(Of IDocumentSession)
+  fullName.vb: System.Threading.Tasks.Task(Of AeroDB.IDocumentSession)
+  name.vb: Task(Of IDocumentSession)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: AeroDB.IDocumentSession
+    name: IDocumentSession
+    isExternal: true
+    href: AeroDB.IDocumentSession.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.IDocumentSession
+    name: IDocumentSession
+    isExternal: true
+    href: AeroDB.IDocumentSession.html
+  - name: )
+- uid: AeroDB.SessionOptions
+  commentId: T:AeroDB.SessionOptions
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.SessionOptions.html
+  name: SessionOptions
+  nameWithType: SessionOptions
+  fullName: AeroDB.SessionOptions

@@ -1,0 +1,800 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.SurrealFunctions
+  commentId: T:AeroDB.SurrealFunctions
+  id: SurrealFunctions
+  parent: AeroDB
+  children:
+  - AeroDB.SurrealFunctions.Analyze(System.String,System.String)
+  - AeroDB.SurrealFunctions.Highlight(System.String,System.String,System.String)
+  - AeroDB.SurrealFunctions.Offsets(System.String)
+  - AeroDB.SurrealFunctions.Score(System.Int32)
+  - AeroDB.SurrealFunctions.VectorDistanceEuclidean(System.Single[],System.Single[])
+  - AeroDB.SurrealFunctions.VectorDistanceKnn
+  - AeroDB.SurrealFunctions.VectorDistanceManhattan(System.Single[],System.Single[])
+  - AeroDB.SurrealFunctions.VectorSimilarityCosine(System.Single[],System.Single[])
+  langs:
+  - csharp
+  - vb
+  name: SurrealFunctions
+  nameWithType: SurrealFunctions
+  fullName: AeroDB.SurrealFunctions
+  type: Class
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    SurrealQL search and vector functions for use in LINQ expressions.
+
+    These methods are NOT callable at runtime — they exist for expression-tree translation only.
+
+    Use <code>MatchTextAsync&lt;T&gt;</code> and <xref href="AeroDB.SearchExtensions.MatchKnnAsync%60%601(AeroDB.ISurrealDbQueryable%7b%60%600%7d%2cSystem.Linq.Expressions.Expression%7bSystem.Func%7b%60%600%2cSystem.Single%5b%5d%7d%7d%2cSystem.Single%5b%5d%2cSystem.Int32%2cSystem.Int32%2cSystem.Threading.CancellationToken)" data-throw-if-not-resolved="false"></xref> for query execution.
+  example: []
+  syntax:
+    content: public static class SurrealFunctions
+    content.vb: Public Module SurrealFunctions
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+- uid: AeroDB.SurrealFunctions.Score(System.Int32)
+  commentId: M:AeroDB.SurrealFunctions.Score(System.Int32)
+  id: Score(System.Int32)
+  parent: AeroDB.SurrealFunctions
+  langs:
+  - csharp
+  - vb
+  name: Score(int)
+  nameWithType: SurrealFunctions.Score(int)
+  fullName: AeroDB.SurrealFunctions.Score(int)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: BM25 relevance score for the nth full-text match operator (@n@). Only valid inside a MatchText query.
+  example: []
+  syntax:
+    content: public static double Score(int n)
+    parameters:
+    - id: n
+      type: System.Int32
+    return:
+      type: System.Double
+    content.vb: Public Shared Function Score(n As Integer) As Double
+  overload: AeroDB.SurrealFunctions.Score*
+  nameWithType.vb: SurrealFunctions.Score(Integer)
+  fullName.vb: AeroDB.SurrealFunctions.Score(Integer)
+  name.vb: Score(Integer)
+- uid: AeroDB.SurrealFunctions.VectorDistanceKnn
+  commentId: M:AeroDB.SurrealFunctions.VectorDistanceKnn
+  id: VectorDistanceKnn
+  parent: AeroDB.SurrealFunctions
+  langs:
+  - csharp
+  - vb
+  name: VectorDistanceKnn()
+  nameWithType: SurrealFunctions.VectorDistanceKnn()
+  fullName: AeroDB.SurrealFunctions.VectorDistanceKnn()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: KNN distance inside a MatchKnn query scope. Only valid with the &lt;||&gt; operator.
+  example: []
+  syntax:
+    content: public static double VectorDistanceKnn()
+    return:
+      type: System.Double
+    content.vb: Public Shared Function VectorDistanceKnn() As Double
+  overload: AeroDB.SurrealFunctions.VectorDistanceKnn*
+- uid: AeroDB.SurrealFunctions.VectorSimilarityCosine(System.Single[],System.Single[])
+  commentId: M:AeroDB.SurrealFunctions.VectorSimilarityCosine(System.Single[],System.Single[])
+  id: VectorSimilarityCosine(System.Single[],System.Single[])
+  parent: AeroDB.SurrealFunctions
+  langs:
+  - csharp
+  - vb
+  name: VectorSimilarityCosine(float[], float[])
+  nameWithType: SurrealFunctions.VectorSimilarityCosine(float[], float[])
+  fullName: AeroDB.SurrealFunctions.VectorSimilarityCosine(float[], float[])
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Cosine similarity between two vectors. Brute-force; prefer HNSW index for scale.
+  example: []
+  syntax:
+    content: public static double VectorSimilarityCosine(float[] a, float[] b)
+    parameters:
+    - id: a
+      type: System.Single[]
+    - id: b
+      type: System.Single[]
+    return:
+      type: System.Double
+    content.vb: Public Shared Function VectorSimilarityCosine(a As Single(), b As Single()) As Double
+  overload: AeroDB.SurrealFunctions.VectorSimilarityCosine*
+  nameWithType.vb: SurrealFunctions.VectorSimilarityCosine(Single(), Single())
+  fullName.vb: AeroDB.SurrealFunctions.VectorSimilarityCosine(Single(), Single())
+  name.vb: VectorSimilarityCosine(Single(), Single())
+- uid: AeroDB.SurrealFunctions.Highlight(System.String,System.String,System.String)
+  commentId: M:AeroDB.SurrealFunctions.Highlight(System.String,System.String,System.String)
+  id: Highlight(System.String,System.String,System.String)
+  parent: AeroDB.SurrealFunctions
+  langs:
+  - csharp
+  - vb
+  name: Highlight(string, string, string)
+  nameWithType: SurrealFunctions.Highlight(string, string, string)
+  fullName: AeroDB.SurrealFunctions.Highlight(string, string, string)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Search highlight for matched terms. Maps to <code>search::highlight(prefix, suffix, field)</code>.
+  example: []
+  syntax:
+    content: public static string Highlight(string prefix, string suffix, string field)
+    parameters:
+    - id: prefix
+      type: System.String
+    - id: suffix
+      type: System.String
+    - id: field
+      type: System.String
+    return:
+      type: System.String
+    content.vb: Public Shared Function Highlight(prefix As String, suffix As String, field As String) As String
+  overload: AeroDB.SurrealFunctions.Highlight*
+  nameWithType.vb: SurrealFunctions.Highlight(String, String, String)
+  fullName.vb: AeroDB.SurrealFunctions.Highlight(String, String, String)
+  name.vb: Highlight(String, String, String)
+- uid: AeroDB.SurrealFunctions.Offsets(System.String)
+  commentId: M:AeroDB.SurrealFunctions.Offsets(System.String)
+  id: Offsets(System.String)
+  parent: AeroDB.SurrealFunctions
+  langs:
+  - csharp
+  - vb
+  name: Offsets(string)
+  nameWithType: SurrealFunctions.Offsets(string)
+  fullName: AeroDB.SurrealFunctions.Offsets(string)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Search offsets for matched terms. Maps to <code>search::offsets(field)</code>.
+  example: []
+  syntax:
+    content: public static string Offsets(string field)
+    parameters:
+    - id: field
+      type: System.String
+    return:
+      type: System.String
+    content.vb: Public Shared Function Offsets(field As String) As String
+  overload: AeroDB.SurrealFunctions.Offsets*
+  nameWithType.vb: SurrealFunctions.Offsets(String)
+  fullName.vb: AeroDB.SurrealFunctions.Offsets(String)
+  name.vb: Offsets(String)
+- uid: AeroDB.SurrealFunctions.Analyze(System.String,System.String)
+  commentId: M:AeroDB.SurrealFunctions.Analyze(System.String,System.String)
+  id: Analyze(System.String,System.String)
+  parent: AeroDB.SurrealFunctions
+  langs:
+  - csharp
+  - vb
+  name: Analyze(string, string)
+  nameWithType: SurrealFunctions.Analyze(string, string)
+  fullName: AeroDB.SurrealFunctions.Analyze(string, string)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Analyze text with a specific analyzer. Maps to <code>search::analyze(text, analyzer)</code>.
+  example: []
+  syntax:
+    content: public static string Analyze(string text, string analyzer)
+    parameters:
+    - id: text
+      type: System.String
+    - id: analyzer
+      type: System.String
+    return:
+      type: System.String
+    content.vb: Public Shared Function Analyze(text As String, analyzer As String) As String
+  overload: AeroDB.SurrealFunctions.Analyze*
+  nameWithType.vb: SurrealFunctions.Analyze(String, String)
+  fullName.vb: AeroDB.SurrealFunctions.Analyze(String, String)
+  name.vb: Analyze(String, String)
+- uid: AeroDB.SurrealFunctions.VectorDistanceEuclidean(System.Single[],System.Single[])
+  commentId: M:AeroDB.SurrealFunctions.VectorDistanceEuclidean(System.Single[],System.Single[])
+  id: VectorDistanceEuclidean(System.Single[],System.Single[])
+  parent: AeroDB.SurrealFunctions
+  langs:
+  - csharp
+  - vb
+  name: VectorDistanceEuclidean(float[], float[])
+  nameWithType: SurrealFunctions.VectorDistanceEuclidean(float[], float[])
+  fullName: AeroDB.SurrealFunctions.VectorDistanceEuclidean(float[], float[])
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Euclidean distance between two vectors. Maps to <code>vector::distance::euclidean(a, b)</code>.
+  example: []
+  syntax:
+    content: public static double VectorDistanceEuclidean(float[] a, float[] b)
+    parameters:
+    - id: a
+      type: System.Single[]
+    - id: b
+      type: System.Single[]
+    return:
+      type: System.Double
+    content.vb: Public Shared Function VectorDistanceEuclidean(a As Single(), b As Single()) As Double
+  overload: AeroDB.SurrealFunctions.VectorDistanceEuclidean*
+  nameWithType.vb: SurrealFunctions.VectorDistanceEuclidean(Single(), Single())
+  fullName.vb: AeroDB.SurrealFunctions.VectorDistanceEuclidean(Single(), Single())
+  name.vb: VectorDistanceEuclidean(Single(), Single())
+- uid: AeroDB.SurrealFunctions.VectorDistanceManhattan(System.Single[],System.Single[])
+  commentId: M:AeroDB.SurrealFunctions.VectorDistanceManhattan(System.Single[],System.Single[])
+  id: VectorDistanceManhattan(System.Single[],System.Single[])
+  parent: AeroDB.SurrealFunctions
+  langs:
+  - csharp
+  - vb
+  name: VectorDistanceManhattan(float[], float[])
+  nameWithType: SurrealFunctions.VectorDistanceManhattan(float[], float[])
+  fullName: AeroDB.SurrealFunctions.VectorDistanceManhattan(float[], float[])
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Manhattan distance between two vectors. Maps to <code>vector::distance::manhattan(a, b)</code>.
+  example: []
+  syntax:
+    content: public static double VectorDistanceManhattan(float[] a, float[] b)
+    parameters:
+    - id: a
+      type: System.Single[]
+    - id: b
+      type: System.Single[]
+    return:
+      type: System.Double
+    content.vb: Public Shared Function VectorDistanceManhattan(a As Single(), b As Single()) As Double
+  overload: AeroDB.SurrealFunctions.VectorDistanceManhattan*
+  nameWithType.vb: SurrealFunctions.VectorDistanceManhattan(Single(), Single())
+  fullName.vb: AeroDB.SurrealFunctions.VectorDistanceManhattan(Single(), Single())
+  name.vb: VectorDistanceManhattan(Single(), Single())
+references:
+- uid: AeroDB.SearchExtensions.MatchKnnAsync``1(AeroDB.ISurrealDbQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Single[]}},System.Single[],System.Int32,System.Int32,System.Threading.CancellationToken)
+  commentId: M:AeroDB.SearchExtensions.MatchKnnAsync``1(AeroDB.ISurrealDbQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Single[]}},System.Single[],System.Int32,System.Int32,System.Threading.CancellationToken)
+  isExternal: true
+  href: AeroDB.SearchExtensions.html#AeroDB_SearchExtensions_MatchKnnAsync__1_AeroDB_ISurrealDbQueryable___0__System_Linq_Expressions_Expression_System_Func___0_System_Single_____System_Single___System_Int32_System_Int32_System_Threading_CancellationToken_
+  name: MatchKnnAsync<T>(ISurrealDbQueryable<T>, Expression<Func<T, float[]>>, float[], int, int, CancellationToken)
+  nameWithType: SearchExtensions.MatchKnnAsync<T>(ISurrealDbQueryable<T>, Expression<Func<T, float[]>>, float[], int, int, CancellationToken)
+  fullName: AeroDB.SearchExtensions.MatchKnnAsync<T>(AeroDB.ISurrealDbQueryable<T>, System.Linq.Expressions.Expression<System.Func<T, float[]>>, float[], int, int, System.Threading.CancellationToken)
+  nameWithType.vb: SearchExtensions.MatchKnnAsync(Of T)(ISurrealDbQueryable(Of T), Expression(Of Func(Of T, Single())), Single(), Integer, Integer, CancellationToken)
+  fullName.vb: AeroDB.SearchExtensions.MatchKnnAsync(Of T)(AeroDB.ISurrealDbQueryable(Of T), System.Linq.Expressions.Expression(Of System.Func(Of T, Single())), Single(), Integer, Integer, System.Threading.CancellationToken)
+  name.vb: MatchKnnAsync(Of T)(ISurrealDbQueryable(Of T), Expression(Of Func(Of T, Single())), Single(), Integer, Integer, CancellationToken)
+  spec.csharp:
+  - uid: AeroDB.SearchExtensions.MatchKnnAsync``1(AeroDB.ISurrealDbQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Single[]}},System.Single[],System.Int32,System.Int32,System.Threading.CancellationToken)
+    name: MatchKnnAsync
+    isExternal: true
+    href: AeroDB.SearchExtensions.html#AeroDB_SearchExtensions_MatchKnnAsync__1_AeroDB_ISurrealDbQueryable___0__System_Linq_Expressions_Expression_System_Func___0_System_Single_____System_Single___System_Int32_System_Int32_System_Threading_CancellationToken_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: AeroDB.ISurrealDbQueryable`1
+    name: ISurrealDbQueryable
+    isExternal: true
+    href: AeroDB.ISurrealDbQueryable-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: '['
+  - name: ']'
+  - name: '>'
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: '['
+  - name: ']'
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: AeroDB.SearchExtensions.MatchKnnAsync``1(AeroDB.ISurrealDbQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Single[]}},System.Single[],System.Int32,System.Int32,System.Threading.CancellationToken)
+    name: MatchKnnAsync
+    isExternal: true
+    href: AeroDB.SearchExtensions.html#AeroDB_SearchExtensions_MatchKnnAsync__1_AeroDB_ISurrealDbQueryable___0__System_Linq_Expressions_Expression_System_Func___0_System_Single_____System_Single___System_Int32_System_Int32_System_Threading_CancellationToken_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: AeroDB.ISurrealDbQueryable`1
+    name: ISurrealDbQueryable
+    isExternal: true
+    href: AeroDB.ISurrealDbQueryable-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: (
+  - name: )
+  - name: )
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: (
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AeroDB.SurrealFunctions.Score*
+  commentId: Overload:AeroDB.SurrealFunctions.Score
+  isExternal: true
+  href: AeroDB.SurrealFunctions.html#AeroDB_SurrealFunctions_Score_System_Int32_
+  name: Score
+  nameWithType: SurrealFunctions.Score
+  fullName: AeroDB.SurrealFunctions.Score
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double
+  nameWithType: double
+  fullName: double
+  nameWithType.vb: Double
+  fullName.vb: Double
+  name.vb: Double
+- uid: AeroDB.SurrealFunctions.VectorDistanceKnn*
+  commentId: Overload:AeroDB.SurrealFunctions.VectorDistanceKnn
+  isExternal: true
+  href: AeroDB.SurrealFunctions.html#AeroDB_SurrealFunctions_VectorDistanceKnn
+  name: VectorDistanceKnn
+  nameWithType: SurrealFunctions.VectorDistanceKnn
+  fullName: AeroDB.SurrealFunctions.VectorDistanceKnn
+- uid: AeroDB.SurrealFunctions.VectorSimilarityCosine*
+  commentId: Overload:AeroDB.SurrealFunctions.VectorSimilarityCosine
+  isExternal: true
+  href: AeroDB.SurrealFunctions.html#AeroDB_SurrealFunctions_VectorSimilarityCosine_System_Single___System_Single___
+  name: VectorSimilarityCosine
+  nameWithType: SurrealFunctions.VectorSimilarityCosine
+  fullName: AeroDB.SurrealFunctions.VectorSimilarityCosine
+- uid: System.Single[]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.single
+  name: float[]
+  nameWithType: float[]
+  fullName: float[]
+  nameWithType.vb: Single()
+  fullName.vb: Single()
+  name.vb: Single()
+  spec.csharp:
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: (
+  - name: )
+- uid: AeroDB.SurrealFunctions.Highlight*
+  commentId: Overload:AeroDB.SurrealFunctions.Highlight
+  isExternal: true
+  href: AeroDB.SurrealFunctions.html#AeroDB_SurrealFunctions_Highlight_System_String_System_String_System_String_
+  name: Highlight
+  nameWithType: SurrealFunctions.Highlight
+  fullName: AeroDB.SurrealFunctions.Highlight
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: AeroDB.SurrealFunctions.Offsets*
+  commentId: Overload:AeroDB.SurrealFunctions.Offsets
+  isExternal: true
+  href: AeroDB.SurrealFunctions.html#AeroDB_SurrealFunctions_Offsets_System_String_
+  name: Offsets
+  nameWithType: SurrealFunctions.Offsets
+  fullName: AeroDB.SurrealFunctions.Offsets
+- uid: AeroDB.SurrealFunctions.Analyze*
+  commentId: Overload:AeroDB.SurrealFunctions.Analyze
+  isExternal: true
+  href: AeroDB.SurrealFunctions.html#AeroDB_SurrealFunctions_Analyze_System_String_System_String_
+  name: Analyze
+  nameWithType: SurrealFunctions.Analyze
+  fullName: AeroDB.SurrealFunctions.Analyze
+- uid: AeroDB.SurrealFunctions.VectorDistanceEuclidean*
+  commentId: Overload:AeroDB.SurrealFunctions.VectorDistanceEuclidean
+  isExternal: true
+  href: AeroDB.SurrealFunctions.html#AeroDB_SurrealFunctions_VectorDistanceEuclidean_System_Single___System_Single___
+  name: VectorDistanceEuclidean
+  nameWithType: SurrealFunctions.VectorDistanceEuclidean
+  fullName: AeroDB.SurrealFunctions.VectorDistanceEuclidean
+- uid: AeroDB.SurrealFunctions.VectorDistanceManhattan*
+  commentId: Overload:AeroDB.SurrealFunctions.VectorDistanceManhattan
+  isExternal: true
+  href: AeroDB.SurrealFunctions.html#AeroDB_SurrealFunctions_VectorDistanceManhattan_System_Single___System_Single___
+  name: VectorDistanceManhattan
+  nameWithType: SurrealFunctions.VectorDistanceManhattan
+  fullName: AeroDB.SurrealFunctions.VectorDistanceManhattan

@@ -1,0 +1,3661 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB
+  commentId: N:AeroDB
+  id: AeroDB
+  children:
+  - AeroDB.AccessDefinition
+  - AeroDB.ActionType
+  - AeroDB.AdvancedOptions
+  - AeroDB.AeroDBAdvancedSql
+  - AeroDB.AeroDBAdvancedSqlExtensions
+  - AeroDB.AeroDBConfigurationServiceCollectionExtensions
+  - AeroDB.AeroDBDaemonHealthCheck
+  - AeroDB.AeroDBEfCoreServiceCollectionExtensions
+  - AeroDB.AeroDBEfCoreTransaction
+  - AeroDB.AeroDBEfCoreTransactionManager`1
+  - AeroDB.AeroDBHealthCheckExtensions
+  - AeroDB.AeroDBHttpExtensions
+  - AeroDB.AeroDBIgnoreAttribute
+  - AeroDB.AeroDBMlQuery`2
+  - AeroDB.AeroDBSearchQuery`1
+  - AeroDB.AeroDBServiceCollectionExtensions
+  - AeroDB.AeroDBSpatialQuery`1
+  - AeroDB.AeroDBSubscriptionBase
+  - AeroDB.AeroDBTimeSeriesQuery`1
+  - AeroDB.AggregateCache
+  - AeroDB.AggregateQueryBuilder`1
+  - AeroDB.AggregateQueryExecutor`1
+  - AeroDB.AggregateQueryExtensions
+  - AeroDB.AnalyzerDefinition
+  - AeroDB.AnalyzerOptions
+  - AeroDB.AppendEventSideEffect
+  - AeroDB.AsyncDaemon
+  - AeroDB.BulkInsertMode
+  - AeroDB.BulkOperations
+  - AeroDB.CombGuidIdGeneration
+  - AeroDB.CompactStreamOptions
+  - AeroDB.CompiledPlan
+  - AeroDB.CompiledQueryExtensions
+  - AeroDB.CompiledQueryPlanner
+  - AeroDB.CompiledQueryProvider`1
+  - AeroDB.CompiledQuery`1
+  - AeroDB.CompositeProjection
+  - AeroDB.ComputedIndexOptions
+  - AeroDB.ComputedIndexOptions.IndexCasing
+  - AeroDB.ComputedIndexOptions.IndexMethod
+  - AeroDB.ComputedIndexOptions.SortOrder
+  - AeroDB.ConcurrencyChecks
+  - AeroDB.ConcurrencyException
+  - AeroDB.DaemonHealthState
+  - AeroDB.DatabaseEndpoint
+  - AeroDB.DatabasePerTenantSelector
+  - AeroDB.DocumentHierarchy
+  - AeroDB.DocumentIndex
+  - AeroDB.DocumentMapping
+  - AeroDB.DocumentMapping`1
+  - AeroDB.DocumentPolicies
+  - AeroDB.DocumentSession
+  - AeroDB.DocumentSessionListenerBase
+  - AeroDB.DocumentStorage
+  - AeroDB.DocumentStore
+  - AeroDB.DocumentTracking
+  - AeroDB.Documents
+  - AeroDB.EdgeMapping`1
+  - AeroDB.EdgeRecord
+  - AeroDB.EfCoreEventProjection`1
+  - AeroDB.EntityGuid
+  - AeroDB.EntityInt
+  - AeroDB.EntitySnowlake
+  - AeroDB.EntityString
+  - AeroDB.Entity`1
+  - AeroDB.EnumStorage
+  - AeroDB.EventAppendMode
+  - AeroDB.EventGrouping`1
+  - AeroDB.EventProjection
+  - AeroDB.EventProjection`1
+  - AeroDB.EventSerializationMode
+  - AeroDB.EventSlice`1
+  - AeroDB.EventSourcingOptions
+  - AeroDB.EventStore
+  - AeroDB.EventStreamIdentity
+  - AeroDB.EventTagQuery
+  - AeroDB.EventTriggerDefinition
+  - AeroDB.EventTriggerManager
+  - AeroDB.EventTriggerOptions
+  - AeroDB.Event`1
+  - AeroDB.ExperimentalOptions
+  - AeroDB.FetchForWritingResult`1
+  - AeroDB.FetchLatestExtensions
+  - AeroDB.FieldDefinition
+  - AeroDB.FlatTableProjection`2
+  - AeroDB.ForeignKeyDefinition
+  - AeroDB.FunctionManager
+  - AeroDB.FunctionOptions
+  - AeroDB.GeometryPoint
+  - AeroDB.GeometryPolygon
+  - AeroDB.Graph
+  - AeroDB.Graph.Edge
+  - AeroDB.GraphEdge
+  - AeroDB.GraphEntry`1
+  - AeroDB.GraphNode
+  - AeroDB.GraphPath
+  - AeroDB.HybridSearchConfig
+  - AeroDB.IAeroDBAdvanced
+  - AeroDB.IAeroDBSubscription
+  - AeroDB.IAeroDBTransaction
+  - AeroDB.IAggregateGrouper`1
+  - AeroDB.IAsyncConfigureAeroDB
+  - AeroDB.IBatchEvents
+  - AeroDB.IBatchedQuery
+  - AeroDB.IChangeListener
+  - AeroDB.IChangeSet
+  - AeroDB.ICompiledListQuery`1
+  - AeroDB.ICompiledListQuery`2
+  - AeroDB.ICompiledQueryMarker
+  - AeroDB.ICompiledQuery`1
+  - AeroDB.ICompiledQuery`2
+  - AeroDB.IConfigureAeroDB
+  - AeroDB.IConfigureAeroDB`1
+  - AeroDB.IDatabase
+  - AeroDB.IDiagnostics
+  - AeroDB.IDocumentOperations
+  - AeroDB.IDocumentPolicy
+  - AeroDB.IDocumentSession
+  - AeroDB.IDocumentSessionListener
+  - AeroDB.IDocumentStore
+  - AeroDB.IEnrichProjection
+  - AeroDB.IEntity`1
+  - AeroDB.IEvent
+  - AeroDB.IEventGrouping`1
+  - AeroDB.IEventSlice`1
+  - AeroDB.IEventUpcaster
+  - AeroDB.IEvent`1
+  - AeroDB.IEvents
+  - AeroDB.IGlobalConfigureAeroDB
+  - AeroDB.IGraphQuery`1
+  - AeroDB.IInitialData
+  - AeroDB.IJsonLoader
+  - AeroDB.ILiveQuery`1
+  - AeroDB.IMartenSessionLogger
+  - AeroDB.IMlQuery`2
+  - AeroDB.IPatchExpression`1
+  - AeroDB.IProjection
+  - AeroDB.IProjectionContext
+  - AeroDB.IProjectionCoordinator
+  - AeroDB.IProjectionSideEffect
+  - AeroDB.IQueryPlanning
+  - AeroDB.IQuerySession
+  - AeroDB.IReadOnlyStoreOptions
+  - AeroDB.ISearchQuery`1
+  - AeroDB.ISessionFactory
+  - AeroDB.ISingleServerMultiTenancy
+  - AeroDB.ISoftDeleted
+  - AeroDB.ISpatialQuery`1
+  - AeroDB.IStaticMultiTenancy
+  - AeroDB.IStorageOperation
+  - AeroDB.ISubscriber`1
+  - AeroDB.ISubscription
+  - AeroDB.ISurrealDbQueryable`1
+  - AeroDB.ITagTypeRegistration
+  - AeroDB.ITenantOperations
+  - AeroDB.ITenantQueryOperations
+  - AeroDB.ITenantSliceGroup`1
+  - AeroDB.ITimeSeriesQuery`1
+  - AeroDB.IUnitOfWork
+  - AeroDB.IVersioned
+  - AeroDB.IndexDefinition
+  - AeroDB.IndexOptions
+  - AeroDB.IndexType
+  - AeroDB.InlineProjection`1
+  - AeroDB.InternalSessionBase
+  - AeroDB.LiveStreamAggregation
+  - AeroDB.LoadManyExtensions
+  - AeroDB.MartenCompatibilityExtensions
+  - AeroDB.MetadataConfig
+  - AeroDB.MlNotAvailableException
+  - AeroDB.MlOptions
+  - AeroDB.MlQueryExtensions
+  - AeroDB.MultiStreamProjection`1
+  - AeroDB.MultiStreamProjection`2
+  - AeroDB.OpenTelemetryOptions
+  - AeroDB.Operation
+  - AeroDB.OperationType
+  - AeroDB.PagedListCompatibilityExtensions
+  - AeroDB.PatchExpression`1
+  - AeroDB.PatchExtensions
+  - AeroDB.ProjectionCollection
+  - AeroDB.ProjectionContext
+  - AeroDB.ProjectionCoordinator
+  - AeroDB.ProjectionLifecycle
+  - AeroDB.ProjectionOptions
+  - AeroDB.ProjectionProgress
+  - AeroDB.ProjectionRebuildProgressCallback
+  - AeroDB.ProjectionReentrancyException
+  - AeroDB.ProjectionShard
+  - AeroDB.QuerySession
+  - AeroDB.QueryStatistics
+  - AeroDB.ReactiveLinqExtensions
+  - AeroDB.ReadPreference
+  - AeroDB.SchemaDiff
+  - AeroDB.SchemaDiff.DiffEntry
+  - AeroDB.SchemaDiffer
+  - AeroDB.SchemaManager
+  - AeroDB.SchemaMode
+  - AeroDB.SchemaOptions
+  - AeroDB.ScopeDefinition
+  - AeroDB.Search
+  - AeroDB.Search.Analyzer
+  - AeroDB.Search.Distance
+  - AeroDB.Search.Filter
+  - AeroDB.Search.Tokenizer
+  - AeroDB.SearchExtensions
+  - AeroDB.SearchQueryExtensions
+  - AeroDB.SessionOptions
+  - AeroDB.SingleStreamProjection`1
+  - AeroDB.SingleStreamProjection`2
+  - AeroDB.SnapshotLifecycle
+  - AeroDB.SnapshotOptions
+  - AeroDB.SnapshotProjection`1
+  - AeroDB.SnowflakeGenerator
+  - AeroDB.SoftDeleteExtensions
+  - AeroDB.SortOrder
+  - AeroDB.SpatialExtensions
+  - AeroDB.StaleDataMode
+  - AeroDB.StateAccumulatorExtensions
+  - AeroDB.StatsExtensions
+  - AeroDB.StoreOptions
+  - AeroDB.StreamIdentity
+  - AeroDB.StreamState
+  - AeroDB.SubscriptionOptions
+  - AeroDB.SurrealArrayFunctions
+  - AeroDB.SurrealAsyncQueryExtensions
+  - AeroDB.SurrealBytesFunctions
+  - AeroDB.SurrealCommandBuilder
+  - AeroDB.SurrealCryptoFunctions
+  - AeroDB.SurrealDbQueryableExtensions
+  - AeroDB.SurrealDbQueryable`1
+  - AeroDB.SurrealDurationFunctions
+  - AeroDB.SurrealExpressionVisitor
+  - AeroDB.SurrealFunction
+  - AeroDB.SurrealFunctionParameter
+  - AeroDB.SurrealFunctions
+  - AeroDB.SurrealHttpFunctions
+  - AeroDB.SurrealLiveQueryExtensions
+  - AeroDB.SurrealMetaFunctions
+  - AeroDB.SurrealObjectFunctions
+  - AeroDB.SurrealQueryProvider
+  - AeroDB.SurrealQueryResult
+  - AeroDB.SurrealRandFunctions
+  - AeroDB.SurrealSeriesFunctions
+  - AeroDB.SurrealSessionFunctions
+  - AeroDB.SurrealStringFunctions
+  - AeroDB.SurrealTypeFunctions
+  - AeroDB.TenancyScope
+  - AeroDB.TenancyStyle
+  - AeroDB.TenantIdStyle
+  - AeroDB.TimeBucket
+  - AeroDB.TimeSeriesExtensions
+  - AeroDB.TimeUnit
+  - AeroDB.TokenDefinition
+  - AeroDB.TombstoneEvent
+  - AeroDB.TriggerActionBuilder
+  - AeroDB.TriggerCreateStatement`1
+  - AeroDB.TriggerDeleteStatement`1
+  - AeroDB.TriggerRelateStatement
+  - AeroDB.TriggerUpdateStatement`1
+  - AeroDB.UnitOfWork
+  - AeroDB.VersionAttribute
+  - AeroDB.ViewDefinition
+  - AeroDB.ViewDefinition`1
+  - AeroDB.ViewGraphSelectBuilder`2
+  - AeroDB.ViewOptions
+  - AeroDB.ViewQueryExtensions
+  - AeroDB.ViewSelectBuilder`1
+  langs:
+  - csharp
+  - vb
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+  type: Namespace
+  assemblies:
+  - AeroDB
+references:
+- uid: AeroDB.AeroDBAdvancedSql
+  commentId: T:AeroDB.AeroDBAdvancedSql
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.AeroDBAdvancedSql.html
+  name: AeroDBAdvancedSql
+  nameWithType: AeroDBAdvancedSql
+  fullName: AeroDB.AeroDBAdvancedSql
+- uid: AeroDB.AeroDBAdvancedSqlExtensions
+  commentId: T:AeroDB.AeroDBAdvancedSqlExtensions
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.AeroDBAdvancedSqlExtensions.html
+  name: AeroDBAdvancedSqlExtensions
+  nameWithType: AeroDBAdvancedSqlExtensions
+  fullName: AeroDB.AeroDBAdvancedSqlExtensions
+- uid: AeroDB.IBatchedQuery
+  commentId: T:AeroDB.IBatchedQuery
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IBatchedQuery.html
+  name: IBatchedQuery
+  nameWithType: IBatchedQuery
+  fullName: AeroDB.IBatchedQuery
+- uid: AeroDB.IBatchEvents
+  commentId: T:AeroDB.IBatchEvents
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IBatchEvents.html
+  name: IBatchEvents
+  nameWithType: IBatchEvents
+  fullName: AeroDB.IBatchEvents
+- uid: AeroDB.BulkInsertMode
+  commentId: T:AeroDB.BulkInsertMode
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.BulkInsertMode.html
+  name: BulkInsertMode
+  nameWithType: BulkInsertMode
+  fullName: AeroDB.BulkInsertMode
+- uid: AeroDB.AeroDBIgnoreAttribute
+  commentId: T:AeroDB.AeroDBIgnoreAttribute
+  isExternal: true
+  href: AeroDB.AeroDBIgnoreAttribute.html
+  name: AeroDBIgnoreAttribute
+  nameWithType: AeroDBIgnoreAttribute
+  fullName: AeroDB.AeroDBIgnoreAttribute
+- uid: AeroDB.CompiledPlan
+  commentId: T:AeroDB.CompiledPlan
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.CompiledPlan.html
+  name: CompiledPlan
+  nameWithType: CompiledPlan
+  fullName: AeroDB.CompiledPlan
+- uid: AeroDB.CompiledQuery`1
+  commentId: T:AeroDB.CompiledQuery`1
+  isExternal: true
+  href: AeroDB.CompiledQuery-1.html
+  name: CompiledQuery<T>
+  nameWithType: CompiledQuery<T>
+  fullName: AeroDB.CompiledQuery<T>
+  nameWithType.vb: CompiledQuery(Of T)
+  fullName.vb: AeroDB.CompiledQuery(Of T)
+  name.vb: CompiledQuery(Of T)
+  spec.csharp:
+  - uid: AeroDB.CompiledQuery`1
+    name: CompiledQuery
+    isExternal: true
+    href: AeroDB.CompiledQuery-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.CompiledQuery`1
+    name: CompiledQuery
+    isExternal: true
+    href: AeroDB.CompiledQuery-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.CompiledQueryExtensions
+  commentId: T:AeroDB.CompiledQueryExtensions
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.CompiledQueryExtensions.html
+  name: CompiledQueryExtensions
+  nameWithType: CompiledQueryExtensions
+  fullName: AeroDB.CompiledQueryExtensions
+- uid: AeroDB.ICompiledQueryMarker
+  commentId: T:AeroDB.ICompiledQueryMarker
+  isExternal: true
+  href: AeroDB.ICompiledQueryMarker.html
+  name: ICompiledQueryMarker
+  nameWithType: ICompiledQueryMarker
+  fullName: AeroDB.ICompiledQueryMarker
+- uid: AeroDB.ICompiledQuery`2
+  commentId: T:AeroDB.ICompiledQuery`2
+  isExternal: true
+  href: AeroDB.ICompiledQuery-2.html
+  name: ICompiledQuery<TDoc, TOut>
+  nameWithType: ICompiledQuery<TDoc, TOut>
+  fullName: AeroDB.ICompiledQuery<TDoc, TOut>
+  nameWithType.vb: ICompiledQuery(Of TDoc, TOut)
+  fullName.vb: AeroDB.ICompiledQuery(Of TDoc, TOut)
+  name.vb: ICompiledQuery(Of TDoc, TOut)
+  spec.csharp:
+  - uid: AeroDB.ICompiledQuery`2
+    name: ICompiledQuery
+    isExternal: true
+    href: AeroDB.ICompiledQuery-2.html
+  - name: <
+  - name: TDoc
+  - name: ','
+  - name: " "
+  - name: TOut
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.ICompiledQuery`2
+    name: ICompiledQuery
+    isExternal: true
+    href: AeroDB.ICompiledQuery-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TDoc
+  - name: ','
+  - name: " "
+  - name: TOut
+  - name: )
+- uid: AeroDB.ICompiledQuery`1
+  commentId: T:AeroDB.ICompiledQuery`1
+  isExternal: true
+  href: AeroDB.ICompiledQuery-1.html
+  name: ICompiledQuery<TDoc>
+  nameWithType: ICompiledQuery<TDoc>
+  fullName: AeroDB.ICompiledQuery<TDoc>
+  nameWithType.vb: ICompiledQuery(Of TDoc)
+  fullName.vb: AeroDB.ICompiledQuery(Of TDoc)
+  name.vb: ICompiledQuery(Of TDoc)
+  spec.csharp:
+  - uid: AeroDB.ICompiledQuery`1
+    name: ICompiledQuery
+    isExternal: true
+    href: AeroDB.ICompiledQuery-1.html
+  - name: <
+  - name: TDoc
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.ICompiledQuery`1
+    name: ICompiledQuery
+    isExternal: true
+    href: AeroDB.ICompiledQuery-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TDoc
+  - name: )
+- uid: AeroDB.ICompiledListQuery`2
+  commentId: T:AeroDB.ICompiledListQuery`2
+  isExternal: true
+  href: AeroDB.ICompiledListQuery-2.html
+  name: ICompiledListQuery<TDoc, TOut>
+  nameWithType: ICompiledListQuery<TDoc, TOut>
+  fullName: AeroDB.ICompiledListQuery<TDoc, TOut>
+  nameWithType.vb: ICompiledListQuery(Of TDoc, TOut)
+  fullName.vb: AeroDB.ICompiledListQuery(Of TDoc, TOut)
+  name.vb: ICompiledListQuery(Of TDoc, TOut)
+  spec.csharp:
+  - uid: AeroDB.ICompiledListQuery`2
+    name: ICompiledListQuery
+    isExternal: true
+    href: AeroDB.ICompiledListQuery-2.html
+  - name: <
+  - name: TDoc
+  - name: ','
+  - name: " "
+  - name: TOut
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.ICompiledListQuery`2
+    name: ICompiledListQuery
+    isExternal: true
+    href: AeroDB.ICompiledListQuery-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TDoc
+  - name: ','
+  - name: " "
+  - name: TOut
+  - name: )
+- uid: AeroDB.ICompiledListQuery`1
+  commentId: T:AeroDB.ICompiledListQuery`1
+  isExternal: true
+  href: AeroDB.ICompiledListQuery-1.html
+  name: ICompiledListQuery<TDoc>
+  nameWithType: ICompiledListQuery<TDoc>
+  fullName: AeroDB.ICompiledListQuery<TDoc>
+  nameWithType.vb: ICompiledListQuery(Of TDoc)
+  fullName.vb: AeroDB.ICompiledListQuery(Of TDoc)
+  name.vb: ICompiledListQuery(Of TDoc)
+  spec.csharp:
+  - uid: AeroDB.ICompiledListQuery`1
+    name: ICompiledListQuery
+    isExternal: true
+    href: AeroDB.ICompiledListQuery-1.html
+  - name: <
+  - name: TDoc
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.ICompiledListQuery`1
+    name: ICompiledListQuery
+    isExternal: true
+    href: AeroDB.ICompiledListQuery-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TDoc
+  - name: )
+- uid: AeroDB.IQueryPlanning
+  commentId: T:AeroDB.IQueryPlanning
+  isExternal: true
+  href: AeroDB.IQueryPlanning.html
+  name: IQueryPlanning
+  nameWithType: IQueryPlanning
+  fullName: AeroDB.IQueryPlanning
+- uid: AeroDB.CompiledQueryPlanner
+  commentId: T:AeroDB.CompiledQueryPlanner
+  isExternal: true
+  href: AeroDB.CompiledQueryPlanner.html
+  name: CompiledQueryPlanner
+  nameWithType: CompiledQueryPlanner
+  fullName: AeroDB.CompiledQueryPlanner
+- uid: AeroDB.CompiledQueryProvider`1
+  commentId: T:AeroDB.CompiledQueryProvider`1
+  isExternal: true
+  href: AeroDB.CompiledQueryProvider-1.html
+  name: CompiledQueryProvider<T>
+  nameWithType: CompiledQueryProvider<T>
+  fullName: AeroDB.CompiledQueryProvider<T>
+  nameWithType.vb: CompiledQueryProvider(Of T)
+  fullName.vb: AeroDB.CompiledQueryProvider(Of T)
+  name.vb: CompiledQueryProvider(Of T)
+  spec.csharp:
+  - uid: AeroDB.CompiledQueryProvider`1
+    name: CompiledQueryProvider
+    isExternal: true
+    href: AeroDB.CompiledQueryProvider-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.CompiledQueryProvider`1
+    name: CompiledQueryProvider
+    isExternal: true
+    href: AeroDB.CompiledQueryProvider-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.ConcurrencyChecks
+  commentId: T:AeroDB.ConcurrencyChecks
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.ConcurrencyChecks.html
+  name: ConcurrencyChecks
+  nameWithType: ConcurrencyChecks
+  fullName: AeroDB.ConcurrencyChecks
+- uid: AeroDB.ConcurrencyException
+  commentId: T:AeroDB.ConcurrencyException
+  isExternal: true
+  href: AeroDB.ConcurrencyException.html
+  name: ConcurrencyException
+  nameWithType: ConcurrencyException
+  fullName: AeroDB.ConcurrencyException
+- uid: AeroDB.IVersioned
+  commentId: T:AeroDB.IVersioned
+  isExternal: true
+  href: AeroDB.IVersioned.html
+  name: IVersioned
+  nameWithType: IVersioned
+  fullName: AeroDB.IVersioned
+- uid: AeroDB.VersionAttribute
+  commentId: T:AeroDB.VersionAttribute
+  isExternal: true
+  href: AeroDB.VersionAttribute.html
+  name: VersionAttribute
+  nameWithType: VersionAttribute
+  fullName: AeroDB.VersionAttribute
+- uid: AeroDB.AdvancedOptions
+  commentId: T:AeroDB.AdvancedOptions
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.AdvancedOptions.html
+  name: AdvancedOptions
+  nameWithType: AdvancedOptions
+  fullName: AeroDB.AdvancedOptions
+- uid: AeroDB.AeroDBServiceCollectionExtensions
+  commentId: T:AeroDB.AeroDBServiceCollectionExtensions
+  isExternal: true
+  href: AeroDB.AeroDBServiceCollectionExtensions.html
+  name: AeroDBServiceCollectionExtensions
+  nameWithType: AeroDBServiceCollectionExtensions
+  fullName: AeroDB.AeroDBServiceCollectionExtensions
+- uid: AeroDB.IAeroDBAdvanced
+  commentId: T:AeroDB.IAeroDBAdvanced
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IAeroDBAdvanced.html
+  name: IAeroDBAdvanced
+  nameWithType: IAeroDBAdvanced
+  fullName: AeroDB.IAeroDBAdvanced
+- uid: AeroDB.IAsyncConfigureAeroDB
+  commentId: T:AeroDB.IAsyncConfigureAeroDB
+  isExternal: true
+  href: AeroDB.IAsyncConfigureAeroDB.html
+  name: IAsyncConfigureAeroDB
+  nameWithType: IAsyncConfigureAeroDB
+  fullName: AeroDB.IAsyncConfigureAeroDB
+- uid: AeroDB.IConfigureAeroDB
+  commentId: T:AeroDB.IConfigureAeroDB
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IConfigureAeroDB.html
+  name: IConfigureAeroDB
+  nameWithType: IConfigureAeroDB
+  fullName: AeroDB.IConfigureAeroDB
+- uid: AeroDB.IConfigureAeroDB`1
+  commentId: T:AeroDB.IConfigureAeroDB`1
+  isExternal: true
+  href: AeroDB.IConfigureAeroDB-1.html
+  name: IConfigureAeroDB<TStore>
+  nameWithType: IConfigureAeroDB<TStore>
+  fullName: AeroDB.IConfigureAeroDB<TStore>
+  nameWithType.vb: IConfigureAeroDB(Of TStore)
+  fullName.vb: AeroDB.IConfigureAeroDB(Of TStore)
+  name.vb: IConfigureAeroDB(Of TStore)
+  spec.csharp:
+  - uid: AeroDB.IConfigureAeroDB`1
+    name: IConfigureAeroDB
+    isExternal: true
+    href: AeroDB.IConfigureAeroDB-1.html
+  - name: <
+  - name: TStore
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.IConfigureAeroDB`1
+    name: IConfigureAeroDB
+    isExternal: true
+    href: AeroDB.IConfigureAeroDB-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TStore
+  - name: )
+- uid: AeroDB.IGlobalConfigureAeroDB
+  commentId: T:AeroDB.IGlobalConfigureAeroDB
+  isExternal: true
+  href: AeroDB.IGlobalConfigureAeroDB.html
+  name: IGlobalConfigureAeroDB
+  nameWithType: IGlobalConfigureAeroDB
+  fullName: AeroDB.IGlobalConfigureAeroDB
+- uid: AeroDB.AeroDBConfigurationServiceCollectionExtensions
+  commentId: T:AeroDB.AeroDBConfigurationServiceCollectionExtensions
+  isExternal: true
+  href: AeroDB.AeroDBConfigurationServiceCollectionExtensions.html
+  name: AeroDBConfigurationServiceCollectionExtensions
+  nameWithType: AeroDBConfigurationServiceCollectionExtensions
+  fullName: AeroDB.AeroDBConfigurationServiceCollectionExtensions
+- uid: AeroDB.DocumentSessionListenerBase
+  commentId: T:AeroDB.DocumentSessionListenerBase
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.DocumentSessionListenerBase.html
+  name: DocumentSessionListenerBase
+  nameWithType: DocumentSessionListenerBase
+  fullName: AeroDB.DocumentSessionListenerBase
+- uid: AeroDB.IChangeListener
+  commentId: T:AeroDB.IChangeListener
+  isExternal: true
+  href: AeroDB.IChangeListener.html
+  name: IChangeListener
+  nameWithType: IChangeListener
+  fullName: AeroDB.IChangeListener
+- uid: AeroDB.IChangeSet
+  commentId: T:AeroDB.IChangeSet
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IChangeSet.html
+  name: IChangeSet
+  nameWithType: IChangeSet
+  fullName: AeroDB.IChangeSet
+- uid: AeroDB.IDiagnostics
+  commentId: T:AeroDB.IDiagnostics
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IDiagnostics.html
+  name: IDiagnostics
+  nameWithType: IDiagnostics
+  fullName: AeroDB.IDiagnostics
+- uid: AeroDB.IDocumentSessionListener
+  commentId: T:AeroDB.IDocumentSessionListener
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IDocumentSessionListener.html
+  name: IDocumentSessionListener
+  nameWithType: IDocumentSessionListener
+  fullName: AeroDB.IDocumentSessionListener
+- uid: AeroDB.IMartenSessionLogger
+  commentId: T:AeroDB.IMartenSessionLogger
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IMartenSessionLogger.html
+  name: IMartenSessionLogger
+  nameWithType: IMartenSessionLogger
+  fullName: AeroDB.IMartenSessionLogger
+- uid: AeroDB.IUnitOfWork
+  commentId: T:AeroDB.IUnitOfWork
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IUnitOfWork.html
+  name: IUnitOfWork
+  nameWithType: IUnitOfWork
+  fullName: AeroDB.IUnitOfWork
+- uid: AeroDB.DocumentSession
+  commentId: T:AeroDB.DocumentSession
+  isExternal: true
+  href: AeroDB.DocumentSession.html
+  name: DocumentSession
+  nameWithType: DocumentSession
+  fullName: AeroDB.DocumentSession
+- uid: AeroDB.DocumentStore
+  commentId: T:AeroDB.DocumentStore
+  isExternal: true
+  href: AeroDB.DocumentStore.html
+  name: DocumentStore
+  nameWithType: DocumentStore
+  fullName: AeroDB.DocumentStore
+- uid: AeroDB.Documents
+  commentId: T:AeroDB.Documents
+  isExternal: true
+  href: AeroDB.Documents.html
+  name: Documents
+  nameWithType: Documents
+  fullName: AeroDB.Documents
+- uid: AeroDB.DocumentTracking
+  commentId: T:AeroDB.DocumentTracking
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.DocumentTracking.html
+  name: DocumentTracking
+  nameWithType: DocumentTracking
+  fullName: AeroDB.DocumentTracking
+- uid: AeroDB.IEntity`1
+  commentId: T:AeroDB.IEntity`1
+  isExternal: true
+  href: AeroDB.IEntity-1.html
+  name: IEntity<TId>
+  nameWithType: IEntity<TId>
+  fullName: AeroDB.IEntity<TId>
+  nameWithType.vb: IEntity(Of TId)
+  fullName.vb: AeroDB.IEntity(Of TId)
+  name.vb: IEntity(Of TId)
+  spec.csharp:
+  - uid: AeroDB.IEntity`1
+    name: IEntity
+    isExternal: true
+    href: AeroDB.IEntity-1.html
+  - name: <
+  - name: TId
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.IEntity`1
+    name: IEntity
+    isExternal: true
+    href: AeroDB.IEntity-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TId
+  - name: )
+- uid: AeroDB.Entity`1
+  commentId: T:AeroDB.Entity`1
+  isExternal: true
+  href: AeroDB.Entity-1.html
+  name: Entity<TId>
+  nameWithType: Entity<TId>
+  fullName: AeroDB.Entity<TId>
+  nameWithType.vb: Entity(Of TId)
+  fullName.vb: AeroDB.Entity(Of TId)
+  name.vb: Entity(Of TId)
+  spec.csharp:
+  - uid: AeroDB.Entity`1
+    name: Entity
+    isExternal: true
+    href: AeroDB.Entity-1.html
+  - name: <
+  - name: TId
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.Entity`1
+    name: Entity
+    isExternal: true
+    href: AeroDB.Entity-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TId
+  - name: )
+- uid: AeroDB.EntitySnowlake
+  commentId: T:AeroDB.EntitySnowlake
+  isExternal: true
+  href: AeroDB.EntitySnowlake.html
+  name: EntitySnowlake
+  nameWithType: EntitySnowlake
+  fullName: AeroDB.EntitySnowlake
+- uid: AeroDB.EntityString
+  commentId: T:AeroDB.EntityString
+  isExternal: true
+  href: AeroDB.EntityString.html
+  name: EntityString
+  nameWithType: EntityString
+  fullName: AeroDB.EntityString
+- uid: AeroDB.EntityInt
+  commentId: T:AeroDB.EntityInt
+  isExternal: true
+  href: AeroDB.EntityInt.html
+  name: EntityInt
+  nameWithType: EntityInt
+  fullName: AeroDB.EntityInt
+- uid: AeroDB.EntityGuid
+  commentId: T:AeroDB.EntityGuid
+  isExternal: true
+  href: AeroDB.EntityGuid.html
+  name: EntityGuid
+  nameWithType: EntityGuid
+  fullName: AeroDB.EntityGuid
+- uid: AeroDB.SnowflakeGenerator
+  commentId: T:AeroDB.SnowflakeGenerator
+  isExternal: true
+  href: AeroDB.SnowflakeGenerator.html
+  name: SnowflakeGenerator
+  nameWithType: SnowflakeGenerator
+  fullName: AeroDB.SnowflakeGenerator
+- uid: AeroDB.ActionType
+  commentId: T:AeroDB.ActionType
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.ActionType.html
+  name: ActionType
+  nameWithType: ActionType
+  fullName: AeroDB.ActionType
+- uid: AeroDB.AeroDBSubscriptionBase
+  commentId: T:AeroDB.AeroDBSubscriptionBase
+  isExternal: true
+  href: AeroDB.AeroDBSubscriptionBase.html
+  name: AeroDBSubscriptionBase
+  nameWithType: AeroDBSubscriptionBase
+  fullName: AeroDB.AeroDBSubscriptionBase
+- uid: AeroDB.CompactStreamOptions
+  commentId: T:AeroDB.CompactStreamOptions
+  isExternal: true
+  href: AeroDB.CompactStreamOptions.html
+  name: CompactStreamOptions
+  nameWithType: CompactStreamOptions
+  fullName: AeroDB.CompactStreamOptions
+- uid: AeroDB.Event`1
+  commentId: T:AeroDB.Event`1
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.Event-1.html
+  name: Event<T>
+  nameWithType: Event<T>
+  fullName: AeroDB.Event<T>
+  nameWithType.vb: Event(Of T)
+  fullName.vb: AeroDB.Event(Of T)
+  name.vb: Event(Of T)
+  spec.csharp:
+  - uid: AeroDB.Event`1
+    name: Event
+    isExternal: true
+    href: AeroDB.Event-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.Event`1
+    name: Event
+    isExternal: true
+    href: AeroDB.Event-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.EventAppendMode
+  commentId: T:AeroDB.EventAppendMode
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.EventAppendMode.html
+  name: EventAppendMode
+  nameWithType: EventAppendMode
+  fullName: AeroDB.EventAppendMode
+- uid: AeroDB.EventSerializationMode
+  commentId: T:AeroDB.EventSerializationMode
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.EventSerializationMode.html
+  name: EventSerializationMode
+  nameWithType: EventSerializationMode
+  fullName: AeroDB.EventSerializationMode
+- uid: AeroDB.EventStore
+  commentId: T:AeroDB.EventStore
+  isExternal: true
+  href: AeroDB.EventStore.html
+  name: EventStore
+  nameWithType: EventStore
+  fullName: AeroDB.EventStore
+- uid: AeroDB.EventStreamIdentity
+  commentId: T:AeroDB.EventStreamIdentity
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.EventStreamIdentity.html
+  name: EventStreamIdentity
+  nameWithType: EventStreamIdentity
+  fullName: AeroDB.EventStreamIdentity
+- uid: AeroDB.EventTagQuery
+  commentId: T:AeroDB.EventTagQuery
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.EventTagQuery.html
+  name: EventTagQuery
+  nameWithType: EventTagQuery
+  fullName: AeroDB.EventTagQuery
+- uid: AeroDB.EventTriggerDefinition
+  commentId: T:AeroDB.EventTriggerDefinition
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.EventTriggerDefinition.html
+  name: EventTriggerDefinition
+  nameWithType: EventTriggerDefinition
+  fullName: AeroDB.EventTriggerDefinition
+- uid: AeroDB.EventTriggerOptions
+  commentId: T:AeroDB.EventTriggerOptions
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.EventTriggerOptions.html
+  name: EventTriggerOptions
+  nameWithType: EventTriggerOptions
+  fullName: AeroDB.EventTriggerOptions
+- uid: AeroDB.EventTriggerManager
+  commentId: T:AeroDB.EventTriggerManager
+  isExternal: true
+  href: AeroDB.EventTriggerManager.html
+  name: EventTriggerManager
+  nameWithType: EventTriggerManager
+  fullName: AeroDB.EventTriggerManager
+- uid: AeroDB.FetchForWritingResult`1
+  commentId: T:AeroDB.FetchForWritingResult`1
+  isExternal: true
+  href: AeroDB.FetchForWritingResult-1.html
+  name: FetchForWritingResult<T>
+  nameWithType: FetchForWritingResult<T>
+  fullName: AeroDB.FetchForWritingResult<T>
+  nameWithType.vb: FetchForWritingResult(Of T)
+  fullName.vb: AeroDB.FetchForWritingResult(Of T)
+  name.vb: FetchForWritingResult(Of T)
+  spec.csharp:
+  - uid: AeroDB.FetchForWritingResult`1
+    name: FetchForWritingResult
+    isExternal: true
+    href: AeroDB.FetchForWritingResult-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.FetchForWritingResult`1
+    name: FetchForWritingResult
+    isExternal: true
+    href: AeroDB.FetchForWritingResult-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.IAeroDBSubscription
+  commentId: T:AeroDB.IAeroDBSubscription
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IAeroDBSubscription.html
+  name: IAeroDBSubscription
+  nameWithType: IAeroDBSubscription
+  fullName: AeroDB.IAeroDBSubscription
+- uid: AeroDB.IEvent`1
+  commentId: T:AeroDB.IEvent`1
+  isExternal: true
+  href: AeroDB.IEvent-1.html
+  name: IEvent<T>
+  nameWithType: IEvent<T>
+  fullName: AeroDB.IEvent<T>
+  nameWithType.vb: IEvent(Of T)
+  fullName.vb: AeroDB.IEvent(Of T)
+  name.vb: IEvent(Of T)
+  spec.csharp:
+  - uid: AeroDB.IEvent`1
+    name: IEvent
+    isExternal: true
+    href: AeroDB.IEvent-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.IEvent`1
+    name: IEvent
+    isExternal: true
+    href: AeroDB.IEvent-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.IEvent
+  commentId: T:AeroDB.IEvent
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IEvent.html
+  name: IEvent
+  nameWithType: IEvent
+  fullName: AeroDB.IEvent
+- uid: AeroDB.IEvents
+  commentId: T:AeroDB.IEvents
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IEvents.html
+  name: IEvents
+  nameWithType: IEvents
+  fullName: AeroDB.IEvents
+- uid: AeroDB.IEventUpcaster
+  commentId: T:AeroDB.IEventUpcaster
+  isExternal: true
+  href: AeroDB.IEventUpcaster.html
+  name: IEventUpcaster
+  nameWithType: IEventUpcaster
+  fullName: AeroDB.IEventUpcaster
+- uid: AeroDB.ISubscription
+  commentId: T:AeroDB.ISubscription
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.ISubscription.html
+  name: ISubscription
+  nameWithType: ISubscription
+  fullName: AeroDB.ISubscription
+- uid: AeroDB.ITagTypeRegistration
+  commentId: T:AeroDB.ITagTypeRegistration
+  isExternal: true
+  href: AeroDB.ITagTypeRegistration.html
+  name: ITagTypeRegistration
+  nameWithType: ITagTypeRegistration
+  fullName: AeroDB.ITagTypeRegistration
+- uid: AeroDB.MetadataConfig
+  commentId: T:AeroDB.MetadataConfig
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.MetadataConfig.html
+  name: MetadataConfig
+  nameWithType: MetadataConfig
+  fullName: AeroDB.MetadataConfig
+- uid: AeroDB.StreamState
+  commentId: T:AeroDB.StreamState
+  isExternal: true
+  href: AeroDB.StreamState.html
+  name: StreamState
+  nameWithType: StreamState
+  fullName: AeroDB.StreamState
+- uid: AeroDB.SubscriptionOptions
+  commentId: T:AeroDB.SubscriptionOptions
+  isExternal: true
+  href: AeroDB.SubscriptionOptions.html
+  name: SubscriptionOptions
+  nameWithType: SubscriptionOptions
+  fullName: AeroDB.SubscriptionOptions
+- uid: AeroDB.TombstoneEvent
+  commentId: T:AeroDB.TombstoneEvent
+  isExternal: true
+  href: AeroDB.TombstoneEvent.html
+  name: TombstoneEvent
+  nameWithType: TombstoneEvent
+  fullName: AeroDB.TombstoneEvent
+- uid: AeroDB.TriggerActionBuilder
+  commentId: T:AeroDB.TriggerActionBuilder
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.TriggerActionBuilder.html
+  name: TriggerActionBuilder
+  nameWithType: TriggerActionBuilder
+  fullName: AeroDB.TriggerActionBuilder
+- uid: AeroDB.TriggerCreateStatement`1
+  commentId: T:AeroDB.TriggerCreateStatement`1
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.TriggerCreateStatement-1.html
+  name: TriggerCreateStatement<T>
+  nameWithType: TriggerCreateStatement<T>
+  fullName: AeroDB.TriggerCreateStatement<T>
+  nameWithType.vb: TriggerCreateStatement(Of T)
+  fullName.vb: AeroDB.TriggerCreateStatement(Of T)
+  name.vb: TriggerCreateStatement(Of T)
+  spec.csharp:
+  - uid: AeroDB.TriggerCreateStatement`1
+    name: TriggerCreateStatement
+    isExternal: true
+    href: AeroDB.TriggerCreateStatement-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.TriggerCreateStatement`1
+    name: TriggerCreateStatement
+    isExternal: true
+    href: AeroDB.TriggerCreateStatement-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.TriggerUpdateStatement`1
+  commentId: T:AeroDB.TriggerUpdateStatement`1
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.TriggerUpdateStatement-1.html
+  name: TriggerUpdateStatement<T>
+  nameWithType: TriggerUpdateStatement<T>
+  fullName: AeroDB.TriggerUpdateStatement<T>
+  nameWithType.vb: TriggerUpdateStatement(Of T)
+  fullName.vb: AeroDB.TriggerUpdateStatement(Of T)
+  name.vb: TriggerUpdateStatement(Of T)
+  spec.csharp:
+  - uid: AeroDB.TriggerUpdateStatement`1
+    name: TriggerUpdateStatement
+    isExternal: true
+    href: AeroDB.TriggerUpdateStatement-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.TriggerUpdateStatement`1
+    name: TriggerUpdateStatement
+    isExternal: true
+    href: AeroDB.TriggerUpdateStatement-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.TriggerDeleteStatement`1
+  commentId: T:AeroDB.TriggerDeleteStatement`1
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.TriggerDeleteStatement-1.html
+  name: TriggerDeleteStatement<T>
+  nameWithType: TriggerDeleteStatement<T>
+  fullName: AeroDB.TriggerDeleteStatement<T>
+  nameWithType.vb: TriggerDeleteStatement(Of T)
+  fullName.vb: AeroDB.TriggerDeleteStatement(Of T)
+  name.vb: TriggerDeleteStatement(Of T)
+  spec.csharp:
+  - uid: AeroDB.TriggerDeleteStatement`1
+    name: TriggerDeleteStatement
+    isExternal: true
+    href: AeroDB.TriggerDeleteStatement-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.TriggerDeleteStatement`1
+    name: TriggerDeleteStatement
+    isExternal: true
+    href: AeroDB.TriggerDeleteStatement-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.TriggerRelateStatement
+  commentId: T:AeroDB.TriggerRelateStatement
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.TriggerRelateStatement.html
+  name: TriggerRelateStatement
+  nameWithType: TriggerRelateStatement
+  fullName: AeroDB.TriggerRelateStatement
+- uid: AeroDB.ExperimentalOptions
+  commentId: T:AeroDB.ExperimentalOptions
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.ExperimentalOptions.html
+  name: ExperimentalOptions
+  nameWithType: ExperimentalOptions
+  fullName: AeroDB.ExperimentalOptions
+- uid: AeroDB.FetchLatestExtensions
+  commentId: T:AeroDB.FetchLatestExtensions
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.FetchLatestExtensions.html
+  name: FetchLatestExtensions
+  nameWithType: FetchLatestExtensions
+  fullName: AeroDB.FetchLatestExtensions
+- uid: AeroDB.FunctionManager
+  commentId: T:AeroDB.FunctionManager
+  isExternal: true
+  href: AeroDB.FunctionManager.html
+  name: FunctionManager
+  nameWithType: FunctionManager
+  fullName: AeroDB.FunctionManager
+- uid: AeroDB.SurrealFunctionParameter
+  commentId: T:AeroDB.SurrealFunctionParameter
+  isExternal: true
+  href: AeroDB.SurrealFunctionParameter.html
+  name: SurrealFunctionParameter
+  nameWithType: SurrealFunctionParameter
+  fullName: AeroDB.SurrealFunctionParameter
+- uid: AeroDB.SurrealFunction
+  commentId: T:AeroDB.SurrealFunction
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.SurrealFunction.html
+  name: SurrealFunction
+  nameWithType: SurrealFunction
+  fullName: AeroDB.SurrealFunction
+- uid: AeroDB.GeometryPoint
+  commentId: T:AeroDB.GeometryPoint
+  isExternal: true
+  href: AeroDB.GeometryPoint.html
+  name: GeometryPoint
+  nameWithType: GeometryPoint
+  fullName: AeroDB.GeometryPoint
+- uid: AeroDB.GeometryPolygon
+  commentId: T:AeroDB.GeometryPolygon
+  isExternal: true
+  href: AeroDB.GeometryPolygon.html
+  name: GeometryPolygon
+  nameWithType: GeometryPolygon
+  fullName: AeroDB.GeometryPolygon
+- uid: AeroDB.EdgeRecord
+  commentId: T:AeroDB.EdgeRecord
+  isExternal: true
+  href: AeroDB.EdgeRecord.html
+  name: EdgeRecord
+  nameWithType: EdgeRecord
+  fullName: AeroDB.EdgeRecord
+- uid: AeroDB.Graph
+  commentId: T:AeroDB.Graph
+  isExternal: true
+  href: AeroDB.Graph.html
+  name: Graph
+  nameWithType: Graph
+  fullName: AeroDB.Graph
+- uid: AeroDB.Graph.Edge
+  commentId: T:AeroDB.Graph.Edge
+  isExternal: true
+  href: AeroDB.Graph.html
+  name: Graph.Edge
+  nameWithType: Graph.Edge
+  fullName: AeroDB.Graph.Edge
+  spec.csharp:
+  - uid: AeroDB.Graph
+    name: Graph
+    isExternal: true
+    href: AeroDB.Graph.html
+  - name: .
+  - uid: AeroDB.Graph.Edge
+    name: Edge
+    isExternal: true
+    href: AeroDB.Graph.Edge.html
+  spec.vb:
+  - uid: AeroDB.Graph
+    name: Graph
+    isExternal: true
+    href: AeroDB.Graph.html
+  - name: .
+  - uid: AeroDB.Graph.Edge
+    name: Edge
+    isExternal: true
+    href: AeroDB.Graph.Edge.html
+- uid: AeroDB.GraphNode
+  commentId: T:AeroDB.GraphNode
+  isExternal: true
+  href: AeroDB.GraphNode.html
+  name: GraphNode
+  nameWithType: GraphNode
+  fullName: AeroDB.GraphNode
+- uid: AeroDB.GraphEdge
+  commentId: T:AeroDB.GraphEdge
+  isExternal: true
+  href: AeroDB.GraphEdge.html
+  name: GraphEdge
+  nameWithType: GraphEdge
+  fullName: AeroDB.GraphEdge
+- uid: AeroDB.GraphPath
+  commentId: T:AeroDB.GraphPath
+  isExternal: true
+  href: AeroDB.GraphPath.html
+  name: GraphPath
+  nameWithType: GraphPath
+  fullName: AeroDB.GraphPath
+- uid: AeroDB.IGraphQuery`1
+  commentId: T:AeroDB.IGraphQuery`1
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IGraphQuery-1.html
+  name: IGraphQuery<TNode>
+  nameWithType: IGraphQuery<TNode>
+  fullName: AeroDB.IGraphQuery<TNode>
+  nameWithType.vb: IGraphQuery(Of TNode)
+  fullName.vb: AeroDB.IGraphQuery(Of TNode)
+  name.vb: IGraphQuery(Of TNode)
+  spec.csharp:
+  - uid: AeroDB.IGraphQuery`1
+    name: IGraphQuery
+    isExternal: true
+    href: AeroDB.IGraphQuery-1.html
+  - name: <
+  - name: TNode
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.IGraphQuery`1
+    name: IGraphQuery
+    isExternal: true
+    href: AeroDB.IGraphQuery-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TNode
+  - name: )
+- uid: AeroDB.AeroDBDaemonHealthCheck
+  commentId: T:AeroDB.AeroDBDaemonHealthCheck
+  isExternal: true
+  href: AeroDB.AeroDBDaemonHealthCheck.html
+  name: AeroDBDaemonHealthCheck
+  nameWithType: AeroDBDaemonHealthCheck
+  fullName: AeroDB.AeroDBDaemonHealthCheck
+- uid: AeroDB.AeroDBHealthCheckExtensions
+  commentId: T:AeroDB.AeroDBHealthCheckExtensions
+  isExternal: true
+  href: AeroDB.AeroDBHealthCheckExtensions.html
+  name: AeroDBHealthCheckExtensions
+  nameWithType: AeroDBHealthCheckExtensions
+  fullName: AeroDB.AeroDBHealthCheckExtensions
+- uid: AeroDB.AeroDBHttpExtensions
+  commentId: T:AeroDB.AeroDBHttpExtensions
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.AeroDBHttpExtensions.html
+  name: AeroDBHttpExtensions
+  nameWithType: AeroDBHttpExtensions
+  fullName: AeroDB.AeroDBHttpExtensions
+- uid: AeroDB.IAeroDBTransaction
+  commentId: T:AeroDB.IAeroDBTransaction
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IAeroDBTransaction.html
+  name: IAeroDBTransaction
+  nameWithType: IAeroDBTransaction
+  fullName: AeroDB.IAeroDBTransaction
+- uid: AeroDB.IDatabase
+  commentId: T:AeroDB.IDatabase
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IDatabase.html
+  name: IDatabase
+  nameWithType: IDatabase
+  fullName: AeroDB.IDatabase
+- uid: AeroDB.IDocumentOperations
+  commentId: T:AeroDB.IDocumentOperations
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IDocumentOperations.html
+  name: IDocumentOperations
+  nameWithType: IDocumentOperations
+  fullName: AeroDB.IDocumentOperations
+- uid: AeroDB.IDocumentStore
+  commentId: T:AeroDB.IDocumentStore
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IDocumentStore.html
+  name: IDocumentStore
+  nameWithType: IDocumentStore
+  fullName: AeroDB.IDocumentStore
+- uid: AeroDB.IQuerySession
+  commentId: T:AeroDB.IQuerySession
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IQuerySession.html
+  name: IQuerySession
+  nameWithType: IQuerySession
+  fullName: AeroDB.IQuerySession
+- uid: AeroDB.IDocumentSession
+  commentId: T:AeroDB.IDocumentSession
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IDocumentSession.html
+  name: IDocumentSession
+  nameWithType: IDocumentSession
+  fullName: AeroDB.IDocumentSession
+- uid: AeroDB.IInitialData
+  commentId: T:AeroDB.IInitialData
+  isExternal: true
+  href: AeroDB.IInitialData.html
+  name: IInitialData
+  nameWithType: IInitialData
+  fullName: AeroDB.IInitialData
+- uid: AeroDB.IJsonLoader
+  commentId: T:AeroDB.IJsonLoader
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IJsonLoader.html
+  name: IJsonLoader
+  nameWithType: IJsonLoader
+  fullName: AeroDB.IJsonLoader
+- uid: AeroDB.InternalSessionBase
+  commentId: T:AeroDB.InternalSessionBase
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.InternalSessionBase.html
+  name: InternalSessionBase
+  nameWithType: InternalSessionBase
+  fullName: AeroDB.InternalSessionBase
+- uid: AeroDB.IReadOnlyStoreOptions
+  commentId: T:AeroDB.IReadOnlyStoreOptions
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IReadOnlyStoreOptions.html
+  name: IReadOnlyStoreOptions
+  nameWithType: IReadOnlyStoreOptions
+  fullName: AeroDB.IReadOnlyStoreOptions
+- uid: AeroDB.ISessionFactory
+  commentId: T:AeroDB.ISessionFactory
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.ISessionFactory.html
+  name: ISessionFactory
+  nameWithType: ISessionFactory
+  fullName: AeroDB.ISessionFactory
+- uid: AeroDB.IStorageOperation
+  commentId: T:AeroDB.IStorageOperation
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IStorageOperation.html
+  name: IStorageOperation
+  nameWithType: IStorageOperation
+  fullName: AeroDB.IStorageOperation
+- uid: AeroDB.ISubscriber`1
+  commentId: T:AeroDB.ISubscriber`1
+  isExternal: true
+  href: AeroDB.ISubscriber-1.html
+  name: ISubscriber<T>
+  nameWithType: ISubscriber<T>
+  fullName: AeroDB.ISubscriber<T>
+  nameWithType.vb: ISubscriber(Of T)
+  fullName.vb: AeroDB.ISubscriber(Of T)
+  name.vb: ISubscriber(Of T)
+  spec.csharp:
+  - uid: AeroDB.ISubscriber`1
+    name: ISubscriber
+    isExternal: true
+    href: AeroDB.ISubscriber-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.ISubscriber`1
+    name: ISubscriber
+    isExternal: true
+    href: AeroDB.ISubscriber-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.ISurrealDbQueryable`1
+  commentId: T:AeroDB.ISurrealDbQueryable`1
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.ISurrealDbQueryable-1.html
+  name: ISurrealDbQueryable<T>
+  nameWithType: ISurrealDbQueryable<T>
+  fullName: AeroDB.ISurrealDbQueryable<T>
+  nameWithType.vb: ISurrealDbQueryable(Of T)
+  fullName.vb: AeroDB.ISurrealDbQueryable(Of T)
+  name.vb: ISurrealDbQueryable(Of T)
+  spec.csharp:
+  - uid: AeroDB.ISurrealDbQueryable`1
+    name: ISurrealDbQueryable
+    isExternal: true
+    href: AeroDB.ISurrealDbQueryable-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.ISurrealDbQueryable`1
+    name: ISurrealDbQueryable
+    isExternal: true
+    href: AeroDB.ISurrealDbQueryable-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.SurrealDbQueryable`1
+  commentId: T:AeroDB.SurrealDbQueryable`1
+  isExternal: true
+  href: AeroDB.SurrealDbQueryable-1.html
+  name: SurrealDbQueryable<T>
+  nameWithType: SurrealDbQueryable<T>
+  fullName: AeroDB.SurrealDbQueryable<T>
+  nameWithType.vb: SurrealDbQueryable(Of T)
+  fullName.vb: AeroDB.SurrealDbQueryable(Of T)
+  name.vb: SurrealDbQueryable(Of T)
+  spec.csharp:
+  - uid: AeroDB.SurrealDbQueryable`1
+    name: SurrealDbQueryable
+    isExternal: true
+    href: AeroDB.SurrealDbQueryable-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.SurrealDbQueryable`1
+    name: SurrealDbQueryable
+    isExternal: true
+    href: AeroDB.SurrealDbQueryable-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.SurrealDbQueryableExtensions
+  commentId: T:AeroDB.SurrealDbQueryableExtensions
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.SurrealDbQueryableExtensions.html
+  name: SurrealDbQueryableExtensions
+  nameWithType: SurrealDbQueryableExtensions
+  fullName: AeroDB.SurrealDbQueryableExtensions
+- uid: AeroDB.AggregateQueryBuilder`1
+  commentId: T:AeroDB.AggregateQueryBuilder`1
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.AggregateQueryBuilder-1.html
+  name: AggregateQueryBuilder<T>
+  nameWithType: AggregateQueryBuilder<T>
+  fullName: AeroDB.AggregateQueryBuilder<T>
+  nameWithType.vb: AggregateQueryBuilder(Of T)
+  fullName.vb: AeroDB.AggregateQueryBuilder(Of T)
+  name.vb: AggregateQueryBuilder(Of T)
+  spec.csharp:
+  - uid: AeroDB.AggregateQueryBuilder`1
+    name: AggregateQueryBuilder
+    isExternal: true
+    href: AeroDB.AggregateQueryBuilder-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.AggregateQueryBuilder`1
+    name: AggregateQueryBuilder
+    isExternal: true
+    href: AeroDB.AggregateQueryBuilder-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.AggregateQueryExtensions
+  commentId: T:AeroDB.AggregateQueryExtensions
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.AggregateQueryExtensions.html
+  name: AggregateQueryExtensions
+  nameWithType: AggregateQueryExtensions
+  fullName: AeroDB.AggregateQueryExtensions
+- uid: AeroDB.AggregateQueryExecutor`1
+  commentId: T:AeroDB.AggregateQueryExecutor`1
+  isExternal: true
+  href: AeroDB.AggregateQueryExecutor-1.html
+  name: AggregateQueryExecutor<T>
+  nameWithType: AggregateQueryExecutor<T>
+  fullName: AeroDB.AggregateQueryExecutor<T>
+  nameWithType.vb: AggregateQueryExecutor(Of T)
+  fullName.vb: AeroDB.AggregateQueryExecutor(Of T)
+  name.vb: AggregateQueryExecutor(Of T)
+  spec.csharp:
+  - uid: AeroDB.AggregateQueryExecutor`1
+    name: AggregateQueryExecutor
+    isExternal: true
+    href: AeroDB.AggregateQueryExecutor-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.AggregateQueryExecutor`1
+    name: AggregateQueryExecutor
+    isExternal: true
+    href: AeroDB.AggregateQueryExecutor-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.SurrealExpressionVisitor
+  commentId: T:AeroDB.SurrealExpressionVisitor
+  isExternal: true
+  href: AeroDB.SurrealExpressionVisitor.html
+  name: SurrealExpressionVisitor
+  nameWithType: SurrealExpressionVisitor
+  fullName: AeroDB.SurrealExpressionVisitor
+- uid: AeroDB.SurrealQueryResult
+  commentId: T:AeroDB.SurrealQueryResult
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.SurrealQueryResult.html
+  name: SurrealQueryResult
+  nameWithType: SurrealQueryResult
+  fullName: AeroDB.SurrealQueryResult
+- uid: AeroDB.QueryStatistics
+  commentId: T:AeroDB.QueryStatistics
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.QueryStatistics.html
+  name: QueryStatistics
+  nameWithType: QueryStatistics
+  fullName: AeroDB.QueryStatistics
+- uid: AeroDB.SearchExtensions
+  commentId: T:AeroDB.SearchExtensions
+  isExternal: true
+  href: AeroDB.SearchExtensions.html
+  name: SearchExtensions
+  nameWithType: SearchExtensions
+  fullName: AeroDB.SearchExtensions
+- uid: AeroDB.HybridSearchConfig
+  commentId: T:AeroDB.HybridSearchConfig
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.HybridSearchConfig.html
+  name: HybridSearchConfig
+  nameWithType: HybridSearchConfig
+  fullName: AeroDB.HybridSearchConfig
+- uid: AeroDB.ISearchQuery`1
+  commentId: T:AeroDB.ISearchQuery`1
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.ISearchQuery-1.html
+  name: ISearchQuery<T>
+  nameWithType: ISearchQuery<T>
+  fullName: AeroDB.ISearchQuery<T>
+  nameWithType.vb: ISearchQuery(Of T)
+  fullName.vb: AeroDB.ISearchQuery(Of T)
+  name.vb: ISearchQuery(Of T)
+  spec.csharp:
+  - uid: AeroDB.ISearchQuery`1
+    name: ISearchQuery
+    isExternal: true
+    href: AeroDB.ISearchQuery-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.ISearchQuery`1
+    name: ISearchQuery
+    isExternal: true
+    href: AeroDB.ISearchQuery-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.AeroDBSearchQuery`1
+  commentId: T:AeroDB.AeroDBSearchQuery`1
+  isExternal: true
+  href: AeroDB.AeroDBSearchQuery-1.html
+  name: AeroDBSearchQuery<T>
+  nameWithType: AeroDBSearchQuery<T>
+  fullName: AeroDB.AeroDBSearchQuery<T>
+  nameWithType.vb: AeroDBSearchQuery(Of T)
+  fullName.vb: AeroDB.AeroDBSearchQuery(Of T)
+  name.vb: AeroDBSearchQuery(Of T)
+  spec.csharp:
+  - uid: AeroDB.AeroDBSearchQuery`1
+    name: AeroDBSearchQuery
+    isExternal: true
+    href: AeroDB.AeroDBSearchQuery-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.AeroDBSearchQuery`1
+    name: AeroDBSearchQuery
+    isExternal: true
+    href: AeroDB.AeroDBSearchQuery-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.SearchQueryExtensions
+  commentId: T:AeroDB.SearchQueryExtensions
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.SearchQueryExtensions.html
+  name: SearchQueryExtensions
+  nameWithType: SearchQueryExtensions
+  fullName: AeroDB.SearchQueryExtensions
+- uid: AeroDB.SurrealArrayFunctions
+  commentId: T:AeroDB.SurrealArrayFunctions
+  isExternal: true
+  href: AeroDB.SurrealArrayFunctions.html
+  name: SurrealArrayFunctions
+  nameWithType: SurrealArrayFunctions
+  fullName: AeroDB.SurrealArrayFunctions
+- uid: AeroDB.SurrealBytesFunctions
+  commentId: T:AeroDB.SurrealBytesFunctions
+  isExternal: true
+  href: AeroDB.SurrealBytesFunctions.html
+  name: SurrealBytesFunctions
+  nameWithType: SurrealBytesFunctions
+  fullName: AeroDB.SurrealBytesFunctions
+- uid: AeroDB.SurrealCryptoFunctions
+  commentId: T:AeroDB.SurrealCryptoFunctions
+  isExternal: true
+  href: AeroDB.SurrealCryptoFunctions.html
+  name: SurrealCryptoFunctions
+  nameWithType: SurrealCryptoFunctions
+  fullName: AeroDB.SurrealCryptoFunctions
+- uid: AeroDB.SurrealDurationFunctions
+  commentId: T:AeroDB.SurrealDurationFunctions
+  isExternal: true
+  href: AeroDB.SurrealDurationFunctions.html
+  name: SurrealDurationFunctions
+  nameWithType: SurrealDurationFunctions
+  fullName: AeroDB.SurrealDurationFunctions
+- uid: AeroDB.SurrealFunctions
+  commentId: T:AeroDB.SurrealFunctions
+  isExternal: true
+  href: AeroDB.SurrealFunctions.html
+  name: SurrealFunctions
+  nameWithType: SurrealFunctions
+  fullName: AeroDB.SurrealFunctions
+- uid: AeroDB.SurrealHttpFunctions
+  commentId: T:AeroDB.SurrealHttpFunctions
+  isExternal: true
+  href: AeroDB.SurrealHttpFunctions.html
+  name: SurrealHttpFunctions
+  nameWithType: SurrealHttpFunctions
+  fullName: AeroDB.SurrealHttpFunctions
+- uid: AeroDB.SurrealMetaFunctions
+  commentId: T:AeroDB.SurrealMetaFunctions
+  isExternal: true
+  href: AeroDB.SurrealMetaFunctions.html
+  name: SurrealMetaFunctions
+  nameWithType: SurrealMetaFunctions
+  fullName: AeroDB.SurrealMetaFunctions
+- uid: AeroDB.SurrealObjectFunctions
+  commentId: T:AeroDB.SurrealObjectFunctions
+  isExternal: true
+  href: AeroDB.SurrealObjectFunctions.html
+  name: SurrealObjectFunctions
+  nameWithType: SurrealObjectFunctions
+  fullName: AeroDB.SurrealObjectFunctions
+- uid: AeroDB.SurrealQueryProvider
+  commentId: T:AeroDB.SurrealQueryProvider
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.SurrealQueryProvider.html
+  name: SurrealQueryProvider
+  nameWithType: SurrealQueryProvider
+  fullName: AeroDB.SurrealQueryProvider
+- uid: AeroDB.SurrealRandFunctions
+  commentId: T:AeroDB.SurrealRandFunctions
+  isExternal: true
+  href: AeroDB.SurrealRandFunctions.html
+  name: SurrealRandFunctions
+  nameWithType: SurrealRandFunctions
+  fullName: AeroDB.SurrealRandFunctions
+- uid: AeroDB.SurrealSeriesFunctions
+  commentId: T:AeroDB.SurrealSeriesFunctions
+  isExternal: true
+  href: AeroDB.SurrealSeriesFunctions.html
+  name: SurrealSeriesFunctions
+  nameWithType: SurrealSeriesFunctions
+  fullName: AeroDB.SurrealSeriesFunctions
+- uid: AeroDB.SurrealSessionFunctions
+  commentId: T:AeroDB.SurrealSessionFunctions
+  isExternal: true
+  href: AeroDB.SurrealSessionFunctions.html
+  name: SurrealSessionFunctions
+  nameWithType: SurrealSessionFunctions
+  fullName: AeroDB.SurrealSessionFunctions
+- uid: AeroDB.SurrealStringFunctions
+  commentId: T:AeroDB.SurrealStringFunctions
+  isExternal: true
+  href: AeroDB.SurrealStringFunctions.html
+  name: SurrealStringFunctions
+  nameWithType: SurrealStringFunctions
+  fullName: AeroDB.SurrealStringFunctions
+- uid: AeroDB.SurrealTypeFunctions
+  commentId: T:AeroDB.SurrealTypeFunctions
+  isExternal: true
+  href: AeroDB.SurrealTypeFunctions.html
+  name: SurrealTypeFunctions
+  nameWithType: SurrealTypeFunctions
+  fullName: AeroDB.SurrealTypeFunctions
+- uid: AeroDB.ViewQueryExtensions
+  commentId: T:AeroDB.ViewQueryExtensions
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.ViewQueryExtensions.html
+  name: ViewQueryExtensions
+  nameWithType: ViewQueryExtensions
+  fullName: AeroDB.ViewQueryExtensions
+- uid: AeroDB.LoadManyExtensions
+  commentId: T:AeroDB.LoadManyExtensions
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.LoadManyExtensions.html
+  name: LoadManyExtensions
+  nameWithType: LoadManyExtensions
+  fullName: AeroDB.LoadManyExtensions
+- uid: AeroDB.EnumStorage
+  commentId: T:AeroDB.EnumStorage
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.EnumStorage.html
+  name: EnumStorage
+  nameWithType: EnumStorage
+  fullName: AeroDB.EnumStorage
+- uid: AeroDB.CombGuidIdGeneration
+  commentId: T:AeroDB.CombGuidIdGeneration
+  isExternal: true
+  href: AeroDB.CombGuidIdGeneration.html
+  name: CombGuidIdGeneration
+  nameWithType: CombGuidIdGeneration
+  fullName: AeroDB.CombGuidIdGeneration
+- uid: AeroDB.MartenCompatibilityExtensions
+  commentId: T:AeroDB.MartenCompatibilityExtensions
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.MartenCompatibilityExtensions.html
+  name: MartenCompatibilityExtensions
+  nameWithType: MartenCompatibilityExtensions
+  fullName: AeroDB.MartenCompatibilityExtensions
+- uid: AeroDB.MlOptions
+  commentId: T:AeroDB.MlOptions
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.MlOptions.html
+  name: MlOptions
+  nameWithType: MlOptions
+  fullName: AeroDB.MlOptions
+- uid: AeroDB.DatabaseEndpoint
+  commentId: T:AeroDB.DatabaseEndpoint
+  isExternal: true
+  href: AeroDB.DatabaseEndpoint.html
+  name: DatabaseEndpoint
+  nameWithType: DatabaseEndpoint
+  fullName: AeroDB.DatabaseEndpoint
+- uid: AeroDB.ReadPreference
+  commentId: T:AeroDB.ReadPreference
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.ReadPreference.html
+  name: ReadPreference
+  nameWithType: ReadPreference
+  fullName: AeroDB.ReadPreference
+- uid: AeroDB.DatabasePerTenantSelector
+  commentId: T:AeroDB.DatabasePerTenantSelector
+  isExternal: true
+  href: AeroDB.DatabasePerTenantSelector.html
+  name: DatabasePerTenantSelector
+  nameWithType: DatabasePerTenantSelector
+  fullName: AeroDB.DatabasePerTenantSelector
+- uid: AeroDB.OpenTelemetryOptions
+  commentId: T:AeroDB.OpenTelemetryOptions
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.OpenTelemetryOptions.html
+  name: OpenTelemetryOptions
+  nameWithType: OpenTelemetryOptions
+  fullName: AeroDB.OpenTelemetryOptions
+- uid: AeroDB.PagedListCompatibilityExtensions
+  commentId: T:AeroDB.PagedListCompatibilityExtensions
+  isExternal: true
+  href: AeroDB.PagedListCompatibilityExtensions.html
+  name: PagedListCompatibilityExtensions
+  nameWithType: PagedListCompatibilityExtensions
+  fullName: AeroDB.PagedListCompatibilityExtensions
+- uid: AeroDB.IPatchExpression`1
+  commentId: T:AeroDB.IPatchExpression`1
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IPatchExpression-1.html
+  name: IPatchExpression<T>
+  nameWithType: IPatchExpression<T>
+  fullName: AeroDB.IPatchExpression<T>
+  nameWithType.vb: IPatchExpression(Of T)
+  fullName.vb: AeroDB.IPatchExpression(Of T)
+  name.vb: IPatchExpression(Of T)
+  spec.csharp:
+  - uid: AeroDB.IPatchExpression`1
+    name: IPatchExpression
+    isExternal: true
+    href: AeroDB.IPatchExpression-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.IPatchExpression`1
+    name: IPatchExpression
+    isExternal: true
+    href: AeroDB.IPatchExpression-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.PatchExpression`1
+  commentId: T:AeroDB.PatchExpression`1
+  isExternal: true
+  href: AeroDB.PatchExpression-1.html
+  name: PatchExpression<T>
+  nameWithType: PatchExpression<T>
+  fullName: AeroDB.PatchExpression<T>
+  nameWithType.vb: PatchExpression(Of T)
+  fullName.vb: AeroDB.PatchExpression(Of T)
+  name.vb: PatchExpression(Of T)
+  spec.csharp:
+  - uid: AeroDB.PatchExpression`1
+    name: PatchExpression
+    isExternal: true
+    href: AeroDB.PatchExpression-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.PatchExpression`1
+    name: PatchExpression
+    isExternal: true
+    href: AeroDB.PatchExpression-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.PatchExtensions
+  commentId: T:AeroDB.PatchExtensions
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.PatchExtensions.html
+  name: PatchExtensions
+  nameWithType: PatchExtensions
+  fullName: AeroDB.PatchExtensions
+- uid: AeroDB.AggregateCache
+  commentId: T:AeroDB.AggregateCache
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.AggregateCache.html
+  name: AggregateCache
+  nameWithType: AggregateCache
+  fullName: AeroDB.AggregateCache
+- uid: AeroDB.ProjectionRebuildProgressCallback
+  commentId: T:AeroDB.ProjectionRebuildProgressCallback
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.ProjectionRebuildProgressCallback.html
+  name: ProjectionRebuildProgressCallback
+  nameWithType: ProjectionRebuildProgressCallback
+  fullName: AeroDB.ProjectionRebuildProgressCallback
+- uid: AeroDB.AsyncDaemon
+  commentId: T:AeroDB.AsyncDaemon
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.AsyncDaemon.html
+  name: AsyncDaemon
+  nameWithType: AsyncDaemon
+  fullName: AeroDB.AsyncDaemon
+- uid: AeroDB.CompositeProjection
+  commentId: T:AeroDB.CompositeProjection
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.CompositeProjection.html
+  name: CompositeProjection
+  nameWithType: CompositeProjection
+  fullName: AeroDB.CompositeProjection
+- uid: AeroDB.DaemonHealthState
+  commentId: T:AeroDB.DaemonHealthState
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.DaemonHealthState.html
+  name: DaemonHealthState
+  nameWithType: DaemonHealthState
+  fullName: AeroDB.DaemonHealthState
+- uid: AeroDB.EventProjection`1
+  commentId: T:AeroDB.EventProjection`1
+  isExternal: true
+  href: AeroDB.EventProjection-1.html
+  name: EventProjection<T>
+  nameWithType: EventProjection<T>
+  fullName: AeroDB.EventProjection<T>
+  nameWithType.vb: EventProjection(Of T)
+  fullName.vb: AeroDB.EventProjection(Of T)
+  name.vb: EventProjection(Of T)
+  spec.csharp:
+  - uid: AeroDB.EventProjection`1
+    name: EventProjection
+    isExternal: true
+    href: AeroDB.EventProjection-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.EventProjection`1
+    name: EventProjection
+    isExternal: true
+    href: AeroDB.EventProjection-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.EventProjection
+  commentId: T:AeroDB.EventProjection
+  isExternal: true
+  href: AeroDB.EventProjection.html
+  name: EventProjection
+  nameWithType: EventProjection
+  fullName: AeroDB.EventProjection
+- uid: AeroDB.FlatTableProjection`2
+  commentId: T:AeroDB.FlatTableProjection`2
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.FlatTableProjection-2.html
+  name: FlatTableProjection<TDoc, TId>
+  nameWithType: FlatTableProjection<TDoc, TId>
+  fullName: AeroDB.FlatTableProjection<TDoc, TId>
+  nameWithType.vb: FlatTableProjection(Of TDoc, TId)
+  fullName.vb: AeroDB.FlatTableProjection(Of TDoc, TId)
+  name.vb: FlatTableProjection(Of TDoc, TId)
+  spec.csharp:
+  - uid: AeroDB.FlatTableProjection`2
+    name: FlatTableProjection
+    isExternal: true
+    href: AeroDB.FlatTableProjection-2.html
+  - name: <
+  - name: TDoc
+  - name: ','
+  - name: " "
+  - name: TId
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.FlatTableProjection`2
+    name: FlatTableProjection
+    isExternal: true
+    href: AeroDB.FlatTableProjection-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TDoc
+  - name: ','
+  - name: " "
+  - name: TId
+  - name: )
+- uid: AeroDB.IEventGrouping`1
+  commentId: T:AeroDB.IEventGrouping`1
+  isExternal: true
+  href: AeroDB.IEventGrouping-1.html
+  name: IEventGrouping<TId>
+  nameWithType: IEventGrouping<TId>
+  fullName: AeroDB.IEventGrouping<TId>
+  nameWithType.vb: IEventGrouping(Of TId)
+  fullName.vb: AeroDB.IEventGrouping(Of TId)
+  name.vb: IEventGrouping(Of TId)
+  spec.csharp:
+  - uid: AeroDB.IEventGrouping`1
+    name: IEventGrouping
+    isExternal: true
+    href: AeroDB.IEventGrouping-1.html
+  - name: <
+  - name: TId
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.IEventGrouping`1
+    name: IEventGrouping
+    isExternal: true
+    href: AeroDB.IEventGrouping-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TId
+  - name: )
+- uid: AeroDB.IAggregateGrouper`1
+  commentId: T:AeroDB.IAggregateGrouper`1
+  isExternal: true
+  href: AeroDB.IAggregateGrouper-1.html
+  name: IAggregateGrouper<TId>
+  nameWithType: IAggregateGrouper<TId>
+  fullName: AeroDB.IAggregateGrouper<TId>
+  nameWithType.vb: IAggregateGrouper(Of TId)
+  fullName.vb: AeroDB.IAggregateGrouper(Of TId)
+  name.vb: IAggregateGrouper(Of TId)
+  spec.csharp:
+  - uid: AeroDB.IAggregateGrouper`1
+    name: IAggregateGrouper
+    isExternal: true
+    href: AeroDB.IAggregateGrouper-1.html
+  - name: <
+  - name: TId
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.IAggregateGrouper`1
+    name: IAggregateGrouper
+    isExternal: true
+    href: AeroDB.IAggregateGrouper-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TId
+  - name: )
+- uid: AeroDB.ITenantSliceGroup`1
+  commentId: T:AeroDB.ITenantSliceGroup`1
+  isExternal: true
+  href: AeroDB.ITenantSliceGroup-1.html
+  name: ITenantSliceGroup<TId>
+  nameWithType: ITenantSliceGroup<TId>
+  fullName: AeroDB.ITenantSliceGroup<TId>
+  nameWithType.vb: ITenantSliceGroup(Of TId)
+  fullName.vb: AeroDB.ITenantSliceGroup(Of TId)
+  name.vb: ITenantSliceGroup(Of TId)
+  spec.csharp:
+  - uid: AeroDB.ITenantSliceGroup`1
+    name: ITenantSliceGroup
+    isExternal: true
+    href: AeroDB.ITenantSliceGroup-1.html
+  - name: <
+  - name: TId
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.ITenantSliceGroup`1
+    name: ITenantSliceGroup
+    isExternal: true
+    href: AeroDB.ITenantSliceGroup-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TId
+  - name: )
+- uid: AeroDB.EventGrouping`1
+  commentId: T:AeroDB.EventGrouping`1
+  isExternal: true
+  href: AeroDB.EventGrouping-1.html
+  name: EventGrouping<TId>
+  nameWithType: EventGrouping<TId>
+  fullName: AeroDB.EventGrouping<TId>
+  nameWithType.vb: EventGrouping(Of TId)
+  fullName.vb: AeroDB.EventGrouping(Of TId)
+  name.vb: EventGrouping(Of TId)
+  spec.csharp:
+  - uid: AeroDB.EventGrouping`1
+    name: EventGrouping
+    isExternal: true
+    href: AeroDB.EventGrouping-1.html
+  - name: <
+  - name: TId
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.EventGrouping`1
+    name: EventGrouping
+    isExternal: true
+    href: AeroDB.EventGrouping-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TId
+  - name: )
+- uid: AeroDB.IEnrichProjection
+  commentId: T:AeroDB.IEnrichProjection
+  isExternal: true
+  href: AeroDB.IEnrichProjection.html
+  name: IEnrichProjection
+  nameWithType: IEnrichProjection
+  fullName: AeroDB.IEnrichProjection
+- uid: AeroDB.IEventSlice`1
+  commentId: T:AeroDB.IEventSlice`1
+  isExternal: true
+  href: AeroDB.IEventSlice-1.html
+  name: IEventSlice<T>
+  nameWithType: IEventSlice<T>
+  fullName: AeroDB.IEventSlice<T>
+  nameWithType.vb: IEventSlice(Of T)
+  fullName.vb: AeroDB.IEventSlice(Of T)
+  name.vb: IEventSlice(Of T)
+  spec.csharp:
+  - uid: AeroDB.IEventSlice`1
+    name: IEventSlice
+    isExternal: true
+    href: AeroDB.IEventSlice-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.IEventSlice`1
+    name: IEventSlice
+    isExternal: true
+    href: AeroDB.IEventSlice-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.EventSlice`1
+  commentId: T:AeroDB.EventSlice`1
+  isExternal: true
+  href: AeroDB.EventSlice-1.html
+  name: EventSlice<T>
+  nameWithType: EventSlice<T>
+  fullName: AeroDB.EventSlice<T>
+  nameWithType.vb: EventSlice(Of T)
+  fullName.vb: AeroDB.EventSlice(Of T)
+  name.vb: EventSlice(Of T)
+  spec.csharp:
+  - uid: AeroDB.EventSlice`1
+    name: EventSlice
+    isExternal: true
+    href: AeroDB.EventSlice-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.EventSlice`1
+    name: EventSlice
+    isExternal: true
+    href: AeroDB.EventSlice-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.ILiveQuery`1
+  commentId: T:AeroDB.ILiveQuery`1
+  isExternal: true
+  href: AeroDB.ILiveQuery-1.html
+  name: ILiveQuery<T>
+  nameWithType: ILiveQuery<T>
+  fullName: AeroDB.ILiveQuery<T>
+  nameWithType.vb: ILiveQuery(Of T)
+  fullName.vb: AeroDB.ILiveQuery(Of T)
+  name.vb: ILiveQuery(Of T)
+  spec.csharp:
+  - uid: AeroDB.ILiveQuery`1
+    name: ILiveQuery
+    isExternal: true
+    href: AeroDB.ILiveQuery-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.ILiveQuery`1
+    name: ILiveQuery
+    isExternal: true
+    href: AeroDB.ILiveQuery-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.InlineProjection`1
+  commentId: T:AeroDB.InlineProjection`1
+  isExternal: true
+  href: AeroDB.InlineProjection-1.html
+  name: InlineProjection<T>
+  nameWithType: InlineProjection<T>
+  fullName: AeroDB.InlineProjection<T>
+  nameWithType.vb: InlineProjection(Of T)
+  fullName.vb: AeroDB.InlineProjection(Of T)
+  name.vb: InlineProjection(Of T)
+  spec.csharp:
+  - uid: AeroDB.InlineProjection`1
+    name: InlineProjection
+    isExternal: true
+    href: AeroDB.InlineProjection-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.InlineProjection`1
+    name: InlineProjection
+    isExternal: true
+    href: AeroDB.InlineProjection-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.IProjection
+  commentId: T:AeroDB.IProjection
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IProjection.html
+  name: IProjection
+  nameWithType: IProjection
+  fullName: AeroDB.IProjection
+- uid: AeroDB.IProjectionContext
+  commentId: T:AeroDB.IProjectionContext
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IProjectionContext.html
+  name: IProjectionContext
+  nameWithType: IProjectionContext
+  fullName: AeroDB.IProjectionContext
+- uid: AeroDB.IProjectionCoordinator
+  commentId: T:AeroDB.IProjectionCoordinator
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IProjectionCoordinator.html
+  name: IProjectionCoordinator
+  nameWithType: IProjectionCoordinator
+  fullName: AeroDB.IProjectionCoordinator
+- uid: AeroDB.LiveStreamAggregation
+  commentId: T:AeroDB.LiveStreamAggregation
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.LiveStreamAggregation.html
+  name: LiveStreamAggregation
+  nameWithType: LiveStreamAggregation
+  fullName: AeroDB.LiveStreamAggregation
+- uid: AeroDB.MultiStreamProjection`1
+  commentId: T:AeroDB.MultiStreamProjection`1
+  isExternal: true
+  href: AeroDB.MultiStreamProjection-1.html
+  name: MultiStreamProjection<T>
+  nameWithType: MultiStreamProjection<T>
+  fullName: AeroDB.MultiStreamProjection<T>
+  nameWithType.vb: MultiStreamProjection(Of T)
+  fullName.vb: AeroDB.MultiStreamProjection(Of T)
+  name.vb: MultiStreamProjection(Of T)
+  spec.csharp:
+  - uid: AeroDB.MultiStreamProjection`1
+    name: MultiStreamProjection
+    isExternal: true
+    href: AeroDB.MultiStreamProjection-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.MultiStreamProjection`1
+    name: MultiStreamProjection
+    isExternal: true
+    href: AeroDB.MultiStreamProjection-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.MultiStreamProjection`2
+  commentId: T:AeroDB.MultiStreamProjection`2
+  isExternal: true
+  href: AeroDB.MultiStreamProjection-2.html
+  name: MultiStreamProjection<T, TId>
+  nameWithType: MultiStreamProjection<T, TId>
+  fullName: AeroDB.MultiStreamProjection<T, TId>
+  nameWithType.vb: MultiStreamProjection(Of T, TId)
+  fullName.vb: AeroDB.MultiStreamProjection(Of T, TId)
+  name.vb: MultiStreamProjection(Of T, TId)
+  spec.csharp:
+  - uid: AeroDB.MultiStreamProjection`2
+    name: MultiStreamProjection
+    isExternal: true
+    href: AeroDB.MultiStreamProjection-2.html
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TId
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.MultiStreamProjection`2
+    name: MultiStreamProjection
+    isExternal: true
+    href: AeroDB.MultiStreamProjection-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TId
+  - name: )
+- uid: AeroDB.ProjectionCollection
+  commentId: T:AeroDB.ProjectionCollection
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.ProjectionCollection.html
+  name: ProjectionCollection
+  nameWithType: ProjectionCollection
+  fullName: AeroDB.ProjectionCollection
+- uid: AeroDB.ProjectionContext
+  commentId: T:AeroDB.ProjectionContext
+  isExternal: true
+  href: AeroDB.ProjectionContext.html
+  name: ProjectionContext
+  nameWithType: ProjectionContext
+  fullName: AeroDB.ProjectionContext
+- uid: AeroDB.ProjectionCoordinator
+  commentId: T:AeroDB.ProjectionCoordinator
+  isExternal: true
+  href: AeroDB.ProjectionCoordinator.html
+  name: ProjectionCoordinator
+  nameWithType: ProjectionCoordinator
+  fullName: AeroDB.ProjectionCoordinator
+- uid: AeroDB.ProjectionLifecycle
+  commentId: T:AeroDB.ProjectionLifecycle
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.ProjectionLifecycle.html
+  name: ProjectionLifecycle
+  nameWithType: ProjectionLifecycle
+  fullName: AeroDB.ProjectionLifecycle
+- uid: AeroDB.ProjectionProgress
+  commentId: T:AeroDB.ProjectionProgress
+  isExternal: true
+  href: AeroDB.ProjectionProgress.html
+  name: ProjectionProgress
+  nameWithType: ProjectionProgress
+  fullName: AeroDB.ProjectionProgress
+- uid: AeroDB.ProjectionShard
+  commentId: T:AeroDB.ProjectionShard
+  isExternal: true
+  href: AeroDB.ProjectionShard.html
+  name: ProjectionShard
+  nameWithType: ProjectionShard
+  fullName: AeroDB.ProjectionShard
+- uid: AeroDB.IProjectionSideEffect
+  commentId: T:AeroDB.IProjectionSideEffect
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IProjectionSideEffect.html
+  name: IProjectionSideEffect
+  nameWithType: IProjectionSideEffect
+  fullName: AeroDB.IProjectionSideEffect
+- uid: AeroDB.AppendEventSideEffect
+  commentId: T:AeroDB.AppendEventSideEffect
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.AppendEventSideEffect.html
+  name: AppendEventSideEffect
+  nameWithType: AppendEventSideEffect
+  fullName: AeroDB.AppendEventSideEffect
+- uid: AeroDB.ProjectionReentrancyException
+  commentId: T:AeroDB.ProjectionReentrancyException
+  isExternal: true
+  href: AeroDB.ProjectionReentrancyException.html
+  name: ProjectionReentrancyException
+  nameWithType: ProjectionReentrancyException
+  fullName: AeroDB.ProjectionReentrancyException
+- uid: AeroDB.SingleStreamProjection`1
+  commentId: T:AeroDB.SingleStreamProjection`1
+  isExternal: true
+  href: AeroDB.SingleStreamProjection-1.html
+  name: SingleStreamProjection<T>
+  nameWithType: SingleStreamProjection<T>
+  fullName: AeroDB.SingleStreamProjection<T>
+  nameWithType.vb: SingleStreamProjection(Of T)
+  fullName.vb: AeroDB.SingleStreamProjection(Of T)
+  name.vb: SingleStreamProjection(Of T)
+  spec.csharp:
+  - uid: AeroDB.SingleStreamProjection`1
+    name: SingleStreamProjection
+    isExternal: true
+    href: AeroDB.SingleStreamProjection-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.SingleStreamProjection`1
+    name: SingleStreamProjection
+    isExternal: true
+    href: AeroDB.SingleStreamProjection-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.SingleStreamProjection`2
+  commentId: T:AeroDB.SingleStreamProjection`2
+  isExternal: true
+  href: AeroDB.SingleStreamProjection-2.html
+  name: SingleStreamProjection<TDoc, TId>
+  nameWithType: SingleStreamProjection<TDoc, TId>
+  fullName: AeroDB.SingleStreamProjection<TDoc, TId>
+  nameWithType.vb: SingleStreamProjection(Of TDoc, TId)
+  fullName.vb: AeroDB.SingleStreamProjection(Of TDoc, TId)
+  name.vb: SingleStreamProjection(Of TDoc, TId)
+  spec.csharp:
+  - uid: AeroDB.SingleStreamProjection`2
+    name: SingleStreamProjection
+    isExternal: true
+    href: AeroDB.SingleStreamProjection-2.html
+  - name: <
+  - name: TDoc
+  - name: ','
+  - name: " "
+  - name: TId
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.SingleStreamProjection`2
+    name: SingleStreamProjection
+    isExternal: true
+    href: AeroDB.SingleStreamProjection-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TDoc
+  - name: ','
+  - name: " "
+  - name: TId
+  - name: )
+- uid: AeroDB.SnapshotOptions
+  commentId: T:AeroDB.SnapshotOptions
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.SnapshotOptions.html
+  name: SnapshotOptions
+  nameWithType: SnapshotOptions
+  fullName: AeroDB.SnapshotOptions
+- uid: AeroDB.SnapshotProjection`1
+  commentId: T:AeroDB.SnapshotProjection`1
+  isExternal: true
+  href: AeroDB.SnapshotProjection-1.html
+  name: SnapshotProjection<T>
+  nameWithType: SnapshotProjection<T>
+  fullName: AeroDB.SnapshotProjection<T>
+  nameWithType.vb: SnapshotProjection(Of T)
+  fullName.vb: AeroDB.SnapshotProjection(Of T)
+  name.vb: SnapshotProjection(Of T)
+  spec.csharp:
+  - uid: AeroDB.SnapshotProjection`1
+    name: SnapshotProjection
+    isExternal: true
+    href: AeroDB.SnapshotProjection-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.SnapshotProjection`1
+    name: SnapshotProjection
+    isExternal: true
+    href: AeroDB.SnapshotProjection-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.QuerySession
+  commentId: T:AeroDB.QuerySession
+  isExternal: true
+  href: AeroDB.QuerySession.html
+  name: QuerySession
+  nameWithType: QuerySession
+  fullName: AeroDB.QuerySession
+- uid: AeroDB.AnalyzerDefinition
+  commentId: T:AeroDB.AnalyzerDefinition
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.AnalyzerDefinition.html
+  name: AnalyzerDefinition
+  nameWithType: AnalyzerDefinition
+  fullName: AeroDB.AnalyzerDefinition
+- uid: AeroDB.AnalyzerOptions
+  commentId: T:AeroDB.AnalyzerOptions
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.AnalyzerOptions.html
+  name: AnalyzerOptions
+  nameWithType: AnalyzerOptions
+  fullName: AeroDB.AnalyzerOptions
+- uid: AeroDB.DocumentHierarchy
+  commentId: T:AeroDB.DocumentHierarchy
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.DocumentHierarchy.html
+  name: DocumentHierarchy
+  nameWithType: DocumentHierarchy
+  fullName: AeroDB.DocumentHierarchy
+- uid: AeroDB.DocumentIndex
+  commentId: T:AeroDB.DocumentIndex
+  isExternal: true
+  href: AeroDB.DocumentIndex.html
+  name: DocumentIndex
+  nameWithType: DocumentIndex
+  fullName: AeroDB.DocumentIndex
+- uid: AeroDB.TenancyScope
+  commentId: T:AeroDB.TenancyScope
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.TenancyScope.html
+  name: TenancyScope
+  nameWithType: TenancyScope
+  fullName: AeroDB.TenancyScope
+- uid: AeroDB.SortOrder
+  commentId: T:AeroDB.SortOrder
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.SortOrder.html
+  name: SortOrder
+  nameWithType: SortOrder
+  fullName: AeroDB.SortOrder
+- uid: AeroDB.DocumentMapping
+  commentId: T:AeroDB.DocumentMapping
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.DocumentMapping.html
+  name: DocumentMapping
+  nameWithType: DocumentMapping
+  fullName: AeroDB.DocumentMapping
+- uid: AeroDB.DocumentMapping`1
+  commentId: T:AeroDB.DocumentMapping`1
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.DocumentMapping-1.html
+  name: DocumentMapping<T>
+  nameWithType: DocumentMapping<T>
+  fullName: AeroDB.DocumentMapping<T>
+  nameWithType.vb: DocumentMapping(Of T)
+  fullName.vb: AeroDB.DocumentMapping(Of T)
+  name.vb: DocumentMapping(Of T)
+  spec.csharp:
+  - uid: AeroDB.DocumentMapping`1
+    name: DocumentMapping
+    isExternal: true
+    href: AeroDB.DocumentMapping-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.DocumentMapping`1
+    name: DocumentMapping
+    isExternal: true
+    href: AeroDB.DocumentMapping-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.SchemaMode
+  commentId: T:AeroDB.SchemaMode
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.SchemaMode.html
+  name: SchemaMode
+  nameWithType: SchemaMode
+  fullName: AeroDB.SchemaMode
+- uid: AeroDB.FieldDefinition
+  commentId: T:AeroDB.FieldDefinition
+  isExternal: true
+  href: AeroDB.FieldDefinition.html
+  name: FieldDefinition
+  nameWithType: FieldDefinition
+  fullName: AeroDB.FieldDefinition
+- uid: AeroDB.DocumentPolicies
+  commentId: T:AeroDB.DocumentPolicies
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.DocumentPolicies.html
+  name: DocumentPolicies
+  nameWithType: DocumentPolicies
+  fullName: AeroDB.DocumentPolicies
+- uid: AeroDB.EdgeMapping`1
+  commentId: T:AeroDB.EdgeMapping`1
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.EdgeMapping-1.html
+  name: EdgeMapping<TEdge>
+  nameWithType: EdgeMapping<TEdge>
+  fullName: AeroDB.EdgeMapping<TEdge>
+  nameWithType.vb: EdgeMapping(Of TEdge)
+  fullName.vb: AeroDB.EdgeMapping(Of TEdge)
+  name.vb: EdgeMapping(Of TEdge)
+  spec.csharp:
+  - uid: AeroDB.EdgeMapping`1
+    name: EdgeMapping
+    isExternal: true
+    href: AeroDB.EdgeMapping-1.html
+  - name: <
+  - name: TEdge
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.EdgeMapping`1
+    name: EdgeMapping
+    isExternal: true
+    href: AeroDB.EdgeMapping-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TEdge
+  - name: )
+- uid: AeroDB.ForeignKeyDefinition
+  commentId: T:AeroDB.ForeignKeyDefinition
+  isExternal: true
+  href: AeroDB.ForeignKeyDefinition.html
+  name: ForeignKeyDefinition
+  nameWithType: ForeignKeyDefinition
+  fullName: AeroDB.ForeignKeyDefinition
+- uid: AeroDB.IDocumentPolicy
+  commentId: T:AeroDB.IDocumentPolicy
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IDocumentPolicy.html
+  name: IDocumentPolicy
+  nameWithType: IDocumentPolicy
+  fullName: AeroDB.IDocumentPolicy
+- uid: AeroDB.IndexDefinition
+  commentId: T:AeroDB.IndexDefinition
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IndexDefinition.html
+  name: IndexDefinition
+  nameWithType: IndexDefinition
+  fullName: AeroDB.IndexDefinition
+- uid: AeroDB.ComputedIndexOptions
+  commentId: T:AeroDB.ComputedIndexOptions
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.ComputedIndexOptions.html
+  name: ComputedIndexOptions
+  nameWithType: ComputedIndexOptions
+  fullName: AeroDB.ComputedIndexOptions
+- uid: AeroDB.ComputedIndexOptions.IndexMethod
+  commentId: T:AeroDB.ComputedIndexOptions.IndexMethod
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.ComputedIndexOptions.html
+  name: ComputedIndexOptions.IndexMethod
+  nameWithType: ComputedIndexOptions.IndexMethod
+  fullName: AeroDB.ComputedIndexOptions.IndexMethod
+  spec.csharp:
+  - uid: AeroDB.ComputedIndexOptions
+    name: ComputedIndexOptions
+    isExternal: true
+    href: AeroDB.ComputedIndexOptions.html
+  - name: .
+  - uid: AeroDB.ComputedIndexOptions.IndexMethod
+    name: IndexMethod
+    isExternal: true
+    href: AeroDB.ComputedIndexOptions.IndexMethod.html
+  spec.vb:
+  - uid: AeroDB.ComputedIndexOptions
+    name: ComputedIndexOptions
+    isExternal: true
+    href: AeroDB.ComputedIndexOptions.html
+  - name: .
+  - uid: AeroDB.ComputedIndexOptions.IndexMethod
+    name: IndexMethod
+    isExternal: true
+    href: AeroDB.ComputedIndexOptions.IndexMethod.html
+- uid: AeroDB.ComputedIndexOptions.IndexCasing
+  commentId: T:AeroDB.ComputedIndexOptions.IndexCasing
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.ComputedIndexOptions.html
+  name: ComputedIndexOptions.IndexCasing
+  nameWithType: ComputedIndexOptions.IndexCasing
+  fullName: AeroDB.ComputedIndexOptions.IndexCasing
+  spec.csharp:
+  - uid: AeroDB.ComputedIndexOptions
+    name: ComputedIndexOptions
+    isExternal: true
+    href: AeroDB.ComputedIndexOptions.html
+  - name: .
+  - uid: AeroDB.ComputedIndexOptions.IndexCasing
+    name: IndexCasing
+    isExternal: true
+    href: AeroDB.ComputedIndexOptions.IndexCasing.html
+  spec.vb:
+  - uid: AeroDB.ComputedIndexOptions
+    name: ComputedIndexOptions
+    isExternal: true
+    href: AeroDB.ComputedIndexOptions.html
+  - name: .
+  - uid: AeroDB.ComputedIndexOptions.IndexCasing
+    name: IndexCasing
+    isExternal: true
+    href: AeroDB.ComputedIndexOptions.IndexCasing.html
+- uid: AeroDB.ComputedIndexOptions.SortOrder
+  commentId: T:AeroDB.ComputedIndexOptions.SortOrder
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.ComputedIndexOptions.html
+  name: ComputedIndexOptions.SortOrder
+  nameWithType: ComputedIndexOptions.SortOrder
+  fullName: AeroDB.ComputedIndexOptions.SortOrder
+  spec.csharp:
+  - uid: AeroDB.ComputedIndexOptions
+    name: ComputedIndexOptions
+    isExternal: true
+    href: AeroDB.ComputedIndexOptions.html
+  - name: .
+  - uid: AeroDB.ComputedIndexOptions.SortOrder
+    name: SortOrder
+    isExternal: true
+    href: AeroDB.ComputedIndexOptions.SortOrder.html
+  spec.vb:
+  - uid: AeroDB.ComputedIndexOptions
+    name: ComputedIndexOptions
+    isExternal: true
+    href: AeroDB.ComputedIndexOptions.html
+  - name: .
+  - uid: AeroDB.ComputedIndexOptions.SortOrder
+    name: SortOrder
+    isExternal: true
+    href: AeroDB.ComputedIndexOptions.SortOrder.html
+- uid: AeroDB.IndexType
+  commentId: T:AeroDB.IndexType
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IndexType.html
+  name: IndexType
+  nameWithType: IndexType
+  fullName: AeroDB.IndexType
+- uid: AeroDB.IndexOptions
+  commentId: T:AeroDB.IndexOptions
+  isExternal: true
+  href: AeroDB.IndexOptions.html
+  name: IndexOptions
+  nameWithType: IndexOptions
+  fullName: AeroDB.IndexOptions
+- uid: AeroDB.SchemaDiff
+  commentId: T:AeroDB.SchemaDiff
+  isExternal: true
+  href: AeroDB.SchemaDiff.html
+  name: SchemaDiff
+  nameWithType: SchemaDiff
+  fullName: AeroDB.SchemaDiff
+- uid: AeroDB.SchemaDiff.DiffEntry
+  commentId: T:AeroDB.SchemaDiff.DiffEntry
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.SchemaDiff.html
+  name: SchemaDiff.DiffEntry
+  nameWithType: SchemaDiff.DiffEntry
+  fullName: AeroDB.SchemaDiff.DiffEntry
+  spec.csharp:
+  - uid: AeroDB.SchemaDiff
+    name: SchemaDiff
+    isExternal: true
+    href: AeroDB.SchemaDiff.html
+  - name: .
+  - uid: AeroDB.SchemaDiff.DiffEntry
+    name: DiffEntry
+    isExternal: true
+    href: AeroDB.SchemaDiff.DiffEntry.html
+  spec.vb:
+  - uid: AeroDB.SchemaDiff
+    name: SchemaDiff
+    isExternal: true
+    href: AeroDB.SchemaDiff.html
+  - name: .
+  - uid: AeroDB.SchemaDiff.DiffEntry
+    name: DiffEntry
+    isExternal: true
+    href: AeroDB.SchemaDiff.DiffEntry.html
+- uid: AeroDB.SchemaDiffer
+  commentId: T:AeroDB.SchemaDiffer
+  isExternal: true
+  href: AeroDB.SchemaDiffer.html
+  name: SchemaDiffer
+  nameWithType: SchemaDiffer
+  fullName: AeroDB.SchemaDiffer
+- uid: AeroDB.SchemaManager
+  commentId: T:AeroDB.SchemaManager
+  isExternal: true
+  href: AeroDB.SchemaManager.html
+  name: SchemaManager
+  nameWithType: SchemaManager
+  fullName: AeroDB.SchemaManager
+- uid: AeroDB.Search
+  commentId: T:AeroDB.Search
+  isExternal: true
+  href: AeroDB.Search.html
+  name: Search
+  nameWithType: Search
+  fullName: AeroDB.Search
+- uid: AeroDB.Search.Tokenizer
+  commentId: T:AeroDB.Search.Tokenizer
+  isExternal: true
+  href: AeroDB.Search.html
+  name: Search.Tokenizer
+  nameWithType: Search.Tokenizer
+  fullName: AeroDB.Search.Tokenizer
+  spec.csharp:
+  - uid: AeroDB.Search
+    name: Search
+    isExternal: true
+    href: AeroDB.Search.html
+  - name: .
+  - uid: AeroDB.Search.Tokenizer
+    name: Tokenizer
+    isExternal: true
+    href: AeroDB.Search.Tokenizer.html
+  spec.vb:
+  - uid: AeroDB.Search
+    name: Search
+    isExternal: true
+    href: AeroDB.Search.html
+  - name: .
+  - uid: AeroDB.Search.Tokenizer
+    name: Tokenizer
+    isExternal: true
+    href: AeroDB.Search.Tokenizer.html
+- uid: AeroDB.Search.Filter
+  commentId: T:AeroDB.Search.Filter
+  isExternal: true
+  href: AeroDB.Search.html
+  name: Search.Filter
+  nameWithType: Search.Filter
+  fullName: AeroDB.Search.Filter
+  spec.csharp:
+  - uid: AeroDB.Search
+    name: Search
+    isExternal: true
+    href: AeroDB.Search.html
+  - name: .
+  - uid: AeroDB.Search.Filter
+    name: Filter
+    isExternal: true
+    href: AeroDB.Search.Filter.html
+  spec.vb:
+  - uid: AeroDB.Search
+    name: Search
+    isExternal: true
+    href: AeroDB.Search.html
+  - name: .
+  - uid: AeroDB.Search.Filter
+    name: Filter
+    isExternal: true
+    href: AeroDB.Search.Filter.html
+- uid: AeroDB.Search.Analyzer
+  commentId: T:AeroDB.Search.Analyzer
+  isExternal: true
+  href: AeroDB.Search.html
+  name: Search.Analyzer
+  nameWithType: Search.Analyzer
+  fullName: AeroDB.Search.Analyzer
+  spec.csharp:
+  - uid: AeroDB.Search
+    name: Search
+    isExternal: true
+    href: AeroDB.Search.html
+  - name: .
+  - uid: AeroDB.Search.Analyzer
+    name: Analyzer
+    isExternal: true
+    href: AeroDB.Search.Analyzer.html
+  spec.vb:
+  - uid: AeroDB.Search
+    name: Search
+    isExternal: true
+    href: AeroDB.Search.html
+  - name: .
+  - uid: AeroDB.Search.Analyzer
+    name: Analyzer
+    isExternal: true
+    href: AeroDB.Search.Analyzer.html
+- uid: AeroDB.Search.Distance
+  commentId: T:AeroDB.Search.Distance
+  isExternal: true
+  href: AeroDB.Search.html
+  name: Search.Distance
+  nameWithType: Search.Distance
+  fullName: AeroDB.Search.Distance
+  spec.csharp:
+  - uid: AeroDB.Search
+    name: Search
+    isExternal: true
+    href: AeroDB.Search.html
+  - name: .
+  - uid: AeroDB.Search.Distance
+    name: Distance
+    isExternal: true
+    href: AeroDB.Search.Distance.html
+  spec.vb:
+  - uid: AeroDB.Search
+    name: Search
+    isExternal: true
+    href: AeroDB.Search.html
+  - name: .
+  - uid: AeroDB.Search.Distance
+    name: Distance
+    isExternal: true
+    href: AeroDB.Search.Distance.html
+- uid: AeroDB.ViewDefinition
+  commentId: T:AeroDB.ViewDefinition
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.ViewDefinition.html
+  name: ViewDefinition
+  nameWithType: ViewDefinition
+  fullName: AeroDB.ViewDefinition
+- uid: AeroDB.ViewDefinition`1
+  commentId: T:AeroDB.ViewDefinition`1
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.ViewDefinition-1.html
+  name: ViewDefinition<T>
+  nameWithType: ViewDefinition<T>
+  fullName: AeroDB.ViewDefinition<T>
+  nameWithType.vb: ViewDefinition(Of T)
+  fullName.vb: AeroDB.ViewDefinition(Of T)
+  name.vb: ViewDefinition(Of T)
+  spec.csharp:
+  - uid: AeroDB.ViewDefinition`1
+    name: ViewDefinition
+    isExternal: true
+    href: AeroDB.ViewDefinition-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.ViewDefinition`1
+    name: ViewDefinition
+    isExternal: true
+    href: AeroDB.ViewDefinition-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.ViewOptions
+  commentId: T:AeroDB.ViewOptions
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.ViewOptions.html
+  name: ViewOptions
+  nameWithType: ViewOptions
+  fullName: AeroDB.ViewOptions
+- uid: AeroDB.ViewSelectBuilder`1
+  commentId: T:AeroDB.ViewSelectBuilder`1
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.ViewSelectBuilder-1.html
+  name: ViewSelectBuilder<T>
+  nameWithType: ViewSelectBuilder<T>
+  fullName: AeroDB.ViewSelectBuilder<T>
+  nameWithType.vb: ViewSelectBuilder(Of T)
+  fullName.vb: AeroDB.ViewSelectBuilder(Of T)
+  name.vb: ViewSelectBuilder(Of T)
+  spec.csharp:
+  - uid: AeroDB.ViewSelectBuilder`1
+    name: ViewSelectBuilder
+    isExternal: true
+    href: AeroDB.ViewSelectBuilder-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.ViewSelectBuilder`1
+    name: ViewSelectBuilder
+    isExternal: true
+    href: AeroDB.ViewSelectBuilder-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.GraphEntry`1
+  commentId: T:AeroDB.GraphEntry`1
+  isExternal: true
+  href: AeroDB.GraphEntry-1.html
+  name: GraphEntry<TSource>
+  nameWithType: GraphEntry<TSource>
+  fullName: AeroDB.GraphEntry<TSource>
+  nameWithType.vb: GraphEntry(Of TSource)
+  fullName.vb: AeroDB.GraphEntry(Of TSource)
+  name.vb: GraphEntry(Of TSource)
+  spec.csharp:
+  - uid: AeroDB.GraphEntry`1
+    name: GraphEntry
+    isExternal: true
+    href: AeroDB.GraphEntry-1.html
+  - name: <
+  - name: TSource
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.GraphEntry`1
+    name: GraphEntry
+    isExternal: true
+    href: AeroDB.GraphEntry-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TSource
+  - name: )
+- uid: AeroDB.ViewGraphSelectBuilder`2
+  commentId: T:AeroDB.ViewGraphSelectBuilder`2
+  isExternal: true
+  href: AeroDB.ViewGraphSelectBuilder-2.html
+  name: ViewGraphSelectBuilder<TSource, TTarget>
+  nameWithType: ViewGraphSelectBuilder<TSource, TTarget>
+  fullName: AeroDB.ViewGraphSelectBuilder<TSource, TTarget>
+  nameWithType.vb: ViewGraphSelectBuilder(Of TSource, TTarget)
+  fullName.vb: AeroDB.ViewGraphSelectBuilder(Of TSource, TTarget)
+  name.vb: ViewGraphSelectBuilder(Of TSource, TTarget)
+  spec.csharp:
+  - uid: AeroDB.ViewGraphSelectBuilder`2
+    name: ViewGraphSelectBuilder
+    isExternal: true
+    href: AeroDB.ViewGraphSelectBuilder-2.html
+  - name: <
+  - name: TSource
+  - name: ','
+  - name: " "
+  - name: TTarget
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.ViewGraphSelectBuilder`2
+    name: ViewGraphSelectBuilder
+    isExternal: true
+    href: AeroDB.ViewGraphSelectBuilder-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TSource
+  - name: ','
+  - name: " "
+  - name: TTarget
+  - name: )
+- uid: AeroDB.SessionOptions
+  commentId: T:AeroDB.SessionOptions
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.SessionOptions.html
+  name: SessionOptions
+  nameWithType: SessionOptions
+  fullName: AeroDB.SessionOptions
+- uid: AeroDB.SnapshotLifecycle
+  commentId: T:AeroDB.SnapshotLifecycle
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.SnapshotLifecycle.html
+  name: SnapshotLifecycle
+  nameWithType: SnapshotLifecycle
+  fullName: AeroDB.SnapshotLifecycle
+- uid: AeroDB.ISoftDeleted
+  commentId: T:AeroDB.ISoftDeleted
+  isExternal: true
+  href: AeroDB.ISoftDeleted.html
+  name: ISoftDeleted
+  nameWithType: ISoftDeleted
+  fullName: AeroDB.ISoftDeleted
+- uid: AeroDB.SoftDeleteExtensions
+  commentId: T:AeroDB.SoftDeleteExtensions
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.SoftDeleteExtensions.html
+  name: SoftDeleteExtensions
+  nameWithType: SoftDeleteExtensions
+  fullName: AeroDB.SoftDeleteExtensions
+- uid: AeroDB.AeroDBSpatialQuery`1
+  commentId: T:AeroDB.AeroDBSpatialQuery`1
+  isExternal: true
+  href: AeroDB.AeroDBSpatialQuery-1.html
+  name: AeroDBSpatialQuery<T>
+  nameWithType: AeroDBSpatialQuery<T>
+  fullName: AeroDB.AeroDBSpatialQuery<T>
+  nameWithType.vb: AeroDBSpatialQuery(Of T)
+  fullName.vb: AeroDB.AeroDBSpatialQuery(Of T)
+  name.vb: AeroDBSpatialQuery(Of T)
+  spec.csharp:
+  - uid: AeroDB.AeroDBSpatialQuery`1
+    name: AeroDBSpatialQuery
+    isExternal: true
+    href: AeroDB.AeroDBSpatialQuery-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.AeroDBSpatialQuery`1
+    name: AeroDBSpatialQuery
+    isExternal: true
+    href: AeroDB.AeroDBSpatialQuery-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.ISpatialQuery`1
+  commentId: T:AeroDB.ISpatialQuery`1
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.ISpatialQuery-1.html
+  name: ISpatialQuery<T>
+  nameWithType: ISpatialQuery<T>
+  fullName: AeroDB.ISpatialQuery<T>
+  nameWithType.vb: ISpatialQuery(Of T)
+  fullName.vb: AeroDB.ISpatialQuery(Of T)
+  name.vb: ISpatialQuery(Of T)
+  spec.csharp:
+  - uid: AeroDB.ISpatialQuery`1
+    name: ISpatialQuery
+    isExternal: true
+    href: AeroDB.ISpatialQuery-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.ISpatialQuery`1
+    name: ISpatialQuery
+    isExternal: true
+    href: AeroDB.ISpatialQuery-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.SpatialExtensions
+  commentId: T:AeroDB.SpatialExtensions
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.SpatialExtensions.html
+  name: SpatialExtensions
+  nameWithType: SpatialExtensions
+  fullName: AeroDB.SpatialExtensions
+- uid: AeroDB.StaleDataMode
+  commentId: T:AeroDB.StaleDataMode
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.StaleDataMode.html
+  name: StaleDataMode
+  nameWithType: StaleDataMode
+  fullName: AeroDB.StaleDataMode
+- uid: AeroDB.StatsExtensions
+  commentId: T:AeroDB.StatsExtensions
+  isExternal: true
+  href: AeroDB.StatsExtensions.html
+  name: StatsExtensions
+  nameWithType: StatsExtensions
+  fullName: AeroDB.StatsExtensions
+- uid: AeroDB.BulkOperations
+  commentId: T:AeroDB.BulkOperations
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.BulkOperations.html
+  name: BulkOperations
+  nameWithType: BulkOperations
+  fullName: AeroDB.BulkOperations
+- uid: AeroDB.DocumentStorage
+  commentId: T:AeroDB.DocumentStorage
+  isExternal: true
+  href: AeroDB.DocumentStorage.html
+  name: DocumentStorage
+  nameWithType: DocumentStorage
+  fullName: AeroDB.DocumentStorage
+- uid: AeroDB.StoreOptions
+  commentId: T:AeroDB.StoreOptions
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.StoreOptions.html
+  name: StoreOptions
+  nameWithType: StoreOptions
+  fullName: AeroDB.StoreOptions
+- uid: AeroDB.SchemaOptions
+  commentId: T:AeroDB.SchemaOptions
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.SchemaOptions.html
+  name: SchemaOptions
+  nameWithType: SchemaOptions
+  fullName: AeroDB.SchemaOptions
+- uid: AeroDB.TenancyStyle
+  commentId: T:AeroDB.TenancyStyle
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.TenancyStyle.html
+  name: TenancyStyle
+  nameWithType: TenancyStyle
+  fullName: AeroDB.TenancyStyle
+- uid: AeroDB.StreamIdentity
+  commentId: T:AeroDB.StreamIdentity
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.StreamIdentity.html
+  name: StreamIdentity
+  nameWithType: StreamIdentity
+  fullName: AeroDB.StreamIdentity
+- uid: AeroDB.EventSourcingOptions
+  commentId: T:AeroDB.EventSourcingOptions
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.EventSourcingOptions.html
+  name: EventSourcingOptions
+  nameWithType: EventSourcingOptions
+  fullName: AeroDB.EventSourcingOptions
+- uid: AeroDB.ProjectionOptions
+  commentId: T:AeroDB.ProjectionOptions
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.ProjectionOptions.html
+  name: ProjectionOptions
+  nameWithType: ProjectionOptions
+  fullName: AeroDB.ProjectionOptions
+- uid: AeroDB.FunctionOptions
+  commentId: T:AeroDB.FunctionOptions
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.FunctionOptions.html
+  name: FunctionOptions
+  nameWithType: FunctionOptions
+  fullName: AeroDB.FunctionOptions
+- uid: AeroDB.AccessDefinition
+  commentId: T:AeroDB.AccessDefinition
+  isExternal: true
+  href: AeroDB.AccessDefinition.html
+  name: AccessDefinition
+  nameWithType: AccessDefinition
+  fullName: AeroDB.AccessDefinition
+- uid: AeroDB.TokenDefinition
+  commentId: T:AeroDB.TokenDefinition
+  isExternal: true
+  href: AeroDB.TokenDefinition.html
+  name: TokenDefinition
+  nameWithType: TokenDefinition
+  fullName: AeroDB.TokenDefinition
+- uid: AeroDB.ScopeDefinition
+  commentId: T:AeroDB.ScopeDefinition
+  isExternal: true
+  href: AeroDB.ScopeDefinition.html
+  name: ScopeDefinition
+  nameWithType: ScopeDefinition
+  fullName: AeroDB.ScopeDefinition
+- uid: AeroDB.SurrealAsyncQueryExtensions
+  commentId: T:AeroDB.SurrealAsyncQueryExtensions
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.SurrealAsyncQueryExtensions.html
+  name: SurrealAsyncQueryExtensions
+  nameWithType: SurrealAsyncQueryExtensions
+  fullName: AeroDB.SurrealAsyncQueryExtensions
+- uid: AeroDB.SurrealCommandBuilder
+  commentId: T:AeroDB.SurrealCommandBuilder
+  isExternal: true
+  href: AeroDB.SurrealCommandBuilder.html
+  name: SurrealCommandBuilder
+  nameWithType: SurrealCommandBuilder
+  fullName: AeroDB.SurrealCommandBuilder
+- uid: AeroDB.ISingleServerMultiTenancy
+  commentId: T:AeroDB.ISingleServerMultiTenancy
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.ISingleServerMultiTenancy.html
+  name: ISingleServerMultiTenancy
+  nameWithType: ISingleServerMultiTenancy
+  fullName: AeroDB.ISingleServerMultiTenancy
+- uid: AeroDB.IStaticMultiTenancy
+  commentId: T:AeroDB.IStaticMultiTenancy
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IStaticMultiTenancy.html
+  name: IStaticMultiTenancy
+  nameWithType: IStaticMultiTenancy
+  fullName: AeroDB.IStaticMultiTenancy
+- uid: AeroDB.ITenantOperations
+  commentId: T:AeroDB.ITenantOperations
+  isExternal: true
+  href: AeroDB.ITenantOperations.html
+  name: ITenantOperations
+  nameWithType: ITenantOperations
+  fullName: AeroDB.ITenantOperations
+- uid: AeroDB.ITenantQueryOperations
+  commentId: T:AeroDB.ITenantQueryOperations
+  isExternal: true
+  href: AeroDB.ITenantQueryOperations.html
+  name: ITenantQueryOperations
+  nameWithType: ITenantQueryOperations
+  fullName: AeroDB.ITenantQueryOperations
+- uid: AeroDB.TenantIdStyle
+  commentId: T:AeroDB.TenantIdStyle
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.TenantIdStyle.html
+  name: TenantIdStyle
+  nameWithType: TenantIdStyle
+  fullName: AeroDB.TenantIdStyle
+- uid: AeroDB.AeroDBTimeSeriesQuery`1
+  commentId: T:AeroDB.AeroDBTimeSeriesQuery`1
+  isExternal: true
+  href: AeroDB.AeroDBTimeSeriesQuery-1.html
+  name: AeroDBTimeSeriesQuery<T>
+  nameWithType: AeroDBTimeSeriesQuery<T>
+  fullName: AeroDB.AeroDBTimeSeriesQuery<T>
+  nameWithType.vb: AeroDBTimeSeriesQuery(Of T)
+  fullName.vb: AeroDB.AeroDBTimeSeriesQuery(Of T)
+  name.vb: AeroDBTimeSeriesQuery(Of T)
+  spec.csharp:
+  - uid: AeroDB.AeroDBTimeSeriesQuery`1
+    name: AeroDBTimeSeriesQuery
+    isExternal: true
+    href: AeroDB.AeroDBTimeSeriesQuery-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.AeroDBTimeSeriesQuery`1
+    name: AeroDBTimeSeriesQuery
+    isExternal: true
+    href: AeroDB.AeroDBTimeSeriesQuery-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.ITimeSeriesQuery`1
+  commentId: T:AeroDB.ITimeSeriesQuery`1
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.ITimeSeriesQuery-1.html
+  name: ITimeSeriesQuery<T>
+  nameWithType: ITimeSeriesQuery<T>
+  fullName: AeroDB.ITimeSeriesQuery<T>
+  nameWithType.vb: ITimeSeriesQuery(Of T)
+  fullName.vb: AeroDB.ITimeSeriesQuery(Of T)
+  name.vb: ITimeSeriesQuery(Of T)
+  spec.csharp:
+  - uid: AeroDB.ITimeSeriesQuery`1
+    name: ITimeSeriesQuery
+    isExternal: true
+    href: AeroDB.ITimeSeriesQuery-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.ITimeSeriesQuery`1
+    name: ITimeSeriesQuery
+    isExternal: true
+    href: AeroDB.ITimeSeriesQuery-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.TimeBucket
+  commentId: T:AeroDB.TimeBucket
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.TimeBucket.html
+  name: TimeBucket
+  nameWithType: TimeBucket
+  fullName: AeroDB.TimeBucket
+- uid: AeroDB.TimeUnit
+  commentId: T:AeroDB.TimeUnit
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.TimeUnit.html
+  name: TimeUnit
+  nameWithType: TimeUnit
+  fullName: AeroDB.TimeUnit
+- uid: AeroDB.TimeSeriesExtensions
+  commentId: T:AeroDB.TimeSeriesExtensions
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.TimeSeriesExtensions.html
+  name: TimeSeriesExtensions
+  nameWithType: TimeSeriesExtensions
+  fullName: AeroDB.TimeSeriesExtensions
+- uid: AeroDB.OperationType
+  commentId: T:AeroDB.OperationType
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.OperationType.html
+  name: OperationType
+  nameWithType: OperationType
+  fullName: AeroDB.OperationType
+- uid: AeroDB.UnitOfWork
+  commentId: T:AeroDB.UnitOfWork
+  isExternal: true
+  href: AeroDB.UnitOfWork.html
+  name: UnitOfWork
+  nameWithType: UnitOfWork
+  fullName: AeroDB.UnitOfWork
+- uid: AeroDB.Operation
+  commentId: T:AeroDB.Operation
+  isExternal: true
+  href: AeroDB.Operation.html
+  name: Operation
+  nameWithType: Operation
+  fullName: AeroDB.Operation
+- uid: AeroDB.AeroDBEfCoreTransaction
+  commentId: T:AeroDB.AeroDBEfCoreTransaction
+  isExternal: true
+  href: AeroDB.AeroDBEfCoreTransaction.html
+  name: AeroDBEfCoreTransaction
+  nameWithType: AeroDBEfCoreTransaction
+  fullName: AeroDB.AeroDBEfCoreTransaction
+- uid: AeroDB.AeroDBEfCoreTransactionManager`1
+  commentId: T:AeroDB.AeroDBEfCoreTransactionManager`1
+  isExternal: true
+  href: AeroDB.AeroDBEfCoreTransactionManager-1.html
+  name: AeroDBEfCoreTransactionManager<TDbContext>
+  nameWithType: AeroDBEfCoreTransactionManager<TDbContext>
+  fullName: AeroDB.AeroDBEfCoreTransactionManager<TDbContext>
+  nameWithType.vb: AeroDBEfCoreTransactionManager(Of TDbContext)
+  fullName.vb: AeroDB.AeroDBEfCoreTransactionManager(Of TDbContext)
+  name.vb: AeroDBEfCoreTransactionManager(Of TDbContext)
+  spec.csharp:
+  - uid: AeroDB.AeroDBEfCoreTransactionManager`1
+    name: AeroDBEfCoreTransactionManager
+    isExternal: true
+    href: AeroDB.AeroDBEfCoreTransactionManager-1.html
+  - name: <
+  - name: TDbContext
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.AeroDBEfCoreTransactionManager`1
+    name: AeroDBEfCoreTransactionManager
+    isExternal: true
+    href: AeroDB.AeroDBEfCoreTransactionManager-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TDbContext
+  - name: )
+- uid: AeroDB.EfCoreEventProjection`1
+  commentId: T:AeroDB.EfCoreEventProjection`1
+  isExternal: true
+  href: AeroDB.EfCoreEventProjection-1.html
+  name: EfCoreEventProjection<TDbContext>
+  nameWithType: EfCoreEventProjection<TDbContext>
+  fullName: AeroDB.EfCoreEventProjection<TDbContext>
+  nameWithType.vb: EfCoreEventProjection(Of TDbContext)
+  fullName.vb: AeroDB.EfCoreEventProjection(Of TDbContext)
+  name.vb: EfCoreEventProjection(Of TDbContext)
+  spec.csharp:
+  - uid: AeroDB.EfCoreEventProjection`1
+    name: EfCoreEventProjection
+    isExternal: true
+    href: AeroDB.EfCoreEventProjection-1.html
+  - name: <
+  - name: TDbContext
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.EfCoreEventProjection`1
+    name: EfCoreEventProjection
+    isExternal: true
+    href: AeroDB.EfCoreEventProjection-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TDbContext
+  - name: )
+- uid: AeroDB.AeroDBEfCoreServiceCollectionExtensions
+  commentId: T:AeroDB.AeroDBEfCoreServiceCollectionExtensions
+  isExternal: true
+  href: AeroDB.AeroDBEfCoreServiceCollectionExtensions.html
+  name: AeroDBEfCoreServiceCollectionExtensions
+  nameWithType: AeroDBEfCoreServiceCollectionExtensions
+  fullName: AeroDB.AeroDBEfCoreServiceCollectionExtensions
+- uid: AeroDB.AeroDBMlQuery`2
+  commentId: T:AeroDB.AeroDBMlQuery`2
+  isExternal: true
+  href: AeroDB.AeroDBMlQuery-2.html
+  name: AeroDBMlQuery<TInput, TOutput>
+  nameWithType: AeroDBMlQuery<TInput, TOutput>
+  fullName: AeroDB.AeroDBMlQuery<TInput, TOutput>
+  nameWithType.vb: AeroDBMlQuery(Of TInput, TOutput)
+  fullName.vb: AeroDB.AeroDBMlQuery(Of TInput, TOutput)
+  name.vb: AeroDBMlQuery(Of TInput, TOutput)
+  spec.csharp:
+  - uid: AeroDB.AeroDBMlQuery`2
+    name: AeroDBMlQuery
+    isExternal: true
+    href: AeroDB.AeroDBMlQuery-2.html
+  - name: <
+  - name: TInput
+  - name: ','
+  - name: " "
+  - name: TOutput
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.AeroDBMlQuery`2
+    name: AeroDBMlQuery
+    isExternal: true
+    href: AeroDB.AeroDBMlQuery-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TInput
+  - name: ','
+  - name: " "
+  - name: TOutput
+  - name: )
+- uid: AeroDB.IMlQuery`2
+  commentId: T:AeroDB.IMlQuery`2
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IMlQuery-2.html
+  name: IMlQuery<TInput, TOutput>
+  nameWithType: IMlQuery<TInput, TOutput>
+  fullName: AeroDB.IMlQuery<TInput, TOutput>
+  nameWithType.vb: IMlQuery(Of TInput, TOutput)
+  fullName.vb: AeroDB.IMlQuery(Of TInput, TOutput)
+  name.vb: IMlQuery(Of TInput, TOutput)
+  spec.csharp:
+  - uid: AeroDB.IMlQuery`2
+    name: IMlQuery
+    isExternal: true
+    href: AeroDB.IMlQuery-2.html
+  - name: <
+  - name: TInput
+  - name: ','
+  - name: " "
+  - name: TOutput
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.IMlQuery`2
+    name: IMlQuery
+    isExternal: true
+    href: AeroDB.IMlQuery-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TInput
+  - name: ','
+  - name: " "
+  - name: TOutput
+  - name: )
+- uid: AeroDB.MlNotAvailableException
+  commentId: T:AeroDB.MlNotAvailableException
+  isExternal: true
+  href: AeroDB.MlNotAvailableException.html
+  name: MlNotAvailableException
+  nameWithType: MlNotAvailableException
+  fullName: AeroDB.MlNotAvailableException
+- uid: AeroDB.MlQueryExtensions
+  commentId: T:AeroDB.MlQueryExtensions
+  isExternal: true
+  href: AeroDB.MlQueryExtensions.html
+  name: MlQueryExtensions
+  nameWithType: MlQueryExtensions
+  fullName: AeroDB.MlQueryExtensions
+- uid: AeroDB.ReactiveLinqExtensions
+  commentId: T:AeroDB.ReactiveLinqExtensions
+  isExternal: true
+  href: AeroDB.ReactiveLinqExtensions.html
+  name: ReactiveLinqExtensions
+  nameWithType: ReactiveLinqExtensions
+  fullName: AeroDB.ReactiveLinqExtensions
+- uid: AeroDB.StateAccumulatorExtensions
+  commentId: T:AeroDB.StateAccumulatorExtensions
+  isExternal: true
+  href: AeroDB.StateAccumulatorExtensions.html
+  name: StateAccumulatorExtensions
+  nameWithType: StateAccumulatorExtensions
+  fullName: AeroDB.StateAccumulatorExtensions
+- uid: AeroDB.SurrealLiveQueryExtensions
+  commentId: T:AeroDB.SurrealLiveQueryExtensions
+  isExternal: true
+  href: AeroDB.SurrealLiveQueryExtensions.html
+  name: SurrealLiveQueryExtensions
+  nameWithType: SurrealLiveQueryExtensions
+  fullName: AeroDB.SurrealLiveQueryExtensions
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB

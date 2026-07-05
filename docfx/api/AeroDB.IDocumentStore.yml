@@ -1,0 +1,1882 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.IDocumentStore
+  commentId: T:AeroDB.IDocumentStore
+  id: IDocumentStore
+  parent: AeroDB
+  children:
+  - AeroDB.IDocumentStore.Advanced
+  - AeroDB.IDocumentStore.BulkInsertAsync``1(System.String,System.Collections.Generic.IEnumerable{``0},AeroDB.BulkInsertMode,System.Int32,System.Threading.CancellationToken)
+  - AeroDB.IDocumentStore.BulkInsertDocumentsAsync(System.Collections.Generic.IEnumerable{System.Object},AeroDB.BulkInsertMode,System.Int32,System.Threading.CancellationToken)
+  - AeroDB.IDocumentStore.BulkInsertDocumentsAsync(System.String,System.Collections.Generic.IEnumerable{System.Object},AeroDB.BulkInsertMode,System.Int32,System.Threading.CancellationToken)
+  - AeroDB.IDocumentStore.BulkInsertEventsAsync(System.String,System.Collections.Generic.IEnumerable{System.ValueTuple{System.String,System.Collections.Generic.IEnumerable{System.Object}}},System.Int32,System.Threading.CancellationToken)
+  - AeroDB.IDocumentStore.CleanDeletedDocumentsAsync(System.TimeSpan,System.Threading.CancellationToken)
+  - AeroDB.IDocumentStore.Client
+  - AeroDB.IDocumentStore.Daemon
+  - AeroDB.IDocumentStore.DirtyTrackedSessionAsync(System.String,System.Threading.CancellationToken)
+  - AeroDB.IDocumentStore.DocumentSessionAsync(System.Threading.CancellationToken)
+  - AeroDB.IDocumentStore.GetVersionAsync(System.Threading.CancellationToken)
+  - AeroDB.IDocumentStore.Graph``1
+  - AeroDB.IDocumentStore.IdentitySessionAsync(System.String,System.Threading.CancellationToken)
+  - AeroDB.IDocumentStore.InitializeAsync(System.Threading.CancellationToken)
+  - AeroDB.IDocumentStore.LightweightSessionAsync(System.Threading.CancellationToken)
+  - AeroDB.IDocumentStore.LiveQuerySessionAsync(System.Threading.CancellationToken)
+  - AeroDB.IDocumentStore.OpenSessionAsync(AeroDB.SessionOptions,System.Threading.CancellationToken)
+  - AeroDB.IDocumentStore.Options
+  - AeroDB.IDocumentStore.QueryAsync``2(AeroDB.ICompiledQuery{``0,``1},System.Threading.CancellationToken)
+  - AeroDB.IDocumentStore.QuerySessionAsync(System.Threading.CancellationToken)
+  - AeroDB.IDocumentStore.WithTenant(System.String)
+  langs:
+  - csharp
+  - vb
+  name: IDocumentStore
+  nameWithType: IDocumentStore
+  fullName: AeroDB.IDocumentStore
+  type: Interface
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDocumentStore.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: The primary entry point for the AeroDB document store. Provides access to query sessions, document sessions, event store, background daemon, and advanced SDK features.
+  example: []
+  syntax:
+    content: 'public interface IDocumentStore : IAsyncDisposable'
+    content.vb: Public Interface IDocumentStore Inherits IAsyncDisposable
+  derivedClasses:
+  - AeroDB.DocumentStore
+  inheritedMembers:
+  - System.IAsyncDisposable.DisposeAsync
+  extensionMethods:
+  - AeroDB.IDocumentStore.AeroDB.CompiledQueryExtensions.CompileQuery``1(System.Linq.Expressions.Expression{System.Func{System.Linq.IQueryable{{T}},System.Linq.IQueryable{{T}}}})
+- uid: AeroDB.IDocumentStore.QuerySessionAsync(System.Threading.CancellationToken)
+  commentId: M:AeroDB.IDocumentStore.QuerySessionAsync(System.Threading.CancellationToken)
+  id: QuerySessionAsync(System.Threading.CancellationToken)
+  parent: AeroDB.IDocumentStore
+  langs:
+  - csharp
+  - vb
+  name: QuerySessionAsync(CancellationToken)
+  nameWithType: IDocumentStore.QuerySessionAsync(CancellationToken)
+  fullName: AeroDB.IDocumentStore.QuerySessionAsync(System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDocumentStore.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: Task<IQuerySession> QuerySessionAsync(CancellationToken ct = default)
+    parameters:
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task{AeroDB.IQuerySession}
+    content.vb: Function QuerySessionAsync(ct As CancellationToken = Nothing) As Task(Of IQuerySession)
+  overload: AeroDB.IDocumentStore.QuerySessionAsync*
+- uid: AeroDB.IDocumentStore.LiveQuerySessionAsync(System.Threading.CancellationToken)
+  commentId: M:AeroDB.IDocumentStore.LiveQuerySessionAsync(System.Threading.CancellationToken)
+  id: LiveQuerySessionAsync(System.Threading.CancellationToken)
+  parent: AeroDB.IDocumentStore
+  langs:
+  - csharp
+  - vb
+  name: LiveQuerySessionAsync(CancellationToken)
+  nameWithType: IDocumentStore.LiveQuerySessionAsync(CancellationToken)
+  fullName: AeroDB.IDocumentStore.LiveQuerySessionAsync(System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDocumentStore.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Opens a session dedicated to live queries (SurrealDB WebSocket required).
+
+    Returns a fluent builder for typed, expression-based subscriptions.
+  example: []
+  syntax:
+    content: Task<ILiveQuerySession> LiveQuerySessionAsync(CancellationToken ct = default)
+    parameters:
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task{AeroDB.LiveQuery.ILiveQuerySession}
+    content.vb: Function LiveQuerySessionAsync(ct As CancellationToken = Nothing) As Task(Of ILiveQuerySession)
+  overload: AeroDB.IDocumentStore.LiveQuerySessionAsync*
+- uid: AeroDB.IDocumentStore.OpenSessionAsync(AeroDB.SessionOptions,System.Threading.CancellationToken)
+  commentId: M:AeroDB.IDocumentStore.OpenSessionAsync(AeroDB.SessionOptions,System.Threading.CancellationToken)
+  id: OpenSessionAsync(AeroDB.SessionOptions,System.Threading.CancellationToken)
+  parent: AeroDB.IDocumentStore
+  langs:
+  - csharp
+  - vb
+  name: OpenSessionAsync(SessionOptions, CancellationToken)
+  nameWithType: IDocumentStore.OpenSessionAsync(SessionOptions, CancellationToken)
+  fullName: AeroDB.IDocumentStore.OpenSessionAsync(AeroDB.SessionOptions, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDocumentStore.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Open a session with full configuration control.
+  example: []
+  syntax:
+    content: Task<IDocumentSession> OpenSessionAsync(SessionOptions options, CancellationToken ct = default)
+    parameters:
+    - id: options
+      type: AeroDB.SessionOptions
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task{AeroDB.IDocumentSession}
+    content.vb: Function OpenSessionAsync(options As SessionOptions, ct As CancellationToken = Nothing) As Task(Of IDocumentSession)
+  overload: AeroDB.IDocumentStore.OpenSessionAsync*
+- uid: AeroDB.IDocumentStore.LightweightSessionAsync(System.Threading.CancellationToken)
+  commentId: M:AeroDB.IDocumentStore.LightweightSessionAsync(System.Threading.CancellationToken)
+  id: LightweightSessionAsync(System.Threading.CancellationToken)
+  parent: AeroDB.IDocumentStore
+  langs:
+  - csharp
+  - vb
+  name: LightweightSessionAsync(CancellationToken)
+  nameWithType: IDocumentStore.LightweightSessionAsync(CancellationToken)
+  fullName: AeroDB.IDocumentStore.LightweightSessionAsync(System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDocumentStore.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Opens a lightweight document session with no identity map or change tracking
+
+    (<xref href="AeroDB.DocumentTracking.None" data-throw-if-not-resolved="false"></xref>). Equivalent to
+
+    <code>OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }, ct)</code>.
+
+    This is the recommended default for most read/write operations, matching Marten's
+
+    <code>LightweightSession()</code> pattern.
+  example: []
+  syntax:
+    content: Task<IDocumentSession> LightweightSessionAsync(CancellationToken ct = default)
+    parameters:
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task{AeroDB.IDocumentSession}
+    content.vb: Function LightweightSessionAsync(ct As CancellationToken = Nothing) As Task(Of IDocumentSession)
+  overload: AeroDB.IDocumentStore.LightweightSessionAsync*
+- uid: AeroDB.IDocumentStore.DocumentSessionAsync(System.Threading.CancellationToken)
+  commentId: M:AeroDB.IDocumentStore.DocumentSessionAsync(System.Threading.CancellationToken)
+  id: DocumentSessionAsync(System.Threading.CancellationToken)
+  parent: AeroDB.IDocumentStore
+  langs:
+  - csharp
+  - vb
+  name: DocumentSessionAsync(CancellationToken)
+  nameWithType: IDocumentStore.DocumentSessionAsync(CancellationToken)
+  fullName: AeroDB.IDocumentStore.DocumentSessionAsync(System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDocumentStore.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: >-
+      [Obsolete("Use OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.IdentityOnly }) instead.")]
+
+      Task<IDocumentSession> DocumentSessionAsync(CancellationToken ct = default)
+    parameters:
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task{AeroDB.IDocumentSession}
+    content.vb: >-
+      <Obsolete("Use OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.IdentityOnly }) instead.")>
+
+      Function DocumentSessionAsync(ct As CancellationToken = Nothing) As Task(Of IDocumentSession)
+  overload: AeroDB.IDocumentStore.DocumentSessionAsync*
+  attributes:
+  - type: System.ObsoleteAttribute
+    ctor: System.ObsoleteAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: Use OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.IdentityOnly }) instead.
+- uid: AeroDB.IDocumentStore.InitializeAsync(System.Threading.CancellationToken)
+  commentId: M:AeroDB.IDocumentStore.InitializeAsync(System.Threading.CancellationToken)
+  id: InitializeAsync(System.Threading.CancellationToken)
+  parent: AeroDB.IDocumentStore
+  langs:
+  - csharp
+  - vb
+  name: InitializeAsync(CancellationToken)
+  nameWithType: IDocumentStore.InitializeAsync(CancellationToken)
+  fullName: AeroDB.IDocumentStore.InitializeAsync(System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDocumentStore.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: Task InitializeAsync(CancellationToken ct = default)
+    parameters:
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Function InitializeAsync(ct As CancellationToken = Nothing) As Task
+  overload: AeroDB.IDocumentStore.InitializeAsync*
+- uid: AeroDB.IDocumentStore.WithTenant(System.String)
+  commentId: M:AeroDB.IDocumentStore.WithTenant(System.String)
+  id: WithTenant(System.String)
+  parent: AeroDB.IDocumentStore
+  langs:
+  - csharp
+  - vb
+  name: WithTenant(string)
+  nameWithType: IDocumentStore.WithTenant(string)
+  fullName: AeroDB.IDocumentStore.WithTenant(string)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDocumentStore.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Sets the tenant ID for the next session created from this store (DatabasePerTenant mode).
+
+    The tenant ID is consumed on the next call to <code>QuerySessionAsync</code>,
+
+    <code>OpenSessionAsync</code>, or <code>OpenSessionAsync</code>.
+  example: []
+  syntax:
+    content: IDocumentStore WithTenant(string tenantId)
+    parameters:
+    - id: tenantId
+      type: System.String
+    return:
+      type: AeroDB.IDocumentStore
+    content.vb: Function WithTenant(tenantId As String) As IDocumentStore
+  overload: AeroDB.IDocumentStore.WithTenant*
+  nameWithType.vb: IDocumentStore.WithTenant(String)
+  fullName.vb: AeroDB.IDocumentStore.WithTenant(String)
+  name.vb: WithTenant(String)
+- uid: AeroDB.IDocumentStore.Graph``1
+  commentId: M:AeroDB.IDocumentStore.Graph``1
+  id: Graph``1
+  parent: AeroDB.IDocumentStore
+  langs:
+  - csharp
+  - vb
+  name: Graph<T>()
+  nameWithType: IDocumentStore.Graph<T>()
+  fullName: AeroDB.IDocumentStore.Graph<T>()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDocumentStore.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Start a graph traversal query. Opens an ephemeral session internally.
+  example: []
+  syntax:
+    content: 'IGraphQuery<T> Graph<T>() where T : class'
+    typeParameters:
+    - id: T
+    return:
+      type: AeroDB.IGraphQuery{{T}}
+    content.vb: Function Graph(Of T As Class)() As IGraphQuery(Of T)
+  overload: AeroDB.IDocumentStore.Graph*
+  nameWithType.vb: IDocumentStore.Graph(Of T)()
+  fullName.vb: AeroDB.IDocumentStore.Graph(Of T)()
+  name.vb: Graph(Of T)()
+- uid: AeroDB.IDocumentStore.GetVersionAsync(System.Threading.CancellationToken)
+  commentId: M:AeroDB.IDocumentStore.GetVersionAsync(System.Threading.CancellationToken)
+  id: GetVersionAsync(System.Threading.CancellationToken)
+  parent: AeroDB.IDocumentStore
+  langs:
+  - csharp
+  - vb
+  name: GetVersionAsync(CancellationToken)
+  nameWithType: IDocumentStore.GetVersionAsync(CancellationToken)
+  fullName: AeroDB.IDocumentStore.GetVersionAsync(System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDocumentStore.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Get the SurrealDB server version string (e.g., "surrealdb-3.1.0").
+  example: []
+  syntax:
+    content: Task<string?> GetVersionAsync(CancellationToken ct = default)
+    parameters:
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task{System.String}
+    content.vb: Function GetVersionAsync(ct As CancellationToken = Nothing) As Task(Of String)
+  overload: AeroDB.IDocumentStore.GetVersionAsync*
+- uid: AeroDB.IDocumentStore.QueryAsync``2(AeroDB.ICompiledQuery{``0,``1},System.Threading.CancellationToken)
+  commentId: M:AeroDB.IDocumentStore.QueryAsync``2(AeroDB.ICompiledQuery{``0,``1},System.Threading.CancellationToken)
+  id: QueryAsync``2(AeroDB.ICompiledQuery{``0,``1},System.Threading.CancellationToken)
+  parent: AeroDB.IDocumentStore
+  langs:
+  - csharp
+  - vb
+  name: QueryAsync<TDoc, TOut>(ICompiledQuery<TDoc, TOut>, CancellationToken)
+  nameWithType: IDocumentStore.QueryAsync<TDoc, TOut>(ICompiledQuery<TDoc, TOut>, CancellationToken)
+  fullName: AeroDB.IDocumentStore.QueryAsync<TDoc, TOut>(AeroDB.ICompiledQuery<TDoc, TOut>, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDocumentStore.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Execute a compiled query against a lightweight session.
+  example: []
+  syntax:
+    content: 'Task<TOut> QueryAsync<TDoc, TOut>(ICompiledQuery<TDoc, TOut> query, CancellationToken ct = default) where TDoc : class'
+    parameters:
+    - id: query
+      type: AeroDB.ICompiledQuery{{TDoc},{TOut}}
+    - id: ct
+      type: System.Threading.CancellationToken
+    typeParameters:
+    - id: TDoc
+    - id: TOut
+    return:
+      type: System.Threading.Tasks.Task{{TOut}}
+    content.vb: Function QueryAsync(Of TDoc As Class, TOut)(query As ICompiledQuery(Of TDoc, TOut), ct As CancellationToken = Nothing) As Task(Of TOut)
+  overload: AeroDB.IDocumentStore.QueryAsync*
+  nameWithType.vb: IDocumentStore.QueryAsync(Of TDoc, TOut)(ICompiledQuery(Of TDoc, TOut), CancellationToken)
+  fullName.vb: AeroDB.IDocumentStore.QueryAsync(Of TDoc, TOut)(AeroDB.ICompiledQuery(Of TDoc, TOut), System.Threading.CancellationToken)
+  name.vb: QueryAsync(Of TDoc, TOut)(ICompiledQuery(Of TDoc, TOut), CancellationToken)
+- uid: AeroDB.IDocumentStore.CleanDeletedDocumentsAsync(System.TimeSpan,System.Threading.CancellationToken)
+  commentId: M:AeroDB.IDocumentStore.CleanDeletedDocumentsAsync(System.TimeSpan,System.Threading.CancellationToken)
+  id: CleanDeletedDocumentsAsync(System.TimeSpan,System.Threading.CancellationToken)
+  parent: AeroDB.IDocumentStore
+  langs:
+  - csharp
+  - vb
+  name: CleanDeletedDocumentsAsync(TimeSpan, CancellationToken)
+  nameWithType: IDocumentStore.CleanDeletedDocumentsAsync(TimeSpan, CancellationToken)
+  fullName: AeroDB.IDocumentStore.CleanDeletedDocumentsAsync(System.TimeSpan, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDocumentStore.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Permanently deletes soft-deleted documents older than the specified age.
+  example: []
+  syntax:
+    content: Task<long> CleanDeletedDocumentsAsync(TimeSpan olderThan, CancellationToken ct = default)
+    parameters:
+    - id: olderThan
+      type: System.TimeSpan
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task{System.Int64}
+    content.vb: Function CleanDeletedDocumentsAsync(olderThan As TimeSpan, ct As CancellationToken = Nothing) As Task(Of Long)
+  overload: AeroDB.IDocumentStore.CleanDeletedDocumentsAsync*
+- uid: AeroDB.IDocumentStore.BulkInsertAsync``1(System.String,System.Collections.Generic.IEnumerable{``0},AeroDB.BulkInsertMode,System.Int32,System.Threading.CancellationToken)
+  commentId: M:AeroDB.IDocumentStore.BulkInsertAsync``1(System.String,System.Collections.Generic.IEnumerable{``0},AeroDB.BulkInsertMode,System.Int32,System.Threading.CancellationToken)
+  id: BulkInsertAsync``1(System.String,System.Collections.Generic.IEnumerable{``0},AeroDB.BulkInsertMode,System.Int32,System.Threading.CancellationToken)
+  parent: AeroDB.IDocumentStore
+  langs:
+  - csharp
+  - vb
+  name: BulkInsertAsync<T>(string, IEnumerable<T>, BulkInsertMode, int, CancellationToken)
+  nameWithType: IDocumentStore.BulkInsertAsync<T>(string, IEnumerable<T>, BulkInsertMode, int, CancellationToken)
+  fullName: AeroDB.IDocumentStore.BulkInsertAsync<T>(string, System.Collections.Generic.IEnumerable<T>, AeroDB.BulkInsertMode, int, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDocumentStore.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Bulk insert typed documents for a specific tenant.
+  example: []
+  syntax:
+    content: 'Task BulkInsertAsync<T>(string tenantId, IEnumerable<T> documents, BulkInsertMode mode = BulkInsertMode.InsertsOnly, int batchSize = 1000, CancellationToken ct = default) where T : class'
+    parameters:
+    - id: tenantId
+      type: System.String
+    - id: documents
+      type: System.Collections.Generic.IEnumerable{{T}}
+    - id: mode
+      type: AeroDB.BulkInsertMode
+    - id: batchSize
+      type: System.Int32
+    - id: ct
+      type: System.Threading.CancellationToken
+    typeParameters:
+    - id: T
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Function BulkInsertAsync(Of T As Class)(tenantId As String, documents As IEnumerable(Of T), mode As BulkInsertMode = BulkInsertMode.InsertsOnly, batchSize As Integer = 1000, ct As CancellationToken = Nothing) As Task
+  overload: AeroDB.IDocumentStore.BulkInsertAsync*
+  nameWithType.vb: IDocumentStore.BulkInsertAsync(Of T)(String, IEnumerable(Of T), BulkInsertMode, Integer, CancellationToken)
+  fullName.vb: AeroDB.IDocumentStore.BulkInsertAsync(Of T)(String, System.Collections.Generic.IEnumerable(Of T), AeroDB.BulkInsertMode, Integer, System.Threading.CancellationToken)
+  name.vb: BulkInsertAsync(Of T)(String, IEnumerable(Of T), BulkInsertMode, Integer, CancellationToken)
+- uid: AeroDB.IDocumentStore.BulkInsertDocumentsAsync(System.String,System.Collections.Generic.IEnumerable{System.Object},AeroDB.BulkInsertMode,System.Int32,System.Threading.CancellationToken)
+  commentId: M:AeroDB.IDocumentStore.BulkInsertDocumentsAsync(System.String,System.Collections.Generic.IEnumerable{System.Object},AeroDB.BulkInsertMode,System.Int32,System.Threading.CancellationToken)
+  id: BulkInsertDocumentsAsync(System.String,System.Collections.Generic.IEnumerable{System.Object},AeroDB.BulkInsertMode,System.Int32,System.Threading.CancellationToken)
+  parent: AeroDB.IDocumentStore
+  langs:
+  - csharp
+  - vb
+  name: BulkInsertDocumentsAsync(string, IEnumerable<object>, BulkInsertMode, int, CancellationToken)
+  nameWithType: IDocumentStore.BulkInsertDocumentsAsync(string, IEnumerable<object>, BulkInsertMode, int, CancellationToken)
+  fullName: AeroDB.IDocumentStore.BulkInsertDocumentsAsync(string, System.Collections.Generic.IEnumerable<object>, AeroDB.BulkInsertMode, int, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDocumentStore.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Bulk insert mixed-type documents for a specific tenant.
+  example: []
+  syntax:
+    content: Task BulkInsertDocumentsAsync(string tenantId, IEnumerable<object> documents, BulkInsertMode mode = BulkInsertMode.InsertsOnly, int batchSize = 1000, CancellationToken ct = default)
+    parameters:
+    - id: tenantId
+      type: System.String
+    - id: documents
+      type: System.Collections.Generic.IEnumerable{System.Object}
+    - id: mode
+      type: AeroDB.BulkInsertMode
+    - id: batchSize
+      type: System.Int32
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Function BulkInsertDocumentsAsync(tenantId As String, documents As IEnumerable(Of Object), mode As BulkInsertMode = BulkInsertMode.InsertsOnly, batchSize As Integer = 1000, ct As CancellationToken = Nothing) As Task
+  overload: AeroDB.IDocumentStore.BulkInsertDocumentsAsync*
+  nameWithType.vb: IDocumentStore.BulkInsertDocumentsAsync(String, IEnumerable(Of Object), BulkInsertMode, Integer, CancellationToken)
+  fullName.vb: AeroDB.IDocumentStore.BulkInsertDocumentsAsync(String, System.Collections.Generic.IEnumerable(Of Object), AeroDB.BulkInsertMode, Integer, System.Threading.CancellationToken)
+  name.vb: BulkInsertDocumentsAsync(String, IEnumerable(Of Object), BulkInsertMode, Integer, CancellationToken)
+- uid: AeroDB.IDocumentStore.BulkInsertDocumentsAsync(System.Collections.Generic.IEnumerable{System.Object},AeroDB.BulkInsertMode,System.Int32,System.Threading.CancellationToken)
+  commentId: M:AeroDB.IDocumentStore.BulkInsertDocumentsAsync(System.Collections.Generic.IEnumerable{System.Object},AeroDB.BulkInsertMode,System.Int32,System.Threading.CancellationToken)
+  id: BulkInsertDocumentsAsync(System.Collections.Generic.IEnumerable{System.Object},AeroDB.BulkInsertMode,System.Int32,System.Threading.CancellationToken)
+  parent: AeroDB.IDocumentStore
+  langs:
+  - csharp
+  - vb
+  name: BulkInsertDocumentsAsync(IEnumerable<object>, BulkInsertMode, int, CancellationToken)
+  nameWithType: IDocumentStore.BulkInsertDocumentsAsync(IEnumerable<object>, BulkInsertMode, int, CancellationToken)
+  fullName: AeroDB.IDocumentStore.BulkInsertDocumentsAsync(System.Collections.Generic.IEnumerable<object>, AeroDB.BulkInsertMode, int, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDocumentStore.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Bulk insert mixed-type documents (non-tenant-scoped).
+  example: []
+  syntax:
+    content: Task BulkInsertDocumentsAsync(IEnumerable<object> documents, BulkInsertMode mode = BulkInsertMode.InsertsOnly, int batchSize = 1000, CancellationToken ct = default)
+    parameters:
+    - id: documents
+      type: System.Collections.Generic.IEnumerable{System.Object}
+    - id: mode
+      type: AeroDB.BulkInsertMode
+    - id: batchSize
+      type: System.Int32
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Function BulkInsertDocumentsAsync(documents As IEnumerable(Of Object), mode As BulkInsertMode = BulkInsertMode.InsertsOnly, batchSize As Integer = 1000, ct As CancellationToken = Nothing) As Task
+  overload: AeroDB.IDocumentStore.BulkInsertDocumentsAsync*
+  nameWithType.vb: IDocumentStore.BulkInsertDocumentsAsync(IEnumerable(Of Object), BulkInsertMode, Integer, CancellationToken)
+  fullName.vb: AeroDB.IDocumentStore.BulkInsertDocumentsAsync(System.Collections.Generic.IEnumerable(Of Object), AeroDB.BulkInsertMode, Integer, System.Threading.CancellationToken)
+  name.vb: BulkInsertDocumentsAsync(IEnumerable(Of Object), BulkInsertMode, Integer, CancellationToken)
+- uid: AeroDB.IDocumentStore.BulkInsertEventsAsync(System.String,System.Collections.Generic.IEnumerable{System.ValueTuple{System.String,System.Collections.Generic.IEnumerable{System.Object}}},System.Int32,System.Threading.CancellationToken)
+  commentId: M:AeroDB.IDocumentStore.BulkInsertEventsAsync(System.String,System.Collections.Generic.IEnumerable{System.ValueTuple{System.String,System.Collections.Generic.IEnumerable{System.Object}}},System.Int32,System.Threading.CancellationToken)
+  id: BulkInsertEventsAsync(System.String,System.Collections.Generic.IEnumerable{System.ValueTuple{System.String,System.Collections.Generic.IEnumerable{System.Object}}},System.Int32,System.Threading.CancellationToken)
+  parent: AeroDB.IDocumentStore
+  langs:
+  - csharp
+  - vb
+  name: BulkInsertEventsAsync(string, IEnumerable<(string StreamId, IEnumerable<object> Events)>, int, CancellationToken)
+  nameWithType: IDocumentStore.BulkInsertEventsAsync(string, IEnumerable<(string StreamId, IEnumerable<object> Events)>, int, CancellationToken)
+  fullName: AeroDB.IDocumentStore.BulkInsertEventsAsync(string, System.Collections.Generic.IEnumerable<(string StreamId, System.Collections.Generic.IEnumerable<object> Events)>, int, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDocumentStore.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Bulk insert events across multiple streams for a specific tenant.
+  example: []
+  syntax:
+    content: Task BulkInsertEventsAsync(string tenantId, IEnumerable<(string StreamId, IEnumerable<object> Events)> streams, int batchSize = 1000, CancellationToken ct = default)
+    parameters:
+    - id: tenantId
+      type: System.String
+    - id: streams
+      type: System.Collections.Generic.IEnumerable{System.ValueTuple{System.String,System.Collections.Generic.IEnumerable{System.Object}}}
+    - id: batchSize
+      type: System.Int32
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Function BulkInsertEventsAsync(tenantId As String, streams As IEnumerable(Of (StreamId As String, Events As IEnumerable(Of Object))), batchSize As Integer = 1000, ct As CancellationToken = Nothing) As Task
+  overload: AeroDB.IDocumentStore.BulkInsertEventsAsync*
+  nameWithType.vb: IDocumentStore.BulkInsertEventsAsync(String, IEnumerable(Of (StreamId As String, Events As IEnumerable(Of Object))), Integer, CancellationToken)
+  fullName.vb: AeroDB.IDocumentStore.BulkInsertEventsAsync(String, System.Collections.Generic.IEnumerable(Of (StreamId As String, Events As System.Collections.Generic.IEnumerable(Of Object))), Integer, System.Threading.CancellationToken)
+  name.vb: BulkInsertEventsAsync(String, IEnumerable(Of (StreamId As String, Events As IEnumerable(Of Object))), Integer, CancellationToken)
+- uid: AeroDB.IDocumentStore.IdentitySessionAsync(System.String,System.Threading.CancellationToken)
+  commentId: M:AeroDB.IDocumentStore.IdentitySessionAsync(System.String,System.Threading.CancellationToken)
+  id: IdentitySessionAsync(System.String,System.Threading.CancellationToken)
+  parent: AeroDB.IDocumentStore
+  langs:
+  - csharp
+  - vb
+  name: IdentitySessionAsync(string, CancellationToken)
+  nameWithType: IDocumentStore.IdentitySessionAsync(string, CancellationToken)
+  fullName: AeroDB.IDocumentStore.IdentitySessionAsync(string, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDocumentStore.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Open an identity-tracking session scoped to a tenant.
+  example: []
+  syntax:
+    content: Task<IDocumentSession> IdentitySessionAsync(string tenantId, CancellationToken ct = default)
+    parameters:
+    - id: tenantId
+      type: System.String
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task{AeroDB.IDocumentSession}
+    content.vb: Function IdentitySessionAsync(tenantId As String, ct As CancellationToken = Nothing) As Task(Of IDocumentSession)
+  overload: AeroDB.IDocumentStore.IdentitySessionAsync*
+  nameWithType.vb: IDocumentStore.IdentitySessionAsync(String, CancellationToken)
+  fullName.vb: AeroDB.IDocumentStore.IdentitySessionAsync(String, System.Threading.CancellationToken)
+  name.vb: IdentitySessionAsync(String, CancellationToken)
+- uid: AeroDB.IDocumentStore.DirtyTrackedSessionAsync(System.String,System.Threading.CancellationToken)
+  commentId: M:AeroDB.IDocumentStore.DirtyTrackedSessionAsync(System.String,System.Threading.CancellationToken)
+  id: DirtyTrackedSessionAsync(System.String,System.Threading.CancellationToken)
+  parent: AeroDB.IDocumentStore
+  langs:
+  - csharp
+  - vb
+  name: DirtyTrackedSessionAsync(string, CancellationToken)
+  nameWithType: IDocumentStore.DirtyTrackedSessionAsync(string, CancellationToken)
+  fullName: AeroDB.IDocumentStore.DirtyTrackedSessionAsync(string, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDocumentStore.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Open a dirty-tracked session scoped to a tenant.
+  example: []
+  syntax:
+    content: Task<IDocumentSession> DirtyTrackedSessionAsync(string tenantId, CancellationToken ct = default)
+    parameters:
+    - id: tenantId
+      type: System.String
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task{AeroDB.IDocumentSession}
+    content.vb: Function DirtyTrackedSessionAsync(tenantId As String, ct As CancellationToken = Nothing) As Task(Of IDocumentSession)
+  overload: AeroDB.IDocumentStore.DirtyTrackedSessionAsync*
+  nameWithType.vb: IDocumentStore.DirtyTrackedSessionAsync(String, CancellationToken)
+  fullName.vb: AeroDB.IDocumentStore.DirtyTrackedSessionAsync(String, System.Threading.CancellationToken)
+  name.vb: DirtyTrackedSessionAsync(String, CancellationToken)
+- uid: AeroDB.IDocumentStore.Options
+  commentId: P:AeroDB.IDocumentStore.Options
+  id: Options
+  parent: AeroDB.IDocumentStore
+  langs:
+  - csharp
+  - vb
+  name: Options
+  nameWithType: IDocumentStore.Options
+  fullName: AeroDB.IDocumentStore.Options
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDocumentStore.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: StoreOptions Options { get; }
+    parameters: []
+    return:
+      type: AeroDB.StoreOptions
+    content.vb: ReadOnly Property Options As StoreOptions
+  overload: AeroDB.IDocumentStore.Options*
+- uid: AeroDB.IDocumentStore.Client
+  commentId: P:AeroDB.IDocumentStore.Client
+  id: Client
+  parent: AeroDB.IDocumentStore
+  langs:
+  - csharp
+  - vb
+  name: Client
+  nameWithType: IDocumentStore.Client
+  fullName: AeroDB.IDocumentStore.Client
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDocumentStore.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: ISurrealDbClient Client { get; }
+    parameters: []
+    return:
+      type: SurrealDb.Net.ISurrealDbClient
+    content.vb: ReadOnly Property Client As ISurrealDbClient
+  overload: AeroDB.IDocumentStore.Client*
+- uid: AeroDB.IDocumentStore.Advanced
+  commentId: P:AeroDB.IDocumentStore.Advanced
+  id: Advanced
+  parent: AeroDB.IDocumentStore
+  langs:
+  - csharp
+  - vb
+  name: Advanced
+  nameWithType: IDocumentStore.Advanced
+  fullName: AeroDB.IDocumentStore.Advanced
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDocumentStore.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Advanced/low-level SDK access for scenarios AeroDB doesn't abstract.
+  example: []
+  syntax:
+    content: IAeroDBAdvanced Advanced { get; }
+    parameters: []
+    return:
+      type: AeroDB.IAeroDBAdvanced
+    content.vb: ReadOnly Property Advanced As IAeroDBAdvanced
+  overload: AeroDB.IDocumentStore.Advanced*
+- uid: AeroDB.IDocumentStore.Daemon
+  commentId: P:AeroDB.IDocumentStore.Daemon
+  id: Daemon
+  parent: AeroDB.IDocumentStore
+  langs:
+  - csharp
+  - vb
+  name: Daemon
+  nameWithType: IDocumentStore.Daemon
+  fullName: AeroDB.IDocumentStore.Daemon
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IDocumentStore.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Async daemon for background projection processing, if events are enabled
+
+    and an <xref href="AeroDB.AsyncDaemon" data-throw-if-not-resolved="false"></xref> has been started.
+  example: []
+  syntax:
+    content: AsyncDaemon? Daemon { get; }
+    parameters: []
+    return:
+      type: AeroDB.AsyncDaemon
+    content.vb: ReadOnly Property Daemon As AsyncDaemon
+  overload: AeroDB.IDocumentStore.Daemon*
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: System.IAsyncDisposable.DisposeAsync
+  commentId: M:System.IAsyncDisposable.DisposeAsync
+  parent: System.IAsyncDisposable
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iasyncdisposable.disposeasync
+  name: DisposeAsync()
+  nameWithType: IAsyncDisposable.DisposeAsync()
+  fullName: System.IAsyncDisposable.DisposeAsync()
+  spec.csharp:
+  - uid: System.IAsyncDisposable.DisposeAsync
+    name: DisposeAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iasyncdisposable.disposeasync
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.IAsyncDisposable.DisposeAsync
+    name: DisposeAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iasyncdisposable.disposeasync
+  - name: (
+  - name: )
+- uid: AeroDB.IDocumentStore.AeroDB.CompiledQueryExtensions.CompileQuery``1(System.Linq.Expressions.Expression{System.Func{System.Linq.IQueryable{{T}},System.Linq.IQueryable{{T}}}})
+  commentId: M:AeroDB.CompiledQueryExtensions.CompileQuery``1(AeroDB.IDocumentStore,System.Linq.Expressions.Expression{System.Func{System.Linq.IQueryable{``0},System.Linq.IQueryable{``0}}})
+  parent: AeroDB.CompiledQueryExtensions
+  definition: AeroDB.CompiledQueryExtensions.CompileQuery``1(AeroDB.IDocumentStore,System.Linq.Expressions.Expression{System.Func{System.Linq.IQueryable{``0},System.Linq.IQueryable{``0}}})
+  href: AeroDB.CompiledQueryExtensions.html#AeroDB_CompiledQueryExtensions_CompileQuery__1_AeroDB_IDocumentStore_System_Linq_Expressions_Expression_System_Func_System_Linq_IQueryable___0__System_Linq_IQueryable___0____
+  name: CompileQuery<T>(IDocumentStore, Expression<Func<IQueryable<T>, IQueryable<T>>>)
+  nameWithType: CompiledQueryExtensions.CompileQuery<T>(IDocumentStore, Expression<Func<IQueryable<T>, IQueryable<T>>>)
+  fullName: AeroDB.CompiledQueryExtensions.CompileQuery<T>(AeroDB.IDocumentStore, System.Linq.Expressions.Expression<System.Func<System.Linq.IQueryable<T>, System.Linq.IQueryable<T>>>)
+  nameWithType.vb: CompiledQueryExtensions.CompileQuery(Of T)(IDocumentStore, Expression(Of Func(Of IQueryable(Of T), IQueryable(Of T))))
+  fullName.vb: AeroDB.CompiledQueryExtensions.CompileQuery(Of T)(AeroDB.IDocumentStore, System.Linq.Expressions.Expression(Of System.Func(Of System.Linq.IQueryable(Of T), System.Linq.IQueryable(Of T))))
+  name.vb: CompileQuery(Of T)(IDocumentStore, Expression(Of Func(Of IQueryable(Of T), IQueryable(Of T))))
+  spec.csharp:
+  - uid: AeroDB.CompiledQueryExtensions.CompileQuery``1(AeroDB.IDocumentStore,System.Linq.Expressions.Expression{System.Func{System.Linq.IQueryable{``0},System.Linq.IQueryable{``0}}})
+    name: CompileQuery
+    isExternal: true
+    href: AeroDB.CompiledQueryExtensions.html#AeroDB_CompiledQueryExtensions_CompileQuery__1_AeroDB_IDocumentStore_System_Linq_Expressions_Expression_System_Func_System_Linq_IQueryable___0__System_Linq_IQueryable___0____
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: AeroDB.IDocumentStore
+    name: IDocumentStore
+    isExternal: true
+    href: AeroDB.IDocumentStore.html
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: System.Linq.IQueryable`1
+    name: IQueryable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.iqueryable-1
+  - name: <
+  - name: T
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Linq.IQueryable`1
+    name: IQueryable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.iqueryable-1
+  - name: <
+  - name: T
+  - name: '>'
+  - name: '>'
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: AeroDB.CompiledQueryExtensions.CompileQuery``1(AeroDB.IDocumentStore,System.Linq.Expressions.Expression{System.Func{System.Linq.IQueryable{``0},System.Linq.IQueryable{``0}}})
+    name: CompileQuery
+    isExternal: true
+    href: AeroDB.CompiledQueryExtensions.html#AeroDB_CompiledQueryExtensions_CompileQuery__1_AeroDB_IDocumentStore_System_Linq_Expressions_Expression_System_Func_System_Linq_IQueryable___0__System_Linq_IQueryable___0____
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: AeroDB.IDocumentStore
+    name: IDocumentStore
+    isExternal: true
+    href: AeroDB.IDocumentStore.html
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Linq.IQueryable`1
+    name: IQueryable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.iqueryable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Linq.IQueryable`1
+    name: IQueryable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.iqueryable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+  - name: )
+  - name: )
+- uid: System.IAsyncDisposable
+  commentId: T:System.IAsyncDisposable
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iasyncdisposable
+  name: IAsyncDisposable
+  nameWithType: IAsyncDisposable
+  fullName: System.IAsyncDisposable
+- uid: AeroDB.CompiledQueryExtensions.CompileQuery``1(AeroDB.IDocumentStore,System.Linq.Expressions.Expression{System.Func{System.Linq.IQueryable{``0},System.Linq.IQueryable{``0}}})
+  commentId: M:AeroDB.CompiledQueryExtensions.CompileQuery``1(AeroDB.IDocumentStore,System.Linq.Expressions.Expression{System.Func{System.Linq.IQueryable{``0},System.Linq.IQueryable{``0}}})
+  isExternal: true
+  href: AeroDB.CompiledQueryExtensions.html#AeroDB_CompiledQueryExtensions_CompileQuery__1_AeroDB_IDocumentStore_System_Linq_Expressions_Expression_System_Func_System_Linq_IQueryable___0__System_Linq_IQueryable___0____
+  name: CompileQuery<T>(IDocumentStore, Expression<Func<IQueryable<T>, IQueryable<T>>>)
+  nameWithType: CompiledQueryExtensions.CompileQuery<T>(IDocumentStore, Expression<Func<IQueryable<T>, IQueryable<T>>>)
+  fullName: AeroDB.CompiledQueryExtensions.CompileQuery<T>(AeroDB.IDocumentStore, System.Linq.Expressions.Expression<System.Func<System.Linq.IQueryable<T>, System.Linq.IQueryable<T>>>)
+  nameWithType.vb: CompiledQueryExtensions.CompileQuery(Of T)(IDocumentStore, Expression(Of Func(Of IQueryable(Of T), IQueryable(Of T))))
+  fullName.vb: AeroDB.CompiledQueryExtensions.CompileQuery(Of T)(AeroDB.IDocumentStore, System.Linq.Expressions.Expression(Of System.Func(Of System.Linq.IQueryable(Of T), System.Linq.IQueryable(Of T))))
+  name.vb: CompileQuery(Of T)(IDocumentStore, Expression(Of Func(Of IQueryable(Of T), IQueryable(Of T))))
+  spec.csharp:
+  - uid: AeroDB.CompiledQueryExtensions.CompileQuery``1(AeroDB.IDocumentStore,System.Linq.Expressions.Expression{System.Func{System.Linq.IQueryable{``0},System.Linq.IQueryable{``0}}})
+    name: CompileQuery
+    isExternal: true
+    href: AeroDB.CompiledQueryExtensions.html#AeroDB_CompiledQueryExtensions_CompileQuery__1_AeroDB_IDocumentStore_System_Linq_Expressions_Expression_System_Func_System_Linq_IQueryable___0__System_Linq_IQueryable___0____
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: AeroDB.IDocumentStore
+    name: IDocumentStore
+    isExternal: true
+    href: AeroDB.IDocumentStore.html
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: System.Linq.IQueryable`1
+    name: IQueryable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.iqueryable-1
+  - name: <
+  - name: T
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Linq.IQueryable`1
+    name: IQueryable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.iqueryable-1
+  - name: <
+  - name: T
+  - name: '>'
+  - name: '>'
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: AeroDB.CompiledQueryExtensions.CompileQuery``1(AeroDB.IDocumentStore,System.Linq.Expressions.Expression{System.Func{System.Linq.IQueryable{``0},System.Linq.IQueryable{``0}}})
+    name: CompileQuery
+    isExternal: true
+    href: AeroDB.CompiledQueryExtensions.html#AeroDB_CompiledQueryExtensions_CompileQuery__1_AeroDB_IDocumentStore_System_Linq_Expressions_Expression_System_Func_System_Linq_IQueryable___0__System_Linq_IQueryable___0____
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: AeroDB.IDocumentStore
+    name: IDocumentStore
+    isExternal: true
+    href: AeroDB.IDocumentStore.html
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Linq.IQueryable`1
+    name: IQueryable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.iqueryable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Linq.IQueryable`1
+    name: IQueryable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.iqueryable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+  - name: )
+  - name: )
+- uid: AeroDB.CompiledQueryExtensions
+  commentId: T:AeroDB.CompiledQueryExtensions
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.CompiledQueryExtensions.html
+  name: CompiledQueryExtensions
+  nameWithType: CompiledQueryExtensions
+  fullName: AeroDB.CompiledQueryExtensions
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AeroDB.IDocumentStore.QuerySessionAsync*
+  commentId: Overload:AeroDB.IDocumentStore.QuerySessionAsync
+  isExternal: true
+  href: AeroDB.IDocumentStore.html#AeroDB_IDocumentStore_QuerySessionAsync_System_Threading_CancellationToken_
+  name: QuerySessionAsync
+  nameWithType: IDocumentStore.QuerySessionAsync
+  fullName: AeroDB.IDocumentStore.QuerySessionAsync
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task{AeroDB.IQuerySession}
+  commentId: T:System.Threading.Tasks.Task{AeroDB.IQuerySession}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<IQuerySession>
+  nameWithType: Task<IQuerySession>
+  fullName: System.Threading.Tasks.Task<AeroDB.IQuerySession>
+  nameWithType.vb: Task(Of IQuerySession)
+  fullName.vb: System.Threading.Tasks.Task(Of AeroDB.IQuerySession)
+  name.vb: Task(Of IQuerySession)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: AeroDB.IQuerySession
+    name: IQuerySession
+    isExternal: true
+    href: AeroDB.IQuerySession.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.IQuerySession
+    name: IQuerySession
+    isExternal: true
+    href: AeroDB.IQuerySession.html
+  - name: )
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: AeroDB.IDocumentStore.LiveQuerySessionAsync*
+  commentId: Overload:AeroDB.IDocumentStore.LiveQuerySessionAsync
+  isExternal: true
+  href: AeroDB.IDocumentStore.html#AeroDB_IDocumentStore_LiveQuerySessionAsync_System_Threading_CancellationToken_
+  name: LiveQuerySessionAsync
+  nameWithType: IDocumentStore.LiveQuerySessionAsync
+  fullName: AeroDB.IDocumentStore.LiveQuerySessionAsync
+- uid: System.Threading.Tasks.Task{AeroDB.LiveQuery.ILiveQuerySession}
+  commentId: T:System.Threading.Tasks.Task{AeroDB.LiveQuery.ILiveQuerySession}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<ILiveQuerySession>
+  nameWithType: Task<ILiveQuerySession>
+  fullName: System.Threading.Tasks.Task<AeroDB.LiveQuery.ILiveQuerySession>
+  nameWithType.vb: Task(Of ILiveQuerySession)
+  fullName.vb: System.Threading.Tasks.Task(Of AeroDB.LiveQuery.ILiveQuerySession)
+  name.vb: Task(Of ILiveQuerySession)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: AeroDB.LiveQuery.ILiveQuerySession
+    name: ILiveQuerySession
+    isExternal: true
+    href: AeroDB.LiveQuery.ILiveQuerySession.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.LiveQuery.ILiveQuerySession
+    name: ILiveQuerySession
+    isExternal: true
+    href: AeroDB.LiveQuery.ILiveQuerySession.html
+  - name: )
+- uid: AeroDB.IDocumentStore.OpenSessionAsync*
+  commentId: Overload:AeroDB.IDocumentStore.OpenSessionAsync
+  isExternal: true
+  href: AeroDB.IDocumentStore.html#AeroDB_IDocumentStore_OpenSessionAsync_AeroDB_SessionOptions_System_Threading_CancellationToken_
+  name: OpenSessionAsync
+  nameWithType: IDocumentStore.OpenSessionAsync
+  fullName: AeroDB.IDocumentStore.OpenSessionAsync
+- uid: AeroDB.SessionOptions
+  commentId: T:AeroDB.SessionOptions
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.SessionOptions.html
+  name: SessionOptions
+  nameWithType: SessionOptions
+  fullName: AeroDB.SessionOptions
+- uid: System.Threading.Tasks.Task{AeroDB.IDocumentSession}
+  commentId: T:System.Threading.Tasks.Task{AeroDB.IDocumentSession}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<IDocumentSession>
+  nameWithType: Task<IDocumentSession>
+  fullName: System.Threading.Tasks.Task<AeroDB.IDocumentSession>
+  nameWithType.vb: Task(Of IDocumentSession)
+  fullName.vb: System.Threading.Tasks.Task(Of AeroDB.IDocumentSession)
+  name.vb: Task(Of IDocumentSession)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: AeroDB.IDocumentSession
+    name: IDocumentSession
+    isExternal: true
+    href: AeroDB.IDocumentSession.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.IDocumentSession
+    name: IDocumentSession
+    isExternal: true
+    href: AeroDB.IDocumentSession.html
+  - name: )
+- uid: AeroDB.DocumentTracking.None
+  commentId: F:AeroDB.DocumentTracking.None
+  isExternal: true
+  href: AeroDB.DocumentTracking.html#AeroDB_DocumentTracking_None
+  name: None
+  nameWithType: DocumentTracking.None
+  fullName: AeroDB.DocumentTracking.None
+- uid: AeroDB.IDocumentStore.LightweightSessionAsync*
+  commentId: Overload:AeroDB.IDocumentStore.LightweightSessionAsync
+  isExternal: true
+  href: AeroDB.IDocumentStore.html#AeroDB_IDocumentStore_LightweightSessionAsync_System_Threading_CancellationToken_
+  name: LightweightSessionAsync
+  nameWithType: IDocumentStore.LightweightSessionAsync
+  fullName: AeroDB.IDocumentStore.LightweightSessionAsync
+- uid: AeroDB.IDocumentStore.DocumentSessionAsync*
+  commentId: Overload:AeroDB.IDocumentStore.DocumentSessionAsync
+  isExternal: true
+  href: AeroDB.IDocumentStore.html#AeroDB_IDocumentStore_DocumentSessionAsync_System_Threading_CancellationToken_
+  name: DocumentSessionAsync
+  nameWithType: IDocumentStore.DocumentSessionAsync
+  fullName: AeroDB.IDocumentStore.DocumentSessionAsync
+- uid: AeroDB.IDocumentStore.InitializeAsync*
+  commentId: Overload:AeroDB.IDocumentStore.InitializeAsync
+  isExternal: true
+  href: AeroDB.IDocumentStore.html#AeroDB_IDocumentStore_InitializeAsync_System_Threading_CancellationToken_
+  name: InitializeAsync
+  nameWithType: IDocumentStore.InitializeAsync
+  fullName: AeroDB.IDocumentStore.InitializeAsync
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: AeroDB.IDocumentStore.WithTenant*
+  commentId: Overload:AeroDB.IDocumentStore.WithTenant
+  isExternal: true
+  href: AeroDB.IDocumentStore.html#AeroDB_IDocumentStore_WithTenant_System_String_
+  name: WithTenant
+  nameWithType: IDocumentStore.WithTenant
+  fullName: AeroDB.IDocumentStore.WithTenant
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: AeroDB.IDocumentStore
+  commentId: T:AeroDB.IDocumentStore
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IDocumentStore.html
+  name: IDocumentStore
+  nameWithType: IDocumentStore
+  fullName: AeroDB.IDocumentStore
+- uid: AeroDB.IDocumentStore.Graph*
+  commentId: Overload:AeroDB.IDocumentStore.Graph
+  isExternal: true
+  href: AeroDB.IDocumentStore.html#AeroDB_IDocumentStore_Graph__1
+  name: Graph
+  nameWithType: IDocumentStore.Graph
+  fullName: AeroDB.IDocumentStore.Graph
+- uid: AeroDB.IGraphQuery{{T}}
+  commentId: T:AeroDB.IGraphQuery{``0}
+  parent: AeroDB
+  definition: AeroDB.IGraphQuery`1
+  href: AeroDB.IGraphQuery-1.html
+  name: IGraphQuery<T>
+  nameWithType: IGraphQuery<T>
+  fullName: AeroDB.IGraphQuery<T>
+  nameWithType.vb: IGraphQuery(Of T)
+  fullName.vb: AeroDB.IGraphQuery(Of T)
+  name.vb: IGraphQuery(Of T)
+  spec.csharp:
+  - uid: AeroDB.IGraphQuery`1
+    name: IGraphQuery
+    isExternal: true
+    href: AeroDB.IGraphQuery-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.IGraphQuery`1
+    name: IGraphQuery
+    isExternal: true
+    href: AeroDB.IGraphQuery-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.IGraphQuery`1
+  commentId: T:AeroDB.IGraphQuery`1
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IGraphQuery-1.html
+  name: IGraphQuery<TNode>
+  nameWithType: IGraphQuery<TNode>
+  fullName: AeroDB.IGraphQuery<TNode>
+  nameWithType.vb: IGraphQuery(Of TNode)
+  fullName.vb: AeroDB.IGraphQuery(Of TNode)
+  name.vb: IGraphQuery(Of TNode)
+  spec.csharp:
+  - uid: AeroDB.IGraphQuery`1
+    name: IGraphQuery
+    isExternal: true
+    href: AeroDB.IGraphQuery-1.html
+  - name: <
+  - name: TNode
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.IGraphQuery`1
+    name: IGraphQuery
+    isExternal: true
+    href: AeroDB.IGraphQuery-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TNode
+  - name: )
+- uid: AeroDB.IDocumentStore.GetVersionAsync*
+  commentId: Overload:AeroDB.IDocumentStore.GetVersionAsync
+  isExternal: true
+  href: AeroDB.IDocumentStore.html#AeroDB_IDocumentStore_GetVersionAsync_System_Threading_CancellationToken_
+  name: GetVersionAsync
+  nameWithType: IDocumentStore.GetVersionAsync
+  fullName: AeroDB.IDocumentStore.GetVersionAsync
+- uid: System.Threading.Tasks.Task{System.String}
+  commentId: T:System.Threading.Tasks.Task{System.String}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<string>
+  nameWithType: Task<string>
+  fullName: System.Threading.Tasks.Task<string>
+  nameWithType.vb: Task(Of String)
+  fullName.vb: System.Threading.Tasks.Task(Of String)
+  name.vb: Task(Of String)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: AeroDB.IDocumentStore.QueryAsync*
+  commentId: Overload:AeroDB.IDocumentStore.QueryAsync
+  isExternal: true
+  href: AeroDB.IDocumentStore.html#AeroDB_IDocumentStore_QueryAsync__2_AeroDB_ICompiledQuery___0___1__System_Threading_CancellationToken_
+  name: QueryAsync
+  nameWithType: IDocumentStore.QueryAsync
+  fullName: AeroDB.IDocumentStore.QueryAsync
+- uid: AeroDB.ICompiledQuery{{TDoc},{TOut}}
+  commentId: T:AeroDB.ICompiledQuery{``0,``1}
+  parent: AeroDB
+  definition: AeroDB.ICompiledQuery`2
+  href: AeroDB.ICompiledQuery-2.html
+  name: ICompiledQuery<TDoc, TOut>
+  nameWithType: ICompiledQuery<TDoc, TOut>
+  fullName: AeroDB.ICompiledQuery<TDoc, TOut>
+  nameWithType.vb: ICompiledQuery(Of TDoc, TOut)
+  fullName.vb: AeroDB.ICompiledQuery(Of TDoc, TOut)
+  name.vb: ICompiledQuery(Of TDoc, TOut)
+  spec.csharp:
+  - uid: AeroDB.ICompiledQuery`2
+    name: ICompiledQuery
+    isExternal: true
+    href: AeroDB.ICompiledQuery-2.html
+  - name: <
+  - name: TDoc
+  - name: ','
+  - name: " "
+  - name: TOut
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.ICompiledQuery`2
+    name: ICompiledQuery
+    isExternal: true
+    href: AeroDB.ICompiledQuery-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TDoc
+  - name: ','
+  - name: " "
+  - name: TOut
+  - name: )
+- uid: System.Threading.Tasks.Task{{TOut}}
+  commentId: T:System.Threading.Tasks.Task{``1}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TOut>
+  nameWithType: Task<TOut>
+  fullName: System.Threading.Tasks.Task<TOut>
+  nameWithType.vb: Task(Of TOut)
+  fullName.vb: System.Threading.Tasks.Task(Of TOut)
+  name.vb: Task(Of TOut)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TOut
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TOut
+  - name: )
+- uid: AeroDB.ICompiledQuery`2
+  commentId: T:AeroDB.ICompiledQuery`2
+  isExternal: true
+  href: AeroDB.ICompiledQuery-2.html
+  name: ICompiledQuery<TDoc, TOut>
+  nameWithType: ICompiledQuery<TDoc, TOut>
+  fullName: AeroDB.ICompiledQuery<TDoc, TOut>
+  nameWithType.vb: ICompiledQuery(Of TDoc, TOut)
+  fullName.vb: AeroDB.ICompiledQuery(Of TDoc, TOut)
+  name.vb: ICompiledQuery(Of TDoc, TOut)
+  spec.csharp:
+  - uid: AeroDB.ICompiledQuery`2
+    name: ICompiledQuery
+    isExternal: true
+    href: AeroDB.ICompiledQuery-2.html
+  - name: <
+  - name: TDoc
+  - name: ','
+  - name: " "
+  - name: TOut
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.ICompiledQuery`2
+    name: ICompiledQuery
+    isExternal: true
+    href: AeroDB.ICompiledQuery-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TDoc
+  - name: ','
+  - name: " "
+  - name: TOut
+  - name: )
+- uid: AeroDB.IDocumentStore.CleanDeletedDocumentsAsync*
+  commentId: Overload:AeroDB.IDocumentStore.CleanDeletedDocumentsAsync
+  isExternal: true
+  href: AeroDB.IDocumentStore.html#AeroDB_IDocumentStore_CleanDeletedDocumentsAsync_System_TimeSpan_System_Threading_CancellationToken_
+  name: CleanDeletedDocumentsAsync
+  nameWithType: IDocumentStore.CleanDeletedDocumentsAsync
+  fullName: AeroDB.IDocumentStore.CleanDeletedDocumentsAsync
+- uid: System.TimeSpan
+  commentId: T:System.TimeSpan
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.timespan
+  name: TimeSpan
+  nameWithType: TimeSpan
+  fullName: System.TimeSpan
+- uid: System.Threading.Tasks.Task{System.Int64}
+  commentId: T:System.Threading.Tasks.Task{System.Int64}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<long>
+  nameWithType: Task<long>
+  fullName: System.Threading.Tasks.Task<long>
+  nameWithType.vb: Task(Of Long)
+  fullName.vb: System.Threading.Tasks.Task(Of Long)
+  name.vb: Task(Of Long)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Int64
+    name: long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Int64
+    name: Long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: )
+- uid: AeroDB.IDocumentStore.BulkInsertAsync*
+  commentId: Overload:AeroDB.IDocumentStore.BulkInsertAsync
+  isExternal: true
+  href: AeroDB.IDocumentStore.html#AeroDB_IDocumentStore_BulkInsertAsync__1_System_String_System_Collections_Generic_IEnumerable___0__AeroDB_BulkInsertMode_System_Int32_System_Threading_CancellationToken_
+  name: BulkInsertAsync
+  nameWithType: IDocumentStore.BulkInsertAsync
+  fullName: AeroDB.IDocumentStore.BulkInsertAsync
+- uid: System.Collections.Generic.IEnumerable{{T}}
+  commentId: T:System.Collections.Generic.IEnumerable{``0}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.BulkInsertMode
+  commentId: T:AeroDB.BulkInsertMode
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.BulkInsertMode.html
+  name: BulkInsertMode
+  nameWithType: BulkInsertMode
+  fullName: AeroDB.BulkInsertMode
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: AeroDB.IDocumentStore.BulkInsertDocumentsAsync*
+  commentId: Overload:AeroDB.IDocumentStore.BulkInsertDocumentsAsync
+  isExternal: true
+  href: AeroDB.IDocumentStore.html#AeroDB_IDocumentStore_BulkInsertDocumentsAsync_System_String_System_Collections_Generic_IEnumerable_System_Object__AeroDB_BulkInsertMode_System_Int32_System_Threading_CancellationToken_
+  name: BulkInsertDocumentsAsync
+  nameWithType: IDocumentStore.BulkInsertDocumentsAsync
+  fullName: AeroDB.IDocumentStore.BulkInsertDocumentsAsync
+- uid: System.Collections.Generic.IEnumerable{System.Object}
+  commentId: T:System.Collections.Generic.IEnumerable{System.Object}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<object>
+  nameWithType: IEnumerable<object>
+  fullName: System.Collections.Generic.IEnumerable<object>
+  nameWithType.vb: IEnumerable(Of Object)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of Object)
+  name.vb: IEnumerable(Of Object)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: AeroDB.IDocumentStore.BulkInsertEventsAsync*
+  commentId: Overload:AeroDB.IDocumentStore.BulkInsertEventsAsync
+  isExternal: true
+  href: AeroDB.IDocumentStore.html#AeroDB_IDocumentStore_BulkInsertEventsAsync_System_String_System_Collections_Generic_IEnumerable_System_ValueTuple_System_String_System_Collections_Generic_IEnumerable_System_Object____System_Int32_System_Threading_CancellationToken_
+  name: BulkInsertEventsAsync
+  nameWithType: IDocumentStore.BulkInsertEventsAsync
+  fullName: AeroDB.IDocumentStore.BulkInsertEventsAsync
+- uid: System.Collections.Generic.IEnumerable{System.ValueTuple{System.String,System.Collections.Generic.IEnumerable{System.Object}}}
+  commentId: T:System.Collections.Generic.IEnumerable{System.ValueTuple{System.String,System.Collections.Generic.IEnumerable{System.Object}}}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<(string StreamId, IEnumerable<object> Events)>
+  nameWithType: IEnumerable<(string StreamId, IEnumerable<object> Events)>
+  fullName: System.Collections.Generic.IEnumerable<(string StreamId, System.Collections.Generic.IEnumerable<object> Events)>
+  nameWithType.vb: IEnumerable(Of (StreamId As String, Events As IEnumerable(Of Object)))
+  fullName.vb: System.Collections.Generic.IEnumerable(Of (StreamId As String, Events As System.Collections.Generic.IEnumerable(Of Object)))
+  name.vb: IEnumerable(Of (StreamId As String, Events As IEnumerable(Of Object)))
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: " "
+  - uid: System.ValueTuple{System.String,System.Collections.Generic.IEnumerable{System.Object}}.StreamId
+    name: StreamId
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.string,system.collections.generic.ienumerable-system.object--.streamid
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
+  - name: " "
+  - uid: System.ValueTuple{System.String,System.Collections.Generic.IEnumerable{System.Object}}.Events
+    name: Events
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.string,system.collections.generic.ienumerable-system.object--.events
+  - name: )
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: (
+  - uid: System.ValueTuple{System.String,System.Collections.Generic.IEnumerable{System.Object}}.StreamId
+    name: StreamId
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.string,system.collections.generic.ienumerable-system.object--.streamid
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.ValueTuple{System.String,System.Collections.Generic.IEnumerable{System.Object}}.Events
+    name: Events
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.string,system.collections.generic.ienumerable-system.object--.events
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  - name: )
+  - name: )
+- uid: AeroDB.IDocumentStore.IdentitySessionAsync*
+  commentId: Overload:AeroDB.IDocumentStore.IdentitySessionAsync
+  isExternal: true
+  href: AeroDB.IDocumentStore.html#AeroDB_IDocumentStore_IdentitySessionAsync_System_String_System_Threading_CancellationToken_
+  name: IdentitySessionAsync
+  nameWithType: IDocumentStore.IdentitySessionAsync
+  fullName: AeroDB.IDocumentStore.IdentitySessionAsync
+- uid: AeroDB.IDocumentStore.DirtyTrackedSessionAsync*
+  commentId: Overload:AeroDB.IDocumentStore.DirtyTrackedSessionAsync
+  isExternal: true
+  href: AeroDB.IDocumentStore.html#AeroDB_IDocumentStore_DirtyTrackedSessionAsync_System_String_System_Threading_CancellationToken_
+  name: DirtyTrackedSessionAsync
+  nameWithType: IDocumentStore.DirtyTrackedSessionAsync
+  fullName: AeroDB.IDocumentStore.DirtyTrackedSessionAsync
+- uid: AeroDB.IDocumentStore.Options*
+  commentId: Overload:AeroDB.IDocumentStore.Options
+  isExternal: true
+  href: AeroDB.IDocumentStore.html#AeroDB_IDocumentStore_Options
+  name: Options
+  nameWithType: IDocumentStore.Options
+  fullName: AeroDB.IDocumentStore.Options
+- uid: AeroDB.StoreOptions
+  commentId: T:AeroDB.StoreOptions
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.StoreOptions.html
+  name: StoreOptions
+  nameWithType: StoreOptions
+  fullName: AeroDB.StoreOptions
+- uid: AeroDB.IDocumentStore.Client*
+  commentId: Overload:AeroDB.IDocumentStore.Client
+  isExternal: true
+  href: AeroDB.IDocumentStore.html#AeroDB_IDocumentStore_Client
+  name: Client
+  nameWithType: IDocumentStore.Client
+  fullName: AeroDB.IDocumentStore.Client
+- uid: SurrealDb.Net.ISurrealDbClient
+  commentId: T:SurrealDb.Net.ISurrealDbClient
+  parent: SurrealDb.Net
+  isExternal: true
+  name: ISurrealDbClient
+  nameWithType: ISurrealDbClient
+  fullName: SurrealDb.Net.ISurrealDbClient
+- uid: SurrealDb.Net
+  commentId: N:SurrealDb.Net
+  isExternal: true
+  name: SurrealDb.Net
+  nameWithType: SurrealDb.Net
+  fullName: SurrealDb.Net
+  spec.csharp:
+  - uid: SurrealDb
+    name: SurrealDb
+    isExternal: true
+  - name: .
+  - uid: SurrealDb.Net
+    name: Net
+    isExternal: true
+  spec.vb:
+  - uid: SurrealDb
+    name: SurrealDb
+    isExternal: true
+  - name: .
+  - uid: SurrealDb.Net
+    name: Net
+    isExternal: true
+- uid: AeroDB.IDocumentStore.Advanced*
+  commentId: Overload:AeroDB.IDocumentStore.Advanced
+  isExternal: true
+  href: AeroDB.IDocumentStore.html#AeroDB_IDocumentStore_Advanced
+  name: Advanced
+  nameWithType: IDocumentStore.Advanced
+  fullName: AeroDB.IDocumentStore.Advanced
+- uid: AeroDB.IAeroDBAdvanced
+  commentId: T:AeroDB.IAeroDBAdvanced
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IAeroDBAdvanced.html
+  name: IAeroDBAdvanced
+  nameWithType: IAeroDBAdvanced
+  fullName: AeroDB.IAeroDBAdvanced
+- uid: AeroDB.AsyncDaemon
+  commentId: T:AeroDB.AsyncDaemon
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.AsyncDaemon.html
+  name: AsyncDaemon
+  nameWithType: AsyncDaemon
+  fullName: AeroDB.AsyncDaemon
+- uid: AeroDB.IDocumentStore.Daemon*
+  commentId: Overload:AeroDB.IDocumentStore.Daemon
+  isExternal: true
+  href: AeroDB.IDocumentStore.html#AeroDB_IDocumentStore_Daemon
+  name: Daemon
+  nameWithType: IDocumentStore.Daemon
+  fullName: AeroDB.IDocumentStore.Daemon

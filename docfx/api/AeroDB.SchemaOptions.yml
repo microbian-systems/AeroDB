@@ -1,0 +1,1153 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.SchemaOptions
+  commentId: T:AeroDB.SchemaOptions
+  id: SchemaOptions
+  parent: AeroDB
+  children:
+  - AeroDB.SchemaOptions.#ctor
+  - AeroDB.SchemaOptions.Accesses
+  - AeroDB.SchemaOptions.Analyzers
+  - AeroDB.SchemaOptions.AutoCreate
+  - AeroDB.SchemaOptions.AutoCreateDatabases
+  - AeroDB.SchemaOptions.Edge``3(System.Action{AeroDB.EdgeMapping{``0}})
+  - AeroDB.SchemaOptions.EventsTableName
+  - AeroDB.SchemaOptions.ForEventProgression
+  - AeroDB.SchemaOptions.ForEvents
+  - AeroDB.SchemaOptions.ForStreams``1
+  - AeroDB.SchemaOptions.For``1
+  - AeroDB.SchemaOptions.ProjectionProgressTableName
+  - AeroDB.SchemaOptions.Scopes
+  - AeroDB.SchemaOptions.Tokens
+  langs:
+  - csharp
+  - vb
+  name: SchemaOptions
+  nameWithType: SchemaOptions
+  fullName: AeroDB.SchemaOptions
+  type: Class
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Configuration for SurrealDB schema management. Controls auto-create behavior, schema mode (<code>SCHEMAFULL</code>/<code>SCHEMALESS</code>), analyzers, views, and per-type document mappings.
+  example: []
+  syntax:
+    content: public class SchemaOptions
+    content.vb: Public Class SchemaOptions
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+- uid: AeroDB.SchemaOptions.For``1
+  commentId: M:AeroDB.SchemaOptions.For``1
+  id: For``1
+  parent: AeroDB.SchemaOptions
+  langs:
+  - csharp
+  - vb
+  name: For<T>()
+  nameWithType: SchemaOptions.For<T>()
+  fullName: AeroDB.SchemaOptions.For<T>()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Fluent API for document-level schema configuration (indices, tenancy policy, etc.).
+
+    Creates or returns a cached <xref href="AeroDB.DocumentMapping%601" data-throw-if-not-resolved="false"></xref> for the specified type.
+  example: []
+  syntax:
+    content: public DocumentMapping<T> For<T>()
+    typeParameters:
+    - id: T
+    return:
+      type: AeroDB.DocumentMapping{{T}}
+    content.vb: Public Function [For](Of T)() As DocumentMapping(Of T)
+  overload: AeroDB.SchemaOptions.For*
+  nameWithType.vb: SchemaOptions.For(Of T)()
+  fullName.vb: AeroDB.SchemaOptions.For(Of T)()
+  name.vb: For(Of T)()
+- uid: AeroDB.SchemaOptions.Edge``3(System.Action{AeroDB.EdgeMapping{``0}})
+  commentId: M:AeroDB.SchemaOptions.Edge``3(System.Action{AeroDB.EdgeMapping{``0}})
+  id: Edge``3(System.Action{AeroDB.EdgeMapping{``0}})
+  parent: AeroDB.SchemaOptions
+  langs:
+  - csharp
+  - vb
+  name: Edge<TEdge, TIn, TOut>(Action<EdgeMapping<TEdge>>)
+  nameWithType: SchemaOptions.Edge<TEdge, TIn, TOut>(Action<EdgeMapping<TEdge>>)
+  fullName: AeroDB.SchemaOptions.Edge<TEdge, TIn, TOut>(System.Action<AeroDB.EdgeMapping<TEdge>>)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Fluent API for edge table schema configuration.
+
+    Configures a SurrealDB RELATION table with IN/OUT type constraints.
+  example: []
+  syntax:
+    content: 'public SchemaOptions Edge<TEdge, TIn, TOut>(Action<EdgeMapping<TEdge>> configure) where TEdge : EdgeRecord where TIn : Record where TOut : Record'
+    parameters:
+    - id: configure
+      type: System.Action{AeroDB.EdgeMapping{{TEdge}}}
+    typeParameters:
+    - id: TEdge
+      description: The edge record type (extends <xref href="AeroDB.EdgeRecord" data-throw-if-not-resolved="false"></xref>).
+    - id: TIn
+      description: The source/from node record type.
+    - id: TOut
+      description: The target/to node record type.
+    return:
+      type: AeroDB.SchemaOptions
+    content.vb: Public Function Edge(Of TEdge As EdgeRecord, TIn As Record, TOut As Record)(configure As Action(Of EdgeMapping(Of TEdge))) As SchemaOptions
+  overload: AeroDB.SchemaOptions.Edge*
+  nameWithType.vb: SchemaOptions.Edge(Of TEdge, TIn, TOut)(Action(Of EdgeMapping(Of TEdge)))
+  fullName.vb: AeroDB.SchemaOptions.Edge(Of TEdge, TIn, TOut)(System.Action(Of AeroDB.EdgeMapping(Of TEdge)))
+  name.vb: Edge(Of TEdge, TIn, TOut)(Action(Of EdgeMapping(Of TEdge)))
+- uid: AeroDB.SchemaOptions.ForStreams``1
+  commentId: M:AeroDB.SchemaOptions.ForStreams``1
+  id: ForStreams``1
+  parent: AeroDB.SchemaOptions
+  langs:
+  - csharp
+  - vb
+  name: ForStreams<TStream>()
+  nameWithType: SchemaOptions.ForStreams<TStream>()
+  fullName: AeroDB.SchemaOptions.ForStreams<TStream>()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Returns the event store table name for the given stream type.
+
+    All streams share mt_events.
+  example: []
+  syntax:
+    content: public string ForStreams<TStream>()
+    typeParameters:
+    - id: TStream
+    return:
+      type: System.String
+    content.vb: Public Function ForStreams(Of TStream)() As String
+  overload: AeroDB.SchemaOptions.ForStreams*
+  nameWithType.vb: SchemaOptions.ForStreams(Of TStream)()
+  fullName.vb: AeroDB.SchemaOptions.ForStreams(Of TStream)()
+  name.vb: ForStreams(Of TStream)()
+- uid: AeroDB.SchemaOptions.ForEvents
+  commentId: M:AeroDB.SchemaOptions.ForEvents
+  id: ForEvents
+  parent: AeroDB.SchemaOptions
+  langs:
+  - csharp
+  - vb
+  name: ForEvents()
+  nameWithType: SchemaOptions.ForEvents()
+  fullName: AeroDB.SchemaOptions.ForEvents()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Returns the event store table name.
+  example: []
+  syntax:
+    content: public string ForEvents()
+    return:
+      type: System.String
+    content.vb: Public Function ForEvents() As String
+  overload: AeroDB.SchemaOptions.ForEvents*
+- uid: AeroDB.SchemaOptions.ForEventProgression
+  commentId: M:AeroDB.SchemaOptions.ForEventProgression
+  id: ForEventProgression
+  parent: AeroDB.SchemaOptions
+  langs:
+  - csharp
+  - vb
+  name: ForEventProgression()
+  nameWithType: SchemaOptions.ForEventProgression()
+  fullName: AeroDB.SchemaOptions.ForEventProgression()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Returns the projection progress table name.
+  example: []
+  syntax:
+    content: public string ForEventProgression()
+    return:
+      type: System.String
+    content.vb: Public Function ForEventProgression() As String
+  overload: AeroDB.SchemaOptions.ForEventProgression*
+- uid: AeroDB.SchemaOptions.#ctor
+  commentId: M:AeroDB.SchemaOptions.#ctor
+  id: '#ctor'
+  parent: AeroDB.SchemaOptions
+  langs:
+  - csharp
+  - vb
+  name: SchemaOptions()
+  nameWithType: SchemaOptions.SchemaOptions()
+  fullName: AeroDB.SchemaOptions.SchemaOptions()
+  type: Constructor
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public SchemaOptions()
+    content.vb: Public Sub New()
+  overload: AeroDB.SchemaOptions.#ctor*
+  nameWithType.vb: SchemaOptions.New()
+  fullName.vb: AeroDB.SchemaOptions.New()
+  name.vb: New()
+- uid: AeroDB.SchemaOptions.AutoCreate
+  commentId: P:AeroDB.SchemaOptions.AutoCreate
+  id: AutoCreate
+  parent: AeroDB.SchemaOptions
+  langs:
+  - csharp
+  - vb
+  name: AutoCreate
+  nameWithType: SchemaOptions.AutoCreate
+  fullName: AeroDB.SchemaOptions.AutoCreate
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public bool AutoCreate { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property AutoCreate As Boolean
+  overload: AeroDB.SchemaOptions.AutoCreate*
+- uid: AeroDB.SchemaOptions.AutoCreateDatabases
+  commentId: P:AeroDB.SchemaOptions.AutoCreateDatabases
+  id: AutoCreateDatabases
+  parent: AeroDB.SchemaOptions
+  langs:
+  - csharp
+  - vb
+  name: AutoCreateDatabases
+  nameWithType: SchemaOptions.AutoCreateDatabases
+  fullName: AeroDB.SchemaOptions.AutoCreateDatabases
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    When true, AeroDB will call <code>DEFINE DATABASE IF NOT EXISTS</code> for each
+
+    configured schema (via <xref href="AeroDB.DocumentMapping%601.Schema(System.String)" data-throw-if-not-resolved="false"></xref>) during
+
+    store initialization. Requires the connection user to have sufficient
+
+    privileges. Default is false.
+  example: []
+  syntax:
+    content: public bool AutoCreateDatabases { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property AutoCreateDatabases As Boolean
+  overload: AeroDB.SchemaOptions.AutoCreateDatabases*
+- uid: AeroDB.SchemaOptions.Analyzers
+  commentId: P:AeroDB.SchemaOptions.Analyzers
+  id: Analyzers
+  parent: AeroDB.SchemaOptions
+  langs:
+  - csharp
+  - vb
+  name: Analyzers
+  nameWithType: SchemaOptions.Analyzers
+  fullName: AeroDB.SchemaOptions.Analyzers
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Configuration for SurrealDB analyzers (DEFINE ANALYZER).
+
+    Analyzers are created during store initialization, before indexes that reference them.
+  example: []
+  syntax:
+    content: public AnalyzerOptions Analyzers { get; }
+    parameters: []
+    return:
+      type: AeroDB.AnalyzerOptions
+    content.vb: Public ReadOnly Property Analyzers As AnalyzerOptions
+  overload: AeroDB.SchemaOptions.Analyzers*
+- uid: AeroDB.SchemaOptions.Accesses
+  commentId: P:AeroDB.SchemaOptions.Accesses
+  id: Accesses
+  parent: AeroDB.SchemaOptions
+  langs:
+  - csharp
+  - vb
+  name: Accesses
+  nameWithType: SchemaOptions.Accesses
+  fullName: AeroDB.SchemaOptions.Accesses
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Auth — DEFINE ACCESS configurations (SurrealDB v3+ replaces DEFINE LOGIN).
+  example: []
+  syntax:
+    content: public List<AccessDefinition> Accesses { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.List{AeroDB.AccessDefinition}
+    content.vb: Public ReadOnly Property Accesses As List(Of AccessDefinition)
+  overload: AeroDB.SchemaOptions.Accesses*
+- uid: AeroDB.SchemaOptions.Tokens
+  commentId: P:AeroDB.SchemaOptions.Tokens
+  id: Tokens
+  parent: AeroDB.SchemaOptions
+  langs:
+  - csharp
+  - vb
+  name: Tokens
+  nameWithType: SchemaOptions.Tokens
+  fullName: AeroDB.SchemaOptions.Tokens
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Auth — DEFINE TOKEN configurations for JWT/HS* verification.
+  example: []
+  syntax:
+    content: public List<TokenDefinition> Tokens { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.List{AeroDB.TokenDefinition}
+    content.vb: Public ReadOnly Property Tokens As List(Of TokenDefinition)
+  overload: AeroDB.SchemaOptions.Tokens*
+- uid: AeroDB.SchemaOptions.Scopes
+  commentId: P:AeroDB.SchemaOptions.Scopes
+  id: Scopes
+  parent: AeroDB.SchemaOptions
+  langs:
+  - csharp
+  - vb
+  name: Scopes
+  nameWithType: SchemaOptions.Scopes
+  fullName: AeroDB.SchemaOptions.Scopes
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Auth — DEFINE SCOPE configurations for user signup/signin flows.
+  example: []
+  syntax:
+    content: public List<ScopeDefinition> Scopes { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.List{AeroDB.ScopeDefinition}
+    content.vb: Public ReadOnly Property Scopes As List(Of ScopeDefinition)
+  overload: AeroDB.SchemaOptions.Scopes*
+- uid: AeroDB.SchemaOptions.EventsTableName
+  commentId: P:AeroDB.SchemaOptions.EventsTableName
+  id: EventsTableName
+  parent: AeroDB.SchemaOptions
+  langs:
+  - csharp
+  - vb
+  name: EventsTableName
+  nameWithType: SchemaOptions.EventsTableName
+  fullName: AeroDB.SchemaOptions.EventsTableName
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Exposes the mt_events table name for raw query scenarios.
+  example: []
+  syntax:
+    content: public string EventsTableName { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public ReadOnly Property EventsTableName As String
+  overload: AeroDB.SchemaOptions.EventsTableName*
+- uid: AeroDB.SchemaOptions.ProjectionProgressTableName
+  commentId: P:AeroDB.SchemaOptions.ProjectionProgressTableName
+  id: ProjectionProgressTableName
+  parent: AeroDB.SchemaOptions
+  langs:
+  - csharp
+  - vb
+  name: ProjectionProgressTableName
+  nameWithType: SchemaOptions.ProjectionProgressTableName
+  fullName: AeroDB.SchemaOptions.ProjectionProgressTableName
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Exposes the mt_projection_progress table name for raw query scenarios.
+  example: []
+  syntax:
+    content: public string ProjectionProgressTableName { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public ReadOnly Property ProjectionProgressTableName As String
+  overload: AeroDB.SchemaOptions.ProjectionProgressTableName*
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AeroDB.DocumentMapping`1
+  commentId: T:AeroDB.DocumentMapping`1
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.DocumentMapping-1.html
+  name: DocumentMapping<T>
+  nameWithType: DocumentMapping<T>
+  fullName: AeroDB.DocumentMapping<T>
+  nameWithType.vb: DocumentMapping(Of T)
+  fullName.vb: AeroDB.DocumentMapping(Of T)
+  name.vb: DocumentMapping(Of T)
+  spec.csharp:
+  - uid: AeroDB.DocumentMapping`1
+    name: DocumentMapping
+    isExternal: true
+    href: AeroDB.DocumentMapping-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.DocumentMapping`1
+    name: DocumentMapping
+    isExternal: true
+    href: AeroDB.DocumentMapping-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.SchemaOptions.For*
+  commentId: Overload:AeroDB.SchemaOptions.For
+  isExternal: true
+  href: AeroDB.SchemaOptions.html#AeroDB_SchemaOptions_For__1
+  name: For
+  nameWithType: SchemaOptions.For
+  fullName: AeroDB.SchemaOptions.For
+- uid: AeroDB.DocumentMapping{{T}}
+  commentId: T:AeroDB.DocumentMapping{``0}
+  parent: AeroDB
+  definition: AeroDB.DocumentMapping`1
+  href: AeroDB.DocumentMapping-1.html
+  name: DocumentMapping<T>
+  nameWithType: DocumentMapping<T>
+  fullName: AeroDB.DocumentMapping<T>
+  nameWithType.vb: DocumentMapping(Of T)
+  fullName.vb: AeroDB.DocumentMapping(Of T)
+  name.vb: DocumentMapping(Of T)
+  spec.csharp:
+  - uid: AeroDB.DocumentMapping`1
+    name: DocumentMapping
+    isExternal: true
+    href: AeroDB.DocumentMapping-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.DocumentMapping`1
+    name: DocumentMapping
+    isExternal: true
+    href: AeroDB.DocumentMapping-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.EdgeRecord
+  commentId: T:AeroDB.EdgeRecord
+  isExternal: true
+  href: AeroDB.EdgeRecord.html
+  name: EdgeRecord
+  nameWithType: EdgeRecord
+  fullName: AeroDB.EdgeRecord
+- uid: AeroDB.SchemaOptions.Edge*
+  commentId: Overload:AeroDB.SchemaOptions.Edge
+  isExternal: true
+  href: AeroDB.SchemaOptions.html#AeroDB_SchemaOptions_Edge__3_System_Action_AeroDB_EdgeMapping___0___
+  name: Edge
+  nameWithType: SchemaOptions.Edge
+  fullName: AeroDB.SchemaOptions.Edge
+- uid: System.Action{AeroDB.EdgeMapping{{TEdge}}}
+  commentId: T:System.Action{AeroDB.EdgeMapping{``0}}
+  parent: System
+  definition: System.Action`1
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<EdgeMapping<TEdge>>
+  nameWithType: Action<EdgeMapping<TEdge>>
+  fullName: System.Action<AeroDB.EdgeMapping<TEdge>>
+  nameWithType.vb: Action(Of EdgeMapping(Of TEdge))
+  fullName.vb: System.Action(Of AeroDB.EdgeMapping(Of TEdge))
+  name.vb: Action(Of EdgeMapping(Of TEdge))
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: AeroDB.EdgeMapping`1
+    name: EdgeMapping
+    isExternal: true
+    href: AeroDB.EdgeMapping-1.html
+  - name: <
+  - name: TEdge
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.EdgeMapping`1
+    name: EdgeMapping
+    isExternal: true
+    href: AeroDB.EdgeMapping-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TEdge
+  - name: )
+  - name: )
+- uid: AeroDB.SchemaOptions
+  commentId: T:AeroDB.SchemaOptions
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.SchemaOptions.html
+  name: SchemaOptions
+  nameWithType: SchemaOptions
+  fullName: AeroDB.SchemaOptions
+- uid: System.Action`1
+  commentId: T:System.Action`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<T>
+  nameWithType: Action<T>
+  fullName: System.Action<T>
+  nameWithType.vb: Action(Of T)
+  fullName.vb: System.Action(Of T)
+  name.vb: Action(Of T)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.SchemaOptions.ForStreams*
+  commentId: Overload:AeroDB.SchemaOptions.ForStreams
+  isExternal: true
+  href: AeroDB.SchemaOptions.html#AeroDB_SchemaOptions_ForStreams__1
+  name: ForStreams
+  nameWithType: SchemaOptions.ForStreams
+  fullName: AeroDB.SchemaOptions.ForStreams
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: AeroDB.SchemaOptions.ForEvents*
+  commentId: Overload:AeroDB.SchemaOptions.ForEvents
+  isExternal: true
+  href: AeroDB.SchemaOptions.html#AeroDB_SchemaOptions_ForEvents
+  name: ForEvents
+  nameWithType: SchemaOptions.ForEvents
+  fullName: AeroDB.SchemaOptions.ForEvents
+- uid: AeroDB.SchemaOptions.ForEventProgression*
+  commentId: Overload:AeroDB.SchemaOptions.ForEventProgression
+  isExternal: true
+  href: AeroDB.SchemaOptions.html#AeroDB_SchemaOptions_ForEventProgression
+  name: ForEventProgression
+  nameWithType: SchemaOptions.ForEventProgression
+  fullName: AeroDB.SchemaOptions.ForEventProgression
+- uid: AeroDB.SchemaOptions.#ctor*
+  commentId: Overload:AeroDB.SchemaOptions.#ctor
+  isExternal: true
+  href: AeroDB.SchemaOptions.html#AeroDB_SchemaOptions__ctor
+  name: SchemaOptions
+  nameWithType: SchemaOptions.SchemaOptions
+  fullName: AeroDB.SchemaOptions.SchemaOptions
+  nameWithType.vb: SchemaOptions.New
+  fullName.vb: AeroDB.SchemaOptions.New
+  name.vb: New
+- uid: AeroDB.SchemaOptions.AutoCreate*
+  commentId: Overload:AeroDB.SchemaOptions.AutoCreate
+  isExternal: true
+  href: AeroDB.SchemaOptions.html#AeroDB_SchemaOptions_AutoCreate
+  name: AutoCreate
+  nameWithType: SchemaOptions.AutoCreate
+  fullName: AeroDB.SchemaOptions.AutoCreate
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: AeroDB.DocumentMapping`1.Schema(System.String)
+  commentId: M:AeroDB.DocumentMapping`1.Schema(System.String)
+  isExternal: true
+  href: AeroDB.DocumentMapping-1.html#AeroDB_DocumentMapping_1_Schema_System_String_
+  name: Schema(string)
+  nameWithType: DocumentMapping<T>.Schema(string)
+  fullName: AeroDB.DocumentMapping<T>.Schema(string)
+  nameWithType.vb: DocumentMapping(Of T).Schema(String)
+  fullName.vb: AeroDB.DocumentMapping(Of T).Schema(String)
+  name.vb: Schema(String)
+  spec.csharp:
+  - uid: AeroDB.DocumentMapping`1.Schema(System.String)
+    name: Schema
+    isExternal: true
+    href: AeroDB.DocumentMapping-1.html#AeroDB_DocumentMapping_1_Schema_System_String_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: AeroDB.DocumentMapping`1.Schema(System.String)
+    name: Schema
+    isExternal: true
+    href: AeroDB.DocumentMapping-1.html#AeroDB_DocumentMapping_1_Schema_System_String_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: AeroDB.SchemaOptions.AutoCreateDatabases*
+  commentId: Overload:AeroDB.SchemaOptions.AutoCreateDatabases
+  isExternal: true
+  href: AeroDB.SchemaOptions.html#AeroDB_SchemaOptions_AutoCreateDatabases
+  name: AutoCreateDatabases
+  nameWithType: SchemaOptions.AutoCreateDatabases
+  fullName: AeroDB.SchemaOptions.AutoCreateDatabases
+- uid: AeroDB.SchemaOptions.Analyzers*
+  commentId: Overload:AeroDB.SchemaOptions.Analyzers
+  isExternal: true
+  href: AeroDB.SchemaOptions.html#AeroDB_SchemaOptions_Analyzers
+  name: Analyzers
+  nameWithType: SchemaOptions.Analyzers
+  fullName: AeroDB.SchemaOptions.Analyzers
+- uid: AeroDB.AnalyzerOptions
+  commentId: T:AeroDB.AnalyzerOptions
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.AnalyzerOptions.html
+  name: AnalyzerOptions
+  nameWithType: AnalyzerOptions
+  fullName: AeroDB.AnalyzerOptions
+- uid: AeroDB.SchemaOptions.Accesses*
+  commentId: Overload:AeroDB.SchemaOptions.Accesses
+  isExternal: true
+  href: AeroDB.SchemaOptions.html#AeroDB_SchemaOptions_Accesses
+  name: Accesses
+  nameWithType: SchemaOptions.Accesses
+  fullName: AeroDB.SchemaOptions.Accesses
+- uid: System.Collections.Generic.List{AeroDB.AccessDefinition}
+  commentId: T:System.Collections.Generic.List{AeroDB.AccessDefinition}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<AccessDefinition>
+  nameWithType: List<AccessDefinition>
+  fullName: System.Collections.Generic.List<AeroDB.AccessDefinition>
+  nameWithType.vb: List(Of AccessDefinition)
+  fullName.vb: System.Collections.Generic.List(Of AeroDB.AccessDefinition)
+  name.vb: List(Of AccessDefinition)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: AeroDB.AccessDefinition
+    name: AccessDefinition
+    isExternal: true
+    href: AeroDB.AccessDefinition.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.AccessDefinition
+    name: AccessDefinition
+    isExternal: true
+    href: AeroDB.AccessDefinition.html
+  - name: )
+- uid: System.Collections.Generic.List`1
+  commentId: T:System.Collections.Generic.List`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<T>
+  nameWithType: List<T>
+  fullName: System.Collections.Generic.List<T>
+  nameWithType.vb: List(Of T)
+  fullName.vb: System.Collections.Generic.List(Of T)
+  name.vb: List(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: AeroDB.SchemaOptions.Tokens*
+  commentId: Overload:AeroDB.SchemaOptions.Tokens
+  isExternal: true
+  href: AeroDB.SchemaOptions.html#AeroDB_SchemaOptions_Tokens
+  name: Tokens
+  nameWithType: SchemaOptions.Tokens
+  fullName: AeroDB.SchemaOptions.Tokens
+- uid: System.Collections.Generic.List{AeroDB.TokenDefinition}
+  commentId: T:System.Collections.Generic.List{AeroDB.TokenDefinition}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<TokenDefinition>
+  nameWithType: List<TokenDefinition>
+  fullName: System.Collections.Generic.List<AeroDB.TokenDefinition>
+  nameWithType.vb: List(Of TokenDefinition)
+  fullName.vb: System.Collections.Generic.List(Of AeroDB.TokenDefinition)
+  name.vb: List(Of TokenDefinition)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: AeroDB.TokenDefinition
+    name: TokenDefinition
+    isExternal: true
+    href: AeroDB.TokenDefinition.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.TokenDefinition
+    name: TokenDefinition
+    isExternal: true
+    href: AeroDB.TokenDefinition.html
+  - name: )
+- uid: AeroDB.SchemaOptions.Scopes*
+  commentId: Overload:AeroDB.SchemaOptions.Scopes
+  isExternal: true
+  href: AeroDB.SchemaOptions.html#AeroDB_SchemaOptions_Scopes
+  name: Scopes
+  nameWithType: SchemaOptions.Scopes
+  fullName: AeroDB.SchemaOptions.Scopes
+- uid: System.Collections.Generic.List{AeroDB.ScopeDefinition}
+  commentId: T:System.Collections.Generic.List{AeroDB.ScopeDefinition}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<ScopeDefinition>
+  nameWithType: List<ScopeDefinition>
+  fullName: System.Collections.Generic.List<AeroDB.ScopeDefinition>
+  nameWithType.vb: List(Of ScopeDefinition)
+  fullName.vb: System.Collections.Generic.List(Of AeroDB.ScopeDefinition)
+  name.vb: List(Of ScopeDefinition)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: AeroDB.ScopeDefinition
+    name: ScopeDefinition
+    isExternal: true
+    href: AeroDB.ScopeDefinition.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.ScopeDefinition
+    name: ScopeDefinition
+    isExternal: true
+    href: AeroDB.ScopeDefinition.html
+  - name: )
+- uid: AeroDB.SchemaOptions.EventsTableName*
+  commentId: Overload:AeroDB.SchemaOptions.EventsTableName
+  isExternal: true
+  href: AeroDB.SchemaOptions.html#AeroDB_SchemaOptions_EventsTableName
+  name: EventsTableName
+  nameWithType: SchemaOptions.EventsTableName
+  fullName: AeroDB.SchemaOptions.EventsTableName
+- uid: AeroDB.SchemaOptions.ProjectionProgressTableName*
+  commentId: Overload:AeroDB.SchemaOptions.ProjectionProgressTableName
+  isExternal: true
+  href: AeroDB.SchemaOptions.html#AeroDB_SchemaOptions_ProjectionProgressTableName
+  name: ProjectionProgressTableName
+  nameWithType: SchemaOptions.ProjectionProgressTableName
+  fullName: AeroDB.SchemaOptions.ProjectionProgressTableName

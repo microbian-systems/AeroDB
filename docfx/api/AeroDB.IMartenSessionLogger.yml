@@ -1,0 +1,276 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.IMartenSessionLogger
+  commentId: T:AeroDB.IMartenSessionLogger
+  id: IMartenSessionLogger
+  parent: AeroDB
+  children:
+  - AeroDB.IMartenSessionLogger.LogFailure(System.Exception,AeroDB.IDocumentSession)
+  - AeroDB.IMartenSessionLogger.LogFailure(System.Exception,AeroDB.IQuerySession)
+  - AeroDB.IMartenSessionLogger.LogSuccess(AeroDB.IDocumentSession)
+  - AeroDB.IMartenSessionLogger.LogSuccess(AeroDB.IQuerySession)
+  - AeroDB.IMartenSessionLogger.OnBeforeExecute(AeroDB.IDocumentSession)
+  - AeroDB.IMartenSessionLogger.OnBeforeExecute(AeroDB.IQuerySession)
+  - AeroDB.IMartenSessionLogger.RecordSavedChanges(AeroDB.IDocumentSession,AeroDB.IChangeSet)
+  langs:
+  - csharp
+  - vb
+  name: IMartenSessionLogger
+  nameWithType: IMartenSessionLogger
+  fullName: AeroDB.IMartenSessionLogger
+  type: Interface
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Diagnostics/IMartenSessionLogger.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Logger interface for recording session-level diagnostic information,
+
+    mirroring the Marten <code>IMartenSessionLogger</code> contract.
+  example: []
+  syntax:
+    content: public interface IMartenSessionLogger
+    content.vb: Public Interface IMartenSessionLogger
+- uid: AeroDB.IMartenSessionLogger.RecordSavedChanges(AeroDB.IDocumentSession,AeroDB.IChangeSet)
+  commentId: M:AeroDB.IMartenSessionLogger.RecordSavedChanges(AeroDB.IDocumentSession,AeroDB.IChangeSet)
+  id: RecordSavedChanges(AeroDB.IDocumentSession,AeroDB.IChangeSet)
+  parent: AeroDB.IMartenSessionLogger
+  langs:
+  - csharp
+  - vb
+  name: RecordSavedChanges(IDocumentSession, IChangeSet)
+  nameWithType: IMartenSessionLogger.RecordSavedChanges(IDocumentSession, IChangeSet)
+  fullName: AeroDB.IMartenSessionLogger.RecordSavedChanges(AeroDB.IDocumentSession, AeroDB.IChangeSet)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Diagnostics/IMartenSessionLogger.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: void RecordSavedChanges(IDocumentSession session, IChangeSet commit)
+    parameters:
+    - id: session
+      type: AeroDB.IDocumentSession
+    - id: commit
+      type: AeroDB.IChangeSet
+    content.vb: Sub RecordSavedChanges(session As IDocumentSession, commit As IChangeSet)
+  overload: AeroDB.IMartenSessionLogger.RecordSavedChanges*
+- uid: AeroDB.IMartenSessionLogger.OnBeforeExecute(AeroDB.IQuerySession)
+  commentId: M:AeroDB.IMartenSessionLogger.OnBeforeExecute(AeroDB.IQuerySession)
+  id: OnBeforeExecute(AeroDB.IQuerySession)
+  parent: AeroDB.IMartenSessionLogger
+  langs:
+  - csharp
+  - vb
+  name: OnBeforeExecute(IQuerySession)
+  nameWithType: IMartenSessionLogger.OnBeforeExecute(IQuerySession)
+  fullName: AeroDB.IMartenSessionLogger.OnBeforeExecute(AeroDB.IQuerySession)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Diagnostics/IMartenSessionLogger.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: void OnBeforeExecute(IQuerySession session)
+    parameters:
+    - id: session
+      type: AeroDB.IQuerySession
+    content.vb: Sub OnBeforeExecute(session As IQuerySession)
+  overload: AeroDB.IMartenSessionLogger.OnBeforeExecute*
+- uid: AeroDB.IMartenSessionLogger.OnBeforeExecute(AeroDB.IDocumentSession)
+  commentId: M:AeroDB.IMartenSessionLogger.OnBeforeExecute(AeroDB.IDocumentSession)
+  id: OnBeforeExecute(AeroDB.IDocumentSession)
+  parent: AeroDB.IMartenSessionLogger
+  langs:
+  - csharp
+  - vb
+  name: OnBeforeExecute(IDocumentSession)
+  nameWithType: IMartenSessionLogger.OnBeforeExecute(IDocumentSession)
+  fullName: AeroDB.IMartenSessionLogger.OnBeforeExecute(AeroDB.IDocumentSession)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Diagnostics/IMartenSessionLogger.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: void OnBeforeExecute(IDocumentSession session)
+    parameters:
+    - id: session
+      type: AeroDB.IDocumentSession
+    content.vb: Sub OnBeforeExecute(session As IDocumentSession)
+  overload: AeroDB.IMartenSessionLogger.OnBeforeExecute*
+- uid: AeroDB.IMartenSessionLogger.LogSuccess(AeroDB.IQuerySession)
+  commentId: M:AeroDB.IMartenSessionLogger.LogSuccess(AeroDB.IQuerySession)
+  id: LogSuccess(AeroDB.IQuerySession)
+  parent: AeroDB.IMartenSessionLogger
+  langs:
+  - csharp
+  - vb
+  name: LogSuccess(IQuerySession)
+  nameWithType: IMartenSessionLogger.LogSuccess(IQuerySession)
+  fullName: AeroDB.IMartenSessionLogger.LogSuccess(AeroDB.IQuerySession)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Diagnostics/IMartenSessionLogger.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: void LogSuccess(IQuerySession session)
+    parameters:
+    - id: session
+      type: AeroDB.IQuerySession
+    content.vb: Sub LogSuccess(session As IQuerySession)
+  overload: AeroDB.IMartenSessionLogger.LogSuccess*
+- uid: AeroDB.IMartenSessionLogger.LogFailure(System.Exception,AeroDB.IQuerySession)
+  commentId: M:AeroDB.IMartenSessionLogger.LogFailure(System.Exception,AeroDB.IQuerySession)
+  id: LogFailure(System.Exception,AeroDB.IQuerySession)
+  parent: AeroDB.IMartenSessionLogger
+  langs:
+  - csharp
+  - vb
+  name: LogFailure(Exception, IQuerySession)
+  nameWithType: IMartenSessionLogger.LogFailure(Exception, IQuerySession)
+  fullName: AeroDB.IMartenSessionLogger.LogFailure(System.Exception, AeroDB.IQuerySession)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Diagnostics/IMartenSessionLogger.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: void LogFailure(Exception ex, IQuerySession session)
+    parameters:
+    - id: ex
+      type: System.Exception
+    - id: session
+      type: AeroDB.IQuerySession
+    content.vb: Sub LogFailure(ex As Exception, session As IQuerySession)
+  overload: AeroDB.IMartenSessionLogger.LogFailure*
+- uid: AeroDB.IMartenSessionLogger.LogSuccess(AeroDB.IDocumentSession)
+  commentId: M:AeroDB.IMartenSessionLogger.LogSuccess(AeroDB.IDocumentSession)
+  id: LogSuccess(AeroDB.IDocumentSession)
+  parent: AeroDB.IMartenSessionLogger
+  langs:
+  - csharp
+  - vb
+  name: LogSuccess(IDocumentSession)
+  nameWithType: IMartenSessionLogger.LogSuccess(IDocumentSession)
+  fullName: AeroDB.IMartenSessionLogger.LogSuccess(AeroDB.IDocumentSession)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Diagnostics/IMartenSessionLogger.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: void LogSuccess(IDocumentSession session)
+    parameters:
+    - id: session
+      type: AeroDB.IDocumentSession
+    content.vb: Sub LogSuccess(session As IDocumentSession)
+  overload: AeroDB.IMartenSessionLogger.LogSuccess*
+- uid: AeroDB.IMartenSessionLogger.LogFailure(System.Exception,AeroDB.IDocumentSession)
+  commentId: M:AeroDB.IMartenSessionLogger.LogFailure(System.Exception,AeroDB.IDocumentSession)
+  id: LogFailure(System.Exception,AeroDB.IDocumentSession)
+  parent: AeroDB.IMartenSessionLogger
+  langs:
+  - csharp
+  - vb
+  name: LogFailure(Exception, IDocumentSession)
+  nameWithType: IMartenSessionLogger.LogFailure(Exception, IDocumentSession)
+  fullName: AeroDB.IMartenSessionLogger.LogFailure(System.Exception, AeroDB.IDocumentSession)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Diagnostics/IMartenSessionLogger.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: void LogFailure(Exception ex, IDocumentSession session)
+    parameters:
+    - id: ex
+      type: System.Exception
+    - id: session
+      type: AeroDB.IDocumentSession
+    content.vb: Sub LogFailure(ex As Exception, session As IDocumentSession)
+  overload: AeroDB.IMartenSessionLogger.LogFailure*
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: AeroDB.IMartenSessionLogger.RecordSavedChanges*
+  commentId: Overload:AeroDB.IMartenSessionLogger.RecordSavedChanges
+  isExternal: true
+  href: AeroDB.IMartenSessionLogger.html#AeroDB_IMartenSessionLogger_RecordSavedChanges_AeroDB_IDocumentSession_AeroDB_IChangeSet_
+  name: RecordSavedChanges
+  nameWithType: IMartenSessionLogger.RecordSavedChanges
+  fullName: AeroDB.IMartenSessionLogger.RecordSavedChanges
+- uid: AeroDB.IDocumentSession
+  commentId: T:AeroDB.IDocumentSession
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IDocumentSession.html
+  name: IDocumentSession
+  nameWithType: IDocumentSession
+  fullName: AeroDB.IDocumentSession
+- uid: AeroDB.IChangeSet
+  commentId: T:AeroDB.IChangeSet
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IChangeSet.html
+  name: IChangeSet
+  nameWithType: IChangeSet
+  fullName: AeroDB.IChangeSet
+- uid: AeroDB.IMartenSessionLogger.OnBeforeExecute*
+  commentId: Overload:AeroDB.IMartenSessionLogger.OnBeforeExecute
+  isExternal: true
+  href: AeroDB.IMartenSessionLogger.html#AeroDB_IMartenSessionLogger_OnBeforeExecute_AeroDB_IQuerySession_
+  name: OnBeforeExecute
+  nameWithType: IMartenSessionLogger.OnBeforeExecute
+  fullName: AeroDB.IMartenSessionLogger.OnBeforeExecute
+- uid: AeroDB.IQuerySession
+  commentId: T:AeroDB.IQuerySession
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IQuerySession.html
+  name: IQuerySession
+  nameWithType: IQuerySession
+  fullName: AeroDB.IQuerySession
+- uid: AeroDB.IMartenSessionLogger.LogSuccess*
+  commentId: Overload:AeroDB.IMartenSessionLogger.LogSuccess
+  isExternal: true
+  href: AeroDB.IMartenSessionLogger.html#AeroDB_IMartenSessionLogger_LogSuccess_AeroDB_IQuerySession_
+  name: LogSuccess
+  nameWithType: IMartenSessionLogger.LogSuccess
+  fullName: AeroDB.IMartenSessionLogger.LogSuccess
+- uid: AeroDB.IMartenSessionLogger.LogFailure*
+  commentId: Overload:AeroDB.IMartenSessionLogger.LogFailure
+  isExternal: true
+  href: AeroDB.IMartenSessionLogger.html#AeroDB_IMartenSessionLogger_LogFailure_System_Exception_AeroDB_IQuerySession_
+  name: LogFailure
+  nameWithType: IMartenSessionLogger.LogFailure
+  fullName: AeroDB.IMartenSessionLogger.LogFailure
+- uid: System.Exception
+  commentId: T:System.Exception
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.exception
+  name: Exception
+  nameWithType: Exception
+  fullName: System.Exception
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System

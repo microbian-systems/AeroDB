@@ -1,0 +1,3256 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.StoreOptions
+  commentId: T:AeroDB.StoreOptions
+  id: StoreOptions
+  parent: AeroDB
+  children:
+  - AeroDB.StoreOptions.#ctor
+  - AeroDB.StoreOptions.AddDatabaseEndpoint(System.String,System.Action{AeroDB.DatabaseEndpoint})
+  - AeroDB.StoreOptions.Advanced
+  - AeroDB.StoreOptions.AllDocumentsAreMultiTenanted
+  - AeroDB.StoreOptions.AllDocumentsEnforceOptimisticConcurrency
+  - AeroDB.StoreOptions.AllDocumentsSoftDeleted
+  - AeroDB.StoreOptions.AsyncConfigurators
+  - AeroDB.StoreOptions.ChangeListeners
+  - AeroDB.StoreOptions.ClientFactory
+  - AeroDB.StoreOptions.CommandTimeout
+  - AeroDB.StoreOptions.Configurators
+  - AeroDB.StoreOptions.ConfigurePolly(System.Action{Polly.ResiliencePipelineBuilder})
+  - AeroDB.StoreOptions.ConfigureSerializer(System.Action{System.Text.Json.JsonSerializerOptions})
+  - AeroDB.StoreOptions.Connection(System.String,System.String,System.String,System.String,System.String,System.String)
+  - AeroDB.StoreOptions.Database
+  - AeroDB.StoreOptions.DatabaseEndpoints
+  - AeroDB.StoreOptions.DatabaseSchemaName
+  - AeroDB.StoreOptions.DefaultTenantId
+  - AeroDB.StoreOptions.EfCoreProjections
+  - AeroDB.StoreOptions.Endpoint
+  - AeroDB.StoreOptions.Events
+  - AeroDB.StoreOptions.Experimental
+  - AeroDB.StoreOptions.Functions
+  - AeroDB.StoreOptions.HierarchyFor``1
+  - AeroDB.StoreOptions.InitialData
+  - AeroDB.StoreOptions.Listeners
+  - AeroDB.StoreOptions.LiveQueryChannelCapacity
+  - AeroDB.StoreOptions.LiveQueryChannelFullMode
+  - AeroDB.StoreOptions.LoggerFactory
+  - AeroDB.StoreOptions.MinimumLogLevel
+  - AeroDB.StoreOptions.MultiTenantedDatabases
+  - AeroDB.StoreOptions.Namespace
+  - AeroDB.StoreOptions.OpenTelemetry
+  - AeroDB.StoreOptions.Password
+  - AeroDB.StoreOptions.Policies
+  - AeroDB.StoreOptions.ProjectionBuild
+  - AeroDB.StoreOptions.Projections
+  - AeroDB.StoreOptions.ReadPreference
+  - AeroDB.StoreOptions.Schema
+  - AeroDB.StoreOptions.SerializerOptions
+  - AeroDB.StoreOptions.ServiceProvider
+  - AeroDB.StoreOptions.SoftDeleteEnabled
+  - AeroDB.StoreOptions.TenancyStyle
+  - AeroDB.StoreOptions.TenantIdStyle
+  - AeroDB.StoreOptions.Token
+  - AeroDB.StoreOptions.Tracking
+  - AeroDB.StoreOptions.UpdateBatchSize
+  - AeroDB.StoreOptions.UseOptimisticConcurrency
+  - AeroDB.StoreOptions.Username
+  - AeroDB.StoreOptions.Views
+  langs:
+  - csharp
+  - vb
+  name: StoreOptions
+  nameWithType: StoreOptions
+  fullName: AeroDB.StoreOptions
+  type: Class
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: The main configuration object for a AeroDB document store. Configures database connection settings, schema generation mode, projections, event sourcing, multi-tenancy, and all other store behaviors.
+  example: []
+  syntax:
+    content: 'public class StoreOptions : IReadOnlyStoreOptions'
+    content.vb: Public Class StoreOptions Implements IReadOnlyStoreOptions
+  inheritance:
+  - System.Object
+  implements:
+  - AeroDB.IReadOnlyStoreOptions
+  inheritedMembers:
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  extensionMethods:
+  - AeroDB.StoreOptions.AeroDB.MartenCompatibilityExtensions.UseSystemTextJsonForSerialization(AeroDB.EnumStorage)
+- uid: AeroDB.StoreOptions.HierarchyFor``1
+  commentId: M:AeroDB.StoreOptions.HierarchyFor``1
+  id: HierarchyFor``1
+  parent: AeroDB.StoreOptions
+  langs:
+  - csharp
+  - vb
+  name: HierarchyFor<TBase>()
+  nameWithType: StoreOptions.HierarchyFor<TBase>()
+  fullName: AeroDB.StoreOptions.HierarchyFor<TBase>()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Register a base type for polymorphic document queries.
+
+    <xref href="AeroDB.DocumentHierarchy.AddSubClass%60%601" data-throw-if-not-resolved="false"></xref> to register derived types.
+  example: []
+  syntax:
+    content: 'public DocumentHierarchy HierarchyFor<TBase>() where TBase : Record'
+    typeParameters:
+    - id: TBase
+    return:
+      type: AeroDB.DocumentHierarchy
+    content.vb: Public Function HierarchyFor(Of TBase As Record)() As DocumentHierarchy
+  overload: AeroDB.StoreOptions.HierarchyFor*
+  nameWithType.vb: StoreOptions.HierarchyFor(Of TBase)()
+  fullName.vb: AeroDB.StoreOptions.HierarchyFor(Of TBase)()
+  name.vb: HierarchyFor(Of TBase)()
+- uid: AeroDB.StoreOptions.ConfigureSerializer(System.Action{System.Text.Json.JsonSerializerOptions})
+  commentId: M:AeroDB.StoreOptions.ConfigureSerializer(System.Action{System.Text.Json.JsonSerializerOptions})
+  id: ConfigureSerializer(System.Action{System.Text.Json.JsonSerializerOptions})
+  parent: AeroDB.StoreOptions
+  langs:
+  - csharp
+  - vb
+  name: ConfigureSerializer(Action<JsonSerializerOptions>)
+  nameWithType: StoreOptions.ConfigureSerializer(Action<JsonSerializerOptions>)
+  fullName: AeroDB.StoreOptions.ConfigureSerializer(System.Action<System.Text.Json.JsonSerializerOptions>)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Convenience method to configure custom serializer options.
+  example: []
+  syntax:
+    content: public void ConfigureSerializer(Action<JsonSerializerOptions> configure)
+    parameters:
+    - id: configure
+      type: System.Action{System.Text.Json.JsonSerializerOptions}
+    content.vb: Public Sub ConfigureSerializer(configure As Action(Of JsonSerializerOptions))
+  overload: AeroDB.StoreOptions.ConfigureSerializer*
+  nameWithType.vb: StoreOptions.ConfigureSerializer(Action(Of JsonSerializerOptions))
+  fullName.vb: AeroDB.StoreOptions.ConfigureSerializer(System.Action(Of System.Text.Json.JsonSerializerOptions))
+  name.vb: ConfigureSerializer(Action(Of JsonSerializerOptions))
+- uid: AeroDB.StoreOptions.#ctor
+  commentId: M:AeroDB.StoreOptions.#ctor
+  id: '#ctor'
+  parent: AeroDB.StoreOptions
+  langs:
+  - csharp
+  - vb
+  name: StoreOptions()
+  nameWithType: StoreOptions.StoreOptions()
+  fullName: AeroDB.StoreOptions.StoreOptions()
+  type: Constructor
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public StoreOptions()
+    content.vb: Public Sub New()
+  overload: AeroDB.StoreOptions.#ctor*
+  nameWithType.vb: StoreOptions.New()
+  fullName.vb: AeroDB.StoreOptions.New()
+  name.vb: New()
+- uid: AeroDB.StoreOptions.ConfigurePolly(System.Action{Polly.ResiliencePipelineBuilder})
+  commentId: M:AeroDB.StoreOptions.ConfigurePolly(System.Action{Polly.ResiliencePipelineBuilder})
+  id: ConfigurePolly(System.Action{Polly.ResiliencePipelineBuilder})
+  parent: AeroDB.StoreOptions
+  langs:
+  - csharp
+  - vb
+  name: ConfigurePolly(Action<ResiliencePipelineBuilder>)
+  nameWithType: StoreOptions.ConfigurePolly(Action<ResiliencePipelineBuilder>)
+  fullName: AeroDB.StoreOptions.ConfigurePolly(System.Action<Polly.ResiliencePipelineBuilder>)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Configure a Polly resilience pipeline for SurrealDB client operations.
+  example: []
+  syntax:
+    content: public Action<ResiliencePipelineBuilder>? ConfigurePolly(Action<ResiliencePipelineBuilder> configure)
+    parameters:
+    - id: configure
+      type: System.Action{Polly.ResiliencePipelineBuilder}
+    return:
+      type: System.Action{Polly.ResiliencePipelineBuilder}
+    content.vb: Public Function ConfigurePolly(configure As Action(Of ResiliencePipelineBuilder)) As Action(Of ResiliencePipelineBuilder)
+  overload: AeroDB.StoreOptions.ConfigurePolly*
+  nameWithType.vb: StoreOptions.ConfigurePolly(Action(Of ResiliencePipelineBuilder))
+  fullName.vb: AeroDB.StoreOptions.ConfigurePolly(System.Action(Of Polly.ResiliencePipelineBuilder))
+  name.vb: ConfigurePolly(Action(Of ResiliencePipelineBuilder))
+- uid: AeroDB.StoreOptions.AllDocumentsAreMultiTenanted
+  commentId: M:AeroDB.StoreOptions.AllDocumentsAreMultiTenanted
+  id: AllDocumentsAreMultiTenanted
+  parent: AeroDB.StoreOptions
+  langs:
+  - csharp
+  - vb
+  name: AllDocumentsAreMultiTenanted()
+  nameWithType: StoreOptions.AllDocumentsAreMultiTenanted()
+  fullName: AeroDB.StoreOptions.AllDocumentsAreMultiTenanted()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Mark all document types as multi-tenanted (requires tenant ID on all documents).
+  example: []
+  syntax:
+    content: public void AllDocumentsAreMultiTenanted()
+    content.vb: Public Sub AllDocumentsAreMultiTenanted()
+  overload: AeroDB.StoreOptions.AllDocumentsAreMultiTenanted*
+- uid: AeroDB.StoreOptions.MultiTenantedDatabases
+  commentId: M:AeroDB.StoreOptions.MultiTenantedDatabases
+  id: MultiTenantedDatabases
+  parent: AeroDB.StoreOptions
+  langs:
+  - csharp
+  - vb
+  name: MultiTenantedDatabases()
+  nameWithType: StoreOptions.MultiTenantedDatabases()
+  fullName: AeroDB.StoreOptions.MultiTenantedDatabases()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Configure database-per-tenant multi-tenancy strategy.
+  example: []
+  syntax:
+    content: public void MultiTenantedDatabases()
+    content.vb: Public Sub MultiTenantedDatabases()
+  overload: AeroDB.StoreOptions.MultiTenantedDatabases*
+- uid: AeroDB.StoreOptions.AllDocumentsSoftDeleted
+  commentId: M:AeroDB.StoreOptions.AllDocumentsSoftDeleted
+  id: AllDocumentsSoftDeleted
+  parent: AeroDB.StoreOptions
+  langs:
+  - csharp
+  - vb
+  name: AllDocumentsSoftDeleted()
+  nameWithType: StoreOptions.AllDocumentsSoftDeleted()
+  fullName: AeroDB.StoreOptions.AllDocumentsSoftDeleted()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Enable soft-delete on all document types.
+  example: []
+  syntax:
+    content: public void AllDocumentsSoftDeleted()
+    content.vb: Public Sub AllDocumentsSoftDeleted()
+  overload: AeroDB.StoreOptions.AllDocumentsSoftDeleted*
+- uid: AeroDB.StoreOptions.AllDocumentsEnforceOptimisticConcurrency
+  commentId: M:AeroDB.StoreOptions.AllDocumentsEnforceOptimisticConcurrency
+  id: AllDocumentsEnforceOptimisticConcurrency
+  parent: AeroDB.StoreOptions
+  langs:
+  - csharp
+  - vb
+  name: AllDocumentsEnforceOptimisticConcurrency()
+  nameWithType: StoreOptions.AllDocumentsEnforceOptimisticConcurrency()
+  fullName: AeroDB.StoreOptions.AllDocumentsEnforceOptimisticConcurrency()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Enable optimistic concurrency on all document types.
+  example: []
+  syntax:
+    content: public void AllDocumentsEnforceOptimisticConcurrency()
+    content.vb: Public Sub AllDocumentsEnforceOptimisticConcurrency()
+  overload: AeroDB.StoreOptions.AllDocumentsEnforceOptimisticConcurrency*
+- uid: AeroDB.StoreOptions.AddDatabaseEndpoint(System.String,System.Action{AeroDB.DatabaseEndpoint})
+  commentId: M:AeroDB.StoreOptions.AddDatabaseEndpoint(System.String,System.Action{AeroDB.DatabaseEndpoint})
+  id: AddDatabaseEndpoint(System.String,System.Action{AeroDB.DatabaseEndpoint})
+  parent: AeroDB.StoreOptions
+  langs:
+  - csharp
+  - vb
+  name: AddDatabaseEndpoint(string, Action<DatabaseEndpoint>?)
+  nameWithType: StoreOptions.AddDatabaseEndpoint(string, Action<DatabaseEndpoint>?)
+  fullName: AeroDB.StoreOptions.AddDatabaseEndpoint(string, System.Action<AeroDB.DatabaseEndpoint>?)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Add a database endpoint to the multi-host configuration.
+  example: []
+  syntax:
+    content: public StoreOptions AddDatabaseEndpoint(string endpoint, Action<DatabaseEndpoint>? configure = null)
+    parameters:
+    - id: endpoint
+      type: System.String
+    - id: configure
+      type: System.Action{AeroDB.DatabaseEndpoint}
+    return:
+      type: AeroDB.StoreOptions
+    content.vb: Public Function AddDatabaseEndpoint(endpoint As String, configure As Action(Of DatabaseEndpoint) = Nothing) As StoreOptions
+  overload: AeroDB.StoreOptions.AddDatabaseEndpoint*
+  nameWithType.vb: StoreOptions.AddDatabaseEndpoint(String, Action(Of DatabaseEndpoint))
+  fullName.vb: AeroDB.StoreOptions.AddDatabaseEndpoint(String, System.Action(Of AeroDB.DatabaseEndpoint))
+  name.vb: AddDatabaseEndpoint(String, Action(Of DatabaseEndpoint))
+- uid: AeroDB.StoreOptions.Connection(System.String,System.String,System.String,System.String,System.String,System.String)
+  commentId: M:AeroDB.StoreOptions.Connection(System.String,System.String,System.String,System.String,System.String,System.String)
+  id: Connection(System.String,System.String,System.String,System.String,System.String,System.String)
+  parent: AeroDB.StoreOptions
+  langs:
+  - csharp
+  - vb
+  name: Connection(string, string?, string?, string?, string?, string?)
+  nameWithType: StoreOptions.Connection(string, string?, string?, string?, string?, string?)
+  fullName: AeroDB.StoreOptions.Connection(string, string?, string?, string?, string?, string?)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public StoreOptions Connection(string endpoint, string? ns = null, string? db = null, string? username = null, string? password = null, string? token = null)
+    parameters:
+    - id: endpoint
+      type: System.String
+    - id: ns
+      type: System.String
+    - id: db
+      type: System.String
+    - id: username
+      type: System.String
+    - id: password
+      type: System.String
+    - id: token
+      type: System.String
+    return:
+      type: AeroDB.StoreOptions
+    content.vb: Public Function Connection(endpoint As String, ns As String = Nothing, db As String = Nothing, username As String = Nothing, password As String = Nothing, token As String = Nothing) As StoreOptions
+  overload: AeroDB.StoreOptions.Connection*
+  nameWithType.vb: StoreOptions.Connection(String, String, String, String, String, String)
+  fullName.vb: AeroDB.StoreOptions.Connection(String, String, String, String, String, String)
+  name.vb: Connection(String, String, String, String, String, String)
+- uid: AeroDB.StoreOptions.Endpoint
+  commentId: P:AeroDB.StoreOptions.Endpoint
+  id: Endpoint
+  parent: AeroDB.StoreOptions
+  langs:
+  - csharp
+  - vb
+  name: Endpoint
+  nameWithType: StoreOptions.Endpoint
+  fullName: AeroDB.StoreOptions.Endpoint
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  example: []
+  syntax:
+    content: public string Endpoint { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property Endpoint As String
+  overload: AeroDB.StoreOptions.Endpoint*
+  implements:
+  - AeroDB.IReadOnlyStoreOptions.Endpoint
+- uid: AeroDB.StoreOptions.Namespace
+  commentId: P:AeroDB.StoreOptions.Namespace
+  id: Namespace
+  parent: AeroDB.StoreOptions
+  langs:
+  - csharp
+  - vb
+  name: Namespace
+  nameWithType: StoreOptions.Namespace
+  fullName: AeroDB.StoreOptions.Namespace
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  example: []
+  syntax:
+    content: public string? Namespace { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property [Namespace] As String
+  overload: AeroDB.StoreOptions.Namespace*
+  implements:
+  - AeroDB.IReadOnlyStoreOptions.Namespace
+- uid: AeroDB.StoreOptions.Database
+  commentId: P:AeroDB.StoreOptions.Database
+  id: Database
+  parent: AeroDB.StoreOptions
+  langs:
+  - csharp
+  - vb
+  name: Database
+  nameWithType: StoreOptions.Database
+  fullName: AeroDB.StoreOptions.Database
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  example: []
+  syntax:
+    content: public string? Database { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property Database As String
+  overload: AeroDB.StoreOptions.Database*
+  implements:
+  - AeroDB.IReadOnlyStoreOptions.Database
+- uid: AeroDB.StoreOptions.DatabaseSchemaName
+  commentId: P:AeroDB.StoreOptions.DatabaseSchemaName
+  id: DatabaseSchemaName
+  parent: AeroDB.StoreOptions
+  langs:
+  - csharp
+  - vb
+  name: DatabaseSchemaName
+  nameWithType: StoreOptions.DatabaseSchemaName
+  fullName: AeroDB.StoreOptions.DatabaseSchemaName
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public string? DatabaseSchemaName { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property DatabaseSchemaName As String
+  overload: AeroDB.StoreOptions.DatabaseSchemaName*
+- uid: AeroDB.StoreOptions.Username
+  commentId: P:AeroDB.StoreOptions.Username
+  id: Username
+  parent: AeroDB.StoreOptions
+  langs:
+  - csharp
+  - vb
+  name: Username
+  nameWithType: StoreOptions.Username
+  fullName: AeroDB.StoreOptions.Username
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  example: []
+  syntax:
+    content: public string? Username { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property Username As String
+  overload: AeroDB.StoreOptions.Username*
+  implements:
+  - AeroDB.IReadOnlyStoreOptions.Username
+- uid: AeroDB.StoreOptions.Password
+  commentId: P:AeroDB.StoreOptions.Password
+  id: Password
+  parent: AeroDB.StoreOptions
+  langs:
+  - csharp
+  - vb
+  name: Password
+  nameWithType: StoreOptions.Password
+  fullName: AeroDB.StoreOptions.Password
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  example: []
+  syntax:
+    content: public string? Password { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property Password As String
+  overload: AeroDB.StoreOptions.Password*
+  implements:
+  - AeroDB.IReadOnlyStoreOptions.Password
+- uid: AeroDB.StoreOptions.Token
+  commentId: P:AeroDB.StoreOptions.Token
+  id: Token
+  parent: AeroDB.StoreOptions
+  langs:
+  - csharp
+  - vb
+  name: Token
+  nameWithType: StoreOptions.Token
+  fullName: AeroDB.StoreOptions.Token
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  example: []
+  syntax:
+    content: public string? Token { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property Token As String
+  overload: AeroDB.StoreOptions.Token*
+  implements:
+  - AeroDB.IReadOnlyStoreOptions.Token
+- uid: AeroDB.StoreOptions.Schema
+  commentId: P:AeroDB.StoreOptions.Schema
+  id: Schema
+  parent: AeroDB.StoreOptions
+  langs:
+  - csharp
+  - vb
+  name: Schema
+  nameWithType: StoreOptions.Schema
+  fullName: AeroDB.StoreOptions.Schema
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  example: []
+  syntax:
+    content: public SchemaOptions Schema { get; }
+    parameters: []
+    return:
+      type: AeroDB.SchemaOptions
+    content.vb: Public ReadOnly Property Schema As SchemaOptions
+  overload: AeroDB.StoreOptions.Schema*
+  implements:
+  - AeroDB.IReadOnlyStoreOptions.Schema
+- uid: AeroDB.StoreOptions.Policies
+  commentId: P:AeroDB.StoreOptions.Policies
+  id: Policies
+  parent: AeroDB.StoreOptions
+  langs:
+  - csharp
+  - vb
+  name: Policies
+  nameWithType: StoreOptions.Policies
+  fullName: AeroDB.StoreOptions.Policies
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Global policy system for configuring all document mappings.
+
+    Use <code>Policies.ForAllDocuments()</code> to apply conventions across all mappings,
+
+    or <code>Policies.ForDocumentsOfType&lt;T&gt;()</code> for type-specific policies.
+  example: []
+  syntax:
+    content: public DocumentPolicies Policies { get; }
+    parameters: []
+    return:
+      type: AeroDB.DocumentPolicies
+    content.vb: Public ReadOnly Property Policies As DocumentPolicies
+  overload: AeroDB.StoreOptions.Policies*
+- uid: AeroDB.StoreOptions.TenancyStyle
+  commentId: P:AeroDB.StoreOptions.TenancyStyle
+  id: TenancyStyle
+  parent: AeroDB.StoreOptions
+  langs:
+  - csharp
+  - vb
+  name: TenancyStyle
+  nameWithType: StoreOptions.TenancyStyle
+  fullName: AeroDB.StoreOptions.TenancyStyle
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  example: []
+  syntax:
+    content: public TenancyStyle TenancyStyle { get; set; }
+    parameters: []
+    return:
+      type: AeroDB.TenancyStyle
+    content.vb: Public Property TenancyStyle As TenancyStyle
+  overload: AeroDB.StoreOptions.TenancyStyle*
+  implements:
+  - AeroDB.IReadOnlyStoreOptions.TenancyStyle
+- uid: AeroDB.StoreOptions.DefaultTenantId
+  commentId: P:AeroDB.StoreOptions.DefaultTenantId
+  id: DefaultTenantId
+  parent: AeroDB.StoreOptions
+  langs:
+  - csharp
+  - vb
+  name: DefaultTenantId
+  nameWithType: StoreOptions.DefaultTenantId
+  fullName: AeroDB.StoreOptions.DefaultTenantId
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  example: []
+  syntax:
+    content: public string? DefaultTenantId { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property DefaultTenantId As String
+  overload: AeroDB.StoreOptions.DefaultTenantId*
+  implements:
+  - AeroDB.IReadOnlyStoreOptions.DefaultTenantId
+- uid: AeroDB.StoreOptions.TenantIdStyle
+  commentId: P:AeroDB.StoreOptions.TenantIdStyle
+  id: TenantIdStyle
+  parent: AeroDB.StoreOptions
+  langs:
+  - csharp
+  - vb
+  name: TenantIdStyle
+  nameWithType: StoreOptions.TenantIdStyle
+  fullName: AeroDB.StoreOptions.TenantIdStyle
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Controls whether tenant IDs are treated as case-sensitive or case-insensitive.
+
+    Defaults to <xref href="AeroDB.TenantIdStyle.CaseSensitive" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: public TenantIdStyle TenantIdStyle { get; set; }
+    parameters: []
+    return:
+      type: AeroDB.TenantIdStyle
+    content.vb: Public Property TenantIdStyle As TenantIdStyle
+  overload: AeroDB.StoreOptions.TenantIdStyle*
+- uid: AeroDB.StoreOptions.Events
+  commentId: P:AeroDB.StoreOptions.Events
+  id: Events
+  parent: AeroDB.StoreOptions
+  langs:
+  - csharp
+  - vb
+  name: Events
+  nameWithType: StoreOptions.Events
+  fullName: AeroDB.StoreOptions.Events
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  example: []
+  syntax:
+    content: public EventSourcingOptions Events { get; }
+    parameters: []
+    return:
+      type: AeroDB.EventSourcingOptions
+    content.vb: Public ReadOnly Property Events As EventSourcingOptions
+  overload: AeroDB.StoreOptions.Events*
+  implements:
+  - AeroDB.IReadOnlyStoreOptions.Events
+- uid: AeroDB.StoreOptions.Functions
+  commentId: P:AeroDB.StoreOptions.Functions
+  id: Functions
+  parent: AeroDB.StoreOptions
+  langs:
+  - csharp
+  - vb
+  name: Functions
+  nameWithType: StoreOptions.Functions
+  fullName: AeroDB.StoreOptions.Functions
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Configuration for SurrealDB user-defined functions (DEFINE FUNCTION).
+
+    Functions are created during store initialization.
+  example: []
+  syntax:
+    content: public FunctionOptions Functions { get; }
+    parameters: []
+    return:
+      type: AeroDB.FunctionOptions
+    content.vb: Public ReadOnly Property Functions As FunctionOptions
+  overload: AeroDB.StoreOptions.Functions*
+- uid: AeroDB.StoreOptions.Listeners
+  commentId: P:AeroDB.StoreOptions.Listeners
+  id: Listeners
+  parent: AeroDB.StoreOptions
+  langs:
+  - csharp
+  - vb
+  name: Listeners
+  nameWithType: StoreOptions.Listeners
+  fullName: AeroDB.StoreOptions.Listeners
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Registered document session listeners. Called in order during SaveChangesAsync.
+  example: []
+  syntax:
+    content: public List<IDocumentSessionListener> Listeners { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.List{AeroDB.IDocumentSessionListener}
+    content.vb: Public ReadOnly Property Listeners As List(Of IDocumentSessionListener)
+  overload: AeroDB.StoreOptions.Listeners*
+- uid: AeroDB.StoreOptions.ChangeListeners
+  commentId: P:AeroDB.StoreOptions.ChangeListeners
+  id: ChangeListeners
+  parent: AeroDB.StoreOptions
+  langs:
+  - csharp
+  - vb
+  name: ChangeListeners
+  nameWithType: StoreOptions.ChangeListeners
+  fullName: AeroDB.StoreOptions.ChangeListeners
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Daemon-level change listeners invoked before/after projection commits.
+  example: []
+  syntax:
+    content: public List<IChangeListener> ChangeListeners { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.List{AeroDB.IChangeListener}
+    content.vb: Public ReadOnly Property ChangeListeners As List(Of IChangeListener)
+  overload: AeroDB.StoreOptions.ChangeListeners*
+- uid: AeroDB.StoreOptions.Tracking
+  commentId: P:AeroDB.StoreOptions.Tracking
+  id: Tracking
+  parent: AeroDB.StoreOptions
+  langs:
+  - csharp
+  - vb
+  name: Tracking
+  nameWithType: StoreOptions.Tracking
+  fullName: AeroDB.StoreOptions.Tracking
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    When true, documents with an <xref href="AeroDB.IVersioned" data-throw-if-not-resolved="false"></xref> version field or
+
+    a property decorated with <xref href="AeroDB.VersionAttribute" data-throw-if-not-resolved="false"></xref> are protected
+
+    against lost updates. Before saving a modified document, AeroDB checks that
+
+    the current database version matches the version captured when the document
+
+    was loaded or stored. If the versions differ, a <xref href="AeroDB.ConcurrencyException" data-throw-if-not-resolved="false"></xref>
+
+    is thrown.
+  example: []
+  syntax:
+    content: public DocumentTracking Tracking { get; set; }
+    parameters: []
+    return:
+      type: AeroDB.DocumentTracking
+    content.vb: Public Property Tracking As DocumentTracking
+  overload: AeroDB.StoreOptions.Tracking*
+  implements:
+  - AeroDB.IReadOnlyStoreOptions.Tracking
+- uid: AeroDB.StoreOptions.UseOptimisticConcurrency
+  commentId: P:AeroDB.StoreOptions.UseOptimisticConcurrency
+  id: UseOptimisticConcurrency
+  parent: AeroDB.StoreOptions
+  langs:
+  - csharp
+  - vb
+  name: UseOptimisticConcurrency
+  nameWithType: StoreOptions.UseOptimisticConcurrency
+  fullName: AeroDB.StoreOptions.UseOptimisticConcurrency
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  example: []
+  syntax:
+    content: public bool UseOptimisticConcurrency { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property UseOptimisticConcurrency As Boolean
+  overload: AeroDB.StoreOptions.UseOptimisticConcurrency*
+  implements:
+  - AeroDB.IReadOnlyStoreOptions.UseOptimisticConcurrency
+- uid: AeroDB.StoreOptions.ClientFactory
+  commentId: P:AeroDB.StoreOptions.ClientFactory
+  id: ClientFactory
+  parent: AeroDB.StoreOptions
+  langs:
+  - csharp
+  - vb
+  name: ClientFactory
+  nameWithType: StoreOptions.ClientFactory
+  fullName: AeroDB.StoreOptions.ClientFactory
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public Func<ISurrealDbClient>? ClientFactory { get; set; }
+    parameters: []
+    return:
+      type: System.Func{SurrealDb.Net.ISurrealDbClient}
+    content.vb: Public Property ClientFactory As Func(Of ISurrealDbClient)
+  overload: AeroDB.StoreOptions.ClientFactory*
+- uid: AeroDB.StoreOptions.LoggerFactory
+  commentId: P:AeroDB.StoreOptions.LoggerFactory
+  id: LoggerFactory
+  parent: AeroDB.StoreOptions
+  langs:
+  - csharp
+  - vb
+  name: LoggerFactory
+  nameWithType: StoreOptions.LoggerFactory
+  fullName: AeroDB.StoreOptions.LoggerFactory
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Logger factory for creating typed loggers throughout the AeroDB stack.
+
+    If null, <code>NullLogger{T}</code> is used everywhere (no-op).
+  example: []
+  syntax:
+    content: public ILoggerFactory? LoggerFactory { get; set; }
+    parameters: []
+    return:
+      type: Microsoft.Extensions.Logging.ILoggerFactory
+    content.vb: Public Property LoggerFactory As ILoggerFactory
+  overload: AeroDB.StoreOptions.LoggerFactory*
+- uid: AeroDB.StoreOptions.MinimumLogLevel
+  commentId: P:AeroDB.StoreOptions.MinimumLogLevel
+  id: MinimumLogLevel
+  parent: AeroDB.StoreOptions
+  langs:
+  - csharp
+  - vb
+  name: MinimumLogLevel
+  nameWithType: StoreOptions.MinimumLogLevel
+  fullName: AeroDB.StoreOptions.MinimumLogLevel
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Minimum log level for AeroDB library log messages.
+  example: []
+  syntax:
+    content: public LogLevel MinimumLogLevel { get; set; }
+    parameters: []
+    return:
+      type: Microsoft.Extensions.Logging.LogLevel
+    content.vb: Public Property MinimumLogLevel As LogLevel
+  overload: AeroDB.StoreOptions.MinimumLogLevel*
+- uid: AeroDB.StoreOptions.Projections
+  commentId: P:AeroDB.StoreOptions.Projections
+  id: Projections
+  parent: AeroDB.StoreOptions
+  langs:
+  - csharp
+  - vb
+  name: Projections
+  nameWithType: StoreOptions.Projections
+  fullName: AeroDB.StoreOptions.Projections
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Registered projections (inline and async).
+  example: []
+  syntax:
+    content: public ProjectionCollection Projections { get; }
+    parameters: []
+    return:
+      type: AeroDB.ProjectionCollection
+    content.vb: Public ReadOnly Property Projections As ProjectionCollection
+  overload: AeroDB.StoreOptions.Projections*
+- uid: AeroDB.StoreOptions.EfCoreProjections
+  commentId: P:AeroDB.StoreOptions.EfCoreProjections
+  id: EfCoreProjections
+  parent: AeroDB.StoreOptions
+  langs:
+  - csharp
+  - vb
+  name: EfCoreProjections
+  nameWithType: StoreOptions.EfCoreProjections
+  fullName: AeroDB.StoreOptions.EfCoreProjections
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: EF Core projections that write through a DbContext.
+  example: []
+  syntax:
+    content: public List<IProjection> EfCoreProjections { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.List{AeroDB.IProjection}
+    content.vb: Public ReadOnly Property EfCoreProjections As List(Of IProjection)
+  overload: AeroDB.StoreOptions.EfCoreProjections*
+- uid: AeroDB.StoreOptions.LiveQueryChannelCapacity
+  commentId: P:AeroDB.StoreOptions.LiveQueryChannelCapacity
+  id: LiveQueryChannelCapacity
+  parent: AeroDB.StoreOptions
+  langs:
+  - csharp
+  - vb
+  name: LiveQueryChannelCapacity
+  nameWithType: StoreOptions.LiveQueryChannelCapacity
+  fullName: AeroDB.StoreOptions.LiveQueryChannelCapacity
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Max items buffered in the live query channel before backpressure is applied.
+
+    Default: 4096.
+  example: []
+  syntax:
+    content: public int LiveQueryChannelCapacity { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property LiveQueryChannelCapacity As Integer
+  overload: AeroDB.StoreOptions.LiveQueryChannelCapacity*
+- uid: AeroDB.StoreOptions.LiveQueryChannelFullMode
+  commentId: P:AeroDB.StoreOptions.LiveQueryChannelFullMode
+  id: LiveQueryChannelFullMode
+  parent: AeroDB.StoreOptions
+  langs:
+  - csharp
+  - vb
+  name: LiveQueryChannelFullMode
+  nameWithType: StoreOptions.LiveQueryChannelFullMode
+  fullName: AeroDB.StoreOptions.LiveQueryChannelFullMode
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Behavior when the live query channel is full.
+
+    Default: Wait (block writer until space is available).
+  example: []
+  syntax:
+    content: public BoundedChannelFullMode LiveQueryChannelFullMode { get; set; }
+    parameters: []
+    return:
+      type: System.Threading.Channels.BoundedChannelFullMode
+    content.vb: Public Property LiveQueryChannelFullMode As BoundedChannelFullMode
+  overload: AeroDB.StoreOptions.LiveQueryChannelFullMode*
+- uid: AeroDB.StoreOptions.SoftDeleteEnabled
+  commentId: P:AeroDB.StoreOptions.SoftDeleteEnabled
+  id: SoftDeleteEnabled
+  parent: AeroDB.StoreOptions
+  langs:
+  - csharp
+  - vb
+  name: SoftDeleteEnabled
+  nameWithType: StoreOptions.SoftDeleteEnabled
+  fullName: AeroDB.StoreOptions.SoftDeleteEnabled
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    When true (default), queries automatically filter out soft-deleted documents
+
+    (those where <code>Deleted = true</code>). Set to false for admin views that need
+
+    to include soft-deleted records.
+
+    Soft-delete behavior always applies to entities implementing <xref href="AeroDB.ISoftDeleted" data-throw-if-not-resolved="false"></xref>
+
+    regardless of this setting — only the query auto-filter is affected.
+  example: []
+  syntax:
+    content: public bool SoftDeleteEnabled { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property SoftDeleteEnabled As Boolean
+  overload: AeroDB.StoreOptions.SoftDeleteEnabled*
+- uid: AeroDB.StoreOptions.SerializerOptions
+  commentId: P:AeroDB.StoreOptions.SerializerOptions
+  id: SerializerOptions
+  parent: AeroDB.StoreOptions
+  langs:
+  - csharp
+  - vb
+  name: SerializerOptions
+  nameWithType: StoreOptions.SerializerOptions
+  fullName: AeroDB.StoreOptions.SerializerOptions
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Gets or sets the <xref href="System.Text.Json.JsonSerializerOptions" data-throw-if-not-resolved="false"></xref> used for
+
+    entity serialization. If not set, defaults are used with camelCase naming.
+  example: []
+  syntax:
+    content: public JsonSerializerOptions? SerializerOptions { get; set; }
+    parameters: []
+    return:
+      type: System.Text.Json.JsonSerializerOptions
+    content.vb: Public Property SerializerOptions As JsonSerializerOptions
+  overload: AeroDB.StoreOptions.SerializerOptions*
+- uid: AeroDB.StoreOptions.Advanced
+  commentId: P:AeroDB.StoreOptions.Advanced
+  id: Advanced
+  parent: AeroDB.StoreOptions
+  langs:
+  - csharp
+  - vb
+  name: Advanced
+  nameWithType: StoreOptions.Advanced
+  fullName: AeroDB.StoreOptions.Advanced
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Advanced SDK access configuration.
+  example: []
+  syntax:
+    content: public AdvancedOptions Advanced { get; }
+    parameters: []
+    return:
+      type: AeroDB.AdvancedOptions
+    content.vb: Public ReadOnly Property Advanced As AdvancedOptions
+  overload: AeroDB.StoreOptions.Advanced*
+- uid: AeroDB.StoreOptions.Experimental
+  commentId: P:AeroDB.StoreOptions.Experimental
+  id: Experimental
+  parent: AeroDB.StoreOptions
+  langs:
+  - csharp
+  - vb
+  name: Experimental
+  nameWithType: StoreOptions.Experimental
+  fullName: AeroDB.StoreOptions.Experimental
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Experimental feature flags. Currently includes SurrealML support.
+  example: []
+  syntax:
+    content: public ExperimentalOptions Experimental { get; }
+    parameters: []
+    return:
+      type: AeroDB.ExperimentalOptions
+    content.vb: Public ReadOnly Property Experimental As ExperimentalOptions
+  overload: AeroDB.StoreOptions.Experimental*
+- uid: AeroDB.StoreOptions.ProjectionBuild
+  commentId: P:AeroDB.StoreOptions.ProjectionBuild
+  id: ProjectionBuild
+  parent: AeroDB.StoreOptions
+  langs:
+  - csharp
+  - vb
+  name: ProjectionBuild
+  nameWithType: StoreOptions.ProjectionBuild
+  fullName: AeroDB.StoreOptions.ProjectionBuild
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Projection rebuild and lifecycle configuration.
+  example: []
+  syntax:
+    content: public ProjectionOptions ProjectionBuild { get; }
+    parameters: []
+    return:
+      type: AeroDB.ProjectionOptions
+    content.vb: Public ReadOnly Property ProjectionBuild As ProjectionOptions
+  overload: AeroDB.StoreOptions.ProjectionBuild*
+- uid: AeroDB.StoreOptions.Views
+  commentId: P:AeroDB.StoreOptions.Views
+  id: Views
+  parent: AeroDB.StoreOptions
+  langs:
+  - csharp
+  - vb
+  name: Views
+  nameWithType: StoreOptions.Views
+  fullName: AeroDB.StoreOptions.Views
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Configuration for SurrealDB pre-computed/aggregate views (DEFINE TABLE ... AS SELECT ...).
+
+    Views are materialized, incrementally-updating tables created during store initialization.
+  example: []
+  syntax:
+    content: public ViewOptions Views { get; }
+    parameters: []
+    return:
+      type: AeroDB.ViewOptions
+    content.vb: Public ReadOnly Property Views As ViewOptions
+  overload: AeroDB.StoreOptions.Views*
+- uid: AeroDB.StoreOptions.InitialData
+  commentId: P:AeroDB.StoreOptions.InitialData
+  id: InitialData
+  parent: AeroDB.StoreOptions
+  langs:
+  - csharp
+  - vb
+  name: InitialData
+  nameWithType: StoreOptions.InitialData
+  fullName: AeroDB.StoreOptions.InitialData
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Initial data seeders. Called during <xref href="AeroDB.DocumentStore.InitializeAsync(System.Threading.CancellationToken)" data-throw-if-not-resolved="false"></xref>
+
+    after schema creation, projections, and views are set up.
+
+    Add implementations to populate seed data on first run.
+  example: []
+  syntax:
+    content: public List<IInitialData> InitialData { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.List{AeroDB.IInitialData}
+    content.vb: Public ReadOnly Property InitialData As List(Of IInitialData)
+  overload: AeroDB.StoreOptions.InitialData*
+- uid: AeroDB.StoreOptions.Configurators
+  commentId: P:AeroDB.StoreOptions.Configurators
+  id: Configurators
+  parent: AeroDB.StoreOptions
+  langs:
+  - csharp
+  - vb
+  name: Configurators
+  nameWithType: StoreOptions.Configurators
+  fullName: AeroDB.StoreOptions.Configurators
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Configuration modules applied during <xref href="AeroDB.DocumentStore.InitializeAsync(System.Threading.CancellationToken)" data-throw-if-not-resolved="false"></xref>.
+
+    Add instances directly or register via DI with <code>ConfigureAeroDB&lt;T&gt;()</code>.
+  example: []
+  syntax:
+    content: public List<IConfigureAeroDB> Configurators { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.List{AeroDB.IConfigureAeroDB}
+    content.vb: Public ReadOnly Property Configurators As List(Of IConfigureAeroDB)
+  overload: AeroDB.StoreOptions.Configurators*
+- uid: AeroDB.StoreOptions.AsyncConfigurators
+  commentId: P:AeroDB.StoreOptions.AsyncConfigurators
+  id: AsyncConfigurators
+  parent: AeroDB.StoreOptions
+  langs:
+  - csharp
+  - vb
+  name: AsyncConfigurators
+  nameWithType: StoreOptions.AsyncConfigurators
+  fullName: AeroDB.StoreOptions.AsyncConfigurators
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Async configuration modules applied during <xref href="AeroDB.DocumentStore.InitializeAsync(System.Threading.CancellationToken)" data-throw-if-not-resolved="false"></xref>
+
+    after sync <xref href="AeroDB.StoreOptions.Configurators" data-throw-if-not-resolved="false"></xref>. Add instances directly or register via DI
+
+    with <code>ConfigureAeroDBAsync&lt;T&gt;()</code>.
+  example: []
+  syntax:
+    content: public List<IAsyncConfigureAeroDB> AsyncConfigurators { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.List{AeroDB.IAsyncConfigureAeroDB}
+    content.vb: Public ReadOnly Property AsyncConfigurators As List(Of IAsyncConfigureAeroDB)
+  overload: AeroDB.StoreOptions.AsyncConfigurators*
+- uid: AeroDB.StoreOptions.ServiceProvider
+  commentId: P:AeroDB.StoreOptions.ServiceProvider
+  id: ServiceProvider
+  parent: AeroDB.StoreOptions
+  langs:
+  - csharp
+  - vb
+  name: ServiceProvider
+  nameWithType: StoreOptions.ServiceProvider
+  fullName: AeroDB.StoreOptions.ServiceProvider
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Optional <xref href="System.IServiceProvider" data-throw-if-not-resolved="false"></xref> for DI auto-discovery of configurators.
+
+    When set before <xref href="AeroDB.DocumentStore.InitializeAsync(System.Threading.CancellationToken)" data-throw-if-not-resolved="false"></xref>, the store resolves
+
+    <xref href="AeroDB.IConfigureAeroDB" data-throw-if-not-resolved="false"></xref> and <xref href="AeroDB.IAsyncConfigureAeroDB" data-throw-if-not-resolved="false"></xref> implementations
+
+    from DI and applies them automatically (in addition to <xref href="AeroDB.StoreOptions.Configurators" data-throw-if-not-resolved="false"></xref>).
+  example: []
+  syntax:
+    content: public IServiceProvider? ServiceProvider { get; set; }
+    parameters: []
+    return:
+      type: System.IServiceProvider
+    content.vb: Public Property ServiceProvider As IServiceProvider
+  overload: AeroDB.StoreOptions.ServiceProvider*
+- uid: AeroDB.StoreOptions.CommandTimeout
+  commentId: P:AeroDB.StoreOptions.CommandTimeout
+  id: CommandTimeout
+  parent: AeroDB.StoreOptions
+  langs:
+  - csharp
+  - vb
+  name: CommandTimeout
+  nameWithType: StoreOptions.CommandTimeout
+  fullName: AeroDB.StoreOptions.CommandTimeout
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Default command timeout in seconds for SurrealDB operations. Set to null for no timeout.
+  example: []
+  syntax:
+    content: public int? CommandTimeout { get; set; }
+    parameters: []
+    return:
+      type: System.Nullable{System.Int32}
+    content.vb: Public Property CommandTimeout As Integer?
+  overload: AeroDB.StoreOptions.CommandTimeout*
+  implements:
+  - AeroDB.IReadOnlyStoreOptions.CommandTimeout
+- uid: AeroDB.StoreOptions.UpdateBatchSize
+  commentId: P:AeroDB.StoreOptions.UpdateBatchSize
+  id: UpdateBatchSize
+  parent: AeroDB.StoreOptions
+  langs:
+  - csharp
+  - vb
+  name: UpdateBatchSize
+  nameWithType: StoreOptions.UpdateBatchSize
+  fullName: AeroDB.StoreOptions.UpdateBatchSize
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Maximum batch size for unit-of-work operations during SaveChangesAsync.
+  example: []
+  syntax:
+    content: public int UpdateBatchSize { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property UpdateBatchSize As Integer
+  overload: AeroDB.StoreOptions.UpdateBatchSize*
+  implements:
+  - AeroDB.IReadOnlyStoreOptions.UpdateBatchSize
+- uid: AeroDB.StoreOptions.OpenTelemetry
+  commentId: P:AeroDB.StoreOptions.OpenTelemetry
+  id: OpenTelemetry
+  parent: AeroDB.StoreOptions
+  langs:
+  - csharp
+  - vb
+  name: OpenTelemetry
+  nameWithType: StoreOptions.OpenTelemetry
+  fullName: AeroDB.StoreOptions.OpenTelemetry
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: OpenTelemetry instrumentation configuration. Null if telemetry is not configured.
+  example: []
+  syntax:
+    content: public OpenTelemetryOptions? OpenTelemetry { get; set; }
+    parameters: []
+    return:
+      type: AeroDB.OpenTelemetryOptions
+    content.vb: Public Property OpenTelemetry As OpenTelemetryOptions
+  overload: AeroDB.StoreOptions.OpenTelemetry*
+- uid: AeroDB.StoreOptions.DatabaseEndpoints
+  commentId: P:AeroDB.StoreOptions.DatabaseEndpoints
+  id: DatabaseEndpoints
+  parent: AeroDB.StoreOptions
+  langs:
+  - csharp
+  - vb
+  name: DatabaseEndpoints
+  nameWithType: StoreOptions.DatabaseEndpoints
+  fullName: AeroDB.StoreOptions.DatabaseEndpoints
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Multiple database endpoints for multi-host / read-replica scenarios.
+
+    When configured, sessions route to appropriate endpoints based on <xref href="AeroDB.StoreOptions.ReadPreference" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: public List<DatabaseEndpoint> DatabaseEndpoints { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.List{AeroDB.DatabaseEndpoint}
+    content.vb: Public ReadOnly Property DatabaseEndpoints As List(Of DatabaseEndpoint)
+  overload: AeroDB.StoreOptions.DatabaseEndpoints*
+- uid: AeroDB.StoreOptions.ReadPreference
+  commentId: P:AeroDB.StoreOptions.ReadPreference
+  id: ReadPreference
+  parent: AeroDB.StoreOptions
+  langs:
+  - csharp
+  - vb
+  name: ReadPreference
+  nameWithType: StoreOptions.ReadPreference
+  fullName: AeroDB.StoreOptions.ReadPreference
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Read preference for query sessions. Default is <xref href="AeroDB.ReadPreference.Primary" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: public ReadPreference ReadPreference { get; set; }
+    parameters: []
+    return:
+      type: AeroDB.ReadPreference
+    content.vb: Public Property ReadPreference As ReadPreference
+  overload: AeroDB.StoreOptions.ReadPreference*
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: AeroDB.IReadOnlyStoreOptions
+  commentId: T:AeroDB.IReadOnlyStoreOptions
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IReadOnlyStoreOptions.html
+  name: IReadOnlyStoreOptions
+  nameWithType: IReadOnlyStoreOptions
+  fullName: AeroDB.IReadOnlyStoreOptions
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: AeroDB.StoreOptions.AeroDB.MartenCompatibilityExtensions.UseSystemTextJsonForSerialization(AeroDB.EnumStorage)
+  commentId: M:AeroDB.MartenCompatibilityExtensions.UseSystemTextJsonForSerialization(AeroDB.StoreOptions,AeroDB.EnumStorage)
+  parent: AeroDB.MartenCompatibilityExtensions
+  definition: AeroDB.MartenCompatibilityExtensions.UseSystemTextJsonForSerialization(AeroDB.StoreOptions,AeroDB.EnumStorage)
+  href: AeroDB.MartenCompatibilityExtensions.html#AeroDB_MartenCompatibilityExtensions_UseSystemTextJsonForSerialization_AeroDB_StoreOptions_AeroDB_EnumStorage_
+  name: UseSystemTextJsonForSerialization(StoreOptions, EnumStorage)
+  nameWithType: MartenCompatibilityExtensions.UseSystemTextJsonForSerialization(StoreOptions, EnumStorage)
+  fullName: AeroDB.MartenCompatibilityExtensions.UseSystemTextJsonForSerialization(AeroDB.StoreOptions, AeroDB.EnumStorage)
+  spec.csharp:
+  - uid: AeroDB.MartenCompatibilityExtensions.UseSystemTextJsonForSerialization(AeroDB.StoreOptions,AeroDB.EnumStorage)
+    name: UseSystemTextJsonForSerialization
+    isExternal: true
+    href: AeroDB.MartenCompatibilityExtensions.html#AeroDB_MartenCompatibilityExtensions_UseSystemTextJsonForSerialization_AeroDB_StoreOptions_AeroDB_EnumStorage_
+  - name: (
+  - uid: AeroDB.StoreOptions
+    name: StoreOptions
+    isExternal: true
+    href: AeroDB.StoreOptions.html
+  - name: ','
+  - name: " "
+  - uid: AeroDB.EnumStorage
+    name: EnumStorage
+    isExternal: true
+    href: AeroDB.EnumStorage.html
+  - name: )
+  spec.vb:
+  - uid: AeroDB.MartenCompatibilityExtensions.UseSystemTextJsonForSerialization(AeroDB.StoreOptions,AeroDB.EnumStorage)
+    name: UseSystemTextJsonForSerialization
+    isExternal: true
+    href: AeroDB.MartenCompatibilityExtensions.html#AeroDB_MartenCompatibilityExtensions_UseSystemTextJsonForSerialization_AeroDB_StoreOptions_AeroDB_EnumStorage_
+  - name: (
+  - uid: AeroDB.StoreOptions
+    name: StoreOptions
+    isExternal: true
+    href: AeroDB.StoreOptions.html
+  - name: ','
+  - name: " "
+  - uid: AeroDB.EnumStorage
+    name: EnumStorage
+    isExternal: true
+    href: AeroDB.EnumStorage.html
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AeroDB.MartenCompatibilityExtensions.UseSystemTextJsonForSerialization(AeroDB.StoreOptions,AeroDB.EnumStorage)
+  commentId: M:AeroDB.MartenCompatibilityExtensions.UseSystemTextJsonForSerialization(AeroDB.StoreOptions,AeroDB.EnumStorage)
+  isExternal: true
+  href: AeroDB.MartenCompatibilityExtensions.html#AeroDB_MartenCompatibilityExtensions_UseSystemTextJsonForSerialization_AeroDB_StoreOptions_AeroDB_EnumStorage_
+  name: UseSystemTextJsonForSerialization(StoreOptions, EnumStorage)
+  nameWithType: MartenCompatibilityExtensions.UseSystemTextJsonForSerialization(StoreOptions, EnumStorage)
+  fullName: AeroDB.MartenCompatibilityExtensions.UseSystemTextJsonForSerialization(AeroDB.StoreOptions, AeroDB.EnumStorage)
+  spec.csharp:
+  - uid: AeroDB.MartenCompatibilityExtensions.UseSystemTextJsonForSerialization(AeroDB.StoreOptions,AeroDB.EnumStorage)
+    name: UseSystemTextJsonForSerialization
+    isExternal: true
+    href: AeroDB.MartenCompatibilityExtensions.html#AeroDB_MartenCompatibilityExtensions_UseSystemTextJsonForSerialization_AeroDB_StoreOptions_AeroDB_EnumStorage_
+  - name: (
+  - uid: AeroDB.StoreOptions
+    name: StoreOptions
+    isExternal: true
+    href: AeroDB.StoreOptions.html
+  - name: ','
+  - name: " "
+  - uid: AeroDB.EnumStorage
+    name: EnumStorage
+    isExternal: true
+    href: AeroDB.EnumStorage.html
+  - name: )
+  spec.vb:
+  - uid: AeroDB.MartenCompatibilityExtensions.UseSystemTextJsonForSerialization(AeroDB.StoreOptions,AeroDB.EnumStorage)
+    name: UseSystemTextJsonForSerialization
+    isExternal: true
+    href: AeroDB.MartenCompatibilityExtensions.html#AeroDB_MartenCompatibilityExtensions_UseSystemTextJsonForSerialization_AeroDB_StoreOptions_AeroDB_EnumStorage_
+  - name: (
+  - uid: AeroDB.StoreOptions
+    name: StoreOptions
+    isExternal: true
+    href: AeroDB.StoreOptions.html
+  - name: ','
+  - name: " "
+  - uid: AeroDB.EnumStorage
+    name: EnumStorage
+    isExternal: true
+    href: AeroDB.EnumStorage.html
+  - name: )
+- uid: AeroDB.MartenCompatibilityExtensions
+  commentId: T:AeroDB.MartenCompatibilityExtensions
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.MartenCompatibilityExtensions.html
+  name: MartenCompatibilityExtensions
+  nameWithType: MartenCompatibilityExtensions
+  fullName: AeroDB.MartenCompatibilityExtensions
+- uid: AeroDB.DocumentHierarchy.AddSubClass``1
+  commentId: M:AeroDB.DocumentHierarchy.AddSubClass``1
+  isExternal: true
+  href: AeroDB.DocumentHierarchy.html#AeroDB_DocumentHierarchy_AddSubClass__1
+  name: AddSubClass<T>()
+  nameWithType: DocumentHierarchy.AddSubClass<T>()
+  fullName: AeroDB.DocumentHierarchy.AddSubClass<T>()
+  nameWithType.vb: DocumentHierarchy.AddSubClass(Of T)()
+  fullName.vb: AeroDB.DocumentHierarchy.AddSubClass(Of T)()
+  name.vb: AddSubClass(Of T)()
+  spec.csharp:
+  - uid: AeroDB.DocumentHierarchy.AddSubClass``1
+    name: AddSubClass
+    isExternal: true
+    href: AeroDB.DocumentHierarchy.html#AeroDB_DocumentHierarchy_AddSubClass__1
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AeroDB.DocumentHierarchy.AddSubClass``1
+    name: AddSubClass
+    isExternal: true
+    href: AeroDB.DocumentHierarchy.html#AeroDB_DocumentHierarchy_AddSubClass__1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: )
+- uid: AeroDB.StoreOptions.HierarchyFor*
+  commentId: Overload:AeroDB.StoreOptions.HierarchyFor
+  isExternal: true
+  href: AeroDB.StoreOptions.html#AeroDB_StoreOptions_HierarchyFor__1
+  name: HierarchyFor
+  nameWithType: StoreOptions.HierarchyFor
+  fullName: AeroDB.StoreOptions.HierarchyFor
+- uid: AeroDB.DocumentHierarchy
+  commentId: T:AeroDB.DocumentHierarchy
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.DocumentHierarchy.html
+  name: DocumentHierarchy
+  nameWithType: DocumentHierarchy
+  fullName: AeroDB.DocumentHierarchy
+- uid: AeroDB.StoreOptions.ConfigureSerializer*
+  commentId: Overload:AeroDB.StoreOptions.ConfigureSerializer
+  isExternal: true
+  href: AeroDB.StoreOptions.html#AeroDB_StoreOptions_ConfigureSerializer_System_Action_System_Text_Json_JsonSerializerOptions__
+  name: ConfigureSerializer
+  nameWithType: StoreOptions.ConfigureSerializer
+  fullName: AeroDB.StoreOptions.ConfigureSerializer
+- uid: System.Action{System.Text.Json.JsonSerializerOptions}
+  commentId: T:System.Action{System.Text.Json.JsonSerializerOptions}
+  parent: System
+  definition: System.Action`1
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<JsonSerializerOptions>
+  nameWithType: Action<JsonSerializerOptions>
+  fullName: System.Action<System.Text.Json.JsonSerializerOptions>
+  nameWithType.vb: Action(Of JsonSerializerOptions)
+  fullName.vb: System.Action(Of System.Text.Json.JsonSerializerOptions)
+  name.vb: Action(Of JsonSerializerOptions)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: System.Text.Json.JsonSerializerOptions
+    name: JsonSerializerOptions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json.jsonserializeroptions
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Text.Json.JsonSerializerOptions
+    name: JsonSerializerOptions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json.jsonserializeroptions
+  - name: )
+- uid: System.Action`1
+  commentId: T:System.Action`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<T>
+  nameWithType: Action<T>
+  fullName: System.Action<T>
+  nameWithType.vb: Action(Of T)
+  fullName.vb: System.Action(Of T)
+  name.vb: Action(Of T)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.StoreOptions.#ctor*
+  commentId: Overload:AeroDB.StoreOptions.#ctor
+  isExternal: true
+  href: AeroDB.StoreOptions.html#AeroDB_StoreOptions__ctor
+  name: StoreOptions
+  nameWithType: StoreOptions.StoreOptions
+  fullName: AeroDB.StoreOptions.StoreOptions
+  nameWithType.vb: StoreOptions.New
+  fullName.vb: AeroDB.StoreOptions.New
+  name.vb: New
+- uid: AeroDB.StoreOptions.ConfigurePolly*
+  commentId: Overload:AeroDB.StoreOptions.ConfigurePolly
+  isExternal: true
+  href: AeroDB.StoreOptions.html#AeroDB_StoreOptions_ConfigurePolly_System_Action_Polly_ResiliencePipelineBuilder__
+  name: ConfigurePolly
+  nameWithType: StoreOptions.ConfigurePolly
+  fullName: AeroDB.StoreOptions.ConfigurePolly
+- uid: System.Action{Polly.ResiliencePipelineBuilder}
+  commentId: T:System.Action{Polly.ResiliencePipelineBuilder}
+  parent: System
+  definition: System.Action`1
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<ResiliencePipelineBuilder>
+  nameWithType: Action<ResiliencePipelineBuilder>
+  fullName: System.Action<Polly.ResiliencePipelineBuilder>
+  nameWithType.vb: Action(Of ResiliencePipelineBuilder)
+  fullName.vb: System.Action(Of Polly.ResiliencePipelineBuilder)
+  name.vb: Action(Of ResiliencePipelineBuilder)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: Polly.ResiliencePipelineBuilder
+    name: ResiliencePipelineBuilder
+    isExternal: true
+    href: https://github.com/App-vNext/Polly/blob/74bf31fff0e0907034994be4df22424aa71818f1/src/Polly.Core/ResiliencePipelineBuilder.cs
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Polly.ResiliencePipelineBuilder
+    name: ResiliencePipelineBuilder
+    isExternal: true
+    href: https://github.com/App-vNext/Polly/blob/74bf31fff0e0907034994be4df22424aa71818f1/src/Polly.Core/ResiliencePipelineBuilder.cs
+  - name: )
+- uid: AeroDB.StoreOptions.AllDocumentsAreMultiTenanted*
+  commentId: Overload:AeroDB.StoreOptions.AllDocumentsAreMultiTenanted
+  isExternal: true
+  href: AeroDB.StoreOptions.html#AeroDB_StoreOptions_AllDocumentsAreMultiTenanted
+  name: AllDocumentsAreMultiTenanted
+  nameWithType: StoreOptions.AllDocumentsAreMultiTenanted
+  fullName: AeroDB.StoreOptions.AllDocumentsAreMultiTenanted
+- uid: AeroDB.StoreOptions.MultiTenantedDatabases*
+  commentId: Overload:AeroDB.StoreOptions.MultiTenantedDatabases
+  isExternal: true
+  href: AeroDB.StoreOptions.html#AeroDB_StoreOptions_MultiTenantedDatabases
+  name: MultiTenantedDatabases
+  nameWithType: StoreOptions.MultiTenantedDatabases
+  fullName: AeroDB.StoreOptions.MultiTenantedDatabases
+- uid: AeroDB.StoreOptions.AllDocumentsSoftDeleted*
+  commentId: Overload:AeroDB.StoreOptions.AllDocumentsSoftDeleted
+  isExternal: true
+  href: AeroDB.StoreOptions.html#AeroDB_StoreOptions_AllDocumentsSoftDeleted
+  name: AllDocumentsSoftDeleted
+  nameWithType: StoreOptions.AllDocumentsSoftDeleted
+  fullName: AeroDB.StoreOptions.AllDocumentsSoftDeleted
+- uid: AeroDB.StoreOptions.AllDocumentsEnforceOptimisticConcurrency*
+  commentId: Overload:AeroDB.StoreOptions.AllDocumentsEnforceOptimisticConcurrency
+  isExternal: true
+  href: AeroDB.StoreOptions.html#AeroDB_StoreOptions_AllDocumentsEnforceOptimisticConcurrency
+  name: AllDocumentsEnforceOptimisticConcurrency
+  nameWithType: StoreOptions.AllDocumentsEnforceOptimisticConcurrency
+  fullName: AeroDB.StoreOptions.AllDocumentsEnforceOptimisticConcurrency
+- uid: AeroDB.StoreOptions.AddDatabaseEndpoint*
+  commentId: Overload:AeroDB.StoreOptions.AddDatabaseEndpoint
+  isExternal: true
+  href: AeroDB.StoreOptions.html#AeroDB_StoreOptions_AddDatabaseEndpoint_System_String_System_Action_AeroDB_DatabaseEndpoint__
+  name: AddDatabaseEndpoint
+  nameWithType: StoreOptions.AddDatabaseEndpoint
+  fullName: AeroDB.StoreOptions.AddDatabaseEndpoint
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Action{AeroDB.DatabaseEndpoint}
+  commentId: T:System.Action{AeroDB.DatabaseEndpoint}
+  parent: System
+  definition: System.Action`1
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<DatabaseEndpoint>
+  nameWithType: Action<DatabaseEndpoint>
+  fullName: System.Action<AeroDB.DatabaseEndpoint>
+  nameWithType.vb: Action(Of DatabaseEndpoint)
+  fullName.vb: System.Action(Of AeroDB.DatabaseEndpoint)
+  name.vb: Action(Of DatabaseEndpoint)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: AeroDB.DatabaseEndpoint
+    name: DatabaseEndpoint
+    isExternal: true
+    href: AeroDB.DatabaseEndpoint.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.DatabaseEndpoint
+    name: DatabaseEndpoint
+    isExternal: true
+    href: AeroDB.DatabaseEndpoint.html
+  - name: )
+- uid: AeroDB.StoreOptions
+  commentId: T:AeroDB.StoreOptions
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.StoreOptions.html
+  name: StoreOptions
+  nameWithType: StoreOptions
+  fullName: AeroDB.StoreOptions
+- uid: AeroDB.StoreOptions.Connection*
+  commentId: Overload:AeroDB.StoreOptions.Connection
+  isExternal: true
+  href: AeroDB.StoreOptions.html#AeroDB_StoreOptions_Connection_System_String_System_String_System_String_System_String_System_String_System_String_
+  name: Connection
+  nameWithType: StoreOptions.Connection
+  fullName: AeroDB.StoreOptions.Connection
+- uid: AeroDB.StoreOptions.Endpoint*
+  commentId: Overload:AeroDB.StoreOptions.Endpoint
+  isExternal: true
+  href: AeroDB.StoreOptions.html#AeroDB_StoreOptions_Endpoint
+  name: Endpoint
+  nameWithType: StoreOptions.Endpoint
+  fullName: AeroDB.StoreOptions.Endpoint
+- uid: AeroDB.IReadOnlyStoreOptions.Endpoint
+  commentId: P:AeroDB.IReadOnlyStoreOptions.Endpoint
+  parent: AeroDB.IReadOnlyStoreOptions
+  isExternal: true
+  href: AeroDB.IReadOnlyStoreOptions.html#AeroDB_IReadOnlyStoreOptions_Endpoint
+  name: Endpoint
+  nameWithType: IReadOnlyStoreOptions.Endpoint
+  fullName: AeroDB.IReadOnlyStoreOptions.Endpoint
+- uid: AeroDB.StoreOptions.Namespace*
+  commentId: Overload:AeroDB.StoreOptions.Namespace
+  isExternal: true
+  href: AeroDB.StoreOptions.html#AeroDB_StoreOptions_Namespace
+  name: Namespace
+  nameWithType: StoreOptions.Namespace
+  fullName: AeroDB.StoreOptions.Namespace
+- uid: AeroDB.IReadOnlyStoreOptions.Namespace
+  commentId: P:AeroDB.IReadOnlyStoreOptions.Namespace
+  parent: AeroDB.IReadOnlyStoreOptions
+  isExternal: true
+  href: AeroDB.IReadOnlyStoreOptions.html#AeroDB_IReadOnlyStoreOptions_Namespace
+  name: Namespace
+  nameWithType: IReadOnlyStoreOptions.Namespace
+  fullName: AeroDB.IReadOnlyStoreOptions.Namespace
+- uid: AeroDB.StoreOptions.Database*
+  commentId: Overload:AeroDB.StoreOptions.Database
+  isExternal: true
+  href: AeroDB.StoreOptions.html#AeroDB_StoreOptions_Database
+  name: Database
+  nameWithType: StoreOptions.Database
+  fullName: AeroDB.StoreOptions.Database
+- uid: AeroDB.IReadOnlyStoreOptions.Database
+  commentId: P:AeroDB.IReadOnlyStoreOptions.Database
+  parent: AeroDB.IReadOnlyStoreOptions
+  isExternal: true
+  href: AeroDB.IReadOnlyStoreOptions.html#AeroDB_IReadOnlyStoreOptions_Database
+  name: Database
+  nameWithType: IReadOnlyStoreOptions.Database
+  fullName: AeroDB.IReadOnlyStoreOptions.Database
+- uid: AeroDB.StoreOptions.DatabaseSchemaName*
+  commentId: Overload:AeroDB.StoreOptions.DatabaseSchemaName
+  isExternal: true
+  href: AeroDB.StoreOptions.html#AeroDB_StoreOptions_DatabaseSchemaName
+  name: DatabaseSchemaName
+  nameWithType: StoreOptions.DatabaseSchemaName
+  fullName: AeroDB.StoreOptions.DatabaseSchemaName
+- uid: AeroDB.StoreOptions.Username*
+  commentId: Overload:AeroDB.StoreOptions.Username
+  isExternal: true
+  href: AeroDB.StoreOptions.html#AeroDB_StoreOptions_Username
+  name: Username
+  nameWithType: StoreOptions.Username
+  fullName: AeroDB.StoreOptions.Username
+- uid: AeroDB.IReadOnlyStoreOptions.Username
+  commentId: P:AeroDB.IReadOnlyStoreOptions.Username
+  parent: AeroDB.IReadOnlyStoreOptions
+  isExternal: true
+  href: AeroDB.IReadOnlyStoreOptions.html#AeroDB_IReadOnlyStoreOptions_Username
+  name: Username
+  nameWithType: IReadOnlyStoreOptions.Username
+  fullName: AeroDB.IReadOnlyStoreOptions.Username
+- uid: AeroDB.StoreOptions.Password*
+  commentId: Overload:AeroDB.StoreOptions.Password
+  isExternal: true
+  href: AeroDB.StoreOptions.html#AeroDB_StoreOptions_Password
+  name: Password
+  nameWithType: StoreOptions.Password
+  fullName: AeroDB.StoreOptions.Password
+- uid: AeroDB.IReadOnlyStoreOptions.Password
+  commentId: P:AeroDB.IReadOnlyStoreOptions.Password
+  parent: AeroDB.IReadOnlyStoreOptions
+  isExternal: true
+  href: AeroDB.IReadOnlyStoreOptions.html#AeroDB_IReadOnlyStoreOptions_Password
+  name: Password
+  nameWithType: IReadOnlyStoreOptions.Password
+  fullName: AeroDB.IReadOnlyStoreOptions.Password
+- uid: AeroDB.StoreOptions.Token*
+  commentId: Overload:AeroDB.StoreOptions.Token
+  isExternal: true
+  href: AeroDB.StoreOptions.html#AeroDB_StoreOptions_Token
+  name: Token
+  nameWithType: StoreOptions.Token
+  fullName: AeroDB.StoreOptions.Token
+- uid: AeroDB.IReadOnlyStoreOptions.Token
+  commentId: P:AeroDB.IReadOnlyStoreOptions.Token
+  parent: AeroDB.IReadOnlyStoreOptions
+  isExternal: true
+  href: AeroDB.IReadOnlyStoreOptions.html#AeroDB_IReadOnlyStoreOptions_Token
+  name: Token
+  nameWithType: IReadOnlyStoreOptions.Token
+  fullName: AeroDB.IReadOnlyStoreOptions.Token
+- uid: AeroDB.StoreOptions.Schema*
+  commentId: Overload:AeroDB.StoreOptions.Schema
+  isExternal: true
+  href: AeroDB.StoreOptions.html#AeroDB_StoreOptions_Schema
+  name: Schema
+  nameWithType: StoreOptions.Schema
+  fullName: AeroDB.StoreOptions.Schema
+- uid: AeroDB.IReadOnlyStoreOptions.Schema
+  commentId: P:AeroDB.IReadOnlyStoreOptions.Schema
+  parent: AeroDB.IReadOnlyStoreOptions
+  isExternal: true
+  href: AeroDB.IReadOnlyStoreOptions.html#AeroDB_IReadOnlyStoreOptions_Schema
+  name: Schema
+  nameWithType: IReadOnlyStoreOptions.Schema
+  fullName: AeroDB.IReadOnlyStoreOptions.Schema
+- uid: AeroDB.SchemaOptions
+  commentId: T:AeroDB.SchemaOptions
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.SchemaOptions.html
+  name: SchemaOptions
+  nameWithType: SchemaOptions
+  fullName: AeroDB.SchemaOptions
+- uid: AeroDB.StoreOptions.Policies*
+  commentId: Overload:AeroDB.StoreOptions.Policies
+  isExternal: true
+  href: AeroDB.StoreOptions.html#AeroDB_StoreOptions_Policies
+  name: Policies
+  nameWithType: StoreOptions.Policies
+  fullName: AeroDB.StoreOptions.Policies
+- uid: AeroDB.DocumentPolicies
+  commentId: T:AeroDB.DocumentPolicies
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.DocumentPolicies.html
+  name: DocumentPolicies
+  nameWithType: DocumentPolicies
+  fullName: AeroDB.DocumentPolicies
+- uid: AeroDB.StoreOptions.TenancyStyle*
+  commentId: Overload:AeroDB.StoreOptions.TenancyStyle
+  isExternal: true
+  href: AeroDB.StoreOptions.html#AeroDB_StoreOptions_TenancyStyle
+  name: TenancyStyle
+  nameWithType: StoreOptions.TenancyStyle
+  fullName: AeroDB.StoreOptions.TenancyStyle
+- uid: AeroDB.IReadOnlyStoreOptions.TenancyStyle
+  commentId: P:AeroDB.IReadOnlyStoreOptions.TenancyStyle
+  parent: AeroDB.IReadOnlyStoreOptions
+  isExternal: true
+  href: AeroDB.IReadOnlyStoreOptions.html#AeroDB_IReadOnlyStoreOptions_TenancyStyle
+  name: TenancyStyle
+  nameWithType: IReadOnlyStoreOptions.TenancyStyle
+  fullName: AeroDB.IReadOnlyStoreOptions.TenancyStyle
+- uid: AeroDB.TenancyStyle
+  commentId: T:AeroDB.TenancyStyle
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.TenancyStyle.html
+  name: TenancyStyle
+  nameWithType: TenancyStyle
+  fullName: AeroDB.TenancyStyle
+- uid: AeroDB.StoreOptions.DefaultTenantId*
+  commentId: Overload:AeroDB.StoreOptions.DefaultTenantId
+  isExternal: true
+  href: AeroDB.StoreOptions.html#AeroDB_StoreOptions_DefaultTenantId
+  name: DefaultTenantId
+  nameWithType: StoreOptions.DefaultTenantId
+  fullName: AeroDB.StoreOptions.DefaultTenantId
+- uid: AeroDB.IReadOnlyStoreOptions.DefaultTenantId
+  commentId: P:AeroDB.IReadOnlyStoreOptions.DefaultTenantId
+  parent: AeroDB.IReadOnlyStoreOptions
+  isExternal: true
+  href: AeroDB.IReadOnlyStoreOptions.html#AeroDB_IReadOnlyStoreOptions_DefaultTenantId
+  name: DefaultTenantId
+  nameWithType: IReadOnlyStoreOptions.DefaultTenantId
+  fullName: AeroDB.IReadOnlyStoreOptions.DefaultTenantId
+- uid: AeroDB.TenantIdStyle.CaseSensitive
+  commentId: F:AeroDB.TenantIdStyle.CaseSensitive
+  isExternal: true
+  href: AeroDB.TenantIdStyle.html#AeroDB_TenantIdStyle_CaseSensitive
+  name: CaseSensitive
+  nameWithType: TenantIdStyle.CaseSensitive
+  fullName: AeroDB.TenantIdStyle.CaseSensitive
+- uid: AeroDB.StoreOptions.TenantIdStyle*
+  commentId: Overload:AeroDB.StoreOptions.TenantIdStyle
+  isExternal: true
+  href: AeroDB.StoreOptions.html#AeroDB_StoreOptions_TenantIdStyle
+  name: TenantIdStyle
+  nameWithType: StoreOptions.TenantIdStyle
+  fullName: AeroDB.StoreOptions.TenantIdStyle
+- uid: AeroDB.TenantIdStyle
+  commentId: T:AeroDB.TenantIdStyle
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.TenantIdStyle.html
+  name: TenantIdStyle
+  nameWithType: TenantIdStyle
+  fullName: AeroDB.TenantIdStyle
+- uid: AeroDB.StoreOptions.Events*
+  commentId: Overload:AeroDB.StoreOptions.Events
+  isExternal: true
+  href: AeroDB.StoreOptions.html#AeroDB_StoreOptions_Events
+  name: Events
+  nameWithType: StoreOptions.Events
+  fullName: AeroDB.StoreOptions.Events
+- uid: AeroDB.IReadOnlyStoreOptions.Events
+  commentId: P:AeroDB.IReadOnlyStoreOptions.Events
+  parent: AeroDB.IReadOnlyStoreOptions
+  isExternal: true
+  href: AeroDB.IReadOnlyStoreOptions.html#AeroDB_IReadOnlyStoreOptions_Events
+  name: Events
+  nameWithType: IReadOnlyStoreOptions.Events
+  fullName: AeroDB.IReadOnlyStoreOptions.Events
+- uid: AeroDB.EventSourcingOptions
+  commentId: T:AeroDB.EventSourcingOptions
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.EventSourcingOptions.html
+  name: EventSourcingOptions
+  nameWithType: EventSourcingOptions
+  fullName: AeroDB.EventSourcingOptions
+- uid: AeroDB.StoreOptions.Functions*
+  commentId: Overload:AeroDB.StoreOptions.Functions
+  isExternal: true
+  href: AeroDB.StoreOptions.html#AeroDB_StoreOptions_Functions
+  name: Functions
+  nameWithType: StoreOptions.Functions
+  fullName: AeroDB.StoreOptions.Functions
+- uid: AeroDB.FunctionOptions
+  commentId: T:AeroDB.FunctionOptions
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.FunctionOptions.html
+  name: FunctionOptions
+  nameWithType: FunctionOptions
+  fullName: AeroDB.FunctionOptions
+- uid: AeroDB.StoreOptions.Listeners*
+  commentId: Overload:AeroDB.StoreOptions.Listeners
+  isExternal: true
+  href: AeroDB.StoreOptions.html#AeroDB_StoreOptions_Listeners
+  name: Listeners
+  nameWithType: StoreOptions.Listeners
+  fullName: AeroDB.StoreOptions.Listeners
+- uid: System.Collections.Generic.List{AeroDB.IDocumentSessionListener}
+  commentId: T:System.Collections.Generic.List{AeroDB.IDocumentSessionListener}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<IDocumentSessionListener>
+  nameWithType: List<IDocumentSessionListener>
+  fullName: System.Collections.Generic.List<AeroDB.IDocumentSessionListener>
+  nameWithType.vb: List(Of IDocumentSessionListener)
+  fullName.vb: System.Collections.Generic.List(Of AeroDB.IDocumentSessionListener)
+  name.vb: List(Of IDocumentSessionListener)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: AeroDB.IDocumentSessionListener
+    name: IDocumentSessionListener
+    isExternal: true
+    href: AeroDB.IDocumentSessionListener.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.IDocumentSessionListener
+    name: IDocumentSessionListener
+    isExternal: true
+    href: AeroDB.IDocumentSessionListener.html
+  - name: )
+- uid: System.Collections.Generic.List`1
+  commentId: T:System.Collections.Generic.List`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<T>
+  nameWithType: List<T>
+  fullName: System.Collections.Generic.List<T>
+  nameWithType.vb: List(Of T)
+  fullName.vb: System.Collections.Generic.List(Of T)
+  name.vb: List(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: AeroDB.StoreOptions.ChangeListeners*
+  commentId: Overload:AeroDB.StoreOptions.ChangeListeners
+  isExternal: true
+  href: AeroDB.StoreOptions.html#AeroDB_StoreOptions_ChangeListeners
+  name: ChangeListeners
+  nameWithType: StoreOptions.ChangeListeners
+  fullName: AeroDB.StoreOptions.ChangeListeners
+- uid: System.Collections.Generic.List{AeroDB.IChangeListener}
+  commentId: T:System.Collections.Generic.List{AeroDB.IChangeListener}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<IChangeListener>
+  nameWithType: List<IChangeListener>
+  fullName: System.Collections.Generic.List<AeroDB.IChangeListener>
+  nameWithType.vb: List(Of IChangeListener)
+  fullName.vb: System.Collections.Generic.List(Of AeroDB.IChangeListener)
+  name.vb: List(Of IChangeListener)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: AeroDB.IChangeListener
+    name: IChangeListener
+    isExternal: true
+    href: AeroDB.IChangeListener.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.IChangeListener
+    name: IChangeListener
+    isExternal: true
+    href: AeroDB.IChangeListener.html
+  - name: )
+- uid: AeroDB.IVersioned
+  commentId: T:AeroDB.IVersioned
+  isExternal: true
+  href: AeroDB.IVersioned.html
+  name: IVersioned
+  nameWithType: IVersioned
+  fullName: AeroDB.IVersioned
+- uid: AeroDB.VersionAttribute
+  commentId: T:AeroDB.VersionAttribute
+  isExternal: true
+  href: AeroDB.VersionAttribute.html
+  name: VersionAttribute
+  nameWithType: VersionAttribute
+  fullName: AeroDB.VersionAttribute
+- uid: AeroDB.ConcurrencyException
+  commentId: T:AeroDB.ConcurrencyException
+  isExternal: true
+  href: AeroDB.ConcurrencyException.html
+  name: ConcurrencyException
+  nameWithType: ConcurrencyException
+  fullName: AeroDB.ConcurrencyException
+- uid: AeroDB.DocumentTracking.None
+  commentId: F:AeroDB.DocumentTracking.None
+  isExternal: true
+  href: AeroDB.DocumentTracking.html#AeroDB_DocumentTracking_None
+  name: None
+  nameWithType: DocumentTracking.None
+  fullName: AeroDB.DocumentTracking.None
+- uid: AeroDB.StoreOptions.Tracking*
+  commentId: Overload:AeroDB.StoreOptions.Tracking
+  isExternal: true
+  href: AeroDB.StoreOptions.html#AeroDB_StoreOptions_Tracking
+  name: Tracking
+  nameWithType: StoreOptions.Tracking
+  fullName: AeroDB.StoreOptions.Tracking
+- uid: AeroDB.IReadOnlyStoreOptions.Tracking
+  commentId: P:AeroDB.IReadOnlyStoreOptions.Tracking
+  parent: AeroDB.IReadOnlyStoreOptions
+  isExternal: true
+  href: AeroDB.IReadOnlyStoreOptions.html#AeroDB_IReadOnlyStoreOptions_Tracking
+  name: Tracking
+  nameWithType: IReadOnlyStoreOptions.Tracking
+  fullName: AeroDB.IReadOnlyStoreOptions.Tracking
+- uid: AeroDB.DocumentTracking
+  commentId: T:AeroDB.DocumentTracking
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.DocumentTracking.html
+  name: DocumentTracking
+  nameWithType: DocumentTracking
+  fullName: AeroDB.DocumentTracking
+- uid: AeroDB.StoreOptions.UseOptimisticConcurrency*
+  commentId: Overload:AeroDB.StoreOptions.UseOptimisticConcurrency
+  isExternal: true
+  href: AeroDB.StoreOptions.html#AeroDB_StoreOptions_UseOptimisticConcurrency
+  name: UseOptimisticConcurrency
+  nameWithType: StoreOptions.UseOptimisticConcurrency
+  fullName: AeroDB.StoreOptions.UseOptimisticConcurrency
+- uid: AeroDB.IReadOnlyStoreOptions.UseOptimisticConcurrency
+  commentId: P:AeroDB.IReadOnlyStoreOptions.UseOptimisticConcurrency
+  parent: AeroDB.IReadOnlyStoreOptions
+  isExternal: true
+  href: AeroDB.IReadOnlyStoreOptions.html#AeroDB_IReadOnlyStoreOptions_UseOptimisticConcurrency
+  name: UseOptimisticConcurrency
+  nameWithType: IReadOnlyStoreOptions.UseOptimisticConcurrency
+  fullName: AeroDB.IReadOnlyStoreOptions.UseOptimisticConcurrency
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: AeroDB.StoreOptions.ClientFactory*
+  commentId: Overload:AeroDB.StoreOptions.ClientFactory
+  isExternal: true
+  href: AeroDB.StoreOptions.html#AeroDB_StoreOptions_ClientFactory
+  name: ClientFactory
+  nameWithType: StoreOptions.ClientFactory
+  fullName: AeroDB.StoreOptions.ClientFactory
+- uid: System.Func{SurrealDb.Net.ISurrealDbClient}
+  commentId: T:System.Func{SurrealDb.Net.ISurrealDbClient}
+  parent: System
+  definition: System.Func`1
+  href: https://learn.microsoft.com/dotnet/api/system.func-1
+  name: Func<ISurrealDbClient>
+  nameWithType: Func<ISurrealDbClient>
+  fullName: System.Func<SurrealDb.Net.ISurrealDbClient>
+  nameWithType.vb: Func(Of ISurrealDbClient)
+  fullName.vb: System.Func(Of SurrealDb.Net.ISurrealDbClient)
+  name.vb: Func(Of ISurrealDbClient)
+  spec.csharp:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: <
+  - uid: SurrealDb.Net.ISurrealDbClient
+    name: ISurrealDbClient
+    isExternal: true
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: SurrealDb.Net.ISurrealDbClient
+    name: ISurrealDbClient
+    isExternal: true
+  - name: )
+- uid: System.Func`1
+  commentId: T:System.Func`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.func-1
+  name: Func<TResult>
+  nameWithType: Func<TResult>
+  fullName: System.Func<TResult>
+  nameWithType.vb: Func(Of TResult)
+  fullName.vb: System.Func(Of TResult)
+  name.vb: Func(Of TResult)
+  spec.csharp:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: AeroDB.StoreOptions.LoggerFactory*
+  commentId: Overload:AeroDB.StoreOptions.LoggerFactory
+  isExternal: true
+  href: AeroDB.StoreOptions.html#AeroDB_StoreOptions_LoggerFactory
+  name: LoggerFactory
+  nameWithType: StoreOptions.LoggerFactory
+  fullName: AeroDB.StoreOptions.LoggerFactory
+- uid: Microsoft.Extensions.Logging.ILoggerFactory
+  commentId: T:Microsoft.Extensions.Logging.ILoggerFactory
+  parent: Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.iloggerfactory
+  name: ILoggerFactory
+  nameWithType: ILoggerFactory
+  fullName: Microsoft.Extensions.Logging.ILoggerFactory
+- uid: Microsoft.Extensions.Logging
+  commentId: N:Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.Logging
+  nameWithType: Microsoft.Extensions.Logging
+  fullName: Microsoft.Extensions.Logging
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+- uid: AeroDB.StoreOptions.MinimumLogLevel*
+  commentId: Overload:AeroDB.StoreOptions.MinimumLogLevel
+  isExternal: true
+  href: AeroDB.StoreOptions.html#AeroDB_StoreOptions_MinimumLogLevel
+  name: MinimumLogLevel
+  nameWithType: StoreOptions.MinimumLogLevel
+  fullName: AeroDB.StoreOptions.MinimumLogLevel
+- uid: Microsoft.Extensions.Logging.LogLevel
+  commentId: T:Microsoft.Extensions.Logging.LogLevel
+  parent: Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.loglevel
+  name: LogLevel
+  nameWithType: LogLevel
+  fullName: Microsoft.Extensions.Logging.LogLevel
+- uid: AeroDB.StoreOptions.Projections*
+  commentId: Overload:AeroDB.StoreOptions.Projections
+  isExternal: true
+  href: AeroDB.StoreOptions.html#AeroDB_StoreOptions_Projections
+  name: Projections
+  nameWithType: StoreOptions.Projections
+  fullName: AeroDB.StoreOptions.Projections
+- uid: AeroDB.ProjectionCollection
+  commentId: T:AeroDB.ProjectionCollection
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.ProjectionCollection.html
+  name: ProjectionCollection
+  nameWithType: ProjectionCollection
+  fullName: AeroDB.ProjectionCollection
+- uid: AeroDB.StoreOptions.EfCoreProjections*
+  commentId: Overload:AeroDB.StoreOptions.EfCoreProjections
+  isExternal: true
+  href: AeroDB.StoreOptions.html#AeroDB_StoreOptions_EfCoreProjections
+  name: EfCoreProjections
+  nameWithType: StoreOptions.EfCoreProjections
+  fullName: AeroDB.StoreOptions.EfCoreProjections
+- uid: System.Collections.Generic.List{AeroDB.IProjection}
+  commentId: T:System.Collections.Generic.List{AeroDB.IProjection}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<IProjection>
+  nameWithType: List<IProjection>
+  fullName: System.Collections.Generic.List<AeroDB.IProjection>
+  nameWithType.vb: List(Of IProjection)
+  fullName.vb: System.Collections.Generic.List(Of AeroDB.IProjection)
+  name.vb: List(Of IProjection)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: AeroDB.IProjection
+    name: IProjection
+    isExternal: true
+    href: AeroDB.IProjection.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.IProjection
+    name: IProjection
+    isExternal: true
+    href: AeroDB.IProjection.html
+  - name: )
+- uid: AeroDB.StoreOptions.LiveQueryChannelCapacity*
+  commentId: Overload:AeroDB.StoreOptions.LiveQueryChannelCapacity
+  isExternal: true
+  href: AeroDB.StoreOptions.html#AeroDB_StoreOptions_LiveQueryChannelCapacity
+  name: LiveQueryChannelCapacity
+  nameWithType: StoreOptions.LiveQueryChannelCapacity
+  fullName: AeroDB.StoreOptions.LiveQueryChannelCapacity
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: AeroDB.StoreOptions.LiveQueryChannelFullMode*
+  commentId: Overload:AeroDB.StoreOptions.LiveQueryChannelFullMode
+  isExternal: true
+  href: AeroDB.StoreOptions.html#AeroDB_StoreOptions_LiveQueryChannelFullMode
+  name: LiveQueryChannelFullMode
+  nameWithType: StoreOptions.LiveQueryChannelFullMode
+  fullName: AeroDB.StoreOptions.LiveQueryChannelFullMode
+- uid: System.Threading.Channels.BoundedChannelFullMode
+  commentId: T:System.Threading.Channels.BoundedChannelFullMode
+  parent: System.Threading.Channels
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.channels.boundedchannelfullmode
+  name: BoundedChannelFullMode
+  nameWithType: BoundedChannelFullMode
+  fullName: System.Threading.Channels.BoundedChannelFullMode
+- uid: System.Threading.Channels
+  commentId: N:System.Threading.Channels
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Channels
+  nameWithType: System.Threading.Channels
+  fullName: System.Threading.Channels
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Channels
+    name: Channels
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.channels
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Channels
+    name: Channels
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.channels
+- uid: AeroDB.ISoftDeleted
+  commentId: T:AeroDB.ISoftDeleted
+  isExternal: true
+  href: AeroDB.ISoftDeleted.html
+  name: ISoftDeleted
+  nameWithType: ISoftDeleted
+  fullName: AeroDB.ISoftDeleted
+- uid: AeroDB.StoreOptions.SoftDeleteEnabled*
+  commentId: Overload:AeroDB.StoreOptions.SoftDeleteEnabled
+  isExternal: true
+  href: AeroDB.StoreOptions.html#AeroDB_StoreOptions_SoftDeleteEnabled
+  name: SoftDeleteEnabled
+  nameWithType: StoreOptions.SoftDeleteEnabled
+  fullName: AeroDB.StoreOptions.SoftDeleteEnabled
+- uid: System.Text.Json.JsonSerializerOptions
+  commentId: T:System.Text.Json.JsonSerializerOptions
+  parent: System.Text.Json
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.text.json.jsonserializeroptions
+  name: JsonSerializerOptions
+  nameWithType: JsonSerializerOptions
+  fullName: System.Text.Json.JsonSerializerOptions
+- uid: AeroDB.StoreOptions.SerializerOptions*
+  commentId: Overload:AeroDB.StoreOptions.SerializerOptions
+  isExternal: true
+  href: AeroDB.StoreOptions.html#AeroDB_StoreOptions_SerializerOptions
+  name: SerializerOptions
+  nameWithType: StoreOptions.SerializerOptions
+  fullName: AeroDB.StoreOptions.SerializerOptions
+- uid: System.Text.Json
+  commentId: N:System.Text.Json
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Text.Json
+  nameWithType: System.Text.Json
+  fullName: System.Text.Json
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Text
+    name: Text
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text
+  - name: .
+  - uid: System.Text.Json
+    name: Json
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Text
+    name: Text
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text
+  - name: .
+  - uid: System.Text.Json
+    name: Json
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json
+- uid: AeroDB.StoreOptions.Advanced*
+  commentId: Overload:AeroDB.StoreOptions.Advanced
+  isExternal: true
+  href: AeroDB.StoreOptions.html#AeroDB_StoreOptions_Advanced
+  name: Advanced
+  nameWithType: StoreOptions.Advanced
+  fullName: AeroDB.StoreOptions.Advanced
+- uid: AeroDB.AdvancedOptions
+  commentId: T:AeroDB.AdvancedOptions
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.AdvancedOptions.html
+  name: AdvancedOptions
+  nameWithType: AdvancedOptions
+  fullName: AeroDB.AdvancedOptions
+- uid: AeroDB.StoreOptions.Experimental*
+  commentId: Overload:AeroDB.StoreOptions.Experimental
+  isExternal: true
+  href: AeroDB.StoreOptions.html#AeroDB_StoreOptions_Experimental
+  name: Experimental
+  nameWithType: StoreOptions.Experimental
+  fullName: AeroDB.StoreOptions.Experimental
+- uid: AeroDB.ExperimentalOptions
+  commentId: T:AeroDB.ExperimentalOptions
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.ExperimentalOptions.html
+  name: ExperimentalOptions
+  nameWithType: ExperimentalOptions
+  fullName: AeroDB.ExperimentalOptions
+- uid: AeroDB.StoreOptions.ProjectionBuild*
+  commentId: Overload:AeroDB.StoreOptions.ProjectionBuild
+  isExternal: true
+  href: AeroDB.StoreOptions.html#AeroDB_StoreOptions_ProjectionBuild
+  name: ProjectionBuild
+  nameWithType: StoreOptions.ProjectionBuild
+  fullName: AeroDB.StoreOptions.ProjectionBuild
+- uid: AeroDB.ProjectionOptions
+  commentId: T:AeroDB.ProjectionOptions
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.ProjectionOptions.html
+  name: ProjectionOptions
+  nameWithType: ProjectionOptions
+  fullName: AeroDB.ProjectionOptions
+- uid: AeroDB.StoreOptions.Views*
+  commentId: Overload:AeroDB.StoreOptions.Views
+  isExternal: true
+  href: AeroDB.StoreOptions.html#AeroDB_StoreOptions_Views
+  name: Views
+  nameWithType: StoreOptions.Views
+  fullName: AeroDB.StoreOptions.Views
+- uid: AeroDB.ViewOptions
+  commentId: T:AeroDB.ViewOptions
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.ViewOptions.html
+  name: ViewOptions
+  nameWithType: ViewOptions
+  fullName: AeroDB.ViewOptions
+- uid: AeroDB.DocumentStore.InitializeAsync(System.Threading.CancellationToken)
+  commentId: M:AeroDB.DocumentStore.InitializeAsync(System.Threading.CancellationToken)
+  isExternal: true
+  href: AeroDB.DocumentStore.html#AeroDB_DocumentStore_InitializeAsync_System_Threading_CancellationToken_
+  name: InitializeAsync(CancellationToken)
+  nameWithType: DocumentStore.InitializeAsync(CancellationToken)
+  fullName: AeroDB.DocumentStore.InitializeAsync(System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: AeroDB.DocumentStore.InitializeAsync(System.Threading.CancellationToken)
+    name: InitializeAsync
+    isExternal: true
+    href: AeroDB.DocumentStore.html#AeroDB_DocumentStore_InitializeAsync_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: AeroDB.DocumentStore.InitializeAsync(System.Threading.CancellationToken)
+    name: InitializeAsync
+    isExternal: true
+    href: AeroDB.DocumentStore.html#AeroDB_DocumentStore_InitializeAsync_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: AeroDB.StoreOptions.InitialData*
+  commentId: Overload:AeroDB.StoreOptions.InitialData
+  isExternal: true
+  href: AeroDB.StoreOptions.html#AeroDB_StoreOptions_InitialData
+  name: InitialData
+  nameWithType: StoreOptions.InitialData
+  fullName: AeroDB.StoreOptions.InitialData
+- uid: System.Collections.Generic.List{AeroDB.IInitialData}
+  commentId: T:System.Collections.Generic.List{AeroDB.IInitialData}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<IInitialData>
+  nameWithType: List<IInitialData>
+  fullName: System.Collections.Generic.List<AeroDB.IInitialData>
+  nameWithType.vb: List(Of IInitialData)
+  fullName.vb: System.Collections.Generic.List(Of AeroDB.IInitialData)
+  name.vb: List(Of IInitialData)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: AeroDB.IInitialData
+    name: IInitialData
+    isExternal: true
+    href: AeroDB.IInitialData.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.IInitialData
+    name: IInitialData
+    isExternal: true
+    href: AeroDB.IInitialData.html
+  - name: )
+- uid: AeroDB.StoreOptions.Configurators*
+  commentId: Overload:AeroDB.StoreOptions.Configurators
+  isExternal: true
+  href: AeroDB.StoreOptions.html#AeroDB_StoreOptions_Configurators
+  name: Configurators
+  nameWithType: StoreOptions.Configurators
+  fullName: AeroDB.StoreOptions.Configurators
+- uid: System.Collections.Generic.List{AeroDB.IConfigureAeroDB}
+  commentId: T:System.Collections.Generic.List{AeroDB.IConfigureAeroDB}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<IConfigureAeroDB>
+  nameWithType: List<IConfigureAeroDB>
+  fullName: System.Collections.Generic.List<AeroDB.IConfigureAeroDB>
+  nameWithType.vb: List(Of IConfigureAeroDB)
+  fullName.vb: System.Collections.Generic.List(Of AeroDB.IConfigureAeroDB)
+  name.vb: List(Of IConfigureAeroDB)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: AeroDB.IConfigureAeroDB
+    name: IConfigureAeroDB
+    isExternal: true
+    href: AeroDB.IConfigureAeroDB.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.IConfigureAeroDB
+    name: IConfigureAeroDB
+    isExternal: true
+    href: AeroDB.IConfigureAeroDB.html
+  - name: )
+- uid: AeroDB.StoreOptions.Configurators
+  commentId: P:AeroDB.StoreOptions.Configurators
+  isExternal: true
+  href: AeroDB.StoreOptions.html#AeroDB_StoreOptions_Configurators
+  name: Configurators
+  nameWithType: StoreOptions.Configurators
+  fullName: AeroDB.StoreOptions.Configurators
+- uid: AeroDB.StoreOptions.AsyncConfigurators*
+  commentId: Overload:AeroDB.StoreOptions.AsyncConfigurators
+  isExternal: true
+  href: AeroDB.StoreOptions.html#AeroDB_StoreOptions_AsyncConfigurators
+  name: AsyncConfigurators
+  nameWithType: StoreOptions.AsyncConfigurators
+  fullName: AeroDB.StoreOptions.AsyncConfigurators
+- uid: System.Collections.Generic.List{AeroDB.IAsyncConfigureAeroDB}
+  commentId: T:System.Collections.Generic.List{AeroDB.IAsyncConfigureAeroDB}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<IAsyncConfigureAeroDB>
+  nameWithType: List<IAsyncConfigureAeroDB>
+  fullName: System.Collections.Generic.List<AeroDB.IAsyncConfigureAeroDB>
+  nameWithType.vb: List(Of IAsyncConfigureAeroDB)
+  fullName.vb: System.Collections.Generic.List(Of AeroDB.IAsyncConfigureAeroDB)
+  name.vb: List(Of IAsyncConfigureAeroDB)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: AeroDB.IAsyncConfigureAeroDB
+    name: IAsyncConfigureAeroDB
+    isExternal: true
+    href: AeroDB.IAsyncConfigureAeroDB.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.IAsyncConfigureAeroDB
+    name: IAsyncConfigureAeroDB
+    isExternal: true
+    href: AeroDB.IAsyncConfigureAeroDB.html
+  - name: )
+- uid: System.IServiceProvider
+  commentId: T:System.IServiceProvider
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iserviceprovider
+  name: IServiceProvider
+  nameWithType: IServiceProvider
+  fullName: System.IServiceProvider
+- uid: AeroDB.IConfigureAeroDB
+  commentId: T:AeroDB.IConfigureAeroDB
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IConfigureAeroDB.html
+  name: IConfigureAeroDB
+  nameWithType: IConfigureAeroDB
+  fullName: AeroDB.IConfigureAeroDB
+- uid: AeroDB.IAsyncConfigureAeroDB
+  commentId: T:AeroDB.IAsyncConfigureAeroDB
+  isExternal: true
+  href: AeroDB.IAsyncConfigureAeroDB.html
+  name: IAsyncConfigureAeroDB
+  nameWithType: IAsyncConfigureAeroDB
+  fullName: AeroDB.IAsyncConfigureAeroDB
+- uid: AeroDB.StoreOptions.ServiceProvider*
+  commentId: Overload:AeroDB.StoreOptions.ServiceProvider
+  isExternal: true
+  href: AeroDB.StoreOptions.html#AeroDB_StoreOptions_ServiceProvider
+  name: ServiceProvider
+  nameWithType: StoreOptions.ServiceProvider
+  fullName: AeroDB.StoreOptions.ServiceProvider
+- uid: AeroDB.StoreOptions.CommandTimeout*
+  commentId: Overload:AeroDB.StoreOptions.CommandTimeout
+  isExternal: true
+  href: AeroDB.StoreOptions.html#AeroDB_StoreOptions_CommandTimeout
+  name: CommandTimeout
+  nameWithType: StoreOptions.CommandTimeout
+  fullName: AeroDB.StoreOptions.CommandTimeout
+- uid: AeroDB.IReadOnlyStoreOptions.CommandTimeout
+  commentId: P:AeroDB.IReadOnlyStoreOptions.CommandTimeout
+  parent: AeroDB.IReadOnlyStoreOptions
+  isExternal: true
+  href: AeroDB.IReadOnlyStoreOptions.html#AeroDB_IReadOnlyStoreOptions_CommandTimeout
+  name: CommandTimeout
+  nameWithType: IReadOnlyStoreOptions.CommandTimeout
+  fullName: AeroDB.IReadOnlyStoreOptions.CommandTimeout
+- uid: System.Nullable{System.Int32}
+  commentId: T:System.Nullable{System.Int32}
+  parent: System
+  definition: System.Nullable`1
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int?
+  nameWithType: int?
+  fullName: int?
+  nameWithType.vb: Integer?
+  fullName.vb: Integer?
+  name.vb: Integer?
+  spec.csharp:
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '?'
+  spec.vb:
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '?'
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.StoreOptions.UpdateBatchSize*
+  commentId: Overload:AeroDB.StoreOptions.UpdateBatchSize
+  isExternal: true
+  href: AeroDB.StoreOptions.html#AeroDB_StoreOptions_UpdateBatchSize
+  name: UpdateBatchSize
+  nameWithType: StoreOptions.UpdateBatchSize
+  fullName: AeroDB.StoreOptions.UpdateBatchSize
+- uid: AeroDB.IReadOnlyStoreOptions.UpdateBatchSize
+  commentId: P:AeroDB.IReadOnlyStoreOptions.UpdateBatchSize
+  parent: AeroDB.IReadOnlyStoreOptions
+  isExternal: true
+  href: AeroDB.IReadOnlyStoreOptions.html#AeroDB_IReadOnlyStoreOptions_UpdateBatchSize
+  name: UpdateBatchSize
+  nameWithType: IReadOnlyStoreOptions.UpdateBatchSize
+  fullName: AeroDB.IReadOnlyStoreOptions.UpdateBatchSize
+- uid: AeroDB.StoreOptions.OpenTelemetry*
+  commentId: Overload:AeroDB.StoreOptions.OpenTelemetry
+  isExternal: true
+  href: AeroDB.StoreOptions.html#AeroDB_StoreOptions_OpenTelemetry
+  name: OpenTelemetry
+  nameWithType: StoreOptions.OpenTelemetry
+  fullName: AeroDB.StoreOptions.OpenTelemetry
+- uid: AeroDB.OpenTelemetryOptions
+  commentId: T:AeroDB.OpenTelemetryOptions
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.OpenTelemetryOptions.html
+  name: OpenTelemetryOptions
+  nameWithType: OpenTelemetryOptions
+  fullName: AeroDB.OpenTelemetryOptions
+- uid: AeroDB.StoreOptions.ReadPreference
+  commentId: P:AeroDB.StoreOptions.ReadPreference
+  isExternal: true
+  href: AeroDB.StoreOptions.html#AeroDB_StoreOptions_ReadPreference
+  name: ReadPreference
+  nameWithType: StoreOptions.ReadPreference
+  fullName: AeroDB.StoreOptions.ReadPreference
+- uid: AeroDB.StoreOptions.DatabaseEndpoints*
+  commentId: Overload:AeroDB.StoreOptions.DatabaseEndpoints
+  isExternal: true
+  href: AeroDB.StoreOptions.html#AeroDB_StoreOptions_DatabaseEndpoints
+  name: DatabaseEndpoints
+  nameWithType: StoreOptions.DatabaseEndpoints
+  fullName: AeroDB.StoreOptions.DatabaseEndpoints
+- uid: System.Collections.Generic.List{AeroDB.DatabaseEndpoint}
+  commentId: T:System.Collections.Generic.List{AeroDB.DatabaseEndpoint}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<DatabaseEndpoint>
+  nameWithType: List<DatabaseEndpoint>
+  fullName: System.Collections.Generic.List<AeroDB.DatabaseEndpoint>
+  nameWithType.vb: List(Of DatabaseEndpoint)
+  fullName.vb: System.Collections.Generic.List(Of AeroDB.DatabaseEndpoint)
+  name.vb: List(Of DatabaseEndpoint)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: AeroDB.DatabaseEndpoint
+    name: DatabaseEndpoint
+    isExternal: true
+    href: AeroDB.DatabaseEndpoint.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.DatabaseEndpoint
+    name: DatabaseEndpoint
+    isExternal: true
+    href: AeroDB.DatabaseEndpoint.html
+  - name: )
+- uid: AeroDB.ReadPreference.Primary
+  commentId: F:AeroDB.ReadPreference.Primary
+  isExternal: true
+  href: AeroDB.ReadPreference.html#AeroDB_ReadPreference_Primary
+  name: Primary
+  nameWithType: ReadPreference.Primary
+  fullName: AeroDB.ReadPreference.Primary
+- uid: AeroDB.StoreOptions.ReadPreference*
+  commentId: Overload:AeroDB.StoreOptions.ReadPreference
+  isExternal: true
+  href: AeroDB.StoreOptions.html#AeroDB_StoreOptions_ReadPreference
+  name: ReadPreference
+  nameWithType: StoreOptions.ReadPreference
+  fullName: AeroDB.StoreOptions.ReadPreference
+- uid: AeroDB.ReadPreference
+  commentId: T:AeroDB.ReadPreference
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.ReadPreference.html
+  name: ReadPreference
+  nameWithType: ReadPreference
+  fullName: AeroDB.ReadPreference

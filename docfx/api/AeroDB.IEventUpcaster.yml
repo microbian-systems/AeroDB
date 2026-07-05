@@ -1,0 +1,142 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.IEventUpcaster
+  commentId: T:AeroDB.IEventUpcaster
+  id: IEventUpcaster
+  parent: AeroDB
+  children:
+  - AeroDB.IEventUpcaster.OldEventType
+  - AeroDB.IEventUpcaster.Upcast(System.Object)
+  langs:
+  - csharp
+  - vb
+  name: IEventUpcaster
+  nameWithType: IEventUpcaster
+  fullName: AeroDB.IEventUpcaster
+  type: Interface
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/IEventUpcaster.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Transforms old event versions to new event types during deserialization.
+
+    Register upcasters via <xref href="AeroDB.EventSourcingOptions.Upcasters" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: public interface IEventUpcaster
+    content.vb: Public Interface IEventUpcaster
+- uid: AeroDB.IEventUpcaster.Upcast(System.Object)
+  commentId: M:AeroDB.IEventUpcaster.Upcast(System.Object)
+  id: Upcast(System.Object)
+  parent: AeroDB.IEventUpcaster
+  langs:
+  - csharp
+  - vb
+  name: Upcast(object)
+  nameWithType: IEventUpcaster.Upcast(object)
+  fullName: AeroDB.IEventUpcaster.Upcast(object)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/IEventUpcaster.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Transform old event data into the new event type.
+  example: []
+  syntax:
+    content: object Upcast(object oldEvent)
+    parameters:
+    - id: oldEvent
+      type: System.Object
+    return:
+      type: System.Object
+    content.vb: Function Upcast(oldEvent As Object) As Object
+  overload: AeroDB.IEventUpcaster.Upcast*
+  nameWithType.vb: IEventUpcaster.Upcast(Object)
+  fullName.vb: AeroDB.IEventUpcaster.Upcast(Object)
+  name.vb: Upcast(Object)
+- uid: AeroDB.IEventUpcaster.OldEventType
+  commentId: P:AeroDB.IEventUpcaster.OldEventType
+  id: OldEventType
+  parent: AeroDB.IEventUpcaster
+  langs:
+  - csharp
+  - vb
+  name: OldEventType
+  nameWithType: IEventUpcaster.OldEventType
+  fullName: AeroDB.IEventUpcaster.OldEventType
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/IEventUpcaster.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: The old event type name this upcaster handles.
+  example: []
+  syntax:
+    content: string OldEventType { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: ReadOnly Property OldEventType As String
+  overload: AeroDB.IEventUpcaster.OldEventType*
+references:
+- uid: AeroDB.EventSourcingOptions.Upcasters
+  commentId: P:AeroDB.EventSourcingOptions.Upcasters
+  isExternal: true
+  href: AeroDB.EventSourcingOptions.html#AeroDB_EventSourcingOptions_Upcasters
+  name: Upcasters
+  nameWithType: EventSourcingOptions.Upcasters
+  fullName: AeroDB.EventSourcingOptions.Upcasters
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: AeroDB.IEventUpcaster.Upcast*
+  commentId: Overload:AeroDB.IEventUpcaster.Upcast
+  isExternal: true
+  href: AeroDB.IEventUpcaster.html#AeroDB_IEventUpcaster_Upcast_System_Object_
+  name: Upcast
+  nameWithType: IEventUpcaster.Upcast
+  fullName: AeroDB.IEventUpcaster.Upcast
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AeroDB.IEventUpcaster.OldEventType*
+  commentId: Overload:AeroDB.IEventUpcaster.OldEventType
+  isExternal: true
+  href: AeroDB.IEventUpcaster.html#AeroDB_IEventUpcaster_OldEventType
+  name: OldEventType
+  nameWithType: IEventUpcaster.OldEventType
+  fullName: AeroDB.IEventUpcaster.OldEventType
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String

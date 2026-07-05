@@ -1,0 +1,403 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.EdgeRecord
+  commentId: T:AeroDB.EdgeRecord
+  id: EdgeRecord
+  parent: AeroDB
+  children:
+  - AeroDB.EdgeRecord.#ctor
+  langs:
+  - csharp
+  - vb
+  name: EdgeRecord
+  nameWithType: EdgeRecord
+  fullName: AeroDB.EdgeRecord
+  type: Class
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Graph/EdgeRecord.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Base class for graph edge types. Edges are SurrealDB records with In/Out direction.
+
+    Extends SurrealDb.Net.Models.RelationRecord to gain IRelationRecord interface and CBOR compatibility.
+  example: []
+  syntax:
+    content: 'public abstract class EdgeRecord : RelationRecord, IRelationRecord, IRecord'
+    content.vb: Public MustInherit Class EdgeRecord Inherits RelationRecord Implements IRelationRecord, IRecord
+  inheritance:
+  - System.Object
+  - SurrealDb.Net.Models.Record
+  - SurrealDb.Net.Models.RelationRecord
+  implements:
+  - SurrealDb.Net.Models.IRelationRecord
+  - SurrealDb.Net.Models.IRecord
+  inheritedMembers:
+  - SurrealDb.Net.Models.RelationRecord.In
+  - SurrealDb.Net.Models.RelationRecord.Out
+  - SurrealDb.Net.Models.Record.Id
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+- uid: AeroDB.EdgeRecord.#ctor
+  commentId: M:AeroDB.EdgeRecord.#ctor
+  id: '#ctor'
+  parent: AeroDB.EdgeRecord
+  langs:
+  - csharp
+  - vb
+  name: EdgeRecord()
+  nameWithType: EdgeRecord.EdgeRecord()
+  fullName: AeroDB.EdgeRecord.EdgeRecord()
+  type: Constructor
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Graph/EdgeRecord.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: protected EdgeRecord()
+    content.vb: Protected Sub New()
+  overload: AeroDB.EdgeRecord.#ctor*
+  nameWithType.vb: EdgeRecord.New()
+  fullName.vb: AeroDB.EdgeRecord.New()
+  name.vb: New()
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: SurrealDb.Net.Models.Record
+  commentId: T:SurrealDb.Net.Models.Record
+  parent: SurrealDb.Net.Models
+  isExternal: true
+  name: Record
+  nameWithType: Record
+  fullName: SurrealDb.Net.Models.Record
+- uid: SurrealDb.Net.Models.RelationRecord
+  commentId: T:SurrealDb.Net.Models.RelationRecord
+  parent: SurrealDb.Net.Models
+  isExternal: true
+  name: RelationRecord
+  nameWithType: RelationRecord
+  fullName: SurrealDb.Net.Models.RelationRecord
+- uid: SurrealDb.Net.Models.IRelationRecord
+  commentId: T:SurrealDb.Net.Models.IRelationRecord
+  parent: SurrealDb.Net.Models
+  isExternal: true
+  name: IRelationRecord
+  nameWithType: IRelationRecord
+  fullName: SurrealDb.Net.Models.IRelationRecord
+- uid: SurrealDb.Net.Models.IRecord
+  commentId: T:SurrealDb.Net.Models.IRecord
+  parent: SurrealDb.Net.Models
+  isExternal: true
+  name: IRecord
+  nameWithType: IRecord
+  fullName: SurrealDb.Net.Models.IRecord
+- uid: SurrealDb.Net.Models.RelationRecord.In
+  commentId: P:SurrealDb.Net.Models.RelationRecord.In
+  parent: SurrealDb.Net.Models.RelationRecord
+  isExternal: true
+  name: In
+  nameWithType: RelationRecord.In
+  fullName: SurrealDb.Net.Models.RelationRecord.In
+- uid: SurrealDb.Net.Models.RelationRecord.Out
+  commentId: P:SurrealDb.Net.Models.RelationRecord.Out
+  parent: SurrealDb.Net.Models.RelationRecord
+  isExternal: true
+  name: Out
+  nameWithType: RelationRecord.Out
+  fullName: SurrealDb.Net.Models.RelationRecord.Out
+- uid: SurrealDb.Net.Models.Record.Id
+  commentId: P:SurrealDb.Net.Models.Record.Id
+  parent: SurrealDb.Net.Models.Record
+  isExternal: true
+  name: Id
+  nameWithType: Record.Id
+  fullName: SurrealDb.Net.Models.Record.Id
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: SurrealDb.Net.Models
+  commentId: N:SurrealDb.Net.Models
+  isExternal: true
+  name: SurrealDb.Net.Models
+  nameWithType: SurrealDb.Net.Models
+  fullName: SurrealDb.Net.Models
+  spec.csharp:
+  - uid: SurrealDb
+    name: SurrealDb
+    isExternal: true
+  - name: .
+  - uid: SurrealDb.Net
+    name: Net
+    isExternal: true
+  - name: .
+  - uid: SurrealDb.Net.Models
+    name: Models
+    isExternal: true
+  spec.vb:
+  - uid: SurrealDb
+    name: SurrealDb
+    isExternal: true
+  - name: .
+  - uid: SurrealDb.Net
+    name: Net
+    isExternal: true
+  - name: .
+  - uid: SurrealDb.Net.Models
+    name: Models
+    isExternal: true
+- uid: AeroDB.EdgeRecord.#ctor*
+  commentId: Overload:AeroDB.EdgeRecord.#ctor
+  isExternal: true
+  href: AeroDB.EdgeRecord.html#AeroDB_EdgeRecord__ctor
+  name: EdgeRecord
+  nameWithType: EdgeRecord.EdgeRecord
+  fullName: AeroDB.EdgeRecord.EdgeRecord
+  nameWithType.vb: EdgeRecord.New
+  fullName.vb: AeroDB.EdgeRecord.New
+  name.vb: New

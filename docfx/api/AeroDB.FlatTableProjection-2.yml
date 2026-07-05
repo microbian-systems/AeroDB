@@ -1,0 +1,1407 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.FlatTableProjection`2
+  commentId: T:AeroDB.FlatTableProjection`2
+  id: FlatTableProjection`2
+  parent: AeroDB
+  children:
+  - AeroDB.FlatTableProjection`2.#ctor(System.String,System.Func{System.Collections.Generic.IReadOnlyList{System.Object},`1})
+  - AeroDB.FlatTableProjection`2.ApplyAsync(AeroDB.IProjectionContext,System.Threading.CancellationToken)
+  - AeroDB.FlatTableProjection`2.Delete``1(System.Func{``0,System.Boolean})
+  - AeroDB.FlatTableProjection`2.EventTypes
+  - AeroDB.FlatTableProjection`2.Life(AeroDB.ProjectionLifecycle)
+  - AeroDB.FlatTableProjection`2.Lifecycle
+  - AeroDB.FlatTableProjection`2.Name
+  - AeroDB.FlatTableProjection`2.Project``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}},System.Linq.Expressions.Expression{System.Func{`0,System.Object}})
+  - AeroDB.FlatTableProjection`2.RebuildAsync(AeroDB.IDocumentSession,System.Threading.CancellationToken)
+  - AeroDB.FlatTableProjection`2.Set``1(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Func{``0,System.Object})
+  langs:
+  - csharp
+  - vb
+  name: FlatTableProjection<TDoc, TId>
+  nameWithType: FlatTableProjection<TDoc, TId>
+  fullName: AeroDB.FlatTableProjection<TDoc, TId>
+  type: Class
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/FlatTableProjection.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Declarative event → table column mapping projection.
+
+    Maps event properties to table columns via LINQ expressions.
+  example: []
+  syntax:
+    content: 'public class FlatTableProjection<TDoc, TId> : IProjection where TDoc : Record, new()'
+    typeParameters:
+    - id: TDoc
+      description: The projected document/row type (must extend <xref href="SurrealDb.Net.Models.Record" data-throw-if-not-resolved="false"></xref> and have a parameterless constructor).
+    - id: TId
+      description: The type of the identifier used to derive the document ID from events.
+    content.vb: Public Class FlatTableProjection(Of TDoc As {Record, New}, TId) Implements IProjection
+  inheritance:
+  - System.Object
+  implements:
+  - AeroDB.IProjection
+  inheritedMembers:
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  nameWithType.vb: FlatTableProjection(Of TDoc, TId)
+  fullName.vb: AeroDB.FlatTableProjection(Of TDoc, TId)
+  name.vb: FlatTableProjection(Of TDoc, TId)
+- uid: AeroDB.FlatTableProjection`2.#ctor(System.String,System.Func{System.Collections.Generic.IReadOnlyList{System.Object},`1})
+  commentId: M:AeroDB.FlatTableProjection`2.#ctor(System.String,System.Func{System.Collections.Generic.IReadOnlyList{System.Object},`1})
+  id: '#ctor(System.String,System.Func{System.Collections.Generic.IReadOnlyList{System.Object},`1})'
+  parent: AeroDB.FlatTableProjection`2
+  langs:
+  - csharp
+  - vb
+  name: FlatTableProjection(string, Func<IReadOnlyList<object>, TId>)
+  nameWithType: FlatTableProjection<TDoc, TId>.FlatTableProjection(string, Func<IReadOnlyList<object>, TId>)
+  fullName: AeroDB.FlatTableProjection<TDoc, TId>.FlatTableProjection(string, System.Func<System.Collections.Generic.IReadOnlyList<object>, TId>)
+  type: Constructor
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/FlatTableProjection.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Creates a flat table projection that maps events to columns in <code class="paramref">tableName</code>.
+  example: []
+  syntax:
+    content: public FlatTableProjection(string tableName, Func<IReadOnlyList<object>, TId> getDocumentId)
+    parameters:
+    - id: tableName
+      type: System.String
+      description: The SurrealDB table to store projected rows in.
+    - id: getDocumentId
+      type: System.Func{System.Collections.Generic.IReadOnlyList{System.Object},{TId}}
+      description: A function that extracts the document identifier from the event batch.
+    content.vb: Public Sub New(tableName As String, getDocumentId As Func(Of IReadOnlyList(Of Object), TId))
+  overload: AeroDB.FlatTableProjection`2.#ctor*
+  nameWithType.vb: FlatTableProjection(Of TDoc, TId).New(String, Func(Of IReadOnlyList(Of Object), TId))
+  fullName.vb: AeroDB.FlatTableProjection(Of TDoc, TId).New(String, System.Func(Of System.Collections.Generic.IReadOnlyList(Of Object), TId))
+  name.vb: New(String, Func(Of IReadOnlyList(Of Object), TId))
+- uid: AeroDB.FlatTableProjection`2.Life(AeroDB.ProjectionLifecycle)
+  commentId: M:AeroDB.FlatTableProjection`2.Life(AeroDB.ProjectionLifecycle)
+  id: Life(AeroDB.ProjectionLifecycle)
+  parent: AeroDB.FlatTableProjection`2
+  langs:
+  - csharp
+  - vb
+  name: Life(ProjectionLifecycle)
+  nameWithType: FlatTableProjection<TDoc, TId>.Life(ProjectionLifecycle)
+  fullName: AeroDB.FlatTableProjection<TDoc, TId>.Life(AeroDB.ProjectionLifecycle)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/FlatTableProjection.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Set the projection lifecycle. Default is <xref href="AeroDB.ProjectionLifecycle.Inline" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: public FlatTableProjection<TDoc, TId> Life(ProjectionLifecycle lifecycle)
+    parameters:
+    - id: lifecycle
+      type: AeroDB.ProjectionLifecycle
+    return:
+      type: AeroDB.FlatTableProjection`2
+    content.vb: Public Function Life(lifecycle As ProjectionLifecycle) As FlatTableProjection(Of TDoc, TId)
+  overload: AeroDB.FlatTableProjection`2.Life*
+  nameWithType.vb: FlatTableProjection(Of TDoc, TId).Life(ProjectionLifecycle)
+  fullName.vb: AeroDB.FlatTableProjection(Of TDoc, TId).Life(AeroDB.ProjectionLifecycle)
+- uid: AeroDB.FlatTableProjection`2.Project``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}},System.Linq.Expressions.Expression{System.Func{`0,System.Object}})
+  commentId: M:AeroDB.FlatTableProjection`2.Project``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}},System.Linq.Expressions.Expression{System.Func{`0,System.Object}})
+  id: Project``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}},System.Linq.Expressions.Expression{System.Func{`0,System.Object}})
+  parent: AeroDB.FlatTableProjection`2
+  langs:
+  - csharp
+  - vb
+  name: Project<TEvent>(Expression<Func<TEvent, object>>, Expression<Func<TDoc, object>>)
+  nameWithType: FlatTableProjection<TDoc, TId>.Project<TEvent>(Expression<Func<TEvent, object>>, Expression<Func<TDoc, object>>)
+  fullName: AeroDB.FlatTableProjection<TDoc, TId>.Project<TEvent>(System.Linq.Expressions.Expression<System.Func<TEvent, object>>, System.Linq.Expressions.Expression<System.Func<TDoc, object>>)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/FlatTableProjection.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Map an event property to a document column. When the mapped event is processed,
+
+    the event property value is extracted and written to the corresponding document property.
+  example: []
+  syntax:
+    content: public FlatTableProjection<TDoc, TId> Project<TEvent>(Expression<Func<TEvent, object>> eventProperty, Expression<Func<TDoc, object>> documentProperty)
+    parameters:
+    - id: eventProperty
+      type: System.Linq.Expressions.Expression{System.Func{{TEvent},System.Object}}
+      description: Expression selecting the event property (e.g., <code>e =&gt; e.Name</code>).
+    - id: documentProperty
+      type: System.Linq.Expressions.Expression{System.Func{{TDoc},System.Object}}
+      description: Expression selecting the document property (e.g., <code>doc =&gt; doc.Name</code>).
+    typeParameters:
+    - id: TEvent
+      description: The event type.
+    return:
+      type: AeroDB.FlatTableProjection`2
+    content.vb: Public Function Project(Of TEvent)(eventProperty As Expression(Of Func(Of TEvent, Object)), documentProperty As Expression(Of Func(Of TDoc, Object))) As FlatTableProjection(Of TDoc, TId)
+  overload: AeroDB.FlatTableProjection`2.Project*
+  nameWithType.vb: FlatTableProjection(Of TDoc, TId).Project(Of TEvent)(Expression(Of Func(Of TEvent, Object)), Expression(Of Func(Of TDoc, Object)))
+  fullName.vb: AeroDB.FlatTableProjection(Of TDoc, TId).Project(Of TEvent)(System.Linq.Expressions.Expression(Of System.Func(Of TEvent, Object)), System.Linq.Expressions.Expression(Of System.Func(Of TDoc, Object)))
+  name.vb: Project(Of TEvent)(Expression(Of Func(Of TEvent, Object)), Expression(Of Func(Of TDoc, Object)))
+- uid: AeroDB.FlatTableProjection`2.Set``1(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Func{``0,System.Object})
+  commentId: M:AeroDB.FlatTableProjection`2.Set``1(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Func{``0,System.Object})
+  id: Set``1(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Func{``0,System.Object})
+  parent: AeroDB.FlatTableProjection`2
+  langs:
+  - csharp
+  - vb
+  name: Set<TEvent>(Expression<Func<TDoc, object>>, Func<TEvent, object>)
+  nameWithType: FlatTableProjection<TDoc, TId>.Set<TEvent>(Expression<Func<TDoc, object>>, Func<TEvent, object>)
+  fullName: AeroDB.FlatTableProjection<TDoc, TId>.Set<TEvent>(System.Linq.Expressions.Expression<System.Func<TDoc, object>>, System.Func<TEvent, object>)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/FlatTableProjection.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Provide a custom value for a column based on the event, without a direct event property mapping.
+  example: []
+  syntax:
+    content: public FlatTableProjection<TDoc, TId> Set<TEvent>(Expression<Func<TDoc, object>> documentProperty, Func<TEvent, object> valueProvider)
+    parameters:
+    - id: documentProperty
+      type: System.Linq.Expressions.Expression{System.Func{{TDoc},System.Object}}
+      description: Expression selecting the document property to set.
+    - id: valueProvider
+      type: System.Func{{TEvent},System.Object}
+      description: A function that produces the column value from the event.
+    typeParameters:
+    - id: TEvent
+      description: The event type.
+    return:
+      type: AeroDB.FlatTableProjection`2
+    content.vb: Public Function [Set](Of TEvent)(documentProperty As Expression(Of Func(Of TDoc, Object)), valueProvider As Func(Of TEvent, Object)) As FlatTableProjection(Of TDoc, TId)
+  overload: AeroDB.FlatTableProjection`2.Set*
+  nameWithType.vb: FlatTableProjection(Of TDoc, TId).Set(Of TEvent)(Expression(Of Func(Of TDoc, Object)), Func(Of TEvent, Object))
+  fullName.vb: AeroDB.FlatTableProjection(Of TDoc, TId).Set(Of TEvent)(System.Linq.Expressions.Expression(Of System.Func(Of TDoc, Object)), System.Func(Of TEvent, Object))
+  name.vb: Set(Of TEvent)(Expression(Of Func(Of TDoc, Object)), Func(Of TEvent, Object))
+- uid: AeroDB.FlatTableProjection`2.Delete``1(System.Func{``0,System.Boolean})
+  commentId: M:AeroDB.FlatTableProjection`2.Delete``1(System.Func{``0,System.Boolean})
+  id: Delete``1(System.Func{``0,System.Boolean})
+  parent: AeroDB.FlatTableProjection`2
+  langs:
+  - csharp
+  - vb
+  name: Delete<TEvent>(Func<TEvent, bool>)
+  nameWithType: FlatTableProjection<TDoc, TId>.Delete<TEvent>(Func<TEvent, bool>)
+  fullName: AeroDB.FlatTableProjection<TDoc, TId>.Delete<TEvent>(System.Func<TEvent, bool>)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/FlatTableProjection.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Delete documents when an event matching the given predicate is processed.
+  example: []
+  syntax:
+    content: public FlatTableProjection<TDoc, TId> Delete<TEvent>(Func<TEvent, bool> predicate)
+    parameters:
+    - id: predicate
+      type: System.Func{{TEvent},System.Boolean}
+      description: A predicate that returns <code>true</code> when the document should be deleted.
+    typeParameters:
+    - id: TEvent
+      description: The event type.
+    return:
+      type: AeroDB.FlatTableProjection`2
+    content.vb: Public Function Delete(Of TEvent)(predicate As Func(Of TEvent, Boolean)) As FlatTableProjection(Of TDoc, TId)
+  overload: AeroDB.FlatTableProjection`2.Delete*
+  nameWithType.vb: FlatTableProjection(Of TDoc, TId).Delete(Of TEvent)(Func(Of TEvent, Boolean))
+  fullName.vb: AeroDB.FlatTableProjection(Of TDoc, TId).Delete(Of TEvent)(System.Func(Of TEvent, Boolean))
+  name.vb: Delete(Of TEvent)(Func(Of TEvent, Boolean))
+- uid: AeroDB.FlatTableProjection`2.ApplyAsync(AeroDB.IProjectionContext,System.Threading.CancellationToken)
+  commentId: M:AeroDB.FlatTableProjection`2.ApplyAsync(AeroDB.IProjectionContext,System.Threading.CancellationToken)
+  id: ApplyAsync(AeroDB.IProjectionContext,System.Threading.CancellationToken)
+  parent: AeroDB.FlatTableProjection`2
+  langs:
+  - csharp
+  - vb
+  name: ApplyAsync(IProjectionContext, CancellationToken)
+  nameWithType: FlatTableProjection<TDoc, TId>.ApplyAsync(IProjectionContext, CancellationToken)
+  fullName: AeroDB.FlatTableProjection<TDoc, TId>.ApplyAsync(AeroDB.IProjectionContext, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/FlatTableProjection.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Apply the projection logic to the given events.
+  example: []
+  syntax:
+    content: public Task ApplyAsync(IProjectionContext context, CancellationToken ct)
+    parameters:
+    - id: context
+      type: AeroDB.IProjectionContext
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Function ApplyAsync(context As IProjectionContext, ct As CancellationToken) As Task
+  overload: AeroDB.FlatTableProjection`2.ApplyAsync*
+  implements:
+  - AeroDB.IProjection.ApplyAsync(AeroDB.IProjectionContext,System.Threading.CancellationToken)
+  nameWithType.vb: FlatTableProjection(Of TDoc, TId).ApplyAsync(IProjectionContext, CancellationToken)
+  fullName.vb: AeroDB.FlatTableProjection(Of TDoc, TId).ApplyAsync(AeroDB.IProjectionContext, System.Threading.CancellationToken)
+- uid: AeroDB.FlatTableProjection`2.RebuildAsync(AeroDB.IDocumentSession,System.Threading.CancellationToken)
+  commentId: M:AeroDB.FlatTableProjection`2.RebuildAsync(AeroDB.IDocumentSession,System.Threading.CancellationToken)
+  id: RebuildAsync(AeroDB.IDocumentSession,System.Threading.CancellationToken)
+  parent: AeroDB.FlatTableProjection`2
+  langs:
+  - csharp
+  - vb
+  name: RebuildAsync(IDocumentSession, CancellationToken)
+  nameWithType: FlatTableProjection<TDoc, TId>.RebuildAsync(IDocumentSession, CancellationToken)
+  fullName: AeroDB.FlatTableProjection<TDoc, TId>.RebuildAsync(AeroDB.IDocumentSession, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/FlatTableProjection.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Rebuild the projection by replaying ALL events from the event store.
+
+    Used for initial projection creation or recovery after data loss.
+
+    The projection is responsible for handling idempotency — calling
+
+    this twice should produce the same result.
+  example: []
+  syntax:
+    content: public Task RebuildAsync(IDocumentSession session, CancellationToken ct)
+    parameters:
+    - id: session
+      type: AeroDB.IDocumentSession
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Function RebuildAsync(session As IDocumentSession, ct As CancellationToken) As Task
+  overload: AeroDB.FlatTableProjection`2.RebuildAsync*
+  implements:
+  - AeroDB.IProjection.RebuildAsync(AeroDB.IDocumentSession,System.Threading.CancellationToken)
+  nameWithType.vb: FlatTableProjection(Of TDoc, TId).RebuildAsync(IDocumentSession, CancellationToken)
+  fullName.vb: AeroDB.FlatTableProjection(Of TDoc, TId).RebuildAsync(AeroDB.IDocumentSession, System.Threading.CancellationToken)
+- uid: AeroDB.FlatTableProjection`2.Name
+  commentId: P:AeroDB.FlatTableProjection`2.Name
+  id: Name
+  parent: AeroDB.FlatTableProjection`2
+  langs:
+  - csharp
+  - vb
+  name: Name
+  nameWithType: FlatTableProjection<TDoc, TId>.Name
+  fullName: AeroDB.FlatTableProjection<TDoc, TId>.Name
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/FlatTableProjection.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Projection name for identification in logs and progress tracking.
+
+    Defaults to the type name when not explicitly set.
+  example: []
+  syntax:
+    content: public string Name { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public ReadOnly Property Name As String
+  overload: AeroDB.FlatTableProjection`2.Name*
+  implements:
+  - AeroDB.IProjection.Name
+  nameWithType.vb: FlatTableProjection(Of TDoc, TId).Name
+  fullName.vb: AeroDB.FlatTableProjection(Of TDoc, TId).Name
+- uid: AeroDB.FlatTableProjection`2.EventTypes
+  commentId: P:AeroDB.FlatTableProjection`2.EventTypes
+  id: EventTypes
+  parent: AeroDB.FlatTableProjection`2
+  langs:
+  - csharp
+  - vb
+  name: EventTypes
+  nameWithType: FlatTableProjection<TDoc, TId>.EventTypes
+  fullName: AeroDB.FlatTableProjection<TDoc, TId>.EventTypes
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/FlatTableProjection.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Event types this projection handles (by C# type).
+  example: []
+  syntax:
+    content: public Type[] EventTypes { get; }
+    parameters: []
+    return:
+      type: System.Type[]
+    content.vb: Public ReadOnly Property EventTypes As Type()
+  overload: AeroDB.FlatTableProjection`2.EventTypes*
+  implements:
+  - AeroDB.IProjection.EventTypes
+  nameWithType.vb: FlatTableProjection(Of TDoc, TId).EventTypes
+  fullName.vb: AeroDB.FlatTableProjection(Of TDoc, TId).EventTypes
+- uid: AeroDB.FlatTableProjection`2.Lifecycle
+  commentId: P:AeroDB.FlatTableProjection`2.Lifecycle
+  id: Lifecycle
+  parent: AeroDB.FlatTableProjection`2
+  langs:
+  - csharp
+  - vb
+  name: Lifecycle
+  nameWithType: FlatTableProjection<TDoc, TId>.Lifecycle
+  fullName: AeroDB.FlatTableProjection<TDoc, TId>.Lifecycle
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/FlatTableProjection.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Whether the projection runs inline during SaveChangesAsync or asynchronously.
+  example: []
+  syntax:
+    content: public ProjectionLifecycle Lifecycle { get; set; }
+    parameters: []
+    return:
+      type: AeroDB.ProjectionLifecycle
+    content.vb: Public Property Lifecycle As ProjectionLifecycle
+  overload: AeroDB.FlatTableProjection`2.Lifecycle*
+  implements:
+  - AeroDB.IProjection.Lifecycle
+  nameWithType.vb: FlatTableProjection(Of TDoc, TId).Lifecycle
+  fullName.vb: AeroDB.FlatTableProjection(Of TDoc, TId).Lifecycle
+references:
+- uid: SurrealDb.Net.Models.Record
+  commentId: T:SurrealDb.Net.Models.Record
+  parent: SurrealDb.Net.Models
+  isExternal: true
+  name: Record
+  nameWithType: Record
+  fullName: SurrealDb.Net.Models.Record
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: AeroDB.IProjection
+  commentId: T:AeroDB.IProjection
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IProjection.html
+  name: IProjection
+  nameWithType: IProjection
+  fullName: AeroDB.IProjection
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: SurrealDb.Net.Models
+  commentId: N:SurrealDb.Net.Models
+  isExternal: true
+  name: SurrealDb.Net.Models
+  nameWithType: SurrealDb.Net.Models
+  fullName: SurrealDb.Net.Models
+  spec.csharp:
+  - uid: SurrealDb
+    name: SurrealDb
+    isExternal: true
+  - name: .
+  - uid: SurrealDb.Net
+    name: Net
+    isExternal: true
+  - name: .
+  - uid: SurrealDb.Net.Models
+    name: Models
+    isExternal: true
+  spec.vb:
+  - uid: SurrealDb
+    name: SurrealDb
+    isExternal: true
+  - name: .
+  - uid: SurrealDb.Net
+    name: Net
+    isExternal: true
+  - name: .
+  - uid: SurrealDb.Net.Models
+    name: Models
+    isExternal: true
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AeroDB.FlatTableProjection`2.#ctor*
+  commentId: Overload:AeroDB.FlatTableProjection`2.#ctor
+  isExternal: true
+  href: AeroDB.FlatTableProjection-2.html#AeroDB_FlatTableProjection_2__ctor_System_String_System_Func_System_Collections_Generic_IReadOnlyList_System_Object___1__
+  name: FlatTableProjection
+  nameWithType: FlatTableProjection<TDoc, TId>.FlatTableProjection
+  fullName: AeroDB.FlatTableProjection<TDoc, TId>.FlatTableProjection
+  nameWithType.vb: FlatTableProjection(Of TDoc, TId).New
+  fullName.vb: AeroDB.FlatTableProjection(Of TDoc, TId).New
+  name.vb: New
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Func{System.Collections.Generic.IReadOnlyList{System.Object},{TId}}
+  commentId: T:System.Func{System.Collections.Generic.IReadOnlyList{System.Object},`1}
+  parent: System
+  definition: System.Func`2
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<IReadOnlyList<object>, TId>
+  nameWithType: Func<IReadOnlyList<object>, TId>
+  fullName: System.Func<System.Collections.Generic.IReadOnlyList<object>, TId>
+  nameWithType.vb: Func(Of IReadOnlyList(Of Object), TId)
+  fullName.vb: System.Func(Of System.Collections.Generic.IReadOnlyList(Of Object), TId)
+  name.vb: Func(Of IReadOnlyList(Of Object), TId)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
+  - name: ','
+  - name: " "
+  - name: TId
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  - name: ','
+  - name: " "
+  - name: TId
+  - name: )
+- uid: System.Func`2
+  commentId: T:System.Func`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<T, TResult>
+  nameWithType: Func<T, TResult>
+  fullName: System.Func<T, TResult>
+  nameWithType.vb: Func(Of T, TResult)
+  fullName.vb: System.Func(Of T, TResult)
+  name.vb: Func(Of T, TResult)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: AeroDB.ProjectionLifecycle.Inline
+  commentId: F:AeroDB.ProjectionLifecycle.Inline
+  isExternal: true
+  href: AeroDB.ProjectionLifecycle.html#AeroDB_ProjectionLifecycle_Inline
+  name: Inline
+  nameWithType: ProjectionLifecycle.Inline
+  fullName: AeroDB.ProjectionLifecycle.Inline
+- uid: AeroDB.FlatTableProjection`2.Life*
+  commentId: Overload:AeroDB.FlatTableProjection`2.Life
+  isExternal: true
+  href: AeroDB.FlatTableProjection-2.html#AeroDB_FlatTableProjection_2_Life_AeroDB_ProjectionLifecycle_
+  name: Life
+  nameWithType: FlatTableProjection<TDoc, TId>.Life
+  fullName: AeroDB.FlatTableProjection<TDoc, TId>.Life
+  nameWithType.vb: FlatTableProjection(Of TDoc, TId).Life
+  fullName.vb: AeroDB.FlatTableProjection(Of TDoc, TId).Life
+- uid: AeroDB.ProjectionLifecycle
+  commentId: T:AeroDB.ProjectionLifecycle
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.ProjectionLifecycle.html
+  name: ProjectionLifecycle
+  nameWithType: ProjectionLifecycle
+  fullName: AeroDB.ProjectionLifecycle
+- uid: AeroDB.FlatTableProjection`2
+  commentId: T:AeroDB.FlatTableProjection`2
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.FlatTableProjection-2.html
+  name: FlatTableProjection<TDoc, TId>
+  nameWithType: FlatTableProjection<TDoc, TId>
+  fullName: AeroDB.FlatTableProjection<TDoc, TId>
+  nameWithType.vb: FlatTableProjection(Of TDoc, TId)
+  fullName.vb: AeroDB.FlatTableProjection(Of TDoc, TId)
+  name.vb: FlatTableProjection(Of TDoc, TId)
+  spec.csharp:
+  - uid: AeroDB.FlatTableProjection`2
+    name: FlatTableProjection
+    isExternal: true
+    href: AeroDB.FlatTableProjection-2.html
+  - name: <
+  - name: TDoc
+  - name: ','
+  - name: " "
+  - name: TId
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.FlatTableProjection`2
+    name: FlatTableProjection
+    isExternal: true
+    href: AeroDB.FlatTableProjection-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TDoc
+  - name: ','
+  - name: " "
+  - name: TId
+  - name: )
+- uid: AeroDB.FlatTableProjection`2.Project*
+  commentId: Overload:AeroDB.FlatTableProjection`2.Project
+  isExternal: true
+  href: AeroDB.FlatTableProjection-2.html#AeroDB_FlatTableProjection_2_Project__1_System_Linq_Expressions_Expression_System_Func___0_System_Object___System_Linq_Expressions_Expression_System_Func__0_System_Object___
+  name: Project
+  nameWithType: FlatTableProjection<TDoc, TId>.Project
+  fullName: AeroDB.FlatTableProjection<TDoc, TId>.Project
+  nameWithType.vb: FlatTableProjection(Of TDoc, TId).Project
+  fullName.vb: AeroDB.FlatTableProjection(Of TDoc, TId).Project
+- uid: System.Linq.Expressions.Expression{System.Func{{TEvent},System.Object}}
+  commentId: T:System.Linq.Expressions.Expression{System.Func{``0,System.Object}}
+  parent: System.Linq.Expressions
+  definition: System.Linq.Expressions.Expression`1
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  name: Expression<Func<TEvent, object>>
+  nameWithType: Expression<Func<TEvent, object>>
+  fullName: System.Linq.Expressions.Expression<System.Func<TEvent, object>>
+  nameWithType.vb: Expression(Of Func(Of TEvent, Object))
+  fullName.vb: System.Linq.Expressions.Expression(Of System.Func(Of TEvent, Object))
+  name.vb: Expression(Of Func(Of TEvent, Object))
+  spec.csharp:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: TEvent
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TEvent
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  - name: )
+- uid: System.Linq.Expressions.Expression{System.Func{{TDoc},System.Object}}
+  commentId: T:System.Linq.Expressions.Expression{System.Func{`0,System.Object}}
+  parent: System.Linq.Expressions
+  definition: System.Linq.Expressions.Expression`1
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  name: Expression<Func<TDoc, object>>
+  nameWithType: Expression<Func<TDoc, object>>
+  fullName: System.Linq.Expressions.Expression<System.Func<TDoc, object>>
+  nameWithType.vb: Expression(Of Func(Of TDoc, Object))
+  fullName.vb: System.Linq.Expressions.Expression(Of System.Func(Of TDoc, Object))
+  name.vb: Expression(Of Func(Of TDoc, Object))
+  spec.csharp:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: TDoc
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TDoc
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  - name: )
+- uid: System.Linq.Expressions.Expression`1
+  commentId: T:System.Linq.Expressions.Expression`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  name: Expression<TDelegate>
+  nameWithType: Expression<TDelegate>
+  fullName: System.Linq.Expressions.Expression<TDelegate>
+  nameWithType.vb: Expression(Of TDelegate)
+  fullName.vb: System.Linq.Expressions.Expression(Of TDelegate)
+  name.vb: Expression(Of TDelegate)
+  spec.csharp:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - name: TDelegate
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TDelegate
+  - name: )
+- uid: System.Linq.Expressions
+  commentId: N:System.Linq.Expressions
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Linq.Expressions
+  nameWithType: System.Linq.Expressions
+  fullName: System.Linq.Expressions
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Linq
+    name: Linq
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq
+  - name: .
+  - uid: System.Linq.Expressions
+    name: Expressions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Linq
+    name: Linq
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq
+  - name: .
+  - uid: System.Linq.Expressions
+    name: Expressions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions
+- uid: AeroDB.FlatTableProjection`2.Set*
+  commentId: Overload:AeroDB.FlatTableProjection`2.Set
+  isExternal: true
+  href: AeroDB.FlatTableProjection-2.html#AeroDB_FlatTableProjection_2_Set__1_System_Linq_Expressions_Expression_System_Func__0_System_Object___System_Func___0_System_Object__
+  name: Set
+  nameWithType: FlatTableProjection<TDoc, TId>.Set
+  fullName: AeroDB.FlatTableProjection<TDoc, TId>.Set
+  nameWithType.vb: FlatTableProjection(Of TDoc, TId).Set
+  fullName.vb: AeroDB.FlatTableProjection(Of TDoc, TId).Set
+- uid: System.Func{{TEvent},System.Object}
+  commentId: T:System.Func{``0,System.Object}
+  parent: System
+  definition: System.Func`2
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<TEvent, object>
+  nameWithType: Func<TEvent, object>
+  fullName: System.Func<TEvent, object>
+  nameWithType.vb: Func(Of TEvent, Object)
+  fullName.vb: System.Func(Of TEvent, Object)
+  name.vb: Func(Of TEvent, Object)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: TEvent
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TEvent
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: AeroDB.FlatTableProjection`2.Delete*
+  commentId: Overload:AeroDB.FlatTableProjection`2.Delete
+  isExternal: true
+  href: AeroDB.FlatTableProjection-2.html#AeroDB_FlatTableProjection_2_Delete__1_System_Func___0_System_Boolean__
+  name: Delete
+  nameWithType: FlatTableProjection<TDoc, TId>.Delete
+  fullName: AeroDB.FlatTableProjection<TDoc, TId>.Delete
+  nameWithType.vb: FlatTableProjection(Of TDoc, TId).Delete
+  fullName.vb: AeroDB.FlatTableProjection(Of TDoc, TId).Delete
+- uid: System.Func{{TEvent},System.Boolean}
+  commentId: T:System.Func{``0,System.Boolean}
+  parent: System
+  definition: System.Func`2
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<TEvent, bool>
+  nameWithType: Func<TEvent, bool>
+  fullName: System.Func<TEvent, bool>
+  nameWithType.vb: Func(Of TEvent, Boolean)
+  fullName.vb: System.Func(Of TEvent, Boolean)
+  name.vb: Func(Of TEvent, Boolean)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: TEvent
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TEvent
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: AeroDB.FlatTableProjection`2.ApplyAsync*
+  commentId: Overload:AeroDB.FlatTableProjection`2.ApplyAsync
+  isExternal: true
+  href: AeroDB.FlatTableProjection-2.html#AeroDB_FlatTableProjection_2_ApplyAsync_AeroDB_IProjectionContext_System_Threading_CancellationToken_
+  name: ApplyAsync
+  nameWithType: FlatTableProjection<TDoc, TId>.ApplyAsync
+  fullName: AeroDB.FlatTableProjection<TDoc, TId>.ApplyAsync
+  nameWithType.vb: FlatTableProjection(Of TDoc, TId).ApplyAsync
+  fullName.vb: AeroDB.FlatTableProjection(Of TDoc, TId).ApplyAsync
+- uid: AeroDB.IProjection.ApplyAsync(AeroDB.IProjectionContext,System.Threading.CancellationToken)
+  commentId: M:AeroDB.IProjection.ApplyAsync(AeroDB.IProjectionContext,System.Threading.CancellationToken)
+  parent: AeroDB.IProjection
+  isExternal: true
+  href: AeroDB.IProjection.html#AeroDB_IProjection_ApplyAsync_AeroDB_IProjectionContext_System_Threading_CancellationToken_
+  name: ApplyAsync(IProjectionContext, CancellationToken)
+  nameWithType: IProjection.ApplyAsync(IProjectionContext, CancellationToken)
+  fullName: AeroDB.IProjection.ApplyAsync(AeroDB.IProjectionContext, System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: AeroDB.IProjection.ApplyAsync(AeroDB.IProjectionContext,System.Threading.CancellationToken)
+    name: ApplyAsync
+    isExternal: true
+    href: AeroDB.IProjection.html#AeroDB_IProjection_ApplyAsync_AeroDB_IProjectionContext_System_Threading_CancellationToken_
+  - name: (
+  - uid: AeroDB.IProjectionContext
+    name: IProjectionContext
+    isExternal: true
+    href: AeroDB.IProjectionContext.html
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: AeroDB.IProjection.ApplyAsync(AeroDB.IProjectionContext,System.Threading.CancellationToken)
+    name: ApplyAsync
+    isExternal: true
+    href: AeroDB.IProjection.html#AeroDB_IProjection_ApplyAsync_AeroDB_IProjectionContext_System_Threading_CancellationToken_
+  - name: (
+  - uid: AeroDB.IProjectionContext
+    name: IProjectionContext
+    isExternal: true
+    href: AeroDB.IProjectionContext.html
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: AeroDB.IProjectionContext
+  commentId: T:AeroDB.IProjectionContext
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IProjectionContext.html
+  name: IProjectionContext
+  nameWithType: IProjectionContext
+  fullName: AeroDB.IProjectionContext
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: AeroDB.FlatTableProjection`2.RebuildAsync*
+  commentId: Overload:AeroDB.FlatTableProjection`2.RebuildAsync
+  isExternal: true
+  href: AeroDB.FlatTableProjection-2.html#AeroDB_FlatTableProjection_2_RebuildAsync_AeroDB_IDocumentSession_System_Threading_CancellationToken_
+  name: RebuildAsync
+  nameWithType: FlatTableProjection<TDoc, TId>.RebuildAsync
+  fullName: AeroDB.FlatTableProjection<TDoc, TId>.RebuildAsync
+  nameWithType.vb: FlatTableProjection(Of TDoc, TId).RebuildAsync
+  fullName.vb: AeroDB.FlatTableProjection(Of TDoc, TId).RebuildAsync
+- uid: AeroDB.IProjection.RebuildAsync(AeroDB.IDocumentSession,System.Threading.CancellationToken)
+  commentId: M:AeroDB.IProjection.RebuildAsync(AeroDB.IDocumentSession,System.Threading.CancellationToken)
+  parent: AeroDB.IProjection
+  isExternal: true
+  href: AeroDB.IProjection.html#AeroDB_IProjection_RebuildAsync_AeroDB_IDocumentSession_System_Threading_CancellationToken_
+  name: RebuildAsync(IDocumentSession, CancellationToken)
+  nameWithType: IProjection.RebuildAsync(IDocumentSession, CancellationToken)
+  fullName: AeroDB.IProjection.RebuildAsync(AeroDB.IDocumentSession, System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: AeroDB.IProjection.RebuildAsync(AeroDB.IDocumentSession,System.Threading.CancellationToken)
+    name: RebuildAsync
+    isExternal: true
+    href: AeroDB.IProjection.html#AeroDB_IProjection_RebuildAsync_AeroDB_IDocumentSession_System_Threading_CancellationToken_
+  - name: (
+  - uid: AeroDB.IDocumentSession
+    name: IDocumentSession
+    isExternal: true
+    href: AeroDB.IDocumentSession.html
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: AeroDB.IProjection.RebuildAsync(AeroDB.IDocumentSession,System.Threading.CancellationToken)
+    name: RebuildAsync
+    isExternal: true
+    href: AeroDB.IProjection.html#AeroDB_IProjection_RebuildAsync_AeroDB_IDocumentSession_System_Threading_CancellationToken_
+  - name: (
+  - uid: AeroDB.IDocumentSession
+    name: IDocumentSession
+    isExternal: true
+    href: AeroDB.IDocumentSession.html
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: AeroDB.IDocumentSession
+  commentId: T:AeroDB.IDocumentSession
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IDocumentSession.html
+  name: IDocumentSession
+  nameWithType: IDocumentSession
+  fullName: AeroDB.IDocumentSession
+- uid: AeroDB.FlatTableProjection`2.Name*
+  commentId: Overload:AeroDB.FlatTableProjection`2.Name
+  isExternal: true
+  href: AeroDB.FlatTableProjection-2.html#AeroDB_FlatTableProjection_2_Name
+  name: Name
+  nameWithType: FlatTableProjection<TDoc, TId>.Name
+  fullName: AeroDB.FlatTableProjection<TDoc, TId>.Name
+  nameWithType.vb: FlatTableProjection(Of TDoc, TId).Name
+  fullName.vb: AeroDB.FlatTableProjection(Of TDoc, TId).Name
+- uid: AeroDB.IProjection.Name
+  commentId: P:AeroDB.IProjection.Name
+  parent: AeroDB.IProjection
+  isExternal: true
+  href: AeroDB.IProjection.html#AeroDB_IProjection_Name
+  name: Name
+  nameWithType: IProjection.Name
+  fullName: AeroDB.IProjection.Name
+- uid: AeroDB.FlatTableProjection`2.EventTypes*
+  commentId: Overload:AeroDB.FlatTableProjection`2.EventTypes
+  isExternal: true
+  href: AeroDB.FlatTableProjection-2.html#AeroDB_FlatTableProjection_2_EventTypes
+  name: EventTypes
+  nameWithType: FlatTableProjection<TDoc, TId>.EventTypes
+  fullName: AeroDB.FlatTableProjection<TDoc, TId>.EventTypes
+  nameWithType.vb: FlatTableProjection(Of TDoc, TId).EventTypes
+  fullName.vb: AeroDB.FlatTableProjection(Of TDoc, TId).EventTypes
+- uid: AeroDB.IProjection.EventTypes
+  commentId: P:AeroDB.IProjection.EventTypes
+  parent: AeroDB.IProjection
+  isExternal: true
+  href: AeroDB.IProjection.html#AeroDB_IProjection_EventTypes
+  name: EventTypes
+  nameWithType: IProjection.EventTypes
+  fullName: AeroDB.IProjection.EventTypes
+- uid: System.Type[]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.type
+  name: Type[]
+  nameWithType: Type[]
+  fullName: System.Type[]
+  nameWithType.vb: Type()
+  fullName.vb: System.Type()
+  name.vb: Type()
+  spec.csharp:
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: (
+  - name: )
+- uid: AeroDB.FlatTableProjection`2.Lifecycle*
+  commentId: Overload:AeroDB.FlatTableProjection`2.Lifecycle
+  isExternal: true
+  href: AeroDB.FlatTableProjection-2.html#AeroDB_FlatTableProjection_2_Lifecycle
+  name: Lifecycle
+  nameWithType: FlatTableProjection<TDoc, TId>.Lifecycle
+  fullName: AeroDB.FlatTableProjection<TDoc, TId>.Lifecycle
+  nameWithType.vb: FlatTableProjection(Of TDoc, TId).Lifecycle
+  fullName.vb: AeroDB.FlatTableProjection(Of TDoc, TId).Lifecycle
+- uid: AeroDB.IProjection.Lifecycle
+  commentId: P:AeroDB.IProjection.Lifecycle
+  parent: AeroDB.IProjection
+  isExternal: true
+  href: AeroDB.IProjection.html#AeroDB_IProjection_Lifecycle
+  name: Lifecycle
+  nameWithType: IProjection.Lifecycle
+  fullName: AeroDB.IProjection.Lifecycle

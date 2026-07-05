@@ -1,0 +1,1409 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.SurrealQueryProvider
+  commentId: T:AeroDB.SurrealQueryProvider
+  id: SurrealQueryProvider
+  parent: AeroDB
+  children:
+  - AeroDB.SurrealQueryProvider.#ctor(SurrealDb.Net.ISurrealDbSession,AeroDB.InternalSessionBase,AeroDB.StoreOptions,System.String)
+  - AeroDB.SurrealQueryProvider.#ctor(SurrealDb.Net.ISurrealDbSession,AeroDB.StoreOptions,System.String)
+  - AeroDB.SurrealQueryProvider.AggregateAsync``1(System.Linq.Expressions.Expression,System.String,System.String,System.Threading.CancellationToken)
+  - AeroDB.SurrealQueryProvider.AnyAsync(System.Linq.Expressions.Expression,System.Threading.CancellationToken)
+  - AeroDB.SurrealQueryProvider.CountAsync(System.Linq.Expressions.Expression,System.Threading.CancellationToken)
+  - AeroDB.SurrealQueryProvider.CreateQuery(System.Linq.Expressions.Expression)
+  - AeroDB.SurrealQueryProvider.CreateQuery``1(System.Linq.Expressions.Expression)
+  - AeroDB.SurrealQueryProvider.Execute(System.Linq.Expressions.Expression)
+  - AeroDB.SurrealQueryProvider.Execute``1(System.Linq.Expressions.Expression)
+  - AeroDB.SurrealQueryProvider.FirstOrDefaultAsync``1(System.Linq.Expressions.Expression,System.Threading.CancellationToken)
+  - AeroDB.SurrealQueryProvider.SingleOrDefaultAsync``1(System.Linq.Expressions.Expression,System.Threading.CancellationToken)
+  - AeroDB.SurrealQueryProvider.ToCommand(System.Linq.Expressions.Expression)
+  - AeroDB.SurrealQueryProvider.ToListAsync``1(System.Linq.Expressions.Expression,System.Threading.CancellationToken)
+  langs:
+  - csharp
+  - vb
+  name: SurrealQueryProvider
+  nameWithType: SurrealQueryProvider
+  fullName: AeroDB.SurrealQueryProvider
+  type: Class
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealQueryProvider.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: 'public class SurrealQueryProvider : IQueryProvider'
+    content.vb: Public Class SurrealQueryProvider Implements IQueryProvider
+  inheritance:
+  - System.Object
+  implements:
+  - System.Linq.IQueryProvider
+  inheritedMembers:
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+- uid: AeroDB.SurrealQueryProvider.#ctor(SurrealDb.Net.ISurrealDbSession,AeroDB.StoreOptions,System.String)
+  commentId: M:AeroDB.SurrealQueryProvider.#ctor(SurrealDb.Net.ISurrealDbSession,AeroDB.StoreOptions,System.String)
+  id: '#ctor(SurrealDb.Net.ISurrealDbSession,AeroDB.StoreOptions,System.String)'
+  parent: AeroDB.SurrealQueryProvider
+  langs:
+  - csharp
+  - vb
+  name: SurrealQueryProvider(ISurrealDbSession, StoreOptions, string?)
+  nameWithType: SurrealQueryProvider.SurrealQueryProvider(ISurrealDbSession, StoreOptions, string?)
+  fullName: AeroDB.SurrealQueryProvider.SurrealQueryProvider(SurrealDb.Net.ISurrealDbSession, AeroDB.StoreOptions, string?)
+  type: Constructor
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealQueryProvider.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Creates a query provider bound to the given session and store options.
+  example: []
+  syntax:
+    content: public SurrealQueryProvider(ISurrealDbSession session, StoreOptions options, string? tenantId = null)
+    parameters:
+    - id: session
+      type: SurrealDb.Net.ISurrealDbSession
+    - id: options
+      type: AeroDB.StoreOptions
+    - id: tenantId
+      type: System.String
+    content.vb: Public Sub New(session As ISurrealDbSession, options As StoreOptions, tenantId As String = Nothing)
+  overload: AeroDB.SurrealQueryProvider.#ctor*
+  nameWithType.vb: SurrealQueryProvider.New(ISurrealDbSession, StoreOptions, String)
+  fullName.vb: AeroDB.SurrealQueryProvider.New(SurrealDb.Net.ISurrealDbSession, AeroDB.StoreOptions, String)
+  name.vb: New(ISurrealDbSession, StoreOptions, String)
+- uid: AeroDB.SurrealQueryProvider.#ctor(SurrealDb.Net.ISurrealDbSession,AeroDB.InternalSessionBase,AeroDB.StoreOptions,System.String)
+  commentId: M:AeroDB.SurrealQueryProvider.#ctor(SurrealDb.Net.ISurrealDbSession,AeroDB.InternalSessionBase,AeroDB.StoreOptions,System.String)
+  id: '#ctor(SurrealDb.Net.ISurrealDbSession,AeroDB.InternalSessionBase,AeroDB.StoreOptions,System.String)'
+  parent: AeroDB.SurrealQueryProvider
+  langs:
+  - csharp
+  - vb
+  name: SurrealQueryProvider(ISurrealDbSession, InternalSessionBase?, StoreOptions, string?)
+  nameWithType: SurrealQueryProvider.SurrealQueryProvider(ISurrealDbSession, InternalSessionBase?, StoreOptions, string?)
+  fullName: AeroDB.SurrealQueryProvider.SurrealQueryProvider(SurrealDb.Net.ISurrealDbSession, AeroDB.InternalSessionBase?, AeroDB.StoreOptions, string?)
+  type: Constructor
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealQueryProvider.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Creates a query provider with optional <xref href="AeroDB.InternalSessionBase" data-throw-if-not-resolved="false"></xref> for schema-based
+
+    session routing. When <code class="paramref">sessionBase</code> is provided, queries are routed
+
+    through the correct forked session based on the element type's schema mapping.
+  example: []
+  syntax:
+    content: public SurrealQueryProvider(ISurrealDbSession session, InternalSessionBase? sessionBase, StoreOptions options, string? tenantId = null)
+    parameters:
+    - id: session
+      type: SurrealDb.Net.ISurrealDbSession
+    - id: sessionBase
+      type: AeroDB.InternalSessionBase
+    - id: options
+      type: AeroDB.StoreOptions
+    - id: tenantId
+      type: System.String
+    content.vb: Public Sub New(session As ISurrealDbSession, sessionBase As InternalSessionBase, options As StoreOptions, tenantId As String = Nothing)
+  overload: AeroDB.SurrealQueryProvider.#ctor*
+  nameWithType.vb: SurrealQueryProvider.New(ISurrealDbSession, InternalSessionBase, StoreOptions, String)
+  fullName.vb: AeroDB.SurrealQueryProvider.New(SurrealDb.Net.ISurrealDbSession, AeroDB.InternalSessionBase, AeroDB.StoreOptions, String)
+  name.vb: New(ISurrealDbSession, InternalSessionBase, StoreOptions, String)
+- uid: AeroDB.SurrealQueryProvider.CreateQuery(System.Linq.Expressions.Expression)
+  commentId: M:AeroDB.SurrealQueryProvider.CreateQuery(System.Linq.Expressions.Expression)
+  id: CreateQuery(System.Linq.Expressions.Expression)
+  parent: AeroDB.SurrealQueryProvider
+  langs:
+  - csharp
+  - vb
+  name: CreateQuery(Expression)
+  nameWithType: SurrealQueryProvider.CreateQuery(Expression)
+  fullName: AeroDB.SurrealQueryProvider.CreateQuery(System.Linq.Expressions.Expression)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealQueryProvider.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  example: []
+  syntax:
+    content: public IQueryable CreateQuery(Expression expression)
+    parameters:
+    - id: expression
+      type: System.Linq.Expressions.Expression
+    return:
+      type: System.Linq.IQueryable
+    content.vb: Public Function CreateQuery(expression As Expression) As IQueryable
+  overload: AeroDB.SurrealQueryProvider.CreateQuery*
+  implements:
+  - System.Linq.IQueryProvider.CreateQuery(System.Linq.Expressions.Expression)
+- uid: AeroDB.SurrealQueryProvider.CreateQuery``1(System.Linq.Expressions.Expression)
+  commentId: M:AeroDB.SurrealQueryProvider.CreateQuery``1(System.Linq.Expressions.Expression)
+  id: CreateQuery``1(System.Linq.Expressions.Expression)
+  parent: AeroDB.SurrealQueryProvider
+  langs:
+  - csharp
+  - vb
+  name: CreateQuery<TElement>(Expression)
+  nameWithType: SurrealQueryProvider.CreateQuery<TElement>(Expression)
+  fullName: AeroDB.SurrealQueryProvider.CreateQuery<TElement>(System.Linq.Expressions.Expression)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealQueryProvider.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  example: []
+  syntax:
+    content: public IQueryable<TElement> CreateQuery<TElement>(Expression expression)
+    parameters:
+    - id: expression
+      type: System.Linq.Expressions.Expression
+    typeParameters:
+    - id: TElement
+    return:
+      type: System.Linq.IQueryable{{TElement}}
+    content.vb: Public Function CreateQuery(Of TElement)(expression As Expression) As IQueryable(Of TElement)
+  overload: AeroDB.SurrealQueryProvider.CreateQuery*
+  implements:
+  - System.Linq.IQueryProvider.CreateQuery``1(System.Linq.Expressions.Expression)
+  nameWithType.vb: SurrealQueryProvider.CreateQuery(Of TElement)(Expression)
+  fullName.vb: AeroDB.SurrealQueryProvider.CreateQuery(Of TElement)(System.Linq.Expressions.Expression)
+  name.vb: CreateQuery(Of TElement)(Expression)
+- uid: AeroDB.SurrealQueryProvider.Execute(System.Linq.Expressions.Expression)
+  commentId: M:AeroDB.SurrealQueryProvider.Execute(System.Linq.Expressions.Expression)
+  id: Execute(System.Linq.Expressions.Expression)
+  parent: AeroDB.SurrealQueryProvider
+  langs:
+  - csharp
+  - vb
+  name: Execute(Expression)
+  nameWithType: SurrealQueryProvider.Execute(Expression)
+  fullName: AeroDB.SurrealQueryProvider.Execute(System.Linq.Expressions.Expression)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealQueryProvider.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  example: []
+  syntax:
+    content: public object? Execute(Expression expression)
+    parameters:
+    - id: expression
+      type: System.Linq.Expressions.Expression
+    return:
+      type: System.Object
+    content.vb: Public Function Execute(expression As Expression) As Object
+  overload: AeroDB.SurrealQueryProvider.Execute*
+  implements:
+  - System.Linq.IQueryProvider.Execute(System.Linq.Expressions.Expression)
+- uid: AeroDB.SurrealQueryProvider.Execute``1(System.Linq.Expressions.Expression)
+  commentId: M:AeroDB.SurrealQueryProvider.Execute``1(System.Linq.Expressions.Expression)
+  id: Execute``1(System.Linq.Expressions.Expression)
+  parent: AeroDB.SurrealQueryProvider
+  langs:
+  - csharp
+  - vb
+  name: Execute<TResult>(Expression)
+  nameWithType: SurrealQueryProvider.Execute<TResult>(Expression)
+  fullName: AeroDB.SurrealQueryProvider.Execute<TResult>(System.Linq.Expressions.Expression)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealQueryProvider.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  example: []
+  syntax:
+    content: public TResult Execute<TResult>(Expression expression)
+    parameters:
+    - id: expression
+      type: System.Linq.Expressions.Expression
+    typeParameters:
+    - id: TResult
+    return:
+      type: '{TResult}'
+    content.vb: Public Function Execute(Of TResult)(expression As Expression) As TResult
+  overload: AeroDB.SurrealQueryProvider.Execute*
+  implements:
+  - System.Linq.IQueryProvider.Execute``1(System.Linq.Expressions.Expression)
+  nameWithType.vb: SurrealQueryProvider.Execute(Of TResult)(Expression)
+  fullName.vb: AeroDB.SurrealQueryProvider.Execute(Of TResult)(System.Linq.Expressions.Expression)
+  name.vb: Execute(Of TResult)(Expression)
+- uid: AeroDB.SurrealQueryProvider.ToListAsync``1(System.Linq.Expressions.Expression,System.Threading.CancellationToken)
+  commentId: M:AeroDB.SurrealQueryProvider.ToListAsync``1(System.Linq.Expressions.Expression,System.Threading.CancellationToken)
+  id: ToListAsync``1(System.Linq.Expressions.Expression,System.Threading.CancellationToken)
+  parent: AeroDB.SurrealQueryProvider
+  langs:
+  - csharp
+  - vb
+  name: ToListAsync<T>(Expression, CancellationToken)
+  nameWithType: SurrealQueryProvider.ToListAsync<T>(Expression, CancellationToken)
+  fullName: AeroDB.SurrealQueryProvider.ToListAsync<T>(System.Linq.Expressions.Expression, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealQueryProvider.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public Task<List<T>> ToListAsync<T>(Expression expression, CancellationToken ct = default)
+    parameters:
+    - id: expression
+      type: System.Linq.Expressions.Expression
+    - id: ct
+      type: System.Threading.CancellationToken
+    typeParameters:
+    - id: T
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.List{{T}}}
+    content.vb: Public Function ToListAsync(Of T)(expression As Expression, ct As CancellationToken = Nothing) As Task(Of List(Of T))
+  overload: AeroDB.SurrealQueryProvider.ToListAsync*
+  nameWithType.vb: SurrealQueryProvider.ToListAsync(Of T)(Expression, CancellationToken)
+  fullName.vb: AeroDB.SurrealQueryProvider.ToListAsync(Of T)(System.Linq.Expressions.Expression, System.Threading.CancellationToken)
+  name.vb: ToListAsync(Of T)(Expression, CancellationToken)
+- uid: AeroDB.SurrealQueryProvider.FirstOrDefaultAsync``1(System.Linq.Expressions.Expression,System.Threading.CancellationToken)
+  commentId: M:AeroDB.SurrealQueryProvider.FirstOrDefaultAsync``1(System.Linq.Expressions.Expression,System.Threading.CancellationToken)
+  id: FirstOrDefaultAsync``1(System.Linq.Expressions.Expression,System.Threading.CancellationToken)
+  parent: AeroDB.SurrealQueryProvider
+  langs:
+  - csharp
+  - vb
+  name: FirstOrDefaultAsync<T>(Expression, CancellationToken)
+  nameWithType: SurrealQueryProvider.FirstOrDefaultAsync<T>(Expression, CancellationToken)
+  fullName: AeroDB.SurrealQueryProvider.FirstOrDefaultAsync<T>(System.Linq.Expressions.Expression, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealQueryProvider.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public Task<T?> FirstOrDefaultAsync<T>(Expression expression, CancellationToken ct = default)
+    parameters:
+    - id: expression
+      type: System.Linq.Expressions.Expression
+    - id: ct
+      type: System.Threading.CancellationToken
+    typeParameters:
+    - id: T
+    return:
+      type: System.Threading.Tasks.Task{{T}}
+    content.vb: Public Function FirstOrDefaultAsync(Of T)(expression As Expression, ct As CancellationToken = Nothing) As Task(Of T)
+  overload: AeroDB.SurrealQueryProvider.FirstOrDefaultAsync*
+  nameWithType.vb: SurrealQueryProvider.FirstOrDefaultAsync(Of T)(Expression, CancellationToken)
+  fullName.vb: AeroDB.SurrealQueryProvider.FirstOrDefaultAsync(Of T)(System.Linq.Expressions.Expression, System.Threading.CancellationToken)
+  name.vb: FirstOrDefaultAsync(Of T)(Expression, CancellationToken)
+- uid: AeroDB.SurrealQueryProvider.SingleOrDefaultAsync``1(System.Linq.Expressions.Expression,System.Threading.CancellationToken)
+  commentId: M:AeroDB.SurrealQueryProvider.SingleOrDefaultAsync``1(System.Linq.Expressions.Expression,System.Threading.CancellationToken)
+  id: SingleOrDefaultAsync``1(System.Linq.Expressions.Expression,System.Threading.CancellationToken)
+  parent: AeroDB.SurrealQueryProvider
+  langs:
+  - csharp
+  - vb
+  name: SingleOrDefaultAsync<T>(Expression, CancellationToken)
+  nameWithType: SurrealQueryProvider.SingleOrDefaultAsync<T>(Expression, CancellationToken)
+  fullName: AeroDB.SurrealQueryProvider.SingleOrDefaultAsync<T>(System.Linq.Expressions.Expression, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealQueryProvider.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public Task<T?> SingleOrDefaultAsync<T>(Expression expression, CancellationToken ct = default)
+    parameters:
+    - id: expression
+      type: System.Linq.Expressions.Expression
+    - id: ct
+      type: System.Threading.CancellationToken
+    typeParameters:
+    - id: T
+    return:
+      type: System.Threading.Tasks.Task{{T}}
+    content.vb: Public Function SingleOrDefaultAsync(Of T)(expression As Expression, ct As CancellationToken = Nothing) As Task(Of T)
+  overload: AeroDB.SurrealQueryProvider.SingleOrDefaultAsync*
+  nameWithType.vb: SurrealQueryProvider.SingleOrDefaultAsync(Of T)(Expression, CancellationToken)
+  fullName.vb: AeroDB.SurrealQueryProvider.SingleOrDefaultAsync(Of T)(System.Linq.Expressions.Expression, System.Threading.CancellationToken)
+  name.vb: SingleOrDefaultAsync(Of T)(Expression, CancellationToken)
+- uid: AeroDB.SurrealQueryProvider.AggregateAsync``1(System.Linq.Expressions.Expression,System.String,System.String,System.Threading.CancellationToken)
+  commentId: M:AeroDB.SurrealQueryProvider.AggregateAsync``1(System.Linq.Expressions.Expression,System.String,System.String,System.Threading.CancellationToken)
+  id: AggregateAsync``1(System.Linq.Expressions.Expression,System.String,System.String,System.Threading.CancellationToken)
+  parent: AeroDB.SurrealQueryProvider
+  langs:
+  - csharp
+  - vb
+  name: AggregateAsync<T>(Expression, string, string, CancellationToken)
+  nameWithType: SurrealQueryProvider.AggregateAsync<T>(Expression, string, string, CancellationToken)
+  fullName: AeroDB.SurrealQueryProvider.AggregateAsync<T>(System.Linq.Expressions.Expression, string, string, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealQueryProvider.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public Task<decimal> AggregateAsync<T>(Expression expression, string fieldName, string function, CancellationToken ct = default)
+    parameters:
+    - id: expression
+      type: System.Linq.Expressions.Expression
+    - id: fieldName
+      type: System.String
+    - id: function
+      type: System.String
+    - id: ct
+      type: System.Threading.CancellationToken
+    typeParameters:
+    - id: T
+    return:
+      type: System.Threading.Tasks.Task{System.Decimal}
+    content.vb: Public Function AggregateAsync(Of T)(expression As Expression, fieldName As String, [function] As String, ct As CancellationToken = Nothing) As Task(Of Decimal)
+  overload: AeroDB.SurrealQueryProvider.AggregateAsync*
+  nameWithType.vb: SurrealQueryProvider.AggregateAsync(Of T)(Expression, String, String, CancellationToken)
+  fullName.vb: AeroDB.SurrealQueryProvider.AggregateAsync(Of T)(System.Linq.Expressions.Expression, String, String, System.Threading.CancellationToken)
+  name.vb: AggregateAsync(Of T)(Expression, String, String, CancellationToken)
+- uid: AeroDB.SurrealQueryProvider.CountAsync(System.Linq.Expressions.Expression,System.Threading.CancellationToken)
+  commentId: M:AeroDB.SurrealQueryProvider.CountAsync(System.Linq.Expressions.Expression,System.Threading.CancellationToken)
+  id: CountAsync(System.Linq.Expressions.Expression,System.Threading.CancellationToken)
+  parent: AeroDB.SurrealQueryProvider
+  langs:
+  - csharp
+  - vb
+  name: CountAsync(Expression, CancellationToken)
+  nameWithType: SurrealQueryProvider.CountAsync(Expression, CancellationToken)
+  fullName: AeroDB.SurrealQueryProvider.CountAsync(System.Linq.Expressions.Expression, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealQueryProvider.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public Task<int> CountAsync(Expression expression, CancellationToken ct = default)
+    parameters:
+    - id: expression
+      type: System.Linq.Expressions.Expression
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task{System.Int32}
+    content.vb: Public Function CountAsync(expression As Expression, ct As CancellationToken = Nothing) As Task(Of Integer)
+  overload: AeroDB.SurrealQueryProvider.CountAsync*
+- uid: AeroDB.SurrealQueryProvider.AnyAsync(System.Linq.Expressions.Expression,System.Threading.CancellationToken)
+  commentId: M:AeroDB.SurrealQueryProvider.AnyAsync(System.Linq.Expressions.Expression,System.Threading.CancellationToken)
+  id: AnyAsync(System.Linq.Expressions.Expression,System.Threading.CancellationToken)
+  parent: AeroDB.SurrealQueryProvider
+  langs:
+  - csharp
+  - vb
+  name: AnyAsync(Expression, CancellationToken)
+  nameWithType: SurrealQueryProvider.AnyAsync(Expression, CancellationToken)
+  fullName: AeroDB.SurrealQueryProvider.AnyAsync(System.Linq.Expressions.Expression, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealQueryProvider.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public Task<bool> AnyAsync(Expression expression, CancellationToken ct = default)
+    parameters:
+    - id: expression
+      type: System.Linq.Expressions.Expression
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task{System.Boolean}
+    content.vb: Public Function AnyAsync(expression As Expression, ct As CancellationToken = Nothing) As Task(Of Boolean)
+  overload: AeroDB.SurrealQueryProvider.AnyAsync*
+- uid: AeroDB.SurrealQueryProvider.ToCommand(System.Linq.Expressions.Expression)
+  commentId: M:AeroDB.SurrealQueryProvider.ToCommand(System.Linq.Expressions.Expression)
+  id: ToCommand(System.Linq.Expressions.Expression)
+  parent: AeroDB.SurrealQueryProvider
+  langs:
+  - csharp
+  - vb
+  name: ToCommand(Expression)
+  nameWithType: SurrealQueryProvider.ToCommand(Expression)
+  fullName: AeroDB.SurrealQueryProvider.ToCommand(System.Linq.Expressions.Expression)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealQueryProvider.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Returns the generated SurrealQL for the given expression without executing it.
+
+    Applies the same translation, tenant filtering, soft-delete filtering, view name
+
+    overrides, and Fetch field propagation that would happen during execution.
+
+    Useful for debugging and logging.
+  example: []
+  syntax:
+    content: public string ToCommand(Expression expression)
+    parameters:
+    - id: expression
+      type: System.Linq.Expressions.Expression
+    return:
+      type: System.String
+    content.vb: Public Function ToCommand(expression As Expression) As String
+  overload: AeroDB.SurrealQueryProvider.ToCommand*
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Linq.IQueryProvider
+  commentId: T:System.Linq.IQueryProvider
+  parent: System.Linq
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.iqueryprovider
+  name: IQueryProvider
+  nameWithType: IQueryProvider
+  fullName: System.Linq.IQueryProvider
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Linq
+  commentId: N:System.Linq
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Linq
+  nameWithType: System.Linq
+  fullName: System.Linq
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Linq
+    name: Linq
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Linq
+    name: Linq
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq
+- uid: AeroDB.SurrealQueryProvider.#ctor*
+  commentId: Overload:AeroDB.SurrealQueryProvider.#ctor
+  isExternal: true
+  href: AeroDB.SurrealQueryProvider.html#AeroDB_SurrealQueryProvider__ctor_SurrealDb_Net_ISurrealDbSession_AeroDB_StoreOptions_System_String_
+  name: SurrealQueryProvider
+  nameWithType: SurrealQueryProvider.SurrealQueryProvider
+  fullName: AeroDB.SurrealQueryProvider.SurrealQueryProvider
+  nameWithType.vb: SurrealQueryProvider.New
+  fullName.vb: AeroDB.SurrealQueryProvider.New
+  name.vb: New
+- uid: SurrealDb.Net.ISurrealDbSession
+  commentId: T:SurrealDb.Net.ISurrealDbSession
+  parent: SurrealDb.Net
+  isExternal: true
+  name: ISurrealDbSession
+  nameWithType: ISurrealDbSession
+  fullName: SurrealDb.Net.ISurrealDbSession
+- uid: AeroDB.StoreOptions
+  commentId: T:AeroDB.StoreOptions
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.StoreOptions.html
+  name: StoreOptions
+  nameWithType: StoreOptions
+  fullName: AeroDB.StoreOptions
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: SurrealDb.Net
+  commentId: N:SurrealDb.Net
+  isExternal: true
+  name: SurrealDb.Net
+  nameWithType: SurrealDb.Net
+  fullName: SurrealDb.Net
+  spec.csharp:
+  - uid: SurrealDb
+    name: SurrealDb
+    isExternal: true
+  - name: .
+  - uid: SurrealDb.Net
+    name: Net
+    isExternal: true
+  spec.vb:
+  - uid: SurrealDb
+    name: SurrealDb
+    isExternal: true
+  - name: .
+  - uid: SurrealDb.Net
+    name: Net
+    isExternal: true
+- uid: AeroDB.InternalSessionBase
+  commentId: T:AeroDB.InternalSessionBase
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.InternalSessionBase.html
+  name: InternalSessionBase
+  nameWithType: InternalSessionBase
+  fullName: AeroDB.InternalSessionBase
+- uid: AeroDB.SurrealQueryProvider.CreateQuery*
+  commentId: Overload:AeroDB.SurrealQueryProvider.CreateQuery
+  isExternal: true
+  href: AeroDB.SurrealQueryProvider.html#AeroDB_SurrealQueryProvider_CreateQuery_System_Linq_Expressions_Expression_
+  name: CreateQuery
+  nameWithType: SurrealQueryProvider.CreateQuery
+  fullName: AeroDB.SurrealQueryProvider.CreateQuery
+- uid: System.Linq.IQueryProvider.CreateQuery(System.Linq.Expressions.Expression)
+  commentId: M:System.Linq.IQueryProvider.CreateQuery(System.Linq.Expressions.Expression)
+  parent: System.Linq.IQueryProvider
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.iqueryprovider.createquery#system-linq-iqueryprovider-createquery(system-linq-expressions-expression)
+  name: CreateQuery(Expression)
+  nameWithType: IQueryProvider.CreateQuery(Expression)
+  fullName: System.Linq.IQueryProvider.CreateQuery(System.Linq.Expressions.Expression)
+  spec.csharp:
+  - uid: System.Linq.IQueryProvider.CreateQuery(System.Linq.Expressions.Expression)
+    name: CreateQuery
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.iqueryprovider.createquery#system-linq-iqueryprovider-createquery(system-linq-expressions-expression)
+  - name: (
+  - uid: System.Linq.Expressions.Expression
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression
+  - name: )
+  spec.vb:
+  - uid: System.Linq.IQueryProvider.CreateQuery(System.Linq.Expressions.Expression)
+    name: CreateQuery
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.iqueryprovider.createquery#system-linq-iqueryprovider-createquery(system-linq-expressions-expression)
+  - name: (
+  - uid: System.Linq.Expressions.Expression
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression
+  - name: )
+- uid: System.Linq.Expressions.Expression
+  commentId: T:System.Linq.Expressions.Expression
+  parent: System.Linq.Expressions
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression
+  name: Expression
+  nameWithType: Expression
+  fullName: System.Linq.Expressions.Expression
+- uid: System.Linq.IQueryable
+  commentId: T:System.Linq.IQueryable
+  parent: System.Linq
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.iqueryable
+  name: IQueryable
+  nameWithType: IQueryable
+  fullName: System.Linq.IQueryable
+- uid: System.Linq.Expressions
+  commentId: N:System.Linq.Expressions
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Linq.Expressions
+  nameWithType: System.Linq.Expressions
+  fullName: System.Linq.Expressions
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Linq
+    name: Linq
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq
+  - name: .
+  - uid: System.Linq.Expressions
+    name: Expressions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Linq
+    name: Linq
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq
+  - name: .
+  - uid: System.Linq.Expressions
+    name: Expressions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions
+- uid: System.Linq.IQueryProvider.CreateQuery``1(System.Linq.Expressions.Expression)
+  commentId: M:System.Linq.IQueryProvider.CreateQuery``1(System.Linq.Expressions.Expression)
+  parent: System.Linq.IQueryProvider
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.iqueryprovider.createquery#system-linq-iqueryprovider-createquery-1(system-linq-expressions-expression)
+  name: CreateQuery<TElement>(Expression)
+  nameWithType: IQueryProvider.CreateQuery<TElement>(Expression)
+  fullName: System.Linq.IQueryProvider.CreateQuery<TElement>(System.Linq.Expressions.Expression)
+  nameWithType.vb: IQueryProvider.CreateQuery(Of TElement)(Expression)
+  fullName.vb: System.Linq.IQueryProvider.CreateQuery(Of TElement)(System.Linq.Expressions.Expression)
+  name.vb: CreateQuery(Of TElement)(Expression)
+  spec.csharp:
+  - uid: System.Linq.IQueryProvider.CreateQuery``1(System.Linq.Expressions.Expression)
+    name: CreateQuery
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.iqueryprovider.createquery#system-linq-iqueryprovider-createquery-1(system-linq-expressions-expression)
+  - name: <
+  - name: TElement
+  - name: '>'
+  - name: (
+  - uid: System.Linq.Expressions.Expression
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression
+  - name: )
+  spec.vb:
+  - uid: System.Linq.IQueryProvider.CreateQuery``1(System.Linq.Expressions.Expression)
+    name: CreateQuery
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.iqueryprovider.createquery#system-linq-iqueryprovider-createquery-1(system-linq-expressions-expression)
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TElement
+  - name: )
+  - name: (
+  - uid: System.Linq.Expressions.Expression
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression
+  - name: )
+- uid: System.Linq.IQueryable{{TElement}}
+  commentId: T:System.Linq.IQueryable{``0}
+  parent: System.Linq
+  definition: System.Linq.IQueryable`1
+  href: https://learn.microsoft.com/dotnet/api/system.linq.iqueryable-1
+  name: IQueryable<TElement>
+  nameWithType: IQueryable<TElement>
+  fullName: System.Linq.IQueryable<TElement>
+  nameWithType.vb: IQueryable(Of TElement)
+  fullName.vb: System.Linq.IQueryable(Of TElement)
+  name.vb: IQueryable(Of TElement)
+  spec.csharp:
+  - uid: System.Linq.IQueryable`1
+    name: IQueryable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.iqueryable-1
+  - name: <
+  - name: TElement
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.IQueryable`1
+    name: IQueryable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.iqueryable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TElement
+  - name: )
+- uid: System.Linq.IQueryable`1
+  commentId: T:System.Linq.IQueryable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.iqueryable-1
+  name: IQueryable<T>
+  nameWithType: IQueryable<T>
+  fullName: System.Linq.IQueryable<T>
+  nameWithType.vb: IQueryable(Of T)
+  fullName.vb: System.Linq.IQueryable(Of T)
+  name.vb: IQueryable(Of T)
+  spec.csharp:
+  - uid: System.Linq.IQueryable`1
+    name: IQueryable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.iqueryable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.IQueryable`1
+    name: IQueryable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.iqueryable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.SurrealQueryProvider.Execute*
+  commentId: Overload:AeroDB.SurrealQueryProvider.Execute
+  isExternal: true
+  href: AeroDB.SurrealQueryProvider.html#AeroDB_SurrealQueryProvider_Execute_System_Linq_Expressions_Expression_
+  name: Execute
+  nameWithType: SurrealQueryProvider.Execute
+  fullName: AeroDB.SurrealQueryProvider.Execute
+- uid: System.Linq.IQueryProvider.Execute(System.Linq.Expressions.Expression)
+  commentId: M:System.Linq.IQueryProvider.Execute(System.Linq.Expressions.Expression)
+  parent: System.Linq.IQueryProvider
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.iqueryprovider.execute#system-linq-iqueryprovider-execute(system-linq-expressions-expression)
+  name: Execute(Expression)
+  nameWithType: IQueryProvider.Execute(Expression)
+  fullName: System.Linq.IQueryProvider.Execute(System.Linq.Expressions.Expression)
+  spec.csharp:
+  - uid: System.Linq.IQueryProvider.Execute(System.Linq.Expressions.Expression)
+    name: Execute
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.iqueryprovider.execute#system-linq-iqueryprovider-execute(system-linq-expressions-expression)
+  - name: (
+  - uid: System.Linq.Expressions.Expression
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression
+  - name: )
+  spec.vb:
+  - uid: System.Linq.IQueryProvider.Execute(System.Linq.Expressions.Expression)
+    name: Execute
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.iqueryprovider.execute#system-linq-iqueryprovider-execute(system-linq-expressions-expression)
+  - name: (
+  - uid: System.Linq.Expressions.Expression
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression
+  - name: )
+- uid: System.Linq.IQueryProvider.Execute``1(System.Linq.Expressions.Expression)
+  commentId: M:System.Linq.IQueryProvider.Execute``1(System.Linq.Expressions.Expression)
+  parent: System.Linq.IQueryProvider
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.iqueryprovider.execute#system-linq-iqueryprovider-execute-1(system-linq-expressions-expression)
+  name: Execute<TResult>(Expression)
+  nameWithType: IQueryProvider.Execute<TResult>(Expression)
+  fullName: System.Linq.IQueryProvider.Execute<TResult>(System.Linq.Expressions.Expression)
+  nameWithType.vb: IQueryProvider.Execute(Of TResult)(Expression)
+  fullName.vb: System.Linq.IQueryProvider.Execute(Of TResult)(System.Linq.Expressions.Expression)
+  name.vb: Execute(Of TResult)(Expression)
+  spec.csharp:
+  - uid: System.Linq.IQueryProvider.Execute``1(System.Linq.Expressions.Expression)
+    name: Execute
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.iqueryprovider.execute#system-linq-iqueryprovider-execute-1(system-linq-expressions-expression)
+  - name: <
+  - name: TResult
+  - name: '>'
+  - name: (
+  - uid: System.Linq.Expressions.Expression
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression
+  - name: )
+  spec.vb:
+  - uid: System.Linq.IQueryProvider.Execute``1(System.Linq.Expressions.Expression)
+    name: Execute
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.iqueryprovider.execute#system-linq-iqueryprovider-execute-1(system-linq-expressions-expression)
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+  - name: (
+  - uid: System.Linq.Expressions.Expression
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression
+  - name: )
+- uid: '{TResult}'
+  commentId: '!:TResult'
+  definition: TResult
+  name: TResult
+  nameWithType: TResult
+  fullName: TResult
+- uid: TResult
+  commentId: '!:TResult'
+  name: TResult
+  nameWithType: TResult
+  fullName: TResult
+- uid: AeroDB.SurrealQueryProvider.ToListAsync*
+  commentId: Overload:AeroDB.SurrealQueryProvider.ToListAsync
+  isExternal: true
+  href: AeroDB.SurrealQueryProvider.html#AeroDB_SurrealQueryProvider_ToListAsync__1_System_Linq_Expressions_Expression_System_Threading_CancellationToken_
+  name: ToListAsync
+  nameWithType: SurrealQueryProvider.ToListAsync
+  fullName: AeroDB.SurrealQueryProvider.ToListAsync
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.List{{T}}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.List{``0}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<List<T>>
+  nameWithType: Task<List<T>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.List<T>>
+  nameWithType.vb: Task(Of List(Of T))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.List(Of T))
+  name.vb: Task(Of List(Of T))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - name: T
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: AeroDB.SurrealQueryProvider.FirstOrDefaultAsync*
+  commentId: Overload:AeroDB.SurrealQueryProvider.FirstOrDefaultAsync
+  isExternal: true
+  href: AeroDB.SurrealQueryProvider.html#AeroDB_SurrealQueryProvider_FirstOrDefaultAsync__1_System_Linq_Expressions_Expression_System_Threading_CancellationToken_
+  name: FirstOrDefaultAsync
+  nameWithType: SurrealQueryProvider.FirstOrDefaultAsync
+  fullName: AeroDB.SurrealQueryProvider.FirstOrDefaultAsync
+- uid: System.Threading.Tasks.Task{{T}}
+  commentId: T:System.Threading.Tasks.Task{``0}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<T>
+  nameWithType: Task<T>
+  fullName: System.Threading.Tasks.Task<T>
+  nameWithType.vb: Task(Of T)
+  fullName.vb: System.Threading.Tasks.Task(Of T)
+  name.vb: Task(Of T)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.SurrealQueryProvider.SingleOrDefaultAsync*
+  commentId: Overload:AeroDB.SurrealQueryProvider.SingleOrDefaultAsync
+  isExternal: true
+  href: AeroDB.SurrealQueryProvider.html#AeroDB_SurrealQueryProvider_SingleOrDefaultAsync__1_System_Linq_Expressions_Expression_System_Threading_CancellationToken_
+  name: SingleOrDefaultAsync
+  nameWithType: SurrealQueryProvider.SingleOrDefaultAsync
+  fullName: AeroDB.SurrealQueryProvider.SingleOrDefaultAsync
+- uid: AeroDB.SurrealQueryProvider.AggregateAsync*
+  commentId: Overload:AeroDB.SurrealQueryProvider.AggregateAsync
+  isExternal: true
+  href: AeroDB.SurrealQueryProvider.html#AeroDB_SurrealQueryProvider_AggregateAsync__1_System_Linq_Expressions_Expression_System_String_System_String_System_Threading_CancellationToken_
+  name: AggregateAsync
+  nameWithType: SurrealQueryProvider.AggregateAsync
+  fullName: AeroDB.SurrealQueryProvider.AggregateAsync
+- uid: System.Threading.Tasks.Task{System.Decimal}
+  commentId: T:System.Threading.Tasks.Task{System.Decimal}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<decimal>
+  nameWithType: Task<decimal>
+  fullName: System.Threading.Tasks.Task<decimal>
+  nameWithType.vb: Task(Of Decimal)
+  fullName.vb: System.Threading.Tasks.Task(Of Decimal)
+  name.vb: Task(Of Decimal)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Decimal
+    name: decimal
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.decimal
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Decimal
+    name: Decimal
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.decimal
+  - name: )
+- uid: AeroDB.SurrealQueryProvider.CountAsync*
+  commentId: Overload:AeroDB.SurrealQueryProvider.CountAsync
+  isExternal: true
+  href: AeroDB.SurrealQueryProvider.html#AeroDB_SurrealQueryProvider_CountAsync_System_Linq_Expressions_Expression_System_Threading_CancellationToken_
+  name: CountAsync
+  nameWithType: SurrealQueryProvider.CountAsync
+  fullName: AeroDB.SurrealQueryProvider.CountAsync
+- uid: System.Threading.Tasks.Task{System.Int32}
+  commentId: T:System.Threading.Tasks.Task{System.Int32}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<int>
+  nameWithType: Task<int>
+  fullName: System.Threading.Tasks.Task<int>
+  nameWithType.vb: Task(Of Integer)
+  fullName.vb: System.Threading.Tasks.Task(Of Integer)
+  name.vb: Task(Of Integer)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: AeroDB.SurrealQueryProvider.AnyAsync*
+  commentId: Overload:AeroDB.SurrealQueryProvider.AnyAsync
+  isExternal: true
+  href: AeroDB.SurrealQueryProvider.html#AeroDB_SurrealQueryProvider_AnyAsync_System_Linq_Expressions_Expression_System_Threading_CancellationToken_
+  name: AnyAsync
+  nameWithType: SurrealQueryProvider.AnyAsync
+  fullName: AeroDB.SurrealQueryProvider.AnyAsync
+- uid: System.Threading.Tasks.Task{System.Boolean}
+  commentId: T:System.Threading.Tasks.Task{System.Boolean}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<bool>
+  nameWithType: Task<bool>
+  fullName: System.Threading.Tasks.Task<bool>
+  nameWithType.vb: Task(Of Boolean)
+  fullName.vb: System.Threading.Tasks.Task(Of Boolean)
+  name.vb: Task(Of Boolean)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: AeroDB.SurrealQueryProvider.ToCommand*
+  commentId: Overload:AeroDB.SurrealQueryProvider.ToCommand
+  isExternal: true
+  href: AeroDB.SurrealQueryProvider.html#AeroDB_SurrealQueryProvider_ToCommand_System_Linq_Expressions_Expression_
+  name: ToCommand
+  nameWithType: SurrealQueryProvider.ToCommand
+  fullName: AeroDB.SurrealQueryProvider.ToCommand

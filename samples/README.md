@@ -55,7 +55,7 @@ The ported versions in this repository are also provided under the same MIT Lice
 
 ## Porting Status
 
-See [docs/marten-samples-port.md](../docs/marten-samples-port.md) for the full porting plan and progress tracking.
+See [.docs/plan/marten-samples-port.md](../.docs/plan/marten-samples-port.md) for the full porting plan and progress tracking.
 
 | Sample | Status |
 |--------|--------|

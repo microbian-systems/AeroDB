@@ -1,0 +1,2029 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.EventSourcingOptions
+  commentId: T:AeroDB.EventSourcingOptions
+  id: EventSourcingOptions
+  parent: AeroDB
+  children:
+  - AeroDB.EventSourcingOptions.#ctor
+  - AeroDB.EventSourcingOptions.AddEventType(System.Type)
+  - AeroDB.EventSourcingOptions.AddEventType``1
+  - AeroDB.EventSourcingOptions.AddEventTypes(System.Collections.Generic.IEnumerable{System.Type})
+  - AeroDB.EventSourcingOptions.AppendMode
+  - AeroDB.EventSourcingOptions.AssignTagWhere``1(System.Linq.Expressions.Expression{System.Func{AeroDB.IEvent,System.Boolean}})
+  - AeroDB.EventSourcingOptions.DataMaskingPredicate
+  - AeroDB.EventSourcingOptions.DatabaseSchemaName
+  - AeroDB.EventSourcingOptions.EnableAdvancedAsyncTracking
+  - AeroDB.EventSourcingOptions.EnableBigIntEvents
+  - AeroDB.EventSourcingOptions.EnableEventTypeIndex
+  - AeroDB.EventSourcingOptions.EnableSideEffectsOnInlineProjections
+  - AeroDB.EventSourcingOptions.EnableUniqueIndexOnEventId
+  - AeroDB.EventSourcingOptions.Enabled
+  - AeroDB.EventSourcingOptions.EventsSchemaName
+  - AeroDB.EventSourcingOptions.MapEventType(System.Type,System.String)
+  - AeroDB.EventSourcingOptions.MapEventType``1(System.String)
+  - AeroDB.EventSourcingOptions.MetadataConfig
+  - AeroDB.EventSourcingOptions.RegisterTagType``1
+  - AeroDB.EventSourcingOptions.SerializationMode
+  - AeroDB.EventSourcingOptions.StreamIdentity
+  - AeroDB.EventSourcingOptions.Subscribe(AeroDB.ISubscription)
+  - AeroDB.EventSourcingOptions.Subscribe(AeroDB.ISubscription,System.Action{AeroDB.SubscriptionOptions})
+  - AeroDB.EventSourcingOptions.Subscriptions
+  - AeroDB.EventSourcingOptions.TenancyStyle
+  - AeroDB.EventSourcingOptions.TimeProvider
+  - AeroDB.EventSourcingOptions.Triggers
+  - AeroDB.EventSourcingOptions.Upcast``1
+  - AeroDB.EventSourcingOptions.Upcast``1(System.String,System.Func{System.Object,``0})
+  - AeroDB.EventSourcingOptions.Upcasters
+  - AeroDB.EventSourcingOptions.UseIdentityMapForAggregates
+  - AeroDB.EventSourcingOptions.UseMandatoryStreamTypeDeclaration
+  langs:
+  - csharp
+  - vb
+  name: EventSourcingOptions
+  nameWithType: EventSourcingOptions
+  fullName: AeroDB.EventSourcingOptions
+  type: Class
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Configuration for AeroDB's event sourcing subsystem. Controls event storage tables, append mode (Rich/Quick), serialization mode (JSON/Binary), and event upcasting.
+  example: []
+  syntax:
+    content: public class EventSourcingOptions
+    content.vb: Public Class EventSourcingOptions
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+- uid: AeroDB.EventSourcingOptions.Subscribe(AeroDB.ISubscription)
+  commentId: M:AeroDB.EventSourcingOptions.Subscribe(AeroDB.ISubscription)
+  id: Subscribe(AeroDB.ISubscription)
+  parent: AeroDB.EventSourcingOptions
+  langs:
+  - csharp
+  - vb
+  name: Subscribe(ISubscription)
+  nameWithType: EventSourcingOptions.Subscribe(ISubscription)
+  fullName: AeroDB.EventSourcingOptions.Subscribe(AeroDB.ISubscription)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Subscribe to events matching the subscription's event types.
+
+    The subscription will be tracked and invoked by the async daemon.
+  example: []
+  syntax:
+    content: public EventSourcingOptions Subscribe(ISubscription subscription)
+    parameters:
+    - id: subscription
+      type: AeroDB.ISubscription
+      description: The subscription to register.
+    return:
+      type: AeroDB.EventSourcingOptions
+    content.vb: Public Function Subscribe(subscription As ISubscription) As EventSourcingOptions
+  overload: AeroDB.EventSourcingOptions.Subscribe*
+- uid: AeroDB.EventSourcingOptions.Subscribe(AeroDB.ISubscription,System.Action{AeroDB.SubscriptionOptions})
+  commentId: M:AeroDB.EventSourcingOptions.Subscribe(AeroDB.ISubscription,System.Action{AeroDB.SubscriptionOptions})
+  id: Subscribe(AeroDB.ISubscription,System.Action{AeroDB.SubscriptionOptions})
+  parent: AeroDB.EventSourcingOptions
+  langs:
+  - csharp
+  - vb
+  name: Subscribe(ISubscription, Action<SubscriptionOptions>)
+  nameWithType: EventSourcingOptions.Subscribe(ISubscription, Action<SubscriptionOptions>)
+  fullName: AeroDB.EventSourcingOptions.Subscribe(AeroDB.ISubscription, System.Action<AeroDB.SubscriptionOptions>)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Subscribe to events with additional configuration options.
+  example: []
+  syntax:
+    content: public EventSourcingOptions Subscribe(ISubscription subscription, Action<SubscriptionOptions> configure)
+    parameters:
+    - id: subscription
+      type: AeroDB.ISubscription
+      description: The subscription to register.
+    - id: configure
+      type: System.Action{AeroDB.SubscriptionOptions}
+      description: Action to configure subscription options.
+    return:
+      type: AeroDB.EventSourcingOptions
+    content.vb: Public Function Subscribe(subscription As ISubscription, configure As Action(Of SubscriptionOptions)) As EventSourcingOptions
+  overload: AeroDB.EventSourcingOptions.Subscribe*
+  nameWithType.vb: EventSourcingOptions.Subscribe(ISubscription, Action(Of SubscriptionOptions))
+  fullName.vb: AeroDB.EventSourcingOptions.Subscribe(AeroDB.ISubscription, System.Action(Of AeroDB.SubscriptionOptions))
+  name.vb: Subscribe(ISubscription, Action(Of SubscriptionOptions))
+- uid: AeroDB.EventSourcingOptions.Upcast``1(System.String,System.Func{System.Object,``0})
+  commentId: M:AeroDB.EventSourcingOptions.Upcast``1(System.String,System.Func{System.Object,``0})
+  id: Upcast``1(System.String,System.Func{System.Object,``0})
+  parent: AeroDB.EventSourcingOptions
+  langs:
+  - csharp
+  - vb
+  name: Upcast<T>(string, Func<object, T>)
+  nameWithType: EventSourcingOptions.Upcast<T>(string, Func<object, T>)
+  fullName: AeroDB.EventSourcingOptions.Upcast<T>(string, System.Func<object, T>)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Register an event upcaster for type migration.
+
+    When events with <code class="paramref">oldEventType</code> are deserialized, the
+
+    <code class="paramref">upcast</code> function transforms them into the new event type.
+  example: []
+  syntax:
+    content: 'public EventSourcingOptions Upcast<T>(string oldEventType, Func<object, T> upcast) where T : class'
+    parameters:
+    - id: oldEventType
+      type: System.String
+    - id: upcast
+      type: System.Func{System.Object,{T}}
+    typeParameters:
+    - id: T
+    return:
+      type: AeroDB.EventSourcingOptions
+    content.vb: Public Function Upcast(Of T As Class)(oldEventType As String, upcast As Func(Of Object, T)) As EventSourcingOptions
+  overload: AeroDB.EventSourcingOptions.Upcast*
+  nameWithType.vb: EventSourcingOptions.Upcast(Of T)(String, Func(Of Object, T))
+  fullName.vb: AeroDB.EventSourcingOptions.Upcast(Of T)(String, System.Func(Of Object, T))
+  name.vb: Upcast(Of T)(String, Func(Of Object, T))
+- uid: AeroDB.EventSourcingOptions.Upcast``1
+  commentId: M:AeroDB.EventSourcingOptions.Upcast``1
+  id: Upcast``1
+  parent: AeroDB.EventSourcingOptions
+  langs:
+  - csharp
+  - vb
+  name: Upcast<TUpcaster>()
+  nameWithType: EventSourcingOptions.Upcast<TUpcaster>()
+  fullName: AeroDB.EventSourcingOptions.Upcast<TUpcaster>()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Register an <xref href="AeroDB.IEventUpcaster" data-throw-if-not-resolved="false"></xref> via its concrete type.
+
+    The upcaster is instantiated via the parameterless constructor.
+  example: []
+  syntax:
+    content: 'public void Upcast<TUpcaster>() where TUpcaster : IEventUpcaster, new()'
+    typeParameters:
+    - id: TUpcaster
+      description: The upcaster type implementing <xref href="AeroDB.IEventUpcaster" data-throw-if-not-resolved="false"></xref> with a parameterless constructor.
+    content.vb: Public Sub Upcast(Of TUpcaster As {IEventUpcaster, New})()
+  overload: AeroDB.EventSourcingOptions.Upcast*
+  nameWithType.vb: EventSourcingOptions.Upcast(Of TUpcaster)()
+  fullName.vb: AeroDB.EventSourcingOptions.Upcast(Of TUpcaster)()
+  name.vb: Upcast(Of TUpcaster)()
+- uid: AeroDB.EventSourcingOptions.RegisterTagType``1
+  commentId: M:AeroDB.EventSourcingOptions.RegisterTagType``1
+  id: RegisterTagType``1
+  parent: AeroDB.EventSourcingOptions
+  langs:
+  - csharp
+  - vb
+  name: RegisterTagType<TTag>()
+  nameWithType: EventSourcingOptions.RegisterTagType<TTag>()
+  fullName: AeroDB.EventSourcingOptions.RegisterTagType<TTag>()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Register a tag type for batched event processing (DCB parity).
+  example: []
+  syntax:
+    content: public EventSourcingOptions RegisterTagType<TTag>()
+    typeParameters:
+    - id: TTag
+    return:
+      type: AeroDB.EventSourcingOptions
+    content.vb: Public Function RegisterTagType(Of TTag)() As EventSourcingOptions
+  overload: AeroDB.EventSourcingOptions.RegisterTagType*
+  nameWithType.vb: EventSourcingOptions.RegisterTagType(Of TTag)()
+  fullName.vb: AeroDB.EventSourcingOptions.RegisterTagType(Of TTag)()
+  name.vb: RegisterTagType(Of TTag)()
+- uid: AeroDB.EventSourcingOptions.AssignTagWhere``1(System.Linq.Expressions.Expression{System.Func{AeroDB.IEvent,System.Boolean}})
+  commentId: M:AeroDB.EventSourcingOptions.AssignTagWhere``1(System.Linq.Expressions.Expression{System.Func{AeroDB.IEvent,System.Boolean}})
+  id: AssignTagWhere``1(System.Linq.Expressions.Expression{System.Func{AeroDB.IEvent,System.Boolean}})
+  parent: AeroDB.EventSourcingOptions
+  langs:
+  - csharp
+  - vb
+  name: AssignTagWhere<TTag>(Expression<Func<IEvent, bool>>)
+  nameWithType: EventSourcingOptions.AssignTagWhere<TTag>(Expression<Func<IEvent, bool>>)
+  fullName: AeroDB.EventSourcingOptions.AssignTagWhere<TTag>(System.Linq.Expressions.Expression<System.Func<AeroDB.IEvent, bool>>)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Assign the given tag value to events matching the predicate.
+
+    Tags enable dynamic consistency boundaries for projection daemons.
+  example: []
+  syntax:
+    content: public void AssignTagWhere<TTag>(Expression<Func<IEvent, bool>> predicate)
+    parameters:
+    - id: predicate
+      type: System.Linq.Expressions.Expression{System.Func{AeroDB.IEvent,System.Boolean}}
+    typeParameters:
+    - id: TTag
+    content.vb: Public Sub AssignTagWhere(Of TTag)(predicate As Expression(Of Func(Of IEvent, Boolean)))
+  overload: AeroDB.EventSourcingOptions.AssignTagWhere*
+  nameWithType.vb: EventSourcingOptions.AssignTagWhere(Of TTag)(Expression(Of Func(Of IEvent, Boolean)))
+  fullName.vb: AeroDB.EventSourcingOptions.AssignTagWhere(Of TTag)(System.Linq.Expressions.Expression(Of System.Func(Of AeroDB.IEvent, Boolean)))
+  name.vb: AssignTagWhere(Of TTag)(Expression(Of Func(Of IEvent, Boolean)))
+- uid: AeroDB.EventSourcingOptions.AddEventType``1
+  commentId: M:AeroDB.EventSourcingOptions.AddEventType``1
+  id: AddEventType``1
+  parent: AeroDB.EventSourcingOptions
+  langs:
+  - csharp
+  - vb
+  name: AddEventType<TEvent>()
+  nameWithType: EventSourcingOptions.AddEventType<TEvent>()
+  fullName: AeroDB.EventSourcingOptions.AddEventType<TEvent>()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Register an event type for schema awareness.
+  example: []
+  syntax:
+    content: public EventSourcingOptions AddEventType<TEvent>()
+    typeParameters:
+    - id: TEvent
+    return:
+      type: AeroDB.EventSourcingOptions
+    content.vb: Public Function AddEventType(Of TEvent)() As EventSourcingOptions
+  overload: AeroDB.EventSourcingOptions.AddEventType*
+  nameWithType.vb: EventSourcingOptions.AddEventType(Of TEvent)()
+  fullName.vb: AeroDB.EventSourcingOptions.AddEventType(Of TEvent)()
+  name.vb: AddEventType(Of TEvent)()
+- uid: AeroDB.EventSourcingOptions.AddEventType(System.Type)
+  commentId: M:AeroDB.EventSourcingOptions.AddEventType(System.Type)
+  id: AddEventType(System.Type)
+  parent: AeroDB.EventSourcingOptions
+  langs:
+  - csharp
+  - vb
+  name: AddEventType(Type)
+  nameWithType: EventSourcingOptions.AddEventType(Type)
+  fullName: AeroDB.EventSourcingOptions.AddEventType(System.Type)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Register an event type for schema awareness.
+  example: []
+  syntax:
+    content: public EventSourcingOptions AddEventType(Type eventType)
+    parameters:
+    - id: eventType
+      type: System.Type
+    return:
+      type: AeroDB.EventSourcingOptions
+    content.vb: Public Function AddEventType(eventType As Type) As EventSourcingOptions
+  overload: AeroDB.EventSourcingOptions.AddEventType*
+- uid: AeroDB.EventSourcingOptions.AddEventTypes(System.Collections.Generic.IEnumerable{System.Type})
+  commentId: M:AeroDB.EventSourcingOptions.AddEventTypes(System.Collections.Generic.IEnumerable{System.Type})
+  id: AddEventTypes(System.Collections.Generic.IEnumerable{System.Type})
+  parent: AeroDB.EventSourcingOptions
+  langs:
+  - csharp
+  - vb
+  name: AddEventTypes(IEnumerable<Type>)
+  nameWithType: EventSourcingOptions.AddEventTypes(IEnumerable<Type>)
+  fullName: AeroDB.EventSourcingOptions.AddEventTypes(System.Collections.Generic.IEnumerable<System.Type>)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Register multiple event types for schema awareness.
+  example: []
+  syntax:
+    content: public EventSourcingOptions AddEventTypes(IEnumerable<Type> types)
+    parameters:
+    - id: types
+      type: System.Collections.Generic.IEnumerable{System.Type}
+    return:
+      type: AeroDB.EventSourcingOptions
+    content.vb: Public Function AddEventTypes(types As IEnumerable(Of Type)) As EventSourcingOptions
+  overload: AeroDB.EventSourcingOptions.AddEventTypes*
+  nameWithType.vb: EventSourcingOptions.AddEventTypes(IEnumerable(Of Type))
+  fullName.vb: AeroDB.EventSourcingOptions.AddEventTypes(System.Collections.Generic.IEnumerable(Of System.Type))
+  name.vb: AddEventTypes(IEnumerable(Of Type))
+- uid: AeroDB.EventSourcingOptions.MapEventType``1(System.String)
+  commentId: M:AeroDB.EventSourcingOptions.MapEventType``1(System.String)
+  id: MapEventType``1(System.String)
+  parent: AeroDB.EventSourcingOptions
+  langs:
+  - csharp
+  - vb
+  name: MapEventType<TEvent>(string)
+  nameWithType: EventSourcingOptions.MapEventType<TEvent>(string)
+  fullName: AeroDB.EventSourcingOptions.MapEventType<TEvent>(string)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Map an event type to a custom name for storage.
+  example: []
+  syntax:
+    content: public EventSourcingOptions MapEventType<TEvent>(string eventTypeName)
+    parameters:
+    - id: eventTypeName
+      type: System.String
+    typeParameters:
+    - id: TEvent
+    return:
+      type: AeroDB.EventSourcingOptions
+    content.vb: Public Function MapEventType(Of TEvent)(eventTypeName As String) As EventSourcingOptions
+  overload: AeroDB.EventSourcingOptions.MapEventType*
+  nameWithType.vb: EventSourcingOptions.MapEventType(Of TEvent)(String)
+  fullName.vb: AeroDB.EventSourcingOptions.MapEventType(Of TEvent)(String)
+  name.vb: MapEventType(Of TEvent)(String)
+- uid: AeroDB.EventSourcingOptions.MapEventType(System.Type,System.String)
+  commentId: M:AeroDB.EventSourcingOptions.MapEventType(System.Type,System.String)
+  id: MapEventType(System.Type,System.String)
+  parent: AeroDB.EventSourcingOptions
+  langs:
+  - csharp
+  - vb
+  name: MapEventType(Type, string)
+  nameWithType: EventSourcingOptions.MapEventType(Type, string)
+  fullName: AeroDB.EventSourcingOptions.MapEventType(System.Type, string)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Map an event type to a custom name for storage.
+  example: []
+  syntax:
+    content: public EventSourcingOptions MapEventType(Type eventType, string eventTypeName)
+    parameters:
+    - id: eventType
+      type: System.Type
+    - id: eventTypeName
+      type: System.String
+    return:
+      type: AeroDB.EventSourcingOptions
+    content.vb: Public Function MapEventType(eventType As Type, eventTypeName As String) As EventSourcingOptions
+  overload: AeroDB.EventSourcingOptions.MapEventType*
+  nameWithType.vb: EventSourcingOptions.MapEventType(Type, String)
+  fullName.vb: AeroDB.EventSourcingOptions.MapEventType(System.Type, String)
+  name.vb: MapEventType(Type, String)
+- uid: AeroDB.EventSourcingOptions.#ctor
+  commentId: M:AeroDB.EventSourcingOptions.#ctor
+  id: '#ctor'
+  parent: AeroDB.EventSourcingOptions
+  langs:
+  - csharp
+  - vb
+  name: EventSourcingOptions()
+  nameWithType: EventSourcingOptions.EventSourcingOptions()
+  fullName: AeroDB.EventSourcingOptions.EventSourcingOptions()
+  type: Constructor
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public EventSourcingOptions()
+    content.vb: Public Sub New()
+  overload: AeroDB.EventSourcingOptions.#ctor*
+  nameWithType.vb: EventSourcingOptions.New()
+  fullName.vb: AeroDB.EventSourcingOptions.New()
+  name.vb: New()
+- uid: AeroDB.EventSourcingOptions.Enabled
+  commentId: P:AeroDB.EventSourcingOptions.Enabled
+  id: Enabled
+  parent: AeroDB.EventSourcingOptions
+  langs:
+  - csharp
+  - vb
+  name: Enabled
+  nameWithType: EventSourcingOptions.Enabled
+  fullName: AeroDB.EventSourcingOptions.Enabled
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public bool Enabled { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property Enabled As Boolean
+  overload: AeroDB.EventSourcingOptions.Enabled*
+- uid: AeroDB.EventSourcingOptions.SerializationMode
+  commentId: P:AeroDB.EventSourcingOptions.SerializationMode
+  id: SerializationMode
+  parent: AeroDB.EventSourcingOptions
+  langs:
+  - csharp
+  - vb
+  name: SerializationMode
+  nameWithType: EventSourcingOptions.SerializationMode
+  fullName: AeroDB.EventSourcingOptions.SerializationMode
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Serialization mode for event data. Default is JSON.
+  example: []
+  syntax:
+    content: public EventSerializationMode SerializationMode { get; set; }
+    parameters: []
+    return:
+      type: AeroDB.EventSerializationMode
+    content.vb: Public Property SerializationMode As EventSerializationMode
+  overload: AeroDB.EventSourcingOptions.SerializationMode*
+- uid: AeroDB.EventSourcingOptions.AppendMode
+  commentId: P:AeroDB.EventSourcingOptions.AppendMode
+  id: AppendMode
+  parent: AeroDB.EventSourcingOptions
+  langs:
+  - csharp
+  - vb
+  name: AppendMode
+  nameWithType: EventSourcingOptions.AppendMode
+  fullName: AeroDB.EventSourcingOptions.AppendMode
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Append mode for event store operations. Default is <xref href="AeroDB.EventAppendMode.Rich" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: public EventAppendMode AppendMode { get; set; }
+    parameters: []
+    return:
+      type: AeroDB.EventAppendMode
+    content.vb: Public Property AppendMode As EventAppendMode
+  overload: AeroDB.EventSourcingOptions.AppendMode*
+- uid: AeroDB.EventSourcingOptions.DatabaseSchemaName
+  commentId: P:AeroDB.EventSourcingOptions.DatabaseSchemaName
+  id: DatabaseSchemaName
+  parent: AeroDB.EventSourcingOptions
+  langs:
+  - csharp
+  - vb
+  name: DatabaseSchemaName
+  nameWithType: EventSourcingOptions.DatabaseSchemaName
+  fullName: AeroDB.EventSourcingOptions.DatabaseSchemaName
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Custom database/schema name for event store tables.
+
+    Default is null (uses the main database).
+  example: []
+  syntax:
+    content: public string? DatabaseSchemaName { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property DatabaseSchemaName As String
+  overload: AeroDB.EventSourcingOptions.DatabaseSchemaName*
+- uid: AeroDB.EventSourcingOptions.EventsSchemaName
+  commentId: P:AeroDB.EventSourcingOptions.EventsSchemaName
+  id: EventsSchemaName
+  parent: AeroDB.EventSourcingOptions
+  langs:
+  - csharp
+  - vb
+  name: EventsSchemaName
+  nameWithType: EventSourcingOptions.EventsSchemaName
+  fullName: AeroDB.EventSourcingOptions.EventsSchemaName
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Custom name for the event store database/schema.
+
+    Default is null (same as DatabaseSchemaName).
+  example: []
+  syntax:
+    content: public string? EventsSchemaName { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property EventsSchemaName As String
+  overload: AeroDB.EventSourcingOptions.EventsSchemaName*
+- uid: AeroDB.EventSourcingOptions.Triggers
+  commentId: P:AeroDB.EventSourcingOptions.Triggers
+  id: Triggers
+  parent: AeroDB.EventSourcingOptions
+  langs:
+  - csharp
+  - vb
+  name: Triggers
+  nameWithType: EventSourcingOptions.Triggers
+  fullName: AeroDB.EventSourcingOptions.Triggers
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Configuration for SurrealDB native event triggers (DEFINE EVENT).
+
+    These are distinct from AeroDB's Marten-style event sourcing — they fire
+
+    at the database level on CREATE/UPDATE/DELETE operations.
+  example: []
+  syntax:
+    content: public EventTriggerOptions Triggers { get; }
+    parameters: []
+    return:
+      type: AeroDB.EventTriggerOptions
+    content.vb: Public ReadOnly Property Triggers As EventTriggerOptions
+  overload: AeroDB.EventSourcingOptions.Triggers*
+- uid: AeroDB.EventSourcingOptions.MetadataConfig
+  commentId: P:AeroDB.EventSourcingOptions.MetadataConfig
+  id: MetadataConfig
+  parent: AeroDB.EventSourcingOptions
+  langs:
+  - csharp
+  - vb
+  name: MetadataConfig
+  nameWithType: EventSourcingOptions.MetadataConfig
+  fullName: AeroDB.EventSourcingOptions.MetadataConfig
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Configuration for event metadata columns (CorrelationId, CausationId, Headers).
+  example: []
+  syntax:
+    content: public MetadataConfig MetadataConfig { get; }
+    parameters: []
+    return:
+      type: AeroDB.MetadataConfig
+    content.vb: Public ReadOnly Property MetadataConfig As MetadataConfig
+  overload: AeroDB.EventSourcingOptions.MetadataConfig*
+- uid: AeroDB.EventSourcingOptions.Upcasters
+  commentId: P:AeroDB.EventSourcingOptions.Upcasters
+  id: Upcasters
+  parent: AeroDB.EventSourcingOptions
+  langs:
+  - csharp
+  - vb
+  name: Upcasters
+  nameWithType: EventSourcingOptions.Upcasters
+  fullName: AeroDB.EventSourcingOptions.Upcasters
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Event upcasters for migrating old event types to new types during deserialization.
+  example: []
+  syntax:
+    content: public List<IEventUpcaster> Upcasters { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.List{AeroDB.IEventUpcaster}
+    content.vb: Public ReadOnly Property Upcasters As List(Of IEventUpcaster)
+  overload: AeroDB.EventSourcingOptions.Upcasters*
+- uid: AeroDB.EventSourcingOptions.DataMaskingPredicate
+  commentId: P:AeroDB.EventSourcingOptions.DataMaskingPredicate
+  id: DataMaskingPredicate
+  parent: AeroDB.EventSourcingOptions
+  langs:
+  - csharp
+  - vb
+  name: DataMaskingPredicate
+  nameWithType: EventSourcingOptions.DataMaskingPredicate
+  fullName: AeroDB.EventSourcingOptions.DataMaskingPredicate
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Optional predicate to mask event data for GDPR/redaction purposes.
+
+    When set, events matching the predicate will have their data replaced
+
+    with null before storage in the database.
+  example: []
+  syntax:
+    content: public Func<IEvent, bool>? DataMaskingPredicate { get; set; }
+    parameters: []
+    return:
+      type: System.Func{AeroDB.IEvent,System.Boolean}
+    content.vb: Public Property DataMaskingPredicate As Func(Of IEvent, Boolean)
+  overload: AeroDB.EventSourcingOptions.DataMaskingPredicate*
+- uid: AeroDB.EventSourcingOptions.Subscriptions
+  commentId: P:AeroDB.EventSourcingOptions.Subscriptions
+  id: Subscriptions
+  parent: AeroDB.EventSourcingOptions
+  langs:
+  - csharp
+  - vb
+  name: Subscriptions
+  nameWithType: EventSourcingOptions.Subscriptions
+  fullName: AeroDB.EventSourcingOptions.Subscriptions
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Registered event subscriptions. Each subscription processes matching events
+
+    as they are appended to streams, tracked by <xref href="AeroDB.ISubscription.SubscriptionName" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: public List<ISubscription> Subscriptions { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.List{AeroDB.ISubscription}
+    content.vb: Public ReadOnly Property Subscriptions As List(Of ISubscription)
+  overload: AeroDB.EventSourcingOptions.Subscriptions*
+- uid: AeroDB.EventSourcingOptions.StreamIdentity
+  commentId: P:AeroDB.EventSourcingOptions.StreamIdentity
+  id: StreamIdentity
+  parent: AeroDB.EventSourcingOptions
+  langs:
+  - csharp
+  - vb
+  name: StreamIdentity
+  nameWithType: EventSourcingOptions.StreamIdentity
+  fullName: AeroDB.EventSourcingOptions.StreamIdentity
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: 'The stream identity mode: Guid or string based stream IDs.'
+  example: []
+  syntax:
+    content: public StreamIdentity StreamIdentity { get; set; }
+    parameters: []
+    return:
+      type: AeroDB.StreamIdentity
+    content.vb: Public Property StreamIdentity As StreamIdentity
+  overload: AeroDB.EventSourcingOptions.StreamIdentity*
+- uid: AeroDB.EventSourcingOptions.TenancyStyle
+  commentId: P:AeroDB.EventSourcingOptions.TenancyStyle
+  id: TenancyStyle
+  parent: AeroDB.EventSourcingOptions
+  langs:
+  - csharp
+  - vb
+  name: TenancyStyle
+  nameWithType: EventSourcingOptions.TenancyStyle
+  fullName: AeroDB.EventSourcingOptions.TenancyStyle
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Event tenancy style.
+  example: []
+  syntax:
+    content: public TenancyStyle TenancyStyle { get; set; }
+    parameters: []
+    return:
+      type: AeroDB.TenancyStyle
+    content.vb: Public Property TenancyStyle As TenancyStyle
+  overload: AeroDB.EventSourcingOptions.TenancyStyle*
+- uid: AeroDB.EventSourcingOptions.EnableSideEffectsOnInlineProjections
+  commentId: P:AeroDB.EventSourcingOptions.EnableSideEffectsOnInlineProjections
+  id: EnableSideEffectsOnInlineProjections
+  parent: AeroDB.EventSourcingOptions
+  langs:
+  - csharp
+  - vb
+  name: EnableSideEffectsOnInlineProjections
+  nameWithType: EventSourcingOptions.EnableSideEffectsOnInlineProjections
+  fullName: AeroDB.EventSourcingOptions.EnableSideEffectsOnInlineProjections
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: When true, inline projections can queue side-effect operations.
+  example: []
+  syntax:
+    content: public bool EnableSideEffectsOnInlineProjections { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property EnableSideEffectsOnInlineProjections As Boolean
+  overload: AeroDB.EventSourcingOptions.EnableSideEffectsOnInlineProjections*
+- uid: AeroDB.EventSourcingOptions.UseIdentityMapForAggregates
+  commentId: P:AeroDB.EventSourcingOptions.UseIdentityMapForAggregates
+  id: UseIdentityMapForAggregates
+  parent: AeroDB.EventSourcingOptions
+  langs:
+  - csharp
+  - vb
+  name: UseIdentityMapForAggregates
+  nameWithType: EventSourcingOptions.UseIdentityMapForAggregates
+  fullName: AeroDB.EventSourcingOptions.UseIdentityMapForAggregates
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: When true, aggregates are tracked through an identity map to avoid re-application.
+  example: []
+  syntax:
+    content: public bool UseIdentityMapForAggregates { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property UseIdentityMapForAggregates As Boolean
+  overload: AeroDB.EventSourcingOptions.UseIdentityMapForAggregates*
+- uid: AeroDB.EventSourcingOptions.EnableUniqueIndexOnEventId
+  commentId: P:AeroDB.EventSourcingOptions.EnableUniqueIndexOnEventId
+  id: EnableUniqueIndexOnEventId
+  parent: AeroDB.EventSourcingOptions
+  langs:
+  - csharp
+  - vb
+  name: EnableUniqueIndexOnEventId
+  nameWithType: EventSourcingOptions.EnableUniqueIndexOnEventId
+  fullName: AeroDB.EventSourcingOptions.EnableUniqueIndexOnEventId
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: When true, a unique index is created on mt_events.event_id.
+  example: []
+  syntax:
+    content: public bool EnableUniqueIndexOnEventId { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property EnableUniqueIndexOnEventId As Boolean
+  overload: AeroDB.EventSourcingOptions.EnableUniqueIndexOnEventId*
+- uid: AeroDB.EventSourcingOptions.EnableEventTypeIndex
+  commentId: P:AeroDB.EventSourcingOptions.EnableEventTypeIndex
+  id: EnableEventTypeIndex
+  parent: AeroDB.EventSourcingOptions
+  langs:
+  - csharp
+  - vb
+  name: EnableEventTypeIndex
+  nameWithType: EventSourcingOptions.EnableEventTypeIndex
+  fullName: AeroDB.EventSourcingOptions.EnableEventTypeIndex
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: When true, a composite index (type, seq_id) is created for event lookups.
+  example: []
+  syntax:
+    content: public bool EnableEventTypeIndex { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property EnableEventTypeIndex As Boolean
+  overload: AeroDB.EventSourcingOptions.EnableEventTypeIndex*
+- uid: AeroDB.EventSourcingOptions.EnableBigIntEvents
+  commentId: P:AeroDB.EventSourcingOptions.EnableBigIntEvents
+  id: EnableBigIntEvents
+  parent: AeroDB.EventSourcingOptions
+  langs:
+  - csharp
+  - vb
+  name: EnableBigIntEvents
+  nameWithType: EventSourcingOptions.EnableBigIntEvents
+  fullName: AeroDB.EventSourcingOptions.EnableBigIntEvents
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: When true, event versions and sequences use 64-bit integers.
+  example: []
+  syntax:
+    content: public bool EnableBigIntEvents { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property EnableBigIntEvents As Boolean
+  overload: AeroDB.EventSourcingOptions.EnableBigIntEvents*
+- uid: AeroDB.EventSourcingOptions.UseMandatoryStreamTypeDeclaration
+  commentId: P:AeroDB.EventSourcingOptions.UseMandatoryStreamTypeDeclaration
+  id: UseMandatoryStreamTypeDeclaration
+  parent: AeroDB.EventSourcingOptions
+  langs:
+  - csharp
+  - vb
+  name: UseMandatoryStreamTypeDeclaration
+  nameWithType: EventSourcingOptions.UseMandatoryStreamTypeDeclaration
+  fullName: AeroDB.EventSourcingOptions.UseMandatoryStreamTypeDeclaration
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: When true, streams must be declared with a known aggregate type before use.
+  example: []
+  syntax:
+    content: public bool UseMandatoryStreamTypeDeclaration { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property UseMandatoryStreamTypeDeclaration As Boolean
+  overload: AeroDB.EventSourcingOptions.UseMandatoryStreamTypeDeclaration*
+- uid: AeroDB.EventSourcingOptions.TimeProvider
+  commentId: P:AeroDB.EventSourcingOptions.TimeProvider
+  id: TimeProvider
+  parent: AeroDB.EventSourcingOptions
+  langs:
+  - csharp
+  - vb
+  name: TimeProvider
+  nameWithType: EventSourcingOptions.TimeProvider
+  fullName: AeroDB.EventSourcingOptions.TimeProvider
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Custom time provider for event timestamps. Defaults to DateTimeOffset.UtcNow.
+  example: []
+  syntax:
+    content: public TimeProvider? TimeProvider { get; set; }
+    parameters: []
+    return:
+      type: System.TimeProvider
+    content.vb: Public Property TimeProvider As TimeProvider
+  overload: AeroDB.EventSourcingOptions.TimeProvider*
+- uid: AeroDB.EventSourcingOptions.EnableAdvancedAsyncTracking
+  commentId: P:AeroDB.EventSourcingOptions.EnableAdvancedAsyncTracking
+  id: EnableAdvancedAsyncTracking
+  parent: AeroDB.EventSourcingOptions
+  langs:
+  - csharp
+  - vb
+  name: EnableAdvancedAsyncTracking
+  nameWithType: EventSourcingOptions.EnableAdvancedAsyncTracking
+  fullName: AeroDB.EventSourcingOptions.EnableAdvancedAsyncTracking
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/StoreOptions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Enable advanced async projection tracking via the daemon.
+  example: []
+  syntax:
+    content: public bool EnableAdvancedAsyncTracking { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property EnableAdvancedAsyncTracking As Boolean
+  overload: AeroDB.EventSourcingOptions.EnableAdvancedAsyncTracking*
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AeroDB.EventSourcingOptions.Subscribe*
+  commentId: Overload:AeroDB.EventSourcingOptions.Subscribe
+  isExternal: true
+  href: AeroDB.EventSourcingOptions.html#AeroDB_EventSourcingOptions_Subscribe_AeroDB_ISubscription_
+  name: Subscribe
+  nameWithType: EventSourcingOptions.Subscribe
+  fullName: AeroDB.EventSourcingOptions.Subscribe
+- uid: AeroDB.ISubscription
+  commentId: T:AeroDB.ISubscription
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.ISubscription.html
+  name: ISubscription
+  nameWithType: ISubscription
+  fullName: AeroDB.ISubscription
+- uid: AeroDB.EventSourcingOptions
+  commentId: T:AeroDB.EventSourcingOptions
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.EventSourcingOptions.html
+  name: EventSourcingOptions
+  nameWithType: EventSourcingOptions
+  fullName: AeroDB.EventSourcingOptions
+- uid: System.Action{AeroDB.SubscriptionOptions}
+  commentId: T:System.Action{AeroDB.SubscriptionOptions}
+  parent: System
+  definition: System.Action`1
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<SubscriptionOptions>
+  nameWithType: Action<SubscriptionOptions>
+  fullName: System.Action<AeroDB.SubscriptionOptions>
+  nameWithType.vb: Action(Of SubscriptionOptions)
+  fullName.vb: System.Action(Of AeroDB.SubscriptionOptions)
+  name.vb: Action(Of SubscriptionOptions)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: AeroDB.SubscriptionOptions
+    name: SubscriptionOptions
+    isExternal: true
+    href: AeroDB.SubscriptionOptions.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.SubscriptionOptions
+    name: SubscriptionOptions
+    isExternal: true
+    href: AeroDB.SubscriptionOptions.html
+  - name: )
+- uid: System.Action`1
+  commentId: T:System.Action`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<T>
+  nameWithType: Action<T>
+  fullName: System.Action<T>
+  nameWithType.vb: Action(Of T)
+  fullName.vb: System.Action(Of T)
+  name.vb: Action(Of T)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.EventSourcingOptions.Upcast*
+  commentId: Overload:AeroDB.EventSourcingOptions.Upcast
+  isExternal: true
+  href: AeroDB.EventSourcingOptions.html#AeroDB_EventSourcingOptions_Upcast__1_System_String_System_Func_System_Object___0__
+  name: Upcast
+  nameWithType: EventSourcingOptions.Upcast
+  fullName: AeroDB.EventSourcingOptions.Upcast
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Func{System.Object,{T}}
+  commentId: T:System.Func{System.Object,``0}
+  parent: System
+  definition: System.Func`2
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<object, T>
+  nameWithType: Func<object, T>
+  fullName: System.Func<object, T>
+  nameWithType.vb: Func(Of Object, T)
+  fullName.vb: System.Func(Of Object, T)
+  name.vb: Func(Of Object, T)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Func`2
+  commentId: T:System.Func`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<T, TResult>
+  nameWithType: Func<T, TResult>
+  fullName: System.Func<T, TResult>
+  nameWithType.vb: Func(Of T, TResult)
+  fullName.vb: System.Func(Of T, TResult)
+  name.vb: Func(Of T, TResult)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: AeroDB.IEventUpcaster
+  commentId: T:AeroDB.IEventUpcaster
+  isExternal: true
+  href: AeroDB.IEventUpcaster.html
+  name: IEventUpcaster
+  nameWithType: IEventUpcaster
+  fullName: AeroDB.IEventUpcaster
+- uid: AeroDB.EventSourcingOptions.RegisterTagType*
+  commentId: Overload:AeroDB.EventSourcingOptions.RegisterTagType
+  isExternal: true
+  href: AeroDB.EventSourcingOptions.html#AeroDB_EventSourcingOptions_RegisterTagType__1
+  name: RegisterTagType
+  nameWithType: EventSourcingOptions.RegisterTagType
+  fullName: AeroDB.EventSourcingOptions.RegisterTagType
+- uid: AeroDB.EventSourcingOptions.AssignTagWhere*
+  commentId: Overload:AeroDB.EventSourcingOptions.AssignTagWhere
+  isExternal: true
+  href: AeroDB.EventSourcingOptions.html#AeroDB_EventSourcingOptions_AssignTagWhere__1_System_Linq_Expressions_Expression_System_Func_AeroDB_IEvent_System_Boolean___
+  name: AssignTagWhere
+  nameWithType: EventSourcingOptions.AssignTagWhere
+  fullName: AeroDB.EventSourcingOptions.AssignTagWhere
+- uid: System.Linq.Expressions.Expression{System.Func{AeroDB.IEvent,System.Boolean}}
+  commentId: T:System.Linq.Expressions.Expression{System.Func{AeroDB.IEvent,System.Boolean}}
+  parent: System.Linq.Expressions
+  definition: System.Linq.Expressions.Expression`1
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  name: Expression<Func<IEvent, bool>>
+  nameWithType: Expression<Func<IEvent, bool>>
+  fullName: System.Linq.Expressions.Expression<System.Func<AeroDB.IEvent, bool>>
+  nameWithType.vb: Expression(Of Func(Of IEvent, Boolean))
+  fullName.vb: System.Linq.Expressions.Expression(Of System.Func(Of AeroDB.IEvent, Boolean))
+  name.vb: Expression(Of Func(Of IEvent, Boolean))
+  spec.csharp:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: AeroDB.IEvent
+    name: IEvent
+    isExternal: true
+    href: AeroDB.IEvent.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.IEvent
+    name: IEvent
+    isExternal: true
+    href: AeroDB.IEvent.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  - name: )
+- uid: System.Linq.Expressions.Expression`1
+  commentId: T:System.Linq.Expressions.Expression`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  name: Expression<TDelegate>
+  nameWithType: Expression<TDelegate>
+  fullName: System.Linq.Expressions.Expression<TDelegate>
+  nameWithType.vb: Expression(Of TDelegate)
+  fullName.vb: System.Linq.Expressions.Expression(Of TDelegate)
+  name.vb: Expression(Of TDelegate)
+  spec.csharp:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - name: TDelegate
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TDelegate
+  - name: )
+- uid: System.Linq.Expressions
+  commentId: N:System.Linq.Expressions
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Linq.Expressions
+  nameWithType: System.Linq.Expressions
+  fullName: System.Linq.Expressions
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Linq
+    name: Linq
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq
+  - name: .
+  - uid: System.Linq.Expressions
+    name: Expressions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Linq
+    name: Linq
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq
+  - name: .
+  - uid: System.Linq.Expressions
+    name: Expressions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions
+- uid: AeroDB.EventSourcingOptions.AddEventType*
+  commentId: Overload:AeroDB.EventSourcingOptions.AddEventType
+  isExternal: true
+  href: AeroDB.EventSourcingOptions.html#AeroDB_EventSourcingOptions_AddEventType__1
+  name: AddEventType
+  nameWithType: EventSourcingOptions.AddEventType
+  fullName: AeroDB.EventSourcingOptions.AddEventType
+- uid: System.Type
+  commentId: T:System.Type
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.type
+  name: Type
+  nameWithType: Type
+  fullName: System.Type
+- uid: AeroDB.EventSourcingOptions.AddEventTypes*
+  commentId: Overload:AeroDB.EventSourcingOptions.AddEventTypes
+  isExternal: true
+  href: AeroDB.EventSourcingOptions.html#AeroDB_EventSourcingOptions_AddEventTypes_System_Collections_Generic_IEnumerable_System_Type__
+  name: AddEventTypes
+  nameWithType: EventSourcingOptions.AddEventTypes
+  fullName: AeroDB.EventSourcingOptions.AddEventTypes
+- uid: System.Collections.Generic.IEnumerable{System.Type}
+  commentId: T:System.Collections.Generic.IEnumerable{System.Type}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<Type>
+  nameWithType: IEnumerable<Type>
+  fullName: System.Collections.Generic.IEnumerable<System.Type>
+  nameWithType.vb: IEnumerable(Of Type)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of System.Type)
+  name.vb: IEnumerable(Of Type)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: AeroDB.EventSourcingOptions.MapEventType*
+  commentId: Overload:AeroDB.EventSourcingOptions.MapEventType
+  isExternal: true
+  href: AeroDB.EventSourcingOptions.html#AeroDB_EventSourcingOptions_MapEventType__1_System_String_
+  name: MapEventType
+  nameWithType: EventSourcingOptions.MapEventType
+  fullName: AeroDB.EventSourcingOptions.MapEventType
+- uid: AeroDB.EventSourcingOptions.#ctor*
+  commentId: Overload:AeroDB.EventSourcingOptions.#ctor
+  isExternal: true
+  href: AeroDB.EventSourcingOptions.html#AeroDB_EventSourcingOptions__ctor
+  name: EventSourcingOptions
+  nameWithType: EventSourcingOptions.EventSourcingOptions
+  fullName: AeroDB.EventSourcingOptions.EventSourcingOptions
+  nameWithType.vb: EventSourcingOptions.New
+  fullName.vb: AeroDB.EventSourcingOptions.New
+  name.vb: New
+- uid: AeroDB.EventSourcingOptions.Enabled*
+  commentId: Overload:AeroDB.EventSourcingOptions.Enabled
+  isExternal: true
+  href: AeroDB.EventSourcingOptions.html#AeroDB_EventSourcingOptions_Enabled
+  name: Enabled
+  nameWithType: EventSourcingOptions.Enabled
+  fullName: AeroDB.EventSourcingOptions.Enabled
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: AeroDB.EventSourcingOptions.SerializationMode*
+  commentId: Overload:AeroDB.EventSourcingOptions.SerializationMode
+  isExternal: true
+  href: AeroDB.EventSourcingOptions.html#AeroDB_EventSourcingOptions_SerializationMode
+  name: SerializationMode
+  nameWithType: EventSourcingOptions.SerializationMode
+  fullName: AeroDB.EventSourcingOptions.SerializationMode
+- uid: AeroDB.EventSerializationMode
+  commentId: T:AeroDB.EventSerializationMode
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.EventSerializationMode.html
+  name: EventSerializationMode
+  nameWithType: EventSerializationMode
+  fullName: AeroDB.EventSerializationMode
+- uid: AeroDB.EventAppendMode.Rich
+  commentId: F:AeroDB.EventAppendMode.Rich
+  isExternal: true
+  href: AeroDB.EventAppendMode.html#AeroDB_EventAppendMode_Rich
+  name: Rich
+  nameWithType: EventAppendMode.Rich
+  fullName: AeroDB.EventAppendMode.Rich
+- uid: AeroDB.EventSourcingOptions.AppendMode*
+  commentId: Overload:AeroDB.EventSourcingOptions.AppendMode
+  isExternal: true
+  href: AeroDB.EventSourcingOptions.html#AeroDB_EventSourcingOptions_AppendMode
+  name: AppendMode
+  nameWithType: EventSourcingOptions.AppendMode
+  fullName: AeroDB.EventSourcingOptions.AppendMode
+- uid: AeroDB.EventAppendMode
+  commentId: T:AeroDB.EventAppendMode
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.EventAppendMode.html
+  name: EventAppendMode
+  nameWithType: EventAppendMode
+  fullName: AeroDB.EventAppendMode
+- uid: AeroDB.EventSourcingOptions.DatabaseSchemaName*
+  commentId: Overload:AeroDB.EventSourcingOptions.DatabaseSchemaName
+  isExternal: true
+  href: AeroDB.EventSourcingOptions.html#AeroDB_EventSourcingOptions_DatabaseSchemaName
+  name: DatabaseSchemaName
+  nameWithType: EventSourcingOptions.DatabaseSchemaName
+  fullName: AeroDB.EventSourcingOptions.DatabaseSchemaName
+- uid: AeroDB.EventSourcingOptions.EventsSchemaName*
+  commentId: Overload:AeroDB.EventSourcingOptions.EventsSchemaName
+  isExternal: true
+  href: AeroDB.EventSourcingOptions.html#AeroDB_EventSourcingOptions_EventsSchemaName
+  name: EventsSchemaName
+  nameWithType: EventSourcingOptions.EventsSchemaName
+  fullName: AeroDB.EventSourcingOptions.EventsSchemaName
+- uid: AeroDB.EventSourcingOptions.Triggers*
+  commentId: Overload:AeroDB.EventSourcingOptions.Triggers
+  isExternal: true
+  href: AeroDB.EventSourcingOptions.html#AeroDB_EventSourcingOptions_Triggers
+  name: Triggers
+  nameWithType: EventSourcingOptions.Triggers
+  fullName: AeroDB.EventSourcingOptions.Triggers
+- uid: AeroDB.EventTriggerOptions
+  commentId: T:AeroDB.EventTriggerOptions
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.EventTriggerOptions.html
+  name: EventTriggerOptions
+  nameWithType: EventTriggerOptions
+  fullName: AeroDB.EventTriggerOptions
+- uid: AeroDB.EventSourcingOptions.MetadataConfig*
+  commentId: Overload:AeroDB.EventSourcingOptions.MetadataConfig
+  isExternal: true
+  href: AeroDB.EventSourcingOptions.html#AeroDB_EventSourcingOptions_MetadataConfig
+  name: MetadataConfig
+  nameWithType: EventSourcingOptions.MetadataConfig
+  fullName: AeroDB.EventSourcingOptions.MetadataConfig
+- uid: AeroDB.MetadataConfig
+  commentId: T:AeroDB.MetadataConfig
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.MetadataConfig.html
+  name: MetadataConfig
+  nameWithType: MetadataConfig
+  fullName: AeroDB.MetadataConfig
+- uid: AeroDB.EventSourcingOptions.Upcasters*
+  commentId: Overload:AeroDB.EventSourcingOptions.Upcasters
+  isExternal: true
+  href: AeroDB.EventSourcingOptions.html#AeroDB_EventSourcingOptions_Upcasters
+  name: Upcasters
+  nameWithType: EventSourcingOptions.Upcasters
+  fullName: AeroDB.EventSourcingOptions.Upcasters
+- uid: System.Collections.Generic.List{AeroDB.IEventUpcaster}
+  commentId: T:System.Collections.Generic.List{AeroDB.IEventUpcaster}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<IEventUpcaster>
+  nameWithType: List<IEventUpcaster>
+  fullName: System.Collections.Generic.List<AeroDB.IEventUpcaster>
+  nameWithType.vb: List(Of IEventUpcaster)
+  fullName.vb: System.Collections.Generic.List(Of AeroDB.IEventUpcaster)
+  name.vb: List(Of IEventUpcaster)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: AeroDB.IEventUpcaster
+    name: IEventUpcaster
+    isExternal: true
+    href: AeroDB.IEventUpcaster.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.IEventUpcaster
+    name: IEventUpcaster
+    isExternal: true
+    href: AeroDB.IEventUpcaster.html
+  - name: )
+- uid: System.Collections.Generic.List`1
+  commentId: T:System.Collections.Generic.List`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<T>
+  nameWithType: List<T>
+  fullName: System.Collections.Generic.List<T>
+  nameWithType.vb: List(Of T)
+  fullName.vb: System.Collections.Generic.List(Of T)
+  name.vb: List(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.EventSourcingOptions.DataMaskingPredicate*
+  commentId: Overload:AeroDB.EventSourcingOptions.DataMaskingPredicate
+  isExternal: true
+  href: AeroDB.EventSourcingOptions.html#AeroDB_EventSourcingOptions_DataMaskingPredicate
+  name: DataMaskingPredicate
+  nameWithType: EventSourcingOptions.DataMaskingPredicate
+  fullName: AeroDB.EventSourcingOptions.DataMaskingPredicate
+- uid: System.Func{AeroDB.IEvent,System.Boolean}
+  commentId: T:System.Func{AeroDB.IEvent,System.Boolean}
+  parent: System
+  definition: System.Func`2
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<IEvent, bool>
+  nameWithType: Func<IEvent, bool>
+  fullName: System.Func<AeroDB.IEvent, bool>
+  nameWithType.vb: Func(Of IEvent, Boolean)
+  fullName.vb: System.Func(Of AeroDB.IEvent, Boolean)
+  name.vb: Func(Of IEvent, Boolean)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: AeroDB.IEvent
+    name: IEvent
+    isExternal: true
+    href: AeroDB.IEvent.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.IEvent
+    name: IEvent
+    isExternal: true
+    href: AeroDB.IEvent.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: AeroDB.ISubscription.SubscriptionName
+  commentId: P:AeroDB.ISubscription.SubscriptionName
+  isExternal: true
+  href: AeroDB.ISubscription.html#AeroDB_ISubscription_SubscriptionName
+  name: SubscriptionName
+  nameWithType: ISubscription.SubscriptionName
+  fullName: AeroDB.ISubscription.SubscriptionName
+- uid: AeroDB.EventSourcingOptions.Subscriptions*
+  commentId: Overload:AeroDB.EventSourcingOptions.Subscriptions
+  isExternal: true
+  href: AeroDB.EventSourcingOptions.html#AeroDB_EventSourcingOptions_Subscriptions
+  name: Subscriptions
+  nameWithType: EventSourcingOptions.Subscriptions
+  fullName: AeroDB.EventSourcingOptions.Subscriptions
+- uid: System.Collections.Generic.List{AeroDB.ISubscription}
+  commentId: T:System.Collections.Generic.List{AeroDB.ISubscription}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<ISubscription>
+  nameWithType: List<ISubscription>
+  fullName: System.Collections.Generic.List<AeroDB.ISubscription>
+  nameWithType.vb: List(Of ISubscription)
+  fullName.vb: System.Collections.Generic.List(Of AeroDB.ISubscription)
+  name.vb: List(Of ISubscription)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: AeroDB.ISubscription
+    name: ISubscription
+    isExternal: true
+    href: AeroDB.ISubscription.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.ISubscription
+    name: ISubscription
+    isExternal: true
+    href: AeroDB.ISubscription.html
+  - name: )
+- uid: AeroDB.EventSourcingOptions.StreamIdentity*
+  commentId: Overload:AeroDB.EventSourcingOptions.StreamIdentity
+  isExternal: true
+  href: AeroDB.EventSourcingOptions.html#AeroDB_EventSourcingOptions_StreamIdentity
+  name: StreamIdentity
+  nameWithType: EventSourcingOptions.StreamIdentity
+  fullName: AeroDB.EventSourcingOptions.StreamIdentity
+- uid: AeroDB.StreamIdentity
+  commentId: T:AeroDB.StreamIdentity
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.StreamIdentity.html
+  name: StreamIdentity
+  nameWithType: StreamIdentity
+  fullName: AeroDB.StreamIdentity
+- uid: AeroDB.EventSourcingOptions.TenancyStyle*
+  commentId: Overload:AeroDB.EventSourcingOptions.TenancyStyle
+  isExternal: true
+  href: AeroDB.EventSourcingOptions.html#AeroDB_EventSourcingOptions_TenancyStyle
+  name: TenancyStyle
+  nameWithType: EventSourcingOptions.TenancyStyle
+  fullName: AeroDB.EventSourcingOptions.TenancyStyle
+- uid: AeroDB.TenancyStyle
+  commentId: T:AeroDB.TenancyStyle
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.TenancyStyle.html
+  name: TenancyStyle
+  nameWithType: TenancyStyle
+  fullName: AeroDB.TenancyStyle
+- uid: AeroDB.EventSourcingOptions.EnableSideEffectsOnInlineProjections*
+  commentId: Overload:AeroDB.EventSourcingOptions.EnableSideEffectsOnInlineProjections
+  isExternal: true
+  href: AeroDB.EventSourcingOptions.html#AeroDB_EventSourcingOptions_EnableSideEffectsOnInlineProjections
+  name: EnableSideEffectsOnInlineProjections
+  nameWithType: EventSourcingOptions.EnableSideEffectsOnInlineProjections
+  fullName: AeroDB.EventSourcingOptions.EnableSideEffectsOnInlineProjections
+- uid: AeroDB.EventSourcingOptions.UseIdentityMapForAggregates*
+  commentId: Overload:AeroDB.EventSourcingOptions.UseIdentityMapForAggregates
+  isExternal: true
+  href: AeroDB.EventSourcingOptions.html#AeroDB_EventSourcingOptions_UseIdentityMapForAggregates
+  name: UseIdentityMapForAggregates
+  nameWithType: EventSourcingOptions.UseIdentityMapForAggregates
+  fullName: AeroDB.EventSourcingOptions.UseIdentityMapForAggregates
+- uid: AeroDB.EventSourcingOptions.EnableUniqueIndexOnEventId*
+  commentId: Overload:AeroDB.EventSourcingOptions.EnableUniqueIndexOnEventId
+  isExternal: true
+  href: AeroDB.EventSourcingOptions.html#AeroDB_EventSourcingOptions_EnableUniqueIndexOnEventId
+  name: EnableUniqueIndexOnEventId
+  nameWithType: EventSourcingOptions.EnableUniqueIndexOnEventId
+  fullName: AeroDB.EventSourcingOptions.EnableUniqueIndexOnEventId
+- uid: AeroDB.EventSourcingOptions.EnableEventTypeIndex*
+  commentId: Overload:AeroDB.EventSourcingOptions.EnableEventTypeIndex
+  isExternal: true
+  href: AeroDB.EventSourcingOptions.html#AeroDB_EventSourcingOptions_EnableEventTypeIndex
+  name: EnableEventTypeIndex
+  nameWithType: EventSourcingOptions.EnableEventTypeIndex
+  fullName: AeroDB.EventSourcingOptions.EnableEventTypeIndex
+- uid: AeroDB.EventSourcingOptions.EnableBigIntEvents*
+  commentId: Overload:AeroDB.EventSourcingOptions.EnableBigIntEvents
+  isExternal: true
+  href: AeroDB.EventSourcingOptions.html#AeroDB_EventSourcingOptions_EnableBigIntEvents
+  name: EnableBigIntEvents
+  nameWithType: EventSourcingOptions.EnableBigIntEvents
+  fullName: AeroDB.EventSourcingOptions.EnableBigIntEvents
+- uid: AeroDB.EventSourcingOptions.UseMandatoryStreamTypeDeclaration*
+  commentId: Overload:AeroDB.EventSourcingOptions.UseMandatoryStreamTypeDeclaration
+  isExternal: true
+  href: AeroDB.EventSourcingOptions.html#AeroDB_EventSourcingOptions_UseMandatoryStreamTypeDeclaration
+  name: UseMandatoryStreamTypeDeclaration
+  nameWithType: EventSourcingOptions.UseMandatoryStreamTypeDeclaration
+  fullName: AeroDB.EventSourcingOptions.UseMandatoryStreamTypeDeclaration
+- uid: AeroDB.EventSourcingOptions.TimeProvider*
+  commentId: Overload:AeroDB.EventSourcingOptions.TimeProvider
+  isExternal: true
+  href: AeroDB.EventSourcingOptions.html#AeroDB_EventSourcingOptions_TimeProvider
+  name: TimeProvider
+  nameWithType: EventSourcingOptions.TimeProvider
+  fullName: AeroDB.EventSourcingOptions.TimeProvider
+- uid: System.TimeProvider
+  commentId: T:System.TimeProvider
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.timeprovider
+  name: TimeProvider
+  nameWithType: TimeProvider
+  fullName: System.TimeProvider
+- uid: AeroDB.EventSourcingOptions.EnableAdvancedAsyncTracking*
+  commentId: Overload:AeroDB.EventSourcingOptions.EnableAdvancedAsyncTracking
+  isExternal: true
+  href: AeroDB.EventSourcingOptions.html#AeroDB_EventSourcingOptions_EnableAdvancedAsyncTracking
+  name: EnableAdvancedAsyncTracking
+  nameWithType: EventSourcingOptions.EnableAdvancedAsyncTracking
+  fullName: AeroDB.EventSourcingOptions.EnableAdvancedAsyncTracking

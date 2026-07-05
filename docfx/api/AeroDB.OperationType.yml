@@ -1,0 +1,166 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.OperationType
+  commentId: T:AeroDB.OperationType
+  id: OperationType
+  parent: AeroDB
+  children:
+  - AeroDB.OperationType.Added
+  - AeroDB.OperationType.Deleted
+  - AeroDB.OperationType.Insert
+  - AeroDB.OperationType.Modified
+  - AeroDB.OperationType.SoftDeleted
+  - AeroDB.OperationType.Update
+  langs:
+  - csharp
+  - vb
+  name: OperationType
+  nameWithType: OperationType
+  fullName: AeroDB.OperationType
+  type: Enum
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/UnitOfWork.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Describes the type of change tracked in a document session's unit of work (<code>Added</code>, <code>Modified</code>, <code>Deleted</code>, <code>SoftDeleted</code>, <code>Insert</code>, <code>Update</code>).
+  example: []
+  syntax:
+    content: public enum OperationType
+    content.vb: Public Enum OperationType
+- uid: AeroDB.OperationType.Added
+  commentId: F:AeroDB.OperationType.Added
+  id: Added
+  parent: AeroDB.OperationType
+  langs:
+  - csharp
+  - vb
+  name: Added
+  nameWithType: OperationType.Added
+  fullName: AeroDB.OperationType.Added
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/UnitOfWork.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: Added = 0
+    return:
+      type: AeroDB.OperationType
+- uid: AeroDB.OperationType.Modified
+  commentId: F:AeroDB.OperationType.Modified
+  id: Modified
+  parent: AeroDB.OperationType
+  langs:
+  - csharp
+  - vb
+  name: Modified
+  nameWithType: OperationType.Modified
+  fullName: AeroDB.OperationType.Modified
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/UnitOfWork.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: Modified = 1
+    return:
+      type: AeroDB.OperationType
+- uid: AeroDB.OperationType.Deleted
+  commentId: F:AeroDB.OperationType.Deleted
+  id: Deleted
+  parent: AeroDB.OperationType
+  langs:
+  - csharp
+  - vb
+  name: Deleted
+  nameWithType: OperationType.Deleted
+  fullName: AeroDB.OperationType.Deleted
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/UnitOfWork.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: Deleted = 2
+    return:
+      type: AeroDB.OperationType
+- uid: AeroDB.OperationType.SoftDeleted
+  commentId: F:AeroDB.OperationType.SoftDeleted
+  id: SoftDeleted
+  parent: AeroDB.OperationType
+  langs:
+  - csharp
+  - vb
+  name: SoftDeleted
+  nameWithType: OperationType.SoftDeleted
+  fullName: AeroDB.OperationType.SoftDeleted
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/UnitOfWork.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: SoftDeleted = 3
+    return:
+      type: AeroDB.OperationType
+- uid: AeroDB.OperationType.Insert
+  commentId: F:AeroDB.OperationType.Insert
+  id: Insert
+  parent: AeroDB.OperationType
+  langs:
+  - csharp
+  - vb
+  name: Insert
+  nameWithType: OperationType.Insert
+  fullName: AeroDB.OperationType.Insert
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/UnitOfWork.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: Insert = 4
+    return:
+      type: AeroDB.OperationType
+- uid: AeroDB.OperationType.Update
+  commentId: F:AeroDB.OperationType.Update
+  id: Update
+  parent: AeroDB.OperationType
+  langs:
+  - csharp
+  - vb
+  name: Update
+  nameWithType: OperationType.Update
+  fullName: AeroDB.OperationType.Update
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/UnitOfWork.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: Update = 5
+    return:
+      type: AeroDB.OperationType
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: AeroDB.OperationType
+  commentId: T:AeroDB.OperationType
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.OperationType.html
+  name: OperationType
+  nameWithType: OperationType
+  fullName: AeroDB.OperationType

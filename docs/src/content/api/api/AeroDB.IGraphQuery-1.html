@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Interface IGraphQuery&lt;TNode&gt; | AeroDB v0.0.5-alpha — API Reference </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="Interface IGraphQuery&lt;TNode&gt; | AeroDB v0.0.5-alpha — API Reference ">
+    
+    <meta name="description" content="Fluent graph query builder for SurrealDB traversal.">
+      <link rel="shortcut icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../styles/docfx.css">
+      <link rel="stylesheet" href="../styles/main.css">
+      <meta property="docfx:navrel" content="../toc.html">
+      <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="AeroDB">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="AeroDB.IGraphQuery`1">
+
+
+
+  <h1 id="AeroDB_IGraphQuery_1" data-uid="AeroDB.IGraphQuery`1" class="text-break">Interface IGraphQuery&lt;TNode&gt;</h1>
+  <div class="markdown level0 summary"><p>Fluent graph query builder for SurrealDB traversal.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="AeroDB.html">AeroDB</a></h6>
+  <h6><strong>Assembly</strong>: AeroDB.dll</h6>
+  <h5 id="AeroDB_IGraphQuery_1_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public interface IGraphQuery&lt;TNode&gt; where TNode : class</code></pre>
+  </div>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TNode</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+</h3>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Graph/IGraphQuery.cs">View Source</a>
+  </span>
+  <a id="AeroDB_IGraphQuery_1_AnyEdge_" data-uid="AeroDB.IGraphQuery`1.AnyEdge*"></a>
+  <h4 id="AeroDB_IGraphQuery_1_AnyEdge" data-uid="AeroDB.IGraphQuery`1.AnyEdge">AnyEdge()</h4>
+  <div class="markdown level1 summary"><p>Any edge type (no direction constraint).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IGraphQuery&lt;GraphNode&gt; AnyEdge()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.IGraphQuery-1.html">IGraphQuery</a>&lt;<a class="xref" href="AeroDB.GraphNode.html">GraphNode</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Graph/IGraphQuery.cs">View Source</a>
+  </span>
+  <a id="AeroDB_IGraphQuery_1_Both_" data-uid="AeroDB.IGraphQuery`1.Both*"></a>
+  <h4 id="AeroDB_IGraphQuery_1_Both__1_System_String_" data-uid="AeroDB.IGraphQuery`1.Both``1(System.String)">Both&lt;TTarget&gt;(string)</h4>
+  <div class="markdown level1 summary"><p>Bidirectional traversal: <code>SELECT &lt;-&gt;edge&lt;-&gt;target FROM ...</code></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IGraphQuery&lt;TTarget&gt; Both&lt;TTarget&gt;(string edgeType) where TTarget : class</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">edgeType</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.IGraphQuery-1.html">IGraphQuery</a>&lt;TTarget&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TTarget</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Graph/IGraphQuery.cs">View Source</a>
+  </span>
+  <a id="AeroDB_IGraphQuery_1_Both_" data-uid="AeroDB.IGraphQuery`1.Both*"></a>
+  <h4 id="AeroDB_IGraphQuery_1_Both__2" data-uid="AeroDB.IGraphQuery`1.Both``2">Both&lt;TTarget, TEdge&gt;()</h4>
+  <div class="markdown level1 summary"><p>Bidirectional traversal using the edge table name inferred from TEdge.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IGraphQuery&lt;TTarget&gt; Both&lt;TTarget, TEdge&gt;() where TTarget : class where TEdge : EdgeRecord</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.IGraphQuery-1.html">IGraphQuery</a>&lt;TTarget&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TTarget</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="parametername">TEdge</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Graph/IGraphQuery.cs">View Source</a>
+  </span>
+  <a id="AeroDB_IGraphQuery_1_CollectAll_" data-uid="AeroDB.IGraphQuery`1.CollectAll*"></a>
+  <h4 id="AeroDB_IGraphQuery_1_CollectAll" data-uid="AeroDB.IGraphQuery`1.CollectAll">CollectAll()</h4>
+  <div class="markdown level1 summary"><p>Collect unique nodes: +collect</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IGraphQuery&lt;TNode&gt; CollectAll()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.IGraphQuery-1.html">IGraphQuery</a>&lt;TNode&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Graph/IGraphQuery.cs">View Source</a>
+  </span>
+  <a id="AeroDB_IGraphQuery_1_CountAsync_" data-uid="AeroDB.IGraphQuery`1.CountAsync*"></a>
+  <h4 id="AeroDB_IGraphQuery_1_CountAsync_System_Threading_CancellationToken_" data-uid="AeroDB.IGraphQuery`1.CountAsync(System.Threading.CancellationToken)">CountAsync(CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Executes the graph traversal and returns the count of matching results.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task&lt;int&gt; CountAsync(CancellationToken ct = default)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">ct</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Graph/IGraphQuery.cs">View Source</a>
+  </span>
+  <a id="AeroDB_IGraphQuery_1_Depth_" data-uid="AeroDB.IGraphQuery`1.Depth*"></a>
+  <h4 id="AeroDB_IGraphQuery_1_Depth" data-uid="AeroDB.IGraphQuery`1.Depth">Depth()</h4>
+  <div class="markdown level1 summary"><p>Open-ended recursion: @.{..}</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IGraphQuery&lt;TNode&gt; Depth()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.IGraphQuery-1.html">IGraphQuery</a>&lt;TNode&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Graph/IGraphQuery.cs">View Source</a>
+  </span>
+  <a id="AeroDB_IGraphQuery_1_Depth_" data-uid="AeroDB.IGraphQuery`1.Depth*"></a>
+  <h4 id="AeroDB_IGraphQuery_1_Depth_System_Int32_" data-uid="AeroDB.IGraphQuery`1.Depth(System.Int32)">Depth(int)</h4>
+  <div class="markdown level1 summary"><p>Fixed recursion depth: @.{n}</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IGraphQuery&lt;TNode&gt; Depth(int depth)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><span class="parametername">depth</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.IGraphQuery-1.html">IGraphQuery</a>&lt;TNode&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Graph/IGraphQuery.cs">View Source</a>
+  </span>
+  <a id="AeroDB_IGraphQuery_1_Depth_" data-uid="AeroDB.IGraphQuery`1.Depth*"></a>
+  <h4 id="AeroDB_IGraphQuery_1_Depth_System_Int32_System_Int32_" data-uid="AeroDB.IGraphQuery`1.Depth(System.Int32,System.Int32)">Depth(int, int)</h4>
+  <div class="markdown level1 summary"><p>Range recursion depth: @.{min..max}</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IGraphQuery&lt;TNode&gt; Depth(int min, int max)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><span class="parametername">min</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><span class="parametername">max</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.IGraphQuery-1.html">IGraphQuery</a>&lt;TNode&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Graph/IGraphQuery.cs">View Source</a>
+  </span>
+  <a id="AeroDB_IGraphQuery_1_Fetch_" data-uid="AeroDB.IGraphQuery`1.Fetch*"></a>
+  <h4 id="AeroDB_IGraphQuery_1_Fetch_System_String___" data-uid="AeroDB.IGraphQuery`1.Fetch(System.String[])">Fetch(params string[])</h4>
+  <div class="markdown level1 summary"><p>Eager load relations: FETCH</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IGraphQuery&lt;TNode&gt; Fetch(params string[] relations)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>[]</td>
+        <td><span class="parametername">relations</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.IGraphQuery-1.html">IGraphQuery</a>&lt;TNode&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Graph/IGraphQuery.cs">View Source</a>
+  </span>
+  <a id="AeroDB_IGraphQuery_1_FirstOrDefaultAsync_" data-uid="AeroDB.IGraphQuery`1.FirstOrDefaultAsync*"></a>
+  <h4 id="AeroDB_IGraphQuery_1_FirstOrDefaultAsync_System_Threading_CancellationToken_" data-uid="AeroDB.IGraphQuery`1.FirstOrDefaultAsync(System.Threading.CancellationToken)">FirstOrDefaultAsync(CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Executes the graph traversal and returns the first matching node, or null.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task&lt;TNode?&gt; FirstOrDefaultAsync(CancellationToken ct = default)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">ct</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;TNode&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Graph/IGraphQuery.cs">View Source</a>
+  </span>
+  <a id="AeroDB_IGraphQuery_1_InAny_" data-uid="AeroDB.IGraphQuery`1.InAny*"></a>
+  <h4 id="AeroDB_IGraphQuery_1_InAny" data-uid="AeroDB.IGraphQuery`1.InAny">InAny()</h4>
+  <div class="markdown level1 summary"><p>Wildcard incoming: <code>SELECT &lt;-?&lt;-... FROM ...</code></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IGraphQuery&lt;GraphNode&gt; InAny()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.IGraphQuery-1.html">IGraphQuery</a>&lt;<a class="xref" href="AeroDB.GraphNode.html">GraphNode</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Graph/IGraphQuery.cs">View Source</a>
+  </span>
+  <a id="AeroDB_IGraphQuery_1_In_" data-uid="AeroDB.IGraphQuery`1.In*"></a>
+  <h4 id="AeroDB_IGraphQuery_1_In__1_System_String_" data-uid="AeroDB.IGraphQuery`1.In``1(System.String)">In&lt;TTarget&gt;(string)</h4>
+  <div class="markdown level1 summary"><p>Backward traversal: <code>SELECT &lt;-edge&lt;-target FROM ...</code></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IGraphQuery&lt;TTarget&gt; In&lt;TTarget&gt;(string edgeType) where TTarget : class</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">edgeType</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.IGraphQuery-1.html">IGraphQuery</a>&lt;TTarget&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TTarget</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Graph/IGraphQuery.cs">View Source</a>
+  </span>
+  <a id="AeroDB_IGraphQuery_1_In_" data-uid="AeroDB.IGraphQuery`1.In*"></a>
+  <h4 id="AeroDB_IGraphQuery_1_In__2" data-uid="AeroDB.IGraphQuery`1.In``2">In&lt;TTarget, TEdge&gt;()</h4>
+  <div class="markdown level1 summary"><p>Backward traversal using the edge table name inferred from TEdge.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IGraphQuery&lt;TTarget&gt; In&lt;TTarget, TEdge&gt;() where TTarget : class where TEdge : EdgeRecord</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.IGraphQuery-1.html">IGraphQuery</a>&lt;TTarget&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TTarget</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="parametername">TEdge</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Graph/IGraphQuery.cs">View Source</a>
+  </span>
+  <a id="AeroDB_IGraphQuery_1_IncludeIntermediate_" data-uid="AeroDB.IGraphQuery`1.IncludeIntermediate*"></a>
+  <h4 id="AeroDB_IGraphQuery_1_IncludeIntermediate" data-uid="AeroDB.IGraphQuery`1.IncludeIntermediate">IncludeIntermediate()</h4>
+  <div class="markdown level1 summary"><p>Include intermediate nodes: (+)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IGraphQuery&lt;TNode&gt; IncludeIntermediate()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.IGraphQuery-1.html">IGraphQuery</a>&lt;TNode&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Graph/IGraphQuery.cs">View Source</a>
+  </span>
+  <a id="AeroDB_IGraphQuery_1_IncludeOrigin_" data-uid="AeroDB.IGraphQuery`1.IncludeOrigin*"></a>
+  <h4 id="AeroDB_IGraphQuery_1_IncludeOrigin" data-uid="AeroDB.IGraphQuery`1.IncludeOrigin">IncludeOrigin()</h4>
+  <div class="markdown level1 summary"><p>Include origin node: +inclusive</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IGraphQuery&lt;TNode&gt; IncludeOrigin()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.IGraphQuery-1.html">IGraphQuery</a>&lt;TNode&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Graph/IGraphQuery.cs">View Source</a>
+  </span>
+  <a id="AeroDB_IGraphQuery_1_OutAny_" data-uid="AeroDB.IGraphQuery`1.OutAny*"></a>
+  <h4 id="AeroDB_IGraphQuery_1_OutAny" data-uid="AeroDB.IGraphQuery`1.OutAny">OutAny()</h4>
+  <div class="markdown level1 summary"><p>Wildcard outgoing: <code>SELECT -&gt;?-&gt;... FROM ...</code></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IGraphQuery&lt;GraphNode&gt; OutAny()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.IGraphQuery-1.html">IGraphQuery</a>&lt;<a class="xref" href="AeroDB.GraphNode.html">GraphNode</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Graph/IGraphQuery.cs">View Source</a>
+  </span>
+  <a id="AeroDB_IGraphQuery_1_Out_" data-uid="AeroDB.IGraphQuery`1.Out*"></a>
+  <h4 id="AeroDB_IGraphQuery_1_Out__1_System_String_" data-uid="AeroDB.IGraphQuery`1.Out``1(System.String)">Out&lt;TTarget&gt;(string)</h4>
+  <div class="markdown level1 summary"><p>Forward traversal: SELECT -&gt;edge-&gt;target FROM ...</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IGraphQuery&lt;TTarget&gt; Out&lt;TTarget&gt;(string edgeType) where TTarget : class</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">edgeType</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.IGraphQuery-1.html">IGraphQuery</a>&lt;TTarget&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TTarget</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Graph/IGraphQuery.cs">View Source</a>
+  </span>
+  <a id="AeroDB_IGraphQuery_1_Out_" data-uid="AeroDB.IGraphQuery`1.Out*"></a>
+  <h4 id="AeroDB_IGraphQuery_1_Out__1_System_String___" data-uid="AeroDB.IGraphQuery`1.Out``1(System.String[])">Out&lt;TTarget&gt;(string[])</h4>
+  <div class="markdown level1 summary"><p>Multiple edge types: SELECT -&gt;(e1, e2)-&gt;...</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IGraphQuery&lt;TTarget&gt; Out&lt;TTarget&gt;(string[] edgeTypes) where TTarget : class</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>[]</td>
+        <td><span class="parametername">edgeTypes</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.IGraphQuery-1.html">IGraphQuery</a>&lt;TTarget&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TTarget</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Graph/IGraphQuery.cs">View Source</a>
+  </span>
+  <a id="AeroDB_IGraphQuery_1_Out_" data-uid="AeroDB.IGraphQuery`1.Out*"></a>
+  <h4 id="AeroDB_IGraphQuery_1_Out__2" data-uid="AeroDB.IGraphQuery`1.Out``2">Out&lt;TTarget, TEdge&gt;()</h4>
+  <div class="markdown level1 summary"><p>Forward traversal using the edge table name inferred from TEdge.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IGraphQuery&lt;TTarget&gt; Out&lt;TTarget, TEdge&gt;() where TTarget : class where TEdge : EdgeRecord</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.IGraphQuery-1.html">IGraphQuery</a>&lt;TTarget&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TTarget</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="parametername">TEdge</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Graph/IGraphQuery.cs">View Source</a>
+  </span>
+  <a id="AeroDB_IGraphQuery_1_ReturnPath_" data-uid="AeroDB.IGraphQuery`1.ReturnPath*"></a>
+  <h4 id="AeroDB_IGraphQuery_1_ReturnPath" data-uid="AeroDB.IGraphQuery`1.ReturnPath">ReturnPath()</h4>
+  <div class="markdown level1 summary"><p>Return full paths: +path</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IGraphQuery&lt;TNode&gt; ReturnPath()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.IGraphQuery-1.html">IGraphQuery</a>&lt;TNode&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Graph/IGraphQuery.cs">View Source</a>
+  </span>
+  <a id="AeroDB_IGraphQuery_1_ShortestPath_" data-uid="AeroDB.IGraphQuery`1.ShortestPath*"></a>
+  <h4 id="AeroDB_IGraphQuery_1_ShortestPath_System_String_" data-uid="AeroDB.IGraphQuery`1.ShortestPath(System.String)">ShortestPath(string)</h4>
+  <div class="markdown level1 summary"><p>Shortest path to target: @.{..+shortest=id}</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IGraphQuery&lt;TNode&gt; ShortestPath(string recordId)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">recordId</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.IGraphQuery-1.html">IGraphQuery</a>&lt;TNode&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Graph/IGraphQuery.cs">View Source</a>
+  </span>
+  <a id="AeroDB_IGraphQuery_1_ToListAsync_" data-uid="AeroDB.IGraphQuery`1.ToListAsync*"></a>
+  <h4 id="AeroDB_IGraphQuery_1_ToListAsync_System_Threading_CancellationToken_" data-uid="AeroDB.IGraphQuery`1.ToListAsync(System.Threading.CancellationToken)">ToListAsync(CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Executes the graph traversal and returns all matching nodes.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task&lt;List&lt;TNode&gt;&gt; ToListAsync(CancellationToken ct = default)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">ct</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;TNode&gt;&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Graph/IGraphQuery.cs">View Source</a>
+  </span>
+  <a id="AeroDB_IGraphQuery_1_ToPathListAsync_" data-uid="AeroDB.IGraphQuery`1.ToPathListAsync*"></a>
+  <h4 id="AeroDB_IGraphQuery_1_ToPathListAsync_System_Threading_CancellationToken_" data-uid="AeroDB.IGraphQuery`1.ToPathListAsync(System.Threading.CancellationToken)">ToPathListAsync(CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Executes the graph traversal and returns matching paths.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task&lt;List&lt;GraphPath&gt;&gt; ToPathListAsync(CancellationToken ct = default)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">ct</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="AeroDB.GraphPath.html">GraphPath</a>&gt;&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Graph/IGraphQuery.cs">View Source</a>
+  </span>
+  <a id="AeroDB_IGraphQuery_1_Where_" data-uid="AeroDB.IGraphQuery`1.Where*"></a>
+  <h4 id="AeroDB_IGraphQuery_1_Where_System_Linq_Expressions_Expression_System_Func__0_System_Boolean___" data-uid="AeroDB.IGraphQuery`1.Where(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">Where(Expression&lt;Func&lt;TNode, bool&gt;&gt;)</h4>
+  <div class="markdown level1 summary"><p>Add a WHERE filter expression (delegates to LINQ). Only valid on the first step.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IGraphQuery&lt;TNode&gt; Where(Expression&lt;Func&lt;TNode, bool&gt;&gt; predicate)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;TNode, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>&gt;&gt;</td>
+        <td><span class="parametername">predicate</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.IGraphQuery-1.html">IGraphQuery</a>&lt;TNode&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Graph/IGraphQuery.cs" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In this article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      Made with 💜 by Microbians — Copyright © 2026 — https://microbians.io/
+      
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.min.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

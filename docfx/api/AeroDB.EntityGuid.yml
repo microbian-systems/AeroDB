@@ -1,0 +1,488 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.EntityGuid
+  commentId: T:AeroDB.EntityGuid
+  id: EntityGuid
+  parent: AeroDB
+  children:
+  - AeroDB.EntityGuid.#ctor
+  langs:
+  - csharp
+  - vb
+  name: EntityGuid
+  nameWithType: EntityGuid
+  fullName: AeroDB.EntityGuid
+  type: Class
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Entity.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Convenience alias for a <code>Guid</code> primary key entity
+
+    using a new random GUID.
+  example: []
+  syntax:
+    content: 'public abstract class EntityGuid : Entity<Guid>, IEntity<Guid>'
+    content.vb: Public MustInherit Class EntityGuid Inherits Entity(Of Guid) Implements IEntity(Of Guid)
+  inheritance:
+  - System.Object
+  - AeroDB.Entity{System.Guid}
+  implements:
+  - AeroDB.IEntity{System.Guid}
+  inheritedMembers:
+  - AeroDB.Entity{System.Guid}.ToString
+  - AeroDB.Entity{System.Guid}.Id
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+- uid: AeroDB.EntityGuid.#ctor
+  commentId: M:AeroDB.EntityGuid.#ctor
+  id: '#ctor'
+  parent: AeroDB.EntityGuid
+  langs:
+  - csharp
+  - vb
+  name: EntityGuid()
+  nameWithType: EntityGuid.EntityGuid()
+  fullName: AeroDB.EntityGuid.EntityGuid()
+  type: Constructor
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Entity.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: protected EntityGuid()
+    content.vb: Protected Sub New()
+  overload: AeroDB.EntityGuid.#ctor*
+  nameWithType.vb: EntityGuid.New()
+  fullName.vb: AeroDB.EntityGuid.New()
+  name.vb: New()
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: AeroDB.Entity{System.Guid}
+  commentId: T:AeroDB.Entity{System.Guid}
+  parent: AeroDB
+  definition: AeroDB.Entity`1
+  href: AeroDB.Entity-1.html
+  name: Entity<Guid>
+  nameWithType: Entity<Guid>
+  fullName: AeroDB.Entity<System.Guid>
+  nameWithType.vb: Entity(Of Guid)
+  fullName.vb: AeroDB.Entity(Of System.Guid)
+  name.vb: Entity(Of Guid)
+  spec.csharp:
+  - uid: AeroDB.Entity`1
+    name: Entity
+    isExternal: true
+    href: AeroDB.Entity-1.html
+  - name: <
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.Entity`1
+    name: Entity
+    isExternal: true
+    href: AeroDB.Entity-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+- uid: AeroDB.IEntity{System.Guid}
+  commentId: T:AeroDB.IEntity{System.Guid}
+  parent: AeroDB
+  definition: AeroDB.IEntity`1
+  href: AeroDB.IEntity-1.html
+  name: IEntity<Guid>
+  nameWithType: IEntity<Guid>
+  fullName: AeroDB.IEntity<System.Guid>
+  nameWithType.vb: IEntity(Of Guid)
+  fullName.vb: AeroDB.IEntity(Of System.Guid)
+  name.vb: IEntity(Of Guid)
+  spec.csharp:
+  - uid: AeroDB.IEntity`1
+    name: IEntity
+    isExternal: true
+    href: AeroDB.IEntity-1.html
+  - name: <
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.IEntity`1
+    name: IEntity
+    isExternal: true
+    href: AeroDB.IEntity-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+- uid: AeroDB.Entity{System.Guid}.ToString
+  commentId: M:AeroDB.Entity{System.Guid}.ToString
+  parent: AeroDB.Entity{System.Guid}
+  definition: AeroDB.Entity`1.ToString
+  href: AeroDB.Entity-1.html#AeroDB_Entity_1_ToString
+  name: ToString()
+  nameWithType: Entity<Guid>.ToString()
+  fullName: AeroDB.Entity<System.Guid>.ToString()
+  nameWithType.vb: Entity(Of Guid).ToString()
+  fullName.vb: AeroDB.Entity(Of System.Guid).ToString()
+  spec.csharp:
+  - uid: AeroDB.Entity{System.Guid}.ToString
+    name: ToString
+    isExternal: true
+    href: AeroDB.Entity-1.html#AeroDB_Entity_1_ToString
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AeroDB.Entity{System.Guid}.ToString
+    name: ToString
+    isExternal: true
+    href: AeroDB.Entity-1.html#AeroDB_Entity_1_ToString
+  - name: (
+  - name: )
+- uid: AeroDB.Entity{System.Guid}.Id
+  commentId: P:AeroDB.Entity{System.Guid}.Id
+  parent: AeroDB.Entity{System.Guid}
+  definition: AeroDB.Entity`1.Id
+  href: AeroDB.Entity-1.html#AeroDB_Entity_1_Id
+  name: Id
+  nameWithType: Entity<Guid>.Id
+  fullName: AeroDB.Entity<System.Guid>.Id
+  nameWithType.vb: Entity(Of Guid).Id
+  fullName.vb: AeroDB.Entity(Of System.Guid).Id
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AeroDB.Entity`1
+  commentId: T:AeroDB.Entity`1
+  isExternal: true
+  href: AeroDB.Entity-1.html
+  name: Entity<TId>
+  nameWithType: Entity<TId>
+  fullName: AeroDB.Entity<TId>
+  nameWithType.vb: Entity(Of TId)
+  fullName.vb: AeroDB.Entity(Of TId)
+  name.vb: Entity(Of TId)
+  spec.csharp:
+  - uid: AeroDB.Entity`1
+    name: Entity
+    isExternal: true
+    href: AeroDB.Entity-1.html
+  - name: <
+  - name: TId
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.Entity`1
+    name: Entity
+    isExternal: true
+    href: AeroDB.Entity-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TId
+  - name: )
+- uid: AeroDB.IEntity`1
+  commentId: T:AeroDB.IEntity`1
+  isExternal: true
+  href: AeroDB.IEntity-1.html
+  name: IEntity<TId>
+  nameWithType: IEntity<TId>
+  fullName: AeroDB.IEntity<TId>
+  nameWithType.vb: IEntity(Of TId)
+  fullName.vb: AeroDB.IEntity(Of TId)
+  name.vb: IEntity(Of TId)
+  spec.csharp:
+  - uid: AeroDB.IEntity`1
+    name: IEntity
+    isExternal: true
+    href: AeroDB.IEntity-1.html
+  - name: <
+  - name: TId
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.IEntity`1
+    name: IEntity
+    isExternal: true
+    href: AeroDB.IEntity-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TId
+  - name: )
+- uid: AeroDB.Entity`1.ToString
+  commentId: M:AeroDB.Entity`1.ToString
+  isExternal: true
+  href: AeroDB.Entity-1.html#AeroDB_Entity_1_ToString
+  name: ToString()
+  nameWithType: Entity<TId>.ToString()
+  fullName: AeroDB.Entity<TId>.ToString()
+  nameWithType.vb: Entity(Of TId).ToString()
+  fullName.vb: AeroDB.Entity(Of TId).ToString()
+  spec.csharp:
+  - uid: AeroDB.Entity`1.ToString
+    name: ToString
+    isExternal: true
+    href: AeroDB.Entity-1.html#AeroDB_Entity_1_ToString
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AeroDB.Entity`1.ToString
+    name: ToString
+    isExternal: true
+    href: AeroDB.Entity-1.html#AeroDB_Entity_1_ToString
+  - name: (
+  - name: )
+- uid: AeroDB.Entity`1.Id
+  commentId: P:AeroDB.Entity`1.Id
+  isExternal: true
+  href: AeroDB.Entity-1.html#AeroDB_Entity_1_Id
+  name: Id
+  nameWithType: Entity<TId>.Id
+  fullName: AeroDB.Entity<TId>.Id
+  nameWithType.vb: Entity(Of TId).Id
+  fullName.vb: AeroDB.Entity(Of TId).Id
+- uid: AeroDB.EntityGuid.#ctor*
+  commentId: Overload:AeroDB.EntityGuid.#ctor
+  isExternal: true
+  href: AeroDB.EntityGuid.html#AeroDB_EntityGuid__ctor
+  name: EntityGuid
+  nameWithType: EntityGuid.EntityGuid
+  fullName: AeroDB.EntityGuid.EntityGuid
+  nameWithType.vb: EntityGuid.New
+  fullName.vb: AeroDB.EntityGuid.New
+  name.vb: New

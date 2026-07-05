@@ -1,0 +1,704 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.HybridSearchConfig
+  commentId: T:AeroDB.HybridSearchConfig
+  id: HybridSearchConfig
+  parent: AeroDB
+  children:
+  - AeroDB.HybridSearchConfig.#ctor
+  - AeroDB.HybridSearchConfig.Query
+  - AeroDB.HybridSearchConfig.QueryVector
+  - AeroDB.HybridSearchConfig.RrfK
+  - AeroDB.HybridSearchConfig.RrfLimit
+  - AeroDB.HybridSearchConfig.TextFields
+  - AeroDB.HybridSearchConfig.VectorCandidates
+  - AeroDB.HybridSearchConfig.VectorField
+  langs:
+  - csharp
+  - vb
+  name: HybridSearchConfig
+  nameWithType: HybridSearchConfig
+  fullName: AeroDB.HybridSearchConfig
+  type: Class
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SearchExtensions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Configuration for hybrid search combining full-text and vector results.
+  example: []
+  syntax:
+    content: public sealed class HybridSearchConfig
+    content.vb: Public NotInheritable Class HybridSearchConfig
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.GetType
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+- uid: AeroDB.HybridSearchConfig.#ctor
+  commentId: M:AeroDB.HybridSearchConfig.#ctor
+  id: '#ctor'
+  parent: AeroDB.HybridSearchConfig
+  langs:
+  - csharp
+  - vb
+  name: HybridSearchConfig()
+  nameWithType: HybridSearchConfig.HybridSearchConfig()
+  fullName: AeroDB.HybridSearchConfig.HybridSearchConfig()
+  type: Constructor
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SearchExtensions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public HybridSearchConfig()
+    content.vb: Public Sub New()
+  overload: AeroDB.HybridSearchConfig.#ctor*
+  nameWithType.vb: HybridSearchConfig.New()
+  fullName.vb: AeroDB.HybridSearchConfig.New()
+  name.vb: New()
+- uid: AeroDB.HybridSearchConfig.Query
+  commentId: P:AeroDB.HybridSearchConfig.Query
+  id: Query
+  parent: AeroDB.HybridSearchConfig
+  langs:
+  - csharp
+  - vb
+  name: Query
+  nameWithType: HybridSearchConfig.Query
+  fullName: AeroDB.HybridSearchConfig.Query
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SearchExtensions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: The search query string for full-text matching.
+  example: []
+  syntax:
+    content: public string Query { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property Query As String
+  overload: AeroDB.HybridSearchConfig.Query*
+- uid: AeroDB.HybridSearchConfig.QueryVector
+  commentId: P:AeroDB.HybridSearchConfig.QueryVector
+  id: QueryVector
+  parent: AeroDB.HybridSearchConfig
+  langs:
+  - csharp
+  - vb
+  name: QueryVector
+  nameWithType: HybridSearchConfig.QueryVector
+  fullName: AeroDB.HybridSearchConfig.QueryVector
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SearchExtensions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: The embedding/query vector for vector search.
+  example: []
+  syntax:
+    content: public float[] QueryVector { get; set; }
+    parameters: []
+    return:
+      type: System.Single[]
+    content.vb: Public Property QueryVector As Single()
+  overload: AeroDB.HybridSearchConfig.QueryVector*
+- uid: AeroDB.HybridSearchConfig.VectorField
+  commentId: P:AeroDB.HybridSearchConfig.VectorField
+  id: VectorField
+  parent: AeroDB.HybridSearchConfig
+  langs:
+  - csharp
+  - vb
+  name: VectorField
+  nameWithType: HybridSearchConfig.VectorField
+  fullName: AeroDB.HybridSearchConfig.VectorField
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SearchExtensions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Field name for the vector/embedding index.
+  example: []
+  syntax:
+    content: public string VectorField { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property VectorField As String
+  overload: AeroDB.HybridSearchConfig.VectorField*
+- uid: AeroDB.HybridSearchConfig.TextFields
+  commentId: P:AeroDB.HybridSearchConfig.TextFields
+  id: TextFields
+  parent: AeroDB.HybridSearchConfig
+  langs:
+  - csharp
+  - vb
+  name: TextFields
+  nameWithType: HybridSearchConfig.TextFields
+  fullName: AeroDB.HybridSearchConfig.TextFields
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SearchExtensions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Named fields with weights for full-text search (e.g., title=25, description=10).
+  example: []
+  syntax:
+    content: public IReadOnlyList<(string FieldName, double Weight)> TextFields { get; set; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IReadOnlyList{System.ValueTuple{System.String,System.Double}}
+    content.vb: Public Property TextFields As IReadOnlyList(Of (FieldName As String, Weight As Double))
+  overload: AeroDB.HybridSearchConfig.TextFields*
+- uid: AeroDB.HybridSearchConfig.VectorCandidates
+  commentId: P:AeroDB.HybridSearchConfig.VectorCandidates
+  id: VectorCandidates
+  parent: AeroDB.HybridSearchConfig
+  langs:
+  - csharp
+  - vb
+  name: VectorCandidates
+  nameWithType: HybridSearchConfig.VectorCandidates
+  fullName: AeroDB.HybridSearchConfig.VectorCandidates
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SearchExtensions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: KNN candidates to explore (higher = more accurate, slower). Default 100.
+  example: []
+  syntax:
+    content: public int VectorCandidates { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property VectorCandidates As Integer
+  overload: AeroDB.HybridSearchConfig.VectorCandidates*
+- uid: AeroDB.HybridSearchConfig.RrfK
+  commentId: P:AeroDB.HybridSearchConfig.RrfK
+  id: RrfK
+  parent: AeroDB.HybridSearchConfig
+  langs:
+  - csharp
+  - vb
+  name: RrfK
+  nameWithType: HybridSearchConfig.RrfK
+  fullName: AeroDB.HybridSearchConfig.RrfK
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SearchExtensions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: RRF smoothness constant (k). Default 60.
+  example: []
+  syntax:
+    content: public int RrfK { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property RrfK As Integer
+  overload: AeroDB.HybridSearchConfig.RrfK*
+- uid: AeroDB.HybridSearchConfig.RrfLimit
+  commentId: P:AeroDB.HybridSearchConfig.RrfLimit
+  id: RrfLimit
+  parent: AeroDB.HybridSearchConfig
+  langs:
+  - csharp
+  - vb
+  name: RrfLimit
+  nameWithType: HybridSearchConfig.RrfLimit
+  fullName: AeroDB.HybridSearchConfig.RrfLimit
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SearchExtensions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Maximum candidates for RRF fusion. Default 80.
+  example: []
+  syntax:
+    content: public int RrfLimit { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property RrfLimit As Integer
+  overload: AeroDB.HybridSearchConfig.RrfLimit*
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AeroDB.HybridSearchConfig.#ctor*
+  commentId: Overload:AeroDB.HybridSearchConfig.#ctor
+  isExternal: true
+  href: AeroDB.HybridSearchConfig.html#AeroDB_HybridSearchConfig__ctor
+  name: HybridSearchConfig
+  nameWithType: HybridSearchConfig.HybridSearchConfig
+  fullName: AeroDB.HybridSearchConfig.HybridSearchConfig
+  nameWithType.vb: HybridSearchConfig.New
+  fullName.vb: AeroDB.HybridSearchConfig.New
+  name.vb: New
+- uid: AeroDB.HybridSearchConfig.Query*
+  commentId: Overload:AeroDB.HybridSearchConfig.Query
+  isExternal: true
+  href: AeroDB.HybridSearchConfig.html#AeroDB_HybridSearchConfig_Query
+  name: Query
+  nameWithType: HybridSearchConfig.Query
+  fullName: AeroDB.HybridSearchConfig.Query
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: AeroDB.HybridSearchConfig.QueryVector*
+  commentId: Overload:AeroDB.HybridSearchConfig.QueryVector
+  isExternal: true
+  href: AeroDB.HybridSearchConfig.html#AeroDB_HybridSearchConfig_QueryVector
+  name: QueryVector
+  nameWithType: HybridSearchConfig.QueryVector
+  fullName: AeroDB.HybridSearchConfig.QueryVector
+- uid: System.Single[]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.single
+  name: float[]
+  nameWithType: float[]
+  fullName: float[]
+  nameWithType.vb: Single()
+  fullName.vb: Single()
+  name.vb: Single()
+  spec.csharp:
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: (
+  - name: )
+- uid: AeroDB.HybridSearchConfig.VectorField*
+  commentId: Overload:AeroDB.HybridSearchConfig.VectorField
+  isExternal: true
+  href: AeroDB.HybridSearchConfig.html#AeroDB_HybridSearchConfig_VectorField
+  name: VectorField
+  nameWithType: HybridSearchConfig.VectorField
+  fullName: AeroDB.HybridSearchConfig.VectorField
+- uid: AeroDB.HybridSearchConfig.TextFields*
+  commentId: Overload:AeroDB.HybridSearchConfig.TextFields
+  isExternal: true
+  href: AeroDB.HybridSearchConfig.html#AeroDB_HybridSearchConfig_TextFields
+  name: TextFields
+  nameWithType: HybridSearchConfig.TextFields
+  fullName: AeroDB.HybridSearchConfig.TextFields
+- uid: System.Collections.Generic.IReadOnlyList{System.ValueTuple{System.String,System.Double}}
+  commentId: T:System.Collections.Generic.IReadOnlyList{System.ValueTuple{System.String,System.Double}}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyList`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<(string FieldName, double Weight)>
+  nameWithType: IReadOnlyList<(string FieldName, double Weight)>
+  fullName: System.Collections.Generic.IReadOnlyList<(string FieldName, double Weight)>
+  nameWithType.vb: IReadOnlyList(Of (FieldName As String, Weight As Double))
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of (FieldName As String, Weight As Double))
+  name.vb: IReadOnlyList(Of (FieldName As String, Weight As Double))
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: " "
+  - uid: System.ValueTuple{System.String,System.Double}.FieldName
+    name: FieldName
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.string,system.double-.fieldname
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: " "
+  - uid: System.ValueTuple{System.String,System.Double}.Weight
+    name: Weight
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.string,system.double-.weight
+  - name: )
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: (
+  - uid: System.ValueTuple{System.String,System.Double}.FieldName
+    name: FieldName
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.string,system.double-.fieldname
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.ValueTuple{System.String,System.Double}.Weight
+    name: Weight
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.string,system.double-.weight
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+  - name: )
+- uid: System.Collections.Generic.IReadOnlyList`1
+  commentId: T:System.Collections.Generic.IReadOnlyList`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<T>
+  nameWithType: IReadOnlyList<T>
+  fullName: System.Collections.Generic.IReadOnlyList<T>
+  nameWithType.vb: IReadOnlyList(Of T)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of T)
+  name.vb: IReadOnlyList(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: AeroDB.HybridSearchConfig.VectorCandidates*
+  commentId: Overload:AeroDB.HybridSearchConfig.VectorCandidates
+  isExternal: true
+  href: AeroDB.HybridSearchConfig.html#AeroDB_HybridSearchConfig_VectorCandidates
+  name: VectorCandidates
+  nameWithType: HybridSearchConfig.VectorCandidates
+  fullName: AeroDB.HybridSearchConfig.VectorCandidates
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: AeroDB.HybridSearchConfig.RrfK*
+  commentId: Overload:AeroDB.HybridSearchConfig.RrfK
+  isExternal: true
+  href: AeroDB.HybridSearchConfig.html#AeroDB_HybridSearchConfig_RrfK
+  name: RrfK
+  nameWithType: HybridSearchConfig.RrfK
+  fullName: AeroDB.HybridSearchConfig.RrfK
+- uid: AeroDB.HybridSearchConfig.RrfLimit*
+  commentId: Overload:AeroDB.HybridSearchConfig.RrfLimit
+  isExternal: true
+  href: AeroDB.HybridSearchConfig.html#AeroDB_HybridSearchConfig_RrfLimit
+  name: RrfLimit
+  nameWithType: HybridSearchConfig.RrfLimit
+  fullName: AeroDB.HybridSearchConfig.RrfLimit

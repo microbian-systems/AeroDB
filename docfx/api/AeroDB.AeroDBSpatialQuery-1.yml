@@ -1,0 +1,2093 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.AeroDBSpatialQuery`1
+  commentId: T:AeroDB.AeroDBSpatialQuery`1
+  id: AeroDBSpatialQuery`1
+  parent: AeroDB
+  children:
+  - AeroDB.AeroDBSpatialQuery`1.NearBy(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Double,System.Double,System.Double)
+  - AeroDB.AeroDBSpatialQuery`1.OrderByDistance(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Double,System.Double)
+  - AeroDB.AeroDBSpatialQuery`1.Skip(System.Int32)
+  - AeroDB.AeroDBSpatialQuery`1.Take(System.Int32)
+  - AeroDB.AeroDBSpatialQuery`1.ToListAsync(System.Threading.CancellationToken)
+  - AeroDB.AeroDBSpatialQuery`1.Where(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})
+  - AeroDB.AeroDBSpatialQuery`1.Within(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Collections.Generic.List{System.ValueTuple{System.Double,System.Double}})
+  langs:
+  - csharp
+  - vb
+  name: AeroDBSpatialQuery<T>
+  nameWithType: AeroDBSpatialQuery<T>
+  fullName: AeroDB.AeroDBSpatialQuery<T>
+  type: Class
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Spatial/AeroDBSpatialQuery.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: 'public sealed class AeroDBSpatialQuery<T> : ISpatialQuery<T> where T : class'
+    typeParameters:
+    - id: T
+    content.vb: Public NotInheritable Class AeroDBSpatialQuery(Of T As Class) Implements ISpatialQuery(Of T)
+  inheritance:
+  - System.Object
+  implements:
+  - AeroDB.ISpatialQuery{{T}}
+  inheritedMembers:
+  - System.Object.GetType
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  nameWithType.vb: AeroDBSpatialQuery(Of T)
+  fullName.vb: AeroDB.AeroDBSpatialQuery(Of T)
+  name.vb: AeroDBSpatialQuery(Of T)
+- uid: AeroDB.AeroDBSpatialQuery`1.NearBy(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Double,System.Double,System.Double)
+  commentId: M:AeroDB.AeroDBSpatialQuery`1.NearBy(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Double,System.Double,System.Double)
+  id: NearBy(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Double,System.Double,System.Double)
+  parent: AeroDB.AeroDBSpatialQuery`1
+  langs:
+  - csharp
+  - vb
+  name: NearBy(Expression<Func<T, object>>, double, double, double)
+  nameWithType: AeroDBSpatialQuery<T>.NearBy(Expression<Func<T, object>>, double, double, double)
+  fullName: AeroDB.AeroDBSpatialQuery<T>.NearBy(System.Linq.Expressions.Expression<System.Func<T, object>>, double, double, double)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Spatial/AeroDBSpatialQuery.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Finds documents located within a specified distance from a reference point.
+
+    Generates a bounding-box pre-filter + geo::DISTANCE post-filter.
+
+    Results are sorted by distance ascending.
+  example: []
+  syntax:
+    content: public ISpatialQuery<T> NearBy(Expression<Func<T, object>> locationField, double latitude, double longitude, double maxDistanceMeters)
+    parameters:
+    - id: locationField
+      type: System.Linq.Expressions.Expression{System.Func{{T},System.Object}}
+    - id: latitude
+      type: System.Double
+    - id: longitude
+      type: System.Double
+    - id: maxDistanceMeters
+      type: System.Double
+    return:
+      type: AeroDB.ISpatialQuery{{T}}
+    content.vb: Public Function NearBy(locationField As Expression(Of Func(Of T, Object)), latitude As Double, longitude As Double, maxDistanceMeters As Double) As ISpatialQuery(Of T)
+  overload: AeroDB.AeroDBSpatialQuery`1.NearBy*
+  implements:
+  - AeroDB.ISpatialQuery{{T}}.NearBy(System.Linq.Expressions.Expression{System.Func{{T},System.Object}},System.Double,System.Double,System.Double)
+  nameWithType.vb: AeroDBSpatialQuery(Of T).NearBy(Expression(Of Func(Of T, Object)), Double, Double, Double)
+  fullName.vb: AeroDB.AeroDBSpatialQuery(Of T).NearBy(System.Linq.Expressions.Expression(Of System.Func(Of T, Object)), Double, Double, Double)
+  name.vb: NearBy(Expression(Of Func(Of T, Object)), Double, Double, Double)
+- uid: AeroDB.AeroDBSpatialQuery`1.Within(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Collections.Generic.List{System.ValueTuple{System.Double,System.Double}})
+  commentId: M:AeroDB.AeroDBSpatialQuery`1.Within(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Collections.Generic.List{System.ValueTuple{System.Double,System.Double}})
+  id: Within(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Collections.Generic.List{System.ValueTuple{System.Double,System.Double}})
+  parent: AeroDB.AeroDBSpatialQuery`1
+  langs:
+  - csharp
+  - vb
+  name: Within(Expression<Func<T, object>>, List<(double Lng, double Lat)>)
+  nameWithType: AeroDBSpatialQuery<T>.Within(Expression<Func<T, object>>, List<(double Lng, double Lat)>)
+  fullName: AeroDB.AeroDBSpatialQuery<T>.Within(System.Linq.Expressions.Expression<System.Func<T, object>>, System.Collections.Generic.List<(double Lng, double Lat)>)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Spatial/AeroDBSpatialQuery.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Finds documents whose geometry point lies within the specified polygon.
+
+    Uses the SurrealDB INSIDE operator for containment check.
+  example: []
+  syntax:
+    content: public ISpatialQuery<T> Within(Expression<Func<T, object>> locationField, List<(double Lng, double Lat)> polygon)
+    parameters:
+    - id: locationField
+      type: System.Linq.Expressions.Expression{System.Func{{T},System.Object}}
+    - id: polygon
+      type: System.Collections.Generic.List{System.ValueTuple{System.Double,System.Double}}
+    return:
+      type: AeroDB.ISpatialQuery{{T}}
+    content.vb: Public Function Within(locationField As Expression(Of Func(Of T, Object)), polygon As List(Of (Lng As Double, Lat As Double))) As ISpatialQuery(Of T)
+  overload: AeroDB.AeroDBSpatialQuery`1.Within*
+  implements:
+  - AeroDB.ISpatialQuery{{T}}.Within(System.Linq.Expressions.Expression{System.Func{{T},System.Object}},System.Collections.Generic.List{System.ValueTuple{System.Double,System.Double}})
+  nameWithType.vb: AeroDBSpatialQuery(Of T).Within(Expression(Of Func(Of T, Object)), List(Of (Lng As Double, Lat As Double)))
+  fullName.vb: AeroDB.AeroDBSpatialQuery(Of T).Within(System.Linq.Expressions.Expression(Of System.Func(Of T, Object)), System.Collections.Generic.List(Of (Lng As Double, Lat As Double)))
+  name.vb: Within(Expression(Of Func(Of T, Object)), List(Of (Lng As Double, Lat As Double)))
+- uid: AeroDB.AeroDBSpatialQuery`1.OrderByDistance(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Double,System.Double)
+  commentId: M:AeroDB.AeroDBSpatialQuery`1.OrderByDistance(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Double,System.Double)
+  id: OrderByDistance(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Double,System.Double)
+  parent: AeroDB.AeroDBSpatialQuery`1
+  langs:
+  - csharp
+  - vb
+  name: OrderByDistance(Expression<Func<T, object>>, double, double)
+  nameWithType: AeroDBSpatialQuery<T>.OrderByDistance(Expression<Func<T, object>>, double, double)
+  fullName: AeroDB.AeroDBSpatialQuery<T>.OrderByDistance(System.Linq.Expressions.Expression<System.Func<T, object>>, double, double)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Spatial/AeroDBSpatialQuery.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Sorts results by distance from a reference point (ascending).
+  example: []
+  syntax:
+    content: public ISpatialQuery<T> OrderByDistance(Expression<Func<T, object>> locationField, double latitude, double longitude)
+    parameters:
+    - id: locationField
+      type: System.Linq.Expressions.Expression{System.Func{{T},System.Object}}
+    - id: latitude
+      type: System.Double
+    - id: longitude
+      type: System.Double
+    return:
+      type: AeroDB.ISpatialQuery{{T}}
+    content.vb: Public Function OrderByDistance(locationField As Expression(Of Func(Of T, Object)), latitude As Double, longitude As Double) As ISpatialQuery(Of T)
+  overload: AeroDB.AeroDBSpatialQuery`1.OrderByDistance*
+  implements:
+  - AeroDB.ISpatialQuery{{T}}.OrderByDistance(System.Linq.Expressions.Expression{System.Func{{T},System.Object}},System.Double,System.Double)
+  nameWithType.vb: AeroDBSpatialQuery(Of T).OrderByDistance(Expression(Of Func(Of T, Object)), Double, Double)
+  fullName.vb: AeroDB.AeroDBSpatialQuery(Of T).OrderByDistance(System.Linq.Expressions.Expression(Of System.Func(Of T, Object)), Double, Double)
+  name.vb: OrderByDistance(Expression(Of Func(Of T, Object)), Double, Double)
+- uid: AeroDB.AeroDBSpatialQuery`1.Where(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})
+  commentId: M:AeroDB.AeroDBSpatialQuery`1.Where(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})
+  id: Where(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})
+  parent: AeroDB.AeroDBSpatialQuery`1
+  langs:
+  - csharp
+  - vb
+  name: Where(Expression<Func<T, bool>>)
+  nameWithType: AeroDBSpatialQuery<T>.Where(Expression<Func<T, bool>>)
+  fullName: AeroDB.AeroDBSpatialQuery<T>.Where(System.Linq.Expressions.Expression<System.Func<T, bool>>)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Spatial/AeroDBSpatialQuery.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Applies a filter condition to the spatial query.
+
+    The expression is translated to a SurrealQL WHERE clause.
+  example: []
+  syntax:
+    content: public ISpatialQuery<T> Where(Expression<Func<T, bool>> predicate)
+    parameters:
+    - id: predicate
+      type: System.Linq.Expressions.Expression{System.Func{{T},System.Boolean}}
+    return:
+      type: AeroDB.ISpatialQuery{{T}}
+    content.vb: Public Function Where(predicate As Expression(Of Func(Of T, Boolean))) As ISpatialQuery(Of T)
+  overload: AeroDB.AeroDBSpatialQuery`1.Where*
+  implements:
+  - AeroDB.ISpatialQuery{{T}}.Where(System.Linq.Expressions.Expression{System.Func{{T},System.Boolean}})
+  nameWithType.vb: AeroDBSpatialQuery(Of T).Where(Expression(Of Func(Of T, Boolean)))
+  fullName.vb: AeroDB.AeroDBSpatialQuery(Of T).Where(System.Linq.Expressions.Expression(Of System.Func(Of T, Boolean)))
+  name.vb: Where(Expression(Of Func(Of T, Boolean)))
+- uid: AeroDB.AeroDBSpatialQuery`1.Take(System.Int32)
+  commentId: M:AeroDB.AeroDBSpatialQuery`1.Take(System.Int32)
+  id: Take(System.Int32)
+  parent: AeroDB.AeroDBSpatialQuery`1
+  langs:
+  - csharp
+  - vb
+  name: Take(int)
+  nameWithType: AeroDBSpatialQuery<T>.Take(int)
+  fullName: AeroDB.AeroDBSpatialQuery<T>.Take(int)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Spatial/AeroDBSpatialQuery.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Limits the number of results returned.
+  example: []
+  syntax:
+    content: public ISpatialQuery<T> Take(int limit)
+    parameters:
+    - id: limit
+      type: System.Int32
+    return:
+      type: AeroDB.ISpatialQuery{{T}}
+    content.vb: Public Function Take(limit As Integer) As ISpatialQuery(Of T)
+  overload: AeroDB.AeroDBSpatialQuery`1.Take*
+  implements:
+  - AeroDB.ISpatialQuery{{T}}.Take(System.Int32)
+  nameWithType.vb: AeroDBSpatialQuery(Of T).Take(Integer)
+  fullName.vb: AeroDB.AeroDBSpatialQuery(Of T).Take(Integer)
+  name.vb: Take(Integer)
+- uid: AeroDB.AeroDBSpatialQuery`1.Skip(System.Int32)
+  commentId: M:AeroDB.AeroDBSpatialQuery`1.Skip(System.Int32)
+  id: Skip(System.Int32)
+  parent: AeroDB.AeroDBSpatialQuery`1
+  langs:
+  - csharp
+  - vb
+  name: Skip(int)
+  nameWithType: AeroDBSpatialQuery<T>.Skip(int)
+  fullName: AeroDB.AeroDBSpatialQuery<T>.Skip(int)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Spatial/AeroDBSpatialQuery.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Skips the specified number of results (for pagination).
+  example: []
+  syntax:
+    content: public ISpatialQuery<T> Skip(int count)
+    parameters:
+    - id: count
+      type: System.Int32
+    return:
+      type: AeroDB.ISpatialQuery{{T}}
+    content.vb: Public Function Skip(count As Integer) As ISpatialQuery(Of T)
+  overload: AeroDB.AeroDBSpatialQuery`1.Skip*
+  implements:
+  - AeroDB.ISpatialQuery{{T}}.Skip(System.Int32)
+  nameWithType.vb: AeroDBSpatialQuery(Of T).Skip(Integer)
+  fullName.vb: AeroDB.AeroDBSpatialQuery(Of T).Skip(Integer)
+  name.vb: Skip(Integer)
+- uid: AeroDB.AeroDBSpatialQuery`1.ToListAsync(System.Threading.CancellationToken)
+  commentId: M:AeroDB.AeroDBSpatialQuery`1.ToListAsync(System.Threading.CancellationToken)
+  id: ToListAsync(System.Threading.CancellationToken)
+  parent: AeroDB.AeroDBSpatialQuery`1
+  langs:
+  - csharp
+  - vb
+  name: ToListAsync(CancellationToken)
+  nameWithType: AeroDBSpatialQuery<T>.ToListAsync(CancellationToken)
+  fullName: AeroDB.AeroDBSpatialQuery<T>.ToListAsync(System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Spatial/AeroDBSpatialQuery.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Executes the spatial query and returns results.
+
+    Each result includes a synthetic _distance field (double, meters from reference point).
+  example: []
+  syntax:
+    content: public Task<List<T>> ToListAsync(CancellationToken ct = default)
+    parameters:
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.List{{T}}}
+    content.vb: Public Function ToListAsync(ct As CancellationToken = Nothing) As Task(Of List(Of T))
+  overload: AeroDB.AeroDBSpatialQuery`1.ToListAsync*
+  implements:
+  - AeroDB.ISpatialQuery{{T}}.ToListAsync(System.Threading.CancellationToken)
+  nameWithType.vb: AeroDBSpatialQuery(Of T).ToListAsync(CancellationToken)
+  fullName.vb: AeroDB.AeroDBSpatialQuery(Of T).ToListAsync(System.Threading.CancellationToken)
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: AeroDB.ISpatialQuery{{T}}
+  commentId: T:AeroDB.ISpatialQuery{`0}
+  parent: AeroDB
+  definition: AeroDB.ISpatialQuery`1
+  href: AeroDB.ISpatialQuery-1.html
+  name: ISpatialQuery<T>
+  nameWithType: ISpatialQuery<T>
+  fullName: AeroDB.ISpatialQuery<T>
+  nameWithType.vb: ISpatialQuery(Of T)
+  fullName.vb: AeroDB.ISpatialQuery(Of T)
+  name.vb: ISpatialQuery(Of T)
+  spec.csharp:
+  - uid: AeroDB.ISpatialQuery`1
+    name: ISpatialQuery
+    isExternal: true
+    href: AeroDB.ISpatialQuery-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.ISpatialQuery`1
+    name: ISpatialQuery
+    isExternal: true
+    href: AeroDB.ISpatialQuery-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AeroDB.ISpatialQuery`1
+  commentId: T:AeroDB.ISpatialQuery`1
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.ISpatialQuery-1.html
+  name: ISpatialQuery<T>
+  nameWithType: ISpatialQuery<T>
+  fullName: AeroDB.ISpatialQuery<T>
+  nameWithType.vb: ISpatialQuery(Of T)
+  fullName.vb: AeroDB.ISpatialQuery(Of T)
+  name.vb: ISpatialQuery(Of T)
+  spec.csharp:
+  - uid: AeroDB.ISpatialQuery`1
+    name: ISpatialQuery
+    isExternal: true
+    href: AeroDB.ISpatialQuery-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.ISpatialQuery`1
+    name: ISpatialQuery
+    isExternal: true
+    href: AeroDB.ISpatialQuery-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.AeroDBSpatialQuery`1.NearBy*
+  commentId: Overload:AeroDB.AeroDBSpatialQuery`1.NearBy
+  isExternal: true
+  href: AeroDB.AeroDBSpatialQuery-1.html#AeroDB_AeroDBSpatialQuery_1_NearBy_System_Linq_Expressions_Expression_System_Func__0_System_Object___System_Double_System_Double_System_Double_
+  name: NearBy
+  nameWithType: AeroDBSpatialQuery<T>.NearBy
+  fullName: AeroDB.AeroDBSpatialQuery<T>.NearBy
+  nameWithType.vb: AeroDBSpatialQuery(Of T).NearBy
+  fullName.vb: AeroDB.AeroDBSpatialQuery(Of T).NearBy
+- uid: AeroDB.ISpatialQuery{{T}}.NearBy(System.Linq.Expressions.Expression{System.Func{{T},System.Object}},System.Double,System.Double,System.Double)
+  commentId: M:AeroDB.ISpatialQuery{`0}.NearBy(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Double,System.Double,System.Double)
+  parent: AeroDB.ISpatialQuery{{T}}
+  definition: AeroDB.ISpatialQuery`1.NearBy(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Double,System.Double,System.Double)
+  href: AeroDB.ISpatialQuery-1.html#AeroDB_ISpatialQuery_1_NearBy_System_Linq_Expressions_Expression_System_Func__0_System_Object___System_Double_System_Double_System_Double_
+  name: NearBy(Expression<Func<T, object>>, double, double, double)
+  nameWithType: ISpatialQuery<T>.NearBy(Expression<Func<T, object>>, double, double, double)
+  fullName: AeroDB.ISpatialQuery<T>.NearBy(System.Linq.Expressions.Expression<System.Func<T, object>>, double, double, double)
+  nameWithType.vb: ISpatialQuery(Of T).NearBy(Expression(Of Func(Of T, Object)), Double, Double, Double)
+  fullName.vb: AeroDB.ISpatialQuery(Of T).NearBy(System.Linq.Expressions.Expression(Of System.Func(Of T, Object)), Double, Double, Double)
+  name.vb: NearBy(Expression(Of Func(Of T, Object)), Double, Double, Double)
+  spec.csharp:
+  - uid: AeroDB.ISpatialQuery{`0}.NearBy(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Double,System.Double,System.Double)
+    name: NearBy
+    isExternal: true
+    href: AeroDB.ISpatialQuery-1.html#AeroDB_ISpatialQuery_1_NearBy_System_Linq_Expressions_Expression_System_Func__0_System_Object___System_Double_System_Double_System_Double_
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+  spec.vb:
+  - uid: AeroDB.ISpatialQuery{`0}.NearBy(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Double,System.Double,System.Double)
+    name: NearBy
+    isExternal: true
+    href: AeroDB.ISpatialQuery-1.html#AeroDB_ISpatialQuery_1_NearBy_System_Linq_Expressions_Expression_System_Func__0_System_Object___System_Double_System_Double_System_Double_
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+- uid: System.Linq.Expressions.Expression{System.Func{{T},System.Object}}
+  commentId: T:System.Linq.Expressions.Expression{System.Func{`0,System.Object}}
+  parent: System.Linq.Expressions
+  definition: System.Linq.Expressions.Expression`1
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  name: Expression<Func<T, object>>
+  nameWithType: Expression<Func<T, object>>
+  fullName: System.Linq.Expressions.Expression<System.Func<T, object>>
+  nameWithType.vb: Expression(Of Func(Of T, Object))
+  fullName.vb: System.Linq.Expressions.Expression(Of System.Func(Of T, Object))
+  name.vb: Expression(Of Func(Of T, Object))
+  spec.csharp:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  - name: )
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double
+  nameWithType: double
+  fullName: double
+  nameWithType.vb: Double
+  fullName.vb: Double
+  name.vb: Double
+- uid: AeroDB.ISpatialQuery`1.NearBy(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Double,System.Double,System.Double)
+  commentId: M:AeroDB.ISpatialQuery`1.NearBy(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Double,System.Double,System.Double)
+  isExternal: true
+  href: AeroDB.ISpatialQuery-1.html#AeroDB_ISpatialQuery_1_NearBy_System_Linq_Expressions_Expression_System_Func__0_System_Object___System_Double_System_Double_System_Double_
+  name: NearBy(Expression<Func<T, object>>, double, double, double)
+  nameWithType: ISpatialQuery<T>.NearBy(Expression<Func<T, object>>, double, double, double)
+  fullName: AeroDB.ISpatialQuery<T>.NearBy(System.Linq.Expressions.Expression<System.Func<T, object>>, double, double, double)
+  nameWithType.vb: ISpatialQuery(Of T).NearBy(Expression(Of Func(Of T, Object)), Double, Double, Double)
+  fullName.vb: AeroDB.ISpatialQuery(Of T).NearBy(System.Linq.Expressions.Expression(Of System.Func(Of T, Object)), Double, Double, Double)
+  name.vb: NearBy(Expression(Of Func(Of T, Object)), Double, Double, Double)
+  spec.csharp:
+  - uid: AeroDB.ISpatialQuery`1.NearBy(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Double,System.Double,System.Double)
+    name: NearBy
+    isExternal: true
+    href: AeroDB.ISpatialQuery-1.html#AeroDB_ISpatialQuery_1_NearBy_System_Linq_Expressions_Expression_System_Func__0_System_Object___System_Double_System_Double_System_Double_
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+  spec.vb:
+  - uid: AeroDB.ISpatialQuery`1.NearBy(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Double,System.Double,System.Double)
+    name: NearBy
+    isExternal: true
+    href: AeroDB.ISpatialQuery-1.html#AeroDB_ISpatialQuery_1_NearBy_System_Linq_Expressions_Expression_System_Func__0_System_Object___System_Double_System_Double_System_Double_
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+- uid: System.Linq.Expressions.Expression`1
+  commentId: T:System.Linq.Expressions.Expression`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  name: Expression<TDelegate>
+  nameWithType: Expression<TDelegate>
+  fullName: System.Linq.Expressions.Expression<TDelegate>
+  nameWithType.vb: Expression(Of TDelegate)
+  fullName.vb: System.Linq.Expressions.Expression(Of TDelegate)
+  name.vb: Expression(Of TDelegate)
+  spec.csharp:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - name: TDelegate
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TDelegate
+  - name: )
+- uid: System.Linq.Expressions
+  commentId: N:System.Linq.Expressions
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Linq.Expressions
+  nameWithType: System.Linq.Expressions
+  fullName: System.Linq.Expressions
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Linq
+    name: Linq
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq
+  - name: .
+  - uid: System.Linq.Expressions
+    name: Expressions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Linq
+    name: Linq
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq
+  - name: .
+  - uid: System.Linq.Expressions
+    name: Expressions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions
+- uid: AeroDB.AeroDBSpatialQuery`1.Within*
+  commentId: Overload:AeroDB.AeroDBSpatialQuery`1.Within
+  isExternal: true
+  href: AeroDB.AeroDBSpatialQuery-1.html#AeroDB_AeroDBSpatialQuery_1_Within_System_Linq_Expressions_Expression_System_Func__0_System_Object___System_Collections_Generic_List_System_ValueTuple_System_Double_System_Double___
+  name: Within
+  nameWithType: AeroDBSpatialQuery<T>.Within
+  fullName: AeroDB.AeroDBSpatialQuery<T>.Within
+  nameWithType.vb: AeroDBSpatialQuery(Of T).Within
+  fullName.vb: AeroDB.AeroDBSpatialQuery(Of T).Within
+- uid: AeroDB.ISpatialQuery{{T}}.Within(System.Linq.Expressions.Expression{System.Func{{T},System.Object}},System.Collections.Generic.List{System.ValueTuple{System.Double,System.Double}})
+  commentId: M:AeroDB.ISpatialQuery{`0}.Within(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Collections.Generic.List{System.ValueTuple{System.Double,System.Double}})
+  parent: AeroDB.ISpatialQuery{{T}}
+  definition: AeroDB.ISpatialQuery`1.Within(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Collections.Generic.List{System.ValueTuple{System.Double,System.Double}})
+  href: AeroDB.ISpatialQuery-1.html#AeroDB_ISpatialQuery_1_Within_System_Linq_Expressions_Expression_System_Func__0_System_Object___System_Collections_Generic_List_System_ValueTuple_System_Double_System_Double___
+  name: Within(Expression<Func<T, object>>, List<(double Lng, double Lat)>)
+  nameWithType: ISpatialQuery<T>.Within(Expression<Func<T, object>>, List<(double Lng, double Lat)>)
+  fullName: AeroDB.ISpatialQuery<T>.Within(System.Linq.Expressions.Expression<System.Func<T, object>>, System.Collections.Generic.List<(double Lng, double Lat)>)
+  nameWithType.vb: ISpatialQuery(Of T).Within(Expression(Of Func(Of T, Object)), List(Of (Lng As Double, Lat As Double)))
+  fullName.vb: AeroDB.ISpatialQuery(Of T).Within(System.Linq.Expressions.Expression(Of System.Func(Of T, Object)), System.Collections.Generic.List(Of (Lng As Double, Lat As Double)))
+  name.vb: Within(Expression(Of Func(Of T, Object)), List(Of (Lng As Double, Lat As Double)))
+  spec.csharp:
+  - uid: AeroDB.ISpatialQuery{`0}.Within(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Collections.Generic.List{System.ValueTuple{System.Double,System.Double}})
+    name: Within
+    isExternal: true
+    href: AeroDB.ISpatialQuery-1.html#AeroDB_ISpatialQuery_1_Within_System_Linq_Expressions_Expression_System_Func__0_System_Object___System_Collections_Generic_List_System_ValueTuple_System_Double_System_Double___
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - name: (
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: " "
+  - uid: System.ValueTuple{System.Double,System.Double}.Lng
+    name: Lng
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.double,system.double-.lng
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: " "
+  - uid: System.ValueTuple{System.Double,System.Double}.Lat
+    name: Lat
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.double,system.double-.lat
+  - name: )
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: AeroDB.ISpatialQuery{`0}.Within(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Collections.Generic.List{System.ValueTuple{System.Double,System.Double}})
+    name: Within
+    isExternal: true
+    href: AeroDB.ISpatialQuery-1.html#AeroDB_ISpatialQuery_1_Within_System_Linq_Expressions_Expression_System_Func__0_System_Object___System_Collections_Generic_List_System_ValueTuple_System_Double_System_Double___
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: (
+  - uid: System.ValueTuple{System.Double,System.Double}.Lng
+    name: Lng
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.double,system.double-.lng
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.ValueTuple{System.Double,System.Double}.Lat
+    name: Lat
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.double,system.double-.lat
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+  - name: )
+  - name: )
+- uid: System.Collections.Generic.List{System.ValueTuple{System.Double,System.Double}}
+  commentId: T:System.Collections.Generic.List{System.ValueTuple{System.Double,System.Double}}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<(double Lng, double Lat)>
+  nameWithType: List<(double Lng, double Lat)>
+  fullName: System.Collections.Generic.List<(double Lng, double Lat)>
+  nameWithType.vb: List(Of (Lng As Double, Lat As Double))
+  fullName.vb: System.Collections.Generic.List(Of (Lng As Double, Lat As Double))
+  name.vb: List(Of (Lng As Double, Lat As Double))
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - name: (
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: " "
+  - uid: System.ValueTuple{System.Double,System.Double}.Lng
+    name: Lng
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.double,system.double-.lng
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: " "
+  - uid: System.ValueTuple{System.Double,System.Double}.Lat
+    name: Lat
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.double,system.double-.lat
+  - name: )
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: (
+  - uid: System.ValueTuple{System.Double,System.Double}.Lng
+    name: Lng
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.double,system.double-.lng
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.ValueTuple{System.Double,System.Double}.Lat
+    name: Lat
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.double,system.double-.lat
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+  - name: )
+- uid: AeroDB.ISpatialQuery`1.Within(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Collections.Generic.List{System.ValueTuple{System.Double,System.Double}})
+  commentId: M:AeroDB.ISpatialQuery`1.Within(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Collections.Generic.List{System.ValueTuple{System.Double,System.Double}})
+  isExternal: true
+  href: AeroDB.ISpatialQuery-1.html#AeroDB_ISpatialQuery_1_Within_System_Linq_Expressions_Expression_System_Func__0_System_Object___System_Collections_Generic_List_System_ValueTuple_System_Double_System_Double___
+  name: Within(Expression<Func<T, object>>, List<(double Lng, double Lat)>)
+  nameWithType: ISpatialQuery<T>.Within(Expression<Func<T, object>>, List<(double Lng, double Lat)>)
+  fullName: AeroDB.ISpatialQuery<T>.Within(System.Linq.Expressions.Expression<System.Func<T, object>>, System.Collections.Generic.List<(double Lng, double Lat)>)
+  nameWithType.vb: ISpatialQuery(Of T).Within(Expression(Of Func(Of T, Object)), List(Of (Lng As Double, Lat As Double)))
+  fullName.vb: AeroDB.ISpatialQuery(Of T).Within(System.Linq.Expressions.Expression(Of System.Func(Of T, Object)), System.Collections.Generic.List(Of (Lng As Double, Lat As Double)))
+  name.vb: Within(Expression(Of Func(Of T, Object)), List(Of (Lng As Double, Lat As Double)))
+  spec.csharp:
+  - uid: AeroDB.ISpatialQuery`1.Within(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Collections.Generic.List{System.ValueTuple{System.Double,System.Double}})
+    name: Within
+    isExternal: true
+    href: AeroDB.ISpatialQuery-1.html#AeroDB_ISpatialQuery_1_Within_System_Linq_Expressions_Expression_System_Func__0_System_Object___System_Collections_Generic_List_System_ValueTuple_System_Double_System_Double___
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - name: (
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: " "
+  - uid: System.ValueTuple{System.Double,System.Double}.Lng
+    name: Lng
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.double,system.double-.lng
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: " "
+  - uid: System.ValueTuple{System.Double,System.Double}.Lat
+    name: Lat
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.double,system.double-.lat
+  - name: )
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: AeroDB.ISpatialQuery`1.Within(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Collections.Generic.List{System.ValueTuple{System.Double,System.Double}})
+    name: Within
+    isExternal: true
+    href: AeroDB.ISpatialQuery-1.html#AeroDB_ISpatialQuery_1_Within_System_Linq_Expressions_Expression_System_Func__0_System_Object___System_Collections_Generic_List_System_ValueTuple_System_Double_System_Double___
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: (
+  - uid: System.ValueTuple{System.Double,System.Double}.Lng
+    name: Lng
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.double,system.double-.lng
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.ValueTuple{System.Double,System.Double}.Lat
+    name: Lat
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.double,system.double-.lat
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+  - name: )
+  - name: )
+- uid: System.Collections.Generic.List`1
+  commentId: T:System.Collections.Generic.List`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<T>
+  nameWithType: List<T>
+  fullName: System.Collections.Generic.List<T>
+  nameWithType.vb: List(Of T)
+  fullName.vb: System.Collections.Generic.List(Of T)
+  name.vb: List(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: AeroDB.AeroDBSpatialQuery`1.OrderByDistance*
+  commentId: Overload:AeroDB.AeroDBSpatialQuery`1.OrderByDistance
+  isExternal: true
+  href: AeroDB.AeroDBSpatialQuery-1.html#AeroDB_AeroDBSpatialQuery_1_OrderByDistance_System_Linq_Expressions_Expression_System_Func__0_System_Object___System_Double_System_Double_
+  name: OrderByDistance
+  nameWithType: AeroDBSpatialQuery<T>.OrderByDistance
+  fullName: AeroDB.AeroDBSpatialQuery<T>.OrderByDistance
+  nameWithType.vb: AeroDBSpatialQuery(Of T).OrderByDistance
+  fullName.vb: AeroDB.AeroDBSpatialQuery(Of T).OrderByDistance
+- uid: AeroDB.ISpatialQuery{{T}}.OrderByDistance(System.Linq.Expressions.Expression{System.Func{{T},System.Object}},System.Double,System.Double)
+  commentId: M:AeroDB.ISpatialQuery{`0}.OrderByDistance(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Double,System.Double)
+  parent: AeroDB.ISpatialQuery{{T}}
+  definition: AeroDB.ISpatialQuery`1.OrderByDistance(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Double,System.Double)
+  href: AeroDB.ISpatialQuery-1.html#AeroDB_ISpatialQuery_1_OrderByDistance_System_Linq_Expressions_Expression_System_Func__0_System_Object___System_Double_System_Double_
+  name: OrderByDistance(Expression<Func<T, object>>, double, double)
+  nameWithType: ISpatialQuery<T>.OrderByDistance(Expression<Func<T, object>>, double, double)
+  fullName: AeroDB.ISpatialQuery<T>.OrderByDistance(System.Linq.Expressions.Expression<System.Func<T, object>>, double, double)
+  nameWithType.vb: ISpatialQuery(Of T).OrderByDistance(Expression(Of Func(Of T, Object)), Double, Double)
+  fullName.vb: AeroDB.ISpatialQuery(Of T).OrderByDistance(System.Linq.Expressions.Expression(Of System.Func(Of T, Object)), Double, Double)
+  name.vb: OrderByDistance(Expression(Of Func(Of T, Object)), Double, Double)
+  spec.csharp:
+  - uid: AeroDB.ISpatialQuery{`0}.OrderByDistance(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Double,System.Double)
+    name: OrderByDistance
+    isExternal: true
+    href: AeroDB.ISpatialQuery-1.html#AeroDB_ISpatialQuery_1_OrderByDistance_System_Linq_Expressions_Expression_System_Func__0_System_Object___System_Double_System_Double_
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+  spec.vb:
+  - uid: AeroDB.ISpatialQuery{`0}.OrderByDistance(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Double,System.Double)
+    name: OrderByDistance
+    isExternal: true
+    href: AeroDB.ISpatialQuery-1.html#AeroDB_ISpatialQuery_1_OrderByDistance_System_Linq_Expressions_Expression_System_Func__0_System_Object___System_Double_System_Double_
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+- uid: AeroDB.ISpatialQuery`1.OrderByDistance(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Double,System.Double)
+  commentId: M:AeroDB.ISpatialQuery`1.OrderByDistance(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Double,System.Double)
+  isExternal: true
+  href: AeroDB.ISpatialQuery-1.html#AeroDB_ISpatialQuery_1_OrderByDistance_System_Linq_Expressions_Expression_System_Func__0_System_Object___System_Double_System_Double_
+  name: OrderByDistance(Expression<Func<T, object>>, double, double)
+  nameWithType: ISpatialQuery<T>.OrderByDistance(Expression<Func<T, object>>, double, double)
+  fullName: AeroDB.ISpatialQuery<T>.OrderByDistance(System.Linq.Expressions.Expression<System.Func<T, object>>, double, double)
+  nameWithType.vb: ISpatialQuery(Of T).OrderByDistance(Expression(Of Func(Of T, Object)), Double, Double)
+  fullName.vb: AeroDB.ISpatialQuery(Of T).OrderByDistance(System.Linq.Expressions.Expression(Of System.Func(Of T, Object)), Double, Double)
+  name.vb: OrderByDistance(Expression(Of Func(Of T, Object)), Double, Double)
+  spec.csharp:
+  - uid: AeroDB.ISpatialQuery`1.OrderByDistance(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Double,System.Double)
+    name: OrderByDistance
+    isExternal: true
+    href: AeroDB.ISpatialQuery-1.html#AeroDB_ISpatialQuery_1_OrderByDistance_System_Linq_Expressions_Expression_System_Func__0_System_Object___System_Double_System_Double_
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+  spec.vb:
+  - uid: AeroDB.ISpatialQuery`1.OrderByDistance(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Double,System.Double)
+    name: OrderByDistance
+    isExternal: true
+    href: AeroDB.ISpatialQuery-1.html#AeroDB_ISpatialQuery_1_OrderByDistance_System_Linq_Expressions_Expression_System_Func__0_System_Object___System_Double_System_Double_
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+- uid: AeroDB.AeroDBSpatialQuery`1.Where*
+  commentId: Overload:AeroDB.AeroDBSpatialQuery`1.Where
+  isExternal: true
+  href: AeroDB.AeroDBSpatialQuery-1.html#AeroDB_AeroDBSpatialQuery_1_Where_System_Linq_Expressions_Expression_System_Func__0_System_Boolean___
+  name: Where
+  nameWithType: AeroDBSpatialQuery<T>.Where
+  fullName: AeroDB.AeroDBSpatialQuery<T>.Where
+  nameWithType.vb: AeroDBSpatialQuery(Of T).Where
+  fullName.vb: AeroDB.AeroDBSpatialQuery(Of T).Where
+- uid: AeroDB.ISpatialQuery{{T}}.Where(System.Linq.Expressions.Expression{System.Func{{T},System.Boolean}})
+  commentId: M:AeroDB.ISpatialQuery{`0}.Where(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})
+  parent: AeroDB.ISpatialQuery{{T}}
+  definition: AeroDB.ISpatialQuery`1.Where(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})
+  href: AeroDB.ISpatialQuery-1.html#AeroDB_ISpatialQuery_1_Where_System_Linq_Expressions_Expression_System_Func__0_System_Boolean___
+  name: Where(Expression<Func<T, bool>>)
+  nameWithType: ISpatialQuery<T>.Where(Expression<Func<T, bool>>)
+  fullName: AeroDB.ISpatialQuery<T>.Where(System.Linq.Expressions.Expression<System.Func<T, bool>>)
+  nameWithType.vb: ISpatialQuery(Of T).Where(Expression(Of Func(Of T, Boolean)))
+  fullName.vb: AeroDB.ISpatialQuery(Of T).Where(System.Linq.Expressions.Expression(Of System.Func(Of T, Boolean)))
+  name.vb: Where(Expression(Of Func(Of T, Boolean)))
+  spec.csharp:
+  - uid: AeroDB.ISpatialQuery{`0}.Where(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})
+    name: Where
+    isExternal: true
+    href: AeroDB.ISpatialQuery-1.html#AeroDB_ISpatialQuery_1_Where_System_Linq_Expressions_Expression_System_Func__0_System_Boolean___
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: AeroDB.ISpatialQuery{`0}.Where(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})
+    name: Where
+    isExternal: true
+    href: AeroDB.ISpatialQuery-1.html#AeroDB_ISpatialQuery_1_Where_System_Linq_Expressions_Expression_System_Func__0_System_Boolean___
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  - name: )
+  - name: )
+- uid: System.Linq.Expressions.Expression{System.Func{{T},System.Boolean}}
+  commentId: T:System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}}
+  parent: System.Linq.Expressions
+  definition: System.Linq.Expressions.Expression`1
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  name: Expression<Func<T, bool>>
+  nameWithType: Expression<Func<T, bool>>
+  fullName: System.Linq.Expressions.Expression<System.Func<T, bool>>
+  nameWithType.vb: Expression(Of Func(Of T, Boolean))
+  fullName.vb: System.Linq.Expressions.Expression(Of System.Func(Of T, Boolean))
+  name.vb: Expression(Of Func(Of T, Boolean))
+  spec.csharp:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  - name: )
+- uid: AeroDB.ISpatialQuery`1.Where(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})
+  commentId: M:AeroDB.ISpatialQuery`1.Where(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})
+  isExternal: true
+  href: AeroDB.ISpatialQuery-1.html#AeroDB_ISpatialQuery_1_Where_System_Linq_Expressions_Expression_System_Func__0_System_Boolean___
+  name: Where(Expression<Func<T, bool>>)
+  nameWithType: ISpatialQuery<T>.Where(Expression<Func<T, bool>>)
+  fullName: AeroDB.ISpatialQuery<T>.Where(System.Linq.Expressions.Expression<System.Func<T, bool>>)
+  nameWithType.vb: ISpatialQuery(Of T).Where(Expression(Of Func(Of T, Boolean)))
+  fullName.vb: AeroDB.ISpatialQuery(Of T).Where(System.Linq.Expressions.Expression(Of System.Func(Of T, Boolean)))
+  name.vb: Where(Expression(Of Func(Of T, Boolean)))
+  spec.csharp:
+  - uid: AeroDB.ISpatialQuery`1.Where(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})
+    name: Where
+    isExternal: true
+    href: AeroDB.ISpatialQuery-1.html#AeroDB_ISpatialQuery_1_Where_System_Linq_Expressions_Expression_System_Func__0_System_Boolean___
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: AeroDB.ISpatialQuery`1.Where(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})
+    name: Where
+    isExternal: true
+    href: AeroDB.ISpatialQuery-1.html#AeroDB_ISpatialQuery_1_Where_System_Linq_Expressions_Expression_System_Func__0_System_Boolean___
+  - name: (
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  - name: )
+  - name: )
+- uid: AeroDB.AeroDBSpatialQuery`1.Take*
+  commentId: Overload:AeroDB.AeroDBSpatialQuery`1.Take
+  isExternal: true
+  href: AeroDB.AeroDBSpatialQuery-1.html#AeroDB_AeroDBSpatialQuery_1_Take_System_Int32_
+  name: Take
+  nameWithType: AeroDBSpatialQuery<T>.Take
+  fullName: AeroDB.AeroDBSpatialQuery<T>.Take
+  nameWithType.vb: AeroDBSpatialQuery(Of T).Take
+  fullName.vb: AeroDB.AeroDBSpatialQuery(Of T).Take
+- uid: AeroDB.ISpatialQuery{{T}}.Take(System.Int32)
+  commentId: M:AeroDB.ISpatialQuery{`0}.Take(System.Int32)
+  parent: AeroDB.ISpatialQuery{{T}}
+  definition: AeroDB.ISpatialQuery`1.Take(System.Int32)
+  href: AeroDB.ISpatialQuery-1.html#AeroDB_ISpatialQuery_1_Take_System_Int32_
+  name: Take(int)
+  nameWithType: ISpatialQuery<T>.Take(int)
+  fullName: AeroDB.ISpatialQuery<T>.Take(int)
+  nameWithType.vb: ISpatialQuery(Of T).Take(Integer)
+  fullName.vb: AeroDB.ISpatialQuery(Of T).Take(Integer)
+  name.vb: Take(Integer)
+  spec.csharp:
+  - uid: AeroDB.ISpatialQuery{`0}.Take(System.Int32)
+    name: Take
+    isExternal: true
+    href: AeroDB.ISpatialQuery-1.html#AeroDB_ISpatialQuery_1_Take_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: AeroDB.ISpatialQuery{`0}.Take(System.Int32)
+    name: Take
+    isExternal: true
+    href: AeroDB.ISpatialQuery-1.html#AeroDB_ISpatialQuery_1_Take_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: AeroDB.ISpatialQuery`1.Take(System.Int32)
+  commentId: M:AeroDB.ISpatialQuery`1.Take(System.Int32)
+  isExternal: true
+  href: AeroDB.ISpatialQuery-1.html#AeroDB_ISpatialQuery_1_Take_System_Int32_
+  name: Take(int)
+  nameWithType: ISpatialQuery<T>.Take(int)
+  fullName: AeroDB.ISpatialQuery<T>.Take(int)
+  nameWithType.vb: ISpatialQuery(Of T).Take(Integer)
+  fullName.vb: AeroDB.ISpatialQuery(Of T).Take(Integer)
+  name.vb: Take(Integer)
+  spec.csharp:
+  - uid: AeroDB.ISpatialQuery`1.Take(System.Int32)
+    name: Take
+    isExternal: true
+    href: AeroDB.ISpatialQuery-1.html#AeroDB_ISpatialQuery_1_Take_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: AeroDB.ISpatialQuery`1.Take(System.Int32)
+    name: Take
+    isExternal: true
+    href: AeroDB.ISpatialQuery-1.html#AeroDB_ISpatialQuery_1_Take_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: AeroDB.AeroDBSpatialQuery`1.Skip*
+  commentId: Overload:AeroDB.AeroDBSpatialQuery`1.Skip
+  isExternal: true
+  href: AeroDB.AeroDBSpatialQuery-1.html#AeroDB_AeroDBSpatialQuery_1_Skip_System_Int32_
+  name: Skip
+  nameWithType: AeroDBSpatialQuery<T>.Skip
+  fullName: AeroDB.AeroDBSpatialQuery<T>.Skip
+  nameWithType.vb: AeroDBSpatialQuery(Of T).Skip
+  fullName.vb: AeroDB.AeroDBSpatialQuery(Of T).Skip
+- uid: AeroDB.ISpatialQuery{{T}}.Skip(System.Int32)
+  commentId: M:AeroDB.ISpatialQuery{`0}.Skip(System.Int32)
+  parent: AeroDB.ISpatialQuery{{T}}
+  definition: AeroDB.ISpatialQuery`1.Skip(System.Int32)
+  href: AeroDB.ISpatialQuery-1.html#AeroDB_ISpatialQuery_1_Skip_System_Int32_
+  name: Skip(int)
+  nameWithType: ISpatialQuery<T>.Skip(int)
+  fullName: AeroDB.ISpatialQuery<T>.Skip(int)
+  nameWithType.vb: ISpatialQuery(Of T).Skip(Integer)
+  fullName.vb: AeroDB.ISpatialQuery(Of T).Skip(Integer)
+  name.vb: Skip(Integer)
+  spec.csharp:
+  - uid: AeroDB.ISpatialQuery{`0}.Skip(System.Int32)
+    name: Skip
+    isExternal: true
+    href: AeroDB.ISpatialQuery-1.html#AeroDB_ISpatialQuery_1_Skip_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: AeroDB.ISpatialQuery{`0}.Skip(System.Int32)
+    name: Skip
+    isExternal: true
+    href: AeroDB.ISpatialQuery-1.html#AeroDB_ISpatialQuery_1_Skip_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: AeroDB.ISpatialQuery`1.Skip(System.Int32)
+  commentId: M:AeroDB.ISpatialQuery`1.Skip(System.Int32)
+  isExternal: true
+  href: AeroDB.ISpatialQuery-1.html#AeroDB_ISpatialQuery_1_Skip_System_Int32_
+  name: Skip(int)
+  nameWithType: ISpatialQuery<T>.Skip(int)
+  fullName: AeroDB.ISpatialQuery<T>.Skip(int)
+  nameWithType.vb: ISpatialQuery(Of T).Skip(Integer)
+  fullName.vb: AeroDB.ISpatialQuery(Of T).Skip(Integer)
+  name.vb: Skip(Integer)
+  spec.csharp:
+  - uid: AeroDB.ISpatialQuery`1.Skip(System.Int32)
+    name: Skip
+    isExternal: true
+    href: AeroDB.ISpatialQuery-1.html#AeroDB_ISpatialQuery_1_Skip_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: AeroDB.ISpatialQuery`1.Skip(System.Int32)
+    name: Skip
+    isExternal: true
+    href: AeroDB.ISpatialQuery-1.html#AeroDB_ISpatialQuery_1_Skip_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: AeroDB.AeroDBSpatialQuery`1.ToListAsync*
+  commentId: Overload:AeroDB.AeroDBSpatialQuery`1.ToListAsync
+  isExternal: true
+  href: AeroDB.AeroDBSpatialQuery-1.html#AeroDB_AeroDBSpatialQuery_1_ToListAsync_System_Threading_CancellationToken_
+  name: ToListAsync
+  nameWithType: AeroDBSpatialQuery<T>.ToListAsync
+  fullName: AeroDB.AeroDBSpatialQuery<T>.ToListAsync
+  nameWithType.vb: AeroDBSpatialQuery(Of T).ToListAsync
+  fullName.vb: AeroDB.AeroDBSpatialQuery(Of T).ToListAsync
+- uid: AeroDB.ISpatialQuery{{T}}.ToListAsync(System.Threading.CancellationToken)
+  commentId: M:AeroDB.ISpatialQuery{`0}.ToListAsync(System.Threading.CancellationToken)
+  parent: AeroDB.ISpatialQuery{{T}}
+  definition: AeroDB.ISpatialQuery`1.ToListAsync(System.Threading.CancellationToken)
+  href: AeroDB.ISpatialQuery-1.html#AeroDB_ISpatialQuery_1_ToListAsync_System_Threading_CancellationToken_
+  name: ToListAsync(CancellationToken)
+  nameWithType: ISpatialQuery<T>.ToListAsync(CancellationToken)
+  fullName: AeroDB.ISpatialQuery<T>.ToListAsync(System.Threading.CancellationToken)
+  nameWithType.vb: ISpatialQuery(Of T).ToListAsync(CancellationToken)
+  fullName.vb: AeroDB.ISpatialQuery(Of T).ToListAsync(System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: AeroDB.ISpatialQuery{`0}.ToListAsync(System.Threading.CancellationToken)
+    name: ToListAsync
+    isExternal: true
+    href: AeroDB.ISpatialQuery-1.html#AeroDB_ISpatialQuery_1_ToListAsync_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: AeroDB.ISpatialQuery{`0}.ToListAsync(System.Threading.CancellationToken)
+    name: ToListAsync
+    isExternal: true
+    href: AeroDB.ISpatialQuery-1.html#AeroDB_ISpatialQuery_1_ToListAsync_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.List{{T}}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.List{``0}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<List<T>>
+  nameWithType: Task<List<T>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.List<T>>
+  nameWithType.vb: Task(Of List(Of T))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.List(Of T))
+  name.vb: Task(Of List(Of T))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - name: T
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+- uid: AeroDB.ISpatialQuery`1.ToListAsync(System.Threading.CancellationToken)
+  commentId: M:AeroDB.ISpatialQuery`1.ToListAsync(System.Threading.CancellationToken)
+  isExternal: true
+  href: AeroDB.ISpatialQuery-1.html#AeroDB_ISpatialQuery_1_ToListAsync_System_Threading_CancellationToken_
+  name: ToListAsync(CancellationToken)
+  nameWithType: ISpatialQuery<T>.ToListAsync(CancellationToken)
+  fullName: AeroDB.ISpatialQuery<T>.ToListAsync(System.Threading.CancellationToken)
+  nameWithType.vb: ISpatialQuery(Of T).ToListAsync(CancellationToken)
+  fullName.vb: AeroDB.ISpatialQuery(Of T).ToListAsync(System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: AeroDB.ISpatialQuery`1.ToListAsync(System.Threading.CancellationToken)
+    name: ToListAsync
+    isExternal: true
+    href: AeroDB.ISpatialQuery-1.html#AeroDB_ISpatialQuery_1_ToListAsync_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: AeroDB.ISpatialQuery`1.ToListAsync(System.Threading.CancellationToken)
+    name: ToListAsync
+    isExternal: true
+    href: AeroDB.ISpatialQuery-1.html#AeroDB_ISpatialQuery_1_ToListAsync_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks

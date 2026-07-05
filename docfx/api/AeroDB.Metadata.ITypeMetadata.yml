@@ -1,0 +1,785 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.Metadata.ITypeMetadata
+  commentId: T:AeroDB.Metadata.ITypeMetadata
+  id: ITypeMetadata
+  parent: AeroDB.Metadata
+  children:
+  - AeroDB.Metadata.ITypeMetadata.Fields
+  - AeroDB.Metadata.ITypeMetadata.GetRecordIdAccessor
+  - AeroDB.Metadata.ITypeMetadata.GetVersionAccessor
+  - AeroDB.Metadata.ITypeMetadata.HasDocumentMetadata
+  - AeroDB.Metadata.ITypeMetadata.HasEventProjectionDispatch
+  - AeroDB.Metadata.ITypeMetadata.HasTenantId
+  - AeroDB.Metadata.ITypeMetadata.HasVersion
+  - AeroDB.Metadata.ITypeMetadata.SetVersionAccessor
+  - AeroDB.Metadata.ITypeMetadata.TableName
+  - AeroDB.Metadata.ITypeMetadata.VersionFieldName
+  langs:
+  - csharp
+  - vb
+  name: ITypeMetadata
+  nameWithType: ITypeMetadata
+  fullName: AeroDB.Metadata.ITypeMetadata
+  type: Interface
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Metadata/MetadataRegistry.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB.Metadata
+  summary: Generic metadata interface for a document type.
+  example: []
+  syntax:
+    content: public interface ITypeMetadata
+    content.vb: Public Interface ITypeMetadata
+- uid: AeroDB.Metadata.ITypeMetadata.TableName
+  commentId: P:AeroDB.Metadata.ITypeMetadata.TableName
+  id: TableName
+  parent: AeroDB.Metadata.ITypeMetadata
+  langs:
+  - csharp
+  - vb
+  name: TableName
+  nameWithType: ITypeMetadata.TableName
+  fullName: AeroDB.Metadata.ITypeMetadata.TableName
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Metadata/MetadataRegistry.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB.Metadata
+  summary: The snake_case table name for this document type.
+  example: []
+  syntax:
+    content: string TableName { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: ReadOnly Property TableName As String
+  overload: AeroDB.Metadata.ITypeMetadata.TableName*
+- uid: AeroDB.Metadata.ITypeMetadata.HasTenantId
+  commentId: P:AeroDB.Metadata.ITypeMetadata.HasTenantId
+  id: HasTenantId
+  parent: AeroDB.Metadata.ITypeMetadata
+  langs:
+  - csharp
+  - vb
+  name: HasTenantId
+  nameWithType: ITypeMetadata.HasTenantId
+  fullName: AeroDB.Metadata.ITypeMetadata.HasTenantId
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Metadata/MetadataRegistry.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB.Metadata
+  summary: Whether this document type has a TenantId string property.
+  example: []
+  syntax:
+    content: bool HasTenantId { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: ReadOnly Property HasTenantId As Boolean
+  overload: AeroDB.Metadata.ITypeMetadata.HasTenantId*
+- uid: AeroDB.Metadata.ITypeMetadata.HasVersion
+  commentId: P:AeroDB.Metadata.ITypeMetadata.HasVersion
+  id: HasVersion
+  parent: AeroDB.Metadata.ITypeMetadata
+  langs:
+  - csharp
+  - vb
+  name: HasVersion
+  nameWithType: ITypeMetadata.HasVersion
+  fullName: AeroDB.Metadata.ITypeMetadata.HasVersion
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Metadata/MetadataRegistry.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB.Metadata
+  summary: Whether this document type has a version field (via <xref href="AeroDB.IVersioned" data-throw-if-not-resolved="false"></xref> or <xref href="AeroDB.VersionAttribute" data-throw-if-not-resolved="false"></xref>).
+  example: []
+  syntax:
+    content: bool HasVersion { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: ReadOnly Property HasVersion As Boolean
+  overload: AeroDB.Metadata.ITypeMetadata.HasVersion*
+- uid: AeroDB.Metadata.ITypeMetadata.HasDocumentMetadata
+  commentId: P:AeroDB.Metadata.ITypeMetadata.HasDocumentMetadata
+  id: HasDocumentMetadata
+  parent: AeroDB.Metadata.ITypeMetadata
+  langs:
+  - csharp
+  - vb
+  name: HasDocumentMetadata
+  nameWithType: ITypeMetadata.HasDocumentMetadata
+  fullName: AeroDB.Metadata.ITypeMetadata.HasDocumentMetadata
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Metadata/MetadataRegistry.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB.Metadata
+  summary: >-
+    Whether this document type implements <xref href="AeroDB.Metadata.IDocumentMetadata" data-throw-if-not-resolved="false"></xref> for auto-tracked
+
+    audit timestamps (CreatedAt, LastModified).
+  example: []
+  syntax:
+    content: bool HasDocumentMetadata { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: ReadOnly Property HasDocumentMetadata As Boolean
+  overload: AeroDB.Metadata.ITypeMetadata.HasDocumentMetadata*
+- uid: AeroDB.Metadata.ITypeMetadata.HasEventProjectionDispatch
+  commentId: P:AeroDB.Metadata.ITypeMetadata.HasEventProjectionDispatch
+  id: HasEventProjectionDispatch
+  parent: AeroDB.Metadata.ITypeMetadata
+  langs:
+  - csharp
+  - vb
+  name: HasEventProjectionDispatch
+  nameWithType: ITypeMetadata.HasEventProjectionDispatch
+  fullName: AeroDB.Metadata.ITypeMetadata.HasEventProjectionDispatch
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Metadata/MetadataRegistry.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB.Metadata
+  summary: >-
+    Whether this document type has an associated <xref href="AeroDB.EventProjection%601" data-throw-if-not-resolved="false"></xref> dispatch.
+
+    When true, the source generator has emitted (or can emit) a type-switch ApplyEvents override
+
+    for the projection class, avoiding runtime reflection.
+  example: []
+  syntax:
+    content: bool HasEventProjectionDispatch { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: ReadOnly Property HasEventProjectionDispatch As Boolean
+  overload: AeroDB.Metadata.ITypeMetadata.HasEventProjectionDispatch*
+- uid: AeroDB.Metadata.ITypeMetadata.VersionFieldName
+  commentId: P:AeroDB.Metadata.ITypeMetadata.VersionFieldName
+  id: VersionFieldName
+  parent: AeroDB.Metadata.ITypeMetadata
+  langs:
+  - csharp
+  - vb
+  name: VersionFieldName
+  nameWithType: ITypeMetadata.VersionFieldName
+  fullName: AeroDB.Metadata.ITypeMetadata.VersionFieldName
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Metadata/MetadataRegistry.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB.Metadata
+  summary: >-
+    The name of the version property, or null if this type has no version field.
+
+    Generated metadata provides this directly from compile-time analysis, avoiding reflection.
+  example: []
+  syntax:
+    content: string? VersionFieldName { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: ReadOnly Property VersionFieldName As String
+  overload: AeroDB.Metadata.ITypeMetadata.VersionFieldName*
+- uid: AeroDB.Metadata.ITypeMetadata.GetVersionAccessor
+  commentId: P:AeroDB.Metadata.ITypeMetadata.GetVersionAccessor
+  id: GetVersionAccessor
+  parent: AeroDB.Metadata.ITypeMetadata
+  langs:
+  - csharp
+  - vb
+  name: GetVersionAccessor
+  nameWithType: ITypeMetadata.GetVersionAccessor
+  fullName: AeroDB.Metadata.ITypeMetadata.GetVersionAccessor
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Metadata/MetadataRegistry.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB.Metadata
+  summary: Untyped version accessor delegate for generated types. Null if no version field.
+  example: []
+  syntax:
+    content: Func<object, long>? GetVersionAccessor { get; }
+    parameters: []
+    return:
+      type: System.Func{System.Object,System.Int64}
+    content.vb: ReadOnly Property GetVersionAccessor As Func(Of Object, Long)
+  overload: AeroDB.Metadata.ITypeMetadata.GetVersionAccessor*
+- uid: AeroDB.Metadata.ITypeMetadata.SetVersionAccessor
+  commentId: P:AeroDB.Metadata.ITypeMetadata.SetVersionAccessor
+  id: SetVersionAccessor
+  parent: AeroDB.Metadata.ITypeMetadata
+  langs:
+  - csharp
+  - vb
+  name: SetVersionAccessor
+  nameWithType: ITypeMetadata.SetVersionAccessor
+  fullName: AeroDB.Metadata.ITypeMetadata.SetVersionAccessor
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Metadata/MetadataRegistry.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB.Metadata
+  summary: Untyped version setter delegate for generated types. Null if no version field.
+  example: []
+  syntax:
+    content: Action<object, long>? SetVersionAccessor { get; }
+    parameters: []
+    return:
+      type: System.Action{System.Object,System.Int64}
+    content.vb: ReadOnly Property SetVersionAccessor As Action(Of Object, Long)
+  overload: AeroDB.Metadata.ITypeMetadata.SetVersionAccessor*
+- uid: AeroDB.Metadata.ITypeMetadata.GetRecordIdAccessor
+  commentId: P:AeroDB.Metadata.ITypeMetadata.GetRecordIdAccessor
+  id: GetRecordIdAccessor
+  parent: AeroDB.Metadata.ITypeMetadata
+  langs:
+  - csharp
+  - vb
+  name: GetRecordIdAccessor
+  nameWithType: ITypeMetadata.GetRecordIdAccessor
+  fullName: AeroDB.Metadata.ITypeMetadata.GetRecordIdAccessor
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Metadata/MetadataRegistry.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB.Metadata
+  summary: Untyped record ID accessor delegate for generated types. Null if no Id property.
+  example: []
+  syntax:
+    content: Func<object, string?>? GetRecordIdAccessor { get; }
+    parameters: []
+    return:
+      type: System.Func{System.Object,System.String}
+    content.vb: ReadOnly Property GetRecordIdAccessor As Func(Of Object, String)
+  overload: AeroDB.Metadata.ITypeMetadata.GetRecordIdAccessor*
+- uid: AeroDB.Metadata.ITypeMetadata.Fields
+  commentId: P:AeroDB.Metadata.ITypeMetadata.Fields
+  id: Fields
+  parent: AeroDB.Metadata.ITypeMetadata
+  langs:
+  - csharp
+  - vb
+  name: Fields
+  nameWithType: ITypeMetadata.Fields
+  fullName: AeroDB.Metadata.ITypeMetadata.Fields
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Metadata/MetadataRegistry.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB.Metadata
+  summary: >-
+    Compile-time list of public readable/writable properties (excluding Id).
+
+    Emitted by the source generator; null when metadata is generated by a legacy
+
+    source generator that predates field schema support.
+  example: []
+  syntax:
+    content: IReadOnlyList<FieldSchema>? Fields { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IReadOnlyList{AeroDB.Metadata.FieldSchema}
+    content.vb: ReadOnly Property Fields As IReadOnlyList(Of FieldSchema)
+  overload: AeroDB.Metadata.ITypeMetadata.Fields*
+references:
+- uid: AeroDB.Metadata
+  commentId: N:AeroDB.Metadata
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB.Metadata
+  nameWithType: AeroDB.Metadata
+  fullName: AeroDB.Metadata
+  spec.csharp:
+  - uid: AeroDB
+    name: AeroDB
+    isExternal: true
+    href: AeroDB.html
+  - name: .
+  - uid: AeroDB.Metadata
+    name: Metadata
+    isExternal: true
+    href: AeroDB.Metadata.html
+  spec.vb:
+  - uid: AeroDB
+    name: AeroDB
+    isExternal: true
+    href: AeroDB.html
+  - name: .
+  - uid: AeroDB.Metadata
+    name: Metadata
+    isExternal: true
+    href: AeroDB.Metadata.html
+- uid: AeroDB.Metadata.ITypeMetadata.TableName*
+  commentId: Overload:AeroDB.Metadata.ITypeMetadata.TableName
+  isExternal: true
+  href: AeroDB.Metadata.ITypeMetadata.html#AeroDB_Metadata_ITypeMetadata_TableName
+  name: TableName
+  nameWithType: ITypeMetadata.TableName
+  fullName: AeroDB.Metadata.ITypeMetadata.TableName
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AeroDB.Metadata.ITypeMetadata.HasTenantId*
+  commentId: Overload:AeroDB.Metadata.ITypeMetadata.HasTenantId
+  isExternal: true
+  href: AeroDB.Metadata.ITypeMetadata.html#AeroDB_Metadata_ITypeMetadata_HasTenantId
+  name: HasTenantId
+  nameWithType: ITypeMetadata.HasTenantId
+  fullName: AeroDB.Metadata.ITypeMetadata.HasTenantId
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: AeroDB.IVersioned
+  commentId: T:AeroDB.IVersioned
+  isExternal: true
+  href: AeroDB.IVersioned.html
+  name: IVersioned
+  nameWithType: IVersioned
+  fullName: AeroDB.IVersioned
+- uid: AeroDB.VersionAttribute
+  commentId: T:AeroDB.VersionAttribute
+  isExternal: true
+  href: AeroDB.VersionAttribute.html
+  name: VersionAttribute
+  nameWithType: VersionAttribute
+  fullName: AeroDB.VersionAttribute
+- uid: AeroDB.Metadata.ITypeMetadata.HasVersion*
+  commentId: Overload:AeroDB.Metadata.ITypeMetadata.HasVersion
+  isExternal: true
+  href: AeroDB.Metadata.ITypeMetadata.html#AeroDB_Metadata_ITypeMetadata_HasVersion
+  name: HasVersion
+  nameWithType: ITypeMetadata.HasVersion
+  fullName: AeroDB.Metadata.ITypeMetadata.HasVersion
+- uid: AeroDB.Metadata.IDocumentMetadata
+  commentId: T:AeroDB.Metadata.IDocumentMetadata
+  isExternal: true
+  href: AeroDB.Metadata.IDocumentMetadata.html
+  name: IDocumentMetadata
+  nameWithType: IDocumentMetadata
+  fullName: AeroDB.Metadata.IDocumentMetadata
+- uid: AeroDB.Metadata.ITypeMetadata.HasDocumentMetadata*
+  commentId: Overload:AeroDB.Metadata.ITypeMetadata.HasDocumentMetadata
+  isExternal: true
+  href: AeroDB.Metadata.ITypeMetadata.html#AeroDB_Metadata_ITypeMetadata_HasDocumentMetadata
+  name: HasDocumentMetadata
+  nameWithType: ITypeMetadata.HasDocumentMetadata
+  fullName: AeroDB.Metadata.ITypeMetadata.HasDocumentMetadata
+- uid: AeroDB.EventProjection`1
+  commentId: T:AeroDB.EventProjection`1
+  isExternal: true
+  href: AeroDB.EventProjection-1.html
+  name: EventProjection<T>
+  nameWithType: EventProjection<T>
+  fullName: AeroDB.EventProjection<T>
+  nameWithType.vb: EventProjection(Of T)
+  fullName.vb: AeroDB.EventProjection(Of T)
+  name.vb: EventProjection(Of T)
+  spec.csharp:
+  - uid: AeroDB.EventProjection`1
+    name: EventProjection
+    isExternal: true
+    href: AeroDB.EventProjection-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.EventProjection`1
+    name: EventProjection
+    isExternal: true
+    href: AeroDB.EventProjection-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.Metadata.ITypeMetadata.HasEventProjectionDispatch*
+  commentId: Overload:AeroDB.Metadata.ITypeMetadata.HasEventProjectionDispatch
+  isExternal: true
+  href: AeroDB.Metadata.ITypeMetadata.html#AeroDB_Metadata_ITypeMetadata_HasEventProjectionDispatch
+  name: HasEventProjectionDispatch
+  nameWithType: ITypeMetadata.HasEventProjectionDispatch
+  fullName: AeroDB.Metadata.ITypeMetadata.HasEventProjectionDispatch
+- uid: AeroDB.Metadata.ITypeMetadata.VersionFieldName*
+  commentId: Overload:AeroDB.Metadata.ITypeMetadata.VersionFieldName
+  isExternal: true
+  href: AeroDB.Metadata.ITypeMetadata.html#AeroDB_Metadata_ITypeMetadata_VersionFieldName
+  name: VersionFieldName
+  nameWithType: ITypeMetadata.VersionFieldName
+  fullName: AeroDB.Metadata.ITypeMetadata.VersionFieldName
+- uid: AeroDB.Metadata.ITypeMetadata.GetVersionAccessor*
+  commentId: Overload:AeroDB.Metadata.ITypeMetadata.GetVersionAccessor
+  isExternal: true
+  href: AeroDB.Metadata.ITypeMetadata.html#AeroDB_Metadata_ITypeMetadata_GetVersionAccessor
+  name: GetVersionAccessor
+  nameWithType: ITypeMetadata.GetVersionAccessor
+  fullName: AeroDB.Metadata.ITypeMetadata.GetVersionAccessor
+- uid: System.Func{System.Object,System.Int64}
+  commentId: T:System.Func{System.Object,System.Int64}
+  parent: System
+  definition: System.Func`2
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<object, long>
+  nameWithType: Func<object, long>
+  fullName: System.Func<object, long>
+  nameWithType.vb: Func(Of Object, Long)
+  fullName.vb: System.Func(Of Object, Long)
+  name.vb: Func(Of Object, Long)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Int64
+    name: long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Int64
+    name: Long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: )
+- uid: System.Func`2
+  commentId: T:System.Func`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<T, TResult>
+  nameWithType: Func<T, TResult>
+  fullName: System.Func<T, TResult>
+  nameWithType.vb: Func(Of T, TResult)
+  fullName.vb: System.Func(Of T, TResult)
+  name.vb: Func(Of T, TResult)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: AeroDB.Metadata.ITypeMetadata.SetVersionAccessor*
+  commentId: Overload:AeroDB.Metadata.ITypeMetadata.SetVersionAccessor
+  isExternal: true
+  href: AeroDB.Metadata.ITypeMetadata.html#AeroDB_Metadata_ITypeMetadata_SetVersionAccessor
+  name: SetVersionAccessor
+  nameWithType: ITypeMetadata.SetVersionAccessor
+  fullName: AeroDB.Metadata.ITypeMetadata.SetVersionAccessor
+- uid: System.Action{System.Object,System.Int64}
+  commentId: T:System.Action{System.Object,System.Int64}
+  parent: System
+  definition: System.Action`2
+  href: https://learn.microsoft.com/dotnet/api/system.action-2
+  name: Action<object, long>
+  nameWithType: Action<object, long>
+  fullName: System.Action<object, long>
+  nameWithType.vb: Action(Of Object, Long)
+  fullName.vb: System.Action(Of Object, Long)
+  name.vb: Action(Of Object, Long)
+  spec.csharp:
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: <
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Int64
+    name: long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Int64
+    name: Long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: )
+- uid: System.Action`2
+  commentId: T:System.Action`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.action-2
+  name: Action<T1, T2>
+  nameWithType: Action<T1, T2>
+  fullName: System.Action<T1, T2>
+  nameWithType.vb: Action(Of T1, T2)
+  fullName.vb: System.Action(Of T1, T2)
+  name.vb: Action(Of T1, T2)
+  spec.csharp:
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: <
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: )
+- uid: AeroDB.Metadata.ITypeMetadata.GetRecordIdAccessor*
+  commentId: Overload:AeroDB.Metadata.ITypeMetadata.GetRecordIdAccessor
+  isExternal: true
+  href: AeroDB.Metadata.ITypeMetadata.html#AeroDB_Metadata_ITypeMetadata_GetRecordIdAccessor
+  name: GetRecordIdAccessor
+  nameWithType: ITypeMetadata.GetRecordIdAccessor
+  fullName: AeroDB.Metadata.ITypeMetadata.GetRecordIdAccessor
+- uid: System.Func{System.Object,System.String}
+  commentId: T:System.Func{System.Object,System.String}
+  parent: System
+  definition: System.Func`2
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<object, string>
+  nameWithType: Func<object, string>
+  fullName: System.Func<object, string>
+  nameWithType.vb: Func(Of Object, String)
+  fullName.vb: System.Func(Of Object, String)
+  name.vb: Func(Of Object, String)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: AeroDB.Metadata.ITypeMetadata.Fields*
+  commentId: Overload:AeroDB.Metadata.ITypeMetadata.Fields
+  isExternal: true
+  href: AeroDB.Metadata.ITypeMetadata.html#AeroDB_Metadata_ITypeMetadata_Fields
+  name: Fields
+  nameWithType: ITypeMetadata.Fields
+  fullName: AeroDB.Metadata.ITypeMetadata.Fields
+- uid: System.Collections.Generic.IReadOnlyList{AeroDB.Metadata.FieldSchema}
+  commentId: T:System.Collections.Generic.IReadOnlyList{AeroDB.Metadata.FieldSchema}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyList`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<FieldSchema>
+  nameWithType: IReadOnlyList<FieldSchema>
+  fullName: System.Collections.Generic.IReadOnlyList<AeroDB.Metadata.FieldSchema>
+  nameWithType.vb: IReadOnlyList(Of FieldSchema)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of AeroDB.Metadata.FieldSchema)
+  name.vb: IReadOnlyList(Of FieldSchema)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - uid: AeroDB.Metadata.FieldSchema
+    name: FieldSchema
+    isExternal: true
+    href: AeroDB.Metadata.FieldSchema.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.Metadata.FieldSchema
+    name: FieldSchema
+    isExternal: true
+    href: AeroDB.Metadata.FieldSchema.html
+  - name: )
+- uid: System.Collections.Generic.IReadOnlyList`1
+  commentId: T:System.Collections.Generic.IReadOnlyList`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<T>
+  nameWithType: IReadOnlyList<T>
+  fullName: System.Collections.Generic.IReadOnlyList<T>
+  nameWithType.vb: IReadOnlyList(Of T)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of T)
+  name.vb: IReadOnlyList(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic

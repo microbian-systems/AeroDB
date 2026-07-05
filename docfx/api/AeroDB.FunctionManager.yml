@@ -1,0 +1,564 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.FunctionManager
+  commentId: T:AeroDB.FunctionManager
+  id: FunctionManager
+  parent: AeroDB
+  children:
+  - AeroDB.FunctionManager.#ctor(Microsoft.Extensions.Logging.ILoggerFactory)
+  - AeroDB.FunctionManager.EnsureFunctionAsync(SurrealDb.Net.ISurrealDbSession,AeroDB.SurrealFunction,System.Threading.CancellationToken)
+  - AeroDB.FunctionManager.RemoveFunctionAsync(SurrealDb.Net.ISurrealDbSession,System.String,System.Threading.CancellationToken)
+  langs:
+  - csharp
+  - vb
+  name: FunctionManager
+  nameWithType: FunctionManager
+  fullName: AeroDB.FunctionManager
+  type: Class
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Functions/FunctionManager.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public class FunctionManager
+    content.vb: Public Class FunctionManager
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+- uid: AeroDB.FunctionManager.#ctor(Microsoft.Extensions.Logging.ILoggerFactory)
+  commentId: M:AeroDB.FunctionManager.#ctor(Microsoft.Extensions.Logging.ILoggerFactory)
+  id: '#ctor(Microsoft.Extensions.Logging.ILoggerFactory)'
+  parent: AeroDB.FunctionManager
+  langs:
+  - csharp
+  - vb
+  name: FunctionManager(ILoggerFactory?)
+  nameWithType: FunctionManager.FunctionManager(ILoggerFactory?)
+  fullName: AeroDB.FunctionManager.FunctionManager(Microsoft.Extensions.Logging.ILoggerFactory?)
+  type: Constructor
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Functions/FunctionManager.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public FunctionManager(ILoggerFactory? loggerFactory = null)
+    parameters:
+    - id: loggerFactory
+      type: Microsoft.Extensions.Logging.ILoggerFactory
+    content.vb: Public Sub New(loggerFactory As ILoggerFactory = Nothing)
+  overload: AeroDB.FunctionManager.#ctor*
+  nameWithType.vb: FunctionManager.New(ILoggerFactory)
+  fullName.vb: AeroDB.FunctionManager.New(Microsoft.Extensions.Logging.ILoggerFactory)
+  name.vb: New(ILoggerFactory)
+- uid: AeroDB.FunctionManager.EnsureFunctionAsync(SurrealDb.Net.ISurrealDbSession,AeroDB.SurrealFunction,System.Threading.CancellationToken)
+  commentId: M:AeroDB.FunctionManager.EnsureFunctionAsync(SurrealDb.Net.ISurrealDbSession,AeroDB.SurrealFunction,System.Threading.CancellationToken)
+  id: EnsureFunctionAsync(SurrealDb.Net.ISurrealDbSession,AeroDB.SurrealFunction,System.Threading.CancellationToken)
+  parent: AeroDB.FunctionManager
+  langs:
+  - csharp
+  - vb
+  name: EnsureFunctionAsync(ISurrealDbSession, SurrealFunction, CancellationToken)
+  nameWithType: FunctionManager.EnsureFunctionAsync(ISurrealDbSession, SurrealFunction, CancellationToken)
+  fullName: AeroDB.FunctionManager.EnsureFunctionAsync(SurrealDb.Net.ISurrealDbSession, AeroDB.SurrealFunction, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Functions/FunctionManager.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public Task EnsureFunctionAsync(ISurrealDbSession session, SurrealFunction function, CancellationToken ct = default)
+    parameters:
+    - id: session
+      type: SurrealDb.Net.ISurrealDbSession
+    - id: function
+      type: AeroDB.SurrealFunction
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Function EnsureFunctionAsync(session As ISurrealDbSession, [function] As SurrealFunction, ct As CancellationToken = Nothing) As Task
+  overload: AeroDB.FunctionManager.EnsureFunctionAsync*
+- uid: AeroDB.FunctionManager.RemoveFunctionAsync(SurrealDb.Net.ISurrealDbSession,System.String,System.Threading.CancellationToken)
+  commentId: M:AeroDB.FunctionManager.RemoveFunctionAsync(SurrealDb.Net.ISurrealDbSession,System.String,System.Threading.CancellationToken)
+  id: RemoveFunctionAsync(SurrealDb.Net.ISurrealDbSession,System.String,System.Threading.CancellationToken)
+  parent: AeroDB.FunctionManager
+  langs:
+  - csharp
+  - vb
+  name: RemoveFunctionAsync(ISurrealDbSession, string, CancellationToken)
+  nameWithType: FunctionManager.RemoveFunctionAsync(ISurrealDbSession, string, CancellationToken)
+  fullName: AeroDB.FunctionManager.RemoveFunctionAsync(SurrealDb.Net.ISurrealDbSession, string, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Functions/FunctionManager.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public Task RemoveFunctionAsync(ISurrealDbSession session, string name, CancellationToken ct = default)
+    parameters:
+    - id: session
+      type: SurrealDb.Net.ISurrealDbSession
+    - id: name
+      type: System.String
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Function RemoveFunctionAsync(session As ISurrealDbSession, name As String, ct As CancellationToken = Nothing) As Task
+  overload: AeroDB.FunctionManager.RemoveFunctionAsync*
+  nameWithType.vb: FunctionManager.RemoveFunctionAsync(ISurrealDbSession, String, CancellationToken)
+  fullName.vb: AeroDB.FunctionManager.RemoveFunctionAsync(SurrealDb.Net.ISurrealDbSession, String, System.Threading.CancellationToken)
+  name.vb: RemoveFunctionAsync(ISurrealDbSession, String, CancellationToken)
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AeroDB.FunctionManager.#ctor*
+  commentId: Overload:AeroDB.FunctionManager.#ctor
+  isExternal: true
+  href: AeroDB.FunctionManager.html#AeroDB_FunctionManager__ctor_Microsoft_Extensions_Logging_ILoggerFactory_
+  name: FunctionManager
+  nameWithType: FunctionManager.FunctionManager
+  fullName: AeroDB.FunctionManager.FunctionManager
+  nameWithType.vb: FunctionManager.New
+  fullName.vb: AeroDB.FunctionManager.New
+  name.vb: New
+- uid: Microsoft.Extensions.Logging.ILoggerFactory
+  commentId: T:Microsoft.Extensions.Logging.ILoggerFactory
+  parent: Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.iloggerfactory
+  name: ILoggerFactory
+  nameWithType: ILoggerFactory
+  fullName: Microsoft.Extensions.Logging.ILoggerFactory
+- uid: Microsoft.Extensions.Logging
+  commentId: N:Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.Logging
+  nameWithType: Microsoft.Extensions.Logging
+  fullName: Microsoft.Extensions.Logging
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+- uid: AeroDB.FunctionManager.EnsureFunctionAsync*
+  commentId: Overload:AeroDB.FunctionManager.EnsureFunctionAsync
+  isExternal: true
+  href: AeroDB.FunctionManager.html#AeroDB_FunctionManager_EnsureFunctionAsync_SurrealDb_Net_ISurrealDbSession_AeroDB_SurrealFunction_System_Threading_CancellationToken_
+  name: EnsureFunctionAsync
+  nameWithType: FunctionManager.EnsureFunctionAsync
+  fullName: AeroDB.FunctionManager.EnsureFunctionAsync
+- uid: SurrealDb.Net.ISurrealDbSession
+  commentId: T:SurrealDb.Net.ISurrealDbSession
+  parent: SurrealDb.Net
+  isExternal: true
+  name: ISurrealDbSession
+  nameWithType: ISurrealDbSession
+  fullName: SurrealDb.Net.ISurrealDbSession
+- uid: AeroDB.SurrealFunction
+  commentId: T:AeroDB.SurrealFunction
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.SurrealFunction.html
+  name: SurrealFunction
+  nameWithType: SurrealFunction
+  fullName: AeroDB.SurrealFunction
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: SurrealDb.Net
+  commentId: N:SurrealDb.Net
+  isExternal: true
+  name: SurrealDb.Net
+  nameWithType: SurrealDb.Net
+  fullName: SurrealDb.Net
+  spec.csharp:
+  - uid: SurrealDb
+    name: SurrealDb
+    isExternal: true
+  - name: .
+  - uid: SurrealDb.Net
+    name: Net
+    isExternal: true
+  spec.vb:
+  - uid: SurrealDb
+    name: SurrealDb
+    isExternal: true
+  - name: .
+  - uid: SurrealDb.Net
+    name: Net
+    isExternal: true
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: AeroDB.FunctionManager.RemoveFunctionAsync*
+  commentId: Overload:AeroDB.FunctionManager.RemoveFunctionAsync
+  isExternal: true
+  href: AeroDB.FunctionManager.html#AeroDB_FunctionManager_RemoveFunctionAsync_SurrealDb_Net_ISurrealDbSession_System_String_System_Threading_CancellationToken_
+  name: RemoveFunctionAsync
+  nameWithType: FunctionManager.RemoveFunctionAsync
+  fullName: AeroDB.FunctionManager.RemoveFunctionAsync
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String

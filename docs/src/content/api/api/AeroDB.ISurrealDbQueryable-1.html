@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Interface ISurrealDbQueryable&lt;T&gt; | AeroDB v0.0.5-alpha — API Reference </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="Interface ISurrealDbQueryable&lt;T&gt; | AeroDB v0.0.5-alpha — API Reference ">
+    
+    
+      <link rel="shortcut icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../styles/docfx.css">
+      <link rel="stylesheet" href="../styles/main.css">
+      <meta property="docfx:navrel" content="../toc.html">
+      <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="AeroDB">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="AeroDB.ISurrealDbQueryable`1">
+
+
+
+  <h1 id="AeroDB_ISurrealDbQueryable_1" data-uid="AeroDB.ISurrealDbQueryable`1" class="text-break">Interface ISurrealDbQueryable&lt;T&gt;</h1>
+  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1.getenumerator">IEnumerable&lt;T&gt;.GetEnumerator()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.iqueryable.expression">IQueryable.Expression</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.iqueryable.elementtype">IQueryable.ElementType</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.iqueryable.provider">IQueryable.Provider</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="AeroDB.html">AeroDB</a></h6>
+  <h6><strong>Assembly</strong>: AeroDB.dll</h6>
+  <h5 id="AeroDB_ISurrealDbQueryable_1_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public interface ISurrealDbQueryable&lt;T&gt; : IOrderedQueryable&lt;T&gt;, IOrderedQueryable, IQueryable&lt;T&gt;, IEnumerable&lt;T&gt;, IQueryable, IEnumerable</code></pre>
+  </div>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+</h3>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/ISurrealDbQueryable.cs">View Source</a>
+  </span>
+  <a id="AeroDB_ISurrealDbQueryable_1_AnyAsync_" data-uid="AeroDB.ISurrealDbQueryable`1.AnyAsync*"></a>
+  <h4 id="AeroDB_ISurrealDbQueryable_1_AnyAsync_System_Threading_CancellationToken_" data-uid="AeroDB.ISurrealDbQueryable`1.AnyAsync(System.Threading.CancellationToken)">AnyAsync(CancellationToken)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task&lt;bool&gt; AnyAsync(CancellationToken ct = default)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">ct</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/ISurrealDbQueryable.cs">View Source</a>
+  </span>
+  <a id="AeroDB_ISurrealDbQueryable_1_AverageAsync_" data-uid="AeroDB.ISurrealDbQueryable`1.AverageAsync*"></a>
+  <h4 id="AeroDB_ISurrealDbQueryable_1_AverageAsync_System_Linq_Expressions_Expression_System_Func__0_System_Decimal___System_Threading_CancellationToken_" data-uid="AeroDB.ISurrealDbQueryable`1.AverageAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Decimal}},System.Threading.CancellationToken)">AverageAsync(Expression&lt;Func&lt;T, decimal&gt;&gt;, CancellationToken)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task&lt;decimal&gt; AverageAsync(Expression&lt;Func&lt;T, decimal&gt;&gt; selector, CancellationToken ct = default)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;T, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.decimal">decimal</a>&gt;&gt;</td>
+        <td><span class="parametername">selector</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">ct</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.decimal">decimal</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/ISurrealDbQueryable.cs">View Source</a>
+  </span>
+  <a id="AeroDB_ISurrealDbQueryable_1_CountAsync_" data-uid="AeroDB.ISurrealDbQueryable`1.CountAsync*"></a>
+  <h4 id="AeroDB_ISurrealDbQueryable_1_CountAsync_System_Threading_CancellationToken_" data-uid="AeroDB.ISurrealDbQueryable`1.CountAsync(System.Threading.CancellationToken)">CountAsync(CancellationToken)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task&lt;int&gt; CountAsync(CancellationToken ct = default)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">ct</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/ISurrealDbQueryable.cs">View Source</a>
+  </span>
+  <a id="AeroDB_ISurrealDbQueryable_1_Fetch_" data-uid="AeroDB.ISurrealDbQueryable`1.Fetch*"></a>
+  <h4 id="AeroDB_ISurrealDbQueryable_1_Fetch_System_Linq_Expressions_Expression_System_Func__0_System_Object___" data-uid="AeroDB.ISurrealDbQueryable`1.Fetch(System.Linq.Expressions.Expression{System.Func{`0,System.Object}})">Fetch(Expression&lt;Func&lt;T, object?&gt;&gt;)</h4>
+  <div class="markdown level1 summary"><p>Adds a SurrealQL FETCH clause to eagerly expand a record-typed field.</p>
+<p>SurrealDB's FETCH expands record references inline — the full
+referenced document is returned as part of the query result. This is
+a <b>server-side operation</b> requiring no additional round trips.</p>
+<p>Only use this on properties typed as <code>RecordId</code> or
+<code>RecordId?</code>. Other property types will be silently ignored by
+the SurrealDB engine.</p>
+<p>Performance: No additional round trips. The FETCH clause is
+appended to the generated SurrealQL. For multiple fields, call
+Fetch() multiple times — they accumulate.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">ISurrealDbQueryable&lt;T&gt; Fetch(Expression&lt;Func&lt;T, object?&gt;&gt; property)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;T, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;&gt;</td>
+        <td><span class="parametername">property</span></td>
+        <td><p>A member expression selecting the record-typed property to expand.
+Example: <code>p =&gt; p.TeamId</code></p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.ISurrealDbQueryable-1.html">ISurrealDbQueryable</a>&lt;T&gt;</td>
+        <td><p>The queryable for chaining.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/ISurrealDbQueryable.cs">View Source</a>
+  </span>
+  <a id="AeroDB_ISurrealDbQueryable_1_FirstOrDefaultAsync_" data-uid="AeroDB.ISurrealDbQueryable`1.FirstOrDefaultAsync*"></a>
+  <h4 id="AeroDB_ISurrealDbQueryable_1_FirstOrDefaultAsync_System_Linq_Expressions_Expression_System_Func__0_System_Boolean___System_Threading_CancellationToken_" data-uid="AeroDB.ISurrealDbQueryable`1.FirstOrDefaultAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Threading.CancellationToken)">FirstOrDefaultAsync(Expression&lt;Func&lt;T, bool&gt;&gt;, CancellationToken)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task&lt;T?&gt; FirstOrDefaultAsync(Expression&lt;Func&lt;T, bool&gt;&gt; predicate, CancellationToken ct = default)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;T, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>&gt;&gt;</td>
+        <td><span class="parametername">predicate</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">ct</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;T&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/ISurrealDbQueryable.cs">View Source</a>
+  </span>
+  <a id="AeroDB_ISurrealDbQueryable_1_FirstOrDefaultAsync_" data-uid="AeroDB.ISurrealDbQueryable`1.FirstOrDefaultAsync*"></a>
+  <h4 id="AeroDB_ISurrealDbQueryable_1_FirstOrDefaultAsync_System_Threading_CancellationToken_" data-uid="AeroDB.ISurrealDbQueryable`1.FirstOrDefaultAsync(System.Threading.CancellationToken)">FirstOrDefaultAsync(CancellationToken)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task&lt;T?&gt; FirstOrDefaultAsync(CancellationToken ct = default)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">ct</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;T&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/ISurrealDbQueryable.cs">View Source</a>
+  </span>
+  <a id="AeroDB_ISurrealDbQueryable_1_IncludeBatch_" data-uid="AeroDB.ISurrealDbQueryable`1.IncludeBatch*"></a>
+  <h4 id="AeroDB_ISurrealDbQueryable_1_IncludeBatch__2_System_Linq_Expressions_Expression_System_Func__0___0___System_Action___1__" data-uid="AeroDB.ISurrealDbQueryable`1.IncludeBatch``2(System.Linq.Expressions.Expression{System.Func{`0,``0}},System.Action{``1})">IncludeBatch&lt;TProperty, TInclude&gt;(Expression&lt;Func&lt;T, TProperty&gt;&gt;, Action&lt;TInclude&gt;)</h4>
+  <div class="markdown level1 summary"><p>Eagerly loads related documents using SurrealDB's LET variable for
+<b>server-side batch loading in a single round trip</b>.</p>
+<p>The generated SurrealQL uses a LET variable to cache the filtered
+main query results, then includes are resolved via subqueries against
+the in-memory LET variable — equivalent to PostgreSQL temp tables
+but using SurrealDB's native variable system.</p>
+<p><b>Performance:</b> One round trip regardless of how many Includes
+are chained. The main WHERE filter is evaluated once by the LET statement.</p>
+<p><b>SurrealQL pattern:</b>
+<pre><code class="lang-csharp">LET $main = (SELECT * FROM source WHERE ...);
+             SELECT * FROM $main;
+             SELECT * FROM target WHERE id IN (SELECT VALUE fk FROM $main);</code></pre>
+
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">ISurrealDbQueryable&lt;T&gt; IncludeBatch&lt;TProperty, TInclude&gt;(Expression&lt;Func&lt;T, TProperty&gt;&gt; property, Action&lt;TInclude&gt; callback) where TInclude : class</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;T, TProperty&gt;&gt;</td>
+        <td><span class="parametername">property</span></td>
+        <td><p>A member expression selecting the property that holds the foreign key.
+Example: <code>i =&gt; i.AssigneeId</code></p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;TInclude&gt;</td>
+        <td><span class="parametername">callback</span></td>
+        <td><p>Invoked once for each loaded TInclude document. Use to populate side collections.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.ISurrealDbQueryable-1.html">ISurrealDbQueryable</a>&lt;T&gt;</td>
+        <td><p>The queryable for chaining.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TProperty</span></td>
+        <td><p>The property type on T (e.g., Guid for an Id reference).</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">TInclude</span></td>
+        <td><p>The type of the included document.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/ISurrealDbQueryable.cs">View Source</a>
+  </span>
+  <a id="AeroDB_ISurrealDbQueryable_1_IncludeBatch_" data-uid="AeroDB.ISurrealDbQueryable`1.IncludeBatch*"></a>
+  <h4 id="AeroDB_ISurrealDbQueryable_1_IncludeBatch__2_System_Linq_Expressions_Expression_System_Func__0___0___System_Collections_Generic_IDictionary___0___1__" data-uid="AeroDB.ISurrealDbQueryable`1.IncludeBatch``2(System.Linq.Expressions.Expression{System.Func{`0,``0}},System.Collections.Generic.IDictionary{``0,``1})">IncludeBatch&lt;TKey, TInclude&gt;(Expression&lt;Func&lt;T, TKey&gt;&gt;, IDictionary&lt;TKey, TInclude&gt;)</h4>
+  <div class="markdown level1 summary"><p>Eagerly loads related documents into a dictionary keyed by the property value.</p>
+<p>Like <a class="xref" href="AeroDB.ISurrealDbQueryable-1.html#AeroDB_ISurrealDbQueryable_1_IncludeBatch__2_System_Linq_Expressions_Expression_System_Func__0___0___System_Action___1__">IncludeBatch&lt;TProperty, TInclude&gt;(Expression&lt;Func&lt;T, TProperty&gt;&gt;, Action&lt;TInclude&gt;)</a>,
+but populates an existing dictionary instead of invoking a callback.
+Uses SurrealDB's LET variable for server-side batch loading in a
+<b>single round trip</b> regardless of how many Includes are chained.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">ISurrealDbQueryable&lt;T&gt; IncludeBatch&lt;TKey, TInclude&gt;(Expression&lt;Func&lt;T, TKey&gt;&gt; key, IDictionary&lt;TKey, TInclude&gt; dictionary) where TInclude : class</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;T, TKey&gt;&gt;</td>
+        <td><span class="parametername">key</span></td>
+        <td><p>Member expression selecting the key property.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.idictionary-2">IDictionary</a>&lt;TKey, TInclude&gt;</td>
+        <td><span class="parametername">dictionary</span></td>
+        <td><p>Dictionary to populate with [key → document] entries.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.ISurrealDbQueryable-1.html">ISurrealDbQueryable</a>&lt;T&gt;</td>
+        <td><p>The queryable for chaining.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TKey</span></td>
+        <td><p>The key type (must match TProperty).</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">TInclude</span></td>
+        <td><p>The type of the included document.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/ISurrealDbQueryable.cs">View Source</a>
+  </span>
+  <a id="AeroDB_ISurrealDbQueryable_1_MaxAsync_" data-uid="AeroDB.ISurrealDbQueryable`1.MaxAsync*"></a>
+  <h4 id="AeroDB_ISurrealDbQueryable_1_MaxAsync_System_Linq_Expressions_Expression_System_Func__0_System_Decimal___System_Threading_CancellationToken_" data-uid="AeroDB.ISurrealDbQueryable`1.MaxAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Decimal}},System.Threading.CancellationToken)">MaxAsync(Expression&lt;Func&lt;T, decimal&gt;&gt;, CancellationToken)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task&lt;decimal&gt; MaxAsync(Expression&lt;Func&lt;T, decimal&gt;&gt; selector, CancellationToken ct = default)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;T, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.decimal">decimal</a>&gt;&gt;</td>
+        <td><span class="parametername">selector</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">ct</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.decimal">decimal</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/ISurrealDbQueryable.cs">View Source</a>
+  </span>
+  <a id="AeroDB_ISurrealDbQueryable_1_MinAsync_" data-uid="AeroDB.ISurrealDbQueryable`1.MinAsync*"></a>
+  <h4 id="AeroDB_ISurrealDbQueryable_1_MinAsync_System_Linq_Expressions_Expression_System_Func__0_System_Decimal___System_Threading_CancellationToken_" data-uid="AeroDB.ISurrealDbQueryable`1.MinAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Decimal}},System.Threading.CancellationToken)">MinAsync(Expression&lt;Func&lt;T, decimal&gt;&gt;, CancellationToken)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task&lt;decimal&gt; MinAsync(Expression&lt;Func&lt;T, decimal&gt;&gt; selector, CancellationToken ct = default)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;T, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.decimal">decimal</a>&gt;&gt;</td>
+        <td><span class="parametername">selector</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">ct</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.decimal">decimal</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/ISurrealDbQueryable.cs">View Source</a>
+  </span>
+  <a id="AeroDB_ISurrealDbQueryable_1_SingleOrDefaultAsync_" data-uid="AeroDB.ISurrealDbQueryable`1.SingleOrDefaultAsync*"></a>
+  <h4 id="AeroDB_ISurrealDbQueryable_1_SingleOrDefaultAsync_System_Threading_CancellationToken_" data-uid="AeroDB.ISurrealDbQueryable`1.SingleOrDefaultAsync(System.Threading.CancellationToken)">SingleOrDefaultAsync(CancellationToken)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task&lt;T?&gt; SingleOrDefaultAsync(CancellationToken ct = default)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">ct</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;T&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/ISurrealDbQueryable.cs">View Source</a>
+  </span>
+  <a id="AeroDB_ISurrealDbQueryable_1_Stats_" data-uid="AeroDB.ISurrealDbQueryable`1.Stats*"></a>
+  <h4 id="AeroDB_ISurrealDbQueryable_1_Stats_AeroDB_QueryStatistics__" data-uid="AeroDB.ISurrealDbQueryable`1.Stats(AeroDB.QueryStatistics@)">Stats(out QueryStatistics)</h4>
+  <div class="markdown level1 summary"><p>Enable query statistics for this query. The <code class="paramref">stats</code> will be populated
+with the total number of matching records when the query executes.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">ISurrealDbQueryable&lt;T&gt; Stats(out QueryStatistics stats)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.QueryStatistics.html">QueryStatistics</a></td>
+        <td><span class="parametername">stats</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AeroDB.ISurrealDbQueryable-1.html">ISurrealDbQueryable</a>&lt;T&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/ISurrealDbQueryable.cs">View Source</a>
+  </span>
+  <a id="AeroDB_ISurrealDbQueryable_1_SumAsync_" data-uid="AeroDB.ISurrealDbQueryable`1.SumAsync*"></a>
+  <h4 id="AeroDB_ISurrealDbQueryable_1_SumAsync_System_Linq_Expressions_Expression_System_Func__0_System_Decimal___System_Threading_CancellationToken_" data-uid="AeroDB.ISurrealDbQueryable`1.SumAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Decimal}},System.Threading.CancellationToken)">SumAsync(Expression&lt;Func&lt;T, decimal&gt;&gt;, CancellationToken)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task&lt;decimal&gt; SumAsync(Expression&lt;Func&lt;T, decimal&gt;&gt; selector, CancellationToken ct = default)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;T, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.decimal">decimal</a>&gt;&gt;</td>
+        <td><span class="parametername">selector</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">ct</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.decimal">decimal</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/ISurrealDbQueryable.cs">View Source</a>
+  </span>
+  <a id="AeroDB_ISurrealDbQueryable_1_ToCommand_" data-uid="AeroDB.ISurrealDbQueryable`1.ToCommand*"></a>
+  <h4 id="AeroDB_ISurrealDbQueryable_1_ToCommand" data-uid="AeroDB.ISurrealDbQueryable`1.ToCommand">ToCommand()</h4>
+  <div class="markdown level1 summary"><p>Returns the generated SurrealQL for this query without executing it.
+Useful for debugging and logging.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">string ToCommand()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/ISurrealDbQueryable.cs">View Source</a>
+  </span>
+  <a id="AeroDB_ISurrealDbQueryable_1_ToListAsync_" data-uid="AeroDB.ISurrealDbQueryable`1.ToListAsync*"></a>
+  <h4 id="AeroDB_ISurrealDbQueryable_1_ToListAsync_System_Threading_CancellationToken_" data-uid="AeroDB.ISurrealDbQueryable`1.ToListAsync(System.Threading.CancellationToken)">ToListAsync(CancellationToken)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task&lt;List&lt;T&gt;&gt; ToListAsync(CancellationToken ct = default)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">ct</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;T&gt;&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="AeroDB.SurrealDbQueryableExtensions.html#AeroDB_SurrealDbQueryableExtensions_Select__2_AeroDB_ISurrealDbQueryable___0__System_Linq_Expressions_Expression_System_Func___0___1___">SurrealDbQueryableExtensions.Select&lt;T, TResult&gt;(ISurrealDbQueryable&lt;T&gt;, Expression&lt;Func&lt;T, TResult&gt;&gt;)</a>
+  </div>
+  <div>
+      <a class="xref" href="AeroDB.Pagination.PagedListQueryableExtensions.html#AeroDB_Pagination_PagedListQueryableExtensions_ToPagedListAsync__1_System_Linq_IQueryable___0__System_Int32_System_Int32_System_Threading_CancellationToken_">PagedListQueryableExtensions.ToPagedListAsync&lt;T&gt;(IQueryable&lt;T&gt;, int, int, CancellationToken)</a>
+  </div>
+  <div>
+      <a class="xref" href="AeroDB.SurrealAsyncQueryExtensions.html#AeroDB_SurrealAsyncQueryExtensions_AnyAsync__1_System_Linq_IQueryable___0__System_Threading_CancellationToken_">SurrealAsyncQueryExtensions.AnyAsync&lt;T&gt;(IQueryable&lt;T&gt;, CancellationToken)</a>
+  </div>
+  <div>
+      <a class="xref" href="AeroDB.SurrealAsyncQueryExtensions.html#AeroDB_SurrealAsyncQueryExtensions_AverageAsync__1_System_Linq_IQueryable___0__System_Linq_Expressions_Expression_System_Func___0_System_Decimal___System_Threading_CancellationToken_">SurrealAsyncQueryExtensions.AverageAsync&lt;T&gt;(IQueryable&lt;T&gt;, Expression&lt;Func&lt;T, decimal&gt;&gt;, CancellationToken)</a>
+  </div>
+  <div>
+      <a class="xref" href="AeroDB.SurrealAsyncQueryExtensions.html#AeroDB_SurrealAsyncQueryExtensions_CountAsync__1_System_Linq_IQueryable___0__System_Threading_CancellationToken_">SurrealAsyncQueryExtensions.CountAsync&lt;T&gt;(IQueryable&lt;T&gt;, CancellationToken)</a>
+  </div>
+  <div>
+      <a class="xref" href="AeroDB.SurrealAsyncQueryExtensions.html#AeroDB_SurrealAsyncQueryExtensions_FirstOrDefaultAsync__1_System_Linq_IQueryable___0__System_Linq_Expressions_Expression_System_Func___0_System_Boolean___System_Threading_CancellationToken_">SurrealAsyncQueryExtensions.FirstOrDefaultAsync&lt;T&gt;(IQueryable&lt;T&gt;, Expression&lt;Func&lt;T, bool&gt;&gt;, CancellationToken)</a>
+  </div>
+  <div>
+      <a class="xref" href="AeroDB.SurrealAsyncQueryExtensions.html#AeroDB_SurrealAsyncQueryExtensions_FirstOrDefaultAsync__1_System_Linq_IQueryable___0__System_Threading_CancellationToken_">SurrealAsyncQueryExtensions.FirstOrDefaultAsync&lt;T&gt;(IQueryable&lt;T&gt;, CancellationToken)</a>
+  </div>
+  <div>
+      <a class="xref" href="AeroDB.SurrealAsyncQueryExtensions.html#AeroDB_SurrealAsyncQueryExtensions_MaxAsync__1_System_Linq_IQueryable___0__System_Linq_Expressions_Expression_System_Func___0_System_Decimal___System_Threading_CancellationToken_">SurrealAsyncQueryExtensions.MaxAsync&lt;T&gt;(IQueryable&lt;T&gt;, Expression&lt;Func&lt;T, decimal&gt;&gt;, CancellationToken)</a>
+  </div>
+  <div>
+      <a class="xref" href="AeroDB.SurrealAsyncQueryExtensions.html#AeroDB_SurrealAsyncQueryExtensions_MinAsync__1_System_Linq_IQueryable___0__System_Linq_Expressions_Expression_System_Func___0_System_Decimal___System_Threading_CancellationToken_">SurrealAsyncQueryExtensions.MinAsync&lt;T&gt;(IQueryable&lt;T&gt;, Expression&lt;Func&lt;T, decimal&gt;&gt;, CancellationToken)</a>
+  </div>
+  <div>
+      <a class="xref" href="AeroDB.SurrealAsyncQueryExtensions.html#AeroDB_SurrealAsyncQueryExtensions_SingleOrDefaultAsync__1_System_Linq_IQueryable___0__System_Threading_CancellationToken_">SurrealAsyncQueryExtensions.SingleOrDefaultAsync&lt;T&gt;(IQueryable&lt;T&gt;, CancellationToken)</a>
+  </div>
+  <div>
+      <a class="xref" href="AeroDB.SurrealAsyncQueryExtensions.html#AeroDB_SurrealAsyncQueryExtensions_SumAsync__1_System_Linq_IQueryable___0__System_Linq_Expressions_Expression_System_Func___0_System_Decimal___System_Threading_CancellationToken_">SurrealAsyncQueryExtensions.SumAsync&lt;T&gt;(IQueryable&lt;T&gt;, Expression&lt;Func&lt;T, decimal&gt;&gt;, CancellationToken)</a>
+  </div>
+  <div>
+      <a class="xref" href="AeroDB.SurrealAsyncQueryExtensions.html#AeroDB_SurrealAsyncQueryExtensions_ToListAsync__1_System_Linq_IQueryable___0__System_Threading_CancellationToken_">SurrealAsyncQueryExtensions.ToListAsync&lt;T&gt;(IQueryable&lt;T&gt;, CancellationToken)</a>
+  </div>
+
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/ISurrealDbQueryable.cs" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In this article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      Made with 💜 by Microbians — Copyright © 2026 — https://microbians.io/
+      
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.min.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

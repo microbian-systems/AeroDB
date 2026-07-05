@@ -1,0 +1,24 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.Generated
+  commentId: N:AeroDB.Generated
+  id: AeroDB.Generated
+  children:
+  - AeroDB.Generated.AeroDBConfiguratorRegistrar
+  langs:
+  - csharp
+  - vb
+  name: AeroDB.Generated
+  nameWithType: AeroDB.Generated
+  fullName: AeroDB.Generated
+  type: Namespace
+  assemblies:
+  - AeroDB
+references:
+- uid: AeroDB.Generated.AeroDBConfiguratorRegistrar
+  commentId: T:AeroDB.Generated.AeroDBConfiguratorRegistrar
+  isExternal: true
+  href: AeroDB.Generated.AeroDBConfiguratorRegistrar.html
+  name: AeroDBConfiguratorRegistrar
+  nameWithType: AeroDBConfiguratorRegistrar
+  fullName: AeroDB.Generated.AeroDBConfiguratorRegistrar

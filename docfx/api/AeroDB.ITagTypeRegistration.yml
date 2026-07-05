@@ -1,0 +1,176 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.ITagTypeRegistration
+  commentId: T:AeroDB.ITagTypeRegistration
+  id: ITagTypeRegistration
+  parent: AeroDB
+  children:
+  - AeroDB.ITagTypeRegistration.AggregateType
+  - AeroDB.ITagTypeRegistration.ExtractValue(System.Object)
+  - AeroDB.ITagTypeRegistration.TagType
+  langs:
+  - csharp
+  - vb
+  name: ITagTypeRegistration
+  nameWithType: ITagTypeRegistration
+  fullName: AeroDB.ITagTypeRegistration
+  type: Interface
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/ITagTypeRegistration.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Registration of a tag type for dynamic consistency boundary (DCB) projections.
+
+    Tags allow events across different streams to be grouped by a shared domain identity.
+  example: []
+  syntax:
+    content: public interface ITagTypeRegistration
+    content.vb: Public Interface ITagTypeRegistration
+- uid: AeroDB.ITagTypeRegistration.ExtractValue(System.Object)
+  commentId: M:AeroDB.ITagTypeRegistration.ExtractValue(System.Object)
+  id: ExtractValue(System.Object)
+  parent: AeroDB.ITagTypeRegistration
+  langs:
+  - csharp
+  - vb
+  name: ExtractValue(object)
+  nameWithType: ITagTypeRegistration.ExtractValue(object)
+  fullName: AeroDB.ITagTypeRegistration.ExtractValue(object)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/ITagTypeRegistration.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Extracts the tag value from a tag object.
+  example: []
+  syntax:
+    content: string ExtractValue(object tag)
+    parameters:
+    - id: tag
+      type: System.Object
+    return:
+      type: System.String
+    content.vb: Function ExtractValue(tag As Object) As String
+  overload: AeroDB.ITagTypeRegistration.ExtractValue*
+  nameWithType.vb: ITagTypeRegistration.ExtractValue(Object)
+  fullName.vb: AeroDB.ITagTypeRegistration.ExtractValue(Object)
+  name.vb: ExtractValue(Object)
+- uid: AeroDB.ITagTypeRegistration.TagType
+  commentId: P:AeroDB.ITagTypeRegistration.TagType
+  id: TagType
+  parent: AeroDB.ITagTypeRegistration
+  langs:
+  - csharp
+  - vb
+  name: TagType
+  nameWithType: ITagTypeRegistration.TagType
+  fullName: AeroDB.ITagTypeRegistration.TagType
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/ITagTypeRegistration.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: The .NET type of the tag value.
+  example: []
+  syntax:
+    content: Type TagType { get; }
+    parameters: []
+    return:
+      type: System.Type
+    content.vb: ReadOnly Property TagType As Type
+  overload: AeroDB.ITagTypeRegistration.TagType*
+- uid: AeroDB.ITagTypeRegistration.AggregateType
+  commentId: P:AeroDB.ITagTypeRegistration.AggregateType
+  id: AggregateType
+  parent: AeroDB.ITagTypeRegistration
+  langs:
+  - csharp
+  - vb
+  name: AggregateType
+  nameWithType: ITagTypeRegistration.AggregateType
+  fullName: AeroDB.ITagTypeRegistration.AggregateType
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/ITagTypeRegistration.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: The aggregate type that the tag routes to.
+  example: []
+  syntax:
+    content: Type? AggregateType { get; }
+    parameters: []
+    return:
+      type: System.Type
+    content.vb: ReadOnly Property AggregateType As Type
+  overload: AeroDB.ITagTypeRegistration.AggregateType*
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: AeroDB.ITagTypeRegistration.ExtractValue*
+  commentId: Overload:AeroDB.ITagTypeRegistration.ExtractValue
+  isExternal: true
+  href: AeroDB.ITagTypeRegistration.html#AeroDB_ITagTypeRegistration_ExtractValue_System_Object_
+  name: ExtractValue
+  nameWithType: ITagTypeRegistration.ExtractValue
+  fullName: AeroDB.ITagTypeRegistration.ExtractValue
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AeroDB.ITagTypeRegistration.TagType*
+  commentId: Overload:AeroDB.ITagTypeRegistration.TagType
+  isExternal: true
+  href: AeroDB.ITagTypeRegistration.html#AeroDB_ITagTypeRegistration_TagType
+  name: TagType
+  nameWithType: ITagTypeRegistration.TagType
+  fullName: AeroDB.ITagTypeRegistration.TagType
+- uid: System.Type
+  commentId: T:System.Type
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.type
+  name: Type
+  nameWithType: Type
+  fullName: System.Type
+- uid: AeroDB.ITagTypeRegistration.AggregateType*
+  commentId: Overload:AeroDB.ITagTypeRegistration.AggregateType
+  isExternal: true
+  href: AeroDB.ITagTypeRegistration.html#AeroDB_ITagTypeRegistration_AggregateType
+  name: AggregateType
+  nameWithType: ITagTypeRegistration.AggregateType
+  fullName: AeroDB.ITagTypeRegistration.AggregateType

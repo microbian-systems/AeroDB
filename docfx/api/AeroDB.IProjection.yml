@@ -1,0 +1,741 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.IProjection
+  commentId: T:AeroDB.IProjection
+  id: IProjection
+  parent: AeroDB
+  children:
+  - AeroDB.IProjection.ApplyAsync(AeroDB.IDocumentOperations,System.Collections.Generic.IEnumerable{AeroDB.IEvent},System.Threading.CancellationToken)
+  - AeroDB.IProjection.ApplyAsync(AeroDB.IDocumentOperations,System.Collections.Generic.IEnumerable{JasperFx.Events.StreamAction},System.Threading.CancellationToken)
+  - AeroDB.IProjection.ApplyAsync(AeroDB.IProjectionContext,System.Threading.CancellationToken)
+  - AeroDB.IProjection.EnrichAsync``1(AeroDB.IEventSlice{``0},System.Threading.CancellationToken)
+  - AeroDB.IProjection.EventTypes
+  - AeroDB.IProjection.Lifecycle
+  - AeroDB.IProjection.Name
+  - AeroDB.IProjection.RebuildAsync(AeroDB.IDocumentSession,System.Threading.CancellationToken)
+  langs:
+  - csharp
+  - vb
+  name: IProjection
+  nameWithType: IProjection
+  fullName: AeroDB.IProjection
+  type: Interface
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/IProjection.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Defines a projection that builds read-side documents from events.
+  example: []
+  syntax:
+    content: public interface IProjection
+    content.vb: Public Interface IProjection
+  derivedClasses:
+  - AeroDB.CompositeProjection
+  - AeroDB.EfCoreEventProjection`1
+  - AeroDB.EventProjection
+  - AeroDB.EventProjection`1
+  - AeroDB.FlatTableProjection`2
+  - AeroDB.InlineProjection`1
+  - AeroDB.MultiStreamProjection`1
+  - AeroDB.MultiStreamProjection`2
+  - AeroDB.SingleStreamProjection`1
+  - AeroDB.SingleStreamProjection`2
+  - AeroDB.SnapshotProjection`1
+- uid: AeroDB.IProjection.ApplyAsync(AeroDB.IProjectionContext,System.Threading.CancellationToken)
+  commentId: M:AeroDB.IProjection.ApplyAsync(AeroDB.IProjectionContext,System.Threading.CancellationToken)
+  id: ApplyAsync(AeroDB.IProjectionContext,System.Threading.CancellationToken)
+  parent: AeroDB.IProjection
+  langs:
+  - csharp
+  - vb
+  name: ApplyAsync(IProjectionContext, CancellationToken)
+  nameWithType: IProjection.ApplyAsync(IProjectionContext, CancellationToken)
+  fullName: AeroDB.IProjection.ApplyAsync(AeroDB.IProjectionContext, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/IProjection.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Apply the projection logic to the given events.
+  example: []
+  syntax:
+    content: Task ApplyAsync(IProjectionContext context, CancellationToken ct)
+    parameters:
+    - id: context
+      type: AeroDB.IProjectionContext
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Function ApplyAsync(context As IProjectionContext, ct As CancellationToken) As Task
+  overload: AeroDB.IProjection.ApplyAsync*
+- uid: AeroDB.IProjection.RebuildAsync(AeroDB.IDocumentSession,System.Threading.CancellationToken)
+  commentId: M:AeroDB.IProjection.RebuildAsync(AeroDB.IDocumentSession,System.Threading.CancellationToken)
+  id: RebuildAsync(AeroDB.IDocumentSession,System.Threading.CancellationToken)
+  parent: AeroDB.IProjection
+  langs:
+  - csharp
+  - vb
+  name: RebuildAsync(IDocumentSession, CancellationToken)
+  nameWithType: IProjection.RebuildAsync(IDocumentSession, CancellationToken)
+  fullName: AeroDB.IProjection.RebuildAsync(AeroDB.IDocumentSession, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/IProjection.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Rebuild the projection by replaying ALL events from the event store.
+
+    Used for initial projection creation or recovery after data loss.
+
+    The projection is responsible for handling idempotency — calling
+
+    this twice should produce the same result.
+  example: []
+  syntax:
+    content: Task RebuildAsync(IDocumentSession session, CancellationToken ct)
+    parameters:
+    - id: session
+      type: AeroDB.IDocumentSession
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Function RebuildAsync(session As IDocumentSession, ct As CancellationToken) As Task
+  overload: AeroDB.IProjection.RebuildAsync*
+- uid: AeroDB.IProjection.EnrichAsync``1(AeroDB.IEventSlice{``0},System.Threading.CancellationToken)
+  commentId: M:AeroDB.IProjection.EnrichAsync``1(AeroDB.IEventSlice{``0},System.Threading.CancellationToken)
+  id: EnrichAsync``1(AeroDB.IEventSlice{``0},System.Threading.CancellationToken)
+  parent: AeroDB.IProjection
+  langs:
+  - csharp
+  - vb
+  name: EnrichAsync<T>(IEventSlice<T>, CancellationToken)
+  nameWithType: IProjection.EnrichAsync<T>(IEventSlice<T>, CancellationToken)
+  fullName: AeroDB.IProjection.EnrichAsync<T>(AeroDB.IEventSlice<T>, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/IProjection.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Enrichment hook called before <xref href="AeroDB.IProjection.ApplyAsync(AeroDB.IProjectionContext%2cSystem.Threading.CancellationToken)" data-throw-if-not-resolved="false"></xref>. Projections can pre-load
+
+    reference data or the aggregate document. Default is no-op.
+  example: []
+  syntax:
+    content: Task EnrichAsync<T>(IEventSlice<T> slice, CancellationToken ct)
+    parameters:
+    - id: slice
+      type: AeroDB.IEventSlice{{T}}
+    - id: ct
+      type: System.Threading.CancellationToken
+    typeParameters:
+    - id: T
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Function EnrichAsync(Of T)(slice As IEventSlice(Of T), ct As CancellationToken) As Task
+  overload: AeroDB.IProjection.EnrichAsync*
+  nameWithType.vb: IProjection.EnrichAsync(Of T)(IEventSlice(Of T), CancellationToken)
+  fullName.vb: AeroDB.IProjection.EnrichAsync(Of T)(AeroDB.IEventSlice(Of T), System.Threading.CancellationToken)
+  name.vb: EnrichAsync(Of T)(IEventSlice(Of T), CancellationToken)
+- uid: AeroDB.IProjection.ApplyAsync(AeroDB.IDocumentOperations,System.Collections.Generic.IEnumerable{AeroDB.IEvent},System.Threading.CancellationToken)
+  commentId: M:AeroDB.IProjection.ApplyAsync(AeroDB.IDocumentOperations,System.Collections.Generic.IEnumerable{AeroDB.IEvent},System.Threading.CancellationToken)
+  id: ApplyAsync(AeroDB.IDocumentOperations,System.Collections.Generic.IEnumerable{AeroDB.IEvent},System.Threading.CancellationToken)
+  parent: AeroDB.IProjection
+  langs:
+  - csharp
+  - vb
+  name: ApplyAsync(IDocumentOperations, IEnumerable<IEvent>, CancellationToken)
+  nameWithType: IProjection.ApplyAsync(IDocumentOperations, IEnumerable<IEvent>, CancellationToken)
+  fullName: AeroDB.IProjection.ApplyAsync(AeroDB.IDocumentOperations, System.Collections.Generic.IEnumerable<AeroDB.IEvent>, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/IProjection.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Marten-compatible ApplyAsync overload. Accepts raw session + event list
+
+    and delegates to the <xref href="AeroDB.IProjectionContext" data-throw-if-not-resolved="false"></xref>-based overload.
+  example: []
+  syntax:
+    content: Task ApplyAsync(IDocumentOperations operations, IEnumerable<IEvent> events, CancellationToken ct)
+    parameters:
+    - id: operations
+      type: AeroDB.IDocumentOperations
+    - id: events
+      type: System.Collections.Generic.IEnumerable{AeroDB.IEvent}
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Function ApplyAsync(operations As IDocumentOperations, events As IEnumerable(Of IEvent), ct As CancellationToken) As Task
+  overload: AeroDB.IProjection.ApplyAsync*
+  nameWithType.vb: IProjection.ApplyAsync(IDocumentOperations, IEnumerable(Of IEvent), CancellationToken)
+  fullName.vb: AeroDB.IProjection.ApplyAsync(AeroDB.IDocumentOperations, System.Collections.Generic.IEnumerable(Of AeroDB.IEvent), System.Threading.CancellationToken)
+  name.vb: ApplyAsync(IDocumentOperations, IEnumerable(Of IEvent), CancellationToken)
+- uid: AeroDB.IProjection.ApplyAsync(AeroDB.IDocumentOperations,System.Collections.Generic.IEnumerable{JasperFx.Events.StreamAction},System.Threading.CancellationToken)
+  commentId: M:AeroDB.IProjection.ApplyAsync(AeroDB.IDocumentOperations,System.Collections.Generic.IEnumerable{JasperFx.Events.StreamAction},System.Threading.CancellationToken)
+  id: ApplyAsync(AeroDB.IDocumentOperations,System.Collections.Generic.IEnumerable{JasperFx.Events.StreamAction},System.Threading.CancellationToken)
+  parent: AeroDB.IProjection
+  langs:
+  - csharp
+  - vb
+  name: ApplyAsync(IDocumentOperations, IEnumerable<StreamAction>, CancellationToken)
+  nameWithType: IProjection.ApplyAsync(IDocumentOperations, IEnumerable<StreamAction>, CancellationToken)
+  fullName: AeroDB.IProjection.ApplyAsync(AeroDB.IDocumentOperations, System.Collections.Generic.IEnumerable<JasperFx.Events.StreamAction>, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/IProjection.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Marten-compatible ApplyAsync overload for producers and projections that receive
+
+    session stream actions from JasperFx.
+  example: []
+  syntax:
+    content: Task ApplyAsync(IDocumentOperations operations, IEnumerable<StreamAction> streams, CancellationToken ct)
+    parameters:
+    - id: operations
+      type: AeroDB.IDocumentOperations
+    - id: streams
+      type: System.Collections.Generic.IEnumerable{JasperFx.Events.StreamAction}
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Function ApplyAsync(operations As IDocumentOperations, streams As IEnumerable(Of StreamAction), ct As CancellationToken) As Task
+  overload: AeroDB.IProjection.ApplyAsync*
+  nameWithType.vb: IProjection.ApplyAsync(IDocumentOperations, IEnumerable(Of StreamAction), CancellationToken)
+  fullName.vb: AeroDB.IProjection.ApplyAsync(AeroDB.IDocumentOperations, System.Collections.Generic.IEnumerable(Of JasperFx.Events.StreamAction), System.Threading.CancellationToken)
+  name.vb: ApplyAsync(IDocumentOperations, IEnumerable(Of StreamAction), CancellationToken)
+- uid: AeroDB.IProjection.EventTypes
+  commentId: P:AeroDB.IProjection.EventTypes
+  id: EventTypes
+  parent: AeroDB.IProjection
+  langs:
+  - csharp
+  - vb
+  name: EventTypes
+  nameWithType: IProjection.EventTypes
+  fullName: AeroDB.IProjection.EventTypes
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/IProjection.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Event types this projection handles (by C# type).
+  example: []
+  syntax:
+    content: Type[] EventTypes { get; }
+    parameters: []
+    return:
+      type: System.Type[]
+    content.vb: ReadOnly Property EventTypes As Type()
+  overload: AeroDB.IProjection.EventTypes*
+- uid: AeroDB.IProjection.Lifecycle
+  commentId: P:AeroDB.IProjection.Lifecycle
+  id: Lifecycle
+  parent: AeroDB.IProjection
+  langs:
+  - csharp
+  - vb
+  name: Lifecycle
+  nameWithType: IProjection.Lifecycle
+  fullName: AeroDB.IProjection.Lifecycle
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/IProjection.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Whether the projection runs inline during SaveChangesAsync or asynchronously.
+  example: []
+  syntax:
+    content: ProjectionLifecycle Lifecycle { get; set; }
+    parameters: []
+    return:
+      type: AeroDB.ProjectionLifecycle
+    content.vb: Property Lifecycle As ProjectionLifecycle
+  overload: AeroDB.IProjection.Lifecycle*
+- uid: AeroDB.IProjection.Name
+  commentId: P:AeroDB.IProjection.Name
+  id: Name
+  parent: AeroDB.IProjection
+  langs:
+  - csharp
+  - vb
+  name: Name
+  nameWithType: IProjection.Name
+  fullName: AeroDB.IProjection.Name
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/IProjection.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Projection name for identification in logs and progress tracking.
+
+    Defaults to the type name when not explicitly set.
+  example: []
+  syntax:
+    content: string Name { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: ReadOnly Property Name As String
+  overload: AeroDB.IProjection.Name*
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: AeroDB.IProjection.ApplyAsync*
+  commentId: Overload:AeroDB.IProjection.ApplyAsync
+  isExternal: true
+  href: AeroDB.IProjection.html#AeroDB_IProjection_ApplyAsync_AeroDB_IProjectionContext_System_Threading_CancellationToken_
+  name: ApplyAsync
+  nameWithType: IProjection.ApplyAsync
+  fullName: AeroDB.IProjection.ApplyAsync
+- uid: AeroDB.IProjectionContext
+  commentId: T:AeroDB.IProjectionContext
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IProjectionContext.html
+  name: IProjectionContext
+  nameWithType: IProjectionContext
+  fullName: AeroDB.IProjectionContext
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: AeroDB.IProjection.RebuildAsync*
+  commentId: Overload:AeroDB.IProjection.RebuildAsync
+  isExternal: true
+  href: AeroDB.IProjection.html#AeroDB_IProjection_RebuildAsync_AeroDB_IDocumentSession_System_Threading_CancellationToken_
+  name: RebuildAsync
+  nameWithType: IProjection.RebuildAsync
+  fullName: AeroDB.IProjection.RebuildAsync
+- uid: AeroDB.IDocumentSession
+  commentId: T:AeroDB.IDocumentSession
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IDocumentSession.html
+  name: IDocumentSession
+  nameWithType: IDocumentSession
+  fullName: AeroDB.IDocumentSession
+- uid: AeroDB.IProjection.ApplyAsync(AeroDB.IProjectionContext,System.Threading.CancellationToken)
+  commentId: M:AeroDB.IProjection.ApplyAsync(AeroDB.IProjectionContext,System.Threading.CancellationToken)
+  parent: AeroDB.IProjection
+  isExternal: true
+  href: AeroDB.IProjection.html#AeroDB_IProjection_ApplyAsync_AeroDB_IProjectionContext_System_Threading_CancellationToken_
+  name: ApplyAsync(IProjectionContext, CancellationToken)
+  nameWithType: IProjection.ApplyAsync(IProjectionContext, CancellationToken)
+  fullName: AeroDB.IProjection.ApplyAsync(AeroDB.IProjectionContext, System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: AeroDB.IProjection.ApplyAsync(AeroDB.IProjectionContext,System.Threading.CancellationToken)
+    name: ApplyAsync
+    isExternal: true
+    href: AeroDB.IProjection.html#AeroDB_IProjection_ApplyAsync_AeroDB_IProjectionContext_System_Threading_CancellationToken_
+  - name: (
+  - uid: AeroDB.IProjectionContext
+    name: IProjectionContext
+    isExternal: true
+    href: AeroDB.IProjectionContext.html
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: AeroDB.IProjection.ApplyAsync(AeroDB.IProjectionContext,System.Threading.CancellationToken)
+    name: ApplyAsync
+    isExternal: true
+    href: AeroDB.IProjection.html#AeroDB_IProjection_ApplyAsync_AeroDB_IProjectionContext_System_Threading_CancellationToken_
+  - name: (
+  - uid: AeroDB.IProjectionContext
+    name: IProjectionContext
+    isExternal: true
+    href: AeroDB.IProjectionContext.html
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: AeroDB.IProjection.EnrichAsync*
+  commentId: Overload:AeroDB.IProjection.EnrichAsync
+  isExternal: true
+  href: AeroDB.IProjection.html#AeroDB_IProjection_EnrichAsync__1_AeroDB_IEventSlice___0__System_Threading_CancellationToken_
+  name: EnrichAsync
+  nameWithType: IProjection.EnrichAsync
+  fullName: AeroDB.IProjection.EnrichAsync
+- uid: AeroDB.IEventSlice{{T}}
+  commentId: T:AeroDB.IEventSlice{`0}
+  parent: AeroDB
+  definition: AeroDB.IEventSlice`1
+  href: AeroDB.IEventSlice-1.html
+  name: IEventSlice<T>
+  nameWithType: IEventSlice<T>
+  fullName: AeroDB.IEventSlice<T>
+  nameWithType.vb: IEventSlice(Of T)
+  fullName.vb: AeroDB.IEventSlice(Of T)
+  name.vb: IEventSlice(Of T)
+  spec.csharp:
+  - uid: AeroDB.IEventSlice`1
+    name: IEventSlice
+    isExternal: true
+    href: AeroDB.IEventSlice-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.IEventSlice`1
+    name: IEventSlice
+    isExternal: true
+    href: AeroDB.IEventSlice-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.IProjection
+  commentId: T:AeroDB.IProjection
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IProjection.html
+  name: IProjection
+  nameWithType: IProjection
+  fullName: AeroDB.IProjection
+- uid: AeroDB.IEventSlice`1
+  commentId: T:AeroDB.IEventSlice`1
+  isExternal: true
+  href: AeroDB.IEventSlice-1.html
+  name: IEventSlice<T>
+  nameWithType: IEventSlice<T>
+  fullName: AeroDB.IEventSlice<T>
+  nameWithType.vb: IEventSlice(Of T)
+  fullName.vb: AeroDB.IEventSlice(Of T)
+  name.vb: IEventSlice(Of T)
+  spec.csharp:
+  - uid: AeroDB.IEventSlice`1
+    name: IEventSlice
+    isExternal: true
+    href: AeroDB.IEventSlice-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.IEventSlice`1
+    name: IEventSlice
+    isExternal: true
+    href: AeroDB.IEventSlice-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.IDocumentOperations
+  commentId: T:AeroDB.IDocumentOperations
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IDocumentOperations.html
+  name: IDocumentOperations
+  nameWithType: IDocumentOperations
+  fullName: AeroDB.IDocumentOperations
+- uid: System.Collections.Generic.IEnumerable{AeroDB.IEvent}
+  commentId: T:System.Collections.Generic.IEnumerable{AeroDB.IEvent}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<IEvent>
+  nameWithType: IEnumerable<IEvent>
+  fullName: System.Collections.Generic.IEnumerable<AeroDB.IEvent>
+  nameWithType.vb: IEnumerable(Of IEvent)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of AeroDB.IEvent)
+  name.vb: IEnumerable(Of IEvent)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: AeroDB.IEvent
+    name: IEvent
+    isExternal: true
+    href: AeroDB.IEvent.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.IEvent
+    name: IEvent
+    isExternal: true
+    href: AeroDB.IEvent.html
+  - name: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: System.Collections.Generic.IEnumerable{JasperFx.Events.StreamAction}
+  commentId: T:System.Collections.Generic.IEnumerable{JasperFx.Events.StreamAction}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<StreamAction>
+  nameWithType: IEnumerable<StreamAction>
+  fullName: System.Collections.Generic.IEnumerable<JasperFx.Events.StreamAction>
+  nameWithType.vb: IEnumerable(Of StreamAction)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of JasperFx.Events.StreamAction)
+  name.vb: IEnumerable(Of StreamAction)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: JasperFx.Events.StreamAction
+    name: StreamAction
+    isExternal: true
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: JasperFx.Events.StreamAction
+    name: StreamAction
+    isExternal: true
+  - name: )
+- uid: AeroDB.IProjection.EventTypes*
+  commentId: Overload:AeroDB.IProjection.EventTypes
+  isExternal: true
+  href: AeroDB.IProjection.html#AeroDB_IProjection_EventTypes
+  name: EventTypes
+  nameWithType: IProjection.EventTypes
+  fullName: AeroDB.IProjection.EventTypes
+- uid: System.Type[]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.type
+  name: Type[]
+  nameWithType: Type[]
+  fullName: System.Type[]
+  nameWithType.vb: Type()
+  fullName.vb: System.Type()
+  name.vb: Type()
+  spec.csharp:
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: (
+  - name: )
+- uid: AeroDB.IProjection.Lifecycle*
+  commentId: Overload:AeroDB.IProjection.Lifecycle
+  isExternal: true
+  href: AeroDB.IProjection.html#AeroDB_IProjection_Lifecycle
+  name: Lifecycle
+  nameWithType: IProjection.Lifecycle
+  fullName: AeroDB.IProjection.Lifecycle
+- uid: AeroDB.ProjectionLifecycle
+  commentId: T:AeroDB.ProjectionLifecycle
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.ProjectionLifecycle.html
+  name: ProjectionLifecycle
+  nameWithType: ProjectionLifecycle
+  fullName: AeroDB.ProjectionLifecycle
+- uid: AeroDB.IProjection.Name*
+  commentId: Overload:AeroDB.IProjection.Name
+  isExternal: true
+  href: AeroDB.IProjection.html#AeroDB_IProjection_Name
+  name: Name
+  nameWithType: IProjection.Name
+  fullName: AeroDB.IProjection.Name
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System

@@ -1,0 +1,1438 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.IGraphQuery`1
+  commentId: T:AeroDB.IGraphQuery`1
+  id: IGraphQuery`1
+  parent: AeroDB
+  children:
+  - AeroDB.IGraphQuery`1.AnyEdge
+  - AeroDB.IGraphQuery`1.Both``1(System.String)
+  - AeroDB.IGraphQuery`1.Both``2
+  - AeroDB.IGraphQuery`1.CollectAll
+  - AeroDB.IGraphQuery`1.CountAsync(System.Threading.CancellationToken)
+  - AeroDB.IGraphQuery`1.Depth
+  - AeroDB.IGraphQuery`1.Depth(System.Int32)
+  - AeroDB.IGraphQuery`1.Depth(System.Int32,System.Int32)
+  - AeroDB.IGraphQuery`1.Fetch(System.String[])
+  - AeroDB.IGraphQuery`1.FirstOrDefaultAsync(System.Threading.CancellationToken)
+  - AeroDB.IGraphQuery`1.InAny
+  - AeroDB.IGraphQuery`1.In``1(System.String)
+  - AeroDB.IGraphQuery`1.In``2
+  - AeroDB.IGraphQuery`1.IncludeIntermediate
+  - AeroDB.IGraphQuery`1.IncludeOrigin
+  - AeroDB.IGraphQuery`1.OutAny
+  - AeroDB.IGraphQuery`1.Out``1(System.String)
+  - AeroDB.IGraphQuery`1.Out``1(System.String[])
+  - AeroDB.IGraphQuery`1.Out``2
+  - AeroDB.IGraphQuery`1.ReturnPath
+  - AeroDB.IGraphQuery`1.ShortestPath(System.String)
+  - AeroDB.IGraphQuery`1.ToListAsync(System.Threading.CancellationToken)
+  - AeroDB.IGraphQuery`1.ToPathListAsync(System.Threading.CancellationToken)
+  - AeroDB.IGraphQuery`1.Where(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})
+  langs:
+  - csharp
+  - vb
+  name: IGraphQuery<TNode>
+  nameWithType: IGraphQuery<TNode>
+  fullName: AeroDB.IGraphQuery<TNode>
+  type: Interface
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Graph/IGraphQuery.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Fluent graph query builder for SurrealDB traversal.
+  example: []
+  syntax:
+    content: 'public interface IGraphQuery<TNode> where TNode : class'
+    typeParameters:
+    - id: TNode
+    content.vb: Public Interface IGraphQuery(Of TNode As Class)
+  nameWithType.vb: IGraphQuery(Of TNode)
+  fullName.vb: AeroDB.IGraphQuery(Of TNode)
+  name.vb: IGraphQuery(Of TNode)
+- uid: AeroDB.IGraphQuery`1.Out``1(System.String)
+  commentId: M:AeroDB.IGraphQuery`1.Out``1(System.String)
+  id: Out``1(System.String)
+  parent: AeroDB.IGraphQuery`1
+  langs:
+  - csharp
+  - vb
+  name: Out<TTarget>(string)
+  nameWithType: IGraphQuery<TNode>.Out<TTarget>(string)
+  fullName: AeroDB.IGraphQuery<TNode>.Out<TTarget>(string)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Graph/IGraphQuery.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: 'Forward traversal: SELECT -&gt;edge-&gt;target FROM ...'
+  example: []
+  syntax:
+    content: 'IGraphQuery<TTarget> Out<TTarget>(string edgeType) where TTarget : class'
+    parameters:
+    - id: edgeType
+      type: System.String
+    typeParameters:
+    - id: TTarget
+    return:
+      type: AeroDB.IGraphQuery{{TTarget}}
+    content.vb: Function Out(Of TTarget As Class)(edgeType As String) As IGraphQuery(Of TTarget)
+  overload: AeroDB.IGraphQuery`1.Out*
+  nameWithType.vb: IGraphQuery(Of TNode).Out(Of TTarget)(String)
+  fullName.vb: AeroDB.IGraphQuery(Of TNode).Out(Of TTarget)(String)
+  name.vb: Out(Of TTarget)(String)
+- uid: AeroDB.IGraphQuery`1.Out``2
+  commentId: M:AeroDB.IGraphQuery`1.Out``2
+  id: Out``2
+  parent: AeroDB.IGraphQuery`1
+  langs:
+  - csharp
+  - vb
+  name: Out<TTarget, TEdge>()
+  nameWithType: IGraphQuery<TNode>.Out<TTarget, TEdge>()
+  fullName: AeroDB.IGraphQuery<TNode>.Out<TTarget, TEdge>()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Graph/IGraphQuery.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Forward traversal using the edge table name inferred from TEdge.
+  example: []
+  syntax:
+    content: 'IGraphQuery<TTarget> Out<TTarget, TEdge>() where TTarget : class where TEdge : EdgeRecord'
+    typeParameters:
+    - id: TTarget
+    - id: TEdge
+    return:
+      type: AeroDB.IGraphQuery{{TTarget}}
+    content.vb: Function Out(Of TTarget As Class, TEdge As EdgeRecord)() As IGraphQuery(Of TTarget)
+  overload: AeroDB.IGraphQuery`1.Out*
+  nameWithType.vb: IGraphQuery(Of TNode).Out(Of TTarget, TEdge)()
+  fullName.vb: AeroDB.IGraphQuery(Of TNode).Out(Of TTarget, TEdge)()
+  name.vb: Out(Of TTarget, TEdge)()
+- uid: AeroDB.IGraphQuery`1.In``1(System.String)
+  commentId: M:AeroDB.IGraphQuery`1.In``1(System.String)
+  id: In``1(System.String)
+  parent: AeroDB.IGraphQuery`1
+  langs:
+  - csharp
+  - vb
+  name: In<TTarget>(string)
+  nameWithType: IGraphQuery<TNode>.In<TTarget>(string)
+  fullName: AeroDB.IGraphQuery<TNode>.In<TTarget>(string)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Graph/IGraphQuery.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: 'Backward traversal: <code>SELECT &lt;-edge&lt;-target FROM ...</code>'
+  example: []
+  syntax:
+    content: 'IGraphQuery<TTarget> In<TTarget>(string edgeType) where TTarget : class'
+    parameters:
+    - id: edgeType
+      type: System.String
+    typeParameters:
+    - id: TTarget
+    return:
+      type: AeroDB.IGraphQuery{{TTarget}}
+    content.vb: Function [In](Of TTarget As Class)(edgeType As String) As IGraphQuery(Of TTarget)
+  overload: AeroDB.IGraphQuery`1.In*
+  nameWithType.vb: IGraphQuery(Of TNode).In(Of TTarget)(String)
+  fullName.vb: AeroDB.IGraphQuery(Of TNode).In(Of TTarget)(String)
+  name.vb: In(Of TTarget)(String)
+- uid: AeroDB.IGraphQuery`1.In``2
+  commentId: M:AeroDB.IGraphQuery`1.In``2
+  id: In``2
+  parent: AeroDB.IGraphQuery`1
+  langs:
+  - csharp
+  - vb
+  name: In<TTarget, TEdge>()
+  nameWithType: IGraphQuery<TNode>.In<TTarget, TEdge>()
+  fullName: AeroDB.IGraphQuery<TNode>.In<TTarget, TEdge>()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Graph/IGraphQuery.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Backward traversal using the edge table name inferred from TEdge.
+  example: []
+  syntax:
+    content: 'IGraphQuery<TTarget> In<TTarget, TEdge>() where TTarget : class where TEdge : EdgeRecord'
+    typeParameters:
+    - id: TTarget
+    - id: TEdge
+    return:
+      type: AeroDB.IGraphQuery{{TTarget}}
+    content.vb: Function [In](Of TTarget As Class, TEdge As EdgeRecord)() As IGraphQuery(Of TTarget)
+  overload: AeroDB.IGraphQuery`1.In*
+  nameWithType.vb: IGraphQuery(Of TNode).In(Of TTarget, TEdge)()
+  fullName.vb: AeroDB.IGraphQuery(Of TNode).In(Of TTarget, TEdge)()
+  name.vb: In(Of TTarget, TEdge)()
+- uid: AeroDB.IGraphQuery`1.Both``1(System.String)
+  commentId: M:AeroDB.IGraphQuery`1.Both``1(System.String)
+  id: Both``1(System.String)
+  parent: AeroDB.IGraphQuery`1
+  langs:
+  - csharp
+  - vb
+  name: Both<TTarget>(string)
+  nameWithType: IGraphQuery<TNode>.Both<TTarget>(string)
+  fullName: AeroDB.IGraphQuery<TNode>.Both<TTarget>(string)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Graph/IGraphQuery.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: 'Bidirectional traversal: <code>SELECT &lt;-&gt;edge&lt;-&gt;target FROM ...</code>'
+  example: []
+  syntax:
+    content: 'IGraphQuery<TTarget> Both<TTarget>(string edgeType) where TTarget : class'
+    parameters:
+    - id: edgeType
+      type: System.String
+    typeParameters:
+    - id: TTarget
+    return:
+      type: AeroDB.IGraphQuery{{TTarget}}
+    content.vb: Function Both(Of TTarget As Class)(edgeType As String) As IGraphQuery(Of TTarget)
+  overload: AeroDB.IGraphQuery`1.Both*
+  nameWithType.vb: IGraphQuery(Of TNode).Both(Of TTarget)(String)
+  fullName.vb: AeroDB.IGraphQuery(Of TNode).Both(Of TTarget)(String)
+  name.vb: Both(Of TTarget)(String)
+- uid: AeroDB.IGraphQuery`1.Both``2
+  commentId: M:AeroDB.IGraphQuery`1.Both``2
+  id: Both``2
+  parent: AeroDB.IGraphQuery`1
+  langs:
+  - csharp
+  - vb
+  name: Both<TTarget, TEdge>()
+  nameWithType: IGraphQuery<TNode>.Both<TTarget, TEdge>()
+  fullName: AeroDB.IGraphQuery<TNode>.Both<TTarget, TEdge>()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Graph/IGraphQuery.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Bidirectional traversal using the edge table name inferred from TEdge.
+  example: []
+  syntax:
+    content: 'IGraphQuery<TTarget> Both<TTarget, TEdge>() where TTarget : class where TEdge : EdgeRecord'
+    typeParameters:
+    - id: TTarget
+    - id: TEdge
+    return:
+      type: AeroDB.IGraphQuery{{TTarget}}
+    content.vb: Function Both(Of TTarget As Class, TEdge As EdgeRecord)() As IGraphQuery(Of TTarget)
+  overload: AeroDB.IGraphQuery`1.Both*
+  nameWithType.vb: IGraphQuery(Of TNode).Both(Of TTarget, TEdge)()
+  fullName.vb: AeroDB.IGraphQuery(Of TNode).Both(Of TTarget, TEdge)()
+  name.vb: Both(Of TTarget, TEdge)()
+- uid: AeroDB.IGraphQuery`1.OutAny
+  commentId: M:AeroDB.IGraphQuery`1.OutAny
+  id: OutAny
+  parent: AeroDB.IGraphQuery`1
+  langs:
+  - csharp
+  - vb
+  name: OutAny()
+  nameWithType: IGraphQuery<TNode>.OutAny()
+  fullName: AeroDB.IGraphQuery<TNode>.OutAny()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Graph/IGraphQuery.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: 'Wildcard outgoing: <code>SELECT -&gt;?-&gt;... FROM ...</code>'
+  example: []
+  syntax:
+    content: IGraphQuery<GraphNode> OutAny()
+    return:
+      type: AeroDB.IGraphQuery{AeroDB.GraphNode}
+    content.vb: Function OutAny() As IGraphQuery(Of GraphNode)
+  overload: AeroDB.IGraphQuery`1.OutAny*
+  nameWithType.vb: IGraphQuery(Of TNode).OutAny()
+  fullName.vb: AeroDB.IGraphQuery(Of TNode).OutAny()
+- uid: AeroDB.IGraphQuery`1.InAny
+  commentId: M:AeroDB.IGraphQuery`1.InAny
+  id: InAny
+  parent: AeroDB.IGraphQuery`1
+  langs:
+  - csharp
+  - vb
+  name: InAny()
+  nameWithType: IGraphQuery<TNode>.InAny()
+  fullName: AeroDB.IGraphQuery<TNode>.InAny()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Graph/IGraphQuery.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: 'Wildcard incoming: <code>SELECT &lt;-?&lt;-... FROM ...</code>'
+  example: []
+  syntax:
+    content: IGraphQuery<GraphNode> InAny()
+    return:
+      type: AeroDB.IGraphQuery{AeroDB.GraphNode}
+    content.vb: Function InAny() As IGraphQuery(Of GraphNode)
+  overload: AeroDB.IGraphQuery`1.InAny*
+  nameWithType.vb: IGraphQuery(Of TNode).InAny()
+  fullName.vb: AeroDB.IGraphQuery(Of TNode).InAny()
+- uid: AeroDB.IGraphQuery`1.AnyEdge
+  commentId: M:AeroDB.IGraphQuery`1.AnyEdge
+  id: AnyEdge
+  parent: AeroDB.IGraphQuery`1
+  langs:
+  - csharp
+  - vb
+  name: AnyEdge()
+  nameWithType: IGraphQuery<TNode>.AnyEdge()
+  fullName: AeroDB.IGraphQuery<TNode>.AnyEdge()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Graph/IGraphQuery.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Any edge type (no direction constraint).
+  example: []
+  syntax:
+    content: IGraphQuery<GraphNode> AnyEdge()
+    return:
+      type: AeroDB.IGraphQuery{AeroDB.GraphNode}
+    content.vb: Function AnyEdge() As IGraphQuery(Of GraphNode)
+  overload: AeroDB.IGraphQuery`1.AnyEdge*
+  nameWithType.vb: IGraphQuery(Of TNode).AnyEdge()
+  fullName.vb: AeroDB.IGraphQuery(Of TNode).AnyEdge()
+- uid: AeroDB.IGraphQuery`1.Out``1(System.String[])
+  commentId: M:AeroDB.IGraphQuery`1.Out``1(System.String[])
+  id: Out``1(System.String[])
+  parent: AeroDB.IGraphQuery`1
+  langs:
+  - csharp
+  - vb
+  name: Out<TTarget>(string[])
+  nameWithType: IGraphQuery<TNode>.Out<TTarget>(string[])
+  fullName: AeroDB.IGraphQuery<TNode>.Out<TTarget>(string[])
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Graph/IGraphQuery.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: 'Multiple edge types: SELECT -&gt;(e1, e2)-&gt;...'
+  example: []
+  syntax:
+    content: 'IGraphQuery<TTarget> Out<TTarget>(string[] edgeTypes) where TTarget : class'
+    parameters:
+    - id: edgeTypes
+      type: System.String[]
+    typeParameters:
+    - id: TTarget
+    return:
+      type: AeroDB.IGraphQuery{{TTarget}}
+    content.vb: Function Out(Of TTarget As Class)(edgeTypes As String()) As IGraphQuery(Of TTarget)
+  overload: AeroDB.IGraphQuery`1.Out*
+  nameWithType.vb: IGraphQuery(Of TNode).Out(Of TTarget)(String())
+  fullName.vb: AeroDB.IGraphQuery(Of TNode).Out(Of TTarget)(String())
+  name.vb: Out(Of TTarget)(String())
+- uid: AeroDB.IGraphQuery`1.Depth(System.Int32)
+  commentId: M:AeroDB.IGraphQuery`1.Depth(System.Int32)
+  id: Depth(System.Int32)
+  parent: AeroDB.IGraphQuery`1
+  langs:
+  - csharp
+  - vb
+  name: Depth(int)
+  nameWithType: IGraphQuery<TNode>.Depth(int)
+  fullName: AeroDB.IGraphQuery<TNode>.Depth(int)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Graph/IGraphQuery.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: 'Fixed recursion depth: @.{n}'
+  example: []
+  syntax:
+    content: IGraphQuery<TNode> Depth(int depth)
+    parameters:
+    - id: depth
+      type: System.Int32
+    return:
+      type: AeroDB.IGraphQuery`1
+    content.vb: Function Depth(depth As Integer) As IGraphQuery(Of TNode)
+  overload: AeroDB.IGraphQuery`1.Depth*
+  nameWithType.vb: IGraphQuery(Of TNode).Depth(Integer)
+  fullName.vb: AeroDB.IGraphQuery(Of TNode).Depth(Integer)
+  name.vb: Depth(Integer)
+- uid: AeroDB.IGraphQuery`1.Depth(System.Int32,System.Int32)
+  commentId: M:AeroDB.IGraphQuery`1.Depth(System.Int32,System.Int32)
+  id: Depth(System.Int32,System.Int32)
+  parent: AeroDB.IGraphQuery`1
+  langs:
+  - csharp
+  - vb
+  name: Depth(int, int)
+  nameWithType: IGraphQuery<TNode>.Depth(int, int)
+  fullName: AeroDB.IGraphQuery<TNode>.Depth(int, int)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Graph/IGraphQuery.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: 'Range recursion depth: @.{min..max}'
+  example: []
+  syntax:
+    content: IGraphQuery<TNode> Depth(int min, int max)
+    parameters:
+    - id: min
+      type: System.Int32
+    - id: max
+      type: System.Int32
+    return:
+      type: AeroDB.IGraphQuery`1
+    content.vb: Function Depth(min As Integer, max As Integer) As IGraphQuery(Of TNode)
+  overload: AeroDB.IGraphQuery`1.Depth*
+  nameWithType.vb: IGraphQuery(Of TNode).Depth(Integer, Integer)
+  fullName.vb: AeroDB.IGraphQuery(Of TNode).Depth(Integer, Integer)
+  name.vb: Depth(Integer, Integer)
+- uid: AeroDB.IGraphQuery`1.Depth
+  commentId: M:AeroDB.IGraphQuery`1.Depth
+  id: Depth
+  parent: AeroDB.IGraphQuery`1
+  langs:
+  - csharp
+  - vb
+  name: Depth()
+  nameWithType: IGraphQuery<TNode>.Depth()
+  fullName: AeroDB.IGraphQuery<TNode>.Depth()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Graph/IGraphQuery.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: 'Open-ended recursion: @.{..}'
+  example: []
+  syntax:
+    content: IGraphQuery<TNode> Depth()
+    return:
+      type: AeroDB.IGraphQuery`1
+    content.vb: Function Depth() As IGraphQuery(Of TNode)
+  overload: AeroDB.IGraphQuery`1.Depth*
+  nameWithType.vb: IGraphQuery(Of TNode).Depth()
+  fullName.vb: AeroDB.IGraphQuery(Of TNode).Depth()
+- uid: AeroDB.IGraphQuery`1.ShortestPath(System.String)
+  commentId: M:AeroDB.IGraphQuery`1.ShortestPath(System.String)
+  id: ShortestPath(System.String)
+  parent: AeroDB.IGraphQuery`1
+  langs:
+  - csharp
+  - vb
+  name: ShortestPath(string)
+  nameWithType: IGraphQuery<TNode>.ShortestPath(string)
+  fullName: AeroDB.IGraphQuery<TNode>.ShortestPath(string)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Graph/IGraphQuery.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: 'Shortest path to target: @.{..+shortest=id}'
+  example: []
+  syntax:
+    content: IGraphQuery<TNode> ShortestPath(string recordId)
+    parameters:
+    - id: recordId
+      type: System.String
+    return:
+      type: AeroDB.IGraphQuery`1
+    content.vb: Function ShortestPath(recordId As String) As IGraphQuery(Of TNode)
+  overload: AeroDB.IGraphQuery`1.ShortestPath*
+  nameWithType.vb: IGraphQuery(Of TNode).ShortestPath(String)
+  fullName.vb: AeroDB.IGraphQuery(Of TNode).ShortestPath(String)
+  name.vb: ShortestPath(String)
+- uid: AeroDB.IGraphQuery`1.ReturnPath
+  commentId: M:AeroDB.IGraphQuery`1.ReturnPath
+  id: ReturnPath
+  parent: AeroDB.IGraphQuery`1
+  langs:
+  - csharp
+  - vb
+  name: ReturnPath()
+  nameWithType: IGraphQuery<TNode>.ReturnPath()
+  fullName: AeroDB.IGraphQuery<TNode>.ReturnPath()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Graph/IGraphQuery.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: 'Return full paths: +path'
+  example: []
+  syntax:
+    content: IGraphQuery<TNode> ReturnPath()
+    return:
+      type: AeroDB.IGraphQuery`1
+    content.vb: Function ReturnPath() As IGraphQuery(Of TNode)
+  overload: AeroDB.IGraphQuery`1.ReturnPath*
+  nameWithType.vb: IGraphQuery(Of TNode).ReturnPath()
+  fullName.vb: AeroDB.IGraphQuery(Of TNode).ReturnPath()
+- uid: AeroDB.IGraphQuery`1.CollectAll
+  commentId: M:AeroDB.IGraphQuery`1.CollectAll
+  id: CollectAll
+  parent: AeroDB.IGraphQuery`1
+  langs:
+  - csharp
+  - vb
+  name: CollectAll()
+  nameWithType: IGraphQuery<TNode>.CollectAll()
+  fullName: AeroDB.IGraphQuery<TNode>.CollectAll()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Graph/IGraphQuery.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: 'Collect unique nodes: +collect'
+  example: []
+  syntax:
+    content: IGraphQuery<TNode> CollectAll()
+    return:
+      type: AeroDB.IGraphQuery`1
+    content.vb: Function CollectAll() As IGraphQuery(Of TNode)
+  overload: AeroDB.IGraphQuery`1.CollectAll*
+  nameWithType.vb: IGraphQuery(Of TNode).CollectAll()
+  fullName.vb: AeroDB.IGraphQuery(Of TNode).CollectAll()
+- uid: AeroDB.IGraphQuery`1.IncludeIntermediate
+  commentId: M:AeroDB.IGraphQuery`1.IncludeIntermediate
+  id: IncludeIntermediate
+  parent: AeroDB.IGraphQuery`1
+  langs:
+  - csharp
+  - vb
+  name: IncludeIntermediate()
+  nameWithType: IGraphQuery<TNode>.IncludeIntermediate()
+  fullName: AeroDB.IGraphQuery<TNode>.IncludeIntermediate()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Graph/IGraphQuery.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: 'Include intermediate nodes: (+)'
+  example: []
+  syntax:
+    content: IGraphQuery<TNode> IncludeIntermediate()
+    return:
+      type: AeroDB.IGraphQuery`1
+    content.vb: Function IncludeIntermediate() As IGraphQuery(Of TNode)
+  overload: AeroDB.IGraphQuery`1.IncludeIntermediate*
+  nameWithType.vb: IGraphQuery(Of TNode).IncludeIntermediate()
+  fullName.vb: AeroDB.IGraphQuery(Of TNode).IncludeIntermediate()
+- uid: AeroDB.IGraphQuery`1.IncludeOrigin
+  commentId: M:AeroDB.IGraphQuery`1.IncludeOrigin
+  id: IncludeOrigin
+  parent: AeroDB.IGraphQuery`1
+  langs:
+  - csharp
+  - vb
+  name: IncludeOrigin()
+  nameWithType: IGraphQuery<TNode>.IncludeOrigin()
+  fullName: AeroDB.IGraphQuery<TNode>.IncludeOrigin()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Graph/IGraphQuery.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: 'Include origin node: +inclusive'
+  example: []
+  syntax:
+    content: IGraphQuery<TNode> IncludeOrigin()
+    return:
+      type: AeroDB.IGraphQuery`1
+    content.vb: Function IncludeOrigin() As IGraphQuery(Of TNode)
+  overload: AeroDB.IGraphQuery`1.IncludeOrigin*
+  nameWithType.vb: IGraphQuery(Of TNode).IncludeOrigin()
+  fullName.vb: AeroDB.IGraphQuery(Of TNode).IncludeOrigin()
+- uid: AeroDB.IGraphQuery`1.Fetch(System.String[])
+  commentId: M:AeroDB.IGraphQuery`1.Fetch(System.String[])
+  id: Fetch(System.String[])
+  parent: AeroDB.IGraphQuery`1
+  langs:
+  - csharp
+  - vb
+  name: Fetch(params string[])
+  nameWithType: IGraphQuery<TNode>.Fetch(params string[])
+  fullName: AeroDB.IGraphQuery<TNode>.Fetch(params string[])
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Graph/IGraphQuery.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: 'Eager load relations: FETCH'
+  example: []
+  syntax:
+    content: IGraphQuery<TNode> Fetch(params string[] relations)
+    parameters:
+    - id: relations
+      type: System.String[]
+    return:
+      type: AeroDB.IGraphQuery`1
+    content.vb: Function Fetch(ParamArray relations As String()) As IGraphQuery(Of TNode)
+  overload: AeroDB.IGraphQuery`1.Fetch*
+  nameWithType.vb: IGraphQuery(Of TNode).Fetch(ParamArray String())
+  fullName.vb: AeroDB.IGraphQuery(Of TNode).Fetch(ParamArray String())
+  name.vb: Fetch(ParamArray String())
+- uid: AeroDB.IGraphQuery`1.Where(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})
+  commentId: M:AeroDB.IGraphQuery`1.Where(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})
+  id: Where(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})
+  parent: AeroDB.IGraphQuery`1
+  langs:
+  - csharp
+  - vb
+  name: Where(Expression<Func<TNode, bool>>)
+  nameWithType: IGraphQuery<TNode>.Where(Expression<Func<TNode, bool>>)
+  fullName: AeroDB.IGraphQuery<TNode>.Where(System.Linq.Expressions.Expression<System.Func<TNode, bool>>)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Graph/IGraphQuery.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Add a WHERE filter expression (delegates to LINQ). Only valid on the first step.
+  example: []
+  syntax:
+    content: IGraphQuery<TNode> Where(Expression<Func<TNode, bool>> predicate)
+    parameters:
+    - id: predicate
+      type: System.Linq.Expressions.Expression{System.Func{{TNode},System.Boolean}}
+    return:
+      type: AeroDB.IGraphQuery`1
+    content.vb: Function Where(predicate As Expression(Of Func(Of TNode, Boolean))) As IGraphQuery(Of TNode)
+  overload: AeroDB.IGraphQuery`1.Where*
+  nameWithType.vb: IGraphQuery(Of TNode).Where(Expression(Of Func(Of TNode, Boolean)))
+  fullName.vb: AeroDB.IGraphQuery(Of TNode).Where(System.Linq.Expressions.Expression(Of System.Func(Of TNode, Boolean)))
+  name.vb: Where(Expression(Of Func(Of TNode, Boolean)))
+- uid: AeroDB.IGraphQuery`1.ToListAsync(System.Threading.CancellationToken)
+  commentId: M:AeroDB.IGraphQuery`1.ToListAsync(System.Threading.CancellationToken)
+  id: ToListAsync(System.Threading.CancellationToken)
+  parent: AeroDB.IGraphQuery`1
+  langs:
+  - csharp
+  - vb
+  name: ToListAsync(CancellationToken)
+  nameWithType: IGraphQuery<TNode>.ToListAsync(CancellationToken)
+  fullName: AeroDB.IGraphQuery<TNode>.ToListAsync(System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Graph/IGraphQuery.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Executes the graph traversal and returns all matching nodes.
+  example: []
+  syntax:
+    content: Task<List<TNode>> ToListAsync(CancellationToken ct = default)
+    parameters:
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.List{{TNode}}}
+    content.vb: Function ToListAsync(ct As CancellationToken = Nothing) As Task(Of List(Of TNode))
+  overload: AeroDB.IGraphQuery`1.ToListAsync*
+  nameWithType.vb: IGraphQuery(Of TNode).ToListAsync(CancellationToken)
+  fullName.vb: AeroDB.IGraphQuery(Of TNode).ToListAsync(System.Threading.CancellationToken)
+- uid: AeroDB.IGraphQuery`1.FirstOrDefaultAsync(System.Threading.CancellationToken)
+  commentId: M:AeroDB.IGraphQuery`1.FirstOrDefaultAsync(System.Threading.CancellationToken)
+  id: FirstOrDefaultAsync(System.Threading.CancellationToken)
+  parent: AeroDB.IGraphQuery`1
+  langs:
+  - csharp
+  - vb
+  name: FirstOrDefaultAsync(CancellationToken)
+  nameWithType: IGraphQuery<TNode>.FirstOrDefaultAsync(CancellationToken)
+  fullName: AeroDB.IGraphQuery<TNode>.FirstOrDefaultAsync(System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Graph/IGraphQuery.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Executes the graph traversal and returns the first matching node, or null.
+  example: []
+  syntax:
+    content: Task<TNode?> FirstOrDefaultAsync(CancellationToken ct = default)
+    parameters:
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task{{TNode}}
+    content.vb: Function FirstOrDefaultAsync(ct As CancellationToken = Nothing) As Task(Of TNode)
+  overload: AeroDB.IGraphQuery`1.FirstOrDefaultAsync*
+  nameWithType.vb: IGraphQuery(Of TNode).FirstOrDefaultAsync(CancellationToken)
+  fullName.vb: AeroDB.IGraphQuery(Of TNode).FirstOrDefaultAsync(System.Threading.CancellationToken)
+- uid: AeroDB.IGraphQuery`1.ToPathListAsync(System.Threading.CancellationToken)
+  commentId: M:AeroDB.IGraphQuery`1.ToPathListAsync(System.Threading.CancellationToken)
+  id: ToPathListAsync(System.Threading.CancellationToken)
+  parent: AeroDB.IGraphQuery`1
+  langs:
+  - csharp
+  - vb
+  name: ToPathListAsync(CancellationToken)
+  nameWithType: IGraphQuery<TNode>.ToPathListAsync(CancellationToken)
+  fullName: AeroDB.IGraphQuery<TNode>.ToPathListAsync(System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Graph/IGraphQuery.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Executes the graph traversal and returns matching paths.
+  example: []
+  syntax:
+    content: Task<List<GraphPath>> ToPathListAsync(CancellationToken ct = default)
+    parameters:
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.List{AeroDB.GraphPath}}
+    content.vb: Function ToPathListAsync(ct As CancellationToken = Nothing) As Task(Of List(Of GraphPath))
+  overload: AeroDB.IGraphQuery`1.ToPathListAsync*
+  nameWithType.vb: IGraphQuery(Of TNode).ToPathListAsync(CancellationToken)
+  fullName.vb: AeroDB.IGraphQuery(Of TNode).ToPathListAsync(System.Threading.CancellationToken)
+- uid: AeroDB.IGraphQuery`1.CountAsync(System.Threading.CancellationToken)
+  commentId: M:AeroDB.IGraphQuery`1.CountAsync(System.Threading.CancellationToken)
+  id: CountAsync(System.Threading.CancellationToken)
+  parent: AeroDB.IGraphQuery`1
+  langs:
+  - csharp
+  - vb
+  name: CountAsync(CancellationToken)
+  nameWithType: IGraphQuery<TNode>.CountAsync(CancellationToken)
+  fullName: AeroDB.IGraphQuery<TNode>.CountAsync(System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Graph/IGraphQuery.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Executes the graph traversal and returns the count of matching results.
+  example: []
+  syntax:
+    content: Task<int> CountAsync(CancellationToken ct = default)
+    parameters:
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task{System.Int32}
+    content.vb: Function CountAsync(ct As CancellationToken = Nothing) As Task(Of Integer)
+  overload: AeroDB.IGraphQuery`1.CountAsync*
+  nameWithType.vb: IGraphQuery(Of TNode).CountAsync(CancellationToken)
+  fullName.vb: AeroDB.IGraphQuery(Of TNode).CountAsync(System.Threading.CancellationToken)
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: AeroDB.IGraphQuery`1.Out*
+  commentId: Overload:AeroDB.IGraphQuery`1.Out
+  isExternal: true
+  href: AeroDB.IGraphQuery-1.html#AeroDB_IGraphQuery_1_Out__1_System_String_
+  name: Out
+  nameWithType: IGraphQuery<TNode>.Out
+  fullName: AeroDB.IGraphQuery<TNode>.Out
+  nameWithType.vb: IGraphQuery(Of TNode).Out
+  fullName.vb: AeroDB.IGraphQuery(Of TNode).Out
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: AeroDB.IGraphQuery{{TTarget}}
+  commentId: T:AeroDB.IGraphQuery{``0}
+  parent: AeroDB
+  definition: AeroDB.IGraphQuery`1
+  href: AeroDB.IGraphQuery-1.html
+  name: IGraphQuery<TTarget>
+  nameWithType: IGraphQuery<TTarget>
+  fullName: AeroDB.IGraphQuery<TTarget>
+  nameWithType.vb: IGraphQuery(Of TTarget)
+  fullName.vb: AeroDB.IGraphQuery(Of TTarget)
+  name.vb: IGraphQuery(Of TTarget)
+  spec.csharp:
+  - uid: AeroDB.IGraphQuery`1
+    name: IGraphQuery
+    isExternal: true
+    href: AeroDB.IGraphQuery-1.html
+  - name: <
+  - name: TTarget
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.IGraphQuery`1
+    name: IGraphQuery
+    isExternal: true
+    href: AeroDB.IGraphQuery-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TTarget
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AeroDB.IGraphQuery`1
+  commentId: T:AeroDB.IGraphQuery`1
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IGraphQuery-1.html
+  name: IGraphQuery<TNode>
+  nameWithType: IGraphQuery<TNode>
+  fullName: AeroDB.IGraphQuery<TNode>
+  nameWithType.vb: IGraphQuery(Of TNode)
+  fullName.vb: AeroDB.IGraphQuery(Of TNode)
+  name.vb: IGraphQuery(Of TNode)
+  spec.csharp:
+  - uid: AeroDB.IGraphQuery`1
+    name: IGraphQuery
+    isExternal: true
+    href: AeroDB.IGraphQuery-1.html
+  - name: <
+  - name: TNode
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.IGraphQuery`1
+    name: IGraphQuery
+    isExternal: true
+    href: AeroDB.IGraphQuery-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TNode
+  - name: )
+- uid: AeroDB.IGraphQuery`1.In*
+  commentId: Overload:AeroDB.IGraphQuery`1.In
+  isExternal: true
+  href: AeroDB.IGraphQuery-1.html#AeroDB_IGraphQuery_1_In__1_System_String_
+  name: In
+  nameWithType: IGraphQuery<TNode>.In
+  fullName: AeroDB.IGraphQuery<TNode>.In
+  nameWithType.vb: IGraphQuery(Of TNode).In
+  fullName.vb: AeroDB.IGraphQuery(Of TNode).In
+- uid: AeroDB.IGraphQuery`1.Both*
+  commentId: Overload:AeroDB.IGraphQuery`1.Both
+  isExternal: true
+  href: AeroDB.IGraphQuery-1.html#AeroDB_IGraphQuery_1_Both__1_System_String_
+  name: Both
+  nameWithType: IGraphQuery<TNode>.Both
+  fullName: AeroDB.IGraphQuery<TNode>.Both
+  nameWithType.vb: IGraphQuery(Of TNode).Both
+  fullName.vb: AeroDB.IGraphQuery(Of TNode).Both
+- uid: AeroDB.IGraphQuery`1.OutAny*
+  commentId: Overload:AeroDB.IGraphQuery`1.OutAny
+  isExternal: true
+  href: AeroDB.IGraphQuery-1.html#AeroDB_IGraphQuery_1_OutAny
+  name: OutAny
+  nameWithType: IGraphQuery<TNode>.OutAny
+  fullName: AeroDB.IGraphQuery<TNode>.OutAny
+  nameWithType.vb: IGraphQuery(Of TNode).OutAny
+  fullName.vb: AeroDB.IGraphQuery(Of TNode).OutAny
+- uid: AeroDB.IGraphQuery{AeroDB.GraphNode}
+  commentId: T:AeroDB.IGraphQuery{AeroDB.GraphNode}
+  parent: AeroDB
+  definition: AeroDB.IGraphQuery`1
+  href: AeroDB.IGraphQuery-1.html
+  name: IGraphQuery<GraphNode>
+  nameWithType: IGraphQuery<GraphNode>
+  fullName: AeroDB.IGraphQuery<AeroDB.GraphNode>
+  nameWithType.vb: IGraphQuery(Of GraphNode)
+  fullName.vb: AeroDB.IGraphQuery(Of AeroDB.GraphNode)
+  name.vb: IGraphQuery(Of GraphNode)
+  spec.csharp:
+  - uid: AeroDB.IGraphQuery`1
+    name: IGraphQuery
+    isExternal: true
+    href: AeroDB.IGraphQuery-1.html
+  - name: <
+  - uid: AeroDB.GraphNode
+    name: GraphNode
+    isExternal: true
+    href: AeroDB.GraphNode.html
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.IGraphQuery`1
+    name: IGraphQuery
+    isExternal: true
+    href: AeroDB.IGraphQuery-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.GraphNode
+    name: GraphNode
+    isExternal: true
+    href: AeroDB.GraphNode.html
+  - name: )
+- uid: AeroDB.IGraphQuery`1.InAny*
+  commentId: Overload:AeroDB.IGraphQuery`1.InAny
+  isExternal: true
+  href: AeroDB.IGraphQuery-1.html#AeroDB_IGraphQuery_1_InAny
+  name: InAny
+  nameWithType: IGraphQuery<TNode>.InAny
+  fullName: AeroDB.IGraphQuery<TNode>.InAny
+  nameWithType.vb: IGraphQuery(Of TNode).InAny
+  fullName.vb: AeroDB.IGraphQuery(Of TNode).InAny
+- uid: AeroDB.IGraphQuery`1.AnyEdge*
+  commentId: Overload:AeroDB.IGraphQuery`1.AnyEdge
+  isExternal: true
+  href: AeroDB.IGraphQuery-1.html#AeroDB_IGraphQuery_1_AnyEdge
+  name: AnyEdge
+  nameWithType: IGraphQuery<TNode>.AnyEdge
+  fullName: AeroDB.IGraphQuery<TNode>.AnyEdge
+  nameWithType.vb: IGraphQuery(Of TNode).AnyEdge
+  fullName.vb: AeroDB.IGraphQuery(Of TNode).AnyEdge
+- uid: System.String[]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string[]
+  nameWithType: string[]
+  fullName: string[]
+  nameWithType.vb: String()
+  fullName.vb: String()
+  name.vb: String()
+  spec.csharp:
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: (
+  - name: )
+- uid: AeroDB.IGraphQuery`1.Depth*
+  commentId: Overload:AeroDB.IGraphQuery`1.Depth
+  isExternal: true
+  href: AeroDB.IGraphQuery-1.html#AeroDB_IGraphQuery_1_Depth_System_Int32_
+  name: Depth
+  nameWithType: IGraphQuery<TNode>.Depth
+  fullName: AeroDB.IGraphQuery<TNode>.Depth
+  nameWithType.vb: IGraphQuery(Of TNode).Depth
+  fullName.vb: AeroDB.IGraphQuery(Of TNode).Depth
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: AeroDB.IGraphQuery`1.ShortestPath*
+  commentId: Overload:AeroDB.IGraphQuery`1.ShortestPath
+  isExternal: true
+  href: AeroDB.IGraphQuery-1.html#AeroDB_IGraphQuery_1_ShortestPath_System_String_
+  name: ShortestPath
+  nameWithType: IGraphQuery<TNode>.ShortestPath
+  fullName: AeroDB.IGraphQuery<TNode>.ShortestPath
+  nameWithType.vb: IGraphQuery(Of TNode).ShortestPath
+  fullName.vb: AeroDB.IGraphQuery(Of TNode).ShortestPath
+- uid: AeroDB.IGraphQuery`1.ReturnPath*
+  commentId: Overload:AeroDB.IGraphQuery`1.ReturnPath
+  isExternal: true
+  href: AeroDB.IGraphQuery-1.html#AeroDB_IGraphQuery_1_ReturnPath
+  name: ReturnPath
+  nameWithType: IGraphQuery<TNode>.ReturnPath
+  fullName: AeroDB.IGraphQuery<TNode>.ReturnPath
+  nameWithType.vb: IGraphQuery(Of TNode).ReturnPath
+  fullName.vb: AeroDB.IGraphQuery(Of TNode).ReturnPath
+- uid: AeroDB.IGraphQuery`1.CollectAll*
+  commentId: Overload:AeroDB.IGraphQuery`1.CollectAll
+  isExternal: true
+  href: AeroDB.IGraphQuery-1.html#AeroDB_IGraphQuery_1_CollectAll
+  name: CollectAll
+  nameWithType: IGraphQuery<TNode>.CollectAll
+  fullName: AeroDB.IGraphQuery<TNode>.CollectAll
+  nameWithType.vb: IGraphQuery(Of TNode).CollectAll
+  fullName.vb: AeroDB.IGraphQuery(Of TNode).CollectAll
+- uid: AeroDB.IGraphQuery`1.IncludeIntermediate*
+  commentId: Overload:AeroDB.IGraphQuery`1.IncludeIntermediate
+  isExternal: true
+  href: AeroDB.IGraphQuery-1.html#AeroDB_IGraphQuery_1_IncludeIntermediate
+  name: IncludeIntermediate
+  nameWithType: IGraphQuery<TNode>.IncludeIntermediate
+  fullName: AeroDB.IGraphQuery<TNode>.IncludeIntermediate
+  nameWithType.vb: IGraphQuery(Of TNode).IncludeIntermediate
+  fullName.vb: AeroDB.IGraphQuery(Of TNode).IncludeIntermediate
+- uid: AeroDB.IGraphQuery`1.IncludeOrigin*
+  commentId: Overload:AeroDB.IGraphQuery`1.IncludeOrigin
+  isExternal: true
+  href: AeroDB.IGraphQuery-1.html#AeroDB_IGraphQuery_1_IncludeOrigin
+  name: IncludeOrigin
+  nameWithType: IGraphQuery<TNode>.IncludeOrigin
+  fullName: AeroDB.IGraphQuery<TNode>.IncludeOrigin
+  nameWithType.vb: IGraphQuery(Of TNode).IncludeOrigin
+  fullName.vb: AeroDB.IGraphQuery(Of TNode).IncludeOrigin
+- uid: AeroDB.IGraphQuery`1.Fetch*
+  commentId: Overload:AeroDB.IGraphQuery`1.Fetch
+  isExternal: true
+  href: AeroDB.IGraphQuery-1.html#AeroDB_IGraphQuery_1_Fetch_System_String___
+  name: Fetch
+  nameWithType: IGraphQuery<TNode>.Fetch
+  fullName: AeroDB.IGraphQuery<TNode>.Fetch
+  nameWithType.vb: IGraphQuery(Of TNode).Fetch
+  fullName.vb: AeroDB.IGraphQuery(Of TNode).Fetch
+- uid: AeroDB.IGraphQuery`1.Where*
+  commentId: Overload:AeroDB.IGraphQuery`1.Where
+  isExternal: true
+  href: AeroDB.IGraphQuery-1.html#AeroDB_IGraphQuery_1_Where_System_Linq_Expressions_Expression_System_Func__0_System_Boolean___
+  name: Where
+  nameWithType: IGraphQuery<TNode>.Where
+  fullName: AeroDB.IGraphQuery<TNode>.Where
+  nameWithType.vb: IGraphQuery(Of TNode).Where
+  fullName.vb: AeroDB.IGraphQuery(Of TNode).Where
+- uid: System.Linq.Expressions.Expression{System.Func{{TNode},System.Boolean}}
+  commentId: T:System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}}
+  parent: System.Linq.Expressions
+  definition: System.Linq.Expressions.Expression`1
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  name: Expression<Func<TNode, bool>>
+  nameWithType: Expression<Func<TNode, bool>>
+  fullName: System.Linq.Expressions.Expression<System.Func<TNode, bool>>
+  nameWithType.vb: Expression(Of Func(Of TNode, Boolean))
+  fullName.vb: System.Linq.Expressions.Expression(Of System.Func(Of TNode, Boolean))
+  name.vb: Expression(Of Func(Of TNode, Boolean))
+  spec.csharp:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: TNode
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TNode
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  - name: )
+- uid: System.Linq.Expressions.Expression`1
+  commentId: T:System.Linq.Expressions.Expression`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  name: Expression<TDelegate>
+  nameWithType: Expression<TDelegate>
+  fullName: System.Linq.Expressions.Expression<TDelegate>
+  nameWithType.vb: Expression(Of TDelegate)
+  fullName.vb: System.Linq.Expressions.Expression(Of TDelegate)
+  name.vb: Expression(Of TDelegate)
+  spec.csharp:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - name: TDelegate
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TDelegate
+  - name: )
+- uid: System.Linq.Expressions
+  commentId: N:System.Linq.Expressions
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Linq.Expressions
+  nameWithType: System.Linq.Expressions
+  fullName: System.Linq.Expressions
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Linq
+    name: Linq
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq
+  - name: .
+  - uid: System.Linq.Expressions
+    name: Expressions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Linq
+    name: Linq
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq
+  - name: .
+  - uid: System.Linq.Expressions
+    name: Expressions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions
+- uid: AeroDB.IGraphQuery`1.ToListAsync*
+  commentId: Overload:AeroDB.IGraphQuery`1.ToListAsync
+  isExternal: true
+  href: AeroDB.IGraphQuery-1.html#AeroDB_IGraphQuery_1_ToListAsync_System_Threading_CancellationToken_
+  name: ToListAsync
+  nameWithType: IGraphQuery<TNode>.ToListAsync
+  fullName: AeroDB.IGraphQuery<TNode>.ToListAsync
+  nameWithType.vb: IGraphQuery(Of TNode).ToListAsync
+  fullName.vb: AeroDB.IGraphQuery(Of TNode).ToListAsync
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.List{{TNode}}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.List{`0}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<List<TNode>>
+  nameWithType: Task<List<TNode>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.List<TNode>>
+  nameWithType.vb: Task(Of List(Of TNode))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.List(Of TNode))
+  name.vb: Task(Of List(Of TNode))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - name: TNode
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TNode
+  - name: )
+  - name: )
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: AeroDB.IGraphQuery`1.FirstOrDefaultAsync*
+  commentId: Overload:AeroDB.IGraphQuery`1.FirstOrDefaultAsync
+  isExternal: true
+  href: AeroDB.IGraphQuery-1.html#AeroDB_IGraphQuery_1_FirstOrDefaultAsync_System_Threading_CancellationToken_
+  name: FirstOrDefaultAsync
+  nameWithType: IGraphQuery<TNode>.FirstOrDefaultAsync
+  fullName: AeroDB.IGraphQuery<TNode>.FirstOrDefaultAsync
+  nameWithType.vb: IGraphQuery(Of TNode).FirstOrDefaultAsync
+  fullName.vb: AeroDB.IGraphQuery(Of TNode).FirstOrDefaultAsync
+- uid: System.Threading.Tasks.Task{{TNode}}
+  commentId: T:System.Threading.Tasks.Task{`0}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TNode>
+  nameWithType: Task<TNode>
+  fullName: System.Threading.Tasks.Task<TNode>
+  nameWithType.vb: Task(Of TNode)
+  fullName.vb: System.Threading.Tasks.Task(Of TNode)
+  name.vb: Task(Of TNode)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TNode
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TNode
+  - name: )
+- uid: AeroDB.IGraphQuery`1.ToPathListAsync*
+  commentId: Overload:AeroDB.IGraphQuery`1.ToPathListAsync
+  isExternal: true
+  href: AeroDB.IGraphQuery-1.html#AeroDB_IGraphQuery_1_ToPathListAsync_System_Threading_CancellationToken_
+  name: ToPathListAsync
+  nameWithType: IGraphQuery<TNode>.ToPathListAsync
+  fullName: AeroDB.IGraphQuery<TNode>.ToPathListAsync
+  nameWithType.vb: IGraphQuery(Of TNode).ToPathListAsync
+  fullName.vb: AeroDB.IGraphQuery(Of TNode).ToPathListAsync
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.List{AeroDB.GraphPath}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.List{AeroDB.GraphPath}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<List<GraphPath>>
+  nameWithType: Task<List<GraphPath>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.List<AeroDB.GraphPath>>
+  nameWithType.vb: Task(Of List(Of GraphPath))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.List(Of AeroDB.GraphPath))
+  name.vb: Task(Of List(Of GraphPath))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: AeroDB.GraphPath
+    name: GraphPath
+    isExternal: true
+    href: AeroDB.GraphPath.html
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.GraphPath
+    name: GraphPath
+    isExternal: true
+    href: AeroDB.GraphPath.html
+  - name: )
+  - name: )
+- uid: AeroDB.IGraphQuery`1.CountAsync*
+  commentId: Overload:AeroDB.IGraphQuery`1.CountAsync
+  isExternal: true
+  href: AeroDB.IGraphQuery-1.html#AeroDB_IGraphQuery_1_CountAsync_System_Threading_CancellationToken_
+  name: CountAsync
+  nameWithType: IGraphQuery<TNode>.CountAsync
+  fullName: AeroDB.IGraphQuery<TNode>.CountAsync
+  nameWithType.vb: IGraphQuery(Of TNode).CountAsync
+  fullName.vb: AeroDB.IGraphQuery(Of TNode).CountAsync
+- uid: System.Threading.Tasks.Task{System.Int32}
+  commentId: T:System.Threading.Tasks.Task{System.Int32}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<int>
+  nameWithType: Task<int>
+  fullName: System.Threading.Tasks.Task<int>
+  nameWithType.vb: Task(Of Integer)
+  fullName.vb: System.Threading.Tasks.Task(Of Integer)
+  name.vb: Task(Of Integer)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )

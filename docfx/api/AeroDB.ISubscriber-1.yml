@@ -1,0 +1,260 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.ISubscriber`1
+  commentId: T:AeroDB.ISubscriber`1
+  id: ISubscriber`1
+  parent: AeroDB
+  children:
+  - AeroDB.ISubscriber`1.CreatedAsync(`0,System.Threading.CancellationToken)
+  - AeroDB.ISubscriber`1.DeletedAsync(`0,System.Threading.CancellationToken)
+  - AeroDB.ISubscriber`1.UpdatedAsync(`0,System.Threading.CancellationToken)
+  langs:
+  - csharp
+  - vb
+  name: ISubscriber<T>
+  nameWithType: ISubscriber<T>
+  fullName: AeroDB.ISubscriber<T>
+  type: Interface
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/ISubscriber.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Receives notifications when documents of type T are created, updated, or deleted.
+
+    Register on <xref href="AeroDB.SessionOptions.Subscribers" data-throw-if-not-resolved="false"></xref> for per-session subscriptions.
+  example: []
+  syntax:
+    content: 'public interface ISubscriber<T> where T : class'
+    typeParameters:
+    - id: T
+    content.vb: Public Interface ISubscriber(Of T As Class)
+  nameWithType.vb: ISubscriber(Of T)
+  fullName.vb: AeroDB.ISubscriber(Of T)
+  name.vb: ISubscriber(Of T)
+- uid: AeroDB.ISubscriber`1.CreatedAsync(`0,System.Threading.CancellationToken)
+  commentId: M:AeroDB.ISubscriber`1.CreatedAsync(`0,System.Threading.CancellationToken)
+  id: CreatedAsync(`0,System.Threading.CancellationToken)
+  parent: AeroDB.ISubscriber`1
+  langs:
+  - csharp
+  - vb
+  name: CreatedAsync(T, CancellationToken)
+  nameWithType: ISubscriber<T>.CreatedAsync(T, CancellationToken)
+  fullName: AeroDB.ISubscriber<T>.CreatedAsync(T, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/ISubscriber.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Called after a document of type T is created.
+  example: []
+  syntax:
+    content: Task CreatedAsync(T document, CancellationToken ct)
+    parameters:
+    - id: document
+      type: '{T}'
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Function CreatedAsync(document As T, ct As CancellationToken) As Task
+  overload: AeroDB.ISubscriber`1.CreatedAsync*
+  nameWithType.vb: ISubscriber(Of T).CreatedAsync(T, CancellationToken)
+  fullName.vb: AeroDB.ISubscriber(Of T).CreatedAsync(T, System.Threading.CancellationToken)
+- uid: AeroDB.ISubscriber`1.UpdatedAsync(`0,System.Threading.CancellationToken)
+  commentId: M:AeroDB.ISubscriber`1.UpdatedAsync(`0,System.Threading.CancellationToken)
+  id: UpdatedAsync(`0,System.Threading.CancellationToken)
+  parent: AeroDB.ISubscriber`1
+  langs:
+  - csharp
+  - vb
+  name: UpdatedAsync(T, CancellationToken)
+  nameWithType: ISubscriber<T>.UpdatedAsync(T, CancellationToken)
+  fullName: AeroDB.ISubscriber<T>.UpdatedAsync(T, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/ISubscriber.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Called after a document of type T is updated.
+  example: []
+  syntax:
+    content: Task UpdatedAsync(T document, CancellationToken ct)
+    parameters:
+    - id: document
+      type: '{T}'
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Function UpdatedAsync(document As T, ct As CancellationToken) As Task
+  overload: AeroDB.ISubscriber`1.UpdatedAsync*
+  nameWithType.vb: ISubscriber(Of T).UpdatedAsync(T, CancellationToken)
+  fullName.vb: AeroDB.ISubscriber(Of T).UpdatedAsync(T, System.Threading.CancellationToken)
+- uid: AeroDB.ISubscriber`1.DeletedAsync(`0,System.Threading.CancellationToken)
+  commentId: M:AeroDB.ISubscriber`1.DeletedAsync(`0,System.Threading.CancellationToken)
+  id: DeletedAsync(`0,System.Threading.CancellationToken)
+  parent: AeroDB.ISubscriber`1
+  langs:
+  - csharp
+  - vb
+  name: DeletedAsync(T, CancellationToken)
+  nameWithType: ISubscriber<T>.DeletedAsync(T, CancellationToken)
+  fullName: AeroDB.ISubscriber<T>.DeletedAsync(T, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/ISubscriber.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Called after a document of type T is deleted.
+  example: []
+  syntax:
+    content: Task DeletedAsync(T document, CancellationToken ct)
+    parameters:
+    - id: document
+      type: '{T}'
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Function DeletedAsync(document As T, ct As CancellationToken) As Task
+  overload: AeroDB.ISubscriber`1.DeletedAsync*
+  nameWithType.vb: ISubscriber(Of T).DeletedAsync(T, CancellationToken)
+  fullName.vb: AeroDB.ISubscriber(Of T).DeletedAsync(T, System.Threading.CancellationToken)
+references:
+- uid: AeroDB.SessionOptions.Subscribers
+  commentId: P:AeroDB.SessionOptions.Subscribers
+  isExternal: true
+  href: AeroDB.SessionOptions.html#AeroDB_SessionOptions_Subscribers
+  name: Subscribers
+  nameWithType: SessionOptions.Subscribers
+  fullName: AeroDB.SessionOptions.Subscribers
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: AeroDB.ISubscriber`1.CreatedAsync*
+  commentId: Overload:AeroDB.ISubscriber`1.CreatedAsync
+  isExternal: true
+  href: AeroDB.ISubscriber-1.html#AeroDB_ISubscriber_1_CreatedAsync__0_System_Threading_CancellationToken_
+  name: CreatedAsync
+  nameWithType: ISubscriber<T>.CreatedAsync
+  fullName: AeroDB.ISubscriber<T>.CreatedAsync
+  nameWithType.vb: ISubscriber(Of T).CreatedAsync
+  fullName.vb: AeroDB.ISubscriber(Of T).CreatedAsync
+- uid: '{T}'
+  commentId: '!:T'
+  definition: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: AeroDB.ISubscriber`1.UpdatedAsync*
+  commentId: Overload:AeroDB.ISubscriber`1.UpdatedAsync
+  isExternal: true
+  href: AeroDB.ISubscriber-1.html#AeroDB_ISubscriber_1_UpdatedAsync__0_System_Threading_CancellationToken_
+  name: UpdatedAsync
+  nameWithType: ISubscriber<T>.UpdatedAsync
+  fullName: AeroDB.ISubscriber<T>.UpdatedAsync
+  nameWithType.vb: ISubscriber(Of T).UpdatedAsync
+  fullName.vb: AeroDB.ISubscriber(Of T).UpdatedAsync
+- uid: AeroDB.ISubscriber`1.DeletedAsync*
+  commentId: Overload:AeroDB.ISubscriber`1.DeletedAsync
+  isExternal: true
+  href: AeroDB.ISubscriber-1.html#AeroDB_ISubscriber_1_DeletedAsync__0_System_Threading_CancellationToken_
+  name: DeletedAsync
+  nameWithType: ISubscriber<T>.DeletedAsync
+  fullName: AeroDB.ISubscriber<T>.DeletedAsync
+  nameWithType.vb: ISubscriber(Of T).DeletedAsync
+  fullName.vb: AeroDB.ISubscriber(Of T).DeletedAsync

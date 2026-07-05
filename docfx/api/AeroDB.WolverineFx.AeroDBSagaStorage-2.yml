@@ -1,0 +1,1263 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.WolverineFx.AeroDBSagaStorage`2
+  commentId: T:AeroDB.WolverineFx.AeroDBSagaStorage`2
+  id: AeroDBSagaStorage`2
+  parent: AeroDB.WolverineFx
+  children:
+  - AeroDB.WolverineFx.AeroDBSagaStorage`2.#ctor(AeroDB.IDocumentStore)
+  - AeroDB.WolverineFx.AeroDBSagaStorage`2.DeleteAsync(`1,System.Threading.CancellationToken)
+  - AeroDB.WolverineFx.AeroDBSagaStorage`2.DisposeAsync
+  - AeroDB.WolverineFx.AeroDBSagaStorage`2.InsertAsync(`1,System.Threading.CancellationToken)
+  - AeroDB.WolverineFx.AeroDBSagaStorage`2.LoadAsync(`0,System.Threading.CancellationToken)
+  - AeroDB.WolverineFx.AeroDBSagaStorage`2.SaveChangesAsync(System.Threading.CancellationToken)
+  - AeroDB.WolverineFx.AeroDBSagaStorage`2.UpdateAsync(`1,System.Threading.CancellationToken)
+  langs:
+  - csharp
+  - vb
+  name: AeroDBSagaStorage<TId, TSaga>
+  nameWithType: AeroDBSagaStorage<TId, TSaga>
+  fullName: AeroDB.WolverineFx.AeroDBSagaStorage<TId, TSaga>
+  type: Class
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBSagaStorage.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  summary: AeroDB-backed saga storage for Wolverine using SurrealDB as the document store.
+  example: []
+  syntax:
+    content: 'public sealed class AeroDBSagaStorage<TId, TSaga> : ISagaStorage<TId, TSaga>, ISagaStorage<TSaga>, IAsyncDisposable where TSaga : Saga'
+    typeParameters:
+    - id: TId
+    - id: TSaga
+    content.vb: Public NotInheritable Class AeroDBSagaStorage(Of TId, TSaga As Saga) Implements ISagaStorage(Of TId, TSaga), ISagaStorage(Of TSaga), IAsyncDisposable
+  inheritance:
+  - System.Object
+  implements:
+  - Wolverine.Persistence.Sagas.ISagaStorage{{TId},{TSaga}}
+  - Wolverine.Persistence.Sagas.ISagaStorage{{TSaga}}
+  - System.IAsyncDisposable
+  inheritedMembers:
+  - System.Object.GetType
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  nameWithType.vb: AeroDBSagaStorage(Of TId, TSaga)
+  fullName.vb: AeroDB.WolverineFx.AeroDBSagaStorage(Of TId, TSaga)
+  name.vb: AeroDBSagaStorage(Of TId, TSaga)
+- uid: AeroDB.WolverineFx.AeroDBSagaStorage`2.#ctor(AeroDB.IDocumentStore)
+  commentId: M:AeroDB.WolverineFx.AeroDBSagaStorage`2.#ctor(AeroDB.IDocumentStore)
+  id: '#ctor(AeroDB.IDocumentStore)'
+  parent: AeroDB.WolverineFx.AeroDBSagaStorage`2
+  langs:
+  - csharp
+  - vb
+  name: AeroDBSagaStorage(IDocumentStore)
+  nameWithType: AeroDBSagaStorage<TId, TSaga>.AeroDBSagaStorage(IDocumentStore)
+  fullName: AeroDB.WolverineFx.AeroDBSagaStorage<TId, TSaga>.AeroDBSagaStorage(AeroDB.IDocumentStore)
+  type: Constructor
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBSagaStorage.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  syntax:
+    content: public AeroDBSagaStorage(IDocumentStore store)
+    parameters:
+    - id: store
+      type: AeroDB.IDocumentStore
+    content.vb: Public Sub New(store As IDocumentStore)
+  overload: AeroDB.WolverineFx.AeroDBSagaStorage`2.#ctor*
+  nameWithType.vb: AeroDBSagaStorage(Of TId, TSaga).New(IDocumentStore)
+  fullName.vb: AeroDB.WolverineFx.AeroDBSagaStorage(Of TId, TSaga).New(AeroDB.IDocumentStore)
+  name.vb: New(IDocumentStore)
+- uid: AeroDB.WolverineFx.AeroDBSagaStorage`2.LoadAsync(`0,System.Threading.CancellationToken)
+  commentId: M:AeroDB.WolverineFx.AeroDBSagaStorage`2.LoadAsync(`0,System.Threading.CancellationToken)
+  id: LoadAsync(`0,System.Threading.CancellationToken)
+  parent: AeroDB.WolverineFx.AeroDBSagaStorage`2
+  langs:
+  - csharp
+  - vb
+  name: LoadAsync(TId, CancellationToken)
+  nameWithType: AeroDBSagaStorage<TId, TSaga>.LoadAsync(TId, CancellationToken)
+  fullName: AeroDB.WolverineFx.AeroDBSagaStorage<TId, TSaga>.LoadAsync(TId, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBSagaStorage.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  example: []
+  syntax:
+    content: public Task<TSaga?> LoadAsync(TId id, CancellationToken cancellationToken)
+    parameters:
+    - id: id
+      type: '{TId}'
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task{{TSaga}}
+    content.vb: Public Function LoadAsync(id As TId, cancellationToken As CancellationToken) As Task(Of TSaga)
+  overload: AeroDB.WolverineFx.AeroDBSagaStorage`2.LoadAsync*
+  implements:
+  - Wolverine.Persistence.Sagas.ISagaStorage{{TId},{TSaga}}.LoadAsync({TId},System.Threading.CancellationToken)
+  nameWithType.vb: AeroDBSagaStorage(Of TId, TSaga).LoadAsync(TId, CancellationToken)
+  fullName.vb: AeroDB.WolverineFx.AeroDBSagaStorage(Of TId, TSaga).LoadAsync(TId, System.Threading.CancellationToken)
+- uid: AeroDB.WolverineFx.AeroDBSagaStorage`2.InsertAsync(`1,System.Threading.CancellationToken)
+  commentId: M:AeroDB.WolverineFx.AeroDBSagaStorage`2.InsertAsync(`1,System.Threading.CancellationToken)
+  id: InsertAsync(`1,System.Threading.CancellationToken)
+  parent: AeroDB.WolverineFx.AeroDBSagaStorage`2
+  langs:
+  - csharp
+  - vb
+  name: InsertAsync(TSaga, CancellationToken)
+  nameWithType: AeroDBSagaStorage<TId, TSaga>.InsertAsync(TSaga, CancellationToken)
+  fullName: AeroDB.WolverineFx.AeroDBSagaStorage<TId, TSaga>.InsertAsync(TSaga, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBSagaStorage.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  example: []
+  syntax:
+    content: public Task InsertAsync(TSaga saga, CancellationToken cancellationToken)
+    parameters:
+    - id: saga
+      type: '{TSaga}'
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Function InsertAsync(saga As TSaga, cancellationToken As CancellationToken) As Task
+  overload: AeroDB.WolverineFx.AeroDBSagaStorage`2.InsertAsync*
+  implements:
+  - Wolverine.Persistence.Sagas.ISagaStorage{{TSaga}}.InsertAsync({TSaga},System.Threading.CancellationToken)
+  nameWithType.vb: AeroDBSagaStorage(Of TId, TSaga).InsertAsync(TSaga, CancellationToken)
+  fullName.vb: AeroDB.WolverineFx.AeroDBSagaStorage(Of TId, TSaga).InsertAsync(TSaga, System.Threading.CancellationToken)
+- uid: AeroDB.WolverineFx.AeroDBSagaStorage`2.UpdateAsync(`1,System.Threading.CancellationToken)
+  commentId: M:AeroDB.WolverineFx.AeroDBSagaStorage`2.UpdateAsync(`1,System.Threading.CancellationToken)
+  id: UpdateAsync(`1,System.Threading.CancellationToken)
+  parent: AeroDB.WolverineFx.AeroDBSagaStorage`2
+  langs:
+  - csharp
+  - vb
+  name: UpdateAsync(TSaga, CancellationToken)
+  nameWithType: AeroDBSagaStorage<TId, TSaga>.UpdateAsync(TSaga, CancellationToken)
+  fullName: AeroDB.WolverineFx.AeroDBSagaStorage<TId, TSaga>.UpdateAsync(TSaga, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBSagaStorage.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  example: []
+  syntax:
+    content: public Task UpdateAsync(TSaga saga, CancellationToken cancellationToken)
+    parameters:
+    - id: saga
+      type: '{TSaga}'
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Function UpdateAsync(saga As TSaga, cancellationToken As CancellationToken) As Task
+  overload: AeroDB.WolverineFx.AeroDBSagaStorage`2.UpdateAsync*
+  implements:
+  - Wolverine.Persistence.Sagas.ISagaStorage{{TSaga}}.UpdateAsync({TSaga},System.Threading.CancellationToken)
+  nameWithType.vb: AeroDBSagaStorage(Of TId, TSaga).UpdateAsync(TSaga, CancellationToken)
+  fullName.vb: AeroDB.WolverineFx.AeroDBSagaStorage(Of TId, TSaga).UpdateAsync(TSaga, System.Threading.CancellationToken)
+- uid: AeroDB.WolverineFx.AeroDBSagaStorage`2.DeleteAsync(`1,System.Threading.CancellationToken)
+  commentId: M:AeroDB.WolverineFx.AeroDBSagaStorage`2.DeleteAsync(`1,System.Threading.CancellationToken)
+  id: DeleteAsync(`1,System.Threading.CancellationToken)
+  parent: AeroDB.WolverineFx.AeroDBSagaStorage`2
+  langs:
+  - csharp
+  - vb
+  name: DeleteAsync(TSaga, CancellationToken)
+  nameWithType: AeroDBSagaStorage<TId, TSaga>.DeleteAsync(TSaga, CancellationToken)
+  fullName: AeroDB.WolverineFx.AeroDBSagaStorage<TId, TSaga>.DeleteAsync(TSaga, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBSagaStorage.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  example: []
+  syntax:
+    content: public Task DeleteAsync(TSaga saga, CancellationToken cancellationToken)
+    parameters:
+    - id: saga
+      type: '{TSaga}'
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Function DeleteAsync(saga As TSaga, cancellationToken As CancellationToken) As Task
+  overload: AeroDB.WolverineFx.AeroDBSagaStorage`2.DeleteAsync*
+  implements:
+  - Wolverine.Persistence.Sagas.ISagaStorage{{TSaga}}.DeleteAsync({TSaga},System.Threading.CancellationToken)
+  nameWithType.vb: AeroDBSagaStorage(Of TId, TSaga).DeleteAsync(TSaga, CancellationToken)
+  fullName.vb: AeroDB.WolverineFx.AeroDBSagaStorage(Of TId, TSaga).DeleteAsync(TSaga, System.Threading.CancellationToken)
+- uid: AeroDB.WolverineFx.AeroDBSagaStorage`2.SaveChangesAsync(System.Threading.CancellationToken)
+  commentId: M:AeroDB.WolverineFx.AeroDBSagaStorage`2.SaveChangesAsync(System.Threading.CancellationToken)
+  id: SaveChangesAsync(System.Threading.CancellationToken)
+  parent: AeroDB.WolverineFx.AeroDBSagaStorage`2
+  langs:
+  - csharp
+  - vb
+  name: SaveChangesAsync(CancellationToken)
+  nameWithType: AeroDBSagaStorage<TId, TSaga>.SaveChangesAsync(CancellationToken)
+  fullName: AeroDB.WolverineFx.AeroDBSagaStorage<TId, TSaga>.SaveChangesAsync(System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBSagaStorage.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  example: []
+  syntax:
+    content: public Task SaveChangesAsync(CancellationToken cancellationToken)
+    parameters:
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Function SaveChangesAsync(cancellationToken As CancellationToken) As Task
+  overload: AeroDB.WolverineFx.AeroDBSagaStorage`2.SaveChangesAsync*
+  implements:
+  - Wolverine.Persistence.Sagas.ISagaStorage{{TSaga}}.SaveChangesAsync(System.Threading.CancellationToken)
+  nameWithType.vb: AeroDBSagaStorage(Of TId, TSaga).SaveChangesAsync(CancellationToken)
+  fullName.vb: AeroDB.WolverineFx.AeroDBSagaStorage(Of TId, TSaga).SaveChangesAsync(System.Threading.CancellationToken)
+- uid: AeroDB.WolverineFx.AeroDBSagaStorage`2.DisposeAsync
+  commentId: M:AeroDB.WolverineFx.AeroDBSagaStorage`2.DisposeAsync
+  id: DisposeAsync
+  parent: AeroDB.WolverineFx.AeroDBSagaStorage`2
+  langs:
+  - csharp
+  - vb
+  name: DisposeAsync()
+  nameWithType: AeroDBSagaStorage<TId, TSaga>.DisposeAsync()
+  fullName: AeroDB.WolverineFx.AeroDBSagaStorage<TId, TSaga>.DisposeAsync()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBSagaStorage.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  example: []
+  syntax:
+    content: public ValueTask DisposeAsync()
+    return:
+      type: System.Threading.Tasks.ValueTask
+    content.vb: Public Function DisposeAsync() As ValueTask
+  overload: AeroDB.WolverineFx.AeroDBSagaStorage`2.DisposeAsync*
+  implements:
+  - System.IAsyncDisposable.DisposeAsync
+  nameWithType.vb: AeroDBSagaStorage(Of TId, TSaga).DisposeAsync()
+  fullName.vb: AeroDB.WolverineFx.AeroDBSagaStorage(Of TId, TSaga).DisposeAsync()
+references:
+- uid: AeroDB.WolverineFx
+  commentId: N:AeroDB.WolverineFx
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB.WolverineFx
+  nameWithType: AeroDB.WolverineFx
+  fullName: AeroDB.WolverineFx
+  spec.csharp:
+  - uid: AeroDB
+    name: AeroDB
+    isExternal: true
+    href: AeroDB.html
+  - name: .
+  - uid: AeroDB.WolverineFx
+    name: WolverineFx
+    isExternal: true
+    href: AeroDB.WolverineFx.html
+  spec.vb:
+  - uid: AeroDB
+    name: AeroDB
+    isExternal: true
+    href: AeroDB.html
+  - name: .
+  - uid: AeroDB.WolverineFx
+    name: WolverineFx
+    isExternal: true
+    href: AeroDB.WolverineFx.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: Wolverine.Persistence.Sagas.ISagaStorage{{TId},{TSaga}}
+  commentId: T:Wolverine.Persistence.Sagas.ISagaStorage{`0,`1}
+  parent: Wolverine.Persistence.Sagas
+  definition: Wolverine.Persistence.Sagas.ISagaStorage`2
+  name: ISagaStorage<TId, TSaga>
+  nameWithType: ISagaStorage<TId, TSaga>
+  fullName: Wolverine.Persistence.Sagas.ISagaStorage<TId, TSaga>
+  nameWithType.vb: ISagaStorage(Of TId, TSaga)
+  fullName.vb: Wolverine.Persistence.Sagas.ISagaStorage(Of TId, TSaga)
+  name.vb: ISagaStorage(Of TId, TSaga)
+  spec.csharp:
+  - uid: Wolverine.Persistence.Sagas.ISagaStorage`2
+    name: ISagaStorage
+    isExternal: true
+  - name: <
+  - name: TId
+  - name: ','
+  - name: " "
+  - name: TSaga
+  - name: '>'
+  spec.vb:
+  - uid: Wolverine.Persistence.Sagas.ISagaStorage`2
+    name: ISagaStorage
+    isExternal: true
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TId
+  - name: ','
+  - name: " "
+  - name: TSaga
+  - name: )
+- uid: Wolverine.Persistence.Sagas.ISagaStorage{{TSaga}}
+  commentId: T:Wolverine.Persistence.Sagas.ISagaStorage{`1}
+  parent: Wolverine.Persistence.Sagas
+  definition: Wolverine.Persistence.Sagas.ISagaStorage`1
+  name: ISagaStorage<TSaga>
+  nameWithType: ISagaStorage<TSaga>
+  fullName: Wolverine.Persistence.Sagas.ISagaStorage<TSaga>
+  nameWithType.vb: ISagaStorage(Of TSaga)
+  fullName.vb: Wolverine.Persistence.Sagas.ISagaStorage(Of TSaga)
+  name.vb: ISagaStorage(Of TSaga)
+  spec.csharp:
+  - uid: Wolverine.Persistence.Sagas.ISagaStorage`1
+    name: ISagaStorage
+    isExternal: true
+  - name: <
+  - name: TSaga
+  - name: '>'
+  spec.vb:
+  - uid: Wolverine.Persistence.Sagas.ISagaStorage`1
+    name: ISagaStorage
+    isExternal: true
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TSaga
+  - name: )
+- uid: System.IAsyncDisposable
+  commentId: T:System.IAsyncDisposable
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iasyncdisposable
+  name: IAsyncDisposable
+  nameWithType: IAsyncDisposable
+  fullName: System.IAsyncDisposable
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Wolverine.Persistence.Sagas.ISagaStorage`2
+  commentId: T:Wolverine.Persistence.Sagas.ISagaStorage`2
+  isExternal: true
+  name: ISagaStorage<TId, TSaga>
+  nameWithType: ISagaStorage<TId, TSaga>
+  fullName: Wolverine.Persistence.Sagas.ISagaStorage<TId, TSaga>
+  nameWithType.vb: ISagaStorage(Of TId, TSaga)
+  fullName.vb: Wolverine.Persistence.Sagas.ISagaStorage(Of TId, TSaga)
+  name.vb: ISagaStorage(Of TId, TSaga)
+  spec.csharp:
+  - uid: Wolverine.Persistence.Sagas.ISagaStorage`2
+    name: ISagaStorage
+    isExternal: true
+  - name: <
+  - name: TId
+  - name: ','
+  - name: " "
+  - name: TSaga
+  - name: '>'
+  spec.vb:
+  - uid: Wolverine.Persistence.Sagas.ISagaStorage`2
+    name: ISagaStorage
+    isExternal: true
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TId
+  - name: ','
+  - name: " "
+  - name: TSaga
+  - name: )
+- uid: Wolverine.Persistence.Sagas
+  commentId: N:Wolverine.Persistence.Sagas
+  isExternal: true
+  name: Wolverine.Persistence.Sagas
+  nameWithType: Wolverine.Persistence.Sagas
+  fullName: Wolverine.Persistence.Sagas
+  spec.csharp:
+  - uid: Wolverine
+    name: Wolverine
+    isExternal: true
+  - name: .
+  - uid: Wolverine.Persistence
+    name: Persistence
+    isExternal: true
+  - name: .
+  - uid: Wolverine.Persistence.Sagas
+    name: Sagas
+    isExternal: true
+  spec.vb:
+  - uid: Wolverine
+    name: Wolverine
+    isExternal: true
+  - name: .
+  - uid: Wolverine.Persistence
+    name: Persistence
+    isExternal: true
+  - name: .
+  - uid: Wolverine.Persistence.Sagas
+    name: Sagas
+    isExternal: true
+- uid: Wolverine.Persistence.Sagas.ISagaStorage`1
+  commentId: T:Wolverine.Persistence.Sagas.ISagaStorage`1
+  isExternal: true
+  name: ISagaStorage<TSaga>
+  nameWithType: ISagaStorage<TSaga>
+  fullName: Wolverine.Persistence.Sagas.ISagaStorage<TSaga>
+  nameWithType.vb: ISagaStorage(Of TSaga)
+  fullName.vb: Wolverine.Persistence.Sagas.ISagaStorage(Of TSaga)
+  name.vb: ISagaStorage(Of TSaga)
+  spec.csharp:
+  - uid: Wolverine.Persistence.Sagas.ISagaStorage`1
+    name: ISagaStorage
+    isExternal: true
+  - name: <
+  - name: TSaga
+  - name: '>'
+  spec.vb:
+  - uid: Wolverine.Persistence.Sagas.ISagaStorage`1
+    name: ISagaStorage
+    isExternal: true
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TSaga
+  - name: )
+- uid: AeroDB.WolverineFx.AeroDBSagaStorage`2.#ctor*
+  commentId: Overload:AeroDB.WolverineFx.AeroDBSagaStorage`2.#ctor
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBSagaStorage-2.html#AeroDB_WolverineFx_AeroDBSagaStorage_2__ctor_AeroDB_IDocumentStore_
+  name: AeroDBSagaStorage
+  nameWithType: AeroDBSagaStorage<TId, TSaga>.AeroDBSagaStorage
+  fullName: AeroDB.WolverineFx.AeroDBSagaStorage<TId, TSaga>.AeroDBSagaStorage
+  nameWithType.vb: AeroDBSagaStorage(Of TId, TSaga).New
+  fullName.vb: AeroDB.WolverineFx.AeroDBSagaStorage(Of TId, TSaga).New
+  name.vb: New
+- uid: AeroDB.IDocumentStore
+  commentId: T:AeroDB.IDocumentStore
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IDocumentStore.html
+  name: IDocumentStore
+  nameWithType: IDocumentStore
+  fullName: AeroDB.IDocumentStore
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: AeroDB.WolverineFx.AeroDBSagaStorage`2.LoadAsync*
+  commentId: Overload:AeroDB.WolverineFx.AeroDBSagaStorage`2.LoadAsync
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBSagaStorage-2.html#AeroDB_WolverineFx_AeroDBSagaStorage_2_LoadAsync__0_System_Threading_CancellationToken_
+  name: LoadAsync
+  nameWithType: AeroDBSagaStorage<TId, TSaga>.LoadAsync
+  fullName: AeroDB.WolverineFx.AeroDBSagaStorage<TId, TSaga>.LoadAsync
+  nameWithType.vb: AeroDBSagaStorage(Of TId, TSaga).LoadAsync
+  fullName.vb: AeroDB.WolverineFx.AeroDBSagaStorage(Of TId, TSaga).LoadAsync
+- uid: Wolverine.Persistence.Sagas.ISagaStorage{{TId},{TSaga}}.LoadAsync({TId},System.Threading.CancellationToken)
+  commentId: M:Wolverine.Persistence.Sagas.ISagaStorage{`0,`1}.LoadAsync(`0,System.Threading.CancellationToken)
+  parent: Wolverine.Persistence.Sagas.ISagaStorage{{TId},{TSaga}}
+  definition: Wolverine.Persistence.Sagas.ISagaStorage`2.LoadAsync(`0,System.Threading.CancellationToken)
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: LoadAsync(TId, CancellationToken)
+  nameWithType: ISagaStorage<TId, TSaga>.LoadAsync(TId, CancellationToken)
+  fullName: Wolverine.Persistence.Sagas.ISagaStorage<TId, TSaga>.LoadAsync(TId, System.Threading.CancellationToken)
+  nameWithType.vb: ISagaStorage(Of TId, TSaga).LoadAsync(TId, CancellationToken)
+  fullName.vb: Wolverine.Persistence.Sagas.ISagaStorage(Of TId, TSaga).LoadAsync(TId, System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: Wolverine.Persistence.Sagas.ISagaStorage{`0,`1}.LoadAsync(`0,System.Threading.CancellationToken)
+    name: LoadAsync
+    isExternal: true
+  - name: (
+  - name: TId
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Wolverine.Persistence.Sagas.ISagaStorage{`0,`1}.LoadAsync(`0,System.Threading.CancellationToken)
+    name: LoadAsync
+    isExternal: true
+  - name: (
+  - name: TId
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: '{TId}'
+  commentId: '!:TId'
+  definition: TId
+  name: TId
+  nameWithType: TId
+  fullName: TId
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task{{TSaga}}
+  commentId: T:System.Threading.Tasks.Task{`1}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TSaga>
+  nameWithType: Task<TSaga>
+  fullName: System.Threading.Tasks.Task<TSaga>
+  nameWithType.vb: Task(Of TSaga)
+  fullName.vb: System.Threading.Tasks.Task(Of TSaga)
+  name.vb: Task(Of TSaga)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TSaga
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TSaga
+  - name: )
+- uid: Wolverine.Persistence.Sagas.ISagaStorage`2.LoadAsync(`0,System.Threading.CancellationToken)
+  commentId: M:Wolverine.Persistence.Sagas.ISagaStorage`2.LoadAsync(`0,System.Threading.CancellationToken)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: LoadAsync(TId, CancellationToken)
+  nameWithType: ISagaStorage<TId, TSaga>.LoadAsync(TId, CancellationToken)
+  fullName: Wolverine.Persistence.Sagas.ISagaStorage<TId, TSaga>.LoadAsync(TId, System.Threading.CancellationToken)
+  nameWithType.vb: ISagaStorage(Of TId, TSaga).LoadAsync(TId, CancellationToken)
+  fullName.vb: Wolverine.Persistence.Sagas.ISagaStorage(Of TId, TSaga).LoadAsync(TId, System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: Wolverine.Persistence.Sagas.ISagaStorage`2.LoadAsync(`0,System.Threading.CancellationToken)
+    name: LoadAsync
+    isExternal: true
+  - name: (
+  - name: TId
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Wolverine.Persistence.Sagas.ISagaStorage`2.LoadAsync(`0,System.Threading.CancellationToken)
+    name: LoadAsync
+    isExternal: true
+  - name: (
+  - name: TId
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: TId
+  name: TId
+  nameWithType: TId
+  fullName: TId
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: AeroDB.WolverineFx.AeroDBSagaStorage`2.InsertAsync*
+  commentId: Overload:AeroDB.WolverineFx.AeroDBSagaStorage`2.InsertAsync
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBSagaStorage-2.html#AeroDB_WolverineFx_AeroDBSagaStorage_2_InsertAsync__1_System_Threading_CancellationToken_
+  name: InsertAsync
+  nameWithType: AeroDBSagaStorage<TId, TSaga>.InsertAsync
+  fullName: AeroDB.WolverineFx.AeroDBSagaStorage<TId, TSaga>.InsertAsync
+  nameWithType.vb: AeroDBSagaStorage(Of TId, TSaga).InsertAsync
+  fullName.vb: AeroDB.WolverineFx.AeroDBSagaStorage(Of TId, TSaga).InsertAsync
+- uid: Wolverine.Persistence.Sagas.ISagaStorage{{TSaga}}.InsertAsync({TSaga},System.Threading.CancellationToken)
+  commentId: M:Wolverine.Persistence.Sagas.ISagaStorage{`1}.InsertAsync(`1,System.Threading.CancellationToken)
+  parent: Wolverine.Persistence.Sagas.ISagaStorage{{TSaga}}
+  definition: Wolverine.Persistence.Sagas.ISagaStorage`1.InsertAsync(`0,System.Threading.CancellationToken)
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: InsertAsync(TSaga, CancellationToken)
+  nameWithType: ISagaStorage<TSaga>.InsertAsync(TSaga, CancellationToken)
+  fullName: Wolverine.Persistence.Sagas.ISagaStorage<TSaga>.InsertAsync(TSaga, System.Threading.CancellationToken)
+  nameWithType.vb: ISagaStorage(Of TSaga).InsertAsync(TSaga, CancellationToken)
+  fullName.vb: Wolverine.Persistence.Sagas.ISagaStorage(Of TSaga).InsertAsync(TSaga, System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: Wolverine.Persistence.Sagas.ISagaStorage{`1}.InsertAsync(`1,System.Threading.CancellationToken)
+    name: InsertAsync
+    isExternal: true
+  - name: (
+  - name: TSaga
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Wolverine.Persistence.Sagas.ISagaStorage{`1}.InsertAsync(`1,System.Threading.CancellationToken)
+    name: InsertAsync
+    isExternal: true
+  - name: (
+  - name: TSaga
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: '{TSaga}'
+  commentId: '!:TSaga'
+  definition: TSaga
+  name: TSaga
+  nameWithType: TSaga
+  fullName: TSaga
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: Wolverine.Persistence.Sagas.ISagaStorage`1.InsertAsync(`0,System.Threading.CancellationToken)
+  commentId: M:Wolverine.Persistence.Sagas.ISagaStorage`1.InsertAsync(`0,System.Threading.CancellationToken)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: InsertAsync(TSaga, CancellationToken)
+  nameWithType: ISagaStorage<TSaga>.InsertAsync(TSaga, CancellationToken)
+  fullName: Wolverine.Persistence.Sagas.ISagaStorage<TSaga>.InsertAsync(TSaga, System.Threading.CancellationToken)
+  nameWithType.vb: ISagaStorage(Of TSaga).InsertAsync(TSaga, CancellationToken)
+  fullName.vb: Wolverine.Persistence.Sagas.ISagaStorage(Of TSaga).InsertAsync(TSaga, System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: Wolverine.Persistence.Sagas.ISagaStorage`1.InsertAsync(`0,System.Threading.CancellationToken)
+    name: InsertAsync
+    isExternal: true
+  - name: (
+  - name: TSaga
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Wolverine.Persistence.Sagas.ISagaStorage`1.InsertAsync(`0,System.Threading.CancellationToken)
+    name: InsertAsync
+    isExternal: true
+  - name: (
+  - name: TSaga
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: TSaga
+  name: TSaga
+  nameWithType: TSaga
+  fullName: TSaga
+- uid: AeroDB.WolverineFx.AeroDBSagaStorage`2.UpdateAsync*
+  commentId: Overload:AeroDB.WolverineFx.AeroDBSagaStorage`2.UpdateAsync
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBSagaStorage-2.html#AeroDB_WolverineFx_AeroDBSagaStorage_2_UpdateAsync__1_System_Threading_CancellationToken_
+  name: UpdateAsync
+  nameWithType: AeroDBSagaStorage<TId, TSaga>.UpdateAsync
+  fullName: AeroDB.WolverineFx.AeroDBSagaStorage<TId, TSaga>.UpdateAsync
+  nameWithType.vb: AeroDBSagaStorage(Of TId, TSaga).UpdateAsync
+  fullName.vb: AeroDB.WolverineFx.AeroDBSagaStorage(Of TId, TSaga).UpdateAsync
+- uid: Wolverine.Persistence.Sagas.ISagaStorage{{TSaga}}.UpdateAsync({TSaga},System.Threading.CancellationToken)
+  commentId: M:Wolverine.Persistence.Sagas.ISagaStorage{`1}.UpdateAsync(`1,System.Threading.CancellationToken)
+  parent: Wolverine.Persistence.Sagas.ISagaStorage{{TSaga}}
+  definition: Wolverine.Persistence.Sagas.ISagaStorage`1.UpdateAsync(`0,System.Threading.CancellationToken)
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: UpdateAsync(TSaga, CancellationToken)
+  nameWithType: ISagaStorage<TSaga>.UpdateAsync(TSaga, CancellationToken)
+  fullName: Wolverine.Persistence.Sagas.ISagaStorage<TSaga>.UpdateAsync(TSaga, System.Threading.CancellationToken)
+  nameWithType.vb: ISagaStorage(Of TSaga).UpdateAsync(TSaga, CancellationToken)
+  fullName.vb: Wolverine.Persistence.Sagas.ISagaStorage(Of TSaga).UpdateAsync(TSaga, System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: Wolverine.Persistence.Sagas.ISagaStorage{`1}.UpdateAsync(`1,System.Threading.CancellationToken)
+    name: UpdateAsync
+    isExternal: true
+  - name: (
+  - name: TSaga
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Wolverine.Persistence.Sagas.ISagaStorage{`1}.UpdateAsync(`1,System.Threading.CancellationToken)
+    name: UpdateAsync
+    isExternal: true
+  - name: (
+  - name: TSaga
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: Wolverine.Persistence.Sagas.ISagaStorage`1.UpdateAsync(`0,System.Threading.CancellationToken)
+  commentId: M:Wolverine.Persistence.Sagas.ISagaStorage`1.UpdateAsync(`0,System.Threading.CancellationToken)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: UpdateAsync(TSaga, CancellationToken)
+  nameWithType: ISagaStorage<TSaga>.UpdateAsync(TSaga, CancellationToken)
+  fullName: Wolverine.Persistence.Sagas.ISagaStorage<TSaga>.UpdateAsync(TSaga, System.Threading.CancellationToken)
+  nameWithType.vb: ISagaStorage(Of TSaga).UpdateAsync(TSaga, CancellationToken)
+  fullName.vb: Wolverine.Persistence.Sagas.ISagaStorage(Of TSaga).UpdateAsync(TSaga, System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: Wolverine.Persistence.Sagas.ISagaStorage`1.UpdateAsync(`0,System.Threading.CancellationToken)
+    name: UpdateAsync
+    isExternal: true
+  - name: (
+  - name: TSaga
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Wolverine.Persistence.Sagas.ISagaStorage`1.UpdateAsync(`0,System.Threading.CancellationToken)
+    name: UpdateAsync
+    isExternal: true
+  - name: (
+  - name: TSaga
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: AeroDB.WolverineFx.AeroDBSagaStorage`2.DeleteAsync*
+  commentId: Overload:AeroDB.WolverineFx.AeroDBSagaStorage`2.DeleteAsync
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBSagaStorage-2.html#AeroDB_WolverineFx_AeroDBSagaStorage_2_DeleteAsync__1_System_Threading_CancellationToken_
+  name: DeleteAsync
+  nameWithType: AeroDBSagaStorage<TId, TSaga>.DeleteAsync
+  fullName: AeroDB.WolverineFx.AeroDBSagaStorage<TId, TSaga>.DeleteAsync
+  nameWithType.vb: AeroDBSagaStorage(Of TId, TSaga).DeleteAsync
+  fullName.vb: AeroDB.WolverineFx.AeroDBSagaStorage(Of TId, TSaga).DeleteAsync
+- uid: Wolverine.Persistence.Sagas.ISagaStorage{{TSaga}}.DeleteAsync({TSaga},System.Threading.CancellationToken)
+  commentId: M:Wolverine.Persistence.Sagas.ISagaStorage{`1}.DeleteAsync(`1,System.Threading.CancellationToken)
+  parent: Wolverine.Persistence.Sagas.ISagaStorage{{TSaga}}
+  definition: Wolverine.Persistence.Sagas.ISagaStorage`1.DeleteAsync(`0,System.Threading.CancellationToken)
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: DeleteAsync(TSaga, CancellationToken)
+  nameWithType: ISagaStorage<TSaga>.DeleteAsync(TSaga, CancellationToken)
+  fullName: Wolverine.Persistence.Sagas.ISagaStorage<TSaga>.DeleteAsync(TSaga, System.Threading.CancellationToken)
+  nameWithType.vb: ISagaStorage(Of TSaga).DeleteAsync(TSaga, CancellationToken)
+  fullName.vb: Wolverine.Persistence.Sagas.ISagaStorage(Of TSaga).DeleteAsync(TSaga, System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: Wolverine.Persistence.Sagas.ISagaStorage{`1}.DeleteAsync(`1,System.Threading.CancellationToken)
+    name: DeleteAsync
+    isExternal: true
+  - name: (
+  - name: TSaga
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Wolverine.Persistence.Sagas.ISagaStorage{`1}.DeleteAsync(`1,System.Threading.CancellationToken)
+    name: DeleteAsync
+    isExternal: true
+  - name: (
+  - name: TSaga
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: Wolverine.Persistence.Sagas.ISagaStorage`1.DeleteAsync(`0,System.Threading.CancellationToken)
+  commentId: M:Wolverine.Persistence.Sagas.ISagaStorage`1.DeleteAsync(`0,System.Threading.CancellationToken)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: DeleteAsync(TSaga, CancellationToken)
+  nameWithType: ISagaStorage<TSaga>.DeleteAsync(TSaga, CancellationToken)
+  fullName: Wolverine.Persistence.Sagas.ISagaStorage<TSaga>.DeleteAsync(TSaga, System.Threading.CancellationToken)
+  nameWithType.vb: ISagaStorage(Of TSaga).DeleteAsync(TSaga, CancellationToken)
+  fullName.vb: Wolverine.Persistence.Sagas.ISagaStorage(Of TSaga).DeleteAsync(TSaga, System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: Wolverine.Persistence.Sagas.ISagaStorage`1.DeleteAsync(`0,System.Threading.CancellationToken)
+    name: DeleteAsync
+    isExternal: true
+  - name: (
+  - name: TSaga
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Wolverine.Persistence.Sagas.ISagaStorage`1.DeleteAsync(`0,System.Threading.CancellationToken)
+    name: DeleteAsync
+    isExternal: true
+  - name: (
+  - name: TSaga
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: AeroDB.WolverineFx.AeroDBSagaStorage`2.SaveChangesAsync*
+  commentId: Overload:AeroDB.WolverineFx.AeroDBSagaStorage`2.SaveChangesAsync
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBSagaStorage-2.html#AeroDB_WolverineFx_AeroDBSagaStorage_2_SaveChangesAsync_System_Threading_CancellationToken_
+  name: SaveChangesAsync
+  nameWithType: AeroDBSagaStorage<TId, TSaga>.SaveChangesAsync
+  fullName: AeroDB.WolverineFx.AeroDBSagaStorage<TId, TSaga>.SaveChangesAsync
+  nameWithType.vb: AeroDBSagaStorage(Of TId, TSaga).SaveChangesAsync
+  fullName.vb: AeroDB.WolverineFx.AeroDBSagaStorage(Of TId, TSaga).SaveChangesAsync
+- uid: Wolverine.Persistence.Sagas.ISagaStorage{{TSaga}}.SaveChangesAsync(System.Threading.CancellationToken)
+  commentId: M:Wolverine.Persistence.Sagas.ISagaStorage{`1}.SaveChangesAsync(System.Threading.CancellationToken)
+  parent: Wolverine.Persistence.Sagas.ISagaStorage{{TSaga}}
+  definition: Wolverine.Persistence.Sagas.ISagaStorage`1.SaveChangesAsync(System.Threading.CancellationToken)
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: SaveChangesAsync(CancellationToken)
+  nameWithType: ISagaStorage<TSaga>.SaveChangesAsync(CancellationToken)
+  fullName: Wolverine.Persistence.Sagas.ISagaStorage<TSaga>.SaveChangesAsync(System.Threading.CancellationToken)
+  nameWithType.vb: ISagaStorage(Of TSaga).SaveChangesAsync(CancellationToken)
+  fullName.vb: Wolverine.Persistence.Sagas.ISagaStorage(Of TSaga).SaveChangesAsync(System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: Wolverine.Persistence.Sagas.ISagaStorage{`1}.SaveChangesAsync(System.Threading.CancellationToken)
+    name: SaveChangesAsync
+    isExternal: true
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Wolverine.Persistence.Sagas.ISagaStorage{`1}.SaveChangesAsync(System.Threading.CancellationToken)
+    name: SaveChangesAsync
+    isExternal: true
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: Wolverine.Persistence.Sagas.ISagaStorage`1.SaveChangesAsync(System.Threading.CancellationToken)
+  commentId: M:Wolverine.Persistence.Sagas.ISagaStorage`1.SaveChangesAsync(System.Threading.CancellationToken)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: SaveChangesAsync(CancellationToken)
+  nameWithType: ISagaStorage<TSaga>.SaveChangesAsync(CancellationToken)
+  fullName: Wolverine.Persistence.Sagas.ISagaStorage<TSaga>.SaveChangesAsync(System.Threading.CancellationToken)
+  nameWithType.vb: ISagaStorage(Of TSaga).SaveChangesAsync(CancellationToken)
+  fullName.vb: Wolverine.Persistence.Sagas.ISagaStorage(Of TSaga).SaveChangesAsync(System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: Wolverine.Persistence.Sagas.ISagaStorage`1.SaveChangesAsync(System.Threading.CancellationToken)
+    name: SaveChangesAsync
+    isExternal: true
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Wolverine.Persistence.Sagas.ISagaStorage`1.SaveChangesAsync(System.Threading.CancellationToken)
+    name: SaveChangesAsync
+    isExternal: true
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: AeroDB.WolverineFx.AeroDBSagaStorage`2.DisposeAsync*
+  commentId: Overload:AeroDB.WolverineFx.AeroDBSagaStorage`2.DisposeAsync
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBSagaStorage-2.html#AeroDB_WolverineFx_AeroDBSagaStorage_2_DisposeAsync
+  name: DisposeAsync
+  nameWithType: AeroDBSagaStorage<TId, TSaga>.DisposeAsync
+  fullName: AeroDB.WolverineFx.AeroDBSagaStorage<TId, TSaga>.DisposeAsync
+  nameWithType.vb: AeroDBSagaStorage(Of TId, TSaga).DisposeAsync
+  fullName.vb: AeroDB.WolverineFx.AeroDBSagaStorage(Of TId, TSaga).DisposeAsync
+- uid: System.IAsyncDisposable.DisposeAsync
+  commentId: M:System.IAsyncDisposable.DisposeAsync
+  parent: System.IAsyncDisposable
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iasyncdisposable.disposeasync
+  name: DisposeAsync()
+  nameWithType: IAsyncDisposable.DisposeAsync()
+  fullName: System.IAsyncDisposable.DisposeAsync()
+  spec.csharp:
+  - uid: System.IAsyncDisposable.DisposeAsync
+    name: DisposeAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iasyncdisposable.disposeasync
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.IAsyncDisposable.DisposeAsync
+    name: DisposeAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iasyncdisposable.disposeasync
+  - name: (
+  - name: )
+- uid: System.Threading.Tasks.ValueTask
+  commentId: T:System.Threading.Tasks.ValueTask
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask
+  name: ValueTask
+  nameWithType: ValueTask
+  fullName: System.Threading.Tasks.ValueTask

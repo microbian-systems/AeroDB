@@ -1,0 +1,1178 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.SurrealDbQueryableExtensions
+  commentId: T:AeroDB.SurrealDbQueryableExtensions
+  id: SurrealDbQueryableExtensions
+  parent: AeroDB
+  children:
+  - AeroDB.SurrealDbQueryableExtensions.FilterInclude``2(AeroDB.ISurrealDbQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Collections.Generic.IEnumerable{``1}}},System.Linq.Expressions.Expression{System.Func{System.Collections.Generic.IEnumerable{``1},System.Boolean}})
+  - AeroDB.SurrealDbQueryableExtensions.IncludeReverse``2(AeroDB.ISurrealDbQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Collections.Generic.IEnumerable{``1}}},System.String)
+  - AeroDB.SurrealDbQueryableExtensions.Include``2(AeroDB.ISurrealDbQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,``1}})
+  - AeroDB.SurrealDbQueryableExtensions.Select``2(AeroDB.ISurrealDbQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,``1}})
+  - AeroDB.SurrealDbQueryableExtensions.Where``1(AeroDB.ISurrealDbQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})
+  langs:
+  - csharp
+  - vb
+  name: SurrealDbQueryableExtensions
+  nameWithType: SurrealDbQueryableExtensions
+  fullName: AeroDB.SurrealDbQueryableExtensions
+  type: Class
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/ISurrealDbQueryable.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public static class SurrealDbQueryableExtensions
+    content.vb: Public Module SurrealDbQueryableExtensions
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+- uid: AeroDB.SurrealDbQueryableExtensions.Select``2(AeroDB.ISurrealDbQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,``1}})
+  commentId: M:AeroDB.SurrealDbQueryableExtensions.Select``2(AeroDB.ISurrealDbQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,``1}})
+  id: Select``2(AeroDB.ISurrealDbQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,``1}})
+  isExtensionMethod: true
+  parent: AeroDB.SurrealDbQueryableExtensions
+  langs:
+  - csharp
+  - vb
+  name: Select<T, TResult>(ISurrealDbQueryable<T>, Expression<Func<T, TResult>>)
+  nameWithType: SurrealDbQueryableExtensions.Select<T, TResult>(ISurrealDbQueryable<T>, Expression<Func<T, TResult>>)
+  fullName: AeroDB.SurrealDbQueryableExtensions.Select<T, TResult>(AeroDB.ISurrealDbQueryable<T>, System.Linq.Expressions.Expression<System.Func<T, TResult>>)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/ISurrealDbQueryable.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Projects each element of a sequence into a new form, preserving the
+
+    <xref href="AeroDB.ISurrealDbQueryable%601" data-throw-if-not-resolved="false"></xref> type for further chaining (e.g., Fetch, Include).
+  example: []
+  syntax:
+    content: public static ISurrealDbQueryable<TResult> Select<T, TResult>(this ISurrealDbQueryable<T> source, Expression<Func<T, TResult>> selector)
+    parameters:
+    - id: source
+      type: AeroDB.ISurrealDbQueryable{{T}}
+      description: The queryable source.
+    - id: selector
+      type: System.Linq.Expressions.Expression{System.Func{{T},{TResult}}}
+      description: A projection function to apply to each element.
+    typeParameters:
+    - id: T
+      description: The source entity type.
+    - id: TResult
+      description: The result element type of the projection.
+    return:
+      type: AeroDB.ISurrealDbQueryable{{TResult}}
+      description: An <xref href="AeroDB.ISurrealDbQueryable%601" data-throw-if-not-resolved="false"></xref> for further chaining.
+    content.vb: Public Shared Function [Select](Of T, TResult)(source As ISurrealDbQueryable(Of T), selector As Expression(Of Func(Of T, TResult))) As ISurrealDbQueryable(Of TResult)
+  overload: AeroDB.SurrealDbQueryableExtensions.Select*
+  nameWithType.vb: SurrealDbQueryableExtensions.Select(Of T, TResult)(ISurrealDbQueryable(Of T), Expression(Of Func(Of T, TResult)))
+  fullName.vb: AeroDB.SurrealDbQueryableExtensions.Select(Of T, TResult)(AeroDB.ISurrealDbQueryable(Of T), System.Linq.Expressions.Expression(Of System.Func(Of T, TResult)))
+  name.vb: Select(Of T, TResult)(ISurrealDbQueryable(Of T), Expression(Of Func(Of T, TResult)))
+- uid: AeroDB.SurrealDbQueryableExtensions.Where``1(AeroDB.ISurrealDbQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})
+  commentId: M:AeroDB.SurrealDbQueryableExtensions.Where``1(AeroDB.ISurrealDbQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})
+  id: Where``1(AeroDB.ISurrealDbQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})
+  isExtensionMethod: true
+  parent: AeroDB.SurrealDbQueryableExtensions
+  langs:
+  - csharp
+  - vb
+  name: Where<T>(ISurrealDbQueryable<T>, Expression<Func<T, bool>>)
+  nameWithType: SurrealDbQueryableExtensions.Where<T>(ISurrealDbQueryable<T>, Expression<Func<T, bool>>)
+  fullName: AeroDB.SurrealDbQueryableExtensions.Where<T>(AeroDB.ISurrealDbQueryable<T>, System.Linq.Expressions.Expression<System.Func<T, bool>>)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/ISurrealDbQueryable.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Filters a sequence of values based on a predicate, preserving the
+
+    <xref href="AeroDB.ISurrealDbQueryable%601" data-throw-if-not-resolved="false"></xref> type for further chaining (e.g., Fetch, Include, ToCommand).
+  example: []
+  syntax:
+    content: 'public static ISurrealDbQueryable<T> Where<T>(this ISurrealDbQueryable<T> source, Expression<Func<T, bool>> predicate) where T : class'
+    parameters:
+    - id: source
+      type: AeroDB.ISurrealDbQueryable{{T}}
+      description: The queryable source.
+    - id: predicate
+      type: System.Linq.Expressions.Expression{System.Func{{T},System.Boolean}}
+      description: A function to test each element for a condition.
+    typeParameters:
+    - id: T
+      description: The entity type.
+    return:
+      type: AeroDB.ISurrealDbQueryable{{T}}
+      description: An <xref href="AeroDB.ISurrealDbQueryable%601" data-throw-if-not-resolved="false"></xref> for further chaining.
+    content.vb: Public Shared Function Where(Of T As Class)(source As ISurrealDbQueryable(Of T), predicate As Expression(Of Func(Of T, Boolean))) As ISurrealDbQueryable(Of T)
+  overload: AeroDB.SurrealDbQueryableExtensions.Where*
+  nameWithType.vb: SurrealDbQueryableExtensions.Where(Of T)(ISurrealDbQueryable(Of T), Expression(Of Func(Of T, Boolean)))
+  fullName.vb: AeroDB.SurrealDbQueryableExtensions.Where(Of T)(AeroDB.ISurrealDbQueryable(Of T), System.Linq.Expressions.Expression(Of System.Func(Of T, Boolean)))
+  name.vb: Where(Of T)(ISurrealDbQueryable(Of T), Expression(Of Func(Of T, Boolean)))
+- uid: AeroDB.SurrealDbQueryableExtensions.Include``2(AeroDB.ISurrealDbQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,``1}})
+  commentId: M:AeroDB.SurrealDbQueryableExtensions.Include``2(AeroDB.ISurrealDbQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,``1}})
+  id: Include``2(AeroDB.ISurrealDbQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,``1}})
+  isExtensionMethod: true
+  parent: AeroDB.SurrealDbQueryableExtensions
+  langs:
+  - csharp
+  - vb
+  name: Include<T, TInclude>(ISurrealDbQueryable<T>, Expression<Func<T, TInclude?>>)
+  nameWithType: SurrealDbQueryableExtensions.Include<T, TInclude>(ISurrealDbQueryable<T>, Expression<Func<T, TInclude?>>)
+  fullName: AeroDB.SurrealDbQueryableExtensions.Include<T, TInclude>(AeroDB.ISurrealDbQueryable<T>, System.Linq.Expressions.Expression<System.Func<T, TInclude?>>)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/ISurrealDbQueryable.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Eagerly loads a typed <code>record&lt;T&gt;</code> property via an inline subquery.
+
+    The subquery is embedded in the SELECT clause, using <code>$parent</code> to reference
+
+    the parent row's foreign key field.
+
+
+    <p>Generated SurrealQL pattern:
+
+    <code>SELECT *, (SELECT * FROM `target` WHERE id = $parent.fk LIMIT 1)[0] AS Property FROM `source`</code>
+
+    </p>
+
+
+    <p>This is a single-round-trip operation — no separate queries are executed.
+
+    Unlike <code>Fetch()</code>, this does not require the SurrealDB server to support
+
+    the FETCH clause and works with typed <code>record&lt;T&gt;</code> properties.</p>
+  example: []
+  syntax:
+    content: 'public static ISurrealDbQueryable<T> Include<T, TInclude>(this ISurrealDbQueryable<T> source, Expression<Func<T, TInclude?>> property) where T : class where TInclude : class'
+    parameters:
+    - id: source
+      type: AeroDB.ISurrealDbQueryable{{T}}
+      description: The queryable source.
+    - id: property
+      type: System.Linq.Expressions.Expression{System.Func{{T},{TInclude}}}
+      description: >-
+        A member expression selecting the typed record property to include.
+
+        Example: <code>o =&gt; o.Customer</code>
+    typeParameters:
+    - id: T
+      description: The source entity type.
+    - id: TInclude
+      description: The included document type (must inherit from <code>Record</code>).
+    return:
+      type: AeroDB.ISurrealDbQueryable{{T}}
+      description: The queryable for chaining.
+    content.vb: Public Shared Function Include(Of T As Class, TInclude As Class)(source As ISurrealDbQueryable(Of T), [property] As Expression(Of Func(Of T, TInclude))) As ISurrealDbQueryable(Of T)
+  overload: AeroDB.SurrealDbQueryableExtensions.Include*
+  nameWithType.vb: SurrealDbQueryableExtensions.Include(Of T, TInclude)(ISurrealDbQueryable(Of T), Expression(Of Func(Of T, TInclude)))
+  fullName.vb: AeroDB.SurrealDbQueryableExtensions.Include(Of T, TInclude)(AeroDB.ISurrealDbQueryable(Of T), System.Linq.Expressions.Expression(Of System.Func(Of T, TInclude)))
+  name.vb: Include(Of T, TInclude)(ISurrealDbQueryable(Of T), Expression(Of Func(Of T, TInclude)))
+- uid: AeroDB.SurrealDbQueryableExtensions.IncludeReverse``2(AeroDB.ISurrealDbQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Collections.Generic.IEnumerable{``1}}},System.String)
+  commentId: M:AeroDB.SurrealDbQueryableExtensions.IncludeReverse``2(AeroDB.ISurrealDbQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Collections.Generic.IEnumerable{``1}}},System.String)
+  id: IncludeReverse``2(AeroDB.ISurrealDbQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Collections.Generic.IEnumerable{``1}}},System.String)
+  isExtensionMethod: true
+  parent: AeroDB.SurrealDbQueryableExtensions
+  langs:
+  - csharp
+  - vb
+  name: IncludeReverse<T, TChild>(ISurrealDbQueryable<T>, Expression<Func<T, IEnumerable<TChild>?>>, string)
+  nameWithType: SurrealDbQueryableExtensions.IncludeReverse<T, TChild>(ISurrealDbQueryable<T>, Expression<Func<T, IEnumerable<TChild>?>>, string)
+  fullName: AeroDB.SurrealDbQueryableExtensions.IncludeReverse<T, TChild>(AeroDB.ISurrealDbQueryable<T>, System.Linq.Expressions.Expression<System.Func<T, System.Collections.Generic.IEnumerable<TChild>?>>, string)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/ISurrealDbQueryable.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Eagerly loads a collection of child records where the child has a foreign key
+
+    pointing back to the parent <code>T</code>. Uses SurrealDB's LET variable for
+
+    <b>server-side batch loading in a single round trip</b>.
+
+
+    <p>Generated SurrealQL pattern:
+
+    <code>LET $main = (SELECT * FROM source WHERE ...);
+
+    SELECT * FROM $main;
+
+    SELECT * FROM `child` WHERE `fkField` IN (SELECT VALUE [id|Id] FROM $main);</code>
+
+    </p>
+
+
+    <p>Unlike <code>Include&lt;T,TInclude&gt;</code>,
+
+    which is forward (FK on parent), this is reverse (FK on child). The child records
+
+    are collected into a <code>List&lt;TChild&gt;</code> and set on the collection property.</p>
+  example: []
+  syntax:
+    content: 'public static ISurrealDbQueryable<T> IncludeReverse<T, TChild>(this ISurrealDbQueryable<T> source, Expression<Func<T, IEnumerable<TChild>?>> property, string foreignKey) where T : class where TChild : class'
+    parameters:
+    - id: source
+      type: AeroDB.ISurrealDbQueryable{{T}}
+      description: The queryable source.
+    - id: property
+      type: System.Linq.Expressions.Expression{System.Func{{T},System.Collections.Generic.IEnumerable{{TChild}}}}
+      description: >-
+        A member expression selecting the collection property on T.
+
+        Example: <code>o =&gt; o.Items</code>
+    - id: foreignKey
+      type: System.String
+      description: >-
+        The foreign key field on the child table (e.g., <code>"order"</code>).
+
+        Both the C# property name and SurrealQL field name.
+    typeParameters:
+    - id: T
+      description: The source entity type (must implement <code>IRecord</code> to have an Id).
+    - id: TChild
+      description: The child record type.
+    return:
+      type: AeroDB.ISurrealDbQueryable{{T}}
+      description: The queryable for chaining.
+    content.vb: Public Shared Function IncludeReverse(Of T As Class, TChild As Class)(source As ISurrealDbQueryable(Of T), [property] As Expression(Of Func(Of T, IEnumerable(Of TChild))), foreignKey As String) As ISurrealDbQueryable(Of T)
+  overload: AeroDB.SurrealDbQueryableExtensions.IncludeReverse*
+  nameWithType.vb: SurrealDbQueryableExtensions.IncludeReverse(Of T, TChild)(ISurrealDbQueryable(Of T), Expression(Of Func(Of T, IEnumerable(Of TChild))), String)
+  fullName.vb: AeroDB.SurrealDbQueryableExtensions.IncludeReverse(Of T, TChild)(AeroDB.ISurrealDbQueryable(Of T), System.Linq.Expressions.Expression(Of System.Func(Of T, System.Collections.Generic.IEnumerable(Of TChild))), String)
+  name.vb: IncludeReverse(Of T, TChild)(ISurrealDbQueryable(Of T), Expression(Of Func(Of T, IEnumerable(Of TChild))), String)
+- uid: AeroDB.SurrealDbQueryableExtensions.FilterInclude``2(AeroDB.ISurrealDbQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Collections.Generic.IEnumerable{``1}}},System.Linq.Expressions.Expression{System.Func{System.Collections.Generic.IEnumerable{``1},System.Boolean}})
+  commentId: M:AeroDB.SurrealDbQueryableExtensions.FilterInclude``2(AeroDB.ISurrealDbQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Collections.Generic.IEnumerable{``1}}},System.Linq.Expressions.Expression{System.Func{System.Collections.Generic.IEnumerable{``1},System.Boolean}})
+  id: FilterInclude``2(AeroDB.ISurrealDbQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Collections.Generic.IEnumerable{``1}}},System.Linq.Expressions.Expression{System.Func{System.Collections.Generic.IEnumerable{``1},System.Boolean}})
+  isExtensionMethod: true
+  parent: AeroDB.SurrealDbQueryableExtensions
+  langs:
+  - csharp
+  - vb
+  name: FilterInclude<T, TChild>(ISurrealDbQueryable<T>, Expression<Func<T, IEnumerable<TChild>>>, Expression<Func<IEnumerable<TChild>, bool>>)
+  nameWithType: SurrealDbQueryableExtensions.FilterInclude<T, TChild>(ISurrealDbQueryable<T>, Expression<Func<T, IEnumerable<TChild>>>, Expression<Func<IEnumerable<TChild>, bool>>)
+  fullName: AeroDB.SurrealDbQueryableExtensions.FilterInclude<T, TChild>(AeroDB.ISurrealDbQueryable<T>, System.Linq.Expressions.Expression<System.Func<T, System.Collections.Generic.IEnumerable<TChild>>>, System.Linq.Expressions.Expression<System.Func<System.Collections.Generic.IEnumerable<TChild>, bool>>)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/ISurrealDbQueryable.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Filters parent documents based on a predicate applied to their included
+
+    child collection <b>in-memory</b>, after includes are fully loaded.
+
+
+    <p>Only parent documents whose child collection satisfies the predicate
+
+    are returned. Unlike a WHERE clause, this filter runs on the client side
+
+    and can use any LINQ expression on the child collection (e.g.,
+
+    <code>.Any()</code>, <code>.All()</code>, <code>.Count()</code>).</p>
+
+
+    <p>Must be used after <xref href="AeroDB.SurrealDbQueryableExtensions.IncludeReverse%60%602(AeroDB.ISurrealDbQueryable%7b%60%600%7d%2cSystem.Linq.Expressions.Expression%7bSystem.Func%7b%60%600%2cSystem.Collections.Generic.IEnumerable%7b%60%601%7d%7d%7d%2cSystem.String)" data-throw-if-not-resolved="false"></xref> on the same
+
+    property to have effect. The filter does not affect which children are
+
+    loaded — it only controls which parent documents are included in results.</p>
+  example: []
+  syntax:
+    content: 'public static ISurrealDbQueryable<T> FilterInclude<T, TChild>(this ISurrealDbQueryable<T> source, Expression<Func<T, IEnumerable<TChild>>> property, Expression<Func<IEnumerable<TChild>, bool>> filter) where T : class where TChild : class'
+    parameters:
+    - id: source
+      type: AeroDB.ISurrealDbQueryable{{T}}
+      description: The queryable source.
+    - id: property
+      type: System.Linq.Expressions.Expression{System.Func{{T},System.Collections.Generic.IEnumerable{{TChild}}}}
+      description: >-
+        A member expression selecting the collection property on T.
+
+        Example: <code>o =&gt; o.Items</code>
+    - id: filter
+      type: System.Linq.Expressions.Expression{System.Func{System.Collections.Generic.IEnumerable{{TChild}},System.Boolean}}
+      description: >-
+        A predicate applied to the child collection. Returning <code>true</code> keeps
+
+        the parent in the result set.
+
+        Example: <code>items =&gt; items.Any(i =&gt; i.Price &gt; 50)</code>
+    typeParameters:
+    - id: T
+      description: The source entity type (must implement <code>IRecord</code>).
+    - id: TChild
+      description: The child record type.
+    return:
+      type: AeroDB.ISurrealDbQueryable{{T}}
+      description: The queryable for chaining.
+    content.vb: Public Shared Function FilterInclude(Of T As Class, TChild As Class)(source As ISurrealDbQueryable(Of T), [property] As Expression(Of Func(Of T, IEnumerable(Of TChild))), filter As Expression(Of Func(Of IEnumerable(Of TChild), Boolean))) As ISurrealDbQueryable(Of T)
+  overload: AeroDB.SurrealDbQueryableExtensions.FilterInclude*
+  nameWithType.vb: SurrealDbQueryableExtensions.FilterInclude(Of T, TChild)(ISurrealDbQueryable(Of T), Expression(Of Func(Of T, IEnumerable(Of TChild))), Expression(Of Func(Of IEnumerable(Of TChild), Boolean)))
+  fullName.vb: AeroDB.SurrealDbQueryableExtensions.FilterInclude(Of T, TChild)(AeroDB.ISurrealDbQueryable(Of T), System.Linq.Expressions.Expression(Of System.Func(Of T, System.Collections.Generic.IEnumerable(Of TChild))), System.Linq.Expressions.Expression(Of System.Func(Of System.Collections.Generic.IEnumerable(Of TChild), Boolean)))
+  name.vb: FilterInclude(Of T, TChild)(ISurrealDbQueryable(Of T), Expression(Of Func(Of T, IEnumerable(Of TChild))), Expression(Of Func(Of IEnumerable(Of TChild), Boolean)))
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AeroDB.ISurrealDbQueryable`1
+  commentId: T:AeroDB.ISurrealDbQueryable`1
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.ISurrealDbQueryable-1.html
+  name: ISurrealDbQueryable<T>
+  nameWithType: ISurrealDbQueryable<T>
+  fullName: AeroDB.ISurrealDbQueryable<T>
+  nameWithType.vb: ISurrealDbQueryable(Of T)
+  fullName.vb: AeroDB.ISurrealDbQueryable(Of T)
+  name.vb: ISurrealDbQueryable(Of T)
+  spec.csharp:
+  - uid: AeroDB.ISurrealDbQueryable`1
+    name: ISurrealDbQueryable
+    isExternal: true
+    href: AeroDB.ISurrealDbQueryable-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.ISurrealDbQueryable`1
+    name: ISurrealDbQueryable
+    isExternal: true
+    href: AeroDB.ISurrealDbQueryable-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.SurrealDbQueryableExtensions.Select*
+  commentId: Overload:AeroDB.SurrealDbQueryableExtensions.Select
+  isExternal: true
+  href: AeroDB.SurrealDbQueryableExtensions.html#AeroDB_SurrealDbQueryableExtensions_Select__2_AeroDB_ISurrealDbQueryable___0__System_Linq_Expressions_Expression_System_Func___0___1___
+  name: Select
+  nameWithType: SurrealDbQueryableExtensions.Select
+  fullName: AeroDB.SurrealDbQueryableExtensions.Select
+- uid: AeroDB.ISurrealDbQueryable{{T}}
+  commentId: T:AeroDB.ISurrealDbQueryable{``0}
+  parent: AeroDB
+  definition: AeroDB.ISurrealDbQueryable`1
+  href: AeroDB.ISurrealDbQueryable-1.html
+  name: ISurrealDbQueryable<T>
+  nameWithType: ISurrealDbQueryable<T>
+  fullName: AeroDB.ISurrealDbQueryable<T>
+  nameWithType.vb: ISurrealDbQueryable(Of T)
+  fullName.vb: AeroDB.ISurrealDbQueryable(Of T)
+  name.vb: ISurrealDbQueryable(Of T)
+  spec.csharp:
+  - uid: AeroDB.ISurrealDbQueryable`1
+    name: ISurrealDbQueryable
+    isExternal: true
+    href: AeroDB.ISurrealDbQueryable-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.ISurrealDbQueryable`1
+    name: ISurrealDbQueryable
+    isExternal: true
+    href: AeroDB.ISurrealDbQueryable-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Linq.Expressions.Expression{System.Func{{T},{TResult}}}
+  commentId: T:System.Linq.Expressions.Expression{System.Func{``0,``1}}
+  parent: System.Linq.Expressions
+  definition: System.Linq.Expressions.Expression`1
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  name: Expression<Func<T, TResult>>
+  nameWithType: Expression<Func<T, TResult>>
+  fullName: System.Linq.Expressions.Expression<System.Func<T, TResult>>
+  nameWithType.vb: Expression(Of Func(Of T, TResult))
+  fullName.vb: System.Linq.Expressions.Expression(Of System.Func(Of T, TResult))
+  name.vb: Expression(Of Func(Of T, TResult))
+  spec.csharp:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: )
+  - name: )
+- uid: AeroDB.ISurrealDbQueryable{{TResult}}
+  commentId: T:AeroDB.ISurrealDbQueryable{``1}
+  parent: AeroDB
+  definition: AeroDB.ISurrealDbQueryable`1
+  href: AeroDB.ISurrealDbQueryable-1.html
+  name: ISurrealDbQueryable<TResult>
+  nameWithType: ISurrealDbQueryable<TResult>
+  fullName: AeroDB.ISurrealDbQueryable<TResult>
+  nameWithType.vb: ISurrealDbQueryable(Of TResult)
+  fullName.vb: AeroDB.ISurrealDbQueryable(Of TResult)
+  name.vb: ISurrealDbQueryable(Of TResult)
+  spec.csharp:
+  - uid: AeroDB.ISurrealDbQueryable`1
+    name: ISurrealDbQueryable
+    isExternal: true
+    href: AeroDB.ISurrealDbQueryable-1.html
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.ISurrealDbQueryable`1
+    name: ISurrealDbQueryable
+    isExternal: true
+    href: AeroDB.ISurrealDbQueryable-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Linq.Expressions.Expression`1
+  commentId: T:System.Linq.Expressions.Expression`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  name: Expression<TDelegate>
+  nameWithType: Expression<TDelegate>
+  fullName: System.Linq.Expressions.Expression<TDelegate>
+  nameWithType.vb: Expression(Of TDelegate)
+  fullName.vb: System.Linq.Expressions.Expression(Of TDelegate)
+  name.vb: Expression(Of TDelegate)
+  spec.csharp:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - name: TDelegate
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TDelegate
+  - name: )
+- uid: System.Linq.Expressions
+  commentId: N:System.Linq.Expressions
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Linq.Expressions
+  nameWithType: System.Linq.Expressions
+  fullName: System.Linq.Expressions
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Linq
+    name: Linq
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq
+  - name: .
+  - uid: System.Linq.Expressions
+    name: Expressions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Linq
+    name: Linq
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq
+  - name: .
+  - uid: System.Linq.Expressions
+    name: Expressions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions
+- uid: AeroDB.SurrealDbQueryableExtensions.Where*
+  commentId: Overload:AeroDB.SurrealDbQueryableExtensions.Where
+  isExternal: true
+  href: AeroDB.SurrealDbQueryableExtensions.html#AeroDB_SurrealDbQueryableExtensions_Where__1_AeroDB_ISurrealDbQueryable___0__System_Linq_Expressions_Expression_System_Func___0_System_Boolean___
+  name: Where
+  nameWithType: SurrealDbQueryableExtensions.Where
+  fullName: AeroDB.SurrealDbQueryableExtensions.Where
+- uid: System.Linq.Expressions.Expression{System.Func{{T},System.Boolean}}
+  commentId: T:System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}}
+  parent: System.Linq.Expressions
+  definition: System.Linq.Expressions.Expression`1
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  name: Expression<Func<T, bool>>
+  nameWithType: Expression<Func<T, bool>>
+  fullName: System.Linq.Expressions.Expression<System.Func<T, bool>>
+  nameWithType.vb: Expression(Of Func(Of T, Boolean))
+  fullName.vb: System.Linq.Expressions.Expression(Of System.Func(Of T, Boolean))
+  name.vb: Expression(Of Func(Of T, Boolean))
+  spec.csharp:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  - name: )
+- uid: AeroDB.SurrealDbQueryableExtensions.Include*
+  commentId: Overload:AeroDB.SurrealDbQueryableExtensions.Include
+  isExternal: true
+  href: AeroDB.SurrealDbQueryableExtensions.html#AeroDB_SurrealDbQueryableExtensions_Include__2_AeroDB_ISurrealDbQueryable___0__System_Linq_Expressions_Expression_System_Func___0___1___
+  name: Include
+  nameWithType: SurrealDbQueryableExtensions.Include
+  fullName: AeroDB.SurrealDbQueryableExtensions.Include
+- uid: System.Linq.Expressions.Expression{System.Func{{T},{TInclude}}}
+  commentId: T:System.Linq.Expressions.Expression{System.Func{``0,``1}}
+  parent: System.Linq.Expressions
+  definition: System.Linq.Expressions.Expression`1
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  name: Expression<Func<T, TInclude>>
+  nameWithType: Expression<Func<T, TInclude>>
+  fullName: System.Linq.Expressions.Expression<System.Func<T, TInclude>>
+  nameWithType.vb: Expression(Of Func(Of T, TInclude))
+  fullName.vb: System.Linq.Expressions.Expression(Of System.Func(Of T, TInclude))
+  name.vb: Expression(Of Func(Of T, TInclude))
+  spec.csharp:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TInclude
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TInclude
+  - name: )
+  - name: )
+- uid: AeroDB.SurrealDbQueryableExtensions.IncludeReverse*
+  commentId: Overload:AeroDB.SurrealDbQueryableExtensions.IncludeReverse
+  isExternal: true
+  href: AeroDB.SurrealDbQueryableExtensions.html#AeroDB_SurrealDbQueryableExtensions_IncludeReverse__2_AeroDB_ISurrealDbQueryable___0__System_Linq_Expressions_Expression_System_Func___0_System_Collections_Generic_IEnumerable___1____System_String_
+  name: IncludeReverse
+  nameWithType: SurrealDbQueryableExtensions.IncludeReverse
+  fullName: AeroDB.SurrealDbQueryableExtensions.IncludeReverse
+- uid: System.Linq.Expressions.Expression{System.Func{{T},System.Collections.Generic.IEnumerable{{TChild}}}}
+  commentId: T:System.Linq.Expressions.Expression{System.Func{``0,System.Collections.Generic.IEnumerable{``1}}}
+  parent: System.Linq.Expressions
+  definition: System.Linq.Expressions.Expression`1
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  name: Expression<Func<T, IEnumerable<TChild>>>
+  nameWithType: Expression<Func<T, IEnumerable<TChild>>>
+  fullName: System.Linq.Expressions.Expression<System.Func<T, System.Collections.Generic.IEnumerable<TChild>>>
+  nameWithType.vb: Expression(Of Func(Of T, IEnumerable(Of TChild)))
+  fullName.vb: System.Linq.Expressions.Expression(Of System.Func(Of T, System.Collections.Generic.IEnumerable(Of TChild)))
+  name.vb: Expression(Of Func(Of T, IEnumerable(Of TChild)))
+  spec.csharp:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: TChild
+  - name: '>'
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TChild
+  - name: )
+  - name: )
+  - name: )
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: AeroDB.SurrealDbQueryableExtensions.IncludeReverse``2(AeroDB.ISurrealDbQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Collections.Generic.IEnumerable{``1}}},System.String)
+  commentId: M:AeroDB.SurrealDbQueryableExtensions.IncludeReverse``2(AeroDB.ISurrealDbQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Collections.Generic.IEnumerable{``1}}},System.String)
+  isExternal: true
+  href: AeroDB.SurrealDbQueryableExtensions.html#AeroDB_SurrealDbQueryableExtensions_IncludeReverse__2_AeroDB_ISurrealDbQueryable___0__System_Linq_Expressions_Expression_System_Func___0_System_Collections_Generic_IEnumerable___1____System_String_
+  name: IncludeReverse<T, TChild>(ISurrealDbQueryable<T>, Expression<Func<T, IEnumerable<TChild>>>, string)
+  nameWithType: SurrealDbQueryableExtensions.IncludeReverse<T, TChild>(ISurrealDbQueryable<T>, Expression<Func<T, IEnumerable<TChild>>>, string)
+  fullName: AeroDB.SurrealDbQueryableExtensions.IncludeReverse<T, TChild>(AeroDB.ISurrealDbQueryable<T>, System.Linq.Expressions.Expression<System.Func<T, System.Collections.Generic.IEnumerable<TChild>>>, string)
+  nameWithType.vb: SurrealDbQueryableExtensions.IncludeReverse(Of T, TChild)(ISurrealDbQueryable(Of T), Expression(Of Func(Of T, IEnumerable(Of TChild))), String)
+  fullName.vb: AeroDB.SurrealDbQueryableExtensions.IncludeReverse(Of T, TChild)(AeroDB.ISurrealDbQueryable(Of T), System.Linq.Expressions.Expression(Of System.Func(Of T, System.Collections.Generic.IEnumerable(Of TChild))), String)
+  name.vb: IncludeReverse(Of T, TChild)(ISurrealDbQueryable(Of T), Expression(Of Func(Of T, IEnumerable(Of TChild))), String)
+  spec.csharp:
+  - uid: AeroDB.SurrealDbQueryableExtensions.IncludeReverse``2(AeroDB.ISurrealDbQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Collections.Generic.IEnumerable{``1}}},System.String)
+    name: IncludeReverse
+    isExternal: true
+    href: AeroDB.SurrealDbQueryableExtensions.html#AeroDB_SurrealDbQueryableExtensions_IncludeReverse__2_AeroDB_ISurrealDbQueryable___0__System_Linq_Expressions_Expression_System_Func___0_System_Collections_Generic_IEnumerable___1____System_String_
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TChild
+  - name: '>'
+  - name: (
+  - uid: AeroDB.ISurrealDbQueryable`1
+    name: ISurrealDbQueryable
+    isExternal: true
+    href: AeroDB.ISurrealDbQueryable-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: TChild
+  - name: '>'
+  - name: '>'
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: AeroDB.SurrealDbQueryableExtensions.IncludeReverse``2(AeroDB.ISurrealDbQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Collections.Generic.IEnumerable{``1}}},System.String)
+    name: IncludeReverse
+    isExternal: true
+    href: AeroDB.SurrealDbQueryableExtensions.html#AeroDB_SurrealDbQueryableExtensions_IncludeReverse__2_AeroDB_ISurrealDbQueryable___0__System_Linq_Expressions_Expression_System_Func___0_System_Collections_Generic_IEnumerable___1____System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TChild
+  - name: )
+  - name: (
+  - uid: AeroDB.ISurrealDbQueryable`1
+    name: ISurrealDbQueryable
+    isExternal: true
+    href: AeroDB.ISurrealDbQueryable-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TChild
+  - name: )
+  - name: )
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: AeroDB.SurrealDbQueryableExtensions.FilterInclude*
+  commentId: Overload:AeroDB.SurrealDbQueryableExtensions.FilterInclude
+  isExternal: true
+  href: AeroDB.SurrealDbQueryableExtensions.html#AeroDB_SurrealDbQueryableExtensions_FilterInclude__2_AeroDB_ISurrealDbQueryable___0__System_Linq_Expressions_Expression_System_Func___0_System_Collections_Generic_IEnumerable___1____System_Linq_Expressions_Expression_System_Func_System_Collections_Generic_IEnumerable___1__System_Boolean___
+  name: FilterInclude
+  nameWithType: SurrealDbQueryableExtensions.FilterInclude
+  fullName: AeroDB.SurrealDbQueryableExtensions.FilterInclude
+- uid: System.Linq.Expressions.Expression{System.Func{System.Collections.Generic.IEnumerable{{TChild}},System.Boolean}}
+  commentId: T:System.Linq.Expressions.Expression{System.Func{System.Collections.Generic.IEnumerable{``1},System.Boolean}}
+  parent: System.Linq.Expressions
+  definition: System.Linq.Expressions.Expression`1
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  name: Expression<Func<IEnumerable<TChild>, bool>>
+  nameWithType: Expression<Func<IEnumerable<TChild>, bool>>
+  fullName: System.Linq.Expressions.Expression<System.Func<System.Collections.Generic.IEnumerable<TChild>, bool>>
+  nameWithType.vb: Expression(Of Func(Of IEnumerable(Of TChild), Boolean))
+  fullName.vb: System.Linq.Expressions.Expression(Of System.Func(Of System.Collections.Generic.IEnumerable(Of TChild), Boolean))
+  name.vb: Expression(Of Func(Of IEnumerable(Of TChild), Boolean))
+  spec.csharp:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: TChild
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TChild
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  - name: )

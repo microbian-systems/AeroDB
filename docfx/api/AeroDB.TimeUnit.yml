@@ -1,0 +1,187 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.TimeUnit
+  commentId: T:AeroDB.TimeUnit
+  id: TimeUnit
+  parent: AeroDB
+  children:
+  - AeroDB.TimeUnit.Day
+  - AeroDB.TimeUnit.Hour
+  - AeroDB.TimeUnit.Minute
+  - AeroDB.TimeUnit.Month
+  - AeroDB.TimeUnit.Second
+  - AeroDB.TimeUnit.Week
+  - AeroDB.TimeUnit.Year
+  langs:
+  - csharp
+  - vb
+  name: TimeUnit
+  nameWithType: TimeUnit
+  fullName: AeroDB.TimeUnit
+  type: Enum
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/TimeSeries/TimeBucket.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Time units for duration-based bucketing via <code>time::floor()</code>.
+  example: []
+  syntax:
+    content: public enum TimeUnit
+    content.vb: Public Enum TimeUnit
+- uid: AeroDB.TimeUnit.Second
+  commentId: F:AeroDB.TimeUnit.Second
+  id: Second
+  parent: AeroDB.TimeUnit
+  langs:
+  - csharp
+  - vb
+  name: Second
+  nameWithType: TimeUnit.Second
+  fullName: AeroDB.TimeUnit.Second
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/TimeSeries/TimeBucket.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: Second = 0
+    return:
+      type: AeroDB.TimeUnit
+- uid: AeroDB.TimeUnit.Minute
+  commentId: F:AeroDB.TimeUnit.Minute
+  id: Minute
+  parent: AeroDB.TimeUnit
+  langs:
+  - csharp
+  - vb
+  name: Minute
+  nameWithType: TimeUnit.Minute
+  fullName: AeroDB.TimeUnit.Minute
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/TimeSeries/TimeBucket.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: Minute = 1
+    return:
+      type: AeroDB.TimeUnit
+- uid: AeroDB.TimeUnit.Hour
+  commentId: F:AeroDB.TimeUnit.Hour
+  id: Hour
+  parent: AeroDB.TimeUnit
+  langs:
+  - csharp
+  - vb
+  name: Hour
+  nameWithType: TimeUnit.Hour
+  fullName: AeroDB.TimeUnit.Hour
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/TimeSeries/TimeBucket.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: Hour = 2
+    return:
+      type: AeroDB.TimeUnit
+- uid: AeroDB.TimeUnit.Day
+  commentId: F:AeroDB.TimeUnit.Day
+  id: Day
+  parent: AeroDB.TimeUnit
+  langs:
+  - csharp
+  - vb
+  name: Day
+  nameWithType: TimeUnit.Day
+  fullName: AeroDB.TimeUnit.Day
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/TimeSeries/TimeBucket.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: Day = 3
+    return:
+      type: AeroDB.TimeUnit
+- uid: AeroDB.TimeUnit.Week
+  commentId: F:AeroDB.TimeUnit.Week
+  id: Week
+  parent: AeroDB.TimeUnit
+  langs:
+  - csharp
+  - vb
+  name: Week
+  nameWithType: TimeUnit.Week
+  fullName: AeroDB.TimeUnit.Week
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/TimeSeries/TimeBucket.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: Week = 4
+    return:
+      type: AeroDB.TimeUnit
+- uid: AeroDB.TimeUnit.Month
+  commentId: F:AeroDB.TimeUnit.Month
+  id: Month
+  parent: AeroDB.TimeUnit
+  langs:
+  - csharp
+  - vb
+  name: Month
+  nameWithType: TimeUnit.Month
+  fullName: AeroDB.TimeUnit.Month
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/TimeSeries/TimeBucket.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: Month = 5
+    return:
+      type: AeroDB.TimeUnit
+- uid: AeroDB.TimeUnit.Year
+  commentId: F:AeroDB.TimeUnit.Year
+  id: Year
+  parent: AeroDB.TimeUnit
+  langs:
+  - csharp
+  - vb
+  name: Year
+  nameWithType: TimeUnit.Year
+  fullName: AeroDB.TimeUnit.Year
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/TimeSeries/TimeBucket.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: Year = 6
+    return:
+      type: AeroDB.TimeUnit
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: AeroDB.TimeUnit
+  commentId: T:AeroDB.TimeUnit
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.TimeUnit.html
+  name: TimeUnit
+  nameWithType: TimeUnit
+  fullName: AeroDB.TimeUnit

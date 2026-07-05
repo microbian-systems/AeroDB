@@ -1,0 +1,727 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.IMlQuery`2
+  commentId: T:AeroDB.IMlQuery`2
+  id: IMlQuery`2
+  parent: AeroDB
+  children:
+  - AeroDB.IMlQuery`2.ComputeAllAsync(System.Threading.CancellationToken)
+  - AeroDB.IMlQuery`2.ComputeAsync(`0,System.Threading.CancellationToken)
+  - AeroDB.IMlQuery`2.Input(System.Linq.Expressions.Expression{System.Func{`0,System.Object}})
+  - AeroDB.IMlQuery`2.Model(System.String,System.String)
+  - AeroDB.IMlQuery`2.Skip(System.Int32)
+  - AeroDB.IMlQuery`2.Take(System.Int32)
+  - AeroDB.IMlQuery`2.Where(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})
+  langs:
+  - csharp
+  - vb
+  name: IMlQuery<TInput, TOutput>
+  nameWithType: IMlQuery<TInput, TOutput>
+  fullName: AeroDB.IMlQuery<TInput, TOutput>
+  type: Interface
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.ML/IMlQuery.cs
+  assemblies:
+  - AeroDB.ML
+  namespace: AeroDB
+  syntax:
+    content: 'public interface IMlQuery<TInput, TOutput> where TInput : class where TOutput : class'
+    typeParameters:
+    - id: TInput
+    - id: TOutput
+    content.vb: Public Interface IMlQuery(Of TInput As Class, TOutput As Class)
+  derivedClasses:
+  - AeroDB.AeroDBMlQuery`2
+  nameWithType.vb: IMlQuery(Of TInput, TOutput)
+  fullName.vb: AeroDB.IMlQuery(Of TInput, TOutput)
+  name.vb: IMlQuery(Of TInput, TOutput)
+- uid: AeroDB.IMlQuery`2.Model(System.String,System.String)
+  commentId: M:AeroDB.IMlQuery`2.Model(System.String,System.String)
+  id: Model(System.String,System.String)
+  parent: AeroDB.IMlQuery`2
+  langs:
+  - csharp
+  - vb
+  name: Model(string, string)
+  nameWithType: IMlQuery<TInput, TOutput>.Model(string, string)
+  fullName: AeroDB.IMlQuery<TInput, TOutput>.Model(string, string)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.ML/IMlQuery.cs
+  assemblies:
+  - AeroDB.ML
+  namespace: AeroDB
+  syntax:
+    content: IMlQuery<TInput, TOutput> Model(string name, string version)
+    parameters:
+    - id: name
+      type: System.String
+    - id: version
+      type: System.String
+    return:
+      type: AeroDB.IMlQuery`2
+    content.vb: Function Model(name As String, version As String) As IMlQuery(Of TInput, TOutput)
+  overload: AeroDB.IMlQuery`2.Model*
+  nameWithType.vb: IMlQuery(Of TInput, TOutput).Model(String, String)
+  fullName.vb: AeroDB.IMlQuery(Of TInput, TOutput).Model(String, String)
+  name.vb: Model(String, String)
+- uid: AeroDB.IMlQuery`2.Input(System.Linq.Expressions.Expression{System.Func{`0,System.Object}})
+  commentId: M:AeroDB.IMlQuery`2.Input(System.Linq.Expressions.Expression{System.Func{`0,System.Object}})
+  id: Input(System.Linq.Expressions.Expression{System.Func{`0,System.Object}})
+  parent: AeroDB.IMlQuery`2
+  langs:
+  - csharp
+  - vb
+  name: Input(Expression<Func<TInput, object>>)
+  nameWithType: IMlQuery<TInput, TOutput>.Input(Expression<Func<TInput, object>>)
+  fullName: AeroDB.IMlQuery<TInput, TOutput>.Input(System.Linq.Expressions.Expression<System.Func<TInput, object>>)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.ML/IMlQuery.cs
+  assemblies:
+  - AeroDB.ML
+  namespace: AeroDB
+  syntax:
+    content: IMlQuery<TInput, TOutput> Input(Expression<Func<TInput, object>> inputMapping)
+    parameters:
+    - id: inputMapping
+      type: System.Linq.Expressions.Expression{System.Func{{TInput},System.Object}}
+    return:
+      type: AeroDB.IMlQuery`2
+    content.vb: Function Input(inputMapping As Expression(Of Func(Of TInput, Object))) As IMlQuery(Of TInput, TOutput)
+  overload: AeroDB.IMlQuery`2.Input*
+  nameWithType.vb: IMlQuery(Of TInput, TOutput).Input(Expression(Of Func(Of TInput, Object)))
+  fullName.vb: AeroDB.IMlQuery(Of TInput, TOutput).Input(System.Linq.Expressions.Expression(Of System.Func(Of TInput, Object)))
+  name.vb: Input(Expression(Of Func(Of TInput, Object)))
+- uid: AeroDB.IMlQuery`2.Where(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})
+  commentId: M:AeroDB.IMlQuery`2.Where(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})
+  id: Where(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})
+  parent: AeroDB.IMlQuery`2
+  langs:
+  - csharp
+  - vb
+  name: Where(Expression<Func<TInput, bool>>)
+  nameWithType: IMlQuery<TInput, TOutput>.Where(Expression<Func<TInput, bool>>)
+  fullName: AeroDB.IMlQuery<TInput, TOutput>.Where(System.Linq.Expressions.Expression<System.Func<TInput, bool>>)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.ML/IMlQuery.cs
+  assemblies:
+  - AeroDB.ML
+  namespace: AeroDB
+  syntax:
+    content: IMlQuery<TInput, TOutput> Where(Expression<Func<TInput, bool>> predicate)
+    parameters:
+    - id: predicate
+      type: System.Linq.Expressions.Expression{System.Func{{TInput},System.Boolean}}
+    return:
+      type: AeroDB.IMlQuery`2
+    content.vb: Function Where(predicate As Expression(Of Func(Of TInput, Boolean))) As IMlQuery(Of TInput, TOutput)
+  overload: AeroDB.IMlQuery`2.Where*
+  nameWithType.vb: IMlQuery(Of TInput, TOutput).Where(Expression(Of Func(Of TInput, Boolean)))
+  fullName.vb: AeroDB.IMlQuery(Of TInput, TOutput).Where(System.Linq.Expressions.Expression(Of System.Func(Of TInput, Boolean)))
+  name.vb: Where(Expression(Of Func(Of TInput, Boolean)))
+- uid: AeroDB.IMlQuery`2.Take(System.Int32)
+  commentId: M:AeroDB.IMlQuery`2.Take(System.Int32)
+  id: Take(System.Int32)
+  parent: AeroDB.IMlQuery`2
+  langs:
+  - csharp
+  - vb
+  name: Take(int)
+  nameWithType: IMlQuery<TInput, TOutput>.Take(int)
+  fullName: AeroDB.IMlQuery<TInput, TOutput>.Take(int)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.ML/IMlQuery.cs
+  assemblies:
+  - AeroDB.ML
+  namespace: AeroDB
+  syntax:
+    content: IMlQuery<TInput, TOutput> Take(int limit)
+    parameters:
+    - id: limit
+      type: System.Int32
+    return:
+      type: AeroDB.IMlQuery`2
+    content.vb: Function Take(limit As Integer) As IMlQuery(Of TInput, TOutput)
+  overload: AeroDB.IMlQuery`2.Take*
+  nameWithType.vb: IMlQuery(Of TInput, TOutput).Take(Integer)
+  fullName.vb: AeroDB.IMlQuery(Of TInput, TOutput).Take(Integer)
+  name.vb: Take(Integer)
+- uid: AeroDB.IMlQuery`2.Skip(System.Int32)
+  commentId: M:AeroDB.IMlQuery`2.Skip(System.Int32)
+  id: Skip(System.Int32)
+  parent: AeroDB.IMlQuery`2
+  langs:
+  - csharp
+  - vb
+  name: Skip(int)
+  nameWithType: IMlQuery<TInput, TOutput>.Skip(int)
+  fullName: AeroDB.IMlQuery<TInput, TOutput>.Skip(int)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.ML/IMlQuery.cs
+  assemblies:
+  - AeroDB.ML
+  namespace: AeroDB
+  syntax:
+    content: IMlQuery<TInput, TOutput> Skip(int count)
+    parameters:
+    - id: count
+      type: System.Int32
+    return:
+      type: AeroDB.IMlQuery`2
+    content.vb: Function Skip(count As Integer) As IMlQuery(Of TInput, TOutput)
+  overload: AeroDB.IMlQuery`2.Skip*
+  nameWithType.vb: IMlQuery(Of TInput, TOutput).Skip(Integer)
+  fullName.vb: AeroDB.IMlQuery(Of TInput, TOutput).Skip(Integer)
+  name.vb: Skip(Integer)
+- uid: AeroDB.IMlQuery`2.ComputeAsync(`0,System.Threading.CancellationToken)
+  commentId: M:AeroDB.IMlQuery`2.ComputeAsync(`0,System.Threading.CancellationToken)
+  id: ComputeAsync(`0,System.Threading.CancellationToken)
+  parent: AeroDB.IMlQuery`2
+  langs:
+  - csharp
+  - vb
+  name: ComputeAsync(TInput, CancellationToken)
+  nameWithType: IMlQuery<TInput, TOutput>.ComputeAsync(TInput, CancellationToken)
+  fullName: AeroDB.IMlQuery<TInput, TOutput>.ComputeAsync(TInput, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.ML/IMlQuery.cs
+  assemblies:
+  - AeroDB.ML
+  namespace: AeroDB
+  syntax:
+    content: Task<TOutput> ComputeAsync(TInput input, CancellationToken ct = default)
+    parameters:
+    - id: input
+      type: '{TInput}'
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task{{TOutput}}
+    content.vb: Function ComputeAsync(input As TInput, ct As CancellationToken = Nothing) As Task(Of TOutput)
+  overload: AeroDB.IMlQuery`2.ComputeAsync*
+  nameWithType.vb: IMlQuery(Of TInput, TOutput).ComputeAsync(TInput, CancellationToken)
+  fullName.vb: AeroDB.IMlQuery(Of TInput, TOutput).ComputeAsync(TInput, System.Threading.CancellationToken)
+- uid: AeroDB.IMlQuery`2.ComputeAllAsync(System.Threading.CancellationToken)
+  commentId: M:AeroDB.IMlQuery`2.ComputeAllAsync(System.Threading.CancellationToken)
+  id: ComputeAllAsync(System.Threading.CancellationToken)
+  parent: AeroDB.IMlQuery`2
+  langs:
+  - csharp
+  - vb
+  name: ComputeAllAsync(CancellationToken)
+  nameWithType: IMlQuery<TInput, TOutput>.ComputeAllAsync(CancellationToken)
+  fullName: AeroDB.IMlQuery<TInput, TOutput>.ComputeAllAsync(System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.ML/IMlQuery.cs
+  assemblies:
+  - AeroDB.ML
+  namespace: AeroDB
+  syntax:
+    content: Task<List<TOutput>> ComputeAllAsync(CancellationToken ct = default)
+    parameters:
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.List{{TOutput}}}
+    content.vb: Function ComputeAllAsync(ct As CancellationToken = Nothing) As Task(Of List(Of TOutput))
+  overload: AeroDB.IMlQuery`2.ComputeAllAsync*
+  nameWithType.vb: IMlQuery(Of TInput, TOutput).ComputeAllAsync(CancellationToken)
+  fullName.vb: AeroDB.IMlQuery(Of TInput, TOutput).ComputeAllAsync(System.Threading.CancellationToken)
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: AeroDB.IMlQuery`2.Model*
+  commentId: Overload:AeroDB.IMlQuery`2.Model
+  isExternal: true
+  href: AeroDB.IMlQuery-2.html#AeroDB_IMlQuery_2_Model_System_String_System_String_
+  name: Model
+  nameWithType: IMlQuery<TInput, TOutput>.Model
+  fullName: AeroDB.IMlQuery<TInput, TOutput>.Model
+  nameWithType.vb: IMlQuery(Of TInput, TOutput).Model
+  fullName.vb: AeroDB.IMlQuery(Of TInput, TOutput).Model
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: AeroDB.IMlQuery`2
+  commentId: T:AeroDB.IMlQuery`2
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IMlQuery-2.html
+  name: IMlQuery<TInput, TOutput>
+  nameWithType: IMlQuery<TInput, TOutput>
+  fullName: AeroDB.IMlQuery<TInput, TOutput>
+  nameWithType.vb: IMlQuery(Of TInput, TOutput)
+  fullName.vb: AeroDB.IMlQuery(Of TInput, TOutput)
+  name.vb: IMlQuery(Of TInput, TOutput)
+  spec.csharp:
+  - uid: AeroDB.IMlQuery`2
+    name: IMlQuery
+    isExternal: true
+    href: AeroDB.IMlQuery-2.html
+  - name: <
+  - name: TInput
+  - name: ','
+  - name: " "
+  - name: TOutput
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.IMlQuery`2
+    name: IMlQuery
+    isExternal: true
+    href: AeroDB.IMlQuery-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TInput
+  - name: ','
+  - name: " "
+  - name: TOutput
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AeroDB.IMlQuery`2.Input*
+  commentId: Overload:AeroDB.IMlQuery`2.Input
+  isExternal: true
+  href: AeroDB.IMlQuery-2.html#AeroDB_IMlQuery_2_Input_System_Linq_Expressions_Expression_System_Func__0_System_Object___
+  name: Input
+  nameWithType: IMlQuery<TInput, TOutput>.Input
+  fullName: AeroDB.IMlQuery<TInput, TOutput>.Input
+  nameWithType.vb: IMlQuery(Of TInput, TOutput).Input
+  fullName.vb: AeroDB.IMlQuery(Of TInput, TOutput).Input
+- uid: System.Linq.Expressions.Expression{System.Func{{TInput},System.Object}}
+  commentId: T:System.Linq.Expressions.Expression{System.Func{`0,System.Object}}
+  parent: System.Linq.Expressions
+  definition: System.Linq.Expressions.Expression`1
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  name: Expression<Func<TInput, object>>
+  nameWithType: Expression<Func<TInput, object>>
+  fullName: System.Linq.Expressions.Expression<System.Func<TInput, object>>
+  nameWithType.vb: Expression(Of Func(Of TInput, Object))
+  fullName.vb: System.Linq.Expressions.Expression(Of System.Func(Of TInput, Object))
+  name.vb: Expression(Of Func(Of TInput, Object))
+  spec.csharp:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: TInput
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TInput
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  - name: )
+- uid: System.Linq.Expressions.Expression`1
+  commentId: T:System.Linq.Expressions.Expression`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  name: Expression<TDelegate>
+  nameWithType: Expression<TDelegate>
+  fullName: System.Linq.Expressions.Expression<TDelegate>
+  nameWithType.vb: Expression(Of TDelegate)
+  fullName.vb: System.Linq.Expressions.Expression(Of TDelegate)
+  name.vb: Expression(Of TDelegate)
+  spec.csharp:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - name: TDelegate
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TDelegate
+  - name: )
+- uid: System.Linq.Expressions
+  commentId: N:System.Linq.Expressions
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Linq.Expressions
+  nameWithType: System.Linq.Expressions
+  fullName: System.Linq.Expressions
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Linq
+    name: Linq
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq
+  - name: .
+  - uid: System.Linq.Expressions
+    name: Expressions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Linq
+    name: Linq
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq
+  - name: .
+  - uid: System.Linq.Expressions
+    name: Expressions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions
+- uid: AeroDB.IMlQuery`2.Where*
+  commentId: Overload:AeroDB.IMlQuery`2.Where
+  isExternal: true
+  href: AeroDB.IMlQuery-2.html#AeroDB_IMlQuery_2_Where_System_Linq_Expressions_Expression_System_Func__0_System_Boolean___
+  name: Where
+  nameWithType: IMlQuery<TInput, TOutput>.Where
+  fullName: AeroDB.IMlQuery<TInput, TOutput>.Where
+  nameWithType.vb: IMlQuery(Of TInput, TOutput).Where
+  fullName.vb: AeroDB.IMlQuery(Of TInput, TOutput).Where
+- uid: System.Linq.Expressions.Expression{System.Func{{TInput},System.Boolean}}
+  commentId: T:System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}}
+  parent: System.Linq.Expressions
+  definition: System.Linq.Expressions.Expression`1
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  name: Expression<Func<TInput, bool>>
+  nameWithType: Expression<Func<TInput, bool>>
+  fullName: System.Linq.Expressions.Expression<System.Func<TInput, bool>>
+  nameWithType.vb: Expression(Of Func(Of TInput, Boolean))
+  fullName.vb: System.Linq.Expressions.Expression(Of System.Func(Of TInput, Boolean))
+  name.vb: Expression(Of Func(Of TInput, Boolean))
+  spec.csharp:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: TInput
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TInput
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  - name: )
+- uid: AeroDB.IMlQuery`2.Take*
+  commentId: Overload:AeroDB.IMlQuery`2.Take
+  isExternal: true
+  href: AeroDB.IMlQuery-2.html#AeroDB_IMlQuery_2_Take_System_Int32_
+  name: Take
+  nameWithType: IMlQuery<TInput, TOutput>.Take
+  fullName: AeroDB.IMlQuery<TInput, TOutput>.Take
+  nameWithType.vb: IMlQuery(Of TInput, TOutput).Take
+  fullName.vb: AeroDB.IMlQuery(Of TInput, TOutput).Take
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: AeroDB.IMlQuery`2.Skip*
+  commentId: Overload:AeroDB.IMlQuery`2.Skip
+  isExternal: true
+  href: AeroDB.IMlQuery-2.html#AeroDB_IMlQuery_2_Skip_System_Int32_
+  name: Skip
+  nameWithType: IMlQuery<TInput, TOutput>.Skip
+  fullName: AeroDB.IMlQuery<TInput, TOutput>.Skip
+  nameWithType.vb: IMlQuery(Of TInput, TOutput).Skip
+  fullName.vb: AeroDB.IMlQuery(Of TInput, TOutput).Skip
+- uid: AeroDB.IMlQuery`2.ComputeAsync*
+  commentId: Overload:AeroDB.IMlQuery`2.ComputeAsync
+  isExternal: true
+  href: AeroDB.IMlQuery-2.html#AeroDB_IMlQuery_2_ComputeAsync__0_System_Threading_CancellationToken_
+  name: ComputeAsync
+  nameWithType: IMlQuery<TInput, TOutput>.ComputeAsync
+  fullName: AeroDB.IMlQuery<TInput, TOutput>.ComputeAsync
+  nameWithType.vb: IMlQuery(Of TInput, TOutput).ComputeAsync
+  fullName.vb: AeroDB.IMlQuery(Of TInput, TOutput).ComputeAsync
+- uid: '{TInput}'
+  commentId: '!:TInput'
+  definition: TInput
+  name: TInput
+  nameWithType: TInput
+  fullName: TInput
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task{{TOutput}}
+  commentId: T:System.Threading.Tasks.Task{`1}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TOutput>
+  nameWithType: Task<TOutput>
+  fullName: System.Threading.Tasks.Task<TOutput>
+  nameWithType.vb: Task(Of TOutput)
+  fullName.vb: System.Threading.Tasks.Task(Of TOutput)
+  name.vb: Task(Of TOutput)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TOutput
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TOutput
+  - name: )
+- uid: TInput
+  name: TInput
+  nameWithType: TInput
+  fullName: TInput
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: AeroDB.IMlQuery`2.ComputeAllAsync*
+  commentId: Overload:AeroDB.IMlQuery`2.ComputeAllAsync
+  isExternal: true
+  href: AeroDB.IMlQuery-2.html#AeroDB_IMlQuery_2_ComputeAllAsync_System_Threading_CancellationToken_
+  name: ComputeAllAsync
+  nameWithType: IMlQuery<TInput, TOutput>.ComputeAllAsync
+  fullName: AeroDB.IMlQuery<TInput, TOutput>.ComputeAllAsync
+  nameWithType.vb: IMlQuery(Of TInput, TOutput).ComputeAllAsync
+  fullName.vb: AeroDB.IMlQuery(Of TInput, TOutput).ComputeAllAsync
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.List{{TOutput}}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.List{`1}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<List<TOutput>>
+  nameWithType: Task<List<TOutput>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.List<TOutput>>
+  nameWithType.vb: Task(Of List(Of TOutput))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.List(Of TOutput))
+  name.vb: Task(Of List(Of TOutput))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - name: TOutput
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TOutput
+  - name: )
+  - name: )

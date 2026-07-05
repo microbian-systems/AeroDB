@@ -1,0 +1,1171 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.IBatchedQuery
+  commentId: T:AeroDB.IBatchedQuery
+  id: IBatchedQuery
+  parent: AeroDB
+  children:
+  - AeroDB.IBatchedQuery.AddItem``1(System.Func{System.Collections.Generic.IReadOnlyList{``0},System.Threading.Tasks.Task})
+  - AeroDB.IBatchedQuery.CheckExists``1(System.String,System.Threading.Tasks.Task{System.Boolean}@)
+  - AeroDB.IBatchedQuery.Events
+  - AeroDB.IBatchedQuery.Execute(System.Threading.CancellationToken)
+  - AeroDB.IBatchedQuery.LoadMany``1(System.Collections.Generic.IEnumerable{System.String},System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{``0}}@)
+  - AeroDB.IBatchedQuery.Load``1(System.String,System.Threading.Tasks.Task{``0}@)
+  - AeroDB.IBatchedQuery.Parent
+  - AeroDB.IBatchedQuery.QueryByPlan``1(System.String,System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{``0}}@)
+  - AeroDB.IBatchedQuery.QueryRawAsync(System.String,System.Threading.CancellationToken)
+  - AeroDB.IBatchedQuery.Query``1(System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{``0}}@)
+  - AeroDB.IBatchedQuery.Query``2(AeroDB.ICompiledQuery{``0,``1})
+  langs:
+  - csharp
+  - vb
+  name: IBatchedQuery
+  nameWithType: IBatchedQuery
+  fullName: AeroDB.IBatchedQuery
+  type: Interface
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Batching/IBatchedQuery.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    A batch of compiled queries that are executed together in a single
+
+    SurrealDB multi-statement round trip (Marten-compatible pattern).
+
+
+    Usage:
+
+
+    <pre><code class="lang-csharp">var batch = session.CreateBatchQuery();
+
+    var justin = batch.Query(new FindByFirstName { FirstName = "Justin" });
+
+    var tamba = batch.Query(new FindByFirstName { FirstName = "Tamba" });
+
+    await batch.Execute();
+
+    var user1 = await justin;
+
+    var user2 = await tamba;</code></pre>
+  example: []
+  syntax:
+    content: public interface IBatchedQuery
+    content.vb: Public Interface IBatchedQuery
+- uid: AeroDB.IBatchedQuery.Query``2(AeroDB.ICompiledQuery{``0,``1})
+  commentId: M:AeroDB.IBatchedQuery.Query``2(AeroDB.ICompiledQuery{``0,``1})
+  id: Query``2(AeroDB.ICompiledQuery{``0,``1})
+  parent: AeroDB.IBatchedQuery
+  langs:
+  - csharp
+  - vb
+  name: Query<TDoc, TOut>(ICompiledQuery<TDoc, TOut>)
+  nameWithType: IBatchedQuery.Query<TDoc, TOut>(ICompiledQuery<TDoc, TOut>)
+  fullName: AeroDB.IBatchedQuery.Query<TDoc, TOut>(AeroDB.ICompiledQuery<TDoc, TOut>)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Batching/IBatchedQuery.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Adds a compiled query to this batch. Returns an awaitable "future"
+
+    that will contain the result after <xref href="AeroDB.IBatchedQuery.Execute(System.Threading.CancellationToken)" data-throw-if-not-resolved="false"></xref> completes.
+  example: []
+  syntax:
+    content: 'Task<TOut> Query<TDoc, TOut>(ICompiledQuery<TDoc, TOut> compiledQuery) where TDoc : class'
+    parameters:
+    - id: compiledQuery
+      type: AeroDB.ICompiledQuery{{TDoc},{TOut}}
+      description: The compiled query instance with parameter values.
+    typeParameters:
+    - id: TDoc
+      description: The document type being queried.
+    - id: TOut
+      description: The result type.
+    return:
+      type: System.Threading.Tasks.Task{{TOut}}
+    content.vb: Function Query(Of TDoc As Class, TOut)(compiledQuery As ICompiledQuery(Of TDoc, TOut)) As Task(Of TOut)
+  overload: AeroDB.IBatchedQuery.Query*
+  nameWithType.vb: IBatchedQuery.Query(Of TDoc, TOut)(ICompiledQuery(Of TDoc, TOut))
+  fullName.vb: AeroDB.IBatchedQuery.Query(Of TDoc, TOut)(AeroDB.ICompiledQuery(Of TDoc, TOut))
+  name.vb: Query(Of TDoc, TOut)(ICompiledQuery(Of TDoc, TOut))
+- uid: AeroDB.IBatchedQuery.QueryRawAsync(System.String,System.Threading.CancellationToken)
+  commentId: M:AeroDB.IBatchedQuery.QueryRawAsync(System.String,System.Threading.CancellationToken)
+  id: QueryRawAsync(System.String,System.Threading.CancellationToken)
+  parent: AeroDB.IBatchedQuery
+  langs:
+  - csharp
+  - vb
+  name: QueryRawAsync(string, CancellationToken)
+  nameWithType: IBatchedQuery.QueryRawAsync(string, CancellationToken)
+  fullName: AeroDB.IBatchedQuery.QueryRawAsync(string, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Batching/IBatchedQuery.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Execute a raw SurrealQL query and return results as a list of raw JSON strings.
+
+    Useful for diagnostic queries or when the result shape is dynamic.
+  example: []
+  syntax:
+    content: Task<IReadOnlyList<string>> QueryRawAsync(string surql, CancellationToken ct = default)
+    parameters:
+    - id: surql
+      type: System.String
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{System.String}}
+    content.vb: Function QueryRawAsync(surql As String, ct As CancellationToken = Nothing) As Task(Of IReadOnlyList(Of String))
+  overload: AeroDB.IBatchedQuery.QueryRawAsync*
+  nameWithType.vb: IBatchedQuery.QueryRawAsync(String, CancellationToken)
+  fullName.vb: AeroDB.IBatchedQuery.QueryRawAsync(String, System.Threading.CancellationToken)
+  name.vb: QueryRawAsync(String, CancellationToken)
+- uid: AeroDB.IBatchedQuery.Execute(System.Threading.CancellationToken)
+  commentId: M:AeroDB.IBatchedQuery.Execute(System.Threading.CancellationToken)
+  id: Execute(System.Threading.CancellationToken)
+  parent: AeroDB.IBatchedQuery
+  langs:
+  - csharp
+  - vb
+  name: Execute(CancellationToken)
+  nameWithType: IBatchedQuery.Execute(CancellationToken)
+  fullName: AeroDB.IBatchedQuery.Execute(System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Batching/IBatchedQuery.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Executes all batched queries in a single round trip.
+
+    Results are set on each future returned by <xref href="AeroDB.IBatchedQuery.Query%60%602(AeroDB.ICompiledQuery%7b%60%600%2c%60%601%7d)" data-throw-if-not-resolved="false"></xref>.
+
+    May be called multiple times — items accumulate additively.
+  example: []
+  syntax:
+    content: Task Execute(CancellationToken ct = default)
+    parameters:
+    - id: ct
+      type: System.Threading.CancellationToken
+      description: Cancellation token.
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Function Execute(ct As CancellationToken = Nothing) As Task
+  overload: AeroDB.IBatchedQuery.Execute*
+- uid: AeroDB.IBatchedQuery.CheckExists``1(System.String,System.Threading.Tasks.Task{System.Boolean}@)
+  commentId: M:AeroDB.IBatchedQuery.CheckExists``1(System.String,System.Threading.Tasks.Task{System.Boolean}@)
+  id: CheckExists``1(System.String,System.Threading.Tasks.Task{System.Boolean}@)
+  parent: AeroDB.IBatchedQuery
+  langs:
+  - csharp
+  - vb
+  name: CheckExists<T>(string, out Task<bool>)
+  nameWithType: IBatchedQuery.CheckExists<T>(string, out Task<bool>)
+  fullName: AeroDB.IBatchedQuery.CheckExists<T>(string, out System.Threading.Tasks.Task<bool>)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Batching/IBatchedQuery.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Check if a document exists by ID.
+  example: []
+  syntax:
+    content: 'IBatchedQuery CheckExists<T>(string id, out Task<bool> result) where T : class'
+    parameters:
+    - id: id
+      type: System.String
+    - id: result
+      type: System.Threading.Tasks.Task{System.Boolean}
+    typeParameters:
+    - id: T
+    return:
+      type: AeroDB.IBatchedQuery
+    content.vb: Function CheckExists(Of T As Class)(id As String, result As Task(Of Boolean)) As IBatchedQuery
+  overload: AeroDB.IBatchedQuery.CheckExists*
+  nameWithType.vb: IBatchedQuery.CheckExists(Of T)(String, Task(Of Boolean))
+  fullName.vb: AeroDB.IBatchedQuery.CheckExists(Of T)(String, System.Threading.Tasks.Task(Of Boolean))
+  name.vb: CheckExists(Of T)(String, Task(Of Boolean))
+- uid: AeroDB.IBatchedQuery.Load``1(System.String,System.Threading.Tasks.Task{``0}@)
+  commentId: M:AeroDB.IBatchedQuery.Load``1(System.String,System.Threading.Tasks.Task{``0}@)
+  id: Load``1(System.String,System.Threading.Tasks.Task{``0}@)
+  parent: AeroDB.IBatchedQuery
+  langs:
+  - csharp
+  - vb
+  name: Load<T>(string, out Task<T?>)
+  nameWithType: IBatchedQuery.Load<T>(string, out Task<T?>)
+  fullName: AeroDB.IBatchedQuery.Load<T>(string, out System.Threading.Tasks.Task<T?>)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Batching/IBatchedQuery.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Load a document by string ID.
+  example: []
+  syntax:
+    content: 'IBatchedQuery Load<T>(string id, out Task<T?> result) where T : class'
+    parameters:
+    - id: id
+      type: System.String
+    - id: result
+      type: System.Threading.Tasks.Task{{T}}
+    typeParameters:
+    - id: T
+    return:
+      type: AeroDB.IBatchedQuery
+    content.vb: Function Load(Of T As Class)(id As String, result As Task(Of T)) As IBatchedQuery
+  overload: AeroDB.IBatchedQuery.Load*
+  nameWithType.vb: IBatchedQuery.Load(Of T)(String, Task(Of T))
+  fullName.vb: AeroDB.IBatchedQuery.Load(Of T)(String, System.Threading.Tasks.Task(Of T))
+  name.vb: Load(Of T)(String, Task(Of T))
+- uid: AeroDB.IBatchedQuery.LoadMany``1(System.Collections.Generic.IEnumerable{System.String},System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{``0}}@)
+  commentId: M:AeroDB.IBatchedQuery.LoadMany``1(System.Collections.Generic.IEnumerable{System.String},System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{``0}}@)
+  id: LoadMany``1(System.Collections.Generic.IEnumerable{System.String},System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{``0}}@)
+  parent: AeroDB.IBatchedQuery
+  langs:
+  - csharp
+  - vb
+  name: LoadMany<T>(IEnumerable<string>, out Task<IReadOnlyList<T>>)
+  nameWithType: IBatchedQuery.LoadMany<T>(IEnumerable<string>, out Task<IReadOnlyList<T>>)
+  fullName: AeroDB.IBatchedQuery.LoadMany<T>(System.Collections.Generic.IEnumerable<string>, out System.Threading.Tasks.Task<System.Collections.Generic.IReadOnlyList<T>>)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Batching/IBatchedQuery.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Load multiple documents by string IDs.
+  example: []
+  syntax:
+    content: 'IBatchedQuery LoadMany<T>(IEnumerable<string> ids, out Task<IReadOnlyList<T>> result) where T : class'
+    parameters:
+    - id: ids
+      type: System.Collections.Generic.IEnumerable{System.String}
+    - id: result
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{{T}}}
+    typeParameters:
+    - id: T
+    return:
+      type: AeroDB.IBatchedQuery
+    content.vb: Function LoadMany(Of T As Class)(ids As IEnumerable(Of String), result As Task(Of IReadOnlyList(Of T))) As IBatchedQuery
+  overload: AeroDB.IBatchedQuery.LoadMany*
+  nameWithType.vb: IBatchedQuery.LoadMany(Of T)(IEnumerable(Of String), Task(Of IReadOnlyList(Of T)))
+  fullName.vb: AeroDB.IBatchedQuery.LoadMany(Of T)(System.Collections.Generic.IEnumerable(Of String), System.Threading.Tasks.Task(Of System.Collections.Generic.IReadOnlyList(Of T)))
+  name.vb: LoadMany(Of T)(IEnumerable(Of String), Task(Of IReadOnlyList(Of T)))
+- uid: AeroDB.IBatchedQuery.Query``1(System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{``0}}@)
+  commentId: M:AeroDB.IBatchedQuery.Query``1(System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{``0}}@)
+  id: Query``1(System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{``0}}@)
+  parent: AeroDB.IBatchedQuery
+  langs:
+  - csharp
+  - vb
+  name: Query<T>(out Task<IReadOnlyList<T>>)
+  nameWithType: IBatchedQuery.Query<T>(out Task<IReadOnlyList<T>>)
+  fullName: AeroDB.IBatchedQuery.Query<T>(out System.Threading.Tasks.Task<System.Collections.Generic.IReadOnlyList<T>>)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Batching/IBatchedQuery.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Query using LINQ expression (full table select).
+  example: []
+  syntax:
+    content: 'IBatchedQuery Query<T>(out Task<IReadOnlyList<T>> result) where T : class'
+    parameters:
+    - id: result
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{{T}}}
+    typeParameters:
+    - id: T
+    return:
+      type: AeroDB.IBatchedQuery
+    content.vb: Function Query(Of T As Class)(result As Task(Of IReadOnlyList(Of T))) As IBatchedQuery
+  overload: AeroDB.IBatchedQuery.Query*
+  nameWithType.vb: IBatchedQuery.Query(Of T)(Task(Of IReadOnlyList(Of T)))
+  fullName.vb: AeroDB.IBatchedQuery.Query(Of T)(System.Threading.Tasks.Task(Of System.Collections.Generic.IReadOnlyList(Of T)))
+  name.vb: Query(Of T)(Task(Of IReadOnlyList(Of T)))
+- uid: AeroDB.IBatchedQuery.AddItem``1(System.Func{System.Collections.Generic.IReadOnlyList{``0},System.Threading.Tasks.Task})
+  commentId: M:AeroDB.IBatchedQuery.AddItem``1(System.Func{System.Collections.Generic.IReadOnlyList{``0},System.Threading.Tasks.Task})
+  id: AddItem``1(System.Func{System.Collections.Generic.IReadOnlyList{``0},System.Threading.Tasks.Task})
+  parent: AeroDB.IBatchedQuery
+  langs:
+  - csharp
+  - vb
+  name: AddItem<T>(Func<IReadOnlyList<T>, Task>)
+  nameWithType: IBatchedQuery.AddItem<T>(Func<IReadOnlyList<T>, Task>)
+  fullName: AeroDB.IBatchedQuery.AddItem<T>(System.Func<System.Collections.Generic.IReadOnlyList<T>, System.Threading.Tasks.Task>)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Batching/IBatchedQuery.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Add a custom handler for a result set.
+  example: []
+  syntax:
+    content: 'IBatchedQuery AddItem<T>(Func<IReadOnlyList<T>, Task> handler) where T : class'
+    parameters:
+    - id: handler
+      type: System.Func{System.Collections.Generic.IReadOnlyList{{T}},System.Threading.Tasks.Task}
+    typeParameters:
+    - id: T
+    return:
+      type: AeroDB.IBatchedQuery
+    content.vb: Function AddItem(Of T As Class)(handler As Func(Of IReadOnlyList(Of T), Task)) As IBatchedQuery
+  overload: AeroDB.IBatchedQuery.AddItem*
+  nameWithType.vb: IBatchedQuery.AddItem(Of T)(Func(Of IReadOnlyList(Of T), Task))
+  fullName.vb: AeroDB.IBatchedQuery.AddItem(Of T)(System.Func(Of System.Collections.Generic.IReadOnlyList(Of T), System.Threading.Tasks.Task))
+  name.vb: AddItem(Of T)(Func(Of IReadOnlyList(Of T), Task))
+- uid: AeroDB.IBatchedQuery.QueryByPlan``1(System.String,System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{``0}}@)
+  commentId: M:AeroDB.IBatchedQuery.QueryByPlan``1(System.String,System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{``0}}@)
+  id: QueryByPlan``1(System.String,System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{``0}}@)
+  parent: AeroDB.IBatchedQuery
+  langs:
+  - csharp
+  - vb
+  name: QueryByPlan<T>(string, out Task<IReadOnlyList<T>>)
+  nameWithType: IBatchedQuery.QueryByPlan<T>(string, out Task<IReadOnlyList<T>>)
+  fullName: AeroDB.IBatchedQuery.QueryByPlan<T>(string, out System.Threading.Tasks.Task<System.Collections.Generic.IReadOnlyList<T>>)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Batching/IBatchedQuery.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Query by an execution plan (raw SurrealQL).
+  example: []
+  syntax:
+    content: 'IBatchedQuery QueryByPlan<T>(string plan, out Task<IReadOnlyList<T>> result) where T : class'
+    parameters:
+    - id: plan
+      type: System.String
+    - id: result
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{{T}}}
+    typeParameters:
+    - id: T
+    return:
+      type: AeroDB.IBatchedQuery
+    content.vb: Function QueryByPlan(Of T As Class)(plan As String, result As Task(Of IReadOnlyList(Of T))) As IBatchedQuery
+  overload: AeroDB.IBatchedQuery.QueryByPlan*
+  nameWithType.vb: IBatchedQuery.QueryByPlan(Of T)(String, Task(Of IReadOnlyList(Of T)))
+  fullName.vb: AeroDB.IBatchedQuery.QueryByPlan(Of T)(String, System.Threading.Tasks.Task(Of System.Collections.Generic.IReadOnlyList(Of T)))
+  name.vb: QueryByPlan(Of T)(String, Task(Of IReadOnlyList(Of T)))
+- uid: AeroDB.IBatchedQuery.Events
+  commentId: P:AeroDB.IBatchedQuery.Events
+  id: Events
+  parent: AeroDB.IBatchedQuery
+  langs:
+  - csharp
+  - vb
+  name: Events
+  nameWithType: IBatchedQuery.Events
+  fullName: AeroDB.IBatchedQuery.Events
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Batching/IBatchedQuery.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Batch event operations.
+  example: []
+  syntax:
+    content: IBatchEvents Events { get; }
+    parameters: []
+    return:
+      type: AeroDB.IBatchEvents
+    content.vb: ReadOnly Property Events As IBatchEvents
+  overload: AeroDB.IBatchedQuery.Events*
+- uid: AeroDB.IBatchedQuery.Parent
+  commentId: P:AeroDB.IBatchedQuery.Parent
+  id: Parent
+  parent: AeroDB.IBatchedQuery
+  langs:
+  - csharp
+  - vb
+  name: Parent
+  nameWithType: IBatchedQuery.Parent
+  fullName: AeroDB.IBatchedQuery.Parent
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Batching/IBatchedQuery.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Parent query session that created this batch.
+  example: []
+  syntax:
+    content: IQuerySession Parent { get; }
+    parameters: []
+    return:
+      type: AeroDB.IQuerySession
+    content.vb: ReadOnly Property Parent As IQuerySession
+  overload: AeroDB.IBatchedQuery.Parent*
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: AeroDB.IBatchedQuery.Execute(System.Threading.CancellationToken)
+  commentId: M:AeroDB.IBatchedQuery.Execute(System.Threading.CancellationToken)
+  isExternal: true
+  href: AeroDB.IBatchedQuery.html#AeroDB_IBatchedQuery_Execute_System_Threading_CancellationToken_
+  name: Execute(CancellationToken)
+  nameWithType: IBatchedQuery.Execute(CancellationToken)
+  fullName: AeroDB.IBatchedQuery.Execute(System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: AeroDB.IBatchedQuery.Execute(System.Threading.CancellationToken)
+    name: Execute
+    isExternal: true
+    href: AeroDB.IBatchedQuery.html#AeroDB_IBatchedQuery_Execute_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: AeroDB.IBatchedQuery.Execute(System.Threading.CancellationToken)
+    name: Execute
+    isExternal: true
+    href: AeroDB.IBatchedQuery.html#AeroDB_IBatchedQuery_Execute_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: AeroDB.IBatchedQuery.Query*
+  commentId: Overload:AeroDB.IBatchedQuery.Query
+  isExternal: true
+  href: AeroDB.IBatchedQuery.html#AeroDB_IBatchedQuery_Query__2_AeroDB_ICompiledQuery___0___1__
+  name: Query
+  nameWithType: IBatchedQuery.Query
+  fullName: AeroDB.IBatchedQuery.Query
+- uid: AeroDB.ICompiledQuery{{TDoc},{TOut}}
+  commentId: T:AeroDB.ICompiledQuery{``0,``1}
+  parent: AeroDB
+  definition: AeroDB.ICompiledQuery`2
+  href: AeroDB.ICompiledQuery-2.html
+  name: ICompiledQuery<TDoc, TOut>
+  nameWithType: ICompiledQuery<TDoc, TOut>
+  fullName: AeroDB.ICompiledQuery<TDoc, TOut>
+  nameWithType.vb: ICompiledQuery(Of TDoc, TOut)
+  fullName.vb: AeroDB.ICompiledQuery(Of TDoc, TOut)
+  name.vb: ICompiledQuery(Of TDoc, TOut)
+  spec.csharp:
+  - uid: AeroDB.ICompiledQuery`2
+    name: ICompiledQuery
+    isExternal: true
+    href: AeroDB.ICompiledQuery-2.html
+  - name: <
+  - name: TDoc
+  - name: ','
+  - name: " "
+  - name: TOut
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.ICompiledQuery`2
+    name: ICompiledQuery
+    isExternal: true
+    href: AeroDB.ICompiledQuery-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TDoc
+  - name: ','
+  - name: " "
+  - name: TOut
+  - name: )
+- uid: System.Threading.Tasks.Task{{TOut}}
+  commentId: T:System.Threading.Tasks.Task{``1}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TOut>
+  nameWithType: Task<TOut>
+  fullName: System.Threading.Tasks.Task<TOut>
+  nameWithType.vb: Task(Of TOut)
+  fullName.vb: System.Threading.Tasks.Task(Of TOut)
+  name.vb: Task(Of TOut)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TOut
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TOut
+  - name: )
+- uid: AeroDB.ICompiledQuery`2
+  commentId: T:AeroDB.ICompiledQuery`2
+  isExternal: true
+  href: AeroDB.ICompiledQuery-2.html
+  name: ICompiledQuery<TDoc, TOut>
+  nameWithType: ICompiledQuery<TDoc, TOut>
+  fullName: AeroDB.ICompiledQuery<TDoc, TOut>
+  nameWithType.vb: ICompiledQuery(Of TDoc, TOut)
+  fullName.vb: AeroDB.ICompiledQuery(Of TDoc, TOut)
+  name.vb: ICompiledQuery(Of TDoc, TOut)
+  spec.csharp:
+  - uid: AeroDB.ICompiledQuery`2
+    name: ICompiledQuery
+    isExternal: true
+    href: AeroDB.ICompiledQuery-2.html
+  - name: <
+  - name: TDoc
+  - name: ','
+  - name: " "
+  - name: TOut
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.ICompiledQuery`2
+    name: ICompiledQuery
+    isExternal: true
+    href: AeroDB.ICompiledQuery-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TDoc
+  - name: ','
+  - name: " "
+  - name: TOut
+  - name: )
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: AeroDB.IBatchedQuery.QueryRawAsync*
+  commentId: Overload:AeroDB.IBatchedQuery.QueryRawAsync
+  isExternal: true
+  href: AeroDB.IBatchedQuery.html#AeroDB_IBatchedQuery_QueryRawAsync_System_String_System_Threading_CancellationToken_
+  name: QueryRawAsync
+  nameWithType: IBatchedQuery.QueryRawAsync
+  fullName: AeroDB.IBatchedQuery.QueryRawAsync
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{System.String}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{System.String}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<IReadOnlyList<string>>
+  nameWithType: Task<IReadOnlyList<string>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.IReadOnlyList<string>>
+  nameWithType.vb: Task(Of IReadOnlyList(Of String))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.IReadOnlyList(Of String))
+  name.vb: Task(Of IReadOnlyList(Of String))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: AeroDB.IBatchedQuery.Query``2(AeroDB.ICompiledQuery{``0,``1})
+  commentId: M:AeroDB.IBatchedQuery.Query``2(AeroDB.ICompiledQuery{``0,``1})
+  isExternal: true
+  href: AeroDB.IBatchedQuery.html#AeroDB_IBatchedQuery_Query__2_AeroDB_ICompiledQuery___0___1__
+  name: Query<TDoc, TOut>(ICompiledQuery<TDoc, TOut>)
+  nameWithType: IBatchedQuery.Query<TDoc, TOut>(ICompiledQuery<TDoc, TOut>)
+  fullName: AeroDB.IBatchedQuery.Query<TDoc, TOut>(AeroDB.ICompiledQuery<TDoc, TOut>)
+  nameWithType.vb: IBatchedQuery.Query(Of TDoc, TOut)(ICompiledQuery(Of TDoc, TOut))
+  fullName.vb: AeroDB.IBatchedQuery.Query(Of TDoc, TOut)(AeroDB.ICompiledQuery(Of TDoc, TOut))
+  name.vb: Query(Of TDoc, TOut)(ICompiledQuery(Of TDoc, TOut))
+  spec.csharp:
+  - uid: AeroDB.IBatchedQuery.Query``2(AeroDB.ICompiledQuery{``0,``1})
+    name: Query
+    isExternal: true
+    href: AeroDB.IBatchedQuery.html#AeroDB_IBatchedQuery_Query__2_AeroDB_ICompiledQuery___0___1__
+  - name: <
+  - name: TDoc
+  - name: ','
+  - name: " "
+  - name: TOut
+  - name: '>'
+  - name: (
+  - uid: AeroDB.ICompiledQuery`2
+    name: ICompiledQuery
+    isExternal: true
+    href: AeroDB.ICompiledQuery-2.html
+  - name: <
+  - name: TDoc
+  - name: ','
+  - name: " "
+  - name: TOut
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: AeroDB.IBatchedQuery.Query``2(AeroDB.ICompiledQuery{``0,``1})
+    name: Query
+    isExternal: true
+    href: AeroDB.IBatchedQuery.html#AeroDB_IBatchedQuery_Query__2_AeroDB_ICompiledQuery___0___1__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TDoc
+  - name: ','
+  - name: " "
+  - name: TOut
+  - name: )
+  - name: (
+  - uid: AeroDB.ICompiledQuery`2
+    name: ICompiledQuery
+    isExternal: true
+    href: AeroDB.ICompiledQuery-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TDoc
+  - name: ','
+  - name: " "
+  - name: TOut
+  - name: )
+  - name: )
+- uid: AeroDB.IBatchedQuery.Execute*
+  commentId: Overload:AeroDB.IBatchedQuery.Execute
+  isExternal: true
+  href: AeroDB.IBatchedQuery.html#AeroDB_IBatchedQuery_Execute_System_Threading_CancellationToken_
+  name: Execute
+  nameWithType: IBatchedQuery.Execute
+  fullName: AeroDB.IBatchedQuery.Execute
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: AeroDB.IBatchedQuery.CheckExists*
+  commentId: Overload:AeroDB.IBatchedQuery.CheckExists
+  isExternal: true
+  href: AeroDB.IBatchedQuery.html#AeroDB_IBatchedQuery_CheckExists__1_System_String_System_Threading_Tasks_Task_System_Boolean___
+  name: CheckExists
+  nameWithType: IBatchedQuery.CheckExists
+  fullName: AeroDB.IBatchedQuery.CheckExists
+- uid: System.Threading.Tasks.Task{System.Boolean}
+  commentId: T:System.Threading.Tasks.Task{System.Boolean}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<bool>
+  nameWithType: Task<bool>
+  fullName: System.Threading.Tasks.Task<bool>
+  nameWithType.vb: Task(Of Boolean)
+  fullName.vb: System.Threading.Tasks.Task(Of Boolean)
+  name.vb: Task(Of Boolean)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: AeroDB.IBatchedQuery
+  commentId: T:AeroDB.IBatchedQuery
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IBatchedQuery.html
+  name: IBatchedQuery
+  nameWithType: IBatchedQuery
+  fullName: AeroDB.IBatchedQuery
+- uid: AeroDB.IBatchedQuery.Load*
+  commentId: Overload:AeroDB.IBatchedQuery.Load
+  isExternal: true
+  href: AeroDB.IBatchedQuery.html#AeroDB_IBatchedQuery_Load__1_System_String_System_Threading_Tasks_Task___0___
+  name: Load
+  nameWithType: IBatchedQuery.Load
+  fullName: AeroDB.IBatchedQuery.Load
+- uid: System.Threading.Tasks.Task{{T}}
+  commentId: T:System.Threading.Tasks.Task{``0}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<T>
+  nameWithType: Task<T>
+  fullName: System.Threading.Tasks.Task<T>
+  nameWithType.vb: Task(Of T)
+  fullName.vb: System.Threading.Tasks.Task(Of T)
+  name.vb: Task(Of T)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.IBatchedQuery.LoadMany*
+  commentId: Overload:AeroDB.IBatchedQuery.LoadMany
+  isExternal: true
+  href: AeroDB.IBatchedQuery.html#AeroDB_IBatchedQuery_LoadMany__1_System_Collections_Generic_IEnumerable_System_String__System_Threading_Tasks_Task_System_Collections_Generic_IReadOnlyList___0____
+  name: LoadMany
+  nameWithType: IBatchedQuery.LoadMany
+  fullName: AeroDB.IBatchedQuery.LoadMany
+- uid: System.Collections.Generic.IEnumerable{System.String}
+  commentId: T:System.Collections.Generic.IEnumerable{System.String}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<string>
+  nameWithType: IEnumerable<string>
+  fullName: System.Collections.Generic.IEnumerable<string>
+  nameWithType.vb: IEnumerable(Of String)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of String)
+  name.vb: IEnumerable(Of String)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{{T}}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{``0}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<IReadOnlyList<T>>
+  nameWithType: Task<IReadOnlyList<T>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.IReadOnlyList<T>>
+  nameWithType.vb: Task(Of IReadOnlyList(Of T))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.IReadOnlyList(Of T))
+  name.vb: Task(Of IReadOnlyList(Of T))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - name: T
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: AeroDB.IBatchedQuery.AddItem*
+  commentId: Overload:AeroDB.IBatchedQuery.AddItem
+  isExternal: true
+  href: AeroDB.IBatchedQuery.html#AeroDB_IBatchedQuery_AddItem__1_System_Func_System_Collections_Generic_IReadOnlyList___0__System_Threading_Tasks_Task__
+  name: AddItem
+  nameWithType: IBatchedQuery.AddItem
+  fullName: AeroDB.IBatchedQuery.AddItem
+- uid: System.Func{System.Collections.Generic.IReadOnlyList{{T}},System.Threading.Tasks.Task}
+  commentId: T:System.Func{System.Collections.Generic.IReadOnlyList{``0},System.Threading.Tasks.Task}
+  parent: System
+  definition: System.Func`2
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<IReadOnlyList<T>, Task>
+  nameWithType: Func<IReadOnlyList<T>, Task>
+  fullName: System.Func<System.Collections.Generic.IReadOnlyList<T>, System.Threading.Tasks.Task>
+  nameWithType.vb: Func(Of IReadOnlyList(Of T), Task)
+  fullName.vb: System.Func(Of System.Collections.Generic.IReadOnlyList(Of T), System.Threading.Tasks.Task)
+  name.vb: Func(Of IReadOnlyList(Of T), Task)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - name: T
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Threading.Tasks.Task
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Threading.Tasks.Task
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  - name: )
+- uid: System.Func`2
+  commentId: T:System.Func`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<T, TResult>
+  nameWithType: Func<T, TResult>
+  fullName: System.Func<T, TResult>
+  nameWithType.vb: Func(Of T, TResult)
+  fullName.vb: System.Func(Of T, TResult)
+  name.vb: Func(Of T, TResult)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: AeroDB.IBatchedQuery.QueryByPlan*
+  commentId: Overload:AeroDB.IBatchedQuery.QueryByPlan
+  isExternal: true
+  href: AeroDB.IBatchedQuery.html#AeroDB_IBatchedQuery_QueryByPlan__1_System_String_System_Threading_Tasks_Task_System_Collections_Generic_IReadOnlyList___0____
+  name: QueryByPlan
+  nameWithType: IBatchedQuery.QueryByPlan
+  fullName: AeroDB.IBatchedQuery.QueryByPlan
+- uid: AeroDB.IBatchedQuery.Events*
+  commentId: Overload:AeroDB.IBatchedQuery.Events
+  isExternal: true
+  href: AeroDB.IBatchedQuery.html#AeroDB_IBatchedQuery_Events
+  name: Events
+  nameWithType: IBatchedQuery.Events
+  fullName: AeroDB.IBatchedQuery.Events
+- uid: AeroDB.IBatchEvents
+  commentId: T:AeroDB.IBatchEvents
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IBatchEvents.html
+  name: IBatchEvents
+  nameWithType: IBatchEvents
+  fullName: AeroDB.IBatchEvents
+- uid: AeroDB.IBatchedQuery.Parent*
+  commentId: Overload:AeroDB.IBatchedQuery.Parent
+  isExternal: true
+  href: AeroDB.IBatchedQuery.html#AeroDB_IBatchedQuery_Parent
+  name: Parent
+  nameWithType: IBatchedQuery.Parent
+  fullName: AeroDB.IBatchedQuery.Parent
+- uid: AeroDB.IQuerySession
+  commentId: T:AeroDB.IQuerySession
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IQuerySession.html
+  name: IQuerySession
+  nameWithType: IQuerySession
+  fullName: AeroDB.IQuerySession

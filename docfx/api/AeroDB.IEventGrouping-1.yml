@@ -1,0 +1,203 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.IEventGrouping`1
+  commentId: T:AeroDB.IEventGrouping`1
+  id: IEventGrouping`1
+  parent: AeroDB
+  children:
+  - AeroDB.IEventGrouping`1.Groups
+  langs:
+  - csharp
+  - vb
+  name: IEventGrouping<TId>
+  nameWithType: IEventGrouping<TId>
+  fullName: AeroDB.IEventGrouping<TId>
+  type: Interface
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/IAggregateGrouper.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Represents a grouping of events by aggregate identifier.
+  example: []
+  syntax:
+    content: 'public interface IEventGrouping<TId> where TId : notnull'
+    typeParameters:
+    - id: TId
+      description: The aggregate identifier type.
+    content.vb: Public Interface IEventGrouping(Of TId)
+  derivedClasses:
+  - AeroDB.EventGrouping`1
+  nameWithType.vb: IEventGrouping(Of TId)
+  fullName.vb: AeroDB.IEventGrouping(Of TId)
+  name.vb: IEventGrouping(Of TId)
+- uid: AeroDB.IEventGrouping`1.Groups
+  commentId: P:AeroDB.IEventGrouping`1.Groups
+  id: Groups
+  parent: AeroDB.IEventGrouping`1
+  langs:
+  - csharp
+  - vb
+  name: Groups
+  nameWithType: IEventGrouping<TId>.Groups
+  fullName: AeroDB.IEventGrouping<TId>.Groups
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Projections/IAggregateGrouper.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: All groups with their events, keyed by aggregate ID.
+  example: []
+  syntax:
+    content: IReadOnlyDictionary<TId, IReadOnlyList<IEvent>> Groups { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IReadOnlyDictionary{{TId},System.Collections.Generic.IReadOnlyList{AeroDB.IEvent}}
+    content.vb: ReadOnly Property Groups As IReadOnlyDictionary(Of TId, IReadOnlyList(Of IEvent))
+  overload: AeroDB.IEventGrouping`1.Groups*
+  nameWithType.vb: IEventGrouping(Of TId).Groups
+  fullName.vb: AeroDB.IEventGrouping(Of TId).Groups
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: AeroDB.IEventGrouping`1.Groups*
+  commentId: Overload:AeroDB.IEventGrouping`1.Groups
+  isExternal: true
+  href: AeroDB.IEventGrouping-1.html#AeroDB_IEventGrouping_1_Groups
+  name: Groups
+  nameWithType: IEventGrouping<TId>.Groups
+  fullName: AeroDB.IEventGrouping<TId>.Groups
+  nameWithType.vb: IEventGrouping(Of TId).Groups
+  fullName.vb: AeroDB.IEventGrouping(Of TId).Groups
+- uid: System.Collections.Generic.IReadOnlyDictionary{{TId},System.Collections.Generic.IReadOnlyList{AeroDB.IEvent}}
+  commentId: T:System.Collections.Generic.IReadOnlyDictionary{`0,System.Collections.Generic.IReadOnlyList{AeroDB.IEvent}}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyDictionary`2
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  name: IReadOnlyDictionary<TId, IReadOnlyList<IEvent>>
+  nameWithType: IReadOnlyDictionary<TId, IReadOnlyList<IEvent>>
+  fullName: System.Collections.Generic.IReadOnlyDictionary<TId, System.Collections.Generic.IReadOnlyList<AeroDB.IEvent>>
+  nameWithType.vb: IReadOnlyDictionary(Of TId, IReadOnlyList(Of IEvent))
+  fullName.vb: System.Collections.Generic.IReadOnlyDictionary(Of TId, System.Collections.Generic.IReadOnlyList(Of AeroDB.IEvent))
+  name.vb: IReadOnlyDictionary(Of TId, IReadOnlyList(Of IEvent))
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyDictionary`2
+    name: IReadOnlyDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  - name: <
+  - name: TId
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - uid: AeroDB.IEvent
+    name: IEvent
+    isExternal: true
+    href: AeroDB.IEvent.html
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyDictionary`2
+    name: IReadOnlyDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TId
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.IEvent
+    name: IEvent
+    isExternal: true
+    href: AeroDB.IEvent.html
+  - name: )
+  - name: )
+- uid: System.Collections.Generic.IReadOnlyDictionary`2
+  commentId: T:System.Collections.Generic.IReadOnlyDictionary`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  name: IReadOnlyDictionary<TKey, TValue>
+  nameWithType: IReadOnlyDictionary<TKey, TValue>
+  fullName: System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>
+  nameWithType.vb: IReadOnlyDictionary(Of TKey, TValue)
+  fullName.vb: System.Collections.Generic.IReadOnlyDictionary(Of TKey, TValue)
+  name.vb: IReadOnlyDictionary(Of TKey, TValue)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyDictionary`2
+    name: IReadOnlyDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  - name: <
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyDictionary`2
+    name: IReadOnlyDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic

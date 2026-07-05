@@ -1,0 +1,738 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.AeroDBDaemonHealthCheck
+  commentId: T:AeroDB.AeroDBDaemonHealthCheck
+  id: AeroDBDaemonHealthCheck
+  parent: AeroDB
+  children:
+  - AeroDB.AeroDBDaemonHealthCheck.#ctor(AeroDB.AsyncDaemon,System.TimeSpan,Microsoft.Extensions.Logging.ILogger{AeroDB.AeroDBDaemonHealthCheck})
+  - AeroDB.AeroDBDaemonHealthCheck.CheckHealthAsync(Microsoft.Extensions.Diagnostics.HealthChecks.HealthCheckContext,System.Threading.CancellationToken)
+  langs:
+  - csharp
+  - vb
+  name: AeroDBDaemonHealthCheck
+  nameWithType: AeroDBDaemonHealthCheck
+  fullName: AeroDB.AeroDBDaemonHealthCheck
+  type: Class
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Health/AeroDBDaemonHealthCheck.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    ASP.NET Core health check for the AeroDB async daemon.
+
+    Reports Healthy/Degraded/Unhealthy based on daemon state.
+  example: []
+  syntax:
+    content: 'public class AeroDBDaemonHealthCheck : IHealthCheck'
+    content.vb: Public Class AeroDBDaemonHealthCheck Implements IHealthCheck
+  inheritance:
+  - System.Object
+  implements:
+  - Microsoft.Extensions.Diagnostics.HealthChecks.IHealthCheck
+  inheritedMembers:
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+- uid: AeroDB.AeroDBDaemonHealthCheck.#ctor(AeroDB.AsyncDaemon,System.TimeSpan,Microsoft.Extensions.Logging.ILogger{AeroDB.AeroDBDaemonHealthCheck})
+  commentId: M:AeroDB.AeroDBDaemonHealthCheck.#ctor(AeroDB.AsyncDaemon,System.TimeSpan,Microsoft.Extensions.Logging.ILogger{AeroDB.AeroDBDaemonHealthCheck})
+  id: '#ctor(AeroDB.AsyncDaemon,System.TimeSpan,Microsoft.Extensions.Logging.ILogger{AeroDB.AeroDBDaemonHealthCheck})'
+  parent: AeroDB.AeroDBDaemonHealthCheck
+  langs:
+  - csharp
+  - vb
+  name: AeroDBDaemonHealthCheck(AsyncDaemon?, TimeSpan, ILogger<AeroDBDaemonHealthCheck>?)
+  nameWithType: AeroDBDaemonHealthCheck.AeroDBDaemonHealthCheck(AsyncDaemon?, TimeSpan, ILogger<AeroDBDaemonHealthCheck>?)
+  fullName: AeroDB.AeroDBDaemonHealthCheck.AeroDBDaemonHealthCheck(AeroDB.AsyncDaemon?, System.TimeSpan, Microsoft.Extensions.Logging.ILogger<AeroDB.AeroDBDaemonHealthCheck>?)
+  type: Constructor
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Health/AeroDBDaemonHealthCheck.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public AeroDBDaemonHealthCheck(AsyncDaemon? daemon, TimeSpan pollInterval, ILogger<AeroDBDaemonHealthCheck>? logger = null)
+    parameters:
+    - id: daemon
+      type: AeroDB.AsyncDaemon
+    - id: pollInterval
+      type: System.TimeSpan
+    - id: logger
+      type: Microsoft.Extensions.Logging.ILogger{AeroDB.AeroDBDaemonHealthCheck}
+    content.vb: Public Sub New(daemon As AsyncDaemon, pollInterval As TimeSpan, logger As ILogger(Of AeroDBDaemonHealthCheck) = Nothing)
+  overload: AeroDB.AeroDBDaemonHealthCheck.#ctor*
+  nameWithType.vb: AeroDBDaemonHealthCheck.New(AsyncDaemon, TimeSpan, ILogger(Of AeroDBDaemonHealthCheck))
+  fullName.vb: AeroDB.AeroDBDaemonHealthCheck.New(AeroDB.AsyncDaemon, System.TimeSpan, Microsoft.Extensions.Logging.ILogger(Of AeroDB.AeroDBDaemonHealthCheck))
+  name.vb: New(AsyncDaemon, TimeSpan, ILogger(Of AeroDBDaemonHealthCheck))
+- uid: AeroDB.AeroDBDaemonHealthCheck.CheckHealthAsync(Microsoft.Extensions.Diagnostics.HealthChecks.HealthCheckContext,System.Threading.CancellationToken)
+  commentId: M:AeroDB.AeroDBDaemonHealthCheck.CheckHealthAsync(Microsoft.Extensions.Diagnostics.HealthChecks.HealthCheckContext,System.Threading.CancellationToken)
+  id: CheckHealthAsync(Microsoft.Extensions.Diagnostics.HealthChecks.HealthCheckContext,System.Threading.CancellationToken)
+  parent: AeroDB.AeroDBDaemonHealthCheck
+  langs:
+  - csharp
+  - vb
+  name: CheckHealthAsync(HealthCheckContext, CancellationToken)
+  nameWithType: AeroDBDaemonHealthCheck.CheckHealthAsync(HealthCheckContext, CancellationToken)
+  fullName: AeroDB.AeroDBDaemonHealthCheck.CheckHealthAsync(Microsoft.Extensions.Diagnostics.HealthChecks.HealthCheckContext, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Health/AeroDBDaemonHealthCheck.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Evaluates daemon health based on the latest <xref href="AeroDB.DaemonHealthState" data-throw-if-not-resolved="false"></xref> snapshot.
+  example: []
+  syntax:
+    content: public Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken ct = default)
+    parameters:
+    - id: context
+      type: Microsoft.Extensions.Diagnostics.HealthChecks.HealthCheckContext
+      description: The health check context.
+    - id: ct
+      type: System.Threading.CancellationToken
+      description: Cancellation token.
+    return:
+      type: System.Threading.Tasks.Task{Microsoft.Extensions.Diagnostics.HealthChecks.HealthCheckResult}
+      description: A <xref href="Microsoft.Extensions.Diagnostics.HealthChecks.HealthCheckResult" data-throw-if-not-resolved="false"></xref> with status and diagnostic data.
+    content.vb: Public Function CheckHealthAsync(context As HealthCheckContext, ct As CancellationToken = Nothing) As Task(Of HealthCheckResult)
+  overload: AeroDB.AeroDBDaemonHealthCheck.CheckHealthAsync*
+  implements:
+  - Microsoft.Extensions.Diagnostics.HealthChecks.IHealthCheck.CheckHealthAsync(Microsoft.Extensions.Diagnostics.HealthChecks.HealthCheckContext,System.Threading.CancellationToken)
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: Microsoft.Extensions.Diagnostics.HealthChecks.IHealthCheck
+  commentId: T:Microsoft.Extensions.Diagnostics.HealthChecks.IHealthCheck
+  parent: Microsoft.Extensions.Diagnostics.HealthChecks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.diagnostics.healthchecks.ihealthcheck
+  name: IHealthCheck
+  nameWithType: IHealthCheck
+  fullName: Microsoft.Extensions.Diagnostics.HealthChecks.IHealthCheck
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Microsoft.Extensions.Diagnostics.HealthChecks
+  commentId: N:Microsoft.Extensions.Diagnostics.HealthChecks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.Diagnostics.HealthChecks
+  nameWithType: Microsoft.Extensions.Diagnostics.HealthChecks
+  fullName: Microsoft.Extensions.Diagnostics.HealthChecks
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Diagnostics
+    name: Diagnostics
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.diagnostics
+  - name: .
+  - uid: Microsoft.Extensions.Diagnostics.HealthChecks
+    name: HealthChecks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.diagnostics.healthchecks
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Diagnostics
+    name: Diagnostics
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.diagnostics
+  - name: .
+  - uid: Microsoft.Extensions.Diagnostics.HealthChecks
+    name: HealthChecks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.diagnostics.healthchecks
+- uid: AeroDB.AeroDBDaemonHealthCheck.#ctor*
+  commentId: Overload:AeroDB.AeroDBDaemonHealthCheck.#ctor
+  isExternal: true
+  href: AeroDB.AeroDBDaemonHealthCheck.html#AeroDB_AeroDBDaemonHealthCheck__ctor_AeroDB_AsyncDaemon_System_TimeSpan_Microsoft_Extensions_Logging_ILogger_AeroDB_AeroDBDaemonHealthCheck__
+  name: AeroDBDaemonHealthCheck
+  nameWithType: AeroDBDaemonHealthCheck.AeroDBDaemonHealthCheck
+  fullName: AeroDB.AeroDBDaemonHealthCheck.AeroDBDaemonHealthCheck
+  nameWithType.vb: AeroDBDaemonHealthCheck.New
+  fullName.vb: AeroDB.AeroDBDaemonHealthCheck.New
+  name.vb: New
+- uid: AeroDB.AsyncDaemon
+  commentId: T:AeroDB.AsyncDaemon
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.AsyncDaemon.html
+  name: AsyncDaemon
+  nameWithType: AsyncDaemon
+  fullName: AeroDB.AsyncDaemon
+- uid: System.TimeSpan
+  commentId: T:System.TimeSpan
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.timespan
+  name: TimeSpan
+  nameWithType: TimeSpan
+  fullName: System.TimeSpan
+- uid: Microsoft.Extensions.Logging.ILogger{AeroDB.AeroDBDaemonHealthCheck}
+  commentId: T:Microsoft.Extensions.Logging.ILogger{AeroDB.AeroDBDaemonHealthCheck}
+  parent: Microsoft.Extensions.Logging
+  definition: Microsoft.Extensions.Logging.ILogger`1
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<AeroDBDaemonHealthCheck>
+  nameWithType: ILogger<AeroDBDaemonHealthCheck>
+  fullName: Microsoft.Extensions.Logging.ILogger<AeroDB.AeroDBDaemonHealthCheck>
+  nameWithType.vb: ILogger(Of AeroDBDaemonHealthCheck)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of AeroDB.AeroDBDaemonHealthCheck)
+  name.vb: ILogger(Of AeroDBDaemonHealthCheck)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - uid: AeroDB.AeroDBDaemonHealthCheck
+    name: AeroDBDaemonHealthCheck
+    isExternal: true
+    href: AeroDB.AeroDBDaemonHealthCheck.html
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.AeroDBDaemonHealthCheck
+    name: AeroDBDaemonHealthCheck
+    isExternal: true
+    href: AeroDB.AeroDBDaemonHealthCheck.html
+  - name: )
+- uid: Microsoft.Extensions.Logging.ILogger`1
+  commentId: T:Microsoft.Extensions.Logging.ILogger`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<TCategoryName>
+  nameWithType: ILogger<TCategoryName>
+  fullName: Microsoft.Extensions.Logging.ILogger<TCategoryName>
+  nameWithType.vb: ILogger(Of TCategoryName)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of TCategoryName)
+  name.vb: ILogger(Of TCategoryName)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - name: TCategoryName
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TCategoryName
+  - name: )
+- uid: Microsoft.Extensions.Logging
+  commentId: N:Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.Logging
+  nameWithType: Microsoft.Extensions.Logging
+  fullName: Microsoft.Extensions.Logging
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+- uid: AeroDB.DaemonHealthState
+  commentId: T:AeroDB.DaemonHealthState
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.DaemonHealthState.html
+  name: DaemonHealthState
+  nameWithType: DaemonHealthState
+  fullName: AeroDB.DaemonHealthState
+- uid: Microsoft.Extensions.Diagnostics.HealthChecks.HealthCheckResult
+  commentId: T:Microsoft.Extensions.Diagnostics.HealthChecks.HealthCheckResult
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.diagnostics.healthchecks.healthcheckresult
+  name: HealthCheckResult
+  nameWithType: HealthCheckResult
+  fullName: Microsoft.Extensions.Diagnostics.HealthChecks.HealthCheckResult
+- uid: AeroDB.AeroDBDaemonHealthCheck.CheckHealthAsync*
+  commentId: Overload:AeroDB.AeroDBDaemonHealthCheck.CheckHealthAsync
+  isExternal: true
+  href: AeroDB.AeroDBDaemonHealthCheck.html#AeroDB_AeroDBDaemonHealthCheck_CheckHealthAsync_Microsoft_Extensions_Diagnostics_HealthChecks_HealthCheckContext_System_Threading_CancellationToken_
+  name: CheckHealthAsync
+  nameWithType: AeroDBDaemonHealthCheck.CheckHealthAsync
+  fullName: AeroDB.AeroDBDaemonHealthCheck.CheckHealthAsync
+- uid: Microsoft.Extensions.Diagnostics.HealthChecks.IHealthCheck.CheckHealthAsync(Microsoft.Extensions.Diagnostics.HealthChecks.HealthCheckContext,System.Threading.CancellationToken)
+  commentId: M:Microsoft.Extensions.Diagnostics.HealthChecks.IHealthCheck.CheckHealthAsync(Microsoft.Extensions.Diagnostics.HealthChecks.HealthCheckContext,System.Threading.CancellationToken)
+  parent: Microsoft.Extensions.Diagnostics.HealthChecks.IHealthCheck
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.diagnostics.healthchecks.ihealthcheck.checkhealthasync
+  name: CheckHealthAsync(HealthCheckContext, CancellationToken)
+  nameWithType: IHealthCheck.CheckHealthAsync(HealthCheckContext, CancellationToken)
+  fullName: Microsoft.Extensions.Diagnostics.HealthChecks.IHealthCheck.CheckHealthAsync(Microsoft.Extensions.Diagnostics.HealthChecks.HealthCheckContext, System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Diagnostics.HealthChecks.IHealthCheck.CheckHealthAsync(Microsoft.Extensions.Diagnostics.HealthChecks.HealthCheckContext,System.Threading.CancellationToken)
+    name: CheckHealthAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.diagnostics.healthchecks.ihealthcheck.checkhealthasync
+  - name: (
+  - uid: Microsoft.Extensions.Diagnostics.HealthChecks.HealthCheckContext
+    name: HealthCheckContext
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.diagnostics.healthchecks.healthcheckcontext
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Microsoft.Extensions.Diagnostics.HealthChecks.IHealthCheck.CheckHealthAsync(Microsoft.Extensions.Diagnostics.HealthChecks.HealthCheckContext,System.Threading.CancellationToken)
+    name: CheckHealthAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.diagnostics.healthchecks.ihealthcheck.checkhealthasync
+  - name: (
+  - uid: Microsoft.Extensions.Diagnostics.HealthChecks.HealthCheckContext
+    name: HealthCheckContext
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.diagnostics.healthchecks.healthcheckcontext
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: Microsoft.Extensions.Diagnostics.HealthChecks.HealthCheckContext
+  commentId: T:Microsoft.Extensions.Diagnostics.HealthChecks.HealthCheckContext
+  parent: Microsoft.Extensions.Diagnostics.HealthChecks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.diagnostics.healthchecks.healthcheckcontext
+  name: HealthCheckContext
+  nameWithType: HealthCheckContext
+  fullName: Microsoft.Extensions.Diagnostics.HealthChecks.HealthCheckContext
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task{Microsoft.Extensions.Diagnostics.HealthChecks.HealthCheckResult}
+  commentId: T:System.Threading.Tasks.Task{Microsoft.Extensions.Diagnostics.HealthChecks.HealthCheckResult}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<HealthCheckResult>
+  nameWithType: Task<HealthCheckResult>
+  fullName: System.Threading.Tasks.Task<Microsoft.Extensions.Diagnostics.HealthChecks.HealthCheckResult>
+  nameWithType.vb: Task(Of HealthCheckResult)
+  fullName.vb: System.Threading.Tasks.Task(Of Microsoft.Extensions.Diagnostics.HealthChecks.HealthCheckResult)
+  name.vb: Task(Of HealthCheckResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: Microsoft.Extensions.Diagnostics.HealthChecks.HealthCheckResult
+    name: HealthCheckResult
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.diagnostics.healthchecks.healthcheckresult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Microsoft.Extensions.Diagnostics.HealthChecks.HealthCheckResult
+    name: HealthCheckResult
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.diagnostics.healthchecks.healthcheckresult
+  - name: )
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks

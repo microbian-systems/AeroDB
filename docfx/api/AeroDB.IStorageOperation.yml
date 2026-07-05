@@ -1,0 +1,194 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.IStorageOperation
+  commentId: T:AeroDB.IStorageOperation
+  id: IStorageOperation
+  parent: AeroDB
+  children:
+  - AeroDB.IStorageOperation.ExecuteAsync(AeroDB.IDocumentSession,System.Threading.CancellationToken)
+  langs:
+  - csharp
+  - vb
+  name: IStorageOperation
+  nameWithType: IStorageOperation
+  fullName: AeroDB.IStorageOperation
+  type: Interface
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IStorageOperation.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Represents a low-level storage operation that can be queued on a session
+
+    and executed during <xref href="AeroDB.IDocumentSession.SaveChangesAsync(System.Threading.CancellationToken)" data-throw-if-not-resolved="false"></xref>.
+
+    Marten parity: <code>session.QueueOperation(operation)</code>.
+  example: []
+  syntax:
+    content: public interface IStorageOperation
+    content.vb: Public Interface IStorageOperation
+- uid: AeroDB.IStorageOperation.ExecuteAsync(AeroDB.IDocumentSession,System.Threading.CancellationToken)
+  commentId: M:AeroDB.IStorageOperation.ExecuteAsync(AeroDB.IDocumentSession,System.Threading.CancellationToken)
+  id: ExecuteAsync(AeroDB.IDocumentSession,System.Threading.CancellationToken)
+  parent: AeroDB.IStorageOperation
+  langs:
+  - csharp
+  - vb
+  name: ExecuteAsync(IDocumentSession, CancellationToken)
+  nameWithType: IStorageOperation.ExecuteAsync(IDocumentSession, CancellationToken)
+  fullName: AeroDB.IStorageOperation.ExecuteAsync(AeroDB.IDocumentSession, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/IStorageOperation.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Execute the operation against the given session.
+  example: []
+  syntax:
+    content: Task ExecuteAsync(IDocumentSession session, CancellationToken ct)
+    parameters:
+    - id: session
+      type: AeroDB.IDocumentSession
+      description: The document session to operate on.
+    - id: ct
+      type: System.Threading.CancellationToken
+      description: Cancellation token.
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Function ExecuteAsync(session As IDocumentSession, ct As CancellationToken) As Task
+  overload: AeroDB.IStorageOperation.ExecuteAsync*
+references:
+- uid: AeroDB.IDocumentSession.SaveChangesAsync(System.Threading.CancellationToken)
+  commentId: M:AeroDB.IDocumentSession.SaveChangesAsync(System.Threading.CancellationToken)
+  parent: AeroDB.IDocumentSession
+  isExternal: true
+  href: AeroDB.IDocumentSession.html#AeroDB_IDocumentSession_SaveChangesAsync_System_Threading_CancellationToken_
+  name: SaveChangesAsync(CancellationToken)
+  nameWithType: IDocumentSession.SaveChangesAsync(CancellationToken)
+  fullName: AeroDB.IDocumentSession.SaveChangesAsync(System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: AeroDB.IDocumentSession.SaveChangesAsync(System.Threading.CancellationToken)
+    name: SaveChangesAsync
+    isExternal: true
+    href: AeroDB.IDocumentSession.html#AeroDB_IDocumentSession_SaveChangesAsync_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: AeroDB.IDocumentSession.SaveChangesAsync(System.Threading.CancellationToken)
+    name: SaveChangesAsync
+    isExternal: true
+    href: AeroDB.IDocumentSession.html#AeroDB_IDocumentSession_SaveChangesAsync_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: AeroDB.IDocumentSession
+  commentId: T:AeroDB.IDocumentSession
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IDocumentSession.html
+  name: IDocumentSession
+  nameWithType: IDocumentSession
+  fullName: AeroDB.IDocumentSession
+- uid: AeroDB.IStorageOperation.ExecuteAsync*
+  commentId: Overload:AeroDB.IStorageOperation.ExecuteAsync
+  isExternal: true
+  href: AeroDB.IStorageOperation.html#AeroDB_IStorageOperation_ExecuteAsync_AeroDB_IDocumentSession_System_Threading_CancellationToken_
+  name: ExecuteAsync
+  nameWithType: IStorageOperation.ExecuteAsync
+  fullName: AeroDB.IStorageOperation.ExecuteAsync
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks

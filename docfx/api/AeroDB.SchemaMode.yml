@@ -1,0 +1,86 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.SchemaMode
+  commentId: T:AeroDB.SchemaMode
+  id: SchemaMode
+  parent: AeroDB
+  children:
+  - AeroDB.SchemaMode.Flexible
+  - AeroDB.SchemaMode.Strict
+  langs:
+  - csharp
+  - vb
+  name: SchemaMode
+  nameWithType: SchemaMode
+  fullName: AeroDB.SchemaMode
+  type: Enum
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentMapping.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Controls the SurrealDB table schema mode. <code>Schemaless</code> (Flexible) allows any fields; <code>Schemafull</code> (Strict) enforces a strict field definition.
+  example: []
+  syntax:
+    content: public enum SchemaMode
+    content.vb: Public Enum SchemaMode
+- uid: AeroDB.SchemaMode.Strict
+  commentId: F:AeroDB.SchemaMode.Strict
+  id: Strict
+  parent: AeroDB.SchemaMode
+  langs:
+  - csharp
+  - vb
+  name: Strict
+  nameWithType: SchemaMode.Strict
+  fullName: AeroDB.SchemaMode.Strict
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentMapping.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: SCHEMAFULL — only explicitly defined fields are permitted; extra fields are rejected.
+  example: []
+  syntax:
+    content: Strict = 0
+    return:
+      type: AeroDB.SchemaMode
+- uid: AeroDB.SchemaMode.Flexible
+  commentId: F:AeroDB.SchemaMode.Flexible
+  id: Flexible
+  parent: AeroDB.SchemaMode
+  langs:
+  - csharp
+  - vb
+  name: Flexible
+  nameWithType: SchemaMode.Flexible
+  fullName: AeroDB.SchemaMode.Flexible
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/DocumentMapping.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: SCHEMALESS — fields are typed/validated if defined, but extra fields are allowed.
+  example: []
+  syntax:
+    content: Flexible = 1
+    return:
+      type: AeroDB.SchemaMode
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: AeroDB.SchemaMode
+  commentId: T:AeroDB.SchemaMode
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.SchemaMode.html
+  name: SchemaMode
+  nameWithType: SchemaMode
+  fullName: AeroDB.SchemaMode

@@ -1,0 +1,610 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.AggregateQueryExtensions
+  commentId: T:AeroDB.AggregateQueryExtensions
+  id: AggregateQueryExtensions
+  parent: AeroDB
+  children:
+  - AeroDB.AggregateQueryExtensions.AggregateQuery``1(AeroDB.IQuerySession,System.Func{AeroDB.AggregateQueryBuilder{``0},AeroDB.AggregateQueryBuilder{``0}})
+  - AeroDB.AggregateQueryExtensions.AggregateQuery``1(System.Linq.IQueryable{``0},System.Func{AeroDB.AggregateQueryBuilder{``0},AeroDB.AggregateQueryBuilder{``0}})
+  langs:
+  - csharp
+  - vb
+  name: AggregateQueryExtensions
+  nameWithType: AggregateQueryExtensions
+  fullName: AeroDB.AggregateQueryExtensions
+  type: Class
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/AggregateQueryExtensions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public static class AggregateQueryExtensions
+    content.vb: Public Module AggregateQueryExtensions
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+- uid: AeroDB.AggregateQueryExtensions.AggregateQuery``1(System.Linq.IQueryable{``0},System.Func{AeroDB.AggregateQueryBuilder{``0},AeroDB.AggregateQueryBuilder{``0}})
+  commentId: M:AeroDB.AggregateQueryExtensions.AggregateQuery``1(System.Linq.IQueryable{``0},System.Func{AeroDB.AggregateQueryBuilder{``0},AeroDB.AggregateQueryBuilder{``0}})
+  id: AggregateQuery``1(System.Linq.IQueryable{``0},System.Func{AeroDB.AggregateQueryBuilder{``0},AeroDB.AggregateQueryBuilder{``0}})
+  isExtensionMethod: true
+  parent: AeroDB.AggregateQueryExtensions
+  langs:
+  - csharp
+  - vb
+  name: AggregateQuery<T>(IQueryable<T>, Func<AggregateQueryBuilder<T>, AggregateQueryBuilder<T>>)
+  nameWithType: AggregateQueryExtensions.AggregateQuery<T>(IQueryable<T>, Func<AggregateQueryBuilder<T>, AggregateQueryBuilder<T>>)
+  fullName: AeroDB.AggregateQueryExtensions.AggregateQuery<T>(System.Linq.IQueryable<T>, System.Func<AeroDB.AggregateQueryBuilder<T>, AeroDB.AggregateQueryBuilder<T>>)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/AggregateQueryExtensions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Starts an ad-hoc aggregate query builder. The source queryable provides
+
+    the table name and any WHERE/ORDER BY/LIMIT clauses from the LINQ chain.
+
+    The aggregate builder overrides the SELECT and GROUP BY.
+  example: []
+  syntax:
+    content: 'public static AggregateQueryExecutor<T> AggregateQuery<T>(this IQueryable<T> source, Func<AggregateQueryBuilder<T>, AggregateQueryBuilder<T>> build) where T : class'
+    parameters:
+    - id: source
+      type: System.Linq.IQueryable{{T}}
+    - id: build
+      type: System.Func{AeroDB.AggregateQueryBuilder{{T}},AeroDB.AggregateQueryBuilder{{T}}}
+    typeParameters:
+    - id: T
+    return:
+      type: AeroDB.AggregateQueryExecutor{{T}}
+    content.vb: Public Shared Function AggregateQuery(Of T As Class)(source As IQueryable(Of T), build As Func(Of AggregateQueryBuilder(Of T), AggregateQueryBuilder(Of T))) As AggregateQueryExecutor(Of T)
+  overload: AeroDB.AggregateQueryExtensions.AggregateQuery*
+  nameWithType.vb: AggregateQueryExtensions.AggregateQuery(Of T)(IQueryable(Of T), Func(Of AggregateQueryBuilder(Of T), AggregateQueryBuilder(Of T)))
+  fullName.vb: AeroDB.AggregateQueryExtensions.AggregateQuery(Of T)(System.Linq.IQueryable(Of T), System.Func(Of AeroDB.AggregateQueryBuilder(Of T), AeroDB.AggregateQueryBuilder(Of T)))
+  name.vb: AggregateQuery(Of T)(IQueryable(Of T), Func(Of AggregateQueryBuilder(Of T), AggregateQueryBuilder(Of T)))
+- uid: AeroDB.AggregateQueryExtensions.AggregateQuery``1(AeroDB.IQuerySession,System.Func{AeroDB.AggregateQueryBuilder{``0},AeroDB.AggregateQueryBuilder{``0}})
+  commentId: M:AeroDB.AggregateQueryExtensions.AggregateQuery``1(AeroDB.IQuerySession,System.Func{AeroDB.AggregateQueryBuilder{``0},AeroDB.AggregateQueryBuilder{``0}})
+  id: AggregateQuery``1(AeroDB.IQuerySession,System.Func{AeroDB.AggregateQueryBuilder{``0},AeroDB.AggregateQueryBuilder{``0}})
+  isExtensionMethod: true
+  parent: AeroDB.AggregateQueryExtensions
+  langs:
+  - csharp
+  - vb
+  name: AggregateQuery<T>(IQuerySession, Func<AggregateQueryBuilder<T>, AggregateQueryBuilder<T>>)
+  nameWithType: AggregateQueryExtensions.AggregateQuery<T>(IQuerySession, Func<AggregateQueryBuilder<T>, AggregateQueryBuilder<T>>)
+  fullName: AeroDB.AggregateQueryExtensions.AggregateQuery<T>(AeroDB.IQuerySession, System.Func<AeroDB.AggregateQueryBuilder<T>, AeroDB.AggregateQueryBuilder<T>>)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/AggregateQueryExtensions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Starts an ad-hoc aggregate query builder from a session query.
+
+    Equivalent to <code>session.Query&lt;T&gt;().AggregateQuery(b =&gt; ...)</code>.
+  example: []
+  syntax:
+    content: 'public static AggregateQueryExecutor<T> AggregateQuery<T>(this IQuerySession session, Func<AggregateQueryBuilder<T>, AggregateQueryBuilder<T>> build) where T : class'
+    parameters:
+    - id: session
+      type: AeroDB.IQuerySession
+    - id: build
+      type: System.Func{AeroDB.AggregateQueryBuilder{{T}},AeroDB.AggregateQueryBuilder{{T}}}
+    typeParameters:
+    - id: T
+    return:
+      type: AeroDB.AggregateQueryExecutor{{T}}
+    content.vb: Public Shared Function AggregateQuery(Of T As Class)(session As IQuerySession, build As Func(Of AggregateQueryBuilder(Of T), AggregateQueryBuilder(Of T))) As AggregateQueryExecutor(Of T)
+  overload: AeroDB.AggregateQueryExtensions.AggregateQuery*
+  nameWithType.vb: AggregateQueryExtensions.AggregateQuery(Of T)(IQuerySession, Func(Of AggregateQueryBuilder(Of T), AggregateQueryBuilder(Of T)))
+  fullName.vb: AeroDB.AggregateQueryExtensions.AggregateQuery(Of T)(AeroDB.IQuerySession, System.Func(Of AeroDB.AggregateQueryBuilder(Of T), AeroDB.AggregateQueryBuilder(Of T)))
+  name.vb: AggregateQuery(Of T)(IQuerySession, Func(Of AggregateQueryBuilder(Of T), AggregateQueryBuilder(Of T)))
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AeroDB.AggregateQueryExtensions.AggregateQuery*
+  commentId: Overload:AeroDB.AggregateQueryExtensions.AggregateQuery
+  isExternal: true
+  href: AeroDB.AggregateQueryExtensions.html#AeroDB_AggregateQueryExtensions_AggregateQuery__1_System_Linq_IQueryable___0__System_Func_AeroDB_AggregateQueryBuilder___0__AeroDB_AggregateQueryBuilder___0___
+  name: AggregateQuery
+  nameWithType: AggregateQueryExtensions.AggregateQuery
+  fullName: AeroDB.AggregateQueryExtensions.AggregateQuery
+- uid: System.Linq.IQueryable{{T}}
+  commentId: T:System.Linq.IQueryable{``0}
+  parent: System.Linq
+  definition: System.Linq.IQueryable`1
+  href: https://learn.microsoft.com/dotnet/api/system.linq.iqueryable-1
+  name: IQueryable<T>
+  nameWithType: IQueryable<T>
+  fullName: System.Linq.IQueryable<T>
+  nameWithType.vb: IQueryable(Of T)
+  fullName.vb: System.Linq.IQueryable(Of T)
+  name.vb: IQueryable(Of T)
+  spec.csharp:
+  - uid: System.Linq.IQueryable`1
+    name: IQueryable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.iqueryable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.IQueryable`1
+    name: IQueryable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.iqueryable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Func{AeroDB.AggregateQueryBuilder{{T}},AeroDB.AggregateQueryBuilder{{T}}}
+  commentId: T:System.Func{AeroDB.AggregateQueryBuilder{``0},AeroDB.AggregateQueryBuilder{``0}}
+  parent: System
+  definition: System.Func`2
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<AggregateQueryBuilder<T>, AggregateQueryBuilder<T>>
+  nameWithType: Func<AggregateQueryBuilder<T>, AggregateQueryBuilder<T>>
+  fullName: System.Func<AeroDB.AggregateQueryBuilder<T>, AeroDB.AggregateQueryBuilder<T>>
+  nameWithType.vb: Func(Of AggregateQueryBuilder(Of T), AggregateQueryBuilder(Of T))
+  fullName.vb: System.Func(Of AeroDB.AggregateQueryBuilder(Of T), AeroDB.AggregateQueryBuilder(Of T))
+  name.vb: Func(Of AggregateQueryBuilder(Of T), AggregateQueryBuilder(Of T))
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: AeroDB.AggregateQueryBuilder`1
+    name: AggregateQueryBuilder
+    isExternal: true
+    href: AeroDB.AggregateQueryBuilder-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: AeroDB.AggregateQueryBuilder`1
+    name: AggregateQueryBuilder
+    isExternal: true
+    href: AeroDB.AggregateQueryBuilder-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.AggregateQueryBuilder`1
+    name: AggregateQueryBuilder
+    isExternal: true
+    href: AeroDB.AggregateQueryBuilder-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: AeroDB.AggregateQueryBuilder`1
+    name: AggregateQueryBuilder
+    isExternal: true
+    href: AeroDB.AggregateQueryBuilder-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+- uid: AeroDB.AggregateQueryExecutor{{T}}
+  commentId: T:AeroDB.AggregateQueryExecutor{``0}
+  parent: AeroDB
+  definition: AeroDB.AggregateQueryExecutor`1
+  href: AeroDB.AggregateQueryExecutor-1.html
+  name: AggregateQueryExecutor<T>
+  nameWithType: AggregateQueryExecutor<T>
+  fullName: AeroDB.AggregateQueryExecutor<T>
+  nameWithType.vb: AggregateQueryExecutor(Of T)
+  fullName.vb: AeroDB.AggregateQueryExecutor(Of T)
+  name.vb: AggregateQueryExecutor(Of T)
+  spec.csharp:
+  - uid: AeroDB.AggregateQueryExecutor`1
+    name: AggregateQueryExecutor
+    isExternal: true
+    href: AeroDB.AggregateQueryExecutor-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.AggregateQueryExecutor`1
+    name: AggregateQueryExecutor
+    isExternal: true
+    href: AeroDB.AggregateQueryExecutor-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Linq.IQueryable`1
+  commentId: T:System.Linq.IQueryable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.iqueryable-1
+  name: IQueryable<T>
+  nameWithType: IQueryable<T>
+  fullName: System.Linq.IQueryable<T>
+  nameWithType.vb: IQueryable(Of T)
+  fullName.vb: System.Linq.IQueryable(Of T)
+  name.vb: IQueryable(Of T)
+  spec.csharp:
+  - uid: System.Linq.IQueryable`1
+    name: IQueryable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.iqueryable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.IQueryable`1
+    name: IQueryable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.iqueryable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Linq
+  commentId: N:System.Linq
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Linq
+  nameWithType: System.Linq
+  fullName: System.Linq
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Linq
+    name: Linq
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Linq
+    name: Linq
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq
+- uid: System.Func`2
+  commentId: T:System.Func`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<T, TResult>
+  nameWithType: Func<T, TResult>
+  fullName: System.Func<T, TResult>
+  nameWithType.vb: Func(Of T, TResult)
+  fullName.vb: System.Func(Of T, TResult)
+  name.vb: Func(Of T, TResult)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: AeroDB.AggregateQueryExecutor`1
+  commentId: T:AeroDB.AggregateQueryExecutor`1
+  isExternal: true
+  href: AeroDB.AggregateQueryExecutor-1.html
+  name: AggregateQueryExecutor<T>
+  nameWithType: AggregateQueryExecutor<T>
+  fullName: AeroDB.AggregateQueryExecutor<T>
+  nameWithType.vb: AggregateQueryExecutor(Of T)
+  fullName.vb: AeroDB.AggregateQueryExecutor(Of T)
+  name.vb: AggregateQueryExecutor(Of T)
+  spec.csharp:
+  - uid: AeroDB.AggregateQueryExecutor`1
+    name: AggregateQueryExecutor
+    isExternal: true
+    href: AeroDB.AggregateQueryExecutor-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.AggregateQueryExecutor`1
+    name: AggregateQueryExecutor
+    isExternal: true
+    href: AeroDB.AggregateQueryExecutor-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.IQuerySession
+  commentId: T:AeroDB.IQuerySession
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IQuerySession.html
+  name: IQuerySession
+  nameWithType: IQuerySession
+  fullName: AeroDB.IQuerySession

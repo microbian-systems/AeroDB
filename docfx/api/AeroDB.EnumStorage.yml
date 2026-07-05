@@ -1,0 +1,80 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.EnumStorage
+  commentId: T:AeroDB.EnumStorage
+  id: EnumStorage
+  parent: AeroDB
+  children:
+  - AeroDB.EnumStorage.AsInteger
+  - AeroDB.EnumStorage.AsString
+  langs:
+  - csharp
+  - vb
+  name: EnumStorage
+  nameWithType: EnumStorage
+  fullName: AeroDB.EnumStorage
+  type: Enum
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/MartenCompatibilityExtensions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public enum EnumStorage
+    content.vb: Public Enum EnumStorage
+- uid: AeroDB.EnumStorage.AsString
+  commentId: F:AeroDB.EnumStorage.AsString
+  id: AsString
+  parent: AeroDB.EnumStorage
+  langs:
+  - csharp
+  - vb
+  name: AsString
+  nameWithType: EnumStorage.AsString
+  fullName: AeroDB.EnumStorage.AsString
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/MartenCompatibilityExtensions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: AsString = 0
+    return:
+      type: AeroDB.EnumStorage
+- uid: AeroDB.EnumStorage.AsInteger
+  commentId: F:AeroDB.EnumStorage.AsInteger
+  id: AsInteger
+  parent: AeroDB.EnumStorage
+  langs:
+  - csharp
+  - vb
+  name: AsInteger
+  nameWithType: EnumStorage.AsInteger
+  fullName: AeroDB.EnumStorage.AsInteger
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/MartenCompatibilityExtensions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: AsInteger = 1
+    return:
+      type: AeroDB.EnumStorage
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: AeroDB.EnumStorage
+  commentId: T:AeroDB.EnumStorage
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.EnumStorage.html
+  name: EnumStorage
+  nameWithType: EnumStorage
+  fullName: AeroDB.EnumStorage

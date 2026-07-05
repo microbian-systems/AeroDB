@@ -1,0 +1,166 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.TimeBucket
+  commentId: T:AeroDB.TimeBucket
+  id: TimeBucket
+  parent: AeroDB
+  children:
+  - AeroDB.TimeBucket.Day
+  - AeroDB.TimeBucket.Hour
+  - AeroDB.TimeBucket.Month
+  - AeroDB.TimeBucket.Quarter
+  - AeroDB.TimeBucket.Week
+  - AeroDB.TimeBucket.Year
+  langs:
+  - csharp
+  - vb
+  name: TimeBucket
+  nameWithType: TimeBucket
+  fullName: AeroDB.TimeBucket
+  type: Enum
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/TimeSeries/TimeBucket.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Predefined time buckets for calendar-aligned grouping via <code>time::group()</code>.
+  example: []
+  syntax:
+    content: public enum TimeBucket
+    content.vb: Public Enum TimeBucket
+- uid: AeroDB.TimeBucket.Hour
+  commentId: F:AeroDB.TimeBucket.Hour
+  id: Hour
+  parent: AeroDB.TimeBucket
+  langs:
+  - csharp
+  - vb
+  name: Hour
+  nameWithType: TimeBucket.Hour
+  fullName: AeroDB.TimeBucket.Hour
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/TimeSeries/TimeBucket.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: Hour = 0
+    return:
+      type: AeroDB.TimeBucket
+- uid: AeroDB.TimeBucket.Day
+  commentId: F:AeroDB.TimeBucket.Day
+  id: Day
+  parent: AeroDB.TimeBucket
+  langs:
+  - csharp
+  - vb
+  name: Day
+  nameWithType: TimeBucket.Day
+  fullName: AeroDB.TimeBucket.Day
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/TimeSeries/TimeBucket.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: Day = 1
+    return:
+      type: AeroDB.TimeBucket
+- uid: AeroDB.TimeBucket.Week
+  commentId: F:AeroDB.TimeBucket.Week
+  id: Week
+  parent: AeroDB.TimeBucket
+  langs:
+  - csharp
+  - vb
+  name: Week
+  nameWithType: TimeBucket.Week
+  fullName: AeroDB.TimeBucket.Week
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/TimeSeries/TimeBucket.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: Week = 2
+    return:
+      type: AeroDB.TimeBucket
+- uid: AeroDB.TimeBucket.Month
+  commentId: F:AeroDB.TimeBucket.Month
+  id: Month
+  parent: AeroDB.TimeBucket
+  langs:
+  - csharp
+  - vb
+  name: Month
+  nameWithType: TimeBucket.Month
+  fullName: AeroDB.TimeBucket.Month
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/TimeSeries/TimeBucket.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: Month = 3
+    return:
+      type: AeroDB.TimeBucket
+- uid: AeroDB.TimeBucket.Quarter
+  commentId: F:AeroDB.TimeBucket.Quarter
+  id: Quarter
+  parent: AeroDB.TimeBucket
+  langs:
+  - csharp
+  - vb
+  name: Quarter
+  nameWithType: TimeBucket.Quarter
+  fullName: AeroDB.TimeBucket.Quarter
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/TimeSeries/TimeBucket.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: Quarter = 4
+    return:
+      type: AeroDB.TimeBucket
+- uid: AeroDB.TimeBucket.Year
+  commentId: F:AeroDB.TimeBucket.Year
+  id: Year
+  parent: AeroDB.TimeBucket
+  langs:
+  - csharp
+  - vb
+  name: Year
+  nameWithType: TimeBucket.Year
+  fullName: AeroDB.TimeBucket.Year
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/TimeSeries/TimeBucket.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: Year = 5
+    return:
+      type: AeroDB.TimeBucket
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: AeroDB.TimeBucket
+  commentId: T:AeroDB.TimeBucket
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.TimeBucket.html
+  name: TimeBucket
+  nameWithType: TimeBucket
+  fullName: AeroDB.TimeBucket

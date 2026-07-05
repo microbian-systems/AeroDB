@@ -1,0 +1,529 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.WolverineFx.WolverineOptionsAeroDBExtensions
+  commentId: T:AeroDB.WolverineFx.WolverineOptionsAeroDBExtensions
+  id: WolverineOptionsAeroDBExtensions
+  parent: AeroDB.WolverineFx
+  children:
+  - AeroDB.WolverineFx.WolverineOptionsAeroDBExtensions.IntegrateWithAeroDB(Wolverine.WolverineOptions,System.IServiceProvider)
+  - AeroDB.WolverineFx.WolverineOptionsAeroDBExtensions.PersistMessagesWithAeroDB(Wolverine.WolverineOptions,SurrealDb.Net.ISurrealDbClient,Microsoft.Extensions.Logging.ILogger{AeroDB.WolverineFx.AeroDBMessageStore})
+  langs:
+  - csharp
+  - vb
+  name: WolverineOptionsAeroDBExtensions
+  nameWithType: WolverineOptionsAeroDBExtensions
+  fullName: AeroDB.WolverineFx.WolverineOptionsAeroDBExtensions
+  type: Class
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/WolverineOptionsAeroDBExtensions.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  summary: Extension methods for integrating Wolverine with AeroDB (SurrealDB) persistence.
+  example: []
+  syntax:
+    content: public static class WolverineOptionsAeroDBExtensions
+    content.vb: Public Module WolverineOptionsAeroDBExtensions
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+- uid: AeroDB.WolverineFx.WolverineOptionsAeroDBExtensions.IntegrateWithAeroDB(Wolverine.WolverineOptions,System.IServiceProvider)
+  commentId: M:AeroDB.WolverineFx.WolverineOptionsAeroDBExtensions.IntegrateWithAeroDB(Wolverine.WolverineOptions,System.IServiceProvider)
+  id: IntegrateWithAeroDB(Wolverine.WolverineOptions,System.IServiceProvider)
+  isExtensionMethod: true
+  parent: AeroDB.WolverineFx.WolverineOptionsAeroDBExtensions
+  langs:
+  - csharp
+  - vb
+  name: IntegrateWithAeroDB(WolverineOptions, IServiceProvider)
+  nameWithType: WolverineOptionsAeroDBExtensions.IntegrateWithAeroDB(WolverineOptions, IServiceProvider)
+  fullName: AeroDB.WolverineFx.WolverineOptionsAeroDBExtensions.IntegrateWithAeroDB(Wolverine.WolverineOptions, System.IServiceProvider)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/WolverineOptionsAeroDBExtensions.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  summary: >-
+    Configure Wolverine to use AeroDB for message persistence, outbox, sagas, and transport.
+
+    Registers AeroDBMessageStore, AeroDBOutboxedSessionFactory, and all supporting services.
+  example: []
+  syntax:
+    content: public static void IntegrateWithAeroDB(this WolverineOptions options, IServiceProvider serviceProvider)
+    parameters:
+    - id: options
+      type: Wolverine.WolverineOptions
+    - id: serviceProvider
+      type: System.IServiceProvider
+    content.vb: Public Shared Sub IntegrateWithAeroDB(options As WolverineOptions, serviceProvider As IServiceProvider)
+  overload: AeroDB.WolverineFx.WolverineOptionsAeroDBExtensions.IntegrateWithAeroDB*
+- uid: AeroDB.WolverineFx.WolverineOptionsAeroDBExtensions.PersistMessagesWithAeroDB(Wolverine.WolverineOptions,SurrealDb.Net.ISurrealDbClient,Microsoft.Extensions.Logging.ILogger{AeroDB.WolverineFx.AeroDBMessageStore})
+  commentId: M:AeroDB.WolverineFx.WolverineOptionsAeroDBExtensions.PersistMessagesWithAeroDB(Wolverine.WolverineOptions,SurrealDb.Net.ISurrealDbClient,Microsoft.Extensions.Logging.ILogger{AeroDB.WolverineFx.AeroDBMessageStore})
+  id: PersistMessagesWithAeroDB(Wolverine.WolverineOptions,SurrealDb.Net.ISurrealDbClient,Microsoft.Extensions.Logging.ILogger{AeroDB.WolverineFx.AeroDBMessageStore})
+  isExtensionMethod: true
+  parent: AeroDB.WolverineFx.WolverineOptionsAeroDBExtensions
+  langs:
+  - csharp
+  - vb
+  name: PersistMessagesWithAeroDB(WolverineOptions, ISurrealDbClient, ILogger<AeroDBMessageStore>)
+  nameWithType: WolverineOptionsAeroDBExtensions.PersistMessagesWithAeroDB(WolverineOptions, ISurrealDbClient, ILogger<AeroDBMessageStore>)
+  fullName: AeroDB.WolverineFx.WolverineOptionsAeroDBExtensions.PersistMessagesWithAeroDB(Wolverine.WolverineOptions, SurrealDb.Net.ISurrealDbClient, Microsoft.Extensions.Logging.ILogger<AeroDB.WolverineFx.AeroDBMessageStore>)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/WolverineOptionsAeroDBExtensions.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  summary: Configure Wolverine to persist messages using AeroDB (SurrealDB).
+  example: []
+  syntax:
+    content: public static void PersistMessagesWithAeroDB(this WolverineOptions options, ISurrealDbClient client, ILogger<AeroDBMessageStore> logger)
+    parameters:
+    - id: options
+      type: Wolverine.WolverineOptions
+    - id: client
+      type: SurrealDb.Net.ISurrealDbClient
+    - id: logger
+      type: Microsoft.Extensions.Logging.ILogger{AeroDB.WolverineFx.AeroDBMessageStore}
+    content.vb: Public Shared Sub PersistMessagesWithAeroDB(options As WolverineOptions, client As ISurrealDbClient, logger As ILogger(Of AeroDBMessageStore))
+  overload: AeroDB.WolverineFx.WolverineOptionsAeroDBExtensions.PersistMessagesWithAeroDB*
+  nameWithType.vb: WolverineOptionsAeroDBExtensions.PersistMessagesWithAeroDB(WolverineOptions, ISurrealDbClient, ILogger(Of AeroDBMessageStore))
+  fullName.vb: AeroDB.WolverineFx.WolverineOptionsAeroDBExtensions.PersistMessagesWithAeroDB(Wolverine.WolverineOptions, SurrealDb.Net.ISurrealDbClient, Microsoft.Extensions.Logging.ILogger(Of AeroDB.WolverineFx.AeroDBMessageStore))
+  name.vb: PersistMessagesWithAeroDB(WolverineOptions, ISurrealDbClient, ILogger(Of AeroDBMessageStore))
+references:
+- uid: AeroDB.WolverineFx
+  commentId: N:AeroDB.WolverineFx
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB.WolverineFx
+  nameWithType: AeroDB.WolverineFx
+  fullName: AeroDB.WolverineFx
+  spec.csharp:
+  - uid: AeroDB
+    name: AeroDB
+    isExternal: true
+    href: AeroDB.html
+  - name: .
+  - uid: AeroDB.WolverineFx
+    name: WolverineFx
+    isExternal: true
+    href: AeroDB.WolverineFx.html
+  spec.vb:
+  - uid: AeroDB
+    name: AeroDB
+    isExternal: true
+    href: AeroDB.html
+  - name: .
+  - uid: AeroDB.WolverineFx
+    name: WolverineFx
+    isExternal: true
+    href: AeroDB.WolverineFx.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AeroDB.WolverineFx.WolverineOptionsAeroDBExtensions.IntegrateWithAeroDB*
+  commentId: Overload:AeroDB.WolverineFx.WolverineOptionsAeroDBExtensions.IntegrateWithAeroDB
+  isExternal: true
+  href: AeroDB.WolverineFx.WolverineOptionsAeroDBExtensions.html#AeroDB_WolverineFx_WolverineOptionsAeroDBExtensions_IntegrateWithAeroDB_Wolverine_WolverineOptions_System_IServiceProvider_
+  name: IntegrateWithAeroDB
+  nameWithType: WolverineOptionsAeroDBExtensions.IntegrateWithAeroDB
+  fullName: AeroDB.WolverineFx.WolverineOptionsAeroDBExtensions.IntegrateWithAeroDB
+- uid: Wolverine.WolverineOptions
+  commentId: T:Wolverine.WolverineOptions
+  parent: Wolverine
+  isExternal: true
+  name: WolverineOptions
+  nameWithType: WolverineOptions
+  fullName: Wolverine.WolverineOptions
+- uid: System.IServiceProvider
+  commentId: T:System.IServiceProvider
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iserviceprovider
+  name: IServiceProvider
+  nameWithType: IServiceProvider
+  fullName: System.IServiceProvider
+- uid: Wolverine
+  commentId: N:Wolverine
+  isExternal: true
+  name: Wolverine
+  nameWithType: Wolverine
+  fullName: Wolverine
+- uid: AeroDB.WolverineFx.WolverineOptionsAeroDBExtensions.PersistMessagesWithAeroDB*
+  commentId: Overload:AeroDB.WolverineFx.WolverineOptionsAeroDBExtensions.PersistMessagesWithAeroDB
+  isExternal: true
+  href: AeroDB.WolverineFx.WolverineOptionsAeroDBExtensions.html#AeroDB_WolverineFx_WolverineOptionsAeroDBExtensions_PersistMessagesWithAeroDB_Wolverine_WolverineOptions_SurrealDb_Net_ISurrealDbClient_Microsoft_Extensions_Logging_ILogger_AeroDB_WolverineFx_AeroDBMessageStore__
+  name: PersistMessagesWithAeroDB
+  nameWithType: WolverineOptionsAeroDBExtensions.PersistMessagesWithAeroDB
+  fullName: AeroDB.WolverineFx.WolverineOptionsAeroDBExtensions.PersistMessagesWithAeroDB
+- uid: SurrealDb.Net.ISurrealDbClient
+  commentId: T:SurrealDb.Net.ISurrealDbClient
+  parent: SurrealDb.Net
+  isExternal: true
+  name: ISurrealDbClient
+  nameWithType: ISurrealDbClient
+  fullName: SurrealDb.Net.ISurrealDbClient
+- uid: Microsoft.Extensions.Logging.ILogger{AeroDB.WolverineFx.AeroDBMessageStore}
+  commentId: T:Microsoft.Extensions.Logging.ILogger{AeroDB.WolverineFx.AeroDBMessageStore}
+  parent: Microsoft.Extensions.Logging
+  definition: Microsoft.Extensions.Logging.ILogger`1
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<AeroDBMessageStore>
+  nameWithType: ILogger<AeroDBMessageStore>
+  fullName: Microsoft.Extensions.Logging.ILogger<AeroDB.WolverineFx.AeroDBMessageStore>
+  nameWithType.vb: ILogger(Of AeroDBMessageStore)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of AeroDB.WolverineFx.AeroDBMessageStore)
+  name.vb: ILogger(Of AeroDBMessageStore)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - uid: AeroDB.WolverineFx.AeroDBMessageStore
+    name: AeroDBMessageStore
+    isExternal: true
+    href: AeroDB.WolverineFx.AeroDBMessageStore.html
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.WolverineFx.AeroDBMessageStore
+    name: AeroDBMessageStore
+    isExternal: true
+    href: AeroDB.WolverineFx.AeroDBMessageStore.html
+  - name: )
+- uid: SurrealDb.Net
+  commentId: N:SurrealDb.Net
+  isExternal: true
+  name: SurrealDb.Net
+  nameWithType: SurrealDb.Net
+  fullName: SurrealDb.Net
+  spec.csharp:
+  - uid: SurrealDb
+    name: SurrealDb
+    isExternal: true
+  - name: .
+  - uid: SurrealDb.Net
+    name: Net
+    isExternal: true
+  spec.vb:
+  - uid: SurrealDb
+    name: SurrealDb
+    isExternal: true
+  - name: .
+  - uid: SurrealDb.Net
+    name: Net
+    isExternal: true
+- uid: Microsoft.Extensions.Logging.ILogger`1
+  commentId: T:Microsoft.Extensions.Logging.ILogger`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<TCategoryName>
+  nameWithType: ILogger<TCategoryName>
+  fullName: Microsoft.Extensions.Logging.ILogger<TCategoryName>
+  nameWithType.vb: ILogger(Of TCategoryName)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of TCategoryName)
+  name.vb: ILogger(Of TCategoryName)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - name: TCategoryName
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TCategoryName
+  - name: )
+- uid: Microsoft.Extensions.Logging
+  commentId: N:Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.Logging
+  nameWithType: Microsoft.Extensions.Logging
+  fullName: Microsoft.Extensions.Logging
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging

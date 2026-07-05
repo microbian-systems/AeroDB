@@ -1,0 +1,172 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.IndexType
+  commentId: T:AeroDB.IndexType
+  id: IndexType
+  parent: AeroDB
+  children:
+  - AeroDB.IndexType.Diskann
+  - AeroDB.IndexType.FullText
+  - AeroDB.IndexType.Geo
+  - AeroDB.IndexType.Hnsw
+  - AeroDB.IndexType.Standard
+  langs:
+  - csharp
+  - vb
+  name: IndexType
+  nameWithType: IndexType
+  fullName: AeroDB.IndexType
+  type: Enum
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/IndexDefinition.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: The type of SurrealDB index to create.
+  example: []
+  syntax:
+    content: public enum IndexType
+    content.vb: Public Enum IndexType
+- uid: AeroDB.IndexType.Standard
+  commentId: F:AeroDB.IndexType.Standard
+  id: Standard
+  parent: AeroDB.IndexType
+  langs:
+  - csharp
+  - vb
+  name: Standard
+  nameWithType: IndexType.Standard
+  fullName: AeroDB.IndexType.Standard
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/IndexDefinition.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Standard btree index — DEFINE INDEX ... COLUMNS ...
+  example: []
+  syntax:
+    content: Standard = 0
+    return:
+      type: AeroDB.IndexType
+- uid: AeroDB.IndexType.FullText
+  commentId: F:AeroDB.IndexType.FullText
+  id: FullText
+  parent: AeroDB.IndexType
+  langs:
+  - csharp
+  - vb
+  name: FullText
+  nameWithType: IndexType.FullText
+  fullName: AeroDB.IndexType.FullText
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/IndexDefinition.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Full-text search index — DEFINE INDEX ... FIELDS ... FULLTEXT ANALYZER ...
+  example: []
+  syntax:
+    content: FullText = 1
+    return:
+      type: AeroDB.IndexType
+- uid: AeroDB.IndexType.Hnsw
+  commentId: F:AeroDB.IndexType.Hnsw
+  id: Hnsw
+  parent: AeroDB.IndexType
+  langs:
+  - csharp
+  - vb
+  name: Hnsw
+  nameWithType: IndexType.Hnsw
+  fullName: AeroDB.IndexType.Hnsw
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/IndexDefinition.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    HNSW vector index — DEFINE INDEX ... FIELDS ... HNSW DIMENSION ... DIST ...
+
+    Approximate nearest-neighbor search using hierarchical navigable small world graphs.
+
+    Best for large datasets where speed matters more than exact results.
+  example: []
+  syntax:
+    content: Hnsw = 2
+    return:
+      type: AeroDB.IndexType
+- uid: AeroDB.IndexType.Diskann
+  commentId: F:AeroDB.IndexType.Diskann
+  id: Diskann
+  parent: AeroDB.IndexType
+  langs:
+  - csharp
+  - vb
+  name: Diskann
+  nameWithType: IndexType.Diskann
+  fullName: AeroDB.IndexType.Diskann
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/IndexDefinition.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    DISKANN vector index — DEFINE INDEX ... FIELDS ... DISKANN DIMENSION ... TYPE ... DIST ...
+
+    Disk-based approximate nearest-neighbour search for very large embedding sets.
+
+    Uses the same &lt;|K, EF|&gt; query operator as HNSW. Available since SurrealDB 3.1.
+
+    Best when the working set exceeds available RAM (vs HNSW for in-memory).
+  example: []
+  syntax:
+    content: Diskann = 3
+    return:
+      type: AeroDB.IndexType
+- uid: AeroDB.IndexType.Geo
+  commentId: F:AeroDB.IndexType.Geo
+  id: Geo
+  parent: AeroDB.IndexType
+  langs:
+  - csharp
+  - vb
+  name: Geo
+  nameWithType: IndexType.Geo
+  fullName: AeroDB.IndexType.Geo
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/IndexDefinition.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Geo-spatial marker index. Uses a standard btree under the hood
+
+    (SurrealDB has no native spatial index). The marker enables informational
+
+    logging during index creation to document intent.
+  example: []
+  syntax:
+    content: Geo = 4
+    return:
+      type: AeroDB.IndexType
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: AeroDB.IndexType
+  commentId: T:AeroDB.IndexType
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IndexType.html
+  name: IndexType
+  nameWithType: IndexType
+  fullName: AeroDB.IndexType

@@ -1,0 +1,86 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.SnapshotLifecycle
+  commentId: T:AeroDB.SnapshotLifecycle
+  id: SnapshotLifecycle
+  parent: AeroDB
+  children:
+  - AeroDB.SnapshotLifecycle.Async
+  - AeroDB.SnapshotLifecycle.Inline
+  langs:
+  - csharp
+  - vb
+  name: SnapshotLifecycle
+  nameWithType: SnapshotLifecycle
+  fullName: AeroDB.SnapshotLifecycle
+  type: Enum
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/SnapshotLifecycle.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: When a snapshot projection should be rebuilt/refreshed. Maps to Marten's SnapshotLifecycle.
+  example: []
+  syntax:
+    content: public enum SnapshotLifecycle
+    content.vb: Public Enum SnapshotLifecycle
+- uid: AeroDB.SnapshotLifecycle.Inline
+  commentId: F:AeroDB.SnapshotLifecycle.Inline
+  id: Inline
+  parent: AeroDB.SnapshotLifecycle
+  langs:
+  - csharp
+  - vb
+  name: Inline
+  nameWithType: SnapshotLifecycle.Inline
+  fullName: AeroDB.SnapshotLifecycle.Inline
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/SnapshotLifecycle.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Snapshot is built inline with each event append.
+  example: []
+  syntax:
+    content: Inline = 0
+    return:
+      type: AeroDB.SnapshotLifecycle
+- uid: AeroDB.SnapshotLifecycle.Async
+  commentId: F:AeroDB.SnapshotLifecycle.Async
+  id: Async
+  parent: AeroDB.SnapshotLifecycle
+  langs:
+  - csharp
+  - vb
+  name: Async
+  nameWithType: SnapshotLifecycle.Async
+  fullName: AeroDB.SnapshotLifecycle.Async
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/SnapshotLifecycle.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Snapshot is built asynchronously by the daemon.
+  example: []
+  syntax:
+    content: Async = 1
+    return:
+      type: AeroDB.SnapshotLifecycle
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: AeroDB.SnapshotLifecycle
+  commentId: T:AeroDB.SnapshotLifecycle
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.SnapshotLifecycle.html
+  name: SnapshotLifecycle
+  nameWithType: SnapshotLifecycle
+  fullName: AeroDB.SnapshotLifecycle

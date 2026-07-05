@@ -1,0 +1,89 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.EventAppendMode
+  commentId: T:AeroDB.EventAppendMode
+  id: EventAppendMode
+  parent: AeroDB
+  children:
+  - AeroDB.EventAppendMode.Quick
+  - AeroDB.EventAppendMode.Rich
+  langs:
+  - csharp
+  - vb
+  name: EventAppendMode
+  nameWithType: EventAppendMode
+  fullName: AeroDB.EventAppendMode
+  type: Enum
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/EventAppendMode.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Controls how events are appended to the event store.
+  example: []
+  syntax:
+    content: public enum EventAppendMode
+    content.vb: Public Enum EventAppendMode
+- uid: AeroDB.EventAppendMode.Rich
+  commentId: F:AeroDB.EventAppendMode.Rich
+  id: Rich
+  parent: AeroDB.EventAppendMode
+  langs:
+  - csharp
+  - vb
+  name: Rich
+  nameWithType: EventAppendMode.Rich
+  fullName: AeroDB.EventAppendMode.Rich
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/EventAppendMode.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: 'Rich mode (default). Full metadata tracking: version, sequence, timestamp, stream key, correlation.'
+  example: []
+  syntax:
+    content: Rich = 0
+    return:
+      type: AeroDB.EventAppendMode
+- uid: AeroDB.EventAppendMode.Quick
+  commentId: F:AeroDB.EventAppendMode.Quick
+  id: Quick
+  parent: AeroDB.EventAppendMode
+  langs:
+  - csharp
+  - vb
+  name: Quick
+  nameWithType: EventAppendMode.Quick
+  fullName: AeroDB.EventAppendMode.Quick
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/EventAppendMode.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Quick mode. Minimal overhead — stores only event type and data.
+
+    Sequence is not generated, correlation is not auto-populated.
+  example: []
+  syntax:
+    content: Quick = 1
+    return:
+      type: AeroDB.EventAppendMode
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: AeroDB.EventAppendMode
+  commentId: T:AeroDB.EventAppendMode
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.EventAppendMode.html
+  name: EventAppendMode
+  nameWithType: EventAppendMode
+  fullName: AeroDB.EventAppendMode

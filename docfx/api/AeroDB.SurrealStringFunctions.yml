@@ -1,0 +1,1131 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.SurrealStringFunctions
+  commentId: T:AeroDB.SurrealStringFunctions
+  id: SurrealStringFunctions
+  parent: AeroDB
+  children:
+  - AeroDB.SurrealStringFunctions.DistanceDamerauLevenshtein(System.String,System.String)
+  - AeroDB.SurrealStringFunctions.DistanceHamming(System.String,System.String)
+  - AeroDB.SurrealStringFunctions.DistanceLevenshtein(System.String,System.String)
+  - AeroDB.SurrealStringFunctions.DistanceNormalizedDamerauLevenshtein(System.String,System.String)
+  - AeroDB.SurrealStringFunctions.DistanceNormalizedLevenshtein(System.String,System.String)
+  - AeroDB.SurrealStringFunctions.DistanceOsa(System.String,System.String)
+  - AeroDB.SurrealStringFunctions.IsAlpha(System.String)
+  - AeroDB.SurrealStringFunctions.IsAlphanum(System.String)
+  - AeroDB.SurrealStringFunctions.IsAscii(System.String)
+  - AeroDB.SurrealStringFunctions.IsDatetime(System.String)
+  - AeroDB.SurrealStringFunctions.IsEmail(System.String)
+  - AeroDB.SurrealStringFunctions.IsNumeric(System.String)
+  - AeroDB.SurrealStringFunctions.IsUrl(System.String)
+  - AeroDB.SurrealStringFunctions.IsUuid(System.String)
+  - AeroDB.SurrealStringFunctions.Join(System.String,System.String[])
+  - AeroDB.SurrealStringFunctions.Repeat(System.String,System.Int32)
+  - AeroDB.SurrealStringFunctions.Reverse(System.String)
+  - AeroDB.SurrealStringFunctions.SimilarityFuzzy(System.String,System.String)
+  - AeroDB.SurrealStringFunctions.SimilarityJaro(System.String,System.String)
+  - AeroDB.SurrealStringFunctions.SimilarityJaroWinkler(System.String,System.String)
+  langs:
+  - csharp
+  - vb
+  name: SurrealStringFunctions
+  nameWithType: SurrealStringFunctions
+  fullName: AeroDB.SurrealStringFunctions
+  type: Class
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealStringFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    SurrealDB string functions for use in LINQ expressions.
+
+    These methods are NOT callable at runtime — they exist for expression-tree translation only.
+  example: []
+  syntax:
+    content: public static class SurrealStringFunctions
+    content.vb: Public Module SurrealStringFunctions
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+- uid: AeroDB.SurrealStringFunctions.Repeat(System.String,System.Int32)
+  commentId: M:AeroDB.SurrealStringFunctions.Repeat(System.String,System.Int32)
+  id: Repeat(System.String,System.Int32)
+  parent: AeroDB.SurrealStringFunctions
+  langs:
+  - csharp
+  - vb
+  name: Repeat(string, int)
+  nameWithType: SurrealStringFunctions.Repeat(string, int)
+  fullName: AeroDB.SurrealStringFunctions.Repeat(string, int)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealStringFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Repeats a string n times. Maps to <code>string::repeat(s, n)</code>.
+  example: []
+  syntax:
+    content: public static string Repeat(string s, int n)
+    parameters:
+    - id: s
+      type: System.String
+    - id: n
+      type: System.Int32
+    return:
+      type: System.String
+    content.vb: Public Shared Function Repeat(s As String, n As Integer) As String
+  overload: AeroDB.SurrealStringFunctions.Repeat*
+  nameWithType.vb: SurrealStringFunctions.Repeat(String, Integer)
+  fullName.vb: AeroDB.SurrealStringFunctions.Repeat(String, Integer)
+  name.vb: Repeat(String, Integer)
+- uid: AeroDB.SurrealStringFunctions.Reverse(System.String)
+  commentId: M:AeroDB.SurrealStringFunctions.Reverse(System.String)
+  id: Reverse(System.String)
+  parent: AeroDB.SurrealStringFunctions
+  langs:
+  - csharp
+  - vb
+  name: Reverse(string)
+  nameWithType: SurrealStringFunctions.Reverse(string)
+  fullName: AeroDB.SurrealStringFunctions.Reverse(string)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealStringFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Reverses a string. Maps to <code>string::reverse(s)</code>.
+  example: []
+  syntax:
+    content: public static string Reverse(string s)
+    parameters:
+    - id: s
+      type: System.String
+    return:
+      type: System.String
+    content.vb: Public Shared Function Reverse(s As String) As String
+  overload: AeroDB.SurrealStringFunctions.Reverse*
+  nameWithType.vb: SurrealStringFunctions.Reverse(String)
+  fullName.vb: AeroDB.SurrealStringFunctions.Reverse(String)
+  name.vb: Reverse(String)
+- uid: AeroDB.SurrealStringFunctions.SimilarityFuzzy(System.String,System.String)
+  commentId: M:AeroDB.SurrealStringFunctions.SimilarityFuzzy(System.String,System.String)
+  id: SimilarityFuzzy(System.String,System.String)
+  parent: AeroDB.SurrealStringFunctions
+  langs:
+  - csharp
+  - vb
+  name: SimilarityFuzzy(string, string)
+  nameWithType: SurrealStringFunctions.SimilarityFuzzy(string, string)
+  fullName: AeroDB.SurrealStringFunctions.SimilarityFuzzy(string, string)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealStringFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Computes fuzzy similarity score. Maps to <code>string::similarity::fuzzy(a, b)</code>.
+  example: []
+  syntax:
+    content: public static int SimilarityFuzzy(string a, string b)
+    parameters:
+    - id: a
+      type: System.String
+    - id: b
+      type: System.String
+    return:
+      type: System.Int32
+    content.vb: Public Shared Function SimilarityFuzzy(a As String, b As String) As Integer
+  overload: AeroDB.SurrealStringFunctions.SimilarityFuzzy*
+  nameWithType.vb: SurrealStringFunctions.SimilarityFuzzy(String, String)
+  fullName.vb: AeroDB.SurrealStringFunctions.SimilarityFuzzy(String, String)
+  name.vb: SimilarityFuzzy(String, String)
+- uid: AeroDB.SurrealStringFunctions.SimilarityJaro(System.String,System.String)
+  commentId: M:AeroDB.SurrealStringFunctions.SimilarityJaro(System.String,System.String)
+  id: SimilarityJaro(System.String,System.String)
+  parent: AeroDB.SurrealStringFunctions
+  langs:
+  - csharp
+  - vb
+  name: SimilarityJaro(string, string)
+  nameWithType: SurrealStringFunctions.SimilarityJaro(string, string)
+  fullName: AeroDB.SurrealStringFunctions.SimilarityJaro(string, string)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealStringFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Computes Jaro similarity. Maps to <code>string::similarity::jaro(a, b)</code>.
+  example: []
+  syntax:
+    content: public static double SimilarityJaro(string a, string b)
+    parameters:
+    - id: a
+      type: System.String
+    - id: b
+      type: System.String
+    return:
+      type: System.Double
+    content.vb: Public Shared Function SimilarityJaro(a As String, b As String) As Double
+  overload: AeroDB.SurrealStringFunctions.SimilarityJaro*
+  nameWithType.vb: SurrealStringFunctions.SimilarityJaro(String, String)
+  fullName.vb: AeroDB.SurrealStringFunctions.SimilarityJaro(String, String)
+  name.vb: SimilarityJaro(String, String)
+- uid: AeroDB.SurrealStringFunctions.SimilarityJaroWinkler(System.String,System.String)
+  commentId: M:AeroDB.SurrealStringFunctions.SimilarityJaroWinkler(System.String,System.String)
+  id: SimilarityJaroWinkler(System.String,System.String)
+  parent: AeroDB.SurrealStringFunctions
+  langs:
+  - csharp
+  - vb
+  name: SimilarityJaroWinkler(string, string)
+  nameWithType: SurrealStringFunctions.SimilarityJaroWinkler(string, string)
+  fullName: AeroDB.SurrealStringFunctions.SimilarityJaroWinkler(string, string)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealStringFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Computes Jaro-Winkler similarity. Maps to <code>string::similarity::jaro_winkler(a, b)</code>.
+  example: []
+  syntax:
+    content: public static double SimilarityJaroWinkler(string a, string b)
+    parameters:
+    - id: a
+      type: System.String
+    - id: b
+      type: System.String
+    return:
+      type: System.Double
+    content.vb: Public Shared Function SimilarityJaroWinkler(a As String, b As String) As Double
+  overload: AeroDB.SurrealStringFunctions.SimilarityJaroWinkler*
+  nameWithType.vb: SurrealStringFunctions.SimilarityJaroWinkler(String, String)
+  fullName.vb: AeroDB.SurrealStringFunctions.SimilarityJaroWinkler(String, String)
+  name.vb: SimilarityJaroWinkler(String, String)
+- uid: AeroDB.SurrealStringFunctions.DistanceLevenshtein(System.String,System.String)
+  commentId: M:AeroDB.SurrealStringFunctions.DistanceLevenshtein(System.String,System.String)
+  id: DistanceLevenshtein(System.String,System.String)
+  parent: AeroDB.SurrealStringFunctions
+  langs:
+  - csharp
+  - vb
+  name: DistanceLevenshtein(string, string)
+  nameWithType: SurrealStringFunctions.DistanceLevenshtein(string, string)
+  fullName: AeroDB.SurrealStringFunctions.DistanceLevenshtein(string, string)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealStringFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Computes Levenshtein distance. Maps to <code>string::distance::levenshtein(a, b)</code>.
+  example: []
+  syntax:
+    content: public static int DistanceLevenshtein(string a, string b)
+    parameters:
+    - id: a
+      type: System.String
+    - id: b
+      type: System.String
+    return:
+      type: System.Int32
+    content.vb: Public Shared Function DistanceLevenshtein(a As String, b As String) As Integer
+  overload: AeroDB.SurrealStringFunctions.DistanceLevenshtein*
+  nameWithType.vb: SurrealStringFunctions.DistanceLevenshtein(String, String)
+  fullName.vb: AeroDB.SurrealStringFunctions.DistanceLevenshtein(String, String)
+  name.vb: DistanceLevenshtein(String, String)
+- uid: AeroDB.SurrealStringFunctions.DistanceHamming(System.String,System.String)
+  commentId: M:AeroDB.SurrealStringFunctions.DistanceHamming(System.String,System.String)
+  id: DistanceHamming(System.String,System.String)
+  parent: AeroDB.SurrealStringFunctions
+  langs:
+  - csharp
+  - vb
+  name: DistanceHamming(string, string)
+  nameWithType: SurrealStringFunctions.DistanceHamming(string, string)
+  fullName: AeroDB.SurrealStringFunctions.DistanceHamming(string, string)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealStringFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Computes Hamming distance. Maps to <code>string::distance::hamming(a, b)</code>.
+  example: []
+  syntax:
+    content: public static int DistanceHamming(string a, string b)
+    parameters:
+    - id: a
+      type: System.String
+    - id: b
+      type: System.String
+    return:
+      type: System.Int32
+    content.vb: Public Shared Function DistanceHamming(a As String, b As String) As Integer
+  overload: AeroDB.SurrealStringFunctions.DistanceHamming*
+  nameWithType.vb: SurrealStringFunctions.DistanceHamming(String, String)
+  fullName.vb: AeroDB.SurrealStringFunctions.DistanceHamming(String, String)
+  name.vb: DistanceHamming(String, String)
+- uid: AeroDB.SurrealStringFunctions.DistanceDamerauLevenshtein(System.String,System.String)
+  commentId: M:AeroDB.SurrealStringFunctions.DistanceDamerauLevenshtein(System.String,System.String)
+  id: DistanceDamerauLevenshtein(System.String,System.String)
+  parent: AeroDB.SurrealStringFunctions
+  langs:
+  - csharp
+  - vb
+  name: DistanceDamerauLevenshtein(string, string)
+  nameWithType: SurrealStringFunctions.DistanceDamerauLevenshtein(string, string)
+  fullName: AeroDB.SurrealStringFunctions.DistanceDamerauLevenshtein(string, string)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealStringFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Computes Damerau-Levenshtein distance. Maps to <code>string::distance::damerau_levenshtein(a, b)</code>.
+  example: []
+  syntax:
+    content: public static int DistanceDamerauLevenshtein(string a, string b)
+    parameters:
+    - id: a
+      type: System.String
+    - id: b
+      type: System.String
+    return:
+      type: System.Int32
+    content.vb: Public Shared Function DistanceDamerauLevenshtein(a As String, b As String) As Integer
+  overload: AeroDB.SurrealStringFunctions.DistanceDamerauLevenshtein*
+  nameWithType.vb: SurrealStringFunctions.DistanceDamerauLevenshtein(String, String)
+  fullName.vb: AeroDB.SurrealStringFunctions.DistanceDamerauLevenshtein(String, String)
+  name.vb: DistanceDamerauLevenshtein(String, String)
+- uid: AeroDB.SurrealStringFunctions.DistanceNormalizedLevenshtein(System.String,System.String)
+  commentId: M:AeroDB.SurrealStringFunctions.DistanceNormalizedLevenshtein(System.String,System.String)
+  id: DistanceNormalizedLevenshtein(System.String,System.String)
+  parent: AeroDB.SurrealStringFunctions
+  langs:
+  - csharp
+  - vb
+  name: DistanceNormalizedLevenshtein(string, string)
+  nameWithType: SurrealStringFunctions.DistanceNormalizedLevenshtein(string, string)
+  fullName: AeroDB.SurrealStringFunctions.DistanceNormalizedLevenshtein(string, string)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealStringFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Computes normalized Levenshtein distance. Maps to <code>string::distance::normalized_levenshtein(a, b)</code>.
+  example: []
+  syntax:
+    content: public static double DistanceNormalizedLevenshtein(string a, string b)
+    parameters:
+    - id: a
+      type: System.String
+    - id: b
+      type: System.String
+    return:
+      type: System.Double
+    content.vb: Public Shared Function DistanceNormalizedLevenshtein(a As String, b As String) As Double
+  overload: AeroDB.SurrealStringFunctions.DistanceNormalizedLevenshtein*
+  nameWithType.vb: SurrealStringFunctions.DistanceNormalizedLevenshtein(String, String)
+  fullName.vb: AeroDB.SurrealStringFunctions.DistanceNormalizedLevenshtein(String, String)
+  name.vb: DistanceNormalizedLevenshtein(String, String)
+- uid: AeroDB.SurrealStringFunctions.DistanceNormalizedDamerauLevenshtein(System.String,System.String)
+  commentId: M:AeroDB.SurrealStringFunctions.DistanceNormalizedDamerauLevenshtein(System.String,System.String)
+  id: DistanceNormalizedDamerauLevenshtein(System.String,System.String)
+  parent: AeroDB.SurrealStringFunctions
+  langs:
+  - csharp
+  - vb
+  name: DistanceNormalizedDamerauLevenshtein(string, string)
+  nameWithType: SurrealStringFunctions.DistanceNormalizedDamerauLevenshtein(string, string)
+  fullName: AeroDB.SurrealStringFunctions.DistanceNormalizedDamerauLevenshtein(string, string)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealStringFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Computes normalized Damerau-Levenshtein distance. Maps to <code>string::distance::normalized_damerau_levenshtein(a, b)</code>.
+  example: []
+  syntax:
+    content: public static double DistanceNormalizedDamerauLevenshtein(string a, string b)
+    parameters:
+    - id: a
+      type: System.String
+    - id: b
+      type: System.String
+    return:
+      type: System.Double
+    content.vb: Public Shared Function DistanceNormalizedDamerauLevenshtein(a As String, b As String) As Double
+  overload: AeroDB.SurrealStringFunctions.DistanceNormalizedDamerauLevenshtein*
+  nameWithType.vb: SurrealStringFunctions.DistanceNormalizedDamerauLevenshtein(String, String)
+  fullName.vb: AeroDB.SurrealStringFunctions.DistanceNormalizedDamerauLevenshtein(String, String)
+  name.vb: DistanceNormalizedDamerauLevenshtein(String, String)
+- uid: AeroDB.SurrealStringFunctions.DistanceOsa(System.String,System.String)
+  commentId: M:AeroDB.SurrealStringFunctions.DistanceOsa(System.String,System.String)
+  id: DistanceOsa(System.String,System.String)
+  parent: AeroDB.SurrealStringFunctions
+  langs:
+  - csharp
+  - vb
+  name: DistanceOsa(string, string)
+  nameWithType: SurrealStringFunctions.DistanceOsa(string, string)
+  fullName: AeroDB.SurrealStringFunctions.DistanceOsa(string, string)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealStringFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Computes OSA (Optimal String Alignment) distance. Maps to <code>string::distance::osa(a, b)</code>.
+  example: []
+  syntax:
+    content: public static int DistanceOsa(string a, string b)
+    parameters:
+    - id: a
+      type: System.String
+    - id: b
+      type: System.String
+    return:
+      type: System.Int32
+    content.vb: Public Shared Function DistanceOsa(a As String, b As String) As Integer
+  overload: AeroDB.SurrealStringFunctions.DistanceOsa*
+  nameWithType.vb: SurrealStringFunctions.DistanceOsa(String, String)
+  fullName.vb: AeroDB.SurrealStringFunctions.DistanceOsa(String, String)
+  name.vb: DistanceOsa(String, String)
+- uid: AeroDB.SurrealStringFunctions.Join(System.String,System.String[])
+  commentId: M:AeroDB.SurrealStringFunctions.Join(System.String,System.String[])
+  id: Join(System.String,System.String[])
+  parent: AeroDB.SurrealStringFunctions
+  langs:
+  - csharp
+  - vb
+  name: Join(string, params string[])
+  nameWithType: SurrealStringFunctions.Join(string, params string[])
+  fullName: AeroDB.SurrealStringFunctions.Join(string, params string[])
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealStringFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Joins string items with a separator. Maps to <code>string::join(sep, items...)</code>.
+  example: []
+  syntax:
+    content: public static string Join(string separator, params string[] items)
+    parameters:
+    - id: separator
+      type: System.String
+    - id: items
+      type: System.String[]
+    return:
+      type: System.String
+    content.vb: Public Shared Function Join(separator As String, ParamArray items As String()) As String
+  overload: AeroDB.SurrealStringFunctions.Join*
+  nameWithType.vb: SurrealStringFunctions.Join(String, ParamArray String())
+  fullName.vb: AeroDB.SurrealStringFunctions.Join(String, ParamArray String())
+  name.vb: Join(String, ParamArray String())
+- uid: AeroDB.SurrealStringFunctions.IsAlphanum(System.String)
+  commentId: M:AeroDB.SurrealStringFunctions.IsAlphanum(System.String)
+  id: IsAlphanum(System.String)
+  parent: AeroDB.SurrealStringFunctions
+  langs:
+  - csharp
+  - vb
+  name: IsAlphanum(string)
+  nameWithType: SurrealStringFunctions.IsAlphanum(string)
+  fullName: AeroDB.SurrealStringFunctions.IsAlphanum(string)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealStringFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Checks if a string contains only alphanumeric characters. Maps to <code>string::is::alphanum(s)</code>.
+  example: []
+  syntax:
+    content: public static bool IsAlphanum(string s)
+    parameters:
+    - id: s
+      type: System.String
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function IsAlphanum(s As String) As Boolean
+  overload: AeroDB.SurrealStringFunctions.IsAlphanum*
+  nameWithType.vb: SurrealStringFunctions.IsAlphanum(String)
+  fullName.vb: AeroDB.SurrealStringFunctions.IsAlphanum(String)
+  name.vb: IsAlphanum(String)
+- uid: AeroDB.SurrealStringFunctions.IsAlpha(System.String)
+  commentId: M:AeroDB.SurrealStringFunctions.IsAlpha(System.String)
+  id: IsAlpha(System.String)
+  parent: AeroDB.SurrealStringFunctions
+  langs:
+  - csharp
+  - vb
+  name: IsAlpha(string)
+  nameWithType: SurrealStringFunctions.IsAlpha(string)
+  fullName: AeroDB.SurrealStringFunctions.IsAlpha(string)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealStringFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Checks if a string contains only alphabetic characters. Maps to <code>string::is::alpha(s)</code>.
+  example: []
+  syntax:
+    content: public static bool IsAlpha(string s)
+    parameters:
+    - id: s
+      type: System.String
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function IsAlpha(s As String) As Boolean
+  overload: AeroDB.SurrealStringFunctions.IsAlpha*
+  nameWithType.vb: SurrealStringFunctions.IsAlpha(String)
+  fullName.vb: AeroDB.SurrealStringFunctions.IsAlpha(String)
+  name.vb: IsAlpha(String)
+- uid: AeroDB.SurrealStringFunctions.IsAscii(System.String)
+  commentId: M:AeroDB.SurrealStringFunctions.IsAscii(System.String)
+  id: IsAscii(System.String)
+  parent: AeroDB.SurrealStringFunctions
+  langs:
+  - csharp
+  - vb
+  name: IsAscii(string)
+  nameWithType: SurrealStringFunctions.IsAscii(string)
+  fullName: AeroDB.SurrealStringFunctions.IsAscii(string)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealStringFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Checks if a string contains only ASCII characters. Maps to <code>string::is::ascii(s)</code>.
+  example: []
+  syntax:
+    content: public static bool IsAscii(string s)
+    parameters:
+    - id: s
+      type: System.String
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function IsAscii(s As String) As Boolean
+  overload: AeroDB.SurrealStringFunctions.IsAscii*
+  nameWithType.vb: SurrealStringFunctions.IsAscii(String)
+  fullName.vb: AeroDB.SurrealStringFunctions.IsAscii(String)
+  name.vb: IsAscii(String)
+- uid: AeroDB.SurrealStringFunctions.IsEmail(System.String)
+  commentId: M:AeroDB.SurrealStringFunctions.IsEmail(System.String)
+  id: IsEmail(System.String)
+  parent: AeroDB.SurrealStringFunctions
+  langs:
+  - csharp
+  - vb
+  name: IsEmail(string)
+  nameWithType: SurrealStringFunctions.IsEmail(string)
+  fullName: AeroDB.SurrealStringFunctions.IsEmail(string)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealStringFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Checks if a string is a valid email. Maps to <code>string::is::email(s)</code>.
+  example: []
+  syntax:
+    content: public static bool IsEmail(string s)
+    parameters:
+    - id: s
+      type: System.String
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function IsEmail(s As String) As Boolean
+  overload: AeroDB.SurrealStringFunctions.IsEmail*
+  nameWithType.vb: SurrealStringFunctions.IsEmail(String)
+  fullName.vb: AeroDB.SurrealStringFunctions.IsEmail(String)
+  name.vb: IsEmail(String)
+- uid: AeroDB.SurrealStringFunctions.IsUrl(System.String)
+  commentId: M:AeroDB.SurrealStringFunctions.IsUrl(System.String)
+  id: IsUrl(System.String)
+  parent: AeroDB.SurrealStringFunctions
+  langs:
+  - csharp
+  - vb
+  name: IsUrl(string)
+  nameWithType: SurrealStringFunctions.IsUrl(string)
+  fullName: AeroDB.SurrealStringFunctions.IsUrl(string)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealStringFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Checks if a string is a valid URL. Maps to <code>string::is::url(s)</code>.
+  example: []
+  syntax:
+    content: public static bool IsUrl(string s)
+    parameters:
+    - id: s
+      type: System.String
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function IsUrl(s As String) As Boolean
+  overload: AeroDB.SurrealStringFunctions.IsUrl*
+  nameWithType.vb: SurrealStringFunctions.IsUrl(String)
+  fullName.vb: AeroDB.SurrealStringFunctions.IsUrl(String)
+  name.vb: IsUrl(String)
+- uid: AeroDB.SurrealStringFunctions.IsUuid(System.String)
+  commentId: M:AeroDB.SurrealStringFunctions.IsUuid(System.String)
+  id: IsUuid(System.String)
+  parent: AeroDB.SurrealStringFunctions
+  langs:
+  - csharp
+  - vb
+  name: IsUuid(string)
+  nameWithType: SurrealStringFunctions.IsUuid(string)
+  fullName: AeroDB.SurrealStringFunctions.IsUuid(string)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealStringFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Checks if a string is a valid UUID. Maps to <code>string::is::uuid(s)</code>.
+  example: []
+  syntax:
+    content: public static bool IsUuid(string s)
+    parameters:
+    - id: s
+      type: System.String
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function IsUuid(s As String) As Boolean
+  overload: AeroDB.SurrealStringFunctions.IsUuid*
+  nameWithType.vb: SurrealStringFunctions.IsUuid(String)
+  fullName.vb: AeroDB.SurrealStringFunctions.IsUuid(String)
+  name.vb: IsUuid(String)
+- uid: AeroDB.SurrealStringFunctions.IsNumeric(System.String)
+  commentId: M:AeroDB.SurrealStringFunctions.IsNumeric(System.String)
+  id: IsNumeric(System.String)
+  parent: AeroDB.SurrealStringFunctions
+  langs:
+  - csharp
+  - vb
+  name: IsNumeric(string)
+  nameWithType: SurrealStringFunctions.IsNumeric(string)
+  fullName: AeroDB.SurrealStringFunctions.IsNumeric(string)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealStringFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Checks if a string is numeric. Maps to <code>string::is::numeric(s)</code>.
+  example: []
+  syntax:
+    content: public static bool IsNumeric(string s)
+    parameters:
+    - id: s
+      type: System.String
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function IsNumeric(s As String) As Boolean
+  overload: AeroDB.SurrealStringFunctions.IsNumeric*
+  nameWithType.vb: SurrealStringFunctions.IsNumeric(String)
+  fullName.vb: AeroDB.SurrealStringFunctions.IsNumeric(String)
+  name.vb: IsNumeric(String)
+- uid: AeroDB.SurrealStringFunctions.IsDatetime(System.String)
+  commentId: M:AeroDB.SurrealStringFunctions.IsDatetime(System.String)
+  id: IsDatetime(System.String)
+  parent: AeroDB.SurrealStringFunctions
+  langs:
+  - csharp
+  - vb
+  name: IsDatetime(string)
+  nameWithType: SurrealStringFunctions.IsDatetime(string)
+  fullName: AeroDB.SurrealStringFunctions.IsDatetime(string)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealStringFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Checks if a string is a valid datetime. Maps to <code>string::is::datetime(s)</code>.
+  example: []
+  syntax:
+    content: public static bool IsDatetime(string s)
+    parameters:
+    - id: s
+      type: System.String
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function IsDatetime(s As String) As Boolean
+  overload: AeroDB.SurrealStringFunctions.IsDatetime*
+  nameWithType.vb: SurrealStringFunctions.IsDatetime(String)
+  fullName.vb: AeroDB.SurrealStringFunctions.IsDatetime(String)
+  name.vb: IsDatetime(String)
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AeroDB.SurrealStringFunctions.Repeat*
+  commentId: Overload:AeroDB.SurrealStringFunctions.Repeat
+  isExternal: true
+  href: AeroDB.SurrealStringFunctions.html#AeroDB_SurrealStringFunctions_Repeat_System_String_System_Int32_
+  name: Repeat
+  nameWithType: SurrealStringFunctions.Repeat
+  fullName: AeroDB.SurrealStringFunctions.Repeat
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: AeroDB.SurrealStringFunctions.Reverse*
+  commentId: Overload:AeroDB.SurrealStringFunctions.Reverse
+  isExternal: true
+  href: AeroDB.SurrealStringFunctions.html#AeroDB_SurrealStringFunctions_Reverse_System_String_
+  name: Reverse
+  nameWithType: SurrealStringFunctions.Reverse
+  fullName: AeroDB.SurrealStringFunctions.Reverse
+- uid: AeroDB.SurrealStringFunctions.SimilarityFuzzy*
+  commentId: Overload:AeroDB.SurrealStringFunctions.SimilarityFuzzy
+  isExternal: true
+  href: AeroDB.SurrealStringFunctions.html#AeroDB_SurrealStringFunctions_SimilarityFuzzy_System_String_System_String_
+  name: SimilarityFuzzy
+  nameWithType: SurrealStringFunctions.SimilarityFuzzy
+  fullName: AeroDB.SurrealStringFunctions.SimilarityFuzzy
+- uid: AeroDB.SurrealStringFunctions.SimilarityJaro*
+  commentId: Overload:AeroDB.SurrealStringFunctions.SimilarityJaro
+  isExternal: true
+  href: AeroDB.SurrealStringFunctions.html#AeroDB_SurrealStringFunctions_SimilarityJaro_System_String_System_String_
+  name: SimilarityJaro
+  nameWithType: SurrealStringFunctions.SimilarityJaro
+  fullName: AeroDB.SurrealStringFunctions.SimilarityJaro
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double
+  nameWithType: double
+  fullName: double
+  nameWithType.vb: Double
+  fullName.vb: Double
+  name.vb: Double
+- uid: AeroDB.SurrealStringFunctions.SimilarityJaroWinkler*
+  commentId: Overload:AeroDB.SurrealStringFunctions.SimilarityJaroWinkler
+  isExternal: true
+  href: AeroDB.SurrealStringFunctions.html#AeroDB_SurrealStringFunctions_SimilarityJaroWinkler_System_String_System_String_
+  name: SimilarityJaroWinkler
+  nameWithType: SurrealStringFunctions.SimilarityJaroWinkler
+  fullName: AeroDB.SurrealStringFunctions.SimilarityJaroWinkler
+- uid: AeroDB.SurrealStringFunctions.DistanceLevenshtein*
+  commentId: Overload:AeroDB.SurrealStringFunctions.DistanceLevenshtein
+  isExternal: true
+  href: AeroDB.SurrealStringFunctions.html#AeroDB_SurrealStringFunctions_DistanceLevenshtein_System_String_System_String_
+  name: DistanceLevenshtein
+  nameWithType: SurrealStringFunctions.DistanceLevenshtein
+  fullName: AeroDB.SurrealStringFunctions.DistanceLevenshtein
+- uid: AeroDB.SurrealStringFunctions.DistanceHamming*
+  commentId: Overload:AeroDB.SurrealStringFunctions.DistanceHamming
+  isExternal: true
+  href: AeroDB.SurrealStringFunctions.html#AeroDB_SurrealStringFunctions_DistanceHamming_System_String_System_String_
+  name: DistanceHamming
+  nameWithType: SurrealStringFunctions.DistanceHamming
+  fullName: AeroDB.SurrealStringFunctions.DistanceHamming
+- uid: AeroDB.SurrealStringFunctions.DistanceDamerauLevenshtein*
+  commentId: Overload:AeroDB.SurrealStringFunctions.DistanceDamerauLevenshtein
+  isExternal: true
+  href: AeroDB.SurrealStringFunctions.html#AeroDB_SurrealStringFunctions_DistanceDamerauLevenshtein_System_String_System_String_
+  name: DistanceDamerauLevenshtein
+  nameWithType: SurrealStringFunctions.DistanceDamerauLevenshtein
+  fullName: AeroDB.SurrealStringFunctions.DistanceDamerauLevenshtein
+- uid: AeroDB.SurrealStringFunctions.DistanceNormalizedLevenshtein*
+  commentId: Overload:AeroDB.SurrealStringFunctions.DistanceNormalizedLevenshtein
+  isExternal: true
+  href: AeroDB.SurrealStringFunctions.html#AeroDB_SurrealStringFunctions_DistanceNormalizedLevenshtein_System_String_System_String_
+  name: DistanceNormalizedLevenshtein
+  nameWithType: SurrealStringFunctions.DistanceNormalizedLevenshtein
+  fullName: AeroDB.SurrealStringFunctions.DistanceNormalizedLevenshtein
+- uid: AeroDB.SurrealStringFunctions.DistanceNormalizedDamerauLevenshtein*
+  commentId: Overload:AeroDB.SurrealStringFunctions.DistanceNormalizedDamerauLevenshtein
+  isExternal: true
+  href: AeroDB.SurrealStringFunctions.html#AeroDB_SurrealStringFunctions_DistanceNormalizedDamerauLevenshtein_System_String_System_String_
+  name: DistanceNormalizedDamerauLevenshtein
+  nameWithType: SurrealStringFunctions.DistanceNormalizedDamerauLevenshtein
+  fullName: AeroDB.SurrealStringFunctions.DistanceNormalizedDamerauLevenshtein
+- uid: AeroDB.SurrealStringFunctions.DistanceOsa*
+  commentId: Overload:AeroDB.SurrealStringFunctions.DistanceOsa
+  isExternal: true
+  href: AeroDB.SurrealStringFunctions.html#AeroDB_SurrealStringFunctions_DistanceOsa_System_String_System_String_
+  name: DistanceOsa
+  nameWithType: SurrealStringFunctions.DistanceOsa
+  fullName: AeroDB.SurrealStringFunctions.DistanceOsa
+- uid: AeroDB.SurrealStringFunctions.Join*
+  commentId: Overload:AeroDB.SurrealStringFunctions.Join
+  isExternal: true
+  href: AeroDB.SurrealStringFunctions.html#AeroDB_SurrealStringFunctions_Join_System_String_System_String___
+  name: Join
+  nameWithType: SurrealStringFunctions.Join
+  fullName: AeroDB.SurrealStringFunctions.Join
+- uid: System.String[]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string[]
+  nameWithType: string[]
+  fullName: string[]
+  nameWithType.vb: String()
+  fullName.vb: String()
+  name.vb: String()
+  spec.csharp:
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: (
+  - name: )
+- uid: AeroDB.SurrealStringFunctions.IsAlphanum*
+  commentId: Overload:AeroDB.SurrealStringFunctions.IsAlphanum
+  isExternal: true
+  href: AeroDB.SurrealStringFunctions.html#AeroDB_SurrealStringFunctions_IsAlphanum_System_String_
+  name: IsAlphanum
+  nameWithType: SurrealStringFunctions.IsAlphanum
+  fullName: AeroDB.SurrealStringFunctions.IsAlphanum
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: AeroDB.SurrealStringFunctions.IsAlpha*
+  commentId: Overload:AeroDB.SurrealStringFunctions.IsAlpha
+  isExternal: true
+  href: AeroDB.SurrealStringFunctions.html#AeroDB_SurrealStringFunctions_IsAlpha_System_String_
+  name: IsAlpha
+  nameWithType: SurrealStringFunctions.IsAlpha
+  fullName: AeroDB.SurrealStringFunctions.IsAlpha
+- uid: AeroDB.SurrealStringFunctions.IsAscii*
+  commentId: Overload:AeroDB.SurrealStringFunctions.IsAscii
+  isExternal: true
+  href: AeroDB.SurrealStringFunctions.html#AeroDB_SurrealStringFunctions_IsAscii_System_String_
+  name: IsAscii
+  nameWithType: SurrealStringFunctions.IsAscii
+  fullName: AeroDB.SurrealStringFunctions.IsAscii
+- uid: AeroDB.SurrealStringFunctions.IsEmail*
+  commentId: Overload:AeroDB.SurrealStringFunctions.IsEmail
+  isExternal: true
+  href: AeroDB.SurrealStringFunctions.html#AeroDB_SurrealStringFunctions_IsEmail_System_String_
+  name: IsEmail
+  nameWithType: SurrealStringFunctions.IsEmail
+  fullName: AeroDB.SurrealStringFunctions.IsEmail
+- uid: AeroDB.SurrealStringFunctions.IsUrl*
+  commentId: Overload:AeroDB.SurrealStringFunctions.IsUrl
+  isExternal: true
+  href: AeroDB.SurrealStringFunctions.html#AeroDB_SurrealStringFunctions_IsUrl_System_String_
+  name: IsUrl
+  nameWithType: SurrealStringFunctions.IsUrl
+  fullName: AeroDB.SurrealStringFunctions.IsUrl
+- uid: AeroDB.SurrealStringFunctions.IsUuid*
+  commentId: Overload:AeroDB.SurrealStringFunctions.IsUuid
+  isExternal: true
+  href: AeroDB.SurrealStringFunctions.html#AeroDB_SurrealStringFunctions_IsUuid_System_String_
+  name: IsUuid
+  nameWithType: SurrealStringFunctions.IsUuid
+  fullName: AeroDB.SurrealStringFunctions.IsUuid
+- uid: AeroDB.SurrealStringFunctions.IsNumeric*
+  commentId: Overload:AeroDB.SurrealStringFunctions.IsNumeric
+  isExternal: true
+  href: AeroDB.SurrealStringFunctions.html#AeroDB_SurrealStringFunctions_IsNumeric_System_String_
+  name: IsNumeric
+  nameWithType: SurrealStringFunctions.IsNumeric
+  fullName: AeroDB.SurrealStringFunctions.IsNumeric
+- uid: AeroDB.SurrealStringFunctions.IsDatetime*
+  commentId: Overload:AeroDB.SurrealStringFunctions.IsDatetime
+  isExternal: true
+  href: AeroDB.SurrealStringFunctions.html#AeroDB_SurrealStringFunctions_IsDatetime_System_String_
+  name: IsDatetime
+  nameWithType: SurrealStringFunctions.IsDatetime
+  fullName: AeroDB.SurrealStringFunctions.IsDatetime

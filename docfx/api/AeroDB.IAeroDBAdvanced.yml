@@ -1,0 +1,641 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.IAeroDBAdvanced
+  commentId: T:AeroDB.IAeroDBAdvanced
+  id: IAeroDBAdvanced
+  parent: AeroDB
+  children:
+  - AeroDB.IAeroDBAdvanced.Client
+  - AeroDB.IAeroDBAdvanced.CompletelyRemoveAsync(System.Type,System.Threading.CancellationToken)
+  - AeroDB.IAeroDBAdvanced.ComputeSchemaDiffAsync(System.Threading.CancellationToken)
+  - AeroDB.IAeroDBAdvanced.CreateSessionAsync(System.Threading.CancellationToken)
+  - AeroDB.IAeroDBAdvanced.DeleteAllDocumentsAsync``1(System.Threading.CancellationToken)
+  - AeroDB.IAeroDBAdvanced.DeleteAllEventDataAsync(System.Threading.CancellationToken)
+  - AeroDB.IAeroDBAdvanced.DeleteDocumentsByTypeAsync(System.Type,System.Threading.CancellationToken)
+  - AeroDB.IAeroDBAdvanced.DeleteDocumentsExceptAsync(System.Type[],System.Threading.CancellationToken)
+  - AeroDB.IAeroDBAdvanced.Diagnostics
+  - AeroDB.IAeroDBAdvanced.ResetAllDataAsync(System.Threading.CancellationToken)
+  langs:
+  - csharp
+  - vb
+  name: IAeroDBAdvanced
+  nameWithType: IAeroDBAdvanced
+  fullName: AeroDB.IAeroDBAdvanced
+  type: Interface
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Configuration/IAeroDBAdvanced.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public interface IAeroDBAdvanced
+    content.vb: Public Interface IAeroDBAdvanced
+- uid: AeroDB.IAeroDBAdvanced.ComputeSchemaDiffAsync(System.Threading.CancellationToken)
+  commentId: M:AeroDB.IAeroDBAdvanced.ComputeSchemaDiffAsync(System.Threading.CancellationToken)
+  id: ComputeSchemaDiffAsync(System.Threading.CancellationToken)
+  parent: AeroDB.IAeroDBAdvanced
+  langs:
+  - csharp
+  - vb
+  name: ComputeSchemaDiffAsync(CancellationToken)
+  nameWithType: IAeroDBAdvanced.ComputeSchemaDiffAsync(CancellationToken)
+  fullName: AeroDB.IAeroDBAdvanced.ComputeSchemaDiffAsync(System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Configuration/IAeroDBAdvanced.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Schema comparison between configured mappings and live database.
+  example: []
+  syntax:
+    content: Task<SchemaDiff> ComputeSchemaDiffAsync(CancellationToken ct = default)
+    parameters:
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task{AeroDB.SchemaDiff}
+    content.vb: Function ComputeSchemaDiffAsync(ct As CancellationToken = Nothing) As Task(Of SchemaDiff)
+  overload: AeroDB.IAeroDBAdvanced.ComputeSchemaDiffAsync*
+- uid: AeroDB.IAeroDBAdvanced.CreateSessionAsync(System.Threading.CancellationToken)
+  commentId: M:AeroDB.IAeroDBAdvanced.CreateSessionAsync(System.Threading.CancellationToken)
+  id: CreateSessionAsync(System.Threading.CancellationToken)
+  parent: AeroDB.IAeroDBAdvanced
+  langs:
+  - csharp
+  - vb
+  name: CreateSessionAsync(CancellationToken)
+  nameWithType: IAeroDBAdvanced.CreateSessionAsync(CancellationToken)
+  fullName: AeroDB.IAeroDBAdvanced.CreateSessionAsync(System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Configuration/IAeroDBAdvanced.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Create a new SurrealDB session (for advanced query scenarios).
+  example: []
+  syntax:
+    content: Task<ISurrealDbSession> CreateSessionAsync(CancellationToken ct = default)
+    parameters:
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task{SurrealDb.Net.ISurrealDbSession}
+    content.vb: Function CreateSessionAsync(ct As CancellationToken = Nothing) As Task(Of ISurrealDbSession)
+  overload: AeroDB.IAeroDBAdvanced.CreateSessionAsync*
+- uid: AeroDB.IAeroDBAdvanced.ResetAllDataAsync(System.Threading.CancellationToken)
+  commentId: M:AeroDB.IAeroDBAdvanced.ResetAllDataAsync(System.Threading.CancellationToken)
+  id: ResetAllDataAsync(System.Threading.CancellationToken)
+  parent: AeroDB.IAeroDBAdvanced
+  langs:
+  - csharp
+  - vb
+  name: ResetAllDataAsync(CancellationToken)
+  nameWithType: IAeroDBAdvanced.ResetAllDataAsync(CancellationToken)
+  fullName: AeroDB.IAeroDBAdvanced.ResetAllDataAsync(System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Configuration/IAeroDBAdvanced.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Deletes all data from all AeroDB-managed tables. For test/CI use only.
+  example: []
+  syntax:
+    content: Task ResetAllDataAsync(CancellationToken ct = default)
+    parameters:
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Function ResetAllDataAsync(ct As CancellationToken = Nothing) As Task
+  overload: AeroDB.IAeroDBAdvanced.ResetAllDataAsync*
+- uid: AeroDB.IAeroDBAdvanced.DeleteAllDocumentsAsync``1(System.Threading.CancellationToken)
+  commentId: M:AeroDB.IAeroDBAdvanced.DeleteAllDocumentsAsync``1(System.Threading.CancellationToken)
+  id: DeleteAllDocumentsAsync``1(System.Threading.CancellationToken)
+  parent: AeroDB.IAeroDBAdvanced
+  langs:
+  - csharp
+  - vb
+  name: DeleteAllDocumentsAsync<T>(CancellationToken)
+  nameWithType: IAeroDBAdvanced.DeleteAllDocumentsAsync<T>(CancellationToken)
+  fullName: AeroDB.IAeroDBAdvanced.DeleteAllDocumentsAsync<T>(System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Configuration/IAeroDBAdvanced.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Permanently delete all documents of type T.
+  example: []
+  syntax:
+    content: 'Task DeleteAllDocumentsAsync<T>(CancellationToken ct = default) where T : class'
+    parameters:
+    - id: ct
+      type: System.Threading.CancellationToken
+    typeParameters:
+    - id: T
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Function DeleteAllDocumentsAsync(Of T As Class)(ct As CancellationToken = Nothing) As Task
+  overload: AeroDB.IAeroDBAdvanced.DeleteAllDocumentsAsync*
+  nameWithType.vb: IAeroDBAdvanced.DeleteAllDocumentsAsync(Of T)(CancellationToken)
+  fullName.vb: AeroDB.IAeroDBAdvanced.DeleteAllDocumentsAsync(Of T)(System.Threading.CancellationToken)
+  name.vb: DeleteAllDocumentsAsync(Of T)(CancellationToken)
+- uid: AeroDB.IAeroDBAdvanced.DeleteDocumentsByTypeAsync(System.Type,System.Threading.CancellationToken)
+  commentId: M:AeroDB.IAeroDBAdvanced.DeleteDocumentsByTypeAsync(System.Type,System.Threading.CancellationToken)
+  id: DeleteDocumentsByTypeAsync(System.Type,System.Threading.CancellationToken)
+  parent: AeroDB.IAeroDBAdvanced
+  langs:
+  - csharp
+  - vb
+  name: DeleteDocumentsByTypeAsync(Type, CancellationToken)
+  nameWithType: IAeroDBAdvanced.DeleteDocumentsByTypeAsync(Type, CancellationToken)
+  fullName: AeroDB.IAeroDBAdvanced.DeleteDocumentsByTypeAsync(System.Type, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Configuration/IAeroDBAdvanced.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Permanently delete all documents of a specific type.
+  example: []
+  syntax:
+    content: Task DeleteDocumentsByTypeAsync(Type documentType, CancellationToken ct = default)
+    parameters:
+    - id: documentType
+      type: System.Type
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Function DeleteDocumentsByTypeAsync(documentType As Type, ct As CancellationToken = Nothing) As Task
+  overload: AeroDB.IAeroDBAdvanced.DeleteDocumentsByTypeAsync*
+- uid: AeroDB.IAeroDBAdvanced.DeleteDocumentsExceptAsync(System.Type[],System.Threading.CancellationToken)
+  commentId: M:AeroDB.IAeroDBAdvanced.DeleteDocumentsExceptAsync(System.Type[],System.Threading.CancellationToken)
+  id: DeleteDocumentsExceptAsync(System.Type[],System.Threading.CancellationToken)
+  parent: AeroDB.IAeroDBAdvanced
+  langs:
+  - csharp
+  - vb
+  name: DeleteDocumentsExceptAsync(Type[], CancellationToken)
+  nameWithType: IAeroDBAdvanced.DeleteDocumentsExceptAsync(Type[], CancellationToken)
+  fullName: AeroDB.IAeroDBAdvanced.DeleteDocumentsExceptAsync(System.Type[], System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Configuration/IAeroDBAdvanced.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Delete all documents except those of the specified types.
+  example: []
+  syntax:
+    content: Task DeleteDocumentsExceptAsync(Type[] preservedTypes, CancellationToken ct = default)
+    parameters:
+    - id: preservedTypes
+      type: System.Type[]
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Function DeleteDocumentsExceptAsync(preservedTypes As Type(), ct As CancellationToken = Nothing) As Task
+  overload: AeroDB.IAeroDBAdvanced.DeleteDocumentsExceptAsync*
+  nameWithType.vb: IAeroDBAdvanced.DeleteDocumentsExceptAsync(Type(), CancellationToken)
+  fullName.vb: AeroDB.IAeroDBAdvanced.DeleteDocumentsExceptAsync(System.Type(), System.Threading.CancellationToken)
+  name.vb: DeleteDocumentsExceptAsync(Type(), CancellationToken)
+- uid: AeroDB.IAeroDBAdvanced.DeleteAllEventDataAsync(System.Threading.CancellationToken)
+  commentId: M:AeroDB.IAeroDBAdvanced.DeleteAllEventDataAsync(System.Threading.CancellationToken)
+  id: DeleteAllEventDataAsync(System.Threading.CancellationToken)
+  parent: AeroDB.IAeroDBAdvanced
+  langs:
+  - csharp
+  - vb
+  name: DeleteAllEventDataAsync(CancellationToken)
+  nameWithType: IAeroDBAdvanced.DeleteAllEventDataAsync(CancellationToken)
+  fullName: AeroDB.IAeroDBAdvanced.DeleteAllEventDataAsync(System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Configuration/IAeroDBAdvanced.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Delete all event data. Keeps schema/metadata intact.
+  example: []
+  syntax:
+    content: Task DeleteAllEventDataAsync(CancellationToken ct = default)
+    parameters:
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Function DeleteAllEventDataAsync(ct As CancellationToken = Nothing) As Task
+  overload: AeroDB.IAeroDBAdvanced.DeleteAllEventDataAsync*
+- uid: AeroDB.IAeroDBAdvanced.CompletelyRemoveAsync(System.Type,System.Threading.CancellationToken)
+  commentId: M:AeroDB.IAeroDBAdvanced.CompletelyRemoveAsync(System.Type,System.Threading.CancellationToken)
+  id: CompletelyRemoveAsync(System.Type,System.Threading.CancellationToken)
+  parent: AeroDB.IAeroDBAdvanced
+  langs:
+  - csharp
+  - vb
+  name: CompletelyRemoveAsync(Type, CancellationToken)
+  nameWithType: IAeroDBAdvanced.CompletelyRemoveAsync(Type, CancellationToken)
+  fullName: AeroDB.IAeroDBAdvanced.CompletelyRemoveAsync(System.Type, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Configuration/IAeroDBAdvanced.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Completely remove a document type including its table and schema.
+  example: []
+  syntax:
+    content: Task CompletelyRemoveAsync(Type documentType, CancellationToken ct = default)
+    parameters:
+    - id: documentType
+      type: System.Type
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Function CompletelyRemoveAsync(documentType As Type, ct As CancellationToken = Nothing) As Task
+  overload: AeroDB.IAeroDBAdvanced.CompletelyRemoveAsync*
+- uid: AeroDB.IAeroDBAdvanced.Client
+  commentId: P:AeroDB.IAeroDBAdvanced.Client
+  id: Client
+  parent: AeroDB.IAeroDBAdvanced
+  langs:
+  - csharp
+  - vb
+  name: Client
+  nameWithType: IAeroDBAdvanced.Client
+  fullName: AeroDB.IAeroDBAdvanced.Client
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Configuration/IAeroDBAdvanced.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Direct access to the underlying SurrealDB client.
+  example: []
+  syntax:
+    content: ISurrealDbClient Client { get; }
+    parameters: []
+    return:
+      type: SurrealDb.Net.ISurrealDbClient
+    content.vb: ReadOnly Property Client As ISurrealDbClient
+  overload: AeroDB.IAeroDBAdvanced.Client*
+- uid: AeroDB.IAeroDBAdvanced.Diagnostics
+  commentId: P:AeroDB.IAeroDBAdvanced.Diagnostics
+  id: Diagnostics
+  parent: AeroDB.IAeroDBAdvanced
+  langs:
+  - csharp
+  - vb
+  name: Diagnostics
+  nameWithType: IAeroDBAdvanced.Diagnostics
+  fullName: AeroDB.IAeroDBAdvanced.Diagnostics
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Configuration/IAeroDBAdvanced.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Query diagnostics — preview generated SurrealQL and explain plans.
+  example: []
+  syntax:
+    content: IDiagnostics Diagnostics { get; }
+    parameters: []
+    return:
+      type: AeroDB.IDiagnostics
+    content.vb: ReadOnly Property Diagnostics As IDiagnostics
+  overload: AeroDB.IAeroDBAdvanced.Diagnostics*
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: AeroDB.IAeroDBAdvanced.ComputeSchemaDiffAsync*
+  commentId: Overload:AeroDB.IAeroDBAdvanced.ComputeSchemaDiffAsync
+  isExternal: true
+  href: AeroDB.IAeroDBAdvanced.html#AeroDB_IAeroDBAdvanced_ComputeSchemaDiffAsync_System_Threading_CancellationToken_
+  name: ComputeSchemaDiffAsync
+  nameWithType: IAeroDBAdvanced.ComputeSchemaDiffAsync
+  fullName: AeroDB.IAeroDBAdvanced.ComputeSchemaDiffAsync
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task{AeroDB.SchemaDiff}
+  commentId: T:System.Threading.Tasks.Task{AeroDB.SchemaDiff}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<SchemaDiff>
+  nameWithType: Task<SchemaDiff>
+  fullName: System.Threading.Tasks.Task<AeroDB.SchemaDiff>
+  nameWithType.vb: Task(Of SchemaDiff)
+  fullName.vb: System.Threading.Tasks.Task(Of AeroDB.SchemaDiff)
+  name.vb: Task(Of SchemaDiff)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: AeroDB.SchemaDiff
+    name: SchemaDiff
+    isExternal: true
+    href: AeroDB.SchemaDiff.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.SchemaDiff
+    name: SchemaDiff
+    isExternal: true
+    href: AeroDB.SchemaDiff.html
+  - name: )
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: AeroDB.IAeroDBAdvanced.CreateSessionAsync*
+  commentId: Overload:AeroDB.IAeroDBAdvanced.CreateSessionAsync
+  isExternal: true
+  href: AeroDB.IAeroDBAdvanced.html#AeroDB_IAeroDBAdvanced_CreateSessionAsync_System_Threading_CancellationToken_
+  name: CreateSessionAsync
+  nameWithType: IAeroDBAdvanced.CreateSessionAsync
+  fullName: AeroDB.IAeroDBAdvanced.CreateSessionAsync
+- uid: System.Threading.Tasks.Task{SurrealDb.Net.ISurrealDbSession}
+  commentId: T:System.Threading.Tasks.Task{SurrealDb.Net.ISurrealDbSession}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<ISurrealDbSession>
+  nameWithType: Task<ISurrealDbSession>
+  fullName: System.Threading.Tasks.Task<SurrealDb.Net.ISurrealDbSession>
+  nameWithType.vb: Task(Of ISurrealDbSession)
+  fullName.vb: System.Threading.Tasks.Task(Of SurrealDb.Net.ISurrealDbSession)
+  name.vb: Task(Of ISurrealDbSession)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: SurrealDb.Net.ISurrealDbSession
+    name: ISurrealDbSession
+    isExternal: true
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: SurrealDb.Net.ISurrealDbSession
+    name: ISurrealDbSession
+    isExternal: true
+  - name: )
+- uid: AeroDB.IAeroDBAdvanced.ResetAllDataAsync*
+  commentId: Overload:AeroDB.IAeroDBAdvanced.ResetAllDataAsync
+  isExternal: true
+  href: AeroDB.IAeroDBAdvanced.html#AeroDB_IAeroDBAdvanced_ResetAllDataAsync_System_Threading_CancellationToken_
+  name: ResetAllDataAsync
+  nameWithType: IAeroDBAdvanced.ResetAllDataAsync
+  fullName: AeroDB.IAeroDBAdvanced.ResetAllDataAsync
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: AeroDB.IAeroDBAdvanced.DeleteAllDocumentsAsync*
+  commentId: Overload:AeroDB.IAeroDBAdvanced.DeleteAllDocumentsAsync
+  isExternal: true
+  href: AeroDB.IAeroDBAdvanced.html#AeroDB_IAeroDBAdvanced_DeleteAllDocumentsAsync__1_System_Threading_CancellationToken_
+  name: DeleteAllDocumentsAsync
+  nameWithType: IAeroDBAdvanced.DeleteAllDocumentsAsync
+  fullName: AeroDB.IAeroDBAdvanced.DeleteAllDocumentsAsync
+- uid: AeroDB.IAeroDBAdvanced.DeleteDocumentsByTypeAsync*
+  commentId: Overload:AeroDB.IAeroDBAdvanced.DeleteDocumentsByTypeAsync
+  isExternal: true
+  href: AeroDB.IAeroDBAdvanced.html#AeroDB_IAeroDBAdvanced_DeleteDocumentsByTypeAsync_System_Type_System_Threading_CancellationToken_
+  name: DeleteDocumentsByTypeAsync
+  nameWithType: IAeroDBAdvanced.DeleteDocumentsByTypeAsync
+  fullName: AeroDB.IAeroDBAdvanced.DeleteDocumentsByTypeAsync
+- uid: System.Type
+  commentId: T:System.Type
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.type
+  name: Type
+  nameWithType: Type
+  fullName: System.Type
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AeroDB.IAeroDBAdvanced.DeleteDocumentsExceptAsync*
+  commentId: Overload:AeroDB.IAeroDBAdvanced.DeleteDocumentsExceptAsync
+  isExternal: true
+  href: AeroDB.IAeroDBAdvanced.html#AeroDB_IAeroDBAdvanced_DeleteDocumentsExceptAsync_System_Type___System_Threading_CancellationToken_
+  name: DeleteDocumentsExceptAsync
+  nameWithType: IAeroDBAdvanced.DeleteDocumentsExceptAsync
+  fullName: AeroDB.IAeroDBAdvanced.DeleteDocumentsExceptAsync
+- uid: System.Type[]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.type
+  name: Type[]
+  nameWithType: Type[]
+  fullName: System.Type[]
+  nameWithType.vb: Type()
+  fullName.vb: System.Type()
+  name.vb: Type()
+  spec.csharp:
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: (
+  - name: )
+- uid: AeroDB.IAeroDBAdvanced.DeleteAllEventDataAsync*
+  commentId: Overload:AeroDB.IAeroDBAdvanced.DeleteAllEventDataAsync
+  isExternal: true
+  href: AeroDB.IAeroDBAdvanced.html#AeroDB_IAeroDBAdvanced_DeleteAllEventDataAsync_System_Threading_CancellationToken_
+  name: DeleteAllEventDataAsync
+  nameWithType: IAeroDBAdvanced.DeleteAllEventDataAsync
+  fullName: AeroDB.IAeroDBAdvanced.DeleteAllEventDataAsync
+- uid: AeroDB.IAeroDBAdvanced.CompletelyRemoveAsync*
+  commentId: Overload:AeroDB.IAeroDBAdvanced.CompletelyRemoveAsync
+  isExternal: true
+  href: AeroDB.IAeroDBAdvanced.html#AeroDB_IAeroDBAdvanced_CompletelyRemoveAsync_System_Type_System_Threading_CancellationToken_
+  name: CompletelyRemoveAsync
+  nameWithType: IAeroDBAdvanced.CompletelyRemoveAsync
+  fullName: AeroDB.IAeroDBAdvanced.CompletelyRemoveAsync
+- uid: AeroDB.IAeroDBAdvanced.Client*
+  commentId: Overload:AeroDB.IAeroDBAdvanced.Client
+  isExternal: true
+  href: AeroDB.IAeroDBAdvanced.html#AeroDB_IAeroDBAdvanced_Client
+  name: Client
+  nameWithType: IAeroDBAdvanced.Client
+  fullName: AeroDB.IAeroDBAdvanced.Client
+- uid: SurrealDb.Net.ISurrealDbClient
+  commentId: T:SurrealDb.Net.ISurrealDbClient
+  parent: SurrealDb.Net
+  isExternal: true
+  name: ISurrealDbClient
+  nameWithType: ISurrealDbClient
+  fullName: SurrealDb.Net.ISurrealDbClient
+- uid: SurrealDb.Net
+  commentId: N:SurrealDb.Net
+  isExternal: true
+  name: SurrealDb.Net
+  nameWithType: SurrealDb.Net
+  fullName: SurrealDb.Net
+  spec.csharp:
+  - uid: SurrealDb
+    name: SurrealDb
+    isExternal: true
+  - name: .
+  - uid: SurrealDb.Net
+    name: Net
+    isExternal: true
+  spec.vb:
+  - uid: SurrealDb
+    name: SurrealDb
+    isExternal: true
+  - name: .
+  - uid: SurrealDb.Net
+    name: Net
+    isExternal: true
+- uid: AeroDB.IAeroDBAdvanced.Diagnostics*
+  commentId: Overload:AeroDB.IAeroDBAdvanced.Diagnostics
+  isExternal: true
+  href: AeroDB.IAeroDBAdvanced.html#AeroDB_IAeroDBAdvanced_Diagnostics
+  name: Diagnostics
+  nameWithType: IAeroDBAdvanced.Diagnostics
+  fullName: AeroDB.IAeroDBAdvanced.Diagnostics
+- uid: AeroDB.IDiagnostics
+  commentId: T:AeroDB.IDiagnostics
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IDiagnostics.html
+  name: IDiagnostics
+  nameWithType: IDiagnostics
+  fullName: AeroDB.IDiagnostics

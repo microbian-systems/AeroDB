@@ -1,0 +1,338 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.IDiagnostics
+  commentId: T:AeroDB.IDiagnostics
+  id: IDiagnostics
+  parent: AeroDB
+  children:
+  - AeroDB.IDiagnostics.ExplainPlanAsync``1(System.Linq.IQueryable{``0},System.Threading.CancellationToken)
+  - AeroDB.IDiagnostics.PreviewCommandAsync``1(System.Linq.IQueryable{``0},System.Threading.CancellationToken)
+  langs:
+  - csharp
+  - vb
+  name: IDiagnostics
+  nameWithType: IDiagnostics
+  fullName: AeroDB.IDiagnostics
+  type: Interface
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Diagnostics/IDiagnostics.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Query diagnostics: preview generated SurrealQL and explain plans.
+
+    Access via <code>store.Advanced.Diagnostics</code>.
+  example: []
+  syntax:
+    content: public interface IDiagnostics
+    content.vb: Public Interface IDiagnostics
+- uid: AeroDB.IDiagnostics.PreviewCommandAsync``1(System.Linq.IQueryable{``0},System.Threading.CancellationToken)
+  commentId: M:AeroDB.IDiagnostics.PreviewCommandAsync``1(System.Linq.IQueryable{``0},System.Threading.CancellationToken)
+  id: PreviewCommandAsync``1(System.Linq.IQueryable{``0},System.Threading.CancellationToken)
+  parent: AeroDB.IDiagnostics
+  langs:
+  - csharp
+  - vb
+  name: PreviewCommandAsync<T>(IQueryable<T>, CancellationToken)
+  nameWithType: IDiagnostics.PreviewCommandAsync<T>(IQueryable<T>, CancellationToken)
+  fullName: AeroDB.IDiagnostics.PreviewCommandAsync<T>(System.Linq.IQueryable<T>, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Diagnostics/IDiagnostics.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Generate the SurrealQL for a query without executing it.
+  example: []
+  syntax:
+    content: 'Task<string> PreviewCommandAsync<T>(IQueryable<T> query, CancellationToken ct = default) where T : class'
+    parameters:
+    - id: query
+      type: System.Linq.IQueryable{{T}}
+    - id: ct
+      type: System.Threading.CancellationToken
+    typeParameters:
+    - id: T
+    return:
+      type: System.Threading.Tasks.Task{System.String}
+    content.vb: Function PreviewCommandAsync(Of T As Class)(query As IQueryable(Of T), ct As CancellationToken = Nothing) As Task(Of String)
+  overload: AeroDB.IDiagnostics.PreviewCommandAsync*
+  nameWithType.vb: IDiagnostics.PreviewCommandAsync(Of T)(IQueryable(Of T), CancellationToken)
+  fullName.vb: AeroDB.IDiagnostics.PreviewCommandAsync(Of T)(System.Linq.IQueryable(Of T), System.Threading.CancellationToken)
+  name.vb: PreviewCommandAsync(Of T)(IQueryable(Of T), CancellationToken)
+- uid: AeroDB.IDiagnostics.ExplainPlanAsync``1(System.Linq.IQueryable{``0},System.Threading.CancellationToken)
+  commentId: M:AeroDB.IDiagnostics.ExplainPlanAsync``1(System.Linq.IQueryable{``0},System.Threading.CancellationToken)
+  id: ExplainPlanAsync``1(System.Linq.IQueryable{``0},System.Threading.CancellationToken)
+  parent: AeroDB.IDiagnostics
+  langs:
+  - csharp
+  - vb
+  name: ExplainPlanAsync<T>(IQueryable<T>, CancellationToken)
+  nameWithType: IDiagnostics.ExplainPlanAsync<T>(IQueryable<T>, CancellationToken)
+  fullName: AeroDB.IDiagnostics.ExplainPlanAsync<T>(System.Linq.IQueryable<T>, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Diagnostics/IDiagnostics.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Get the SurrealDB EXPLAIN output for a query.
+  example: []
+  syntax:
+    content: 'Task<string> ExplainPlanAsync<T>(IQueryable<T> query, CancellationToken ct = default) where T : class'
+    parameters:
+    - id: query
+      type: System.Linq.IQueryable{{T}}
+    - id: ct
+      type: System.Threading.CancellationToken
+    typeParameters:
+    - id: T
+    return:
+      type: System.Threading.Tasks.Task{System.String}
+    content.vb: Function ExplainPlanAsync(Of T As Class)(query As IQueryable(Of T), ct As CancellationToken = Nothing) As Task(Of String)
+  overload: AeroDB.IDiagnostics.ExplainPlanAsync*
+  nameWithType.vb: IDiagnostics.ExplainPlanAsync(Of T)(IQueryable(Of T), CancellationToken)
+  fullName.vb: AeroDB.IDiagnostics.ExplainPlanAsync(Of T)(System.Linq.IQueryable(Of T), System.Threading.CancellationToken)
+  name.vb: ExplainPlanAsync(Of T)(IQueryable(Of T), CancellationToken)
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: AeroDB.IDiagnostics.PreviewCommandAsync*
+  commentId: Overload:AeroDB.IDiagnostics.PreviewCommandAsync
+  isExternal: true
+  href: AeroDB.IDiagnostics.html#AeroDB_IDiagnostics_PreviewCommandAsync__1_System_Linq_IQueryable___0__System_Threading_CancellationToken_
+  name: PreviewCommandAsync
+  nameWithType: IDiagnostics.PreviewCommandAsync
+  fullName: AeroDB.IDiagnostics.PreviewCommandAsync
+- uid: System.Linq.IQueryable{{T}}
+  commentId: T:System.Linq.IQueryable{``0}
+  parent: System.Linq
+  definition: System.Linq.IQueryable`1
+  href: https://learn.microsoft.com/dotnet/api/system.linq.iqueryable-1
+  name: IQueryable<T>
+  nameWithType: IQueryable<T>
+  fullName: System.Linq.IQueryable<T>
+  nameWithType.vb: IQueryable(Of T)
+  fullName.vb: System.Linq.IQueryable(Of T)
+  name.vb: IQueryable(Of T)
+  spec.csharp:
+  - uid: System.Linq.IQueryable`1
+    name: IQueryable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.iqueryable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.IQueryable`1
+    name: IQueryable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.iqueryable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task{System.String}
+  commentId: T:System.Threading.Tasks.Task{System.String}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<string>
+  nameWithType: Task<string>
+  fullName: System.Threading.Tasks.Task<string>
+  nameWithType.vb: Task(Of String)
+  fullName.vb: System.Threading.Tasks.Task(Of String)
+  name.vb: Task(Of String)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Linq.IQueryable`1
+  commentId: T:System.Linq.IQueryable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.iqueryable-1
+  name: IQueryable<T>
+  nameWithType: IQueryable<T>
+  fullName: System.Linq.IQueryable<T>
+  nameWithType.vb: IQueryable(Of T)
+  fullName.vb: System.Linq.IQueryable(Of T)
+  name.vb: IQueryable(Of T)
+  spec.csharp:
+  - uid: System.Linq.IQueryable`1
+    name: IQueryable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.iqueryable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.IQueryable`1
+    name: IQueryable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.iqueryable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Linq
+  commentId: N:System.Linq
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Linq
+  nameWithType: System.Linq
+  fullName: System.Linq
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Linq
+    name: Linq
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Linq
+    name: Linq
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: AeroDB.IDiagnostics.ExplainPlanAsync*
+  commentId: Overload:AeroDB.IDiagnostics.ExplainPlanAsync
+  isExternal: true
+  href: AeroDB.IDiagnostics.html#AeroDB_IDiagnostics_ExplainPlanAsync__1_System_Linq_IQueryable___0__System_Threading_CancellationToken_
+  name: ExplainPlanAsync
+  nameWithType: IDiagnostics.ExplainPlanAsync
+  fullName: AeroDB.IDiagnostics.ExplainPlanAsync

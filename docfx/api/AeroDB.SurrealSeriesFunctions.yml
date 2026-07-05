@@ -1,0 +1,763 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.SurrealSeriesFunctions
+  commentId: T:AeroDB.SurrealSeriesFunctions
+  id: SurrealSeriesFunctions
+  parent: AeroDB
+  children:
+  - AeroDB.SurrealSeriesFunctions.Add(System.Double[],System.Double,System.DateTimeOffset)
+  - AeroDB.SurrealSeriesFunctions.First(System.Double[])
+  - AeroDB.SurrealSeriesFunctions.Last(System.Double[])
+  - AeroDB.SurrealSeriesFunctions.Len(System.Double[])
+  - AeroDB.SurrealSeriesFunctions.Max(System.Double[])
+  - AeroDB.SurrealSeriesFunctions.Mean(System.Double[])
+  - AeroDB.SurrealSeriesFunctions.Median(System.Double[])
+  - AeroDB.SurrealSeriesFunctions.Min(System.Double[])
+  - AeroDB.SurrealSeriesFunctions.Range(System.Double[],System.DateTimeOffset,System.DateTimeOffset)
+  - AeroDB.SurrealSeriesFunctions.Std(System.Double[])
+  - AeroDB.SurrealSeriesFunctions.Sum(System.Double[])
+  langs:
+  - csharp
+  - vb
+  name: SurrealSeriesFunctions
+  nameWithType: SurrealSeriesFunctions
+  fullName: AeroDB.SurrealSeriesFunctions
+  type: Class
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealSeriesFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Marker methods for SurrealDB series:: time-series functions.
+
+    These are never executed — they are intercepted by the LINQ expression visitor
+
+    and translated to SurrealQL <code>series::*</code> function calls.
+  example: []
+  syntax:
+    content: public static class SurrealSeriesFunctions
+    content.vb: Public Module SurrealSeriesFunctions
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+- uid: AeroDB.SurrealSeriesFunctions.Add(System.Double[],System.Double,System.DateTimeOffset)
+  commentId: M:AeroDB.SurrealSeriesFunctions.Add(System.Double[],System.Double,System.DateTimeOffset)
+  id: Add(System.Double[],System.Double,System.DateTimeOffset)
+  parent: AeroDB.SurrealSeriesFunctions
+  langs:
+  - csharp
+  - vb
+  name: Add(double[], double, DateTimeOffset)
+  nameWithType: SurrealSeriesFunctions.Add(double[], double, DateTimeOffset)
+  fullName: AeroDB.SurrealSeriesFunctions.Add(double[], double, System.DateTimeOffset)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealSeriesFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Adds a value to a time series at the given timestamp. Maps to <code>series::add(series, value, timestamp)</code>.
+  example: []
+  syntax:
+    content: public static double[] Add(double[] series, double value, DateTimeOffset timestamp)
+    parameters:
+    - id: series
+      type: System.Double[]
+    - id: value
+      type: System.Double
+    - id: timestamp
+      type: System.DateTimeOffset
+    return:
+      type: System.Double[]
+    content.vb: Public Shared Function Add(series As Double(), value As Double, timestamp As DateTimeOffset) As Double()
+  overload: AeroDB.SurrealSeriesFunctions.Add*
+  nameWithType.vb: SurrealSeriesFunctions.Add(Double(), Double, DateTimeOffset)
+  fullName.vb: AeroDB.SurrealSeriesFunctions.Add(Double(), Double, System.DateTimeOffset)
+  name.vb: Add(Double(), Double, DateTimeOffset)
+- uid: AeroDB.SurrealSeriesFunctions.Len(System.Double[])
+  commentId: M:AeroDB.SurrealSeriesFunctions.Len(System.Double[])
+  id: Len(System.Double[])
+  parent: AeroDB.SurrealSeriesFunctions
+  langs:
+  - csharp
+  - vb
+  name: Len(double[])
+  nameWithType: SurrealSeriesFunctions.Len(double[])
+  fullName: AeroDB.SurrealSeriesFunctions.Len(double[])
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealSeriesFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Returns the number of points in a series. Maps to <code>series::len(series)</code>.
+  example: []
+  syntax:
+    content: public static int Len(double[] series)
+    parameters:
+    - id: series
+      type: System.Double[]
+    return:
+      type: System.Int32
+    content.vb: Public Shared Function Len(series As Double()) As Integer
+  overload: AeroDB.SurrealSeriesFunctions.Len*
+  nameWithType.vb: SurrealSeriesFunctions.Len(Double())
+  fullName.vb: AeroDB.SurrealSeriesFunctions.Len(Double())
+  name.vb: Len(Double())
+- uid: AeroDB.SurrealSeriesFunctions.First(System.Double[])
+  commentId: M:AeroDB.SurrealSeriesFunctions.First(System.Double[])
+  id: First(System.Double[])
+  parent: AeroDB.SurrealSeriesFunctions
+  langs:
+  - csharp
+  - vb
+  name: First(double[])
+  nameWithType: SurrealSeriesFunctions.First(double[])
+  fullName: AeroDB.SurrealSeriesFunctions.First(double[])
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealSeriesFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Returns the first value in a series. Maps to <code>series::first(series)</code>.
+  example: []
+  syntax:
+    content: public static double First(double[] series)
+    parameters:
+    - id: series
+      type: System.Double[]
+    return:
+      type: System.Double
+    content.vb: Public Shared Function First(series As Double()) As Double
+  overload: AeroDB.SurrealSeriesFunctions.First*
+  nameWithType.vb: SurrealSeriesFunctions.First(Double())
+  fullName.vb: AeroDB.SurrealSeriesFunctions.First(Double())
+  name.vb: First(Double())
+- uid: AeroDB.SurrealSeriesFunctions.Last(System.Double[])
+  commentId: M:AeroDB.SurrealSeriesFunctions.Last(System.Double[])
+  id: Last(System.Double[])
+  parent: AeroDB.SurrealSeriesFunctions
+  langs:
+  - csharp
+  - vb
+  name: Last(double[])
+  nameWithType: SurrealSeriesFunctions.Last(double[])
+  fullName: AeroDB.SurrealSeriesFunctions.Last(double[])
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealSeriesFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Returns the last value in a series. Maps to <code>series::last(series)</code>.
+  example: []
+  syntax:
+    content: public static double Last(double[] series)
+    parameters:
+    - id: series
+      type: System.Double[]
+    return:
+      type: System.Double
+    content.vb: Public Shared Function Last(series As Double()) As Double
+  overload: AeroDB.SurrealSeriesFunctions.Last*
+  nameWithType.vb: SurrealSeriesFunctions.Last(Double())
+  fullName.vb: AeroDB.SurrealSeriesFunctions.Last(Double())
+  name.vb: Last(Double())
+- uid: AeroDB.SurrealSeriesFunctions.Min(System.Double[])
+  commentId: M:AeroDB.SurrealSeriesFunctions.Min(System.Double[])
+  id: Min(System.Double[])
+  parent: AeroDB.SurrealSeriesFunctions
+  langs:
+  - csharp
+  - vb
+  name: Min(double[])
+  nameWithType: SurrealSeriesFunctions.Min(double[])
+  fullName: AeroDB.SurrealSeriesFunctions.Min(double[])
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealSeriesFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Returns the minimum value in a series. Maps to <code>series::min(series)</code>.
+  example: []
+  syntax:
+    content: public static double Min(double[] series)
+    parameters:
+    - id: series
+      type: System.Double[]
+    return:
+      type: System.Double
+    content.vb: Public Shared Function Min(series As Double()) As Double
+  overload: AeroDB.SurrealSeriesFunctions.Min*
+  nameWithType.vb: SurrealSeriesFunctions.Min(Double())
+  fullName.vb: AeroDB.SurrealSeriesFunctions.Min(Double())
+  name.vb: Min(Double())
+- uid: AeroDB.SurrealSeriesFunctions.Max(System.Double[])
+  commentId: M:AeroDB.SurrealSeriesFunctions.Max(System.Double[])
+  id: Max(System.Double[])
+  parent: AeroDB.SurrealSeriesFunctions
+  langs:
+  - csharp
+  - vb
+  name: Max(double[])
+  nameWithType: SurrealSeriesFunctions.Max(double[])
+  fullName: AeroDB.SurrealSeriesFunctions.Max(double[])
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealSeriesFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Returns the maximum value in a series. Maps to <code>series::max(series)</code>.
+  example: []
+  syntax:
+    content: public static double Max(double[] series)
+    parameters:
+    - id: series
+      type: System.Double[]
+    return:
+      type: System.Double
+    content.vb: Public Shared Function Max(series As Double()) As Double
+  overload: AeroDB.SurrealSeriesFunctions.Max*
+  nameWithType.vb: SurrealSeriesFunctions.Max(Double())
+  fullName.vb: AeroDB.SurrealSeriesFunctions.Max(Double())
+  name.vb: Max(Double())
+- uid: AeroDB.SurrealSeriesFunctions.Mean(System.Double[])
+  commentId: M:AeroDB.SurrealSeriesFunctions.Mean(System.Double[])
+  id: Mean(System.Double[])
+  parent: AeroDB.SurrealSeriesFunctions
+  langs:
+  - csharp
+  - vb
+  name: Mean(double[])
+  nameWithType: SurrealSeriesFunctions.Mean(double[])
+  fullName: AeroDB.SurrealSeriesFunctions.Mean(double[])
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealSeriesFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Returns the mean (average) value in a series. Maps to <code>series::mean(series)</code>.
+  example: []
+  syntax:
+    content: public static double Mean(double[] series)
+    parameters:
+    - id: series
+      type: System.Double[]
+    return:
+      type: System.Double
+    content.vb: Public Shared Function Mean(series As Double()) As Double
+  overload: AeroDB.SurrealSeriesFunctions.Mean*
+  nameWithType.vb: SurrealSeriesFunctions.Mean(Double())
+  fullName.vb: AeroDB.SurrealSeriesFunctions.Mean(Double())
+  name.vb: Mean(Double())
+- uid: AeroDB.SurrealSeriesFunctions.Median(System.Double[])
+  commentId: M:AeroDB.SurrealSeriesFunctions.Median(System.Double[])
+  id: Median(System.Double[])
+  parent: AeroDB.SurrealSeriesFunctions
+  langs:
+  - csharp
+  - vb
+  name: Median(double[])
+  nameWithType: SurrealSeriesFunctions.Median(double[])
+  fullName: AeroDB.SurrealSeriesFunctions.Median(double[])
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealSeriesFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Returns the median value in a series. Maps to <code>series::median(series)</code>.
+  example: []
+  syntax:
+    content: public static double Median(double[] series)
+    parameters:
+    - id: series
+      type: System.Double[]
+    return:
+      type: System.Double
+    content.vb: Public Shared Function Median(series As Double()) As Double
+  overload: AeroDB.SurrealSeriesFunctions.Median*
+  nameWithType.vb: SurrealSeriesFunctions.Median(Double())
+  fullName.vb: AeroDB.SurrealSeriesFunctions.Median(Double())
+  name.vb: Median(Double())
+- uid: AeroDB.SurrealSeriesFunctions.Std(System.Double[])
+  commentId: M:AeroDB.SurrealSeriesFunctions.Std(System.Double[])
+  id: Std(System.Double[])
+  parent: AeroDB.SurrealSeriesFunctions
+  langs:
+  - csharp
+  - vb
+  name: Std(double[])
+  nameWithType: SurrealSeriesFunctions.Std(double[])
+  fullName: AeroDB.SurrealSeriesFunctions.Std(double[])
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealSeriesFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Returns the standard deviation of values in a series. Maps to <code>series::std(series)</code>.
+  example: []
+  syntax:
+    content: public static double Std(double[] series)
+    parameters:
+    - id: series
+      type: System.Double[]
+    return:
+      type: System.Double
+    content.vb: Public Shared Function Std(series As Double()) As Double
+  overload: AeroDB.SurrealSeriesFunctions.Std*
+  nameWithType.vb: SurrealSeriesFunctions.Std(Double())
+  fullName.vb: AeroDB.SurrealSeriesFunctions.Std(Double())
+  name.vb: Std(Double())
+- uid: AeroDB.SurrealSeriesFunctions.Sum(System.Double[])
+  commentId: M:AeroDB.SurrealSeriesFunctions.Sum(System.Double[])
+  id: Sum(System.Double[])
+  parent: AeroDB.SurrealSeriesFunctions
+  langs:
+  - csharp
+  - vb
+  name: Sum(double[])
+  nameWithType: SurrealSeriesFunctions.Sum(double[])
+  fullName: AeroDB.SurrealSeriesFunctions.Sum(double[])
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealSeriesFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Returns the sum of values in a series. Maps to <code>series::sum(series)</code>.
+  example: []
+  syntax:
+    content: public static double Sum(double[] series)
+    parameters:
+    - id: series
+      type: System.Double[]
+    return:
+      type: System.Double
+    content.vb: Public Shared Function Sum(series As Double()) As Double
+  overload: AeroDB.SurrealSeriesFunctions.Sum*
+  nameWithType.vb: SurrealSeriesFunctions.Sum(Double())
+  fullName.vb: AeroDB.SurrealSeriesFunctions.Sum(Double())
+  name.vb: Sum(Double())
+- uid: AeroDB.SurrealSeriesFunctions.Range(System.Double[],System.DateTimeOffset,System.DateTimeOffset)
+  commentId: M:AeroDB.SurrealSeriesFunctions.Range(System.Double[],System.DateTimeOffset,System.DateTimeOffset)
+  id: Range(System.Double[],System.DateTimeOffset,System.DateTimeOffset)
+  parent: AeroDB.SurrealSeriesFunctions
+  langs:
+  - csharp
+  - vb
+  name: Range(double[], DateTimeOffset, DateTimeOffset)
+  nameWithType: SurrealSeriesFunctions.Range(double[], DateTimeOffset, DateTimeOffset)
+  fullName: AeroDB.SurrealSeriesFunctions.Range(double[], System.DateTimeOffset, System.DateTimeOffset)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Linq/SurrealSeriesFunctions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Filters a series to a time range. Maps to <code>series::range(series, from, to)</code>.
+  example: []
+  syntax:
+    content: public static double[] Range(double[] series, DateTimeOffset from, DateTimeOffset to)
+    parameters:
+    - id: series
+      type: System.Double[]
+    - id: from
+      type: System.DateTimeOffset
+    - id: to
+      type: System.DateTimeOffset
+    return:
+      type: System.Double[]
+    content.vb: Public Shared Function Range(series As Double(), from As DateTimeOffset, [to] As DateTimeOffset) As Double()
+  overload: AeroDB.SurrealSeriesFunctions.Range*
+  nameWithType.vb: SurrealSeriesFunctions.Range(Double(), DateTimeOffset, DateTimeOffset)
+  fullName.vb: AeroDB.SurrealSeriesFunctions.Range(Double(), System.DateTimeOffset, System.DateTimeOffset)
+  name.vb: Range(Double(), DateTimeOffset, DateTimeOffset)
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AeroDB.SurrealSeriesFunctions.Add*
+  commentId: Overload:AeroDB.SurrealSeriesFunctions.Add
+  isExternal: true
+  href: AeroDB.SurrealSeriesFunctions.html#AeroDB_SurrealSeriesFunctions_Add_System_Double___System_Double_System_DateTimeOffset_
+  name: Add
+  nameWithType: SurrealSeriesFunctions.Add
+  fullName: AeroDB.SurrealSeriesFunctions.Add
+- uid: System.Double[]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double[]
+  nameWithType: double[]
+  fullName: double[]
+  nameWithType.vb: Double()
+  fullName.vb: Double()
+  name.vb: Double()
+  spec.csharp:
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: (
+  - name: )
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double
+  nameWithType: double
+  fullName: double
+  nameWithType.vb: Double
+  fullName.vb: Double
+  name.vb: Double
+- uid: System.DateTimeOffset
+  commentId: T:System.DateTimeOffset
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.datetimeoffset
+  name: DateTimeOffset
+  nameWithType: DateTimeOffset
+  fullName: System.DateTimeOffset
+- uid: AeroDB.SurrealSeriesFunctions.Len*
+  commentId: Overload:AeroDB.SurrealSeriesFunctions.Len
+  isExternal: true
+  href: AeroDB.SurrealSeriesFunctions.html#AeroDB_SurrealSeriesFunctions_Len_System_Double___
+  name: Len
+  nameWithType: SurrealSeriesFunctions.Len
+  fullName: AeroDB.SurrealSeriesFunctions.Len
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: AeroDB.SurrealSeriesFunctions.First*
+  commentId: Overload:AeroDB.SurrealSeriesFunctions.First
+  isExternal: true
+  href: AeroDB.SurrealSeriesFunctions.html#AeroDB_SurrealSeriesFunctions_First_System_Double___
+  name: First
+  nameWithType: SurrealSeriesFunctions.First
+  fullName: AeroDB.SurrealSeriesFunctions.First
+- uid: AeroDB.SurrealSeriesFunctions.Last*
+  commentId: Overload:AeroDB.SurrealSeriesFunctions.Last
+  isExternal: true
+  href: AeroDB.SurrealSeriesFunctions.html#AeroDB_SurrealSeriesFunctions_Last_System_Double___
+  name: Last
+  nameWithType: SurrealSeriesFunctions.Last
+  fullName: AeroDB.SurrealSeriesFunctions.Last
+- uid: AeroDB.SurrealSeriesFunctions.Min*
+  commentId: Overload:AeroDB.SurrealSeriesFunctions.Min
+  isExternal: true
+  href: AeroDB.SurrealSeriesFunctions.html#AeroDB_SurrealSeriesFunctions_Min_System_Double___
+  name: Min
+  nameWithType: SurrealSeriesFunctions.Min
+  fullName: AeroDB.SurrealSeriesFunctions.Min
+- uid: AeroDB.SurrealSeriesFunctions.Max*
+  commentId: Overload:AeroDB.SurrealSeriesFunctions.Max
+  isExternal: true
+  href: AeroDB.SurrealSeriesFunctions.html#AeroDB_SurrealSeriesFunctions_Max_System_Double___
+  name: Max
+  nameWithType: SurrealSeriesFunctions.Max
+  fullName: AeroDB.SurrealSeriesFunctions.Max
+- uid: AeroDB.SurrealSeriesFunctions.Mean*
+  commentId: Overload:AeroDB.SurrealSeriesFunctions.Mean
+  isExternal: true
+  href: AeroDB.SurrealSeriesFunctions.html#AeroDB_SurrealSeriesFunctions_Mean_System_Double___
+  name: Mean
+  nameWithType: SurrealSeriesFunctions.Mean
+  fullName: AeroDB.SurrealSeriesFunctions.Mean
+- uid: AeroDB.SurrealSeriesFunctions.Median*
+  commentId: Overload:AeroDB.SurrealSeriesFunctions.Median
+  isExternal: true
+  href: AeroDB.SurrealSeriesFunctions.html#AeroDB_SurrealSeriesFunctions_Median_System_Double___
+  name: Median
+  nameWithType: SurrealSeriesFunctions.Median
+  fullName: AeroDB.SurrealSeriesFunctions.Median
+- uid: AeroDB.SurrealSeriesFunctions.Std*
+  commentId: Overload:AeroDB.SurrealSeriesFunctions.Std
+  isExternal: true
+  href: AeroDB.SurrealSeriesFunctions.html#AeroDB_SurrealSeriesFunctions_Std_System_Double___
+  name: Std
+  nameWithType: SurrealSeriesFunctions.Std
+  fullName: AeroDB.SurrealSeriesFunctions.Std
+- uid: AeroDB.SurrealSeriesFunctions.Sum*
+  commentId: Overload:AeroDB.SurrealSeriesFunctions.Sum
+  isExternal: true
+  href: AeroDB.SurrealSeriesFunctions.html#AeroDB_SurrealSeriesFunctions_Sum_System_Double___
+  name: Sum
+  nameWithType: SurrealSeriesFunctions.Sum
+  fullName: AeroDB.SurrealSeriesFunctions.Sum
+- uid: AeroDB.SurrealSeriesFunctions.Range*
+  commentId: Overload:AeroDB.SurrealSeriesFunctions.Range
+  isExternal: true
+  href: AeroDB.SurrealSeriesFunctions.html#AeroDB_SurrealSeriesFunctions_Range_System_Double___System_DateTimeOffset_System_DateTimeOffset_
+  name: Range
+  nameWithType: SurrealSeriesFunctions.Range
+  fullName: AeroDB.SurrealSeriesFunctions.Range

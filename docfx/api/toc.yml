@@ -1,0 +1,964 @@
+### YamlMime:TableOfContent
+items:
+- uid: AeroDB
+  name: AeroDB
+  type: Namespace
+  items:
+  - uid: AeroDB.AccessDefinition
+    name: AccessDefinition
+    type: Class
+  - uid: AeroDB.ActionType
+    name: ActionType
+    type: Enum
+  - uid: AeroDB.AdvancedOptions
+    name: AdvancedOptions
+    type: Class
+  - uid: AeroDB.AeroDBAdvancedSql
+    name: AeroDBAdvancedSql
+    type: Class
+  - uid: AeroDB.AeroDBAdvancedSqlExtensions
+    name: AeroDBAdvancedSqlExtensions
+    type: Class
+  - uid: AeroDB.AeroDBConfigurationServiceCollectionExtensions
+    name: AeroDBConfigurationServiceCollectionExtensions
+    type: Class
+  - uid: AeroDB.AeroDBDaemonHealthCheck
+    name: AeroDBDaemonHealthCheck
+    type: Class
+  - uid: AeroDB.AeroDBEfCoreServiceCollectionExtensions
+    name: AeroDBEfCoreServiceCollectionExtensions
+    type: Class
+  - uid: AeroDB.AeroDBEfCoreTransaction
+    name: AeroDBEfCoreTransaction
+    type: Class
+  - uid: AeroDB.AeroDBEfCoreTransactionManager`1
+    name: AeroDBEfCoreTransactionManager<TDbContext>
+    type: Class
+  - uid: AeroDB.AeroDBHealthCheckExtensions
+    name: AeroDBHealthCheckExtensions
+    type: Class
+  - uid: AeroDB.AeroDBHttpExtensions
+    name: AeroDBHttpExtensions
+    type: Class
+  - uid: AeroDB.AeroDBIgnoreAttribute
+    name: AeroDBIgnoreAttribute
+    type: Class
+  - uid: AeroDB.AeroDBMlQuery`2
+    name: AeroDBMlQuery<TInput, TOutput>
+    type: Class
+  - uid: AeroDB.AeroDBSearchQuery`1
+    name: AeroDBSearchQuery<T>
+    type: Class
+  - uid: AeroDB.AeroDBServiceCollectionExtensions
+    name: AeroDBServiceCollectionExtensions
+    type: Class
+  - uid: AeroDB.AeroDBSpatialQuery`1
+    name: AeroDBSpatialQuery<T>
+    type: Class
+  - uid: AeroDB.AeroDBSubscriptionBase
+    name: AeroDBSubscriptionBase
+    type: Class
+  - uid: AeroDB.AeroDBTimeSeriesQuery`1
+    name: AeroDBTimeSeriesQuery<T>
+    type: Class
+  - uid: AeroDB.AggregateCache
+    name: AggregateCache
+    type: Class
+  - uid: AeroDB.AggregateQueryBuilder`1
+    name: AggregateQueryBuilder<T>
+    type: Class
+  - uid: AeroDB.AggregateQueryExecutor`1
+    name: AggregateQueryExecutor<T>
+    type: Class
+  - uid: AeroDB.AggregateQueryExtensions
+    name: AggregateQueryExtensions
+    type: Class
+  - uid: AeroDB.AnalyzerDefinition
+    name: AnalyzerDefinition
+    type: Class
+  - uid: AeroDB.AnalyzerOptions
+    name: AnalyzerOptions
+    type: Class
+  - uid: AeroDB.AppendEventSideEffect
+    name: AppendEventSideEffect
+    type: Class
+  - uid: AeroDB.AsyncDaemon
+    name: AsyncDaemon
+    type: Class
+  - uid: AeroDB.BulkInsertMode
+    name: BulkInsertMode
+    type: Enum
+  - uid: AeroDB.BulkOperations
+    name: BulkOperations
+    type: Class
+  - uid: AeroDB.CombGuidIdGeneration
+    name: CombGuidIdGeneration
+    type: Class
+  - uid: AeroDB.CompactStreamOptions
+    name: CompactStreamOptions
+    type: Class
+  - uid: AeroDB.CompiledPlan
+    name: CompiledPlan
+    type: Class
+  - uid: AeroDB.CompiledQueryExtensions
+    name: CompiledQueryExtensions
+    type: Class
+  - uid: AeroDB.CompiledQueryPlanner
+    name: CompiledQueryPlanner
+    type: Class
+  - uid: AeroDB.CompiledQueryProvider`1
+    name: CompiledQueryProvider<T>
+    type: Class
+  - uid: AeroDB.CompiledQuery`1
+    name: CompiledQuery<T>
+    type: Class
+  - uid: AeroDB.CompositeProjection
+    name: CompositeProjection
+    type: Class
+  - uid: AeroDB.ComputedIndexOptions
+    name: ComputedIndexOptions
+    type: Class
+  - uid: AeroDB.ComputedIndexOptions.IndexCasing
+    name: ComputedIndexOptions.IndexCasing
+    type: Enum
+  - uid: AeroDB.ComputedIndexOptions.IndexMethod
+    name: ComputedIndexOptions.IndexMethod
+    type: Enum
+  - uid: AeroDB.ComputedIndexOptions.SortOrder
+    name: ComputedIndexOptions.SortOrder
+    type: Enum
+  - uid: AeroDB.ConcurrencyChecks
+    name: ConcurrencyChecks
+    type: Enum
+  - uid: AeroDB.ConcurrencyException
+    name: ConcurrencyException
+    type: Class
+  - uid: AeroDB.DaemonHealthState
+    name: DaemonHealthState
+    type: Class
+  - uid: AeroDB.DatabaseEndpoint
+    name: DatabaseEndpoint
+    type: Class
+  - uid: AeroDB.DatabasePerTenantSelector
+    name: DatabasePerTenantSelector
+    type: Class
+  - uid: AeroDB.DocumentHierarchy
+    name: DocumentHierarchy
+    type: Class
+  - uid: AeroDB.DocumentIndex
+    name: DocumentIndex
+    type: Class
+  - uid: AeroDB.DocumentMapping
+    name: DocumentMapping
+    type: Class
+  - uid: AeroDB.DocumentMapping`1
+    name: DocumentMapping<T>
+    type: Class
+  - uid: AeroDB.DocumentPolicies
+    name: DocumentPolicies
+    type: Class
+  - uid: AeroDB.DocumentSession
+    name: DocumentSession
+    type: Class
+  - uid: AeroDB.DocumentSessionListenerBase
+    name: DocumentSessionListenerBase
+    type: Class
+  - uid: AeroDB.DocumentStorage
+    name: DocumentStorage
+    type: Class
+  - uid: AeroDB.DocumentStore
+    name: DocumentStore
+    type: Class
+  - uid: AeroDB.DocumentTracking
+    name: DocumentTracking
+    type: Enum
+  - uid: AeroDB.Documents
+    name: Documents
+    type: Class
+  - uid: AeroDB.EdgeMapping`1
+    name: EdgeMapping<TEdge>
+    type: Class
+  - uid: AeroDB.EdgeRecord
+    name: EdgeRecord
+    type: Class
+  - uid: AeroDB.EfCoreEventProjection`1
+    name: EfCoreEventProjection<TDbContext>
+    type: Class
+  - uid: AeroDB.EntityGuid
+    name: EntityGuid
+    type: Class
+  - uid: AeroDB.EntityInt
+    name: EntityInt
+    type: Class
+  - uid: AeroDB.EntitySnowlake
+    name: EntitySnowlake
+    type: Class
+  - uid: AeroDB.EntityString
+    name: EntityString
+    type: Class
+  - uid: AeroDB.Entity`1
+    name: Entity<TId>
+    type: Class
+  - uid: AeroDB.EnumStorage
+    name: EnumStorage
+    type: Enum
+  - uid: AeroDB.EventAppendMode
+    name: EventAppendMode
+    type: Enum
+  - uid: AeroDB.EventGrouping`1
+    name: EventGrouping<TId>
+    type: Class
+  - uid: AeroDB.EventProjection
+    name: EventProjection
+    type: Class
+  - uid: AeroDB.EventProjection`1
+    name: EventProjection<T>
+    type: Class
+  - uid: AeroDB.EventSerializationMode
+    name: EventSerializationMode
+    type: Enum
+  - uid: AeroDB.EventSlice`1
+    name: EventSlice<T>
+    type: Class
+  - uid: AeroDB.EventSourcingOptions
+    name: EventSourcingOptions
+    type: Class
+  - uid: AeroDB.EventStore
+    name: EventStore
+    type: Class
+  - uid: AeroDB.EventStreamIdentity
+    name: EventStreamIdentity
+    type: Struct
+  - uid: AeroDB.EventTagQuery
+    name: EventTagQuery
+    type: Class
+  - uid: AeroDB.EventTriggerDefinition
+    name: EventTriggerDefinition
+    type: Class
+  - uid: AeroDB.EventTriggerManager
+    name: EventTriggerManager
+    type: Class
+  - uid: AeroDB.EventTriggerOptions
+    name: EventTriggerOptions
+    type: Class
+  - uid: AeroDB.Event`1
+    name: Event<T>
+    type: Class
+  - uid: AeroDB.ExperimentalOptions
+    name: ExperimentalOptions
+    type: Class
+  - uid: AeroDB.FetchForWritingResult`1
+    name: FetchForWritingResult<T>
+    type: Class
+  - uid: AeroDB.FetchLatestExtensions
+    name: FetchLatestExtensions
+    type: Class
+  - uid: AeroDB.FieldDefinition
+    name: FieldDefinition
+    type: Class
+  - uid: AeroDB.FlatTableProjection`2
+    name: FlatTableProjection<TDoc, TId>
+    type: Class
+  - uid: AeroDB.ForeignKeyDefinition
+    name: ForeignKeyDefinition
+    type: Class
+  - uid: AeroDB.FunctionManager
+    name: FunctionManager
+    type: Class
+  - uid: AeroDB.FunctionOptions
+    name: FunctionOptions
+    type: Class
+  - uid: AeroDB.GeometryPoint
+    name: GeometryPoint
+    type: Class
+  - uid: AeroDB.GeometryPolygon
+    name: GeometryPolygon
+    type: Class
+  - uid: AeroDB.Graph
+    name: Graph
+    type: Class
+  - uid: AeroDB.Graph.Edge
+    name: Graph.Edge
+    type: Class
+  - uid: AeroDB.GraphEdge
+    name: GraphEdge
+    type: Class
+  - uid: AeroDB.GraphEntry`1
+    name: GraphEntry<TSource>
+    type: Class
+  - uid: AeroDB.GraphNode
+    name: GraphNode
+    type: Class
+  - uid: AeroDB.GraphPath
+    name: GraphPath
+    type: Class
+  - uid: AeroDB.HybridSearchConfig
+    name: HybridSearchConfig
+    type: Class
+  - uid: AeroDB.IAeroDBAdvanced
+    name: IAeroDBAdvanced
+    type: Interface
+  - uid: AeroDB.IAeroDBSubscription
+    name: IAeroDBSubscription
+    type: Interface
+  - uid: AeroDB.IAeroDBTransaction
+    name: IAeroDBTransaction
+    type: Interface
+  - uid: AeroDB.IAggregateGrouper`1
+    name: IAggregateGrouper<TId>
+    type: Interface
+  - uid: AeroDB.IAsyncConfigureAeroDB
+    name: IAsyncConfigureAeroDB
+    type: Interface
+  - uid: AeroDB.IBatchEvents
+    name: IBatchEvents
+    type: Interface
+  - uid: AeroDB.IBatchedQuery
+    name: IBatchedQuery
+    type: Interface
+  - uid: AeroDB.IChangeListener
+    name: IChangeListener
+    type: Interface
+  - uid: AeroDB.IChangeSet
+    name: IChangeSet
+    type: Interface
+  - uid: AeroDB.ICompiledListQuery`1
+    name: ICompiledListQuery<TDoc>
+    type: Interface
+  - uid: AeroDB.ICompiledListQuery`2
+    name: ICompiledListQuery<TDoc, TOut>
+    type: Interface
+  - uid: AeroDB.ICompiledQueryMarker
+    name: ICompiledQueryMarker
+    type: Interface
+  - uid: AeroDB.ICompiledQuery`1
+    name: ICompiledQuery<TDoc>
+    type: Interface
+  - uid: AeroDB.ICompiledQuery`2
+    name: ICompiledQuery<TDoc, TOut>
+    type: Interface
+  - uid: AeroDB.IConfigureAeroDB
+    name: IConfigureAeroDB
+    type: Interface
+  - uid: AeroDB.IConfigureAeroDB`1
+    name: IConfigureAeroDB<TStore>
+    type: Interface
+  - uid: AeroDB.IDatabase
+    name: IDatabase
+    type: Interface
+  - uid: AeroDB.IDiagnostics
+    name: IDiagnostics
+    type: Interface
+  - uid: AeroDB.IDocumentOperations
+    name: IDocumentOperations
+    type: Interface
+  - uid: AeroDB.IDocumentPolicy
+    name: IDocumentPolicy
+    type: Interface
+  - uid: AeroDB.IDocumentSession
+    name: IDocumentSession
+    type: Interface
+  - uid: AeroDB.IDocumentSessionListener
+    name: IDocumentSessionListener
+    type: Interface
+  - uid: AeroDB.IDocumentStore
+    name: IDocumentStore
+    type: Interface
+  - uid: AeroDB.IEnrichProjection
+    name: IEnrichProjection
+    type: Interface
+  - uid: AeroDB.IEntity`1
+    name: IEntity<TId>
+    type: Interface
+  - uid: AeroDB.IEvent
+    name: IEvent
+    type: Interface
+  - uid: AeroDB.IEventGrouping`1
+    name: IEventGrouping<TId>
+    type: Interface
+  - uid: AeroDB.IEventSlice`1
+    name: IEventSlice<T>
+    type: Interface
+  - uid: AeroDB.IEventUpcaster
+    name: IEventUpcaster
+    type: Interface
+  - uid: AeroDB.IEvent`1
+    name: IEvent<T>
+    type: Interface
+  - uid: AeroDB.IEvents
+    name: IEvents
+    type: Interface
+  - uid: AeroDB.IGlobalConfigureAeroDB
+    name: IGlobalConfigureAeroDB
+    type: Interface
+  - uid: AeroDB.IGraphQuery`1
+    name: IGraphQuery<TNode>
+    type: Interface
+  - uid: AeroDB.IInitialData
+    name: IInitialData
+    type: Interface
+  - uid: AeroDB.IJsonLoader
+    name: IJsonLoader
+    type: Interface
+  - uid: AeroDB.ILiveQuery`1
+    name: ILiveQuery<T>
+    type: Interface
+  - uid: AeroDB.IMartenSessionLogger
+    name: IMartenSessionLogger
+    type: Interface
+  - uid: AeroDB.IMlQuery`2
+    name: IMlQuery<TInput, TOutput>
+    type: Interface
+  - uid: AeroDB.IPatchExpression`1
+    name: IPatchExpression<T>
+    type: Interface
+  - uid: AeroDB.IProjection
+    name: IProjection
+    type: Interface
+  - uid: AeroDB.IProjectionContext
+    name: IProjectionContext
+    type: Interface
+  - uid: AeroDB.IProjectionCoordinator
+    name: IProjectionCoordinator
+    type: Interface
+  - uid: AeroDB.IProjectionSideEffect
+    name: IProjectionSideEffect
+    type: Interface
+  - uid: AeroDB.IQueryPlanning
+    name: IQueryPlanning
+    type: Interface
+  - uid: AeroDB.IQuerySession
+    name: IQuerySession
+    type: Interface
+  - uid: AeroDB.IReadOnlyStoreOptions
+    name: IReadOnlyStoreOptions
+    type: Interface
+  - uid: AeroDB.ISearchQuery`1
+    name: ISearchQuery<T>
+    type: Interface
+  - uid: AeroDB.ISessionFactory
+    name: ISessionFactory
+    type: Interface
+  - uid: AeroDB.ISingleServerMultiTenancy
+    name: ISingleServerMultiTenancy
+    type: Interface
+  - uid: AeroDB.ISoftDeleted
+    name: ISoftDeleted
+    type: Interface
+  - uid: AeroDB.ISpatialQuery`1
+    name: ISpatialQuery<T>
+    type: Interface
+  - uid: AeroDB.IStaticMultiTenancy
+    name: IStaticMultiTenancy
+    type: Interface
+  - uid: AeroDB.IStorageOperation
+    name: IStorageOperation
+    type: Interface
+  - uid: AeroDB.ISubscriber`1
+    name: ISubscriber<T>
+    type: Interface
+  - uid: AeroDB.ISubscription
+    name: ISubscription
+    type: Interface
+  - uid: AeroDB.ISurrealDbQueryable`1
+    name: ISurrealDbQueryable<T>
+    type: Interface
+  - uid: AeroDB.ITagTypeRegistration
+    name: ITagTypeRegistration
+    type: Interface
+  - uid: AeroDB.ITenantOperations
+    name: ITenantOperations
+    type: Interface
+  - uid: AeroDB.ITenantQueryOperations
+    name: ITenantQueryOperations
+    type: Interface
+  - uid: AeroDB.ITenantSliceGroup`1
+    name: ITenantSliceGroup<TId>
+    type: Interface
+  - uid: AeroDB.ITimeSeriesQuery`1
+    name: ITimeSeriesQuery<T>
+    type: Interface
+  - uid: AeroDB.IUnitOfWork
+    name: IUnitOfWork
+    type: Interface
+  - uid: AeroDB.IVersioned
+    name: IVersioned
+    type: Interface
+  - uid: AeroDB.IndexDefinition
+    name: IndexDefinition
+    type: Class
+  - uid: AeroDB.IndexOptions
+    name: IndexOptions
+    type: Class
+  - uid: AeroDB.IndexType
+    name: IndexType
+    type: Enum
+  - uid: AeroDB.InlineProjection`1
+    name: InlineProjection<T>
+    type: Class
+  - uid: AeroDB.InternalSessionBase
+    name: InternalSessionBase
+    type: Class
+  - uid: AeroDB.LiveStreamAggregation
+    name: LiveStreamAggregation
+    type: Class
+  - uid: AeroDB.LoadManyExtensions
+    name: LoadManyExtensions
+    type: Class
+  - uid: AeroDB.MartenCompatibilityExtensions
+    name: MartenCompatibilityExtensions
+    type: Class
+  - uid: AeroDB.MetadataConfig
+    name: MetadataConfig
+    type: Class
+  - uid: AeroDB.MlNotAvailableException
+    name: MlNotAvailableException
+    type: Class
+  - uid: AeroDB.MlOptions
+    name: MlOptions
+    type: Class
+  - uid: AeroDB.MlQueryExtensions
+    name: MlQueryExtensions
+    type: Class
+  - uid: AeroDB.MultiStreamProjection`1
+    name: MultiStreamProjection<T>
+    type: Class
+  - uid: AeroDB.MultiStreamProjection`2
+    name: MultiStreamProjection<T, TId>
+    type: Class
+  - uid: AeroDB.OpenTelemetryOptions
+    name: OpenTelemetryOptions
+    type: Class
+  - uid: AeroDB.Operation
+    name: Operation
+    type: Class
+  - uid: AeroDB.OperationType
+    name: OperationType
+    type: Enum
+  - uid: AeroDB.PagedListCompatibilityExtensions
+    name: PagedListCompatibilityExtensions
+    type: Class
+  - uid: AeroDB.PatchExpression`1
+    name: PatchExpression<T>
+    type: Class
+  - uid: AeroDB.PatchExtensions
+    name: PatchExtensions
+    type: Class
+  - uid: AeroDB.ProjectionCollection
+    name: ProjectionCollection
+    type: Class
+  - uid: AeroDB.ProjectionContext
+    name: ProjectionContext
+    type: Class
+  - uid: AeroDB.ProjectionCoordinator
+    name: ProjectionCoordinator
+    type: Class
+  - uid: AeroDB.ProjectionLifecycle
+    name: ProjectionLifecycle
+    type: Enum
+  - uid: AeroDB.ProjectionOptions
+    name: ProjectionOptions
+    type: Class
+  - uid: AeroDB.ProjectionProgress
+    name: ProjectionProgress
+    type: Class
+  - uid: AeroDB.ProjectionRebuildProgressCallback
+    name: ProjectionRebuildProgressCallback
+    type: Delegate
+  - uid: AeroDB.ProjectionReentrancyException
+    name: ProjectionReentrancyException
+    type: Class
+  - uid: AeroDB.ProjectionShard
+    name: ProjectionShard
+    type: Class
+  - uid: AeroDB.QuerySession
+    name: QuerySession
+    type: Class
+  - uid: AeroDB.QueryStatistics
+    name: QueryStatistics
+    type: Class
+  - uid: AeroDB.ReactiveLinqExtensions
+    name: ReactiveLinqExtensions
+    type: Class
+  - uid: AeroDB.ReadPreference
+    name: ReadPreference
+    type: Enum
+  - uid: AeroDB.SchemaDiff
+    name: SchemaDiff
+    type: Class
+  - uid: AeroDB.SchemaDiff.DiffEntry
+    name: SchemaDiff.DiffEntry
+    type: Class
+  - uid: AeroDB.SchemaDiffer
+    name: SchemaDiffer
+    type: Class
+  - uid: AeroDB.SchemaManager
+    name: SchemaManager
+    type: Class
+  - uid: AeroDB.SchemaMode
+    name: SchemaMode
+    type: Enum
+  - uid: AeroDB.SchemaOptions
+    name: SchemaOptions
+    type: Class
+  - uid: AeroDB.ScopeDefinition
+    name: ScopeDefinition
+    type: Class
+  - uid: AeroDB.Search
+    name: Search
+    type: Class
+  - uid: AeroDB.Search.Analyzer
+    name: Search.Analyzer
+    type: Class
+  - uid: AeroDB.Search.Distance
+    name: Search.Distance
+    type: Class
+  - uid: AeroDB.Search.Filter
+    name: Search.Filter
+    type: Class
+  - uid: AeroDB.Search.Tokenizer
+    name: Search.Tokenizer
+    type: Class
+  - uid: AeroDB.SearchExtensions
+    name: SearchExtensions
+    type: Class
+  - uid: AeroDB.SearchQueryExtensions
+    name: SearchQueryExtensions
+    type: Class
+  - uid: AeroDB.SessionOptions
+    name: SessionOptions
+    type: Class
+  - uid: AeroDB.SingleStreamProjection`1
+    name: SingleStreamProjection<T>
+    type: Class
+  - uid: AeroDB.SingleStreamProjection`2
+    name: SingleStreamProjection<TDoc, TId>
+    type: Class
+  - uid: AeroDB.SnapshotLifecycle
+    name: SnapshotLifecycle
+    type: Enum
+  - uid: AeroDB.SnapshotOptions
+    name: SnapshotOptions
+    type: Class
+  - uid: AeroDB.SnapshotProjection`1
+    name: SnapshotProjection<T>
+    type: Class
+  - uid: AeroDB.SnowflakeGenerator
+    name: SnowflakeGenerator
+    type: Class
+  - uid: AeroDB.SoftDeleteExtensions
+    name: SoftDeleteExtensions
+    type: Class
+  - uid: AeroDB.SortOrder
+    name: SortOrder
+    type: Enum
+  - uid: AeroDB.SpatialExtensions
+    name: SpatialExtensions
+    type: Class
+  - uid: AeroDB.StaleDataMode
+    name: StaleDataMode
+    type: Enum
+  - uid: AeroDB.StateAccumulatorExtensions
+    name: StateAccumulatorExtensions
+    type: Class
+  - uid: AeroDB.StatsExtensions
+    name: StatsExtensions
+    type: Class
+  - uid: AeroDB.StoreOptions
+    name: StoreOptions
+    type: Class
+  - uid: AeroDB.StreamIdentity
+    name: StreamIdentity
+    type: Enum
+  - uid: AeroDB.StreamState
+    name: StreamState
+    type: Class
+  - uid: AeroDB.SubscriptionOptions
+    name: SubscriptionOptions
+    type: Class
+  - uid: AeroDB.SurrealArrayFunctions
+    name: SurrealArrayFunctions
+    type: Class
+  - uid: AeroDB.SurrealAsyncQueryExtensions
+    name: SurrealAsyncQueryExtensions
+    type: Class
+  - uid: AeroDB.SurrealBytesFunctions
+    name: SurrealBytesFunctions
+    type: Class
+  - uid: AeroDB.SurrealCommandBuilder
+    name: SurrealCommandBuilder
+    type: Class
+  - uid: AeroDB.SurrealCryptoFunctions
+    name: SurrealCryptoFunctions
+    type: Class
+  - uid: AeroDB.SurrealDbQueryableExtensions
+    name: SurrealDbQueryableExtensions
+    type: Class
+  - uid: AeroDB.SurrealDbQueryable`1
+    name: SurrealDbQueryable<T>
+    type: Class
+  - uid: AeroDB.SurrealDurationFunctions
+    name: SurrealDurationFunctions
+    type: Class
+  - uid: AeroDB.SurrealExpressionVisitor
+    name: SurrealExpressionVisitor
+    type: Class
+  - uid: AeroDB.SurrealFunction
+    name: SurrealFunction
+    type: Class
+  - uid: AeroDB.SurrealFunctionParameter
+    name: SurrealFunctionParameter
+    type: Class
+  - uid: AeroDB.SurrealFunctions
+    name: SurrealFunctions
+    type: Class
+  - uid: AeroDB.SurrealHttpFunctions
+    name: SurrealHttpFunctions
+    type: Class
+  - uid: AeroDB.SurrealLiveQueryExtensions
+    name: SurrealLiveQueryExtensions
+    type: Class
+  - uid: AeroDB.SurrealMetaFunctions
+    name: SurrealMetaFunctions
+    type: Class
+  - uid: AeroDB.SurrealObjectFunctions
+    name: SurrealObjectFunctions
+    type: Class
+  - uid: AeroDB.SurrealQueryProvider
+    name: SurrealQueryProvider
+    type: Class
+  - uid: AeroDB.SurrealQueryResult
+    name: SurrealQueryResult
+    type: Class
+  - uid: AeroDB.SurrealRandFunctions
+    name: SurrealRandFunctions
+    type: Class
+  - uid: AeroDB.SurrealSeriesFunctions
+    name: SurrealSeriesFunctions
+    type: Class
+  - uid: AeroDB.SurrealSessionFunctions
+    name: SurrealSessionFunctions
+    type: Class
+  - uid: AeroDB.SurrealStringFunctions
+    name: SurrealStringFunctions
+    type: Class
+  - uid: AeroDB.SurrealTypeFunctions
+    name: SurrealTypeFunctions
+    type: Class
+  - uid: AeroDB.TenancyScope
+    name: TenancyScope
+    type: Enum
+  - uid: AeroDB.TenancyStyle
+    name: TenancyStyle
+    type: Enum
+  - uid: AeroDB.TenantIdStyle
+    name: TenantIdStyle
+    type: Enum
+  - uid: AeroDB.TimeBucket
+    name: TimeBucket
+    type: Enum
+  - uid: AeroDB.TimeSeriesExtensions
+    name: TimeSeriesExtensions
+    type: Class
+  - uid: AeroDB.TimeUnit
+    name: TimeUnit
+    type: Enum
+  - uid: AeroDB.TokenDefinition
+    name: TokenDefinition
+    type: Class
+  - uid: AeroDB.TombstoneEvent
+    name: TombstoneEvent
+    type: Class
+  - uid: AeroDB.TriggerActionBuilder
+    name: TriggerActionBuilder
+    type: Class
+  - uid: AeroDB.TriggerCreateStatement`1
+    name: TriggerCreateStatement<T>
+    type: Class
+  - uid: AeroDB.TriggerDeleteStatement`1
+    name: TriggerDeleteStatement<T>
+    type: Class
+  - uid: AeroDB.TriggerRelateStatement
+    name: TriggerRelateStatement
+    type: Class
+  - uid: AeroDB.TriggerUpdateStatement`1
+    name: TriggerUpdateStatement<T>
+    type: Class
+  - uid: AeroDB.UnitOfWork
+    name: UnitOfWork
+    type: Class
+  - uid: AeroDB.VersionAttribute
+    name: VersionAttribute
+    type: Class
+  - uid: AeroDB.ViewDefinition
+    name: ViewDefinition
+    type: Class
+  - uid: AeroDB.ViewDefinition`1
+    name: ViewDefinition<T>
+    type: Class
+  - uid: AeroDB.ViewGraphSelectBuilder`2
+    name: ViewGraphSelectBuilder<TSource, TTarget>
+    type: Class
+  - uid: AeroDB.ViewOptions
+    name: ViewOptions
+    type: Class
+  - uid: AeroDB.ViewQueryExtensions
+    name: ViewQueryExtensions
+    type: Class
+  - uid: AeroDB.ViewSelectBuilder`1
+    name: ViewSelectBuilder<T>
+    type: Class
+- uid: AeroDB.AspNetIdentity
+  name: AeroDB.AspNetIdentity
+  type: Namespace
+  items:
+  - uid: AeroDB.AspNetIdentity.AeroDBRoleStore`1
+    name: AeroDBRoleStore<TRole>
+    type: Class
+  - uid: AeroDB.AspNetIdentity.AeroDBRoleStore`2
+    name: AeroDBRoleStore<TRole, TKey>
+    type: Class
+  - uid: AeroDB.AspNetIdentity.AeroDBUserStore`2
+    name: AeroDBUserStore<TUser, TRole>
+    type: Class
+  - uid: AeroDB.AspNetIdentity.AeroDBUserStore`3
+    name: AeroDBUserStore<TUser, TRole, TKey>
+    type: Class
+- uid: AeroDB.Diagnostics
+  name: AeroDB.Diagnostics
+  type: Namespace
+  items:
+  - uid: AeroDB.Diagnostics.DocumentMetadataListener
+    name: DocumentMetadataListener
+    type: Class
+- uid: AeroDB.Generated
+  name: AeroDB.Generated
+  type: Namespace
+  items:
+  - uid: AeroDB.Generated.AeroDBConfiguratorRegistrar
+    name: AeroDBConfiguratorRegistrar
+    type: Class
+- uid: AeroDB.IdGeneration
+  name: AeroDB.IdGeneration
+  type: Namespace
+  items:
+  - uid: AeroDB.IdGeneration.IIdGenerator
+    name: IIdGenerator
+    type: Interface
+  - uid: AeroDB.IdGeneration.SnowflakeIdGenerator
+    name: SnowflakeIdGenerator
+    type: Class
+- uid: AeroDB.LiveQuery
+  name: AeroDB.LiveQuery
+  type: Namespace
+  items:
+  - uid: AeroDB.LiveQuery.AeroDBLiveAction
+    name: AeroDBLiveAction
+    type: Enum
+  - uid: AeroDB.LiveQuery.AeroDBLiveChange`1
+    name: AeroDBLiveChange<T>
+    type: Class
+  - uid: AeroDB.LiveQuery.IAeroDBLiveQueryBuilder`1
+    name: IAeroDBLiveQueryBuilder<T>
+    type: Interface
+  - uid: AeroDB.LiveQuery.IAeroDBLiveQuery`1
+    name: IAeroDBLiveQuery<T>
+    type: Interface
+  - uid: AeroDB.LiveQuery.ILiveQuerySession
+    name: ILiveQuerySession
+    type: Interface
+- uid: AeroDB.Metadata
+  name: AeroDB.Metadata
+  type: Namespace
+  items:
+  - uid: AeroDB.Metadata.FieldSchema
+    name: FieldSchema
+    type: Struct
+  - uid: AeroDB.Metadata.IDocumentMetadata
+    name: IDocumentMetadata
+    type: Interface
+  - uid: AeroDB.Metadata.ITypeMetadata
+    name: ITypeMetadata
+    type: Interface
+  - uid: AeroDB.Metadata.ITypeMetadata`1
+    name: ITypeMetadata<T>
+    type: Interface
+  - uid: AeroDB.Metadata.MetadataRegistry
+    name: MetadataRegistry
+    type: Class
+- uid: AeroDB.Pagination
+  name: AeroDB.Pagination
+  type: Namespace
+  items:
+  - uid: AeroDB.Pagination.IPagedList`1
+    name: IPagedList<T>
+    type: Interface
+  - uid: AeroDB.Pagination.PagedListQueryableExtensions
+    name: PagedListQueryableExtensions
+    type: Class
+  - uid: AeroDB.Pagination.PagedList`1
+    name: PagedList<T>
+    type: Class
+- uid: AeroDB.WolverineFx
+  name: AeroDB.WolverineFx
+  type: Namespace
+  items:
+  - uid: AeroDB.WolverineFx.AeroDBEndpoint
+    name: AeroDBEndpoint
+    type: Class
+  - uid: AeroDB.WolverineFx.AeroDBEnvelope
+    name: AeroDBEnvelope
+    type: Class
+  - uid: AeroDB.WolverineFx.AeroDBIntegration
+    name: AeroDBIntegration
+    type: Class
+  - uid: AeroDB.WolverineFx.AeroDBMessageStore
+    name: AeroDBMessageStore
+    type: Class
+  - uid: AeroDB.WolverineFx.AeroDBOps
+    name: AeroDBOps
+    type: Class
+  - uid: AeroDB.WolverineFx.AeroDBOutboxedSessionFactory
+    name: AeroDBOutboxedSessionFactory
+    type: Class
+  - uid: AeroDB.WolverineFx.AeroDBQueueListener
+    name: AeroDBQueueListener
+    type: Class
+  - uid: AeroDB.WolverineFx.AeroDBQueueSender
+    name: AeroDBQueueSender
+    type: Class
+  - uid: AeroDB.WolverineFx.AeroDBSagaStorage`2
+    name: AeroDBSagaStorage<TId, TSaga>
+    type: Class
+  - uid: AeroDB.WolverineFx.AeroDBTransport
+    name: AeroDBTransport
+    type: Class
+  - uid: AeroDB.WolverineFx.AeroDBTransportOptions
+    name: AeroDBTransportOptions
+    type: Class
+  - uid: AeroDB.WolverineFx.AeroDBWolverineOptionsEventExtensions
+    name: AeroDBWolverineOptionsEventExtensions
+    type: Class
+  - uid: AeroDB.WolverineFx.IAeroDBOp
+    name: IAeroDBOp
+    type: Interface
+  - uid: AeroDB.WolverineFx.ScopedDocumentSessionHolder
+    name: ScopedDocumentSessionHolder
+    type: Class
+  - uid: AeroDB.WolverineFx.WolverineEnvelopeSchemas
+    name: WolverineEnvelopeSchemas
+    type: Class
+  - uid: AeroDB.WolverineFx.WolverineOptionsAeroDBExtensions
+    name: WolverineOptionsAeroDBExtensions
+    type: Class
+  - uid: AeroDB.WolverineFx.WolverineOptionsSubscriptionExtensions
+    name: WolverineOptionsSubscriptionExtensions
+    type: Class
+- uid: Microsoft.Extensions.DependencyInjection
+  name: Microsoft.Extensions.DependencyInjection
+  type: Namespace
+  items:
+  - uid: Microsoft.Extensions.DependencyInjection.AeroDBIdentityExtensions
+    name: AeroDBIdentityExtensions
+    type: Class
+memberLayout: SamePage

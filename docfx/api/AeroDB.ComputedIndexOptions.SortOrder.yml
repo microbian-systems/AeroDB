@@ -1,0 +1,100 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.ComputedIndexOptions.SortOrder
+  commentId: T:AeroDB.ComputedIndexOptions.SortOrder
+  id: ComputedIndexOptions.SortOrder
+  parent: AeroDB
+  children:
+  - AeroDB.ComputedIndexOptions.SortOrder.Asc
+  - AeroDB.ComputedIndexOptions.SortOrder.Desc
+  langs:
+  - csharp
+  - vb
+  name: ComputedIndexOptions.SortOrder
+  nameWithType: ComputedIndexOptions.SortOrder
+  fullName: AeroDB.ComputedIndexOptions.SortOrder
+  type: Enum
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/IndexDefinition.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public enum ComputedIndexOptions.SortOrder
+    content.vb: Public Enum ComputedIndexOptions.SortOrder
+- uid: AeroDB.ComputedIndexOptions.SortOrder.Asc
+  commentId: F:AeroDB.ComputedIndexOptions.SortOrder.Asc
+  id: Asc
+  parent: AeroDB.ComputedIndexOptions.SortOrder
+  langs:
+  - csharp
+  - vb
+  name: Asc
+  nameWithType: ComputedIndexOptions.SortOrder.Asc
+  fullName: AeroDB.ComputedIndexOptions.SortOrder.Asc
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/IndexDefinition.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: Asc = 0
+    return:
+      type: AeroDB.ComputedIndexOptions.SortOrder
+- uid: AeroDB.ComputedIndexOptions.SortOrder.Desc
+  commentId: F:AeroDB.ComputedIndexOptions.SortOrder.Desc
+  id: Desc
+  parent: AeroDB.ComputedIndexOptions.SortOrder
+  langs:
+  - csharp
+  - vb
+  name: Desc
+  nameWithType: ComputedIndexOptions.SortOrder.Desc
+  fullName: AeroDB.ComputedIndexOptions.SortOrder.Desc
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Schema/IndexDefinition.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: Desc = 1
+    return:
+      type: AeroDB.ComputedIndexOptions.SortOrder
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: AeroDB.ComputedIndexOptions.SortOrder
+  commentId: T:AeroDB.ComputedIndexOptions.SortOrder
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.ComputedIndexOptions.html
+  name: ComputedIndexOptions.SortOrder
+  nameWithType: ComputedIndexOptions.SortOrder
+  fullName: AeroDB.ComputedIndexOptions.SortOrder
+  spec.csharp:
+  - uid: AeroDB.ComputedIndexOptions
+    name: ComputedIndexOptions
+    isExternal: true
+    href: AeroDB.ComputedIndexOptions.html
+  - name: .
+  - uid: AeroDB.ComputedIndexOptions.SortOrder
+    name: SortOrder
+    isExternal: true
+    href: AeroDB.ComputedIndexOptions.SortOrder.html
+  spec.vb:
+  - uid: AeroDB.ComputedIndexOptions
+    name: ComputedIndexOptions
+    isExternal: true
+    href: AeroDB.ComputedIndexOptions.html
+  - name: .
+  - uid: AeroDB.ComputedIndexOptions.SortOrder
+    name: SortOrder
+    isExternal: true
+    href: AeroDB.ComputedIndexOptions.SortOrder.html

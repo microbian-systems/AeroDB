@@ -1,0 +1,233 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.ITenantOperations
+  commentId: T:AeroDB.ITenantOperations
+  id: ITenantOperations
+  parent: AeroDB
+  children:
+  - AeroDB.ITenantOperations.ForTenant(System.String)
+  langs:
+  - csharp
+  - vb
+  name: ITenantOperations
+  nameWithType: ITenantOperations
+  fullName: AeroDB.ITenantOperations
+  type: Interface
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Tenancy/ITenantOperations.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Cross-tenant document operations within a session.
+
+    Provides access to per-tenant query sessions for multi-tenancy scenarios.
+  remarks: >-
+    Marten parity: <code>ITenantOperations</code> / <code>ITenantQueryOperations</code> provide
+
+    <code>ForTenant(tenantId) =&gt; IQuerySession</code> to scope operations to a specific tenant.
+
+    <br />
+
+    <b>Existing AeroDB API:</b> AeroDB already achieves the same capabilities through:
+
+
+    <ul><li><xref href="AeroDB.IDocumentStore.WithTenant(System.String)" data-throw-if-not-resolved="false"></xref> — sets tenant for the next session creation.</li><li><xref href="AeroDB.IQuerySession.SetTenant(System.String)" data-throw-if-not-resolved="false"></xref> — scopes a session to a tenant.</li><li><xref href="AeroDB.IDocumentSession.ForTenant(System.String)" data-throw-if-not-resolved="false"></xref> — returns a session scoped to a tenant.</li></ul>
+
+
+    This interface provides a unified Marten-compatible surface over those APIs.
+  example: []
+  syntax:
+    content: public interface ITenantOperations
+    content.vb: Public Interface ITenantOperations
+- uid: AeroDB.ITenantOperations.ForTenant(System.String)
+  commentId: M:AeroDB.ITenantOperations.ForTenant(System.String)
+  id: ForTenant(System.String)
+  parent: AeroDB.ITenantOperations
+  langs:
+  - csharp
+  - vb
+  name: ForTenant(string)
+  nameWithType: ITenantOperations.ForTenant(string)
+  fullName: AeroDB.ITenantOperations.ForTenant(string)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Tenancy/ITenantOperations.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Returns a query session scoped to the specified tenant.
+
+    All subsequent queries and operations are isolated to that tenant's data.
+  example: []
+  syntax:
+    content: IQuerySession ForTenant(string tenantId)
+    parameters:
+    - id: tenantId
+      type: System.String
+      description: The tenant identifier.
+    return:
+      type: AeroDB.IQuerySession
+      description: A query session scoped to the given tenant.
+    content.vb: Function ForTenant(tenantId As String) As IQuerySession
+  overload: AeroDB.ITenantOperations.ForTenant*
+  nameWithType.vb: ITenantOperations.ForTenant(String)
+  fullName.vb: AeroDB.ITenantOperations.ForTenant(String)
+  name.vb: ForTenant(String)
+references:
+- uid: AeroDB.IDocumentStore.WithTenant(System.String)
+  commentId: M:AeroDB.IDocumentStore.WithTenant(System.String)
+  parent: AeroDB.IDocumentStore
+  isExternal: true
+  href: AeroDB.IDocumentStore.html#AeroDB_IDocumentStore_WithTenant_System_String_
+  name: WithTenant(string)
+  nameWithType: IDocumentStore.WithTenant(string)
+  fullName: AeroDB.IDocumentStore.WithTenant(string)
+  nameWithType.vb: IDocumentStore.WithTenant(String)
+  fullName.vb: AeroDB.IDocumentStore.WithTenant(String)
+  name.vb: WithTenant(String)
+  spec.csharp:
+  - uid: AeroDB.IDocumentStore.WithTenant(System.String)
+    name: WithTenant
+    isExternal: true
+    href: AeroDB.IDocumentStore.html#AeroDB_IDocumentStore_WithTenant_System_String_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: AeroDB.IDocumentStore.WithTenant(System.String)
+    name: WithTenant
+    isExternal: true
+    href: AeroDB.IDocumentStore.html#AeroDB_IDocumentStore_WithTenant_System_String_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: AeroDB.IQuerySession.SetTenant(System.String)
+  commentId: M:AeroDB.IQuerySession.SetTenant(System.String)
+  parent: AeroDB.IQuerySession
+  isExternal: true
+  href: AeroDB.IQuerySession.html#AeroDB_IQuerySession_SetTenant_System_String_
+  name: SetTenant(string)
+  nameWithType: IQuerySession.SetTenant(string)
+  fullName: AeroDB.IQuerySession.SetTenant(string)
+  nameWithType.vb: IQuerySession.SetTenant(String)
+  fullName.vb: AeroDB.IQuerySession.SetTenant(String)
+  name.vb: SetTenant(String)
+  spec.csharp:
+  - uid: AeroDB.IQuerySession.SetTenant(System.String)
+    name: SetTenant
+    isExternal: true
+    href: AeroDB.IQuerySession.html#AeroDB_IQuerySession_SetTenant_System_String_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: AeroDB.IQuerySession.SetTenant(System.String)
+    name: SetTenant
+    isExternal: true
+    href: AeroDB.IQuerySession.html#AeroDB_IQuerySession_SetTenant_System_String_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: AeroDB.IDocumentSession.ForTenant(System.String)
+  commentId: M:AeroDB.IDocumentSession.ForTenant(System.String)
+  parent: AeroDB.IDocumentSession
+  isExternal: true
+  href: AeroDB.IDocumentSession.html#AeroDB_IDocumentSession_ForTenant_System_String_
+  name: ForTenant(string)
+  nameWithType: IDocumentSession.ForTenant(string)
+  fullName: AeroDB.IDocumentSession.ForTenant(string)
+  nameWithType.vb: IDocumentSession.ForTenant(String)
+  fullName.vb: AeroDB.IDocumentSession.ForTenant(String)
+  name.vb: ForTenant(String)
+  spec.csharp:
+  - uid: AeroDB.IDocumentSession.ForTenant(System.String)
+    name: ForTenant
+    isExternal: true
+    href: AeroDB.IDocumentSession.html#AeroDB_IDocumentSession_ForTenant_System_String_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: AeroDB.IDocumentSession.ForTenant(System.String)
+    name: ForTenant
+    isExternal: true
+    href: AeroDB.IDocumentSession.html#AeroDB_IDocumentSession_ForTenant_System_String_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: AeroDB.IDocumentStore
+  commentId: T:AeroDB.IDocumentStore
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IDocumentStore.html
+  name: IDocumentStore
+  nameWithType: IDocumentStore
+  fullName: AeroDB.IDocumentStore
+- uid: AeroDB.IQuerySession
+  commentId: T:AeroDB.IQuerySession
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IQuerySession.html
+  name: IQuerySession
+  nameWithType: IQuerySession
+  fullName: AeroDB.IQuerySession
+- uid: AeroDB.IDocumentSession
+  commentId: T:AeroDB.IDocumentSession
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.IDocumentSession.html
+  name: IDocumentSession
+  nameWithType: IDocumentSession
+  fullName: AeroDB.IDocumentSession
+- uid: AeroDB.ITenantOperations.ForTenant*
+  commentId: Overload:AeroDB.ITenantOperations.ForTenant
+  isExternal: true
+  href: AeroDB.ITenantOperations.html#AeroDB_ITenantOperations_ForTenant_System_String_
+  name: ForTenant
+  nameWithType: ITenantOperations.ForTenant
+  fullName: AeroDB.ITenantOperations.ForTenant
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System

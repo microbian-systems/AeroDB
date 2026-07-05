@@ -5,6 +5,7 @@
     <PackageId>AeroDB.Reactive</PackageId>
     <Description>Reactive Extensions for AeroDB live queries</Description>
     <PackageTags>AeroDB SurrealDB Reactive Extensions LiveQuery</PackageTags>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

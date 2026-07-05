@@ -1,0 +1,124 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.IEntity`1
+  commentId: T:AeroDB.IEntity`1
+  id: IEntity`1
+  parent: AeroDB
+  children:
+  - AeroDB.IEntity`1.Id
+  langs:
+  - csharp
+  - vb
+  name: IEntity<TId>
+  nameWithType: IEntity<TId>
+  fullName: AeroDB.IEntity<TId>
+  type: Interface
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Entity.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Interface for entities with a typed primary key.
+
+    Use <xref href="AeroDB.Entity%601" data-throw-if-not-resolved="false"></xref> as a base class for default implementation.
+
+    For Snowflake-style long IDs, use <xref href="AeroDB.Entity%601" data-throw-if-not-resolved="false"></xref> with <code>long</code>.
+  example: []
+  syntax:
+    content: 'public interface IEntity<TId> where TId : notnull, IEquatable<TId>, IComparable<TId>'
+    typeParameters:
+    - id: TId
+      description: The primary key type (long, string, int, Guid, etc.).
+    content.vb: Public Interface IEntity(Of TId As {IEquatable(Of TId), IComparable(Of TId)})
+  derivedClasses:
+  - AeroDB.EntityGuid
+  - AeroDB.EntityInt
+  - AeroDB.EntitySnowlake
+  - AeroDB.EntityString
+  - AeroDB.Entity`1
+  nameWithType.vb: IEntity(Of TId)
+  fullName.vb: AeroDB.IEntity(Of TId)
+  name.vb: IEntity(Of TId)
+- uid: AeroDB.IEntity`1.Id
+  commentId: P:AeroDB.IEntity`1.Id
+  id: Id
+  parent: AeroDB.IEntity`1
+  langs:
+  - csharp
+  - vb
+  name: Id
+  nameWithType: IEntity<TId>.Id
+  fullName: AeroDB.IEntity<TId>.Id
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Entity.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: The primary key for this entity.
+  example: []
+  syntax:
+    content: TId Id { get; set; }
+    parameters: []
+    return:
+      type: '{TId}'
+    content.vb: Property Id As TId
+  overload: AeroDB.IEntity`1.Id*
+  nameWithType.vb: IEntity(Of TId).Id
+  fullName.vb: AeroDB.IEntity(Of TId).Id
+references:
+- uid: AeroDB.Entity`1
+  commentId: T:AeroDB.Entity`1
+  isExternal: true
+  href: AeroDB.Entity-1.html
+  name: Entity<TId>
+  nameWithType: Entity<TId>
+  fullName: AeroDB.Entity<TId>
+  nameWithType.vb: Entity(Of TId)
+  fullName.vb: AeroDB.Entity(Of TId)
+  name.vb: Entity(Of TId)
+  spec.csharp:
+  - uid: AeroDB.Entity`1
+    name: Entity
+    isExternal: true
+    href: AeroDB.Entity-1.html
+  - name: <
+  - name: TId
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.Entity`1
+    name: Entity
+    isExternal: true
+    href: AeroDB.Entity-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TId
+  - name: )
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: AeroDB.IEntity`1.Id*
+  commentId: Overload:AeroDB.IEntity`1.Id
+  isExternal: true
+  href: AeroDB.IEntity-1.html#AeroDB_IEntity_1_Id
+  name: Id
+  nameWithType: IEntity<TId>.Id
+  fullName: AeroDB.IEntity<TId>.Id
+  nameWithType.vb: IEntity(Of TId).Id
+  fullName.vb: AeroDB.IEntity(Of TId).Id
+- uid: '{TId}'
+  commentId: '!:TId'
+  definition: TId
+  name: TId
+  nameWithType: TId
+  fullName: TId
+- uid: TId
+  name: TId
+  nameWithType: TId
+  fullName: TId

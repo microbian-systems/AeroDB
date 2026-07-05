@@ -1,0 +1,194 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.ActionType
+  commentId: T:AeroDB.ActionType
+  id: ActionType
+  parent: AeroDB
+  children:
+  - AeroDB.ActionType.HardDelete
+  - AeroDB.ActionType.Nothing
+  - AeroDB.ActionType.SoftDelete
+  - AeroDB.ActionType.Store
+  langs:
+  - csharp
+  - vb
+  name: ActionType
+  nameWithType: ActionType
+  fullName: AeroDB.ActionType
+  type: Enum
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/ActionType.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Determines what action a projection should take after processing events.
+
+    Returned by <xref href="AeroDB.InlineProjection%601.DetermineAction(%600%2cSystem.Collections.Generic.IReadOnlyList%7bAeroDB.IEvent%7d)" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: public enum ActionType
+    content.vb: Public Enum ActionType
+- uid: AeroDB.ActionType.Store
+  commentId: F:AeroDB.ActionType.Store
+  id: Store
+  parent: AeroDB.ActionType
+  langs:
+  - csharp
+  - vb
+  name: Store
+  nameWithType: ActionType.Store
+  fullName: AeroDB.ActionType.Store
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/ActionType.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Store the projected document (normal case).
+  example: []
+  syntax:
+    content: Store = 0
+    return:
+      type: AeroDB.ActionType
+- uid: AeroDB.ActionType.Nothing
+  commentId: F:AeroDB.ActionType.Nothing
+  id: Nothing
+  parent: AeroDB.ActionType
+  langs:
+  - csharp
+  - vb
+  name: Nothing
+  nameWithType: ActionType.Nothing
+  fullName: AeroDB.ActionType.Nothing
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/ActionType.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Skip — do nothing (no-op for this batch).
+  example: []
+  syntax:
+    content: Nothing = 1
+    return:
+      type: AeroDB.ActionType
+- uid: AeroDB.ActionType.SoftDelete
+  commentId: F:AeroDB.ActionType.SoftDelete
+  id: SoftDelete
+  parent: AeroDB.ActionType
+  langs:
+  - csharp
+  - vb
+  name: SoftDelete
+  nameWithType: ActionType.SoftDelete
+  fullName: AeroDB.ActionType.SoftDelete
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/ActionType.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Mark the document as soft-deleted via <xref href="AeroDB.ISoftDeleted" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: SoftDelete = 2
+    return:
+      type: AeroDB.ActionType
+- uid: AeroDB.ActionType.HardDelete
+  commentId: F:AeroDB.ActionType.HardDelete
+  id: HardDelete
+  parent: AeroDB.ActionType
+  langs:
+  - csharp
+  - vb
+  name: HardDelete
+  nameWithType: ActionType.HardDelete
+  fullName: AeroDB.ActionType.HardDelete
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Events/ActionType.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Hard delete the projected document.
+  example: []
+  syntax:
+    content: HardDelete = 3
+    return:
+      type: AeroDB.ActionType
+references:
+- uid: AeroDB.InlineProjection`1.DetermineAction(`0,System.Collections.Generic.IReadOnlyList{AeroDB.IEvent})
+  commentId: M:AeroDB.InlineProjection`1.DetermineAction(`0,System.Collections.Generic.IReadOnlyList{AeroDB.IEvent})
+  isExternal: true
+  href: AeroDB.InlineProjection-1.html#AeroDB_InlineProjection_1_DetermineAction__0_System_Collections_Generic_IReadOnlyList_AeroDB_IEvent__
+  name: DetermineAction(T, IReadOnlyList<IEvent>)
+  nameWithType: InlineProjection<T>.DetermineAction(T, IReadOnlyList<IEvent>)
+  fullName: AeroDB.InlineProjection<T>.DetermineAction(T, System.Collections.Generic.IReadOnlyList<AeroDB.IEvent>)
+  nameWithType.vb: InlineProjection(Of T).DetermineAction(T, IReadOnlyList(Of IEvent))
+  fullName.vb: AeroDB.InlineProjection(Of T).DetermineAction(T, System.Collections.Generic.IReadOnlyList(Of AeroDB.IEvent))
+  name.vb: DetermineAction(T, IReadOnlyList(Of IEvent))
+  spec.csharp:
+  - uid: AeroDB.InlineProjection`1.DetermineAction(`0,System.Collections.Generic.IReadOnlyList{AeroDB.IEvent})
+    name: DetermineAction
+    isExternal: true
+    href: AeroDB.InlineProjection-1.html#AeroDB_InlineProjection_1_DetermineAction__0_System_Collections_Generic_IReadOnlyList_AeroDB_IEvent__
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - uid: AeroDB.IEvent
+    name: IEvent
+    isExternal: true
+    href: AeroDB.IEvent.html
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: AeroDB.InlineProjection`1.DetermineAction(`0,System.Collections.Generic.IReadOnlyList{AeroDB.IEvent})
+    name: DetermineAction
+    isExternal: true
+    href: AeroDB.InlineProjection-1.html#AeroDB_InlineProjection_1_DetermineAction__0_System_Collections_Generic_IReadOnlyList_AeroDB_IEvent__
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.IEvent
+    name: IEvent
+    isExternal: true
+    href: AeroDB.IEvent.html
+  - name: )
+  - name: )
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: AeroDB.ActionType
+  commentId: T:AeroDB.ActionType
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.ActionType.html
+  name: ActionType
+  nameWithType: ActionType
+  fullName: AeroDB.ActionType
+- uid: AeroDB.ISoftDeleted
+  commentId: T:AeroDB.ISoftDeleted
+  isExternal: true
+  href: AeroDB.ISoftDeleted.html
+  name: ISoftDeleted
+  nameWithType: ISoftDeleted
+  fullName: AeroDB.ISoftDeleted

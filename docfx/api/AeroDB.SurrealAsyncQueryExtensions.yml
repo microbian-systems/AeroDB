@@ -1,0 +1,1779 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.SurrealAsyncQueryExtensions
+  commentId: T:AeroDB.SurrealAsyncQueryExtensions
+  id: SurrealAsyncQueryExtensions
+  parent: AeroDB
+  children:
+  - AeroDB.SurrealAsyncQueryExtensions.AnyAsync``1(System.Linq.IQueryable{``0},System.Threading.CancellationToken)
+  - AeroDB.SurrealAsyncQueryExtensions.AverageAsync``1(System.Linq.IQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Decimal}},System.Threading.CancellationToken)
+  - AeroDB.SurrealAsyncQueryExtensions.ContainsAll``2(AeroDB.ISurrealDbQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Collections.Generic.IEnumerable{``1}}},System.Collections.Generic.IEnumerable{``1})
+  - AeroDB.SurrealAsyncQueryExtensions.ContainsAny``2(AeroDB.ISurrealDbQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Collections.Generic.IEnumerable{``1}}},System.Collections.Generic.IEnumerable{``1})
+  - AeroDB.SurrealAsyncQueryExtensions.ContainsNone``2(AeroDB.ISurrealDbQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Collections.Generic.IEnumerable{``1}}},System.Collections.Generic.IEnumerable{``1})
+  - AeroDB.SurrealAsyncQueryExtensions.CountAsync``1(System.Linq.IQueryable{``0},System.Threading.CancellationToken)
+  - AeroDB.SurrealAsyncQueryExtensions.DeleteAsync``1(AeroDB.ISurrealDbQueryable{``0},System.Threading.CancellationToken)
+  - AeroDB.SurrealAsyncQueryExtensions.DeletedBefore``1(AeroDB.ISurrealDbQueryable{``0},System.DateTimeOffset)
+  - AeroDB.SurrealAsyncQueryExtensions.FirstOrDefaultAsync``1(System.Linq.IQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Threading.CancellationToken)
+  - AeroDB.SurrealAsyncQueryExtensions.FirstOrDefaultAsync``1(System.Linq.IQueryable{``0},System.Threading.CancellationToken)
+  - AeroDB.SurrealAsyncQueryExtensions.Intersects``2(AeroDB.ISurrealDbQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Collections.Generic.IEnumerable{``1}}},System.Collections.Generic.IEnumerable{``1})
+  - AeroDB.SurrealAsyncQueryExtensions.MaxAsync``1(System.Linq.IQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Decimal}},System.Threading.CancellationToken)
+  - AeroDB.SurrealAsyncQueryExtensions.MinAsync``1(System.Linq.IQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Decimal}},System.Threading.CancellationToken)
+  - AeroDB.SurrealAsyncQueryExtensions.SingleOrDefaultAsync``1(System.Linq.IQueryable{``0},System.Threading.CancellationToken)
+  - AeroDB.SurrealAsyncQueryExtensions.SumAsync``1(System.Linq.IQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Decimal}},System.Threading.CancellationToken)
+  - AeroDB.SurrealAsyncQueryExtensions.ToListAsync``1(System.Linq.IQueryable{``0},System.Threading.CancellationToken)
+  langs:
+  - csharp
+  - vb
+  name: SurrealAsyncQueryExtensions
+  nameWithType: SurrealAsyncQueryExtensions
+  fullName: AeroDB.SurrealAsyncQueryExtensions
+  type: Class
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/SurrealAsyncQueryExtensions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public static class SurrealAsyncQueryExtensions
+    content.vb: Public Module SurrealAsyncQueryExtensions
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+- uid: AeroDB.SurrealAsyncQueryExtensions.ToListAsync``1(System.Linq.IQueryable{``0},System.Threading.CancellationToken)
+  commentId: M:AeroDB.SurrealAsyncQueryExtensions.ToListAsync``1(System.Linq.IQueryable{``0},System.Threading.CancellationToken)
+  id: ToListAsync``1(System.Linq.IQueryable{``0},System.Threading.CancellationToken)
+  isExtensionMethod: true
+  parent: AeroDB.SurrealAsyncQueryExtensions
+  langs:
+  - csharp
+  - vb
+  name: ToListAsync<T>(IQueryable<T>, CancellationToken)
+  nameWithType: SurrealAsyncQueryExtensions.ToListAsync<T>(IQueryable<T>, CancellationToken)
+  fullName: AeroDB.SurrealAsyncQueryExtensions.ToListAsync<T>(System.Linq.IQueryable<T>, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/SurrealAsyncQueryExtensions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public static Task<List<T>> ToListAsync<T>(this IQueryable<T> source, CancellationToken ct = default)
+    parameters:
+    - id: source
+      type: System.Linq.IQueryable{{T}}
+    - id: ct
+      type: System.Threading.CancellationToken
+    typeParameters:
+    - id: T
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.List{{T}}}
+    content.vb: Public Shared Function ToListAsync(Of T)(source As IQueryable(Of T), ct As CancellationToken = Nothing) As Task(Of List(Of T))
+  overload: AeroDB.SurrealAsyncQueryExtensions.ToListAsync*
+  nameWithType.vb: SurrealAsyncQueryExtensions.ToListAsync(Of T)(IQueryable(Of T), CancellationToken)
+  fullName.vb: AeroDB.SurrealAsyncQueryExtensions.ToListAsync(Of T)(System.Linq.IQueryable(Of T), System.Threading.CancellationToken)
+  name.vb: ToListAsync(Of T)(IQueryable(Of T), CancellationToken)
+- uid: AeroDB.SurrealAsyncQueryExtensions.FirstOrDefaultAsync``1(System.Linq.IQueryable{``0},System.Threading.CancellationToken)
+  commentId: M:AeroDB.SurrealAsyncQueryExtensions.FirstOrDefaultAsync``1(System.Linq.IQueryable{``0},System.Threading.CancellationToken)
+  id: FirstOrDefaultAsync``1(System.Linq.IQueryable{``0},System.Threading.CancellationToken)
+  isExtensionMethod: true
+  parent: AeroDB.SurrealAsyncQueryExtensions
+  langs:
+  - csharp
+  - vb
+  name: FirstOrDefaultAsync<T>(IQueryable<T>, CancellationToken)
+  nameWithType: SurrealAsyncQueryExtensions.FirstOrDefaultAsync<T>(IQueryable<T>, CancellationToken)
+  fullName: AeroDB.SurrealAsyncQueryExtensions.FirstOrDefaultAsync<T>(System.Linq.IQueryable<T>, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/SurrealAsyncQueryExtensions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public static Task<T?> FirstOrDefaultAsync<T>(this IQueryable<T> source, CancellationToken ct = default)
+    parameters:
+    - id: source
+      type: System.Linq.IQueryable{{T}}
+    - id: ct
+      type: System.Threading.CancellationToken
+    typeParameters:
+    - id: T
+    return:
+      type: System.Threading.Tasks.Task{{T}}
+    content.vb: Public Shared Function FirstOrDefaultAsync(Of T)(source As IQueryable(Of T), ct As CancellationToken = Nothing) As Task(Of T)
+  overload: AeroDB.SurrealAsyncQueryExtensions.FirstOrDefaultAsync*
+  nameWithType.vb: SurrealAsyncQueryExtensions.FirstOrDefaultAsync(Of T)(IQueryable(Of T), CancellationToken)
+  fullName.vb: AeroDB.SurrealAsyncQueryExtensions.FirstOrDefaultAsync(Of T)(System.Linq.IQueryable(Of T), System.Threading.CancellationToken)
+  name.vb: FirstOrDefaultAsync(Of T)(IQueryable(Of T), CancellationToken)
+- uid: AeroDB.SurrealAsyncQueryExtensions.FirstOrDefaultAsync``1(System.Linq.IQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Threading.CancellationToken)
+  commentId: M:AeroDB.SurrealAsyncQueryExtensions.FirstOrDefaultAsync``1(System.Linq.IQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Threading.CancellationToken)
+  id: FirstOrDefaultAsync``1(System.Linq.IQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Threading.CancellationToken)
+  isExtensionMethod: true
+  parent: AeroDB.SurrealAsyncQueryExtensions
+  langs:
+  - csharp
+  - vb
+  name: FirstOrDefaultAsync<T>(IQueryable<T>, Expression<Func<T, bool>>, CancellationToken)
+  nameWithType: SurrealAsyncQueryExtensions.FirstOrDefaultAsync<T>(IQueryable<T>, Expression<Func<T, bool>>, CancellationToken)
+  fullName: AeroDB.SurrealAsyncQueryExtensions.FirstOrDefaultAsync<T>(System.Linq.IQueryable<T>, System.Linq.Expressions.Expression<System.Func<T, bool>>, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/SurrealAsyncQueryExtensions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public static Task<T?> FirstOrDefaultAsync<T>(this IQueryable<T> source, Expression<Func<T, bool>> predicate, CancellationToken ct = default)
+    parameters:
+    - id: source
+      type: System.Linq.IQueryable{{T}}
+    - id: predicate
+      type: System.Linq.Expressions.Expression{System.Func{{T},System.Boolean}}
+    - id: ct
+      type: System.Threading.CancellationToken
+    typeParameters:
+    - id: T
+    return:
+      type: System.Threading.Tasks.Task{{T}}
+    content.vb: Public Shared Function FirstOrDefaultAsync(Of T)(source As IQueryable(Of T), predicate As Expression(Of Func(Of T, Boolean)), ct As CancellationToken = Nothing) As Task(Of T)
+  overload: AeroDB.SurrealAsyncQueryExtensions.FirstOrDefaultAsync*
+  nameWithType.vb: SurrealAsyncQueryExtensions.FirstOrDefaultAsync(Of T)(IQueryable(Of T), Expression(Of Func(Of T, Boolean)), CancellationToken)
+  fullName.vb: AeroDB.SurrealAsyncQueryExtensions.FirstOrDefaultAsync(Of T)(System.Linq.IQueryable(Of T), System.Linq.Expressions.Expression(Of System.Func(Of T, Boolean)), System.Threading.CancellationToken)
+  name.vb: FirstOrDefaultAsync(Of T)(IQueryable(Of T), Expression(Of Func(Of T, Boolean)), CancellationToken)
+- uid: AeroDB.SurrealAsyncQueryExtensions.SingleOrDefaultAsync``1(System.Linq.IQueryable{``0},System.Threading.CancellationToken)
+  commentId: M:AeroDB.SurrealAsyncQueryExtensions.SingleOrDefaultAsync``1(System.Linq.IQueryable{``0},System.Threading.CancellationToken)
+  id: SingleOrDefaultAsync``1(System.Linq.IQueryable{``0},System.Threading.CancellationToken)
+  isExtensionMethod: true
+  parent: AeroDB.SurrealAsyncQueryExtensions
+  langs:
+  - csharp
+  - vb
+  name: SingleOrDefaultAsync<T>(IQueryable<T>, CancellationToken)
+  nameWithType: SurrealAsyncQueryExtensions.SingleOrDefaultAsync<T>(IQueryable<T>, CancellationToken)
+  fullName: AeroDB.SurrealAsyncQueryExtensions.SingleOrDefaultAsync<T>(System.Linq.IQueryable<T>, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/SurrealAsyncQueryExtensions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public static Task<T?> SingleOrDefaultAsync<T>(this IQueryable<T> source, CancellationToken ct = default)
+    parameters:
+    - id: source
+      type: System.Linq.IQueryable{{T}}
+    - id: ct
+      type: System.Threading.CancellationToken
+    typeParameters:
+    - id: T
+    return:
+      type: System.Threading.Tasks.Task{{T}}
+    content.vb: Public Shared Function SingleOrDefaultAsync(Of T)(source As IQueryable(Of T), ct As CancellationToken = Nothing) As Task(Of T)
+  overload: AeroDB.SurrealAsyncQueryExtensions.SingleOrDefaultAsync*
+  nameWithType.vb: SurrealAsyncQueryExtensions.SingleOrDefaultAsync(Of T)(IQueryable(Of T), CancellationToken)
+  fullName.vb: AeroDB.SurrealAsyncQueryExtensions.SingleOrDefaultAsync(Of T)(System.Linq.IQueryable(Of T), System.Threading.CancellationToken)
+  name.vb: SingleOrDefaultAsync(Of T)(IQueryable(Of T), CancellationToken)
+- uid: AeroDB.SurrealAsyncQueryExtensions.CountAsync``1(System.Linq.IQueryable{``0},System.Threading.CancellationToken)
+  commentId: M:AeroDB.SurrealAsyncQueryExtensions.CountAsync``1(System.Linq.IQueryable{``0},System.Threading.CancellationToken)
+  id: CountAsync``1(System.Linq.IQueryable{``0},System.Threading.CancellationToken)
+  isExtensionMethod: true
+  parent: AeroDB.SurrealAsyncQueryExtensions
+  langs:
+  - csharp
+  - vb
+  name: CountAsync<T>(IQueryable<T>, CancellationToken)
+  nameWithType: SurrealAsyncQueryExtensions.CountAsync<T>(IQueryable<T>, CancellationToken)
+  fullName: AeroDB.SurrealAsyncQueryExtensions.CountAsync<T>(System.Linq.IQueryable<T>, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/SurrealAsyncQueryExtensions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public static Task<int> CountAsync<T>(this IQueryable<T> source, CancellationToken ct = default)
+    parameters:
+    - id: source
+      type: System.Linq.IQueryable{{T}}
+    - id: ct
+      type: System.Threading.CancellationToken
+    typeParameters:
+    - id: T
+    return:
+      type: System.Threading.Tasks.Task{System.Int32}
+    content.vb: Public Shared Function CountAsync(Of T)(source As IQueryable(Of T), ct As CancellationToken = Nothing) As Task(Of Integer)
+  overload: AeroDB.SurrealAsyncQueryExtensions.CountAsync*
+  nameWithType.vb: SurrealAsyncQueryExtensions.CountAsync(Of T)(IQueryable(Of T), CancellationToken)
+  fullName.vb: AeroDB.SurrealAsyncQueryExtensions.CountAsync(Of T)(System.Linq.IQueryable(Of T), System.Threading.CancellationToken)
+  name.vb: CountAsync(Of T)(IQueryable(Of T), CancellationToken)
+- uid: AeroDB.SurrealAsyncQueryExtensions.AnyAsync``1(System.Linq.IQueryable{``0},System.Threading.CancellationToken)
+  commentId: M:AeroDB.SurrealAsyncQueryExtensions.AnyAsync``1(System.Linq.IQueryable{``0},System.Threading.CancellationToken)
+  id: AnyAsync``1(System.Linq.IQueryable{``0},System.Threading.CancellationToken)
+  isExtensionMethod: true
+  parent: AeroDB.SurrealAsyncQueryExtensions
+  langs:
+  - csharp
+  - vb
+  name: AnyAsync<T>(IQueryable<T>, CancellationToken)
+  nameWithType: SurrealAsyncQueryExtensions.AnyAsync<T>(IQueryable<T>, CancellationToken)
+  fullName: AeroDB.SurrealAsyncQueryExtensions.AnyAsync<T>(System.Linq.IQueryable<T>, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/SurrealAsyncQueryExtensions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public static Task<bool> AnyAsync<T>(this IQueryable<T> source, CancellationToken ct = default)
+    parameters:
+    - id: source
+      type: System.Linq.IQueryable{{T}}
+    - id: ct
+      type: System.Threading.CancellationToken
+    typeParameters:
+    - id: T
+    return:
+      type: System.Threading.Tasks.Task{System.Boolean}
+    content.vb: Public Shared Function AnyAsync(Of T)(source As IQueryable(Of T), ct As CancellationToken = Nothing) As Task(Of Boolean)
+  overload: AeroDB.SurrealAsyncQueryExtensions.AnyAsync*
+  nameWithType.vb: SurrealAsyncQueryExtensions.AnyAsync(Of T)(IQueryable(Of T), CancellationToken)
+  fullName.vb: AeroDB.SurrealAsyncQueryExtensions.AnyAsync(Of T)(System.Linq.IQueryable(Of T), System.Threading.CancellationToken)
+  name.vb: AnyAsync(Of T)(IQueryable(Of T), CancellationToken)
+- uid: AeroDB.SurrealAsyncQueryExtensions.SumAsync``1(System.Linq.IQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Decimal}},System.Threading.CancellationToken)
+  commentId: M:AeroDB.SurrealAsyncQueryExtensions.SumAsync``1(System.Linq.IQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Decimal}},System.Threading.CancellationToken)
+  id: SumAsync``1(System.Linq.IQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Decimal}},System.Threading.CancellationToken)
+  isExtensionMethod: true
+  parent: AeroDB.SurrealAsyncQueryExtensions
+  langs:
+  - csharp
+  - vb
+  name: SumAsync<T>(IQueryable<T>, Expression<Func<T, decimal>>, CancellationToken)
+  nameWithType: SurrealAsyncQueryExtensions.SumAsync<T>(IQueryable<T>, Expression<Func<T, decimal>>, CancellationToken)
+  fullName: AeroDB.SurrealAsyncQueryExtensions.SumAsync<T>(System.Linq.IQueryable<T>, System.Linq.Expressions.Expression<System.Func<T, decimal>>, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/SurrealAsyncQueryExtensions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public static Task<decimal> SumAsync<T>(this IQueryable<T> source, Expression<Func<T, decimal>> selector, CancellationToken ct = default)
+    parameters:
+    - id: source
+      type: System.Linq.IQueryable{{T}}
+    - id: selector
+      type: System.Linq.Expressions.Expression{System.Func{{T},System.Decimal}}
+    - id: ct
+      type: System.Threading.CancellationToken
+    typeParameters:
+    - id: T
+    return:
+      type: System.Threading.Tasks.Task{System.Decimal}
+    content.vb: Public Shared Function SumAsync(Of T)(source As IQueryable(Of T), selector As Expression(Of Func(Of T, Decimal)), ct As CancellationToken = Nothing) As Task(Of Decimal)
+  overload: AeroDB.SurrealAsyncQueryExtensions.SumAsync*
+  nameWithType.vb: SurrealAsyncQueryExtensions.SumAsync(Of T)(IQueryable(Of T), Expression(Of Func(Of T, Decimal)), CancellationToken)
+  fullName.vb: AeroDB.SurrealAsyncQueryExtensions.SumAsync(Of T)(System.Linq.IQueryable(Of T), System.Linq.Expressions.Expression(Of System.Func(Of T, Decimal)), System.Threading.CancellationToken)
+  name.vb: SumAsync(Of T)(IQueryable(Of T), Expression(Of Func(Of T, Decimal)), CancellationToken)
+- uid: AeroDB.SurrealAsyncQueryExtensions.MinAsync``1(System.Linq.IQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Decimal}},System.Threading.CancellationToken)
+  commentId: M:AeroDB.SurrealAsyncQueryExtensions.MinAsync``1(System.Linq.IQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Decimal}},System.Threading.CancellationToken)
+  id: MinAsync``1(System.Linq.IQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Decimal}},System.Threading.CancellationToken)
+  isExtensionMethod: true
+  parent: AeroDB.SurrealAsyncQueryExtensions
+  langs:
+  - csharp
+  - vb
+  name: MinAsync<T>(IQueryable<T>, Expression<Func<T, decimal>>, CancellationToken)
+  nameWithType: SurrealAsyncQueryExtensions.MinAsync<T>(IQueryable<T>, Expression<Func<T, decimal>>, CancellationToken)
+  fullName: AeroDB.SurrealAsyncQueryExtensions.MinAsync<T>(System.Linq.IQueryable<T>, System.Linq.Expressions.Expression<System.Func<T, decimal>>, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/SurrealAsyncQueryExtensions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public static Task<decimal> MinAsync<T>(this IQueryable<T> source, Expression<Func<T, decimal>> selector, CancellationToken ct = default)
+    parameters:
+    - id: source
+      type: System.Linq.IQueryable{{T}}
+    - id: selector
+      type: System.Linq.Expressions.Expression{System.Func{{T},System.Decimal}}
+    - id: ct
+      type: System.Threading.CancellationToken
+    typeParameters:
+    - id: T
+    return:
+      type: System.Threading.Tasks.Task{System.Decimal}
+    content.vb: Public Shared Function MinAsync(Of T)(source As IQueryable(Of T), selector As Expression(Of Func(Of T, Decimal)), ct As CancellationToken = Nothing) As Task(Of Decimal)
+  overload: AeroDB.SurrealAsyncQueryExtensions.MinAsync*
+  nameWithType.vb: SurrealAsyncQueryExtensions.MinAsync(Of T)(IQueryable(Of T), Expression(Of Func(Of T, Decimal)), CancellationToken)
+  fullName.vb: AeroDB.SurrealAsyncQueryExtensions.MinAsync(Of T)(System.Linq.IQueryable(Of T), System.Linq.Expressions.Expression(Of System.Func(Of T, Decimal)), System.Threading.CancellationToken)
+  name.vb: MinAsync(Of T)(IQueryable(Of T), Expression(Of Func(Of T, Decimal)), CancellationToken)
+- uid: AeroDB.SurrealAsyncQueryExtensions.MaxAsync``1(System.Linq.IQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Decimal}},System.Threading.CancellationToken)
+  commentId: M:AeroDB.SurrealAsyncQueryExtensions.MaxAsync``1(System.Linq.IQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Decimal}},System.Threading.CancellationToken)
+  id: MaxAsync``1(System.Linq.IQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Decimal}},System.Threading.CancellationToken)
+  isExtensionMethod: true
+  parent: AeroDB.SurrealAsyncQueryExtensions
+  langs:
+  - csharp
+  - vb
+  name: MaxAsync<T>(IQueryable<T>, Expression<Func<T, decimal>>, CancellationToken)
+  nameWithType: SurrealAsyncQueryExtensions.MaxAsync<T>(IQueryable<T>, Expression<Func<T, decimal>>, CancellationToken)
+  fullName: AeroDB.SurrealAsyncQueryExtensions.MaxAsync<T>(System.Linq.IQueryable<T>, System.Linq.Expressions.Expression<System.Func<T, decimal>>, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/SurrealAsyncQueryExtensions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public static Task<decimal> MaxAsync<T>(this IQueryable<T> source, Expression<Func<T, decimal>> selector, CancellationToken ct = default)
+    parameters:
+    - id: source
+      type: System.Linq.IQueryable{{T}}
+    - id: selector
+      type: System.Linq.Expressions.Expression{System.Func{{T},System.Decimal}}
+    - id: ct
+      type: System.Threading.CancellationToken
+    typeParameters:
+    - id: T
+    return:
+      type: System.Threading.Tasks.Task{System.Decimal}
+    content.vb: Public Shared Function MaxAsync(Of T)(source As IQueryable(Of T), selector As Expression(Of Func(Of T, Decimal)), ct As CancellationToken = Nothing) As Task(Of Decimal)
+  overload: AeroDB.SurrealAsyncQueryExtensions.MaxAsync*
+  nameWithType.vb: SurrealAsyncQueryExtensions.MaxAsync(Of T)(IQueryable(Of T), Expression(Of Func(Of T, Decimal)), CancellationToken)
+  fullName.vb: AeroDB.SurrealAsyncQueryExtensions.MaxAsync(Of T)(System.Linq.IQueryable(Of T), System.Linq.Expressions.Expression(Of System.Func(Of T, Decimal)), System.Threading.CancellationToken)
+  name.vb: MaxAsync(Of T)(IQueryable(Of T), Expression(Of Func(Of T, Decimal)), CancellationToken)
+- uid: AeroDB.SurrealAsyncQueryExtensions.AverageAsync``1(System.Linq.IQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Decimal}},System.Threading.CancellationToken)
+  commentId: M:AeroDB.SurrealAsyncQueryExtensions.AverageAsync``1(System.Linq.IQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Decimal}},System.Threading.CancellationToken)
+  id: AverageAsync``1(System.Linq.IQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Decimal}},System.Threading.CancellationToken)
+  isExtensionMethod: true
+  parent: AeroDB.SurrealAsyncQueryExtensions
+  langs:
+  - csharp
+  - vb
+  name: AverageAsync<T>(IQueryable<T>, Expression<Func<T, decimal>>, CancellationToken)
+  nameWithType: SurrealAsyncQueryExtensions.AverageAsync<T>(IQueryable<T>, Expression<Func<T, decimal>>, CancellationToken)
+  fullName: AeroDB.SurrealAsyncQueryExtensions.AverageAsync<T>(System.Linq.IQueryable<T>, System.Linq.Expressions.Expression<System.Func<T, decimal>>, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/SurrealAsyncQueryExtensions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  syntax:
+    content: public static Task<decimal> AverageAsync<T>(this IQueryable<T> source, Expression<Func<T, decimal>> selector, CancellationToken ct = default)
+    parameters:
+    - id: source
+      type: System.Linq.IQueryable{{T}}
+    - id: selector
+      type: System.Linq.Expressions.Expression{System.Func{{T},System.Decimal}}
+    - id: ct
+      type: System.Threading.CancellationToken
+    typeParameters:
+    - id: T
+    return:
+      type: System.Threading.Tasks.Task{System.Decimal}
+    content.vb: Public Shared Function AverageAsync(Of T)(source As IQueryable(Of T), selector As Expression(Of Func(Of T, Decimal)), ct As CancellationToken = Nothing) As Task(Of Decimal)
+  overload: AeroDB.SurrealAsyncQueryExtensions.AverageAsync*
+  nameWithType.vb: SurrealAsyncQueryExtensions.AverageAsync(Of T)(IQueryable(Of T), Expression(Of Func(Of T, Decimal)), CancellationToken)
+  fullName.vb: AeroDB.SurrealAsyncQueryExtensions.AverageAsync(Of T)(System.Linq.IQueryable(Of T), System.Linq.Expressions.Expression(Of System.Func(Of T, Decimal)), System.Threading.CancellationToken)
+  name.vb: AverageAsync(Of T)(IQueryable(Of T), Expression(Of Func(Of T, Decimal)), CancellationToken)
+- uid: AeroDB.SurrealAsyncQueryExtensions.DeletedBefore``1(AeroDB.ISurrealDbQueryable{``0},System.DateTimeOffset)
+  commentId: M:AeroDB.SurrealAsyncQueryExtensions.DeletedBefore``1(AeroDB.ISurrealDbQueryable{``0},System.DateTimeOffset)
+  id: DeletedBefore``1(AeroDB.ISurrealDbQueryable{``0},System.DateTimeOffset)
+  isExtensionMethod: true
+  parent: AeroDB.SurrealAsyncQueryExtensions
+  langs:
+  - csharp
+  - vb
+  name: DeletedBefore<T>(ISurrealDbQueryable<T>, DateTimeOffset)
+  nameWithType: SurrealAsyncQueryExtensions.DeletedBefore<T>(ISurrealDbQueryable<T>, DateTimeOffset)
+  fullName: AeroDB.SurrealAsyncQueryExtensions.DeletedBefore<T>(AeroDB.ISurrealDbQueryable<T>, System.DateTimeOffset)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/SurrealAsyncQueryExtensions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Filter to only soft-deleted documents whose DeletedAt is before the cutoff.
+
+    Requires the document type to implement <xref href="AeroDB.ISoftDeleted" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: 'public static ISurrealDbQueryable<T> DeletedBefore<T>(this ISurrealDbQueryable<T> source, DateTimeOffset cutoff) where T : class'
+    parameters:
+    - id: source
+      type: AeroDB.ISurrealDbQueryable{{T}}
+    - id: cutoff
+      type: System.DateTimeOffset
+    typeParameters:
+    - id: T
+    return:
+      type: AeroDB.ISurrealDbQueryable{{T}}
+    content.vb: Public Shared Function DeletedBefore(Of T As Class)(source As ISurrealDbQueryable(Of T), cutoff As DateTimeOffset) As ISurrealDbQueryable(Of T)
+  overload: AeroDB.SurrealAsyncQueryExtensions.DeletedBefore*
+  nameWithType.vb: SurrealAsyncQueryExtensions.DeletedBefore(Of T)(ISurrealDbQueryable(Of T), DateTimeOffset)
+  fullName.vb: AeroDB.SurrealAsyncQueryExtensions.DeletedBefore(Of T)(AeroDB.ISurrealDbQueryable(Of T), System.DateTimeOffset)
+  name.vb: DeletedBefore(Of T)(ISurrealDbQueryable(Of T), DateTimeOffset)
+- uid: AeroDB.SurrealAsyncQueryExtensions.DeleteAsync``1(AeroDB.ISurrealDbQueryable{``0},System.Threading.CancellationToken)
+  commentId: M:AeroDB.SurrealAsyncQueryExtensions.DeleteAsync``1(AeroDB.ISurrealDbQueryable{``0},System.Threading.CancellationToken)
+  id: DeleteAsync``1(AeroDB.ISurrealDbQueryable{``0},System.Threading.CancellationToken)
+  isExtensionMethod: true
+  parent: AeroDB.SurrealAsyncQueryExtensions
+  langs:
+  - csharp
+  - vb
+  name: DeleteAsync<T>(ISurrealDbQueryable<T>, CancellationToken)
+  nameWithType: SurrealAsyncQueryExtensions.DeleteAsync<T>(ISurrealDbQueryable<T>, CancellationToken)
+  fullName: AeroDB.SurrealAsyncQueryExtensions.DeleteAsync<T>(AeroDB.ISurrealDbQueryable<T>, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/SurrealAsyncQueryExtensions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Execute a hard DELETE matching the current query's WHERE clause. Bypasses soft-delete.
+
+    Returns the number of deleted rows (best-effort — SurrealDB may return 1 per statement).
+  example: []
+  syntax:
+    content: 'public static Task<long> DeleteAsync<T>(this ISurrealDbQueryable<T> source, CancellationToken ct = default) where T : class'
+    parameters:
+    - id: source
+      type: AeroDB.ISurrealDbQueryable{{T}}
+    - id: ct
+      type: System.Threading.CancellationToken
+    typeParameters:
+    - id: T
+    return:
+      type: System.Threading.Tasks.Task{System.Int64}
+    content.vb: Public Shared Function DeleteAsync(Of T As Class)(source As ISurrealDbQueryable(Of T), ct As CancellationToken = Nothing) As Task(Of Long)
+  overload: AeroDB.SurrealAsyncQueryExtensions.DeleteAsync*
+  nameWithType.vb: SurrealAsyncQueryExtensions.DeleteAsync(Of T)(ISurrealDbQueryable(Of T), CancellationToken)
+  fullName.vb: AeroDB.SurrealAsyncQueryExtensions.DeleteAsync(Of T)(AeroDB.ISurrealDbQueryable(Of T), System.Threading.CancellationToken)
+  name.vb: DeleteAsync(Of T)(ISurrealDbQueryable(Of T), CancellationToken)
+- uid: AeroDB.SurrealAsyncQueryExtensions.ContainsAll``2(AeroDB.ISurrealDbQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Collections.Generic.IEnumerable{``1}}},System.Collections.Generic.IEnumerable{``1})
+  commentId: M:AeroDB.SurrealAsyncQueryExtensions.ContainsAll``2(AeroDB.ISurrealDbQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Collections.Generic.IEnumerable{``1}}},System.Collections.Generic.IEnumerable{``1})
+  id: ContainsAll``2(AeroDB.ISurrealDbQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Collections.Generic.IEnumerable{``1}}},System.Collections.Generic.IEnumerable{``1})
+  isExtensionMethod: true
+  parent: AeroDB.SurrealAsyncQueryExtensions
+  langs:
+  - csharp
+  - vb
+  name: ContainsAll<T, TValue>(ISurrealDbQueryable<T>, Expression<Func<T, IEnumerable<TValue>?>>, IEnumerable<TValue>)
+  nameWithType: SurrealAsyncQueryExtensions.ContainsAll<T, TValue>(ISurrealDbQueryable<T>, Expression<Func<T, IEnumerable<TValue>?>>, IEnumerable<TValue>)
+  fullName: AeroDB.SurrealAsyncQueryExtensions.ContainsAll<T, TValue>(AeroDB.ISurrealDbQueryable<T>, System.Linq.Expressions.Expression<System.Func<T, System.Collections.Generic.IEnumerable<TValue>?>>, System.Collections.Generic.IEnumerable<TValue>)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/SurrealAsyncQueryExtensions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Filters documents where the array field contains ALL of the specified values.
+
+    Translates to SurrealDB: <code>WHERE field CONTAINSALL [...]</code>
+  example: []
+  syntax:
+    content: 'public static ISurrealDbQueryable<T> ContainsAll<T, TValue>(this ISurrealDbQueryable<T> source, Expression<Func<T, IEnumerable<TValue>?>> field, IEnumerable<TValue> values) where T : class'
+    parameters:
+    - id: source
+      type: AeroDB.ISurrealDbQueryable{{T}}
+    - id: field
+      type: System.Linq.Expressions.Expression{System.Func{{T},System.Collections.Generic.IEnumerable{{TValue}}}}
+    - id: values
+      type: System.Collections.Generic.IEnumerable{{TValue}}
+    typeParameters:
+    - id: T
+    - id: TValue
+    return:
+      type: AeroDB.ISurrealDbQueryable{{T}}
+    content.vb: Public Shared Function ContainsAll(Of T As Class, TValue)(source As ISurrealDbQueryable(Of T), field As Expression(Of Func(Of T, IEnumerable(Of TValue))), values As IEnumerable(Of TValue)) As ISurrealDbQueryable(Of T)
+  overload: AeroDB.SurrealAsyncQueryExtensions.ContainsAll*
+  nameWithType.vb: SurrealAsyncQueryExtensions.ContainsAll(Of T, TValue)(ISurrealDbQueryable(Of T), Expression(Of Func(Of T, IEnumerable(Of TValue))), IEnumerable(Of TValue))
+  fullName.vb: AeroDB.SurrealAsyncQueryExtensions.ContainsAll(Of T, TValue)(AeroDB.ISurrealDbQueryable(Of T), System.Linq.Expressions.Expression(Of System.Func(Of T, System.Collections.Generic.IEnumerable(Of TValue))), System.Collections.Generic.IEnumerable(Of TValue))
+  name.vb: ContainsAll(Of T, TValue)(ISurrealDbQueryable(Of T), Expression(Of Func(Of T, IEnumerable(Of TValue))), IEnumerable(Of TValue))
+- uid: AeroDB.SurrealAsyncQueryExtensions.ContainsAny``2(AeroDB.ISurrealDbQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Collections.Generic.IEnumerable{``1}}},System.Collections.Generic.IEnumerable{``1})
+  commentId: M:AeroDB.SurrealAsyncQueryExtensions.ContainsAny``2(AeroDB.ISurrealDbQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Collections.Generic.IEnumerable{``1}}},System.Collections.Generic.IEnumerable{``1})
+  id: ContainsAny``2(AeroDB.ISurrealDbQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Collections.Generic.IEnumerable{``1}}},System.Collections.Generic.IEnumerable{``1})
+  isExtensionMethod: true
+  parent: AeroDB.SurrealAsyncQueryExtensions
+  langs:
+  - csharp
+  - vb
+  name: ContainsAny<T, TValue>(ISurrealDbQueryable<T>, Expression<Func<T, IEnumerable<TValue>?>>, IEnumerable<TValue>)
+  nameWithType: SurrealAsyncQueryExtensions.ContainsAny<T, TValue>(ISurrealDbQueryable<T>, Expression<Func<T, IEnumerable<TValue>?>>, IEnumerable<TValue>)
+  fullName: AeroDB.SurrealAsyncQueryExtensions.ContainsAny<T, TValue>(AeroDB.ISurrealDbQueryable<T>, System.Linq.Expressions.Expression<System.Func<T, System.Collections.Generic.IEnumerable<TValue>?>>, System.Collections.Generic.IEnumerable<TValue>)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/SurrealAsyncQueryExtensions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Filters documents where the array field contains ANY of the specified values.
+
+    Translates to SurrealDB: <code>WHERE field CONTAINSANY [...]</code>
+  example: []
+  syntax:
+    content: 'public static ISurrealDbQueryable<T> ContainsAny<T, TValue>(this ISurrealDbQueryable<T> source, Expression<Func<T, IEnumerable<TValue>?>> field, IEnumerable<TValue> values) where T : class'
+    parameters:
+    - id: source
+      type: AeroDB.ISurrealDbQueryable{{T}}
+    - id: field
+      type: System.Linq.Expressions.Expression{System.Func{{T},System.Collections.Generic.IEnumerable{{TValue}}}}
+    - id: values
+      type: System.Collections.Generic.IEnumerable{{TValue}}
+    typeParameters:
+    - id: T
+    - id: TValue
+    return:
+      type: AeroDB.ISurrealDbQueryable{{T}}
+    content.vb: Public Shared Function ContainsAny(Of T As Class, TValue)(source As ISurrealDbQueryable(Of T), field As Expression(Of Func(Of T, IEnumerable(Of TValue))), values As IEnumerable(Of TValue)) As ISurrealDbQueryable(Of T)
+  overload: AeroDB.SurrealAsyncQueryExtensions.ContainsAny*
+  nameWithType.vb: SurrealAsyncQueryExtensions.ContainsAny(Of T, TValue)(ISurrealDbQueryable(Of T), Expression(Of Func(Of T, IEnumerable(Of TValue))), IEnumerable(Of TValue))
+  fullName.vb: AeroDB.SurrealAsyncQueryExtensions.ContainsAny(Of T, TValue)(AeroDB.ISurrealDbQueryable(Of T), System.Linq.Expressions.Expression(Of System.Func(Of T, System.Collections.Generic.IEnumerable(Of TValue))), System.Collections.Generic.IEnumerable(Of TValue))
+  name.vb: ContainsAny(Of T, TValue)(ISurrealDbQueryable(Of T), Expression(Of Func(Of T, IEnumerable(Of TValue))), IEnumerable(Of TValue))
+- uid: AeroDB.SurrealAsyncQueryExtensions.ContainsNone``2(AeroDB.ISurrealDbQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Collections.Generic.IEnumerable{``1}}},System.Collections.Generic.IEnumerable{``1})
+  commentId: M:AeroDB.SurrealAsyncQueryExtensions.ContainsNone``2(AeroDB.ISurrealDbQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Collections.Generic.IEnumerable{``1}}},System.Collections.Generic.IEnumerable{``1})
+  id: ContainsNone``2(AeroDB.ISurrealDbQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Collections.Generic.IEnumerable{``1}}},System.Collections.Generic.IEnumerable{``1})
+  isExtensionMethod: true
+  parent: AeroDB.SurrealAsyncQueryExtensions
+  langs:
+  - csharp
+  - vb
+  name: ContainsNone<T, TValue>(ISurrealDbQueryable<T>, Expression<Func<T, IEnumerable<TValue>?>>, IEnumerable<TValue>)
+  nameWithType: SurrealAsyncQueryExtensions.ContainsNone<T, TValue>(ISurrealDbQueryable<T>, Expression<Func<T, IEnumerable<TValue>?>>, IEnumerable<TValue>)
+  fullName: AeroDB.SurrealAsyncQueryExtensions.ContainsNone<T, TValue>(AeroDB.ISurrealDbQueryable<T>, System.Linq.Expressions.Expression<System.Func<T, System.Collections.Generic.IEnumerable<TValue>?>>, System.Collections.Generic.IEnumerable<TValue>)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/SurrealAsyncQueryExtensions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Filters documents where the array field contains NONE of the specified values.
+
+    Translates to SurrealDB: <code>WHERE field CONTAINSNONE [...]</code>
+  example: []
+  syntax:
+    content: 'public static ISurrealDbQueryable<T> ContainsNone<T, TValue>(this ISurrealDbQueryable<T> source, Expression<Func<T, IEnumerable<TValue>?>> field, IEnumerable<TValue> values) where T : class'
+    parameters:
+    - id: source
+      type: AeroDB.ISurrealDbQueryable{{T}}
+    - id: field
+      type: System.Linq.Expressions.Expression{System.Func{{T},System.Collections.Generic.IEnumerable{{TValue}}}}
+    - id: values
+      type: System.Collections.Generic.IEnumerable{{TValue}}
+    typeParameters:
+    - id: T
+    - id: TValue
+    return:
+      type: AeroDB.ISurrealDbQueryable{{T}}
+    content.vb: Public Shared Function ContainsNone(Of T As Class, TValue)(source As ISurrealDbQueryable(Of T), field As Expression(Of Func(Of T, IEnumerable(Of TValue))), values As IEnumerable(Of TValue)) As ISurrealDbQueryable(Of T)
+  overload: AeroDB.SurrealAsyncQueryExtensions.ContainsNone*
+  nameWithType.vb: SurrealAsyncQueryExtensions.ContainsNone(Of T, TValue)(ISurrealDbQueryable(Of T), Expression(Of Func(Of T, IEnumerable(Of TValue))), IEnumerable(Of TValue))
+  fullName.vb: AeroDB.SurrealAsyncQueryExtensions.ContainsNone(Of T, TValue)(AeroDB.ISurrealDbQueryable(Of T), System.Linq.Expressions.Expression(Of System.Func(Of T, System.Collections.Generic.IEnumerable(Of TValue))), System.Collections.Generic.IEnumerable(Of TValue))
+  name.vb: ContainsNone(Of T, TValue)(ISurrealDbQueryable(Of T), Expression(Of Func(Of T, IEnumerable(Of TValue))), IEnumerable(Of TValue))
+- uid: AeroDB.SurrealAsyncQueryExtensions.Intersects``2(AeroDB.ISurrealDbQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Collections.Generic.IEnumerable{``1}}},System.Collections.Generic.IEnumerable{``1})
+  commentId: M:AeroDB.SurrealAsyncQueryExtensions.Intersects``2(AeroDB.ISurrealDbQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Collections.Generic.IEnumerable{``1}}},System.Collections.Generic.IEnumerable{``1})
+  id: Intersects``2(AeroDB.ISurrealDbQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Collections.Generic.IEnumerable{``1}}},System.Collections.Generic.IEnumerable{``1})
+  isExtensionMethod: true
+  parent: AeroDB.SurrealAsyncQueryExtensions
+  langs:
+  - csharp
+  - vb
+  name: Intersects<T, TValue>(ISurrealDbQueryable<T>, Expression<Func<T, IEnumerable<TValue>?>>, IEnumerable<TValue>)
+  nameWithType: SurrealAsyncQueryExtensions.Intersects<T, TValue>(ISurrealDbQueryable<T>, Expression<Func<T, IEnumerable<TValue>?>>, IEnumerable<TValue>)
+  fullName: AeroDB.SurrealAsyncQueryExtensions.Intersects<T, TValue>(AeroDB.ISurrealDbQueryable<T>, System.Linq.Expressions.Expression<System.Func<T, System.Collections.Generic.IEnumerable<TValue>?>>, System.Collections.Generic.IEnumerable<TValue>)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/SurrealAsyncQueryExtensions.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: >-
+    Filters documents where the array field intersects with the specified values.
+
+    Translates to SurrealDB: <code>WHERE field INTERSECTS [...]</code>
+  example: []
+  syntax:
+    content: 'public static ISurrealDbQueryable<T> Intersects<T, TValue>(this ISurrealDbQueryable<T> source, Expression<Func<T, IEnumerable<TValue>?>> field, IEnumerable<TValue> values) where T : class'
+    parameters:
+    - id: source
+      type: AeroDB.ISurrealDbQueryable{{T}}
+    - id: field
+      type: System.Linq.Expressions.Expression{System.Func{{T},System.Collections.Generic.IEnumerable{{TValue}}}}
+    - id: values
+      type: System.Collections.Generic.IEnumerable{{TValue}}
+    typeParameters:
+    - id: T
+    - id: TValue
+    return:
+      type: AeroDB.ISurrealDbQueryable{{T}}
+    content.vb: Public Shared Function Intersects(Of T As Class, TValue)(source As ISurrealDbQueryable(Of T), field As Expression(Of Func(Of T, IEnumerable(Of TValue))), values As IEnumerable(Of TValue)) As ISurrealDbQueryable(Of T)
+  overload: AeroDB.SurrealAsyncQueryExtensions.Intersects*
+  nameWithType.vb: SurrealAsyncQueryExtensions.Intersects(Of T, TValue)(ISurrealDbQueryable(Of T), Expression(Of Func(Of T, IEnumerable(Of TValue))), IEnumerable(Of TValue))
+  fullName.vb: AeroDB.SurrealAsyncQueryExtensions.Intersects(Of T, TValue)(AeroDB.ISurrealDbQueryable(Of T), System.Linq.Expressions.Expression(Of System.Func(Of T, System.Collections.Generic.IEnumerable(Of TValue))), System.Collections.Generic.IEnumerable(Of TValue))
+  name.vb: Intersects(Of T, TValue)(ISurrealDbQueryable(Of T), Expression(Of Func(Of T, IEnumerable(Of TValue))), IEnumerable(Of TValue))
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AeroDB.SurrealAsyncQueryExtensions.ToListAsync*
+  commentId: Overload:AeroDB.SurrealAsyncQueryExtensions.ToListAsync
+  isExternal: true
+  href: AeroDB.SurrealAsyncQueryExtensions.html#AeroDB_SurrealAsyncQueryExtensions_ToListAsync__1_System_Linq_IQueryable___0__System_Threading_CancellationToken_
+  name: ToListAsync
+  nameWithType: SurrealAsyncQueryExtensions.ToListAsync
+  fullName: AeroDB.SurrealAsyncQueryExtensions.ToListAsync
+- uid: System.Linq.IQueryable{{T}}
+  commentId: T:System.Linq.IQueryable{``0}
+  parent: System.Linq
+  definition: System.Linq.IQueryable`1
+  href: https://learn.microsoft.com/dotnet/api/system.linq.iqueryable-1
+  name: IQueryable<T>
+  nameWithType: IQueryable<T>
+  fullName: System.Linq.IQueryable<T>
+  nameWithType.vb: IQueryable(Of T)
+  fullName.vb: System.Linq.IQueryable(Of T)
+  name.vb: IQueryable(Of T)
+  spec.csharp:
+  - uid: System.Linq.IQueryable`1
+    name: IQueryable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.iqueryable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.IQueryable`1
+    name: IQueryable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.iqueryable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.List{{T}}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.List{``0}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<List<T>>
+  nameWithType: Task<List<T>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.List<T>>
+  nameWithType.vb: Task(Of List(Of T))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.List(Of T))
+  name.vb: Task(Of List(Of T))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - name: T
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+- uid: System.Linq.IQueryable`1
+  commentId: T:System.Linq.IQueryable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.iqueryable-1
+  name: IQueryable<T>
+  nameWithType: IQueryable<T>
+  fullName: System.Linq.IQueryable<T>
+  nameWithType.vb: IQueryable(Of T)
+  fullName.vb: System.Linq.IQueryable(Of T)
+  name.vb: IQueryable(Of T)
+  spec.csharp:
+  - uid: System.Linq.IQueryable`1
+    name: IQueryable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.iqueryable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.IQueryable`1
+    name: IQueryable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.iqueryable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Linq
+  commentId: N:System.Linq
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Linq
+  nameWithType: System.Linq
+  fullName: System.Linq
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Linq
+    name: Linq
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Linq
+    name: Linq
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: AeroDB.SurrealAsyncQueryExtensions.FirstOrDefaultAsync*
+  commentId: Overload:AeroDB.SurrealAsyncQueryExtensions.FirstOrDefaultAsync
+  isExternal: true
+  href: AeroDB.SurrealAsyncQueryExtensions.html#AeroDB_SurrealAsyncQueryExtensions_FirstOrDefaultAsync__1_System_Linq_IQueryable___0__System_Threading_CancellationToken_
+  name: FirstOrDefaultAsync
+  nameWithType: SurrealAsyncQueryExtensions.FirstOrDefaultAsync
+  fullName: AeroDB.SurrealAsyncQueryExtensions.FirstOrDefaultAsync
+- uid: System.Threading.Tasks.Task{{T}}
+  commentId: T:System.Threading.Tasks.Task{``0}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<T>
+  nameWithType: Task<T>
+  fullName: System.Threading.Tasks.Task<T>
+  nameWithType.vb: Task(Of T)
+  fullName.vb: System.Threading.Tasks.Task(Of T)
+  name.vb: Task(Of T)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Linq.Expressions.Expression{System.Func{{T},System.Boolean}}
+  commentId: T:System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}}
+  parent: System.Linq.Expressions
+  definition: System.Linq.Expressions.Expression`1
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  name: Expression<Func<T, bool>>
+  nameWithType: Expression<Func<T, bool>>
+  fullName: System.Linq.Expressions.Expression<System.Func<T, bool>>
+  nameWithType.vb: Expression(Of Func(Of T, Boolean))
+  fullName.vb: System.Linq.Expressions.Expression(Of System.Func(Of T, Boolean))
+  name.vb: Expression(Of Func(Of T, Boolean))
+  spec.csharp:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  - name: )
+- uid: System.Linq.Expressions.Expression`1
+  commentId: T:System.Linq.Expressions.Expression`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  name: Expression<TDelegate>
+  nameWithType: Expression<TDelegate>
+  fullName: System.Linq.Expressions.Expression<TDelegate>
+  nameWithType.vb: Expression(Of TDelegate)
+  fullName.vb: System.Linq.Expressions.Expression(Of TDelegate)
+  name.vb: Expression(Of TDelegate)
+  spec.csharp:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - name: TDelegate
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TDelegate
+  - name: )
+- uid: System.Linq.Expressions
+  commentId: N:System.Linq.Expressions
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Linq.Expressions
+  nameWithType: System.Linq.Expressions
+  fullName: System.Linq.Expressions
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Linq
+    name: Linq
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq
+  - name: .
+  - uid: System.Linq.Expressions
+    name: Expressions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Linq
+    name: Linq
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq
+  - name: .
+  - uid: System.Linq.Expressions
+    name: Expressions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions
+- uid: AeroDB.SurrealAsyncQueryExtensions.SingleOrDefaultAsync*
+  commentId: Overload:AeroDB.SurrealAsyncQueryExtensions.SingleOrDefaultAsync
+  isExternal: true
+  href: AeroDB.SurrealAsyncQueryExtensions.html#AeroDB_SurrealAsyncQueryExtensions_SingleOrDefaultAsync__1_System_Linq_IQueryable___0__System_Threading_CancellationToken_
+  name: SingleOrDefaultAsync
+  nameWithType: SurrealAsyncQueryExtensions.SingleOrDefaultAsync
+  fullName: AeroDB.SurrealAsyncQueryExtensions.SingleOrDefaultAsync
+- uid: AeroDB.SurrealAsyncQueryExtensions.CountAsync*
+  commentId: Overload:AeroDB.SurrealAsyncQueryExtensions.CountAsync
+  isExternal: true
+  href: AeroDB.SurrealAsyncQueryExtensions.html#AeroDB_SurrealAsyncQueryExtensions_CountAsync__1_System_Linq_IQueryable___0__System_Threading_CancellationToken_
+  name: CountAsync
+  nameWithType: SurrealAsyncQueryExtensions.CountAsync
+  fullName: AeroDB.SurrealAsyncQueryExtensions.CountAsync
+- uid: System.Threading.Tasks.Task{System.Int32}
+  commentId: T:System.Threading.Tasks.Task{System.Int32}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<int>
+  nameWithType: Task<int>
+  fullName: System.Threading.Tasks.Task<int>
+  nameWithType.vb: Task(Of Integer)
+  fullName.vb: System.Threading.Tasks.Task(Of Integer)
+  name.vb: Task(Of Integer)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: AeroDB.SurrealAsyncQueryExtensions.AnyAsync*
+  commentId: Overload:AeroDB.SurrealAsyncQueryExtensions.AnyAsync
+  isExternal: true
+  href: AeroDB.SurrealAsyncQueryExtensions.html#AeroDB_SurrealAsyncQueryExtensions_AnyAsync__1_System_Linq_IQueryable___0__System_Threading_CancellationToken_
+  name: AnyAsync
+  nameWithType: SurrealAsyncQueryExtensions.AnyAsync
+  fullName: AeroDB.SurrealAsyncQueryExtensions.AnyAsync
+- uid: System.Threading.Tasks.Task{System.Boolean}
+  commentId: T:System.Threading.Tasks.Task{System.Boolean}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<bool>
+  nameWithType: Task<bool>
+  fullName: System.Threading.Tasks.Task<bool>
+  nameWithType.vb: Task(Of Boolean)
+  fullName.vb: System.Threading.Tasks.Task(Of Boolean)
+  name.vb: Task(Of Boolean)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: AeroDB.SurrealAsyncQueryExtensions.SumAsync*
+  commentId: Overload:AeroDB.SurrealAsyncQueryExtensions.SumAsync
+  isExternal: true
+  href: AeroDB.SurrealAsyncQueryExtensions.html#AeroDB_SurrealAsyncQueryExtensions_SumAsync__1_System_Linq_IQueryable___0__System_Linq_Expressions_Expression_System_Func___0_System_Decimal___System_Threading_CancellationToken_
+  name: SumAsync
+  nameWithType: SurrealAsyncQueryExtensions.SumAsync
+  fullName: AeroDB.SurrealAsyncQueryExtensions.SumAsync
+- uid: System.Linq.Expressions.Expression{System.Func{{T},System.Decimal}}
+  commentId: T:System.Linq.Expressions.Expression{System.Func{`0,System.Decimal}}
+  parent: System.Linq.Expressions
+  definition: System.Linq.Expressions.Expression`1
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  name: Expression<Func<T, decimal>>
+  nameWithType: Expression<Func<T, decimal>>
+  fullName: System.Linq.Expressions.Expression<System.Func<T, decimal>>
+  nameWithType.vb: Expression(Of Func(Of T, Decimal))
+  fullName.vb: System.Linq.Expressions.Expression(Of System.Func(Of T, Decimal))
+  name.vb: Expression(Of Func(Of T, Decimal))
+  spec.csharp:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Decimal
+    name: decimal
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.decimal
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Decimal
+    name: Decimal
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.decimal
+  - name: )
+  - name: )
+- uid: System.Threading.Tasks.Task{System.Decimal}
+  commentId: T:System.Threading.Tasks.Task{System.Decimal}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<decimal>
+  nameWithType: Task<decimal>
+  fullName: System.Threading.Tasks.Task<decimal>
+  nameWithType.vb: Task(Of Decimal)
+  fullName.vb: System.Threading.Tasks.Task(Of Decimal)
+  name.vb: Task(Of Decimal)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Decimal
+    name: decimal
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.decimal
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Decimal
+    name: Decimal
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.decimal
+  - name: )
+- uid: AeroDB.SurrealAsyncQueryExtensions.MinAsync*
+  commentId: Overload:AeroDB.SurrealAsyncQueryExtensions.MinAsync
+  isExternal: true
+  href: AeroDB.SurrealAsyncQueryExtensions.html#AeroDB_SurrealAsyncQueryExtensions_MinAsync__1_System_Linq_IQueryable___0__System_Linq_Expressions_Expression_System_Func___0_System_Decimal___System_Threading_CancellationToken_
+  name: MinAsync
+  nameWithType: SurrealAsyncQueryExtensions.MinAsync
+  fullName: AeroDB.SurrealAsyncQueryExtensions.MinAsync
+- uid: AeroDB.SurrealAsyncQueryExtensions.MaxAsync*
+  commentId: Overload:AeroDB.SurrealAsyncQueryExtensions.MaxAsync
+  isExternal: true
+  href: AeroDB.SurrealAsyncQueryExtensions.html#AeroDB_SurrealAsyncQueryExtensions_MaxAsync__1_System_Linq_IQueryable___0__System_Linq_Expressions_Expression_System_Func___0_System_Decimal___System_Threading_CancellationToken_
+  name: MaxAsync
+  nameWithType: SurrealAsyncQueryExtensions.MaxAsync
+  fullName: AeroDB.SurrealAsyncQueryExtensions.MaxAsync
+- uid: AeroDB.SurrealAsyncQueryExtensions.AverageAsync*
+  commentId: Overload:AeroDB.SurrealAsyncQueryExtensions.AverageAsync
+  isExternal: true
+  href: AeroDB.SurrealAsyncQueryExtensions.html#AeroDB_SurrealAsyncQueryExtensions_AverageAsync__1_System_Linq_IQueryable___0__System_Linq_Expressions_Expression_System_Func___0_System_Decimal___System_Threading_CancellationToken_
+  name: AverageAsync
+  nameWithType: SurrealAsyncQueryExtensions.AverageAsync
+  fullName: AeroDB.SurrealAsyncQueryExtensions.AverageAsync
+- uid: AeroDB.ISoftDeleted
+  commentId: T:AeroDB.ISoftDeleted
+  isExternal: true
+  href: AeroDB.ISoftDeleted.html
+  name: ISoftDeleted
+  nameWithType: ISoftDeleted
+  fullName: AeroDB.ISoftDeleted
+- uid: AeroDB.SurrealAsyncQueryExtensions.DeletedBefore*
+  commentId: Overload:AeroDB.SurrealAsyncQueryExtensions.DeletedBefore
+  isExternal: true
+  href: AeroDB.SurrealAsyncQueryExtensions.html#AeroDB_SurrealAsyncQueryExtensions_DeletedBefore__1_AeroDB_ISurrealDbQueryable___0__System_DateTimeOffset_
+  name: DeletedBefore
+  nameWithType: SurrealAsyncQueryExtensions.DeletedBefore
+  fullName: AeroDB.SurrealAsyncQueryExtensions.DeletedBefore
+- uid: AeroDB.ISurrealDbQueryable{{T}}
+  commentId: T:AeroDB.ISurrealDbQueryable{``0}
+  parent: AeroDB
+  definition: AeroDB.ISurrealDbQueryable`1
+  href: AeroDB.ISurrealDbQueryable-1.html
+  name: ISurrealDbQueryable<T>
+  nameWithType: ISurrealDbQueryable<T>
+  fullName: AeroDB.ISurrealDbQueryable<T>
+  nameWithType.vb: ISurrealDbQueryable(Of T)
+  fullName.vb: AeroDB.ISurrealDbQueryable(Of T)
+  name.vb: ISurrealDbQueryable(Of T)
+  spec.csharp:
+  - uid: AeroDB.ISurrealDbQueryable`1
+    name: ISurrealDbQueryable
+    isExternal: true
+    href: AeroDB.ISurrealDbQueryable-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.ISurrealDbQueryable`1
+    name: ISurrealDbQueryable
+    isExternal: true
+    href: AeroDB.ISurrealDbQueryable-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.DateTimeOffset
+  commentId: T:System.DateTimeOffset
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.datetimeoffset
+  name: DateTimeOffset
+  nameWithType: DateTimeOffset
+  fullName: System.DateTimeOffset
+- uid: AeroDB.ISurrealDbQueryable`1
+  commentId: T:AeroDB.ISurrealDbQueryable`1
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.ISurrealDbQueryable-1.html
+  name: ISurrealDbQueryable<T>
+  nameWithType: ISurrealDbQueryable<T>
+  fullName: AeroDB.ISurrealDbQueryable<T>
+  nameWithType.vb: ISurrealDbQueryable(Of T)
+  fullName.vb: AeroDB.ISurrealDbQueryable(Of T)
+  name.vb: ISurrealDbQueryable(Of T)
+  spec.csharp:
+  - uid: AeroDB.ISurrealDbQueryable`1
+    name: ISurrealDbQueryable
+    isExternal: true
+    href: AeroDB.ISurrealDbQueryable-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.ISurrealDbQueryable`1
+    name: ISurrealDbQueryable
+    isExternal: true
+    href: AeroDB.ISurrealDbQueryable-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.SurrealAsyncQueryExtensions.DeleteAsync*
+  commentId: Overload:AeroDB.SurrealAsyncQueryExtensions.DeleteAsync
+  isExternal: true
+  href: AeroDB.SurrealAsyncQueryExtensions.html#AeroDB_SurrealAsyncQueryExtensions_DeleteAsync__1_AeroDB_ISurrealDbQueryable___0__System_Threading_CancellationToken_
+  name: DeleteAsync
+  nameWithType: SurrealAsyncQueryExtensions.DeleteAsync
+  fullName: AeroDB.SurrealAsyncQueryExtensions.DeleteAsync
+- uid: System.Threading.Tasks.Task{System.Int64}
+  commentId: T:System.Threading.Tasks.Task{System.Int64}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<long>
+  nameWithType: Task<long>
+  fullName: System.Threading.Tasks.Task<long>
+  nameWithType.vb: Task(Of Long)
+  fullName.vb: System.Threading.Tasks.Task(Of Long)
+  name.vb: Task(Of Long)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Int64
+    name: long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Int64
+    name: Long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: )
+- uid: AeroDB.SurrealAsyncQueryExtensions.ContainsAll*
+  commentId: Overload:AeroDB.SurrealAsyncQueryExtensions.ContainsAll
+  isExternal: true
+  href: AeroDB.SurrealAsyncQueryExtensions.html#AeroDB_SurrealAsyncQueryExtensions_ContainsAll__2_AeroDB_ISurrealDbQueryable___0__System_Linq_Expressions_Expression_System_Func___0_System_Collections_Generic_IEnumerable___1____System_Collections_Generic_IEnumerable___1__
+  name: ContainsAll
+  nameWithType: SurrealAsyncQueryExtensions.ContainsAll
+  fullName: AeroDB.SurrealAsyncQueryExtensions.ContainsAll
+- uid: System.Linq.Expressions.Expression{System.Func{{T},System.Collections.Generic.IEnumerable{{TValue}}}}
+  commentId: T:System.Linq.Expressions.Expression{System.Func{``0,System.Collections.Generic.IEnumerable{``1}}}
+  parent: System.Linq.Expressions
+  definition: System.Linq.Expressions.Expression`1
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  name: Expression<Func<T, IEnumerable<TValue>>>
+  nameWithType: Expression<Func<T, IEnumerable<TValue>>>
+  fullName: System.Linq.Expressions.Expression<System.Func<T, System.Collections.Generic.IEnumerable<TValue>>>
+  nameWithType.vb: Expression(Of Func(Of T, IEnumerable(Of TValue)))
+  fullName.vb: System.Linq.Expressions.Expression(Of System.Func(Of T, System.Collections.Generic.IEnumerable(Of TValue)))
+  name.vb: Expression(Of Func(Of T, IEnumerable(Of TValue)))
+  spec.csharp:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: TValue
+  - name: '>'
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TValue
+  - name: )
+  - name: )
+  - name: )
+- uid: System.Collections.Generic.IEnumerable{{TValue}}
+  commentId: T:System.Collections.Generic.IEnumerable{``1}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<TValue>
+  nameWithType: IEnumerable<TValue>
+  fullName: System.Collections.Generic.IEnumerable<TValue>
+  nameWithType.vb: IEnumerable(Of TValue)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of TValue)
+  name.vb: IEnumerable(Of TValue)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: TValue
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TValue
+  - name: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: AeroDB.SurrealAsyncQueryExtensions.ContainsAny*
+  commentId: Overload:AeroDB.SurrealAsyncQueryExtensions.ContainsAny
+  isExternal: true
+  href: AeroDB.SurrealAsyncQueryExtensions.html#AeroDB_SurrealAsyncQueryExtensions_ContainsAny__2_AeroDB_ISurrealDbQueryable___0__System_Linq_Expressions_Expression_System_Func___0_System_Collections_Generic_IEnumerable___1____System_Collections_Generic_IEnumerable___1__
+  name: ContainsAny
+  nameWithType: SurrealAsyncQueryExtensions.ContainsAny
+  fullName: AeroDB.SurrealAsyncQueryExtensions.ContainsAny
+- uid: AeroDB.SurrealAsyncQueryExtensions.ContainsNone*
+  commentId: Overload:AeroDB.SurrealAsyncQueryExtensions.ContainsNone
+  isExternal: true
+  href: AeroDB.SurrealAsyncQueryExtensions.html#AeroDB_SurrealAsyncQueryExtensions_ContainsNone__2_AeroDB_ISurrealDbQueryable___0__System_Linq_Expressions_Expression_System_Func___0_System_Collections_Generic_IEnumerable___1____System_Collections_Generic_IEnumerable___1__
+  name: ContainsNone
+  nameWithType: SurrealAsyncQueryExtensions.ContainsNone
+  fullName: AeroDB.SurrealAsyncQueryExtensions.ContainsNone
+- uid: AeroDB.SurrealAsyncQueryExtensions.Intersects*
+  commentId: Overload:AeroDB.SurrealAsyncQueryExtensions.Intersects
+  isExternal: true
+  href: AeroDB.SurrealAsyncQueryExtensions.html#AeroDB_SurrealAsyncQueryExtensions_Intersects__2_AeroDB_ISurrealDbQueryable___0__System_Linq_Expressions_Expression_System_Func___0_System_Collections_Generic_IEnumerable___1____System_Collections_Generic_IEnumerable___1__
+  name: Intersects
+  nameWithType: SurrealAsyncQueryExtensions.Intersects
+  fullName: AeroDB.SurrealAsyncQueryExtensions.Intersects

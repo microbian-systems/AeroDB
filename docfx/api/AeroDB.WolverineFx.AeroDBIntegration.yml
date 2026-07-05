@@ -1,0 +1,412 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.WolverineFx.AeroDBIntegration
+  commentId: T:AeroDB.WolverineFx.AeroDBIntegration
+  id: AeroDBIntegration
+  parent: AeroDB.WolverineFx
+  children:
+  - AeroDB.WolverineFx.AeroDBIntegration.#ctor
+  - AeroDB.WolverineFx.AeroDBIntegration.Configure(Wolverine.WolverineOptions)
+  langs:
+  - csharp
+  - vb
+  name: AeroDBIntegration
+  nameWithType: AeroDBIntegration
+  fullName: AeroDB.WolverineFx.AeroDBIntegration
+  type: Class
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBIntegration.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  summary: >-
+    Wolverine extension that integrates AeroDB (SurrealDB) as the message persistence
+
+    and saga storage provider. Registers codegen sources, persistence frame provider,
+
+    and the AeroDB transport.
+  example: []
+  syntax:
+    content: 'public sealed class AeroDBIntegration : IWolverineExtension, IJasperFxExtension'
+    content.vb: Public NotInheritable Class AeroDBIntegration Implements IWolverineExtension, IJasperFxExtension
+  inheritance:
+  - System.Object
+  implements:
+  - Wolverine.IWolverineExtension
+  - JasperFx.IJasperFxExtension
+  inheritedMembers:
+  - System.Object.GetType
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+- uid: AeroDB.WolverineFx.AeroDBIntegration.Configure(Wolverine.WolverineOptions)
+  commentId: M:AeroDB.WolverineFx.AeroDBIntegration.Configure(Wolverine.WolverineOptions)
+  id: Configure(Wolverine.WolverineOptions)
+  parent: AeroDB.WolverineFx.AeroDBIntegration
+  langs:
+  - csharp
+  - vb
+  name: Configure(WolverineOptions)
+  nameWithType: AeroDBIntegration.Configure(WolverineOptions)
+  fullName: AeroDB.WolverineFx.AeroDBIntegration.Configure(Wolverine.WolverineOptions)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBIntegration.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  summary: >-
+    Register AeroDB-specific code generation sources, persistence strategy,
+
+    and transport with the Wolverine options.
+  example: []
+  syntax:
+    content: public void Configure(WolverineOptions options)
+    parameters:
+    - id: options
+      type: Wolverine.WolverineOptions
+    content.vb: Public Sub Configure(options As WolverineOptions)
+  overload: AeroDB.WolverineFx.AeroDBIntegration.Configure*
+  implements:
+  - Wolverine.IWolverineExtension.Configure(Wolverine.WolverineOptions)
+- uid: AeroDB.WolverineFx.AeroDBIntegration.#ctor
+  commentId: M:AeroDB.WolverineFx.AeroDBIntegration.#ctor
+  id: '#ctor'
+  parent: AeroDB.WolverineFx.AeroDBIntegration
+  langs:
+  - csharp
+  - vb
+  name: AeroDBIntegration()
+  nameWithType: AeroDBIntegration.AeroDBIntegration()
+  fullName: AeroDB.WolverineFx.AeroDBIntegration.AeroDBIntegration()
+  type: Constructor
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.WolverineFx/AeroDBIntegration.cs
+  assemblies:
+  - AeroDB.WolverineFx
+  namespace: AeroDB.WolverineFx
+  syntax:
+    content: public AeroDBIntegration()
+    content.vb: Public Sub New()
+  overload: AeroDB.WolverineFx.AeroDBIntegration.#ctor*
+  nameWithType.vb: AeroDBIntegration.New()
+  fullName.vb: AeroDB.WolverineFx.AeroDBIntegration.New()
+  name.vb: New()
+references:
+- uid: AeroDB.WolverineFx
+  commentId: N:AeroDB.WolverineFx
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB.WolverineFx
+  nameWithType: AeroDB.WolverineFx
+  fullName: AeroDB.WolverineFx
+  spec.csharp:
+  - uid: AeroDB
+    name: AeroDB
+    isExternal: true
+    href: AeroDB.html
+  - name: .
+  - uid: AeroDB.WolverineFx
+    name: WolverineFx
+    isExternal: true
+    href: AeroDB.WolverineFx.html
+  spec.vb:
+  - uid: AeroDB
+    name: AeroDB
+    isExternal: true
+    href: AeroDB.html
+  - name: .
+  - uid: AeroDB.WolverineFx
+    name: WolverineFx
+    isExternal: true
+    href: AeroDB.WolverineFx.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: Wolverine.IWolverineExtension
+  commentId: T:Wolverine.IWolverineExtension
+  parent: Wolverine
+  isExternal: true
+  name: IWolverineExtension
+  nameWithType: IWolverineExtension
+  fullName: Wolverine.IWolverineExtension
+- uid: JasperFx.IJasperFxExtension
+  commentId: T:JasperFx.IJasperFxExtension
+  parent: JasperFx
+  isExternal: true
+  name: IJasperFxExtension
+  nameWithType: IJasperFxExtension
+  fullName: JasperFx.IJasperFxExtension
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Wolverine
+  commentId: N:Wolverine
+  isExternal: true
+  name: Wolverine
+  nameWithType: Wolverine
+  fullName: Wolverine
+- uid: JasperFx
+  commentId: N:JasperFx
+  isExternal: true
+  name: JasperFx
+  nameWithType: JasperFx
+  fullName: JasperFx
+- uid: AeroDB.WolverineFx.AeroDBIntegration.Configure*
+  commentId: Overload:AeroDB.WolverineFx.AeroDBIntegration.Configure
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBIntegration.html#AeroDB_WolverineFx_AeroDBIntegration_Configure_Wolverine_WolverineOptions_
+  name: Configure
+  nameWithType: AeroDBIntegration.Configure
+  fullName: AeroDB.WolverineFx.AeroDBIntegration.Configure
+- uid: Wolverine.IWolverineExtension.Configure(Wolverine.WolverineOptions)
+  commentId: M:Wolverine.IWolverineExtension.Configure(Wolverine.WolverineOptions)
+  parent: Wolverine.IWolverineExtension
+  isExternal: true
+  name: Configure(WolverineOptions)
+  nameWithType: IWolverineExtension.Configure(WolverineOptions)
+  fullName: Wolverine.IWolverineExtension.Configure(Wolverine.WolverineOptions)
+  spec.csharp:
+  - uid: Wolverine.IWolverineExtension.Configure(Wolverine.WolverineOptions)
+    name: Configure
+    isExternal: true
+  - name: (
+  - uid: Wolverine.WolverineOptions
+    name: WolverineOptions
+    isExternal: true
+  - name: )
+  spec.vb:
+  - uid: Wolverine.IWolverineExtension.Configure(Wolverine.WolverineOptions)
+    name: Configure
+    isExternal: true
+  - name: (
+  - uid: Wolverine.WolverineOptions
+    name: WolverineOptions
+    isExternal: true
+  - name: )
+- uid: Wolverine.WolverineOptions
+  commentId: T:Wolverine.WolverineOptions
+  parent: Wolverine
+  isExternal: true
+  name: WolverineOptions
+  nameWithType: WolverineOptions
+  fullName: Wolverine.WolverineOptions
+- uid: AeroDB.WolverineFx.AeroDBIntegration.#ctor*
+  commentId: Overload:AeroDB.WolverineFx.AeroDBIntegration.#ctor
+  isExternal: true
+  href: AeroDB.WolverineFx.AeroDBIntegration.html#AeroDB_WolverineFx_AeroDBIntegration__ctor
+  name: AeroDBIntegration
+  nameWithType: AeroDBIntegration.AeroDBIntegration
+  fullName: AeroDB.WolverineFx.AeroDBIntegration.AeroDBIntegration
+  nameWithType.vb: AeroDBIntegration.New
+  fullName.vb: AeroDB.WolverineFx.AeroDBIntegration.New
+  name.vb: New

@@ -1,0 +1,1745 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.Pagination.PagedList`1
+  commentId: T:AeroDB.Pagination.PagedList`1
+  id: PagedList`1
+  parent: AeroDB.Pagination
+  children:
+  - AeroDB.Pagination.PagedList`1.Count
+  - AeroDB.Pagination.PagedList`1.CreateAsync(System.Linq.IQueryable{`0},System.Int32,System.Int32,System.Boolean,System.Threading.CancellationToken)
+  - AeroDB.Pagination.PagedList`1.CreateAsync(System.Linq.IQueryable{`0},System.Int32,System.Int32,System.Threading.CancellationToken)
+  - AeroDB.Pagination.PagedList`1.FirstItemOnPage
+  - AeroDB.Pagination.PagedList`1.GetEnumerator
+  - AeroDB.Pagination.PagedList`1.HasNextPage
+  - AeroDB.Pagination.PagedList`1.HasPreviousPage
+  - AeroDB.Pagination.PagedList`1.IsFirstPage
+  - AeroDB.Pagination.PagedList`1.IsLastPage
+  - AeroDB.Pagination.PagedList`1.Item(System.Int32)
+  - AeroDB.Pagination.PagedList`1.LastItemOnPage
+  - AeroDB.Pagination.PagedList`1.PageCount
+  - AeroDB.Pagination.PagedList`1.PageNumber
+  - AeroDB.Pagination.PagedList`1.PageSize
+  - AeroDB.Pagination.PagedList`1.TotalItemCount
+  langs:
+  - csharp
+  - vb
+  name: PagedList<T>
+  nameWithType: PagedList<T>
+  fullName: AeroDB.Pagination.PagedList<T>
+  type: Class
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Pagination/PagedList.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB.Pagination
+  summary: >-
+    Paged list implementation that adapts AeroDB's <xref href="AeroDB.QueryStatistics" data-throw-if-not-resolved="false"></xref>
+
+    for total row count (default, single round trip) or falls back to separate
+
+    <code>LongCountAsync</code> when <code>useCountQuery</code> is set.
+  example: []
+  syntax:
+    content: 'public class PagedList<T> : IPagedList<T>, IEnumerable<T>, IEnumerable where T : class'
+    typeParameters:
+    - id: T
+      description: Document type.
+    content.vb: Public Class PagedList(Of T As Class) Implements IPagedList(Of T), IEnumerable(Of T), IEnumerable
+  inheritance:
+  - System.Object
+  implements:
+  - AeroDB.Pagination.IPagedList{{T}}
+  - System.Collections.Generic.IEnumerable{{T}}
+  - System.Collections.IEnumerable
+  inheritedMembers:
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  nameWithType.vb: PagedList(Of T)
+  fullName.vb: AeroDB.Pagination.PagedList(Of T)
+  name.vb: PagedList(Of T)
+- uid: AeroDB.Pagination.PagedList`1.GetEnumerator
+  commentId: M:AeroDB.Pagination.PagedList`1.GetEnumerator
+  id: GetEnumerator
+  parent: AeroDB.Pagination.PagedList`1
+  langs:
+  - csharp
+  - vb
+  name: GetEnumerator()
+  nameWithType: PagedList<T>.GetEnumerator()
+  fullName: AeroDB.Pagination.PagedList<T>.GetEnumerator()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Pagination/PagedList.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB.Pagination
+  example: []
+  syntax:
+    content: public IEnumerator<T> GetEnumerator()
+    return:
+      type: System.Collections.Generic.IEnumerator{{T}}
+    content.vb: Public Function GetEnumerator() As IEnumerator(Of T)
+  overload: AeroDB.Pagination.PagedList`1.GetEnumerator*
+  implements:
+  - System.Collections.Generic.IEnumerable{{T}}.GetEnumerator
+  nameWithType.vb: PagedList(Of T).GetEnumerator()
+  fullName.vb: AeroDB.Pagination.PagedList(Of T).GetEnumerator()
+- uid: AeroDB.Pagination.PagedList`1.CreateAsync(System.Linq.IQueryable{`0},System.Int32,System.Int32,System.Threading.CancellationToken)
+  commentId: M:AeroDB.Pagination.PagedList`1.CreateAsync(System.Linq.IQueryable{`0},System.Int32,System.Int32,System.Threading.CancellationToken)
+  id: CreateAsync(System.Linq.IQueryable{`0},System.Int32,System.Int32,System.Threading.CancellationToken)
+  parent: AeroDB.Pagination.PagedList`1
+  langs:
+  - csharp
+  - vb
+  name: CreateAsync(IQueryable<T>, int, int, CancellationToken)
+  nameWithType: PagedList<T>.CreateAsync(IQueryable<T>, int, int, CancellationToken)
+  fullName: AeroDB.Pagination.PagedList<T>.CreateAsync(System.Linq.IQueryable<T>, int, int, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Pagination/PagedList.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB.Pagination
+  summary: >-
+    Creates a paged list from a queryable using <xref href="AeroDB.QueryStatistics" data-throw-if-not-resolved="false"></xref>
+
+    for total row count (single round trip).
+  example: []
+  syntax:
+    content: public static Task<PagedList<T>> CreateAsync(IQueryable<T> queryable, int pageNumber, int pageSize, CancellationToken ct = default)
+    parameters:
+    - id: queryable
+      type: System.Linq.IQueryable{{T}}
+    - id: pageNumber
+      type: System.Int32
+    - id: pageSize
+      type: System.Int32
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task{AeroDB.Pagination.PagedList`1}
+    content.vb: Public Shared Function CreateAsync(queryable As IQueryable(Of T), pageNumber As Integer, pageSize As Integer, ct As CancellationToken = Nothing) As Task(Of PagedList(Of T))
+  overload: AeroDB.Pagination.PagedList`1.CreateAsync*
+  nameWithType.vb: PagedList(Of T).CreateAsync(IQueryable(Of T), Integer, Integer, CancellationToken)
+  fullName.vb: AeroDB.Pagination.PagedList(Of T).CreateAsync(System.Linq.IQueryable(Of T), Integer, Integer, System.Threading.CancellationToken)
+  name.vb: CreateAsync(IQueryable(Of T), Integer, Integer, CancellationToken)
+- uid: AeroDB.Pagination.PagedList`1.CreateAsync(System.Linq.IQueryable{`0},System.Int32,System.Int32,System.Boolean,System.Threading.CancellationToken)
+  commentId: M:AeroDB.Pagination.PagedList`1.CreateAsync(System.Linq.IQueryable{`0},System.Int32,System.Int32,System.Boolean,System.Threading.CancellationToken)
+  id: CreateAsync(System.Linq.IQueryable{`0},System.Int32,System.Int32,System.Boolean,System.Threading.CancellationToken)
+  parent: AeroDB.Pagination.PagedList`1
+  langs:
+  - csharp
+  - vb
+  name: CreateAsync(IQueryable<T>, int, int, bool, CancellationToken)
+  nameWithType: PagedList<T>.CreateAsync(IQueryable<T>, int, int, bool, CancellationToken)
+  fullName: AeroDB.Pagination.PagedList<T>.CreateAsync(System.Linq.IQueryable<T>, int, int, bool, System.Threading.CancellationToken)
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Pagination/PagedList.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB.Pagination
+  summary: >-
+    Creates a paged list from a queryable using either Stats (default)
+
+    or a separate count query when <code class="paramref">useCountQuery</code> is true.
+  example: []
+  syntax:
+    content: public static Task<PagedList<T>> CreateAsync(IQueryable<T> queryable, int pageNumber, int pageSize, bool useCountQuery, CancellationToken ct = default)
+    parameters:
+    - id: queryable
+      type: System.Linq.IQueryable{{T}}
+    - id: pageNumber
+      type: System.Int32
+    - id: pageSize
+      type: System.Int32
+    - id: useCountQuery
+      type: System.Boolean
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task{AeroDB.Pagination.PagedList`1}
+    content.vb: Public Shared Function CreateAsync(queryable As IQueryable(Of T), pageNumber As Integer, pageSize As Integer, useCountQuery As Boolean, ct As CancellationToken = Nothing) As Task(Of PagedList(Of T))
+  overload: AeroDB.Pagination.PagedList`1.CreateAsync*
+  nameWithType.vb: PagedList(Of T).CreateAsync(IQueryable(Of T), Integer, Integer, Boolean, CancellationToken)
+  fullName.vb: AeroDB.Pagination.PagedList(Of T).CreateAsync(System.Linq.IQueryable(Of T), Integer, Integer, Boolean, System.Threading.CancellationToken)
+  name.vb: CreateAsync(IQueryable(Of T), Integer, Integer, Boolean, CancellationToken)
+- uid: AeroDB.Pagination.PagedList`1.Item(System.Int32)
+  commentId: P:AeroDB.Pagination.PagedList`1.Item(System.Int32)
+  id: Item(System.Int32)
+  parent: AeroDB.Pagination.PagedList`1
+  langs:
+  - csharp
+  - vb
+  name: this[int]
+  nameWithType: PagedList<T>.this[int]
+  fullName: AeroDB.Pagination.PagedList<T>.this[int]
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Pagination/PagedList.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB.Pagination
+  example: []
+  syntax:
+    content: public T this[int index] { get; }
+    parameters:
+    - id: index
+      type: System.Int32
+    return:
+      type: '{T}'
+    content.vb: Public ReadOnly Default Property this[](index As Integer) As T
+  overload: AeroDB.Pagination.PagedList`1.Item*
+  implements:
+  - AeroDB.Pagination.IPagedList{{T}}.Item(System.Int32)
+  nameWithType.vb: PagedList(Of T).this[](Integer)
+  fullName.vb: AeroDB.Pagination.PagedList(Of T).this[](Integer)
+  name.vb: this[](Integer)
+- uid: AeroDB.Pagination.PagedList`1.Count
+  commentId: P:AeroDB.Pagination.PagedList`1.Count
+  id: Count
+  parent: AeroDB.Pagination.PagedList`1
+  langs:
+  - csharp
+  - vb
+  name: Count
+  nameWithType: PagedList<T>.Count
+  fullName: AeroDB.Pagination.PagedList<T>.Count
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Pagination/PagedList.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB.Pagination
+  example: []
+  syntax:
+    content: public long Count { get; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: Public ReadOnly Property Count As Long
+  overload: AeroDB.Pagination.PagedList`1.Count*
+  implements:
+  - AeroDB.Pagination.IPagedList{{T}}.Count
+  nameWithType.vb: PagedList(Of T).Count
+  fullName.vb: AeroDB.Pagination.PagedList(Of T).Count
+- uid: AeroDB.Pagination.PagedList`1.PageNumber
+  commentId: P:AeroDB.Pagination.PagedList`1.PageNumber
+  id: PageNumber
+  parent: AeroDB.Pagination.PagedList`1
+  langs:
+  - csharp
+  - vb
+  name: PageNumber
+  nameWithType: PagedList<T>.PageNumber
+  fullName: AeroDB.Pagination.PagedList<T>.PageNumber
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Pagination/PagedList.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB.Pagination
+  example: []
+  syntax:
+    content: public long PageNumber { get; protected set; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: Public Property PageNumber As Long
+  overload: AeroDB.Pagination.PagedList`1.PageNumber*
+  implements:
+  - AeroDB.Pagination.IPagedList{{T}}.PageNumber
+  nameWithType.vb: PagedList(Of T).PageNumber
+  fullName.vb: AeroDB.Pagination.PagedList(Of T).PageNumber
+- uid: AeroDB.Pagination.PagedList`1.PageSize
+  commentId: P:AeroDB.Pagination.PagedList`1.PageSize
+  id: PageSize
+  parent: AeroDB.Pagination.PagedList`1
+  langs:
+  - csharp
+  - vb
+  name: PageSize
+  nameWithType: PagedList<T>.PageSize
+  fullName: AeroDB.Pagination.PagedList<T>.PageSize
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Pagination/PagedList.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB.Pagination
+  example: []
+  syntax:
+    content: public long PageSize { get; protected set; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: Public Property PageSize As Long
+  overload: AeroDB.Pagination.PagedList`1.PageSize*
+  implements:
+  - AeroDB.Pagination.IPagedList{{T}}.PageSize
+  nameWithType.vb: PagedList(Of T).PageSize
+  fullName.vb: AeroDB.Pagination.PagedList(Of T).PageSize
+- uid: AeroDB.Pagination.PagedList`1.PageCount
+  commentId: P:AeroDB.Pagination.PagedList`1.PageCount
+  id: PageCount
+  parent: AeroDB.Pagination.PagedList`1
+  langs:
+  - csharp
+  - vb
+  name: PageCount
+  nameWithType: PagedList<T>.PageCount
+  fullName: AeroDB.Pagination.PagedList<T>.PageCount
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Pagination/PagedList.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB.Pagination
+  example: []
+  syntax:
+    content: public long PageCount { get; protected set; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: Public Property PageCount As Long
+  overload: AeroDB.Pagination.PagedList`1.PageCount*
+  implements:
+  - AeroDB.Pagination.IPagedList{{T}}.PageCount
+  nameWithType.vb: PagedList(Of T).PageCount
+  fullName.vb: AeroDB.Pagination.PagedList(Of T).PageCount
+- uid: AeroDB.Pagination.PagedList`1.TotalItemCount
+  commentId: P:AeroDB.Pagination.PagedList`1.TotalItemCount
+  id: TotalItemCount
+  parent: AeroDB.Pagination.PagedList`1
+  langs:
+  - csharp
+  - vb
+  name: TotalItemCount
+  nameWithType: PagedList<T>.TotalItemCount
+  fullName: AeroDB.Pagination.PagedList<T>.TotalItemCount
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Pagination/PagedList.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB.Pagination
+  example: []
+  syntax:
+    content: public long TotalItemCount { get; protected set; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: Public Property TotalItemCount As Long
+  overload: AeroDB.Pagination.PagedList`1.TotalItemCount*
+  implements:
+  - AeroDB.Pagination.IPagedList{{T}}.TotalItemCount
+  nameWithType.vb: PagedList(Of T).TotalItemCount
+  fullName.vb: AeroDB.Pagination.PagedList(Of T).TotalItemCount
+- uid: AeroDB.Pagination.PagedList`1.HasPreviousPage
+  commentId: P:AeroDB.Pagination.PagedList`1.HasPreviousPage
+  id: HasPreviousPage
+  parent: AeroDB.Pagination.PagedList`1
+  langs:
+  - csharp
+  - vb
+  name: HasPreviousPage
+  nameWithType: PagedList<T>.HasPreviousPage
+  fullName: AeroDB.Pagination.PagedList<T>.HasPreviousPage
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Pagination/PagedList.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB.Pagination
+  example: []
+  syntax:
+    content: public bool HasPreviousPage { get; protected set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property HasPreviousPage As Boolean
+  overload: AeroDB.Pagination.PagedList`1.HasPreviousPage*
+  implements:
+  - AeroDB.Pagination.IPagedList{{T}}.HasPreviousPage
+  nameWithType.vb: PagedList(Of T).HasPreviousPage
+  fullName.vb: AeroDB.Pagination.PagedList(Of T).HasPreviousPage
+- uid: AeroDB.Pagination.PagedList`1.HasNextPage
+  commentId: P:AeroDB.Pagination.PagedList`1.HasNextPage
+  id: HasNextPage
+  parent: AeroDB.Pagination.PagedList`1
+  langs:
+  - csharp
+  - vb
+  name: HasNextPage
+  nameWithType: PagedList<T>.HasNextPage
+  fullName: AeroDB.Pagination.PagedList<T>.HasNextPage
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Pagination/PagedList.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB.Pagination
+  example: []
+  syntax:
+    content: public bool HasNextPage { get; protected set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property HasNextPage As Boolean
+  overload: AeroDB.Pagination.PagedList`1.HasNextPage*
+  implements:
+  - AeroDB.Pagination.IPagedList{{T}}.HasNextPage
+  nameWithType.vb: PagedList(Of T).HasNextPage
+  fullName.vb: AeroDB.Pagination.PagedList(Of T).HasNextPage
+- uid: AeroDB.Pagination.PagedList`1.IsFirstPage
+  commentId: P:AeroDB.Pagination.PagedList`1.IsFirstPage
+  id: IsFirstPage
+  parent: AeroDB.Pagination.PagedList`1
+  langs:
+  - csharp
+  - vb
+  name: IsFirstPage
+  nameWithType: PagedList<T>.IsFirstPage
+  fullName: AeroDB.Pagination.PagedList<T>.IsFirstPage
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Pagination/PagedList.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB.Pagination
+  example: []
+  syntax:
+    content: public bool IsFirstPage { get; protected set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property IsFirstPage As Boolean
+  overload: AeroDB.Pagination.PagedList`1.IsFirstPage*
+  implements:
+  - AeroDB.Pagination.IPagedList{{T}}.IsFirstPage
+  nameWithType.vb: PagedList(Of T).IsFirstPage
+  fullName.vb: AeroDB.Pagination.PagedList(Of T).IsFirstPage
+- uid: AeroDB.Pagination.PagedList`1.IsLastPage
+  commentId: P:AeroDB.Pagination.PagedList`1.IsLastPage
+  id: IsLastPage
+  parent: AeroDB.Pagination.PagedList`1
+  langs:
+  - csharp
+  - vb
+  name: IsLastPage
+  nameWithType: PagedList<T>.IsLastPage
+  fullName: AeroDB.Pagination.PagedList<T>.IsLastPage
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Pagination/PagedList.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB.Pagination
+  example: []
+  syntax:
+    content: public bool IsLastPage { get; protected set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property IsLastPage As Boolean
+  overload: AeroDB.Pagination.PagedList`1.IsLastPage*
+  implements:
+  - AeroDB.Pagination.IPagedList{{T}}.IsLastPage
+  nameWithType.vb: PagedList(Of T).IsLastPage
+  fullName.vb: AeroDB.Pagination.PagedList(Of T).IsLastPage
+- uid: AeroDB.Pagination.PagedList`1.FirstItemOnPage
+  commentId: P:AeroDB.Pagination.PagedList`1.FirstItemOnPage
+  id: FirstItemOnPage
+  parent: AeroDB.Pagination.PagedList`1
+  langs:
+  - csharp
+  - vb
+  name: FirstItemOnPage
+  nameWithType: PagedList<T>.FirstItemOnPage
+  fullName: AeroDB.Pagination.PagedList<T>.FirstItemOnPage
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Pagination/PagedList.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB.Pagination
+  example: []
+  syntax:
+    content: public long FirstItemOnPage { get; protected set; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: Public Property FirstItemOnPage As Long
+  overload: AeroDB.Pagination.PagedList`1.FirstItemOnPage*
+  implements:
+  - AeroDB.Pagination.IPagedList{{T}}.FirstItemOnPage
+  nameWithType.vb: PagedList(Of T).FirstItemOnPage
+  fullName.vb: AeroDB.Pagination.PagedList(Of T).FirstItemOnPage
+- uid: AeroDB.Pagination.PagedList`1.LastItemOnPage
+  commentId: P:AeroDB.Pagination.PagedList`1.LastItemOnPage
+  id: LastItemOnPage
+  parent: AeroDB.Pagination.PagedList`1
+  langs:
+  - csharp
+  - vb
+  name: LastItemOnPage
+  nameWithType: PagedList<T>.LastItemOnPage
+  fullName: AeroDB.Pagination.PagedList<T>.LastItemOnPage
+  type: Property
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/Pagination/PagedList.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB.Pagination
+  example: []
+  syntax:
+    content: public long LastItemOnPage { get; protected set; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: Public Property LastItemOnPage As Long
+  overload: AeroDB.Pagination.PagedList`1.LastItemOnPage*
+  implements:
+  - AeroDB.Pagination.IPagedList{{T}}.LastItemOnPage
+  nameWithType.vb: PagedList(Of T).LastItemOnPage
+  fullName.vb: AeroDB.Pagination.PagedList(Of T).LastItemOnPage
+references:
+- uid: AeroDB.QueryStatistics
+  commentId: T:AeroDB.QueryStatistics
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.QueryStatistics.html
+  name: QueryStatistics
+  nameWithType: QueryStatistics
+  fullName: AeroDB.QueryStatistics
+- uid: AeroDB.Pagination
+  commentId: N:AeroDB.Pagination
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB.Pagination
+  nameWithType: AeroDB.Pagination
+  fullName: AeroDB.Pagination
+  spec.csharp:
+  - uid: AeroDB
+    name: AeroDB
+    isExternal: true
+    href: AeroDB.html
+  - name: .
+  - uid: AeroDB.Pagination
+    name: Pagination
+    isExternal: true
+    href: AeroDB.Pagination.html
+  spec.vb:
+  - uid: AeroDB
+    name: AeroDB
+    isExternal: true
+    href: AeroDB.html
+  - name: .
+  - uid: AeroDB.Pagination
+    name: Pagination
+    isExternal: true
+    href: AeroDB.Pagination.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: AeroDB.Pagination.IPagedList{{T}}
+  commentId: T:AeroDB.Pagination.IPagedList{`0}
+  parent: AeroDB.Pagination
+  definition: AeroDB.Pagination.IPagedList`1
+  href: AeroDB.Pagination.IPagedList-1.html
+  name: IPagedList<T>
+  nameWithType: IPagedList<T>
+  fullName: AeroDB.Pagination.IPagedList<T>
+  nameWithType.vb: IPagedList(Of T)
+  fullName.vb: AeroDB.Pagination.IPagedList(Of T)
+  name.vb: IPagedList(Of T)
+  spec.csharp:
+  - uid: AeroDB.Pagination.IPagedList`1
+    name: IPagedList
+    isExternal: true
+    href: AeroDB.Pagination.IPagedList-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.Pagination.IPagedList`1
+    name: IPagedList
+    isExternal: true
+    href: AeroDB.Pagination.IPagedList-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic.IEnumerable{{T}}
+  commentId: T:System.Collections.Generic.IEnumerable{``0}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.IEnumerable
+  commentId: T:System.Collections.IEnumerable
+  parent: System.Collections
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.ienumerable
+  name: IEnumerable
+  nameWithType: IEnumerable
+  fullName: System.Collections.IEnumerable
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AeroDB.Pagination.IPagedList`1
+  commentId: T:AeroDB.Pagination.IPagedList`1
+  isExternal: true
+  href: AeroDB.Pagination.IPagedList-1.html
+  name: IPagedList<T>
+  nameWithType: IPagedList<T>
+  fullName: AeroDB.Pagination.IPagedList<T>
+  nameWithType.vb: IPagedList(Of T)
+  fullName.vb: AeroDB.Pagination.IPagedList(Of T)
+  name.vb: IPagedList(Of T)
+  spec.csharp:
+  - uid: AeroDB.Pagination.IPagedList`1
+    name: IPagedList
+    isExternal: true
+    href: AeroDB.Pagination.IPagedList-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.Pagination.IPagedList`1
+    name: IPagedList
+    isExternal: true
+    href: AeroDB.Pagination.IPagedList-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: System.Collections
+  commentId: N:System.Collections
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections
+  nameWithType: System.Collections
+  fullName: System.Collections
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+- uid: AeroDB.Pagination.PagedList`1.GetEnumerator*
+  commentId: Overload:AeroDB.Pagination.PagedList`1.GetEnumerator
+  isExternal: true
+  href: AeroDB.Pagination.PagedList-1.html#AeroDB_Pagination_PagedList_1_GetEnumerator
+  name: GetEnumerator
+  nameWithType: PagedList<T>.GetEnumerator
+  fullName: AeroDB.Pagination.PagedList<T>.GetEnumerator
+  nameWithType.vb: PagedList(Of T).GetEnumerator
+  fullName.vb: AeroDB.Pagination.PagedList(Of T).GetEnumerator
+- uid: System.Collections.Generic.IEnumerable{{T}}.GetEnumerator
+  commentId: M:System.Collections.Generic.IEnumerable{`0}.GetEnumerator
+  parent: System.Collections.Generic.IEnumerable{{T}}
+  definition: System.Collections.Generic.IEnumerable`1.GetEnumerator
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1.getenumerator
+  name: GetEnumerator()
+  nameWithType: IEnumerable<T>.GetEnumerator()
+  fullName: System.Collections.Generic.IEnumerable<T>.GetEnumerator()
+  nameWithType.vb: IEnumerable(Of T).GetEnumerator()
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T).GetEnumerator()
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable{`0}.GetEnumerator
+    name: GetEnumerator
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1.getenumerator
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable{`0}.GetEnumerator
+    name: GetEnumerator
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1.getenumerator
+  - name: (
+  - name: )
+- uid: System.Collections.Generic.IEnumerator{{T}}
+  commentId: T:System.Collections.Generic.IEnumerator{`0}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerator`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerator-1
+  name: IEnumerator<T>
+  nameWithType: IEnumerator<T>
+  fullName: System.Collections.Generic.IEnumerator<T>
+  nameWithType.vb: IEnumerator(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerator(Of T)
+  name.vb: IEnumerator(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerator`1
+    name: IEnumerator
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerator-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerator`1
+    name: IEnumerator
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerator-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic.IEnumerable`1.GetEnumerator
+  commentId: M:System.Collections.Generic.IEnumerable`1.GetEnumerator
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1.getenumerator
+  name: GetEnumerator()
+  nameWithType: IEnumerable<T>.GetEnumerator()
+  fullName: System.Collections.Generic.IEnumerable<T>.GetEnumerator()
+  nameWithType.vb: IEnumerable(Of T).GetEnumerator()
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T).GetEnumerator()
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1.GetEnumerator
+    name: GetEnumerator
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1.getenumerator
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1.GetEnumerator
+    name: GetEnumerator
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1.getenumerator
+  - name: (
+  - name: )
+- uid: System.Collections.Generic.IEnumerator`1
+  commentId: T:System.Collections.Generic.IEnumerator`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerator-1
+  name: IEnumerator<T>
+  nameWithType: IEnumerator<T>
+  fullName: System.Collections.Generic.IEnumerator<T>
+  nameWithType.vb: IEnumerator(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerator(Of T)
+  name.vb: IEnumerator(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerator`1
+    name: IEnumerator
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerator-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerator`1
+    name: IEnumerator
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerator-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AeroDB.Pagination.PagedList`1.CreateAsync*
+  commentId: Overload:AeroDB.Pagination.PagedList`1.CreateAsync
+  isExternal: true
+  href: AeroDB.Pagination.PagedList-1.html#AeroDB_Pagination_PagedList_1_CreateAsync_System_Linq_IQueryable__0__System_Int32_System_Int32_System_Threading_CancellationToken_
+  name: CreateAsync
+  nameWithType: PagedList<T>.CreateAsync
+  fullName: AeroDB.Pagination.PagedList<T>.CreateAsync
+  nameWithType.vb: PagedList(Of T).CreateAsync
+  fullName.vb: AeroDB.Pagination.PagedList(Of T).CreateAsync
+- uid: System.Linq.IQueryable{{T}}
+  commentId: T:System.Linq.IQueryable{``0}
+  parent: System.Linq
+  definition: System.Linq.IQueryable`1
+  href: https://learn.microsoft.com/dotnet/api/system.linq.iqueryable-1
+  name: IQueryable<T>
+  nameWithType: IQueryable<T>
+  fullName: System.Linq.IQueryable<T>
+  nameWithType.vb: IQueryable(Of T)
+  fullName.vb: System.Linq.IQueryable(Of T)
+  name.vb: IQueryable(Of T)
+  spec.csharp:
+  - uid: System.Linq.IQueryable`1
+    name: IQueryable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.iqueryable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.IQueryable`1
+    name: IQueryable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.iqueryable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task{AeroDB.Pagination.PagedList`1}
+  commentId: T:System.Threading.Tasks.Task{AeroDB.Pagination.PagedList`1}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<PagedList<T>>
+  nameWithType: Task<PagedList<T>>
+  fullName: System.Threading.Tasks.Task<AeroDB.Pagination.PagedList<T>>
+  nameWithType.vb: Task(Of PagedList(Of T))
+  fullName.vb: System.Threading.Tasks.Task(Of AeroDB.Pagination.PagedList(Of T))
+  name.vb: Task(Of PagedList(Of T))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: AeroDB.Pagination.PagedList`1
+    name: PagedList
+    isExternal: true
+    href: AeroDB.Pagination.PagedList-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AeroDB.Pagination.PagedList`1
+    name: PagedList
+    isExternal: true
+    href: AeroDB.Pagination.PagedList-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+- uid: System.Linq.IQueryable`1
+  commentId: T:System.Linq.IQueryable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.iqueryable-1
+  name: IQueryable<T>
+  nameWithType: IQueryable<T>
+  fullName: System.Linq.IQueryable<T>
+  nameWithType.vb: IQueryable(Of T)
+  fullName.vb: System.Linq.IQueryable(Of T)
+  name.vb: IQueryable(Of T)
+  spec.csharp:
+  - uid: System.Linq.IQueryable`1
+    name: IQueryable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.iqueryable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.IQueryable`1
+    name: IQueryable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.iqueryable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Linq
+  commentId: N:System.Linq
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Linq
+  nameWithType: System.Linq
+  fullName: System.Linq
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Linq
+    name: Linq
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Linq
+    name: Linq
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: AeroDB.Pagination.PagedList`1.Item*
+  commentId: Overload:AeroDB.Pagination.PagedList`1.Item
+  isExternal: true
+  href: AeroDB.Pagination.PagedList-1.html#AeroDB_Pagination_PagedList_1_Item_System_Int32_
+  name: this
+  nameWithType: PagedList<T>.this
+  fullName: AeroDB.Pagination.PagedList<T>.this
+  nameWithType.vb: PagedList(Of T).this[]
+  fullName.vb: AeroDB.Pagination.PagedList(Of T).this[]
+  name.vb: this[]
+- uid: AeroDB.Pagination.IPagedList{{T}}.Item(System.Int32)
+  commentId: P:AeroDB.Pagination.IPagedList{`0}.Item(System.Int32)
+  parent: AeroDB.Pagination.IPagedList{{T}}
+  definition: AeroDB.Pagination.IPagedList`1.Item(System.Int32)
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: this[int]
+  nameWithType: IPagedList<T>.this[int]
+  fullName: AeroDB.Pagination.IPagedList<T>.this[int]
+  nameWithType.vb: IPagedList(Of T).this[](Integer)
+  fullName.vb: AeroDB.Pagination.IPagedList(Of T).this[](Integer)
+  name.vb: this[](Integer)
+  spec.csharp:
+  - name: this
+  - name: '['
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ']'
+  spec.vb:
+  - uid: AeroDB.Pagination.IPagedList{`0}.Item(System.Int32)
+    name: this[]
+    isExternal: true
+    href: AeroDB.Pagination.IPagedList-1.html#AeroDB_Pagination_IPagedList_1_Item_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: '{T}'
+  commentId: '!:T'
+  definition: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: AeroDB.Pagination.IPagedList`1.Item(System.Int32)
+  commentId: P:AeroDB.Pagination.IPagedList`1.Item(System.Int32)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: this[int]
+  nameWithType: IPagedList<T>.this[int]
+  fullName: AeroDB.Pagination.IPagedList<T>.this[int]
+  nameWithType.vb: IPagedList(Of T).this[](Integer)
+  fullName.vb: AeroDB.Pagination.IPagedList(Of T).this[](Integer)
+  name.vb: this[](Integer)
+  spec.csharp:
+  - name: this
+  - name: '['
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ']'
+  spec.vb:
+  - uid: AeroDB.Pagination.IPagedList`1.Item(System.Int32)
+    name: this[]
+    isExternal: true
+    href: AeroDB.Pagination.IPagedList-1.html#AeroDB_Pagination_IPagedList_1_Item_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: AeroDB.Pagination.PagedList`1.Count*
+  commentId: Overload:AeroDB.Pagination.PagedList`1.Count
+  isExternal: true
+  href: AeroDB.Pagination.PagedList-1.html#AeroDB_Pagination_PagedList_1_Count
+  name: Count
+  nameWithType: PagedList<T>.Count
+  fullName: AeroDB.Pagination.PagedList<T>.Count
+  nameWithType.vb: PagedList(Of T).Count
+  fullName.vb: AeroDB.Pagination.PagedList(Of T).Count
+- uid: AeroDB.Pagination.IPagedList{{T}}.Count
+  commentId: P:AeroDB.Pagination.IPagedList{`0}.Count
+  parent: AeroDB.Pagination.IPagedList{{T}}
+  definition: AeroDB.Pagination.IPagedList`1.Count
+  href: AeroDB.Pagination.IPagedList-1.html#AeroDB_Pagination_IPagedList_1_Count
+  name: Count
+  nameWithType: IPagedList<T>.Count
+  fullName: AeroDB.Pagination.IPagedList<T>.Count
+  nameWithType.vb: IPagedList(Of T).Count
+  fullName.vb: AeroDB.Pagination.IPagedList(Of T).Count
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
+- uid: AeroDB.Pagination.IPagedList`1.Count
+  commentId: P:AeroDB.Pagination.IPagedList`1.Count
+  isExternal: true
+  href: AeroDB.Pagination.IPagedList-1.html#AeroDB_Pagination_IPagedList_1_Count
+  name: Count
+  nameWithType: IPagedList<T>.Count
+  fullName: AeroDB.Pagination.IPagedList<T>.Count
+  nameWithType.vb: IPagedList(Of T).Count
+  fullName.vb: AeroDB.Pagination.IPagedList(Of T).Count
+- uid: AeroDB.Pagination.PagedList`1.PageNumber*
+  commentId: Overload:AeroDB.Pagination.PagedList`1.PageNumber
+  isExternal: true
+  href: AeroDB.Pagination.PagedList-1.html#AeroDB_Pagination_PagedList_1_PageNumber
+  name: PageNumber
+  nameWithType: PagedList<T>.PageNumber
+  fullName: AeroDB.Pagination.PagedList<T>.PageNumber
+  nameWithType.vb: PagedList(Of T).PageNumber
+  fullName.vb: AeroDB.Pagination.PagedList(Of T).PageNumber
+- uid: AeroDB.Pagination.IPagedList{{T}}.PageNumber
+  commentId: P:AeroDB.Pagination.IPagedList{`0}.PageNumber
+  parent: AeroDB.Pagination.IPagedList{{T}}
+  definition: AeroDB.Pagination.IPagedList`1.PageNumber
+  href: AeroDB.Pagination.IPagedList-1.html#AeroDB_Pagination_IPagedList_1_PageNumber
+  name: PageNumber
+  nameWithType: IPagedList<T>.PageNumber
+  fullName: AeroDB.Pagination.IPagedList<T>.PageNumber
+  nameWithType.vb: IPagedList(Of T).PageNumber
+  fullName.vb: AeroDB.Pagination.IPagedList(Of T).PageNumber
+- uid: AeroDB.Pagination.IPagedList`1.PageNumber
+  commentId: P:AeroDB.Pagination.IPagedList`1.PageNumber
+  isExternal: true
+  href: AeroDB.Pagination.IPagedList-1.html#AeroDB_Pagination_IPagedList_1_PageNumber
+  name: PageNumber
+  nameWithType: IPagedList<T>.PageNumber
+  fullName: AeroDB.Pagination.IPagedList<T>.PageNumber
+  nameWithType.vb: IPagedList(Of T).PageNumber
+  fullName.vb: AeroDB.Pagination.IPagedList(Of T).PageNumber
+- uid: AeroDB.Pagination.PagedList`1.PageSize*
+  commentId: Overload:AeroDB.Pagination.PagedList`1.PageSize
+  isExternal: true
+  href: AeroDB.Pagination.PagedList-1.html#AeroDB_Pagination_PagedList_1_PageSize
+  name: PageSize
+  nameWithType: PagedList<T>.PageSize
+  fullName: AeroDB.Pagination.PagedList<T>.PageSize
+  nameWithType.vb: PagedList(Of T).PageSize
+  fullName.vb: AeroDB.Pagination.PagedList(Of T).PageSize
+- uid: AeroDB.Pagination.IPagedList{{T}}.PageSize
+  commentId: P:AeroDB.Pagination.IPagedList{`0}.PageSize
+  parent: AeroDB.Pagination.IPagedList{{T}}
+  definition: AeroDB.Pagination.IPagedList`1.PageSize
+  href: AeroDB.Pagination.IPagedList-1.html#AeroDB_Pagination_IPagedList_1_PageSize
+  name: PageSize
+  nameWithType: IPagedList<T>.PageSize
+  fullName: AeroDB.Pagination.IPagedList<T>.PageSize
+  nameWithType.vb: IPagedList(Of T).PageSize
+  fullName.vb: AeroDB.Pagination.IPagedList(Of T).PageSize
+- uid: AeroDB.Pagination.IPagedList`1.PageSize
+  commentId: P:AeroDB.Pagination.IPagedList`1.PageSize
+  isExternal: true
+  href: AeroDB.Pagination.IPagedList-1.html#AeroDB_Pagination_IPagedList_1_PageSize
+  name: PageSize
+  nameWithType: IPagedList<T>.PageSize
+  fullName: AeroDB.Pagination.IPagedList<T>.PageSize
+  nameWithType.vb: IPagedList(Of T).PageSize
+  fullName.vb: AeroDB.Pagination.IPagedList(Of T).PageSize
+- uid: AeroDB.Pagination.PagedList`1.PageCount*
+  commentId: Overload:AeroDB.Pagination.PagedList`1.PageCount
+  isExternal: true
+  href: AeroDB.Pagination.PagedList-1.html#AeroDB_Pagination_PagedList_1_PageCount
+  name: PageCount
+  nameWithType: PagedList<T>.PageCount
+  fullName: AeroDB.Pagination.PagedList<T>.PageCount
+  nameWithType.vb: PagedList(Of T).PageCount
+  fullName.vb: AeroDB.Pagination.PagedList(Of T).PageCount
+- uid: AeroDB.Pagination.IPagedList{{T}}.PageCount
+  commentId: P:AeroDB.Pagination.IPagedList{`0}.PageCount
+  parent: AeroDB.Pagination.IPagedList{{T}}
+  definition: AeroDB.Pagination.IPagedList`1.PageCount
+  href: AeroDB.Pagination.IPagedList-1.html#AeroDB_Pagination_IPagedList_1_PageCount
+  name: PageCount
+  nameWithType: IPagedList<T>.PageCount
+  fullName: AeroDB.Pagination.IPagedList<T>.PageCount
+  nameWithType.vb: IPagedList(Of T).PageCount
+  fullName.vb: AeroDB.Pagination.IPagedList(Of T).PageCount
+- uid: AeroDB.Pagination.IPagedList`1.PageCount
+  commentId: P:AeroDB.Pagination.IPagedList`1.PageCount
+  isExternal: true
+  href: AeroDB.Pagination.IPagedList-1.html#AeroDB_Pagination_IPagedList_1_PageCount
+  name: PageCount
+  nameWithType: IPagedList<T>.PageCount
+  fullName: AeroDB.Pagination.IPagedList<T>.PageCount
+  nameWithType.vb: IPagedList(Of T).PageCount
+  fullName.vb: AeroDB.Pagination.IPagedList(Of T).PageCount
+- uid: AeroDB.Pagination.PagedList`1.TotalItemCount*
+  commentId: Overload:AeroDB.Pagination.PagedList`1.TotalItemCount
+  isExternal: true
+  href: AeroDB.Pagination.PagedList-1.html#AeroDB_Pagination_PagedList_1_TotalItemCount
+  name: TotalItemCount
+  nameWithType: PagedList<T>.TotalItemCount
+  fullName: AeroDB.Pagination.PagedList<T>.TotalItemCount
+  nameWithType.vb: PagedList(Of T).TotalItemCount
+  fullName.vb: AeroDB.Pagination.PagedList(Of T).TotalItemCount
+- uid: AeroDB.Pagination.IPagedList{{T}}.TotalItemCount
+  commentId: P:AeroDB.Pagination.IPagedList{`0}.TotalItemCount
+  parent: AeroDB.Pagination.IPagedList{{T}}
+  definition: AeroDB.Pagination.IPagedList`1.TotalItemCount
+  href: AeroDB.Pagination.IPagedList-1.html#AeroDB_Pagination_IPagedList_1_TotalItemCount
+  name: TotalItemCount
+  nameWithType: IPagedList<T>.TotalItemCount
+  fullName: AeroDB.Pagination.IPagedList<T>.TotalItemCount
+  nameWithType.vb: IPagedList(Of T).TotalItemCount
+  fullName.vb: AeroDB.Pagination.IPagedList(Of T).TotalItemCount
+- uid: AeroDB.Pagination.IPagedList`1.TotalItemCount
+  commentId: P:AeroDB.Pagination.IPagedList`1.TotalItemCount
+  isExternal: true
+  href: AeroDB.Pagination.IPagedList-1.html#AeroDB_Pagination_IPagedList_1_TotalItemCount
+  name: TotalItemCount
+  nameWithType: IPagedList<T>.TotalItemCount
+  fullName: AeroDB.Pagination.IPagedList<T>.TotalItemCount
+  nameWithType.vb: IPagedList(Of T).TotalItemCount
+  fullName.vb: AeroDB.Pagination.IPagedList(Of T).TotalItemCount
+- uid: AeroDB.Pagination.PagedList`1.HasPreviousPage*
+  commentId: Overload:AeroDB.Pagination.PagedList`1.HasPreviousPage
+  isExternal: true
+  href: AeroDB.Pagination.PagedList-1.html#AeroDB_Pagination_PagedList_1_HasPreviousPage
+  name: HasPreviousPage
+  nameWithType: PagedList<T>.HasPreviousPage
+  fullName: AeroDB.Pagination.PagedList<T>.HasPreviousPage
+  nameWithType.vb: PagedList(Of T).HasPreviousPage
+  fullName.vb: AeroDB.Pagination.PagedList(Of T).HasPreviousPage
+- uid: AeroDB.Pagination.IPagedList{{T}}.HasPreviousPage
+  commentId: P:AeroDB.Pagination.IPagedList{`0}.HasPreviousPage
+  parent: AeroDB.Pagination.IPagedList{{T}}
+  definition: AeroDB.Pagination.IPagedList`1.HasPreviousPage
+  href: AeroDB.Pagination.IPagedList-1.html#AeroDB_Pagination_IPagedList_1_HasPreviousPage
+  name: HasPreviousPage
+  nameWithType: IPagedList<T>.HasPreviousPage
+  fullName: AeroDB.Pagination.IPagedList<T>.HasPreviousPage
+  nameWithType.vb: IPagedList(Of T).HasPreviousPage
+  fullName.vb: AeroDB.Pagination.IPagedList(Of T).HasPreviousPage
+- uid: AeroDB.Pagination.IPagedList`1.HasPreviousPage
+  commentId: P:AeroDB.Pagination.IPagedList`1.HasPreviousPage
+  isExternal: true
+  href: AeroDB.Pagination.IPagedList-1.html#AeroDB_Pagination_IPagedList_1_HasPreviousPage
+  name: HasPreviousPage
+  nameWithType: IPagedList<T>.HasPreviousPage
+  fullName: AeroDB.Pagination.IPagedList<T>.HasPreviousPage
+  nameWithType.vb: IPagedList(Of T).HasPreviousPage
+  fullName.vb: AeroDB.Pagination.IPagedList(Of T).HasPreviousPage
+- uid: AeroDB.Pagination.PagedList`1.HasNextPage*
+  commentId: Overload:AeroDB.Pagination.PagedList`1.HasNextPage
+  isExternal: true
+  href: AeroDB.Pagination.PagedList-1.html#AeroDB_Pagination_PagedList_1_HasNextPage
+  name: HasNextPage
+  nameWithType: PagedList<T>.HasNextPage
+  fullName: AeroDB.Pagination.PagedList<T>.HasNextPage
+  nameWithType.vb: PagedList(Of T).HasNextPage
+  fullName.vb: AeroDB.Pagination.PagedList(Of T).HasNextPage
+- uid: AeroDB.Pagination.IPagedList{{T}}.HasNextPage
+  commentId: P:AeroDB.Pagination.IPagedList{`0}.HasNextPage
+  parent: AeroDB.Pagination.IPagedList{{T}}
+  definition: AeroDB.Pagination.IPagedList`1.HasNextPage
+  href: AeroDB.Pagination.IPagedList-1.html#AeroDB_Pagination_IPagedList_1_HasNextPage
+  name: HasNextPage
+  nameWithType: IPagedList<T>.HasNextPage
+  fullName: AeroDB.Pagination.IPagedList<T>.HasNextPage
+  nameWithType.vb: IPagedList(Of T).HasNextPage
+  fullName.vb: AeroDB.Pagination.IPagedList(Of T).HasNextPage
+- uid: AeroDB.Pagination.IPagedList`1.HasNextPage
+  commentId: P:AeroDB.Pagination.IPagedList`1.HasNextPage
+  isExternal: true
+  href: AeroDB.Pagination.IPagedList-1.html#AeroDB_Pagination_IPagedList_1_HasNextPage
+  name: HasNextPage
+  nameWithType: IPagedList<T>.HasNextPage
+  fullName: AeroDB.Pagination.IPagedList<T>.HasNextPage
+  nameWithType.vb: IPagedList(Of T).HasNextPage
+  fullName.vb: AeroDB.Pagination.IPagedList(Of T).HasNextPage
+- uid: AeroDB.Pagination.PagedList`1.IsFirstPage*
+  commentId: Overload:AeroDB.Pagination.PagedList`1.IsFirstPage
+  isExternal: true
+  href: AeroDB.Pagination.PagedList-1.html#AeroDB_Pagination_PagedList_1_IsFirstPage
+  name: IsFirstPage
+  nameWithType: PagedList<T>.IsFirstPage
+  fullName: AeroDB.Pagination.PagedList<T>.IsFirstPage
+  nameWithType.vb: PagedList(Of T).IsFirstPage
+  fullName.vb: AeroDB.Pagination.PagedList(Of T).IsFirstPage
+- uid: AeroDB.Pagination.IPagedList{{T}}.IsFirstPage
+  commentId: P:AeroDB.Pagination.IPagedList{`0}.IsFirstPage
+  parent: AeroDB.Pagination.IPagedList{{T}}
+  definition: AeroDB.Pagination.IPagedList`1.IsFirstPage
+  href: AeroDB.Pagination.IPagedList-1.html#AeroDB_Pagination_IPagedList_1_IsFirstPage
+  name: IsFirstPage
+  nameWithType: IPagedList<T>.IsFirstPage
+  fullName: AeroDB.Pagination.IPagedList<T>.IsFirstPage
+  nameWithType.vb: IPagedList(Of T).IsFirstPage
+  fullName.vb: AeroDB.Pagination.IPagedList(Of T).IsFirstPage
+- uid: AeroDB.Pagination.IPagedList`1.IsFirstPage
+  commentId: P:AeroDB.Pagination.IPagedList`1.IsFirstPage
+  isExternal: true
+  href: AeroDB.Pagination.IPagedList-1.html#AeroDB_Pagination_IPagedList_1_IsFirstPage
+  name: IsFirstPage
+  nameWithType: IPagedList<T>.IsFirstPage
+  fullName: AeroDB.Pagination.IPagedList<T>.IsFirstPage
+  nameWithType.vb: IPagedList(Of T).IsFirstPage
+  fullName.vb: AeroDB.Pagination.IPagedList(Of T).IsFirstPage
+- uid: AeroDB.Pagination.PagedList`1.IsLastPage*
+  commentId: Overload:AeroDB.Pagination.PagedList`1.IsLastPage
+  isExternal: true
+  href: AeroDB.Pagination.PagedList-1.html#AeroDB_Pagination_PagedList_1_IsLastPage
+  name: IsLastPage
+  nameWithType: PagedList<T>.IsLastPage
+  fullName: AeroDB.Pagination.PagedList<T>.IsLastPage
+  nameWithType.vb: PagedList(Of T).IsLastPage
+  fullName.vb: AeroDB.Pagination.PagedList(Of T).IsLastPage
+- uid: AeroDB.Pagination.IPagedList{{T}}.IsLastPage
+  commentId: P:AeroDB.Pagination.IPagedList{`0}.IsLastPage
+  parent: AeroDB.Pagination.IPagedList{{T}}
+  definition: AeroDB.Pagination.IPagedList`1.IsLastPage
+  href: AeroDB.Pagination.IPagedList-1.html#AeroDB_Pagination_IPagedList_1_IsLastPage
+  name: IsLastPage
+  nameWithType: IPagedList<T>.IsLastPage
+  fullName: AeroDB.Pagination.IPagedList<T>.IsLastPage
+  nameWithType.vb: IPagedList(Of T).IsLastPage
+  fullName.vb: AeroDB.Pagination.IPagedList(Of T).IsLastPage
+- uid: AeroDB.Pagination.IPagedList`1.IsLastPage
+  commentId: P:AeroDB.Pagination.IPagedList`1.IsLastPage
+  isExternal: true
+  href: AeroDB.Pagination.IPagedList-1.html#AeroDB_Pagination_IPagedList_1_IsLastPage
+  name: IsLastPage
+  nameWithType: IPagedList<T>.IsLastPage
+  fullName: AeroDB.Pagination.IPagedList<T>.IsLastPage
+  nameWithType.vb: IPagedList(Of T).IsLastPage
+  fullName.vb: AeroDB.Pagination.IPagedList(Of T).IsLastPage
+- uid: AeroDB.Pagination.PagedList`1.FirstItemOnPage*
+  commentId: Overload:AeroDB.Pagination.PagedList`1.FirstItemOnPage
+  isExternal: true
+  href: AeroDB.Pagination.PagedList-1.html#AeroDB_Pagination_PagedList_1_FirstItemOnPage
+  name: FirstItemOnPage
+  nameWithType: PagedList<T>.FirstItemOnPage
+  fullName: AeroDB.Pagination.PagedList<T>.FirstItemOnPage
+  nameWithType.vb: PagedList(Of T).FirstItemOnPage
+  fullName.vb: AeroDB.Pagination.PagedList(Of T).FirstItemOnPage
+- uid: AeroDB.Pagination.IPagedList{{T}}.FirstItemOnPage
+  commentId: P:AeroDB.Pagination.IPagedList{`0}.FirstItemOnPage
+  parent: AeroDB.Pagination.IPagedList{{T}}
+  definition: AeroDB.Pagination.IPagedList`1.FirstItemOnPage
+  href: AeroDB.Pagination.IPagedList-1.html#AeroDB_Pagination_IPagedList_1_FirstItemOnPage
+  name: FirstItemOnPage
+  nameWithType: IPagedList<T>.FirstItemOnPage
+  fullName: AeroDB.Pagination.IPagedList<T>.FirstItemOnPage
+  nameWithType.vb: IPagedList(Of T).FirstItemOnPage
+  fullName.vb: AeroDB.Pagination.IPagedList(Of T).FirstItemOnPage
+- uid: AeroDB.Pagination.IPagedList`1.FirstItemOnPage
+  commentId: P:AeroDB.Pagination.IPagedList`1.FirstItemOnPage
+  isExternal: true
+  href: AeroDB.Pagination.IPagedList-1.html#AeroDB_Pagination_IPagedList_1_FirstItemOnPage
+  name: FirstItemOnPage
+  nameWithType: IPagedList<T>.FirstItemOnPage
+  fullName: AeroDB.Pagination.IPagedList<T>.FirstItemOnPage
+  nameWithType.vb: IPagedList(Of T).FirstItemOnPage
+  fullName.vb: AeroDB.Pagination.IPagedList(Of T).FirstItemOnPage
+- uid: AeroDB.Pagination.PagedList`1.LastItemOnPage*
+  commentId: Overload:AeroDB.Pagination.PagedList`1.LastItemOnPage
+  isExternal: true
+  href: AeroDB.Pagination.PagedList-1.html#AeroDB_Pagination_PagedList_1_LastItemOnPage
+  name: LastItemOnPage
+  nameWithType: PagedList<T>.LastItemOnPage
+  fullName: AeroDB.Pagination.PagedList<T>.LastItemOnPage
+  nameWithType.vb: PagedList(Of T).LastItemOnPage
+  fullName.vb: AeroDB.Pagination.PagedList(Of T).LastItemOnPage
+- uid: AeroDB.Pagination.IPagedList{{T}}.LastItemOnPage
+  commentId: P:AeroDB.Pagination.IPagedList{`0}.LastItemOnPage
+  parent: AeroDB.Pagination.IPagedList{{T}}
+  definition: AeroDB.Pagination.IPagedList`1.LastItemOnPage
+  href: AeroDB.Pagination.IPagedList-1.html#AeroDB_Pagination_IPagedList_1_LastItemOnPage
+  name: LastItemOnPage
+  nameWithType: IPagedList<T>.LastItemOnPage
+  fullName: AeroDB.Pagination.IPagedList<T>.LastItemOnPage
+  nameWithType.vb: IPagedList(Of T).LastItemOnPage
+  fullName.vb: AeroDB.Pagination.IPagedList(Of T).LastItemOnPage
+- uid: AeroDB.Pagination.IPagedList`1.LastItemOnPage
+  commentId: P:AeroDB.Pagination.IPagedList`1.LastItemOnPage
+  isExternal: true
+  href: AeroDB.Pagination.IPagedList-1.html#AeroDB_Pagination_IPagedList_1_LastItemOnPage
+  name: LastItemOnPage
+  nameWithType: IPagedList<T>.LastItemOnPage
+  fullName: AeroDB.Pagination.IPagedList<T>.LastItemOnPage
+  nameWithType.vb: IPagedList(Of T).LastItemOnPage
+  fullName.vb: AeroDB.Pagination.IPagedList(Of T).LastItemOnPage

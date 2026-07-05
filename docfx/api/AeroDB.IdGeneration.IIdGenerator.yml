@@ -1,0 +1,108 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.IdGeneration.IIdGenerator
+  commentId: T:AeroDB.IdGeneration.IIdGenerator
+  id: IIdGenerator
+  parent: AeroDB.IdGeneration
+  children:
+  - AeroDB.IdGeneration.IIdGenerator.NewId
+  langs:
+  - csharp
+  - vb
+  name: IIdGenerator
+  nameWithType: IIdGenerator
+  fullName: AeroDB.IdGeneration.IIdGenerator
+  type: Interface
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.Snowflake/IIdGenerator.cs
+  assemblies:
+  - AeroDB.Snowflake
+  namespace: AeroDB.IdGeneration
+  summary: >-
+    Defines a contract for generating unique, time-sortable long identifiers
+
+    (e.g., Snowflake IDs).
+  example: []
+  syntax:
+    content: public interface IIdGenerator
+    content.vb: Public Interface IIdGenerator
+  derivedClasses:
+  - AeroDB.IdGeneration.SnowflakeIdGenerator
+- uid: AeroDB.IdGeneration.IIdGenerator.NewId
+  commentId: M:AeroDB.IdGeneration.IIdGenerator.NewId
+  id: NewId
+  parent: AeroDB.IdGeneration.IIdGenerator
+  langs:
+  - csharp
+  - vb
+  name: NewId()
+  nameWithType: IIdGenerator.NewId()
+  fullName: AeroDB.IdGeneration.IIdGenerator.NewId()
+  type: Method
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB.Snowflake/IIdGenerator.cs
+  assemblies:
+  - AeroDB.Snowflake
+  namespace: AeroDB.IdGeneration
+  summary: Generates a new unique identifier.
+  example: []
+  syntax:
+    content: long NewId()
+    return:
+      type: System.Int64
+      description: A unique long identifier.
+    content.vb: Function NewId() As Long
+  overload: AeroDB.IdGeneration.IIdGenerator.NewId*
+references:
+- uid: AeroDB.IdGeneration
+  commentId: N:AeroDB.IdGeneration
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB.IdGeneration
+  nameWithType: AeroDB.IdGeneration
+  fullName: AeroDB.IdGeneration
+  spec.csharp:
+  - uid: AeroDB
+    name: AeroDB
+    isExternal: true
+    href: AeroDB.html
+  - name: .
+  - uid: AeroDB.IdGeneration
+    name: IdGeneration
+    isExternal: true
+    href: AeroDB.IdGeneration.html
+  spec.vb:
+  - uid: AeroDB
+    name: AeroDB
+    isExternal: true
+    href: AeroDB.html
+  - name: .
+  - uid: AeroDB.IdGeneration
+    name: IdGeneration
+    isExternal: true
+    href: AeroDB.IdGeneration.html
+- uid: AeroDB.IdGeneration.IIdGenerator.NewId*
+  commentId: Overload:AeroDB.IdGeneration.IIdGenerator.NewId
+  isExternal: true
+  href: AeroDB.IdGeneration.IIdGenerator.html#AeroDB_IdGeneration_IIdGenerator_NewId
+  name: NewId
+  nameWithType: IIdGenerator.NewId
+  fullName: AeroDB.IdGeneration.IIdGenerator.NewId
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System

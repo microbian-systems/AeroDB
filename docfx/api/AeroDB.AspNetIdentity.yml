@@ -1,0 +1,156 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.AspNetIdentity
+  commentId: N:AeroDB.AspNetIdentity
+  id: AeroDB.AspNetIdentity
+  children:
+  - AeroDB.AspNetIdentity.AeroDBRoleStore`1
+  - AeroDB.AspNetIdentity.AeroDBRoleStore`2
+  - AeroDB.AspNetIdentity.AeroDBUserStore`2
+  - AeroDB.AspNetIdentity.AeroDBUserStore`3
+  langs:
+  - csharp
+  - vb
+  name: AeroDB.AspNetIdentity
+  nameWithType: AeroDB.AspNetIdentity
+  fullName: AeroDB.AspNetIdentity
+  type: Namespace
+  assemblies:
+  - AeroDB.AspNetIdentity
+references:
+- uid: AeroDB.AspNetIdentity.AeroDBRoleStore`2
+  commentId: T:AeroDB.AspNetIdentity.AeroDBRoleStore`2
+  isExternal: true
+  href: AeroDB.AspNetIdentity.AeroDBRoleStore-2.html
+  name: AeroDBRoleStore<TRole, TKey>
+  nameWithType: AeroDBRoleStore<TRole, TKey>
+  fullName: AeroDB.AspNetIdentity.AeroDBRoleStore<TRole, TKey>
+  nameWithType.vb: AeroDBRoleStore(Of TRole, TKey)
+  fullName.vb: AeroDB.AspNetIdentity.AeroDBRoleStore(Of TRole, TKey)
+  name.vb: AeroDBRoleStore(Of TRole, TKey)
+  spec.csharp:
+  - uid: AeroDB.AspNetIdentity.AeroDBRoleStore`2
+    name: AeroDBRoleStore
+    isExternal: true
+    href: AeroDB.AspNetIdentity.AeroDBRoleStore-2.html
+  - name: <
+  - name: TRole
+  - name: ','
+  - name: " "
+  - name: TKey
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.AspNetIdentity.AeroDBRoleStore`2
+    name: AeroDBRoleStore
+    isExternal: true
+    href: AeroDB.AspNetIdentity.AeroDBRoleStore-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TRole
+  - name: ','
+  - name: " "
+  - name: TKey
+  - name: )
+- uid: AeroDB.AspNetIdentity.AeroDBRoleStore`1
+  commentId: T:AeroDB.AspNetIdentity.AeroDBRoleStore`1
+  isExternal: true
+  href: AeroDB.AspNetIdentity.AeroDBRoleStore-1.html
+  name: AeroDBRoleStore<TRole>
+  nameWithType: AeroDBRoleStore<TRole>
+  fullName: AeroDB.AspNetIdentity.AeroDBRoleStore<TRole>
+  nameWithType.vb: AeroDBRoleStore(Of TRole)
+  fullName.vb: AeroDB.AspNetIdentity.AeroDBRoleStore(Of TRole)
+  name.vb: AeroDBRoleStore(Of TRole)
+  spec.csharp:
+  - uid: AeroDB.AspNetIdentity.AeroDBRoleStore`1
+    name: AeroDBRoleStore
+    isExternal: true
+    href: AeroDB.AspNetIdentity.AeroDBRoleStore-1.html
+  - name: <
+  - name: TRole
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.AspNetIdentity.AeroDBRoleStore`1
+    name: AeroDBRoleStore
+    isExternal: true
+    href: AeroDB.AspNetIdentity.AeroDBRoleStore-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TRole
+  - name: )
+- uid: AeroDB.AspNetIdentity.AeroDBUserStore`3
+  commentId: T:AeroDB.AspNetIdentity.AeroDBUserStore`3
+  isExternal: true
+  href: AeroDB.AspNetIdentity.AeroDBUserStore-3.html
+  name: AeroDBUserStore<TUser, TRole, TKey>
+  nameWithType: AeroDBUserStore<TUser, TRole, TKey>
+  fullName: AeroDB.AspNetIdentity.AeroDBUserStore<TUser, TRole, TKey>
+  nameWithType.vb: AeroDBUserStore(Of TUser, TRole, TKey)
+  fullName.vb: AeroDB.AspNetIdentity.AeroDBUserStore(Of TUser, TRole, TKey)
+  name.vb: AeroDBUserStore(Of TUser, TRole, TKey)
+  spec.csharp:
+  - uid: AeroDB.AspNetIdentity.AeroDBUserStore`3
+    name: AeroDBUserStore
+    isExternal: true
+    href: AeroDB.AspNetIdentity.AeroDBUserStore-3.html
+  - name: <
+  - name: TUser
+  - name: ','
+  - name: " "
+  - name: TRole
+  - name: ','
+  - name: " "
+  - name: TKey
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.AspNetIdentity.AeroDBUserStore`3
+    name: AeroDBUserStore
+    isExternal: true
+    href: AeroDB.AspNetIdentity.AeroDBUserStore-3.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TUser
+  - name: ','
+  - name: " "
+  - name: TRole
+  - name: ','
+  - name: " "
+  - name: TKey
+  - name: )
+- uid: AeroDB.AspNetIdentity.AeroDBUserStore`2
+  commentId: T:AeroDB.AspNetIdentity.AeroDBUserStore`2
+  isExternal: true
+  href: AeroDB.AspNetIdentity.AeroDBUserStore-2.html
+  name: AeroDBUserStore<TUser, TRole>
+  nameWithType: AeroDBUserStore<TUser, TRole>
+  fullName: AeroDB.AspNetIdentity.AeroDBUserStore<TUser, TRole>
+  nameWithType.vb: AeroDBUserStore(Of TUser, TRole)
+  fullName.vb: AeroDB.AspNetIdentity.AeroDBUserStore(Of TUser, TRole)
+  name.vb: AeroDBUserStore(Of TUser, TRole)
+  spec.csharp:
+  - uid: AeroDB.AspNetIdentity.AeroDBUserStore`2
+    name: AeroDBUserStore
+    isExternal: true
+    href: AeroDB.AspNetIdentity.AeroDBUserStore-2.html
+  - name: <
+  - name: TUser
+  - name: ','
+  - name: " "
+  - name: TRole
+  - name: '>'
+  spec.vb:
+  - uid: AeroDB.AspNetIdentity.AeroDBUserStore`2
+    name: AeroDBUserStore
+    isExternal: true
+    href: AeroDB.AspNetIdentity.AeroDBUserStore-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TUser
+  - name: ','
+  - name: " "
+  - name: TRole
+  - name: )

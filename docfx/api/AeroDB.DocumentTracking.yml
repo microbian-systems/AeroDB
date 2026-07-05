@@ -1,0 +1,109 @@
+### YamlMime:ManagedReference
+items:
+- uid: AeroDB.DocumentTracking
+  commentId: T:AeroDB.DocumentTracking
+  id: DocumentTracking
+  parent: AeroDB
+  children:
+  - AeroDB.DocumentTracking.DirtyTracking
+  - AeroDB.DocumentTracking.IdentityOnly
+  - AeroDB.DocumentTracking.None
+  langs:
+  - csharp
+  - vb
+  name: DocumentTracking
+  nameWithType: DocumentTracking
+  fullName: AeroDB.DocumentTracking
+  type: Enum
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/DocumentTracking.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Controls the document tracking behavior for a session.
+  example: []
+  syntax:
+    content: public enum DocumentTracking
+    content.vb: Public Enum DocumentTracking
+- uid: AeroDB.DocumentTracking.None
+  commentId: F:AeroDB.DocumentTracking.None
+  id: None
+  parent: AeroDB.DocumentTracking
+  langs:
+  - csharp
+  - vb
+  name: None
+  nameWithType: DocumentTracking.None
+  fullName: AeroDB.DocumentTracking.None
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/DocumentTracking.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: No identity map or change tracking. Each LoadAsync&lt;T&gt; hits the database. Lowest overhead.
+  example: []
+  syntax:
+    content: None = 0
+    return:
+      type: AeroDB.DocumentTracking
+- uid: AeroDB.DocumentTracking.IdentityOnly
+  commentId: F:AeroDB.DocumentTracking.IdentityOnly
+  id: IdentityOnly
+  parent: AeroDB.DocumentTracking
+  langs:
+  - csharp
+  - vb
+  name: IdentityOnly
+  nameWithType: DocumentTracking.IdentityOnly
+  fullName: AeroDB.DocumentTracking.IdentityOnly
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/DocumentTracking.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Maintains an identity map. LoadAsync&lt;T&gt; returns the same instance on repeated calls for the same ID. Foundation for DirtyTracking.
+  example: []
+  syntax:
+    content: IdentityOnly = 1
+    return:
+      type: AeroDB.DocumentTracking
+- uid: AeroDB.DocumentTracking.DirtyTracking
+  commentId: F:AeroDB.DocumentTracking.DirtyTracking
+  id: DirtyTracking
+  parent: AeroDB.DocumentTracking
+  langs:
+  - csharp
+  - vb
+  name: DirtyTracking
+  nameWithType: DocumentTracking.DirtyTracking
+  fullName: AeroDB.DocumentTracking.DirtyTracking
+  type: Field
+  source:
+    href: https://github.com/microbian-systems/AeroDB/blob/9cfbbf2dab7dff5f6032048bca90bb9c8b2c674a/src/AeroDB/DocumentTracking.cs
+  assemblies:
+  - AeroDB
+  namespace: AeroDB
+  summary: Identity map + auto-detect modifications on SaveChangesAsync. Not yet implemented.
+  example: []
+  syntax:
+    content: DirtyTracking = 2
+    return:
+      type: AeroDB.DocumentTracking
+references:
+- uid: AeroDB
+  commentId: N:AeroDB
+  isExternal: true
+  href: AeroDB.html
+  name: AeroDB
+  nameWithType: AeroDB
+  fullName: AeroDB
+- uid: AeroDB.DocumentTracking
+  commentId: T:AeroDB.DocumentTracking
+  parent: AeroDB
+  isExternal: true
+  href: AeroDB.DocumentTracking.html
+  name: DocumentTracking
+  nameWithType: DocumentTracking
+  fullName: AeroDB.DocumentTracking
