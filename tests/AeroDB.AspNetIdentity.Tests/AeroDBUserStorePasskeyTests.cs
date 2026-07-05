@@ -147,12 +147,8 @@ public class AeroDBUserStorePasskeyTests
         var user = new IdentityUser("testuser") { Id = "user-1" };
         var passkey = CreatePasskey();
 
-        // FindPasskeyRecordAsync uses RawQueryAsync<AeroDBUserPasskey> — returns empty
-        session.RawQueryAsync<AeroDBUserPasskey>(
-                Arg.Any<string>(),
-                Arg.Any<IReadOnlyDictionary<string, object?>>(),
-                Arg.Any<CancellationToken>())
-            .Returns(new List<AeroDBUserPasskey>());
+        var passkeyQueryable = CreateMockQueryable(new List<AeroDBUserPasskey>());
+        session.Query<AeroDBUserPasskey>().Returns(passkeyQueryable);
 
         var userStore = new AeroDBUserStore<IdentityUser, IdentityRole>(store, logger);
 
@@ -174,11 +170,8 @@ public class AeroDBUserStorePasskeyTests
 
         var existingRecord = CreatePasskeyRecord("user-1", [1, 2, 3]);
 
-        session.RawQueryAsync<AeroDBUserPasskey>(
-                Arg.Any<string>(),
-                Arg.Any<IReadOnlyDictionary<string, object?>>(),
-                Arg.Any<CancellationToken>())
-            .Returns(new List<AeroDBUserPasskey> { existingRecord });
+        var passkeyQueryable = CreateMockQueryable(new List<AeroDBUserPasskey> { existingRecord });
+        session.Query<AeroDBUserPasskey>().Returns(passkeyQueryable);
 
         var userStore = new AeroDBUserStore<IdentityUser, IdentityRole>(store, logger);
 
@@ -200,11 +193,8 @@ public class AeroDBUserStorePasskeyTests
 
         var passkeyRecord = CreatePasskeyRecord("user-1", credentialId);
 
-        querySession.RawQueryAsync<AeroDBUserPasskey>(
-                Arg.Any<string>(),
-                Arg.Any<IReadOnlyDictionary<string, object?>>(),
-                Arg.Any<CancellationToken>())
-            .Returns(new List<AeroDBUserPasskey> { passkeyRecord });
+        var passkeyQueryable = CreateMockQueryable(new List<AeroDBUserPasskey> { passkeyRecord });
+        querySession.Query<AeroDBUserPasskey>().Returns(passkeyQueryable);
 
         var userStore = new AeroDBUserStore<IdentityUser, IdentityRole>(store, logger);
 
@@ -222,11 +212,8 @@ public class AeroDBUserStorePasskeyTests
         var user = new IdentityUser("testuser") { Id = "user-1" };
         var credentialId = new byte[] { 99, 99, 99 };
 
-        querySession.RawQueryAsync<AeroDBUserPasskey>(
-                Arg.Any<string>(),
-                Arg.Any<IReadOnlyDictionary<string, object?>>(),
-                Arg.Any<CancellationToken>())
-            .Returns(new List<AeroDBUserPasskey>());
+        var passkeyQueryable = CreateMockQueryable(new List<AeroDBUserPasskey>());
+        querySession.Query<AeroDBUserPasskey>().Returns(passkeyQueryable);
 
         var userStore = new AeroDBUserStore<IdentityUser, IdentityRole>(store, logger);
 
@@ -250,11 +237,8 @@ public class AeroDBUserStorePasskeyTests
             CredentialId = credentialId
         };
 
-        querySession.RawQueryAsync<AeroDBUserPasskey>(
-                Arg.Any<string>(),
-                Arg.Any<IReadOnlyDictionary<string, object?>>(),
-                Arg.Any<CancellationToken>())
-            .Returns(new List<AeroDBUserPasskey> { passkeyRecord });
+        var passkeyQueryable = CreateMockQueryable(new List<AeroDBUserPasskey> { passkeyRecord });
+        querySession.Query<AeroDBUserPasskey>().Returns(passkeyQueryable);
 
         var user = new IdentityUser("testuser") { Id = "user-1" };
         querySession.LoadAsync<IdentityUser>("user-1", Arg.Any<CancellationToken>()).Returns(user);
@@ -273,11 +257,8 @@ public class AeroDBUserStorePasskeyTests
         var store = CreateStore(out var querySession, out _, out var logger);
         var credentialId = new byte[] { 99, 99, 99 };
 
-        querySession.RawQueryAsync<AeroDBUserPasskey>(
-                Arg.Any<string>(),
-                Arg.Any<IReadOnlyDictionary<string, object?>>(),
-                Arg.Any<CancellationToken>())
-            .Returns(new List<AeroDBUserPasskey>());
+        var passkeyQueryable = CreateMockQueryable(new List<AeroDBUserPasskey>());
+        querySession.Query<AeroDBUserPasskey>().Returns(passkeyQueryable);
 
         var userStore = new AeroDBUserStore<IdentityUser, IdentityRole>(store, logger);
 
@@ -297,11 +278,8 @@ public class AeroDBUserStorePasskeyTests
 
         var passkeyRecord = CreatePasskeyRecord("user-1", credentialId);
 
-        session.RawQueryAsync<AeroDBUserPasskey>(
-                Arg.Any<string>(),
-                Arg.Any<IReadOnlyDictionary<string, object?>>(),
-                Arg.Any<CancellationToken>())
-            .Returns(new List<AeroDBUserPasskey> { passkeyRecord });
+        var passkeyQueryable = CreateMockQueryable(new List<AeroDBUserPasskey> { passkeyRecord });
+        session.Query<AeroDBUserPasskey>().Returns(passkeyQueryable);
 
         var userStore = new AeroDBUserStore<IdentityUser, IdentityRole>(store, logger);
 
@@ -318,11 +296,8 @@ public class AeroDBUserStorePasskeyTests
         var user = new IdentityUser("testuser") { Id = "user-1" };
         var credentialId = new byte[] { 99, 99, 99 };
 
-        session.RawQueryAsync<AeroDBUserPasskey>(
-                Arg.Any<string>(),
-                Arg.Any<IReadOnlyDictionary<string, object?>>(),
-                Arg.Any<CancellationToken>())
-            .Returns(new List<AeroDBUserPasskey>());
+        var passkeyQueryable = CreateMockQueryable(new List<AeroDBUserPasskey>());
+        session.Query<AeroDBUserPasskey>().Returns(passkeyQueryable);
 
         var userStore = new AeroDBUserStore<IdentityUser, IdentityRole>(store, logger);
 
