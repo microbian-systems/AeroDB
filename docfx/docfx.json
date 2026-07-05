@@ -79,7 +79,7 @@
     ],
     "dest": "../docs/src/content/api",
     "globalMetadata": {
-      "_appTitle": "AeroDB v0.0.5-alpha — API Reference",
+      "_appTitle": "AeroDB v0.0.8-alpha — API Reference",
       "_appFooter": "Made with 💜 by Microbians — Copyright © 2026 — https://microbians.io/",
       "_appName": "AeroDB"
     }

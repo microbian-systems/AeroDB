@@ -322,7 +322,7 @@ if (doSplit)
 var indexJson = $$"""
 {
   "library": "AeroDB",
-  "version": "0.1.0",
+  "version": "0.0.8-alpha",
   "generatedAt": "{{DateTimeOffset.UtcNow:O}}",
   "documentation": [
     { "file": "aerodb-llms-getting-started.txt", "topics": ["install", "configuration", "quickstart"] },

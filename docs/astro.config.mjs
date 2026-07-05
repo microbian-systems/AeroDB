@@ -6,7 +6,7 @@ export default defineConfig({
   base: '/',
   integrations: [
     starlight({
-      title: 'AeroDB v0.0.5-alpha',
+      title: 'AeroDB v0.0.8-alpha',
       description: 'Fast, multi-model document database for .NET — built on SurrealDB',
       social: [
         { icon: 'github', label: 'GitHub', href: 'https://github.com/microbians/AeroDB' },
