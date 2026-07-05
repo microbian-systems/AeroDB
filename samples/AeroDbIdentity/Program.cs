@@ -1,21 +1,17 @@
 using AeroDB;
 using Microsoft.AspNetCore.Identity;
-using SurrealDb.Embedded.InMemory;
 using SurrealDb.Net;
-using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // ── AeroDB Document Store ────────────────────────────────────────
-var store = Documents.For(o =>
+builder.Services.AddAeroDB(o =>
 {
     //o.ClientFactory = () => new SurrealDbMemoryClient();
     o.ClientFactory = () => new SurrealDbClient("ws://localhost:8000/rpc");
     o.Namespace = "identity";
     o.Database = "identity";
 });
-await store.InitializeAsync();
-builder.Services.AddSingleton<IDocumentStore>(store);
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddRoles<IdentityRole>()

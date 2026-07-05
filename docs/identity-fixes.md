@@ -38,12 +38,6 @@ Fixes **all** store methods that capture parameters in LINQ predicates:
 - `GetUsersInRoleAsync`
 - Any user code using `session.Query<T>().Where(x => x.Field == localVar)`
 
-### Files Changed
-
-| File | Change |
-|------|--------|
-| `src/AeroDB/Linq/ExpressionVisitor.cs` | Add `TryExtractCapturedValue()` helper; guard both `Operand` overloads |
-
 ---
 
 ## Issue 2: Duplicate Email / Username Registrations
@@ -51,81 +45,93 @@ Fixes **all** store methods that capture parameters in LINQ predicates:
 ### Root Cause
 
 Identity types (`TUser`, `TRole`) are never registered in `StoreOptions.Schema.For<T>()`,
-so no `DEFINE INDEX` statements are issued. Additionally, `CreateAsync` does not check
-for existing users before persisting.
+so no `DEFINE INDEX` or `DEFINE TABLE` statements are issued. All identity tables are
+schemaless with no unique constraints.
 
-### Fix — Three Layers
+### Fix — Two Parts
 
-#### Layer 1: `StoreOptions.AddAeroIdentity<TUser, TRole>()` extension
+#### Part A: `IConfigureAeroDB` via DI Discovery (Schema at Startup)
 
-New extension method on `StoreOptions` that registers default unique indexes. Called
-**inside** `AddAeroDB`'s configure delegate, so indexes are created during
-`DocumentStore.InitializeAsync()` — before any runtime queries.
+A new `AeroDBIdentityConfigurator<TUser, TRole> : IConfigureAeroDB` registers identity
+schema configuration. It is registered from `AddAeroDBStores<TUser, TRole>()` as a
+singleton in DI. During `DocumentStore.InitializeAsync()`, the existing
+`ApplyDiscoveredConfigurators()` resolves it from DI and applies the schema —
+**before** `DEFINE TABLE` and `DEFINE INDEX` are processed.
+
+This uses the same infrastructure as `WolverineEnvelopeSchemas : IConfigureAeroDB`.
 
 ```csharp
-// src/AeroDB.AspNetIdentity/Extensions.cs
-public static StoreOptions AddAeroIdentity<TUser, TRole>(this StoreOptions options)
+internal sealed class AeroDBIdentityConfigurator<TUser, TRole> : IConfigureAeroDB
     where TUser : IdentityUser
     where TRole : IdentityRole
 {
-    options.Schema.For<TUser>()
-        .SetSchemaMode(SchemaMode.Flexible)
-        .UniqueIndex(x => x.NormalizedUserName)
-        .UniqueIndex(x => x.NormalizedEmail);
-    options.Schema.For<TRole>()
-        .SetSchemaMode(SchemaMode.Flexible)
-        .UniqueIndex(x => x.NormalizedName);
-    return options;
+    public void Configure(IServiceProvider? services, StoreOptions options)
+    {
+        var identityOptions = services?.GetService<IOptions<IdentityOptions>>();
+        var requireUniqueEmail = identityOptions?.Value?.User?.RequireUniqueEmail ?? true;
+
+        options.Schema.For<TUser>()
+            .UniqueIndex(x => x.NormalizedUserName);
+
+        if (requireUniqueEmail)
+            options.Schema.For<TUser>()
+                .UniqueIndex(x => x.NormalizedEmail);
+
+        options.Schema.For<TRole>()
+            .UniqueIndex(x => x.NormalizedName);
+    }
 }
 ```
 
-Usage:
+| Index | Always? | Why |
+|-------|---------|-----|
+| `NormalizedUserName` | ✅ Always | ASP.NET Core Identity always enforces this |
+| `NormalizedEmail` | ✅ Only when `RequireUniqueEmail` | Respects the user's `IdentityOptions` setting |
+| `NormalizedName` (role) | ✅ Always | Role names are always unique |
+
+Schema mode defaults to `Strict` — `DocumentMapping<T>`'s default. `GetFieldSchemas(typeof(T))`
+iterates all public readable/writable properties (inherited and custom), so subclass properties
+like `AvatarUrl` get `DEFINE FIELD` automatically.
+
+#### Part B: Inline Duplicate Guard in `CreateAsync`
+
+Before persisting, check for existing users with the same `NormalizedEmail` or
+`NormalizedUserName`. Wrap `SaveChangesAsync` in a try-catch for the unique constraint
+error to handle the race window between check and save.
+
+#### Usage
+
+Types are specified **only once** (in `AddAeroDBStores`):
 
 ```csharp
 services.AddAeroDB(opts => {
     opts.Connection("ws://localhost:8000");
-    opts.AddAeroIdentity<AppUser, IdentityRole>();
-
-    // Optional: additional indexes on custom properties
-    opts.Schema.For<AppUser>().UniqueIndex(x => x.SomeCustomField);
+    opts.Schema.For<AppUser>().UniqueIndex(x => x.SomeCustomField); // extras
 })
-.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireConfirmedAccount = true)
+.AddDefaultIdentity<AppUser>(options => {
+    options.SignIn.RequireConfirmedAccount = true;
+    options.User.RequireUniqueEmail = true; // controls whether unique email index is created
+})
 .AddRoles<IdentityRole>()
 .AddAeroDBStores<AppUser, IdentityRole>();
 ```
 
-The `where TUser : IdentityUser` constraint is enforced at compile time —
-passing a type without `NormalizedEmail`/`NormalizedUserName` produces a CS0311 error.
+#### What was NOT needed
 
-#### Layer 2: Lazy `DEFINE INDEX` from the store (safety net)
-
-Both `AeroDBUserStore` and `AeroDBRoleStore` lazily issue `DEFINE INDEX IF NOT EXISTS`
-on first mutation call. This catches cases where the user forgets `AddAeroIdentity`.
-
-| Store | Indexes Defined |
-|-------|----------------|
-| `AeroDBUserStore` | `NormalizedUserName UNIQUE`, `NormalizedEmail UNIQUE` |
-| `AeroDBRoleStore` | `NormalizedName UNIQUE` |
-
-#### Layer 3: Pre-create guard in `CreateAsync`
-
-Before persisting a new user, check `FindByNameAsync` and `FindByEmailAsync`.
-Wrap `SaveChangesAsync` in a try-catch for the SurrealDB unique constraint exception
-to handle the race window between check and save.
-
-### Files Changed
-
-| File | Change |
-|------|--------|
-| `src/AeroDB.AspNetIdentity/Extensions.cs` | Add `AddAeroIdentity<TUser, TRole>()` on `StoreOptions` |
-| `src/AeroDB.AspNetIdentity/AeroDBUserStore.cs` | Add `EnsureIdentitySchemaAsync()`; guard `CreateAsync` |
-| `src/AeroDB.AspNetIdentity/AeroDBRoleStore.cs` | Add `EnsureRoleSchemaAsync()` |
+| Approach | Verdict | Reason |
+|----------|---------|--------|
+| `PostConfigure<StoreOptions>` | ❌ Broken | `StoreOptions` isn't `IOptions`-backed; `PostConfigure` never fires |
+| `IAeroDBSchemaInitializer` | ❌ Overengineered | Schema runs at startup via `IConfigureAeroDB`; duplicate check is a 15-line inline guard |
+| `Lazy<Task>` / `SemaphoreSlim` | ❌ Not needed | `InitializeAsync()` already has its own single-flight state machine |
+| `TKey` generic parameter | ❌ Deferred | Adds risk/scope to a critical fix; do as a separate feature later |
 
 ---
 
-## Implementation Order
+## Files Changed
 
-1. **ExpressionVisitor.cs** — Fix captured-variable handling (unblocks `FindByEmailAsync`/`FindByNameAsync` used by the `CreateAsync` guard)
-2. **Extensions.cs** — Add `AddAeroIdentity<TUser, TRole>()`
-3. **AeroDBUserStore.cs** — Add lazy DDL + `CreateAsync` guard
-4. **AeroDBRoleStore.cs** — Add lazy DDL for role table index
+| File | Change |
+|------|--------|
+| `src/AeroDB/Linq/ExpressionVisitor.cs` | Add `TryExtractCapturedValue()` helper; guard both `Operand` overloads |
+| `src/AeroDB.AspNetIdentity/Extensions.cs` | Add `AeroDBIdentityConfigurator<TUser, TRole>`; register in `AddAeroDBStores` |
+| `src/AeroDB.AspNetIdentity/AeroDBUserStore.cs` | Add inline duplicate check + try-catch in `CreateAsync` |
+| `src/AeroDB.AspNetIdentity/AeroDBRoleStore.cs` | Add inline duplicate check + try-catch in `CreateAsync` |

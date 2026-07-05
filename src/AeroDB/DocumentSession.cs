@@ -734,7 +734,8 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                                         // Non-IRecord (Entity<TId>) types with explicit IDs — use SurrealQL to avoid CBOR serialization issues
                                         if (TryBuildSurrealQlObjectLiteral(op.Entity, out var literal))
                                         {
-                                            var response = await targetSession.RawQuery(
+                                            var response = await ExecuteRawWriteAsync(
+                                                targetSession,
                                                 $"UPSERT {table}:`{entityId}` CONTENT {literal}",
                                                 null,
                                                 ct).ConfigureAwait(false);
@@ -742,10 +743,12 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                                         }
                                         else
                                         {
-                                            await targetSession.RawQuery(
+                                            var response = await ExecuteRawWriteAsync(
+                                                targetSession,
                                                 $"UPSERT {table}:`{entityId}` MERGE $data",
                                                 new Dictionary<string, object?> { ["data"] = op.Entity },
                                                 ct).ConfigureAwait(false);
+                                            ThrowIfRawQueryFailed(response);
                                         }
                                     }
                                 }
@@ -807,7 +810,8 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
 
                                             if (TryBuildSurrealQlObjectLiteral(op.Entity, out var literal))
                                             {
-                                                var response = await targetSession.RawQuery(
+                                                var response = await ExecuteRawWriteAsync(
+                                                    targetSession,
                                                     $"UPSERT {table}:`{modEntityId}` MERGE {literal}",
                                                     null,
                                                     ct).ConfigureAwait(false);
@@ -815,10 +819,12 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                                             }
                                             else
                                             {
-                                                await targetSession.RawQuery(
+                                                var response = await ExecuteRawWriteAsync(
+                                                    targetSession,
                                                     $"UPSERT {table}:`{modEntityId}` MERGE $data",
                                                     new Dictionary<string, object?> { ["data"] = op.Entity },
                                                     ct).ConfigureAwait(false);
+                                                ThrowIfRawQueryFailed(response);
                                             }
                                         }
                                     }
@@ -845,7 +851,8 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                                     // Use CREATE (insert-only, fails if record already exists)
                                     if (TryBuildSurrealQlObjectLiteral(op.Entity, out var literal))
                                     {
-                                        var response = await targetSession.RawQuery(
+                                        var response = await ExecuteRawWriteAsync(
+                                            targetSession,
                                             $"CREATE {table}:`{insertId}` CONTENT {literal}",
                                             null,
                                             ct).ConfigureAwait(false);
@@ -853,10 +860,12 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                                     }
                                     else
                                     {
-                                        await targetSession.RawQuery(
+                                        var response = await ExecuteRawWriteAsync(
+                                            targetSession,
                                             $"CREATE {table}:`{insertId}` CONTENT $data",
                                             new Dictionary<string, object?> { ["data"] = op.Entity },
                                             ct).ConfigureAwait(false);
+                                        ThrowIfRawQueryFailed(response);
                                     }
                                 }
                                 else
@@ -893,7 +902,8 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                                     // Use UPDATE (update-only, fails if record doesn't exist)
                                     if (TryBuildSurrealQlObjectLiteral(op.Entity, out var literal))
                                     {
-                                        var response = await targetSession.RawQuery(
+                                        var response = await ExecuteRawWriteAsync(
+                                            targetSession,
                                             $"UPDATE {table}:`{updateId}` MERGE {literal}",
                                             null,
                                             ct).ConfigureAwait(false);
@@ -901,10 +911,12 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                                     }
                                     else
                                     {
-                                        await targetSession.RawQuery(
+                                        var response = await ExecuteRawWriteAsync(
+                                            targetSession,
                                             $"UPDATE {table}:`{updateId}` MERGE $data",
                                             new Dictionary<string, object?> { ["data"] = op.Entity },
                                             ct).ConfigureAwait(false);
+                                        ThrowIfRawQueryFailed(response);
                                     }
                                 }
                                 break;
@@ -947,10 +959,12 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                                         var softDelEntityId = GetEntityId(op.Entity);
                                         if (softDelEntityId is not null)
                                         {
-                                            await targetSession.RawQuery(
+                                            var response = await ExecuteRawWriteAsync(
+                                                targetSession,
                                                 $"UPSERT {table}:`{softDelEntityId}` MERGE $data",
                                                 new Dictionary<string, object?> { ["data"] = op.Entity },
                                                 ct).ConfigureAwait(false);
+                                            ThrowIfRawQueryFailed(response);
                                         }
                                     }
                                 }
@@ -1087,7 +1101,8 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                                         else if (!string.IsNullOrEmpty(entityId))
                                         {
                                             // POCO projection with explicit identity — use MERGE to upsert
-                                            var response = await targetSession.RawQuery(
+                                            var response = await ExecuteRawWriteAsync(
+                                                targetSession,
                                                 $"UPSERT {table}:`{entityId}` MERGE $data",
                                                 new Dictionary<string, object?> { ["data"] = op.Entity },
                                                 ct).ConfigureAwait(false);
@@ -1490,7 +1505,8 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
 
         if (!properties.Any(p =>
             p.PropertyType == typeof(GeometryPoint)
-            || p.PropertyType == typeof(GeometryPolygon)))
+            || p.PropertyType == typeof(GeometryPolygon)
+            || p.GetValue(entity) is null))
         {
             return false;
         }
@@ -1504,11 +1520,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
             if (string.Equals(property.Name, identityProperty, StringComparison.OrdinalIgnoreCase))
                 continue;
 
-            var value = property.GetValue(entity);
-            if (value is null)
-                continue;
-
-            fields.Add($"{property.Name}: {ToSurrealQlLiteral(value)}");
+            fields.Add($"{property.Name}: {ToSurrealQlLiteral(property.GetValue(entity))}");
         }
 
         literal = "{ " + string.Join(", ", fields) + " }";
@@ -1519,7 +1531,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
     {
         return value switch
         {
-            null => "null",
+            null => "NONE",
             string s => $"'{EscapeSurrealQlString(s)}'",
             char c => $"'{EscapeSurrealQlString(c.ToString())}'",
             bool b => b ? "true" : "false",
@@ -1529,22 +1541,93 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
             DateTimeOffset dto => $"d'{dto.UtcDateTime:O}'",
             Guid guid => $"'{guid}'",
             Enum e => Convert.ToInt64(e, CultureInfo.InvariantCulture).ToString(CultureInfo.InvariantCulture),
+            System.Collections.IDictionary dictionary => ToSurrealQlDictionaryLiteral(dictionary),
+            System.Collections.IEnumerable enumerable when value is not string => ToSurrealQlArrayLiteral(enumerable),
             byte or sbyte or short or ushort or int or uint or long or ulong or float or double or decimal
                 => ((IFormattable)value).ToString(null, CultureInfo.InvariantCulture),
             _ => $"'{EscapeSurrealQlString(value.ToString() ?? string.Empty)}'"
         };
     }
 
+    private static string ToSurrealQlArrayLiteral(System.Collections.IEnumerable values)
+    {
+        var items = values.Cast<object?>().Select(ToSurrealQlLiteral);
+        return "[" + string.Join(", ", items) + "]";
+    }
+
+    private static string ToSurrealQlDictionaryLiteral(System.Collections.IDictionary dictionary)
+    {
+        var fields = dictionary.Keys
+            .Cast<object?>()
+            .Where(key => key is not null)
+            .Select(key => $"{key}: {ToSurrealQlLiteral(dictionary[key!])}");
+
+        return "{ " + string.Join(", ", fields) + " }";
+    }
+
     private static string EscapeSurrealQlString(string value)
         => value.Replace("\\", "\\\\").Replace("'", "\\'");
+
+    private async Task<SurrealDbResponse> ExecuteRawWriteAsync(
+        ISurrealDbSession session,
+        string surql,
+        IReadOnlyDictionary<string, object?>? parameters,
+        CancellationToken ct)
+    {
+        if (ResolvedLogger.IsEnabled(LogLevel.Debug))
+        {
+            ResolvedLogger.LogDebug(
+                "SaveChangesAsync write SurrealQL: {SurrealQL}{Parameters}",
+                surql,
+                FormatWriteParameters(parameters));
+        }
+
+        var response = await session.RawQuery(surql, parameters, ct).ConfigureAwait(false);
+
+        if (ResolvedLogger.IsEnabled(LogLevel.Debug))
+        {
+            ResolvedLogger.LogDebug(
+                "SaveChangesAsync write response: HasErrors={HasErrors}; Count={Count}; FirstOk={FirstOk}; Errors={Errors}",
+                response.HasErrors,
+                response.Count,
+                response.FirstOk is not null,
+                FormatRawQueryErrors(response));
+        }
+
+        return response;
+    }
+
+    private static string FormatWriteParameters(IReadOnlyDictionary<string, object?>? parameters)
+    {
+        if (parameters is null || parameters.Count == 0)
+            return string.Empty;
+
+        var entries = parameters.Select(parameter =>
+        {
+            var value = parameter.Value;
+            return value is null
+                ? $"{parameter.Key}=null"
+                : $"{parameter.Key}=<{value.GetType().Name}>";
+        });
+
+        return "; Parameters: [" + string.Join(", ", entries) + "]";
+    }
+
+    private static string FormatRawQueryErrors(SurrealDbResponse response)
+    {
+        if (!response.HasErrors)
+            return "";
+
+        return string.Join("; ", response.Errors.Select(error =>
+            error is SurrealDbErrorResult err ? err.Details : error.ToString()));
+    }
 
     private static void ThrowIfRawQueryFailed(SurrealDbResponse response)
     {
         if (!response.HasErrors)
             return;
 
-        var details = string.Join("; ", response.Errors.Select(error =>
-            error is SurrealDbErrorResult err ? err.Details : error.ToString()));
+        var details = FormatRawQueryErrors(response);
         throw new InvalidOperationException(details);
     }
 

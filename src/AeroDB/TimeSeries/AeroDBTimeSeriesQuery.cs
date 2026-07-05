@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using AeroDB.Metadata;
@@ -19,8 +20,7 @@ public sealed class AeroDBTimeSeriesQuery<T> : ITimeSeriesQuery<T> where T : cla
     private Action<AggregateQueryBuilder<T>>? _selectConfig;
 
     // Filter / pagination
-    private Expression<Func<T, bool>>? _wherePredicate;
-    private string? _whereClause;
+    private readonly List<string> _whereClauses = new();
     private int _limit = 1000;
     private int _skip;
 
@@ -69,19 +69,18 @@ public sealed class AeroDBTimeSeriesQuery<T> : ITimeSeriesQuery<T> where T : cla
 
     public ITimeSeriesQuery<T> Where(Expression<Func<T, bool>> predicate)
     {
-        _wherePredicate = predicate;
-        _whereClause = SurrealExpressionVisitor.TranslateCondition(predicate.Body, _paramBuilder);
+        _whereClauses.Add(SurrealExpressionVisitor.TranslateCondition(predicate.Body, _paramBuilder));
 
         // Try to extract time range for downsampling
-        if (_downsampleFrom is null && predicate.Body is BinaryExpression bin)
+        if (predicate.Body is BinaryExpression bin)
         {
             if (bin.Left is MemberExpression mem && bin.Right is ConstantExpression val)
             {
                 if (val.Value is DateTime dt)
                 {
-                    if (bin.NodeType == ExpressionType.GreaterThanOrEqual)
+                    if (bin.NodeType == ExpressionType.GreaterThanOrEqual && _downsampleFrom is null)
                         _downsampleFrom = dt;
-                    else if (bin.NodeType == ExpressionType.LessThanOrEqual)
+                    else if (bin.NodeType == ExpressionType.LessThanOrEqual && _downsampleTo is null)
                         _downsampleTo = dt;
                 }
             }
@@ -169,12 +168,8 @@ public sealed class AeroDBTimeSeriesQuery<T> : ITimeSeriesQuery<T> where T : cla
         sb.Append($" FROM `{_table}`");
 
         // WHERE clause
-        var whereParts = new List<string>();
-        if (_whereClause is not null)
-            whereParts.Add($"({_whereClause})");
-
-        if (whereParts.Count > 0)
-            sb.Append(" WHERE ").Append(string.Join(" AND ", whereParts));
+        if (_whereClauses.Count > 0)
+            sb.Append(" WHERE ").Append(string.Join(" AND ", _whereClauses.Select(c => $"({c})")));
 
         // GROUP BY
         if (_bucketExpr is not null)

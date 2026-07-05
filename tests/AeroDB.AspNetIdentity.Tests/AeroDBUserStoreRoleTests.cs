@@ -74,7 +74,7 @@ public class AeroDBUserStoreRoleTests
 
         // Should have set role_ids via ExecuteSqlAsync
         await session.Received(1).ExecuteSqlAsync(
-            Arg.Is<string>(s => s.Contains("SET role_ids")),
+            Arg.Is<string>(s => s.Contains("UPDATE identity_user:`user-1` SET role_ids", StringComparison.Ordinal)),
             Arg.Any<IReadOnlyDictionary<string, object?>>(),
             Arg.Any<CancellationToken>());
 
@@ -164,7 +164,7 @@ public class AeroDBUserStoreRoleTests
 
         // Should update role_ids via ExecuteSqlAsync
         await session.Received(1).ExecuteSqlAsync(
-            Arg.Is<string>(s => s.Contains("SET role_ids") || s.Contains("SET role_ids = NONE")),
+            Arg.Is<string>(s => s.Contains("UPDATE identity_user:`user-1` SET role_ids", StringComparison.Ordinal)),
             Arg.Any<IReadOnlyDictionary<string, object?>>(),
             Arg.Any<CancellationToken>());
     }
@@ -272,6 +272,29 @@ public class AeroDBUserStoreRoleTests
         var result = await userStore.GetRolesAsync(user, CancellationToken.None);
 
         result.ShouldBeEmpty();
+    }
+
+    [Test]
+    public async Task GetRolesAsync_ShouldQuoteGuidUserIdInRawRoleIdQuery()
+    {
+        var store = CreateStore(out var querySession, out _, out var logger);
+        var user = new IdentityUser("testuser") { Id = "5d2df65b-e540-42f4-89d2-918929dcc9be" };
+
+        querySession.RawQueryAsync<RoleIdsResult>(
+                Arg.Any<string>(),
+                Arg.Any<IReadOnlyDictionary<string, object?>>(),
+                Arg.Any<CancellationToken>())
+            .Returns(new List<RoleIdsResult> { new() { RoleIds = [] } });
+
+        var userStore = new AeroDBUserStore<IdentityUser, IdentityRole>(store, logger);
+
+        var result = await userStore.GetRolesAsync(user, CancellationToken.None);
+
+        result.ShouldBeEmpty();
+        await querySession.Received(1).RawQueryAsync<RoleIdsResult>(
+            Arg.Is<string>(s => s == "SELECT role_ids FROM identity_user:`5d2df65b-e540-42f4-89d2-918929dcc9be`"),
+            Arg.Any<IReadOnlyDictionary<string, object?>?>(),
+            Arg.Any<CancellationToken>());
     }
 
     // ── IsInRoleAsync ─────────────────────────────────────────────────

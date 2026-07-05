@@ -8,11 +8,14 @@ namespace AeroDB.AspNetIdentity;
 /// implementing <see cref="IRoleStore{TRole}"/> and <see cref="IQueryableRoleStore{TRole}"/>.
 /// </summary>
 /// <typeparam name="TRole">The role type, must inherit from <see cref="IdentityRole"/>.</typeparam>
-public class AeroDBRoleStore<TRole> : IRoleStore<TRole>, IQueryableRoleStore<TRole>
-    where TRole : IdentityRole
+/// <typeparam name="TKey">The identity key type.</typeparam>
+public class AeroDBRoleStore<TRole, TKey> : IRoleStore<TRole>, IQueryableRoleStore<TRole>
+    where TRole : IdentityRole<TKey>
+    where TKey : IEquatable<TKey>
 {
     private readonly IDocumentStore _store;
-    private readonly ILogger<AeroDBRoleStore<TRole>> _logger;
+    private readonly ILogger _logger;
+    private readonly IdentityErrorDescriber _describer;
     private bool _disposed;
 
     /// <summary>
@@ -20,10 +23,23 @@ public class AeroDBRoleStore<TRole> : IRoleStore<TRole>, IQueryableRoleStore<TRo
     /// </summary>
     /// <param name="store">The AeroDB document store.</param>
     /// <param name="logger">Logger instance.</param>
-    public AeroDBRoleStore(IDocumentStore store, ILogger<AeroDBRoleStore<TRole>> logger)
+    /// <param name="describer">Identity error describer.</param>
+    public AeroDBRoleStore(
+        IDocumentStore store,
+        ILogger<AeroDBRoleStore<TRole, TKey>> logger,
+        IdentityErrorDescriber? describer = null)
+        : this(store, (ILogger)logger, describer)
+    {
+    }
+
+    protected AeroDBRoleStore(
+        IDocumentStore store,
+        ILogger logger,
+        IdentityErrorDescriber? describer = null)
     {
         _store = store ?? throw new ArgumentNullException(nameof(store));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        _describer = describer ?? new IdentityErrorDescriber();
     }
 
     // ── IQueryableRoleStore ──────────────────────────────────────────
@@ -53,6 +69,15 @@ public class AeroDBRoleStore<TRole> : IRoleStore<TRole>, IQueryableRoleStore<TRo
         try
         {
             await using var session = await _store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }, cancellationToken);
+
+            if (!string.IsNullOrWhiteSpace(role.NormalizedName))
+            {
+                var duplicate = await session.Query<TRole>()
+                    .FirstOrDefaultAsync(r => r.NormalizedName == role.NormalizedName, cancellationToken);
+                if (duplicate is not null)
+                    return IdentityResult.Failed(_describer.DuplicateRoleName(role.Name ?? role.NormalizedName));
+            }
+
             session.Store(role);
             await session.SaveChangesAsync(cancellationToken);
             _logger.LogDebug("Created role {RoleName} ({RoleId})", role.Name, role.Id);
@@ -64,6 +89,9 @@ public class AeroDBRoleStore<TRole> : IRoleStore<TRole>, IQueryableRoleStore<TRo
         }
         catch (Exception ex)
         {
+            if (IsUniqueConstraintViolation(ex))
+                return IdentityResult.Failed(_describer.DuplicateRoleName(role.Name ?? role.NormalizedName ?? string.Empty));
+
             _logger.LogError(ex, "Failed to create the role {RoleName}.", role.Name);
             return IdentityResult.Failed(new IdentityError
             {
@@ -149,7 +177,7 @@ public class AeroDBRoleStore<TRole> : IRoleStore<TRole>, IQueryableRoleStore<TRo
     public Task<string> GetRoleIdAsync(TRole role, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
-        return Task.FromResult(role.Id);
+        return Task.FromResult(IdToString(role.Id));
     }
 
     /// <inheritdoc />
@@ -191,5 +219,26 @@ public class AeroDBRoleStore<TRole> : IRoleStore<TRole>, IQueryableRoleStore<TRo
             return;
         _disposed = true;
         // The store is DI-managed — no external resources to release.
+    }
+
+    private static string IdToString(TKey id)
+        => Convert.ToString(id, System.Globalization.CultureInfo.InvariantCulture) ?? string.Empty;
+
+    private static bool IsUniqueConstraintViolation(Exception ex)
+        => ex.ToString().Contains("unique", StringComparison.OrdinalIgnoreCase);
+}
+
+/// <summary>
+/// String-key compatibility wrapper for the default ASP.NET Core Identity role type.
+/// </summary>
+public class AeroDBRoleStore<TRole> : AeroDBRoleStore<TRole, string>
+    where TRole : IdentityRole
+{
+    public AeroDBRoleStore(
+        IDocumentStore store,
+        ILogger<AeroDBRoleStore<TRole>> logger,
+        IdentityErrorDescriber? describer = null)
+        : base(store, logger, describer)
+    {
     }
 }

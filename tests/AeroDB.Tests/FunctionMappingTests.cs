@@ -27,6 +27,28 @@ public class FunctionTestDoc
 /// </summary>
 public partial class FunctionMappingTests
 {
+    [Test]
+    public async Task CapturedScalarVariable_TranslatesAsValue_NotFieldName()
+    {
+        var expectedName = "Alice";
+        Expression<Func<FunctionTestDoc, bool>> condition = x => x.Name == expectedName;
+
+        var result = SurrealExpressionVisitor.TranslateCondition(condition.Body);
+
+        result.ShouldBe("Name = 'Alice'");
+    }
+
+    [Test]
+    public async Task CapturedObjectProperty_TranslatesAsValue_NotMemberPath()
+    {
+        var expected = new FunctionTestDoc { Name = "Alice" };
+        Expression<Func<FunctionTestDoc, bool>> condition = x => x.Name == expected.Name;
+
+        var result = SurrealExpressionVisitor.TranslateCondition(condition.Body);
+
+        result.ShouldBe("Name = 'Alice'");
+    }
+
     // ════════════════════════════════════════════════════════════
     // Unsupported methods
     // ════════════════════════════════════════════════════════════

@@ -27,6 +27,7 @@ public static class AeroDBServiceCollectionExtensions
         services.AddSingleton<IDocumentStore>(sp =>
         {
             options.ServiceProvider = sp;
+            options.LoggerFactory ??= sp.GetService<Microsoft.Extensions.Logging.ILoggerFactory>();
             var store = new DocumentStore(options);
             // Initialize synchronously for configurator discovery.
             // Null sync-context prevents ASP.NET deadlocks.
@@ -70,6 +71,7 @@ public static class AeroDBServiceCollectionExtensions
         {
             var options = configure(sp);
             options.ServiceProvider = sp;
+            options.LoggerFactory ??= sp.GetService<Microsoft.Extensions.Logging.ILoggerFactory>();
             var store = new DocumentStore(options);
             var prevCtx = SynchronizationContext.Current;
             try
@@ -127,6 +129,7 @@ public static class AeroDBServiceCollectionExtensions
         services.AddKeyedScoped<IDocumentStore>(typeof(T).FullName!, (sp, _) =>
         {
             options.ServiceProvider = sp;
+            options.LoggerFactory ??= sp.GetService<Microsoft.Extensions.Logging.ILoggerFactory>();
             var store = new DocumentStore(options);
             // Initialize synchronously for configurator discovery.
             // Null sync-context prevents ASP.NET deadlocks.

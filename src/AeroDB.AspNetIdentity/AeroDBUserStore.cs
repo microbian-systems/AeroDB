@@ -2,6 +2,7 @@ using System.Security.Claims;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace AeroDB.AspNetIdentity;
 
@@ -70,9 +71,10 @@ internal sealed class AeroDBUserPasskey
 /// implementing all standard ASP.NET Core Identity store interfaces including
 /// passkey (WebAuthn) support for .NET 10.
 /// </summary>
-/// <typeparam name="TUser">The user type, must inherit from <see cref="IdentityUser"/>.</typeparam>
-/// <typeparam name="TRole">The role type, must inherit from <see cref="IdentityRole"/>.</typeparam>
-public class AeroDBUserStore<TUser, TRole> :
+/// <typeparam name="TUser">The user type, must inherit from <see cref="IdentityUser{TKey}"/>.</typeparam>
+/// <typeparam name="TRole">The role type, must inherit from <see cref="IdentityRole{TKey}"/>.</typeparam>
+/// <typeparam name="TKey">The identity key type.</typeparam>
+public class AeroDBUserStore<TUser, TRole, TKey> :
     IUserStore<TUser>,
     IUserPasswordStore<TUser>,
     IUserEmailStore<TUser>,
@@ -89,11 +91,14 @@ public class AeroDBUserStore<TUser, TRole> :
     IUserAuthenticationTokenStore<TUser>,
     IUserPasskeyStore<TUser>,
     IProtectedUserStore<TUser>
-    where TUser : IdentityUser
-    where TRole : IdentityRole
+    where TUser : IdentityUser<TKey>
+    where TRole : IdentityRole<TKey>
+    where TKey : IEquatable<TKey>
 {
     private readonly IDocumentStore _store;
-    private readonly ILogger<AeroDBUserStore<TUser, TRole>> _logger;
+    private readonly ILogger _logger;
+    private readonly IdentityOptions _identityOptions;
+    private readonly IdentityErrorDescriber _describer;
     private bool _disposed;
 
     // Cached snake_case table names computed from the CLR type names.
@@ -109,10 +114,27 @@ public class AeroDBUserStore<TUser, TRole> :
     /// </summary>
     /// <param name="store">The AeroDB document store.</param>
     /// <param name="logger">Logger instance.</param>
-    public AeroDBUserStore(IDocumentStore store, ILogger<AeroDBUserStore<TUser, TRole>> logger)
+    /// <param name="identityOptions">ASP.NET Core Identity options.</param>
+    /// <param name="describer">Identity error describer.</param>
+    public AeroDBUserStore(
+        IDocumentStore store,
+        ILogger<AeroDBUserStore<TUser, TRole, TKey>> logger,
+        IOptions<IdentityOptions>? identityOptions = null,
+        IdentityErrorDescriber? describer = null)
+        : this(store, (ILogger)logger, identityOptions, describer)
+    {
+    }
+
+    protected AeroDBUserStore(
+        IDocumentStore store,
+        ILogger logger,
+        IOptions<IdentityOptions>? identityOptions = null,
+        IdentityErrorDescriber? describer = null)
     {
         _store = store ?? throw new ArgumentNullException(nameof(store));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        _identityOptions = identityOptions?.Value ?? new IdentityOptions { User = { RequireUniqueEmail = true } };
+        _describer = describer ?? new IdentityErrorDescriber();
 
         _userTable = ToSnakeCase(typeof(TUser).Name);
         _roleTable = ToSnakeCase(typeof(TRole).Name);
@@ -152,6 +174,23 @@ public class AeroDBUserStore<TUser, TRole> :
         try
         {
             await using var session = await _store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }, cancellationToken);
+
+            if (!string.IsNullOrWhiteSpace(user.NormalizedUserName))
+            {
+                var duplicateUserName = await session.Query<TUser>()
+                    .FirstOrDefaultAsync(u => u.NormalizedUserName == user.NormalizedUserName, cancellationToken);
+                if (duplicateUserName is not null)
+                    return IdentityResult.Failed(_describer.DuplicateUserName(user.UserName ?? user.NormalizedUserName));
+            }
+
+            if (_identityOptions.User.RequireUniqueEmail && !string.IsNullOrWhiteSpace(user.NormalizedEmail))
+            {
+                var duplicateEmail = await session.Query<TUser>()
+                    .FirstOrDefaultAsync(u => u.NormalizedEmail == user.NormalizedEmail, cancellationToken);
+                if (duplicateEmail is not null)
+                    return IdentityResult.Failed(_describer.DuplicateEmail(user.Email ?? user.NormalizedEmail));
+            }
+
             session.Store(user);
             var res = await session.SaveChangesAsync(cancellationToken);
             if(res > 0) 
@@ -172,6 +211,18 @@ public class AeroDBUserStore<TUser, TRole> :
         }
         catch (Exception ex)
         {
+            if (IsUniqueConstraintViolation(ex))
+            {
+                if (_identityOptions.User.RequireUniqueEmail &&
+                    !string.IsNullOrWhiteSpace(user.NormalizedEmail) &&
+                    IsEmailConstraintViolation(ex))
+                {
+                    return IdentityResult.Failed(_describer.DuplicateEmail(user.Email ?? user.NormalizedEmail));
+                }
+
+                return IdentityResult.Failed(_describer.DuplicateUserName(user.UserName ?? user.NormalizedUserName ?? string.Empty));
+            }
+
             _logger.LogError(ex, "Failed to create the user {UserId}.", user.Id);
             return IdentityResult.Failed(new IdentityError
             {
@@ -217,7 +268,7 @@ public class AeroDBUserStore<TUser, TRole> :
             await using var session = await _store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }, cancellationToken);
 
             // Remove associated records from separate tables
-            await DeleteAssociatedRecordsAsync(session, user.Id, cancellationToken);
+            await DeleteAssociatedRecordsAsync(session, UserIdToString(user), cancellationToken);
 
             // Remove the user document
             session.Delete(user);
@@ -262,7 +313,7 @@ public class AeroDBUserStore<TUser, TRole> :
     public Task<string> GetUserIdAsync(TUser user, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
-        return Task.FromResult(user.Id);
+        return Task.FromResult(UserIdToString(user));
     }
 
     /// <inheritdoc />
@@ -520,8 +571,9 @@ public class AeroDBUserStore<TUser, TRole> :
 
         // Raw SQL: reads a single embedded field without loading the full user document.
         await using var session = await _store.QuerySessionAsync(cancellationToken);
+        var userId = UserIdToString(user);
         var results = await session.RawQueryAsync<AuthenticatorKeyResult>(
-            $"SELECT authenticator_key FROM {_userTable}:{user.Id}",
+            $"SELECT authenticator_key FROM {UserRecordId(userId)}",
             parameters: null,
             cancellationToken);
         return results.FirstOrDefault()?.AuthenticatorKey;
@@ -533,9 +585,10 @@ public class AeroDBUserStore<TUser, TRole> :
         cancellationToken.ThrowIfCancellationRequested();
 
         await using var session = await _store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }, cancellationToken);
+        var userId = UserIdToString(user);
         // Raw SQL: updates a single embedded field without loading the full user document.
         await session.ExecuteSqlAsync(
-            $"UPDATE {_userTable}:{user.Id} SET authenticator_key = $key",
+            $"UPDATE {UserRecordId(userId)} SET authenticator_key = $key",
             new Dictionary<string, object?> { ["key"] = key },
             cancellationToken);
     }
@@ -550,14 +603,15 @@ public class AeroDBUserStore<TUser, TRole> :
         cancellationToken.ThrowIfCancellationRequested();
 
         await using var session = await _store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }, cancellationToken);
+        var userId = UserIdToString(user);
 
-        var codes = await GetRecoveryCodesAsync(session, user.Id, cancellationToken);
+        var codes = await GetRecoveryCodesAsync(session, userId, cancellationToken);
         var match = codes.FirstOrDefault(c => c == code);
         if (match is null)
             return false;
 
         codes.Remove(match);
-        await SetRecoveryCodesAsync(session, user.Id, codes, cancellationToken);
+        await SetRecoveryCodesAsync(session, userId, codes, cancellationToken);
         return true;
     }
 
@@ -567,7 +621,7 @@ public class AeroDBUserStore<TUser, TRole> :
         cancellationToken.ThrowIfCancellationRequested();
 
         await using var session = await _store.QuerySessionAsync(cancellationToken);
-        var codes = await GetRecoveryCodesAsync(session, user.Id, cancellationToken);
+        var codes = await GetRecoveryCodesAsync(session, UserIdToString(user), cancellationToken);
         return codes.Count;
     }
 
@@ -577,7 +631,7 @@ public class AeroDBUserStore<TUser, TRole> :
         cancellationToken.ThrowIfCancellationRequested();
 
         await using var session = await _store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }, cancellationToken);
-        await SetRecoveryCodesAsync(session, user.Id, recoveryCodes.ToList(), cancellationToken);
+        await SetRecoveryCodesAsync(session, UserIdToString(user), recoveryCodes.ToList(), cancellationToken);
     }
 
     // ══════════════════════════════════════════════════════════════════
@@ -590,8 +644,9 @@ public class AeroDBUserStore<TUser, TRole> :
         cancellationToken.ThrowIfCancellationRequested();
 
         await using var session = await _store.QuerySessionAsync(cancellationToken);
+        var userId = UserIdToString(user);
         var records = await session.Query<AeroDBUserClaim>()
-            .Where(c => c.UserId == user.Id)
+            .Where(c => c.UserId == userId)
             .ToListAsync(cancellationToken);
         return records.Select(ToClaim).ToList();
     }
@@ -602,11 +657,12 @@ public class AeroDBUserStore<TUser, TRole> :
         cancellationToken.ThrowIfCancellationRequested();
 
         await using var session = await _store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }, cancellationToken);
+        var userId = UserIdToString(user);
         foreach (var claim in claims)
         {
             session.Store(new AeroDBUserClaim
             {
-                UserId = user.Id,
+                UserId = userId,
                 ClaimType = claim.Type,
                 ClaimValue = claim.Value
             });
@@ -620,9 +676,10 @@ public class AeroDBUserStore<TUser, TRole> :
         cancellationToken.ThrowIfCancellationRequested();
 
         await using var session = await _store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }, cancellationToken);
+        var userId = UserIdToString(user);
 
         var records = await session.Query<AeroDBUserClaim>()
-            .Where(c => c.UserId == user.Id
+            .Where(c => c.UserId == userId
                      && c.ClaimType == claim.Type
                      && c.ClaimValue == claim.Value)
             .ToListAsync(cancellationToken);
@@ -643,11 +700,12 @@ public class AeroDBUserStore<TUser, TRole> :
         cancellationToken.ThrowIfCancellationRequested();
 
         await using var session = await _store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }, cancellationToken);
+        var userId = UserIdToString(user);
 
         foreach (var claim in claims)
         {
             var records = await session.Query<AeroDBUserClaim>()
-                .Where(c => c.UserId == user.Id
+                .Where(c => c.UserId == userId
                          && c.ClaimType == claim.Type
                          && c.ClaimValue == claim.Value)
                 .ToListAsync(cancellationToken);
@@ -693,9 +751,10 @@ public class AeroDBUserStore<TUser, TRole> :
         cancellationToken.ThrowIfCancellationRequested();
 
         await using var session = await _store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }, cancellationToken);
+        var userId = UserIdToString(user);
         session.Store(new AeroDBUserLogin
         {
-            UserId = user.Id,
+            UserId = userId,
             LoginProvider = login.LoginProvider,
             ProviderKey = login.ProviderKey,
             ProviderDisplayName = login.ProviderDisplayName ?? string.Empty
@@ -709,10 +768,11 @@ public class AeroDBUserStore<TUser, TRole> :
         cancellationToken.ThrowIfCancellationRequested();
 
         await using var session = await _store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }, cancellationToken);
+        var userId = UserIdToString(user);
 
         var record = await session.Query<AeroDBUserLogin>()
             .FirstOrDefaultAsync(l =>
-                l.UserId == user.Id &&
+                l.UserId == userId &&
                 l.LoginProvider == loginProvider &&
                 l.ProviderKey == providerKey,
                 cancellationToken);
@@ -730,9 +790,10 @@ public class AeroDBUserStore<TUser, TRole> :
         cancellationToken.ThrowIfCancellationRequested();
 
         await using var session = await _store.QuerySessionAsync(cancellationToken);
+        var userId = UserIdToString(user);
 
         var records = await session.Query<AeroDBUserLogin>()
-            .Where(l => l.UserId == user.Id)
+            .Where(l => l.UserId == userId)
             .ToListAsync(cancellationToken);
 
         return records
@@ -769,6 +830,7 @@ public class AeroDBUserStore<TUser, TRole> :
         cancellationToken.ThrowIfCancellationRequested();
 
         await using var session = await _store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }, cancellationToken);
+        var userId = UserIdToString(user);
 
         var role = await session.Query<TRole>()
             .FirstOrDefaultAsync(r => r.NormalizedName == normalizedRoleName, cancellationToken);
@@ -776,12 +838,13 @@ public class AeroDBUserStore<TUser, TRole> :
         if (role is null)
             return;
 
-        var roleIds = await GetRoleIdsAsync(session, user.Id, cancellationToken);
-        if (roleIds.Contains(role.Id))
+        var roleId = IdToString(role.Id);
+        var roleIds = await GetRoleIdsAsync(session, userId, cancellationToken);
+        if (roleIds.Contains(roleId))
             return;
 
-        roleIds.Add(role.Id);
-        await SetRoleIdsAsync(session, user.Id, roleIds, cancellationToken);
+        roleIds.Add(roleId);
+        await SetRoleIdsAsync(session, userId, roleIds, cancellationToken);
     }
 
     /// <inheritdoc />
@@ -790,6 +853,7 @@ public class AeroDBUserStore<TUser, TRole> :
         cancellationToken.ThrowIfCancellationRequested();
 
         await using var session = await _store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }, cancellationToken);
+        var userId = UserIdToString(user);
 
         var role = await session.Query<TRole>()
             .FirstOrDefaultAsync(r => r.NormalizedName == normalizedRoleName, cancellationToken);
@@ -797,11 +861,11 @@ public class AeroDBUserStore<TUser, TRole> :
         if (role is null)
             return;
 
-        var roleIds = await GetRoleIdsAsync(session, user.Id, cancellationToken);
-        if (!roleIds.Remove(role.Id))
+        var roleIds = await GetRoleIdsAsync(session, userId, cancellationToken);
+        if (!roleIds.Remove(IdToString(role.Id)))
             return;
 
-        await SetRoleIdsAsync(session, user.Id, roleIds, cancellationToken);
+        await SetRoleIdsAsync(session, userId, roleIds, cancellationToken);
     }
 
     /// <inheritdoc />
@@ -811,13 +875,27 @@ public class AeroDBUserStore<TUser, TRole> :
 
         await using var session = await _store.QuerySessionAsync(cancellationToken);
 
-        var roleIds = await GetRoleIdsAsync(session, user.Id, cancellationToken);
+        var roleIds = await GetRoleIdsAsync(session, UserIdToString(user), cancellationToken);
         if (roleIds.Count == 0)
             return Array.Empty<string>();
 
-        var roles = await session.Query<TRole>()
-            .Where(r => roleIds.Contains(r.Id!))
-            .ToListAsync(cancellationToken);
+        List<TRole> roles;
+        if (typeof(TKey) == typeof(string))
+        {
+            roles = await session.Query<TRole>()
+                .Where(r => roleIds.Contains((string)(object)r.Id!))
+                .ToListAsync(cancellationToken);
+        }
+        else
+        {
+            roles = [];
+            foreach (var roleId in roleIds)
+            {
+                var role = await session.LoadAsync<TRole>(roleId, cancellationToken);
+                if (role is not null)
+                    roles.Add(role);
+            }
+        }
 
         return roles.Select(r => r.Name!).ToList();
     }
@@ -835,8 +913,8 @@ public class AeroDBUserStore<TUser, TRole> :
         if (role is null)
             return false;
 
-        var roleIds = await GetRoleIdsAsync(session, user.Id, cancellationToken);
-        return roleIds.Contains(role.Id);
+        var roleIds = await GetRoleIdsAsync(session, UserIdToString(user), cancellationToken);
+        return roleIds.Contains(IdToString(role.Id));
     }
 
     /// <inheritdoc />
@@ -855,7 +933,7 @@ public class AeroDBUserStore<TUser, TRole> :
         // Raw SQL: SurrealDB CONTAINS operator has no LINQ equivalent in AeroDB's fluent API.
         return await session.RawQueryAsync<TUser>(
             $"SELECT * FROM {_userTable} WHERE role_ids CONTAINS $roleId",
-            new Dictionary<string, object?> { ["roleId"] = role.Id },
+            new Dictionary<string, object?> { ["roleId"] = IdToString(role.Id) },
             cancellationToken);
     }
 
@@ -869,10 +947,11 @@ public class AeroDBUserStore<TUser, TRole> :
         cancellationToken.ThrowIfCancellationRequested();
 
         await using var session = await _store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }, cancellationToken);
+        var userId = UserIdToString(user);
 
         var existing = await session.Query<AeroDBUserToken>()
             .FirstOrDefaultAsync(t =>
-                t.UserId == user.Id &&
+                t.UserId == userId &&
                 t.LoginProvider == loginProvider &&
                 t.Name == name,
                 cancellationToken);
@@ -886,7 +965,7 @@ public class AeroDBUserStore<TUser, TRole> :
         {
             session.Store(new AeroDBUserToken
             {
-                UserId = user.Id,
+                UserId = userId,
                 LoginProvider = loginProvider,
                 Name = name,
                 Value = value ?? string.Empty
@@ -902,10 +981,11 @@ public class AeroDBUserStore<TUser, TRole> :
         cancellationToken.ThrowIfCancellationRequested();
 
         await using var session = await _store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }, cancellationToken);
+        var userId = UserIdToString(user);
 
         var existing = await session.Query<AeroDBUserToken>()
             .FirstOrDefaultAsync(t =>
-                t.UserId == user.Id &&
+                t.UserId == userId &&
                 t.LoginProvider == loginProvider &&
                 t.Name == name,
                 cancellationToken);
@@ -923,10 +1003,11 @@ public class AeroDBUserStore<TUser, TRole> :
         cancellationToken.ThrowIfCancellationRequested();
 
         await using var session = await _store.QuerySessionAsync(cancellationToken);
+        var userId = UserIdToString(user);
 
         var token = await session.Query<AeroDBUserToken>()
             .FirstOrDefaultAsync(t =>
-                t.UserId == user.Id &&
+                t.UserId == userId &&
                 t.LoginProvider == loginProvider &&
                 t.Name == name,
                 cancellationToken);
@@ -944,9 +1025,10 @@ public class AeroDBUserStore<TUser, TRole> :
         cancellationToken.ThrowIfCancellationRequested();
 
         await using var session = await _store.QuerySessionAsync(cancellationToken);
+        var userId = UserIdToString(user);
 
         var records = await session.Query<AeroDBUserPasskey>()
-            .Where(p => p.UserId == user.Id)
+            .Where(p => p.UserId == userId)
             .ToListAsync(cancellationToken);
 
         return records.Select(ToPasskeyInfo).ToList();
@@ -958,9 +1040,10 @@ public class AeroDBUserStore<TUser, TRole> :
         cancellationToken.ThrowIfCancellationRequested();
 
         await using var session = await _store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }, cancellationToken);
+        var userId = UserIdToString(user);
 
         // Try to find an existing passkey with the same credential ID for this user.
-        var existing = await FindPasskeyRecordAsync(session, user.Id, passkey.CredentialId, cancellationToken);
+        var existing = await FindPasskeyRecordAsync(session, userId, passkey.CredentialId, cancellationToken);
 
         if (existing is not null)
         {
@@ -978,7 +1061,7 @@ public class AeroDBUserStore<TUser, TRole> :
         }
         else
         {
-            session.Store(ToPasskeyRecord(user.Id, passkey));
+            session.Store(ToPasskeyRecord(userId, passkey));
         }
 
         await session.SaveChangesAsync(cancellationToken);
@@ -991,7 +1074,7 @@ public class AeroDBUserStore<TUser, TRole> :
 
         await using var session = await _store.QuerySessionAsync(cancellationToken);
 
-        var record = await FindPasskeyRecordAsync(session, user.Id, credentialId, cancellationToken);
+        var record = await FindPasskeyRecordAsync(session, UserIdToString(user), credentialId, cancellationToken);
         return record is not null ? ToPasskeyInfo(record) : null;
     }
 
@@ -1024,7 +1107,7 @@ public class AeroDBUserStore<TUser, TRole> :
         await using var session = await _store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }, cancellationToken);
 
         // Find the passkey record by credential ID for this user.
-        var passkey = await FindPasskeyRecordAsync(session, user.Id, credentialId, cancellationToken);
+        var passkey = await FindPasskeyRecordAsync(session, UserIdToString(user), credentialId, cancellationToken);
         if (passkey is not null)
         {
             session.Delete(passkey);
@@ -1053,7 +1136,7 @@ public class AeroDBUserStore<TUser, TRole> :
     {
         // Raw SQL: reads a single embedded field without loading the full user document.
         var result = await session.RawQueryAsync<RecoveryCodesResult>(
-            $"SELECT recovery_codes FROM {_userTable}:{userId}",
+            $"SELECT recovery_codes FROM {UserRecordId(userId)}",
             parameters: null,
             ct);
         return result.FirstOrDefault()?.RecoveryCodes ?? [];
@@ -1063,7 +1146,7 @@ public class AeroDBUserStore<TUser, TRole> :
     {
         // Raw SQL: updates a single embedded field without loading the full user document.
         await session.ExecuteSqlAsync(
-            $"UPDATE {_userTable}:{userId} SET recovery_codes = $codes",
+            $"UPDATE {UserRecordId(userId)} SET recovery_codes = $codes",
             new Dictionary<string, object?> { ["codes"] = codes },
             ct);
     }
@@ -1076,7 +1159,7 @@ public class AeroDBUserStore<TUser, TRole> :
     {
         // Raw SQL: reads a single embedded field without loading the full user document.
         var result = await session.RawQueryAsync<RoleIdsResult>(
-            $"SELECT role_ids FROM {_userTable}:{userId}",
+            $"SELECT role_ids FROM {UserRecordId(userId)}",
             parameters: null,
             ct);
         return result.FirstOrDefault()?.RoleIds ?? [];
@@ -1088,18 +1171,25 @@ public class AeroDBUserStore<TUser, TRole> :
         if (roleIds.Count == 0)
         {
             await session.ExecuteSqlAsync(
-                $"UPDATE {_userTable}:{userId} SET role_ids = NONE",
+                $"UPDATE {UserRecordId(userId)} SET role_ids = NONE",
                 parameters: null,
                 ct);
         }
         else
         {
             await session.ExecuteSqlAsync(
-                $"UPDATE {_userTable}:{userId} SET role_ids = $roleIds",
+                $"UPDATE {UserRecordId(userId)} SET role_ids = $roleIds",
                 new Dictionary<string, object?> { ["roleIds"] = roleIds },
                 ct);
         }
     }
+
+    private string UserRecordId(string userId)
+        => $"{_userTable}:`{EscapeRecordIdPart(userId)}`";
+
+    private static string EscapeRecordIdPart(string value)
+        => value.Replace("\\", "\\\\", StringComparison.Ordinal)
+            .Replace("`", "\\`", StringComparison.Ordinal);
 
     // ══════════════════════════════════════════════════════════════════
     //  Private Helpers — Passkey (separate table, byte[] comparisons)
@@ -1216,6 +1306,40 @@ public class AeroDBUserStore<TUser, TRole> :
                 : char.ToLowerInvariant(c).ToString()));
     }
 
+    private static string UserIdToString(TUser user)
+        => IdToString(user.Id);
+
+    private static string IdToString(TKey id)
+        => Convert.ToString(id, System.Globalization.CultureInfo.InvariantCulture) ?? string.Empty;
+
+    private static bool IsUniqueConstraintViolation(Exception ex)
+        => ex.ToString().Contains("unique", StringComparison.OrdinalIgnoreCase);
+
+    private static bool IsEmailConstraintViolation(Exception ex)
+    {
+        var text = ex.ToString();
+        return text.Contains(nameof(IdentityUser.NormalizedEmail), StringComparison.OrdinalIgnoreCase)
+            || text.Contains("normalized_email", StringComparison.OrdinalIgnoreCase)
+            || text.Contains("email", StringComparison.OrdinalIgnoreCase);
+    }
+
+}
+
+/// <summary>
+/// String-key compatibility wrapper for the default ASP.NET Core Identity user and role types.
+/// </summary>
+public class AeroDBUserStore<TUser, TRole> : AeroDBUserStore<TUser, TRole, string>
+    where TUser : IdentityUser
+    where TRole : IdentityRole
+{
+    public AeroDBUserStore(
+        IDocumentStore store,
+        ILogger<AeroDBUserStore<TUser, TRole>> logger,
+        IOptions<IdentityOptions>? identityOptions = null,
+        IdentityErrorDescriber? describer = null)
+        : base(store, logger, identityOptions, describer)
+    {
+    }
 }
 
 // ══════════════════════════════════════════════════════════════════

@@ -71,6 +71,85 @@ public class SurrealQueryProvider : IQueryProvider
         return await _sessionBase.GetSessionForSchemaAsync(schemaName, ct).ConfigureAwait(false);
     }
 
+    private void LogSurrealQuery(string operation, string surql, SurrealQueryResult query, Type? elementType)
+    {
+        if (!_logger.IsEnabled(LogLevel.Debug))
+            return;
+
+        if (query.Parameters is { Count: > 0 })
+        {
+            _logger.LogDebug(
+                "{Operation} SurrealQL: {SurrealQL} Parameters: {@Parameters}",
+                operation,
+                surql,
+                RedactParameters(query, elementType));
+        }
+        else
+        {
+            _logger.LogDebug("{Operation} SurrealQL: {SurrealQL}", operation, surql);
+        }
+    }
+
+    private static IReadOnlyDictionary<string, object?> RedactParameters(SurrealQueryResult query, Type? elementType)
+    {
+        if (elementType is null)
+            return query.Parameters;
+
+        var redacted = new Dictionary<string, object?>(StringComparer.Ordinal);
+        foreach (var parameter in query.Parameters)
+        {
+            redacted[parameter.Key] = IsPersonalDataParameter(query, elementType, parameter.Key)
+                ? "[REDACTED]"
+                : parameter.Value;
+        }
+
+        return redacted;
+    }
+
+    private static bool IsPersonalDataParameter(SurrealQueryResult query, Type elementType, string parameterName)
+    {
+        var placeholder = "$" + parameterName;
+        foreach (var where in query.Where)
+        {
+            if (!where.Contains(placeholder, StringComparison.Ordinal))
+                continue;
+
+            var fieldName = ExtractLeftHandField(where, placeholder);
+            if (fieldName is null)
+                continue;
+
+            var property = elementType.GetProperty(fieldName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.IgnoreCase);
+            if (property is null)
+                continue;
+
+            return property.GetCustomAttributes(inherit: true)
+                .Any(attribute =>
+                {
+                    var name = attribute.GetType().Name;
+                    return string.Equals(name, "PersonalDataAttribute", StringComparison.Ordinal)
+                        || string.Equals(name, "ProtectedPersonalDataAttribute", StringComparison.Ordinal);
+                });
+        }
+
+        return false;
+    }
+
+    private static string? ExtractLeftHandField(string where, string placeholder)
+    {
+        var placeholderIndex = where.IndexOf(placeholder, StringComparison.Ordinal);
+        if (placeholderIndex <= 0)
+            return null;
+
+        var beforePlaceholder = where[..placeholderIndex].TrimEnd();
+        var operatorIndex = beforePlaceholder.LastIndexOfAny(['=', '<', '>', '!']);
+        if (operatorIndex <= 0)
+            return null;
+
+        return beforePlaceholder[..operatorIndex]
+            .Trim()
+            .Trim('`');
+    }
+
     private SurrealExpressionVisitor CreateVisitor() => new(_options.Schema);
 
     /// <summary>
@@ -417,7 +496,7 @@ public class SurrealQueryProvider : IQueryProvider
                 countQuery.Projection = "count()";
                 countQuery.GroupAll = true;
                 var combinedSurql = countQuery.ToSurrealQL() + "\n" + query.ToSurrealQL();
-                _logger.LogDebug("ToSurrealQL (with stats): {Surql}", combinedSurql);
+                LogSurrealQuery("ToListAsync (with stats)", combinedSurql, query, sourceType);
                 var statsSession = await GetSessionForElementType(sourceType, ct).ConfigureAwait(false);
                 var statsResponse = await statsSession.RawQuery(combinedSurql, query.Parameters, ct).ConfigureAwait(false);
                 if (!statsResponse.HasErrors && statsResponse.Count > 1)
@@ -499,7 +578,7 @@ public class SurrealQueryProvider : IQueryProvider
             surql = query.ToSurrealQL();
         }
 
-        _logger.LogDebug("ToSurrealQL: {Surql}", surql);
+        LogSurrealQuery("ToListAsync", surql, query, sourceType);
         var querySession = await GetSessionForElementType(sourceType, ct).ConfigureAwait(false);
         var response = await querySession.RawQuery(surql, query.Parameters, ct).ConfigureAwait(false);
 
@@ -712,7 +791,7 @@ public class SurrealQueryProvider : IQueryProvider
             surql = query.ToSurrealQL();
         }
 
-        _logger.LogDebug("FirstOrDefaultAsync SurrealQL: {Surql}", surql);
+        LogSurrealQuery("FirstOrDefaultAsync", surql, query, sourceType);
         var querySession = await GetSessionForElementType(sourceType, ct).ConfigureAwait(false);
         var response = await querySession.RawQuery(surql, query.Parameters, ct).ConfigureAwait(false);
 
@@ -851,7 +930,7 @@ public class SurrealQueryProvider : IQueryProvider
             surql = query.ToSurrealQL();
         }
 
-        _logger.LogDebug("SingleOrDefaultAsync SurrealQL: {Surql}", surql);
+        LogSurrealQuery("SingleOrDefaultAsync", surql, query, sourceType);
         var querySession = await GetSessionForElementType(sourceType, ct).ConfigureAwait(false);
         var response = await querySession.RawQuery(surql, query.Parameters, ct).ConfigureAwait(false);
 
@@ -1366,7 +1445,7 @@ public class SurrealQueryProvider : IQueryProvider
         // The visitor already generated the correct server-side projection
         // (e.g., math::sum(Price)). Let it flow through to SurrealQL.
         var surql = query.ToSurrealQL();
-        _logger.LogDebug("AggregateAsync ({Function}) SurrealQL: {Surql}", function, surql);
+        LogSurrealQuery($"AggregateAsync ({function})", surql, query, elementType);
         var aggSession = await GetSessionForElementType(elementType, ct).ConfigureAwait(false);
         var response = await aggSession.RawQuery(surql, query.Parameters, ct).ConfigureAwait(false);
 
@@ -1406,7 +1485,7 @@ public class SurrealQueryProvider : IQueryProvider
         query.GroupAll = true;
 
         var surql = query.ToSurrealQL();
-        _logger.LogDebug("CountAsync SurrealQL: {Surql}", surql);
+        LogSurrealQuery("CountAsync", surql, query, elementType);
         var countSession = await GetSessionForElementType(elementType ?? typeof(object), ct).ConfigureAwait(false);
         var response = await countSession.RawQuery(surql, query.Parameters, ct).ConfigureAwait(false);
 
@@ -1452,6 +1531,7 @@ public class SurrealQueryProvider : IQueryProvider
 
         var surql = result.ToSurrealQL();
         var querySession = await GetSessionForElementType(elementType, ct).ConfigureAwait(false);
+        LogSurrealQuery("SelectAsync", surql, result, elementType);
         var response = await querySession.RawQuery(surql, result.Parameters, ct).ConfigureAwait(false);
 
         if (!response.HasErrors && response.Count > 0)
@@ -1481,7 +1561,7 @@ public class SurrealQueryProvider : IQueryProvider
         ApplySoftDeleteFilter(query, elementType);
         query.Limit = 1;
         var surql = query.ToSurrealQL();
-        _logger.LogDebug("AnyAsync SurrealQL: {Surql}", surql);
+        LogSurrealQuery("AnyAsync", surql, query, elementType);
         var anySession = await GetSessionForElementType(elementType ?? typeof(object), ct).ConfigureAwait(false);
         var response = await anySession.RawQuery(surql, query.Parameters, ct).ConfigureAwait(false);
 

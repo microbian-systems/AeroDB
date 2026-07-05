@@ -208,6 +208,7 @@ public abstract class InternalSessionBase : IAsyncDisposable
     public async Task<List<T>> RawQueryAsync<T>(string sql, IReadOnlyDictionary<string, object?>? parameters = null, CancellationToken ct = default)
     {
         RequestCount++;
+        LogSurrealQuery(sql, parameters);
         var response = await Session.RawQuery(sql, parameters, ct).ConfigureAwait(false);
 
         if (TryDeserializeMappedPocoResponse<T>(response, out var mapped))
@@ -242,6 +243,7 @@ public abstract class InternalSessionBase : IAsyncDisposable
     public async Task<int> ExecuteSqlAsync(string sql, IReadOnlyDictionary<string, object?>? parameters = null, CancellationToken ct = default)
     {
         RequestCount++;
+        LogSurrealQuery(sql, parameters);
         var response = await Session.RawQuery(sql, parameters, ct).ConfigureAwait(false);
         return response.FirstOk is not null ? 1 : 0;
     }
@@ -251,6 +253,7 @@ public abstract class InternalSessionBase : IAsyncDisposable
         var table = MetadataDispatch.GetTableName(typeof(T));
         var sql = $"SELECT id FROM {table}:`{id.Replace("`", "\\`")}`";
         RequestCount++;
+        LogSurrealQuery(sql, null);
         var response = await Session.RawQuery(sql, null, ct).ConfigureAwait(false);
         return response.Count > 0 && !response.HasErrors && response.FirstOk is not null;
     }
@@ -455,10 +458,9 @@ public abstract class InternalSessionBase : IAsyncDisposable
         where T : class
     {
         var escapedId = id.Replace("`", "\\`");
-        var response = await session.RawQuery(
-            $"SELECT * FROM {table}:`{escapedId}`",
-            null,
-            ct).ConfigureAwait(false);
+        var sql = $"SELECT * FROM {table}:`{escapedId}`";
+        LogSurrealQuery(sql, null);
+        var response = await session.RawQuery(sql, null, ct).ConfigureAwait(false);
 
         // Read raw CBOR data directly to avoid Dahomey.Cbor's ObjectConverter issue with maps.
         var records = CborResultReader.ReadPocoResult(response, 0);
@@ -467,6 +469,24 @@ public abstract class InternalSessionBase : IAsyncDisposable
 
         var mapping = Options.Schema.Mappings.GetValueOrDefault(typeof(T));
         return DeserializePocoFromList<T>(records, mapping?.IdentityProperty)[0];
+    }
+
+    protected void LogSurrealQuery(string sql, IReadOnlyDictionary<string, object?>? parameters)
+    {
+        if (!_logger.IsEnabled(LogLevel.Debug))
+            return;
+
+        if (parameters is { Count: > 0 })
+        {
+            _logger.LogDebug(
+                "Executing SurrealQL: {SurrealQL} Parameters: {@Parameters}",
+                sql,
+                parameters);
+        }
+        else
+        {
+            _logger.LogDebug("Executing SurrealQL: {SurrealQL}", sql);
+        }
     }
 
     /// <summary>

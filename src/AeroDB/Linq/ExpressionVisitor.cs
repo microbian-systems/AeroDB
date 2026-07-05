@@ -466,6 +466,7 @@ namespace AeroDB;
     private string Operand(Expression expr, SurrealCommandBuilder builder) => expr switch
     {
         ConstantExpression c => FormatValue(c.Value, builder),
+        MemberExpression m when TryExtractCapturedValue(m, out var value) => FormatValue(value, builder),
         MemberExpression m => MemberPath(m),
         NewArrayExpression na => string.Join(", ", na.Expressions.Select(e => Operand(e, builder))),
         UnaryExpression u when u.NodeType == ExpressionType.Convert => Operand(u.Operand, builder),
@@ -475,6 +476,7 @@ namespace AeroDB;
     private string Operand(Expression expr) => expr switch
     {
         ConstantExpression c => FormatValue(c.Value),
+        MemberExpression m when TryExtractCapturedValue(m, out var value) => FormatValue(value),
         MemberExpression m => MemberPath(m),
         NewArrayExpression na => string.Join(", ", na.Expressions.Select(Operand)),
         UnaryExpression u when u.NodeType == ExpressionType.Convert => Operand(u.Operand),
@@ -601,8 +603,8 @@ namespace AeroDB;
     {
         null => "NONE",
         bool b => b ? "true" : "false",
-        DateTime dt => $"time::from_unix({new DateTimeOffset(dt.ToUniversalTime(), TimeSpan.Zero).ToUnixTimeSeconds()})",
-        DateTimeOffset dto => $"time::from_unix({dto.ToUnixTimeSeconds()})",
+        DateTime dt => $"d'{dt.ToUniversalTime():yyyy-MM-ddTHH:mm:ssZ}'",
+        DateTimeOffset dto => $"d'{dto.ToUniversalTime():yyyy-MM-ddTHH:mm:ssZ}'",
         _ => builder.Parameter(val)
     };
 
@@ -611,6 +613,50 @@ namespace AeroDB;
         if (string.IsNullOrEmpty(name)) return name;
         return string.Concat(name.Select((c, i) =>
             i > 0 && char.IsUpper(c) ? "_" + char.ToLower(c) : char.ToLower(c).ToString()));
+    }
+
+    private static bool TryExtractCapturedValue(MemberExpression expr, out object? value)
+    {
+        value = null;
+
+        if (!IsRootedInConstant(expr))
+            return false;
+
+        value = EvaluateCapturedExpression(expr);
+        return true;
+    }
+
+    private static bool IsRootedInConstant(Expression expr)
+    {
+        expr = StripConvert(expr) ?? expr;
+        while (expr is MemberExpression member)
+            expr = StripConvert(member.Expression) ?? member.Expression!;
+
+        return expr is ConstantExpression;
+    }
+
+    private static object? EvaluateCapturedExpression(Expression expr)
+    {
+        expr = StripConvert(expr) ?? expr;
+        return expr switch
+        {
+            ConstantExpression constant => constant.Value,
+            MemberExpression member => GetMemberValue(EvaluateCapturedExpression(member.Expression!), member.Member),
+            _ => null
+        };
+    }
+
+    private static object? GetMemberValue(object? container, MemberInfo member)
+    {
+        if (container is null)
+            return null;
+
+        return member switch
+        {
+            FieldInfo field => field.GetValue(container),
+            PropertyInfo property => property.GetValue(container),
+            _ => null
+        };
     }
 
     /// <summary>
