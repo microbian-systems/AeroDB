@@ -11,3 +11,6 @@ Welcome to the AeroDB API reference documentation. This is auto-generated from t
 - **AeroDB.ML** — SurrealML model inference
 - **AeroDB.Snowflake** — Snowflake ID generator
 - **AeroDB.WolverineFx** — Wolverine message persistence and transport
+
+---
+Made with 💜 by Microbians — Copyright © 2026 — https://microbians.io/

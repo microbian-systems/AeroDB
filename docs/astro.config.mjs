@@ -6,7 +6,7 @@ export default defineConfig({
   base: '/',
   integrations: [
     starlight({
-      title: 'AeroDB',
+      title: 'AeroDB v0.0.5-alpha',
       description: 'Fast, multi-model document database for .NET — built on SurrealDB',
       social: [
         { icon: 'github', label: 'GitHub', href: 'https://github.com/microbians/AeroDB' },
@@ -99,6 +99,9 @@ export default defineConfig({
         { label: 'Roadmap', slug: 'roadmap' },
       ],
       customCss: ['./src/styles/custom.css'],
+      components: {
+        Footer: './src/components/Footer.astro',
+      },
     }),
   ],
   outDir: 'dist',

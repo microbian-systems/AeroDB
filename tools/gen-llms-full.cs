@@ -32,6 +32,21 @@ while (!Directory.Exists(Path.Combine(repoRoot, ".git")) && !File.Exists(Path.Co
 }
 
 var sep = "\n\n---\n\n";
+
+// Parse version from Directory.Build.props
+var buildProps = Path.Combine(repoRoot, "src", "Directory.Build.props");
+var version = "0.0.0";
+if (File.Exists(buildProps))
+{
+    var xml = XDocument.Load(buildProps);
+    var prefix = xml.Descendants("VersionPrefix").FirstOrDefault()?.Value.Trim();
+    var suffix = xml.Descendants("VersionSuffix").FirstOrDefault()?.Value.Trim();
+    version = string.IsNullOrEmpty(suffix) ? prefix : $"{prefix}-{suffix}";
+}
+var now = DateTimeOffset.UtcNow.ToString("yyyy-MM-dd");
+var header = $"# AeroDB v{version} — Documentation generated {now}\n\n";
+
+var footer = "\n\n---\n\nMade with 💜 by Microbians — Copyright © 2026 — https://microbians.io/\n";
 var docDir = Path.Combine(repoRoot, "docs", "src", "content", "docs");
 
 // ── Helpers ───────────────────────────────────────────────────
@@ -258,7 +273,7 @@ foreach (var section in order)
 Directory.CreateDirectory(outDir);
 
 var fullPath = Path.Combine(outDir, "aerodb-llms-full.txt");
-await File.WriteAllTextAsync(fullPath, fullContent.ToString());
+await File.WriteAllTextAsync(fullPath, header + fullContent.ToString() + footer);
 Console.WriteLine($"  aerodb-llms-full.txt = {FormatBytes(new FileInfo(fullPath).Length)}");
 
 if (doSplit)
@@ -270,7 +285,7 @@ if (doSplit)
         var path = Path.Combine(outDir, $"aerodb-llms-{section}.txt");
         // Global dedup only for split files
         var deduped = DeduplicateCodeBlocks(content, totalSeen);
-        await File.WriteAllTextAsync(path, deduped);
+        await File.WriteAllTextAsync(path, header + deduped + footer);
         Console.WriteLine($"  aerodb-llms-{section,-18}.txt = {FormatBytes(new FileInfo(path).Length)}");
     }
 
@@ -299,9 +314,30 @@ if (doSplit)
     toc.AppendLine("- **GitHub**: https://github.com/microbians/AeroDB");
     toc.AppendLine("- **Docs**: https://docs.aerodb.io");
 
-    await File.WriteAllTextAsync(tocPath, toc.ToString());
+    await File.WriteAllTextAsync(tocPath, header + toc + footer);
     Console.WriteLine($"  aerodb-llms.txt = {FormatBytes(new FileInfo(tocPath).Length)}");
 }
+
+// llms-index.json for AI tooling discoverability
+var indexJson = $$"""
+{
+  "library": "AeroDB",
+  "version": "0.1.0",
+  "generatedAt": "{{DateTimeOffset.UtcNow:O}}",
+  "documentation": [
+    { "file": "aerodb-llms-getting-started.txt", "topics": ["install", "configuration", "quickstart"] },
+    { "file": "aerodb-llms-concepts.txt", "topics": ["architecture", "documents", "events", "projections", "tenancy"] },
+    { "file": "aerodb-llms-guides.txt", "topics": ["crud", "linq", "surrealql", "event-sourcing", "live-queries", "recipes"] },
+    { "file": "aerodb-llms-examples.txt", "topics": ["console", "aspnet", "blazor", "graph", "timeseries", "fulltext-search"] },
+    { "file": "aerodb-llms-api.txt", "topics": ["classes", "methods", "interfaces", "enums", "properties"] },
+    { "file": "aerodb-llms-advanced.txt", "topics": ["performance", "schema", "search", "serialization", "snowflake"] },
+    { "file": "aerodb-llms-full.txt", "topics": ["all"] }
+  ]
+}
+""";
+var indexPath = Path.Combine(outDir, "llms-index.json");
+await File.WriteAllTextAsync(indexPath, indexJson);
+Console.WriteLine($"  llms-index.json = {FormatBytes(new FileInfo(indexPath).Length)}");
 
 Console.WriteLine();
 Console.WriteLine($"Done. Output dir: {Path.GetFullPath(outDir)}");
