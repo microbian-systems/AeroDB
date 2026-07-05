@@ -10,7 +10,9 @@ A .NET document store for SurrealDB with a Marten-compatible fluent API — idio
 
 ## Goal
 
-**Be the MartenDB for SurrealDB.** Bring the ergonomic document-session pattern, fluent schema configuration, and LINQ query pipeline that the .NET ecosystem loves to SurrealDB's document, graph, and search capabilities. If you've used Marten with PostgreSQL, AeroDB should feel like home.
+AeroDB brings a proven .NET document-store pattern — fluent sessions, LINQ querying, schema-first indexing — to **SurrealDB's true multi-model engine**. While MartenDB and Polecat layer document-store access on top of PostgreSQL and MSSQL (relational databases at their core), AeroDB unlocks SurrealDB's native document, graph, and time-series models in a single database. Graph traversals over relations, temporal aggregations, full-text and vector search, live queries, and geospatial operations all happen natively — no translation layers, no polyglot persistence. For AI workloads, SurrealDB's vector indexing (HNSW, DiskANN) and `ml::` inference functions make AeroDB a natural fit for semantic search, RAG pipelines, and embedding-powered .NET applications.
+
+If you've used Marten with PostgreSQL, AeroDB should feel like home — but the database underneath is built for a multi-model world.
 
 ---
 
@@ -234,7 +236,7 @@ Experimental `AeroDB.ML` package exposes SurrealDB's `ml::` inference functions 
 
 ## Credits
 
-AeroDB was solely and greatly inspired by **Jeremy D. Miller** and the genius developers over at **JasperFx** and their brilliant library **MartenDB** for PostgreSQL, which we have used for years. They just released **Polecat** for MSSQL, which is awesome. We recently had a need to use SurrealDB in a project and decided to follow the MartenDB patterns. AeroDB depends on **SurrealDB.net**, another awesome OSS library from the SurrealDB team.
+AeroDB was solely and greatly inspired by **Jeremy D. Miller** and the genius developers over at **JasperFx** and their brilliant library **MartenDB** for PostgreSQL, which we have used for years. AeroDB depends on **SurrealDB.net**, another awesome OSS library from the SurrealDB team.
 
 - [MartenDB](https://martendb.io/)
 - [Polecat](https://polecat.jasperfx.net/)
