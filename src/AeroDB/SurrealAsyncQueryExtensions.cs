@@ -169,6 +169,30 @@ public static class SurrealAsyncQueryExtensions
         public ISurrealDbQueryable<T> Fetch(Expression<Func<T, object?>> property)
             => new DeletedBeforeQueryable<T>(_inner.Fetch(property), _cutoff);
 
+        public ILinkedSurrealDbQueryable<T, TTarget> Link<TTarget>(Expression<Func<T, object?>> fkSelector)
+            where TTarget : class
+            => new LinkedSurrealDbQueryable<T, TTarget>(
+                new DeletedBeforeQueryable<T>(_inner.Link<TTarget>(fkSelector), _cutoff));
+
+        public ILinkedSurrealDbQueryable<T, TTarget> Join<TTarget>(Expression<Func<T, object?>> fkSelector)
+            where TTarget : class
+            => Link<TTarget>(fkSelector);
+
+        public ISurrealDbQueryable<T> Where<TTarget>(Expression<Func<T, TTarget, bool>> predicate)
+            where TTarget : class
+            => new DeletedBeforeQueryable<T>(_inner.Where(predicate), _cutoff);
+
+        public ISurrealDbQueryable<T> Where<TTarget1, TTarget2>(Expression<Func<T, TTarget1, TTarget2, bool>> predicate)
+            where TTarget1 : class
+            where TTarget2 : class
+            => new DeletedBeforeQueryable<T>(_inner.Where(predicate), _cutoff);
+
+        public ISurrealDbQueryable<T> Where<TTarget1, TTarget2, TTarget3>(Expression<Func<T, TTarget1, TTarget2, TTarget3, bool>> predicate)
+            where TTarget1 : class
+            where TTarget2 : class
+            where TTarget3 : class
+            => new DeletedBeforeQueryable<T>(_inner.Where(predicate), _cutoff);
+
         public ISurrealDbQueryable<T> IncludeBatch<TProperty, TInclude>(
             Expression<Func<T, TProperty>> property, Action<TInclude> callback)
             where TInclude : class

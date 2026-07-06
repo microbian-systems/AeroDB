@@ -302,6 +302,29 @@ public class SchemaOptions
 {
     public bool AutoCreate { get; set; } = true;
 
+    private IAeroDbNamingPolicy? _namingPolicy;
+
+    private AeroDbNameCase _case = AeroDbNameCase.SnakeCaseLower;
+
+    internal bool HasConfiguredCase { get; private set; }
+
+    public AeroDbNameCase Case
+    {
+        get => _case;
+        set
+        {
+            _case = value;
+            HasConfiguredCase = true;
+            _namingPolicy = null;
+        }
+    }
+
+    public IAeroDbNamingPolicy NamingPolicy
+    {
+        get => _namingPolicy ??= new AeroDbCaseNamingPolicy(Case);
+        set => _namingPolicy = value ?? throw new ArgumentNullException(nameof(value));
+    }
+
     /// <summary>
     /// When true, AeroDB will call <c>DEFINE DATABASE IF NOT EXISTS</c> for each
     /// configured schema (via <see cref="DocumentMapping{T}.Schema"/>) during
@@ -349,7 +372,7 @@ public class SchemaOptions
     {
         if (!Mappings.TryGetValue(typeof(T), out var existing))
         {
-            var mapping = new DocumentMapping<T>();
+            var mapping = new DocumentMapping<T>(this);
             Mappings[typeof(T)] = mapping;
             return mapping;
         }

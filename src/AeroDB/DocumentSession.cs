@@ -1641,6 +1641,17 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
 
     private async Task UpsertRecordAsync(IRecord record, RecordId rid, ISurrealDbSession session, CancellationToken ct)
     {
+        if (TryBuildRelationshipRecordLiteral(record, out var literal))
+        {
+            var response = await ExecuteRawWriteAsync(
+                session,
+                $"UPSERT {FormatRecordIdLiteral(rid)} CONTENT {literal}",
+                null,
+                ct).ConfigureAwait(false);
+            ThrowIfRawQueryFailed(response);
+            return;
+        }
+
         // Use the Upsert method via ISurrealDbSharedMethods interface.
         // We call the generic method with the record's runtime type.
         var entityType = record.GetType();
@@ -1648,6 +1659,94 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         var task = (Task)generic.Invoke(session, [rid, record, ct])!;
         await task.ConfigureAwait(false);
     }
+
+    private bool TryBuildRelationshipRecordLiteral(IRecord record, out string literal)
+    {
+        literal = "";
+        var entityType = record.GetType();
+        var mapping = Options.Schema.Mappings.GetValueOrDefault(entityType);
+        var relationships = mapping?.GetRelationshipMappings();
+        if (relationships is not { Count: > 0 })
+            return false;
+
+        var relationshipByMember = relationships
+            .Where(r => r.ClrMemberName is not null)
+            .ToDictionary(r => r.ClrMemberName!, StringComparer.Ordinal);
+
+        var fields = new List<string>();
+        foreach (var property in entityType.GetProperties(BindingFlags.Public | BindingFlags.Instance))
+        {
+            if (!property.CanRead || property.GetIndexParameters().Length > 0)
+                continue;
+
+            if (property.Name == nameof(IRecord.Id))
+                continue;
+
+            if (relationshipByMember.TryGetValue(property.Name, out var relationship))
+            {
+                fields.Add($"{relationship.StorageFieldName}: {ToRelationshipLiteral(property.GetValue(record), relationship)}");
+                continue;
+            }
+
+            var fieldName = MetadataDispatch.GetFieldName(entityType, property.Name, Options.Schema);
+            fields.Add($"{fieldName}: {ToSurrealQlLiteral(property.GetValue(record))}");
+        }
+
+        literal = "{ " + string.Join(", ", fields) + " }";
+        return true;
+    }
+
+    private static string ToRelationshipLiteral(object? value, RelationshipMapping relationship)
+    {
+        if (value is null)
+            return "NONE";
+
+        if (relationship.Kind == RelationshipKind.HasMany && value is System.Collections.IEnumerable values and not string)
+            return "[" + string.Join(", ", values.Cast<object?>().Select(v => ToSingleRelationshipLiteral(v, relationship))) + "]";
+
+        return ToSingleRelationshipLiteral(value, relationship);
+    }
+
+    private static string ToSingleRelationshipLiteral(object? value, RelationshipMapping relationship)
+    {
+        if (value is null)
+            return "NONE";
+
+        if (value is IRecord record && record.Id is not null)
+            return FormatRecordIdLiteral(record.Id);
+
+        if (value is RecordId recordId)
+            return FormatRecordIdLiteral(recordId);
+
+        return ToRecordIdLiteral(relationship.TargetTableName, value);
+    }
+
+    private static string ToRecordIdLiteral(string tableName, object id)
+    {
+        var value = id switch
+        {
+            string s => QuoteRecordIdValue(s),
+            Guid g => QuoteRecordIdValue(g.ToString()),
+            DateTime dt => QuoteRecordIdValue(dt.ToString("O", CultureInfo.InvariantCulture)),
+            DateTimeOffset dto => QuoteRecordIdValue(dto.ToString("O", CultureInfo.InvariantCulture)),
+            IFormattable formattable => formattable.ToString(null, CultureInfo.InvariantCulture) ?? string.Empty,
+            _ => QuoteRecordIdValue(id.ToString() ?? string.Empty)
+        };
+
+        return $"{tableName}:{value}";
+    }
+
+    private static string QuoteRecordIdValue(string value)
+        => "`" + value.Replace("`", "\\`", StringComparison.Ordinal) + "`";
+
+    private static string FormatRecordIdLiteral(RecordId recordId)
+        => recordId switch
+        {
+            RecordIdOf<string> s => $"{s.Table}:{QuoteRecordIdValue(s.Id)}",
+            RecordIdOf<long> l => $"{l.Table}:{l.Id.ToString(CultureInfo.InvariantCulture)}",
+            RecordIdOf<int> i => $"{i.Table}:{i.Id.ToString(CultureInfo.InvariantCulture)}",
+            _ => $"{recordId.Table}:{QuoteRecordIdValue(recordId.DeserializeId<object>()?.ToString() ?? string.Empty)}"
+        };
 
     // ===================================================================
     // Marten API parity: Watch* live query wrappers

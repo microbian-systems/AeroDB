@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Linq.Expressions;
+using System.Reflection;
 using AeroDB.Metadata;
 using SurrealDb.Net;
 using SurrealDb.Net.Models;
@@ -55,6 +56,24 @@ public interface ISurrealDbQueryable<T> : IOrderedQueryable<T>
     /// <returns>The queryable for chaining.</returns>
     ISurrealDbQueryable<T> Fetch(Expression<Func<T, object?>> property);
 
+    ILinkedSurrealDbQueryable<T, TTarget> Link<TTarget>(Expression<Func<T, object?>> fkSelector)
+        where TTarget : class;
+
+    ILinkedSurrealDbQueryable<T, TTarget> Join<TTarget>(Expression<Func<T, object?>> fkSelector)
+        where TTarget : class;
+
+    ISurrealDbQueryable<T> Where<TTarget>(Expression<Func<T, TTarget, bool>> predicate)
+        where TTarget : class;
+
+    ISurrealDbQueryable<T> Where<TTarget1, TTarget2>(Expression<Func<T, TTarget1, TTarget2, bool>> predicate)
+        where TTarget1 : class
+        where TTarget2 : class;
+
+    ISurrealDbQueryable<T> Where<TTarget1, TTarget2, TTarget3>(Expression<Func<T, TTarget1, TTarget2, TTarget3, bool>> predicate)
+        where TTarget1 : class
+        where TTarget2 : class
+        where TTarget3 : class;
+
     /// <summary>
     /// Eagerly loads related documents using SurrealDB's LET variable for
     /// <b>server-side batch loading in a single round trip</b>.
@@ -107,6 +126,39 @@ public interface ISurrealDbQueryable<T> : IOrderedQueryable<T>
         where TInclude : class;
 }
 
+public interface ILinkedSurrealDbQueryable<T, TTarget> : ISurrealDbQueryable<T>
+    where TTarget : class
+{
+    ISurrealDbQueryable<T> Where(Expression<Func<T, TTarget, bool>> predicate);
+
+    new ILinkedSurrealDbQueryable<T, TTarget, TNext> Link<TNext>(Expression<Func<T, object?>> fkSelector)
+        where TNext : class;
+
+    new ILinkedSurrealDbQueryable<T, TTarget, TNext> Join<TNext>(Expression<Func<T, object?>> fkSelector)
+        where TNext : class;
+}
+
+public interface ILinkedSurrealDbQueryable<T, TTarget1, TTarget2> : ISurrealDbQueryable<T>
+    where TTarget1 : class
+    where TTarget2 : class
+{
+    ISurrealDbQueryable<T> Where(Expression<Func<T, TTarget1, TTarget2, bool>> predicate);
+
+    new ILinkedSurrealDbQueryable<T, TTarget1, TTarget2, TNext> Link<TNext>(Expression<Func<T, object?>> fkSelector)
+        where TNext : class;
+
+    new ILinkedSurrealDbQueryable<T, TTarget1, TTarget2, TNext> Join<TNext>(Expression<Func<T, object?>> fkSelector)
+        where TNext : class;
+}
+
+public interface ILinkedSurrealDbQueryable<T, TTarget1, TTarget2, TTarget3> : ISurrealDbQueryable<T>
+    where TTarget1 : class
+    where TTarget2 : class
+    where TTarget3 : class
+{
+    ISurrealDbQueryable<T> Where(Expression<Func<T, TTarget1, TTarget2, TTarget3, bool>> predicate);
+}
+
 public class SurrealDbQueryable<T> : ISurrealDbQueryable<T>, IAsyncEnumerable<T>, IOrderedQueryable
 {
     private readonly SurrealQueryProvider _provider;
@@ -122,9 +174,13 @@ public class SurrealDbQueryable<T> : ISurrealDbQueryable<T>, IAsyncEnumerable<T>
 
     /// <summary>Filter predicates applied in-memory after includes are loaded.</summary>
     internal List<FilterIncludeSpec> FilterIncludeSpecs = new();
+    internal List<LinkRegistration> LinkRegistrations = new();
+    internal List<LinkedWhereSpec> LinkedWhereSpecs = new();
 
     /// <summary>Returns the underlying SurrealDB session for raw query execution.</summary>
     internal ISurrealDbSession GetSession() => ((SurrealQueryProvider)Provider).Session;
+
+    internal StoreOptions StoreOptions => _provider.StoreOptions;
 
     /// <summary>
     /// Optional override for the table/view name used in generated SurrealQL.
@@ -176,6 +232,132 @@ public class SurrealDbQueryable<T> : ISurrealDbQueryable<T>, IAsyncEnumerable<T>
     public IQueryProvider Provider => _provider;
 
     public string ToCommand() => _provider.ToCommand(Expression);
+
+    public ILinkedSurrealDbQueryable<T, TTarget> Link<TTarget>(Expression<Func<T, object?>> fkSelector)
+        where TTarget : class
+    {
+        var clrName = ExtractFieldName(fkSelector);
+        var schema = StoreOptions.Schema;
+        var sourceProp = typeof(T).GetProperty(clrName, BindingFlags.Instance | BindingFlags.Public);
+        var fkType = Nullable.GetUnderlyingType(sourceProp?.PropertyType ?? typeof(object))
+            ?? sourceProp?.PropertyType
+            ?? typeof(object);
+
+        var fkField = MetadataDispatch.GetFieldName(typeof(T), clrName, schema);
+        var targetTable = MetadataDispatch.GetTableName(typeof(TTarget), schema);
+        var isRecordId = typeof(RecordId).IsAssignableFrom(fkType)
+            || typeof(IRecord).IsAssignableFrom(fkType)
+            || (fkType.IsGenericType && fkType.GetGenericTypeDefinition() == typeof(RecordIdOf<>));
+        var targetUsesPocoIdentity = schema.Mappings.TryGetValue(typeof(TTarget), out var targetMapping)
+            && targetMapping.IdentityProperty is not null
+            && !typeof(IRecord).IsAssignableFrom(typeof(TTarget))
+            && !ImplementsGenericInterface(typeof(TTarget), typeof(IEntity<>));
+        var castFkToString = targetUsesPocoIdentity && fkType != typeof(string);
+
+        LinkRegistrations.Add(new LinkRegistration(
+            typeof(TTarget),
+            targetTable,
+            fkField,
+            isRecordId,
+            castFkToString));
+
+        return new LinkedSurrealDbQueryable<T, TTarget>(this);
+    }
+
+    public ILinkedSurrealDbQueryable<T, TTarget> Join<TTarget>(Expression<Func<T, object?>> fkSelector)
+        where TTarget : class
+        => Link<TTarget>(fkSelector);
+
+    public ISurrealDbQueryable<T> Where<TTarget>(Expression<Func<T, TTarget, bool>> predicate)
+        where TTarget : class
+    {
+        EnsureLink<TTarget>();
+        LinkedWhereSpecs.Add(new LinkedWhereSpec(predicate, LinkRegistrations.ToList()));
+        return this;
+    }
+
+    public ISurrealDbQueryable<T> Where<TTarget1, TTarget2>(Expression<Func<T, TTarget1, TTarget2, bool>> predicate)
+        where TTarget1 : class
+        where TTarget2 : class
+    {
+        EnsureLink<TTarget1>();
+        EnsureLink<TTarget2>();
+        LinkedWhereSpecs.Add(new LinkedWhereSpec(predicate, LinkRegistrations.ToList()));
+        return this;
+    }
+
+    public ISurrealDbQueryable<T> Where<TTarget1, TTarget2, TTarget3>(Expression<Func<T, TTarget1, TTarget2, TTarget3, bool>> predicate)
+        where TTarget1 : class
+        where TTarget2 : class
+        where TTarget3 : class
+    {
+        EnsureLink<TTarget1>();
+        EnsureLink<TTarget2>();
+        EnsureLink<TTarget3>();
+        LinkedWhereSpecs.Add(new LinkedWhereSpec(predicate, LinkRegistrations.ToList()));
+        return this;
+    }
+
+    private void EnsureLink<TTarget>()
+        where TTarget : class
+    {
+        if (LinkRegistrations.Any(l => l.TargetType == typeof(TTarget)))
+            return;
+
+        Link<TTarget>(BuildConventionFkSelector<TTarget>(StoreOptions.Schema));
+    }
+
+    private static Expression<Func<T, object?>> BuildConventionFkSelector<TTarget>(SchemaOptions schema)
+    {
+        if (schema.Mappings.TryGetValue(typeof(T), out var mapping))
+        {
+            var relationships = mapping.GetRelationshipMappings()
+                .Where(r => r.TargetType == typeof(TTarget) && r.ClrMemberName is not null)
+                .ToList();
+
+            if (relationships.Count == 1)
+            {
+                var relationshipProperty = typeof(T).GetProperty(
+                    relationships[0].ClrMemberName!,
+                    BindingFlags.Instance | BindingFlags.Public);
+
+                if (relationshipProperty is not null)
+                    return BuildMemberSelector(relationshipProperty);
+            }
+        }
+
+        var targetName = typeof(TTarget).Name;
+        var shortName = targetName.StartsWith("Entity", StringComparison.Ordinal) && targetName.Length > "Entity".Length
+            ? targetName["Entity".Length..]
+            : targetName;
+
+        var candidates = new List<PropertyInfo>();
+        foreach (var candidateName in new[] { shortName, shortName + "Id", targetName, targetName + "Id" }.Distinct(StringComparer.Ordinal))
+        {
+            var property = typeof(T).GetProperty(candidateName, BindingFlags.Instance | BindingFlags.Public);
+            if (property is not null)
+                candidates.Add(property);
+        }
+
+        if (candidates.Count != 1)
+            throw new InvalidOperationException(
+                $"Cannot infer a unique FK from '{typeof(T).Name}' to '{typeof(TTarget).Name}'. " +
+                "Use explicit .Link<TTarget>(...) before .Where<TTarget>(...).");
+
+        return BuildMemberSelector(candidates[0]);
+    }
+
+    private static Expression<Func<T, object?>> BuildMemberSelector(PropertyInfo property)
+    {
+        var parameter = Expression.Parameter(typeof(T), "x");
+        Expression body = Expression.Property(parameter, property);
+        if (body.Type.IsValueType)
+            body = Expression.Convert(body, typeof(object));
+        return Expression.Lambda<Func<T, object?>>(body, parameter);
+    }
+
+    private static bool ImplementsGenericInterface(Type type, Type genericInterface)
+        => type.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == genericInterface);
 
     /// <summary>
     /// Enable query statistics for this query. The <paramref name="stats"/> will be populated
@@ -265,6 +447,7 @@ public class SurrealDbQueryable<T> : ISurrealDbQueryable<T>, IAsyncEnumerable<T>
     public ISurrealDbQueryable<T> Fetch(Expression<Func<T, object?>> property)
     {
         var memberName = ExtractFieldName(property);
+        memberName = MetadataDispatch.GetFieldName(typeof(T), memberName, _provider.StoreOptions.Schema);
         FetchFields.Add(memberName);
         return this;
     }
@@ -317,6 +500,145 @@ public class SurrealDbQueryable<T> : ISurrealDbQueryable<T>, IAsyncEnumerable<T>
             return m.Member.Name;
         throw new ArgumentException("Selector must be a simple member expression (e.g., p => p.Price)");
     }
+}
+
+internal abstract class LinkedSurrealDbQueryableBase<T> : ISurrealDbQueryable<T>, IAsyncEnumerable<T>, IOrderedQueryable
+{
+    protected readonly ISurrealDbQueryable<T> Inner;
+
+    protected LinkedSurrealDbQueryableBase(ISurrealDbQueryable<T> inner)
+    {
+        Inner = inner;
+    }
+
+    public Type ElementType => Inner.ElementType;
+    public Expression Expression => Inner.Expression;
+    public IQueryProvider Provider => Inner.Provider;
+
+    public Task<List<T>> ToListAsync(CancellationToken ct = default) => Inner.ToListAsync(ct);
+    public Task<T?> FirstOrDefaultAsync(CancellationToken ct = default) => Inner.FirstOrDefaultAsync(ct);
+    public Task<T?> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate, CancellationToken ct = default) => Inner.FirstOrDefaultAsync(predicate, ct);
+    public Task<T?> SingleOrDefaultAsync(CancellationToken ct = default) => Inner.SingleOrDefaultAsync(ct);
+    public Task<int> CountAsync(CancellationToken ct = default) => Inner.CountAsync(ct);
+    public Task<bool> AnyAsync(CancellationToken ct = default) => Inner.AnyAsync(ct);
+    public Task<decimal> SumAsync(Expression<Func<T, decimal>> selector, CancellationToken ct = default) => Inner.SumAsync(selector, ct);
+    public Task<decimal> MinAsync(Expression<Func<T, decimal>> selector, CancellationToken ct = default) => Inner.MinAsync(selector, ct);
+    public Task<decimal> MaxAsync(Expression<Func<T, decimal>> selector, CancellationToken ct = default) => Inner.MaxAsync(selector, ct);
+    public Task<decimal> AverageAsync(Expression<Func<T, decimal>> selector, CancellationToken ct = default) => Inner.AverageAsync(selector, ct);
+    public ISurrealDbQueryable<T> Stats(out QueryStatistics stats) => Inner.Stats(out stats);
+    public string ToCommand() => Inner.ToCommand();
+    public ISurrealDbQueryable<T> Fetch(Expression<Func<T, object?>> property) => Inner.Fetch(property);
+
+    public ILinkedSurrealDbQueryable<T, TTarget> Link<TTarget>(Expression<Func<T, object?>> fkSelector)
+        where TTarget : class
+        => Inner.Link<TTarget>(fkSelector);
+
+    public ILinkedSurrealDbQueryable<T, TTarget> Join<TTarget>(Expression<Func<T, object?>> fkSelector)
+        where TTarget : class
+        => Inner.Join<TTarget>(fkSelector);
+
+    public ISurrealDbQueryable<T> Where<TTarget>(Expression<Func<T, TTarget, bool>> predicate)
+        where TTarget : class
+        => Inner.Where(predicate);
+
+    public ISurrealDbQueryable<T> Where<TTarget1, TTarget2>(Expression<Func<T, TTarget1, TTarget2, bool>> predicate)
+        where TTarget1 : class
+        where TTarget2 : class
+        => Inner.Where(predicate);
+
+    public ISurrealDbQueryable<T> Where<TTarget1, TTarget2, TTarget3>(Expression<Func<T, TTarget1, TTarget2, TTarget3, bool>> predicate)
+        where TTarget1 : class
+        where TTarget2 : class
+        where TTarget3 : class
+        => Inner.Where(predicate);
+
+    public ISurrealDbQueryable<T> IncludeBatch<TProperty, TInclude>(
+        Expression<Func<T, TProperty>> property,
+        Action<TInclude> callback)
+        where TInclude : class
+        => Inner.IncludeBatch(property, callback);
+
+    public ISurrealDbQueryable<T> IncludeBatch<TKey, TInclude>(
+        Expression<Func<T, TKey>> key,
+        IDictionary<TKey, TInclude> dictionary)
+        where TInclude : class
+        => Inner.IncludeBatch(key, dictionary);
+
+    public IEnumerator<T> GetEnumerator() => Inner.GetEnumerator();
+    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+    public async IAsyncEnumerator<T> GetAsyncEnumerator(CancellationToken ct = default)
+    {
+        await foreach (var item in ((IAsyncEnumerable<T>)Inner).WithCancellation(ct))
+            yield return item;
+    }
+}
+
+internal sealed class LinkedSurrealDbQueryable<T, TTarget> :
+    LinkedSurrealDbQueryableBase<T>,
+    ILinkedSurrealDbQueryable<T, TTarget>
+    where TTarget : class
+{
+    public LinkedSurrealDbQueryable(ISurrealDbQueryable<T> inner)
+        : base(inner)
+    {
+    }
+
+    public ISurrealDbQueryable<T> Where(Expression<Func<T, TTarget, bool>> predicate)
+        => Inner.Where(predicate);
+
+    public new ILinkedSurrealDbQueryable<T, TTarget, TNext> Link<TNext>(Expression<Func<T, object?>> fkSelector)
+        where TNext : class
+    {
+        Inner.Link<TNext>(fkSelector);
+        return new LinkedSurrealDbQueryable<T, TTarget, TNext>(Inner);
+    }
+
+    public new ILinkedSurrealDbQueryable<T, TTarget, TNext> Join<TNext>(Expression<Func<T, object?>> fkSelector)
+        where TNext : class
+        => Link<TNext>(fkSelector);
+}
+
+internal sealed class LinkedSurrealDbQueryable<T, TTarget1, TTarget2> :
+    LinkedSurrealDbQueryableBase<T>,
+    ILinkedSurrealDbQueryable<T, TTarget1, TTarget2>
+    where TTarget1 : class
+    where TTarget2 : class
+{
+    public LinkedSurrealDbQueryable(ISurrealDbQueryable<T> inner)
+        : base(inner)
+    {
+    }
+
+    public ISurrealDbQueryable<T> Where(Expression<Func<T, TTarget1, TTarget2, bool>> predicate)
+        => Inner.Where(predicate);
+
+    public new ILinkedSurrealDbQueryable<T, TTarget1, TTarget2, TNext> Link<TNext>(Expression<Func<T, object?>> fkSelector)
+        where TNext : class
+    {
+        Inner.Link<TNext>(fkSelector);
+        return new LinkedSurrealDbQueryable<T, TTarget1, TTarget2, TNext>(Inner);
+    }
+
+    public new ILinkedSurrealDbQueryable<T, TTarget1, TTarget2, TNext> Join<TNext>(Expression<Func<T, object?>> fkSelector)
+        where TNext : class
+        => Link<TNext>(fkSelector);
+}
+
+internal sealed class LinkedSurrealDbQueryable<T, TTarget1, TTarget2, TTarget3> :
+    LinkedSurrealDbQueryableBase<T>,
+    ILinkedSurrealDbQueryable<T, TTarget1, TTarget2, TTarget3>
+    where TTarget1 : class
+    where TTarget2 : class
+    where TTarget3 : class
+{
+    public LinkedSurrealDbQueryable(ISurrealDbQueryable<T> inner)
+        : base(inner)
+    {
+    }
+
+    public ISurrealDbQueryable<T> Where(Expression<Func<T, TTarget1, TTarget2, TTarget3, bool>> predicate)
+        => Inner.Where(predicate);
 }
 
 // ── Extension methods ────────────────────────────────────────────────
@@ -409,8 +731,11 @@ public static class SurrealDbQueryableExtensions
             throw new ArgumentException("Expression must be a member access (e.g., o => o.Customer).");
 
         var propName = memberExpr.Member.Name;
-        var fkField = propName.ToLowerInvariant();
-        var targetTable = MetadataDispatch.GetTableName(typeof(TInclude));
+        var schema = queryable.StoreOptions.Schema;
+        var fkField = schema.HasConfiguredCase
+            ? MetadataDispatch.GetFieldName(typeof(T), propName, schema)
+            : schema.NamingPolicy.FieldName(propName);
+        var targetTable = MetadataDispatch.GetTableName(typeof(TInclude), queryable.StoreOptions.Schema);
 
         queryable.IncludeSpecs.Add(new IncludeSpec
         {
@@ -465,7 +790,7 @@ public static class SurrealDbQueryableExtensions
             throw new ArgumentException("Expression must be a member access (e.g., o => o.Items).");
 
         var propName = memberExpr.Member.Name;
-        var targetTable = MetadataDispatch.GetTableName(typeof(TChild));
+        var targetTable = MetadataDispatch.GetTableName(typeof(TChild), queryable.StoreOptions.Schema);
 
         var spec = new IncludeSpec
         {

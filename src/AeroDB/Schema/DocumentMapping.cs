@@ -11,6 +11,7 @@ namespace AeroDB;
 public abstract class DocumentMapping
 {
     internal abstract Type EntityType { get; }
+    internal abstract SchemaOptions SchemaOptions { get; }
 
     /// <summary>
     /// The CLR type mapped by this document mapping.
@@ -21,9 +22,12 @@ public abstract class DocumentMapping
     internal abstract bool IsMultiTenanted { get; }
     internal abstract SchemaMode SchemaModeType { get; }
     internal abstract string? SchemaName { get; }
+    internal abstract string? TableNameOverride { get; }
+    internal abstract string ResolveFieldName(string clrName);
 
     /// <summary>Custom field definitions for this document type. Overridden in generic subclass.</summary>
     internal virtual IReadOnlyList<FieldDefinition> GetFieldDefinitions() => [];
+    internal virtual IReadOnlyList<RelationshipMapping> GetRelationshipMappings() => [];
 
     /// <summary>Multi-tenancy style for this document type.</summary>
     public TenancyStyle TenancyStyle { get; set; }
@@ -59,6 +63,7 @@ public enum SchemaMode
 public class DocumentMapping<T> : DocumentMapping
 {
     internal override Type EntityType => typeof(T);
+    internal override SchemaOptions SchemaOptions { get; }
     internal override List<IndexDefinition> Indices { get; } = [];
     private bool _isMultiTenanted;
     internal override bool IsMultiTenanted => _isMultiTenanted;
@@ -66,15 +71,25 @@ public class DocumentMapping<T> : DocumentMapping
     internal override SchemaMode SchemaModeType => _schemaModeType;
     private string? _schemaName;
     internal override string? SchemaName => _schemaName;
+    private string? _tableNameOverride;
+    internal override string? TableNameOverride => _tableNameOverride;
 
     private readonly List<Type> _subClasses = [];
     private readonly HashSet<string> _ignoredIndexes = [];
     private readonly List<ForeignKeyDefinition> _foreignKeys = [];
     private readonly List<FieldDefinition> _fieldDefinitions = [];
+    private readonly Dictionary<string, string> _fieldNameOverrides = new(StringComparer.Ordinal);
+    private readonly List<RelationshipMapping> _relationshipMappings = [];
 
-    internal DocumentMapping()
+    internal DocumentMapping(SchemaOptions schemaOptions)
     {
+        SchemaOptions = schemaOptions;
         ValidateDocumentType<T>();
+    }
+
+    public DocumentMapping()
+        : this(new SchemaOptions())
+    {
     }
 
     /// <summary>Register a derived type for polymorphic querying.</summary>
@@ -129,6 +144,120 @@ public class DocumentMapping<T> : DocumentMapping
     /// <summary>Custom field definitions for this document type.</summary>
     public IReadOnlyList<FieldDefinition> FieldDefinitions => _fieldDefinitions;
     internal override IReadOnlyList<FieldDefinition> GetFieldDefinitions() => _fieldDefinitions;
+    internal override IReadOnlyList<RelationshipMapping> GetRelationshipMappings() => _relationshipMappings;
+
+    public DocumentMapping<T> TableName(string tableName)
+    {
+        if (string.IsNullOrWhiteSpace(tableName))
+            throw new ArgumentException("Table name cannot be empty.", nameof(tableName));
+
+        _tableNameOverride = tableName;
+        return this;
+    }
+
+    public DocumentMapping<T> FieldName<TProp>(Expression<Func<T, TProp>> property, string fieldName)
+    {
+        if (string.IsNullOrWhiteSpace(fieldName))
+            throw new ArgumentException("Field name cannot be empty.", nameof(fieldName));
+
+        var member = ExtractMember(property);
+        _fieldNameOverrides[member.Name] = fieldName;
+        return this;
+    }
+
+    internal override string ResolveFieldName(string clrName)
+        => _fieldNameOverrides.TryGetValue(clrName, out var fieldName)
+            ? fieldName
+            : SchemaOptions.HasConfiguredCase
+                ? SchemaOptions.NamingPolicy.FieldName(clrName)
+                : clrName;
+
+    internal string ResolveTableName()
+        => _tableNameOverride ?? Metadata.MetadataDispatch.GetTableName(typeof(T), SchemaOptions);
+
+    public RelationshipBuilder<T> HasOne<TRelated>(Expression<Func<T, TRelated?>> member)
+    {
+        var memberInfo = ExtractMember(member);
+        var storageField = ResolveFieldName(memberInfo.Name);
+        var mapping = RelationshipMapping.Create(
+            typeof(T),
+            ResolveTableName(),
+            typeof(TRelated),
+            ResolveTableName(typeof(TRelated)),
+            memberInfo.Name,
+            storageField,
+            RelationshipKind.HasOne,
+            RelationshipStorageModel.RecordLink);
+        _relationshipMappings.Add(mapping);
+        return new RelationshipBuilder<T>(mapping);
+    }
+
+    public RelationshipBuilder<T> HasOne<TRelated>()
+        => HasOne<TRelated>(ResolveTableName(typeof(TRelated)));
+
+    public RelationshipBuilder<T> HasOne<TRelated>(string fieldName)
+    {
+        var mapping = RelationshipMapping.Create(
+            typeof(T),
+            ResolveTableName(),
+            typeof(TRelated),
+            ResolveTableName(typeof(TRelated)),
+            null,
+            fieldName,
+            RelationshipKind.HasOne,
+            RelationshipStorageModel.RecordLink);
+        _relationshipMappings.Add(mapping);
+        return new RelationshipBuilder<T>(mapping);
+    }
+
+    public RelationshipBuilder<T> HasMany<TRelated>(Expression<Func<T, IEnumerable<TRelated>?>> member)
+    {
+        var memberInfo = ExtractMember(member);
+        var storageField = ResolveFieldName(memberInfo.Name);
+        var mapping = RelationshipMapping.Create(
+            typeof(T),
+            ResolveTableName(),
+            typeof(TRelated),
+            ResolveTableName(typeof(TRelated)),
+            memberInfo.Name,
+            storageField,
+            RelationshipKind.HasMany,
+            RelationshipStorageModel.RecordLinkArray);
+        _relationshipMappings.Add(mapping);
+        return new RelationshipBuilder<T>(mapping);
+    }
+
+    public RelationshipBuilder<T> HasMany<TRelated>()
+        => HasMany<TRelated>(
+            SchemaOptions.HasConfiguredCase
+                ? SchemaOptions.NamingPolicy.FieldName(Pluralize(typeof(TRelated).Name))
+                : Pluralize(typeof(TRelated).Name));
+
+    public RelationshipBuilder<T> HasMany<TRelated>(string fieldName)
+    {
+        var mapping = RelationshipMapping.Create(
+            typeof(T),
+            ResolveTableName(),
+            typeof(TRelated),
+            ResolveTableName(typeof(TRelated)),
+            null,
+            fieldName,
+            RelationshipKind.HasMany,
+            RelationshipStorageModel.RecordLinkArray);
+        _relationshipMappings.Add(mapping);
+        return new RelationshipBuilder<T>(mapping);
+    }
+
+    private string ResolveTableName(Type type)
+    {
+        if (SchemaOptions.Mappings.TryGetValue(type, out var mapping) && mapping.TableNameOverride is not null)
+            return mapping.TableNameOverride;
+
+        return Metadata.MetadataDispatch.GetTableName(type, SchemaOptions);
+    }
+
+    private static string Pluralize(string name)
+        => name.EndsWith("s", StringComparison.OrdinalIgnoreCase) ? name : name + "s";
 
     /// <summary>
     /// Defines a computed/expression-based index with configurable options

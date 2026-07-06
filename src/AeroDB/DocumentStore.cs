@@ -5,6 +5,7 @@ using SurrealDb.Net;
 using System.Threading;
 using AeroDB.Internals.Cbor;
 using AeroDB.LiveQuery;
+using AeroDB.Metadata;
 
 namespace AeroDB;
 
@@ -194,10 +195,17 @@ public class DocumentStore : IDocumentStore, ISessionFactory
                 {
                     // Ensure table schema (DEFINE TABLE + fields) with the configured schema mode
                     var fds = mapping.GetFieldDefinitions();
-                    await schemaManager.EnsureDocumentSchemaAsync(mapping.EntityType, schemaSession, mode: mapping.SchemaModeType, fieldDefinitions: fds, ct: ct).ConfigureAwait(false);
+                    await schemaManager.EnsureDocumentSchemaAsync(
+                        mapping.EntityType,
+                        schemaSession,
+                        mode: mapping.SchemaModeType,
+                        fieldDefinitions: fds,
+                        relationshipMappings: mapping.GetRelationshipMappings(),
+                        schemaOptions: Options.Schema,
+                        ct: ct).ConfigureAwait(false);
 
                     // Ensure each configured index
-                    var tableName = SchemaManager.Snake(mapping.EntityType.Name);
+                    var tableName = MetadataDispatch.GetTableName(mapping.EntityType, Options.Schema);
                     foreach (var index in mapping.Indices)
                     {
                         await schemaManager.EnsureIndexAsync(schemaSession, tableName, index, ct).ConfigureAwait(false);
@@ -233,9 +241,16 @@ public class DocumentStore : IDocumentStore, ISessionFactory
                     {
                         var mapping = kvp.Value;
                         var fieldDefs = mapping.GetFieldDefinitions();
-                        await schemaManager.EnsureDocumentSchemaAsync(mapping.EntityType, schemaSession, mode: mapping.SchemaModeType, fieldDefinitions: fieldDefs, ct: ct).ConfigureAwait(false);
+                        await schemaManager.EnsureDocumentSchemaAsync(
+                            mapping.EntityType,
+                            schemaSession,
+                            mode: mapping.SchemaModeType,
+                            fieldDefinitions: fieldDefs,
+                            relationshipMappings: mapping.GetRelationshipMappings(),
+                            schemaOptions: Options.Schema,
+                            ct: ct).ConfigureAwait(false);
 
-                        var tableName = SchemaManager.Snake(mapping.EntityType.Name);
+                        var tableName = MetadataDispatch.GetTableName(mapping.EntityType, Options.Schema);
                         foreach (var index in mapping.Indices)
                         {
                             await schemaManager.EnsureIndexAsync(schemaSession, tableName, index, ct).ConfigureAwait(false);

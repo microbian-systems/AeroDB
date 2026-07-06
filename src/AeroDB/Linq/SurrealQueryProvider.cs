@@ -294,6 +294,27 @@ public class SurrealQueryProvider : IQueryProvider
         return null;
     }
 
+    internal static List<LinkedWhereSpec>? ExtractLinkedWhereSpecs(Expression expression)
+    {
+        if (expression is ConstantExpression c && c.Value is IQueryable q)
+        {
+            var qType = q.GetType();
+            if (qType.IsGenericType && qType.GetGenericTypeDefinition() == typeof(SurrealDbQueryable<>))
+            {
+                var linkedWhereField = qType.GetField("LinkedWhereSpecs",
+                    BindingFlags.Instance | BindingFlags.NonPublic);
+                var specs = linkedWhereField?.GetValue(q) as List<LinkedWhereSpec>;
+                if (specs is { Count: > 0 })
+                    return specs;
+            }
+        }
+        if (expression is MethodCallExpression m && m.Arguments.Count > 0)
+            return ExtractLinkedWhereSpecs(m.Arguments[0]);
+        if (expression is UnaryExpression u)
+            return ExtractLinkedWhereSpecs(u.Operand);
+        return null;
+    }
+
     /// <summary>
     /// Extracts <see cref="SurrealDbQueryable{T}.QueryStats"/> from the source queryable embedded
     /// in the expression tree. Used to recover the QueryStatistics reference set via
@@ -447,6 +468,7 @@ public class SurrealQueryProvider : IQueryProvider
             query.TableName = viewName;
 
         var sourceType = ExtractElementType(expression) ?? typeof(T);
+        ApplyLinkedWhereSpecs(query, expression, sourceType);
         ApplyTenantFilter(query, sourceType);
         ApplySoftDeleteFilter(query, sourceType);
 
@@ -1474,6 +1496,7 @@ public class SurrealQueryProvider : IQueryProvider
             query.TableName = viewName;
 
         var elementType = ExtractElementType(expression);
+        ApplyLinkedWhereSpecs(query, expression, elementType);
         ApplyTenantFilter(query, elementType);
         ApplySoftDeleteFilter(query, elementType);
 
@@ -1557,6 +1580,7 @@ public class SurrealQueryProvider : IQueryProvider
             query.TableName = viewName;
 
         var elementType = ExtractElementType(expression);
+        ApplyLinkedWhereSpecs(query, expression, elementType);
         ApplyTenantFilter(query, elementType);
         ApplySoftDeleteFilter(query, elementType);
         query.Limit = 1;
@@ -1595,6 +1619,7 @@ public class SurrealQueryProvider : IQueryProvider
             query.TableName = viewName;
 
         var elementType = ExtractElementType(expression);
+        ApplyLinkedWhereSpecs(query, expression, elementType);
         ApplyTenantFilter(query, elementType);
         ApplySoftDeleteFilter(query, elementType);
 
@@ -1604,6 +1629,26 @@ public class SurrealQueryProvider : IQueryProvider
             query.FetchFields.AddRange(fetchFields);
 
         return query.ToSurrealQL();
+    }
+
+    private void ApplyLinkedWhereSpecs(SurrealQueryResult query, Expression expression, Type? sourceType)
+    {
+        var specs = ExtractLinkedWhereSpecs(expression);
+        if (specs is not { Count: > 0 })
+            return;
+
+        foreach (var spec in specs)
+        {
+            var visitor = CreateVisitor();
+            query.Where.Add(visitor.TranslateLinkedWhere(spec.Predicate, spec.Links));
+            if (visitor.Parameters.Count > 0)
+            {
+                var merged = new Dictionary<string, object?>(query.Parameters);
+                foreach (var parameter in visitor.Parameters)
+                    merged[parameter.Key] = parameter.Value;
+                query.Parameters = merged;
+            }
+        }
     }
 
     private static readonly JsonSerializerOptions JsonOptions = new()

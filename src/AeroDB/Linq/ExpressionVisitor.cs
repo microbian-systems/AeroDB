@@ -19,6 +19,7 @@ namespace AeroDB;
         private string _projection = "*";
         private SurrealCommandBuilder _cmdBuilder = new();
         private readonly SchemaOptions? _schema;
+        private Dictionary<ParameterExpression, LinkRegistration> _parameterLinks = new();
 
         public SurrealExpressionVisitor(SchemaOptions? schema = null)
         {
@@ -58,6 +59,30 @@ namespace AeroDB;
             ["SurrealSeriesFunctions"] = SeriesExpressionHandler.TranslateSeriesFunc,
         };
 
+    internal IReadOnlyDictionary<string, object?> Parameters => _cmdBuilder.Parameters;
+
+    internal string TranslateLinkedWhere(LambdaExpression predicate, IReadOnlyList<LinkRegistration> links)
+    {
+        if (predicate.Parameters.Count < 2)
+            throw new ArgumentException("Linked where predicates must have at least two parameters.", nameof(predicate));
+
+        if (links.Count < predicate.Parameters.Count - 1)
+            throw new InvalidOperationException("Linked where predicate has more linked parameters than registered links.");
+
+        _parameterLinks = new Dictionary<ParameterExpression, LinkRegistration>();
+        for (var i = 1; i < predicate.Parameters.Count; i++)
+            _parameterLinks[predicate.Parameters[i]] = links[i - 1];
+
+        try
+        {
+            return TranslateConditionCore(predicate.Body, _cmdBuilder);
+        }
+        finally
+        {
+            _parameterLinks.Clear();
+        }
+    }
+
     public SurrealQueryResult Translate(Expression expression)
     {
         _sb.Clear();
@@ -70,6 +95,7 @@ namespace AeroDB;
         _projection = "*";
         TableName = null;
         _cmdBuilder = new SurrealCommandBuilder();
+        _parameterLinks.Clear();
 
         Visit(expression);
         return new SurrealQueryResult
@@ -276,7 +302,7 @@ namespace AeroDB;
         MethodCallExpression m => TranslateMethod(m, builder),
         UnaryExpression u when u.NodeType == ExpressionType.Not
             => $"NOT ({TranslateConditionCore(u.Operand, builder)})",
-        MemberExpression m => m.Member.Name,
+        MemberExpression m => MemberPath(m),
         _ => ""
     };
 
@@ -286,12 +312,18 @@ namespace AeroDB;
         MethodCallExpression m => TranslateMethod(m),
         UnaryExpression u when u.NodeType == ExpressionType.Not
             => $"NOT ({TranslateConditionCore(u.Operand)})",
-        MemberExpression m => m.Member.Name,
+        MemberExpression m => MemberPath(m),
         _ => ""
     };
 
     private string TranslateBinary(BinaryExpression b, SurrealCommandBuilder builder)
     {
+        if (TryTranslateCoalescedLinkedTypedAnd(b, builder, out var coalesced))
+            return coalesced;
+
+        if (TryTranslateLinkedTypedBinary(b, builder, out var linkedTyped))
+            return linkedTyped;
+
         var left = Operand(b.Left, builder);
         var right = Operand(b.Right, builder);
         var op = b.NodeType switch
@@ -499,22 +531,267 @@ namespace AeroDB;
 
         if (m.Expression is ParameterExpression paramExpr)
         {
+            if (_parameterLinks.TryGetValue(paramExpr, out var link))
+            {
+                var linkedField = FieldName(link.TargetType, m.Member.Name);
+                return link.FkIsRecordId ? $"{link.FkFieldName}.{linkedField}" : linkedField;
+            }
+
             var propName = m.Member.Name;
             // If this parameter's type has a configured identity, emit native "id" key
             if (_schema?.Mappings.TryGetValue(paramExpr.Type, out var mapping) == true
                 && mapping.IdentityProperty == propName)
                 return "id";
-            return propName;
+            return FieldName(paramExpr.Type, propName);
         }
         if (m.Expression is MemberExpression inner)
         {
+            if (TryRelationshipPath(m, out var relationshipPath))
+                return relationshipPath;
+
             var innerPath = MemberPath(inner);
             if (IsDateTimeMember(m))
                 return DateTimeFunc(m.Member.Name, innerPath);
-            return $"{innerPath}.{m.Member.Name}";
+            return $"{innerPath}.{FieldName(m.Member.DeclaringType, m.Member.Name)}";
         }
-        return m.Member.Name;
+        return FieldName(m.Member.DeclaringType, m.Member.Name);
     }
+
+    private bool TryRelationshipPath(MemberExpression member, out string path)
+    {
+        path = "";
+        var members = new List<MemberExpression>();
+        Expression? current = member;
+        while (current is MemberExpression me)
+        {
+            members.Add(me);
+            current = StripConvert(me.Expression);
+        }
+
+        if (current is not ParameterExpression root || members.Count < 2)
+            return false;
+
+        members.Reverse();
+        var rootMember = members[0];
+        if (_schema is null || !_schema.Mappings.TryGetValue(root.Type, out var sourceMapping))
+            return false;
+
+        var relationships = sourceMapping.GetRelationshipMappings();
+        if (relationships.Count == 0)
+            return false;
+
+        var relationship = relationships.FirstOrDefault(r =>
+            string.Equals(r.ClrMemberName, rootMember.Member.Name, StringComparison.Ordinal));
+
+        if (relationship is null)
+        {
+            throw new NotSupportedException(
+                $"Cannot translate member access '{root.Type.Name}.{string.Join(".", members.Select(x => x.Member.Name))}'. " +
+                $"The member '{root.Type.Name}.{rootMember.Member.Name}' is not configured as an AeroDB relationship.");
+        }
+
+        var parts = new List<string> { relationship.StorageFieldName };
+        var currentType = relationship.TargetType;
+        foreach (var next in members.Skip(1))
+        {
+            parts.Add(FieldName(currentType, next.Member.Name));
+            currentType = GetMemberType(next.Member) ?? currentType;
+        }
+
+        path = string.Join(".", parts);
+        return true;
+    }
+
+    private bool TryTranslateLinkedTypedBinary(BinaryExpression binary, SurrealCommandBuilder builder, out string translated)
+    {
+        translated = "";
+        if (binary.NodeType is ExpressionType.AndAlso or ExpressionType.OrElse)
+            return false;
+
+        if (TryGetLinkedMember(binary.Left, out var leftMember, out var leftLink) && !leftLink.FkIsRecordId)
+        {
+            var right = Operand(binary.Right, builder);
+            translated = BuildTypedLinkSubquery(leftLink, leftMember, binary.NodeType, right);
+            return true;
+        }
+
+        if (TryGetLinkedMember(binary.Right, out var rightMember, out var rightLink) && !rightLink.FkIsRecordId)
+        {
+            var left = Operand(binary.Left, builder);
+            translated = BuildTypedLinkSubquery(rightLink, rightMember, Flip(binary.NodeType), left);
+            return true;
+        }
+
+        return false;
+    }
+
+    private bool TryTranslateCoalescedLinkedTypedAnd(BinaryExpression binary, SurrealCommandBuilder builder, out string translated)
+    {
+        translated = "";
+        if (binary.NodeType != ExpressionType.AndAlso)
+            return false;
+
+        var clauses = new List<BinaryExpression>();
+        FlattenAndAlso(binary, clauses);
+        if (clauses.Count < 2)
+            return false;
+
+        LinkRegistration? commonLink = null;
+        var conditions = new List<string>(clauses.Count);
+
+        foreach (var clause in clauses)
+        {
+            if (!TryBuildLinkedTargetCondition(clause, builder, out var link, out var condition))
+                return false;
+
+            if (link.FkIsRecordId)
+                return false;
+
+            commonLink ??= link;
+            if (!ReferenceEquals(commonLink, link) && commonLink != link)
+                return false;
+
+            conditions.Add(condition);
+        }
+
+        if (commonLink is null)
+            return false;
+
+        translated = string.Join(" AND ", conditions);
+        return true;
+    }
+
+    private static void FlattenAndAlso(Expression expression, List<BinaryExpression> clauses)
+    {
+        if (expression is BinaryExpression { NodeType: ExpressionType.AndAlso } andAlso)
+        {
+            FlattenAndAlso(andAlso.Left, clauses);
+            FlattenAndAlso(andAlso.Right, clauses);
+            return;
+        }
+
+        if (expression is BinaryExpression binary)
+            clauses.Add(binary);
+    }
+
+    private bool TryBuildLinkedTargetCondition(
+        BinaryExpression binary,
+        SurrealCommandBuilder builder,
+        out LinkRegistration link,
+        out string condition)
+    {
+        link = null!;
+        condition = "";
+        if (binary.NodeType is ExpressionType.AndAlso or ExpressionType.OrElse)
+            return false;
+
+        if (TryGetLinkedMember(binary.Left, out var leftMember, out var leftLink) && !leftLink.FkIsRecordId)
+        {
+            var right = Operand(binary.Right, builder);
+            condition = BuildTargetCondition(leftLink, leftMember, binary.NodeType, right);
+            link = leftLink;
+            return true;
+        }
+
+        if (TryGetLinkedMember(binary.Right, out var rightMember, out var rightLink) && !rightLink.FkIsRecordId)
+        {
+            var left = Operand(binary.Left, builder);
+            condition = BuildTargetCondition(rightLink, rightMember, Flip(binary.NodeType), left);
+            link = rightLink;
+            return true;
+        }
+
+        return false;
+    }
+
+    private bool TryGetLinkedMember(Expression expression, out MemberExpression member, out LinkRegistration link)
+    {
+        expression = StripConvert(expression) ?? expression;
+        if (expression is MemberExpression { Expression: ParameterExpression parameter } linkedMember
+            && _parameterLinks.TryGetValue(parameter, out var registration))
+        {
+            member = linkedMember;
+            link = registration;
+            return true;
+        }
+
+        member = null!;
+        link = null!;
+        return false;
+    }
+
+    private string BuildTypedLinkSubquery(
+        LinkRegistration link,
+        MemberExpression targetMember,
+        ExpressionType nodeType,
+        string value)
+    {
+        var field = FieldName(link.TargetType, targetMember.Member.Name);
+        var op = nodeType switch
+        {
+            ExpressionType.Equal => "=",
+            ExpressionType.NotEqual => "!=",
+            ExpressionType.GreaterThan => ">",
+            ExpressionType.GreaterThanOrEqual => ">=",
+            ExpressionType.LessThan => "<",
+            ExpressionType.LessThanOrEqual => "<=",
+            _ => throw new NotSupportedException($"Operator {nodeType}")
+        };
+
+        return $"{TypedRecordExpression(link)}.{field} {op} {value}";
+    }
+
+    private string BuildTargetCondition(
+        LinkRegistration link,
+        MemberExpression targetMember,
+        ExpressionType nodeType,
+        string value)
+    {
+        var field = FieldName(link.TargetType, targetMember.Member.Name);
+        var op = nodeType switch
+        {
+            ExpressionType.Equal => "=",
+            ExpressionType.NotEqual => "!=",
+            ExpressionType.GreaterThan => ">",
+            ExpressionType.GreaterThanOrEqual => ">=",
+            ExpressionType.LessThan => "<",
+            ExpressionType.LessThanOrEqual => "<=",
+            _ => throw new NotSupportedException($"Operator {nodeType}")
+        };
+
+        return $"{TypedRecordExpression(link)}.{field} {op} {value}";
+    }
+
+    private static string TypedRecordExpression(LinkRegistration link)
+    {
+        var fk = link.CastFkToStringForRecordId
+            ? $"<string>{link.FkFieldName}"
+            : link.FkFieldName;
+
+        return $"type::record(\"{link.TargetTable}\", {fk})";
+    }
+
+    private static ExpressionType Flip(ExpressionType nodeType) => nodeType switch
+    {
+        ExpressionType.GreaterThan => ExpressionType.LessThan,
+        ExpressionType.GreaterThanOrEqual => ExpressionType.LessThanOrEqual,
+        ExpressionType.LessThan => ExpressionType.GreaterThan,
+        ExpressionType.LessThanOrEqual => ExpressionType.GreaterThanOrEqual,
+        _ => nodeType
+    };
+
+    private string FieldName(Type? sourceType, string clrName)
+        => sourceType is null
+            ? (_schema?.NamingPolicy.FieldName(clrName) ?? clrName)
+            : MetadataDispatch.GetFieldName(sourceType, clrName, _schema);
+
+    private static Type? GetMemberType(MemberInfo member)
+        => member switch
+        {
+            PropertyInfo property => Nullable.GetUnderlyingType(property.PropertyType) ?? property.PropertyType,
+            FieldInfo field => Nullable.GetUnderlyingType(field.FieldType) ?? field.FieldType,
+            _ => null
+        };
 
     private static bool IsDateTimeMember(MemberExpression m)
         => m.Member.DeclaringType == typeof(DateTime) || m.Member.DeclaringType == typeof(DateTimeOffset);
@@ -553,6 +830,9 @@ namespace AeroDB;
         if (expr is not MemberExpression m)
             return "*";
 
+        if (TryRelationshipPath(m, out var relationshipPath))
+            return relationshipPath;
+
         // Check for chained member access (inner expression is also a MemberExpression)
         // Examples: o.Customer.Name → parts = [Name, Customer], reversed → "Customer.Name"
         //           o.Customer.Address.City → parts = [City, Address, Customer], reversed → "Customer.Address.City"
@@ -563,7 +843,7 @@ namespace AeroDB;
             Expression? current = expr;
             while (current is MemberExpression me)
             {
-                parts.Add(me.Member.Name);
+                parts.Add(FieldName(me.Member.DeclaringType, me.Member.Name));
                 current = StripConvert(me.Expression);
                 if (current is ParameterExpression)
                     break;
@@ -573,7 +853,7 @@ namespace AeroDB;
         }
 
         // Single level — unchanged behavior (o.Customer → "Customer")
-        return m.Member.Name;
+        return FieldName(m.Member.DeclaringType, m.Member.Name);
     }
 
     /// <summary>
