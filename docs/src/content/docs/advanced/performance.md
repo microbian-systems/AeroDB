@@ -34,17 +34,21 @@ await batch.ExecuteAsync(); // single round-trip
 
 ## Compiled Queries
 
-Pre-parse hot-path queries with `CompiledQuery`:
+Pre-compile hot-path queries to avoid expression-tree parsing on every call:
 
 ```csharp
-private static readonly CompiledQuery<User, User?> GetByEmail =
-    CompiledQuery.Create((IQueryable<User> q, string email) =>
-        q.FirstOrDefaultAsync(u => u.Email == email));
+public class UsersByCity : CompiledQuery<User>
+{
+    public string City { get; set; }
 
-var user = await GetByEmail(session.Query<User>(), "alice@example.com");
+    public override Expression<Func<IQueryable<User>, IQueryable<User>>> Query()
+        => q => q.Where(u => u.City == City);
+}
+
+var nycUsers = await session.QueryAsync(new UsersByCity { City = "NYC" });
 ```
 
-For maximum throughput, implement `ICompiledQuery<TDoc, TOut>` to cache the query plan.
+The compiled query caches the expression tree so subsequent executions skip the compilation step entirely.
 
 ## Index Strategies
 

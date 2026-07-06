@@ -67,15 +67,18 @@ var dtos = await session.Query<User>()
 
 ## Compiled Queries for Hot Paths
 
-Avoid re-compiling the same query shape repeatedly:
+Avoid re-compiling the same query shape repeatedly by subclassing `CompiledQuery<T>`:
 
 ```csharp
-private static readonly CompiledQuery<User, User?> GetByEmail =
-    CompiledQuery.Create((IQueryable<User> q, string email) =>
-        q.FirstOrDefaultAsync(u => u.Email == email));
+public class UsersByCity : CompiledQuery<User>
+{
+    public string City { get; set; }
 
-// Usage — cache and reuse
-var user = await GetByEmail(session.Query<User>(), "alice@example.com");
+    public override Expression<Func<IQueryable<User>, IQueryable<User>>> Query()
+        => q => q.Where(u => u.City == City);
+}
+
+var nycUsers = await session.QueryAsync(new UsersByCity { City = "NYC" });
 ```
 
 ## Limitations and Workarounds

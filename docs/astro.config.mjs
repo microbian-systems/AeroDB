@@ -8,6 +8,10 @@ export default defineConfig({
   integrations: [
     starlight({
       title: 'AeroDB v0.0.8.1-alpha',
+      logo: {
+        src: './src/assets/logo.png',
+        alt: 'AeroDB',
+      },
       // plugins: [
       //   starlightVersions({
       //     versions: [{ slug: '0.0.8.1-alpha', label: 'v0.0.8.1 (alpha)' }],
@@ -105,6 +109,7 @@ export default defineConfig({
             { label: 'Transactions', slug: 'advanced/transactions' },
             { label: 'Search', slug: 'advanced/search' },
             { label: 'Custom Serialization', slug: 'advanced/serialization' },
+            { label: 'Reactive Streams', slug: 'advanced/reactive-streams' },
             { label: 'Snowflake IDs', slug: 'advanced/snowflake' },
           ],
         },

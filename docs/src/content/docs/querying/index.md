@@ -333,13 +333,16 @@ Console.WriteLine(surrealql); // SELECT ... FROM user WHERE ...
 
 ## Compiled Queries for Hot Paths
 
-Avoid re-compiling the same query shape repeatedly in high-throughput paths:
+Avoid re-compiling the same query shape repeatedly in high-throughput paths by subclassing `CompiledQuery<T>`:
 
 ```csharp
-private static readonly CompiledQuery<User, User?> GetByEmail =
-    CompiledQuery.Create((IQueryable<User> q, string email) =>
-        q.FirstOrDefaultAsync(u => u.Email == email));
+public class UsersByCity : CompiledQuery<User>
+{
+    public string City { get; set; }
 
-// Reuse across requests
-var user = await GetByEmail(session.Query<User>(), "alice@example.com");
+    public override Expression<Func<IQueryable<User>, IQueryable<User>>> Query()
+        => q => q.Where(u => u.City == City);
+}
+
+var nycUsers = await session.QueryAsync(new UsersByCity { City = "NYC" });
 ```
