@@ -347,6 +347,146 @@ LIMIT 1;
 
 ---
 
+## Filter Behavior — Link and Multi-Parameter Where
+
+### Problem
+
+For `Record` subclasses, standard LINQ dot-notation works in Where clauses:
+```csharp
+session.Query<Order>()
+    .Where(o => o.Customer!.Name == "Alice")
+    .ToListAsync();
+```
+→ `SELECT * FROM order WHERE Customer.Name = 'Alice';`
+
+But for `Entity<TId>` and POCO types, the FK field is a plain typed value (long/string/etc), not a `RecordId`. `Where(x => CustomerId == 5)` is valid, but there's no way to filter by properties of the *referenced* entity without explicit subqueries.
+
+### Solution: Link + Multi-Parameter Lambda
+
+Two-part API:
+
+```csharp
+// Part 1: Link — register the FK relationship on the query
+.Link<TTarget>(o => o.FkField)
+
+// Part 2: Where — multi-parameter lambda, second+ params reference linked entities
+.Where((o, c) => o.CreatedOn >= someDate && c.Name == "Alice")
+```
+
+Where `c` refers to the `Customer` entity linked via `o.Customer` (the record link property). The expression visitor distinguishes parameters:
+
+| Root Parameter | Meaning | Translation |
+|---|---|---|
+| `Parameters[0]` (`o`) | Main entity | Standard property access |
+| `Parameters[1]` (`c`) | Linked entity via `.Link<Customer>()` | FK-traversed access |
+
+### SurrealQL Translation
+
+**When FK field is a RecordId** (`record<T>` link — dot-notation):
+
+```csharp
+session.Query<Order>()
+    .Link<Customer>(o => o.Customer)   // Customer is a record<T> property
+    .Where((o, c) => o.CreatedOn >= someDate && c.Name == "Alice")
+    .ToListAsync();
+```
+
+```surql
+SELECT * FROM `order` WHERE CreatedOn >= $p0 AND Customer.Name = 'Alice';
+```
+
+The dot-notation follows the CLR property name (`Customer`), which maps to the SurrealDB field storing the `record<customer>` link.
+
+**When FK field is a typed value** (long/string — IN subquery):
+
+```csharp
+session.Query<EntityOrder>()
+    .Link<EntityCustomer>(o => o.CustomerId)   // CustomerId is a typed FK (long)
+    .Where((o, c) => c.Name == "Alice")
+    .ToListAsync();
+```
+
+```surql
+SELECT * FROM `entity_order` WHERE CustomerId IN (
+    SELECT VALUE Id FROM `entity_customer` WHERE Name = 'Alice'
+);
+```
+
+FK type detection: The visitor inspects the property type of the FK field on the source type. If it's `RecordId`/`RecordIdOf<T>` or the property type implements `IRecord` → dot-notation. If it's `long`/`string`/`int`/`Guid` → IN subquery.
+
+### Shorthand: `Where<TTarget>()`
+
+Auto-infers the FK field by convention (`TTarget.Name + "Id"`) when no explicit `.Link()` is needed:
+
+```csharp
+session.Query<Order>()
+    .Where<Customer>((o, c) => c.Name == "Alice")
+    .ToListAsync();
+```
+→ `SELECT * FROM `order` WHERE Customer.Name = 'Alice';`
+
+The convention resolves `Where<Customer>` → FK field `Customer` on the source type (matching the record link property name). For typed FK fields, the convention uses `{TTarget.Name}Id` (e.g., `CustomerId` on `EntityOrder` for `Where<EntityCustomer>`). Resolution order:
+
+1. **Explicit `.Link<TTarget>(...)`** — highest priority (manual override)
+2. **`Schema.For<T>().ForeignKey<TTarget>()`** — declared in schema config
+3. **Convention** — `{TTarget.Name}Id` on source type
+4. **Attribute** — `[ForeignKey(typeof(TTarget))]` on the FK property
+
+### Composition: Multiple Links
+
+```csharp
+session.Query<Order>()
+    .Link<Customer>(o => o.Customer)      // RecordId FK → dot-notation
+    .Link<Product>(o => o.ProductId)      // typed FK → IN subquery
+    .Where((o, c, p) => o.CreatedOn >= someDate && c.Name == "Alice" && p.Price > 50)
+    .ToListAsync();
+```
+
+Generated SurrealQL (mixed: Customer is RecordId, Product is typed):
+
+```surql
+SELECT * FROM `order` WHERE
+    CreatedOn >= $p0
+    AND Customer.Name = $p1
+    AND ProductId IN (SELECT VALUE Id FROM `product` WHERE Price > $p2);
+```
+
+### Composition with Fetch
+
+`.Link()` (WHERE filter) and `.Fetch()` (eager loading) are orthogonal and compose naturally:
+
+```csharp
+session.Query<Order>()
+    .Link<Customer>(o => o.Customer)
+    .Fetch(o => o.Customer)
+    .Where((o, c) => c.Name == "Alice")
+    .ToListAsync();
+```
+
+```surql
+SELECT * FROM `order` WHERE Customer.Name = 'Alice' FETCH `Customer`;
+```
+
+### Implementation
+
+The visitor needs:
+
+1. A `List<LinkRegistration>` on `SurrealDbQueryable<T>`, populated by `.Link<TTarget>()`
+2. A context dictionary mapping `ParameterExpression` → link registration for multi-param lambdas
+3. FK type detection (RecordId vs typed) at translation time
+4. Conditional coalescing: multiple conditions on the same linked entity → one subquery
+
+```csharp
+internal sealed record LinkRegistration(
+    Type TargetType,
+    string TargetTable,
+    string FkFieldName,
+    bool FkIsRecordId
+);
+```
+
+---
+
 ## Schemafull vs Schemaless
 
 ## SCHEMAFULL
@@ -881,6 +1021,29 @@ Cannot translate collection relationship access 'Order.Products'. The member 'Or
 9. Add tests for schema generation, query translation, includes, and mutation behavior.
 10. Keep graph edge relationship support separate from record relationship support.
 
+### Link + Multi-Parameter Filter Tasks
+
+11. Add `LinkRegistration` record type and `List<LinkRegistration>` to `SurrealDbQueryable<T>`.
+12. Add `.Link<TTarget>(Expression<Func<T, object>> fkSelector)` extension method on `ISurrealDbQueryable<T>`.
+13. Extend `SurrealExpressionVisitor` to accept link registrations and handle multi-parameter lambdas:
+    - Detect which `ParameterExpression` a `MemberExpression` roots in.
+    - For main-entity params (index 0): standard translation (existing path).
+    - For linked-entity params (index 1+): translate via link registration.
+14. Implement FK type detection at translation time — `RecordId`/`RecordIdOf<T>` → dot-notation; `long`/`string`/`int`/`Guid` → IN subquery.
+15. Add `.Where<TTarget>((o, target) => ...)` shorthand that auto-infers FK field by convention (`TTarget.Name + "Id"`) and delegates to the core Link+Where infrastructure.
+16. Add `.WhereFK<TTarget>(fkSelector, predicate)` legacy bridge — wraps into Link+Where internally.
+17. Implement multi-link composition: 3+ parameter Where with multiple `.Link()` registrations.
+18. Implement conditional coalescing: multiple conditions on the same linked entity group into one IN-subquery.
+19. Add test cases:
+    - Link + Where with RecordId FK (dot-notation path)
+    - Link + Where with typed FK (IN subquery path)
+    - `Where<TTarget>()` shorthand (convention-based FK resolution)
+    - Multiple links composition (3+ params)
+    - Mixed WHERE conditions (main entity + linked entity in one expression)
+    - Cross-paradigm: Record subclass, Entity<TId>, POCO
+    - Error: unconfigured link with no convention match
+    - Composition with Fetch, Include, IncludeReverse
+
 ---
 
 ## Test Cases
@@ -980,6 +1143,88 @@ Expected:
 
 ```text
 Clear translation error explaining that Order.Customer is not configured as a relationship.
+```
+
+## Link + Where (RecordId FK — dot-notation)
+
+Input (Record subclass):
+```csharp
+session.Query<Order>()
+    .Link<Customer>(o => o.Customer)   // record<T> property
+    .Where((o, c) => o.CreatedOn >= someDate && c.Name == "Alice")
+    .ToListAsync();
+```
+
+Expected SurrealQL:
+```sql
+SELECT * FROM `order` WHERE CreatedOn >= $p0 AND Customer.Name = 'Alice';
+```
+
+## Link + Where (typed FK — IN subquery)
+
+Input (Entity<TId>):
+```csharp
+session.Query<EntityOrder>()
+    .Link<EntityCustomer>(o => o.CustomerId)  // typed FK (long)
+    .Where((o, c) => c.Name == "Alice")
+    .ToListAsync();
+```
+
+Expected SurrealQL:
+```sql
+SELECT * FROM `entity_order` WHERE CustomerId IN (SELECT VALUE Id FROM `entity_customer` WHERE Name = 'Alice');
+```
+
+## Where<TTarget> shorthand (convention-based FK)
+
+Input (Record subclass):
+```csharp
+session.Query<Order>()
+    .Where<Customer>((o, c) => c.Name == "Bob")
+    .ToListAsync();
+```
+
+Expected: Same as explicit `.Link<Customer>(o => o.Customer).Where((o, c) => ...)` — convention resolves `Customer` → FK field `Customer`.
+
+Input (Entity<TId>):
+```csharp
+session.Query<EntityOrder>()
+    .Where<EntityCustomer>((o, c) => c.Name == "Alice")
+    .ToListAsync();
+```
+
+Expected: Same as explicit `.Link<EntityCustomer>(o => o.CustomerId).Where((o, c) => ...)` — convention resolves `EntityCustomer` → FK field `CustomerId`.
+
+## Multiple links composition (mixed types)
+
+Input:
+```csharp
+session.Query<Order>()
+    .Link<Customer>(o => o.Customer)      // RecordId FK → dot-notation
+    .Link<Product>(o => o.ProductId)      // typed FK → IN subquery
+    .Where((o, c, p) => o.CreatedOn >= someDate && c.Name == "Alice" && p.Price > 50)
+    .ToListAsync();
+```
+
+Expected SurrealQL:
+```sql
+SELECT * FROM `order` WHERE CreatedOn >= $p0 AND Customer.Name = $p1 AND ProductId IN (SELECT VALUE Id FROM `product` WHERE Price > $p2);
+```
+
+## Link + Where composed with Fetch
+
+Input:
+```csharp
+session.Query<Order>()
+    .Link<Customer>(o => o.Customer)
+    .Fetch(o => o.Customer)
+    .Where((o, c) => c.Name == "Alice")
+    .ToListAsync();
+```
+
+Expected SurrealQL:
+```sql
+SELECT * FROM `order` WHERE Customer.Name = 'Alice' FETCH `Customer`;
 ```
 
 ---
