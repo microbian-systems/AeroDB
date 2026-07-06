@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
+using System.Diagnostics.CodeAnalysis;
 // Resolve ambiguity: JasperFx.Events.IEvent is the primary IEvent used in this file
 using IEvent = JasperFx.Events.IEvent;
 
@@ -15,6 +16,7 @@ namespace AeroDB.WolverineFx;
 /// Background service that polls the AeroDB event store and dispatches new events
 /// to registered subscriptions via <see cref="AeroDBSubscriptionRunner"/>.
 /// </summary>
+[Experimental("AERODB001")]
 internal class AeroDBSubscriptionHostedService : IHostedService, IAsyncDisposable
 {
     private readonly IServiceProvider _services;

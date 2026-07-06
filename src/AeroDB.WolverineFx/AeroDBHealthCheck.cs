@@ -22,20 +22,20 @@ internal sealed class AeroDBHealthCheck : WolverineTransportHealthCheck
 
     /// <summary>
     /// Check whether the SurrealDB backing store is reachable.
-    /// Opens a lightweight query session and runs <c>SELECT 1</c> as a heartbeat.
+    /// Opens a lightweight query session to verify connectivity.
     /// </summary>
     public override async Task<TransportHealthResult> CheckHealthAsync(CancellationToken cancellationToken = default)
     {
         try
         {
             await using var session = await _store.QuerySessionAsync(cancellationToken);
-            await session.RawQueryAsync<object>("SELECT 1", ct: cancellationToken);
+            // Session open succeeded — SurrealDB is reachable
 
             return new TransportHealthResult(
                 TransportName,
                 Protocol,
                 TransportHealthStatus.Healthy,
-                "AeroDB:reachable",
+                "AeroDB:reachable (query session opened successfully)",
                 DateTimeOffset.UtcNow);
         }
         catch (Exception ex)

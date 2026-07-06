@@ -1,4 +1,5 @@
 using AeroDB;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
@@ -7,6 +8,8 @@ using Wolverine;
 using Wolverine.Runtime;
 
 namespace AeroDB.WolverineFx;
+
+#pragma warning disable AERODB001
 
 /// <summary>
 /// Extension methods for registering AeroDB event subscriptions with Wolverine.

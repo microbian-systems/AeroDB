@@ -30,7 +30,7 @@ public sealed class AeroDBEndpoint : Endpoint
     public override async ValueTask<IListener> BuildListenerAsync(IWolverineRuntime runtime, IReceiver receiver)
     {
         var store = ResolveStore(runtime);
-        var options = new AeroDBTransportOptions();
+        var options = runtime.Services.GetService<AeroDBTransportOptions>() ?? new AeroDBTransportOptions();
         var logger = runtime.LoggerFactory.CreateLogger<AeroDBQueueListener>();
         var listener = new AeroDBQueueListener(store, receiver, options, logger, Uri);
         await listener.StartAsync();

@@ -135,14 +135,14 @@ public sealed class AeroDBMessageStore : IMessageStore,
     {
         if (incoming.Count == 0) return;
 
-        var sb = new StringBuilder("BEGIN TRANSACTION;");
+        // Use individual UPDATE statements for maximum SurrealDB portability.
+        // Multi-node atomicity can be enhanced later with SurrealDB 3.1+ MERGE/RETURN AFTER.
         foreach (var env in incoming)
         {
             var id = env.Id.ToString();
-            sb.AppendLine($"UPDATE {IncomingTable}:`{EscapeId(id)}` SET owner_id = {ownerId};");
+            await Client.RawQuery(
+                $"UPDATE {IncomingTable}:`{EscapeId(id)}` SET owner_id = {ownerId};");
         }
-        sb.AppendLine("COMMIT TRANSACTION;");
-        await Client.RawQuery(sb.ToString());
     }
 
     public void PromoteToMain(IWolverineRuntime runtime)

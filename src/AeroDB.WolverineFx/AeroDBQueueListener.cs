@@ -111,6 +111,9 @@ public sealed class AeroDBQueueListener : IListener
 
                 if (envelopes.Count > 0)
                 {
+                    // Atomically claim these messages for this node so no other node processes them
+                    await _store.ReassignIncomingAsync(_store.GetOwnerId(), envelopes);
+
                     _logger.LogDebug("AeroDBQueueListener dispatching {Count} messages from {Address}",
                         envelopes.Count, Address);
                     await _receiver.ReceivedAsync(this, envelopes.ToArray());

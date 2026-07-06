@@ -2,6 +2,7 @@ using AeroDB;
 using JasperFx.Events.Daemon;
 using JasperFx.Events.Projections;
 using Microsoft.Extensions.DependencyInjection;
+using System.Diagnostics.CodeAnalysis;
 using Wolverine;
 using Wolverine.Runtime;
 
@@ -12,6 +13,7 @@ namespace AeroDB.WolverineFx;
 /// Creates a MessageContext, enlists in the outbox, delegates to the subscription,
 /// then commits the session and flushes outgoing messages.
 /// </summary>
+[Experimental("AERODB001")]
 internal class AeroDBSubscriptionRunner
 {
     private readonly IAeroDBSubscription _subscription;

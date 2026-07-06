@@ -54,7 +54,7 @@ internal sealed class FlushOutgoingMessagesOnAeroDBCommit : IDocumentSessionList
     {
         if (_context.Envelope == null) return;
 
-        if (_context.Envelope.Destination != null && _context.Envelope.WasPersistedInInbox)
+        if (_context.Envelope.WasPersistedInInbox)
         {
             await _messageStore.Inbox.MarkIncomingEnvelopeAsHandledAsync(_context.Envelope);
             _context.Envelope.Status = EnvelopeStatus.Handled;
