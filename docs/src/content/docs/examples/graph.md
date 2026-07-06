@@ -38,4 +38,4 @@ var connections = await session.Query<Person>()
     .ToListAsync();
 ```
 
-**Full sample:** [`samples/WikipediaSearch/`](https://github.com/microbians/AeroDB/tree/main/samples/WikipediaSearch)
+**Full sample:** [`samples/WikipediaSearch/`](https://github.com/microbian-systems/AeroDB/tree/main/samples/WikipediaSearch)

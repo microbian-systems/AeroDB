@@ -35,4 +35,4 @@ var movingAverage = await session.Query<Metric>()
     .ToListAsync();
 ```
 
-**Full sample:** [`samples/CryptoTrader/`](https://github.com/microbians/AeroDB/tree/main/samples/CryptoTrader)
+**Full sample:** [`samples/CryptoTrader/`](https://github.com/microbian-systems/AeroDB/tree/main/samples/CryptoTrader)

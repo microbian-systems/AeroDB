@@ -1,6 +1,6 @@
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
-import starlightVersions from 'starlight-versions';
+// import starlightVersions from 'starlight-versions';
 
 export default defineConfig({
   site: 'https://docs.aerodb.io',
@@ -8,17 +8,17 @@ export default defineConfig({
   integrations: [
     starlight({
       title: 'AeroDB v0.0.8.1-alpha',
-      plugins: [
-        starlightVersions({
-          versions: [{ slug: '0.0.8.1-alpha', label: 'v0.0.8.1 (alpha)' }],
-        }),
-      ],
+      // plugins: [
+      //   starlightVersions({
+      //     versions: [{ slug: '0.0.8.1-alpha', label: 'v0.0.8.1 (alpha)' }],
+      //   }),
+      // ],
       description: 'Fast, multi-model document database for .NET — built on SurrealDB',
       social: [
-        { icon: 'github', label: 'GitHub', href: 'https://github.com/microbians/AeroDB' },
+        { icon: 'github', label: 'GitHub', href: 'https://github.com/microbian-systems/AeroDB' },
       ],
       editLink: {
-        baseUrl: 'https://github.com/microbians/AeroDB/edit/main/docs/',
+        baseUrl: 'https://github.com/microbian-systems/AeroDB/edit/main/docs/',
       },
       sidebar: [
         {
@@ -35,16 +35,27 @@ export default defineConfig({
           items: [
             { label: 'Architecture', slug: 'concepts/architecture' },
             { label: 'Documents', slug: 'concepts/documents' },
+            { label: 'Schemas', slug: 'concepts/schemas' },
+            { label: 'Document Types', slug: 'concepts/document-types' },
             { label: 'Events', slug: 'concepts/events' },
             { label: 'Projections', slug: 'concepts/projections' },
             { label: 'Multi-Tenancy', slug: 'concepts/multi-tenancy' },
           ],
         },
         {
+          label: 'Querying',
+          items: [
+            { label: 'Overview', slug: 'querying' },
+            { label: 'Relational', slug: 'relational' },
+            { label: 'Graphs', slug: 'graphs' },
+            { label: 'Time Series', slug: 'timeseries' },
+            { label: 'Searching', slug: 'searching' },
+          ],
+        },
+        {
           label: 'Guides',
           items: [
             { label: 'CRUD Operations', slug: 'guides/crud' },
-            { label: 'Querying', slug: 'guides/querying' },
             { label: 'LINQ', slug: 'guides/linq' },
             { label: 'Raw SurrealQL', slug: 'guides/surrealql' },
             { label: 'Event Sourcing', slug: 'guides/event-sourcing' },
@@ -91,6 +102,7 @@ export default defineConfig({
           items: [
             { label: 'Performance', slug: 'advanced/performance' },
             { label: 'Schema Management', slug: 'advanced/schema' },
+            { label: 'Transactions', slug: 'advanced/transactions' },
             { label: 'Search', slug: 'advanced/search' },
             { label: 'Custom Serialization', slug: 'advanced/serialization' },
             { label: 'Snowflake IDs', slug: 'advanced/snowflake' },
@@ -99,7 +111,7 @@ export default defineConfig({
         {
           label: 'API Reference',
           collapsed: true,
-          autogenerate: { directory: 'api' },
+          items: [{ autogenerate: { directory: 'api' } }],
         },
         { label: 'FAQ', slug: 'faq' },
         { label: 'Roadmap', slug: 'roadmap' },

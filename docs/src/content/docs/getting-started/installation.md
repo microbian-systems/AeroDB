@@ -24,4 +24,4 @@ dotnet add package AeroDB.WolverineFx
 ## Requirements
 
 - .NET 10 or later
-- SurrealDB 2.x (local, remote, or cloud)
+- SurrealDB 3.1 or later (local, remote, or cloud)

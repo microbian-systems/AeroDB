@@ -40,4 +40,4 @@ session.LiveQuery<User>()
 subscription.Dispose();
 ```
 
-**Full sample:** [`samples/`](https://github.com/microbians/AeroDB/tree/main/samples)
+**Full sample:** [`samples/`](https://github.com/microbian-systems/AeroDB/tree/main/samples)

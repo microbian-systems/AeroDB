@@ -37,4 +37,4 @@ var result = await session.ExecuteAsync(
 );
 ```
 
-**Full sample:** [`samples/DocSamples/`](https://github.com/microbians/AeroDB/tree/main/samples/DocSamples)
+**Full sample:** [`samples/DocSamples/`](https://github.com/microbian-systems/AeroDB/tree/main/samples/DocSamples)

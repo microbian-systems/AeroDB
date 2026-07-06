@@ -1,11 +1,77 @@
 ---
 // docs/src/components/Footer.astro
 // Extends Starlight's default footer with Microbians branding
-import Default from '@astrojs/starlight/components/Footer.astro';
+import EditLink from 'virtual:starlight/components/EditLink';
+import LastUpdated from 'virtual:starlight/components/LastUpdated';
+import Pagination from 'virtual:starlight/components/Pagination';
+import config from 'virtual:starlight/user-config';
+import { Icon } from '@astrojs/starlight/components';
 ---
 
-<Default>
-  <div slot="footer-bottom" style="text-align:center;padding:1rem 0;font-size:0.8125rem;color:var(--sl-color-gray-4)">
-    v0.0.8.1-alpha · Made with 💜 by Microbians — Copyright © 2026 — <a href="https://microbians.io/" style="color:inherit">https://microbians.io/</a>
-  </div>
-</Default>
+<footer class="sl-flex">
+	<div class="meta sl-flex">
+		<EditLink />
+		<LastUpdated />
+	</div>
+	<Pagination />
+
+	{
+		config.credits && (
+			<a class="kudos sl-flex" href="https://starlight.astro.build">
+				<Icon name={'starlight'} /> {Astro.locals.t('builtWithStarlight.label')}
+			</a>
+		)
+	}
+
+	<div class="branding">
+		v0.0.8.1-alpha · Made with 💜 by Microbians — Copyright © 2026 — <a href="https://microbians.io/">https://microbians.io/</a>
+	</div>
+</footer>
+
+<style>
+	@layer starlight.core {
+		footer {
+			flex-direction: column;
+			gap: 1.5rem;
+		}
+		.meta {
+			gap: 0.75rem 3rem;
+			justify-content: space-between;
+			flex-wrap: wrap;
+			margin-top: 3rem;
+			font-size: var(--sl-text-sm);
+			color: var(--sl-color-gray-3);
+		}
+		.meta > :global(p:only-child) {
+			margin-inline-start: auto;
+		}
+
+		.kudos {
+			align-items: center;
+			gap: 0.5em;
+			margin: 1.5rem auto;
+			font-size: var(--sl-text-xs);
+			text-decoration: none;
+			color: var(--sl-color-gray-3);
+		}
+		.kudos:hover {
+			color: var(--sl-color-white);
+		}
+
+		.branding {
+			text-align: center;
+			padding: 0.5rem 0 1rem;
+			font-size: var(--sl-text-xs);
+			color: var(--sl-color-gray-4);
+		}
+		.branding a {
+			color: inherit;
+		}
+	}
+
+	@layer starlight.components {
+		.kudos :global(svg) {
+			color: var(--sl-color-orange);
+		}
+	}
+</style>
