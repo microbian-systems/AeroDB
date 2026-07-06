@@ -10,8 +10,60 @@ public enum RelationshipStorageModel
 {
     RecordLink,
     RecordLinkArray,
+    ScalarForeignKey,
     GraphEdge
 }
+
+public enum RelationshipStorageKind
+{
+    ScalarForeignKey,
+    RecordLink
+}
+
+public enum RelationshipCardinality
+{
+    One,
+    Many
+}
+
+public enum RelationshipOrigin
+{
+    Explicit,
+    Convention,
+    SourceGenerated
+}
+
+public sealed record RelationshipConstraints(
+    bool Reference = false,
+    RelationshipOnDeleteAction? OnDelete = null,
+    string? OnDeleteThenSurql = null,
+    bool Unique = false);
+
+public sealed record RelationshipCandidate(
+    string SourceTypeName,
+    string TargetTypeName,
+    string SourceMemberName,
+    string TargetIdMemberName,
+    RelationshipStorageKind StorageKind,
+    RelationshipCardinality Cardinality,
+    bool IsTentative = false);
+
+public sealed record RelationshipDescriptor(
+    Type SourceType,
+    Type TargetType,
+    string SourceTableName,
+    string TargetTableName,
+    string SourceMemberName,
+    string SourceFieldName,
+    string TargetIdMemberName,
+    string TargetIdFieldName,
+    RelationshipStorageKind StorageKind,
+    RelationshipCardinality Cardinality,
+    bool IsNullable,
+    bool IsRequired,
+    RelationshipOrigin Origin,
+    bool WasOverridden,
+    RelationshipConstraints Constraints);
 
 public sealed class RelationshipMapping
 {
@@ -23,6 +75,10 @@ public sealed class RelationshipMapping
     public string StorageFieldName { get; private set; } = "";
     public RelationshipKind Kind { get; private init; }
     public RelationshipStorageModel StorageModel { get; private init; }
+    public RelationshipStorageKind StorageKind { get; private init; }
+    public RelationshipCardinality Cardinality { get; private init; }
+    public RelationshipOrigin Origin { get; private init; } = RelationshipOrigin.Explicit;
+    public bool WasOverridden { get; private init; }
     public bool Required { get; private set; } = true;
     public bool Nullable { get; private set; }
     public bool Reference { get; private set; }
@@ -38,7 +94,8 @@ public sealed class RelationshipMapping
         string? clrMemberName,
         string storageFieldName,
         RelationshipKind kind,
-        RelationshipStorageModel storageModel)
+        RelationshipStorageModel storageModel,
+        RelationshipOrigin origin = RelationshipOrigin.Explicit)
         => new()
         {
             SourceType = sourceType,
@@ -48,7 +105,14 @@ public sealed class RelationshipMapping
             ClrMemberName = clrMemberName,
             StorageFieldName = storageFieldName,
             Kind = kind,
-            StorageModel = storageModel
+            StorageModel = storageModel,
+            StorageKind = storageModel is RelationshipStorageModel.ScalarForeignKey
+                ? RelationshipStorageKind.ScalarForeignKey
+                : RelationshipStorageKind.RecordLink,
+            Cardinality = kind is RelationshipKind.HasMany
+                ? RelationshipCardinality.Many
+                : RelationshipCardinality.One,
+            Origin = origin
         };
 
     internal void SetFieldName(string fieldName) => StorageFieldName = fieldName;
@@ -73,6 +137,24 @@ public sealed class RelationshipMapping
     }
 
     internal void SetUnique() => Unique = true;
+
+    internal RelationshipDescriptor ToDescriptor(string targetIdMemberName, string targetIdFieldName)
+        => new(
+            SourceType,
+            TargetType,
+            SourceTableName,
+            TargetTableName,
+            ClrMemberName ?? StorageFieldName,
+            StorageFieldName,
+            targetIdMemberName,
+            targetIdFieldName,
+            StorageKind,
+            Cardinality,
+            Nullable,
+            Required,
+            Origin,
+            WasOverridden,
+            new RelationshipConstraints(Reference, OnDelete, OnDeleteThenSurql, Unique));
 }
 
 public enum RelationshipOnDeleteAction

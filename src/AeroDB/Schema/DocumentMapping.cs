@@ -24,6 +24,7 @@ public abstract class DocumentMapping
     internal abstract string? SchemaName { get; }
     internal abstract string? TableNameOverride { get; }
     internal abstract string ResolveFieldName(string clrName);
+    internal abstract void AddRelationshipMapping(RelationshipMapping mapping);
 
     /// <summary>Custom field definitions for this document type. Overridden in generic subclass.</summary>
     internal virtual IReadOnlyList<FieldDefinition> GetFieldDefinitions() => [];
@@ -145,6 +146,7 @@ public class DocumentMapping<T> : DocumentMapping
     public IReadOnlyList<FieldDefinition> FieldDefinitions => _fieldDefinitions;
     internal override IReadOnlyList<FieldDefinition> GetFieldDefinitions() => _fieldDefinitions;
     internal override IReadOnlyList<RelationshipMapping> GetRelationshipMappings() => _relationshipMappings;
+    internal override void AddRelationshipMapping(RelationshipMapping mapping) => _relationshipMappings.Add(mapping);
 
     public DocumentMapping<T> TableName(string tableName)
     {
@@ -178,6 +180,7 @@ public class DocumentMapping<T> : DocumentMapping
     public RelationshipBuilder<T> HasOne<TRelated>(Expression<Func<T, TRelated?>> member)
     {
         var memberInfo = ExtractMember(member);
+        ValidateRecordLinkMember<TRelated>(memberInfo);
         var storageField = ResolveFieldName(memberInfo.Name);
         var mapping = RelationshipMapping.Create(
             typeof(T),
@@ -188,6 +191,24 @@ public class DocumentMapping<T> : DocumentMapping
             storageField,
             RelationshipKind.HasOne,
             RelationshipStorageModel.RecordLink);
+        _relationshipMappings.Add(mapping);
+        return new RelationshipBuilder<T>(mapping);
+    }
+
+    public RelationshipBuilder<T> HasOne<TRelated>(Expression<Func<T, object?>> scalarFk)
+    {
+        var memberInfo = ExtractMember(scalarFk);
+        ValidateScalarForeignKeyMember<TRelated>(memberInfo);
+        var storageField = ResolveFieldName(memberInfo.Name);
+        var mapping = RelationshipMapping.Create(
+            typeof(T),
+            ResolveTableName(),
+            typeof(TRelated),
+            ResolveTableName(typeof(TRelated)),
+            memberInfo.Name,
+            storageField,
+            RelationshipKind.HasOne,
+            RelationshipStorageModel.ScalarForeignKey);
         _relationshipMappings.Add(mapping);
         return new RelationshipBuilder<T>(mapping);
     }
@@ -258,6 +279,71 @@ public class DocumentMapping<T> : DocumentMapping
 
     private static string Pluralize(string name)
         => name.EndsWith("s", StringComparison.OrdinalIgnoreCase) ? name : name + "s";
+
+    private static void ValidateRecordLinkMember<TRelated>(MemberInfo member)
+    {
+        var memberType = GetMemberType(member);
+        if (memberType is null)
+            return;
+
+        var underlying = Nullable.GetUnderlyingType(memberType) ?? memberType;
+        if (underlying != typeof(TRelated))
+        {
+            throw new InvalidOperationException(
+                $"Schema.For<{typeof(T).Name}>().HasOne(x => x.{member.Name}) expects member type '{typeof(TRelated).Name}' " +
+                $"for a record-link relationship, but found '{memberType.Name}'. Use HasOne<{typeof(TRelated).Name}>(x => x.{member.Name}) scalar FK overload only for identity-compatible scalar members.");
+        }
+    }
+
+    private void ValidateScalarForeignKeyMember<TRelated>(MemberInfo member)
+    {
+        var memberType = GetMemberType(member)
+            ?? throw new InvalidOperationException($"Cannot determine relationship member type for '{typeof(T).Name}.{member.Name}'.");
+
+        if (Nullable.GetUnderlyingType(memberType) is null && !IsNullableReferenceMember(member))
+        {
+            // Requiredness is stored separately; no validation needed here.
+        }
+
+        var targetId = ResolveIdentityMember(typeof(TRelated));
+        var targetIdType = Nullable.GetUnderlyingType(GetMemberType(targetId)!) ?? GetMemberType(targetId)!;
+        var sourceType = Nullable.GetUnderlyingType(memberType) ?? memberType;
+        if (sourceType != targetIdType)
+        {
+            throw new InvalidOperationException(
+                $"Schema.For<{typeof(T).Name}>().HasOne<{typeof(TRelated).Name}>(x => x.{member.Name}) expects '{member.Name}' " +
+                $"to be compatible with '{typeof(TRelated).Name}.{targetId.Name}' ({targetIdType.Name}), but found '{memberType.Name}'.");
+        }
+    }
+
+    private MemberInfo ResolveIdentityMember(Type type)
+    {
+        if (SchemaOptions.Mappings.TryGetValue(type, out var mapping) && mapping.IdentityProperty is not null)
+        {
+            var configured = type.GetProperty(mapping.IdentityProperty, BindingFlags.Instance | BindingFlags.Public);
+            if (configured is not null)
+                return configured;
+        }
+
+        return type.GetProperty("Id", BindingFlags.Instance | BindingFlags.Public)
+            ?? throw new InvalidOperationException($"Cannot infer identity member for '{type.FullName}'. Configure Schema.For<{type.Name}>().Identity(...).");
+    }
+
+    private static bool IsNullableReferenceMember(MemberInfo member)
+        => member switch
+        {
+            PropertyInfo property => !property.PropertyType.IsValueType,
+            FieldInfo field => !field.FieldType.IsValueType,
+            _ => false
+        };
+
+    private static Type? GetMemberType(MemberInfo member)
+        => member switch
+        {
+            PropertyInfo property => property.PropertyType,
+            FieldInfo field => field.FieldType,
+            _ => null
+        };
 
     /// <summary>
     /// Defines a computed/expression-based index with configurable options

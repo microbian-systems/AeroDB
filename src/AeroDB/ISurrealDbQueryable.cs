@@ -159,6 +159,12 @@ public interface ILinkedSurrealDbQueryable<T, TTarget1, TTarget2, TTarget3> : IS
     ISurrealDbQueryable<T> Where(Expression<Func<T, TTarget1, TTarget2, TTarget3, bool>> predicate);
 }
 
+public interface IIncludableSurrealDbQueryable<T, TInclude> : ISurrealDbQueryable<T>
+    where T : class
+    where TInclude : class
+{
+}
+
 public class SurrealDbQueryable<T> : ISurrealDbQueryable<T>, IAsyncEnumerable<T>, IOrderedQueryable
 {
     private readonly SurrealQueryProvider _provider;
@@ -243,9 +249,11 @@ public class SurrealDbQueryable<T> : ISurrealDbQueryable<T>, IAsyncEnumerable<T>
             ?? sourceProp?.PropertyType
             ?? typeof(object);
 
-        var fkField = MetadataDispatch.GetFieldName(typeof(T), clrName, schema);
-        var targetTable = MetadataDispatch.GetTableName(typeof(TTarget), schema);
-        var isRecordId = typeof(RecordId).IsAssignableFrom(fkType)
+        var relationship = schema.FindRelationship(typeof(T), typeof(TTarget), clrName);
+        var fkField = relationship?.SourceFieldName ?? MetadataDispatch.GetFieldName(typeof(T), clrName, schema);
+        var targetTable = relationship?.TargetTableName ?? MetadataDispatch.GetTableName(typeof(TTarget), schema);
+        var isRecordId = relationship?.StorageKind == RelationshipStorageKind.RecordLink
+            || typeof(RecordId).IsAssignableFrom(fkType)
             || typeof(IRecord).IsAssignableFrom(fkType)
             || (fkType.IsGenericType && fkType.GetGenericTypeDefinition() == typeof(RecordIdOf<>));
         var targetUsesPocoIdentity = schema.Mappings.TryGetValue(typeof(TTarget), out var targetMapping)
@@ -309,21 +317,15 @@ public class SurrealDbQueryable<T> : ISurrealDbQueryable<T>, IAsyncEnumerable<T>
 
     private static Expression<Func<T, object?>> BuildConventionFkSelector<TTarget>(SchemaOptions schema)
     {
-        if (schema.Mappings.TryGetValue(typeof(T), out var mapping))
+        var relationship = schema.FindRelationship(typeof(T), typeof(TTarget));
+        if (relationship is not null)
         {
-            var relationships = mapping.GetRelationshipMappings()
-                .Where(r => r.TargetType == typeof(TTarget) && r.ClrMemberName is not null)
-                .ToList();
+            var relationshipProperty = typeof(T).GetProperty(
+                relationship.SourceMemberName,
+                BindingFlags.Instance | BindingFlags.Public);
 
-            if (relationships.Count == 1)
-            {
-                var relationshipProperty = typeof(T).GetProperty(
-                    relationships[0].ClrMemberName!,
-                    BindingFlags.Instance | BindingFlags.Public);
-
-                if (relationshipProperty is not null)
-                    return BuildMemberSelector(relationshipProperty);
-            }
+            if (relationshipProperty is not null)
+                return BuildMemberSelector(relationshipProperty);
         }
 
         var targetName = typeof(TTarget).Name;
@@ -641,6 +643,23 @@ internal sealed class LinkedSurrealDbQueryable<T, TTarget1, TTarget2, TTarget3> 
         => Inner.Where(predicate);
 }
 
+internal sealed class IncludableSurrealDbQueryable<T, TInclude> :
+    LinkedSurrealDbQueryableBase<T>,
+    IIncludableSurrealDbQueryable<T, TInclude>
+    where T : class
+    where TInclude : class
+{
+    public IncludableSurrealDbQueryable(SurrealDbQueryable<T> queryable, string includePath)
+        : base(queryable)
+    {
+        Queryable = queryable;
+        IncludePath = includePath;
+    }
+
+    internal SurrealDbQueryable<T> Queryable { get; }
+    internal string IncludePath { get; }
+}
+
 // ── Extension methods ────────────────────────────────────────────────
 
 public static class SurrealDbQueryableExtensions
@@ -718,7 +737,7 @@ public static class SurrealDbQueryableExtensions
     ///   Example: <c>o => o.Customer</c>
     /// </param>
     /// <returns>The queryable for chaining.</returns>
-    public static ISurrealDbQueryable<T> Include<T, TInclude>(
+    public static IIncludableSurrealDbQueryable<T, TInclude> Include<T, TInclude>(
         this ISurrealDbQueryable<T> source,
         Expression<Func<T, TInclude?>> property)
         where T : class
@@ -742,11 +761,41 @@ public static class SurrealDbQueryableExtensions
             PropertyName = propName,
             TargetTable = targetTable,
             ForeignKeyField = fkField,
+            ForeignKeyClrName = propName,
             IncludeType = typeof(TInclude),
             IsSingle = true
         });
 
-        return queryable;
+        return new IncludableSurrealDbQueryable<T, TInclude>(queryable, fkField);
+    }
+
+    public static IIncludableSurrealDbQueryable<T, TNext> ThenInclude<T, TPrevious, TNext>(
+        this IIncludableSurrealDbQueryable<T, TPrevious> source,
+        Expression<Func<TPrevious, TNext?>> property)
+        where T : class
+        where TPrevious : class
+        where TNext : class
+    {
+        if (source is not IncludableSurrealDbQueryable<T, TPrevious> includable)
+            throw new InvalidOperationException("ThenInclude is only supported on AeroDB includable queryables.");
+
+        if (property.Body is not MemberExpression memberExpr)
+            throw new ArgumentException("Expression must be a member access (e.g., c => c.Address).");
+
+        var schema = includable.Queryable.StoreOptions.Schema;
+        var relationship = schema.FindRelationship(typeof(TPrevious), typeof(TNext), memberExpr.Member.Name);
+
+        if (relationship is null || relationship.StorageKind != RelationshipStorageKind.RecordLink)
+        {
+            throw new NotSupportedException(
+                $"ThenInclude currently supports configured record-link relationships only. " +
+                $"Configure Schema.For<{typeof(TPrevious).Name}>().HasOne(x => x.{memberExpr.Member.Name}).");
+        }
+
+        var nestedPath = includable.IncludePath + "." + relationship.SourceFieldName;
+        includable.Queryable.FetchFields.Add(nestedPath);
+
+        return new IncludableSurrealDbQueryable<T, TNext>(includable.Queryable, nestedPath);
     }
 
     /// <summary>
@@ -764,39 +813,50 @@ public static class SurrealDbQueryableExtensions
     /// which is forward (FK on parent), this is reverse (FK on child). The child records
     /// are collected into a <c>List&lt;TChild&gt;</c> and set on the collection property.</para>
     /// </summary>
-    /// <typeparam name="T">The source entity type (must implement <c>IRecord</c> to have an Id).</typeparam>
+    /// <typeparam name="T">The source entity type.</typeparam>
     /// <typeparam name="TChild">The child record type.</typeparam>
     /// <param name="source">The queryable source.</param>
     /// <param name="property">
     ///   A member expression selecting the collection property on T.
     ///   Example: <c>o => o.Items</c>
     /// </param>
-    /// <param name="foreignKey">
-    ///   The foreign key field on the child table (e.g., <c>"order"</c>).
-    ///   Both the C# property name and SurrealQL field name.
+    /// <param name="fkSelector">
+    ///   A lambda selecting the foreign key property on TChild that points back to T.
+    ///   Example: <c>i => i.Order</c>
     /// </param>
     /// <returns>The queryable for chaining.</returns>
     public static ISurrealDbQueryable<T> IncludeReverse<T, TChild>(
         this ISurrealDbQueryable<T> source,
         Expression<Func<T, IEnumerable<TChild>?>> property,
-        string foreignKey)
+        Expression<Func<TChild, object?>> fkSelector)
         where T : class
         where TChild : class
     {
-        if (source is not SurrealDbQueryable<T> queryable)
+        if (!TryGetSurrealDbQueryable(source, out var queryable))
             throw new InvalidOperationException("IncludeReverse is only supported on SurrealDbQueryable<T>.");
 
         if (property.Body is not MemberExpression memberExpr)
             throw new ArgumentException("Expression must be a member access (e.g., o => o.Items).");
 
+        // Extract CLR name from fkSelector (unwrapping Convert nodes for boxing)
+        var fkBody = fkSelector.Body;
+        while (fkBody is UnaryExpression { NodeType: ExpressionType.Convert or ExpressionType.TypeAs } unary)
+            fkBody = unary.Operand;
+        if (fkBody is not MemberExpression fkMemberExpr)
+            throw new ArgumentException("fkSelector must be a simple member expression (e.g., i => i.Order).");
+
+        var clrName = fkMemberExpr.Member.Name;
         var propName = memberExpr.Member.Name;
-        var targetTable = MetadataDispatch.GetTableName(typeof(TChild), queryable.StoreOptions.Schema);
+        var schema = queryable.StoreOptions.Schema;
+        var targetTable = MetadataDispatch.GetTableName(typeof(TChild), schema);
+        var fkField = MetadataDispatch.GetFieldName(typeof(TChild), clrName, schema);
 
         var spec = new IncludeSpec
         {
             PropertyName = propName,
             TargetTable = targetTable,
-            ForeignKeyField = foreignKey,  // FK field on the child table
+            ForeignKeyField = fkField,
+            ForeignKeyClrName = clrName,
             IncludeType = typeof(TChild),
             IsSingle = false,   // collection
             IsForward = false   // reverse
@@ -813,6 +873,139 @@ public static class SurrealDbQueryableExtensions
     }
 
     /// <summary>
+    /// Eagerly loads a collection of child records using convention-based FK resolution.
+    /// The reverse foreign key on <typeparamref name="TChild"/> is inferred automatically.
+    ///
+    /// <para>Resolution order:</para>
+    /// <list type="number">
+    ///   <item>If <c>Schema.For&lt;T&gt;().HasMany(x =&gt; x.Children)</c> is configured,
+    ///   derives the FK as <c>typeof(T).Name + "Id"</c> and verifies the property exists on TChild.</item>
+    ///   <item>Falls back to checking whether <c>typeof(T).Name + "Id"</c> exists on TChild.</item>
+    ///   <item>Throws if neither convention succeeds — use the explicit lambda overload.</item>
+    /// </list>
+    /// </summary>
+    /// <typeparam name="T">The source entity type.</typeparam>
+    /// <typeparam name="TChild">The child record type.</typeparam>
+    /// <param name="source">The queryable source.</param>
+    /// <param name="property">
+    ///   A member expression selecting the collection property on T.
+    ///   Example: <c>o => o.Items</c>
+    /// </param>
+    /// <returns>The queryable for chaining.</returns>
+    public static ISurrealDbQueryable<T> IncludeReverse<T, TChild>(
+        this ISurrealDbQueryable<T> source,
+        Expression<Func<T, IEnumerable<TChild>?>> property)
+        where T : class
+        where TChild : class
+    {
+        if (!TryGetSurrealDbQueryable(source, out var queryable))
+            throw new InvalidOperationException("IncludeReverse is only supported on SurrealDbQueryable<T>.");
+
+        if (property.Body is not MemberExpression memberExpr)
+            throw new ArgumentException("Expression must be a member access (e.g., o => o.Items).");
+
+        var schema = queryable.StoreOptions.Schema;
+
+        // Resolve the FK field name by convention
+        var (fkClrName, fkFieldName) = ResolveReverseFkField<T, TChild>(schema);
+
+        var propName = memberExpr.Member.Name;
+        var targetTable = MetadataDispatch.GetTableName(typeof(TChild), schema);
+
+        var spec = new IncludeSpec
+        {
+            PropertyName = propName,
+            TargetTable = targetTable,
+            ForeignKeyField = fkFieldName,
+            ForeignKeyClrName = fkClrName,
+            IncludeType = typeof(TChild),
+            IsSingle = false,
+            IsForward = false
+        };
+
+        var parentIsRecord = typeof(IRecord).IsAssignableFrom(typeof(T));
+        spec.ParentIdField = parentIsRecord ? "id" : "Id";
+
+        queryable.IncludeSpecs.Add(spec);
+        return queryable;
+    }
+
+    private static (string clrName, string fieldName) ResolveReverseFkField<TSource, TTarget>(SchemaOptions schema)
+        where TSource : class
+        where TTarget : class
+    {
+        var relationships = schema.FindRelationships(typeof(TTarget), typeof(TSource));
+        if (relationships.Count == 1)
+        {
+            var relationship = relationships[0];
+            if (typeof(TTarget).GetProperty(relationship.SourceMemberName, BindingFlags.Instance | BindingFlags.Public) is not null)
+                return (relationship.SourceMemberName, relationship.SourceFieldName);
+        }
+
+        if (relationships.Count > 1)
+        {
+            throw new InvalidOperationException(
+                $"Cannot infer reverse FK field on '{typeof(TTarget).Name}' pointing to '{typeof(TSource).Name}' because multiple relationships match. " +
+                "Use the explicit lambda overload: .IncludeReverse<TTarget>(x => x.Items, child => child.FkProperty)");
+        }
+
+        // Check HasMany metadata and derive conventional scalar FK as a compatibility fallback.
+        if (schema.Mappings.TryGetValue(typeof(TSource), out var mapping))
+        {
+            var hasManyRelationships = mapping.GetRelationshipMappings()
+                .Where(r => r.Kind == RelationshipKind.HasMany && r.TargetType == typeof(TTarget))
+                .ToList();
+
+            if (hasManyRelationships.Count > 0)
+            {
+                var fkClrName = typeof(TSource).Name + "Id";
+                if (typeof(TTarget).GetProperty(fkClrName, BindingFlags.Instance | BindingFlags.Public) is not null)
+                {
+                    var fkFieldName = MetadataDispatch.GetFieldName(typeof(TTarget), fkClrName, schema);
+                    return (fkClrName, fkFieldName);
+                }
+            }
+        }
+
+        // 3. Fallback: sourceType.Name + "Id"
+        var fallbackFk = typeof(TSource).Name + "Id";
+        if (typeof(TTarget).GetProperty(fallbackFk, BindingFlags.Instance | BindingFlags.Public) is not null)
+        {
+            var fkFieldName = MetadataDispatch.GetFieldName(typeof(TTarget), fallbackFk, schema);
+            return (fallbackFk, fkFieldName);
+        }
+
+        // 4. Error
+        throw new InvalidOperationException(
+            $"Cannot infer reverse FK field on '{typeof(TTarget).Name}' pointing to '{typeof(TSource).Name}'. " +
+            "Use the explicit lambda overload: .IncludeReverse<TTarget>(x => x.Items, child => child.FkProperty)");
+    }
+
+    private static bool TryGetSurrealDbQueryable<T>(ISurrealDbQueryable<T> source, out SurrealDbQueryable<T> queryable)
+    {
+        if (source is SurrealDbQueryable<T> direct)
+        {
+            queryable = direct;
+            return true;
+        }
+
+        var includableType = source.GetType();
+        if (includableType.IsGenericType
+            && includableType.GetGenericTypeDefinition() == typeof(IncludableSurrealDbQueryable<,>))
+        {
+            var property = includableType.GetProperty("Queryable", BindingFlags.Instance | BindingFlags.NonPublic);
+            if (property?.GetValue(source) is SurrealDbQueryable<T> inner)
+            {
+                queryable = inner;
+                return true;
+            }
+        }
+
+        queryable = null!;
+        return false;
+    }
+
+    /// <summary>
     /// Filters parent documents based on a predicate applied to their included
     /// child collection <b>in-memory</b>, after includes are fully loaded.
     ///
@@ -821,7 +1014,7 @@ public static class SurrealDbQueryableExtensions
     /// and can use any LINQ expression on the child collection (e.g.,
     /// <c>.Any()</c>, <c>.All()</c>, <c>.Count()</c>).</para>
     ///
-    /// <para>Must be used after <see cref="IncludeReverse{T,TChild}"/> on the same
+    /// <para>Must be used after <see cref="IncludeReverse{T,TChild}(ISurrealDbQueryable{T}, Expression{Func{T,IEnumerable{TChild}?}}, Expression{Func{TChild,object?}})"/> on the same
     /// property to have effect. The filter does not affect which children are
     /// loaded — it only controls which parent documents are included in results.</para>
     /// </summary>

@@ -1670,7 +1670,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
             return false;
 
         var relationshipByMember = relationships
-            .Where(r => r.ClrMemberName is not null)
+            .Where(r => r.ClrMemberName is not null && r.StorageKind == RelationshipStorageKind.RecordLink)
             .ToDictionary(r => r.ClrMemberName!, StringComparer.Ordinal);
 
         var fields = new List<string>();

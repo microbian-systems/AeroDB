@@ -286,7 +286,7 @@ namespace AeroDB;
     protected override Expression VisitConstant(ConstantExpression node)
     {
         if (node.Value is IQueryable q)
-            TableName = ViewName ?? MetadataDispatch.GetTableName(q.ElementType);
+            TableName = ViewName ?? MetadataDispatch.GetTableName(q.ElementType, _schema);
         return node;
     }
 
@@ -1064,12 +1064,15 @@ public class SurrealQueryResult
         if (FetchFields.Count > 0)
         {
             sb.Append(" FETCH ");
-            sb.Append(string.Join(", ", FetchFields.Select(f => $"`{f}`")));
+            sb.Append(string.Join(", ", FetchFields.Select(QuoteFetchPath)));
         }
 
         sb.Append(';');
         return sb.ToString();
     }
+
+    private static string QuoteFetchPath(string path)
+        => string.Join(".", path.Split('.', StringSplitOptions.RemoveEmptyEntries).Select(part => $"`{part}`"));
 
     /// <summary>
     /// Creates a deep clone of this query result, including copies of all mutable collections.

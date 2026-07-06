@@ -103,6 +103,7 @@ public interface ITypeMetadata<T> : ITypeMetadata
 public static class MetadataRegistry
 {
     private static readonly ConcurrentDictionary<Type, ITypeMetadata> _cache = new();
+    private static readonly ConcurrentBag<RelationshipCandidate> _relationshipCandidates = new();
 
     /// <summary>
     /// Called by generated code to register metadata for a type.
@@ -132,6 +133,19 @@ public static class MetadataRegistry
             return typed;
         return null;
     }
+
+    /// <summary>
+    /// Called by generated code to register compile-time relationship candidates.
+    /// These candidates are shape-only hints; <see cref="SchemaOptions"/> remains
+    /// the runtime authority that applies naming policy, table names, and overrides.
+    /// </summary>
+    public static void RegisterRelationshipCandidates(params RelationshipCandidate[] candidates)
+    {
+        foreach (var candidate in candidates)
+            _relationshipCandidates.Add(candidate);
+    }
+
+    internal static IReadOnlyList<RelationshipCandidate> RelationshipCandidates => _relationshipCandidates.ToArray();
 
     // Shim type lookup for IEntity<TId> CBOR deserialization
     private static readonly ConcurrentDictionary<Type, Type> _shimTypes = new();

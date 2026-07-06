@@ -1277,7 +1277,7 @@ public class SurrealQueryProvider : IQueryProvider
             if (!spec.IsForward)
             {
                 // ── Reverse include: group by FK field on child ────────
-                var fkProp = spec.IncludeType.GetProperty(spec.ForeignKeyField,
+                var fkProp = spec.IncludeType.GetProperty(spec.ForeignKeyClrName,
                     BindingFlags.Instance | BindingFlags.Public);
 
                 if (fkProp is null) { resultIndex++; continue; }
@@ -1413,13 +1413,13 @@ public class SurrealQueryProvider : IQueryProvider
     {
         // Validate FK field exists on child type
         var fkProp = spec.IncludeType.GetProperty(
-            spec.ForeignKeyField,
+            spec.ForeignKeyClrName,
             BindingFlags.Public | BindingFlags.Instance);
 
-        if (fkProp is null && !string.IsNullOrWhiteSpace(spec.ForeignKeyField))
+        if (fkProp is null && !string.IsNullOrWhiteSpace(spec.ForeignKeyClrName))
         {
             System.Diagnostics.Debug.WriteLine(
-                $"[AeroDB] IncludeReverse: FK field '{spec.ForeignKeyField}' not found on type '{spec.IncludeType.Name}'. " +
+                $"[AeroDB] IncludeReverse: FK field '{spec.ForeignKeyClrName}' not found on type '{spec.IncludeType.Name}'. " +
                 "Reverse include results may be incorrect.");
         }
 

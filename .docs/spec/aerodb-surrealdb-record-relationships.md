@@ -35,6 +35,131 @@ Avoid using `Relate(...)` for ordinary record relationships if AeroDB already us
 
 ## Relationship Models
 
+## Relationship Metadata Pipeline
+
+Relationship discovery and query translation must use one shared metadata model, not separate query-time heuristics.
+
+### Compile-time candidate discovery
+
+Source generation may emit shape-only relationship candidates:
+
+```text
+Order.CustomerId -> Customer.Id
+Order.Customer -> Customer
+Customer.AddressId -> Address.Id
+```
+
+Generated candidates are an optimization and diagnostics layer. They are not authoritative because runtime schema configuration can still override table names, field names, naming policy, identity members, and module composition.
+
+The generator should emit a module-initialized `GeneratedRelationshipCatalog` that registers `RelationshipCandidate` values with runtime metadata. Candidates remain shape-only and may be ignored by startup finalization if the composed schema cannot validate the source type, target type, identity member, or scalar FK type compatibility.
+
+### Startup finalization
+
+`SchemaOptions.ResolveRelationships()` / schema finalization runs after all `Schema.For<T>()` configuration and before DDL generation or query planning. It resolves:
+
+- identity members first
+- explicit fluent relationships
+- generated or reflection-discovered convention candidates
+- naming policy, table names, and field names
+- ambiguity and type-compatibility checks
+
+Finalized relationships are exposed through normal relationship metadata so `Link`, `Join`, `Include`, `IncludeReverse`, `ThenInclude`, materialization, tooling, and compiled queries can all consume the same model.
+
+Compiled query planning must be schema-aware. Interface-based compiled queries should build plans with the session/store schema so relationship fluent chains such as `Link<T>()`, `Join<T>()`, `Include(...)`, and `ThenInclude(...)` resolve against finalized descriptors instead of query-time reflection fallbacks or mutable queryable state alone.
+
+### Descriptor axes
+
+Do not encode storage model and cardinality into one enum. They are independent axes:
+
+```csharp
+public enum RelationshipStorageKind
+{
+    ScalarForeignKey,
+    RecordLink
+}
+
+public enum RelationshipCardinality
+{
+    One,
+    Many
+}
+```
+
+Requiredness/nullability and DDL constraints are separate concerns:
+
+- `IsNullable`: the CLR/storage value can be absent, null, or `NONE`.
+- `IsRequired`: schema/validation says the relationship must be present.
+- `RelationshipConstraints`: DDL-only behavior such as `REFERENCE`, `ON DELETE`, and `UNIQUE`.
+
+`RecordLinkArray` is represented by `StorageKind = RecordLink` plus `Cardinality = Many`; it should not require a separate long-term storage enum value.
+
+### Ambiguity rules
+
+Convention discovery must distinguish "no match" from "ambiguous match":
+
+- Duplicate mapped target type names: hard startup/build diagnostic naming the full types and assemblies.
+- Multiple FK-shaped members to the same target: valid; register separate descriptors keyed by source member.
+- FK/identity type mismatch: not a relationship match; leave the source member as a scalar field.
+- Unknown target identity: resolve identity first, then run relationship inference.
+- Competing conventions for the same member: hard diagnostic, not first-registered-wins.
+
+Explicit fluent configuration overrides convention-discovered relationships.
+
+---
+
+## 0. Scalar Foreign Key Relationship
+
+Scalar FK relationships are AeroDB relationship metadata backed by ordinary scalar fields, not SurrealDB native record-link fields.
+
+### C# model
+
+```csharp
+public sealed class Order
+{
+    public long Id { get; set; }
+    public long CustomerId { get; set; }
+}
+
+public sealed class Customer
+{
+    public long Id { get; set; }
+    public string Name { get; set; } = "";
+}
+```
+
+### Convention mapping
+
+```text
+Order.CustomerId -> Customer.Id
+```
+
+### Explicit mapping
+
+```csharp
+Schema.For<Order>()
+    .HasOne<Customer>(x => x.CustomerId);
+```
+
+### Mapping metadata produced
+
+```text
+SourceType: Order
+SourceTable: order
+MemberName: CustomerId
+StorageFieldName: customer_id
+TargetType: Customer
+TargetTable: customer
+Kind/Cardinality: HasOne / One
+StorageKind: ScalarForeignKey
+Origin: Convention or Explicit
+```
+
+### DDL behavior
+
+No SurrealDB `record<customer>` field is emitted for scalar FK relationships. The scalar field is treated as a normal field; relationship metadata is used by query translation, include loading, and materialization.
+
+---
+
 ## 1. Single Record Relationship
 
 ### C# model

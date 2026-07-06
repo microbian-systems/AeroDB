@@ -169,6 +169,7 @@ public class DocumentStore : IDocumentStore, ISessionFactory
 
         // Apply global document policies to all registered mappings
         ApplyPolicies();
+        Options.Schema.ResolveRelationships();
 
         var schemaManager = new SchemaManager(Options.LoggerFactory);
         var triggerManager = new EventTriggerManager(Options.LoggerFactory);

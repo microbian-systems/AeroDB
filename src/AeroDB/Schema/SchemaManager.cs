@@ -369,6 +369,9 @@ public class SchemaManager
         {
             foreach (var relationship in relationshipMappings)
             {
+                if (relationship.StorageKind == RelationshipStorageKind.ScalarForeignKey)
+                    continue;
+
                 var sql = BuildRelationshipFieldStatement(relationship, tableName);
                 await session.RawQuery(sql, null, ct).ConfigureAwait(false);
 
@@ -384,7 +387,10 @@ public class SchemaManager
     internal static string BuildRelationshipFieldStatement(RelationshipMapping relationship, string? tableName = null)
     {
         var sourceTable = tableName ?? relationship.SourceTableName;
-        var type = relationship.Kind == RelationshipKind.HasMany
+        if (relationship.StorageKind == RelationshipStorageKind.ScalarForeignKey)
+            throw new InvalidOperationException("Scalar foreign key relationships do not emit SurrealDB record-link field DDL.");
+
+        var type = relationship.Cardinality == RelationshipCardinality.Many
             ? $"array<record<{relationship.TargetTableName}>>"
             : $"record<{relationship.TargetTableName}>";
 

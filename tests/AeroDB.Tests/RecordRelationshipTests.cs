@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using AeroDB;
 using NSubstitute;
 using SurrealDb.Net;
@@ -48,6 +49,94 @@ public sealed class RecordRelationshipTests
         var ddl = SchemaManager.BuildRelationshipFieldStatement(relationship);
 
         ddl.ShouldBe("DEFINE FIELD products ON TABLE relationship_order TYPE array<record<relationship_product>>;");
+    }
+
+    [Test]
+    public async Task ResolveRelationships_Registers_ScalarFk_Convention_Mapping()
+    {
+        var options = SnakeCaseOptions();
+        options.Schema.For<ConventionFixtures.Customer>().Identity(x => x.Id);
+        options.Schema.For<ConventionFixtures.Order>().Identity(x => x.Id);
+
+        var relationship = options.Schema.FindRelationship(typeof(ConventionFixtures.Order), typeof(ConventionFixtures.Customer), nameof(ConventionFixtures.Order.CustomerId));
+
+        relationship.ShouldNotBeNull();
+        relationship.StorageKind.ShouldBe(RelationshipStorageKind.ScalarForeignKey);
+        relationship.Cardinality.ShouldBe(RelationshipCardinality.One);
+        relationship.SourceFieldName.ShouldBe("customer_id");
+        relationship.TargetIdMemberName.ShouldBe(nameof(ConventionFixtures.Customer.Id));
+        relationship.Origin.ShouldBe(RelationshipOrigin.Convention);
+    }
+
+    [Test]
+    public async Task ResolveRelationships_Uses_SourceGenerated_ScalarFk_Candidate_When_Available()
+    {
+        var options = SnakeCaseOptions();
+        options.Schema.For<GeneratedCustomer>().Identity(x => x.Id);
+        options.Schema.For<GeneratedOrder>().Identity(x => x.Id);
+
+        var relationship = options.Schema.FindRelationship(typeof(GeneratedOrder), typeof(GeneratedCustomer), nameof(GeneratedOrder.GeneratedCustomerId));
+
+        relationship.ShouldNotBeNull();
+        relationship.StorageKind.ShouldBe(RelationshipStorageKind.ScalarForeignKey);
+        relationship.Origin.ShouldBe(RelationshipOrigin.SourceGenerated);
+    }
+
+    [Test]
+    public async Task ScalarFk_Relationship_Does_Not_Emit_RecordLink_Ddl()
+    {
+        var options = SnakeCaseOptions();
+        options.Schema.For<ConventionFixtures.Customer>().Identity(x => x.Id);
+        options.Schema.For<ConventionFixtures.Order>().Identity(x => x.Id);
+
+        options.Schema.ResolveRelationships();
+        var mapping = options.Schema.Mappings[typeof(ConventionFixtures.Order)];
+        var relationship = mapping.GetRelationshipMappings()
+            .Single(r => r.ClrMemberName == nameof(ConventionFixtures.Order.CustomerId));
+
+        Should.Throw<InvalidOperationException>(() => SchemaManager.BuildRelationshipFieldStatement(relationship));
+    }
+
+    [Test]
+    public async Task ResolveRelationships_Downgrades_TypeMismatch_To_Scalar_Field()
+    {
+        var options = SnakeCaseOptions();
+        options.Schema.For<PocoCustomer>().Identity(x => x.Id);
+        options.Schema.For<MismatchedCustomerOrder>().Identity(x => x.Id);
+
+        var relationship = options.Schema.FindRelationship(
+            typeof(MismatchedCustomerOrder),
+            typeof(PocoCustomer),
+            nameof(MismatchedCustomerOrder.CustomerId));
+
+        relationship.ShouldBeNull();
+    }
+
+    [Test]
+    public async Task ResolveRelationships_Throws_On_Duplicate_Target_Type_Names()
+    {
+        var options = SnakeCaseOptions();
+        options.Schema.For<DuplicateCustomerOrder>().Identity(x => x.Id);
+        options.Schema.For<DuplicateModuleA.Customer>().Identity(x => x.Id);
+        options.Schema.For<DuplicateModuleB.Customer>().Identity(x => x.Id);
+
+        var ex = Should.Throw<InvalidOperationException>(() => options.Schema.ResolveRelationships());
+        ex.Message.ShouldContain(typeof(DuplicateModuleA.Customer).FullName!);
+        ex.Message.ShouldContain(typeof(DuplicateModuleB.Customer).FullName!);
+    }
+
+    [Test]
+    public async Task HasOne_ScalarFk_Validates_Against_Target_Identity()
+    {
+        var options = SnakeCaseOptions();
+        options.Schema.For<PocoCustomer>().Identity(x => x.Id);
+
+        var mapping = options.Schema.For<PocoOrder>();
+        mapping.HasOne<PocoCustomer>(x => x.CustomerId);
+
+        var relationship = mapping.GetRelationshipMappings().Single(r => r.ClrMemberName == nameof(PocoOrder.CustomerId));
+        relationship.StorageKind.ShouldBe(RelationshipStorageKind.ScalarForeignKey);
+        relationship.StorageFieldName.ShouldBe("customer_id");
     }
 
     [Test]
@@ -248,6 +337,77 @@ public sealed class RecordRelationshipTests
                 123,
                 x => x.Customer)
             .ShouldBe("UPDATE relationship_order:123 SET customer = NONE;");
+    }
+
+    [Test]
+    public async Task IncludeReverse_Convention_Uses_Child_HasOne_FieldName()
+    {
+        var options = SnakeCaseOptions();
+        options.Schema.For<ReverseParent>();
+        options.Schema.For<ReverseChild>()
+            .HasOne(x => x.Parent)
+            .FieldName("parent_order");
+
+        var provider = new SurrealQueryProvider(Substitute.For<ISurrealDbSession>(), options);
+        var concrete = new SurrealDbQueryable<ReverseParent>(provider);
+        ISurrealDbQueryable<ReverseParent> queryable = concrete;
+
+        SurrealDbQueryableExtensions.IncludeReverse<ReverseParent, ReverseChild>(queryable, x => x.Items);
+
+        var spec = concrete.IncludeSpecs.Single();
+        spec.ForeignKeyClrName.ShouldBe(nameof(ReverseChild.Parent));
+        spec.ForeignKeyField.ShouldBe("parent_order");
+    }
+
+    [Test]
+    public async Task ThenInclude_RecordLinks_Adds_Nested_Fetch_Path()
+    {
+        var options = SnakeCaseOptions();
+        options.Schema.For<ThenOrder>().HasOne(x => x.Customer);
+        options.Schema.For<ThenCustomer>().HasOne(x => x.Address);
+        options.Schema.For<ThenAddress>();
+
+        var provider = new SurrealQueryProvider(Substitute.For<ISurrealDbSession>(), options);
+        var query = new SurrealDbQueryable<ThenOrder>(provider)
+            .Include(x => x.Customer)
+            .ThenInclude(x => x.Address);
+
+        query.ToCommand().ShouldBe("SELECT * FROM `then_order` FETCH `customer`.`address`;");
+    }
+
+    [Test]
+    public async Task CompiledQuery_LinkWhere_Uses_Resolved_Relationship_Metadata()
+    {
+        var options = SnakeCaseOptions();
+        options.Schema.For<RelationshipOrder>().HasOne(x => x.Customer);
+        options.Schema.For<RelationshipCustomer>();
+
+        var plan = CompiledQueryPlanner.GetOrBuildPlan<
+            RelationshipOrder,
+            IEnumerable<RelationshipOrder>>(
+            new CompiledRelationshipOrdersByCustomerName { Name = "Alice" },
+            options);
+
+        plan.SkeletonResult.ToSurrealQL()
+            .ShouldBe("SELECT * FROM `relationship_order` WHERE customer.name = $p0;");
+    }
+
+    [Test]
+    public async Task CompiledQuery_ThenInclude_Uses_Resolved_Relationship_Metadata()
+    {
+        var options = SnakeCaseOptions();
+        options.Schema.For<ThenOrder>().HasOne(x => x.Customer);
+        options.Schema.For<ThenCustomer>().HasOne(x => x.Address);
+        options.Schema.For<ThenAddress>();
+
+        var plan = CompiledQueryPlanner.GetOrBuildPlan<
+            ThenOrder,
+            IEnumerable<ThenOrder>>(
+            new CompiledThenIncludeOrders(),
+            options);
+
+        plan.SkeletonResult.ToSurrealQL()
+            .ShouldBe("SELECT * FROM `then_order` FETCH `customer`.`address`;");
     }
 
     [Test]
@@ -574,4 +734,100 @@ public sealed class PocoSalesRep
 {
     public long Id { get; set; }
     public string Name { get; set; } = "";
+}
+
+public static class ConventionFixtures
+{
+    public sealed class Order
+    {
+        public long Id { get; set; }
+        public long CustomerId { get; set; }
+    }
+
+    public sealed class Customer
+    {
+        public long Id { get; set; }
+        public string Name { get; set; } = "";
+    }
+}
+
+public sealed class GeneratedOrder : Entity<long>
+{
+    public long GeneratedCustomerId { get; set; }
+}
+
+public sealed class GeneratedCustomer : Entity<long>
+{
+    public string Name { get; set; } = "";
+}
+
+public sealed class MismatchedCustomerOrder
+{
+    public long Id { get; set; }
+    public string CustomerId { get; set; } = "";
+}
+
+public sealed class DuplicateCustomerOrder
+{
+    public long Id { get; set; }
+    public long CustomerId { get; set; }
+}
+
+public static class DuplicateModuleA
+{
+    public sealed class Customer
+    {
+        public long Id { get; set; }
+    }
+}
+
+public static class DuplicateModuleB
+{
+    public sealed class Customer
+    {
+        public long Id { get; set; }
+    }
+}
+
+public sealed class ReverseParent : Record
+{
+    public IEnumerable<ReverseChild>? Items { get; set; } = [];
+}
+
+public sealed class ReverseChild : Record
+{
+    public ReverseParent? Parent { get; set; }
+}
+
+public sealed class ThenOrder : Record
+{
+    public ThenCustomer? Customer { get; set; }
+}
+
+public sealed class ThenCustomer : Record
+{
+    public ThenAddress? Address { get; set; }
+}
+
+public sealed class ThenAddress : Record
+{
+    public string City { get; set; } = "";
+}
+
+public sealed class CompiledRelationshipOrdersByCustomerName : ICompiledListQuery<RelationshipOrder>
+{
+    public string Name { get; set; } = "";
+
+    public Expression<Func<ISurrealDbQueryable<RelationshipOrder>, IEnumerable<RelationshipOrder>>> QueryIs()
+        => q => q
+            .Link<RelationshipCustomer>(x => x.Customer)
+            .Where((o, c) => c.Name == Name);
+}
+
+public sealed class CompiledThenIncludeOrders : ICompiledListQuery<ThenOrder>
+{
+    public Expression<Func<ISurrealDbQueryable<ThenOrder>, IEnumerable<ThenOrder>>> QueryIs()
+        => q => q
+            .Include(x => x.Customer)
+            .ThenInclude(x => x.Address);
 }
