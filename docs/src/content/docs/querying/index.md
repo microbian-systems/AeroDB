@@ -311,18 +311,36 @@ var cities = await session.Query<User>()
 
 ## Raw SQL Fallback
 
-When the LINQ provider cannot express a query, fall back to raw SurrealQL:
+When the LINQ provider cannot express a query, fall back to raw SurrealQL. The preferred way uses positional parameters (`$p1`, `$p2`, etc.) via the `params object[]` overload:
+
+```csharp
+var users = await session.RawQueryAsync<User>(
+    "SELECT * FROM user WHERE age > $p1 AND city = $p2", 21, "NYC");
+
+// Execute statements with positional parameters
+await session.ExecuteSqlAsync(
+    "UPDATE user SET age = $p2 WHERE id = $p1", userId, newAge);
+```
+
+For complex scenarios (e.g., when you need named parameters for clarity or reuse), use the dictionary-based overload:
 
 ```csharp
 var results = await session.RawQueryAsync<User>(
     "SELECT * FROM user WHERE age > $min AND geo::DISTANCE(location, $center) < $radius " +
     "ORDER BY age DESC LIMIT 20",
-    new { min = 18, center = new { lat = 40.7128, lon = -74.0060 }, radius = 50000 });
+    new Dictionary<string, object?>
+    {
+        ["min"] = 18,
+        ["center"] = new { lat = 40.7128, lon = -74.0060 },
+        ["radius"] = 50000
+    });
 
-// Raw query with type deserialization
+// Raw query with dynamic deserialization
 var json = await session.RawQueryAsync<dynamic>(
     "SELECT count() AS total, math::mean(age) AS avg_age FROM user GROUP BY department");
 ```
+
+> **Tip:** Raw queries with positional parameters (`$p1`, `$p2`, ...) are type-safe and avoid string interpolation injection risks.
 
 Use `ToDebugString()` to inspect generated SurrealQL for any LINQ query:
 
