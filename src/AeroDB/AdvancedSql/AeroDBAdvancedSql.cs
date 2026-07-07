@@ -79,31 +79,9 @@ public class AeroDBAdvancedSql
         }
     }
 
-    private static IReadOnlyList<T> DeserializeList<T>(SurrealDbResponse response, int index)
+    private IReadOnlyList<T> DeserializeList<T>(SurrealDbResponse response, int index)
         where T : class
-    {
-        try
-        {
-            var list = response.GetValue<List<T>>(index);
-            return list?.AsReadOnly() ?? (IReadOnlyList<T>)Array.Empty<T>();
-        }
-        catch
-        {
-            // CBOR deserialization fallback — try JSON round-trip
-            try
-            {
-                var raw = response.GetValue<List<object>>(index);
-                if (raw is null) return Array.Empty<T>();
-                var json = System.Text.Json.JsonSerializer.Serialize(raw);
-                var result = System.Text.Json.JsonSerializer.Deserialize<List<T>>(json);
-                return result?.AsReadOnly() ?? (IReadOnlyList<T>)Array.Empty<T>();
-            }
-            catch
-            {
-                return Array.Empty<T>();
-            }
-        }
-    }
+        => _session.DeserializeMappedPocoResponse<T>(response, index).AsReadOnly();
 
     private static InvalidOperationException CreateError(IEnumerable<ISurrealDbErrorResult> errors)
     {

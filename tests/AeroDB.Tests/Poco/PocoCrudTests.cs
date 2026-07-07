@@ -105,7 +105,7 @@ public class PocoCrudTests
         await session.SaveChangesAsync();
 
         var results = await session.RawQueryAsync<PocoLong>(
-            "SELECT * FROM poco_long WHERE Score = 7;");
+            "SELECT * FROM poco_long WHERE score = 7;");
 
         results.Count.ShouldBe(1);
         results[0].Id.ShouldBe(4242);

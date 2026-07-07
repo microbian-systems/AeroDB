@@ -187,6 +187,7 @@ public class SurrealDbQueryable<T> : ISurrealDbQueryable<T>, IAsyncEnumerable<T>
     internal ISurrealDbSession GetSession() => ((SurrealQueryProvider)Provider).Session;
 
     internal StoreOptions StoreOptions => _provider.StoreOptions;
+    internal InternalSessionBase? InternalSession => _provider.SessionBase;
 
     /// <summary>
     /// Optional override for the table/view name used in generated SurrealQL.
@@ -209,6 +210,8 @@ public class SurrealDbQueryable<T> : ISurrealDbQueryable<T>, IAsyncEnumerable<T>
     {
         /// <summary>The property name on T that holds the foreign key.</summary>
         public string PropertyName { get; set; } = "";
+        /// <summary>The storage field name on T that holds the foreign key.</summary>
+        public string FieldName { get; set; } = "";
         /// <summary>The type of the foreign key property.</summary>
         public Type PropertyType { get; set; } = null!;
         /// <summary>The document type being loaded.</summary>
@@ -409,7 +412,7 @@ public class SurrealDbQueryable<T> : ISurrealDbQueryable<T>, IAsyncEnumerable<T>
 
     public Task<decimal> SumAsync(Expression<Func<T, decimal>> selector, CancellationToken ct = default)
     {
-        var fieldName = ExtractFieldName(selector);
+        var fieldName = MetadataDispatch.GetFieldName(typeof(T), ExtractFieldName(selector), _provider.StoreOptions.Schema);
         var sumExpr = Expression.Call(
             typeof(Queryable), "Sum", [typeof(T)],
             Expression, Expression.Quote(selector));
@@ -418,7 +421,7 @@ public class SurrealDbQueryable<T> : ISurrealDbQueryable<T>, IAsyncEnumerable<T>
 
     public Task<decimal> MinAsync(Expression<Func<T, decimal>> selector, CancellationToken ct = default)
     {
-        var fieldName = ExtractFieldName(selector);
+        var fieldName = MetadataDispatch.GetFieldName(typeof(T), ExtractFieldName(selector), _provider.StoreOptions.Schema);
         var minExpr = Expression.Call(
             typeof(Queryable), "Min", [typeof(T), typeof(decimal)],
             Expression, Expression.Quote(selector));
@@ -427,7 +430,7 @@ public class SurrealDbQueryable<T> : ISurrealDbQueryable<T>, IAsyncEnumerable<T>
 
     public Task<decimal> MaxAsync(Expression<Func<T, decimal>> selector, CancellationToken ct = default)
     {
-        var fieldName = ExtractFieldName(selector);
+        var fieldName = MetadataDispatch.GetFieldName(typeof(T), ExtractFieldName(selector), _provider.StoreOptions.Schema);
         var maxExpr = Expression.Call(
             typeof(Queryable), "Max", [typeof(T), typeof(decimal)],
             Expression, Expression.Quote(selector));
@@ -436,7 +439,7 @@ public class SurrealDbQueryable<T> : ISurrealDbQueryable<T>, IAsyncEnumerable<T>
 
     public Task<decimal> AverageAsync(Expression<Func<T, decimal>> selector, CancellationToken ct = default)
     {
-        var fieldName = ExtractFieldName(selector);
+        var fieldName = MetadataDispatch.GetFieldName(typeof(T), ExtractFieldName(selector), _provider.StoreOptions.Schema);
         var avgExpr = Expression.Call(
             typeof(Queryable), "Average", [typeof(T)],
             Expression, Expression.Quote(selector));
@@ -463,9 +466,11 @@ public class SurrealDbQueryable<T> : ISurrealDbQueryable<T>, IAsyncEnumerable<T>
         Action<TInclude> callback) where TInclude : class
     {
         var memberName = ExtractFieldName(property);
+        var fieldName = MetadataDispatch.GetFieldName(typeof(T), memberName, _provider.StoreOptions.Schema);
         IncludeDescriptors.Add(new IncludeDescriptor
         {
             PropertyName = memberName,
+            FieldName = fieldName,
             PropertyType = typeof(TProperty),
             IncludeType = typeof(TInclude),
             Callback = callback
@@ -482,9 +487,11 @@ public class SurrealDbQueryable<T> : ISurrealDbQueryable<T>, IAsyncEnumerable<T>
         IDictionary<TKey, TInclude> dictionary) where TInclude : class
     {
         var memberName = ExtractFieldName(key);
+        var fieldName = MetadataDispatch.GetFieldName(typeof(T), memberName, _provider.StoreOptions.Schema);
         IncludeDescriptors.Add(new IncludeDescriptor
         {
             PropertyName = memberName,
+            FieldName = fieldName,
             PropertyType = typeof(TKey),
             IncludeType = typeof(TInclude),
             Dictionary = dictionary
@@ -713,7 +720,20 @@ public static class SurrealDbQueryableExtensions
             source.Expression,
             Expression.Quote(predicate));
 
-        return (ISurrealDbQueryable<T>)source.Provider.CreateQuery<T>(expr);
+        var next = (ISurrealDbQueryable<T>)source.Provider.CreateQuery<T>(expr);
+        if (source is SurrealDbQueryable<T> sourceQuery && next is SurrealDbQueryable<T> nextQuery)
+        {
+            nextQuery.FetchFields = sourceQuery.FetchFields.ToList();
+            nextQuery.IncludeDescriptors = sourceQuery.IncludeDescriptors.ToList();
+            nextQuery.IncludeSpecs = sourceQuery.IncludeSpecs.ToList();
+            nextQuery.FilterIncludeSpecs = sourceQuery.FilterIncludeSpecs.ToList();
+            nextQuery.LinkRegistrations = sourceQuery.LinkRegistrations.ToList();
+            nextQuery.LinkedWhereSpecs = sourceQuery.LinkedWhereSpecs.ToList();
+            nextQuery.ViewName = sourceQuery.ViewName;
+            nextQuery.QueryStats = sourceQuery.QueryStats;
+        }
+
+        return next;
     }
 
     /// <summary>
@@ -751,9 +771,7 @@ public static class SurrealDbQueryableExtensions
 
         var propName = memberExpr.Member.Name;
         var schema = queryable.StoreOptions.Schema;
-        var fkField = schema.HasConfiguredCase
-            ? MetadataDispatch.GetFieldName(typeof(T), propName, schema)
-            : schema.NamingPolicy.FieldName(propName);
+        var fkField = MetadataDispatch.GetFieldName(typeof(T), propName, schema);
         var targetTable = MetadataDispatch.GetTableName(typeof(TInclude), queryable.StoreOptions.Schema);
 
         queryable.IncludeSpecs.Add(new IncludeSpec
@@ -862,10 +880,7 @@ public static class SurrealDbQueryableExtensions
             IsForward = false   // reverse
         };
 
-        // Pre-compute the parent ID field name for SurrealQL generation.
-        // Record types use "id" (RecordId), Entity types use "Id" (typed property).
-        var parentIsRecord = typeof(IRecord).IsAssignableFrom(typeof(T));
-        spec.ParentIdField = parentIsRecord ? "id" : "Id";
+        spec.ParentIdField = ResolveReverseParentIdField<T, TChild>(clrName);
 
         queryable.IncludeSpecs.Add(spec);
 
@@ -923,11 +938,26 @@ public static class SurrealDbQueryableExtensions
             IsForward = false
         };
 
-        var parentIsRecord = typeof(IRecord).IsAssignableFrom(typeof(T));
-        spec.ParentIdField = parentIsRecord ? "id" : "Id";
+        spec.ParentIdField = ResolveReverseParentIdField<T, TChild>(fkClrName);
 
         queryable.IncludeSpecs.Add(spec);
         return queryable;
+    }
+
+    private static string ResolveReverseParentIdField<TSource, TChild>(string fkClrName)
+    {
+        if (typeof(IRecord).IsAssignableFrom(typeof(TSource)))
+            return "id";
+
+        var fkProperty = typeof(TChild).GetProperty(fkClrName, BindingFlags.Instance | BindingFlags.Public);
+        var fkType = Nullable.GetUnderlyingType(fkProperty?.PropertyType ?? typeof(object))
+            ?? fkProperty?.PropertyType
+            ?? typeof(object);
+
+        if (fkType == typeof(int) || fkType == typeof(long))
+            return "<int> meta::id(id)";
+
+        return "meta::id(id)";
     }
 
     private static (string clrName, string fieldName) ResolveReverseFkField<TSource, TTarget>(SchemaOptions schema)

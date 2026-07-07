@@ -246,18 +246,12 @@ internal static class CborResultReader
         reader.ReadBeginArray();
 
         var size = reader.ReadSize();
-        if (size > 2)
-        {
-            for (var i = 0; i < size; i++)
-            {
-                reader.SkipDataItem();
-            }
-
-            return DateTime.UnixEpoch;
-        }
-
         var seconds = size >= 1 ? reader.ReadInt64() : 0;
         var nanos = size >= 2 ? reader.ReadInt32() : 0;
+        for (var i = 2; i < size; i++)
+        {
+            reader.SkipDataItem();
+        }
 
         return DateTime.UnixEpoch
             .AddSeconds(seconds)

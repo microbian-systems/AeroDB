@@ -12,6 +12,7 @@ namespace AeroDB;
 public class CompiledQueryProvider<T> where T : class
 {
     private readonly IQuerySession _session;
+    private readonly InternalSessionBase _internalSession;
     private readonly ISurrealDbSession _surrealSession;
     private readonly CompiledQuery<T> _compiled;
     private readonly ILogger<CompiledQueryProvider<T>> _logger;
@@ -28,11 +29,11 @@ public class CompiledQueryProvider<T> where T : class
         _compiled = compiled;
 
         // Access the underlying SurrealDB session via the base class
-        var internalSession = (InternalSessionBase)session;
-        _surrealSession = internalSession.Session;
+        _internalSession = (InternalSessionBase)session;
+        _surrealSession = _internalSession.Session;
         _tenantId = session.TenantId;
 
-        var loggerFactory = internalSession.StoreOptions.LoggerFactory;
+        var loggerFactory = _internalSession.StoreOptions.LoggerFactory;
         _logger = loggerFactory?.CreateLogger<CompiledQueryProvider<T>>()
             ?? NullLogger<CompiledQueryProvider<T>>.Instance;
     }
@@ -50,8 +51,7 @@ public class CompiledQueryProvider<T> where T : class
 
         if (!response.HasErrors && response.Count > 0)
         {
-            var raw = response.GetValue<List<T>>(0);
-            return raw ?? [];
+            return _internalSession.DeserializeMappedPocoResponse<T>(response, 0);
         }
 
         return [];
@@ -71,7 +71,7 @@ public class CompiledQueryProvider<T> where T : class
 
         if (!response.HasErrors && response.Count > 0)
         {
-            var raw = response.GetValue<List<T>>(0);
+            var raw = _internalSession.DeserializeMappedPocoResponse<T>(response, 0);
             if (raw is not null && raw.Count > 0)
                 return raw[0];
         }
@@ -89,7 +89,8 @@ public class CompiledQueryProvider<T> where T : class
         // Apply tenant filter at execution time (same approach as SurrealQueryProvider)
         if (!string.IsNullOrEmpty(_tenantId) && HasTenantProperty(typeof(T)))
         {
-            result.Where.Add($"TenantId = '{_tenantId.Replace("'", "\\'")}'");
+            var tenantField = MetadataDispatch.GetFieldName(typeof(T), "TenantId", _internalSession.StoreOptions.Schema);
+            result.Where.Add($"{tenantField} = '{_tenantId.Replace("'", "\\'")}'");
             _logger.LogDebug("Tenant filter applied on compiled query: {TenantId}", _tenantId);
         }
 

@@ -152,7 +152,7 @@ public class MlQueryTests
         await mockSession.Received(1).RawQuery(
             Arg.Is<string>(sql =>
                 sql.Contains("WHERE (")
-                && sql.Contains("Bedrooms")),
+                && sql.Contains("bedrooms")),
             Arg.Any<IReadOnlyDictionary<string, object?>>(),
             Arg.Any<CancellationToken>()
         );

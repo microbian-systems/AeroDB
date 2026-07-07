@@ -154,20 +154,57 @@ public class SchemaManager
     /// <summary>
     /// Ensures the specified index exists on the given table.
     /// </summary>
-    public async Task EnsureIndexAsync(ISurrealDbSession session, string tableName, IndexDefinition index, CancellationToken ct = default)
+    public async Task EnsureIndexAsync(
+        ISurrealDbSession session,
+        string tableName,
+        IndexDefinition index,
+        Type? entityType = null,
+        SchemaOptions? schemaOptions = null,
+        CancellationToken ct = default)
     {
+        var resolvedIndex = ResolveIndexColumns(index, entityType, schemaOptions);
         string surql = index.Type switch
         {
-            IndexType.FullText => BuildFullTextIndex(tableName, index),
-            IndexType.Hnsw => BuildHnswIndex(tableName, index),
-            IndexType.Diskann => BuildDiskannIndex(tableName, index),
-            IndexType.Geo => BuildStandardIndex(tableName, index),
-            _ => BuildStandardIndex(tableName, index)
+            IndexType.FullText => BuildFullTextIndex(tableName, resolvedIndex),
+            IndexType.Hnsw => BuildHnswIndex(tableName, resolvedIndex),
+            IndexType.Diskann => BuildDiskannIndex(tableName, resolvedIndex),
+            IndexType.Geo => BuildStandardIndex(tableName, resolvedIndex),
+            _ => BuildStandardIndex(tableName, resolvedIndex)
         };
 
         _logger.LogDebug("Ensuring index {IndexName} on table {Table} (type: {Type})",
             index.Name, tableName, index.Type);
         await session.RawQuery(surql, null, ct).ConfigureAwait(false);
+    }
+
+    private static IndexDefinition ResolveIndexColumns(
+        IndexDefinition index,
+        Type? entityType,
+        SchemaOptions? schemaOptions)
+    {
+        if (entityType is null || schemaOptions is null)
+            return index;
+
+        var resolvedColumns = index.Columns
+            .Select(column => MetadataDispatch.GetFieldName(entityType, column, schemaOptions))
+            .ToArray();
+
+        return new IndexDefinition
+        {
+            Name = index.Name,
+            Columns = resolvedColumns,
+            IsUnique = index.IsUnique,
+            Type = index.Type,
+            Analyzer = index.Analyzer,
+            Bm25 = index.Bm25,
+            VectorDimension = index.VectorDimension,
+            VectorDistance = index.VectorDistance,
+            VectorElementType = index.VectorElementType,
+            DiskannDegree = index.DiskannDegree,
+            DiskannLBuild = index.DiskannLBuild,
+            DiskannAlpha = index.DiskannAlpha,
+            HasHashedVector = index.HasHashedVector
+        };
     }
 
     private static string BuildStandardIndex(string tableName, IndexDefinition index)

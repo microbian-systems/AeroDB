@@ -170,10 +170,10 @@ public class SurrealQueryProvider : IQueryProvider
     /// <summary>
     /// Extracts the table name from the expression and applies it to the query.
     /// </summary>
-    private static void ExtractTable(Expression expression, SurrealQueryResult query)
+    private void ExtractTable(Expression expression, SurrealQueryResult query)
     {
         if (expression is ConstantExpression c && c.Value is IQueryable q)
-            query.TableName = MetadataDispatch.GetTableName(q.ElementType);
+            query.TableName = MetadataDispatch.GetTableName(q.ElementType, _options.Schema);
     }
 
     /// <summary>
@@ -354,7 +354,8 @@ public class SurrealQueryProvider : IQueryProvider
 
         if (HasTenantProperty(elementType))
         {
-            query.Where.Add($"TenantId = '{_tenantId?.Replace("'", "\\'")}'");
+            var tenantField = MetadataDispatch.GetFieldName(elementType, "TenantId", _options.Schema);
+            query.Where.Add($"{tenantField} = '{_tenantId?.Replace("'", "\\'")}'");
             _logger.LogDebug("Tenant filter applied: {TenantId}", _tenantId);
         }
     }
@@ -373,7 +374,8 @@ public class SurrealQueryProvider : IQueryProvider
 
         if (IsSoftDeletedType(elementType))
         {
-            query.Where.Add("Deleted = false");
+            var deletedField = MetadataDispatch.GetFieldName(elementType, nameof(ISoftDeleted.Deleted), _options.Schema);
+            query.Where.Add($"{deletedField} = false");
             _logger.LogDebug("Soft-delete filter applied to {Type}", elementType.Name);
         }
     }
@@ -459,7 +461,7 @@ public class SurrealQueryProvider : IQueryProvider
         if (string.IsNullOrEmpty(query.TableName))
         {
             if (expression is ConstantExpression c && c.Value is IQueryable q)
-                query.TableName = MetadataDispatch.GetTableName(q.ElementType);
+                query.TableName = MetadataDispatch.GetTableName(q.ElementType, _options.Schema);
         }
 
         // Apply ViewName override if the source queryable has one
@@ -499,6 +501,8 @@ public class SurrealQueryProvider : IQueryProvider
                 filterIncludeSpecs = extracted;
         }
 
+        PromoteFetchFieldsToIncludeSpecs<T>(query, ref includeSpecs);
+
         var hasIncludes = includeDescriptors is { Count: > 0 };
         var hasIncludeSpecs = includeSpecs is { Count: > 0 };
 
@@ -528,6 +532,7 @@ public class SurrealQueryProvider : IQueryProvider
                     if (countVal.HasValue)
                         queryStats.TotalResults = countVal.Value;
                     var dataResults = DeserializeQueryResults<T>(statsResponse, 1);
+                    await HydrateFetchedRecordLinksAsync(dataResults, query.FetchFields, statsSession, ct).ConfigureAwait(false);
                     if (filterIncludeSpecs is { Count: > 0 } && dataResults is { Count: > 0 })
                         dataResults = ApplyFilterIncludePredicates(dataResults, filterIncludeSpecs);
                     return dataResults;
@@ -562,11 +567,11 @@ public class SurrealQueryProvider : IQueryProvider
             {
                 foreach (var include in includeDescriptors!)
                 {
-                    var targetTable = MetadataDispatch.GetTableName(include.IncludeType);
+                    var targetTable = MetadataDispatch.GetTableName(include.IncludeType, _options.Schema);
                     sb.Append("SELECT * FROM `")
                       .Append(targetTable)
                       .Append("` WHERE id IN (SELECT VALUE `")
-                      .Append(include.PropertyName)
+                      .Append(include.FieldName)
                       .Append("` FROM $main);");
                 }
             }
@@ -576,7 +581,7 @@ public class SurrealQueryProvider : IQueryProvider
             {
                 foreach (var spec in includeSpecs!)
                 {
-                    sb.Append("SELECT * FROM `").Append(spec.TargetTable).Append("` WHERE ");
+                    sb.Append("SELECT *, id AS __aerodb_include_id FROM `").Append(spec.TargetTable).Append("` WHERE ");
                     if (spec.IsForward)
                     {
                         // Forward: FK on parent. WHERE id IN (SELECT VALUE {parentFk} FROM $main)
@@ -607,22 +612,12 @@ public class SurrealQueryProvider : IQueryProvider
         if (hasIncludes || hasIncludeSpecs)
         {
             // Determine main result index once (shared between descriptor and spec processing).
-            int mainIndex = 0;
-            List<T>? testMain = null;
-            if (response.Count > 0 && response[0] is SurrealDbOkResult)
-            {
-                try { testMain = DeserializeQueryResults<T>(response, 0); }
-                catch { /* ignore type mismatch */ }
-            }
-
-            if (testMain is { Count: > 0 })
-                mainIndex = 0;
-            else if (response.Count > 1 && response[1] is SurrealDbOkResult)
-                mainIndex = 1;
-            else
+            var includeResultCount = (includeDescriptors?.Count ?? 0) + (includeSpecs?.Count ?? 0);
+            var mainIndex = ResolveMainResultIndex(response, includeResultCount);
+            if (mainIndex < 0)
                 return [];
 
-            var results = mainIndex == 0 ? testMain : DeserializeQueryResults<T>(response, mainIndex);
+            var results = DeserializeQueryResults<T>(response, mainIndex);
             if (results is null || results.Count == 0)
                 return [];
 
@@ -634,22 +629,9 @@ public class SurrealQueryProvider : IQueryProvider
                 {
                     if (ri >= response.Count) break;
 
-                    var listType = typeof(List<>).MakeGenericType(include.IncludeType);
-                    var getValueMethod = typeof(SurrealDbResponse).GetMethods()
-                        .FirstOrDefault(m => m.Name == "GetValue" && m.IsGenericMethodDefinition
-                            && m.GetParameters().Length == 1
-                            && m.GetParameters()[0].ParameterType == typeof(int));
+                    if (response[ri] is not SurrealDbOkResult) { ri++; continue; }
 
-                    if (getValueMethod is null) { ri++; continue; }
-
-                    var typedGetValue = getValueMethod.MakeGenericMethod(listType);
-                    object? includedListObj;
-                    try
-                    {
-                        if (response[ri] is not SurrealDbOkResult) { ri++; continue; }
-                        includedListObj = typedGetValue.Invoke(response, [ri]);
-                    }
-                    catch { ri++; continue; }
+                    object? includedListObj = DeserializeIncludeResultSet(response, ri, include.IncludeType);
 
                     if (includedListObj is not IEnumerable includedEnumerable) { ri++; continue; }
 
@@ -704,7 +686,9 @@ public class SurrealQueryProvider : IQueryProvider
 
         if (!response.HasErrors && response.Count > 0)
         {
-            return DeserializeQueryResults<T>(response, 0);
+            var results = DeserializeQueryResults<T>(response, 0);
+            await HydrateFetchedRecordLinksAsync(results, query.FetchFields, querySession, ct).ConfigureAwait(false);
+            return results;
         }
 
         return [];
@@ -723,7 +707,7 @@ public class SurrealQueryProvider : IQueryProvider
         if (string.IsNullOrEmpty(query.TableName))
         {
             if (expression is ConstantExpression c && c.Value is IQueryable q)
-                query.TableName = MetadataDispatch.GetTableName(q.ElementType);
+                query.TableName = MetadataDispatch.GetTableName(q.ElementType, _options.Schema);
         }
 
         // Apply ViewName override if the source queryable has one
@@ -760,6 +744,8 @@ public class SurrealQueryProvider : IQueryProvider
                 filterIncludeSpecs = extracted;
         }
 
+        PromoteFetchFieldsToIncludeSpecs<T>(query, ref includeSpecs);
+
         query.Limit = 1;
 
         var hasIncludes = includeDescriptors is { Count: > 0 };
@@ -779,11 +765,11 @@ public class SurrealQueryProvider : IQueryProvider
             {
                 foreach (var include in includeDescriptors!)
                 {
-                    var targetTable = MetadataDispatch.GetTableName(include.IncludeType);
+                    var targetTable = MetadataDispatch.GetTableName(include.IncludeType, _options.Schema);
                     sb.Append("SELECT * FROM `")
                       .Append(targetTable)
                       .Append("` WHERE id IN (SELECT VALUE `")
-                      .Append(include.PropertyName)
+                      .Append(include.FieldName)
                       .Append("` FROM $main);");
                 }
             }
@@ -792,7 +778,7 @@ public class SurrealQueryProvider : IQueryProvider
             {
                 foreach (var spec in includeSpecs!)
                 {
-                    sb.Append("SELECT * FROM `").Append(spec.TargetTable).Append("` WHERE ");
+                    sb.Append("SELECT *, id AS __aerodb_include_id FROM `").Append(spec.TargetTable).Append("` WHERE ");
                     if (spec.IsForward)
                     {
                         sb.Append("id IN (SELECT VALUE `").Append(spec.ForeignKeyField).Append("`");
@@ -847,7 +833,10 @@ public class SurrealQueryProvider : IQueryProvider
         {
             var raw = DeserializeQueryResults<T>(response, 0);
             if (raw is { Count: > 0 })
+            {
+                await HydrateFetchedRecordLinksAsync(raw, query.FetchFields, querySession, ct).ConfigureAwait(false);
                 return raw[0];
+            }
         }
 
         return default;
@@ -899,6 +888,8 @@ public class SurrealQueryProvider : IQueryProvider
                 filterIncludeSpecs = extracted;
         }
 
+        PromoteFetchFieldsToIncludeSpecs<T>(query, ref includeSpecs);
+
         query.Limit = 2; // fetch 2 to detect > 1 result
 
         var hasIncludes = includeDescriptors is { Count: > 0 };
@@ -918,11 +909,11 @@ public class SurrealQueryProvider : IQueryProvider
             {
                 foreach (var include in includeDescriptors!)
                 {
-                    var targetTable = MetadataDispatch.GetTableName(include.IncludeType);
+                    var targetTable = MetadataDispatch.GetTableName(include.IncludeType, _options.Schema);
                     sb.Append("SELECT * FROM `")
                       .Append(targetTable)
                       .Append("` WHERE id IN (SELECT VALUE `")
-                      .Append(include.PropertyName)
+                      .Append(include.FieldName)
                       .Append("` FROM $main);");
                 }
             }
@@ -931,7 +922,7 @@ public class SurrealQueryProvider : IQueryProvider
             {
                 foreach (var spec in includeSpecs!)
                 {
-                    sb.Append("SELECT * FROM `").Append(spec.TargetTable).Append("` WHERE ");
+                    sb.Append("SELECT *, id AS __aerodb_include_id FROM `").Append(spec.TargetTable).Append("` WHERE ");
                     if (spec.IsForward)
                     {
                         sb.Append("id IN (SELECT VALUE `").Append(spec.ForeignKeyField).Append("`");
@@ -991,6 +982,7 @@ public class SurrealQueryProvider : IQueryProvider
             var raw = DeserializeQueryResults<T>(response, 0);
             if (raw is { Count: > 0 })
             {
+                await HydrateFetchedRecordLinksAsync(raw, query.FetchFields, querySession, ct).ConfigureAwait(false);
                 if (raw.Count > 1)
                     throw new InvalidOperationException("Sequence contains more than one element.");
                 if (raw.Count == 1)
@@ -1018,23 +1010,11 @@ public class SurrealQueryProvider : IQueryProvider
     {
         var includeCount = includes.Count;
 
-        // Detect engine behavior: some engines (embedded) don't produce a result
-        // for the LET statement, so response.Count = 1 + includeCount.
-        // Remote engines (HTTP/WS) produce a LET result, so response.Count = 2 + includeCount.
-        //   LET absent: [main, include1, include2, ...]
-        //   LET present: [let_result, main, include1, include2, ...]
-        int mainIndex;
-        // Pragmatic heuristic: try index 0 first; if it yields results, use it.
-        // If index 0 yields nothing and there are more result sets, try index 1.
-        var testMain = DeserializeQueryResults<T>(response, 0);
-        if (testMain is { Count: > 0 })
-            mainIndex = 0;
-        else if (response.Count > 1)
-            mainIndex = 1;
-        else
+        var mainIndex = ResolveMainResultIndex(response, includeCount);
+        if (mainIndex < 0)
             return [];
 
-        var results = mainIndex == 0 ? testMain : DeserializeQueryResults<T>(response, mainIndex);
+        var results = DeserializeQueryResults<T>(response, mainIndex);
         if (results is null || results.Count == 0)
             return results ?? [];
 
@@ -1044,43 +1024,13 @@ public class SurrealQueryProvider : IQueryProvider
         {
             if (resultIndex >= response.Count) break;
 
-            var listType = typeof(List<>).MakeGenericType(include.IncludeType);
-            var getValueMethod = typeof(SurrealDbResponse).GetMethods()
-                .FirstOrDefault(m => m.Name == "GetValue" && m.IsGenericMethodDefinition
-                    && m.GetParameters().Length == 1
-                    && m.GetParameters()[0].ParameterType == typeof(int));
-
-            if (getValueMethod is null) { resultIndex++; continue; }
-
-            var typedGetValue = getValueMethod.MakeGenericMethod(listType);
-            object? includedListObj;
-            try
-            {
-                // Check if this result is an OK result (not an error, e.g., non-existent table)
-                if (response[resultIndex] is not SurrealDbOkResult)
-                {
-                    resultIndex++;
-                    continue;
-                }
-
-                includedListObj = typedGetValue.Invoke(response, [resultIndex]);
-            }
-            catch (TargetInvocationException tie) when (tie.InnerException is NotSupportedException)
+            if (response[resultIndex] is not SurrealDbOkResult)
             {
                 resultIndex++;
                 continue;
             }
-            catch (TargetInvocationException tie)
-            {
-                throw new InvalidOperationException(
-                    $"CBOR deserialization of List<{include.IncludeType.Name}> failed: " +
-                    $"{tie.InnerException?.GetType().Name}: {tie.InnerException?.Message}", tie);
-            }
-            catch
-            {
-                resultIndex++;
-                continue;
-            }
+
+            object? includedListObj = DeserializeIncludeResultSet(response, resultIndex, include.IncludeType);
 
             if (includedListObj is not IEnumerable includedEnumerable)
             {
@@ -1136,6 +1086,23 @@ public class SurrealQueryProvider : IQueryProvider
     /// handling both engine behaviors (LET result present or absent).
     /// Used by IncludeSpec (forward include) post-processing.
     /// </summary>
+    private static int ResolveMainResultIndex(SurrealDbResponse response, int includeResultCount)
+    {
+        if (response.Count <= 0)
+            return -1;
+
+        var expectedWithoutLet = includeResultCount + 1;
+        var expectedWithLet = includeResultCount + 2;
+
+        if (response.Count >= expectedWithLet)
+            return response.Count - includeResultCount - 1;
+
+        if (response.Count >= expectedWithoutLet)
+            return response.Count - includeResultCount - 1;
+
+        return response.Count > 1 ? 1 : 0;
+    }
+
     private List<T> DeserializeMainResults<T>(SurrealDbResponse response)
     {
         var testMain = DeserializeQueryResults<T>(response, 0);
@@ -1158,6 +1125,16 @@ public class SurrealQueryProvider : IQueryProvider
     /// </summary>
     private List<T> DeserializeQueryResults<T>(SurrealDbResponse response, int index)
     {
+        // Use raw CBOR map reading for document classes so the active
+        // schema naming policy is honored for convention-only Record/POCO types.
+        var mapping = _options.Schema.Mappings.GetValueOrDefault(typeof(T));
+        if (typeof(T).IsClass)
+        {
+            var items = CborResultReader.ReadPocoResult(response, index);
+            if (items is { Count: > 0 })
+                return InternalSessionBase.DeserializePocoFromList<T>(items, mapping?.IdentityProperty ?? "Id", _options.Schema);
+        }
+
         var shimType = MetadataRegistry.GetShimType(typeof(T));
         if (shimType is not null)
         {
@@ -1185,20 +1162,189 @@ public class SurrealQueryProvider : IQueryProvider
             return results;
         }
 
-        // Check for POCO with configured identity — use raw CBOR reading
-        // to avoid Dahomey.Cbor's ObjectConverter issue with CBOR maps.
-        var mapping = _options.Schema.Mappings.GetValueOrDefault(typeof(T));
-        if (mapping?.IdentityProperty is not null)
-        {
-            var items = CborResultReader.ReadPocoResult(response, index);
-            if (items is null or { Count: 0 }) return [];
-
-            return InternalSessionBase.DeserializePocoFromList<T>(items, mapping.IdentityProperty);
-        }
-
-        // Direct deserialization for Record subclasses (existing path)
         var raw = response.GetValue<List<T>>(index);
         return raw ?? [];
+    }
+
+    private void PromoteFetchFieldsToIncludeSpecs<T>(
+        SurrealQueryResult query,
+        ref List<IncludeSpec>? includeSpecs)
+    {
+        if (query.FetchFields.Count == 0)
+            return;
+
+        var promoted = new List<string>();
+        var properties = typeof(T)
+            .GetProperties(BindingFlags.Instance | BindingFlags.Public)
+            .Where(p => typeof(IRecord).IsAssignableFrom(Nullable.GetUnderlyingType(p.PropertyType) ?? p.PropertyType))
+            .ToArray();
+
+        foreach (var fetchField in query.FetchFields)
+        {
+            var property = properties.FirstOrDefault(p =>
+                string.Equals(p.Name, fetchField, StringComparison.OrdinalIgnoreCase)
+                || string.Equals(MetadataDispatch.GetFieldName(typeof(T), p.Name, _options.Schema), fetchField, StringComparison.OrdinalIgnoreCase));
+
+            if (property is null)
+                continue;
+
+            var targetType = Nullable.GetUnderlyingType(property.PropertyType) ?? property.PropertyType;
+            includeSpecs ??= [];
+            if (includeSpecs.Any(spec => spec.IsForward && spec.PropertyName == property.Name))
+            {
+                promoted.Add(fetchField);
+                continue;
+            }
+
+            includeSpecs.Add(new IncludeSpec
+            {
+                PropertyName = property.Name,
+                ForeignKeyClrName = property.Name,
+                ForeignKeyField = MetadataDispatch.GetFieldName(typeof(T), property.Name, _options.Schema),
+                TargetTable = MetadataDispatch.GetTableName(targetType, _options.Schema),
+                IncludeType = targetType,
+                IsSingle = true,
+                IsForward = true
+            });
+            promoted.Add(fetchField);
+        }
+
+        if (promoted.Count > 0)
+            query.FetchFields.RemoveAll(field => promoted.Contains(field, StringComparer.OrdinalIgnoreCase));
+    }
+
+    private async Task HydrateFetchedRecordLinksAsync<T>(
+        List<T> results,
+        IReadOnlyList<string> fetchFields,
+        ISurrealDbSession session,
+        CancellationToken ct)
+    {
+        if (results.Count == 0 || fetchFields.Count == 0)
+            return;
+
+        var properties = typeof(T)
+            .GetProperties(BindingFlags.Instance | BindingFlags.Public)
+            .Where(p => p.CanRead && p.CanWrite && typeof(IRecord).IsAssignableFrom(Nullable.GetUnderlyingType(p.PropertyType) ?? p.PropertyType))
+            .ToArray();
+
+        if (properties.Length == 0)
+            return;
+
+        foreach (var fetchField in fetchFields)
+        {
+            var property = properties.FirstOrDefault(p =>
+                string.Equals(p.Name, fetchField, StringComparison.OrdinalIgnoreCase)
+                || string.Equals(MetadataDispatch.GetFieldName(typeof(T), p.Name, _options.Schema), fetchField, StringComparison.OrdinalIgnoreCase));
+
+            if (property is null)
+                continue;
+
+            var targetType = Nullable.GetUnderlyingType(property.PropertyType) ?? property.PropertyType;
+            foreach (var item in results)
+            {
+                if (item is null)
+                    continue;
+
+                if (property.GetValue(item) is not IRecord linked)
+                    continue;
+
+                var recordId = linked.Id
+                    ?? await LoadFetchedRecordIdFromSourceAsync(item, fetchField, session, ct).ConfigureAwait(false);
+                if (recordId is null)
+                    continue;
+
+                var hydrated = await LoadFetchedRecordAsync(targetType, recordId, session, ct).ConfigureAwait(false);
+                if (hydrated is not null)
+                    property.SetValue(item, hydrated);
+            }
+        }
+    }
+
+    private async Task<RecordId?> LoadFetchedRecordIdFromSourceAsync<T>(
+        T source,
+        string fetchField,
+        ISurrealDbSession session,
+        CancellationToken ct)
+    {
+        if (source is not IRecord sourceRecord || sourceRecord.Id is null)
+            return null;
+
+        var sourceTable = MetadataDispatch.GetTableName(typeof(T), _options.Schema);
+        var sourceKey = StripRecordTable(ExtractKeyString(sourceRecord.Id));
+        if (string.IsNullOrWhiteSpace(sourceKey))
+            return null;
+
+        var sql = $"SELECT `{fetchField}` AS link_id FROM `{sourceTable}`:{FormatRecordIdKey(sourceKey)}";
+        var response = await session.RawQuery(sql, null, ct).ConfigureAwait(false);
+        if (response.HasErrors || response.Count == 0)
+            return null;
+
+        var records = CborResultReader.ReadPocoResult(response, 0);
+        if (records.Count == 0 || !records[0].TryGetValue("link_id", out var value))
+            return null;
+
+        if (value is RecordId recordId)
+            return recordId;
+
+        var recordText = value?.ToString();
+        if (string.IsNullOrWhiteSpace(recordText) || !recordText.Contains(':', StringComparison.Ordinal))
+            return null;
+
+        var colon = recordText.IndexOf(':');
+        return RecordId.From(recordText[..colon], recordText[(colon + 1)..]);
+    }
+
+    private Task<object?> LoadFetchedRecordAsync(Type targetType, RecordId recordId, ISurrealDbSession session, CancellationToken ct)
+    {
+        var method = GetType()
+            .GetMethod(nameof(LoadFetchedRecordGenericAsync), BindingFlags.Instance | BindingFlags.NonPublic)!
+            .MakeGenericMethod(targetType);
+        return (Task<object?>)method.Invoke(this, [recordId, session, ct])!;
+    }
+
+    private async Task<object?> LoadFetchedRecordGenericAsync<TFetched>(
+        RecordId recordId,
+        ISurrealDbSession session,
+        CancellationToken ct)
+        where TFetched : class
+    {
+        var table = MetadataDispatch.GetTableName(typeof(TFetched), _options.Schema);
+        var key = StripRecordTable(ExtractKeyString(recordId));
+        if (string.IsNullOrWhiteSpace(key))
+            return null;
+
+        var sql = $"SELECT * FROM `{table}`:{FormatRecordIdKey(key)}";
+        var response = await session.RawQuery(sql, null, ct).ConfigureAwait(false);
+        if (response.HasErrors || response.Count == 0)
+            return null;
+
+        var records = CborResultReader.ReadPocoResult(response, 0);
+        if (records.Count == 0)
+            return null;
+
+        var mapping = _options.Schema.Mappings.GetValueOrDefault(typeof(TFetched));
+        return InternalSessionBase.DeserializePocoFromList<TFetched>(
+            records,
+            mapping?.IdentityProperty ?? "Id",
+            _options.Schema).FirstOrDefault();
+    }
+
+    private static string FormatRecordIdKey(string key)
+    {
+        key = StripRecordTable(key) ?? key;
+        if (long.TryParse(key, out _) || ulong.TryParse(key, out _))
+            return key;
+
+        return $"`{key.Replace("`", "\\`")}`";
+    }
+
+    private static string? StripRecordTable(string? key)
+    {
+        if (string.IsNullOrWhiteSpace(key))
+            return key;
+
+        var colon = key.LastIndexOf(':');
+        return colon >= 0 && colon < key.Length - 1 ? key[(colon + 1)..] : key;
     }
 
     /// <summary>
@@ -1247,26 +1393,7 @@ public class SurrealQueryProvider : IQueryProvider
                 continue;
             }
 
-            // Deserialize include results via reflection
-            var listType = typeof(List<>).MakeGenericType(spec.IncludeType);
-            var getValueMethod = typeof(SurrealDbResponse).GetMethods()
-                .FirstOrDefault(m => m.Name == "GetValue" && m.IsGenericMethodDefinition
-                    && m.GetParameters().Length == 1
-                    && m.GetParameters()[0].ParameterType == typeof(int));
-
-            if (getValueMethod is null) { resultIndex++; continue; }
-
-            var typedGetValue = getValueMethod.MakeGenericMethod(listType);
-            object? includedListObj;
-            try
-            {
-                includedListObj = typedGetValue.Invoke(response, [resultIndex]);
-            }
-            catch
-            {
-                resultIndex++;
-                continue;
-            }
+            object? includedListObj = DeserializeIncludeResultSet(response, resultIndex, spec.IncludeType);
 
             if (includedListObj is not IEnumerable includedEnumerable)
             {
@@ -1294,7 +1421,7 @@ public class SurrealQueryProvider : IQueryProvider
                 }
 
                 // Assign grouped results to each main result
-                var idProp = spec.IncludeType.GetProperty("Id", BindingFlags.Instance | BindingFlags.Public);
+                var idProp = typeof(T).GetProperty("Id", BindingFlags.Instance | BindingFlags.Public);
                 var includeProp = typeof(T).GetProperty(spec.PropertyName, BindingFlags.Instance | BindingFlags.Public);
                 if (includeProp is null) { resultIndex++; continue; }
 
@@ -1323,13 +1450,31 @@ public class SurrealQueryProvider : IQueryProvider
             // ── Forward include: build lookup by Id ───────────────────
             var idPropFwd = spec.IncludeType.GetProperty("Id", BindingFlags.Instance | BindingFlags.Public);
             var docById = new Dictionary<string, object?>(StringComparer.Ordinal);
+            var includeRecords = CborResultReader.ReadPocoResult(response, resultIndex);
+            var includeRecordIndex = 0;
             foreach (var typedDoc in includedEnumerable)
             {
                 if (typedDoc is null) continue;
                 var docId = idPropFwd?.GetValue(typedDoc);
                 var strKey = ExtractKeyString(docId);
-                if (strKey is not null && !docById.ContainsKey(strKey))
-                    docById[strKey] = typedDoc;
+                if (strKey is null
+                    && includeRecordIndex < includeRecords.Count
+                    && includeRecords[includeRecordIndex].TryGetValue("__aerodb_include_id", out var aliasedId))
+                {
+                    strKey = StripRecordTable(ExtractKeyString(aliasedId));
+                }
+
+                if (strKey is not null)
+                {
+                    if (!docById.ContainsKey(strKey))
+                        docById[strKey] = typedDoc;
+
+                    var strippedKey = StripRecordTable(strKey);
+                    if (!string.IsNullOrWhiteSpace(strippedKey) && !docById.ContainsKey(strippedKey))
+                        docById[strippedKey] = typedDoc;
+                }
+
+                includeRecordIndex++;
             }
 
             if (docById.Count == 0)
@@ -1364,6 +1509,21 @@ public class SurrealQueryProvider : IQueryProvider
 
             resultIndex++;
         }
+    }
+
+    private object? DeserializeIncludeResultSet(SurrealDbResponse response, int index, Type includeType)
+    {
+        var method = typeof(SurrealQueryProvider)
+            .GetMethod(nameof(DeserializeIncludeResultSetGeneric), BindingFlags.Instance | BindingFlags.NonPublic)!
+            .MakeGenericMethod(includeType);
+        return method.Invoke(this, [response, index]);
+    }
+
+    private List<TInclude> DeserializeIncludeResultSetGeneric<TInclude>(SurrealDbResponse response, int index)
+    {
+        var mapping = _options.Schema.Mappings.GetValueOrDefault(typeof(TInclude));
+        var records = CborResultReader.ReadPocoResult(response, index);
+        return InternalSessionBase.DeserializePocoFromList<TInclude>(records, mapping?.IdentityProperty ?? "Id", _options.Schema);
     }
 
     /// <summary>
@@ -1434,11 +1594,23 @@ public class SurrealQueryProvider : IQueryProvider
         if (value is RecordIdOf<string> sRid) return sRid.Id;
         if (value is RecordIdOf<long> lRid) return lRid.Id.ToString();
         if (value is RecordIdOf<int> iRid) return iRid.Id.ToString();
+        var valueType = value.GetType();
+        if (valueType.IsGenericType && valueType.GetGenericTypeDefinition() == typeof(RecordIdOf<>))
+        {
+            var idValue = valueType.GetProperty("Id", BindingFlags.Instance | BindingFlags.Public)?.GetValue(value);
+            return idValue switch
+            {
+                null => null,
+                Guid guid => guid.ToString(),
+                _ => idValue.ToString()
+            };
+        }
         if (value is RecordId rid)
         {
             try { return rid.DeserializeId<string>(); } catch { }
             try { return rid.DeserializeId<long>().ToString(); } catch { }
             try { return rid.DeserializeId<int>().ToString(); } catch { }
+            try { return rid.DeserializeId<Guid>().ToString(); } catch { }
             return rid.Table;
         }
         return value.ToString();
@@ -1464,8 +1636,7 @@ public class SurrealQueryProvider : IQueryProvider
         query.Skip = null;
         query.GroupAll = true;
 
-        // The visitor already generated the correct server-side projection
-        // (e.g., math::sum(Price)). Let it flow through to SurrealQL.
+        query.Projection = $"{function}({fieldName})";
         var surql = query.ToSurrealQL();
         LogSurrealQuery($"AggregateAsync ({function})", surql, query, elementType);
         var aggSession = await GetSessionForElementType(elementType, ct).ConfigureAwait(false);
@@ -1490,7 +1661,7 @@ public class SurrealQueryProvider : IQueryProvider
         if (string.IsNullOrEmpty(query.TableName))
         {
             if (expression is ConstantExpression c && c.Value is IQueryable q)
-                query.TableName = MetadataDispatch.GetTableName(q.ElementType);
+                query.TableName = MetadataDispatch.GetTableName(q.ElementType, _options.Schema);
         }
         if (viewName is not null)
             query.TableName = viewName;
@@ -1538,7 +1709,7 @@ public class SurrealQueryProvider : IQueryProvider
         if (string.IsNullOrEmpty(result.TableName))
         {
             if (sourceExpression is ConstantExpression c && c.Value is IQueryable q)
-                result.TableName = MetadataDispatch.GetTableName(q.ElementType);
+                result.TableName = MetadataDispatch.GetTableName(q.ElementType, _options.Schema);
         }
         if (viewName is not null)
             result.TableName = viewName;
@@ -1574,7 +1745,7 @@ public class SurrealQueryProvider : IQueryProvider
         if (string.IsNullOrEmpty(query.TableName))
         {
             if (expression is ConstantExpression c && c.Value is IQueryable q)
-                query.TableName = MetadataDispatch.GetTableName(q.ElementType);
+                query.TableName = MetadataDispatch.GetTableName(q.ElementType, _options.Schema);
         }
         if (viewName is not null)
             query.TableName = viewName;
@@ -1611,7 +1782,7 @@ public class SurrealQueryProvider : IQueryProvider
         if (string.IsNullOrEmpty(query.TableName))
         {
             if (expression is ConstantExpression c && c.Value is IQueryable q)
-                query.TableName = MetadataDispatch.GetTableName(q.ElementType);
+                query.TableName = MetadataDispatch.GetTableName(q.ElementType, _options.Schema);
         }
 
         var viewName = ExtractViewName(expression);

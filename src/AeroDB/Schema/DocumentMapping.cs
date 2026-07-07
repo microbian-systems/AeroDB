@@ -170,9 +170,7 @@ public class DocumentMapping<T> : DocumentMapping
     internal override string ResolveFieldName(string clrName)
         => _fieldNameOverrides.TryGetValue(clrName, out var fieldName)
             ? fieldName
-            : SchemaOptions.HasConfiguredCase
-                ? SchemaOptions.NamingPolicy.FieldName(clrName)
-                : clrName;
+            : SchemaOptions.NamingPolicy.FieldName(clrName);
 
     internal string ResolveTableName()
         => _tableNameOverride ?? Metadata.MetadataDispatch.GetTableName(typeof(T), SchemaOptions);
@@ -250,9 +248,7 @@ public class DocumentMapping<T> : DocumentMapping
 
     public RelationshipBuilder<T> HasMany<TRelated>()
         => HasMany<TRelated>(
-            SchemaOptions.HasConfiguredCase
-                ? SchemaOptions.NamingPolicy.FieldName(Pluralize(typeof(TRelated).Name))
-                : Pluralize(typeof(TRelated).Name));
+            SchemaOptions.NamingPolicy.FieldName(Pluralize(typeof(TRelated).Name)));
 
     public RelationshipBuilder<T> HasMany<TRelated>(string fieldName)
     {

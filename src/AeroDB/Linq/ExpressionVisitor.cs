@@ -296,6 +296,9 @@ namespace AeroDB;
     internal static string TranslateCondition(Expression expr)
         => new SurrealExpressionVisitor().TranslateConditionCore(expr);
 
+    internal static string TranslateCondition(Expression expr, SchemaOptions schema)
+        => new SurrealExpressionVisitor(schema).TranslateConditionCore(expr);
+
     private string TranslateConditionCore(Expression expr, SurrealCommandBuilder builder) => expr switch
     {
         BinaryExpression b => TranslateBinary(b, builder),
@@ -985,9 +988,12 @@ namespace AeroDB;
     internal static string[] ExtractGroupByColumns<T, TKey>(Expression<Func<T, TKey>> keySelector)
     {
         if (keySelector.Body is MemberExpression m)
-            return [m.Member.Name];
+            return [MetadataDispatch.GetFieldName(typeof(T), m.Member.Name, null)];
         if (keySelector.Body is NewExpression n)
-            return n.Arguments.OfType<MemberExpression>().Select(x => x.Member.Name).ToArray();
+            return n.Arguments
+                .OfType<MemberExpression>()
+                .Select(x => MetadataDispatch.GetFieldName(typeof(T), x.Member.Name, null))
+                .ToArray();
         return [];
     }
 }

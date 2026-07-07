@@ -157,7 +157,7 @@ public class SchemaRoutingTests
         await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         // Write an entity via RawQuery (default db = "test")
         var defaultSession = ((InternalSessionBase)session).Session;
-        await defaultSession.RawQuery("CREATE default_entity CONTENT { Name: 'default-test' };");
+        await defaultSession.RawQuery("CREATE default_entity CONTENT { name: 'default-test' };");
 
         // Query via LINQ — should resolve through the default session
         var result = await session.Query<DefaultEntity>().FirstOrDefaultAsync(e => e.Name == "default-test");
@@ -184,7 +184,7 @@ public class SchemaRoutingTests
         // Create the database if needed (DEFINE DATABASE is idempotent)
         await schemaSession.RawQuery("DEFINE DATABASE IF NOT EXISTS sales;");
         await schemaSession.Use(internalSession.StoreOptions.Namespace ?? "test", "sales");
-        await schemaSession.RawQuery("CREATE sales_order CONTENT { OrderNumber: 'ORD-001', Amount: 100.50 };");
+        await schemaSession.RawQuery("CREATE sales_order CONTENT { order_number: 'ORD-001', amount: 100.50 };");
 
         // Now query via LINQ — must resolve to the "sales" forked session
         var result = await session.Query<SalesOrder>().FirstOrDefaultAsync(e => e.OrderNumber == "ORD-001");
@@ -210,10 +210,10 @@ public class SchemaRoutingTests
         var schemaSession = await internalSession.GetSessionForSchemaAsync(schemaDb);
         await schemaSession.RawQuery("DEFINE DATABASE IF NOT EXISTS sales;");
         await schemaSession.Use(internalSession.StoreOptions.Namespace ?? "test", "sales");
-        await schemaSession.RawQuery("CREATE sales_order CONTENT { OrderNumber: 'ORD-002', Amount: 200.00 };");
+        await schemaSession.RawQuery("CREATE sales_order CONTENT { order_number: 'ORD-002', amount: 200.00 };");
 
         // Write data to the default database
-        await internalSession.Session.RawQuery("CREATE default_entity CONTENT { Name: 'default-only' };");
+        await internalSession.Session.RawQuery("CREATE default_entity CONTENT { name: 'default-only' };");
 
         // Query default — should only see the default entity, not schema data
         var defaultEntities = await session.Query<DefaultEntity>().ToListAsync();

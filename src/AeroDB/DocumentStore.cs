@@ -209,7 +209,13 @@ public class DocumentStore : IDocumentStore, ISessionFactory
                     var tableName = MetadataDispatch.GetTableName(mapping.EntityType, Options.Schema);
                     foreach (var index in mapping.Indices)
                     {
-                        await schemaManager.EnsureIndexAsync(schemaSession, tableName, index, ct).ConfigureAwait(false);
+                        await schemaManager.EnsureIndexAsync(
+                            schemaSession,
+                            tableName,
+                            index,
+                            mapping.EntityType,
+                            Options.Schema,
+                            ct).ConfigureAwait(false);
                     }
                 }
             }
@@ -254,7 +260,13 @@ public class DocumentStore : IDocumentStore, ISessionFactory
                         var tableName = MetadataDispatch.GetTableName(mapping.EntityType, Options.Schema);
                         foreach (var index in mapping.Indices)
                         {
-                            await schemaManager.EnsureIndexAsync(schemaSession, tableName, index, ct).ConfigureAwait(false);
+                            await schemaManager.EnsureIndexAsync(
+                                schemaSession,
+                                tableName,
+                                index,
+                                mapping.EntityType,
+                                Options.Schema,
+                                ct).ConfigureAwait(false);
                         }
                     }
                 }
@@ -723,13 +735,13 @@ public class DocumentStore : IDocumentStore, ISessionFactory
             if (!typeof(ISoftDeleted).IsAssignableFrom(mapping.DocumentType))
                 continue;
 
-            var tableName = Metadata.MetadataDispatch.GetTableName(mapping.DocumentType);
+            var tableName = Metadata.MetadataDispatch.GetTableName(mapping.DocumentType, Options.Schema);
             if (string.IsNullOrEmpty(tableName))
                 continue;
 
-            // Use PascalCase field names matching the C# properties (per CBOR convention):
-            // Deleted = true AND DeletedAt < cutoff
-            var surql = $"DELETE FROM `{tableName}` WHERE Deleted = true AND DeletedAt < d'{cutoff:yyyy-MM-ddTHH:mm:ssZ}';";
+            var deletedField = Metadata.MetadataDispatch.GetFieldName(mapping.DocumentType, nameof(ISoftDeleted.Deleted), Options.Schema);
+            var deletedAtField = Metadata.MetadataDispatch.GetFieldName(mapping.DocumentType, nameof(ISoftDeleted.DeletedAt), Options.Schema);
+            var surql = $"DELETE FROM `{tableName}` WHERE {deletedField} = true AND {deletedAtField} < d'{cutoff:yyyy-MM-ddTHH:mm:ssZ}';";
             await internalSession.ExecuteSqlAsync(surql, null, ct).ConfigureAwait(false);
             totalDeleted++;
         }

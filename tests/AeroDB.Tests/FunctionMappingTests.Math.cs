@@ -22,7 +22,7 @@ public partial class FunctionMappingTests
         var condition = Expression.GreaterThan(absCall, Expression.Constant(5.0));
 
         var result = SurrealExpressionVisitor.TranslateCondition(condition);
-        result.ShouldBe("math::abs(Value) > 5");
+        result.ShouldBe("math::abs(value) > 5");
     }
 
     [Test]
@@ -37,7 +37,7 @@ public partial class FunctionMappingTests
         var condition = Expression.GreaterThan(ceilCall, Expression.Constant(5.0));
 
         var result = SurrealExpressionVisitor.TranslateCondition(condition);
-        result.ShouldBe("math::ceil(Value) > 5");
+        result.ShouldBe("math::ceil(value) > 5");
     }
 
     [Test]
@@ -52,7 +52,7 @@ public partial class FunctionMappingTests
         var condition = Expression.GreaterThan(floorCall, Expression.Constant(5.0));
 
         var result = SurrealExpressionVisitor.TranslateCondition(condition);
-        result.ShouldBe("math::floor(Value) > 5");
+        result.ShouldBe("math::floor(value) > 5");
     }
 
     [Test]
@@ -67,7 +67,7 @@ public partial class FunctionMappingTests
         var condition = Expression.GreaterThan(roundCall, Expression.Constant(5.0));
 
         var result = SurrealExpressionVisitor.TranslateCondition(condition);
-        result.ShouldBe("math::round(Value) > 5");
+        result.ShouldBe("math::round(value) > 5");
     }
 
     [Test]
@@ -82,7 +82,7 @@ public partial class FunctionMappingTests
         var condition = Expression.GreaterThan(sqrtCall, Expression.Constant(5.0));
 
         var result = SurrealExpressionVisitor.TranslateCondition(condition);
-        result.ShouldBe("math::sqrt(Value) > 5");
+        result.ShouldBe("math::sqrt(value) > 5");
     }
 
     [Test]
@@ -98,7 +98,7 @@ public partial class FunctionMappingTests
         var condition = Expression.GreaterThan(powCall, Expression.Constant(5.0));
 
         var result = SurrealExpressionVisitor.TranslateCondition(condition);
-        result.ShouldBe("math::pow(Value, 2) > 5");
+        result.ShouldBe("math::pow(value, 2) > 5");
     }
 
     [Test]
@@ -115,7 +115,7 @@ public partial class FunctionMappingTests
         var condition = Expression.GreaterThan(minCall, Expression.Constant(5.0));
 
         var result = SurrealExpressionVisitor.TranslateCondition(condition);
-        result.ShouldBe("math::min(Value, OtherValue) > 5");
+        result.ShouldBe("math::min(value, other_value) > 5");
     }
 
     [Test]
@@ -132,7 +132,7 @@ public partial class FunctionMappingTests
         var condition = Expression.GreaterThan(maxCall, Expression.Constant(5.0));
 
         var result = SurrealExpressionVisitor.TranslateCondition(condition);
-        result.ShouldBe("math::max(Value, OtherValue) > 5");
+        result.ShouldBe("math::max(value, other_value) > 5");
     }
 
     [Test]
@@ -147,7 +147,7 @@ public partial class FunctionMappingTests
         var condition = Expression.GreaterThan(sinCall, Expression.Constant(0.0));
 
         var result = SurrealExpressionVisitor.TranslateCondition(condition);
-        result.ShouldBe("math::sin(Value) > 0");
+        result.ShouldBe("math::sin(value) > 0");
     }
 
     [Test]
@@ -162,7 +162,7 @@ public partial class FunctionMappingTests
         var condition = Expression.GreaterThan(cosCall, Expression.Constant(0.0));
 
         var result = SurrealExpressionVisitor.TranslateCondition(condition);
-        result.ShouldBe("math::cos(Value) > 0");
+        result.ShouldBe("math::cos(value) > 0");
     }
 
     [Test]
@@ -177,7 +177,7 @@ public partial class FunctionMappingTests
         var condition = Expression.GreaterThan(tanCall, Expression.Constant(0.0));
 
         var result = SurrealExpressionVisitor.TranslateCondition(condition);
-        result.ShouldBe("math::tan(Value) > 0");
+        result.ShouldBe("math::tan(value) > 0");
     }
 
     [Test]
@@ -192,7 +192,7 @@ public partial class FunctionMappingTests
         var condition = Expression.GreaterThan(logCall, Expression.Constant(0.0));
 
         var result = SurrealExpressionVisitor.TranslateCondition(condition);
-        result.ShouldBe("math::ln(Value) > 0");
+        result.ShouldBe("math::ln(value) > 0");
     }
 
     [Test]
@@ -208,7 +208,7 @@ public partial class FunctionMappingTests
         var condition = Expression.GreaterThan(logCall, Expression.Constant(0.0));
 
         var result = SurrealExpressionVisitor.TranslateCondition(condition);
-        result.ShouldBe("math::log(Value, 10) > 0");
+        result.ShouldBe("math::log(value, 10) > 0");
     }
 
     [Test]
@@ -223,7 +223,7 @@ public partial class FunctionMappingTests
         var condition = Expression.GreaterThan(log10Call, Expression.Constant(0.0));
 
         var result = SurrealExpressionVisitor.TranslateCondition(condition);
-        result.ShouldBe("math::log10(Value) > 0");
+        result.ShouldBe("math::log10(value) > 0");
     }
 
     [Test]
@@ -238,7 +238,7 @@ public partial class FunctionMappingTests
         var condition = Expression.GreaterThan(signCall, Expression.Constant(0));
 
         var result = SurrealExpressionVisitor.TranslateCondition(condition);
-        result.ShouldBe("math::sign(Value) > 0");
+        result.ShouldBe("math::sign(value) > 0");
     }
 
 }

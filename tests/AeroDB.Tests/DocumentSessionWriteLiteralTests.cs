@@ -38,8 +38,8 @@ public class DocumentSessionWriteLiteralTests
         await surrealSession.Received(1).RawQuery(
             Arg.Is<string>(surql =>
                 surql.Contains("UPSERT nullable_write_document:`nullable-write` CONTENT", StringComparison.Ordinal)
-                && surql.Contains("LockoutEnd: NONE", StringComparison.Ordinal)
-                && surql.Contains("Tags: ['alpha', 'beta']", StringComparison.Ordinal)
+                && surql.Contains("lockout_end: NONE", StringComparison.Ordinal)
+                && surql.Contains("tags: ['alpha', 'beta']", StringComparison.Ordinal)
                 && !surql.Contains("$data", StringComparison.Ordinal)),
             Arg.Is<IReadOnlyDictionary<string, object?>?>(parameters => parameters == null),
             Arg.Any<CancellationToken>());

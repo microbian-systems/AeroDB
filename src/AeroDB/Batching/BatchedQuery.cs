@@ -53,7 +53,7 @@ internal class BatchedQuery : IBatchedQuery
                     return;
                 }
 
-                var list = response.GetValue<List<TDoc>>(index) ?? new List<TDoc>();
+                var list = _session.DeserializeMappedPocoResponse<TDoc>(response, index);
 
                 if (plan.IsSingleResult)
                 {

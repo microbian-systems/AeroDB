@@ -65,7 +65,7 @@ public class PocoGisTests
             Arg.Is<string>(sql =>
                 sql.Contains("geo::DISTANCE")
                 && sql.Contains("$p0")
-                && sql.Contains("Category")),
+                && sql.Contains("category")),
             Arg.Any<IReadOnlyDictionary<string, object?>>(),
             Arg.Any<CancellationToken>());
     }

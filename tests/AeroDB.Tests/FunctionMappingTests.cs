@@ -35,7 +35,7 @@ public partial class FunctionMappingTests
 
         var result = SurrealExpressionVisitor.TranslateCondition(condition.Body);
 
-        result.ShouldBe("Name = 'Alice'");
+        result.ShouldBe("name = 'Alice'");
     }
 
     [Test]
@@ -46,7 +46,7 @@ public partial class FunctionMappingTests
 
         var result = SurrealExpressionVisitor.TranslateCondition(condition.Body);
 
-        result.ShouldBe("Name = 'Alice'");
+        result.ShouldBe("name = 'Alice'");
     }
 
     // ════════════════════════════════════════════════════════════

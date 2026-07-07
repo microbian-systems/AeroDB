@@ -117,7 +117,7 @@ public static class SurrealAsyncQueryExtensions
 
         private async Task<List<T>> FilteredResultsAsync(CancellationToken ct)
         {
-            var all = await _inner.ToListAsync(ct).ConfigureAwait(false);
+            var all = await LoadIncludingDeletedAsync(ct).ConfigureAwait(false);
             var filtered = new List<T>();
             var c = _cutoff;
             foreach (var item in all)
@@ -126,6 +126,17 @@ public static class SurrealAsyncQueryExtensions
                     filtered.Add(item);
             }
             return filtered;
+        }
+
+        private async Task<List<T>> LoadIncludingDeletedAsync(CancellationToken ct)
+        {
+            if (_inner is not SurrealDbQueryable<T> queryable || queryable.InternalSession is null)
+                return await _inner.ToListAsync(ct).ConfigureAwait(false);
+
+            var session = queryable.InternalSession;
+            var table = MetadataDispatch.GetTableName(typeof(T), queryable.StoreOptions.Schema);
+            var response = await session.Session.RawQuery($"SELECT * FROM `{table}`", null, ct).ConfigureAwait(false);
+            return session.DeserializeMappedPocoResponse<T>(response, 0);
         }
 
         public Task<List<T>> ToListAsync(CancellationToken ct = default)
@@ -221,12 +232,12 @@ public static class SurrealAsyncQueryExtensions
         if (source is not SurrealDbQueryable<T> surrealQueryable)
             throw new NotSupportedException("DeleteAsync requires AeroDB's SurrealDbQueryable provider.");
 
-        var tableName = MetadataDispatch.GetTableName(typeof(T));
+        var tableName = MetadataDispatch.GetTableName(typeof(T), surrealQueryable.StoreOptions.Schema);
         if (string.IsNullOrEmpty(tableName))
             throw new InvalidOperationException($"Cannot resolve table name for type '{typeof(T).Name}'.");
 
         // Build the SurrealQL from the expression tree
-        var visitor = new SurrealExpressionVisitor();
+        var visitor = new SurrealExpressionVisitor(surrealQueryable.StoreOptions.Schema);
         var result = visitor.Translate(source.Expression);
 
         var surql = $"DELETE FROM `{tableName}`";

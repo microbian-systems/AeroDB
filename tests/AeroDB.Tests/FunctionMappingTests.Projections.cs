@@ -23,7 +23,7 @@ public partial class FunctionMappingTests
             queryable.Expression, Expression.Quote(expr));
 
         var result = visitor.Translate(sumExpr);
-        result.Projection.ShouldBe("math::sum(math::abs(Value))");
+        result.Projection.ShouldBe("math::sum(math::abs(value))");
     }
 
     [Test]
@@ -39,7 +39,7 @@ public partial class FunctionMappingTests
             queryable.Expression, Expression.Quote(expr));
 
         var result = visitor.Translate(minExpr);
-        result.Projection.ShouldBe("math::min(math::round(Value))");
+        result.Projection.ShouldBe("math::min(math::round(value))");
     }
 
     [Test]
@@ -55,7 +55,7 @@ public partial class FunctionMappingTests
             queryable.Expression, Expression.Quote(expr));
 
         var result = visitor.Translate(maxExpr);
-        result.Projection.ShouldBe("math::max(math::sqrt(Value))");
+        result.Projection.ShouldBe("math::max(math::sqrt(value))");
     }
 
     [Test]
@@ -71,7 +71,7 @@ public partial class FunctionMappingTests
             queryable.Expression, Expression.Quote(expr));
 
         var result = visitor.Translate(avgExpr);
-        result.Projection.ShouldBe("math::mean(math::abs(Value))");
+        result.Projection.ShouldBe("math::mean(math::abs(value))");
     }
 
     // ════════════════════════════════════════════════════════════
@@ -98,7 +98,7 @@ public partial class FunctionMappingTests
             source.Expression);
 
         var result = visitor.Translate(expression);
-        result.Projection.ShouldContain("math::abs(Value) AS Value");
+        result.Projection.ShouldContain("math::abs(value) AS Value");
     }
 
     [Test]
@@ -112,7 +112,7 @@ public partial class FunctionMappingTests
             source.Expression);
 
         var result = visitor.Translate(expression);
-        result.Projection.ShouldContain("string::trim(Name) AS Name");
+        result.Projection.ShouldContain("string::trim(name) AS Name");
     }
 
     [Test]
@@ -126,7 +126,7 @@ public partial class FunctionMappingTests
             source.Expression);
 
         var result = visitor.Translate(expression);
-        result.Projection.ShouldContain("type::of(Name) AS Name");
+        result.Projection.ShouldContain("type::of(name) AS Name");
     }
 
     [Test]
@@ -156,7 +156,7 @@ public partial class FunctionMappingTests
             Expression.Quote(lambda));
 
         var result = visitor.Translate(expression);
-        result.Projection.ShouldContain("array::len(Tags) AS Value");
+        result.Projection.ShouldContain("array::len(tags) AS Value");
     }
 
     // ════════════════════════════════════════════════════════════
@@ -185,7 +185,7 @@ public partial class FunctionMappingTests
 
         var result = visitor.Translate(expression);
         result.OrderBy.Count.ShouldBe(1);
-        result.OrderBy[0].ShouldBe("math::abs(Value) ASC");
+        result.OrderBy[0].ShouldBe("math::abs(value) ASC");
     }
 
     [Test]
@@ -208,7 +208,7 @@ public partial class FunctionMappingTests
 
         var result = visitor.Translate(expression);
         result.OrderBy.Count.ShouldBe(1);
-        result.OrderBy[0].ShouldBe("string::length(Name) DESC");
+        result.OrderBy[0].ShouldBe("string::length(name) DESC");
     }
 
     // ════════════════════════════════════════════════════════════
@@ -237,6 +237,6 @@ public partial class FunctionMappingTests
 
         var result = visitor.Translate(expression);
         result.GroupBy.Count.ShouldBe(1);
-        result.GroupBy[0].ShouldBe("type::of(Name)");
+        result.GroupBy[0].ShouldBe("type::of(name)");
     }
 }

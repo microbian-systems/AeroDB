@@ -27,7 +27,7 @@ internal static class MetadataDispatch
         if (schema?.Mappings.TryGetValue(type, out var mapping) == true)
             return mapping.TableNameOverride ?? GetTableName(type);
 
-        return schema?.HasConfiguredCase == true
+        return schema is not null
             ? schema.NamingPolicy.TableName(type)
             : GetTableName(type);
     }
@@ -37,9 +37,9 @@ internal static class MetadataDispatch
         if (schema?.Mappings.TryGetValue(sourceType, out var configured) == true)
             return configured.ResolveFieldName(clrName);
 
-        return schema?.HasConfiguredCase == true
+        return schema is not null
             ? schema.NamingPolicy.FieldName(clrName)
-            : clrName;
+            : ToSnakeCase(clrName);
     }
 
     /// <summary>

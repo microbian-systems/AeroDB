@@ -24,7 +24,7 @@ public class ViewSelectBuilder<T> where T : class
     /// <summary>Adds <c>math::sum(field)</c> aggregate.</summary>
     public ViewSelectBuilder<T> Sum(Expression<Func<T, object?>> field)
     {
-        var name = GetMemberName(field.Body);
+        var name = GetStorageFieldName(field.Body);
         _columns.Add(($"math::sum({name})", null));
         _pendingAlias = true;
         return this;
@@ -33,7 +33,7 @@ public class ViewSelectBuilder<T> where T : class
     /// <summary>Adds <c>math::min(field)</c> aggregate.</summary>
     public ViewSelectBuilder<T> Min(Expression<Func<T, object?>> field)
     {
-        var name = GetMemberName(field.Body);
+        var name = GetStorageFieldName(field.Body);
         _columns.Add(($"math::min({name})", null));
         _pendingAlias = true;
         return this;
@@ -42,7 +42,7 @@ public class ViewSelectBuilder<T> where T : class
     /// <summary>Adds <c>math::max(field)</c> aggregate.</summary>
     public ViewSelectBuilder<T> Max(Expression<Func<T, object?>> field)
     {
-        var name = GetMemberName(field.Body);
+        var name = GetStorageFieldName(field.Body);
         _columns.Add(($"math::max({name})", null));
         _pendingAlias = true;
         return this;
@@ -51,7 +51,7 @@ public class ViewSelectBuilder<T> where T : class
     /// <summary>Adds <c>math::mean(field)</c> aggregate.</summary>
     public ViewSelectBuilder<T> Average(Expression<Func<T, object?>> field)
     {
-        var name = GetMemberName(field.Body);
+        var name = GetStorageFieldName(field.Body);
         _columns.Add(($"math::mean({name})", null));
         _pendingAlias = true;
         return this;
@@ -60,7 +60,7 @@ public class ViewSelectBuilder<T> where T : class
     /// <summary>Adds a bare column reference (no aggregation).</summary>
     public ViewSelectBuilder<T> Column(Expression<Func<T, object?>> field)
     {
-        var name = GetMemberName(field.Body);
+        var name = GetStorageFieldName(field.Body);
         _columns.Add((name, null));
         _pendingAlias = true;
         return this;
@@ -126,6 +126,9 @@ public class ViewSelectBuilder<T> where T : class
             return m.Member.Name;
         throw new ArgumentException("Selector must be a simple member expression (e.g., x => x.Property).");
     }
+
+    private static string GetStorageFieldName(Expression body)
+        => MetadataDispatch.GetFieldName(typeof(T), GetMemberName(body), null);
 }
 
 /// <summary>
@@ -230,7 +233,10 @@ public class ViewGraphSelectBuilder<TSource, TTarget>
     public ViewSelectBuilder<TSource> Select(Expression<Func<TTarget, object?>> field)
     {
         GuardOpen();
-        var fieldName = ViewSelectBuilder<TSource>.GetMemberName(field.Body);
+        var fieldName = MetadataDispatch.GetFieldName(
+            typeof(TTarget),
+            ViewSelectBuilder<TSource>.GetMemberName(field.Body),
+            null);
         _parent.AddColumn($"{_path}.{fieldName}");
         _closed = true;
         return _parent;

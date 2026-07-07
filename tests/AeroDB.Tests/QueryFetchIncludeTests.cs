@@ -206,8 +206,8 @@ public class FetchSurrealQLTests
         queryable.Fetch(p => p.Email);
 
         queryable.FetchFields.Count.ShouldBe(2);
-        queryable.FetchFields.ShouldContain("Name");
-        queryable.FetchFields.ShouldContain("Email");
+        queryable.FetchFields.ShouldContain("name");
+        queryable.FetchFields.ShouldContain("email");
     }
 
     [Test]
@@ -377,7 +377,7 @@ public class ProjectionSurrealQLTests
         var visitor = new SurrealExpressionVisitor();
         var result = visitor.Translate(selector);
 
-        result.Projection.ShouldBe("customer, Product AS Product");
+        result.Projection.ShouldBe("customer, product AS Product");
         result.FetchFields.ShouldContain("customer");
         result.FetchFields.Count.ShouldBe(1);
     }

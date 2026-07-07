@@ -18,7 +18,7 @@ public partial class FunctionMappingTests
         var method = typeof(SurrealObjectFunctions).GetMethod("Keys", [typeof(object)])!;
         var call = Expression.Call(method, Expression.Convert(nameProp, typeof(object)));
         var result = SurrealExpressionVisitor.TranslateCondition(Expression.Equal(call, Expression.Constant(null)));
-        result.ShouldBe("object::keys(Name) = NONE");
+        result.ShouldBe("object::keys(name) = NONE");
     }
 
     [Test]
@@ -29,7 +29,7 @@ public partial class FunctionMappingTests
         var method = typeof(SurrealObjectFunctions).GetMethod("Values", [typeof(object)])!;
         var call = Expression.Call(method, Expression.Convert(nameProp, typeof(object)));
         var result = SurrealExpressionVisitor.TranslateCondition(Expression.Equal(call, Expression.Constant(null)));
-        result.ShouldBe("object::values(Name) = NONE");
+        result.ShouldBe("object::values(name) = NONE");
     }
 
     [Test]
@@ -40,7 +40,7 @@ public partial class FunctionMappingTests
         var method = typeof(SurrealObjectFunctions).GetMethod("Len", [typeof(object)])!;
         var call = Expression.Call(method, Expression.Convert(nameProp, typeof(object)));
         var result = SurrealExpressionVisitor.TranslateCondition(Expression.GreaterThan(call, Expression.Constant(0)));
-        result.ShouldBe("object::len(Name) > 0");
+        result.ShouldBe("object::len(name) > 0");
     }
 
     // ════════════════════════════════════════════════════════════

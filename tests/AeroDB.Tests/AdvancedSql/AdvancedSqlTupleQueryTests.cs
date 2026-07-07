@@ -17,7 +17,7 @@ public class AdvancedSqlTupleQueryTests
         session.Store(new Order { CustomerName = "Bob", Total = 50m });
         await session.SaveChangesAsync();
 
-        var sql = "SELECT * FROM person WHERE Age > 0; SELECT * FROM order WHERE Total > 0;";
+        var sql = "SELECT * FROM person WHERE age > 0; SELECT * FROM order WHERE total > 0;";
         var (people, orders) = await session.AdvancedSql().QueryAsync<Person, Order>(sql);
 
         people.ShouldNotBeNull();
@@ -37,7 +37,7 @@ public class AdvancedSqlTupleQueryTests
         await session.SaveChangesAsync();
 
         // Swap statement order: orders first, people second
-        var sql = "SELECT * FROM order WHERE Total > 0; SELECT * FROM person WHERE Age > 0;";
+        var sql = "SELECT * FROM order WHERE total > 0; SELECT * FROM person WHERE age > 0;";
         var (orders, people) = await session.AdvancedSql().QueryAsync<Order, Person>(sql);
 
         orders.ShouldNotBeNull();
@@ -113,7 +113,7 @@ public class AdvancedSqlTupleQueryTests
         session.Store(new Person { Name = "Charlie", Age = 35 });
         await session.SaveChangesAsync();
 
-        var sql = "SELECT * FROM person WHERE Age > 0 ORDER BY Name;";
+        var sql = "SELECT * FROM person WHERE age > 0 ORDER BY name;";
         var count = 0;
         await foreach (var person in session.AdvancedSql().StreamAsync<Person>(sql))
         {
@@ -135,7 +135,7 @@ public class AdvancedSqlTupleQueryTests
         session.Store(new Person { Name = "Alice", Age = 30 });
         await session.SaveChangesAsync();
 
-        var sql = "SELECT * FROM person WHERE Name = 'NonExistent';";
+        var sql = "SELECT * FROM person WHERE name = 'NonExistent';";
         var count = 0;
         await foreach (var person in session.AdvancedSql().StreamAsync<Person>(sql))
         {
@@ -168,7 +168,7 @@ public class AdvancedSqlTupleQueryTests
         await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         await session.ExecuteSqlAsync("CREATE person:QTFE_temp CONTENT { Name: 'Temp' };");
 
-        var sql = "SELECT * FROM person WHERE Name = 'NonExistent_QTFE_99'; SELECT * FROM person WHERE Name = 'NonExistent_QTFE_99';";
+        var sql = "SELECT * FROM person WHERE name = 'NonExistent_QTFE_99'; SELECT * FROM person WHERE name = 'NonExistent_QTFE_99';";
         var (people, people2) = await session.AdvancedSql().QueryAsync<Person, Person>(sql);
 
         people.ShouldNotBeNull();
@@ -189,7 +189,7 @@ public class AdvancedSqlTupleQueryTests
         session.Store(new Order { CustomerName = "Bob", Total = 50m });
         await session.SaveChangesAsync();
 
-        var sql = "SELECT * FROM person WHERE Age > $minAge; SELECT * FROM order WHERE Total > $minTotal;";
+        var sql = "SELECT * FROM person WHERE age > $minAge; SELECT * FROM order WHERE total > $minTotal;";
         var parameters = new Dictionary<string, object?>
         {
             ["minAge"] = 25,
@@ -219,7 +219,7 @@ public class AdvancedSqlTupleQueryTests
         await session.SaveChangesAsync();
 
         // Use dynamic to trigger the fallback path when the type doesn't match directly
-        var sql = "SELECT * FROM person WHERE Name = 'CborFallback'; SELECT * FROM order WHERE CustomerName = 'CborFallback';";
+        var sql = "SELECT * FROM person WHERE name = 'CborFallback'; SELECT * FROM order WHERE customer_name = 'CborFallback';";
         var (people, orders) = await session.AdvancedSql().QueryAsync<Person, Order>(sql);
 
         people.ShouldNotBeNull();
@@ -240,7 +240,7 @@ public class AdvancedSqlTupleQueryTests
         await writeSession.SaveChangesAsync();
 
         await using var querySession = await store.QuerySessionAsync();
-        var sql = "SELECT * FROM person WHERE Name = 'QuerySessionUser'; SELECT * FROM order WHERE CustomerName = 'QuerySessionUser';";
+        var sql = "SELECT * FROM person WHERE name = 'QuerySessionUser'; SELECT * FROM order WHERE customer_name = 'QuerySessionUser';";
         var (people, orders) = await querySession.AdvancedSql().QueryAsync<Person, Order>(sql);
 
         people.Count.ShouldBe(1);
@@ -260,10 +260,11 @@ public class AdvancedSqlTupleQueryTests
         await session.SaveChangesAsync();
 
         // Explicitly pass null for parameters
-        var sql = "SELECT * FROM person WHERE Name = 'NoParams'; SELECT * FROM order WHERE CustomerName = 'NoParams';";
+        var sql = "SELECT * FROM person WHERE name = 'NoParams'; SELECT * FROM order WHERE customer_name = 'NoParams';";
         var (people, orders) = await session.AdvancedSql().QueryAsync<Person, Order>(sql, parameters: null);
 
         people.Count.ShouldBe(1);
         orders.Count.ShouldBe(1);
     }
 }
+
