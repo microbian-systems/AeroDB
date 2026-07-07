@@ -1,6 +1,7 @@
 <Solution>
   <Project Path="AeroDB.AspNetIdentity/AeroDB.AspNetIdentity.csproj" />
   <Project Path="AeroDB.EntityFrameworkCore/AeroDB.EntityFrameworkCore.csproj" />
+  <Project Path="AeroDB.ML/AeroDB.ML.csproj" />
   <Project Path="AeroDB.Reactive/AeroDB.Reactive.csproj" />
   <Project Path="AeroDB.Snowflake/AeroDB.Snowflake.csproj" />
   <Project Path="AeroDB.SourceGenerators/AeroDB.SourceGenerators.csproj" />

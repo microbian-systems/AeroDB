@@ -34,7 +34,7 @@
     <PackageVersion Include="Markdig" Version="1.2.0" />
     <PackageVersion Include="Marten" Version="8.37.1" />
     <PackageVersion Include="Marten.AspNetCore" Version="8.37.1" />
-    <PackageVersion Include="JasperFx.Events" Version="2.18.1" />
+    <PackageVersion Include="JasperFx.Events" Version="2.22.0" />
     <PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.8" />
     <PackageVersion Include="Microsoft.AspNetCore.Html.Abstractions" Version="2.3.10" />
     <PackageVersion Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.11" />
@@ -133,7 +133,7 @@
     <PackageVersion Include="Shouldly" Version="4.3.0" />
     <PackageVersion Include="Scriban" Version="7.2.0" />
     <PackageVersion Include="System.IdentityModel.Tokens.Jwt" Version="8.18.0" />
-    <PackageVersion Include="System.Reactive" Version="6.0.1" />
+    <PackageVersion Include="System.Reactive" Version="6.1.0" />
     <PackageVersion Include="System.Numerics.Tensors" Version="10.0.8" />
     <PackageVersion Include="System.Threading" Version="10.0.3" />
     <PackageVersion Include="TickerQ" Version="10.4.0" />
@@ -144,7 +144,7 @@
     <PackageVersion Include="TickerQ.SDK" Version="10.4.0" />
     <PackageVersion Include="TickerQ.Utilities" Version="10.4.0" />
     <PackageVersion Include="Weasel.Postgresql" Version="8.15.2" />
-    <PackageVersion Include="WolverineFx" Version="5.39.3" />
+    <PackageVersion Include="WolverineFx" Version="6.16.0" />
     <PackageVersion Include="WolverineFx.EntityFrameworkCore" Version="5.39.3" />
     <PackageVersion Include="WolverineFx.FluentValidation" Version="5.39.3" />
     <PackageVersion Include="WolverineFx.Marten" Version="5.39.3" />
