@@ -145,11 +145,12 @@
     <PackageVersion Include="TickerQ.Utilities" Version="10.4.0" />
     <PackageVersion Include="Weasel.Postgresql" Version="8.15.2" />
     <PackageVersion Include="WolverineFx" Version="6.16.0" />
-    <PackageVersion Include="WolverineFx.EntityFrameworkCore" Version="5.39.3" />
-    <PackageVersion Include="WolverineFx.FluentValidation" Version="5.39.3" />
-    <PackageVersion Include="WolverineFx.Marten" Version="5.39.3" />
-    <PackageVersion Include="WolverineFx.Postgresql" Version="5.39.3" />
-    <PackageVersion Include="WolverineFx.RabbitMQ" Version="5.39.3" />
+    <PackageVersion Include="WolverineFx.EntityFrameworkCore" Version="6.16.0" />
+    <PackageVersion Include="WolverineFx.FluentValidation" Version="6.16.0" />
+    <PackageVersion Include="WolverineFx.Marten" Version="6.16.0" />
+    <PackageVersion Include="WolverineFx.Postgresql" Version="6.16.0" />
+    <PackageVersion Include="WolverineFx.RabbitMQ" Version="6.16.0" />
+    <PackageVersion Include="WolverineFx.RuntimeCompilation" Version="6.16.0" />
     <PackageVersion Include="WorkOS.net" Version="4.0.1" />
     <PackageVersion Include="ZiggyCreatures.FusionCache" Version="2.6.0" />
     <PackageVersion Include="ZiggyCreatures.FusionCache.Backplane.Memory" Version="2.6.0" />

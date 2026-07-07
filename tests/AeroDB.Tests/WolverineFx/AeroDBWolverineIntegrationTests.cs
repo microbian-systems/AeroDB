@@ -77,6 +77,7 @@ public class AeroDBWolverineIntegrationTests
             })
             .UseWolverine(opts =>
             {
+                opts.RestoreV5Defaults();
                 opts.Durability.Mode = DurabilityMode.Solo;
 
                 extraWolverineConfig?.Invoke(opts);

@@ -15,6 +15,7 @@
     <PackageReference Include="Shouldly" VersionOverride="4.3.0" />
     <PackageReference Include="SurrealDb.Embedded.InMemory" VersionOverride="0.10.2" />
     <PackageReference Include="SurrealDb.Embedded.SurrealKv" VersionOverride="0.10.2" />
+    <PackageReference Include="WolverineFx.RuntimeCompilation" Version="6.16.0" />
     <PackageReference Include="NSubstitute" VersionOverride="5.3.0" />
     <PackageReference Include="Microsoft.CodeAnalysis" Version="5.6.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="5.6.0" />
