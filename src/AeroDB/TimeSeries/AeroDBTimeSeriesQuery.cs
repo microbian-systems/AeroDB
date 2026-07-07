@@ -191,9 +191,9 @@ public sealed class AeroDBTimeSeriesQuery<T> : ITimeSeriesQuery<T> where T : cla
     private static string GetMemberName(Expression<Func<T, object>> selector)
     {
         if (selector.Body is MemberExpression m)
-            return m.Member.Name;
+            return MetadataDispatch.GetFieldName(typeof(T), m.Member.Name, null);
         if (selector.Body is UnaryExpression { NodeType: ExpressionType.Convert, Operand: MemberExpression um })
-            return um.Member.Name;
+            return MetadataDispatch.GetFieldName(typeof(T), um.Member.Name, null);
         throw new ArgumentException("Selector must be a simple member expression");
     }
 }

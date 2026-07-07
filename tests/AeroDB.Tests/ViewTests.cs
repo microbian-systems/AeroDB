@@ -52,7 +52,7 @@ public class ViewTests
 
         var surql = def.BuildSelectSurql();
         // SurrealDB treats WHERE Active (boolean member) as WHERE Active = true
-        surql.ShouldBe("SELECT * FROM `view_user` WHERE Active");
+        surql.ShouldBe("SELECT * FROM `view_user` WHERE active");
     }
 
     [Test]
@@ -64,7 +64,7 @@ public class ViewTests
             .Where(u => u.Role == "admin");
 
         var surql = def.BuildSelectSurql();
-        surql.ShouldBe("SELECT * FROM `view_user` WHERE Role = 'admin'");
+        surql.ShouldBe("SELECT * FROM `view_user` WHERE role = 'admin'");
     }
 
     [Test]
@@ -79,7 +79,7 @@ public class ViewTests
             .GroupBy(r => r.ProductId);
 
         var surql = def.BuildSelectSurql();
-        surql.ShouldBe("SELECT count() AS num, math::mean(rating) AS avg FROM `view_review` GROUP BY ProductId");
+        surql.ShouldBe("SELECT count() AS num, math::mean(rating) AS avg FROM `view_review` GROUP BY product_id");
     }
 
     [Test]
@@ -93,7 +93,7 @@ public class ViewTests
             .GroupBy(r => r.Category);
 
         var surql = def.BuildSelectSurql();
-        surql.ShouldBe("SELECT count() AS num, math::mean(rating) AS avg, category FROM `view_review` WHERE Rating >= 3 GROUP BY Category");
+        surql.ShouldBe("SELECT count() AS num, math::mean(rating) AS avg, category FROM `view_review` WHERE rating >= 3 GROUP BY category");
     }
 
     [Test]
@@ -136,7 +136,7 @@ public class ViewTests
 
         var surql = def.BuildSelectSurql();
         // SurrealDB treats WHERE Active (boolean member) as WHERE Active = true
-        surql.ShouldBe("SELECT * FROM `custom_source_table` WHERE Active");
+        surql.ShouldBe("SELECT * FROM `custom_source_table` WHERE active");
     }
 
     [Test]
@@ -189,7 +189,7 @@ public class ViewTests
             .Where(u => u.Active);
 
         def.SchemaName.ShouldBe("analytics");
-        def.BuildSelectSurql().ShouldBe("SELECT * FROM `view_user` WHERE Active");
+        def.BuildSelectSurql().ShouldBe("SELECT * FROM `view_user` WHERE active");
     }
 
     [Test]
@@ -290,7 +290,7 @@ public class ViewTests
         var columns = SurrealExpressionVisitor.ExtractGroupByColumns<ViewReview, int>(x => x.Rating);
 
         columns.Length.ShouldBe(1);
-        columns[0].ShouldBe("Rating");
+        columns[0].ShouldBe("rating");
     }
 
     [Test]
@@ -300,8 +300,8 @@ public class ViewTests
             x => new { x.Category, x.Region });
 
         columns.Length.ShouldBe(2);
-        columns[0].ShouldBe("Category");
-        columns[1].ShouldBe("Region");
+        columns[0].ShouldBe("category");
+        columns[1].ShouldBe("region");
     }
 
     [Test]
@@ -310,7 +310,7 @@ public class ViewTests
         var columns = SurrealExpressionVisitor.ExtractGroupByColumns<ViewReview, string>(x => x.ProductId);
 
         columns.Length.ShouldBe(1);
-        columns[0].ShouldBe("ProductId");
+        columns[0].ShouldBe("product_id");
     }
 
     [Test]
@@ -320,9 +320,9 @@ public class ViewTests
             x => new { x.ProductId, x.Category, x.Region });
 
         columns.Length.ShouldBe(3);
-        columns.ShouldContain("ProductId");
-        columns.ShouldContain("Category");
-        columns.ShouldContain("Region");
+        columns.ShouldContain("product_id");
+        columns.ShouldContain("category");
+        columns.ShouldContain("region");
     }
 
     // ════════════════════════════════════════════════════════════
@@ -390,8 +390,8 @@ public class ViewTests
         def.ViewName.ShouldBe("my_view");
         def.FromTable.ShouldBe("view_review");
         def.SelectColumns.ShouldBe("count() AS cnt");
-        def.WhereClause.ShouldBe("Rating > 2");
-        def.GroupByColumns.ShouldBe("Category");
+        def.WhereClause.ShouldBe("rating > 2");
+        def.GroupByColumns.ShouldBe("category");
         def.IsDrop.ShouldBeFalse();
     }
 

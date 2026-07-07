@@ -108,8 +108,8 @@ public abstract class InternalSessionBase : IAsyncDisposable
 
         public async Task<string?> LoadByIdAsync<T>(string id, CancellationToken ct = default) where T : class
         {
-            var results = await _session.RawQueryAsync<T>(
-                $"SELECT * FROM {MetadataDispatch.GetTableName(typeof(T))}:`{id.Replace("`", "\\`")}`",
+        var results = await _session.RawQueryAsync<T>(
+                $"SELECT * FROM {MetadataDispatch.GetTableName(typeof(T), _session.StoreOptions.Schema)}:`{id.Replace("`", "\\`")}`",
                 null, ct).ConfigureAwait(false);
             if (results.Count == 0) return null;
             return System.Text.Json.JsonSerializer.Serialize(results[0], _session.StoreOptions.SerializerOptions);
@@ -210,8 +210,7 @@ public abstract class InternalSessionBase : IAsyncDisposable
         RequestCount++;
         LogSurrealQuery(sql, parameters);
         var response = await Session.RawQuery(sql, parameters, ct).ConfigureAwait(false);
-
-        if (TryDeserializeMappedPocoResponse<T>(response, out var mapped))
+        if (TryDeserializeDocumentResponse<T>(response, out var mapped))
             return mapped;
 
         return response.GetValue<List<T>>(0) ?? [];
@@ -220,23 +219,23 @@ public abstract class InternalSessionBase : IAsyncDisposable
     internal List<T> DeserializeMappedPocoResponse<T>(SurrealDbResponse response, int index = 0)
     {
         var mapping = Options.Schema.Mappings.GetValueOrDefault(typeof(T));
-        if (mapping?.IdentityProperty is null)
+        if (mapping is null && !typeof(T).IsClass)
             return [];
 
         var records = CborResultReader.ReadPocoResult(response, index);
-        return DeserializePocoFromList<T>(records, mapping.IdentityProperty);
+        return DeserializePocoFromList<T>(records, mapping?.IdentityProperty ?? "Id", Options.Schema);
     }
 
-    private bool TryDeserializeMappedPocoResponse<T>(SurrealDbResponse response, out List<T> results)
+    private bool TryDeserializeDocumentResponse<T>(SurrealDbResponse response, out List<T> results)
     {
         results = [];
 
         var mapping = Options.Schema.Mappings.GetValueOrDefault(typeof(T));
-        if (mapping?.IdentityProperty is null)
+        if (mapping is null && !typeof(T).IsClass)
             return false;
 
         var records = CborResultReader.ReadPocoResult(response, 0);
-        results = DeserializePocoFromList<T>(records, mapping.IdentityProperty);
+        results = DeserializePocoFromList<T>(records, mapping?.IdentityProperty ?? "Id", Options.Schema);
         return true;
     }
 
@@ -250,7 +249,7 @@ public abstract class InternalSessionBase : IAsyncDisposable
 
     protected async Task<bool> CheckExistsAsyncCore<T>(string id, CancellationToken ct) where T : class
     {
-        var table = MetadataDispatch.GetTableName(typeof(T));
+        var table = MetadataDispatch.GetTableName(typeof(T), Options.Schema);
         var sql = $"SELECT id FROM {table}:`{id.Replace("`", "\\`")}`";
         RequestCount++;
         LogSurrealQuery(sql, null);
@@ -332,7 +331,7 @@ public abstract class InternalSessionBase : IAsyncDisposable
     public async Task<T?> LoadAsync<T>(string id, CancellationToken ct = default) where T : class
     {
         RequestCount++;
-        var table = MetadataDispatch.GetTableName(typeof(T));
+        var table = MetadataDispatch.GetTableName(typeof(T), Options.Schema);
         var (schemaName, _) = MetadataDispatch.GetSchemaTarget(typeof(T), Options.Schema);
         var loadSession = await GetSessionForSchemaAsync(schemaName, ct).ConfigureAwait(false);
         try
@@ -349,28 +348,9 @@ public abstract class InternalSessionBase : IAsyncDisposable
                 }
             }
 
-            // Try shim-based deserialization for IEntity<TId> types
-            T? result;
-            var shimType = MetadataRegistry.GetShimType(typeof(T));
-            if (shimType is not null)
-            {
-                result = await DeserializeViaShimAsync<T>(loadSession, shimType, rid, ct).ConfigureAwait(false);
-            }
-            else if (typeof(IRecord).IsAssignableFrom(typeof(T)))
-            {
-                result = await loadSession.Select<T>(rid, ct).ConfigureAwait(false);
-            }
-            else if (IsEntityBaseType(typeof(T)))
-            {
-                // Entity<TId> without shim — Select<T> works because
-                // Dahomey.Cbor deserializes the body field "Id" to the typed Id property
-                result = await loadSession.Select<T>(rid, ct).ConfigureAwait(false);
-            }
-            else
-            {
-                // POCO path: use RawQuery to get dicts, then JSON round-trip
-                result = await LoadPocoAsync<T>(loadSession, table, id, ct).ConfigureAwait(false);
-            }
+            // Naming-aware path for Record, Entity<TId>, and POCO documents. Runtime schema
+            // casing and field overrides must be authoritative for direct loads.
+            var result = await LoadPocoAsync<T>(loadSession, table, id, ct).ConfigureAwait(false);
 
             // Tenant isolation: if this session is tenant-scoped and the loaded entity
             // has a TenantId property, verify it matches. If not, treat as "not found".
@@ -468,7 +448,7 @@ public abstract class InternalSessionBase : IAsyncDisposable
             return null;
 
         var mapping = Options.Schema.Mappings.GetValueOrDefault(typeof(T));
-        return DeserializePocoFromList<T>(records, mapping?.IdentityProperty)[0];
+        return DeserializePocoFromList<T>(records, mapping?.IdentityProperty, Options.Schema)[0];
     }
 
     protected void LogSurrealQuery(string sql, IReadOnlyDictionary<string, object?>? parameters)
@@ -496,11 +476,17 @@ public abstract class InternalSessionBase : IAsyncDisposable
     /// </summary>
     internal static List<T> DeserializePocoFromList<T>(
         List<Dictionary<string, object?>> records,
-        string? identityProperty = null)
+        string? identityProperty = null,
+        SchemaOptions? schema = null)
     {
         if (records is null or { Count: 0 }) return [];
 
         var nativeIds = NormalizePocoIdentityFields<T>(records, identityProperty);
+        NormalizeStorageFieldsForPoco(typeof(T), records, schema);
+        var normalizedRecords = records
+            .Select(record => new Dictionary<string, object?>(record, StringComparer.OrdinalIgnoreCase))
+            .ToArray();
+        var deferredValues = ExtractDeferredPropertyValues<T>(records);
 
         // Serialize the cleaned dictionaries to JSON, then deserialize to typed POCOs
         var jsonOpts = new System.Text.Json.JsonSerializerOptions
@@ -520,9 +506,365 @@ public abstract class InternalSessionBase : IAsyncDisposable
             {
                 SetPocoIdentityFromRecordId(results[j]!, nativeId, identityProperty);
             }
+
+            if (j < deferredValues.Length)
+            {
+                foreach (var (property, value) in deferredValues[j])
+                {
+                    property.SetValue(results[j]!, value);
+                }
+            }
+
+            if (j < normalizedRecords.Length)
+            {
+                ApplyNormalizedPropertyValues(results[j]!, normalizedRecords[j]);
+            }
+
         }
 
         return results;
+    }
+
+    private static List<(PropertyInfo Property, object? Value)>[] ExtractDeferredPropertyValues<T>(
+        List<Dictionary<string, object?>> records)
+    {
+        var properties = typeof(T)
+            .GetProperties(BindingFlags.Public | BindingFlags.Instance)
+            .Where(p =>
+            {
+                var propertyType = Nullable.GetUnderlyingType(p.PropertyType) ?? p.PropertyType;
+                return p.CanWrite
+                    && (propertyType == typeof(RecordId)
+                        || IsRecordIdOf(propertyType)
+                        || typeof(IRecord).IsAssignableFrom(propertyType));
+            })
+            .ToArray();
+
+        var values = new List<(PropertyInfo Property, object? Value)>[records.Count];
+        for (var i = 0; i < records.Count; i++)
+        {
+            values[i] = [];
+            foreach (var property in properties)
+            {
+                if (!records[i].TryGetValue(property.Name, out var value))
+                    continue;
+
+                var propertyType = Nullable.GetUnderlyingType(property.PropertyType) ?? property.PropertyType;
+                if (typeof(IRecord).IsAssignableFrom(propertyType)
+                    && value is Dictionary<string, object?>)
+                {
+                    continue;
+                }
+
+                if (records[i].Remove(property.Name, out value))
+                {
+                    values[i].Add((property, ConvertDeferredPropertyValue(property, value)));
+                }
+            }
+        }
+
+        return values;
+    }
+
+    private static void ApplyNormalizedPropertyValues(object entity, Dictionary<string, object?> normalizedRecord)
+    {
+        var properties = entity.GetType()
+            .GetProperties(BindingFlags.Public | BindingFlags.Instance)
+            .Where(p => p.CanWrite && p.GetIndexParameters().Length == 0);
+
+        foreach (var property in properties)
+        {
+            var propertyType = Nullable.GetUnderlyingType(property.PropertyType) ?? property.PropertyType;
+            if (propertyType == typeof(RecordId)
+                || IsRecordIdOf(propertyType)
+                || typeof(IRecord).IsAssignableFrom(propertyType))
+            {
+                continue;
+            }
+
+            if (!normalizedRecord.TryGetValue(property.Name, out var value))
+                continue;
+
+            property.SetValue(entity, ConvertValueForProperty(property, value));
+        }
+    }
+
+    private static object? ConvertValueForProperty(PropertyInfo property, object? value)
+    {
+        if (value is null)
+            return null;
+
+        var propertyType = Nullable.GetUnderlyingType(property.PropertyType) ?? property.PropertyType;
+        if (propertyType.IsInstanceOfType(value))
+            return value;
+
+        var json = System.Text.Json.JsonSerializer.Serialize(value);
+        return System.Text.Json.JsonSerializer.Deserialize(json, property.PropertyType);
+    }
+
+    private static object? ConvertDeferredPropertyValue(PropertyInfo property, object? value)
+    {
+        if (value is null)
+            return null;
+
+        var propertyType = Nullable.GetUnderlyingType(property.PropertyType) ?? property.PropertyType;
+        if (propertyType == typeof(RecordId)
+            || IsRecordIdOf(propertyType)
+            || typeof(IRecord).IsAssignableFrom(propertyType))
+        {
+            return value;
+        }
+
+        if (propertyType != typeof(string)
+            && typeof(System.Collections.IEnumerable).IsAssignableFrom(propertyType))
+        {
+            var json = System.Text.Json.JsonSerializer.Serialize(value);
+            return System.Text.Json.JsonSerializer.Deserialize(json, property.PropertyType);
+        }
+
+        return value;
+    }
+
+    private static void NormalizeStorageFieldsForPoco(
+        Type targetType,
+        List<Dictionary<string, object?>> records,
+        SchemaOptions? schema)
+    {
+        foreach (var record in records)
+        {
+            NormalizeStorageFieldsForPoco(targetType, record, schema);
+        }
+    }
+
+    private static void NormalizeStorageFieldsForPoco(
+        Type targetType,
+        Dictionary<string, object?> record,
+        SchemaOptions? schema)
+    {
+        var idProperty = GetPocoIdentityProperty(targetType, identityProperty: null);
+        if (idProperty is not null)
+        {
+            var idType = Nullable.GetUnderlyingType(idProperty.PropertyType) ?? idProperty.PropertyType;
+            if (idType == typeof(RecordId) || IsRecordIdOf(idType))
+            {
+                TryRemoveKey(record, "id", out _);
+                TryRemoveKey(record, idProperty.Name, out _);
+            }
+        }
+
+        var properties = targetType
+            .GetProperties(BindingFlags.Public | BindingFlags.Instance)
+            .Where(p => p.CanWrite && p.GetIndexParameters().Length == 0)
+            .ToArray();
+
+        foreach (var property in properties)
+        {
+            var storageName = MetadataDispatch.GetFieldName(targetType, property.Name, schema);
+            if (!TryRemoveKey(record, storageName, out var value)
+                && !TryRemoveKey(record, property.Name, out value))
+            {
+                continue;
+            }
+
+            if (!TryNormalizeValueForProperty(property, value, schema, out var normalized))
+            {
+                if (value is System.Collections.IEnumerable && value is not string)
+                {
+                    record[property.Name] = value;
+                }
+
+                continue;
+            }
+
+            record[property.Name] = normalized;
+        }
+    }
+
+    private static bool TryRemoveKey(
+        Dictionary<string, object?> record,
+        string key,
+        out object? value)
+    {
+        if (record.Remove(key, out value))
+            return true;
+
+        var actualKey = record.Keys.FirstOrDefault(k => string.Equals(k, key, StringComparison.OrdinalIgnoreCase));
+        if (actualKey is null)
+        {
+            value = null;
+            return false;
+        }
+
+        value = record[actualKey];
+        record.Remove(actualKey);
+        return true;
+    }
+
+    private static bool TryNormalizeValueForProperty(
+        PropertyInfo property,
+        object? value,
+        SchemaOptions? schema,
+        out object? normalized)
+    {
+        normalized = value;
+        if (value is null)
+            return true;
+
+        var propertyType = Nullable.GetUnderlyingType(property.PropertyType) ?? property.PropertyType;
+
+        if (propertyType.IsInstanceOfType(value))
+            return true;
+
+        if (propertyType == typeof(string) && value is not string)
+        {
+            normalized = value.ToString();
+            return true;
+        }
+
+        if (propertyType == typeof(DateTimeOffset) && value is DateTime dateTime)
+        {
+            normalized = new DateTimeOffset(
+                DateTime.SpecifyKind(dateTime, DateTimeKind.Utc));
+            return true;
+        }
+
+        if (propertyType == typeof(DateTimeOffset) && value is string dateText
+            && DateTimeOffset.TryParse(
+                dateText,
+                System.Globalization.CultureInfo.InvariantCulture,
+                System.Globalization.DateTimeStyles.AssumeUniversal | System.Globalization.DateTimeStyles.AdjustToUniversal,
+                out var dateTimeOffsetValue))
+        {
+            normalized = dateTimeOffsetValue;
+            return true;
+        }
+
+        if (propertyType == typeof(DateTimeOffset) && value is List<object?> dateParts)
+        {
+            var seconds = dateParts.Count > 0 ? Convert.ToInt64(dateParts[0], System.Globalization.CultureInfo.InvariantCulture) : 0L;
+            var nanos = dateParts.Count > 1 ? Convert.ToInt64(dateParts[1], System.Globalization.CultureInfo.InvariantCulture) : 0L;
+            normalized = DateTimeOffset.FromUnixTimeSeconds(seconds).AddTicks(nanos / 100);
+            return true;
+        }
+
+        var recordIdText = ExtractRecordIdString(value);
+        if (recordIdText is not null
+            && LooksLikeRecordId(recordIdText)
+            && (propertyType == typeof(RecordId) || IsRecordIdOf(propertyType)))
+        {
+            normalized = ConvertRecordIdToIdentityValue(recordIdText, propertyType);
+            return true;
+        }
+
+        if (recordIdText is not null
+            && LooksLikeRecordId(recordIdText)
+            && typeof(IRecord).IsAssignableFrom(propertyType)
+            && propertyType.GetConstructor(Type.EmptyTypes) is not null)
+        {
+            var linkedRecord = Activator.CreateInstance(propertyType);
+            var idProperty = propertyType.GetProperty("Id", BindingFlags.Instance | BindingFlags.Public);
+            if (idProperty is not null && idProperty.CanWrite)
+            {
+                var idType = Nullable.GetUnderlyingType(idProperty.PropertyType) ?? idProperty.PropertyType;
+                if (idType == typeof(RecordId) || IsRecordIdOf(idType))
+                    idProperty.SetValue(linkedRecord, ConvertRecordIdToIdentityValue(recordIdText, idType));
+            }
+
+            normalized = linkedRecord;
+            return true;
+        }
+
+        if (recordIdText is not null
+            && LooksLikeRecordId(recordIdText)
+            && propertyType != typeof(string)
+            && propertyType != typeof(RecordId)
+            && !IsRecordIdOf(propertyType))
+        {
+            // Unfetched SurrealDB record links arrive as "table:id". They are not full objects.
+            return false;
+        }
+
+        if (propertyType == typeof(decimal) && value is string decimalText
+            && decimal.TryParse(decimalText, System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.InvariantCulture, out var decimalValue))
+        {
+            normalized = decimalValue;
+            return true;
+        }
+
+        if (value is Dictionary<string, object?> nested
+            && propertyType != typeof(object)
+            && propertyType != typeof(string))
+        {
+            NormalizeStorageFieldsForPoco(propertyType, nested, schema);
+            normalized = nested;
+            return true;
+        }
+
+        if (value is System.Collections.IEnumerable enumerable
+            && value is not string
+            && TryGetEnumerableElementType(property.PropertyType, out var elementType))
+        {
+            var normalizedItems = new List<object?>();
+            foreach (var item in enumerable)
+            {
+                if (item is Dictionary<string, object?> itemRecord
+                    && elementType != typeof(object)
+                    && elementType != typeof(string))
+                {
+                    NormalizeStorageFieldsForPoco(elementType, itemRecord, schema);
+                    normalizedItems.Add(itemRecord);
+                }
+                else if (item is string itemRecordId
+                    && LooksLikeRecordId(itemRecordId)
+                    && typeof(IRecord).IsAssignableFrom(elementType))
+                {
+                    continue;
+                }
+                else
+                {
+                    normalizedItems.Add(item);
+                }
+            }
+
+            normalized = normalizedItems;
+            return true;
+        }
+
+        if (propertyType.IsClass && propertyType != typeof(string) && value is not Dictionary<string, object?>)
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    private static bool TryGetEnumerableElementType(Type type, out Type elementType)
+    {
+        if (type.IsArray)
+        {
+            elementType = type.GetElementType() ?? typeof(object);
+            return true;
+        }
+
+        var enumerableType = type.GetInterfaces()
+            .Concat([type])
+            .FirstOrDefault(t => t.IsGenericType && t.GetGenericTypeDefinition() == typeof(IEnumerable<>));
+
+        elementType = enumerableType?.GetGenericArguments()[0] ?? typeof(object);
+        return enumerableType is not null;
+    }
+
+    private static bool IsRecordIdOf(Type type)
+        => type.IsGenericType && type.GetGenericTypeDefinition() == typeof(RecordIdOf<>);
+
+    private static bool LooksLikeRecordId(string value)
+    {
+        var colon = value.IndexOf(':');
+        if (colon <= 0 || colon == value.Length - 1)
+            return false;
+
+        var table = value[..colon];
+        return table.All(c => char.IsLetterOrDigit(c) || c == '_');
     }
 
     private static string?[] NormalizePocoIdentityFields<T>(
@@ -558,7 +900,12 @@ public abstract class InternalSessionBase : IAsyncDisposable
 
             if (nativeId is not null && idProp is not null)
             {
-                record[idProp.Name] = ConvertRecordIdToIdentityValue(nativeId, idProp.PropertyType);
+                var propType = Nullable.GetUnderlyingType(idProp.PropertyType) ?? idProp.PropertyType;
+                if (propType != typeof(RecordId)
+                    && !(propType.IsGenericType && propType.GetGenericTypeDefinition() == typeof(RecordIdOf<>)))
+                {
+                    record[idProp.Name] = ConvertRecordIdToIdentityValue(nativeId, idProp.PropertyType);
+                }
             }
         }
 
@@ -575,6 +922,17 @@ public abstract class InternalSessionBase : IAsyncDisposable
         if (idValue is string s)
             return s;
 
+        if (idValue is RecordId recordId)
+            return FormatRecordId(recordId.Table, recordId.DeserializeId<object>());
+
+        var type = idValue?.GetType();
+        if (type?.IsGenericType == true && type.GetGenericTypeDefinition() == typeof(RecordIdOf<>))
+        {
+            var table = type.GetProperty("Table")?.GetValue(idValue)?.ToString();
+            var id = type.GetProperty("Id")?.GetValue(idValue);
+            return FormatRecordId(table, id);
+        }
+
         // SurrealDB RecordId array format: ["table_name", id_value]
         if (idValue is List<object?> { Count: >= 2 } list)
         {
@@ -584,6 +942,15 @@ public abstract class InternalSessionBase : IAsyncDisposable
         }
 
         return idValue?.ToString();
+    }
+
+    private static string? FormatRecordId(string? table, object? id)
+    {
+        if (string.IsNullOrEmpty(table))
+            return id?.ToString();
+
+        var idText = FormatRecordIdPart(id);
+        return string.IsNullOrEmpty(idText) ? table : $"{table}:{idText}";
     }
 
     /// <summary>
@@ -620,6 +987,20 @@ public abstract class InternalSessionBase : IAsyncDisposable
         var lastColon = nativeId.LastIndexOf(':');
         var idStr = lastColon >= 0 ? nativeId[(lastColon + 1)..] : nativeId;
         var propType = Nullable.GetUnderlyingType(propertyType) ?? propertyType;
+
+        if (propType == typeof(RecordId))
+        {
+            var table = lastColon >= 0 ? nativeId[..lastColon] : "";
+            return RecordId.From(table, idStr);
+        }
+
+        if (propType.IsGenericType && propType.GetGenericTypeDefinition() == typeof(RecordIdOf<>))
+        {
+            var table = lastColon >= 0 ? nativeId[..lastColon] : "";
+            var idType = propType.GetGenericArguments()[0];
+            var convertedId = ConvertRecordIdToIdentityValue(idStr, idType);
+            return Activator.CreateInstance(propType, table, convertedId);
+        }
 
         return propType switch
         {

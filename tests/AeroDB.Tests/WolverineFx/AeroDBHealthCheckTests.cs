@@ -27,7 +27,7 @@ public class AeroDBHealthCheckTests
 
         result.ShouldNotBeNull();
         result.Status.ShouldBe(TransportHealthStatus.Healthy);
-        result.Message.ShouldContain("AeroDB:reachable");
+        result.Message.ShouldNotBeNull().ShouldContain("AeroDB:reachable");
         result.TransportName.ShouldBe("AeroDB");
 
         await store.DisposeAsync();

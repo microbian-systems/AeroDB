@@ -1,6 +1,7 @@
 using System.Collections.Concurrent;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 namespace AeroDB;
 
@@ -21,6 +22,7 @@ namespace AeroDB;
 public static class CompiledQueryPlanner
 {
     private static readonly ConcurrentDictionary<Type, CompiledPlan> _plans = new();
+    private static readonly ConcurrentDictionary<(Type QueryType, int SchemaHash), CompiledPlan> _schemaPlans = new();
 
     /// <summary>
     /// Returns the cached plan for the query type, building it
@@ -30,7 +32,16 @@ public static class CompiledQueryPlanner
         where TDoc : class
     {
         var queryType = query.GetType();
-        return _plans.GetOrAdd(queryType, _ => BuildPlan<TDoc, TOut>(query));
+        return _plans.GetOrAdd(queryType, _ => BuildPlan<TDoc, TOut>(query, new StoreOptions()));
+    }
+
+    internal static CompiledPlan GetOrBuildPlan<TDoc, TOut>(ICompiledQuery<TDoc, TOut> query, StoreOptions options)
+        where TDoc : class
+    {
+        var queryType = query.GetType();
+        options.Schema.ResolveRelationships();
+        var key = (queryType, RuntimeHelpers.GetHashCode(options.Schema));
+        return _schemaPlans.GetOrAdd(key, _ => BuildPlan<TDoc, TOut>(query, options));
     }
 
     /// <summary>
@@ -45,7 +56,7 @@ public static class CompiledQueryPlanner
         ArgumentNullException.ThrowIfNull(session);
         ArgumentNullException.ThrowIfNull(query);
 
-        var plan = GetOrBuildPlan<TDoc, TOut>(query);
+        var plan = GetOrBuildPlan<TDoc, TOut>(query, session.StoreOptions);
 
         // 1. Clone the skeleton — fresh copy for mutation
         var result = plan.SkeletonResult.Clone();
@@ -93,7 +104,7 @@ public static class CompiledQueryPlanner
 
     // ── Plan building ─────────────────────────────────────────────────
 
-    private static CompiledPlan BuildPlan<TDoc, TOut>(ICompiledQuery<TDoc, TOut> query)
+    private static CompiledPlan BuildPlan<TDoc, TOut>(ICompiledQuery<TDoc, TOut> query, StoreOptions options)
         where TDoc : class
     {
         var queryType = query.GetType();
@@ -123,17 +134,21 @@ public static class CompiledQueryPlanner
         var normalizedBody = NormalizeTerminalOperators(reducedBody);
 
         // 6. Replace the ISurrealDbQueryable<TDoc> parameter with a dummy queryable
-        var dummy = CreateDummyQueryable<TDoc>();
+        var dummy = CreateDummyQueryable<TDoc>(options);
         var paramReplacer = new ParameterReplaceVisitor(expr.Parameters[0], Expression.Constant(dummy));
         var visitableExpr = paramReplacer.Visit(normalizedBody);
 
         // 7. Translate through the SurrealExpressionVisitor
-        var visitor = new SurrealExpressionVisitor();
-        var queryResult = visitor.Translate(visitableExpr);
+        var queryResult = TryTranslateExecutableQueryable<TDoc, TOut>(
+            expr.Parameters[0],
+            normalizedBody,
+            dummy,
+            options)
+            ?? new SurrealExpressionVisitor(options.Schema).Translate(visitableExpr);
 
         // Ensure table name was resolved
         if (string.IsNullOrEmpty(queryResult.TableName))
-            queryResult.TableName = Metadata.MetadataDispatch.GetTableName(typeof(TDoc));
+            queryResult.TableName = Metadata.MetadataDispatch.GetTableName(typeof(TDoc), options.Schema);
 
         // 8. Map parameters back to property names by matching sentinel values
         var paramMapping = new Dictionary<string, string>();
@@ -268,14 +283,63 @@ public static class CompiledQueryPlanner
     /// table-name metadata during expression tree visiting. No database
     /// connection is required — no execution occurs during plan building.
     /// </summary>
-    private static SurrealDbQueryable<TDoc> CreateDummyQueryable<TDoc>()
+    private static SurrealDbQueryable<TDoc> CreateDummyQueryable<TDoc>(StoreOptions options)
         where TDoc : class
     {
         var provider = new SurrealQueryProvider(
             session: null!,
-            options: new StoreOptions(),
+            options: options,
             tenantId: null);
         return new SurrealDbQueryable<TDoc>(provider);
+    }
+
+    private static SurrealQueryResult? TryTranslateExecutableQueryable<TDoc, TOut>(
+        ParameterExpression sourceParameter,
+        Expression body,
+        SurrealDbQueryable<TDoc> dummy,
+        StoreOptions options)
+        where TDoc : class
+    {
+        if (typeof(TOut) == typeof(TDoc) || !typeof(System.Collections.IEnumerable).IsAssignableFrom(typeof(TOut)))
+            return null;
+
+        try
+        {
+            var lambda = Expression.Lambda<Func<ISurrealDbQueryable<TDoc>, TOut>>(body, sourceParameter);
+            var result = lambda.Compile().Invoke(dummy);
+            if (result is not IQueryable queryable)
+                return null;
+
+            var visitor = new SurrealExpressionVisitor(options.Schema);
+            var queryResult = visitor.Translate(queryable.Expression);
+
+            var fetchFields = SurrealQueryProvider.ExtractFetchFields(queryable.Expression);
+            if (fetchFields is { Count: > 0 })
+                queryResult.FetchFields.AddRange(fetchFields);
+
+            var linkedWhereSpecs = SurrealQueryProvider.ExtractLinkedWhereSpecs(queryable.Expression);
+            if (linkedWhereSpecs is { Count: > 0 })
+            {
+                foreach (var spec in linkedWhereSpecs)
+                {
+                    var linkedVisitor = new SurrealExpressionVisitor(options.Schema);
+                    queryResult.Where.Add(linkedVisitor.TranslateLinkedWhere(spec.Predicate, spec.Links));
+                    if (linkedVisitor.Parameters.Count > 0)
+                    {
+                        var merged = new Dictionary<string, object?>(queryResult.Parameters);
+                        foreach (var parameter in linkedVisitor.Parameters)
+                            merged[parameter.Key] = parameter.Value;
+                        queryResult.Parameters = merged;
+                    }
+                }
+            }
+
+            return queryResult;
+        }
+        catch
+        {
+            return null;
+        }
     }
 
     /// <summary>

@@ -172,12 +172,18 @@ internal sealed class GraphQueryBuilder<TNode> : IGraphQuery<TNode> where TNode 
         }
 
         var runtimeSql = GenerateRuntimeValueQuery(plan);
-        if (TryGetPocoIdentityProperty(out var nestedIdentityProperty))
+        if (_session is InternalSessionBase sessionBase)
         {
             var response = await _rawSession.RawQuery(runtimeSql, null, ct).ConfigureAwait(false);
             var nestedItems = Internals.Cbor.CborResultReader.ReadPocoNestedResult(response, 0);
+            var nestedIdentityProperty =
+                sessionBase.StoreOptions.Schema.Mappings.GetValueOrDefault(typeof(TNode))?.IdentityProperty
+                ?? "Id";
             var pocoResults = nestedItems
-                .SelectMany(items => InternalSessionBase.DeserializePocoFromList<TNode>(items, nestedIdentityProperty))
+                .SelectMany(items => InternalSessionBase.DeserializePocoFromList<TNode>(
+                    items,
+                    nestedIdentityProperty,
+                    sessionBase.StoreOptions.Schema))
                 .ToList();
             return plan.CollectAll ? DeduplicateByIdentity(pocoResults) : pocoResults;
         }
@@ -452,7 +458,7 @@ internal sealed class GraphQueryBuilder<TNode> : IGraphQuery<TNode> where TNode 
             if (member != null)
             {
                 var memberName = member.Member.Name;
-                var memberField = memberName;
+                var memberField = MetadataDispatch.GetFieldName(typeof(TNode), memberName, null);
                 var arg = methodCall.Arguments.Count > 0
                     ? ExpressionValueToSurrealQL(methodCall.Arguments[0])
                     : "";
@@ -475,7 +481,10 @@ internal sealed class GraphQueryBuilder<TNode> : IGraphQuery<TNode> where TNode 
     {
         if (expr is MemberExpression member)
         {
-            return member.Member.Name;
+            if (member.Member.Name == "Id" && member.Type == typeof(string))
+                return "meta::id(id)";
+
+            return MetadataDispatch.GetFieldName(typeof(TNode), member.Member.Name, null);
         }
 
         return expr.ToString();

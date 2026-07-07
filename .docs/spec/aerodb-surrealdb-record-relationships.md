@@ -35,6 +35,131 @@ Avoid using `Relate(...)` for ordinary record relationships if AeroDB already us
 
 ## Relationship Models
 
+## Relationship Metadata Pipeline
+
+Relationship discovery and query translation must use one shared metadata model, not separate query-time heuristics.
+
+### Compile-time candidate discovery
+
+Source generation may emit shape-only relationship candidates:
+
+```text
+Order.CustomerId -> Customer.Id
+Order.Customer -> Customer
+Customer.AddressId -> Address.Id
+```
+
+Generated candidates are an optimization and diagnostics layer. They are not authoritative because runtime schema configuration can still override table names, field names, naming policy, identity members, and module composition.
+
+The generator should emit a module-initialized `GeneratedRelationshipCatalog` that registers `RelationshipCandidate` values with runtime metadata. Candidates remain shape-only and may be ignored by startup finalization if the composed schema cannot validate the source type, target type, identity member, or scalar FK type compatibility.
+
+### Startup finalization
+
+`SchemaOptions.ResolveRelationships()` / schema finalization runs after all `Schema.For<T>()` configuration and before DDL generation or query planning. It resolves:
+
+- identity members first
+- explicit fluent relationships
+- generated or reflection-discovered convention candidates
+- naming policy, table names, and field names
+- ambiguity and type-compatibility checks
+
+Finalized relationships are exposed through normal relationship metadata so `Link`, `Join`, `Include`, `IncludeReverse`, `ThenInclude`, materialization, tooling, and compiled queries can all consume the same model.
+
+Compiled query planning must be schema-aware. Interface-based compiled queries should build plans with the session/store schema so relationship fluent chains such as `Link<T>()`, `Join<T>()`, `Include(...)`, and `ThenInclude(...)` resolve against finalized descriptors instead of query-time reflection fallbacks or mutable queryable state alone.
+
+### Descriptor axes
+
+Do not encode storage model and cardinality into one enum. They are independent axes:
+
+```csharp
+public enum RelationshipStorageKind
+{
+    ScalarForeignKey,
+    RecordLink
+}
+
+public enum RelationshipCardinality
+{
+    One,
+    Many
+}
+```
+
+Requiredness/nullability and DDL constraints are separate concerns:
+
+- `IsNullable`: the CLR/storage value can be absent, null, or `NONE`.
+- `IsRequired`: schema/validation says the relationship must be present.
+- `RelationshipConstraints`: DDL-only behavior such as `REFERENCE`, `ON DELETE`, and `UNIQUE`.
+
+`RecordLinkArray` is represented by `StorageKind = RecordLink` plus `Cardinality = Many`; it should not require a separate long-term storage enum value.
+
+### Ambiguity rules
+
+Convention discovery must distinguish "no match" from "ambiguous match":
+
+- Duplicate mapped target type names: hard startup/build diagnostic naming the full types and assemblies.
+- Multiple FK-shaped members to the same target: valid; register separate descriptors keyed by source member.
+- FK/identity type mismatch: not a relationship match; leave the source member as a scalar field.
+- Unknown target identity: resolve identity first, then run relationship inference.
+- Competing conventions for the same member: hard diagnostic, not first-registered-wins.
+
+Explicit fluent configuration overrides convention-discovered relationships.
+
+---
+
+## 0. Scalar Foreign Key Relationship
+
+Scalar FK relationships are AeroDB relationship metadata backed by ordinary scalar fields, not SurrealDB native record-link fields.
+
+### C# model
+
+```csharp
+public sealed class Order
+{
+    public long Id { get; set; }
+    public long CustomerId { get; set; }
+}
+
+public sealed class Customer
+{
+    public long Id { get; set; }
+    public string Name { get; set; } = "";
+}
+```
+
+### Convention mapping
+
+```text
+Order.CustomerId -> Customer.Id
+```
+
+### Explicit mapping
+
+```csharp
+Schema.For<Order>()
+    .HasOne<Customer>(x => x.CustomerId);
+```
+
+### Mapping metadata produced
+
+```text
+SourceType: Order
+SourceTable: order
+MemberName: CustomerId
+StorageFieldName: customer_id
+TargetType: Customer
+TargetTable: customer
+Kind/Cardinality: HasOne / One
+StorageKind: ScalarForeignKey
+Origin: Convention or Explicit
+```
+
+### DDL behavior
+
+No SurrealDB `record<customer>` field is emitted for scalar FK relationships. The scalar field is treated as a normal field; relationship metadata is used by query translation, include loading, and materialization.
+
+---
+
 ## 1. Single Record Relationship
 
 ### C# model
@@ -89,8 +214,8 @@ TYPE record<customer>;
 
 ```sql
 CREATE customer:troy SET
-    firstName = "Troy",
-    lastName = "Robinson";
+    first_name = "Troy",
+    last_name = "Robinson";
 
 CREATE order:1 SET
     customer = customer:troy;
@@ -228,8 +353,8 @@ The LINQ provider should inspect the expression tree and resolve `Order.Customer
 ```sql
 SELECT
     id,
-    customer.firstName AS customerFirstName,
-    customer.lastName AS customerLastName
+    customer.first_name AS customer_first_name,
+    customer.last_name AS customer_last_name
 FROM order
 WHERE id = $orderId
 LIMIT 1;
@@ -289,6 +414,13 @@ LIMIT 1;
 `Include(...)` should mean: hydrate the related object or collection on the returned root entity.
 
 It should not mean: define a relationship.
+
+In AeroDB, keep the existing distinction between provider-neutral eager hydration and SurrealDB-native fetch behavior:
+
+- `Fetch(...)`: SurrealDB-specific `FETCH` clause.
+- `Include(...)`: provider-neutral eager hydration API.
+
+For SurrealDB record links, `Include(...)` may internally translate to `FETCH` when the relationship is represented as a direct record link or array of record links. Existing LET/subquery include behavior should remain available for reverse includes and typed-FK scenarios where `FETCH` is not the right primitive.
 
 ### Single include
 
@@ -357,19 +489,21 @@ session.Query<Order>()
     .Where(o => o.Customer!.Name == "Alice")
     .ToListAsync();
 ```
-→ `SELECT * FROM order WHERE Customer.Name = 'Alice';`
+→ `SELECT * FROM order WHERE customer.name = 'Alice';`
 
-But for `Entity<TId>` and POCO types, the FK field is a plain typed value (long/string/etc), not a `RecordId`. `Where(x => CustomerId == 5)` is valid, but there's no way to filter by properties of the *referenced* entity without explicit subqueries.
+For `Entity<TId>` and POCO types, the FK field may be a plain typed value (long/string/etc), not a `RecordId`. `Where(x => CustomerId == 5)` is valid. To filter by properties of the referenced entity without a subquery, AeroDB constructs a SurrealDB record id expression with `type::record(target_table, scalar_fk)` and then uses dot traversal.
 
 ### Solution: Link + Multi-Parameter Lambda
 
 Two-part API:
 
 ```csharp
-// Part 1: Link — register the FK relationship on the query
+// Part 1: Link — register the FK relationship on the query.
+// Join<TTarget>() is a thin alias for Link<TTarget>() for RDBMS-oriented users.
 .Link<TTarget>(o => o.FkField)
 
-// Part 2: Where — multi-parameter lambda, second+ params reference linked entities
+// Part 2: Where — target type is inferred from the preceding Link/Join chain.
+// Second+ params reference linked entities.
 .Where((o, c) => o.CreatedOn >= someDate && c.Name == "Alice")
 ```
 
@@ -392,12 +526,12 @@ session.Query<Order>()
 ```
 
 ```surql
-SELECT * FROM `order` WHERE CreatedOn >= $p0 AND Customer.Name = 'Alice';
+SELECT * FROM `order` WHERE created_on >= $p0 AND customer.name = $p1;
 ```
 
-The dot-notation follows the CLR property name (`Customer`), which maps to the SurrealDB field storing the `record<customer>` link.
+The dot-notation follows the configured AeroDB naming policy. With the default `SnakeCaseLower` policy, CLR `Customer.Name` maps to SurrealDB `customer.name`.
 
-**When FK field is a typed value** (long/string — IN subquery):
+**When FK field is a typed scalar value** (long/string/etc — computed record id dot traversal):
 
 ```csharp
 session.Query<EntityOrder>()
@@ -407,37 +541,62 @@ session.Query<EntityOrder>()
 ```
 
 ```surql
-SELECT * FROM `entity_order` WHERE CustomerId IN (
-    SELECT VALUE Id FROM `entity_customer` WHERE Name = 'Alice'
-);
+SELECT * FROM `entity_order`
+WHERE type::record("entity_customer", customer_id).name = $p0;
 ```
 
-FK type detection: The visitor inspects the property type of the FK field on the source type. If it's `RecordId`/`RecordIdOf<T>` or the property type implements `IRecord` → dot-notation. If it's `long`/`string`/`int`/`Guid` → IN subquery.
+FK type detection: The visitor inspects the property type of the FK field on the source type. If it's `RecordId`/`RecordIdOf<T>` or the property type implements `IRecord` → direct dot-notation. If it's `long`/`string`/`int`/`Guid` → `type::record(target_table, fk_field).field`.
 
-### Shorthand: `Where<TTarget>()`
+Important: for `Entity<TId>` shim-backed types, the shim does not persist a separate scalar `Id` field. The generated shim derives from SurrealDB `Record`, skips the entity `Id` member, and uses the native lowercase `id` record id. The typed entity `Id` is restored during materialization.
 
-Auto-infers the FK field by convention (`TTarget.Name + "Id"`) when no explicit `.Link()` is needed:
+Therefore typed-FK translation must not rely on a persisted scalar `Id` column on the target table. If the source FK stores a scalar value, AeroDB converts the FK value into the target record id shape with `type::record(...)` before traversing related fields.
+
+### Legacy/convention shorthand: `Where<TTarget>()`
+
+Auto-infers the FK field by strict convention when no explicit `.Link()` is needed:
 
 ```csharp
 session.Query<Order>()
-    .Where<Customer>((o, c) => c.Name == "Alice")
+    .Where((Order o, Customer c) => c.Name == "Alice")
     .ToListAsync();
 ```
-→ `SELECT * FROM `order` WHERE Customer.Name = 'Alice';`
+→ `SELECT * FROM `order` WHERE customer.name = $p0;`
 
-The convention resolves `Where<Customer>` → FK field `Customer` on the source type (matching the record link property name). For typed FK fields, the convention uses `{TTarget.Name}Id` (e.g., `CustomerId` on `EntityOrder` for `Where<EntityCustomer>`). Resolution order:
+This shorthand is only convenience sugar over the same `.Link<TTarget>(...)` infrastructure. It must not introduce a separate translation path. The preferred explicit relationship API is `.Link<TTarget>(...).Where((source, target) => ...)` or `.Join<TTarget>(...).Where((source, target) => ...)`, where the target type is inferred from the linked-query wrapper.
+
+The convention resolves the two-parameter linked `Where` target as follows:
+
+- Record-link property: field/property named after the target relationship, e.g. `Customer`.
+- Typed FK property: field/property named `{short target name}Id`, e.g. `CustomerId`.
+- Target identity: always resolves to the target table's native SurrealDB `id`, not a persisted scalar `Id` field.
+
+For `EntityCustomer`, the short target name may normalize common AeroDB entity prefixes/suffixes so `EntityCustomer` can resolve `CustomerId` instead of requiring `EntityCustomerId`. If this cannot be resolved deterministically, throw and require explicit `.Link<TTarget>(...)`.
+
+Resolution order:
 
 1. **Explicit `.Link<TTarget>(...)`** — highest priority (manual override)
 2. **`Schema.For<T>().ForeignKey<TTarget>()`** — declared in schema config
 3. **Convention** — `{TTarget.Name}Id` on source type
 4. **Attribute** — `[ForeignKey(typeof(TTarget))]` on the FK property
 
+If convention or metadata finds zero candidates or more than one candidate, reject the shorthand with a clear error and tell the caller to use explicit `.Link<TTarget>(...)`.
+
 ### Composition: Multiple Links
 
 ```csharp
 session.Query<Order>()
     .Link<Customer>(o => o.Customer)      // RecordId FK → dot-notation
-    .Link<Product>(o => o.ProductId)      // typed FK → IN subquery
+    .Link<Product>(o => o.ProductId)      // typed FK → type::record(...).field
+    .Where((o, c, p) => o.CreatedOn >= someDate && c.Name == "Alice" && p.Price > 50)
+    .ToListAsync();
+```
+
+Equivalent RDBMS-friendly spelling:
+
+```csharp
+session.Query<Order>()
+    .Join<Customer>(o => o.Customer)
+    .Join<Product>(o => o.ProductId)
     .Where((o, c, p) => o.CreatedOn >= someDate && c.Name == "Alice" && p.Price > 50)
     .ToListAsync();
 ```
@@ -446,9 +605,9 @@ Generated SurrealQL (mixed: Customer is RecordId, Product is typed):
 
 ```surql
 SELECT * FROM `order` WHERE
-    CreatedOn >= $p0
-    AND Customer.Name = $p1
-    AND ProductId IN (SELECT VALUE Id FROM `product` WHERE Price > $p2);
+    created_on >= $p0
+    AND customer.name = $p1
+    AND type::record("product", product_id).price > $p2;
 ```
 
 ### Composition with Fetch
@@ -464,17 +623,17 @@ session.Query<Order>()
 ```
 
 ```surql
-SELECT * FROM `order` WHERE Customer.Name = 'Alice' FETCH `Customer`;
+SELECT * FROM `order` WHERE customer.name = $p0 FETCH `customer`;
 ```
 
 ### Implementation
 
 The visitor needs:
 
-1. A `List<LinkRegistration>` on `SurrealDbQueryable<T>`, populated by `.Link<TTarget>()`
+1. A `List<LinkRegistration>` on `SurrealDbQueryable<T>`, populated by `.Link<TTarget>()` / `.Join<TTarget>()`
 2. A context dictionary mapping `ParameterExpression` → link registration for multi-param lambdas
 3. FK type detection (RecordId vs typed) at translation time
-4. Conditional coalescing: multiple conditions on the same linked entity → one subquery
+4. Conditional coalescing: multiple conditions on the same linked scalar-FK entity share the same `type::record(...)` base expression
 
 ```csharp
 internal sealed record LinkRegistration(
@@ -609,15 +768,57 @@ or provider-specific raw SurrealQL escape hatches.
 
 Do not hardcode `.ToLowerInvariant()` everywhere.
 
-Use a configurable naming policy.
+Use a configurable naming policy exposed through AeroDB options:
 
-Recommended default:
-
-```text
-PascalCase CLR type/property -> camelCase or snake_case_lower storage field/table
+```csharp
+options.Schema.Case = AeroDbNameCase.SnakeCaseLower;
 ```
 
-For SurrealDB specifically, choose one consistent default and apply it everywhere.
+Define the built-in case enum:
+
+```csharp
+public enum AeroDbNameCase
+{
+    SnakeCaseLower,
+    CamelCase,
+    PascalCase
+}
+```
+
+Define a naming policy abstraction so generated metadata, schema generation, and query translation use one source of truth:
+
+```csharp
+public interface IAeroDbNamingPolicy
+{
+    string TableName(Type type);
+    string FieldName(MemberInfo member);
+    string FieldName(string clrName);
+}
+```
+
+Built-in cases:
+
+- `SnakeCaseLower`
+- `CamelCase`
+- `PascalCase`
+
+Recommended explicit configuration for new SurrealDB relationship work:
+
+```text
+PascalCase CLR type/property -> snake_case_lower storage field/table
+```
+
+For SurrealDB specifically, choose one consistent configured policy and apply it everywhere:
+
+- table names
+- field names
+- relationship storage fields
+- schema generation
+- LINQ member translation
+- `Fetch(...)`
+- `Include(...)`
+- `Link(...)`
+- convention-based FK resolution
 
 Examples if using snake_case_lower:
 
@@ -638,6 +839,20 @@ Order.Products -> products
 ```
 
 AeroDB should allow per-table and per-field overrides.
+
+Proposed override API shape:
+
+```csharp
+options.Schema.For<Order>()
+    .TableName("sales_order")
+    .FieldName(x => x.CreatedOn, "created_at");
+
+options.Schema.For<Order>()
+    .HasOne(x => x.Customer)
+    .FieldName("customer");
+```
+
+This is a foundation task. Relationship implementation should use the naming policy instead of introducing new local calls to `.ToLowerInvariant()`, `Snake(...)`, or member-name passthroughs.
 
 ---
 
@@ -812,7 +1027,7 @@ x.Customer.FirstName
 SurrealQL:
 
 ```sql
-customer.firstName
+customer.first_name
 ```
 
 ## Collection member projection
@@ -974,8 +1189,8 @@ Cannot translate collection relationship access 'Order.Products'. The member 'Or
 
 - `HasOne` maps to `record<table>`.
 - `HasMany` maps to `array<record<table>>`.
-- `Include` maps to `FETCH`.
-- Related field projection maps to dot traversal such as `customer.firstName` or `products.name`.
+- `Include` may map to `FETCH` for direct record links; reverse and typed-FK includes may use LET/subquery behavior.
+- Related field projection maps to dot traversal such as `customer.first_name` or `products.name` under the default `SnakeCaseLower` naming policy.
 
 ## MartenDB
 
@@ -993,19 +1208,24 @@ Cannot translate collection relationship access 'Order.Products'. The member 'Or
 
 ## Implementation Tasks
 
-1. Add relationship metadata types.
-2. Add schema builder methods:
+1. Add the naming policy foundation:
+   - `AeroDbNameCase`
+   - `IAeroDbNamingPolicy`
+   - built-in snake_case, camelCase, and PascalCase policies
+   - per-table and per-field overrides
+   - one shared policy path for generated metadata, schema generation, query translation, `Fetch`, `Include`, and `Link`
+2. Add relationship metadata types.
+3. Add schema builder methods:
    - `HasOne(Expression<Func<T, TRelated>> member)`
    - `HasOne<TRelated>()`
    - `HasOne<TRelated>(string fieldName)`
    - `HasMany(Expression<Func<T, IEnumerable<TRelated>>> member)`
    - `HasMany<TRelated>()`
    - `HasMany<TRelated>(string fieldName)`
-3. Add optional modifiers:
+4. Add optional modifiers:
    - `.Required()`
    - `.Optional()`
    - `.FieldName(string name)`
-4. Add naming policy support for inferred field and table names.
 5. Update SurrealDB schema generator:
    - `HasOne` -> `TYPE record<table>`
    - `HasMany` -> `TYPE array<record<table>>`
@@ -1020,28 +1240,44 @@ Cannot translate collection relationship access 'Order.Products'. The member 'Or
 8. Add mutation helpers for assigning, adding, and removing record links.
 9. Add tests for schema generation, query translation, includes, and mutation behavior.
 10. Keep graph edge relationship support separate from record relationship support.
+11. Add optional relationship DDL modifiers:
+    - `Reference()`
+    - `OnDeleteIgnore()`
+    - `OnDeleteUnset()`
+    - `OnDeleteCascade()`
+    - `OnDeleteThen(string surqlBlock)` or a safer builder if feasible
+12. Add uniqueness support for record-link arrays:
+    - schema/index-level uniqueness where applicable
+    - mutation-level idempotent add using `array::add`
+13. Resolve the existing `DocumentMapping<T>.ForeignKey<TChild>()` conflict before adding relationship-driven FK APIs:
+    - keep it metadata-only and document the distinction, or
+    - deprecate and delegate it to the new relationship model in a later breaking-change phase.
 
 ### Link + Multi-Parameter Filter Tasks
 
-11. Add `LinkRegistration` record type and `List<LinkRegistration>` to `SurrealDbQueryable<T>`.
-12. Add `.Link<TTarget>(Expression<Func<T, object>> fkSelector)` extension method on `ISurrealDbQueryable<T>`.
-13. Extend `SurrealExpressionVisitor` to accept link registrations and handle multi-parameter lambdas:
+14. Add `LinkRegistration` record type and `List<LinkRegistration>` to `SurrealDbQueryable<T>`.
+15. Add `.Link<TTarget>(Expression<Func<T, object>> fkSelector)` and `.Join<TTarget>(...)` methods on `ISurrealDbQueryable<T>`. `Join` delegates to `Link` and has no separate semantics.
+16. Extend `SurrealExpressionVisitor` to accept link registrations and handle multi-parameter lambdas:
     - Detect which `ParameterExpression` a `MemberExpression` roots in.
     - For main-entity params (index 0): standard translation (existing path).
     - For linked-entity params (index 1+): translate via link registration.
-14. Implement FK type detection at translation time — `RecordId`/`RecordIdOf<T>` → dot-notation; `long`/`string`/`int`/`Guid` → IN subquery.
-15. Add `.Where<TTarget>((o, target) => ...)` shorthand that auto-infers FK field by convention (`TTarget.Name + "Id"`) and delegates to the core Link+Where infrastructure.
-16. Add `.WhereFK<TTarget>(fkSelector, predicate)` legacy bridge — wraps into Link+Where internally.
-17. Implement multi-link composition: 3+ parameter Where with multiple `.Link()` registrations.
-18. Implement conditional coalescing: multiple conditions on the same linked entity group into one IN-subquery.
-19. Add test cases:
+17. Implement FK type detection at translation time — `RecordId`/`RecordIdOf<T>` → direct dot-notation; `long`/`string`/`int`/`Guid` → `type::record(target_table, fk_field).field`.
+18. Ensure linked predicates share a single parameter allocator so generated `$p0`, `$p1`, etc. cannot collide.
+19. Make `.Link<TTarget>(...)` / `.Join<TTarget>(...)` return a typed linked-query wrapper so the immediately chained `.Where((TSource source, TTarget target) => ...)` infers target types without redundant generic arguments. Keep convention-based `Where<TTarget>()` separate and fail fast on ambiguity.
+20. Implement multi-link composition: 3+ parameter Where with multiple `.Link()` registrations.
+21. Implement conditional coalescing: multiple conditions on the same linked scalar-FK entity reuse the same `type::record(...)` base expression.
+23. Add test cases:
+    - Naming policy output for schema generation and query translation under snake_case, camelCase, and PascalCase
     - Link + Where with RecordId FK (dot-notation path)
-    - Link + Where with typed FK (IN subquery path)
+    - Link + Where with typed FK (`type::record(...)` path)
+    - typed `Link/Join -> Where(...)` inference
     - `Where<TTarget>()` shorthand (convention-based FK resolution)
     - Multiple links composition (3+ params)
     - Mixed WHERE conditions (main entity + linked entity in one expression)
+    - Linked predicate parameter names do not collide
     - Cross-paradigm: Record subclass, Entity<TId>, POCO
     - Error: unconfigured link with no convention match
+    - Error: convention shorthand finds multiple FK candidates
     - Composition with Fetch, Include, IncludeReverse
 
 ---
@@ -1119,7 +1355,7 @@ session.Query<Order>()
 Expected SurrealQL shape:
 
 ```sql
-SELECT id, customer.firstName AS customerFirstName
+SELECT id, customer.first_name AS customer_first_name
 FROM order
 WHERE id = $orderId;
 ```
@@ -1157,10 +1393,10 @@ session.Query<Order>()
 
 Expected SurrealQL:
 ```sql
-SELECT * FROM `order` WHERE CreatedOn >= $p0 AND Customer.Name = 'Alice';
+SELECT * FROM `order` WHERE created_on >= $p0 AND customer.name = $p1;
 ```
 
-## Link + Where (typed FK — IN subquery)
+## Link + Where (typed FK — computed record id dot traversal)
 
 Input (Entity<TId>):
 ```csharp
@@ -1172,15 +1408,17 @@ session.Query<EntityOrder>()
 
 Expected SurrealQL:
 ```sql
-SELECT * FROM `entity_order` WHERE CustomerId IN (SELECT VALUE Id FROM `entity_customer` WHERE Name = 'Alice');
+SELECT * FROM `entity_order` WHERE type::record("entity_customer", customer_id).name = $p0;
 ```
+
+If `CustomerId` stores a scalar typed id rather than a full SurrealDB record id, the translator must use AeroDB's record-id conversion/extraction strategy rather than assuming a persisted scalar `Id` column exists on the target table.
 
 ## Where<TTarget> shorthand (convention-based FK)
 
 Input (Record subclass):
 ```csharp
 session.Query<Order>()
-    .Where<Customer>((o, c) => c.Name == "Bob")
+    .Where((Order o, Customer c) => c.Name == "Bob")
     .ToListAsync();
 ```
 
@@ -1189,7 +1427,7 @@ Expected: Same as explicit `.Link<Customer>(o => o.Customer).Where((o, c) => ...
 Input (Entity<TId>):
 ```csharp
 session.Query<EntityOrder>()
-    .Where<EntityCustomer>((o, c) => c.Name == "Alice")
+    .Where((EntityOrder o, EntityCustomer c) => c.Name == "Alice")
     .ToListAsync();
 ```
 
@@ -1201,14 +1439,14 @@ Input:
 ```csharp
 session.Query<Order>()
     .Link<Customer>(o => o.Customer)      // RecordId FK → dot-notation
-    .Link<Product>(o => o.ProductId)      // typed FK → IN subquery
+    .Link<Product>(o => o.ProductId)      // typed FK → type::record(...).field
     .Where((o, c, p) => o.CreatedOn >= someDate && c.Name == "Alice" && p.Price > 50)
     .ToListAsync();
 ```
 
 Expected SurrealQL:
 ```sql
-SELECT * FROM `order` WHERE CreatedOn >= $p0 AND Customer.Name = $p1 AND ProductId IN (SELECT VALUE Id FROM `product` WHERE Price > $p2);
+SELECT * FROM `order` WHERE created_on >= $p0 AND customer.name = $p1 AND type::record("product", product_id).price > $p2;
 ```
 
 ## Link + Where composed with Fetch
@@ -1224,7 +1462,7 @@ session.Query<Order>()
 
 Expected SurrealQL:
 ```sql
-SELECT * FROM `order` WHERE Customer.Name = 'Alice' FETCH `Customer`;
+SELECT * FROM `order` WHERE customer.name = $p0 FETCH `customer`;
 ```
 
 ---
@@ -1247,3 +1485,22 @@ DEFINE FIELD products ON TABLE order TYPE array<record<product>>;
 ```
 
 Keep graph relationships separate and continue using AeroDB's existing graph API for SurrealDB `RELATE` edge records.
+
+---
+
+## Current Implementation Findings
+
+- `Entity<TId>` shims do not persist a separate scalar `Id` field. The shim derives from SurrealDB `Record`, skips the entity `Id` member, and uses the native lowercase `id` record id.
+- Any typed-FK implementation must avoid `SELECT VALUE Id FROM target`.
+- `Where<TTarget>()` remains viable in v1 only as strict convention sugar over `.Link<TTarget>()`; ambiguity must fail fast.
+- Preferred explicit linked queries should use `.Link<TTarget>(...).Where((source, target) => ...)` or `.Join<TTarget>(...).Where((source, target) => ...)`; the linked wrapper carries target type information so the `Where` call does not need redundant generic arguments.
+- `REFERENCE ON DELETE` is viable for record-link DDL and should be added as an optional relationship modifier.
+- Idempotent add semantics are viable through SurrealDB array helpers such as `array::add`, with `+=` / `-=` still usable for direct append/remove mutations.
+
+## Corrected Phase Plan
+
+1. Naming policy, relationship metadata, schema generation, `Include`, and `Select` projection through record links.
+2. Validated direct dot-traversal `Where` through configured record links.
+3. SurrealDB-specific `.Link<TTarget>()` / `.Join<TTarget>()` plus typed-wrapper multi-parameter `Where`.
+4. Strict `.Where<TTarget>()` shorthand over `.Link<TTarget>()`, enabled only when exactly one FK can be resolved.
+5. Typed scalar FK support, `REFERENCE ON DELETE`, uniqueness modifiers, and mutation helpers.

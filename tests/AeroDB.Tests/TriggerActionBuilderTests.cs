@@ -88,7 +88,7 @@ public class TriggerActionBuilderTests
             .Where(x => x.Total < 0)
             .End();
 
-        builder.Build().ShouldBe("UPDATE order_item SET Status = 'cancelled' WHERE Total < 0");
+        builder.Build().ShouldBe("UPDATE order_item SET Status = 'cancelled' WHERE total < 0");
     }
 
     [Test]
@@ -99,7 +99,7 @@ public class TriggerActionBuilderTests
             .Where(x => x.Status == "pending")
             .End();
 
-        builder.Build().ShouldBe("UPDATE order_item WHERE Status = 'pending'");
+        builder.Build().ShouldBe("UPDATE order_item WHERE status = 'pending'");
     }
 
     // ════════════════════════════════════════════════════════════
@@ -123,7 +123,7 @@ public class TriggerActionBuilderTests
             .Where(x => x.Event == "timeout")
             .End();
 
-        builder.Build().ShouldBe("DELETE audit_log WHERE Event = 'timeout'");
+        builder.Build().ShouldBe("DELETE audit_log WHERE event = 'timeout'");
     }
 
     // ════════════════════════════════════════════════════════════
@@ -175,9 +175,9 @@ public class TriggerActionBuilderTests
     public async Task Raw_ProducesVerbatimSurql()
     {
         var builder = new TriggerActionBuilder();
-        builder.Raw("DELETE FROM audit_log WHERE Event = 'cleanup';");
+        builder.Raw("DELETE FROM audit_log WHERE event = 'cleanup';");
 
-        builder.Build().ShouldBe("DELETE FROM audit_log WHERE Event = 'cleanup';");
+        builder.Build().ShouldBe("DELETE FROM audit_log WHERE event = 'cleanup';");
     }
 
     [Test]
@@ -236,6 +236,6 @@ public class TriggerActionBuilderTests
         options.Triggers.Count.ShouldBe(1);
         var trigger = options.Triggers[0];
         trigger.Name.ShouldBe("cancel_negative");
-        trigger.Action.ShouldBe("UPDATE order_item SET Status = 'cancelled' WHERE Total < 0");
+        trigger.Action.ShouldBe("UPDATE order_item SET Status = 'cancelled' WHERE total < 0");
     }
 }

@@ -117,7 +117,7 @@ public static class SurrealAsyncQueryExtensions
 
         private async Task<List<T>> FilteredResultsAsync(CancellationToken ct)
         {
-            var all = await _inner.ToListAsync(ct).ConfigureAwait(false);
+            var all = await LoadIncludingDeletedAsync(ct).ConfigureAwait(false);
             var filtered = new List<T>();
             var c = _cutoff;
             foreach (var item in all)
@@ -126,6 +126,17 @@ public static class SurrealAsyncQueryExtensions
                     filtered.Add(item);
             }
             return filtered;
+        }
+
+        private async Task<List<T>> LoadIncludingDeletedAsync(CancellationToken ct)
+        {
+            if (_inner is not SurrealDbQueryable<T> queryable || queryable.InternalSession is null)
+                return await _inner.ToListAsync(ct).ConfigureAwait(false);
+
+            var session = queryable.InternalSession;
+            var table = MetadataDispatch.GetTableName(typeof(T), queryable.StoreOptions.Schema);
+            var response = await session.Session.RawQuery($"SELECT * FROM `{table}`", null, ct).ConfigureAwait(false);
+            return session.DeserializeMappedPocoResponse<T>(response, 0);
         }
 
         public Task<List<T>> ToListAsync(CancellationToken ct = default)
@@ -169,6 +180,30 @@ public static class SurrealAsyncQueryExtensions
         public ISurrealDbQueryable<T> Fetch(Expression<Func<T, object?>> property)
             => new DeletedBeforeQueryable<T>(_inner.Fetch(property), _cutoff);
 
+        public ILinkedSurrealDbQueryable<T, TTarget> Link<TTarget>(Expression<Func<T, object?>> fkSelector)
+            where TTarget : class
+            => new LinkedSurrealDbQueryable<T, TTarget>(
+                new DeletedBeforeQueryable<T>(_inner.Link<TTarget>(fkSelector), _cutoff));
+
+        public ILinkedSurrealDbQueryable<T, TTarget> Join<TTarget>(Expression<Func<T, object?>> fkSelector)
+            where TTarget : class
+            => Link<TTarget>(fkSelector);
+
+        public ISurrealDbQueryable<T> Where<TTarget>(Expression<Func<T, TTarget, bool>> predicate)
+            where TTarget : class
+            => new DeletedBeforeQueryable<T>(_inner.Where(predicate), _cutoff);
+
+        public ISurrealDbQueryable<T> Where<TTarget1, TTarget2>(Expression<Func<T, TTarget1, TTarget2, bool>> predicate)
+            where TTarget1 : class
+            where TTarget2 : class
+            => new DeletedBeforeQueryable<T>(_inner.Where(predicate), _cutoff);
+
+        public ISurrealDbQueryable<T> Where<TTarget1, TTarget2, TTarget3>(Expression<Func<T, TTarget1, TTarget2, TTarget3, bool>> predicate)
+            where TTarget1 : class
+            where TTarget2 : class
+            where TTarget3 : class
+            => new DeletedBeforeQueryable<T>(_inner.Where(predicate), _cutoff);
+
         public ISurrealDbQueryable<T> IncludeBatch<TProperty, TInclude>(
             Expression<Func<T, TProperty>> property, Action<TInclude> callback)
             where TInclude : class
@@ -197,12 +232,12 @@ public static class SurrealAsyncQueryExtensions
         if (source is not SurrealDbQueryable<T> surrealQueryable)
             throw new NotSupportedException("DeleteAsync requires AeroDB's SurrealDbQueryable provider.");
 
-        var tableName = MetadataDispatch.GetTableName(typeof(T));
+        var tableName = MetadataDispatch.GetTableName(typeof(T), surrealQueryable.StoreOptions.Schema);
         if (string.IsNullOrEmpty(tableName))
             throw new InvalidOperationException($"Cannot resolve table name for type '{typeof(T).Name}'.");
 
         // Build the SurrealQL from the expression tree
-        var visitor = new SurrealExpressionVisitor();
+        var visitor = new SurrealExpressionVisitor(surrealQueryable.StoreOptions.Schema);
         var result = visitor.Translate(source.Expression);
 
         var surql = $"DELETE FROM `{tableName}`";

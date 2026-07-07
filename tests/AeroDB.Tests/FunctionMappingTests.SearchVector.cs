@@ -19,7 +19,7 @@ public partial class FunctionMappingTests
             typeof(SurrealFunctions).GetMethod("Highlight", [typeof(string), typeof(string), typeof(string)])!,
             Expression.Constant("<b>"), Expression.Constant("</b>"), nameProp);
         var result = SurrealExpressionVisitor.TranslateCondition(Expression.Equal(call, Expression.Constant("r")));
-        result.ShouldBe("search::highlight('<b>', '</b>', Name) = 'r'");
+        result.ShouldBe("search::highlight('<b>', '</b>', name) = 'r'");
     }
 
     [Test]
@@ -31,7 +31,7 @@ public partial class FunctionMappingTests
             typeof(SurrealFunctions).GetMethod("Offsets", [typeof(string)])!,
             nameProp);
         var result = SurrealExpressionVisitor.TranslateCondition(Expression.Equal(call, Expression.Constant("r")));
-        result.ShouldBe("search::offsets(Name) = 'r'");
+        result.ShouldBe("search::offsets(name) = 'r'");
     }
 
     [Test]
@@ -43,7 +43,7 @@ public partial class FunctionMappingTests
             typeof(SurrealFunctions).GetMethod("Analyze", [typeof(string), typeof(string)])!,
             nameProp, Expression.Constant("english"));
         var result = SurrealExpressionVisitor.TranslateCondition(Expression.Equal(call, Expression.Constant("r")));
-        result.ShouldBe("search::analyze(Name, 'english') = 'r'");
+        result.ShouldBe("search::analyze(name, 'english') = 'r'");
     }
 
     [Test]

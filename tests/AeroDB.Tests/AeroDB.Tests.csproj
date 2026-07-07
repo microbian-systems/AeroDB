@@ -36,7 +36,6 @@
     <ProjectReference Include="..\..\src\AeroDB.ML\AeroDB.ML.csproj" />
     <ProjectReference Include="..\..\src\AeroDB.Reactive\AeroDB.Reactive.csproj" />
     <ProjectReference Include="..\..\src\AeroDB.WolverineFx\AeroDB.WolverineFx.csproj" />
-    <ProjectReference Include="..\..\wolverine\src\Wolverine.RuntimeCompilation\Wolverine.RuntimeCompilation.csproj" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\AeroDB.SourceGenerators\AeroDB.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="true">

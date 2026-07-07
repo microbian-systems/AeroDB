@@ -1,6 +1,7 @@
 using System.Collections.Concurrent;
 using System.Globalization;
 using System.Reflection;
+using AeroDB.Internals.Cbor;
 using AeroDB.LiveQuery;
 using AeroDB.Metadata;
 using Microsoft.Extensions.Logging;
@@ -413,7 +414,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
     /// </summary>
     public async Task<long> DeleteWhere<T>(System.Linq.Expressions.Expression<Func<T, bool>> predicate, CancellationToken ct = default) where T : class
     {
-        var table = MetadataDispatch.GetTableName(typeof(T));
+        var table = MetadataDispatch.GetTableName(typeof(T), Options.Schema);
         // Use a basic field-value extraction for common equality predicates.
         // For complex predicates, callers should use RawQueryAsync or Query<T> + manual delete.
         var whereClause = BuildWhereClause(predicate);
@@ -435,7 +436,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         _ => $"'{value}'"
     };
 
-    private static string BuildWhereClause<T>(System.Linq.Expressions.Expression<Func<T, bool>> predicate)
+    private string BuildWhereClause<T>(System.Linq.Expressions.Expression<Func<T, bool>> predicate)
     {
         // Simple binary expression handler: field == value
         if (predicate.Body is System.Linq.Expressions.BinaryExpression binary
@@ -443,7 +444,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
             && binary.Left is System.Linq.Expressions.MemberExpression member
             && binary.Right is System.Linq.Expressions.ConstantExpression constant)
         {
-            var fieldName = member.Member.Name;  // PascalCase matches CBOR storage
+            var fieldName = MetadataDispatch.GetFieldName(typeof(T), member.Member.Name, Options.Schema);
             return $"{fieldName} = {FormatWhereValue(constant.Value)}";
         }
         // Fallback: return a tautology (matches everything)
@@ -1081,7 +1082,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                             {
                                 foreach (var op in _unitOfWork.Operations)
                                 {
-                                    var table = MetadataDispatch.GetTableName(op.EntityType);
+                                    var table = MetadataDispatch.GetTableName(op.EntityType, Options.Schema);
 
                                     if (op.Type == OperationType.Deleted)
                                     {
@@ -1374,20 +1375,18 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         if (MetadataDispatch.GetVersionFieldName(entityType) is null)
             return -1;
 
-        var table = MetadataDispatch.GetTableName(entityType);
+        var table = MetadataDispatch.GetTableName(entityType, Options.Schema);
         var id = GetEntityId(entity);
         if (id is null) return -1;
 
-        var surql = $"SELECT * FROM {table}:{id};";
+        var surql = $"SELECT * FROM {table}:`{id.Replace("`", "\\`")}`;";
         var response = await session.RawQuery(surql, null, ct).ConfigureAwait(false);
 
-        if (response.HasErrors || response.Count == 0 || GetValueMethod is null)
+        if (response.HasErrors || response.Count == 0)
             return -1;
 
-        var listType = typeof(List<>).MakeGenericType(entityType);
-        var typedGetValue = GetValueMethod.MakeGenericMethod(listType);
-        var raw = typedGetValue.Invoke(response, [0]);
-        if (raw is System.Collections.IList list && list.Count > 0 && list[0] is not null)
+        var list = DeserializeResponseForEntityType(response, entityType);
+        if (list.Count > 0 && list[0] is not null)
             return GetVersion(list[0]!);
 
         return -1;
@@ -1413,7 +1412,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         // Determine the version property name for this entity type
         if (MetadataDispatch.GetVersionFieldName(op.EntityType) is null) return;
 
-        var table = MetadataDispatch.GetTableName(op.EntityType);
+        var table = MetadataDispatch.GetTableName(op.EntityType, Options.Schema);
         var id = GetEntityId(entity);
         if (id is null)
         {
@@ -1424,7 +1423,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
 
         // Query the current version from the DB using a raw SurrealQL call
         // with typed GetValue<T> deserialization (same path as Query provider).
-        var surql = $"SELECT * FROM {table}:{id};";
+        var surql = $"SELECT * FROM {table}:`{id.Replace("`", "\\`")}`;";
         var response = await session.RawQuery(surql, null, ct).ConfigureAwait(false);
 
         if (response.HasErrors)
@@ -1435,12 +1434,10 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         }
 
         long dbVersion = 0;
-        if (response.Count > 0 && GetValueMethod is not null)
+        if (response.Count > 0)
         {
-            var listType = typeof(List<>).MakeGenericType(op.EntityType);
-            var typedGetValue = GetValueMethod.MakeGenericMethod(listType);
-            var raw = typedGetValue.Invoke(response, [0]);
-            if (raw is System.Collections.IList list && list.Count > 0)
+            var list = DeserializeResponseForEntityType(response, op.EntityType);
+            if (list.Count > 0)
             {
                 var dbEntity = list[0];
                 if (dbEntity is not null)
@@ -1463,6 +1460,14 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
             op.EntityType.Name, id, dbVersion);
     }
 
+    private System.Collections.IList DeserializeResponseForEntityType(SurrealDbResponse response, Type entityType)
+    {
+        var method = typeof(InternalSessionBase)
+            .GetMethod(nameof(DeserializeMappedPocoResponse), BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)!
+            .MakeGenericMethod(entityType);
+        return (System.Collections.IList)(method.Invoke(this, [response, 0]) ?? Array.Empty<object>());
+    }
+
     /// <summary>
     /// Creates an entity in SurrealDB using <c>Session.Create&lt;T&gt;</c> with the
     /// correct runtime type, ensuring all properties (including version fields)
@@ -1470,6 +1475,17 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
     /// </summary>
     private async Task<object?> CreateEntityAsync(Operation op, string table, ISurrealDbSession session, CancellationToken ct)
     {
+        if (TryBuildSurrealQlObjectLiteral(op.Entity, out var literal))
+        {
+            var response = await ExecuteRawWriteAsync(
+                session,
+                $"CREATE {table} CONTENT {literal}",
+                null,
+                ct).ConfigureAwait(false);
+            ThrowIfRawQueryFailed(response);
+            return DeserializeCreatedEntity(response, op.EntityType);
+        }
+
         try
         {
             // Use dynamic dispatch to invoke the correct generic Create<T> overload.
@@ -1503,14 +1519,6 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
             .Where(p => p.CanRead && p.GetIndexParameters().Length == 0)
             .ToArray();
 
-        if (!properties.Any(p =>
-            p.PropertyType == typeof(GeometryPoint)
-            || p.PropertyType == typeof(GeometryPolygon)
-            || p.GetValue(entity) is null))
-        {
-            return false;
-        }
-
         var fields = new List<string>(properties.Length);
         var mapping = Options.Schema.Mappings.GetValueOrDefault(entity.GetType());
         var identityProperty = mapping?.IdentityProperty ?? "Id";
@@ -1520,7 +1528,8 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
             if (string.Equals(property.Name, identityProperty, StringComparison.OrdinalIgnoreCase))
                 continue;
 
-            fields.Add($"{property.Name}: {ToSurrealQlLiteral(property.GetValue(entity))}");
+            var fieldName = MetadataDispatch.GetFieldName(entity.GetType(), property.Name, Options.Schema);
+            fields.Add($"{fieldName}: {ToSurrealQlLiteral(property.GetValue(entity))}");
         }
 
         literal = "{ " + string.Join(", ", fields) + " }";
@@ -1537,16 +1546,65 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
             bool b => b ? "true" : "false",
             GeometryPoint point => point.ToSurrealQL(),
             GeometryPolygon polygon => polygon.ToSurrealQL(),
-            DateTime dt => $"d'{dt.ToUniversalTime():O}'",
-            DateTimeOffset dto => $"d'{dto.UtcDateTime:O}'",
+            DateTime dt => $"d'{dt.ToUniversalTime():yyyy-MM-ddTHH:mm:ssZ}'",
+            DateTimeOffset dto => $"d'{dto.UtcDateTime:yyyy-MM-ddTHH:mm:ssZ}'",
             Guid guid => $"'{guid}'",
             Enum e => Convert.ToInt64(e, CultureInfo.InvariantCulture).ToString(CultureInfo.InvariantCulture),
+            _ when TryFormatRecordLinkLiteral(value, out var recordLink) => recordLink,
             System.Collections.IDictionary dictionary => ToSurrealQlDictionaryLiteral(dictionary),
             System.Collections.IEnumerable enumerable when value is not string => ToSurrealQlArrayLiteral(enumerable),
             byte or sbyte or short or ushort or int or uint or long or ulong or float or double or decimal
                 => ((IFormattable)value).ToString(null, CultureInfo.InvariantCulture),
             _ => $"'{EscapeSurrealQlString(value.ToString() ?? string.Empty)}'"
         };
+    }
+
+    private static bool TryFormatRecordLinkLiteral(object value, out string literal)
+    {
+        literal = "";
+        if (TryFormatRecordIdObject(value, out literal))
+            return true;
+
+        var idProperty = value.GetType().GetProperty("Id", BindingFlags.Public | BindingFlags.Instance);
+        if (idProperty is null)
+            return false;
+
+        var id = idProperty.GetValue(value);
+        if (id is null)
+            return false;
+
+        var idText = id.ToString();
+        if (string.IsNullOrWhiteSpace(idText))
+            return false;
+
+        if (TryFormatRecordIdObject(id, out literal))
+            return true;
+
+        if (idText.Contains(':', StringComparison.Ordinal))
+        {
+            literal = idText;
+            return true;
+        }
+
+        var table = MetadataDispatch.GetTableName(value.GetType());
+        literal = $"{table}:{idText}";
+        return true;
+    }
+
+    private static bool TryFormatRecordIdObject(object value, out string literal)
+    {
+        literal = "";
+
+        if (TryFormatRecordIdLike(value, out literal))
+            return true;
+
+        if (value is RecordId recordId)
+        {
+            literal = FormatRecordIdLiteral(recordId);
+            return true;
+        }
+
+        return false;
     }
 
     private static string ToSurrealQlArrayLiteral(System.Collections.IEnumerable values)
@@ -1567,6 +1625,20 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
 
     private static string EscapeSurrealQlString(string value)
         => value.Replace("\\", "\\\\").Replace("'", "\\'");
+
+    private object? DeserializeCreatedEntity(SurrealDbResponse response, Type entityType)
+    {
+        var records = CborResultReader.ReadPocoResult(response, 0);
+        if (records.Count == 0)
+            return null;
+
+        var mapping = Options.Schema.Mappings.GetValueOrDefault(entityType);
+        var method = typeof(InternalSessionBase)
+            .GetMethod(nameof(InternalSessionBase.DeserializePocoFromList), BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public)!
+            .MakeGenericMethod(entityType);
+        var result = method.Invoke(null, [records, mapping?.IdentityProperty ?? "Id", Options.Schema]);
+        return result is System.Collections.IList { Count: > 0 } list ? list[0] : null;
+    }
 
     private async Task<SurrealDbResponse> ExecuteRawWriteAsync(
         ISurrealDbSession session,
@@ -1641,12 +1713,148 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
 
     private async Task UpsertRecordAsync(IRecord record, RecordId rid, ISurrealDbSession session, CancellationToken ct)
     {
+        if (TryBuildSurrealQlObjectLiteral(record, out var literal))
+        {
+            var response = await ExecuteRawWriteAsync(
+                session,
+                $"UPSERT {FormatRecordIdLiteral(rid)} CONTENT {literal}",
+                null,
+                ct).ConfigureAwait(false);
+            ThrowIfRawQueryFailed(response);
+            return;
+        }
+
         // Use the Upsert method via ISurrealDbSharedMethods interface.
         // We call the generic method with the record's runtime type.
         var entityType = record.GetType();
         var generic = UpsertMethod!.MakeGenericMethod(entityType, entityType);
         var task = (Task)generic.Invoke(session, [rid, record, ct])!;
         await task.ConfigureAwait(false);
+    }
+
+    private bool TryBuildRelationshipRecordLiteral(IRecord record, out string literal)
+    {
+        literal = "";
+        var entityType = record.GetType();
+        var mapping = Options.Schema.Mappings.GetValueOrDefault(entityType);
+        var relationships = mapping?.GetRelationshipMappings();
+        if (relationships is not { Count: > 0 })
+            return false;
+
+        var relationshipByMember = relationships
+            .Where(r => r.ClrMemberName is not null && r.StorageKind == RelationshipStorageKind.RecordLink)
+            .ToDictionary(r => r.ClrMemberName!, StringComparer.Ordinal);
+
+        var fields = new List<string>();
+        foreach (var property in entityType.GetProperties(BindingFlags.Public | BindingFlags.Instance))
+        {
+            if (!property.CanRead || property.GetIndexParameters().Length > 0)
+                continue;
+
+            if (property.Name == nameof(IRecord.Id))
+                continue;
+
+            if (relationshipByMember.TryGetValue(property.Name, out var relationship))
+            {
+                fields.Add($"{relationship.StorageFieldName}: {ToRelationshipLiteral(property.GetValue(record), relationship)}");
+                continue;
+            }
+
+            var fieldName = MetadataDispatch.GetFieldName(entityType, property.Name, Options.Schema);
+            fields.Add($"{fieldName}: {ToSurrealQlLiteral(property.GetValue(record))}");
+        }
+
+        literal = "{ " + string.Join(", ", fields) + " }";
+        return true;
+    }
+
+    private static string ToRelationshipLiteral(object? value, RelationshipMapping relationship)
+    {
+        if (value is null)
+            return "NONE";
+
+        if (relationship.Kind == RelationshipKind.HasMany && value is System.Collections.IEnumerable values and not string)
+            return "[" + string.Join(", ", values.Cast<object?>().Select(v => ToSingleRelationshipLiteral(v, relationship))) + "]";
+
+        return ToSingleRelationshipLiteral(value, relationship);
+    }
+
+    private static string ToSingleRelationshipLiteral(object? value, RelationshipMapping relationship)
+    {
+        if (value is null)
+            return "NONE";
+
+        if (value is IRecord record && record.Id is not null)
+            return FormatRecordIdLiteral(record.Id);
+
+        if (value is RecordId recordId)
+            return FormatRecordIdLiteral(recordId);
+
+        return ToRecordIdLiteral(relationship.TargetTableName, value);
+    }
+
+    private static string ToRecordIdLiteral(string tableName, object id)
+    {
+        var value = id switch
+        {
+            string s => QuoteRecordIdValue(s),
+            Guid g => QuoteRecordIdValue(g.ToString()),
+            DateTime dt => QuoteRecordIdValue(dt.ToString("O", CultureInfo.InvariantCulture)),
+            DateTimeOffset dto => QuoteRecordIdValue(dto.ToString("O", CultureInfo.InvariantCulture)),
+            IFormattable formattable => formattable.ToString(null, CultureInfo.InvariantCulture) ?? string.Empty,
+            _ => QuoteRecordIdValue(id.ToString() ?? string.Empty)
+        };
+
+        return $"{tableName}:{value}";
+    }
+
+    private static string QuoteRecordIdValue(string value)
+        => "`" + value.Replace("`", "\\`", StringComparison.Ordinal) + "`";
+
+    private static string FormatRecordIdLiteral(RecordId recordId)
+    {
+        if (TryFormatRecordIdOf(recordId, out var literal))
+            return literal;
+
+        return recordId switch
+        {
+            RecordIdOf<string> s => $"{s.Table}:{QuoteRecordIdValue(s.Id)}",
+            RecordIdOf<long> l => $"{l.Table}:{l.Id.ToString(CultureInfo.InvariantCulture)}",
+            RecordIdOf<int> i => $"{i.Table}:{i.Id.ToString(CultureInfo.InvariantCulture)}",
+            _ => $"{recordId.Table}:{QuoteRecordIdValue(recordId.DeserializeId<object>()?.ToString() ?? string.Empty)}"
+        };
+    }
+
+    private static bool TryFormatRecordIdOf(object value, out string literal)
+    {
+        if (TryFormatRecordIdLike(value, out literal))
+            return true;
+
+        literal = "";
+        var type = value.GetType();
+        if (!type.IsGenericType || type.GetGenericTypeDefinition() != typeof(RecordIdOf<>))
+            return false;
+
+        var table = type.GetProperty("Table")?.GetValue(value)?.ToString();
+        var id = type.GetProperty("Id")?.GetValue(value);
+        if (string.IsNullOrWhiteSpace(table) || id is null)
+            return false;
+
+        literal = ToRecordIdLiteral(table, id);
+        return true;
+    }
+
+    private static bool TryFormatRecordIdLike(object value, out string literal)
+    {
+        literal = "";
+        var type = value.GetType();
+        var table = type.GetProperty("Table", BindingFlags.Public | BindingFlags.Instance)?.GetValue(value)?.ToString();
+        var id = type.GetProperty("Id", BindingFlags.Public | BindingFlags.Instance)?.GetValue(value);
+        if (string.IsNullOrWhiteSpace(table) || id is null)
+            return false;
+
+        literal = ToRecordIdLiteral(table, id);
+        return true;
     }
 
     // ===================================================================

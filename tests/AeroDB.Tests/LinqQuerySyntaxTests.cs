@@ -667,7 +667,7 @@ public class LinqQuerySyntaxTests
         await SeedPeople(session);
 
         var results = await session.RawQueryAsync<Person>(
-            "SELECT * FROM person WHERE Age > 18");
+            "SELECT * FROM person WHERE age > 18");
 
         results.ShouldNotBeNull();
         results.Count.ShouldBe(4);

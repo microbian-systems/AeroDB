@@ -8,7 +8,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\AeroDB\AeroDB.csproj" />
     <ProjectReference Include="..\..\src\AeroDB.WolverineFx\AeroDB.WolverineFx.csproj" />
-    <ProjectReference Include="..\..\wolverine\src\Wolverine.RuntimeCompilation\Wolverine.RuntimeCompilation.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Bogus" Version="35.6.5" />
@@ -17,5 +16,6 @@
     <PackageReference Include="Serilog.Extensions.Logging" Version="10.0.0" />
     <PackageReference Include="Serilog.Sinks.Console" Version="6.1.1" />
     <PackageReference Include="SurrealDb.Embedded.InMemory" VersionOverride="0.10.2" />
+    <PackageReference Include="WolverineFx" Version="6.16.0" />
   </ItemGroup>
 </Project>

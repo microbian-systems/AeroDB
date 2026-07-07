@@ -24,10 +24,12 @@ public static class SoftDeleteExtensions
         ArgumentException.ThrowIfNullOrWhiteSpace(recordId);
 
         var internalSession = (InternalSessionBase)session;
-        var table = MetadataDispatch.GetTableName(typeof(T));
+        var schema = internalSession.StoreOptions.Schema;
+        var table = MetadataDispatch.GetTableName(typeof(T), schema);
+        var deletedField = MetadataDispatch.GetFieldName(typeof(T), nameof(ISoftDeleted.Deleted), schema);
+        var deletedAtField = MetadataDispatch.GetFieldName(typeof(T), nameof(ISoftDeleted.DeletedAt), schema);
 
-        // Field names must be PascalCase to match the C# property names used by the CBOR serializer.
-        var surql = $"UPDATE {table}:{recordId} SET Deleted = true, DeletedAt = d'{DateTimeOffset.UtcNow:yyyy-MM-ddTHH:mm:ssZ}';";
+        var surql = $"UPDATE {table}:{recordId} SET {deletedField} = true, {deletedAtField} = d'{DateTimeOffset.UtcNow:yyyy-MM-ddTHH:mm:ssZ}';";
 
         await internalSession.Session.RawQuery(surql, null, ct).ConfigureAwait(false);
     }

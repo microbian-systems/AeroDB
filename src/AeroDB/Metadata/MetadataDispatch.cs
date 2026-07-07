@@ -22,6 +22,26 @@ internal static class MetadataDispatch
         return ToSnakeCase(type.Name);
     }
 
+    public static string GetTableName(Type type, SchemaOptions? schema)
+    {
+        if (schema?.Mappings.TryGetValue(type, out var mapping) == true)
+            return mapping.TableNameOverride ?? GetTableName(type);
+
+        return schema is not null
+            ? schema.NamingPolicy.TableName(type)
+            : GetTableName(type);
+    }
+
+    public static string GetFieldName(Type sourceType, string clrName, SchemaOptions? schema)
+    {
+        if (schema?.Mappings.TryGetValue(sourceType, out var configured) == true)
+            return configured.ResolveFieldName(clrName);
+
+        return schema is not null
+            ? schema.NamingPolicy.FieldName(clrName)
+            : ToSnakeCase(clrName);
+    }
+
     /// <summary>
     /// Returns true if the type has a TenantId string property.
     /// Uses generated metadata if available, otherwise inspects via reflection.
@@ -67,7 +87,7 @@ internal static class MetadataDispatch
     /// <param name="schema">The schema options containing document mappings.</param>
     public static (string? Database, string Table) GetSchemaTarget(Type type, SchemaOptions schema)
     {
-        var table = GetTableName(type);
+        var table = GetTableName(type, schema);
         if (schema.Mappings.TryGetValue(type, out var mapping) && mapping.SchemaName is not null)
             return (mapping.SchemaName, table);
         return (null, table);

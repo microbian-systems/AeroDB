@@ -81,18 +81,20 @@ internal class FilteredPatchExpression<T> : IPatchExpression<T>, IDeferredPatch 
     {
         if (_operations.Count == 0) return;
 
-        var table = MetadataDispatch.GetTableName(typeof(T));
-        var surrealdbSession = ((InternalSessionBase)session).Session;
+        var internalSession = (InternalSessionBase)session;
+        var schema = internalSession.StoreOptions.Schema;
+        var table = MetadataDispatch.GetTableName(typeof(T), schema);
+        var surrealdbSession = internalSession.Session;
 
         // Convert the filter expression to a WHERE clause
-        var whereClause = CompileFilter(_filter);
+        var whereClause = SurrealExpressionVisitor.TranslateCondition(_filter.Body, schema);
 
         var renameOps = _operations.Where(o => o.Kind == OperationKind.Rename).ToList();
         var updateOps = _operations.Where(o => o.Kind != OperationKind.Rename).ToList();
 
         if (updateOps.Count > 0)
         {
-            var sets = updateOps.Select(o => o.ToSurrealQL()).ToList();
+            var sets = updateOps.Select(o => MapOperation(o, schema).ToSurrealQL()).ToList();
             var surql = $"UPDATE {table} SET {string.Join(", ", sets)} WHERE {whereClause};";
             _logger.LogDebug("Applying filtered patch: {SurrealQL}", surql);
             await surrealdbSession.RawQuery(surql, null, ct).ConfigureAwait(false);
@@ -101,7 +103,8 @@ internal class FilteredPatchExpression<T> : IPatchExpression<T>, IDeferredPatch 
         // Rename operations require ALTER TABLE (not filterable by WHERE)
         foreach (var op in renameOps)
         {
-            var surql = $"ALTER TABLE {table} RENAME COLUMN `{op.OldName}` TO `{op.FieldName}`;";
+            var mapped = MapOperation(op, schema);
+            var surql = $"ALTER TABLE {table} RENAME COLUMN `{mapped.OldName}` TO `{mapped.FieldName}`;";
             _logger.LogDebug("Applying rename: {SurrealQL}", surql);
             await surrealdbSession.RawQuery(surql, null, ct).ConfigureAwait(false);
         }
@@ -118,12 +121,6 @@ internal class FilteredPatchExpression<T> : IPatchExpression<T>, IDeferredPatch 
         await ((IDeferredPatch)this).ExecuteAsync(_session, ct).ConfigureAwait(false);
     }
 
-    private static string CompileFilter(Expression<Func<T, bool>> filter)
-    {
-        // Use the SurrealExpressionVisitor's internal TranslateCondition helper
-        return SurrealExpressionVisitor.TranslateCondition(filter.Body);
-    }
-
     private static MemberInfo GetMember<TValue>(Expression<Func<T, TValue>> property)
     {
         return property.Body switch
@@ -133,4 +130,14 @@ internal class FilteredPatchExpression<T> : IPatchExpression<T>, IDeferredPatch 
             _ => throw new ArgumentException("Expression must be a property access expression.", nameof(property))
         };
     }
+
+    private static SetOperation MapOperation(SetOperation op, SchemaOptions schema)
+        => new(
+            MetadataDispatch.GetFieldName(typeof(T), op.FieldName, schema),
+            op.Value,
+            op.Kind,
+            op.OldName is null ? null : MetadataDispatch.GetFieldName(typeof(T), op.OldName, schema),
+            op.TargetField is null ? null : MetadataDispatch.GetFieldName(typeof(T), op.TargetField, schema),
+            op.InsertIndex);
+
 }

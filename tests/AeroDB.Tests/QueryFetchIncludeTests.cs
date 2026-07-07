@@ -206,8 +206,8 @@ public class FetchSurrealQLTests
         queryable.Fetch(p => p.Email);
 
         queryable.FetchFields.Count.ShouldBe(2);
-        queryable.FetchFields.ShouldContain("Name");
-        queryable.FetchFields.ShouldContain("Email");
+        queryable.FetchFields.ShouldContain("name");
+        queryable.FetchFields.ShouldContain("email");
     }
 
     [Test]
@@ -377,7 +377,7 @@ public class ProjectionSurrealQLTests
         var visitor = new SurrealExpressionVisitor();
         var result = visitor.Translate(selector);
 
-        result.Projection.ShouldBe("customer, Product AS Product");
+        result.Projection.ShouldBe("customer, product AS Product");
         result.FetchFields.ShouldContain("customer");
         result.FetchFields.Count.ShouldBe(1);
     }
@@ -875,7 +875,7 @@ public class FetchIncludeIntegrationTests
         await session.SaveChangesAsync();
 
         var results = await session.Query<OrderWithItems>()
-            .IncludeReverse(o => o.Items, "Order")
+            .IncludeReverse(o => o.Items, i => i.Order)
             .Where(o => o.Name == "Order 1")
             .ToListAsync();
 
@@ -896,7 +896,7 @@ public class FetchIncludeIntegrationTests
         await session.SaveChangesAsync();
 
         var results = await session.Query<OrderWithItems>()
-            .IncludeReverse(o => o.Items, "Order")
+            .IncludeReverse(o => o.Items, i => i.Order)
             .Where(o => o.Name == "Empty Order")
             .ToListAsync();
 
@@ -931,7 +931,7 @@ public class FetchIncludeIntegrationTests
         await session.SaveChangesAsync();
 
         var results = await session.Query<OrderWithItems>()
-            .IncludeReverse(o => o.Items, "Order")
+            .IncludeReverse(o => o.Items, i => i.Order)
             .ToListAsync();
 
         results.Count.ShouldBe(2);
@@ -957,7 +957,7 @@ public class FetchIncludeIntegrationTests
         await session.SaveChangesAsync();
 
         var results = await session.Query<OrderWithItems>()
-            .IncludeReverse(o => o.Items, "Order")
+            .IncludeReverse(o => o.Items, i => i.Order)
             .ToListAsync();
 
         results.Count.ShouldBe(1);
@@ -1017,7 +1017,7 @@ public class FetchIncludeIntegrationTests
 
         // Reverse include loads all items, OrderBy on root level
         var results = await session.Query<OrderWithItems>()
-            .IncludeReverse(o => o.Items, "Order")
+            .IncludeReverse(o => o.Items, i => i.Order)
             .Where(o => o.Name == "TestOrder")
             .ToListAsync();
 
@@ -1053,7 +1053,7 @@ public class FetchIncludeIntegrationTests
 
         // All three have expensive items. Take(2) + Skip(1)
         var results = await session.Query<OrderWithItems>()
-            .IncludeReverse(o => o.Items, "Order")
+            .IncludeReverse(o => o.Items, i => i.Order)
             .FilterInclude(o => o.Items, items => items.Any(i => i.Price > 50))
             .OrderBy(o => o.Name)
             .Skip(1)
@@ -1124,7 +1124,7 @@ public class FetchIncludeIntegrationTests
 
         // Test reverse Include + FilterInclude on OrderWithItems
         var itemResults = await session.Query<OrderWithItems>()
-            .IncludeReverse(o => o.Items, "Order")
+            .IncludeReverse(o => o.Items, i => i.Order)
             .FilterInclude(o => o.Items, items => items.Any(i => i.Price > 50))
             .ToListAsync();
 
@@ -1173,7 +1173,7 @@ public class FetchIncludeIntegrationTests
 
         // Query with conditions that return no results
         var results = await session.Query<OrderWithItems>()
-            .IncludeReverse(o => o.Items, "Order")
+            .IncludeReverse(o => o.Items, i => i.Order)
             .Where(o => o.Name == "Nonexistent")
             .ToListAsync();
 
@@ -1187,7 +1187,7 @@ public class FetchIncludeIntegrationTests
         await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         var results = await session.Query<OrderWithItems>()
-            .IncludeReverse(o => o.Items, "Order")
+            .IncludeReverse(o => o.Items, i => i.Order)
             .FilterInclude(o => o.Items, items => items.Any(i => i.Price > 50))
             .Where(o => o.Name == "Nonexistent")
             .ToListAsync();
@@ -1254,7 +1254,7 @@ public class FilterIncludeIntegrationTests
         await session.SaveChangesAsync();
 
         var results = await session.Query<OrderWithItems>()
-            .IncludeReverse(o => o.Items, "Order")
+            .IncludeReverse(o => o.Items, i => i.Order)
             .FilterInclude(o => o.Items, items => items.Any(i => i.Price > 50))
             .ToListAsync();
 
@@ -1285,7 +1285,7 @@ public class FilterIncludeIntegrationTests
         await session.SaveChangesAsync();
 
         var results = await session.Query<OrderWithItems>()
-            .IncludeReverse(o => o.Items, "Order")
+            .IncludeReverse(o => o.Items, i => i.Order)
             .FilterInclude(o => o.Items, items => items.Any(i => i.Price > 50))
             .ToListAsync();
 
@@ -1305,7 +1305,7 @@ public class FilterIncludeIntegrationTests
 
         // FilterInclude with ANY predicate requires at least one child to match, but there are none
         var results = await session.Query<OrderWithItems>()
-            .IncludeReverse(o => o.Items, "Order")
+            .IncludeReverse(o => o.Items, i => i.Order)
             .FilterInclude(o => o.Items, items => items.Any(i => i.Price > 0))
             .ToListAsync();
 
@@ -1338,7 +1338,7 @@ public class FilterIncludeIntegrationTests
 
         // Chain: IncludeReverse + FilterInclude on one queryable
         var results = await session.Query<OrderWithItems>()
-            .IncludeReverse(o => o.Items, "Order")
+            .IncludeReverse(o => o.Items, i => i.Order)
             .FilterInclude(o => o.Items, items => items.Any(i => i.Price > 50))
             .ToListAsync();
 
@@ -1783,7 +1783,7 @@ public class IncludeGraphIntegrationTests
         // ── Query: all orders with Customer + Items loaded ──────────
         var results = await session.Query<ClientOrder>()
             .Include(o => o.Customer)
-            .IncludeReverse(o => o.Items, "Order")
+            .IncludeReverse(o => o.Items, i => i.Order)
             .OrderBy(o => o.Description)
             .ToListAsync();
 
@@ -1859,7 +1859,7 @@ public class IncludeGraphIntegrationTests
         // FilterInclude: only orders with at least one item > $50
         var results = await session.Query<ClientOrder>()
             .Include(o => o.Customer)
-            .IncludeReverse(o => o.Items, "Order")
+            .IncludeReverse(o => o.Items, i => i.Order)
             .FilterInclude(o => o.Items, items => items.Any(i => i.Price > 50))
             .OrderBy(o => o.Description)
             .ToListAsync();
@@ -1925,7 +1925,7 @@ public class IncludeGraphIntegrationTests
 
         var results = await session.Query<ClientOrder>()
             .Include(o => o.Customer)
-            .IncludeReverse(o => o.Items, "Order")
+            .IncludeReverse(o => o.Items, i => i.Order)
             .Where(o => o.Description == "No Items Order")
             .ToListAsync();
 

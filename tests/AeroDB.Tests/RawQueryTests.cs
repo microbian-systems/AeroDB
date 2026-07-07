@@ -16,7 +16,7 @@ public class RawQueryTests
         await session.SaveChangesAsync();
 
         var results = await session.RawQueryAsync<Person>(
-            "SELECT * FROM person WHERE Age > 25");
+            "SELECT * FROM person WHERE age > 25");
 
         results.ShouldNotBeNull();
         results.Count.ShouldBe(1);
@@ -33,7 +33,7 @@ public class RawQueryTests
         await session.SaveChangesAsync();
 
         var results = await session.RawQueryAsync<Person>(
-            "SELECT * FROM person WHERE Age > $minAge",
+            "SELECT * FROM person WHERE age > $minAge",
             new Dictionary<string, object?> { ["minAge"] = 25 });
 
         results.ShouldNotBeNull();
@@ -52,7 +52,7 @@ public class RawQueryTests
 
         await using var querySession = await store.QuerySessionAsync();
         var results = await querySession.RawQueryAsync<Person>(
-            "SELECT * FROM person WHERE Name = $name",
+            "SELECT * FROM person WHERE name = $name",
             new Dictionary<string, object?> { ["name"] = "Nobody" });
 
         results.ShouldNotBeNull();
@@ -66,10 +66,10 @@ public class RawQueryTests
         await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         await session.ExecuteSqlAsync(
-            "CREATE person CONTENT { Name: 'FromSql', Age: 42 }");
+            "CREATE person CONTENT { name: 'FromSql', age: 42 }");
 
         var results = await session.RawQueryAsync<Person>(
-            "SELECT * FROM person WHERE Name = 'FromSql'");
+            "SELECT * FROM person WHERE name = 'FromSql'");
 
         results.Count.ShouldBe(1);
         results[0].Age.ShouldBe(42);
@@ -100,7 +100,7 @@ public class RawQueryTests
         await session.SaveChangesAsync();
 
         var results = await session.RawQueryAsync<dynamic>(
-            "SELECT * FROM person WHERE Name = 'Dynamic'");
+            "SELECT * FROM person WHERE name = 'Dynamic'");
 
         results.ShouldNotBeNull();
         results.Count.ShouldBe(1);
@@ -137,7 +137,7 @@ public class RawQueryTests
 
         await using var querySession = await store.QuerySessionAsync();
         var results = await querySession.RawQueryAsync<Person>(
-            "SELECT * FROM person WHERE Name = 'QuerySession'");
+            "SELECT * FROM person WHERE name = 'QuerySession'");
 
         results.Count.ShouldBe(1);
         results[0].Age.ShouldBe(35);

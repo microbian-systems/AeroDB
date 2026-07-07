@@ -42,13 +42,13 @@ internal class SetOperation
         {
             OperationKind.Set => $"{fieldName} = {FormatValue(Value)}",
             OperationKind.Increment => $"{fieldName} += {FormatValue(Value)}",
-            OperationKind.Append => $"{fieldName} += [{FormatValue(Value)}]",
+            OperationKind.Append => $"{fieldName} = array::insert({fieldName}, {FormatValue(Value)})",
             OperationKind.AppendIfNotExists => $"{fieldName} = {FormatAppendIfNotExists()}",
             OperationKind.Insert => InsertIndex is null
                 ? $"{fieldName} += [{FormatValue(Value)}]"
                 : $"{fieldName} = array::insert({fieldName}, {FormatValue(Value)}, {InsertIndex})",
             OperationKind.InsertIfNotExists => $"{fieldName} = {FormatInsertIfNotExists()}",
-            OperationKind.Remove => $"{fieldName} -= {FormatValue(Value)}",
+            OperationKind.Remove => $"{fieldName} = array::filter({fieldName}, |$value| $value != {FormatValue(Value)})",
             OperationKind.Duplicate => $"{fieldName} = {Escape(TargetField!)}",
             OperationKind.Rename => $"DROP $_; ALTER TABLE $_ RENAME COLUMN {Escape(OldName!)} TO {fieldName}",
             OperationKind.Delete => $"{fieldName} = NONE",
@@ -58,22 +58,24 @@ internal class SetOperation
 
     private string FormatAppendIfNotExists()
     {
-        // IF array::find_index(field, value) IS NONE THEN array::insert(field, value) (append) ELSE field END
-        return $"IF {FuncFindIndex()} IS NONE THEN array::insert({FieldName}, {FormatValue(Value)}) ELSE {FieldName} END";
+        // array::add appends only when the value is not already present.
+        var fieldName = Escape(FieldName);
+        return $"array::add({fieldName}, {FormatValue(Value)})";
     }
 
     private string FormatInsertIfNotExists()
     {
         // IF array::find_index(field, value) IS NONE THEN array::insert(field, value, [index]) ELSE field END
+        var fieldName = Escape(FieldName);
         var insertExpr = InsertIndex is null
-            ? $"array::insert({FieldName}, {FormatValue(Value)})"
-            : $"array::insert({FieldName}, {FormatValue(Value)}, {InsertIndex})";
-        return $"IF {FuncFindIndex()} IS NONE THEN {insertExpr} ELSE {FieldName} END";
+            ? $"array::insert({fieldName}, {FormatValue(Value)})"
+            : $"array::insert({fieldName}, {FormatValue(Value)}, {InsertIndex})";
+        return $"IF {FuncFindIndex()} IS NONE THEN {insertExpr} ELSE {fieldName} END";
     }
 
     private string FuncFindIndex()
     {
-        return $"array::find_index({FieldName}, {FormatValue(Value)})";
+        return $"array::find_index({Escape(FieldName)}, {FormatValue(Value)})";
     }
 
     private static string Escape(string name)

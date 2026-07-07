@@ -74,7 +74,6 @@ var host = Host.CreateDefaultBuilder()
     .UseWolverine(opts =>
     {
         opts.Durability.Mode = DurabilityMode.Solo;
-        opts.UseRuntimeCompilation();
 
         // Register handlers explicitly for deterministic discovery
         opts.Discovery.IncludeType<PlaceOrderHandler>()

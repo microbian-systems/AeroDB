@@ -1,4 +1,5 @@
 using System.Linq.Expressions;
+using AeroDB.Metadata;
 
 namespace AeroDB;
 
@@ -107,7 +108,8 @@ public class AggregateQueryBuilder<T> where T : class
         var body = selector.Body;
         while (body is UnaryExpression { NodeType: ExpressionType.Convert or ExpressionType.TypeAs } unary)
             body = unary.Operand;
-        if (body is MemberExpression m) return m.Member.Name;
+        if (body is MemberExpression m)
+            return MetadataDispatch.GetFieldName(typeof(T), m.Member.Name, null);
         throw new ArgumentException("Selector must be a simple member expression");
     }
 }

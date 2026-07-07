@@ -1,6 +1,7 @@
 using System.Globalization;
 using System.Linq.Expressions;
 using System.Reflection;
+using AeroDB.Internals.Cbor;
 using AeroDB.Metadata;
 
 namespace AeroDB;
@@ -112,12 +113,12 @@ public sealed class AeroDBSearchQuery<T> : ISearchQuery<T> where T : class
     internal AeroDBSearchQuery(SurrealQueryProvider provider)
     {
         _provider = provider;
-        _table = MetadataDispatch.GetTableName(typeof(T));
+        _table = MetadataDispatch.GetTableName(typeof(T), _provider.StoreOptions.Schema);
     }
 
     public ISearchQuery<T> MatchText(Expression<Func<T, object>> fieldSelector, double weight, string query)
     {
-        var fieldName = GetMemberName(fieldSelector);
+        var fieldName = GetStorageFieldName(fieldSelector);
         _textFields.Add((fieldName, weight, _textFields.Count));
         _textQuery = query;
         return this;
@@ -129,7 +130,7 @@ public sealed class AeroDBSearchQuery<T> : ISearchQuery<T> where T : class
     {
         foreach (var (fieldSelector, weight) in fields)
         {
-            var fieldName = GetMemberName(fieldSelector);
+            var fieldName = GetStorageFieldName(fieldSelector);
             _textFields.Add((fieldName, weight, _textFields.Count));
         }
         _textQuery = query;
@@ -142,14 +143,14 @@ public sealed class AeroDBSearchQuery<T> : ISearchQuery<T> where T : class
     /// <summary>Internal: registers a text field by string name (for SearchExtensions).</summary>
     internal ISearchQuery<T> MatchTextField(string fieldName, double weight, string query)
     {
-        _textFields.Add((fieldName, weight, _textFields.Count));
+        _textFields.Add((GetStorageFieldName(fieldName), weight, _textFields.Count));
         _textQuery = query;
         return this;
     }
 
     public ISearchQuery<T> WithVector(Expression<Func<T, float[]>> fieldSelector, float[] queryVector)
     {
-        _vectorField = GetMemberName(fieldSelector);
+        _vectorField = GetStorageFieldName(fieldSelector);
         _queryVector = queryVector;
         return this;
     }
@@ -157,7 +158,7 @@ public sealed class AeroDBSearchQuery<T> : ISearchQuery<T> where T : class
     /// <summary>Internal: sets the vector field by string name (for SearchExtensions).</summary>
     internal ISearchQuery<T> WithVectorField(string fieldName, float[] queryVector)
     {
-        _vectorField = fieldName;
+        _vectorField = GetStorageFieldName(fieldName);
         _queryVector = queryVector;
         return this;
     }
@@ -183,7 +184,7 @@ public sealed class AeroDBSearchQuery<T> : ISearchQuery<T> where T : class
 
     public ISearchQuery<T> OrderBy<TKey>(Expression<Func<T, TKey>> keySelector, bool descending = false)
     {
-        var fieldName = GetMemberName(keySelector);
+        var fieldName = GetStorageFieldName(keySelector);
         _orderByClause = descending ? $"{fieldName} DESC" : $"{fieldName} ASC";
         return this;
     }
@@ -341,12 +342,25 @@ LET $vs = (
 
         if (!response.HasErrors && response.Count > 0)
         {
-            var raw = response.GetValue<List<T>>(0);
-            if (raw is not null) return raw;
+            var records = CborResultReader.ReadPocoResult(response, 0);
+            if (records is { Count: > 0 })
+            {
+                var mapping = _provider.StoreOptions.Schema.Mappings.GetValueOrDefault(typeof(T));
+                return InternalSessionBase.DeserializePocoFromList<T>(
+                    records,
+                    mapping?.IdentityProperty ?? "Id",
+                    _provider.StoreOptions.Schema);
+            }
         }
 
         return [];
     }
+
+    private string GetStorageFieldName<TProp>(Expression<Func<T, TProp>> selector)
+        => MetadataDispatch.GetFieldName(typeof(T), GetMemberName(selector), _provider.StoreOptions.Schema);
+
+    private string GetStorageFieldName(string fieldName)
+        => MetadataDispatch.GetFieldName(typeof(T), fieldName, _provider.StoreOptions.Schema);
 
     private static string GetMemberName<TProp>(Expression<Func<T, TProp>> selector)
     {

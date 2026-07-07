@@ -70,12 +70,18 @@ public class SchemaManager
     /// Returns the list of field schemas for the given type, using generated metadata
     /// when available, falling back to runtime reflection if not.
     /// </summary>
-    private static IEnumerable<(string Name, string SurrealType)> GetFieldSchemas(Type type)
+    private static IEnumerable<(string Name, string SurrealType)> GetFieldSchemas(
+        Type type,
+        SchemaOptions? schema = null,
+        IReadOnlySet<string>? excludedClrNames = null)
     {
         var nullability = new NullabilityInfoContext();
         var properties = type
             .GetProperties(BindingFlags.Public | BindingFlags.Instance)
-            .Where(prop => prop.Name != "Id" && prop.CanRead && prop.CanWrite)
+            .Where(prop => prop.Name != "Id"
+                && prop.CanRead
+                && prop.CanWrite
+                && excludedClrNames?.Contains(prop.Name) != true)
             .ToDictionary(prop => prop.Name, StringComparer.Ordinal);
 
         var meta = Metadata.MetadataRegistry.TryGet(type);
@@ -84,9 +90,9 @@ public class SchemaManager
             foreach (var f in fields)
             {
                 if (properties.TryGetValue(f.Name, out var prop))
-                    yield return (f.Name, MakeOptionalIfNullable(f.SurrealType, prop, nullability));
+                    yield return (MetadataDispatch.GetFieldName(type, f.Name, schema), MakeOptionalIfNullable(f.SurrealType, prop, nullability));
                 else
-                    yield return (f.Name, f.SurrealType);
+                    yield return (MetadataDispatch.GetFieldName(type, f.Name, schema), f.SurrealType);
             }
 
             yield break;
@@ -95,7 +101,7 @@ public class SchemaManager
         // Fallback: runtime reflection (legacy path for non-generated types)
         foreach (var prop in properties.Values)
         {
-            yield return (prop.Name, GetSurrealType(prop.PropertyType, prop, nullability));
+            yield return (MetadataDispatch.GetFieldName(type, prop.Name, schema), GetSurrealType(prop.PropertyType, prop, nullability));
         }
     }
 
@@ -148,20 +154,57 @@ public class SchemaManager
     /// <summary>
     /// Ensures the specified index exists on the given table.
     /// </summary>
-    public async Task EnsureIndexAsync(ISurrealDbSession session, string tableName, IndexDefinition index, CancellationToken ct = default)
+    public async Task EnsureIndexAsync(
+        ISurrealDbSession session,
+        string tableName,
+        IndexDefinition index,
+        Type? entityType = null,
+        SchemaOptions? schemaOptions = null,
+        CancellationToken ct = default)
     {
+        var resolvedIndex = ResolveIndexColumns(index, entityType, schemaOptions);
         string surql = index.Type switch
         {
-            IndexType.FullText => BuildFullTextIndex(tableName, index),
-            IndexType.Hnsw => BuildHnswIndex(tableName, index),
-            IndexType.Diskann => BuildDiskannIndex(tableName, index),
-            IndexType.Geo => BuildStandardIndex(tableName, index),
-            _ => BuildStandardIndex(tableName, index)
+            IndexType.FullText => BuildFullTextIndex(tableName, resolvedIndex),
+            IndexType.Hnsw => BuildHnswIndex(tableName, resolvedIndex),
+            IndexType.Diskann => BuildDiskannIndex(tableName, resolvedIndex),
+            IndexType.Geo => BuildStandardIndex(tableName, resolvedIndex),
+            _ => BuildStandardIndex(tableName, resolvedIndex)
         };
 
         _logger.LogDebug("Ensuring index {IndexName} on table {Table} (type: {Type})",
             index.Name, tableName, index.Type);
         await session.RawQuery(surql, null, ct).ConfigureAwait(false);
+    }
+
+    private static IndexDefinition ResolveIndexColumns(
+        IndexDefinition index,
+        Type? entityType,
+        SchemaOptions? schemaOptions)
+    {
+        if (entityType is null || schemaOptions is null)
+            return index;
+
+        var resolvedColumns = index.Columns
+            .Select(column => MetadataDispatch.GetFieldName(entityType, column, schemaOptions))
+            .ToArray();
+
+        return new IndexDefinition
+        {
+            Name = index.Name,
+            Columns = resolvedColumns,
+            IsUnique = index.IsUnique,
+            Type = index.Type,
+            Analyzer = index.Analyzer,
+            Bm25 = index.Bm25,
+            VectorDimension = index.VectorDimension,
+            VectorDistance = index.VectorDistance,
+            VectorElementType = index.VectorElementType,
+            DiskannDegree = index.DiskannDegree,
+            DiskannLBuild = index.DiskannLBuild,
+            DiskannAlpha = index.DiskannAlpha,
+            HasHashedVector = index.HasHashedVector
+        };
     }
 
     private static string BuildStandardIndex(string tableName, IndexDefinition index)
@@ -322,13 +365,25 @@ public class SchemaManager
     /// Non-generic overload of <c>EnsureDocumentSchemaAsync&lt;T&gt;</c> for use without
     /// compile-time type knowledge (e.g. when iterating configured mappings).
     /// </summary>
-    internal async Task EnsureDocumentSchemaAsync(Type entityType, ISurrealDbSession session, SchemaMode mode = SchemaMode.Strict, IReadOnlyList<FieldDefinition>? fieldDefinitions = null, CancellationToken ct = default)
+    internal async Task EnsureDocumentSchemaAsync(
+        Type entityType,
+        ISurrealDbSession session,
+        SchemaMode mode = SchemaMode.Strict,
+        IReadOnlyList<FieldDefinition>? fieldDefinitions = null,
+        IReadOnlyList<RelationshipMapping>? relationshipMappings = null,
+        SchemaOptions? schemaOptions = null,
+        CancellationToken ct = default)
     {
-        var tableName = MetadataDispatch.GetTableName(entityType);
+        var tableName = MetadataDispatch.GetTableName(entityType, schemaOptions);
         _logger.LogDebug("Ensuring document schema for type {Type} with table {Table} and mode {Mode}", entityType.Name, tableName, mode);
         await session.RawQuery($"DEFINE TABLE {tableName} {GetSchemaSurql(mode)};", null, ct).ConfigureAwait(false);
 
-        foreach (var (name, surrealType) in GetFieldSchemas(entityType))
+        var relationshipFieldNames = relationshipMappings?
+            .Where(r => r.ClrMemberName is not null)
+            .Select(r => r.ClrMemberName!)
+            .ToHashSet(StringComparer.Ordinal);
+
+        foreach (var (name, surrealType) in GetFieldSchemas(entityType, schemaOptions, relationshipFieldNames))
         {
             var fieldSurql = $"DEFINE FIELD {name} ON TABLE {tableName} TYPE {surrealType};";
             await session.RawQuery(fieldSurql, null, ct).ConfigureAwait(false);
@@ -346,6 +401,70 @@ public class SchemaManager
         {
             await EnsureFieldDefinitionsAsync(session, tableName, fieldDefinitions, ct).ConfigureAwait(false);
         }
+
+        if (relationshipMappings is { Count: > 0 })
+        {
+            foreach (var relationship in relationshipMappings)
+            {
+                if (relationship.StorageKind == RelationshipStorageKind.ScalarForeignKey)
+                    continue;
+
+                var sql = BuildRelationshipFieldStatement(relationship, tableName);
+                await session.RawQuery(sql, null, ct).ConfigureAwait(false);
+
+                if (relationship.Unique)
+                {
+                    var indexSql = BuildRelationshipIndexStatement(relationship, tableName);
+                    await session.RawQuery(indexSql, null, ct).ConfigureAwait(false);
+                }
+            }
+        }
+    }
+
+    internal static string BuildRelationshipFieldStatement(RelationshipMapping relationship, string? tableName = null)
+    {
+        var sourceTable = tableName ?? relationship.SourceTableName;
+        if (relationship.StorageKind == RelationshipStorageKind.ScalarForeignKey)
+            throw new InvalidOperationException("Scalar foreign key relationships do not emit SurrealDB record-link field DDL.");
+
+        var type = relationship.Cardinality == RelationshipCardinality.Many
+            ? $"array<record<{relationship.TargetTableName}>>"
+            : $"record<{relationship.TargetTableName}>";
+
+        if (relationship.Nullable)
+            type = $"option<{type}>";
+
+        var sb = new StringBuilder();
+        sb.Append("DEFINE FIELD ").Append(relationship.StorageFieldName)
+            .Append(" ON TABLE ").Append(sourceTable)
+            .Append(" TYPE ").Append(type);
+
+        if (relationship.Reference)
+        {
+            sb.Append(" REFERENCE");
+            if (relationship.OnDelete is not null)
+            {
+                sb.Append(" ON DELETE ");
+                sb.Append(relationship.OnDelete.Value switch
+                {
+                    RelationshipOnDeleteAction.Ignore => "IGNORE",
+                    RelationshipOnDeleteAction.Unset => "UNSET",
+                    RelationshipOnDeleteAction.Cascade => "CASCADE",
+                    RelationshipOnDeleteAction.Then => "THEN " + relationship.OnDeleteThenSurql,
+                    _ => "IGNORE"
+                });
+            }
+        }
+
+        sb.Append(';');
+        return sb.ToString();
+    }
+
+    internal static string BuildRelationshipIndexStatement(RelationshipMapping relationship, string? tableName = null)
+    {
+        var sourceTable = tableName ?? relationship.SourceTableName;
+        var indexName = $"uidx_{sourceTable}_{relationship.StorageFieldName}";
+        return $"DEFINE INDEX {indexName} ON TABLE {sourceTable} COLUMNS {relationship.StorageFieldName} UNIQUE;";
     }
 
     /// <summary>

@@ -175,14 +175,16 @@ public class PatchExpression<T> : IPatchExpression<T>, IDeferredPatch where T : 
         var renameOps = _operations.Where(o => o.Kind == OperationKind.Rename).ToList();
         var updateOps = _operations.Where(o => o.Kind != OperationKind.Rename).ToList();
 
-        var table = MetadataDispatch.GetTableName(typeof(T));
-        var surrealdbSession = ((InternalSessionBase)session).Session;
+        var internalSession = (InternalSessionBase)session;
+        var schema = internalSession.StoreOptions.Schema;
+        var table = MetadataDispatch.GetTableName(typeof(T), schema);
+        var surrealdbSession = internalSession.Session;
 
         // Execute UPDATE SET for all non-rename operations
         if (updateOps.Count > 0)
         {
-            var sets = updateOps.Select(o => o.ToSurrealQL()).ToList();
-            var surql = $"UPDATE {table}:{_recordId} SET {string.Join(", ", sets)};";
+            var sets = updateOps.Select(o => MapOperation(o, schema).ToSurrealQL()).ToList();
+            var surql = $"UPDATE {table}:{FormatRecordId(_recordId)} SET {string.Join(", ", sets)};";
             _logger.LogDebug("Applying patch: {SurrealQL}", surql);
             await surrealdbSession.RawQuery(surql, null, ct).ConfigureAwait(false);
         }
@@ -190,7 +192,8 @@ public class PatchExpression<T> : IPatchExpression<T>, IDeferredPatch where T : 
         // Execute ALTER TABLE RENAME COLUMN for rename operations
         foreach (var op in renameOps)
         {
-            var surql = $"ALTER TABLE {table} RENAME COLUMN `{op.OldName}` TO `{op.FieldName}`;";
+            var mapped = MapOperation(op, schema);
+            var surql = $"ALTER TABLE {table} RENAME COLUMN `{mapped.OldName}` TO `{mapped.FieldName}`;";
             _logger.LogDebug("Applying rename: {SurrealQL}", surql);
             await surrealdbSession.RawQuery(surql, null, ct).ConfigureAwait(false);
         }
@@ -216,4 +219,22 @@ public class PatchExpression<T> : IPatchExpression<T>, IDeferredPatch where T : 
             _ => throw new ArgumentException("Expression must be a property access expression.", nameof(property))
         };
     }
+
+    private static SetOperation MapOperation(SetOperation op, SchemaOptions schema)
+        => new(
+            MetadataDispatch.GetFieldName(typeof(T), op.FieldName, schema),
+            op.Value,
+            op.Kind,
+            op.OldName is null ? null : MetadataDispatch.GetFieldName(typeof(T), op.OldName, schema),
+            op.TargetField is null ? null : MetadataDispatch.GetFieldName(typeof(T), op.TargetField, schema),
+            op.InsertIndex);
+
+    private static string FormatRecordId(string id)
+    {
+        if (long.TryParse(id, out _) || ulong.TryParse(id, out _))
+            return id;
+
+        return $"`{id.Replace("`", "\\`")}`";
+    }
+
 }

@@ -1,4 +1,5 @@
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Threading.Channels;
 using Microsoft.Extensions.Logging;
 using Polly;
@@ -302,6 +303,31 @@ public class SchemaOptions
 {
     public bool AutoCreate { get; set; } = true;
 
+    private IAeroDbNamingPolicy? _namingPolicy;
+
+    private AeroDbNameCase _case = AeroDbNameCase.SnakeCaseLower;
+    private bool _relationshipsResolved;
+    private readonly List<RelationshipDescriptor> _relationshipDescriptors = [];
+
+    internal bool HasConfiguredCase { get; private set; }
+
+    public AeroDbNameCase Case
+    {
+        get => _case;
+        set
+        {
+            _case = value;
+            HasConfiguredCase = true;
+            _namingPolicy = null;
+        }
+    }
+
+    public IAeroDbNamingPolicy NamingPolicy
+    {
+        get => _namingPolicy ??= new AeroDbCaseNamingPolicy(Case);
+        set => _namingPolicy = value ?? throw new ArgumentNullException(nameof(value));
+    }
+
     /// <summary>
     /// When true, AeroDB will call <c>DEFINE DATABASE IF NOT EXISTS</c> for each
     /// configured schema (via <see cref="DocumentMapping{T}.Schema"/>) during
@@ -320,6 +346,15 @@ public class SchemaOptions
     /// Cached document mappings, keyed by entity type.
     /// </summary>
     internal Dictionary<Type, DocumentMapping> Mappings { get; } = new();
+
+    internal IReadOnlyList<RelationshipDescriptor> RelationshipDescriptors
+    {
+        get
+        {
+            ResolveRelationships();
+            return _relationshipDescriptors;
+        }
+    }
 
     /// <summary>
     /// Edge table mappings, used to generate RELATION table schemas during initialization.
@@ -349,12 +384,213 @@ public class SchemaOptions
     {
         if (!Mappings.TryGetValue(typeof(T), out var existing))
         {
-            var mapping = new DocumentMapping<T>();
+            var mapping = new DocumentMapping<T>(this);
             Mappings[typeof(T)] = mapping;
             return mapping;
         }
         return (DocumentMapping<T>)existing;
     }
+
+    internal void ResolveRelationships()
+    {
+        if (_relationshipsResolved)
+            return;
+
+        _relationshipsResolved = true;
+        RegisterConventionScalarForeignKeys();
+        RebuildRelationshipDescriptors();
+    }
+
+    internal RelationshipDescriptor? FindRelationship(Type sourceType, Type targetType, string? sourceMemberName = null)
+    {
+        ResolveRelationships();
+        var matches = _relationshipDescriptors
+            .Where(r => r.SourceType == sourceType
+                && r.TargetType == targetType
+                && (sourceMemberName is null || string.Equals(r.SourceMemberName, sourceMemberName, StringComparison.Ordinal)))
+            .ToList();
+
+        return matches.Count switch
+        {
+            0 => null,
+            1 => matches[0],
+            _ => throw new InvalidOperationException(
+                $"Multiple relationships from '{sourceType.Name}' to '{targetType.Name}' match. " +
+                "Use an explicit source member selector to disambiguate.")
+        };
+    }
+
+    internal IReadOnlyList<RelationshipDescriptor> FindRelationships(Type sourceType, Type targetType)
+    {
+        ResolveRelationships();
+        return _relationshipDescriptors
+            .Where(r => r.SourceType == sourceType && r.TargetType == targetType)
+            .ToList();
+    }
+
+    private void RegisterConventionScalarForeignKeys()
+    {
+        var mappings = Mappings.Values.ToList();
+        RegisterGeneratedRelationshipCandidates(mappings);
+
+        foreach (var sourceMapping in mappings)
+        {
+            var sourceType = sourceMapping.EntityType;
+            var explicitMembers = sourceMapping.GetRelationshipMappings()
+                .Where(r => r.ClrMemberName is not null)
+                .Select(r => r.ClrMemberName!)
+                .ToHashSet(StringComparer.Ordinal);
+
+            foreach (var property in sourceType.GetProperties(BindingFlags.Instance | BindingFlags.Public))
+            {
+                if (!property.CanRead || !property.CanWrite || explicitMembers.Contains(property.Name))
+                    continue;
+
+                if (!property.Name.EndsWith("Id", StringComparison.Ordinal) || property.Name.Length <= 2)
+                    continue;
+
+                var targetName = property.Name[..^2];
+                var targetMatches = mappings
+                    .Where(m => string.Equals(m.EntityType.Name, targetName, StringComparison.Ordinal))
+                    .ToList();
+
+                if (targetMatches.Count == 0)
+                    continue;
+
+                if (targetMatches.Count > 1)
+                {
+                    var candidates = string.Join(", ", targetMatches.Select(m => $"{m.EntityType.FullName} ({m.EntityType.Assembly.GetName().Name})"));
+                    throw new InvalidOperationException(
+                        $"Cannot infer relationship for '{sourceType.FullName}.{property.Name}' because multiple mapped target types are named '{targetName}': {candidates}. " +
+                        "Configure the relationship explicitly to disambiguate the target type.");
+                }
+
+                var targetMapping = targetMatches[0];
+                var targetIdentity = ResolveIdentityMember(targetMapping);
+                if (!TypesAreCompatible(property.PropertyType, GetMemberType(targetIdentity)!))
+                    continue;
+
+                AddConventionScalarForeignKey(sourceMapping, targetMapping, property, RelationshipOrigin.Convention);
+            }
+        }
+    }
+
+    private void RegisterGeneratedRelationshipCandidates(IReadOnlyList<DocumentMapping> mappings)
+    {
+        foreach (var candidate in Metadata.MetadataRegistry.RelationshipCandidates)
+        {
+            if (candidate.StorageKind != RelationshipStorageKind.ScalarForeignKey
+                || candidate.Cardinality != RelationshipCardinality.One)
+                continue;
+
+            var sourceMatches = mappings
+                .Where(m => string.Equals(m.EntityType.Name, candidate.SourceTypeName, StringComparison.Ordinal))
+                .ToList();
+            if (sourceMatches.Count != 1)
+                continue;
+
+            var targetMatches = mappings
+                .Where(m => string.Equals(m.EntityType.Name, candidate.TargetTypeName, StringComparison.Ordinal))
+                .ToList();
+            if (targetMatches.Count != 1)
+                continue;
+
+            var sourceMapping = sourceMatches[0];
+            if (sourceMapping.GetRelationshipMappings().Any(r =>
+                    string.Equals(r.ClrMemberName, candidate.SourceMemberName, StringComparison.Ordinal)))
+                continue;
+
+            var property = sourceMapping.EntityType.GetProperty(candidate.SourceMemberName, BindingFlags.Instance | BindingFlags.Public);
+            if (property is null || !property.CanRead || !property.CanWrite)
+                continue;
+
+            var targetIdentity = ResolveIdentityMember(targetMatches[0]);
+            if (!string.Equals(targetIdentity.Name, candidate.TargetIdMemberName, StringComparison.Ordinal))
+                continue;
+
+            if (!TypesAreCompatible(property.PropertyType, GetMemberType(targetIdentity)!))
+                continue;
+
+            AddConventionScalarForeignKey(sourceMapping, targetMatches[0], property, RelationshipOrigin.SourceGenerated);
+        }
+    }
+
+    private void AddConventionScalarForeignKey(
+        DocumentMapping sourceMapping,
+        DocumentMapping targetMapping,
+        PropertyInfo property,
+        RelationshipOrigin origin)
+    {
+        var relationship = RelationshipMapping.Create(
+            sourceMapping.EntityType,
+            Metadata.MetadataDispatch.GetTableName(sourceMapping.EntityType, this),
+            targetMapping.EntityType,
+            Metadata.MetadataDispatch.GetTableName(targetMapping.EntityType, this),
+            property.Name,
+            Metadata.MetadataDispatch.GetFieldName(sourceMapping.EntityType, property.Name, this),
+            RelationshipKind.HasOne,
+            RelationshipStorageModel.ScalarForeignKey,
+            origin);
+
+        if (IsNullable(property))
+            relationship.SetOptional();
+
+        sourceMapping.AddRelationshipMapping(relationship);
+    }
+
+    private void RebuildRelationshipDescriptors()
+    {
+        _relationshipDescriptors.Clear();
+
+        foreach (var mapping in Mappings.Values)
+        {
+            foreach (var relationship in mapping.GetRelationshipMappings())
+            {
+                var targetMapping = Mappings.TryGetValue(relationship.TargetType, out var mappedTarget)
+                    ? mappedTarget
+                    : null;
+                var targetIdentity = targetMapping is not null
+                    ? ResolveIdentityMember(targetMapping)
+                    : relationship.TargetType.GetProperty("Id", BindingFlags.Instance | BindingFlags.Public);
+
+                var targetIdMemberName = targetIdentity?.Name ?? "Id";
+                var targetIdFieldName = Metadata.MetadataDispatch.GetFieldName(relationship.TargetType, targetIdMemberName, this);
+                _relationshipDescriptors.Add(relationship.ToDescriptor(targetIdMemberName, targetIdFieldName));
+            }
+        }
+    }
+
+    private static MemberInfo ResolveIdentityMember(DocumentMapping mapping)
+    {
+        if (mapping.IdentityProperty is not null)
+        {
+            var configured = mapping.EntityType.GetProperty(mapping.IdentityProperty, BindingFlags.Instance | BindingFlags.Public);
+            if (configured is not null)
+                return configured;
+        }
+
+        return mapping.EntityType.GetProperty("Id", BindingFlags.Instance | BindingFlags.Public)
+            ?? throw new InvalidOperationException(
+                $"Cannot infer identity member for '{mapping.EntityType.FullName}'. Configure Schema.For<{mapping.EntityType.Name}>().Identity(...).");
+    }
+
+    private static Type? GetMemberType(MemberInfo member)
+        => member switch
+        {
+            PropertyInfo property => property.PropertyType,
+            FieldInfo field => field.FieldType,
+            _ => null
+        };
+
+    private static bool TypesAreCompatible(Type sourceType, Type targetType)
+    {
+        var source = Nullable.GetUnderlyingType(sourceType) ?? sourceType;
+        var target = Nullable.GetUnderlyingType(targetType) ?? targetType;
+        return source == target;
+    }
+
+    private static bool IsNullable(PropertyInfo property)
+        => Nullable.GetUnderlyingType(property.PropertyType) is not null || !property.PropertyType.IsValueType;
 
     /// <summary>
     /// Fluent API for edge table schema configuration.

@@ -225,7 +225,9 @@ public class TestConfig : AeroDB.IConfigureAeroDB
             .GroupBy(a => a.Location)
             .Select(g => g.First())
             .Select(a => MetadataReference.CreateFromFile(a.Location))
+            .Append(MetadataReference.CreateFromFile(typeof(IServiceCollection).Assembly.Location))
             .Cast<MetadataReference>()
+            .DistinctBy(r => r.Display)
             .ToArray();
 
         var compilation = CSharpCompilation.Create("Generated",
@@ -237,6 +239,6 @@ public class TestConfig : AeroDB.IConfigureAeroDB
             .Where(d => d.Severity == DiagnosticSeverity.Error)
             .ToList();
 
-        diagnostics.Count.ShouldBe(0);
+        diagnostics.Count.ShouldBe(0, string.Join(Environment.NewLine, diagnostics));
     }
 }

@@ -279,7 +279,7 @@ public class LiveQueryTests
         session.LiveRawQuery<Person>(Arg.Any<string>(), Arg.Any<IReadOnlyDictionary<string, object?>?>(), Arg.Any<CancellationToken>())
             .Returns(Task.FromResult<SurrealDbLiveQuery<Person>>(default!));
         await using var sub = await qs.Live<Person>().Where(x => x.Age > 18).SubscribeAsync();
-        await session.Received(1).LiveRawQuery<Person>(Arg.Is<string>(s => s.Contains("LIVE SELECT * FROM `person`") && s.Contains("Age > 18")), null, Arg.Any<CancellationToken>());
+        await session.Received(1).LiveRawQuery<Person>(Arg.Is<string>(s => s.Contains("LIVE SELECT * FROM `person`") && s.Contains("age > 18")), null, Arg.Any<CancellationToken>());
     }
 
     [Test]
@@ -300,7 +300,7 @@ public class LiveQueryTests
         session.LiveRawQuery<Person>(Arg.Any<string>(), Arg.Any<IReadOnlyDictionary<string, object?>?>(), Arg.Any<CancellationToken>())
             .Returns(Task.FromResult<SurrealDbLiveQuery<Person>>(default!));
         await using var sub = await qs.Live<Person>().Where(x => x.Age > 18).Where(x => x.Name != null).SubscribeAsync();
-        await session.Received(1).LiveRawQuery<Person>(Arg.Is<string>(s => s.Contains("Age > 18") && s.Contains("AND") && s.Contains("Name")), null, Arg.Any<CancellationToken>());
+        await session.Received(1).LiveRawQuery<Person>(Arg.Is<string>(s => s.Contains("age > 18") && s.Contains("AND") && s.Contains("name")), null, Arg.Any<CancellationToken>());
     }
 
     [Test]
@@ -310,7 +310,7 @@ public class LiveQueryTests
         session.LiveRawQuery<Person>(Arg.Any<string>(), Arg.Any<IReadOnlyDictionary<string, object?>?>(), Arg.Any<CancellationToken>())
             .Returns(Task.FromResult<SurrealDbLiveQuery<Person>>(default!));
         await using var sub = await qs.Live<Person>().Where(x => x.Name == "Alice").SubscribeAsync();
-        await session.Received(1).LiveRawQuery<Person>(Arg.Is<string>(s => s.Contains("WHERE") && s.Contains("Name")), null, Arg.Any<CancellationToken>());
+        await session.Received(1).LiveRawQuery<Person>(Arg.Is<string>(s => s.Contains("WHERE") && s.Contains("name")), null, Arg.Any<CancellationToken>());
     }
 
     [Test]
@@ -335,7 +335,7 @@ public class LiveQueryTests
         session.LiveRawQuery<Person>(Arg.Any<string>(), Arg.Any<IReadOnlyDictionary<string, object?>?>(), Arg.Any<CancellationToken>())
             .Returns(Task.FromResult<SurrealDbLiveQuery<Person>>(default!));
         await using var sub = await qs.Live<Person>().Where(x => x.Name == null).SubscribeAsync();
-        await session.Received(1).LiveRawQuery<Person>(Arg.Is<string>(s => s.Contains("Name") && s.Contains("NONE")), null, Arg.Any<CancellationToken>());
+        await session.Received(1).LiveRawQuery<Person>(Arg.Is<string>(s => s.Contains("name") && s.Contains("NONE")), null, Arg.Any<CancellationToken>());
     }
 
     [Test]
@@ -345,7 +345,7 @@ public class LiveQueryTests
         session.LiveRawQuery<Person>(Arg.Any<string>(), Arg.Any<IReadOnlyDictionary<string, object?>?>(), Arg.Any<CancellationToken>())
             .Returns(Task.FromResult<SurrealDbLiveQuery<Person>>(default!));
         await using var sub = await qs.Live<Person>().Where(x => x.Name != null).SubscribeAsync();
-        await session.Received(1).LiveRawQuery<Person>(Arg.Is<string>(s => s.Contains("Name") && s.Contains("NONE") && s.Contains("!=")), null, Arg.Any<CancellationToken>());
+        await session.Received(1).LiveRawQuery<Person>(Arg.Is<string>(s => s.Contains("name") && s.Contains("NONE") && s.Contains("!=")), null, Arg.Any<CancellationToken>());
     }
 
     [Test]
@@ -355,7 +355,7 @@ public class LiveQueryTests
         session.LiveRawQuery<EnumTestDoc>(Arg.Any<string>(), Arg.Any<IReadOnlyDictionary<string, object?>?>(), Arg.Any<CancellationToken>())
             .Returns(Task.FromResult<SurrealDbLiveQuery<EnumTestDoc>>(default!));
         await using var sub = await qs.Live<EnumTestDoc>().Where(x => x.Status == TestStatus.Published).SubscribeAsync();
-        await session.Received(1).LiveRawQuery<EnumTestDoc>(Arg.Is<string>(s => !s.Contains("= Published") && s.Contains("Status")), null, Arg.Any<CancellationToken>());
+        await session.Received(1).LiveRawQuery<EnumTestDoc>(Arg.Is<string>(s => !s.Contains("= Published") && s.Contains("status")), null, Arg.Any<CancellationToken>());
     }
 
     [Test]
