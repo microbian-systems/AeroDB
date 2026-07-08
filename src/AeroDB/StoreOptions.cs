@@ -107,6 +107,33 @@ public class StoreOptions : IReadOnlyStoreOptions
     public LogLevel MinimumLogLevel { get; set; } = LogLevel.Information;
 
     /// <summary>
+    /// Event stream configurations, keyed by aggregate type.
+    /// Populated via <see cref="IAeroSchemaBuilder.EventStream{T}"/>.
+    /// </summary>
+    internal Dictionary<Type, EventStreamConfiguration> EventStreamConfigs { get; } = new();
+
+    /// <summary>
+    /// Global resolver for patch-to-event rules registered via <see cref="DocumentMapping{T}.PatchEvents"/>.
+    /// Rules are populated during <see cref="DocumentStore.InitializeAsync"/>.
+    /// Null until initialization completes.
+    /// </summary>
+    public PatchRuleResolver? PatchRules { get; internal set; }
+
+    /// <summary>
+    /// Gets or creates an event stream configuration for the specified aggregate type.
+    /// </summary>
+    /// <typeparam name="T">The aggregate type.</typeparam>
+    /// <returns>An existing or new <see cref="EventStreamConfiguration"/>.</returns>
+    internal EventStreamConfiguration GetOrCreateEventStreamConfig<T>() where T : class
+    {
+        if (EventStreamConfigs.TryGetValue(typeof(T), out var existing))
+            return existing;
+        var config = new EventStreamConfiguration();
+        EventStreamConfigs[typeof(T)] = config;
+        return config;
+    }
+
+    /// <summary>
     /// Registered projections (inline and async).
     /// </summary>
     public ProjectionCollection Projections { get; } = new();

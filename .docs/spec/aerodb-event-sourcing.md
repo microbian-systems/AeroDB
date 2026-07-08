@@ -1,7 +1,8 @@
 # AeroDB Event Sourcing & Change Tracking — Design Spec
 
 > **Status:** Draft  
-> **Last updated:** 2026-07-06  
+> **Last updated:** 2026-07-08  
+> **Author:** Agent review (Oracle + Architect)  
 > **Applies to:** AeroDB (SurrealDB-backed document + event store)
 
 ---
@@ -1187,3 +1188,317 @@ src/AeroDB.SourceGenerators/
 | `DEFINE INDEX ... UNIQUE` | `EventStream<T>()` | Optimistic concurrency on stream versions |
 | `DEFINE FIELD ... TYPE` | Schema management | Typed columns for all tables |
 | `SchemaDiffer` / `INFO FOR TABLE` | Schema migration | Detect schema drift and apply ALTER |
+
+---
+
+## Appendix B: Implementation Plan & Tracking
+
+> **Last reviewed:** 2026-07-08  
+> **Reviewers:** Oracle (architecture), Architect (implementation)  
+> **Status:** Synthesis complete — Phases 0-2 approved, Phase 3 scoped down
+
+### Key Review Decisions
+
+| Decision | Value | Source |
+|----------|-------|--------|
+| `IConfigureAeroDB` | Keep — no rename | Oracle P2 |
+| `.WithReason()` | Confirmed (not `.Because()`) | Design review |
+| `ChangeTracking()` | Explicit opt-in per entity | User decision |
+| `EventLog` rename | Rename to `Outbox` before Phase 1 | Oracle C1 |
+| Source gen for projections | Pure `Apply(TEvent e)` convention on `partial class` — no attributes | User decision |
+| `DEFINE EVENT` | Use `IF NOT EXISTS` not `OVERWRITE` | Architect Issue #2, Oracle Q6 |
+| Phase 3 PatchPipeline | **Deferred** — ship `.WithReason()` only | Architect Issue #1, Oracle Q2 |
+
+### Benefits Summary
+
+| Capability | Before | After |
+|------------|--------|-------|
+| **Audit trail** | Per-doc metadata only (CreatedAt/LastModified) | Full before/after snapshots in `aero_audit_log` via native `DEFINE EVENT`, with `$auth.id` and timestamp |
+| **Change replay** | None (no document-level time-travel) | `CHANGEFEED` + `SHOW CHANGES` enables per-document point-in-time queries |
+| **Event stream config** | Manual `IEvents.Append(streamId, events)` with string-based types | Typed `.Events<AccountOpened, MoneyDeposited>()` — compile-time safety |
+| **Command intent** | `Patch<T>().Increment(x.Balance, 50m)` — raw mutation, no business meaning | Same call + `.WithReason("CustomerDeposit")` → emits `MoneyDeposited` domain event |
+| **Transactional safety** | State mutation and event append are separate calls | Single SurrealDB transaction: append event + apply patch + fire audit triggers |
+| **Change detection** | Manual state diff in C# | `UPDATE ... SET field += value RETURN DIFF` gives JSON Patch `[{"op":"replace","path":"/balance","value":175}]` |
+| **Projection dispatch** | Runtime reflection discovers `Apply(TEvent e)` methods | Source gen emits `switch` dispatcher at compile time — AOT-compatible |
+| **Concurrency** | Manual version management | `UNIQUE(stream_id, version)` index enforced at DB level, optimistic locking |
+| **Multi-tenancy** | `tenantId` column (risk of leak if filter is forgotten) | Structurally isolated via SurrealDB namespace + database scoping |
+
+### Fluent Query Examples
+
+```csharp
+// ── Phase 1: ChangeTracking audit trail ──────────────────────────
+
+// Minimal — sensible defaults
+Schema.For<Account>()
+    .ChangeTracking();
+
+// Full configuration
+Schema.For<Account>(doc =>
+{
+    doc.ChangeTracking(x => x
+        .ChangeFeed(retention: "30d", includeOriginal: true)
+        .AuditTrail()
+        .Outbox()
+        .TrackCreates()
+        .TrackUpdates()
+        .TrackDeletes()
+        .Ignore(a => a.UpdatedAt));
+});
+
+// Query audit log
+await session.Query<AuditLogRecord>()
+    .Where(a => a.SourceTable == "account")
+    .Where(a => a.SourceRecord == accountId)
+    .Where(a => a.ChangedAt > threeDaysAgo)
+    .OrderBy(a => a.ChangedAt)
+    .ToListAsync();
+
+// ── Phase 2: Typed event streams ──────────────────────────────────
+
+Schema.EventStream<Account>()
+    .UseTable<AccountEvent>()
+    .Events<AccountOpened, MoneyDeposited, MoneyWithdrawn, BalanceCorrected>()
+    .StreamId(x => x.StreamId)
+    .Version(x => x.Version)
+    .Serialization(EventSerializationMode.Json);
+
+// Append with compile-time type safety
+await session.Events
+    .For<Account>(accountId)
+    .AppendAsync(new MoneyDeposited(accountId, 50m), expectedVersion: 3);
+
+// Streaming read with checkpoint
+await foreach (var envelope in session.Events
+    .ReadFromAsync<AccountEvent>(checkpoint, ct))
+{
+    Process(envelope);
+}
+
+// ── Phase 3: Intent-aware patch with WithReason() ──────────────
+
+// Application code
+await session.Patch<Account>(accountId)
+    .Increment(x => x.Balance, 50m)
+    .WithReason("CustomerDeposit")
+    .SaveChangesAsync();
+
+// Configuration mapping reason → domain event
+Schema.For<Account>(doc =>
+{
+    doc.PatchEvents(events =>
+    {
+        events.OnIncrement(x => x.Balance)
+            .WithReason("CustomerDeposit")
+            .Emit((acct, amount, ctx) =>
+                new MoneyDeposited(acct.Id, amount, ctx.UserId));
+
+        events.OnDecrement(x => x.Balance)
+            .WithReason("Withdrawal")
+            .Emit((acct, amount, ctx) =>
+                new MoneyWithdrawn(acct.Id, amount, ctx.UserId));
+
+        events.OnReplace(x => x.Balance)
+            .WithReason("Correction")
+            .When((b, a, ctx) => ctx.Reason == "Correction")
+            .Emit((before, after, ctx) =>
+                new BalanceCorrected(
+                    after.Id, before.Balance, after.Balance, ctx.UserId));
+    });
+});
+
+// ── Combined: All layers together ─────────────────────────────
+
+public sealed class BankingAeroConfig : IConfigureAeroDB
+{
+    public void Configure(IAeroSchemaBuilder schema)
+    {
+        // 1. Document with change tracking + patch events
+        schema.For<Account>(doc =>
+        {
+            doc.ChangeTracking(x => x
+                .AuditTrail()
+                .ChangeFeed("30d")
+                .Ignore(a => a.UpdatedAt));
+
+            doc.PatchEvents(events =>
+            {
+                events.OnIncrement(x => x.Balance)
+                    .WithReason("CustomerDeposit")
+                    .Emit((acct, amt, ctx) =>
+                        new MoneyDeposited(acct.Id, amt, ctx.UserId));
+
+                events.OnDecrement(x => x.Balance)
+                    .WithReason("Withdrawal")
+                    .Emit((acct, amt, ctx) =>
+                        new MoneyWithdrawn(acct.Id, amt, ctx.UserId));
+            });
+        });
+
+        // 2. Event stream
+        schema.EventStream<Account>()
+            .UseTable<AccountEvent>()
+            .Events<AccountOpened, MoneyDeposited, MoneyWithdrawn, BalanceCorrected>()
+            .StreamId(x => x.StreamId)
+            .Version(x => x.Version);
+
+        // 3. Projection (source gen — pure convention)
+        schema.Projection<AccountBalanceProjection>()
+            .FromStream<AccountEvent>()
+            .Handles<AccountOpened>()
+            .Handles<MoneyDeposited>()
+            .Handles<MoneyWithdrawn>()
+            .Checkpointed()
+            .Async();
+    }
+}
+```
+
+### Phase 0 — `IAeroSchemaBuilder` (foundation)
+
+| File | Status | Notes |
+|------|--------|-------|
+| `src/AeroDB/Configuration/IAeroSchemaBuilder.cs` | 📋 Planned | Fluent facade: `For<T>()`, `EventStream<T>()`, `Projection<T>()` |
+| `src/AeroDB/Configuration/AeroDBSchemaBuilder.cs` | 📋 Planned | Internal implementation wrapping `SchemaOptions` |
+| `src/AeroDB/Configuration/IConfigureAeroDB.cs` | 📋 Planned | Add `Configure(IAeroSchemaBuilder)` default-implement overload |
+
+### Phase 1 — `ChangeTracking()` (native audit + changefeed)
+
+| File | Status | Notes |
+|------|--------|-------|
+| `src/AeroDB/ChangeTracking/ChangeTrackingOptions.cs` | 📋 Planned | Config POCO: `ChangeFeed`, `AuditTrail`, `TrackCreates/Updates/Deletes`, `Ignore`, `Outbox` |
+| `src/AeroDB/ChangeTracking/ChangeTrackingGenerator.cs` | 📋 Planned | Returns `ChangeTrackingDefinition` POCO with table name, CHANGEFEED clause, trigger definitions |
+| `src/AeroDB/ChangeTracking/ChangeTrackingSchemaManager.cs` | 📋 Planned | Creates shared `aero_audit_log` table, calls `EventTriggerManager.EnsureTriggerAsync` |
+| `src/AeroDB/ChangeTracking/AuditLogRecord.cs` | 📋 Planned | POCO for `aero_audit_log` |
+| `src/AeroDB/ChangeTracking/TechnicalEventTypes.cs` | 📋 Planned | `AccountCreated`/`AccountUpdated`/`AccountDeleted` sync event types |
+| `src/AeroDB/Schema/DocumentMapping.cs` | 📋 Planned | Add `.ChangeTracking()` method |
+| `src/AeroDB/Schema/SchemaManager.cs` | 📋 Planned | Add `AlterTableChangeFeedAsync()` for CHANGEFEED DDL |
+| `src/AeroDB/Events/EventTriggerManager.cs` | 📋 Planned | Add `IF NOT EXISTS` support (default), optional `Overwrite` flag |
+
+### Phase 2 — `EventStreamConfiguration` (typed event streams)
+
+| File | Status | Notes |
+|------|--------|-------|
+| `src/AeroDB/EventStreams/EventStreamConfiguration.cs` | 📋 Planned | Fluent: `.UseTable<T>()`, `.Events<>()`, `.StreamId()`, `.Version()` |
+| `src/AeroDB/EventStreams/EventStreamGenerator.cs` | 📋 Planned | DDL: `DEFINE TABLE ... SCHEMAFULL CHANGEFEED` + `DEFINE INDEX ... UNIQUE` |
+| `src/AeroDB/EventStreams/EventStreamAppender.cs` | 📋 Planned | Typed append API wrapping existing `IEvents` |
+| `src/AeroDB/EventStreams/IEventStreamAppender.cs` | 📋 Planned | Interface |
+| `src/AeroDB/Events/IEvents.cs` | 📋 Planned | Add `Append<T>(string, T, ...)` typed overloads with default implementations |
+
+### Phase 3-Lite — `WithReason()` + `PatchEvents()` config (scope-limited)
+
+| File | Status | Notes |
+|------|--------|-------|
+| `src/AeroDB/Patching/PatchEventsConfiguration.cs` | 📋 Planned | `.OnIncrement()`, `.OnReplace()`, `.Emit()` fluent API |
+| `src/AeroDB/Patching/PatchRuleResolver.cs` | 📋 Planned | Expression tree matching against `PatchEventRule` registry |
+| `src/AeroDB/Patching/PatchContext.cs` | 📋 Planned | Context: user ID, reason, metadata, timestamp |
+| `src/AeroDB/Patching/PatchEventRule.cs` | 📋 Planned | Rule model: op + field + reason + emit factory |
+| `src/AeroDB/Patching/IPatchExpression.cs` | 📋 Planned | Add `.WithReason(string reason)` method |
+| `src/AeroDB/Patching/PatchExpression.cs` | 📋 Planned | Implement `.WithReason()` — stores reason metadata, no pipeline execution |
+| `src/AeroDB/Schema/DocumentMapping.cs` | 📋 Planned | Add `.PatchEvents()` method |
+| `src/AeroDB/Schema/SchemaManager.cs` | 📋 Planned | Wire rule registration during `InitializeAsync` |
+
+> **Note:** The full `PatchPipeline` (load doc → validate version → resolve rule → compute version → append event → apply patch in a single atomic transaction) is **deferred**. Current `SaveChangesAsync` pipeline architecture cannot interleave event appends with patch mutations atomically. Requires a SaveChangesAsync refactoring in a future milestone. `.WithReason()` ships as metadata-only — the reason string is stored on the patch context for listeners and audit, but no automatic event emission occurs.
+
+### Phase 4 — Projection Source Gen (future, post-v1)
+
+| File | Status | Notes |
+|------|--------|-------|
+| `src/AeroDB.SourceGenerators/ProjectionDispatchGenerator.cs` | 📋 Future | Convention: `Apply(TEvent e)` → `switch` dispatcher on `partial class` |
+| `src/AeroDB.SourceGenerators/ProjectionRegistrationGenerator.cs` | 📋 Future | DI registration for discovered projections |
+| `src/AeroDB.SourceGenerators/EventTypeMetadataGenerator.cs` | 📋 Future | Event type name constants for string-free dispatch |
+
+### Marten Event Sourcing Parity Audit
+
+Audit of **47 Marten event sourcing features** against AeroDB (source: marten submodule + marten-llms-full.txt):
+
+#### ✅ Already Existing (30 of 47 — 64%)
+
+| Feature | File |
+|---------|------|
+| `Append` / `StartStream` (all overloads) | `Events/EventStore.cs` |
+| `AppendOptimistic` / `AppendExclusive` | `Events/IEvents.cs` |
+| `FetchStream` with version/timestamp/filtering | `Events/EventStore.cs` |
+| `AggregateStream<T>()` | `Events/LiveStreamAggregation.cs` |
+| `FetchForWriting` + auto-flush in SaveChanges | `Events/FetchForWritingResult.cs`, `DocumentSession.cs` |
+| `FetchLatest<T>()` | On `IQuerySession` |
+| `OverwriteEvent` / `DeleteSingleEvent` | `Events/EventStore.cs` |
+| `FetchStreamState` (Guid + string) | `Events/EventStore.cs` |
+| `CompactStream` / `ArchiveStream` / `WriteTombstone` | `Events/EventStore.cs` |
+| `FetchAllAfterSequence` | Async daemon polling |
+| `SingleStreamProjection<T>` (1 type param) | `Projections/` |
+| `MultiStreamProjection<T>` | `Projections/` |
+| `EventProjection<T>` (generic) | `Projections/` |
+| `SnapshotProjection<T>` | `Projections/` |
+| `FlatTableProjection<TDoc, TId>` | `Projections/` |
+| `CompositeProjection` | `Projections/` (Phase 18) |
+| `LiveStreamAggregation<T>` | `Events/` |
+| `IAggregateGrouper<TId>` / `CustomGrouping` | `Projections/` (Phase 18) |
+| `IEventSlice<T>` enrichment | `Projections/IEventSlice.cs` (Phase 17) |
+| `IChangeListener` (daemon pipeline) | `Diagnostics/IChangeListener.cs` (Phase 17) |
+| `BulkInsertEventsAsync` (IEvents + store-level) | `Events/EventStore.cs` (Phase 13) |
+| `SessionOptions` class | `SessionOptions.cs` (Phase 13) |
+| `RequestCount` on sessions | `InternalSessionBase.cs` (Phase 13) |
+| Per-session logger override | `IMartenSessionLogger` (Phase 13) |
+| Per-session listeners | `SessionOptions.Listeners` (Phase 13) |
+| Identity map (`Eject<T>` / `EjectAll`) | `InternalSessionBase.cs` |
+| Event metadata masking (GDPR) | `StoreOptions.DataMaskingPredicate` (Phase 17) |
+| Projection progress persistence | `AsyncDaemon` + `mt_projection_progress` (Phase 7b) |
+| Sharded async daemon | `AsyncDaemon` (Phase 18) |
+| Event type index for rebuilds | `StoreOptions.Events.EnableEventTypeIndex` |
+
+#### ⚠️ Partial (5 of 47 — 11%)
+
+| Feature | Gap |
+|---------|-----|
+| `DocumentTracking.DirtyTracking` | Auto-diff comparison logic in `SaveChangesAsync` is dead code — factory exists, identity map exists, but diff against original snapshot is not wired |
+| `SingleStreamProjection<TDoc, TId>` (2 type params) | Only `SingleStreamProjection<T>` exists — missing typed stream identity |
+| `EventProjection` (non-generic) | Only `EventProjection<T>` exists — missing non-generic base class |
+| `ProjectionCollection` fluent API | `StoreOptions.Projections` is raw `List<IProjection>` — missing `Add<T>()`/`Snapshot<T>()`/`LiveStreamAggregation<T>()` |
+| Blue-green projections (`ProjectionVersionAttribute`) | `SubscriptionVersion` exists on subscriptions only — no `ProjectionVersionAttribute` for projections |
+
+#### ❌ Missing (10 of 47 — 21%)
+
+| Feature | Notes |
+|---------|-------|
+| **Natural Keys** (`[NaturalKey]`, `FetchForWriting<T,TKey>`) | Marten attribute + typed overload by natural key instead of stream ID |
+| **DCB / Dynamic Consistency Boundary** (`FetchForWritingByTags`, `IEventBoundary`, event tags) | Cross-stream consistency — `EventTagQuery` exists for reads only |
+| **Poison event detection / dead-letter queue** | Async daemon has no skip-and-log or DLQ for bad events |
+| **`IChangeSet.Changes()` before/after** | `IChangeSet` exists (Operations, AppendedEvents) but no `Changes()` returning `IChange<T>` with `.Before`/`.After` |
+| **`FetchEventStoreStatistics()`** | Event count, stream count, etc. — missing from `IAeroDBAdvanced` |
+| **`AllProjectionProgress()` / `ProjectionProgressFor(ShardName)`** | Per-shard progress diagnostics — missing from `IAeroDBAdvanced` |
+| **Projection rebuild progress callback** | `RebuildAsync` has no progress reporting |
+| **Tenant management (Add/Remove tenants via Advanced)** | Missing from `IAeroDBAdvanced` |
+| **Database pool management** | Postgres-specific — marked N/A |
+| **Strong typed stream IDs (Vogen/StronglyTypedId)** | `EventStreamIdentity` is internal, no public API for custom stream identity types |
+
+### SurrealDB Primitives Verified
+
+All primitives tested against live SurrealDB (memory engine, 2026-07-07):
+
+| Primitive | Works | Notes |
+|-----------|-------|-------|
+| `UPDATE ... SET field += value RETURN DIFF` | ✅ | `[{"op":"replace","path":"/balance","value":175}]` — native arithmetic, no read-then-compute |
+| `UPDATE ... PATCH [{op,path,value}]` | ✅ | RFC 6902 JSON Patch — `add`, `replace`, `remove`, `copy`, `move` |
+| `UPDATE ... RETURN DIFF` | ✅ | Returns JSON Patch diff array |
+| `UPDATE ... RETURN AFTER` | ✅ | Single keyword only |
+| `DEFINE TABLE ... CHANGEFEED 30d INCLUDE ORIGINAL` | ✅ | `INFO FOR TABLE` shows changefeed config |
+| `DEFINE EVENT ON TABLE WHEN $event THEN (...)` | ✅ | All three triggers (CREATE/UPDATE/DELETE) fire correctly |
+| `$before`, `$after`, `$value`, `$event` in triggers | ✅ | Audit log entries created with operation, source, timestamps |
+| `CREATE aero_audit_log SET ...` inside trigger | ✅ | Shared audit log table + population verified |
+
+### SurrealDB Version Dependency
+
+- **SurrealDB ≥ 3.1.0 recommended** — CVE fix for JSON Patch info-disclosure via `UPDATE … PATCH` `copy` op with empty `from` pointer
+- **`DEFINE EVENT ... ASYNC`** requires SurrealDB 3.0+. For audit purposes, sync triggers are preferable anyway (in-transaction vs. out-of-transaction)
+- **`CHANGEFEED` retention enforcement** varies by storage engine: RocksDB/TiKV/SurrealDB Cloud enforce; Memory/SurrealKV accept syntax but don't clean up
+
+### Open Risks (from reviews)
+
+| # | Risk | Severity | Status |
+|---|------|----------|--------|
+| R1 | `UNIQUE(stream_id, version)` + `BEGIN/COMMIT` atomicity must be validated against live SurrealDB | Critical | ⏳ Pre-Phase 1 gate |
+| R2 | `.When()` predicate evaluates against snapshot isolation — stale read without optimistic concurrency | Medium | Documented: require `UseOptimisticConcurrency = true` for safety-critical predicates |
+| R3 | `aero_audit_log` unbounded growth — no retention strategy | Medium | Deferred to post-v1 |
+| R4 | `PatchContext` metadata (reason, userId) doesn't flow to audit log via `DEFINE EVENT` | Medium | Store in document field or `LET $patch_reason` session variable |
+| R5 | Source gen misses inherited `Apply()` methods from base classes | Low | Documented: stub `Apply` methods in partial class that delegate to base |
+| R6 | `CHANGEFEED` on event stream tables doubles storage | Low | Make opt-in for event stream tables |

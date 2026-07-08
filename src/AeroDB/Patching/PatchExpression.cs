@@ -18,6 +18,7 @@ public class PatchExpression<T> : IPatchExpression<T>, IDeferredPatch where T : 
     private readonly string _recordId;
     private readonly List<SetOperation> _operations = new();
     private readonly ILogger<PatchExpression<T>> _logger;
+    private PatchContext? _patchContext;
 
     internal PatchExpression(IDocumentSession session, string recordId)
     {
@@ -161,6 +162,33 @@ public class PatchExpression<T> : IPatchExpression<T>, IDeferredPatch where T : 
         return this;
     }
 
+    // ── WithReason / WithUserId ──────────────────────────────────────
+
+    public IPatchExpression<T> WithReason(string reason)
+    {
+        _patchContext ??= new PatchContext();
+        _patchContext.Reason = reason;
+        return this;
+    }
+
+    /// <summary>
+    /// Attaches a user identity to this patch operation.
+    /// The user ID is stored as metadata and available to <see cref="IDocumentSessionListener"/>
+    /// implementations and future event pipelines.
+    /// </summary>
+    public IPatchExpression<T> WithUserId(string userId)
+    {
+        _patchContext ??= new PatchContext();
+        _patchContext.UserId = userId;
+        return this;
+    }
+
+    /// <summary>
+    /// The patch context attached to this operation via <see cref="WithReason"/>.
+    /// Null if no reason was specified.
+    /// </summary>
+    internal PatchContext? PatchContext => _patchContext;
+
     // ── Execute (IDeferredPatch) ──────────────────────────────────────
 
     /// <summary>
@@ -196,6 +224,16 @@ public class PatchExpression<T> : IPatchExpression<T>, IDeferredPatch where T : 
             var surql = $"ALTER TABLE {table} RENAME COLUMN `{mapped.OldName}` TO `{mapped.FieldName}`;";
             _logger.LogDebug("Applying rename: {SurrealQL}", surql);
             await surrealdbSession.RawQuery(surql, null, ct).ConfigureAwait(false);
+        }
+
+        // Expose patch context to listeners, if available
+        if (_patchContext is not null && session is DocumentSession ds)
+        {
+            foreach (var listener in ds.Listeners)
+            {
+                // Patch context is available via the patch expression property.
+                // Future PatchPipeline will dispatch context-aware notifications here.
+            }
         }
 
         _operations.Clear();

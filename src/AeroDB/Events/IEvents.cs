@@ -165,6 +165,34 @@ public interface IEvents
     ISurrealDbQueryable<IEvent> QueryAllRawEvents();
 
     /// <summary>
+    /// Appends a single typed event to a stream with automatic versioning.
+    /// Default implementation delegates to <see cref="Append(string, IEnumerable{object}, Dictionary{string, string}?, CancellationToken)"/>.
+    /// </summary>
+    /// <typeparam name="T">The event type (must be a class).</typeparam>
+    /// <param name="streamId">The stream identifier.</param>
+    /// <param name="event">The event to append.</param>
+    /// <param name="ct">Cancellation token.</param>
+    /// <returns>The list of wrapped <see cref="IEvent"/> envelopes with assigned metadata.</returns>
+    Task<IReadOnlyList<IEvent>> Append<T>(string streamId, T @event, CancellationToken ct = default)
+        where T : class
+        => Append(streamId, new object[] { @event! }, ct: ct);
+
+    /// <summary>
+    /// Appends a single typed event to a stream with expected version (optimistic concurrency).
+    /// Throws <see cref="ConcurrencyException"/> if the stream's current version does not match.
+    /// Default implementation delegates to <see cref="Append(string, long, IEnumerable{object}, CancellationToken)"/>.
+    /// </summary>
+    /// <typeparam name="T">The event type (must be a class).</typeparam>
+    /// <param name="streamId">The stream identifier.</param>
+    /// <param name="expectedVersion">The expected current version of the stream.</param>
+    /// <param name="event">The event to append.</param>
+    /// <param name="ct">Cancellation token.</param>
+    /// <returns>The list of wrapped <see cref="IEvent"/> envelopes with assigned metadata.</returns>
+    Task<IReadOnlyList<IEvent>> Append<T>(string streamId, long expectedVersion, T @event, CancellationToken ct = default)
+        where T : class
+        => Append(streamId, expectedVersion, new object[] { @event! }, ct);
+
+    /// <summary>
     /// Build an <see cref="IEvent"/> envelope from raw event data without persisting it.
     /// The returned event carries the current timestamp but no version/sequence/stream identity.
     /// </summary>

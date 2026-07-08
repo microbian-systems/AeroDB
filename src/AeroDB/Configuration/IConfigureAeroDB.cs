@@ -29,4 +29,18 @@ public interface IConfigureAeroDB
     /// </summary>
     void Configure(IServiceProvider? services, StoreOptions options)
         => Configure(options);
+
+    /// <summary>
+    /// Called during <c>DocumentStore.InitializeAsync</c> with a fluent <see cref="IAeroSchemaBuilder"/>
+    /// that provides a unified entry point for document, event stream, and projection configuration.
+    /// Default implementation is a no-op — override to use the higher-level fluent API.
+    /// <para>
+    /// Prefer this overload over <see cref="Configure(StoreOptions)"/> for new configuration.
+    /// Both overloads are called during initialization.
+    /// </para>
+    /// </summary>
+    void Configure(IAeroSchemaBuilder schema)
+    {
+        // Default: no-op for backward compatibility.
+    }
 }

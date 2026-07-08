@@ -134,7 +134,7 @@ public class EventTriggerTests
             BindingFlags.NonPublic | BindingFlags.Static);
         var surql = (string)method!.Invoke(null, [trigger])!;
 
-        surql.ShouldContain("DEFINE EVENT user_created ON TABLE user");
+        surql.ShouldContain("DEFINE EVENT OVERWRITE user_created ON TABLE user");
         surql.ShouldContain("WHEN $event = 'CREATE'");
         surql.ShouldContain("THEN (CREATE audit SET event = $event, table_name = 'user')");
     }
@@ -175,7 +175,7 @@ public class EventTriggerTests
             BindingFlags.NonPublic | BindingFlags.Static);
         var surql = (string)method!.Invoke(null, [trigger])!;
 
-        surql.ShouldContain("DEFINE EVENT always_fire ON TABLE data");
+        surql.ShouldContain("DEFINE EVENT OVERWRITE always_fire ON TABLE data");
         surql.ShouldNotContain("WHEN");
         surql.ShouldContain("THEN (CREATE log SET data = $after)");
     }

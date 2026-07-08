@@ -1,6 +1,6 @@
 namespace AeroDB;
 
-internal enum OperationKind
+public enum OperationKind
 {
     Set,
     Increment,

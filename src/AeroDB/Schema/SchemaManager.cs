@@ -594,6 +594,15 @@ public class SchemaManager
         }
     }
 
+    /// <summary>
+    /// Alters a table's CHANGEFEED clause. Used by ChangeTrackingSchemaManager during initialization.
+    /// </summary>
+    public async Task AlterTableChangeFeedAsync(ISurrealDbSession session, string tableName, string changeFeedClause, CancellationToken ct = default)
+    {
+        _logger.LogDebug("Altering CHANGEFEED for table {Table}: {Clause}", tableName, changeFeedClause);
+        await session.RawQuery($"ALTER TABLE {tableName} {changeFeedClause};", null, ct).ConfigureAwait(false);
+    }
+
     public async Task DropTableAsync(ISurrealDbSession session, string tableName, CancellationToken ct = default)
     {
         _logger.LogDebug("Dropping table {Table}", tableName);

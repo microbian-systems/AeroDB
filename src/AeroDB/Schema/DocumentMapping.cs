@@ -41,6 +41,12 @@ public abstract class DocumentMapping
 
     /// <summary>The configured identity (primary key) property name. Set via <c>Schema.For&lt;T&gt;().Identity(...)</c>.</summary>
     internal string? IdentityProperty { get; set; }
+
+    /// <summary>Change tracking configuration for this document type. Null when not enabled.</summary>
+    internal virtual ChangeTrackingOptions? ChangeTrackingConfig => null;
+
+    /// <summary>Patch events configuration for this document type. Null when not configured.</summary>
+    internal virtual object? PatchEventsConfig => null;
 }
 
 /// <summary>Controls the SurrealDB table schema mode. <c>Schemaless</c> (Flexible) allows any fields; <c>Schemafull</c> (Strict) enforces a strict field definition.</summary>
@@ -68,6 +74,8 @@ public class DocumentMapping<T> : DocumentMapping
     internal override List<IndexDefinition> Indices { get; } = [];
     private bool _isMultiTenanted;
     internal override bool IsMultiTenanted => _isMultiTenanted;
+    private ChangeTrackingOptions? _changeTracking;
+    internal override ChangeTrackingOptions? ChangeTrackingConfig => _changeTracking;
     private SchemaMode _schemaModeType = SchemaMode.Strict;
     internal override SchemaMode SchemaModeType => _schemaModeType;
     private string? _schemaName;
@@ -742,6 +750,42 @@ public class DocumentMapping<T> : DocumentMapping
     public DocumentMapping<T> SoftDeleted()
     {
         ((DocumentMapping)this).IsSoftDeleted = true;
+        return this;
+    }
+
+    /// <summary>
+    /// Enable SurrealDB-native change tracking for this document type.
+    /// Generates CHANGEFEED on the table and DEFINE EVENT triggers that write
+    /// before/after snapshots to the shared <c>aero_audit_log</c> table.
+    /// Explicit opt-in — must be called per-entity.
+    /// </summary>
+    /// <param name="configure">Optional configuration for changefeed retention, tracked operations, ignored fields.</param>
+    public DocumentMapping<T> ChangeTracking(Action<ChangeTrackingOptions>? configure = null)
+    {
+        var opts = new ChangeTrackingOptions();
+        configure?.Invoke(opts);
+        _changeTracking = opts;
+        return this;
+    }
+
+    private PatchEventsConfiguration<T>? _patchEvents;
+    internal override object? PatchEventsConfig => _patchEvents;
+
+    /// <summary>
+    /// Configures patch-to-event mapping rules for this document type.
+    /// Rules map <see cref="IPatchExpression{T}.WithReason"/> call-site semantics
+    /// to domain event types and factories. Rules are resolved during patch execution.
+    /// <para>
+    /// Note: The full PatchPipeline (automatic event emission during SaveChangesAsync)
+    /// is deferred to a future milestone. Rules are stored and validated but events
+    /// are not automatically emitted in this phase.
+    /// </para>
+    /// </summary>
+    public DocumentMapping<T> PatchEvents(Action<PatchEventsConfiguration<T>> configure)
+    {
+        var config = new PatchEventsConfiguration<T>();
+        configure(config);
+        _patchEvents = config;
         return this;
     }
 

@@ -16,6 +16,7 @@ internal class FilteredPatchExpression<T> : IPatchExpression<T>, IDeferredPatch 
     private readonly Expression<Func<T, bool>> _filter;
     private readonly List<SetOperation> _operations = new();
     private readonly ILogger<FilteredPatchExpression<T>> _logger;
+    private PatchContext? _patchContext;
 
     public FilteredPatchExpression(IDocumentSession session, Expression<Func<T, bool>> filter)
     {
@@ -77,6 +78,15 @@ internal class FilteredPatchExpression<T> : IPatchExpression<T>, IDeferredPatch 
         return this;
     }
 
+    public IPatchExpression<T> WithReason(string reason)
+    {
+        _patchContext ??= new PatchContext();
+        _patchContext.Reason = reason;
+        return this;
+    }
+
+    internal PatchContext? PatchContext => _patchContext;
+
     async Task IDeferredPatch.ExecuteAsync(IDocumentSession session, CancellationToken ct)
     {
         if (_operations.Count == 0) return;
@@ -107,6 +117,16 @@ internal class FilteredPatchExpression<T> : IPatchExpression<T>, IDeferredPatch 
             var surql = $"ALTER TABLE {table} RENAME COLUMN `{mapped.OldName}` TO `{mapped.FieldName}`;";
             _logger.LogDebug("Applying rename: {SurrealQL}", surql);
             await surrealdbSession.RawQuery(surql, null, ct).ConfigureAwait(false);
+        }
+
+        // Expose patch context to listeners, if available
+        if (_patchContext is not null && session is DocumentSession ds)
+        {
+            foreach (var listener in ds.Listeners)
+            {
+                // Patch context is available via the patch expression property.
+                // Future PatchPipeline will dispatch context-aware notifications here.
+            }
         }
 
         _operations.Clear();

@@ -39,7 +39,8 @@ public class EventTriggerManager
     private static string BuildDefineEventSurql(EventTriggerDefinition trigger)
     {
         var sb = new StringBuilder();
-        sb.Append($"DEFINE EVENT {trigger.Name} ON TABLE {trigger.Table}");
+        sb.Append(trigger.Overwrite ? "DEFINE EVENT OVERWRITE " : "DEFINE EVENT ");
+        sb.Append($"{trigger.Name} ON TABLE {trigger.Table}");
 
         if (trigger.WhenCondition is not null)
             sb.Append($" WHEN {trigger.WhenCondition}");

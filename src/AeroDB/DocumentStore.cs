@@ -77,6 +77,11 @@ public class DocumentStore : IDocumentStore, ISessionFactory
             foreach (var configurator in Options.Configurators)
                 configurator.Configure(Options.ServiceProvider, Options);
 
+            // Phase 0: IAeroSchemaBuilder — new fluent config path
+            var dbPerTenantSchema = new AeroDBSchemaBuilder(Options);
+            foreach (var configurator in Options.Configurators)
+                configurator.Configure(dbPerTenantSchema);
+
             // Auto-discover and apply IConfigureAeroDB from DI (if ServiceProvider is set)
             await ApplyDiscoveredConfigurators(Options, ct).ConfigureAwait(false);
 
@@ -96,6 +101,11 @@ public class DocumentStore : IDocumentStore, ISessionFactory
 
             // Apply global document policies to all registered mappings
             ApplyPolicies();
+
+            // TODO: Phase 1 — ChangeTracking for DatabasePerTenant
+            // In this mode, each tenant gets its own database on first session.
+            // ChangeTracking will need to be applied per-tenant during schema auto-creation.
+            // See ChangeTrackingSchemaManager.ApplyAsync for the implementation.
 
             _logger.LogInformation("AeroDB store initialized (DatabasePerTenant mode)");
             Interlocked.Exchange(ref _initialized, 2);
@@ -159,6 +169,11 @@ public class DocumentStore : IDocumentStore, ISessionFactory
         // Apply IConfigureAeroDB modules (manual Configurators list)
         foreach (var configurator in Options.Configurators)
             configurator.Configure(Options.ServiceProvider, Options);
+
+        // Phase 0: IAeroSchemaBuilder — new fluent config path
+        var schemaBuilder = new AeroDBSchemaBuilder(Options);
+        foreach (var configurator in Options.Configurators)
+            configurator.Configure(schemaBuilder);
 
         // Auto-discover and apply IConfigureAeroDB from DI (if ServiceProvider is set)
         await ApplyDiscoveredConfigurators(Options, ct).ConfigureAwait(false);
@@ -303,6 +318,51 @@ public class DocumentStore : IDocumentStore, ISessionFactory
                 else
                     await triggerManager.EnsureTriggerAsync(triggerSession, trigger, ct).ConfigureAwait(false);
             }
+        }
+
+        // Phase 1: ChangeTracking — SurrealDB-native audit trail (CHANGEFEED + DEFINE EVENT triggers)
+        {
+            await using var changeTrackingSession = await _client.CreateSession(ct).ConfigureAwait(false);
+            await changeTrackingSession.Use(ns, db, ct).ConfigureAwait(false);
+            var changeTrackingManager = new ChangeTrackingSchemaManager(Options.LoggerFactory);
+            await changeTrackingManager.ApplyAsync(Options, changeTrackingSession, ct).ConfigureAwait(false);
+        }
+
+        // Phase 2: EventStream — create event stream tables and indexes
+        if (Options.EventStreamConfigs.Count > 0)
+        {
+            await using var eventStreamSession = await _client.CreateSession(ct).ConfigureAwait(false);
+            await eventStreamSession.Use(ns, db, ct).ConfigureAwait(false);
+
+            foreach (var (aggregateType, config) in Options.EventStreamConfigs)
+            {
+                _logger.LogDebug("Creating event stream table for aggregate {AggregateType}", aggregateType.Name);
+                var surql = EventStreamGenerator.BuildCreateSurql(config);
+                await eventStreamSession.RawQuery(surql, null, ct).ConfigureAwait(false);
+            }
+        }
+
+        // Phase 3: PatchEvents — register patch-to-event rules (no DB operations)
+        {
+            var patchRules = new PatchRuleResolver();
+            foreach (var mapping in Options.Schema.Mappings.Values)
+            {
+                var config = mapping.PatchEventsConfig;
+                if (config is null)
+                    continue;
+
+                // Use reflection to access the generic PatchEventsConfiguration<T>.Rules property
+                var rulesProperty = config.GetType().GetProperty("Rules",
+                    System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                if (rulesProperty?.GetValue(config) is IReadOnlyList<PatchEventRule> rules)
+                {
+                    patchRules.RegisterRange(rules);
+                    _logger.LogDebug("Registered {Count} patch event rules for {EntityType}",
+                        rules.Count, mapping.EntityType.Name);
+                }
+            }
+            Options.PatchRules = patchRules;
+            _logger.LogInformation("Registered {Count} total patch event rules across all entities", patchRules.Count);
         }
 
         // Auto-create user-defined functions
@@ -702,6 +762,15 @@ public class DocumentStore : IDocumentStore, ISessionFactory
                 if (manualConfiguratorTypes.Contains(configurator.GetType()))
                     continue;
                 configurator.Configure(options.ServiceProvider, options);
+            }
+
+            // Phase 0: also apply IAeroSchemaBuilder to DI-discovered configurators
+            var diSchemaBuilder = new AeroDBSchemaBuilder(options);
+            foreach (var configurator in diConfigurators)
+            {
+                if (manualConfiguratorTypes.Contains(configurator.GetType()))
+                    continue;
+                configurator.Configure(diSchemaBuilder);
             }
         }
 

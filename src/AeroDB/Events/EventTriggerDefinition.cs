@@ -11,6 +11,9 @@ public sealed class EventTriggerDefinition
     public bool Async { get; set; }
     public int? Retry { get; set; }
     public int? MaxDepth { get; set; }
+
+    /// <summary>Use DEFINE EVENT OVERWRITE instead of DEFINE EVENT. Default: true (idempotent re-application).</summary>
+    public bool Overwrite { get; set; } = true;
 }
 
 public class EventTriggerOptions

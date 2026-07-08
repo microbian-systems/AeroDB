@@ -26,4 +26,11 @@ public interface IPatchExpression<T> where T : class
 
     /// <summary>Set all writable properties of the matching type to the given value.</summary>
     IPatchExpression<T> SetAll<TValue>(TValue value);
+
+    /// <summary>
+    /// Attaches a business reason to this patch operation.
+    /// The reason is stored as metadata and available to <see cref="IDocumentSessionListener"/>
+    /// implementations and future event pipelines. Does NOT automatically emit domain events.
+    /// </summary>
+    IPatchExpression<T> WithReason(string reason);
 }
