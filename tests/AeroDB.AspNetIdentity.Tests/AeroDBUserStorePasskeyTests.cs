@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
 using Shouldly;
+using SurrealDb.Embedded.InMemory;
 
 namespace AeroDB.AspNetIdentity.Tests;
 
@@ -92,6 +93,20 @@ public class AeroDBUserStorePasskeyTests
         return a.AsSpan().SequenceEqual(b);
     }
 
+    private static async Task<IDocumentStore> CreateEmbeddedStoreAsync()
+    {
+        var uniqueId = $"identity_{Guid.NewGuid():N}";
+        var store = Documents.For(options =>
+        {
+            options.ClientFactory = () => new SurrealDbMemoryClient();
+            options.Namespace = uniqueId;
+            options.Database = uniqueId;
+        });
+
+        await store.InitializeAsync();
+        return store;
+    }
+
     // ── GetPasskeysAsync ──────────────────────────────────────────────
 
     [Test]
@@ -136,6 +151,38 @@ public class AeroDBUserStorePasskeyTests
         var result = await userStore.GetPasskeysAsync(user, CancellationToken.None);
 
         result.ShouldBeEmpty();
+    }
+
+    [Test]
+    public async Task GetPasskeysAsync_ShouldRoundTripCreatedAt_FromEmbeddedStore()
+    {
+        await using var store = await CreateEmbeddedStoreAsync();
+        var logger = Substitute.For<ILogger<AeroDBUserStore<IdentityUser, IdentityRole>>>();
+        var userStore = new AeroDBUserStore<IdentityUser, IdentityRole>(store, logger);
+        var user = new IdentityUser("testuser") { Id = "user-1" };
+        var createdAt = new DateTimeOffset(2026, 7, 8, 12, 34, 56, TimeSpan.Zero);
+        var passkey = new UserPasskeyInfo(
+            credentialId: [1, 2, 3],
+            publicKey: [4, 5, 6],
+            createdAt: createdAt,
+            signCount: 0,
+            transports: ["internal"],
+            isUserVerified: true,
+            isBackupEligible: true,
+            isBackedUp: false,
+            attestationObject: [7, 8, 9],
+            clientDataJson: [10, 11, 12])
+        {
+            Name = "test-passkey"
+        };
+
+        await userStore.AddOrUpdatePasskeyAsync(user, passkey, CancellationToken.None);
+
+        var result = await userStore.GetPasskeysAsync(user, CancellationToken.None);
+
+        result.Count.ShouldBe(1);
+        result[0].Name.ShouldBe("test-passkey");
+        result[0].CreatedAt.ShouldBe(createdAt);
     }
 
     // ── AddOrUpdatePasskeyAsync ────────────────────────────────────────

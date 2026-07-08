@@ -598,6 +598,9 @@ public abstract class InternalSessionBase : IAsyncDisposable
         if (propertyType.IsInstanceOfType(value))
             return value;
 
+        if (TryConvertDateTimeOffsetValue(propertyType, value, out var dateTimeOffsetValue))
+            return dateTimeOffsetValue;
+
         var json = System.Text.Json.JsonSerializer.Serialize(value);
         return System.Text.Json.JsonSerializer.Deserialize(json, property.PropertyType);
     }
@@ -721,29 +724,15 @@ public abstract class InternalSessionBase : IAsyncDisposable
             return true;
         }
 
-        if (propertyType == typeof(DateTimeOffset) && value is DateTime dateTime)
+        if (propertyType == typeof(byte[]) && TryConvertByteArrayValue(value, out var bytes))
         {
-            normalized = new DateTimeOffset(
-                DateTime.SpecifyKind(dateTime, DateTimeKind.Utc));
+            normalized = bytes;
             return true;
         }
 
-        if (propertyType == typeof(DateTimeOffset) && value is string dateText
-            && DateTimeOffset.TryParse(
-                dateText,
-                System.Globalization.CultureInfo.InvariantCulture,
-                System.Globalization.DateTimeStyles.AssumeUniversal | System.Globalization.DateTimeStyles.AdjustToUniversal,
-                out var dateTimeOffsetValue))
+        if (TryConvertDateTimeOffsetValue(propertyType, value, out var dateTimeOffsetValue))
         {
             normalized = dateTimeOffsetValue;
-            return true;
-        }
-
-        if (propertyType == typeof(DateTimeOffset) && value is List<object?> dateParts)
-        {
-            var seconds = dateParts.Count > 0 ? Convert.ToInt64(dateParts[0], System.Globalization.CultureInfo.InvariantCulture) : 0L;
-            var nanos = dateParts.Count > 1 ? Convert.ToInt64(dateParts[1], System.Globalization.CultureInfo.InvariantCulture) : 0L;
-            normalized = DateTimeOffset.FromUnixTimeSeconds(seconds).AddTicks(nanos / 100);
             return true;
         }
 
@@ -836,6 +825,138 @@ public abstract class InternalSessionBase : IAsyncDisposable
         }
 
         return true;
+    }
+
+    private static bool TryConvertByteArrayValue(object value, out byte[] bytes)
+    {
+        bytes = [];
+
+        switch (value)
+        {
+            case byte[] existing:
+                bytes = existing;
+                return true;
+            case string text:
+                try
+                {
+                    bytes = Convert.FromBase64String(text);
+                    return true;
+                }
+                catch (FormatException)
+                {
+                    return false;
+                }
+            case System.Collections.IEnumerable enumerable when value is not string:
+                var values = new List<byte>();
+                foreach (var item in enumerable)
+                {
+                    if (item is null)
+                        return false;
+
+                    values.Add(Convert.ToByte(item, System.Globalization.CultureInfo.InvariantCulture));
+                }
+
+                bytes = values.ToArray();
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    private static bool TryConvertDateTimeOffsetValue(
+        Type propertyType,
+        object value,
+        out DateTimeOffset normalized)
+    {
+        normalized = default;
+        if (propertyType != typeof(DateTimeOffset))
+            return false;
+
+        switch (value)
+        {
+            case DateTimeOffset dateTimeOffset:
+                normalized = dateTimeOffset;
+                return true;
+            case DateTime dateTime:
+                normalized = new DateTimeOffset(DateTime.SpecifyKind(dateTime, DateTimeKind.Utc));
+                return true;
+            case string dateText
+                when DateTimeOffset.TryParse(
+                    dateText,
+                    System.Globalization.CultureInfo.InvariantCulture,
+                    System.Globalization.DateTimeStyles.AssumeUniversal | System.Globalization.DateTimeStyles.AdjustToUniversal,
+                    out var parsed):
+                normalized = parsed;
+                return true;
+            case List<object?> dateParts:
+                var seconds = dateParts.Count > 0
+                    ? Convert.ToInt64(dateParts[0], System.Globalization.CultureInfo.InvariantCulture)
+                    : 0L;
+                var nanos = dateParts.Count > 1
+                    ? Convert.ToInt64(dateParts[1], System.Globalization.CultureInfo.InvariantCulture)
+                    : 0L;
+                normalized = DateTimeOffset.FromUnixTimeSeconds(seconds).AddTicks(nanos / 100);
+                return true;
+            case Dictionary<string, object?> map:
+                return TryConvertDateTimeOffsetMap(map, out normalized);
+            case IReadOnlyDictionary<string, object?> map:
+                return TryConvertDateTimeOffsetMap(map, out normalized);
+        }
+
+        return false;
+    }
+
+    private static bool TryConvertDateTimeOffsetMap(
+        IReadOnlyDictionary<string, object?> map,
+        out DateTimeOffset normalized)
+    {
+        normalized = default;
+
+        if (TryGetMapValue(map, "seconds", out var secondsValue)
+            || TryGetMapValue(map, "secs", out secondsValue)
+            || TryGetMapValue(map, "sec", out secondsValue))
+        {
+            var seconds = Convert.ToInt64(secondsValue, System.Globalization.CultureInfo.InvariantCulture);
+            var nanos = TryGetMapValue(map, "nanoseconds", out var nanosValue)
+                || TryGetMapValue(map, "nanos", out nanosValue)
+                || TryGetMapValue(map, "ns", out nanosValue)
+                ? Convert.ToInt64(nanosValue, System.Globalization.CultureInfo.InvariantCulture)
+                : 0L;
+
+            normalized = DateTimeOffset.FromUnixTimeSeconds(seconds).AddTicks(nanos / 100);
+            return true;
+        }
+
+        if (TryGetMapValue(map, "$date", out var dateValue)
+            || TryGetMapValue(map, "datetime", out dateValue)
+            || TryGetMapValue(map, "value", out dateValue))
+        {
+            return dateValue is not null
+                && TryConvertDateTimeOffsetValue(typeof(DateTimeOffset), dateValue, out normalized);
+        }
+
+        return false;
+    }
+
+    private static bool TryGetMapValue(
+        IReadOnlyDictionary<string, object?> map,
+        string key,
+        out object? value)
+    {
+        if (map.TryGetValue(key, out value))
+            return true;
+
+        foreach (var pair in map)
+        {
+            if (string.Equals(pair.Key, key, StringComparison.OrdinalIgnoreCase))
+            {
+                value = pair.Value;
+                return true;
+            }
+        }
+
+        value = null;
+        return false;
     }
 
     private static bool TryGetEnumerableElementType(Type type, out Type elementType)
