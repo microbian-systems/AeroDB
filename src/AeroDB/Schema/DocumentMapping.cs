@@ -862,6 +862,12 @@ public class FieldDefinition
     /// <summary>Field name in the SurrealDB table.</summary>
     public string FieldName { get; set; } = "";
 
+    /// <summary>
+    /// When true, the schema manager emits a <c>REMOVE FIELD</c> statement instead of
+    /// a <c>DEFINE FIELD</c> statement. Useful for cleaning up legacy field names.
+    /// </summary>
+    public bool Remove { get; set; }
+
     /// <summary>SurrealDB type (e.g., "string", "int", "datetime", "option&lt;string&gt;").</summary>
     public string? FieldType { get; set; }
 

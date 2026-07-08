@@ -577,6 +577,14 @@ public class SchemaManager
     {
         foreach (var field in fields)
         {
+            if (field.Remove)
+            {
+                var removeSurql = $"REMOVE FIELD {field.FieldName} ON TABLE {tableName};";
+                _logger.LogDebug("Removing field definition {Field} on table {Table}", field.FieldName, tableName);
+                await session.RawQuery(removeSurql, null, ct).ConfigureAwait(false);
+                continue;
+            }
+
             var sb = new StringBuilder();
             sb.Append("DEFINE FIELD ").Append(field.FieldName);
             sb.Append(" ON TABLE ").Append(tableName);

@@ -79,11 +79,42 @@ internal sealed class AeroDBIdentityConfigurator<TUser, TRole, TKey> : IConfigur
             .Field("recovery_codes", f => f.FieldType = "option<array<string>>")
             .Field("role_ids", f => f.FieldType = "option<array<string>>");
 
+        RemoveLegacyPascalCaseIdentityUserFields(userMapping);
+
         if (requireUniqueEmail)
             userMapping.UniqueIndex(x => x.NormalizedEmail);
 
-        options.Schema.For<TRole>()
+        var roleMapping = options.Schema.For<TRole>()
             .Identity(x => x.Id)
             .UniqueIndex(x => x.NormalizedName);
+
+        RemoveLegacyPascalCaseIdentityRoleFields(roleMapping);
+    }
+
+    private static void RemoveLegacyPascalCaseIdentityUserFields(DocumentMapping<TUser> mapping)
+    {
+        mapping
+            .Field(nameof(IdentityUser<TKey>.UserName), f => f.Remove = true)
+            .Field(nameof(IdentityUser<TKey>.NormalizedUserName), f => f.Remove = true)
+            .Field(nameof(IdentityUser<TKey>.Email), f => f.Remove = true)
+            .Field(nameof(IdentityUser<TKey>.NormalizedEmail), f => f.Remove = true)
+            .Field(nameof(IdentityUser<TKey>.EmailConfirmed), f => f.Remove = true)
+            .Field(nameof(IdentityUser<TKey>.PasswordHash), f => f.Remove = true)
+            .Field(nameof(IdentityUser<TKey>.SecurityStamp), f => f.Remove = true)
+            .Field(nameof(IdentityUser<TKey>.ConcurrencyStamp), f => f.Remove = true)
+            .Field(nameof(IdentityUser<TKey>.PhoneNumber), f => f.Remove = true)
+            .Field(nameof(IdentityUser<TKey>.PhoneNumberConfirmed), f => f.Remove = true)
+            .Field(nameof(IdentityUser<TKey>.TwoFactorEnabled), f => f.Remove = true)
+            .Field(nameof(IdentityUser<TKey>.LockoutEnd), f => f.Remove = true)
+            .Field(nameof(IdentityUser<TKey>.LockoutEnabled), f => f.Remove = true)
+            .Field(nameof(IdentityUser<TKey>.AccessFailedCount), f => f.Remove = true);
+    }
+
+    private static void RemoveLegacyPascalCaseIdentityRoleFields(DocumentMapping<TRole> mapping)
+    {
+        mapping
+            .Field(nameof(IdentityRole<TKey>.Name), f => f.Remove = true)
+            .Field(nameof(IdentityRole<TKey>.NormalizedName), f => f.Remove = true)
+            .Field(nameof(IdentityRole<TKey>.ConcurrencyStamp), f => f.Remove = true);
     }
 }

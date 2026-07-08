@@ -100,6 +100,7 @@ public class ExtensionsTests
         fields.ShouldContain(f => f.FieldName == "authenticator_key" && f.FieldType == "option<string>");
         fields.ShouldContain(f => f.FieldName == "recovery_codes" && f.FieldType == "option<array<string>>");
         fields.ShouldContain(f => f.FieldName == "role_ids" && f.FieldType == "option<array<string>>");
+        fields.ShouldContain(f => f.FieldName == nameof(IdentityUser.AccessFailedCount) && f.Remove);
     }
 
     [Test]

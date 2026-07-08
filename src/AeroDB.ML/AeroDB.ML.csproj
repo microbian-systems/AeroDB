@@ -14,8 +14,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AeroDB\AeroDB.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="SurrealDb.Net" VersionOverride="0.10.2" />
+    <ProjectReference Include="..\..\surrealdb.net\SurrealDb.Net\SurrealDb.Net.csproj" />
   </ItemGroup>
 </Project>

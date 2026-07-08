@@ -1,6 +1,9 @@
 using TUnit.Core;
 using AeroDB;
+using NSubstitute;
+using SurrealDb.Net;
 using SurrealDb.Net.Models;
+using SurrealDb.Net.Models.Response;
 
 namespace AeroDB.Tests;
 
@@ -81,6 +84,30 @@ public class SchemaManagerEdgeTests
         var response = await surrealSession.RawQuery("INFO FOR TABLE schema_test_doc;");
         response.HasErrors.ShouldBeFalse();
         response.Count.ShouldBeGreaterThan(0);
+    }
+
+    [Test]
+    public async Task EnsureFieldDefinitionsAsync_RemovesLegacyField()
+    {
+        var session = Substitute.For<ISurrealDbSession>();
+        session.RawQuery(
+            Arg.Any<string>(),
+            Arg.Any<IReadOnlyDictionary<string, object?>>(),
+            Arg.Any<CancellationToken>())
+            .Returns(new SurrealDbResponse(new List<ISurrealDbResult>()));
+
+        var schemaManager = new SchemaManager();
+        var fields = new List<FieldDefinition>
+        {
+            new() { FieldName = "AccessFailedCount", Remove = true }
+        };
+
+        await schemaManager.EnsureFieldDefinitionsAsync(session, "identity_user", fields);
+
+        await session.Received(1).RawQuery(
+            "REMOVE FIELD AccessFailedCount ON TABLE identity_user;",
+            null,
+            Arg.Any<CancellationToken>());
     }
 
     [Test]
