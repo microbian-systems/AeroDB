@@ -175,7 +175,14 @@ public interface IEvents
     /// <returns>The list of wrapped <see cref="IEvent"/> envelopes with assigned metadata.</returns>
     Task<IReadOnlyList<IEvent>> Append<T>(string streamId, T @event, CancellationToken ct = default)
         where T : class
-        => Append(streamId, new object[] { @event! }, ct: ct);
+    {
+        if (@event is IEnumerable<object> events)
+        {
+            return Append(streamId, events, headers: null, ct);
+        }
+
+        return Append(streamId, (IEnumerable<object>)new object[] { @event! }, headers: null, ct);
+    }
 
     /// <summary>
     /// Appends a single typed event to a stream with expected version (optimistic concurrency).
@@ -190,7 +197,14 @@ public interface IEvents
     /// <returns>The list of wrapped <see cref="IEvent"/> envelopes with assigned metadata.</returns>
     Task<IReadOnlyList<IEvent>> Append<T>(string streamId, long expectedVersion, T @event, CancellationToken ct = default)
         where T : class
-        => Append(streamId, expectedVersion, new object[] { @event! }, ct);
+    {
+        if (@event is IEnumerable<object> events)
+        {
+            return Append(streamId, expectedVersion, events, ct);
+        }
+
+        return Append(streamId, expectedVersion, (IEnumerable<object>)new object[] { @event! }, ct);
+    }
 
     /// <summary>
     /// Build an <see cref="IEvent"/> envelope from raw event data without persisting it.
