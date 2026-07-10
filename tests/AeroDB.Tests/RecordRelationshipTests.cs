@@ -146,7 +146,7 @@ public sealed class RecordRelationshipTests
         options.Schema.For<RelationshipOrder>().HasOne(x => x.Customer);
 
         var provider = new SurrealQueryProvider(Substitute.For<ISurrealDbSession>(), options);
-        var query = new SurrealDbQueryable<RelationshipOrder>(provider)
+        var query = ((ISurrealDbQueryable<RelationshipOrder>)new SurrealDbQueryable<RelationshipOrder>(provider))
             .Select(x => new { x.Customer!.Name });
 
         query.ToCommand().ShouldBe("SELECT customer.name FROM `relationship_order`;");
@@ -159,7 +159,7 @@ public sealed class RecordRelationshipTests
         options.Schema.For<RelationshipOrder>().HasOne(x => x.Customer);
 
         var provider = new SurrealQueryProvider(Substitute.For<ISurrealDbSession>(), options);
-        var query = new SurrealDbQueryable<RelationshipOrder>(provider)
+        var query = ((ISurrealDbQueryable<RelationshipOrder>)new SurrealDbQueryable<RelationshipOrder>(provider))
             .Where(x => x.Customer!.Name == "Alice");
 
         query.ToCommand().ShouldBe("SELECT * FROM `relationship_order` WHERE customer.name = $p0;");
@@ -173,7 +173,7 @@ public sealed class RecordRelationshipTests
         var orderedOnOrAfter = new DateTimeOffset(2026, 1, 1, 0, 0, 0, TimeSpan.Zero);
 
         var provider = new SurrealQueryProvider(Substitute.For<ISurrealDbSession>(), options);
-        var query = new SurrealDbQueryable<RelationshipOrder>(provider)
+        var query = ((ISurrealDbQueryable<RelationshipOrder>)new SurrealDbQueryable<RelationshipOrder>(provider))
             .Where(o => o.CreatedOn >= orderedOnOrAfter && o.Customer!.Name == "Alice");
 
         query.ToCommand().ShouldBe("SELECT * FROM `relationship_order` WHERE (created_on >= d'2026-01-01T00:00:00Z') AND (customer.name = $p0);");

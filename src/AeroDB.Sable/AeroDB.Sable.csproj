@@ -13,6 +13,7 @@
     <ProjectReference Include="..\..\surrealdb.net\SurrealDb.Net\SurrealDb.Net.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Dahomey.Cbor" />
     <PackageReference Include="SurrealDb.Reactive" VersionOverride="0.10.2" />
     <PackageReference Include="FlakeId" VersionOverride="1.3.2" />
     <PackageReference Include="JasperFx.Events" />

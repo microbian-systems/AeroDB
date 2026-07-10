@@ -17,6 +17,7 @@
     <PackageVersion Include="Blazor.Radzen.Theming" Version="10.2.3" />
     <PackageVersion Include="Bogus" Version="35.6.5" />
     <PackageVersion Include="Boxed.AspNetCore" Version="9.0.1" />
+    <PackageVersion Include="Dahomey.Cbor" Version="1.26.3" />
     <PackageVersion Include="EasyScrutor" Version="0.3.0" />
     <PackageVersion Include="FluentValidation" Version="12.1.1" />
     <PackageVersion Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
