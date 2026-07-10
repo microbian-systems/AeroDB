@@ -1,4 +1,5 @@
-using AeroDB;
+using AeroDB.Sable;
+using AeroDB.WolverineFx;
 
 namespace AeroDB.Tests;
 
@@ -8,7 +9,7 @@ using TUnit.Core;
 using Wolverine;
 
 /// <summary>
-/// Pure unit tests for Layer 3 of AeroDB.WolverineFx:
+/// Pure unit tests for Layer 3 of AeroDB.Sable.WolverineFx:
 ///  • AeroDBOps factory methods (Store/Delete/Insert)
 ///  • ScopedDocumentSessionHolder
 ///  • WolverineEnvelopeSchemas.Configure()

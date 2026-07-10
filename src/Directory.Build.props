@@ -25,7 +25,7 @@
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageIcon>aero-logo-new.png</PackageIcon>
 		<PackageProjectUrl>https://microbians.io/products</PackageProjectUrl>
-		<RepositoryUrl>https://github.com/microbian-systems/AeroDB</RepositoryUrl>
+		<RepositoryUrl>https://github.com/microbian-systems/AeroDB.Sable</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
 		<PublishRepositoryUrl>true</PublishRepositoryUrl>
 		<IncludeSymbols>true</IncludeSymbols>

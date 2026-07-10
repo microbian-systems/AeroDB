@@ -10,7 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AeroDB\AeroDB.csproj" />
+    <ProjectReference Include="..\AeroDB.Sable\AeroDB.Sable.csproj" />
     <PackageReference Include="Aero.Core" />
   </ItemGroup>
 

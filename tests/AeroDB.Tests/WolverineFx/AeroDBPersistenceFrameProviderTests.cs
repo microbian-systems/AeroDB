@@ -1,9 +1,12 @@
+using AeroDB.WolverineFx;
+using AeroDB.WolverineFx.Codegen;
+
 namespace AeroDB.Tests;
 
 using System.Reflection;
 using AeroDB.WolverineFx;
 using AeroDB.WolverineFx.Codegen;
-using global::AeroDB;
+using global::AeroDB.Sable;
 using JasperFx;
 using JasperFx.CodeGeneration.Frames;
 using JasperFx.CodeGeneration.Model;
@@ -84,7 +87,7 @@ public class AeroDBPersistenceFrameProviderTests
     [Test]
     public void CanApply_ReturnsFalse_WhenOnlyIQuerySessionDependency()
     {
-        // Arrange: IQuerySession alone should NOT trigger AeroDB persistence
+        // Arrange: IQuerySession alone should NOT trigger AeroDB.Sable persistence
         var chain = Substitute.For<IChain>();
         chain.Middleware.Returns([]);
         chain.Postprocessors.Returns([]);

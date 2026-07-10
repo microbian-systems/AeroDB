@@ -1,7 +1,7 @@
 using System.Linq.Expressions;
 using System.Reflection;
 using Dahomey.Cbor.Attributes;
-using AeroDB;
+using AeroDB.Sable;
 using SurrealDb.Net.Models;
 
 namespace AeroDB.Tests;

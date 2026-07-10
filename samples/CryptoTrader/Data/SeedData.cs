@@ -1,6 +1,6 @@
 using Bogus;
 using CryptoTrader.Models;
-using AeroDB;
+using AeroDB.Sable;
 using SurrealDb.Net.Models;
 
 namespace CryptoTrader.Data;
@@ -8,7 +8,7 @@ namespace CryptoTrader.Data;
 /// <summary>
 /// Generates realistic test data using Bogus.
 /// Demonstrates:
-/// - AeroDB document CRUD (Store + SaveChangesAsync)
+/// - AeroDB.Sable document CRUD (Store + SaveChangesAsync)
 /// - Graph relationships via Relate (User → Account, User → holds_asset → CryptoAsset), flushed in batches with SaveChangesAsync
 /// </summary>
 public static class SeedData

@@ -1,4 +1,4 @@
-using AeroDB.WolverineFx;
+using AeroDB.SourceGenerators;
 
 namespace AeroDB.Tests;
 
@@ -49,7 +49,7 @@ public class AeroDBMessageStoreTests
         await using var store = await CreateStoreAsync();
         var env = MakeEnvelope("StoreTest");
         env.Data = new byte[] { 1, 2, 3 };
-        env.Destination = new Uri("AeroDB://localhost/incoming");
+        env.Destination = new Uri("AeroDB.Sable://localhost/incoming");
         await store.StoreIncomingAsync(env);
     }
 
@@ -59,7 +59,7 @@ public class AeroDBMessageStoreTests
         await using var store = await CreateStoreAsync();
         var env = MakeEnvelope("OutgoingTest");
         env.Data = new byte[] { 4, 5, 6 };
-        env.Destination = new Uri("AeroDB://localhost/outgoing");
+        env.Destination = new Uri("AeroDB.Sable://localhost/outgoing");
         await store.StoreOutgoingAsync(env, 0);
     }
 
@@ -85,7 +85,7 @@ public class AeroDBMessageStoreTests
     {
         await using var store = await CreateStoreAsync();
         var env = MakeEnvelope("DeadTest");
-        env.Destination = new Uri("AeroDB://localhost/queue");
+        env.Destination = new Uri("AeroDB.Sable://localhost/queue");
         await store.StoreIncomingAsync(env);
         await store.MoveToDeadLetterStorageAsync(env, new InvalidOperationException("test"));
     }
@@ -105,7 +105,7 @@ public class AeroDBMessageStoreTests
     public async Task DeleteOutgoing_DoesNotThrow()
     {
         await using var store = await CreateStoreAsync();
-        var uri = new Uri("AeroDB://localhost/delete-test");
+        var uri = new Uri("AeroDB.Sable://localhost/delete-test");
         var env = MakeEnvelope("DeleteMe");
         env.Destination = uri;
         await store.StoreOutgoingAsync(env, 0);
@@ -145,9 +145,9 @@ public class AeroDBMessageStoreTests
     {
         await using var store = await CreateStoreAsync();
         var env = MakeEnvelope("ReleaseTest");
-        env.Destination = new Uri("AeroDB://localhost/listener");
+        env.Destination = new Uri("AeroDB.Sable://localhost/listener");
         await store.StoreIncomingAsync(env);
-        await store.Inbox.ReleaseIncomingAsync(0, new Uri("AeroDB://localhost/listener"));
+        await store.Inbox.ReleaseIncomingAsync(0, new Uri("AeroDB.Sable://localhost/listener"));
     }
 
     [Test]

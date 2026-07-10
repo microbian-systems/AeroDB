@@ -1,4 +1,4 @@
-using AeroDB;
+using AeroDB.Sable;
 using JasperFx.Resources;
 using Microsoft.Extensions.DependencyInjection;
 using Wolverine.Configuration;
@@ -9,24 +9,24 @@ using Wolverine.Transports;
 namespace AeroDB.WolverineFx;
 
 /// <summary>
-/// AeroDB-backed transport for Wolverine using SurrealDB as the message store.
-/// Registers the "AeroDB://" protocol scheme and creates AeroDBEndpoint instances.
+/// AeroDB.Sable-backed transport for Wolverine using SurrealDB as the message store.
+/// Registers the "AeroDB.Sable://" protocol scheme and creates AeroDBEndpoint instances.
 /// </summary>
 public sealed class AeroDBTransport : ITransport
 {
     private readonly Dictionary<Uri, AeroDBEndpoint> _endpoints = new();
 
     /// <summary>The protocol scheme for this transport.</summary>
-    public string Protocol => "AeroDB";
+    public string Protocol => "AeroDB.Sable";
 
     /// <summary>Diagnostic name.</summary>
-    public string Name => "AeroDB SurrealDB Transport";
+    public string Name => "AeroDB.Sable SurrealDB Transport";
 
     /// <summary>No reply endpoint for this transport.</summary>
     public Endpoint? ReplyEndpoint() => null;
 
     /// <summary>
-    /// Get or create a AeroDB endpoint for the given URI.
+    /// Get or create a AeroDB.Sable endpoint for the given URI.
     /// </summary>
     public Endpoint GetOrCreateEndpoint(Uri uri)
     {

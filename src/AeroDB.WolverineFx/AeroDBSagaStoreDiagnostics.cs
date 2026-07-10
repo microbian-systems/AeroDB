@@ -1,5 +1,5 @@
 using System.Text.Json;
-using AeroDB;
+using AeroDB.Sable;
 using Wolverine;
 using Wolverine.Configuration.Capabilities;
 using SagaInstanceState = JasperFx.Descriptors.SagaInstanceState;
@@ -9,7 +9,7 @@ using Wolverine.Runtime;
 namespace AeroDB.WolverineFx;
 
 /// <summary>
-/// AeroDB-backed implementation of <see cref="ISagaStoreDiagnostics"/>.
+/// AeroDB.Sable-backed implementation of <see cref="ISagaStoreDiagnostics"/>.
 /// </summary>
 internal sealed class AeroDBSagaStoreDiagnostics : ISagaStoreDiagnostics
 {

@@ -1,5 +1,5 @@
 using System.Linq.Expressions;
-using AeroDB;
+using AeroDB.Sable;
 
 namespace AeroDB.Tests;
 

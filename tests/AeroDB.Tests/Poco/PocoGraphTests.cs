@@ -1,5 +1,5 @@
-using AeroDB;
-using AeroDB.Metadata;
+using AeroDB.Sable;
+using AeroDB.Sable.Metadata;
 using SurrealDb.Net.Models;
 using TUnit.Core;
 
@@ -31,7 +31,7 @@ public class PocoStringBook
     public string Title { get; set; } = "";
 }
 
-// ─── Edge Types (AeroDB types, nodes are POCOs) ────────────────────
+// ─── Edge Types (AeroDB.Sable types, nodes are POCOs) ────────────────────
 
 public class PocoWrote : EdgeRecord { }
 public class PocoReviewed : EdgeRecord { }

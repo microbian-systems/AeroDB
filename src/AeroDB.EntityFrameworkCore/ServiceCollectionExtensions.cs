@@ -1,3 +1,4 @@
+using AeroDB.Sable;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -7,12 +8,12 @@ using Microsoft.Extensions.Logging;
 namespace AeroDB;
 
 /// <summary>
-/// DI registration extensions for AeroDB EF Core integration.
+/// DI registration extensions for AeroDB.Sable EF Core integration.
 /// </summary>
 public static class AeroDBEfCoreServiceCollectionExtensions
 {
     /// <summary>
-    /// Registers AeroDB alongside EF Core for coordinated transactions.
+    /// Registers AeroDB.Sable alongside EF Core for coordinated transactions.
     /// Consumers must also call <see cref="UseAeroDBTransactionManager{TDbContext}"/>
     /// in their DbContext's <c>OnConfiguring</c> method to wire up the transaction
     /// manager inside EF Core's internal service provider.
@@ -22,7 +23,7 @@ public static class AeroDBEfCoreServiceCollectionExtensions
         Action<StoreOptions> configureAeroDB)
         where TDbContext : DbContext
     {
-        // Register AeroDB store (singleton)
+        // Register AeroDB.Sable store (singleton)
         var store = Documents.For(configureAeroDB);
         services.AddSingleton(store);
 
@@ -45,7 +46,7 @@ public static class AeroDBEfCoreServiceCollectionExtensions
 
     /// <summary>
     /// Replaces EF Core's default <see cref="IDbContextTransactionManager"/> with
-    /// a AeroDB-aware one so that <c>Database.BeginTransaction()</c> coordinates
+    /// a AeroDB.Sable-aware one so that <c>Database.BeginTransaction()</c> coordinates
     /// both SurrealDB and EF Core changes.
     /// Call this inside your DbContext's <c>OnConfiguring</c> method:
     /// <code>

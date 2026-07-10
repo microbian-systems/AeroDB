@@ -1,4 +1,4 @@
-using AeroDB;
+using AeroDB.Sable;
 using AeroDB.AspNetIdentity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
@@ -79,7 +79,7 @@ public class ExtensionsTests
         var services = new ServiceCollection();
         services.Configure<IdentityOptions>(o => o.User.RequireUniqueEmail = false);
         using var provider = services.BuildServiceProvider();
-        var options = new StoreOptions { ServiceProvider = provider };
+        var options = new AeroDB.Sable.StoreOptions { ServiceProvider = provider };
         var configurator = new AeroDBIdentityConfigurator<IdentityUser, IdentityRole, string>();
 
         configurator.Configure(provider, options);
@@ -109,7 +109,7 @@ public class ExtensionsTests
         var services = new ServiceCollection();
         services.Configure<IdentityOptions>(o => o.User.RequireUniqueEmail = true);
         using var provider = services.BuildServiceProvider();
-        var options = new StoreOptions { ServiceProvider = provider };
+        var options = new Sable.StoreOptions { ServiceProvider = provider };
         var configurator = new AeroDBIdentityConfigurator<IdentityUser, IdentityRole, string>();
 
         configurator.Configure(provider, options);
@@ -126,7 +126,7 @@ public class ExtensionsTests
         return (IReadOnlyList<IndexDefinition>)property.GetValue(mapping)!;
     }
 
-    private static IReadOnlyDictionary<Type, DocumentMapping> GetMappings(StoreOptions options)
+    private static IReadOnlyDictionary<Type, DocumentMapping> GetMappings(Sable.StoreOptions options)
     {
         var property = typeof(SchemaOptions)
             .GetProperty("Mappings", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Public)!;

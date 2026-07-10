@@ -31,8 +31,8 @@ public class AeroDBEntityShimGenerator : IIncrementalGenerator
         {
             var (compilation, types) = source;
 
-            // Find the Entity<TId> type in AeroDB
-            var entityGenericType = compilation.GetTypeByMetadataName("AeroDB.Entity`1");
+            // Find the Entity<TId> type in AeroDB.Sable
+            var entityGenericType = compilation.GetTypeByMetadataName("AeroDB.Sable.Entity`1");
             if (entityGenericType is null) return;
 
             // Find the Record type in SurrealDb.Net (needed for shim base class)
@@ -40,7 +40,7 @@ public class AeroDBEntityShimGenerator : IIncrementalGenerator
             if (recordType is null) return;
 
             // Optionally find the AeroDBDocumentAttribute for opt-out
-            var AeroDBDocAttrType = compilation.GetTypeByMetadataName("AeroDB.AeroDBDocumentAttribute");
+            var AeroDBDocAttrType = compilation.GetTypeByMetadataName("AeroDB.Sable.AeroDBDocumentAttribute");
 
             foreach (var type in types)
             {
@@ -129,13 +129,13 @@ public class AeroDBEntityShimGenerator : IIncrementalGenerator
         sb.AppendLine("using global::SurrealDb.Net.Models;");
         sb.AppendLine("using global::Dahomey.Cbor.Attributes;");
         sb.AppendLine();
-        sb.AppendLine("namespace AeroDB.Metadata;");
+        sb.AppendLine("namespace AeroDB.Sable.Metadata;");
         sb.AppendLine();
         sb.AppendLine($"internal sealed class {typeName}Shim : Record");
         sb.AppendLine("{");
         sb.AppendLine($"    static {typeName}Shim()");
         sb.AppendLine("    {");
-        sb.AppendLine($"        global::AeroDB.Metadata.MetadataRegistry.RegisterShimType<{fullName}>(typeof({typeName}Shim));");
+        sb.AppendLine($"        global::AeroDB.Sable.Metadata.MetadataRegistry.RegisterShimType<{fullName}>(typeof({typeName}Shim));");
         sb.AppendLine("    }");
         sb.AppendLine();
 

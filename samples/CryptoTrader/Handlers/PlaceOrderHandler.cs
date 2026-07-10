@@ -1,17 +1,17 @@
 using CryptoTrader.Messages;
 using CryptoTrader.Sagas;
-using AeroDB;
+using AeroDB.Sable;
 using SurrealDb.Net.Models;
 
 namespace CryptoTrader.Handlers;
 
 /// <summary>
-/// Handles initial buy/sell order placement by creating a saga record in AeroDB.
+/// Handles initial buy/sell order placement by creating a saga record in AeroDB.Sable.
 /// Uses explicit session management (IDocumentStore via constructor) to avoid
-/// codegen issues with AeroDB's auto-transaction support.
+/// codegen issues with AeroDB.Sable's auto-transaction support.
 ///
 /// Demonstrates:
-/// - AeroDB document CRUD (manual session open/save)
+/// - AeroDB.Sable document CRUD (manual session open/save)
 /// - IDocumentStore dependency injection
 /// - Cascading message return (OrderPlaced)
 /// </summary>

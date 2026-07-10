@@ -1,4 +1,4 @@
-using AeroDB;
+using AeroDB.Sable;
 using SurrealDb.Embedded.InMemory;
 using TUnit.Core;
 

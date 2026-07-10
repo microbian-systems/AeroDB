@@ -21,11 +21,11 @@ internal sealed class AeroDBScheduledJobAgent : IAgent
 
     private const string IncomingTable = "wolverine_incoming_envelopes";
 
-    public Uri Uri { get; } = new("AeroDB://scheduled-jobs");
+    public Uri Uri { get; } = new("AeroDB.Sable://scheduled-jobs");
 
     public AgentStatus Status { get; private set; } = AgentStatus.Stopped;
 
-    public string Description => "AeroDB scheduled job agent: polls for ready scheduled messages";
+    public string Description => "AeroDB.Sable scheduled job agent: polls for ready scheduled messages";
 
     public AeroDBScheduledJobAgent(ISurrealDbClient client, ILogger logger)
     {

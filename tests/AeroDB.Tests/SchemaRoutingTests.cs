@@ -1,5 +1,5 @@
-using AeroDB;
-using AeroDB.Metadata;
+using AeroDB.Sable;
+using AeroDB.Sable.Metadata;
 using TUnit.Core;
 
 namespace AeroDB.Tests;

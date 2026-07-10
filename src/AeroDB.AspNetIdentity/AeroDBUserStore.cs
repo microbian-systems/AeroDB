@@ -1,5 +1,5 @@
 using System.Security.Claims;
-
+using AeroDB.Sable;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -112,7 +112,7 @@ public class AeroDBUserStore<TUser, TRole, TKey> :
     /// <summary>
     /// Initializes a new instance of <see cref="AeroDBUserStore{TUser, TRole}"/>.
     /// </summary>
-    /// <param name="store">The AeroDB document store.</param>
+    /// <param name="store">The AeroDB.Sable document store.</param>
     /// <param name="logger">Logger instance.</param>
     /// <param name="identityOptions">ASP.NET Core Identity options.</param>
     /// <param name="describer">Identity error describer.</param>
@@ -153,7 +153,7 @@ public class AeroDBUserStore<TUser, TRole, TKey> :
     {
         get
         {
-            // IQueryableUserStore.Users is synchronous — AeroDB sessions are async-only.
+            // IQueryableUserStore.Users is synchronous — AeroDB.Sable sessions are async-only.
             // Block on the async call to match the synchronous property contract.
             var session = _store.QuerySessionAsync(CancellationToken.None)
                 .GetAwaiter()
@@ -930,7 +930,7 @@ public class AeroDBUserStore<TUser, TRole, TKey> :
         if (role is null)
             return Array.Empty<TUser>();
 
-        // Raw SQL: SurrealDB CONTAINS operator has no LINQ equivalent in AeroDB's fluent API.
+        // Raw SQL: SurrealDB CONTAINS operator has no LINQ equivalent in AeroDB.Sable's fluent API.
         return await session.RawQueryAsync<TUser>(
             $"SELECT * FROM {_userTable} WHERE role_ids CONTAINS $roleId",
             new Dictionary<string, object?> { ["roleId"] = IdToString(role.Id) },
@@ -1216,7 +1216,7 @@ public class AeroDBUserStore<TUser, TRole, TKey> :
 
     /// <summary>
     /// Loads and deletes all associated claim, login, token, and passkey records
-    /// for the given user ID using the AeroDB session pattern.
+    /// for the given user ID using the AeroDB.Sable session pattern.
     /// </summary>
     private async Task DeleteAssociatedRecordsAsync(IDocumentSession session, string userId, CancellationToken ct)
     {
@@ -1291,7 +1291,7 @@ public class AeroDBUserStore<TUser, TRole, TKey> :
 
     /// <summary>
     /// Converts a PascalCase or camelCase name to snake_case.
-    /// Matches AeroDB's default naming convention for SurrealDB tables.
+    /// Matches AeroDB.Sable's default naming convention for SurrealDB tables.
     /// </summary>
     private static string ToSnakeCase(string name)
     {

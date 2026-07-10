@@ -1,4 +1,5 @@
-using AeroDB;
+using AeroDB.AspNetIdentity;
+using AeroDB.Sable;
 using AeroDB.AspNetIdentity;
 
 using Microsoft.AspNetCore.Identity;
@@ -7,13 +8,13 @@ using Microsoft.Extensions.Options;
 namespace Microsoft.Extensions.DependencyInjection;
 
 /// <summary>
-/// Extension methods for registering AeroDB-backed ASP.NET Core Identity stores
+/// Extension methods for registering AeroDB.Sable-backed ASP.NET Core Identity stores
 /// onto an <see cref="IdentityBuilder"/>.
 /// </summary>
 public static class AeroDBIdentityExtensions
 {
     /// <summary>
-    /// Registers <see cref="AeroDBUserStore{TUser, TRole}"/> and <see cref="AeroDBRoleStore{TRole}"/>
+    /// Registers <see cref="AeroDBUserStore{TUser,TRole}"/> and <see cref="AeroDBRoleStore{TRole}"/>
     /// with the identity system. Expects an <see cref="IDocumentStore"/> to already be
     /// registered in the service collection (as a singleton).
     /// </summary>
@@ -64,10 +65,10 @@ internal sealed class AeroDBIdentityConfigurator<TUser, TRole, TKey> : IConfigur
     where TRole : IdentityRole<TKey>
     where TKey : IEquatable<TKey>
 {
-    public void Configure(AeroDB.StoreOptions options)
+    public void Configure(AeroDB.Sable.StoreOptions options)
         => Configure(options.ServiceProvider, options);
 
-    public void Configure(IServiceProvider? services, AeroDB.StoreOptions options)
+    public void Configure(IServiceProvider? services, AeroDB.Sable.StoreOptions options)
     {
         var identityOptions = services?.GetService<IOptions<IdentityOptions>>();
         var requireUniqueEmail = identityOptions?.Value.User.RequireUniqueEmail ?? true;

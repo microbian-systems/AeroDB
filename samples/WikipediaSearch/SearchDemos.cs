@@ -1,4 +1,4 @@
-using AeroDB;
+using AeroDB.Sable;
 using SurrealDb.Embedded.SurrealKv;
 using SurrealDb.Net;
 using SurrealDb.Net.Models;

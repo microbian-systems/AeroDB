@@ -1,10 +1,10 @@
-using AeroDB;
+using AeroDB.Sable;
 using Wolverine.Transports;
 
 namespace AeroDB.WolverineFx;
 
 /// <summary>
-/// Health check for the AeroDB (SurrealDB) transport.
+/// Health check for the AeroDB.Sable (SurrealDB) transport.
 /// Verifies connectivity by opening a query session and running a heartbeat query.
 /// </summary>
 internal sealed class AeroDBHealthCheck : WolverineTransportHealthCheck
@@ -16,9 +16,9 @@ internal sealed class AeroDBHealthCheck : WolverineTransportHealthCheck
         _store = store ?? throw new ArgumentNullException(nameof(store));
     }
 
-    public override string TransportName => "AeroDB";
+    public override string TransportName => "AeroDB.Sable";
 
-    public override string Protocol => "AeroDB";
+    public override string Protocol => "AeroDB.Sable";
 
     /// <summary>
     /// Check whether the SurrealDB backing store is reachable.
@@ -35,7 +35,7 @@ internal sealed class AeroDBHealthCheck : WolverineTransportHealthCheck
                 TransportName,
                 Protocol,
                 TransportHealthStatus.Healthy,
-                "AeroDB:reachable (query session opened successfully)",
+                "AeroDB.Sable:reachable (query session opened successfully)",
                 DateTimeOffset.UtcNow);
         }
         catch (Exception ex)
@@ -44,7 +44,7 @@ internal sealed class AeroDBHealthCheck : WolverineTransportHealthCheck
                 TransportName,
                 Protocol,
                 TransportHealthStatus.Unhealthy,
-                $"AeroDB:unreachable: {ex.Message}",
+                $"AeroDB.Sable:unreachable: {ex.Message}",
                 DateTimeOffset.UtcNow);
         }
     }

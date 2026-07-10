@@ -1,6 +1,6 @@
 using System.Globalization;
 using System.Linq.Expressions;
-using AeroDB;
+using AeroDB.Sable;
 using SurrealDb.Net;
 using SurrealDb.Net.Models.Response;
 using NSubstitute;

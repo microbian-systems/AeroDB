@@ -1,4 +1,4 @@
-using AeroDB;
+using AeroDB.Sable;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
@@ -11,12 +11,12 @@ using Wolverine.Runtime;
 namespace AeroDB.WolverineFx;
 
 /// <summary>
-/// Extension methods for integrating Wolverine with AeroDB (SurrealDB) persistence.
+/// Extension methods for integrating Wolverine with AeroDB.Sable (SurrealDB) persistence.
 /// </summary>
 public static class WolverineOptionsAeroDBExtensions
 {
     /// <summary>
-    /// Configure Wolverine to use AeroDB for message persistence, outbox, sagas, and transport.
+    /// Configure Wolverine to use AeroDB.Sable for message persistence, outbox, sagas, and transport.
     /// Registers AeroDBMessageStore, AeroDBOutboxedSessionFactory, and all supporting services.
     /// </summary>
     public static void IntegrateWithAeroDB(this WolverineOptions options, IServiceProvider serviceProvider)
@@ -50,7 +50,7 @@ public static class WolverineOptionsAeroDBExtensions
     }
 
     /// <summary>
-    /// Configure Wolverine to persist messages using AeroDB (SurrealDB).
+    /// Configure Wolverine to persist messages using AeroDB.Sable (SurrealDB).
     /// </summary>
     public static void PersistMessagesWithAeroDB(
         this WolverineOptions options,

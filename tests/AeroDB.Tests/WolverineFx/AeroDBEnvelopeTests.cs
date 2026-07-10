@@ -1,4 +1,4 @@
-using AeroDB.WolverineFx;
+using AeroDB.SourceGenerators;
 
 namespace AeroDB.Tests;
 
@@ -15,7 +15,7 @@ public class AeroDBEnvelopeTests
         var env = new Envelope
         {
             Id = Guid.NewGuid(),
-            Destination = new Uri("AeroDB://localhost/queue"),
+            Destination = new Uri("AeroDB.Sable://localhost/queue"),
             MessageType = "TestMessage",
             Attempts = 3,
             DeliverBy = DateTimeOffset.UtcNow.AddHours(1),
@@ -65,11 +65,11 @@ public class AeroDBEnvelopeTests
             TenantId = "t1",
             CorrelationId = "corr-abc",
             Source = "source-1",
-            Destination = new Uri("AeroDB://localhost/rt"),
+            Destination = new Uri("AeroDB.Sable://localhost/rt"),
             ContentType = "application/json",
             SagaId = "saga-1",
             ConversationId = Guid.NewGuid(),
-            ReplyUri = new Uri("AeroDB://localhost/reply")
+            ReplyUri = new Uri("AeroDB.Sable://localhost/reply")
         };
         env.Data = new byte[] { 10, 20, 30 };
 
@@ -266,8 +266,8 @@ public class AeroDBEnvelopeTests
             CorrelationId = "corr-full-001",
             SagaId = "saga-xyz",
             ContentType = "application/json",
-            Destination = new Uri("AeroDB://dest/queue"),
-            ReplyUri = new Uri("AeroDB://reply/callback"),
+            Destination = new Uri("AeroDB.Sable://dest/queue"),
+            ReplyUri = new Uri("AeroDB.Sable://reply/callback"),
             ConversationId = Guid.NewGuid(),
             DeliverBy = DateTimeOffset.UtcNow.AddDays(1),
             KeepUntil = DateTimeOffset.UtcNow.AddDays(7),
@@ -316,15 +316,15 @@ public class AeroDBEnvelopeTests
             Attempts = int.MaxValue,
             Body = longBody,
             MessageType = longMessageType,
-            Destination = "AeroDB://very-long-uri-that-should-still-work/" + new string('p', 200),
+            Destination = "AeroDB.Sable://very-long-uri-that-should-still-work/" + new string('p', 200),
             CorrelationId = longCorrelationId,
             Source = "source-" + new string('s', 200),
             TenantId = "tenant-" + new string('t', 200),
             ContentType = "application/x.custom+" + new string('z', 100),
-            ReplyUri = "AeroDB://reply/" + new string('r', 200),
+            ReplyUri = "AeroDB.Sable://reply/" + new string('r', 200),
             SagaId = longSagaId,
             ConversationId = Guid.NewGuid().ToString(),
-            ReceivedAt = "AeroDB://received/" + new string('a', 200),
+            ReceivedAt = "AeroDB.Sable://received/" + new string('a', 200),
             DeliverBy = DateTimeOffset.MaxValue,
             KeepUntil = DateTimeOffset.MaxValue,
             SentAt = DateTimeOffset.MaxValue,

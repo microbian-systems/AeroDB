@@ -1,5 +1,5 @@
 using System.Reflection;
-using AeroDB;
+using AeroDB.Sable;
 
 namespace AeroDB.Tests;
 

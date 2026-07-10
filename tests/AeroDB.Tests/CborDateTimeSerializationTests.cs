@@ -1,8 +1,8 @@
 using System.Text;
 using Dahomey.Cbor;
 using Dahomey.Cbor.Attributes;
-using AeroDB;
-using AeroDB.Internals.Cbor;
+using AeroDB.Sable;
+using AeroDB.Sable.Internals.Cbor;
 using SurrealDb.Embedded.InMemory;
 using SurrealDb.Net.Models;
 using TUnit.Core;

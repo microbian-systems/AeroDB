@@ -13,7 +13,7 @@
     <PackageReference Include="NSubstitute" VersionOverride="5.3.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\AeroDB\AeroDB.csproj" />
+    <ProjectReference Include="..\..\src\AeroDB.Sable\AeroDB.Sable.csproj" />
     <ProjectReference Include="..\..\src\AeroDB.Reactive\AeroDB.Reactive.csproj" />
     <ProjectReference Include="..\..\surrealdb.net\SurrealDb.Net\SurrealDb.Net.csproj" />
   </ItemGroup>

@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Reflection;
-using AeroDB;
+using AeroDB.Sable;
 
 namespace AeroDB.WolverineFx.Internal;
 
@@ -10,7 +10,7 @@ namespace AeroDB.WolverineFx.Internal;
 /// <see cref="FlushOutgoingMessagesOnAeroDBCommit"/> need this same logic.
 /// Consolidating here avoids duplicating the reflection code.
 ///
-/// A future AeroDB API (e.g., <c>DocumentSession.GetPendingAppendedEvents()</c>)
+/// A future AeroDB.Sable API (e.g., <c>DocumentSession.GetPendingAppendedEvents()</c>)
 /// would eliminate the need for reflection entirely.
 /// </summary>
 internal static class AeroDBSessionEventAccessor
@@ -28,7 +28,7 @@ internal static class AeroDBSessionEventAccessor
     }
 
     /// <summary>
-    /// Gets the list of appended event objects from a AeroDB DocumentSession
+    /// Gets the list of appended event objects from a AeroDB.Sable DocumentSession
     /// by reading the internal <c>_appendedEvents</c> field.
     /// Returns an empty list if no events are pending or if reflection fails.
     /// </summary>

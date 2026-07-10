@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\AeroDB\AeroDB.csproj" />
+    <ProjectReference Include="..\..\src\AeroDB.Sable\AeroDB.Sable.csproj" />
     <ProjectReference Include="..\..\src\AeroDB.WolverineFx\AeroDB.WolverineFx.csproj" />
   </ItemGroup>
   <ItemGroup>

@@ -1,5 +1,5 @@
 using System.Reflection;
-using AeroDB;
+using AeroDB.Sable;
 using JasperFx.Events;
 using JasperFx.Events.Daemon;
 using JasperFx.Events.Projections;
@@ -8,7 +8,7 @@ using Shouldly;
 namespace AeroDB.Tests;
 
 /// <summary>
-/// Tests for AeroDB event subscriptions — verifies IAeroDBSubscription interface,
+/// Tests for AeroDB.Sable event subscriptions — verifies IAeroDBSubscription interface,
 /// AeroDBSubscriptionBase filtering, and controller/event type contracts.
 /// Integration tests (fetch→append→process cycle) are deferred until the daemon
 /// infrastructure supports constructing EventRange objects externally.

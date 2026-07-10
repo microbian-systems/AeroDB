@@ -1,3 +1,4 @@
+using AeroDB.Sable;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -7,8 +8,8 @@ using Microsoft.Extensions.Logging.Abstractions;
 namespace AeroDB;
 
 /// <summary>
-/// EF Core transaction manager that wraps AeroDB sessions.
-/// Use when both EF Core and AeroDB operations must be atomic.
+/// EF Core transaction manager that wraps AeroDB.Sable sessions.
+/// Use when both EF Core and AeroDB.Sable operations must be atomic.
 /// </summary>
 public class AeroDBEfCoreTransactionManager<TDbContext> : IDbContextTransactionManager
     where TDbContext : DbContext
@@ -32,7 +33,7 @@ public class AeroDBEfCoreTransactionManager<TDbContext> : IDbContextTransactionM
 
     public async Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken ct = default)
     {
-        _logger.LogInformation("Beginning AeroDB EF Core transaction");
+        _logger.LogInformation("Beginning AeroDB.Sable EF Core transaction");
         var efTransaction = await _dbContext.Database.BeginTransactionAsync(ct).ConfigureAwait(false);
         var AeroDBTransaction = new AeroDBEfCoreTransaction(_AeroDBSession)
         {

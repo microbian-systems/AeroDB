@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using AeroDB.SourceGenerators;
+using AeroDB.SourceGenerators;
 using TUnit.Core;
 
 namespace AeroDB.Tests.Generators;
@@ -16,16 +17,16 @@ namespace AeroDB.Tests.Generators;
 public class AeroDBDocumentGeneratorTests
 {
     /// <summary>
-    /// Minimal inline definitions for AeroDB types that the generator discovers
+    /// Minimal inline definitions for AeroDB.Sable types that the generator discovers
     /// via <c>GetTypeByMetadataName</c>. These are defined inline because the
-    /// real <c>AeroDB</c> assembly is excluded from compilation references to
+    /// real <c>AeroDB.Sable</c> assembly is excluded from compilation references to
     /// avoid interface conflicts.
     /// </summary>
     private const string AeroDBTypes = @"
 using System;
 using System.Collections.Generic;
 
-namespace AeroDB
+namespace AeroDB.Sable
 {
     public interface IEntity<TId>
         where TId : notnull, IEquatable<TId>, IComparable<TId>
@@ -51,7 +52,7 @@ namespace AeroDB
     public class VersionAttribute : Attribute { }
 }
 
-namespace AeroDB.Metadata
+namespace AeroDB.Sable.Metadata
 {
     public readonly record struct FieldSchema(string Name, string SurrealType, bool CanRead, bool CanWrite);
 
@@ -95,7 +96,7 @@ namespace AeroDB.Metadata
 
     /// <summary>
     /// Runs the <see cref="AeroDBDocumentGenerator"/> in-process over the given
-    /// C# source snippets combined with the inline AeroDB type definitions.
+    /// C# source snippets combined with the inline AeroDB.Sable type definitions.
     /// </summary>
     private static GeneratorDriverRunResult RunGenerator(params string[] sources)
     {
@@ -113,7 +114,7 @@ namespace AeroDB.Metadata
             .Where(a =>
             {
                 var name = a.GetName().Name;
-                return name != "AeroDB" && name != "AeroDB.SourceGenerators";
+                return name != "AeroDB.Sable" && name != "AeroDB.Sable.SourceGenerators";
             })
             .GroupBy(a => a.Location)
             .Select(g => MetadataReference.CreateFromFile(g.Key))
@@ -173,7 +174,7 @@ public class MyDocument : SurrealDb.Net.Models.Record
     public void Entity_long_subclass_generates_metadata()
     {
         var source = @"
-public class MyEntity : AeroDB.Entity<long>
+public class MyEntity : AeroDB.Sable.Entity<long>
 {
     public string Label { get; set; }
 }
@@ -258,7 +259,7 @@ public class TenantDocument : SurrealDb.Net.Models.Record
     public void IVersioned_interface_sets_HasVersion_true()
     {
         var source = @"
-public class VersionedDoc : SurrealDb.Net.Models.Record, AeroDB.IVersioned
+public class VersionedDoc : SurrealDb.Net.Models.Record, AeroDB.Sable.IVersioned
 {
     public long Version { get; set; }
 }
@@ -282,7 +283,7 @@ public class VersionedDoc : SurrealDb.Net.Models.Record, AeroDB.IVersioned
         var source = @"
 public class AttrVersionDoc : SurrealDb.Net.Models.Record
 {
-    [AeroDB.Version]
+    [AeroDB.Sable.Version]
     public long Revision { get; set; }
 }
 ";
@@ -301,7 +302,7 @@ public class AttrVersionDoc : SurrealDb.Net.Models.Record
     public void IDocumentMetadata_sets_HasDocumentMetadata_true()
     {
         var source = @"
-using AeroDB.Metadata;
+using AeroDB.Sable.Metadata;
 public class AuditDoc : SurrealDb.Net.Models.Record, IDocumentMetadata
 {
     public System.DateTimeOffset CreatedAt { get; set; }
@@ -323,7 +324,7 @@ public class AuditDoc : SurrealDb.Net.Models.Record, IDocumentMetadata
     public void SkipGeneration_opt_out_skips_type()
     {
         var source = @"
-[AeroDB.AeroDBDocument(SkipGeneration = true)]
+[AeroDB.Sable.AeroDBDocument(SkipGeneration = true)]
 public class SkippedDoc : SurrealDb.Net.Models.Record
 {
     public string Name { get; set; }
@@ -421,8 +422,8 @@ public class AlsoNot { public string X { get; set; } }
     {
         var userSource = @"
 using System;
-using AeroDB;
-using AeroDB.Metadata;
+using AeroDB.Sable;
+using AeroDB.Sable.Metadata;
 
 public class CompilableDoc : SurrealDb.Net.Models.Record
 {
@@ -447,7 +448,7 @@ public class CompilableDoc : SurrealDb.Net.Models.Record
             .Where(a =>
             {
                 var name = a.GetName().Name;
-                return name != "AeroDB" && name != "AeroDB.SourceGenerators";
+                return name != "AeroDB.Sable" && name != "AeroDB.Sable.SourceGenerators";
             })
             .GroupBy(a => a.Location)
             .Select(g => MetadataReference.CreateFromFile(g.Key))
@@ -483,7 +484,7 @@ public class CompilableDoc : SurrealDb.Net.Models.Record
     public void Entity_with_tenant_and_version_detects_both()
     {
         var source = @"
-public class FullEntity : AeroDB.Entity<long>, AeroDB.IVersioned
+public class FullEntity : AeroDB.Sable.Entity<long>, AeroDB.Sable.IVersioned
 {
     public string? TenantId { get; set; }
     public long Version { get; set; }

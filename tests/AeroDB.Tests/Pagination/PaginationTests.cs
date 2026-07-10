@@ -1,5 +1,5 @@
-using AeroDB;
-using AeroDB.Pagination;
+using AeroDB.Sable;
+using AeroDB.Sable.Pagination;
 using TUnit.Core;
 
 namespace AeroDB.Tests.Pagination;

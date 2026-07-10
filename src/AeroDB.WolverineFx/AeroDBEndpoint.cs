@@ -9,7 +9,7 @@ using Wolverine.Transports.Sending;
 namespace AeroDB.WolverineFx;
 
 /// <summary>
-/// AeroDB endpoint backed by SurrealDB message storage.
+/// AeroDB.Sable endpoint backed by SurrealDB message storage.
 /// Creates <see cref="AeroDBQueueListener"/> and <see cref="AeroDBQueueSender"/>
 /// for message processing.
 /// </summary>

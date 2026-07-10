@@ -1,3 +1,5 @@
+using AeroDB.Sable;
+
 namespace AeroDB;
 
 public static class MlQueryExtensions
@@ -11,6 +13,6 @@ public static class MlQueryExtensions
             return new AeroDBMlQuery<TInput, TOutput>(provider);
 
         throw new NotSupportedException(
-            $"ML queries are only supported on AeroDB query sessions.");
+            $"ML queries are only supported on AeroDB.Sable query sessions.");
     }
 }

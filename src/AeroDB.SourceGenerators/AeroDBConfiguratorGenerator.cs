@@ -29,9 +29,9 @@ public class AeroDBConfiguratorGenerator : IIncrementalGenerator
 
             // Look for the configurator interfaces in the compilation.
             // If neither exists, there's nothing to generate.
-            var configureAeroDBType = compilation.GetTypeByMetadataName("AeroDB.IConfigureAeroDB");
-            var globalConfigureAeroDBType = compilation.GetTypeByMetadataName("AeroDB.IGlobalConfigureAeroDB");
-            var asyncConfigureAeroDBType = compilation.GetTypeByMetadataName("AeroDB.IAsyncConfigureAeroDB");
+            var configureAeroDBType = compilation.GetTypeByMetadataName("AeroDB.Sable.IConfigureAeroDB");
+            var globalConfigureAeroDBType = compilation.GetTypeByMetadataName("AeroDB.Sable.IGlobalConfigureAeroDB");
+            var asyncConfigureAeroDBType = compilation.GetTypeByMetadataName("AeroDB.Sable.IAsyncConfigureAeroDB");
 
             if (configureAeroDBType is null && asyncConfigureAeroDBType is null)
                 return;
@@ -83,7 +83,7 @@ public class AeroDBConfiguratorGenerator : IIncrementalGenerator
                 // Only add if not already registered as a plain IConfigureAeroDB or IGlobalConfigureAeroDB implementor.
                 if (!isGlobal && !isConfigureAeroDB && configureAeroDBType is not null)
                 {
-                    var typedConfigureAeroDB = compilation.GetTypeByMetadataName("AeroDB.IConfigureAeroDB`1");
+                    var typedConfigureAeroDB = compilation.GetTypeByMetadataName("AeroDB.Sable.IConfigureAeroDB`1");
                     if (typedConfigureAeroDB is not null)
                     {
                         foreach (var iface in type.AllInterfaces)
@@ -141,7 +141,7 @@ public class AeroDBConfiguratorGenerator : IIncrementalGenerator
         sb.AppendLine();
         sb.AppendLine("using Microsoft.Extensions.DependencyInjection;");
         sb.AppendLine();
-        sb.AppendLine("namespace AeroDB.Generated;");
+        sb.AppendLine("namespace AeroDB.Sable.Generated;");
         sb.AppendLine();
         sb.AppendLine("/// <summary>");
         sb.AppendLine("/// Source-generated registration helper for discovered IConfigureAeroDB / IGlobalConfigureAeroDB / IAsyncConfigureAeroDB implementations.");
@@ -159,21 +159,21 @@ public class AeroDBConfiguratorGenerator : IIncrementalGenerator
         foreach (var type in syncConfigurators)
         {
             var fqn = type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
-            sb.AppendLine($"        services.AddSingleton<global::AeroDB.IConfigureAeroDB, {fqn}>();");
+            sb.AppendLine($"        services.AddSingleton<global::AeroDB.Sable.IConfigureAeroDB, {fqn}>();");
         }
 
         // Global configurators (all store types)
         foreach (var type in globalConfigurators)
         {
             var fqn = type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
-            sb.AppendLine($"        services.AddSingleton<global::AeroDB.IGlobalConfigureAeroDB, {fqn}>();");
+            sb.AppendLine($"        services.AddSingleton<global::AeroDB.Sable.IGlobalConfigureAeroDB, {fqn}>();");
         }
 
         // Async configurators
         foreach (var type in asyncConfigurators)
         {
             var fqn = type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
-            sb.AppendLine($"        services.AddSingleton<global::AeroDB.IAsyncConfigureAeroDB, {fqn}>();");
+            sb.AppendLine($"        services.AddSingleton<global::AeroDB.Sable.IAsyncConfigureAeroDB, {fqn}>();");
         }
 
         sb.AppendLine("        return services;");

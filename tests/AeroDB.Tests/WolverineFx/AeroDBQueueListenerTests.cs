@@ -1,3 +1,5 @@
+using AeroDB.WolverineFx;
+
 namespace AeroDB.Tests;
 using AeroDB.WolverineFx;
 using Microsoft.Extensions.Logging.Abstractions;

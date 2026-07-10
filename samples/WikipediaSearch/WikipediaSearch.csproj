@@ -8,7 +8,7 @@
     <Description>AeroDB search demo — Wikipedia articles indexed with real ONNX embeddings across FTS, HNSW, MTREE, DiskANN, and hybrid search</Description>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="../../src/AeroDB/AeroDB.csproj" />
+    <ProjectReference Include="..\..\src\AeroDB.Sable\AeroDB.Sable.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AngleSharp" Version="1.5.2" />

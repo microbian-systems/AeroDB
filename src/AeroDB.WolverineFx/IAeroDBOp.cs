@@ -1,4 +1,4 @@
-using AeroDB;
+using AeroDB.Sable;
 using JasperFx;
 using JasperFx.CodeGeneration;
 using JasperFx.CodeGeneration.Frames;
@@ -9,7 +9,7 @@ using Wolverine.Runtime.Handlers;
 
 namespace AeroDB.WolverineFx;
 
-/// <summary>Side effect that executes against a AeroDB document session.</summary>
+/// <summary>Side effect that executes against a AeroDB.Sable document session.</summary>
 public interface IAeroDBOp : ISideEffect
 {
     Task ExecuteAsync(IDocumentSession session, CancellationToken ct);
@@ -63,7 +63,7 @@ internal sealed class InsertOp<T> : IAeroDBOp where T : class
 /// <summary>
 /// Chain policy that detects <see cref="IAeroDBOp"/> and
 /// <see cref="IEnumerable{T}"/> of <see cref="IAeroDBOp"/> return values in
-/// handler chains and ensures AeroDB transaction support (session open, save,
+/// handler chains and ensures AeroDB.Sable transaction support (session open, save,
 /// flush) is applied. For collection returns, generates a foreach loop that
 /// calls <see cref="IAeroDBOp.ExecuteAsync"/> on each item.
 /// </summary>
@@ -118,7 +118,7 @@ internal sealed class ForEachAeroDBOpFrame : Frame
 
     public override void GenerateCode(GeneratedMethod method, ISourceWriter writer)
     {
-        writer.WriteComment("Apply each AeroDB op to the current document session");
+        writer.WriteComment("Apply each AeroDB.Sable op to the current document session");
         writer.Write(
             $"foreach (var item_of_{_collection.Usage} in {_collection.Usage}) await item_of_{_collection.Usage}.{nameof(IAeroDBOp.ExecuteAsync)}({_session.Usage}, {_cancellation.Usage}).ConfigureAwait(false);");
         Next?.GenerateCode(method, writer);
@@ -126,7 +126,7 @@ internal sealed class ForEachAeroDBOpFrame : Frame
 
     public override void GenerateFSharpCode(GeneratedMethod method, ISourceWriter writer)
     {
-        writer.WriteComment("Apply each AeroDB op to the current document session");
+        writer.WriteComment("Apply each AeroDB.Sable op to the current document session");
         writer.Write(
             $"for item_of_{_collection.Usage} in {_collection.Usage} do item_of_{_collection.Usage}.{nameof(IAeroDBOp.ExecuteAsync)}({_session.Usage}, {_cancellation.Usage})");
         Next?.GenerateFSharpCode(method, writer);

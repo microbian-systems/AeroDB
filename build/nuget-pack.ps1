@@ -47,7 +47,7 @@ param(
 $RepoRoot = Resolve-Path "$PSScriptRoot/.."
 $OutputDir = $(if ($OutputDir) { $OutputDir } else { "$RepoRoot/build/nupkgs" })
 
-Write-Host "=== AeroDB NuGet Pack Script ===" -ForegroundColor Cyan
+Write-Host "=== AeroDB.Sable NuGet Pack Script ===" -ForegroundColor Cyan
 Write-Host "Repo:     $RepoRoot" -ForegroundColor Gray
 Write-Host "Output:   $OutputDir" -ForegroundColor Gray
 Write-Host "Config:   $Configuration" -ForegroundColor Gray
@@ -70,7 +70,7 @@ if ($Stable) {
 New-Item -ItemType Directory -Force -Path $OutputDir | Out-Null
 
 $libProjects = @(
-    "$RepoRoot/src/AeroDB"
+    "$RepoRoot/src/AeroDB.Sable"
     "$RepoRoot/src/AeroDB.AspNetIdentity"
     "$RepoRoot/src/AeroDB.EntityFrameworkCore"
     "$RepoRoot/src/AeroDB.ML"

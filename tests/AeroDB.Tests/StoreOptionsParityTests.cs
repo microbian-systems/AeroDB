@@ -1,4 +1,4 @@
-using AeroDB;
+using AeroDB.Sable;
 using Microsoft.Extensions.DependencyInjection;
 using SurrealDb.Embedded.InMemory;
 using SurrealDb.Net.Models;

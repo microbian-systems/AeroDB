@@ -1,5 +1,5 @@
 using System.Linq.Expressions;
-using AeroDB;
+using AeroDB.Sable;
 using NSubstitute;
 using SurrealDb.Net;
 using SurrealDb.Net.Models;

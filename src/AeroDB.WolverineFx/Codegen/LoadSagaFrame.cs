@@ -1,13 +1,13 @@
 using JasperFx.CodeGeneration;
 using JasperFx.CodeGeneration.Frames;
 using JasperFx.CodeGeneration.Model;
-using AeroDB;
+using AeroDB.Sable;
 
 namespace AeroDB.WolverineFx.Codegen;
 
 /// <summary>
 /// Codegen frame that loads a saga document using <c>IDocumentSession.LoadAsync&lt;T&gt;</c>
-/// from the AeroDB session.
+/// from the AeroDB.Sable session.
 /// </summary>
 internal sealed class LoadSagaFrame : AsyncFrame
 {
@@ -42,7 +42,7 @@ internal sealed class LoadSagaFrame : AsyncFrame
     public override void GenerateCode(GeneratedMethod method, ISourceWriter writer)
     {
         writer.WriteLine("");
-        writer.WriteComment("Try to load the existing saga document from AeroDB");
+        writer.WriteComment("Try to load the existing saga document from AeroDB.Sable");
         writer.Write(
             $"var {Saga.Usage} = await {_session!.Usage}.{nameof(IDocumentSession.LoadAsync)}<{_sagaType.FullName}>({_sagaId.Usage}.ToString(), {_cancellation!.Usage}).ConfigureAwait(false);");
 

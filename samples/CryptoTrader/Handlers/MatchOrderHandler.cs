@@ -1,7 +1,7 @@
 using CryptoTrader.Models;
 using CryptoTrader.Messages;
 using CryptoTrader.Services;
-using AeroDB;
+using AeroDB.Sable;
 
 namespace CryptoTrader.Handlers;
 
@@ -10,7 +10,7 @@ namespace CryptoTrader.Handlers;
 /// and recording the trade event.
 ///
 /// Demonstrates:
-/// - AeroDB document CRUD via IDocumentStore (constructor-injected)
+/// - AeroDB.Sable document CRUD via IDocumentStore (constructor-injected)
 /// - Price simulation via external service
 /// - Cascading return value (TradeExecuted) for console reporting
 /// </summary>

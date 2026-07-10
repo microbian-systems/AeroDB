@@ -1,5 +1,7 @@
+using AeroDB.WolverineFx;
+
 namespace AeroDB.Tests;
-using AeroDB;
+using Sable;
 using AeroDB.WolverineFx;
 using NSubstitute;
 using Shouldly;
@@ -27,8 +29,8 @@ public class AeroDBHealthCheckTests
 
         result.ShouldNotBeNull();
         result.Status.ShouldBe(TransportHealthStatus.Healthy);
-        result.Message.ShouldNotBeNull().ShouldContain("AeroDB:reachable");
-        result.TransportName.ShouldBe("AeroDB");
+        result.Message.ShouldNotBeNull().ShouldContain("AeroDB.Sable:reachable");
+        result.TransportName.ShouldBe("AeroDB.Sable");
 
         await store.DisposeAsync();
     }
@@ -45,6 +47,6 @@ public class AeroDBHealthCheckTests
 
         result.ShouldNotBeNull();
         result.Status.ShouldBe(TransportHealthStatus.Unhealthy);
-        result.Message!.ShouldContain("AeroDB:unreachable");
+        result.Message!.ShouldContain("AeroDB.Sable:unreachable");
     }
 }

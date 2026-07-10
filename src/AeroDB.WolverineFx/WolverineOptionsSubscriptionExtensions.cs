@@ -1,4 +1,4 @@
-using AeroDB;
+using AeroDB.Sable;
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -12,13 +12,13 @@ namespace AeroDB.WolverineFx;
 #pragma warning disable AERODB001
 
 /// <summary>
-/// Extension methods for registering AeroDB event subscriptions with Wolverine.
+/// Extension methods for registering AeroDB.Sable event subscriptions with Wolverine.
 /// </summary>
 public static class WolverineOptionsSubscriptionExtensions
 {
     /// <summary>
-    /// Register a AeroDB event subscription as a singleton.
-    /// The subscription will be polled by the AeroDB subscription daemon automatically.
+    /// Register a AeroDB.Sable event subscription as a singleton.
+    /// The subscription will be polled by the AeroDB.Sable subscription daemon automatically.
     /// </summary>
     public static WolverineOptions AddAeroDBSubscription<T>(this WolverineOptions options)
         where T : class, IAeroDBSubscription
@@ -32,7 +32,7 @@ public static class WolverineOptionsSubscriptionExtensions
     }
 
     /// <summary>
-    /// Register a AeroDB event subscription with a specific instance.
+    /// Register a AeroDB.Sable event subscription with a specific instance.
     /// </summary>
     public static WolverineOptions AddAeroDBSubscription(this WolverineOptions options, IAeroDBSubscription subscription)
     {
@@ -45,7 +45,7 @@ public static class WolverineOptionsSubscriptionExtensions
     }
 
     /// <summary>
-    /// Ensure the AeroDB subscription hosted service is registered.
+    /// Ensure the AeroDB.Sable subscription hosted service is registered.
     /// Called automatically by <see cref="WolverineOptionsAeroDBExtensions.IntegrateWithAeroDB"/>
     /// but can also be called manually for advanced scenarios.
     /// </summary>

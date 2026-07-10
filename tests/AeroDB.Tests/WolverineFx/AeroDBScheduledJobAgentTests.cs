@@ -1,3 +1,5 @@
+using AeroDB.WolverineFx;
+
 namespace AeroDB.Tests;
 
 using System.Reflection;
@@ -252,7 +254,7 @@ public class AeroDBScheduledJobAgentTests
         var logger = NullLogger<AeroDBScheduledJobAgent>.Instance;
         var agent = new AeroDBScheduledJobAgent(client, logger);
 
-        agent.Uri.ShouldBe(new Uri("AeroDB://scheduled-jobs"));
+        agent.Uri.ShouldBe(new Uri("AeroDB.Sable://scheduled-jobs"));
     }
 
     [Test]

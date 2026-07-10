@@ -1,4 +1,4 @@
-using AeroDB;
+using AeroDB.Sable;
 using SurrealDb.Net.Models;
 using TUnit.Core;
 
@@ -440,14 +440,14 @@ public class GraphIntegrationTests
     public async Task Graph_PersonTableName_IsSnakeCased()
     {
         // Verify MetadataDispatch returns snake_case for Person
-        var tableName = AeroDB.Metadata.MetadataDispatch.GetTableName(typeof(Person));
+        var tableName = Sable.Metadata.MetadataDispatch.GetTableName(typeof(Person));
         tableName.ShouldBe("person");
     }
 
     [Test]
     public async Task Graph_KnowsTableName_IsSnakeCased()
     {
-        var tableName = AeroDB.Metadata.MetadataDispatch.GetTableName(typeof(Knows));
+        var tableName = Sable.Metadata.MetadataDispatch.GetTableName(typeof(Knows));
         tableName.ShouldBe("knows");
     }
 

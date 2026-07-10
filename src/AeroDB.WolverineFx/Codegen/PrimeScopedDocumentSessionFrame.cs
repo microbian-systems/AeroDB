@@ -3,7 +3,7 @@ using JasperFx.CodeGeneration.Frames;
 using JasperFx.CodeGeneration.Model;
 using JasperFx.CodeGeneration.Services;
 using JasperFx.Core.Reflection;
-using AeroDB;
+using AeroDB.Sable;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AeroDB.WolverineFx.Codegen;

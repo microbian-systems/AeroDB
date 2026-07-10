@@ -1,14 +1,14 @@
 using JasperFx.CodeGeneration;
 using JasperFx.CodeGeneration.Frames;
 using JasperFx.CodeGeneration.Model;
-using AeroDB;
+using AeroDB.Sable;
 using Wolverine.Persistence;
 
 namespace AeroDB.WolverineFx.Codegen;
 
 /// <summary>
-/// AeroDB-backed <see cref="IAncillaryStoreFrameProvider"/> that teaches the generic
-/// <see cref="StorageAttribute"/> how to route a handler chain to a AeroDB ancillary store.
+/// AeroDB.Sable-backed <see cref="IAncillaryStoreFrameProvider"/> that teaches the generic
+/// <see cref="StorageAttribute"/> how to route a handler chain to a AeroDB.Sable ancillary store.
 /// </summary>
 internal sealed class AeroDBAncillaryStoreFrameProvider : IAncillaryStoreFrameProvider
 {
@@ -25,7 +25,7 @@ internal sealed class AeroDBAncillaryStoreFrameProvider : IAncillaryStoreFramePr
 }
 
 /// <summary>
-/// Frame that resolves a AeroDB ancillary store's outbox-enrolled session factory.
+/// Frame that resolves a AeroDB.Sable ancillary store's outbox-enrolled session factory.
 /// </summary>
 internal sealed class OpenAncillaryAeroDBSessionFrame : Frame
 {

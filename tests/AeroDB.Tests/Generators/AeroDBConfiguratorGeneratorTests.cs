@@ -6,13 +6,14 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.Extensions.DependencyInjection;
 using AeroDB.SourceGenerators;
+using AeroDB.SourceGenerators;
 using TUnit.Core;
 
 namespace AeroDB.Tests.Generators;
 
 /// <summary>
 /// Additional edge-case tests for <see cref="AeroDBConfiguratorGenerator"/>.
-/// See <c>AeroDB.Tests.AeroDBConfiguratorGeneratorTests</c> for the core scenario tests.
+/// See <c>AeroDB.Sable.Tests.AeroDBConfiguratorGeneratorTests</c> for the core scenario tests.
 /// </summary>
 public class AeroDBConfiguratorGeneratorEdgeCaseTests
 {
@@ -32,7 +33,7 @@ public class AeroDBConfiguratorGeneratorEdgeCaseTests
             .Where(a =>
             {
                 var name = a.GetName().Name;
-                return name != "AeroDB" && name != "AeroDB.SourceGenerators";
+                return name != "AeroDB.Sable" && name != "AeroDB.Sable.SourceGenerators";
             })
             .GroupBy(a => a.Location)
             .Select(g => MetadataReference.CreateFromFile(g.Key))
@@ -57,22 +58,22 @@ public class AeroDBConfiguratorGeneratorEdgeCaseTests
     {
         var source = @"
 using System;
-using AeroDB;
+using AeroDB.Sable;
 
-namespace AeroDB
+namespace AeroDB.Sable
 {
     public interface IConfigureAeroDB { void Configure(StoreOptions options); }
     public class StoreOptions { }
 }
 
-public static class StaticConfigurator : AeroDB.IConfigureAeroDB
+public static class StaticConfigurator : AeroDB.Sable.IConfigureAeroDB
 {
-    public static void Configure(AeroDB.StoreOptions options) { }
+    public static void Configure(AeroDB.Sable.StoreOptions options) { }
 }
 
-public class InstanceConfigurator : AeroDB.IConfigureAeroDB
+public class InstanceConfigurator : AeroDB.Sable.IConfigureAeroDB
 {
-    public void Configure(AeroDB.StoreOptions options) { }
+    public void Configure(AeroDB.Sable.StoreOptions options) { }
 }
 ";
         var result = RunGenerator(source);
@@ -89,22 +90,22 @@ public class InstanceConfigurator : AeroDB.IConfigureAeroDB
     {
         var source = @"
 using System;
-using AeroDB;
+using AeroDB.Sable;
 
-namespace AeroDB
+namespace AeroDB.Sable
 {
     public interface IConfigureAeroDB { void Configure(StoreOptions options); }
     public class StoreOptions { }
 }
 
-public class GenericConfigurator<T> : AeroDB.IConfigureAeroDB
+public class GenericConfigurator<T> : AeroDB.Sable.IConfigureAeroDB
 {
-    public void Configure(AeroDB.StoreOptions options) { }
+    public void Configure(AeroDB.Sable.StoreOptions options) { }
 }
 
-public class SimpleConfigurator : AeroDB.IConfigureAeroDB
+public class SimpleConfigurator : AeroDB.Sable.IConfigureAeroDB
 {
-    public void Configure(AeroDB.StoreOptions options) { }
+    public void Configure(AeroDB.Sable.StoreOptions options) { }
 }
 ";
         var result = RunGenerator(source);
@@ -121,17 +122,17 @@ public class SimpleConfigurator : AeroDB.IConfigureAeroDB
     {
         var source = @"
 using System;
-using AeroDB;
+using AeroDB.Sable;
 
-namespace AeroDB
+namespace AeroDB.Sable
 {
     public interface IConfigureAeroDB { void Configure(StoreOptions options); }
     public class StoreOptions { }
 }
 
-class InternalConfigurator : AeroDB.IConfigureAeroDB
+class InternalConfigurator : AeroDB.Sable.IConfigureAeroDB
 {
-    public void Configure(AeroDB.StoreOptions options) { }
+    public void Configure(AeroDB.Sable.StoreOptions options) { }
 }
 ";
         var result = RunGenerator(source);
@@ -148,9 +149,9 @@ class InternalConfigurator : AeroDB.IConfigureAeroDB
     {
         var source = @"
 using System;
-using AeroDB;
+using AeroDB.Sable;
 
-namespace AeroDB
+namespace AeroDB.Sable
 {
     public interface IConfigureAeroDB { void Configure(StoreOptions options); }
     public class StoreOptions { }
@@ -158,14 +159,14 @@ namespace AeroDB
 
 public class Outer
 {
-    private class PrivateConfigurator : AeroDB.IConfigureAeroDB
+    private class PrivateConfigurator : AeroDB.Sable.IConfigureAeroDB
     {
-        public void Configure(AeroDB.StoreOptions options) { }
+        public void Configure(AeroDB.Sable.StoreOptions options) { }
     }
 
-    public class PublicConfigurator : AeroDB.IConfigureAeroDB
+    public class PublicConfigurator : AeroDB.Sable.IConfigureAeroDB
     {
-        public void Configure(AeroDB.StoreOptions options) { }
+        public void Configure(AeroDB.Sable.StoreOptions options) { }
     }
 }
 ";
@@ -183,18 +184,18 @@ public class Outer
     {
         var source = @"
 using System;
-using AeroDB;
+using AeroDB.Sable;
 
-namespace AeroDB
+namespace AeroDB.Sable
 {
     public interface IConfigureAeroDB { void Configure(StoreOptions options); }
     public interface IGlobalConfigureAeroDB : IConfigureAeroDB { }
     public class StoreOptions { }
 }
 
-public class MyGlobalConfigurator : AeroDB.IGlobalConfigureAeroDB
+public class MyGlobalConfigurator : AeroDB.Sable.IGlobalConfigureAeroDB
 {
-    public void Configure(AeroDB.StoreOptions options) { }
+    public void Configure(AeroDB.Sable.StoreOptions options) { }
 }
 ";
         var result = RunGenerator(source);
@@ -215,18 +216,18 @@ public class MyGlobalConfigurator : AeroDB.IGlobalConfigureAeroDB
     {
         var source = @"
 using System;
-using AeroDB;
+using AeroDB.Sable;
 
-namespace AeroDB
+namespace AeroDB.Sable
 {
     public interface IConfigureAeroDB { void Configure(StoreOptions options); }
     public interface IConfigureAeroDB<TStore> : IConfigureAeroDB { }
     public class StoreOptions { }
 }
 
-public class TypedConfigurator : AeroDB.IConfigureAeroDB<int>
+public class TypedConfigurator : AeroDB.Sable.IConfigureAeroDB<int>
 {
-    public void Configure(AeroDB.StoreOptions options) { }
+    public void Configure(AeroDB.Sable.StoreOptions options) { }
 }
 ";
         var result = RunGenerator(source);
@@ -245,19 +246,19 @@ public class TypedConfigurator : AeroDB.IConfigureAeroDB<int>
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using AeroDB;
+using AeroDB.Sable;
 
-namespace AeroDB
+namespace AeroDB.Sable
 {
     public interface IConfigureAeroDB { void Configure(StoreOptions options); }
     public interface IAsyncConfigureAeroDB { Task ConfigureAsync(StoreOptions options, CancellationToken ct = default); }
     public class StoreOptions { }
 }
 
-public class DualConfigurator : AeroDB.IConfigureAeroDB, AeroDB.IAsyncConfigureAeroDB
+public class DualConfigurator : AeroDB.Sable.IConfigureAeroDB, AeroDB.Sable.IAsyncConfigureAeroDB
 {
-    public void Configure(AeroDB.StoreOptions options) { }
-    public Task ConfigureAsync(AeroDB.StoreOptions options, CancellationToken ct) => Task.CompletedTask;
+    public void Configure(AeroDB.Sable.StoreOptions options) { }
+    public Task ConfigureAsync(AeroDB.Sable.StoreOptions options, CancellationToken ct) => Task.CompletedTask;
 }
 ";
         var result = RunGenerator(source);
@@ -282,9 +283,9 @@ public class DualConfigurator : AeroDB.IConfigureAeroDB, AeroDB.IAsyncConfigureA
         // guard and proceeds to emit an empty registrar.
         var source = @"
 using System;
-using AeroDB;
+using AeroDB.Sable;
 
-namespace AeroDB
+namespace AeroDB.Sable
 {
     public interface IConfigureAeroDB { void Configure(StoreOptions options); }
     public class StoreOptions { }
@@ -317,9 +318,9 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
-using AeroDB;
+using AeroDB.Sable;
 
-namespace AeroDB
+namespace AeroDB.Sable
 {
     public interface IConfigureAeroDB { void Configure(StoreOptions options); }
     public interface IGlobalConfigureAeroDB : IConfigureAeroDB { }
@@ -327,19 +328,19 @@ namespace AeroDB
     public class StoreOptions { }
 }
 
-public class SyncCfg : AeroDB.IConfigureAeroDB
+public class SyncCfg : AeroDB.Sable.IConfigureAeroDB
 {
-    public void Configure(AeroDB.StoreOptions options) { }
+    public void Configure(AeroDB.Sable.StoreOptions options) { }
 }
 
-public class GlobalCfg : AeroDB.IGlobalConfigureAeroDB
+public class GlobalCfg : AeroDB.Sable.IGlobalConfigureAeroDB
 {
-    public void Configure(AeroDB.StoreOptions options) { }
+    public void Configure(AeroDB.Sable.StoreOptions options) { }
 }
 
-public class AsyncCfg : AeroDB.IAsyncConfigureAeroDB
+public class AsyncCfg : AeroDB.Sable.IAsyncConfigureAeroDB
 {
-    public Task ConfigureAsync(AeroDB.StoreOptions options, CancellationToken ct) => Task.CompletedTask;
+    public Task ConfigureAsync(AeroDB.Sable.StoreOptions options, CancellationToken ct) => Task.CompletedTask;
 }
 ";
         var result = RunGenerator(source);

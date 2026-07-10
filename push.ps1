@@ -3,7 +3,7 @@
 .SYNOPSIS
     Local pack + push to NuGet (uses $env:NUGET_API_KEY).
 .DESCRIPTION
-    Packs all AeroDB libraries and pushes them to nuget.org.
+    Packs all AeroDB.Sable libraries and pushes them to nuget.org.
     Defaults to preview (alpha suffix). Use -Stable for release.
 .PARAMETER VersionSuffix
     Version suffix for preview builds. Default: alpha.
@@ -26,7 +26,7 @@ param(
 $apiKey = $env:GITHUB_API_KEY_AeroDB ?? $env:NUGET_API_KEY
 if ([string]::IsNullOrWhiteSpace($apiKey)) {
     Write-Host "No NuGet API key found." -ForegroundColor Red
-    Write-Host "Set: `$env:GITHUB_API_KEY_AeroDB = 'your-AeroDB-key'" -ForegroundColor Yellow
+    Write-Host "Set: \`$env:GITHUB_API_KEY_AeroDB = 'your-AeroDB.Sable-key'" -ForegroundColor Yellow
     Write-Host "Or:  `$env:NUGET_API_KEY = 'your-key-here'" -ForegroundColor Yellow
     exit 1
 }

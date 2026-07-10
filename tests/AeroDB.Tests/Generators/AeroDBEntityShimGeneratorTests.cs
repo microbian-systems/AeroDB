@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using AeroDB.SourceGenerators;
+using AeroDB.SourceGenerators;
 using TUnit.Core;
 
 namespace AeroDB.Tests.Generators;
@@ -16,14 +17,14 @@ namespace AeroDB.Tests.Generators;
 public class AeroDBEntityShimGeneratorTests
 {
     /// <summary>
-    /// Minimal inline definitions for AeroDB types that the shim generator
+    /// Minimal inline definitions for AeroDB.Sable types that the shim generator
     /// discovers via <c>GetTypeByMetadataName</c>.
     /// </summary>
     private const string AeroDBTypes = @"
 using System;
 using System.Collections.Generic;
 
-namespace AeroDB
+namespace AeroDB.Sable
 {
     public interface IEntity<TId>
         where TId : notnull, IEquatable<TId>, IComparable<TId>
@@ -44,7 +45,7 @@ namespace AeroDB
     }
 }
 
-namespace AeroDB.Metadata
+namespace AeroDB.Sable.Metadata
 {
     public static class MetadataRegistry
     {
@@ -99,7 +100,7 @@ namespace AeroDB.Metadata
             .Where(a =>
             {
                 var name = a.GetName().Name;
-                return name != "AeroDB" && name != "AeroDB.SourceGenerators";
+                return name != "AeroDB.Sable" && name != "AeroDB.Sable.SourceGenerators";
             })
             .GroupBy(a => a.Location)
             .Select(g => MetadataReference.CreateFromFile(g.Key))
@@ -135,7 +136,7 @@ namespace AeroDB.Metadata
     public void Entity_long_generates_shim()
     {
         var source = @"
-public class MyLongEntity : AeroDB.Entity<long>
+public class MyLongEntity : AeroDB.Sable.Entity<long>
 {
     public string Name { get; set; }
     public int Value { get; set; }
@@ -161,7 +162,7 @@ public class MyLongEntity : AeroDB.Entity<long>
     public void Entity_string_generates_shim()
     {
         var source = @"
-public class MyStringEntity : AeroDB.Entity<string>
+public class MyStringEntity : AeroDB.Sable.Entity<string>
 {
     public string Label { get; set; }
 }
@@ -182,7 +183,7 @@ public class MyStringEntity : AeroDB.Entity<string>
     public void Entity_int_generates_shim()
     {
         var source = @"
-public class MyIntEntity : AeroDB.Entity<int>
+public class MyIntEntity : AeroDB.Sable.Entity<int>
 {
     public int Value { get; set; }
 }
@@ -204,7 +205,7 @@ public class MyIntEntity : AeroDB.Entity<int>
     {
         var source = @"
 using System;
-public class MyGuidEntity : AeroDB.Entity<Guid>
+public class MyGuidEntity : AeroDB.Sable.Entity<Guid>
 {
     public string Name { get; set; }
 }
@@ -225,7 +226,7 @@ public class MyGuidEntity : AeroDB.Entity<Guid>
     public void Shim_properties_have_CborProperty_attributes()
     {
         var source = @"
-public class EntityWithProps : AeroDB.Entity<long>
+public class EntityWithProps : AeroDB.Sable.Entity<long>
 {
     public string FirstName { get; set; }
     public int Age { get; set; }
@@ -255,7 +256,7 @@ public class EntityWithProps : AeroDB.Entity<long>
     public void ToEntity_maps_all_properties()
     {
         var source = @"
-public class EntityMapping : AeroDB.Entity<long>
+public class EntityMapping : AeroDB.Sable.Entity<long>
 {
     public string Title { get; set; }
     public int Rank { get; set; }
@@ -280,13 +281,13 @@ public class EntityMapping : AeroDB.Entity<long>
     public void SkipGeneration_opt_out_skips_shim()
     {
         var source = @"
-[AeroDB.AeroDBDocument(SkipGeneration = true)]
-public class SkippedEntity : AeroDB.Entity<long>
+[AeroDB.Sable.AeroDBDocument(SkipGeneration = true)]
+public class SkippedEntity : AeroDB.Sable.Entity<long>
 {
     public string Name { get; set; }
 }
 
-public class IncludedEntity : AeroDB.Entity<long>
+public class IncludedEntity : AeroDB.Sable.Entity<long>
 {
     public string Name { get; set; }
 }
@@ -305,12 +306,12 @@ public class IncludedEntity : AeroDB.Entity<long>
     public void Abstract_class_is_skipped()
     {
         var source = @"
-public abstract class AbstractEntity : AeroDB.Entity<long>
+public abstract class AbstractEntity : AeroDB.Sable.Entity<long>
 {
     public string Name { get; set; }
 }
 
-public class ConcreteEntity : AeroDB.Entity<long>
+public class ConcreteEntity : AeroDB.Sable.Entity<long>
 {
     public string Name { get; set; }
 }
@@ -346,10 +347,10 @@ public class NotAnEntity
     {
         var userSource = @"
 using System;
-using AeroDB;
-using AeroDB.Metadata;
+using AeroDB.Sable;
+using AeroDB.Sable.Metadata;
 
-public class CompilableShimEntity : AeroDB.Entity<long>
+public class CompilableShimEntity : AeroDB.Sable.Entity<long>
 {
     public string Name { get; set; }
     public int Count { get; set; }
@@ -368,7 +369,7 @@ public class CompilableShimEntity : AeroDB.Entity<long>
             .Where(a =>
             {
                 var name = a.GetName().Name;
-                return name != "AeroDB" && name != "AeroDB.SourceGenerators";
+                return name != "AeroDB.Sable" && name != "AeroDB.Sable.SourceGenerators";
             })
             .GroupBy(a => a.Location)
             .Select(g => MetadataReference.CreateFromFile(g.Key))

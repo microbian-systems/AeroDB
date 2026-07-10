@@ -1,7 +1,7 @@
 namespace AeroDB.WolverineFx;
 
 /// <summary>
-/// Configuration options for the AeroDB-backed transport.
+/// Configuration options for the AeroDB.Sable-backed transport.
 /// Controls polling behavior and batch sizes for the SurrealDB message queue.
 /// </summary>
 public sealed class AeroDBTransportOptions

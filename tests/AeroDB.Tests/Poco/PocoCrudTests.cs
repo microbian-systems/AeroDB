@@ -1,5 +1,5 @@
 using TUnit.Core;
-using AeroDB;
+using AeroDB.Sable;
 
 namespace AeroDB.Tests.Poco;
 

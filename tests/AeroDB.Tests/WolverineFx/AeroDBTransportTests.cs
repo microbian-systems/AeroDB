@@ -1,6 +1,8 @@
+using AeroDB.WolverineFx;
+
 namespace AeroDB.Tests;
 
-using AeroDB;
+using Sable;
 using AeroDB.WolverineFx;
 using NSubstitute;
 using Shouldly;
@@ -10,7 +12,7 @@ using Wolverine.Transports;
 
 /// <summary>
 /// Unit tests for <see cref="AeroDBTransport"/> — the ITransport implementation
-/// that registers the "AeroDB://" protocol scheme for Wolverine.
+/// that registers the "AeroDB.Sable://" protocol scheme for Wolverine.
 /// No Wolverine runtime or SurrealDB involved.
 /// </summary>
 public class AeroDBTransportTests
@@ -20,7 +22,7 @@ public class AeroDBTransportTests
     {
         var transport = new AeroDBTransport();
 
-        transport.Protocol.ShouldBe("AeroDB");
+        transport.Protocol.ShouldBe("AeroDB.Sable");
     }
 
     [Test]
@@ -28,7 +30,7 @@ public class AeroDBTransportTests
     {
         var transport = new AeroDBTransport();
 
-        transport.Name.ShouldBe("AeroDB SurrealDB Transport");
+        transport.Name.ShouldBe("AeroDB.Sable SurrealDB Transport");
     }
 
     [Test]
@@ -43,7 +45,7 @@ public class AeroDBTransportTests
     public void GetOrCreateEndpoint_ReturnsEndpoint_ForNewUri()
     {
         var transport = new AeroDBTransport();
-        var uri = new Uri("AeroDB://queue/incoming");
+        var uri = new Uri("AeroDB.Sable://queue/incoming");
 
         var endpoint = transport.GetOrCreateEndpoint(uri);
 
@@ -56,7 +58,7 @@ public class AeroDBTransportTests
     public void GetOrCreateEndpoint_ReturnsExistingEndpoint_OnSecondCall()
     {
         var transport = new AeroDBTransport();
-        var uri = new Uri("AeroDB://queue/incoming");
+        var uri = new Uri("AeroDB.Sable://queue/incoming");
 
         var first = transport.GetOrCreateEndpoint(uri);
         var second = transport.GetOrCreateEndpoint(uri);
@@ -68,7 +70,7 @@ public class AeroDBTransportTests
     public void TryGetEndpoint_ReturnsNull_WhenNotFound()
     {
         var transport = new AeroDBTransport();
-        var uri = new Uri("AeroDB://queue/unknown");
+        var uri = new Uri("AeroDB.Sable://queue/unknown");
 
         var endpoint = transport.TryGetEndpoint(uri);
 
@@ -79,7 +81,7 @@ public class AeroDBTransportTests
     public void TryGetEndpoint_ReturnsEndpoint_WhenExists()
     {
         var transport = new AeroDBTransport();
-        var uri = new Uri("AeroDB://queue/incoming");
+        var uri = new Uri("AeroDB.Sable://queue/incoming");
 
         transport.GetOrCreateEndpoint(uri);
         var endpoint = transport.TryGetEndpoint(uri);
@@ -92,8 +94,8 @@ public class AeroDBTransportTests
     public void Endpoints_ReturnsAllRegisteredEndpoints()
     {
         var transport = new AeroDBTransport();
-        var uri1 = new Uri("AeroDB://queue/one");
-        var uri2 = new Uri("AeroDB://queue/two");
+        var uri1 = new Uri("AeroDB.Sable://queue/one");
+        var uri2 = new Uri("AeroDB.Sable://queue/two");
 
         transport.GetOrCreateEndpoint(uri1);
         transport.GetOrCreateEndpoint(uri2);
@@ -133,7 +135,7 @@ public class AeroDBTransportTests
 
         var description = ((ITransport)transport).Describe();
 
-        description.ShouldBe("AeroDB SurrealDB Transport (scheme 'AeroDB')");
+        description.ShouldBe("AeroDB.Sable SurrealDB Transport (scheme 'AeroDB.Sable')");
     }
 
     [Test]

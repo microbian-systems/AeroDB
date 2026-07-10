@@ -1,3 +1,5 @@
+using AeroDB.WolverineFx;
+
 namespace AeroDB.Tests;
 
 using AeroDB.WolverineFx;
@@ -17,7 +19,7 @@ using Wolverine.Transports.Sending;
 /// </summary>
 public class AeroDBQueueSenderTests
 {
-    private static readonly Uri TestUri = new("AeroDB://localhost/test-queue");
+    private static readonly Uri TestUri = new("AeroDB.Sable://localhost/test-queue");
 
     private static AeroDBMessageStore CreateStore(ISurrealDbClient client)
     {

@@ -1,6 +1,6 @@
 using System.Text;
 using System.Text.Json;
-using AeroDB;
+using AeroDB.Sable;
 using JasperFx.Core;
 using JasperFx.Descriptors;
 using Microsoft.Extensions.Logging;
@@ -17,11 +17,11 @@ using Wolverine.Runtime.Agents;
 namespace AeroDB.WolverineFx;
 
 /// <summary>
-/// SurrealDB (AeroDB) backed implementation of Wolverine's IMessageStore and all sub-interfaces.
+/// SurrealDB (AeroDB.Sable) backed implementation of Wolverine's IMessageStore and all sub-interfaces.
 /// All operations use SurrealQL RawQuery with parameterized queries.
 /// Envelope bodies are stored as Base64 strings for reliable CBOR round-tripping.
 /// 
-/// Schema initialization now delegates to the AeroDB <see cref="SchemaManager"/> pipeline
+/// Schema initialization now delegates to the AeroDB.Sable <see cref="SchemaManager"/> pipeline
 /// via typed POCOs (<see cref="WolverineIncomingEnvelope"/>, etc.) instead of
 /// a hardcoded SurrealQL string.
 /// </summary>
@@ -54,7 +54,7 @@ public sealed class AeroDBMessageStore : IMessageStore,
         // Derive Uri from the actual connection endpoint if available
         Uri = storeOptions?.Endpoint is { Length: > 0 } ep
             ? new Uri(ep)
-            : new Uri("AeroDB://localhost");
+            : new Uri("AeroDB.Sable://localhost");
     }
 
     // ─── IMessageStore Members ───
@@ -81,12 +81,12 @@ public sealed class AeroDBMessageStore : IMessageStore,
 
     public IScheduledMessages ScheduledMessages => this;
 
-    public string Name { get; set; } = "AeroDB";
+    public string Name { get; set; } = "AeroDB.Sable";
 
     public void Initialize(IWolverineRuntime runtime)
     {
         _ownerId = runtime.Options.Durability.AssignedNodeNumber;
-        Name = runtime.Options.ServiceName ?? "AeroDB";
+        Name = runtime.Options.ServiceName ?? "AeroDB.Sable";
         _logger.LogInformation("AeroDBMessageStore initialized as node {NodeId}, ownerId={OwnerId}", _nodeId, _ownerId);
     }
 
@@ -95,7 +95,7 @@ public sealed class AeroDBMessageStore : IMessageStore,
         return new DatabaseDescriptor
         {
             Engine = "SurrealDB",
-            ServerName = "AeroDB",
+            ServerName = "AeroDB.Sable",
             DatabaseName = "wolverine",
             Subject = GetType().FullName!
         };
@@ -398,7 +398,7 @@ public sealed class AeroDBMessageStore : IMessageStore,
                         var dest = row.GetValueOrDefault("destination")?.ToString() ?? "";
                         var count = Convert.ToInt32(row.GetValueOrDefault("total") ?? 0);
                         results.Add(new DeadLetterQueueCount(serviceName,
-                            string.IsNullOrEmpty(dest) ? Uri : new Uri($"AeroDB://{dest}"),
+                            string.IsNullOrEmpty(dest) ? Uri : new Uri($"AeroDB.Sable://{dest}"),
                             mt, et, Uri, count));
                     }
                 }
@@ -591,7 +591,7 @@ public sealed class AeroDBMessageStore : IMessageStore,
                     try
                     {
                         var id = Guid.Parse(r.GetValueOrDefault("id")?.ToString() ?? Guid.NewGuid().ToString());
-                        var uri = new Uri(r.GetValueOrDefault("agent_uri")?.ToString() ?? "AeroDB://unknown");
+                        var uri = new Uri(r.GetValueOrDefault("agent_uri")?.ToString() ?? "AeroDB.Sable://unknown");
                         var type = r.GetValueOrDefault("type")?.ToString() == "Pinned"
                             ? AgentRestrictionType.Pinned
                             : r.GetValueOrDefault("type")?.ToString() == "Paused"
@@ -985,7 +985,7 @@ public sealed class AeroDBMessageStore : IMessageStore,
     // ─── Schema Initialization ───
 
     /// <summary>
-    /// Initialize the SurrealDB schema for all wolverine tables using the AeroDB schema pipeline.
+    /// Initialize the SurrealDB schema for all wolverine tables using the AeroDB.Sable schema pipeline.
     /// Creates tables, fields, and indexes via <see cref="SchemaManager"/>.
     /// Called during store initialization. Idempotent — uses IF NOT EXISTS variants.
     /// </summary>

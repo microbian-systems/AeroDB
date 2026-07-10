@@ -1,6 +1,6 @@
 using System.Reflection;
 using System.Linq.Expressions;
-using AeroDB;
+using AeroDB.Sable;
 using SurrealDb.Net;
 using SurrealDb.Net.Models;
 using SurrealDb.Embedded.InMemory;

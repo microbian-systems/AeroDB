@@ -1,7 +1,7 @@
 using System.Linq.Expressions;
 using System.Reflection;
 using Bogus;
-using AeroDB;
+using AeroDB.Sable;
 using NSubstitute;
 using SurrealDb.Net;
 using SurrealDb.Net.Models;

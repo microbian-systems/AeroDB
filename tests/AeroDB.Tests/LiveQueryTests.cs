@@ -1,8 +1,8 @@
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading.Channels;
-using AeroDB;
-using AeroDB.LiveQuery;
+using AeroDB.Sable;
+using AeroDB.Sable.LiveQuery;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using NSubstitute;

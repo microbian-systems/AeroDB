@@ -1,3 +1,4 @@
+using AeroDB.Sable;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -5,7 +6,7 @@ using Microsoft.Extensions.Logging.Abstractions;
 namespace AeroDB;
 
 /// <summary>
-/// Wraps a AeroDB document session in an EF Core IDbContextTransaction,
+/// Wraps a AeroDB.Sable document session in an EF Core IDbContextTransaction,
 /// allowing simultaneous SurrealDB + EF Core operations.
 /// </summary>
 public class AeroDBEfCoreTransaction : IDbContextTransaction
@@ -33,7 +34,7 @@ public class AeroDBEfCoreTransaction : IDbContextTransaction
 
     public async Task CommitAsync(CancellationToken ct = default)
     {
-        _logger.LogInformation("Committing AeroDB EF Core transaction {TransactionId}", TransactionId);
+        _logger.LogInformation("Committing AeroDB.Sable EF Core transaction {TransactionId}", TransactionId);
         await _AeroDBSession.SaveChangesAsync(ct).ConfigureAwait(false);
         if (OwnedTransaction is not null)
             await OwnedTransaction.CommitAsync(ct).ConfigureAwait(false);

@@ -1,6 +1,8 @@
+using AeroDB.WolverineFx;
+
 namespace AeroDB.Tests;
 
-using global::AeroDB;
+using global::AeroDB.Sable;
 using global::AeroDB.WolverineFx;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -24,7 +26,7 @@ public record Pong(string Message);
 
 /// <summary>
 /// Simple handler that does not require IDocumentSession injection.
-/// Used to verify basic Wolverine message dispatch works with AeroDB host.
+/// Used to verify basic Wolverine message dispatch works with AeroDB.Sable host.
 /// </summary>
 public class PingHandler
 {
@@ -55,7 +57,7 @@ public class PongHandler
 public class AeroDBWolverineIntegrationTests
 {
     /// <summary>
-    /// Bootstrap a Wolverine host with AeroDB persistence backed by in-memory SurrealDB.
+    /// Bootstrap a Wolverine host with AeroDB.Sable persistence backed by in-memory SurrealDB.
     /// </summary>
     private static async Task<IHost> BuildWolverineHostAsync(
         Action<WolverineOptions>? extraWolverineConfig = null,
@@ -82,7 +84,7 @@ public class AeroDBWolverineIntegrationTests
 
                 extraWolverineConfig?.Invoke(opts);
 
-                // Manually register AeroDB persistence services (same as
+                // Manually register AeroDB.Sable persistence services (same as
                 // IntegrateWithAeroDB but using factory lambdas since IServiceProvider
                 // isn't available during configuration).
                 opts.Services.AddSingleton<AeroDBMessageStore>(sp =>
@@ -111,7 +113,7 @@ public class AeroDBWolverineIntegrationTests
         return host;
     }
 
-    // ─── Test 1: Host boots with AeroDB ───
+    // ─── Test 1: Host boots with AeroDB.Sable ───
 
     [Test]
     public async Task Host_BootsWithAeroDBPersistence()
@@ -163,7 +165,7 @@ public class AeroDBWolverineIntegrationTests
             Id = Guid.NewGuid(),
             MessageType = "TestMessage",
             Data = new byte[] { 1, 2, 3 },
-            Destination = new Uri("AeroDB://localhost/incoming")
+            Destination = new Uri("AeroDB.Sable://localhost/incoming")
         };
 
         // Store should not throw
@@ -187,7 +189,7 @@ public class AeroDBWolverineIntegrationTests
             Id = Guid.NewGuid(),
             MessageType = "OutgoingMessage",
             Data = new byte[] { 4, 5, 6 },
-            Destination = new Uri("AeroDB://localhost/outgoing")
+            Destination = new Uri("AeroDB.Sable://localhost/outgoing")
         };
 
         // Store should not throw
@@ -205,7 +207,7 @@ public class AeroDBWolverineIntegrationTests
         // Schema applied without exception
     }
 
-    // ─── Test 6: AeroDB IDocumentSession persists documents ───
+    // ─── Test 6: AeroDB.Sable IDocumentSession persists documents ───
 
     [Test]
     public async Task DocumentSession_StoreAndLoad()
@@ -238,7 +240,7 @@ public class AeroDBWolverineIntegrationTests
         }
     }
 
-    // ─── Test 7: AeroDB IDocumentSession delete ───
+    // ─── Test 7: AeroDB.Sable IDocumentSession delete ───
 
     [Test]
     public async Task DocumentSession_DeleteDocument()
@@ -290,7 +292,7 @@ public class AeroDBWolverineIntegrationTests
     [Test]
     public async Task Concurrency_ExceptionTypeExists()
     {
-        // AeroDB tracks versions on entities that implement IVersioned or have a
+        // AeroDB.Sable tracks versions on entities that implement IVersioned or have a
         // [Version] property when UseOptimisticConcurrency is true.
         // The Store() API always marks entities as "Added" (CREATE) — true
         // UPDATE-based concurrency detection requires Upsert/Merge which is
@@ -387,7 +389,7 @@ public class AeroDBWolverineIntegrationTests
             Id = msgId,
             MessageType = "IdempotentMessage",
             Data = new byte[] { 1, 2, 3 },
-            Destination = new Uri("AeroDB://localhost/incoming")
+            Destination = new Uri("AeroDB.Sable://localhost/incoming")
         };
 
         // Store twice (simulates duplicate delivery — store accepts duplicates)
@@ -417,7 +419,7 @@ public class AeroDBWolverineIntegrationTests
             Id = envId,
             MessageType = "DeadLetterReplayTest",
             Data = new byte[] { 10, 20, 30 },
-            Destination = new Uri("AeroDB://localhost/incoming")
+            Destination = new Uri("AeroDB.Sable://localhost/incoming")
         };
 
         // Store as incoming first
@@ -452,7 +454,7 @@ public class AeroDBWolverineIntegrationTests
             Id = Guid.NewGuid(),
             MessageType = "TenantTest",
             Data = new byte[] { 1 },
-            Destination = new Uri("AeroDB://localhost/incoming"),
+            Destination = new Uri("AeroDB.Sable://localhost/incoming"),
             TenantId = "tenant-alpha"
         };
 
@@ -599,7 +601,7 @@ public class AeroDBWolverineIntegrationTests
             Id = Guid.NewGuid(),
             MessageType = "OwnershipTest",
             Data = new byte[] { 1, 2, 3 },
-            Destination = new Uri("AeroDB://localhost/incoming")
+            Destination = new Uri("AeroDB.Sable://localhost/incoming")
         };
         await store.StoreIncomingAsync(env1);
 
@@ -609,7 +611,7 @@ public class AeroDBWolverineIntegrationTests
             Id = Guid.NewGuid(),
             MessageType = "OwnershipTestOutgoing",
             Data = new byte[] { 4, 5, 6 },
-            Destination = new Uri("AeroDB://localhost/outgoing")
+            Destination = new Uri("AeroDB.Sable://localhost/outgoing")
         };
         await store.StoreOutgoingAsync(env2, ownerId: 42);
 
@@ -642,7 +644,7 @@ public class AeroDBWolverineIntegrationTests
             Id = Guid.NewGuid(),
             MessageType = "OwnerReleaseTest",
             Data = new byte[] { 7, 8, 9 },
-            Destination = new Uri("AeroDB://localhost/incoming")
+            Destination = new Uri("AeroDB.Sable://localhost/incoming")
         };
         await store.StoreIncomingAsync(env);
 
@@ -748,7 +750,7 @@ public class AeroDBWolverineIntegrationTests
         {
                 new AgentRestriction(
                 Guid.NewGuid(),
-                new Uri("AeroDB://agent/test-agent"),
+                new Uri("AeroDB.Sable://agent/test-agent"),
                 AgentRestrictionType.Pinned,
                 1)
         };
@@ -777,11 +779,11 @@ public class VersionedDoc : Record
     public string Name { get; set; } = string.Empty;
 
     /// <summary>
-    /// AeroDB checks for <see cref="IVersioned"/> or <see cref="AeroDB.VersionAttribute"/>
+    /// AeroDB.Sable checks for <see cref="IVersioned"/> or <see cref="Sable.VersionAttribute"/>
     /// to enable optimistic concurrency versioning. We mark this long property with
-    /// [Version] so AeroDB tracks it during Store/Load and checks on SaveChanges.
+    /// [Version] so AeroDB.Sable tracks it during Store/Load and checks on SaveChanges.
     /// </summary>
-    [AeroDB.Version]
+    [Sable.Version]
     public long Revision { get; set; }
 }
 
