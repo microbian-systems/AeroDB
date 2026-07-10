@@ -10,7 +10,7 @@ namespace AeroDB.WolverineFx;
 
 /// <summary>
 /// AeroDB.Sable-backed transport for Wolverine using SurrealDB as the message store.
-/// Registers the "AeroDB.Sable://" protocol scheme and creates AeroDBEndpoint instances.
+/// Registers the "AeroDB://" protocol scheme and creates AeroDBEndpoint instances.
 /// </summary>
 public sealed class AeroDBTransport : ITransport
 {

@@ -254,7 +254,7 @@ public class AeroDBScheduledJobAgentTests
         var logger = NullLogger<AeroDBScheduledJobAgent>.Instance;
         var agent = new AeroDBScheduledJobAgent(client, logger);
 
-        agent.Uri.ShouldBe(new Uri("AeroDB.Sable://scheduled-jobs"));
+        agent.Uri.ShouldBe(new Uri("AeroDB://scheduled-jobs"));
     }
 
     [Test]

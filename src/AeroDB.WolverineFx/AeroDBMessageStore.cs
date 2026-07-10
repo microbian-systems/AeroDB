@@ -54,7 +54,7 @@ public sealed class AeroDBMessageStore : IMessageStore,
         // Derive Uri from the actual connection endpoint if available
         Uri = storeOptions?.Endpoint is { Length: > 0 } ep
             ? new Uri(ep)
-            : new Uri("AeroDB.Sable://localhost");
+            : new Uri("AeroDB://localhost");
     }
 
     // ─── IMessageStore Members ───
@@ -398,7 +398,7 @@ public sealed class AeroDBMessageStore : IMessageStore,
                         var dest = row.GetValueOrDefault("destination")?.ToString() ?? "";
                         var count = Convert.ToInt32(row.GetValueOrDefault("total") ?? 0);
                         results.Add(new DeadLetterQueueCount(serviceName,
-                            string.IsNullOrEmpty(dest) ? Uri : new Uri($"AeroDB.Sable://{dest}"),
+                            string.IsNullOrEmpty(dest) ? Uri : new Uri($"AeroDB://{dest}"),
                             mt, et, Uri, count));
                     }
                 }
@@ -591,7 +591,7 @@ public sealed class AeroDBMessageStore : IMessageStore,
                     try
                     {
                         var id = Guid.Parse(r.GetValueOrDefault("id")?.ToString() ?? Guid.NewGuid().ToString());
-                        var uri = new Uri(r.GetValueOrDefault("agent_uri")?.ToString() ?? "AeroDB.Sable://unknown");
+                        var uri = new Uri(r.GetValueOrDefault("agent_uri")?.ToString() ?? "AeroDB://unknown");
                         var type = r.GetValueOrDefault("type")?.ToString() == "Pinned"
                             ? AgentRestrictionType.Pinned
                             : r.GetValueOrDefault("type")?.ToString() == "Paused"

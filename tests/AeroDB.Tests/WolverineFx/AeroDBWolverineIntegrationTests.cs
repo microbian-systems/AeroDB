@@ -165,7 +165,7 @@ public class AeroDBWolverineIntegrationTests
             Id = Guid.NewGuid(),
             MessageType = "TestMessage",
             Data = new byte[] { 1, 2, 3 },
-            Destination = new Uri("AeroDB.Sable://localhost/incoming")
+            Destination = new Uri("AeroDB://localhost/incoming")
         };
 
         // Store should not throw
@@ -189,7 +189,7 @@ public class AeroDBWolverineIntegrationTests
             Id = Guid.NewGuid(),
             MessageType = "OutgoingMessage",
             Data = new byte[] { 4, 5, 6 },
-            Destination = new Uri("AeroDB.Sable://localhost/outgoing")
+            Destination = new Uri("AeroDB://localhost/outgoing")
         };
 
         // Store should not throw
@@ -389,7 +389,7 @@ public class AeroDBWolverineIntegrationTests
             Id = msgId,
             MessageType = "IdempotentMessage",
             Data = new byte[] { 1, 2, 3 },
-            Destination = new Uri("AeroDB.Sable://localhost/incoming")
+            Destination = new Uri("AeroDB://localhost/incoming")
         };
 
         // Store twice (simulates duplicate delivery — store accepts duplicates)
@@ -419,7 +419,7 @@ public class AeroDBWolverineIntegrationTests
             Id = envId,
             MessageType = "DeadLetterReplayTest",
             Data = new byte[] { 10, 20, 30 },
-            Destination = new Uri("AeroDB.Sable://localhost/incoming")
+            Destination = new Uri("AeroDB://localhost/incoming")
         };
 
         // Store as incoming first
@@ -454,7 +454,7 @@ public class AeroDBWolverineIntegrationTests
             Id = Guid.NewGuid(),
             MessageType = "TenantTest",
             Data = new byte[] { 1 },
-            Destination = new Uri("AeroDB.Sable://localhost/incoming"),
+            Destination = new Uri("AeroDB://localhost/incoming"),
             TenantId = "tenant-alpha"
         };
 
@@ -601,7 +601,7 @@ public class AeroDBWolverineIntegrationTests
             Id = Guid.NewGuid(),
             MessageType = "OwnershipTest",
             Data = new byte[] { 1, 2, 3 },
-            Destination = new Uri("AeroDB.Sable://localhost/incoming")
+            Destination = new Uri("AeroDB://localhost/incoming")
         };
         await store.StoreIncomingAsync(env1);
 
@@ -611,7 +611,7 @@ public class AeroDBWolverineIntegrationTests
             Id = Guid.NewGuid(),
             MessageType = "OwnershipTestOutgoing",
             Data = new byte[] { 4, 5, 6 },
-            Destination = new Uri("AeroDB.Sable://localhost/outgoing")
+            Destination = new Uri("AeroDB://localhost/outgoing")
         };
         await store.StoreOutgoingAsync(env2, ownerId: 42);
 
@@ -644,7 +644,7 @@ public class AeroDBWolverineIntegrationTests
             Id = Guid.NewGuid(),
             MessageType = "OwnerReleaseTest",
             Data = new byte[] { 7, 8, 9 },
-            Destination = new Uri("AeroDB.Sable://localhost/incoming")
+            Destination = new Uri("AeroDB://localhost/incoming")
         };
         await store.StoreIncomingAsync(env);
 
@@ -750,7 +750,7 @@ public class AeroDBWolverineIntegrationTests
         {
                 new AgentRestriction(
                 Guid.NewGuid(),
-                new Uri("AeroDB.Sable://agent/test-agent"),
+                new Uri("AeroDB://agent/test-agent"),
                 AgentRestrictionType.Pinned,
                 1)
         };

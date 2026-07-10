@@ -21,7 +21,7 @@ internal sealed class AeroDBScheduledJobAgent : IAgent
 
     private const string IncomingTable = "wolverine_incoming_envelopes";
 
-    public Uri Uri { get; } = new("AeroDB.Sable://scheduled-jobs");
+    public Uri Uri { get; } = new("AeroDB://scheduled-jobs");
 
     public AgentStatus Status { get; private set; } = AgentStatus.Stopped;
 
