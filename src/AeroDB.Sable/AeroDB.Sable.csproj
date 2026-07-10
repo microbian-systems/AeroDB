@@ -10,7 +10,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AeroDB.SourceGenerators\AeroDB.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
-    <ProjectReference Include="..\..\surrealdb.net\SurrealDb.Net\SurrealDb.Net.csproj" />
+    <PackageReference Include="SurrealDb.Net" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Dahomey.Cbor" />
