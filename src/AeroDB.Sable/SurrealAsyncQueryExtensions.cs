@@ -237,7 +237,7 @@ public static class SurrealAsyncQueryExtensions
             throw new InvalidOperationException($"Cannot resolve table name for type '{typeof(T).Name}'.");
 
         // Build the SurrealQL from the expression tree
-        var visitor = new SurrealExpressionVisitor(surrealQueryable.StoreOptions.Schema);
+        var visitor = new SurrealExpressionVisitor(surrealQueryable.StoreOptions.Schema, surrealQueryable.StoreOptions.EnumStorage);
         var result = visitor.Translate(source.Expression);
 
         var surql = $"DELETE FROM `{tableName}`";

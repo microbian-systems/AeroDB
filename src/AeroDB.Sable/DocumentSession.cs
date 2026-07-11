@@ -423,14 +423,16 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         return response.Count;
     }
 
-    private static string FormatWhereValue(object? value) => value switch
+    private string FormatWhereValue(object? value) => value switch
     {
         null => "NONE",
         string s => $"'{s.Replace("'", "\\'")}'",
         bool b => b ? "true" : "false",
         int or long or short or byte or sbyte or ushort or uint or ulong
             or float or double or decimal => value.ToString()!,
-        Enum e => Convert.ToInt64(e).ToString(),
+        Enum e => Options.EnumStorage == EnumStorage.AsString
+            ? $"'{e}'"
+            : Convert.ToInt64(e).ToString(),
         DateTime dt => $"d'{dt:yyyy-MM-ddTHH:mm:ssZ}'",
         DateTimeOffset dto => $"d'{dto:yyyy-MM-ddTHH:mm:ssZ}'",
         _ => $"'{value}'"
@@ -1536,7 +1538,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         return true;
     }
 
-    private static string ToSurrealQlLiteral(object? value)
+    private string ToSurrealQlLiteral(object? value)
     {
         return value switch
         {
@@ -1549,7 +1551,9 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
             DateTime dt => $"d'{dt.ToUniversalTime():yyyy-MM-ddTHH:mm:ssZ}'",
             DateTimeOffset dto => $"d'{dto.UtcDateTime:yyyy-MM-ddTHH:mm:ssZ}'",
             Guid guid => $"'{guid}'",
-            Enum e => Convert.ToInt64(e, CultureInfo.InvariantCulture).ToString(CultureInfo.InvariantCulture),
+            Enum e => Options.EnumStorage == EnumStorage.AsString
+                ? $"'{e}'"
+                : Convert.ToInt64(e, CultureInfo.InvariantCulture).ToString(CultureInfo.InvariantCulture),
             _ when TryFormatRecordLinkLiteral(value, out var recordLink) => recordLink,
             System.Collections.IDictionary dictionary => ToSurrealQlDictionaryLiteral(dictionary),
             System.Collections.IEnumerable enumerable when value is not string => ToSurrealQlArrayLiteral(enumerable),
@@ -1607,13 +1611,13 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         return false;
     }
 
-    private static string ToSurrealQlArrayLiteral(System.Collections.IEnumerable values)
+    private string ToSurrealQlArrayLiteral(System.Collections.IEnumerable values)
     {
-        var items = values.Cast<object?>().Select(ToSurrealQlLiteral);
+        var items = values.Cast<object?>().Select(v => ToSurrealQlLiteral(v));
         return "[" + string.Join(", ", items) + "]";
     }
 
-    private static string ToSurrealQlDictionaryLiteral(System.Collections.IDictionary dictionary)
+    private string ToSurrealQlDictionaryLiteral(System.Collections.IDictionary dictionary)
     {
         var fields = dictionary.Keys
             .Cast<object?>()
@@ -1636,7 +1640,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         var method = typeof(InternalSessionBase)
             .GetMethod(nameof(InternalSessionBase.DeserializePocoFromList), BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public)!
             .MakeGenericMethod(entityType);
-        var result = method.Invoke(null, [records, mapping?.IdentityProperty ?? "Id", Options.Schema]);
+        var result = method.Invoke(null, [records, mapping?.IdentityProperty ?? "Id", Options.Schema, Options.EnumStorage]);
         return result is System.Collections.IList { Count: > 0 } list ? list[0] : null;
     }
 

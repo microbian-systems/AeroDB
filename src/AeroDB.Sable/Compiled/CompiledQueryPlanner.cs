@@ -144,7 +144,7 @@ public static class CompiledQueryPlanner
             normalizedBody,
             dummy,
             options)
-            ?? new SurrealExpressionVisitor(options.Schema).Translate(visitableExpr);
+            ?? new SurrealExpressionVisitor(options.Schema, options.EnumStorage).Translate(visitableExpr);
 
         // Ensure table name was resolved
         if (string.IsNullOrEmpty(queryResult.TableName))
@@ -310,7 +310,7 @@ public static class CompiledQueryPlanner
             if (result is not IQueryable queryable)
                 return null;
 
-            var visitor = new SurrealExpressionVisitor(options.Schema);
+            var visitor = new SurrealExpressionVisitor(options.Schema, options.EnumStorage);
             var queryResult = visitor.Translate(queryable.Expression);
 
             var fetchFields = SurrealQueryProvider.ExtractFetchFields(queryable.Expression);
@@ -322,7 +322,7 @@ public static class CompiledQueryPlanner
             {
                 foreach (var spec in linkedWhereSpecs)
                 {
-                    var linkedVisitor = new SurrealExpressionVisitor(options.Schema);
+                    var linkedVisitor = new SurrealExpressionVisitor(options.Schema, options.EnumStorage);
                     queryResult.Where.Add(linkedVisitor.TranslateLinkedWhere(spec.Predicate, spec.Links));
                     if (linkedVisitor.Parameters.Count > 0)
                     {

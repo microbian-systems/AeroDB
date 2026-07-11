@@ -22,9 +22,11 @@ internal class SetOperation
     public string? OldName { get; }      // for Rename
     public string? TargetField { get; }  // for Duplicate
     public int? InsertIndex { get; }     // for Insert / InsertIfNotExists
+    private readonly EnumStorage _enumStorage;
 
     public SetOperation(string fieldName, object? value, OperationKind kind,
-        string? oldName = null, string? targetField = null, int? insertIndex = null)
+        string? oldName = null, string? targetField = null, int? insertIndex = null,
+        EnumStorage enumStorage = EnumStorage.AsString)
     {
         FieldName = fieldName;
         Value = value;
@@ -32,6 +34,7 @@ internal class SetOperation
         OldName = oldName;
         TargetField = targetField;
         InsertIndex = insertIndex;
+        _enumStorage = enumStorage;
     }
 
     public string ToSurrealQL()
@@ -84,7 +87,7 @@ internal class SetOperation
         return $"`{name}`";
     }
 
-    private static string FormatValue(object? val) => val switch
+    private string FormatValue(object? val) => val switch
     {
         null => "NONE",
         string s => $"'{s.Replace("'", "\\'")}'",
@@ -93,6 +96,9 @@ internal class SetOperation
             ((IFormattable)val).ToString(null, System.Globalization.CultureInfo.InvariantCulture),
         DateTime dt => $"d'{dt:yyyy-MM-ddTHH:mm:ss}'",
         DateTimeOffset dto => $"d'{dto:yyyy-MM-ddTHH:mm:ss}'",
+        Enum e => _enumStorage == EnumStorage.AsString
+            ? $"'{e}'"
+            : Convert.ToInt64(e).ToString(System.Globalization.CultureInfo.InvariantCulture),
         _ => $"'{val}'"
     };
 }

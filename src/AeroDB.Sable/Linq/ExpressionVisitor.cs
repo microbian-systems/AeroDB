@@ -19,11 +19,13 @@ namespace AeroDB.Sable;
         private string _projection = "*";
         private SurrealCommandBuilder _cmdBuilder = new();
         private readonly SchemaOptions? _schema;
+        private readonly EnumStorage _enumStorage;
         private Dictionary<ParameterExpression, LinkRegistration> _parameterLinks = new();
 
-        public SurrealExpressionVisitor(SchemaOptions? schema = null)
+        public SurrealExpressionVisitor(SchemaOptions? schema = null, EnumStorage enumStorage = EnumStorage.AsString)
         {
             _schema = schema;
+            _enumStorage = enumStorage;
         }
 
         /// <summary>
@@ -870,24 +872,29 @@ namespace AeroDB.Sable;
         return expr;
     }
 
-    private static string FormatValue(object? val) => val switch
+    private string FormatValue(object? val) => val switch
     {
         null => "NONE",
         string s => $"'{s.Replace("'", "\\'")}'",
         bool b => b ? "true" : "false",
         int or long or short or byte or float or double or decimal => val.ToString()!,
-        Enum e => $"'{Convert.ToInt64(e)}'",
+        Enum e => _enumStorage == EnumStorage.AsString
+            ? $"'{e}'"
+            : Convert.ToInt64(e).ToString(),
         DateTime dt => $"d'{dt:yyyy-MM-ddTHH:mm:ssZ}'",
         DateTimeOffset dto => $"d'{dto:yyyy-MM-ddTHH:mm:ssZ}'",
         _ => val.ToString()!
     };
 
-    private static string FormatValue(object? val, SurrealCommandBuilder builder) => val switch
+    private string FormatValue(object? val, SurrealCommandBuilder builder) => val switch
     {
         null => "NONE",
         bool b => b ? "true" : "false",
         DateTime dt => $"d'{dt.ToUniversalTime():yyyy-MM-ddTHH:mm:ssZ}'",
         DateTimeOffset dto => $"d'{dto.ToUniversalTime():yyyy-MM-ddTHH:mm:ssZ}'",
+        Enum e => _enumStorage == EnumStorage.AsString
+            ? builder.Parameter(e.ToString())
+            : builder.Parameter(Convert.ToInt64(e)),
         _ => builder.Parameter(val)
     };
 

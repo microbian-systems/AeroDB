@@ -349,13 +349,15 @@ public class LiveQueryTests
     }
 
     [Test]
-    public async Task TranslateCondition_enum_equality_emits_quoted_integer()
+    public async Task TranslateCondition_enum_equality_emits_string_name()
     {
         var qs = CreateSession(out var session);
         session.LiveRawQuery<EnumTestDoc>(Arg.Any<string>(), Arg.Any<IReadOnlyDictionary<string, object?>?>(), Arg.Any<CancellationToken>())
             .Returns(Task.FromResult<SurrealDbLiveQuery<EnumTestDoc>>(default!));
-        await using var sub = await qs.Live<EnumTestDoc>().Where(x => x.Status == TestStatus.Published).SubscribeAsync();
-        await session.Received(1).LiveRawQuery<EnumTestDoc>(Arg.Is<string>(s => !s.Contains("= Published") && s.Contains("status")), null, Arg.Any<CancellationToken>());
+        // Use a captured variable to prevent C# compiler from inlining the enum as an integer constant
+        var status = TestStatus.Published;
+        await using var sub = await qs.Live<EnumTestDoc>().Where(x => x.Status == status).SubscribeAsync();
+        await session.Received(1).LiveRawQuery<EnumTestDoc>(Arg.Is<string>(s => s.Contains("'Published'") && s.Contains("status")), null, Arg.Any<CancellationToken>());
     }
 
     [Test]

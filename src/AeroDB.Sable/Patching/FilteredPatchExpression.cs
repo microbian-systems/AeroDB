@@ -16,15 +16,18 @@ internal class FilteredPatchExpression<T> : IPatchExpression<T>, IDeferredPatch 
     private readonly Expression<Func<T, bool>> _filter;
     private readonly List<SetOperation> _operations = new();
     private readonly ILogger<FilteredPatchExpression<T>> _logger;
+    private readonly EnumStorage _enumStorage;
     private PatchContext? _patchContext;
 
     public FilteredPatchExpression(IDocumentSession session, Expression<Func<T, bool>> filter)
     {
         _session = session;
         _filter = filter;
-        _logger = ((InternalSessionBase)session).StoreOptions.LoggerFactory
+        var storeOptions = ((InternalSessionBase)session).StoreOptions;
+        _logger = storeOptions.LoggerFactory
             ?.CreateLogger<FilteredPatchExpression<T>>()
             ?? NullLogger<FilteredPatchExpression<T>>.Instance;
+        _enumStorage = storeOptions.EnumStorage;
 
         // Auto-register on the session for execution during SaveChangesAsync
         if (session is DocumentSession ds)
@@ -33,48 +36,48 @@ internal class FilteredPatchExpression<T> : IPatchExpression<T>, IDeferredPatch 
 
     public IPatchExpression<T> Set<TValue>(Expression<Func<T, TValue>> property, TValue value)
     {
-        _operations.Add(new SetOperation(GetMember(property).Name, value, OperationKind.Set));
+        _operations.Add(new SetOperation(GetMember(property).Name, value, OperationKind.Set, enumStorage: _enumStorage));
         return this;
     }
 
     public IPatchExpression<T> Increment(Expression<Func<T, int>> property, int amount = 1)
-    { _operations.Add(new SetOperation(GetMember(property).Name, amount, OperationKind.Increment)); return this; }
+    { _operations.Add(new SetOperation(GetMember(property).Name, amount, OperationKind.Increment, enumStorage: _enumStorage)); return this; }
     public IPatchExpression<T> Increment(Expression<Func<T, long>> property, long amount = 1)
-    { _operations.Add(new SetOperation(GetMember(property).Name, amount, OperationKind.Increment)); return this; }
+    { _operations.Add(new SetOperation(GetMember(property).Name, amount, OperationKind.Increment, enumStorage: _enumStorage)); return this; }
     public IPatchExpression<T> Increment(Expression<Func<T, double>> property, double amount = 1)
-    { _operations.Add(new SetOperation(GetMember(property).Name, amount, OperationKind.Increment)); return this; }
+    { _operations.Add(new SetOperation(GetMember(property).Name, amount, OperationKind.Increment, enumStorage: _enumStorage)); return this; }
     public IPatchExpression<T> Increment(Expression<Func<T, float>> property, float amount = 1)
-    { _operations.Add(new SetOperation(GetMember(property).Name, amount, OperationKind.Increment)); return this; }
+    { _operations.Add(new SetOperation(GetMember(property).Name, amount, OperationKind.Increment, enumStorage: _enumStorage)); return this; }
     public IPatchExpression<T> Increment(Expression<Func<T, decimal>> property, decimal amount = 1)
-    { _operations.Add(new SetOperation(GetMember(property).Name, amount, OperationKind.Increment)); return this; }
+    { _operations.Add(new SetOperation(GetMember(property).Name, amount, OperationKind.Increment, enumStorage: _enumStorage)); return this; }
     public IPatchExpression<T> Append<TElement>(Expression<Func<T, IEnumerable<TElement>>> property, TElement element)
-    { _operations.Add(new SetOperation(GetMember(property).Name, element, OperationKind.Append)); return this; }
+    { _operations.Add(new SetOperation(GetMember(property).Name, element, OperationKind.Append, enumStorage: _enumStorage)); return this; }
     public IPatchExpression<T> AppendIfNotExists<TElement>(Expression<Func<T, IEnumerable<TElement>>> property, TElement element)
-    { _operations.Add(new SetOperation(GetMember(property).Name, element, OperationKind.AppendIfNotExists)); return this; }
+    { _operations.Add(new SetOperation(GetMember(property).Name, element, OperationKind.AppendIfNotExists, enumStorage: _enumStorage)); return this; }
     public IPatchExpression<T> Insert<TElement>(Expression<Func<T, IEnumerable<TElement>>> property, TElement element, int? index = null)
-    { _operations.Add(new SetOperation(GetMember(property).Name, element, OperationKind.Insert, insertIndex: index)); return this; }
+    { _operations.Add(new SetOperation(GetMember(property).Name, element, OperationKind.Insert, insertIndex: index, enumStorage: _enumStorage)); return this; }
     public IPatchExpression<T> InsertIfNotExists<TElement>(Expression<Func<T, IEnumerable<TElement>>> property, TElement element, int? index = null)
-    { _operations.Add(new SetOperation(GetMember(property).Name, element, OperationKind.InsertIfNotExists, insertIndex: index)); return this; }
+    { _operations.Add(new SetOperation(GetMember(property).Name, element, OperationKind.InsertIfNotExists, insertIndex: index, enumStorage: _enumStorage)); return this; }
     public IPatchExpression<T> Remove<TElement>(Expression<Func<T, IEnumerable<TElement>>> property, TElement element)
-    { _operations.Add(new SetOperation(GetMember(property).Name, element, OperationKind.Remove)); return this; }
+    { _operations.Add(new SetOperation(GetMember(property).Name, element, OperationKind.Remove, enumStorage: _enumStorage)); return this; }
     public IPatchExpression<T> Duplicate<TElement>(Expression<Func<T, TElement>> source, params Expression<Func<T, TElement>>[] destinations)
     {
         var src = GetMember(source).Name;
         foreach (var d in destinations)
-            _operations.Add(new SetOperation(GetMember(d).Name, null, OperationKind.Duplicate, targetField: src));
+            _operations.Add(new SetOperation(GetMember(d).Name, null, OperationKind.Duplicate, targetField: src, enumStorage: _enumStorage));
         return this;
     }
     public IPatchExpression<T> Rename(string oldName, Expression<Func<T, object?>> target)
-    { _operations.Add(new SetOperation(GetMember(target).Name, null, OperationKind.Rename, oldName: oldName)); return this; }
+    { _operations.Add(new SetOperation(GetMember(target).Name, null, OperationKind.Rename, oldName: oldName, enumStorage: _enumStorage)); return this; }
     public IPatchExpression<T> Delete<TValue>(Expression<Func<T, TValue>> property)
-    { _operations.Add(new SetOperation(GetMember(property).Name, null, OperationKind.Delete)); return this; }
+    { _operations.Add(new SetOperation(GetMember(property).Name, null, OperationKind.Delete, enumStorage: _enumStorage)); return this; }
 
     public IPatchExpression<T> SetAll<TValue>(TValue value)
     {
         var props = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance)
             .Where(p => p.CanRead && p.CanWrite && p.PropertyType == typeof(TValue));
         foreach (var prop in props)
-            _operations.Add(new SetOperation(prop.Name, value, OperationKind.Set));
+            _operations.Add(new SetOperation(prop.Name, value, OperationKind.Set, enumStorage: _enumStorage));
         return this;
     }
 

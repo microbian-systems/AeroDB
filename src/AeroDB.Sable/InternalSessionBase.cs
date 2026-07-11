@@ -223,7 +223,7 @@ public abstract class InternalSessionBase : IAsyncDisposable
             return [];
 
         var records = CborResultReader.ReadPocoResult(response, index);
-        return DeserializePocoFromList<T>(records, mapping?.IdentityProperty ?? "Id", Options.Schema);
+        return DeserializePocoFromList<T>(records, mapping?.IdentityProperty ?? "Id", Options.Schema, Options.EnumStorage);
     }
 
     private bool TryDeserializeDocumentResponse<T>(SurrealDbResponse response, out List<T> results)
@@ -235,7 +235,7 @@ public abstract class InternalSessionBase : IAsyncDisposable
             return false;
 
         var records = CborResultReader.ReadPocoResult(response, 0);
-        results = DeserializePocoFromList<T>(records, mapping?.IdentityProperty ?? "Id", Options.Schema);
+        results = DeserializePocoFromList<T>(records, mapping?.IdentityProperty ?? "Id", Options.Schema, Options.EnumStorage);
         return true;
     }
 
@@ -448,7 +448,7 @@ public abstract class InternalSessionBase : IAsyncDisposable
             return null;
 
         var mapping = Options.Schema.Mappings.GetValueOrDefault(typeof(T));
-        return DeserializePocoFromList<T>(records, mapping?.IdentityProperty, Options.Schema)[0];
+        return DeserializePocoFromList<T>(records, mapping?.IdentityProperty, Options.Schema, Options.EnumStorage)[0];
     }
 
     protected void LogSurrealQuery(string sql, IReadOnlyDictionary<string, object?>? parameters)
@@ -477,7 +477,8 @@ public abstract class InternalSessionBase : IAsyncDisposable
     internal static List<T> DeserializePocoFromList<T>(
         List<Dictionary<string, object?>> records,
         string? identityProperty = null,
-        SchemaOptions? schema = null)
+        SchemaOptions? schema = null,
+        EnumStorage enumStorage = EnumStorage.AsString)
     {
         if (records is null or { Count: 0 }) return [];
 
@@ -493,7 +494,8 @@ public abstract class InternalSessionBase : IAsyncDisposable
         {
             PropertyNameCaseInsensitive = true
         };
-        jsonOpts.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
+        if (enumStorage == EnumStorage.AsString)
+            jsonOpts.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
         var json = System.Text.Json.JsonSerializer.Serialize(records);
         var results = System.Text.Json.JsonSerializer.Deserialize<List<T>>(json, jsonOpts);
         if (results is null) return [];

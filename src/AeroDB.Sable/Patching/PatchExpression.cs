@@ -18,15 +18,18 @@ public class PatchExpression<T> : IPatchExpression<T>, IDeferredPatch where T : 
     private readonly string _recordId;
     private readonly List<SetOperation> _operations = new();
     private readonly ILogger<PatchExpression<T>> _logger;
+    private readonly EnumStorage _enumStorage;
     private PatchContext? _patchContext;
 
     internal PatchExpression(IDocumentSession session, string recordId)
     {
         _session = session;
         _recordId = recordId;
-        _logger = ((InternalSessionBase)session).StoreOptions.LoggerFactory
+        var storeOptions = ((InternalSessionBase)session).StoreOptions;
+        _logger = storeOptions.LoggerFactory
             ?.CreateLogger<PatchExpression<T>>()
             ?? NullLogger<PatchExpression<T>>.Instance;
+        _enumStorage = storeOptions.EnumStorage;
 
         // Auto-register on the session for execution during SaveChangesAsync
         if (session is DocumentSession ds)
@@ -38,7 +41,7 @@ public class PatchExpression<T> : IPatchExpression<T>, IDeferredPatch where T : 
     public IPatchExpression<T> Set<TValue>(Expression<Func<T, TValue>> property, TValue value)
     {
         var member = GetMember(property);
-        _operations.Add(new SetOperation(member.Name, value, OperationKind.Set));
+        _operations.Add(new SetOperation(member.Name, value, OperationKind.Set, enumStorage: _enumStorage));
         return this;
     }
 
@@ -47,35 +50,35 @@ public class PatchExpression<T> : IPatchExpression<T>, IDeferredPatch where T : 
     public IPatchExpression<T> Increment(Expression<Func<T, int>> property, int amount = 1)
     {
         var member = GetMember(property);
-        _operations.Add(new SetOperation(member.Name, amount, OperationKind.Increment));
+        _operations.Add(new SetOperation(member.Name, amount, OperationKind.Increment, enumStorage: _enumStorage));
         return this;
     }
 
     public IPatchExpression<T> Increment(Expression<Func<T, long>> property, long amount = 1)
     {
         var member = GetMember(property);
-        _operations.Add(new SetOperation(member.Name, amount, OperationKind.Increment));
+        _operations.Add(new SetOperation(member.Name, amount, OperationKind.Increment, enumStorage: _enumStorage));
         return this;
     }
 
     public IPatchExpression<T> Increment(Expression<Func<T, double>> property, double amount = 1)
     {
         var member = GetMember(property);
-        _operations.Add(new SetOperation(member.Name, amount, OperationKind.Increment));
+        _operations.Add(new SetOperation(member.Name, amount, OperationKind.Increment, enumStorage: _enumStorage));
         return this;
     }
 
     public IPatchExpression<T> Increment(Expression<Func<T, float>> property, float amount = 1)
     {
         var member = GetMember(property);
-        _operations.Add(new SetOperation(member.Name, amount, OperationKind.Increment));
+        _operations.Add(new SetOperation(member.Name, amount, OperationKind.Increment, enumStorage: _enumStorage));
         return this;
     }
 
     public IPatchExpression<T> Increment(Expression<Func<T, decimal>> property, decimal amount = 1)
     {
         var member = GetMember(property);
-        _operations.Add(new SetOperation(member.Name, amount, OperationKind.Increment));
+        _operations.Add(new SetOperation(member.Name, amount, OperationKind.Increment, enumStorage: _enumStorage));
         return this;
     }
 
@@ -84,14 +87,14 @@ public class PatchExpression<T> : IPatchExpression<T>, IDeferredPatch where T : 
     public IPatchExpression<T> Append<TElement>(Expression<Func<T, IEnumerable<TElement>>> property, TElement element)
     {
         var member = GetMember(property);
-        _operations.Add(new SetOperation(member.Name, element, OperationKind.Append));
+        _operations.Add(new SetOperation(member.Name, element, OperationKind.Append, enumStorage: _enumStorage));
         return this;
     }
 
     public IPatchExpression<T> AppendIfNotExists<TElement>(Expression<Func<T, IEnumerable<TElement>>> property, TElement element)
     {
         var member = GetMember(property);
-        _operations.Add(new SetOperation(member.Name, element, OperationKind.AppendIfNotExists));
+        _operations.Add(new SetOperation(member.Name, element, OperationKind.AppendIfNotExists, enumStorage: _enumStorage));
         return this;
     }
 
@@ -100,14 +103,14 @@ public class PatchExpression<T> : IPatchExpression<T>, IDeferredPatch where T : 
     public IPatchExpression<T> Insert<TElement>(Expression<Func<T, IEnumerable<TElement>>> property, TElement element, int? index = null)
     {
         var member = GetMember(property);
-        _operations.Add(new SetOperation(member.Name, element, OperationKind.Insert, insertIndex: index));
+        _operations.Add(new SetOperation(member.Name, element, OperationKind.Insert, insertIndex: index, enumStorage: _enumStorage));
         return this;
     }
 
     public IPatchExpression<T> InsertIfNotExists<TElement>(Expression<Func<T, IEnumerable<TElement>>> property, TElement element, int? index = null)
     {
         var member = GetMember(property);
-        _operations.Add(new SetOperation(member.Name, element, OperationKind.InsertIfNotExists, insertIndex: index));
+        _operations.Add(new SetOperation(member.Name, element, OperationKind.InsertIfNotExists, insertIndex: index, enumStorage: _enumStorage));
         return this;
     }
 
@@ -116,7 +119,7 @@ public class PatchExpression<T> : IPatchExpression<T>, IDeferredPatch where T : 
     public IPatchExpression<T> Remove<TElement>(Expression<Func<T, IEnumerable<TElement>>> property, TElement element)
     {
         var member = GetMember(property);
-        _operations.Add(new SetOperation(member.Name, element, OperationKind.Remove));
+        _operations.Add(new SetOperation(member.Name, element, OperationKind.Remove, enumStorage: _enumStorage));
         return this;
     }
 
@@ -128,7 +131,7 @@ public class PatchExpression<T> : IPatchExpression<T>, IDeferredPatch where T : 
         foreach (var dest in destinations)
         {
             var destMember = GetMember(dest);
-            _operations.Add(new SetOperation(destMember.Name, null, OperationKind.Duplicate, targetField: sourceMember.Name));
+            _operations.Add(new SetOperation(destMember.Name, null, OperationKind.Duplicate, targetField: sourceMember.Name, enumStorage: _enumStorage));
         }
         return this;
     }
@@ -138,7 +141,7 @@ public class PatchExpression<T> : IPatchExpression<T>, IDeferredPatch where T : 
     public IPatchExpression<T> Rename(string oldName, Expression<Func<T, object?>> target)
     {
         var member = GetMember(target);
-        _operations.Add(new SetOperation(member.Name, null, OperationKind.Rename, oldName: oldName));
+        _operations.Add(new SetOperation(member.Name, null, OperationKind.Rename, oldName: oldName, enumStorage: _enumStorage));
         return this;
     }
 
@@ -147,7 +150,7 @@ public class PatchExpression<T> : IPatchExpression<T>, IDeferredPatch where T : 
     public IPatchExpression<T> Delete<TValue>(Expression<Func<T, TValue>> property)
     {
         var member = GetMember(property);
-        _operations.Add(new SetOperation(member.Name, null, OperationKind.Delete));
+        _operations.Add(new SetOperation(member.Name, null, OperationKind.Delete, enumStorage: _enumStorage));
         return this;
     }
 
@@ -158,7 +161,7 @@ public class PatchExpression<T> : IPatchExpression<T>, IDeferredPatch where T : 
         var props = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance)
             .Where(p => p.CanRead && p.CanWrite && p.PropertyType == typeof(TValue));
         foreach (var prop in props)
-            _operations.Add(new SetOperation(prop.Name, value, OperationKind.Set));
+            _operations.Add(new SetOperation(prop.Name, value, OperationKind.Set, enumStorage: _enumStorage));
         return this;
     }
 

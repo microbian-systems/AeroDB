@@ -29,6 +29,9 @@ public static class MartenCompatibilityExtensions
         this StoreOptions options,
         EnumStorage enumStorage = EnumStorage.AsString)
     {
+        // Set the central EnumStorage config so all paths (JSON, LINQ, patching) agree
+        options.EnumStorage = enumStorage;
+
         options.ConfigureSerializer(o =>
         {
             if (enumStorage == EnumStorage.AsString)

@@ -165,6 +165,16 @@ public class StoreOptions : IReadOnlyStoreOptions
     public bool SoftDeleteEnabled { get; set; } = true;
 
     /// <summary>
+    /// Controls how enum values are serialized across all paths:
+    /// JSON storage, LINQ WHERE clauses, patch operations, and literal formatting.
+    /// Defaults to <see cref="EnumStorage.AsString"/>.
+    /// When set to <see cref="EnumStorage.AsString"/>, enums are serialized as their
+    /// string names (e.g. "Published"). When set to <see cref="EnumStorage.AsInteger"/>,
+    /// enums are serialized as their underlying integer values.
+    /// </summary>
+    public EnumStorage EnumStorage { get; set; } = EnumStorage.AsString;
+
+    /// <summary>
     /// Gets or sets the <see cref="System.Text.Json.JsonSerializerOptions"/> used for
     /// entity serialization. If not set, defaults are used with camelCase naming.
     /// </summary>

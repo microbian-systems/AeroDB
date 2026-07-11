@@ -1702,7 +1702,7 @@ public class SurrealQueryProvider : IQueryProvider
         Expression sourceExpression,
         CancellationToken ct) where T : class
     {
-        var visitor = new SurrealExpressionVisitor();
+        var visitor = new SurrealExpressionVisitor(null, _options.EnumStorage);
         var viewName = ExtractViewName(sourceExpression);
         visitor.ViewName = viewName;
         var result = visitor.Translate(sourceExpression);
