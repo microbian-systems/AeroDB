@@ -31,7 +31,8 @@ public class SchemaManager
     /// Ensures a document table exists with the configured schema mode and defines fields for all
     /// public readable/writable properties on T (except Id).
     /// </summary>
-    public async Task EnsureDocumentSchemaAsync<T>(ISurrealDbSession session, CancellationToken ct = default)
+    public async Task EnsureDocumentSchemaAsync<T>(ISurrealDbSession session, CancellationToken ct = default,
+        EnumStorage enumStorage = EnumStorage.AsString)
         where T : class
     {
         var tableName = MetadataDispatch.GetTableName(typeof(T));
@@ -39,7 +40,7 @@ public class SchemaManager
         var schemaMode = typeof(T).IsSealed ? SchemaMode.Strict : SchemaMode.Flexible;
         await session.RawQuery($"DEFINE TABLE {tableName} {GetSchemaSurql(schemaMode)};", null, ct).ConfigureAwait(false);
 
-        foreach (var (name, surrealType) in GetFieldSchemas(typeof(T)))
+        foreach (var (name, surrealType) in GetFieldSchemas(typeof(T), enumStorage: enumStorage))
         {
             var fieldSurql = $"DEFINE FIELD {name} ON TABLE {tableName} TYPE {surrealType};";
             await session.RawQuery(fieldSurql, null, ct).ConfigureAwait(false);
@@ -49,14 +50,15 @@ public class SchemaManager
     /// <summary>
     /// Ensures a document table exists with the specified schema mode.
     /// </summary>
-    public async Task EnsureDocumentSchemaAsync<T>(ISurrealDbSession session, SchemaMode mode, CancellationToken ct = default)
+    public async Task EnsureDocumentSchemaAsync<T>(ISurrealDbSession session, SchemaMode mode, CancellationToken ct = default,
+        EnumStorage enumStorage = EnumStorage.AsString)
         where T : class
     {
         var tableName = MetadataDispatch.GetTableName(typeof(T));
         _logger.LogDebug("Ensuring document schema for table {Table} with mode {Mode}", tableName, mode);
         await session.RawQuery($"DEFINE TABLE {tableName} {GetSchemaSurql(mode)};", null, ct).ConfigureAwait(false);
 
-        foreach (var (name, surrealType) in GetFieldSchemas(typeof(T)))
+        foreach (var (name, surrealType) in GetFieldSchemas(typeof(T), enumStorage: enumStorage))
         {
             var fieldSurql = $"DEFINE FIELD {name} ON TABLE {tableName} TYPE {surrealType};";
             await session.RawQuery(fieldSurql, null, ct).ConfigureAwait(false);
@@ -73,7 +75,8 @@ public class SchemaManager
     private static IEnumerable<(string Name, string SurrealType)> GetFieldSchemas(
         Type type,
         SchemaOptions? schema = null,
-        IReadOnlySet<string>? excludedClrNames = null)
+        IReadOnlySet<string>? excludedClrNames = null,
+        EnumStorage enumStorage = EnumStorage.AsString)
     {
         var nullability = new NullabilityInfoContext();
         var properties = type
@@ -90,9 +93,22 @@ public class SchemaManager
             foreach (var f in fields)
             {
                 if (properties.TryGetValue(f.Name, out var prop))
-                    yield return (MetadataDispatch.GetFieldName(type, f.Name, schema), MakeOptionalIfNullable(f.SurrealType, prop, nullability));
+                {
+                    var st = MakeOptionalIfNullable(f.SurrealType, prop, nullability);
+                    // Rewrite enum literals to integers when runtime config overrides source gen default
+                    var propType = Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType;
+                    if (enumStorage == EnumStorage.AsInteger && propType.IsEnum)
+                    {
+                        var literalType = BuildEnumLiteralType(propType, enumStorage);
+                        var isOpt = st.StartsWith("option<", StringComparison.Ordinal);
+                        st = isOpt ? $"option<{literalType}>" : literalType;
+                    }
+                    yield return (MetadataDispatch.GetFieldName(type, f.Name, schema), st);
+                }
                 else
+                {
                     yield return (MetadataDispatch.GetFieldName(type, f.Name, schema), f.SurrealType);
+                }
             }
 
             yield break;
@@ -101,7 +117,7 @@ public class SchemaManager
         // Fallback: runtime reflection (legacy path for non-generated types)
         foreach (var prop in properties.Values)
         {
-            yield return (MetadataDispatch.GetFieldName(type, prop.Name, schema), GetSurrealType(prop.PropertyType, prop, nullability));
+            yield return (MetadataDispatch.GetFieldName(type, prop.Name, schema), GetSurrealType(prop.PropertyType, prop, nullability, enumStorage));
         }
     }
 
@@ -372,7 +388,8 @@ public class SchemaManager
         IReadOnlyList<FieldDefinition>? fieldDefinitions = null,
         IReadOnlyList<RelationshipMapping>? relationshipMappings = null,
         SchemaOptions? schemaOptions = null,
-        CancellationToken ct = default)
+        CancellationToken ct = default,
+        EnumStorage enumStorage = EnumStorage.AsString)
     {
         var tableName = MetadataDispatch.GetTableName(entityType, schemaOptions);
         _logger.LogDebug("Ensuring document schema for type {Type} with table {Table} and mode {Mode}", entityType.Name, tableName, mode);
@@ -383,7 +400,7 @@ public class SchemaManager
             .Select(r => r.ClrMemberName!)
             .ToHashSet(StringComparer.Ordinal);
 
-        foreach (var (name, surrealType) in GetFieldSchemas(entityType, schemaOptions, relationshipFieldNames))
+        foreach (var (name, surrealType) in GetFieldSchemas(entityType, schemaOptions, relationshipFieldNames, enumStorage))
         {
             var fieldSurql = $"DEFINE FIELD {name} ON TABLE {tableName} TYPE {surrealType};";
             await session.RawQuery(fieldSurql, null, ct).ConfigureAwait(false);
@@ -617,14 +634,22 @@ public class SchemaManager
         await session.RawQuery($"REMOVE TABLE {tableName};", null, ct).ConfigureAwait(false);
     }
 
-    private static string GetSurrealType(Type type, PropertyInfo? property = null, NullabilityInfoContext? nullability = null)
+    private static string GetSurrealType(Type type, PropertyInfo? property = null, NullabilityInfoContext? nullability = null,
+        EnumStorage enumStorage = EnumStorage.AsString)
     {
         var underlyingNullableType = Nullable.GetUnderlyingType(type);
         var isNullable = underlyingNullableType is not null
             || (property is not null && IsNullableReferenceProperty(property, nullability));
         var effectiveType = underlyingNullableType ?? type;
 
-        // Check for geometry types first
+        // Check for enums first — generate literal type constraints (e.g. "Active" | "Inactive")
+        if (effectiveType.IsEnum)
+        {
+            var literalType = BuildEnumLiteralType(effectiveType, enumStorage);
+            return isNullable ? $"option<{literalType}>" : literalType;
+        }
+
+        // Check for geometry types
         var surrealType =
             effectiveType == typeof(GeometryPoint) || effectiveType == typeof(GeometryPolygon) ? "geometry" :
             effectiveType == typeof(string) || effectiveType == typeof(Guid) ? "string" :
@@ -638,6 +663,15 @@ public class SchemaManager
             "object";
 
         return isNullable ? $"option<{surrealType}>" : surrealType;
+    }
+
+    private static string BuildEnumLiteralType(Type enumType, EnumStorage storage)
+    {
+        var names = Enum.GetNames(enumType);
+        var literals = storage == EnumStorage.AsInteger
+            ? names.Select(n => Convert.ToInt64(Enum.Parse(enumType, n)).ToString())
+            : names.Select(n => $"\"{n}\"");
+        return string.Join(" | ", literals);
     }
 
     private static string MakeOptionalIfNullable(string surrealType, PropertyInfo property, NullabilityInfoContext nullability)

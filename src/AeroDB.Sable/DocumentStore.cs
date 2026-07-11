@@ -218,7 +218,8 @@ public class DocumentStore : IDocumentStore, ISessionFactory
                         fieldDefinitions: fds,
                         relationshipMappings: mapping.GetRelationshipMappings(),
                         schemaOptions: Options.Schema,
-                        ct: ct).ConfigureAwait(false);
+                        ct: ct,
+                        enumStorage: Options.EnumStorage).ConfigureAwait(false);
 
                     // Ensure each configured index
                     var tableName = MetadataDispatch.GetTableName(mapping.EntityType, Options.Schema);
@@ -270,7 +271,8 @@ public class DocumentStore : IDocumentStore, ISessionFactory
                             fieldDefinitions: fieldDefs,
                             relationshipMappings: mapping.GetRelationshipMappings(),
                             schemaOptions: Options.Schema,
-                            ct: ct).ConfigureAwait(false);
+                            ct: ct,
+                            enumStorage: Options.EnumStorage).ConfigureAwait(false);
 
                         var tableName = MetadataDispatch.GetTableName(mapping.EntityType, Options.Schema);
                         foreach (var index in mapping.Indices)

@@ -251,7 +251,8 @@ public class AeroDBDocumentGenerator : IIncrementalGenerator
             if (member.GetMethod is null || member.SetMethod is null) continue;
 
             var surrealType = GetSurrealType(member);
-            fields.Add($"            new global::AeroDB.Sable.Metadata.FieldSchema(\"{member.Name}\", \"{surrealType}\", true, true)");
+            var escapedType = surrealType.Replace("\"", "\\\"");
+            fields.Add($"            new global::AeroDB.Sable.Metadata.FieldSchema(\"{member.Name}\", \"{escapedType}\", true, true)");
         }
 
         if (fields.Count > 0)
@@ -451,8 +452,18 @@ public class AeroDBDocumentGenerator : IIncrementalGenerator
             "byte[]" or "System.Byte[]" => "bytes",
             _ when type is IArrayTypeSymbol => "array",
             _ when type.OriginalDefinition?.ToDisplayString() == "System.Collections.Generic.List<T>" => "array",
+            _ when type.TypeKind == TypeKind.Enum => BuildEnumLiteralType(type),
             _ => "object"
         };
+    }
+
+    private static string BuildEnumLiteralType(ITypeSymbol enumType)
+    {
+        var names = enumType.GetMembers()
+            .OfType<IFieldSymbol>()
+            .Where(f => f.HasConstantValue && f.Name != "value__")
+            .Select(f => $"\"{f.Name}\"");
+        return string.Join(" | ", names);
     }
 
     private static bool IsNullableProperty(IPropertySymbol property)

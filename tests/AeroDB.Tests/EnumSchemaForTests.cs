@@ -9,11 +9,15 @@ public enum SchemaTestStatus { Draft = 0, Published = 1, Archived = 2 }
 
 public class SchemaEnumDoc
 {
+    public long Id { get; set; }
     public SchemaTestStatus Status { get; set; }
+    public string? CreatedBy { get; set; }
 }
 
 public class EnumSchemaForTests
 {
+    // ── Unit tests: Schema.For<T>() mapping and serialization ──
+
     [Test]
     public void SchemaFor_creates_mapping_for_enum_doc_type()
     {
@@ -78,5 +82,96 @@ public class EnumSchemaForTests
             BindingFlags.NonPublic | BindingFlags.Instance, null, [typeof(object)], null);
         var result = method!.Invoke(visitor, [SchemaTestStatus.Published]);
         result.ShouldBe("1");
+    }
+
+    // ── Integration tests with embedded in-memory SurrealDB ──
+    //
+    // After the fix, enum properties produce literal type constraints
+    // (e.g. TYPE "Draft" | "Published" | "Archived") instead of TYPE object.
+    // These tests verify the full save → load round-trip works correctly.
+
+    [Test]
+    public async Task SchemaFor_integration_save_and_load_enum_with_strict_schema()
+    {
+        await using var store = await TestHarness.CreateStoreAsync(o =>
+        {
+            o.Schema.For<SchemaEnumDoc>()
+                .Identity(x => x.Id)
+                .SetSchemaMode(SchemaMode.Strict);
+        });
+
+        var session = await store.OpenSessionAsync(
+            new SessionOptions { Tracking = DocumentTracking.IdentityOnly });
+
+        var doc = new SchemaEnumDoc
+        {
+            Id = 1,
+            Status = SchemaTestStatus.Published,
+            CreatedBy = null
+        };
+        session.Store(doc);
+        await session.SaveChangesAsync();
+
+        var loaded = await session.LoadAsync<SchemaEnumDoc>(1);
+        loaded.ShouldNotBeNull();
+        loaded!.Status.ShouldBe(SchemaTestStatus.Published);
+        loaded.CreatedBy.ShouldBeNull();
+    }
+
+    [Test]
+    public async Task SchemaFor_integration_save_and_load_enum_with_flexible_schema()
+    {
+        await using var store = await TestHarness.CreateStoreAsync(o =>
+        {
+            o.Schema.For<SchemaEnumDoc>()
+                .Identity(x => x.Id)
+                .SetSchemaMode(SchemaMode.Flexible);
+        });
+
+        var session = await store.OpenSessionAsync(
+            new SessionOptions { Tracking = DocumentTracking.IdentityOnly });
+
+        var doc = new SchemaEnumDoc
+        {
+            Id = 2,
+            Status = SchemaTestStatus.Archived,
+            CreatedBy = "test-user"
+        };
+        session.Store(doc);
+        await session.SaveChangesAsync();
+
+        var loaded = await session.LoadAsync<SchemaEnumDoc>(2);
+        loaded.ShouldNotBeNull();
+        loaded!.Status.ShouldBe(SchemaTestStatus.Archived);
+        loaded.CreatedBy.ShouldBe("test-user");
+    }
+
+    [Test]
+    public async Task SchemaFor_integration_save_and_load_enum_as_integer()
+    {
+        await using var store = await TestHarness.CreateStoreAsync(o =>
+        {
+            o.UseSystemTextJsonForSerialization(EnumStorage.AsInteger);
+            o.Schema.For<SchemaEnumDoc>()
+                .Identity(x => x.Id)
+                .SetSchemaMode(SchemaMode.Strict);
+        });
+
+        var session = await store.OpenSessionAsync(
+            new SessionOptions { Tracking = DocumentTracking.IdentityOnly });
+
+        var doc = new SchemaEnumDoc
+        {
+            Id = 3,
+            Status = SchemaTestStatus.Published,
+            CreatedBy = null
+        };
+        session.Store(doc);
+        await session.SaveChangesAsync();
+
+        var loaded = await session.LoadAsync<SchemaEnumDoc>(3);
+        loaded.ShouldNotBeNull();
+        loaded!.Status.ShouldBe(SchemaTestStatus.Published);
+        loaded.CreatedBy.ShouldBeNull();
     }
 }
