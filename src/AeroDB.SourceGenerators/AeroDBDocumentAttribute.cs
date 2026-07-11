@@ -1,7 +1,7 @@
 namespace AeroDB;
 
 /// <summary>
-/// Marks a type for AeroDB source generation. Use as an opt-out on Record subclasses
+/// Marks a type for AeroDB.Sable source generation. Use as an opt-out on Record subclasses
 /// (to skip generation) or as an opt-in on non-Record types.
 /// </summary>
 [AttributeUsage(AttributeTargets.Class)]

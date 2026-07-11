@@ -1,4 +1,4 @@
-using AeroDB;
+using AeroDB.Sable;
 using System.Linq.Expressions;
 using SurrealDb.Net;
 using SurrealDb.Net.Models.Response;
@@ -152,7 +152,7 @@ public class MlQueryTests
         await mockSession.Received(1).RawQuery(
             Arg.Is<string>(sql =>
                 sql.Contains("WHERE (")
-                && sql.Contains("Bedrooms")),
+                && sql.Contains("bedrooms")),
             Arg.Any<IReadOnlyDictionary<string, object?>>(),
             Arg.Any<CancellationToken>()
         );

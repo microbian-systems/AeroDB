@@ -1,5 +1,5 @@
-using AeroDB;
-using AeroDB.Metadata;
+using AeroDB.Sable;
+using AeroDB.Sable.Metadata;
 using SurrealDb.Net.Models;
 
 namespace AeroDB.Tests;

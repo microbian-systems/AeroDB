@@ -6,6 +6,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.Extensions.DependencyInjection;
 using AeroDB.SourceGenerators;
+using AeroDB.SourceGenerators;
 using TUnit.Core;
 
 namespace AeroDB.Tests;
@@ -27,14 +28,14 @@ public class AeroDBConfiguratorGeneratorTests
         _ = typeof(IServiceCollection);
 
         // Collect all loaded assemblies as metadata references, excluding the real
-        // AeroDB assembly so inline interface definitions don't conflict with the
-        // project-level AeroDB.dll reference.
+        // AeroDB.Sable assembly so inline interface definitions don't conflict with the
+        // project-level AeroDB.Sable.dll reference.
         var references = AppDomain.CurrentDomain.GetAssemblies()
             .Where(a => !a.IsDynamic && !string.IsNullOrEmpty(a.Location))
             .Where(a =>
             {
                 var name = a.GetName().Name;
-                return name != "AeroDB" && name != "AeroDB.SourceGenerators";
+                return name != "AeroDB.Sable" && name != "AeroDB.Sable.SourceGenerators";
             })
             .GroupBy(a => a.Location)
             .Select(g => MetadataReference.CreateFromFile(g.Key))
@@ -58,9 +59,9 @@ public class AeroDBConfiguratorGeneratorTests
     {
         var source = @"
 using System;
-using AeroDB;
+using AeroDB.Sable;
 
-namespace AeroDB
+namespace AeroDB.Sable
 {
     public interface IConfigureAeroDB
     {
@@ -70,9 +71,9 @@ namespace AeroDB
     public class StoreOptions { }
 }
 
-public class MyConfigurator : AeroDB.IConfigureAeroDB
+public class MyConfigurator : AeroDB.Sable.IConfigureAeroDB
 {
-    public void Configure(AeroDB.StoreOptions options) { }
+    public void Configure(AeroDB.Sable.StoreOptions options) { }
 }
 ";
         var result = RunGenerator(source);
@@ -85,7 +86,7 @@ public class MyConfigurator : AeroDB.IConfigureAeroDB
         // Should register our configurator
         generatedCode.ShouldContain("MyConfigurator");
         // Should be in the right namespace
-        generatedCode.ShouldContain("namespace AeroDB.Generated");
+        generatedCode.ShouldContain("namespace AeroDB.Sable.Generated");
     }
 
     // ── Test 2: IAsyncConfigureAeroDB discovery ─────────────────────────────────
@@ -97,9 +98,9 @@ public class MyConfigurator : AeroDB.IConfigureAeroDB
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using AeroDB;
+using AeroDB.Sable;
 
-namespace AeroDB
+namespace AeroDB.Sable
 {
     public interface IAsyncConfigureAeroDB
     {
@@ -109,9 +110,9 @@ namespace AeroDB
     public class StoreOptions { }
 }
 
-public class MyAsyncConfigurator : AeroDB.IAsyncConfigureAeroDB
+public class MyAsyncConfigurator : AeroDB.Sable.IAsyncConfigureAeroDB
 {
-    public Task ConfigureAsync(AeroDB.StoreOptions options, CancellationToken ct) => Task.CompletedTask;
+    public Task ConfigureAsync(AeroDB.Sable.StoreOptions options, CancellationToken ct) => Task.CompletedTask;
 }
 ";
         var result = RunGenerator(source);
@@ -130,22 +131,22 @@ public class MyAsyncConfigurator : AeroDB.IAsyncConfigureAeroDB
     {
         var source = @"
 using System;
-using AeroDB;
+using AeroDB.Sable;
 
-namespace AeroDB
+namespace AeroDB.Sable
 {
     public interface IConfigureAeroDB { void Configure(StoreOptions options); }
     public class StoreOptions { }
 }
 
-public abstract class AbstractConfigurator : AeroDB.IConfigureAeroDB
+public abstract class AbstractConfigurator : AeroDB.Sable.IConfigureAeroDB
 {
-    public abstract void Configure(AeroDB.StoreOptions options);
+    public abstract void Configure(AeroDB.Sable.StoreOptions options);
 }
 
-public class ConcreteConfigurator : AeroDB.IConfigureAeroDB
+public class ConcreteConfigurator : AeroDB.Sable.IConfigureAeroDB
 {
-    public void Configure(AeroDB.StoreOptions options) { }
+    public void Configure(AeroDB.Sable.StoreOptions options) { }
 }
 ";
         var result = RunGenerator(source);
@@ -163,9 +164,9 @@ public class ConcreteConfigurator : AeroDB.IConfigureAeroDB
     {
         var source = @"
 using System;
-using AeroDB;
+using AeroDB.Sable;
 
-namespace AeroDB
+namespace AeroDB.Sable
 {
     public interface IConfigureAeroDB { void Configure(StoreOptions options); }
     public class StoreOptions { }
@@ -189,24 +190,24 @@ public class NotAConfigurator { } // Does NOT implement IConfigureAeroDB
     {
         var source = @"
 using System;
-using AeroDB;
+using AeroDB.Sable;
 
-namespace AeroDB
+namespace AeroDB.Sable
 {
     public interface IConfigureAeroDB { void Configure(StoreOptions options); }
     public class StoreOptions { }
 }
 
-public class TestConfig : AeroDB.IConfigureAeroDB
+public class TestConfig : AeroDB.Sable.IConfigureAeroDB
 {
-    public void Configure(AeroDB.StoreOptions options) { }
+    public void Configure(AeroDB.Sable.StoreOptions options) { }
 }
 ";
         var result = RunGenerator(source);
         var generatedCode = result.GeneratedTrees[0].ToString();
 
         // Compile the user source + generated code together so all type
-        // references (e.g. global::AeroDB.IConfigureAeroDB) resolve correctly.
+        // references (e.g. global::AeroDB.Sable.IConfigureAeroDB) resolve correctly.
         var syntaxTrees = new[]
         {
             CSharpSyntaxTree.ParseText(source, new CSharpParseOptions(LanguageVersion.Latest)),
@@ -220,12 +221,14 @@ public class TestConfig : AeroDB.IConfigureAeroDB
             .Where(a =>
             {
                 var name = a.GetName().Name;
-                return name != "AeroDB" && name != "AeroDB.SourceGenerators";
+                return name != "AeroDB.Sable" && name != "AeroDB.Sable.SourceGenerators";
             })
             .GroupBy(a => a.Location)
             .Select(g => g.First())
             .Select(a => MetadataReference.CreateFromFile(a.Location))
+            .Append(MetadataReference.CreateFromFile(typeof(IServiceCollection).Assembly.Location))
             .Cast<MetadataReference>()
+            .DistinctBy(r => r.Display)
             .ToArray();
 
         var compilation = CSharpCompilation.Create("Generated",
@@ -237,6 +240,6 @@ public class TestConfig : AeroDB.IConfigureAeroDB
             .Where(d => d.Severity == DiagnosticSeverity.Error)
             .ToList();
 
-        diagnostics.Count.ShouldBe(0);
+        diagnostics.Count.ShouldBe(0, string.Join(Environment.NewLine, diagnostics));
     }
 }

@@ -1,6 +1,6 @@
 using System.Globalization;
 using System.Linq.Expressions;
-using AeroDB;
+using AeroDB.Sable;
 using SurrealDb.Net;
 using SurrealDb.Net.Models.Response;
 using NSubstitute;
@@ -154,7 +154,7 @@ public class TimeSeriesQueryTests
             .Average(s => s.Value).As("avg");
 
         var select = builder.BuildSelect();
-        select.ShouldBe("math::sum(Value) AS total, math::mean(Value) AS avg");
+        select.ShouldBe("math::sum(value) AS total, math::mean(value) AS avg");
     }
 
     [Test]
@@ -176,7 +176,7 @@ public class TimeSeriesQueryTests
             .Max(s => s.Value).As("max_val");
 
         var select = builder.BuildSelect();
-        select.ShouldBe("math::min(Value) AS min_val, math::max(Value) AS max_val");
+        select.ShouldBe("math::min(value) AS min_val, math::max(value) AS max_val");
     }
 
     [Test]
@@ -219,7 +219,7 @@ public class TimeSeriesQueryTests
 
         await mockSession.Received(1).RawQuery(
             Arg.Is<string>(sql =>
-                sql.Contains("time::floor(Timestamp, 1d)") // Falls back to 1d when both bounds not available
+                sql.Contains("time::floor(timestamp, 1d)") // Falls back to 1d when both bounds not available
                 && sql.Contains("GROUP BY _bucket")),
             Arg.Any<IReadOnlyDictionary<string, object?>>(),
             Arg.Any<CancellationToken>()
@@ -239,7 +239,7 @@ public class TimeSeriesQueryTests
 
         await mockSession.Received(1).RawQuery(
             Arg.Is<string>(sql =>
-                sql.Contains("time::floor(Timestamp, 1d)") // Falls back to 1d
+                sql.Contains("time::floor(timestamp, 1d)") // Falls back to 1d
                 && sql.Contains("GROUP BY _bucket")),
             Arg.Any<IReadOnlyDictionary<string, object?>>(),
             Arg.Any<CancellationToken>()
@@ -261,7 +261,7 @@ public class TimeSeriesQueryTests
             Arg.Is<string>(sql =>
                 // With only one time bound extracted by Where(), downsample falls back to 1d default.
                 // Full ComputeBuckets logic is tested in dedicated TimeBucketHelper unit tests.
-                sql.Contains("time::floor(Timestamp, 1d)")
+                sql.Contains("time::floor(timestamp, 1d)")
                 && sql.Contains("GROUP BY _bucket")),
             Arg.Any<IReadOnlyDictionary<string, object?>>(),
             Arg.Any<CancellationToken>()
@@ -281,7 +281,7 @@ public class TimeSeriesQueryTests
 
         await mockSession.Received(1).RawQuery(
             Arg.Is<string>(sql =>
-                sql.Contains("time::floor(Timestamp, 1d)")
+                sql.Contains("time::floor(timestamp, 1d)")
                 && sql.Contains("GROUP BY _bucket")),
             Arg.Any<IReadOnlyDictionary<string, object?>>(),
             Arg.Any<CancellationToken>()
@@ -305,7 +305,7 @@ public class TimeSeriesQueryTests
 
         await mockSession.Received(1).RawQuery(
             Arg.Is<string>(sql =>
-                sql.Contains("time::floor(Timestamp, 1h) AS _bucket")
+                sql.Contains("time::floor(timestamp, 1h) AS _bucket")
                 && sql.Contains("count() AS cnt")
                 && sql.Contains("GROUP BY _bucket")
                 && sql.Contains("ORDER BY _bucket ASC")
@@ -328,7 +328,7 @@ public class TimeSeriesQueryTests
 
         await mockSession.Received(1).RawQuery(
             Arg.Is<string>(sql =>
-                sql.Contains("time::group(Timestamp, 'month') AS _bucket")
+                sql.Contains("time::group(timestamp, 'month') AS _bucket")
                 && sql.Contains("GROUP BY _bucket")),
             Arg.Any<IReadOnlyDictionary<string, object?>>(),
             Arg.Any<CancellationToken>()
@@ -350,7 +350,7 @@ public class TimeSeriesQueryTests
         await mockSession.Received(1).RawQuery(
             Arg.Is<string>(sql =>
                 sql.Contains("WHERE")
-                && sql.Contains("Timestamp")),
+                && sql.Contains("timestamp")),
             Arg.Any<IReadOnlyDictionary<string, object?>>(),
             Arg.Any<CancellationToken>()
         );
@@ -413,7 +413,7 @@ public class TimeSeriesQueryTests
             Arg.Is<string>(sql =>
                 sql.Contains("GROUP BY _bucket")
                 && sql.Contains("count() AS cnt")
-                && sql.Contains("math::sum(Value) AS total")),
+                && sql.Contains("math::sum(value) AS total")),
             Arg.Any<IReadOnlyDictionary<string, object?>>(),
             Arg.Any<CancellationToken>()
         );
@@ -435,9 +435,9 @@ public class TimeSeriesQueryTests
 
         await mockSession.Received(1).RawQuery(
             Arg.Is<string>(sql =>
-                sql.Contains("SensorId")
+                sql.Contains("sensor_id")
                 && sql.Contains("count() AS cnt")
-                && sql.Contains("math::mean(Value) AS avg_temp")),
+                && sql.Contains("math::mean(value) AS avg_temp")),
             Arg.Any<IReadOnlyDictionary<string, object?>>(),
             Arg.Any<CancellationToken>()
         );
@@ -614,9 +614,9 @@ public class TimeSeriesQueryTests
 
         await surrealSession.RawQuery("DEFINE TABLE sensor_reading SCHEMALESS;");
         // Insert readings on different days
-        await surrealSession.RawQuery("CREATE sensor_reading:1 CONTENT { Timestamp: '2024-01-01T10:00:00Z', Value: 25.5, SensorId: 's1' };");
-        await surrealSession.RawQuery("CREATE sensor_reading:2 CONTENT { Timestamp: '2024-01-01T14:00:00Z', Value: 26.0, SensorId: 's1' };");
-        await surrealSession.RawQuery("CREATE sensor_reading:3 CONTENT { Timestamp: '2024-01-02T10:00:00Z', Value: 27.5, SensorId: 's1' };");
+        await surrealSession.RawQuery("CREATE sensor_reading:1 CONTENT { timestamp: '2024-01-01T10:00:00Z', value: 25.5, sensor_id: 's1' };");
+        await surrealSession.RawQuery("CREATE sensor_reading:2 CONTENT { timestamp: '2024-01-01T14:00:00Z', value: 26.0, sensor_id: 's1' };");
+        await surrealSession.RawQuery("CREATE sensor_reading:3 CONTENT { timestamp: '2024-01-02T10:00:00Z', value: 27.5, sensor_id: 's1' };");
 
         try
         {
@@ -648,9 +648,9 @@ public class TimeSeriesQueryTests
         var surrealSession = ((InternalSessionBase)session).Session;
 
         await surrealSession.RawQuery("DEFINE TABLE sensor_reading SCHEMALESS;");
-        await surrealSession.RawQuery("CREATE sensor_reading:1 CONTENT { Timestamp: '2024-01-01T10:00:00Z', Value: 25.0, SensorId: 's1' };");
-        await surrealSession.RawQuery("CREATE sensor_reading:2 CONTENT { Timestamp: '2024-01-01T11:00:00Z', Value: 26.0, SensorId: 's1' };");
-        await surrealSession.RawQuery("CREATE sensor_reading:3 CONTENT { Timestamp: '2024-01-01T11:30:00Z', Value: 27.0, SensorId: 's1' };");
+        await surrealSession.RawQuery("CREATE sensor_reading:1 CONTENT { timestamp: '2024-01-01T10:00:00Z', value: 25.0, sensor_id: 's1' };");
+        await surrealSession.RawQuery("CREATE sensor_reading:2 CONTENT { timestamp: '2024-01-01T11:00:00Z', value: 26.0, sensor_id: 's1' };");
+        await surrealSession.RawQuery("CREATE sensor_reading:3 CONTENT { timestamp: '2024-01-01T11:30:00Z', value: 27.0, sensor_id: 's1' };");
 
         try
         {
@@ -681,8 +681,8 @@ public class TimeSeriesQueryTests
         var surrealSession = ((InternalSessionBase)session).Session;
 
         await surrealSession.RawQuery("DEFINE TABLE sensor_reading SCHEMALESS;");
-        await surrealSession.RawQuery("CREATE sensor_reading:1 CONTENT { Timestamp: '2024-01-01T10:00:00Z', Value: 25.0, SensorId: 's1' };");
-        await surrealSession.RawQuery("CREATE sensor_reading:2 CONTENT { Timestamp: '2024-01-15T10:00:00Z', Value: 30.0, SensorId: 's1' };");
+        await surrealSession.RawQuery("CREATE sensor_reading:1 CONTENT { timestamp: '2024-01-01T10:00:00Z', value: 25.0, sensor_id: 's1' };");
+        await surrealSession.RawQuery("CREATE sensor_reading:2 CONTENT { timestamp: '2024-01-15T10:00:00Z', value: 30.0, sensor_id: 's1' };");
 
         try
         {
@@ -719,7 +719,7 @@ public class TimeSeriesQueryTests
 
         await surrealSession.RawQuery("DEFINE TABLE sensor_reading SCHEMALESS;");
         // Data outside query range
-        await surrealSession.RawQuery("CREATE sensor_reading:1 CONTENT { Timestamp: '2024-06-01T10:00:00Z', Value: 25.0, SensorId: 's1' };");
+        await surrealSession.RawQuery("CREATE sensor_reading:1 CONTENT { timestamp: '2024-06-01T10:00:00Z', value: 25.0, sensor_id: 's1' };");
 
         try
         {
@@ -756,7 +756,7 @@ public class TimeSeriesQueryTests
         var surrealSession = ((InternalSessionBase)session).Session;
 
         await surrealSession.RawQuery("DEFINE TABLE sensor_reading SCHEMALESS;");
-        await surrealSession.RawQuery("CREATE sensor_reading:1 CONTENT { Timestamp: '2024-01-01T10:00:00Z', Value: 42.0, SensorId: 's1' };");
+        await surrealSession.RawQuery("CREATE sensor_reading:1 CONTENT { timestamp: '2024-01-01T10:00:00Z', value: 42.0, sensor_id: 's1' };");
 
         try
         {
@@ -788,8 +788,8 @@ public class TimeSeriesQueryTests
 
         await surrealSession.RawQuery("DEFINE TABLE sensor_reading SCHEMALESS;");
         // Two readings with a large time gap
-        await surrealSession.RawQuery("CREATE sensor_reading:1 CONTENT { Timestamp: '2024-01-01T10:00:00Z', Value: 25.0, SensorId: 's1' };");
-        await surrealSession.RawQuery("CREATE sensor_reading:2 CONTENT { Timestamp: '2024-06-01T10:00:00Z', Value: 35.0, SensorId: 's1' };");
+        await surrealSession.RawQuery("CREATE sensor_reading:1 CONTENT { timestamp: '2024-01-01T10:00:00Z', value: 25.0, sensor_id: 's1' };");
+        await surrealSession.RawQuery("CREATE sensor_reading:2 CONTENT { timestamp: '2024-06-01T10:00:00Z', value: 35.0, sensor_id: 's1' };");
 
         try
         {
@@ -870,7 +870,7 @@ public class TimeSeriesQueryTests
 
         await mockSession.Received(1).RawQuery(
             Arg.Is<string>(sql =>
-                sql.Contains("time::floor(Timestamp, 1d)")),
+                sql.Contains("time::floor(timestamp, 1d)")),
             Arg.Any<IReadOnlyDictionary<string, object?>>(),
             Arg.Any<CancellationToken>()
         );

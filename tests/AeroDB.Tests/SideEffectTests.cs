@@ -1,4 +1,4 @@
-using AeroDB;
+using AeroDB.Sable;
 using NSubstitute;
 using SurrealDb.Net.Models;
 using TUnit.Core;

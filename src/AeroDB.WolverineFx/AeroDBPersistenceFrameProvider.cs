@@ -1,4 +1,5 @@
-using AeroDB;
+using AeroDB.Sable;
+using AeroDB.WolverineFx.Codegen;
 using AeroDB.WolverineFx.Codegen;
 using JasperFx;
 using JasperFx.CodeGeneration.Frames;
@@ -10,8 +11,8 @@ using Wolverine.Persistence.Sagas;
 namespace AeroDB.WolverineFx;
 
 /// <summary>
-/// AeroDB-backed <see cref="IPersistenceFrameProvider"/> that generates codegen frames
-/// for saga persistence operations through AeroDB's IDocumentSession.
+/// AeroDB.Sable-backed <see cref="IPersistenceFrameProvider"/> that generates codegen frames
+/// for saga persistence operations through AeroDB.Sable's IDocumentSession.
 /// Mirrors the MartenPersistenceFrameProvider pattern.
 /// </summary>
 internal sealed class AeroDBPersistenceFrameProvider : IPersistenceFrameProvider
@@ -100,7 +101,7 @@ internal sealed class AeroDBPersistenceFrameProvider : IPersistenceFrameProvider
 
     public Frame DetermineStorageActionFrame(Type entityType, Variable action, IServiceContainer container)
     {
-        throw new NotSupportedException("Storage action frames are not supported by AeroDB persistence.");
+        throw new NotSupportedException("Storage action frames are not supported by AeroDB.Sable persistence.");
     }
 
     public Frame[] DetermineFrameToNullOutMaybeSoftDeleted(Variable entity)

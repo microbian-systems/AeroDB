@@ -52,4 +52,4 @@ builder.Services.AddAeroDB(cfg =>
 // continuously updating projections
 ```
 
-**Full sample:** [`samples/EventSourcingIntro/`](https://github.com/microbians/AeroDB/tree/main/samples/EventSourcingIntro)
+**Full sample:** [`samples/EventSourcingIntro/`](https://github.com/microbian-systems/AeroDB/tree/main/samples/EventSourcingIntro)

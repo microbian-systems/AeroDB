@@ -1,7 +1,7 @@
 namespace AeroDB;
 
 using System.Reactive.Linq;
-using AeroDB.LiveQuery;
+using Sable.LiveQuery;
 
 public static class SurrealLiveQueryExtensions
 {

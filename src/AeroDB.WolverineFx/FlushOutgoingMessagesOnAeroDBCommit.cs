@@ -1,11 +1,11 @@
-using AeroDB;
+using AeroDB.Sable;
 using Wolverine;
 using Wolverine.Runtime;
 
 namespace AeroDB.WolverineFx;
 
 /// <summary>
-/// AeroDB <see cref="IDocumentSessionListener"/> that integrates with Wolverine's outbox
+/// AeroDB.Sable <see cref="IDocumentSessionListener"/> that integrates with Wolverine's outbox
 /// and forwards appended events as Wolverine messages.
 /// <list type="bullet">
 ///   <item><description><see cref="BeforeSaveChangesAsync"/> — captures appended events and publishes them through Wolverine's outbox.</description></item>
@@ -54,7 +54,7 @@ internal sealed class FlushOutgoingMessagesOnAeroDBCommit : IDocumentSessionList
     {
         if (_context.Envelope == null) return;
 
-        if (_context.Envelope.Destination != null && _context.Envelope.WasPersistedInInbox)
+        if (_context.Envelope.WasPersistedInInbox)
         {
             await _messageStore.Inbox.MarkIncomingEnvelopeAsHandledAsync(_context.Envelope);
             _context.Envelope.Status = EnvelopeStatus.Handled;

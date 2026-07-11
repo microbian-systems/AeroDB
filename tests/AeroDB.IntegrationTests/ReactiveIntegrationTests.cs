@@ -1,12 +1,12 @@
 using System.Reactive.Linq;
-using AeroDB;
-using AeroDB.LiveQuery;
+using AeroDB.Sable;
+using AeroDB.Sable.LiveQuery;
 using SurrealDb.Net.Models;
 
 namespace AeroDB.IntegrationTests;
 
 /// <summary>
-/// End-to-end integration tests for AeroDB.Reactive against a real SurrealDB WebSocket server.
+/// End-to-end integration tests for AeroDB.Sable.Reactive against a real SurrealDB WebSocket server.
 /// These tests require a running SurrealDB instance (ws://localhost:8000 by default).
 /// They are skipped when no server is available.
 /// </summary>

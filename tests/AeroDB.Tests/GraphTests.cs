@@ -1,4 +1,4 @@
-using AeroDB;
+using AeroDB.Sable;
 using SurrealDb.Net.Models;
 using TUnit.Core;
 
@@ -152,18 +152,16 @@ public class GraphIntegrationTests
     }
 
     [Test]
-    public async Task Graph_FirstOrDefaultAsync_TableNotExist_Throws()
+    public async Task Graph_FirstOrDefaultAsync_TableNotExist_ReturnsNull()
     {
         await using var store = await TestHarness.CreateStoreAsync();
         await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
-        // No data stored — no table exists yet, so RawQueryAsync
-        // returns an error result which throws NotSupportedException.
-        // This is expected behavior for the current implementation.
-        var ex = await Should.ThrowAsync<NotSupportedException>(async () =>
-            await session.Graph<Person>().FirstOrDefaultAsync());
+        // No data stored - no table exists yet, so an empty result should
+        // materialize the same way as any other empty graph query.
+        var result = await session.Graph<Person>().FirstOrDefaultAsync();
 
-        ex.Message.ShouldContain("Cannot get value");
+        result.ShouldBeNull();
     }
 
     // ── Relate / Unrelate ──
@@ -283,7 +281,7 @@ public class GraphIntegrationTests
     }
 
     [Test]
-    public async Task RawQuery_WithWhereClause_UsingPascalCase()
+    public async Task RawQuery_WithWhereClause_UsingStorageCase()
     {
         await using var store = await TestHarness.CreateStoreAsync();
         await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
@@ -294,7 +292,7 @@ public class GraphIntegrationTests
 
         // SurrealDB stores property names with original C# casing (PascalCase)
         var results = await session.RawQueryAsync<Person>(
-            "SELECT * FROM person WHERE Name = 'Alice'");
+            "SELECT * FROM person WHERE name = 'Alice'");
 
         results.Count.ShouldBe(1);
         results[0].Name.ShouldBe("Alice");
@@ -442,14 +440,14 @@ public class GraphIntegrationTests
     public async Task Graph_PersonTableName_IsSnakeCased()
     {
         // Verify MetadataDispatch returns snake_case for Person
-        var tableName = AeroDB.Metadata.MetadataDispatch.GetTableName(typeof(Person));
+        var tableName = Sable.Metadata.MetadataDispatch.GetTableName(typeof(Person));
         tableName.ShouldBe("person");
     }
 
     [Test]
     public async Task Graph_KnowsTableName_IsSnakeCased()
     {
-        var tableName = AeroDB.Metadata.MetadataDispatch.GetTableName(typeof(Knows));
+        var tableName = Sable.Metadata.MetadataDispatch.GetTableName(typeof(Knows));
         tableName.ShouldBe("knows");
     }
 

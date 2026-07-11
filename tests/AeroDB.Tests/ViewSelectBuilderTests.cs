@@ -1,5 +1,5 @@
 using System.Linq.Expressions;
-using AeroDB;
+using AeroDB.Sable;
 using SurrealDb.Net.Models;
 using TUnit.Core;
 
@@ -64,7 +64,7 @@ public class ViewSelectBuilderTests
     {
         var builder = new ViewSelectBuilder<SelectReview>();
         var cols = builder.Sum(x => x.Rating).As("avg");
-        cols.Build().ShouldBe("math::sum(Rating) AS avg");
+        cols.Build().ShouldBe("math::sum(rating) AS avg");
     }
 
     [Test]
@@ -72,7 +72,7 @@ public class ViewSelectBuilderTests
     {
         var builder = new ViewSelectBuilder<SelectPerson>();
         var cols = builder.Min(x => x.Age).As("youngest");
-        cols.Build().ShouldBe("math::min(Age) AS youngest");
+        cols.Build().ShouldBe("math::min(age) AS youngest");
     }
 
     [Test]
@@ -80,7 +80,7 @@ public class ViewSelectBuilderTests
     {
         var builder = new ViewSelectBuilder<SelectProduct>();
         var cols = builder.Max(x => x.Price).As("most_expensive");
-        cols.Build().ShouldBe("math::max(Price) AS most_expensive");
+        cols.Build().ShouldBe("math::max(price) AS most_expensive");
     }
 
     [Test]
@@ -88,7 +88,7 @@ public class ViewSelectBuilderTests
     {
         var builder = new ViewSelectBuilder<SelectReview>();
         var cols = builder.Average(x => x.Score).As("mean");
-        cols.Build().ShouldBe("math::mean(Score) AS mean");
+        cols.Build().ShouldBe("math::mean(score) AS mean");
     }
 
     [Test]
@@ -102,8 +102,8 @@ public class ViewSelectBuilderTests
             .Min(x => x.Rating).As("min_rating")
             .Max(x => x.Rating).As("max_rating");
         cols.Build().ShouldBe(
-            "count() AS num, math::sum(Rating) AS total, math::mean(Score) AS avg_score, " +
-            "math::min(Rating) AS min_rating, math::max(Rating) AS max_rating");
+            "count() AS num, math::sum(rating) AS total, math::mean(score) AS avg_score, " +
+            "math::min(rating) AS min_rating, math::max(rating) AS max_rating");
     }
 
     // ════════════════════════════════════════════════════════════
@@ -115,7 +115,7 @@ public class ViewSelectBuilderTests
     {
         var builder = new ViewSelectBuilder<SelectReview>();
         var cols = builder.Column(x => x.Title).As("post_title");
-        cols.Build().ShouldBe("Title AS post_title");
+        cols.Build().ShouldBe("title AS post_title");
     }
 
     [Test]
@@ -123,7 +123,7 @@ public class ViewSelectBuilderTests
     {
         var builder = new ViewSelectBuilder<SelectReview>();
         var cols = builder.Column(x => x.Title);
-        cols.Build().ShouldBe("Title");
+        cols.Build().ShouldBe("title");
     }
 
     [Test]
@@ -134,7 +134,7 @@ public class ViewSelectBuilderTests
             .Column(x => x.ProductId)
             .Column(x => x.Rating)
             .Column(x => x.Title);
-        cols.Build().ShouldBe("ProductId, Rating, Title");
+        cols.Build().ShouldBe("product_id, rating, title");
     }
 
     // ════════════════════════════════════════════════════════════
@@ -148,7 +148,7 @@ public class ViewSelectBuilderTests
         var cols = builder
             .Column(x => x.ProductId)
             .Count().As("num");
-        cols.Build().ShouldBe("ProductId, count() AS num");
+        cols.Build().ShouldBe("product_id, count() AS num");
     }
 
     [Test]
@@ -159,7 +159,7 @@ public class ViewSelectBuilderTests
             .Count().As("n")
             .Sum(x => x.Rating).As("s")
             .Column(x => x.Title);
-        cols.Build().ShouldBe("count() AS n, math::sum(Rating) AS s, Title");
+        cols.Build().ShouldBe("count() AS n, math::sum(rating) AS s, title");
     }
 
     [Test]
@@ -171,7 +171,7 @@ public class ViewSelectBuilderTests
             .Column(x => x.Title)
             .Count().As("reviews")
             .Average(x => x.Rating).As("avg_rating");
-        cols.Build().ShouldBe("ProductId, Title, count() AS reviews, math::mean(Rating) AS avg_rating");
+        cols.Build().ShouldBe("product_id, title, count() AS reviews, math::mean(rating) AS avg_rating");
     }
 
     // ════════════════════════════════════════════════════════════
@@ -184,7 +184,7 @@ public class ViewSelectBuilderTests
         var builder = new ViewSelectBuilder<SelectReview>();
         var cols = builder
             .Graph().Out<SelectPost>("wrote").Select(x => x.Title).As("post");
-        cols.Build().ShouldBe("->wrote->select_post.Title AS post");
+        cols.Build().ShouldBe("->wrote->select_post.title AS post");
     }
 
     [Test]
@@ -193,7 +193,7 @@ public class ViewSelectBuilderTests
         var builder = new ViewSelectBuilder<SelectPerson>();
         var cols = builder
             .Graph().In<SelectUser>("assigned").Select(x => x.Name).As("assignee");
-        cols.Build().ShouldBe("<-assigned<-select_user.Name AS assignee");
+        cols.Build().ShouldBe("<-assigned<-select_user.name AS assignee");
     }
 
     [Test]
@@ -202,7 +202,7 @@ public class ViewSelectBuilderTests
         var builder = new ViewSelectBuilder<SelectPerson>();
         var cols = builder
             .Graph().Out<SelectPerson>().Select(x => x.Name).As("friend");
-        cols.Build().ShouldBe("->?->select_person.Name AS friend");
+        cols.Build().ShouldBe("->?->select_person.name AS friend");
     }
 
     [Test]
@@ -211,7 +211,7 @@ public class ViewSelectBuilderTests
         var builder = new ViewSelectBuilder<SelectReview>();
         var cols = builder
             .Graph().In<SelectProduct>().Select(x => x.Name);
-        cols.Build().ShouldBe("<-?<-select_product.Name");
+        cols.Build().ShouldBe("<-?<-select_product.name");
     }
 
     // ════════════════════════════════════════════════════════════
@@ -225,7 +225,7 @@ public class ViewSelectBuilderTests
         var cols = builder
             .Graph().Out<SelectProduct>("sold").Select(x => x.Name).As("product")
             .Count().As("num");
-        cols.Build().ShouldBe("->sold->select_product.Name AS product, count() AS num");
+        cols.Build().ShouldBe("->sold->select_product.name AS product, count() AS num");
     }
 
     [Test]
@@ -235,7 +235,7 @@ public class ViewSelectBuilderTests
         var cols = builder
             .Count().As("total")
             .Graph().Out<SelectPost>("wrote").Select(x => x.Title).As("post_title");
-        cols.Build().ShouldBe("count() AS total, ->wrote->select_post.Title AS post_title");
+        cols.Build().ShouldBe("count() AS total, ->wrote->select_post.title AS post_title");
     }
 
     // ════════════════════════════════════════════════════════════
@@ -268,7 +268,7 @@ public class ViewSelectBuilderTests
             .Column(x => x.ProductId)
             .Raw("math::round(math::mean(score))").As("rounded")
             .Count().As("cnt");
-        cols.Build().ShouldBe("ProductId, math::round(math::mean(score)) AS rounded, count() AS cnt");
+        cols.Build().ShouldBe("product_id, math::round(math::mean(score)) AS rounded, count() AS cnt");
     }
 
     // ════════════════════════════════════════════════════════════
@@ -340,7 +340,7 @@ public class ViewSelectBuilderTests
             .GroupBy(r => r.ProductId);
 
         view.BuildSelectSurql().ShouldBe(
-            "SELECT count() AS total, math::mean(Rating) AS avg_rating FROM `view_review` GROUP BY ProductId");
+            "SELECT count() AS total, math::mean(rating) AS avg_rating FROM `view_review` GROUP BY product_id");
     }
 
     [Test]
@@ -354,7 +354,7 @@ public class ViewSelectBuilderTests
                 .Count().As("cnt"));
 
         view.BuildSelectSurql().ShouldBe(
-            "SELECT ProductId, Category, count() AS cnt FROM `view_review`");
+            "SELECT product_id, category, count() AS cnt FROM `view_review`");
     }
 
     [Test]
@@ -367,7 +367,7 @@ public class ViewSelectBuilderTests
                 .Graph().Out<ViewUser>("product").Select(u => u.Name).As("product_name"));
 
         view.BuildSelectSurql().ShouldBe(
-            "SELECT Rating, ->product->view_user.Name AS product_name FROM `view_review`");
+            "SELECT rating, ->product->view_user.name AS product_name FROM `view_review`");
     }
 
     [Test]
@@ -383,7 +383,7 @@ public class ViewSelectBuilderTests
             .GroupBy(r => r.Category);
 
         view.BuildSelectSurql().ShouldBe(
-            "SELECT count() AS num, math::mean(Rating) AS avg, ->author->view_user.Name AS author FROM `view_review` WHERE Rating >= 3 GROUP BY Category");
+            "SELECT count() AS num, math::mean(rating) AS avg, ->author->view_user.name AS author FROM `view_review` WHERE rating >= 3 GROUP BY category");
     }
 
     [Test]
@@ -393,10 +393,10 @@ public class ViewSelectBuilderTests
             .From<ViewReview>()
             .Select(cols => cols
                 .Column(r => r.ProductId)
-                .Raw("math::round(math::mean(Rating), 2)").As("rounded_avg"));
+                .Raw("math::round(math::mean(rating), 2)").As("rounded_avg"));
 
         view.BuildSelectSurql().ShouldBe(
-            "SELECT ProductId, math::round(math::mean(Rating), 2) AS rounded_avg FROM `view_review`");
+            "SELECT product_id, math::round(math::mean(rating), 2) AS rounded_avg FROM `view_review`");
     }
 
     // ════════════════════════════════════════════════════════════
@@ -443,7 +443,7 @@ public class ViewSelectBuilderTests
         // Expressions like x => (object)x.Price (boxing) should be unwrapped
         var builder = new ViewSelectBuilder<SelectProduct>();
         var cols = builder.Column(x => (object)x.Price).As("price");
-        cols.Build().ShouldBe("Price AS price");
+        cols.Build().ShouldBe("price AS price");
     }
 
     [Test]
@@ -451,7 +451,7 @@ public class ViewSelectBuilderTests
     {
         var builder = new ViewSelectBuilder<SelectReview>();
         var cols = builder.Sum(x => (object)x.Score).As("total_score");
-        cols.Build().ShouldBe("math::sum(Score) AS total_score");
+        cols.Build().ShouldBe("math::sum(score) AS total_score");
     }
 
     [Test]
@@ -487,6 +487,6 @@ public class ViewSelectBuilderTests
     {
         var builder = new ViewSelectBuilder<SelectReview>();
         builder.Graph().Out<SelectPost>("wrote").Select(x => x.Title);
-        builder.Build().ShouldBe("->wrote->select_post.Title");
+        builder.Build().ShouldBe("->wrote->select_post.title");
     }
 }

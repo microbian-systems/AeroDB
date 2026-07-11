@@ -1,5 +1,4 @@
-using AeroDB;
-using AeroDB.Pagination;
+using AeroDB.Sable;
 using TUnit.Core;
 
 namespace AeroDB.Tests.Pagination;
@@ -214,7 +213,7 @@ public class PaginationTests
 
         await SeedPeople(session, 25);
 
-        var paged = await session.Query<Person>().ToPagedListAsync(2, 10, useCountQuery: true);
+        var paged = await AeroDB.Sable.Pagination.PagedListQueryableExtensions.ToPagedListAsync(session.Query<Person>(), 2, 10, useCountQuery: true);
 
         paged.PageNumber.ShouldBe(2);
         paged.PageSize.ShouldBe(10);

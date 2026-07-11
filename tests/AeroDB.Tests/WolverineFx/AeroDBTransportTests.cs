@@ -1,6 +1,8 @@
+using AeroDB.WolverineFx;
+
 namespace AeroDB.Tests;
 
-using AeroDB;
+using Sable;
 using AeroDB.WolverineFx;
 using NSubstitute;
 using Shouldly;
@@ -20,7 +22,7 @@ public class AeroDBTransportTests
     {
         var transport = new AeroDBTransport();
 
-        transport.Protocol.ShouldBe("AeroDB");
+        transport.Protocol.ShouldBe("AeroDB.Sable");
     }
 
     [Test]
@@ -28,7 +30,7 @@ public class AeroDBTransportTests
     {
         var transport = new AeroDBTransport();
 
-        transport.Name.ShouldBe("AeroDB SurrealDB Transport");
+        transport.Name.ShouldBe("AeroDB.Sable SurrealDB Transport");
     }
 
     [Test]
@@ -133,7 +135,7 @@ public class AeroDBTransportTests
 
         var description = ((ITransport)transport).Describe();
 
-        description.ShouldBe("AeroDB SurrealDB Transport (scheme 'AeroDB')");
+        description.ShouldBe("AeroDB.Sable SurrealDB Transport (scheme 'AeroDB.Sable')");
     }
 
     [Test]

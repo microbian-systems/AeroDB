@@ -6,7 +6,7 @@ namespace AeroDB.WolverineFx.Codegen;
 
 /// <summary>
 /// Codegen frame that calls <see cref="MessageContext.FlushOutgoingMessagesAsync"/>
-/// to dispatch outgoing messages after the AeroDB session commits.
+/// to dispatch outgoing messages after the AeroDB.Sable session commits.
 /// </summary>
 internal sealed class FlushAeroDBOutgoingMessagesFrame : MethodCall
 {
@@ -15,6 +15,6 @@ internal sealed class FlushAeroDBOutgoingMessagesFrame : MethodCall
     public FlushAeroDBOutgoingMessagesFrame()
         : base(typeof(MessageContext), nameof(MessageContext.FlushOutgoingMessagesAsync))
     {
-        CommentText = "Flush outgoing messages after AeroDB transaction commits";
+        CommentText = "Flush outgoing messages after AeroDB.Sable transaction commits";
     }
 }

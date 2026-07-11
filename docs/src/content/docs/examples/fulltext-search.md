@@ -49,4 +49,4 @@ var results = await session.Search<WikipediaArticle>()
     .ToListAsync();
 ```
 
-**Full sample:** [`samples/WikipediaSearch/`](https://github.com/microbians/AeroDB/tree/main/samples/WikipediaSearch)
+**Full sample:** [`samples/WikipediaSearch/`](https://github.com/microbian-systems/AeroDB/tree/main/samples/WikipediaSearch)

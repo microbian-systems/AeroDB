@@ -1,4 +1,4 @@
-using AeroDB;
+using AeroDB.Sable;
 
 namespace CryptoTrader.Models;
 

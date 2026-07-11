@@ -1,5 +1,5 @@
 using System.Linq.Expressions;
-using AeroDB;
+using AeroDB.Sable;
 using TUnit.Core;
 
 namespace AeroDB.Tests;
@@ -19,7 +19,7 @@ public partial class FunctionMappingTests
             typeof(SurrealCryptoFunctions).GetMethod("Argon2Generate", [typeof(string)])!,
             nameProp);
         var result = SurrealExpressionVisitor.TranslateCondition(Expression.Equal(call, Expression.Constant("h")));
-        result.ShouldBe("crypto::argon2::generate(Name) = 'h'");
+        result.ShouldBe("crypto::argon2::generate(name) = 'h'");
     }
 
     [Test]
@@ -31,7 +31,7 @@ public partial class FunctionMappingTests
             typeof(SurrealCryptoFunctions).GetMethod("Argon2Compare", [typeof(string), typeof(string)])!,
             nameProp, Expression.Constant("hash"));
         var result = SurrealExpressionVisitor.TranslateCondition(Expression.Equal(call, Expression.Constant(true)));
-        result.ShouldBe("crypto::argon2::compare(Name, 'hash') = true");
+        result.ShouldBe("crypto::argon2::compare(name, 'hash') = true");
     }
 
     [Test]
@@ -43,7 +43,7 @@ public partial class FunctionMappingTests
             typeof(SurrealCryptoFunctions).GetMethod("BcryptGenerate", [typeof(string)])!,
             nameProp);
         var result = SurrealExpressionVisitor.TranslateCondition(Expression.Equal(call, Expression.Constant("h")));
-        result.ShouldBe("crypto::bcrypt::generate(Name) = 'h'");
+        result.ShouldBe("crypto::bcrypt::generate(name) = 'h'");
     }
 
     [Test]
@@ -55,7 +55,7 @@ public partial class FunctionMappingTests
             typeof(SurrealCryptoFunctions).GetMethod("BcryptCompare", [typeof(string), typeof(string)])!,
             nameProp, Expression.Constant("hash"));
         var result = SurrealExpressionVisitor.TranslateCondition(Expression.Equal(call, Expression.Constant(true)));
-        result.ShouldBe("crypto::bcrypt::compare(Name, 'hash') = true");
+        result.ShouldBe("crypto::bcrypt::compare(name, 'hash') = true");
     }
 
     [Test]
@@ -67,7 +67,7 @@ public partial class FunctionMappingTests
             typeof(SurrealCryptoFunctions).GetMethod("Pbkdf2Generate", [typeof(string)])!,
             nameProp);
         var result = SurrealExpressionVisitor.TranslateCondition(Expression.Equal(call, Expression.Constant("h")));
-        result.ShouldBe("crypto::pbkdf2::generate(Name) = 'h'");
+        result.ShouldBe("crypto::pbkdf2::generate(name) = 'h'");
     }
 
     [Test]
@@ -79,7 +79,7 @@ public partial class FunctionMappingTests
             typeof(SurrealCryptoFunctions).GetMethod("Pbkdf2Compare", [typeof(string), typeof(string)])!,
             nameProp, Expression.Constant("hash"));
         var result = SurrealExpressionVisitor.TranslateCondition(Expression.Equal(call, Expression.Constant(true)));
-        result.ShouldBe("crypto::pbkdf2::compare(Name, 'hash') = true");
+        result.ShouldBe("crypto::pbkdf2::compare(name, 'hash') = true");
     }
 
     [Test]
@@ -91,7 +91,7 @@ public partial class FunctionMappingTests
             typeof(SurrealCryptoFunctions).GetMethod("ScryptGenerate", [typeof(string)])!,
             nameProp);
         var result = SurrealExpressionVisitor.TranslateCondition(Expression.Equal(call, Expression.Constant("h")));
-        result.ShouldBe("crypto::scrypt::generate(Name) = 'h'");
+        result.ShouldBe("crypto::scrypt::generate(name) = 'h'");
     }
 
     [Test]
@@ -103,7 +103,7 @@ public partial class FunctionMappingTests
             typeof(SurrealCryptoFunctions).GetMethod("ScryptCompare", [typeof(string), typeof(string)])!,
             nameProp, Expression.Constant("hash"));
         var result = SurrealExpressionVisitor.TranslateCondition(Expression.Equal(call, Expression.Constant(true)));
-        result.ShouldBe("crypto::scrypt::compare(Name, 'hash') = true");
+        result.ShouldBe("crypto::scrypt::compare(name, 'hash') = true");
     }
 
     [Test]
@@ -115,7 +115,7 @@ public partial class FunctionMappingTests
             typeof(SurrealCryptoFunctions).GetMethod("Md5", [typeof(string)])!,
             nameProp);
         var result = SurrealExpressionVisitor.TranslateCondition(Expression.Equal(call, Expression.Constant("d5")));
-        result.ShouldBe("crypto::md5(Name) = 'd5'");
+        result.ShouldBe("crypto::md5(name) = 'd5'");
     }
 
     [Test]
@@ -127,7 +127,7 @@ public partial class FunctionMappingTests
             typeof(SurrealCryptoFunctions).GetMethod("Sha1", [typeof(string)])!,
             nameProp);
         var result = SurrealExpressionVisitor.TranslateCondition(Expression.Equal(call, Expression.Constant("a")));
-        result.ShouldBe("crypto::sha1(Name) = 'a'");
+        result.ShouldBe("crypto::sha1(name) = 'a'");
     }
 
     [Test]
@@ -139,7 +139,7 @@ public partial class FunctionMappingTests
             typeof(SurrealCryptoFunctions).GetMethod("Sha256", [typeof(string)])!,
             nameProp);
         var result = SurrealExpressionVisitor.TranslateCondition(Expression.Equal(call, Expression.Constant("b")));
-        result.ShouldBe("crypto::sha256(Name) = 'b'");
+        result.ShouldBe("crypto::sha256(name) = 'b'");
     }
 
     [Test]
@@ -151,7 +151,7 @@ public partial class FunctionMappingTests
             typeof(SurrealCryptoFunctions).GetMethod("Sha512", [typeof(string)])!,
             nameProp);
         var result = SurrealExpressionVisitor.TranslateCondition(Expression.Equal(call, Expression.Constant("c")));
-        result.ShouldBe("crypto::sha512(Name) = 'c'");
+        result.ShouldBe("crypto::sha512(name) = 'c'");
     }
 
     [Test]

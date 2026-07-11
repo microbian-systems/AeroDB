@@ -1,0 +1,12 @@
+Running tests from D:\proj\microbians\AeroDB\tests\AeroDB.Tests\bin\Debug\net10.0\AeroDB.Tests.dll (net10.0|x64)
+D:\proj\microbians\AeroDB\tests\AeroDB.Tests\bin\Debug\net10.0\AeroDB.Tests.dll (net10.0|x64) passed (1m 07s 896ms)
+
+  In process file artifacts produced:
+    - D:\proj\microbians\AeroDB\tests\AeroDB.Tests\bin\Debug\net10.0\TestResults\AeroDB.Tests-windows-net10.0-report.html
+
+Test run summary: Passed!
+  total: 1904
+  failed: 0
+  succeeded: 1904
+  skipped: 0
+  duration: 1m 08s 167ms

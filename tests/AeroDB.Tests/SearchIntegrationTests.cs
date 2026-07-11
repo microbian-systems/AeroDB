@@ -1,5 +1,5 @@
 using System.Linq.Expressions;
-using AeroDB;
+using AeroDB.Sable;
 using TUnit.Core;
 using Shouldly;
 
@@ -53,7 +53,7 @@ public class SearchIntegrationTests
         if (results.Count == 0)
         {
             results = await session.RawQueryAsync<SearchablePage>(
-                "SELECT * FROM searchable_page WHERE Content CONTAINS 'quick' OR Content CONTAINS 'brown' OR Content CONTAINS 'fox'");
+                "SELECT * FROM searchable_page WHERE content CONTAINS 'quick' OR content CONTAINS 'brown' OR content CONTAINS 'fox'");
         }
 
         results.ShouldNotBeNull();
@@ -103,7 +103,7 @@ public class SearchIntegrationTests
         if (results.Count < 2)
         {
             results = await session.RawQueryAsync<SearchablePage>(
-                "SELECT * FROM searchable_page WHERE Title CONTAINS 'important' OR Title CONTAINS 'data' OR Content CONTAINS 'important' OR Content CONTAINS 'data'");
+                "SELECT * FROM searchable_page WHERE title CONTAINS 'important' OR title CONTAINS 'data' OR content CONTAINS 'important' OR content CONTAINS 'data'");
         }
 
         results.ShouldNotBeNull();
@@ -173,7 +173,7 @@ public class SearchIntegrationTests
         if (results.Count == 0)
         {
             results = await session.RawQueryAsync<SearchablePage>(
-                "SELECT * FROM searchable_page WHERE Content CONTAINS 'data'");
+                "SELECT * FROM searchable_page WHERE content CONTAINS 'data'");
         }
 
         results.ShouldNotBeNull();
@@ -226,7 +226,7 @@ public class SearchIntegrationTests
         if (results.Count == 0)
         {
             results = await session.RawQueryAsync<SearchablePage>(
-                "SELECT * FROM searchable_page WHERE Content CONTAINS 'data' LIMIT 5");
+                "SELECT * FROM searchable_page WHERE content CONTAINS 'data' LIMIT 5");
         }
 
         results.ShouldNotBeNull();
@@ -261,7 +261,7 @@ public class SearchIntegrationTests
         if (results.Count == 0)
         {
             results = await session.RawQueryAsync<SearchablePage>(
-                "SELECT * FROM searchable_page WHERE Content CONTAINS 'data'");
+                "SELECT * FROM searchable_page WHERE content CONTAINS 'data'");
         }
 
         results.ShouldNotBeNull();
@@ -319,7 +319,7 @@ public class SearchIntegrationTests
         if (results is null)
         {
             results = await session.RawQueryAsync<SearchablePage>(
-                "SELECT *, vector::similarity::cosine(Embedding, $vector) AS sim FROM searchable_page ORDER BY sim DESC LIMIT 5",
+                "SELECT *, vector::similarity::cosine(embedding, $vector) AS sim FROM searchable_page ORDER BY sim DESC LIMIT 5",
                 new Dictionary<string, object?> { ["vector"] = queryVector });
         }
 
@@ -416,7 +416,7 @@ public class SearchIntegrationTests
 
             // Try text-first approach with CONTAINS (always supported)
             results = await session.RawQueryAsync<SearchablePage>(
-                "SELECT * FROM searchable_page WHERE Title CONTAINS 'data' OR Content CONTAINS 'data' OR Title CONTAINS 'science' OR Content CONTAINS 'science'");
+                "SELECT * FROM searchable_page WHERE title CONTAINS 'data' OR content CONTAINS 'data' OR title CONTAINS 'science' OR content CONTAINS 'science'");
 
             // If text search is empty but we have vector results, try vector similarity
             if (results.Count == 0)
@@ -424,7 +424,7 @@ public class SearchIntegrationTests
                 try
                 {
                     results = await session.RawQueryAsync<SearchablePage>(
-                        "SELECT *, vector::similarity::cosine(Embedding, $vector) AS sim FROM searchable_page ORDER BY sim DESC LIMIT 10",
+                        "SELECT *, vector::similarity::cosine(embedding, $vector) AS sim FROM searchable_page ORDER BY sim DESC LIMIT 10",
                         new Dictionary<string, object?> { ["vector"] = config.QueryVector });
                 }
                 catch
@@ -510,7 +510,7 @@ public class SearchIntegrationTests
 
         // Execute SurrealQL directly with the @@ full-text operator
         var results = await session.RawQueryAsync<SearchablePage>(
-            "SELECT *, search::score(0) AS _score FROM searchable_page WHERE Content @@ 'hello test' ORDER BY _score DESC LIMIT 10");
+            "SELECT *, search::score(0) AS _score FROM searchable_page WHERE content @@ 'hello test' ORDER BY _score DESC LIMIT 10");
 
         results.ShouldNotBeNull();
         results.Count.ShouldBe(1);
@@ -544,7 +544,7 @@ public class SearchIntegrationTests
         var queryVector = new[] { 0.9f, 0.1f, 0.0f };
 
         var results = await session.RawQueryAsync<SearchablePage>(
-            "SELECT *, vector::similarity::cosine(Embedding, $vector) AS sim FROM searchable_page ORDER BY sim DESC LIMIT 4",
+            "SELECT *, vector::similarity::cosine(embedding, $vector) AS sim FROM searchable_page ORDER BY sim DESC LIMIT 4",
             new Dictionary<string, object?> { ["vector"] = queryVector });
 
         results.ShouldNotBeNull();
@@ -617,7 +617,7 @@ public class SearchIntegrationTests
         try
         {
             var results = await session.RawQueryAsync<SearchablePage>(
-                "SELECT *, vector::similarity::jaccard(Embedding, $vector) AS jac FROM searchable_page ORDER BY jac DESC",
+                "SELECT *, vector::similarity::jaccard(embedding, $vector) AS jac FROM searchable_page ORDER BY jac DESC",
                 new Dictionary<string, object?> { ["vector"] = new[] { 1.0f, 0.0f, 0.0f } });
 
             results.ShouldNotBeNull();
@@ -663,7 +663,7 @@ public class SearchIntegrationTests
         {
             // Fallback: check for the actual words via CONTAINS if @@ isn't supported
             results = await session.RawQueryAsync<SearchablePage>(
-                "SELECT * FROM searchable_page WHERE Content CONTAINS 'dogs' OR Content CONTAINS 'running'");
+                "SELECT * FROM searchable_page WHERE content CONTAINS 'dogs' OR content CONTAINS 'running'");
         }
 
         results.ShouldNotBeNull();
@@ -692,7 +692,7 @@ public class SearchIntegrationTests
         try
         {
             await session.ExecuteSqlAsync(
-                "DEFINE INDEX hnsw_searchable_page_embedding ON TABLE searchable_page FIELDS Embedding HNSW DIMENSION 3 DIST COSINE;");
+                "DEFINE INDEX hnsw_searchable_page_embedding ON TABLE searchable_page FIELDS embedding HNSW DIMENSION 3 DIST COSINE;");
 
             session.Store(new SearchablePage { Title = "A", Embedding = [1.0f, 0.0f, 0.0f] });
             session.Store(new SearchablePage { Title = "B", Embedding = [0.0f, 1.0f, 0.0f] });
@@ -703,7 +703,7 @@ public class SearchIntegrationTests
             var vecStr = "[" + string.Join(", ", queryVector) + "]";
 
             var results = await session.RawQueryAsync<SearchablePage>(
-                $"SELECT *, vector::distance::knn() AS _distance FROM searchable_page WHERE Embedding <|3,10|> {vecStr} ORDER BY _distance ASC LIMIT 3");
+                $"SELECT *, vector::distance::knn() AS _distance FROM searchable_page WHERE embedding <|3,10|> {vecStr} ORDER BY _distance ASC LIMIT 3");
 
             results.ShouldNotBeNull();
             results.Count.ShouldBeGreaterThanOrEqualTo(1);

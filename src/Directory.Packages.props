@@ -17,6 +17,7 @@
     <PackageVersion Include="Blazor.Radzen.Theming" Version="10.2.3" />
     <PackageVersion Include="Bogus" Version="35.6.5" />
     <PackageVersion Include="Boxed.AspNetCore" Version="9.0.1" />
+    <PackageVersion Include="Dahomey.Cbor" Version="1.26.3" />
     <PackageVersion Include="EasyScrutor" Version="0.3.0" />
     <PackageVersion Include="FluentValidation" Version="12.1.1" />
     <PackageVersion Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
@@ -34,7 +35,7 @@
     <PackageVersion Include="Markdig" Version="1.2.0" />
     <PackageVersion Include="Marten" Version="8.37.1" />
     <PackageVersion Include="Marten.AspNetCore" Version="8.37.1" />
-    <PackageVersion Include="JasperFx.Events" Version="2.18.1" />
+    <PackageVersion Include="JasperFx.Events" Version="2.26.0" />
     <PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.8" />
     <PackageVersion Include="Microsoft.AspNetCore.Html.Abstractions" Version="2.3.10" />
     <PackageVersion Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.11" />
@@ -133,7 +134,7 @@
     <PackageVersion Include="Shouldly" Version="4.3.0" />
     <PackageVersion Include="Scriban" Version="7.2.0" />
     <PackageVersion Include="System.IdentityModel.Tokens.Jwt" Version="8.18.0" />
-    <PackageVersion Include="System.Reactive" Version="6.0.1" />
+    <PackageVersion Include="System.Reactive" Version="6.1.0" />
     <PackageVersion Include="System.Numerics.Tensors" Version="10.0.8" />
     <PackageVersion Include="System.Threading" Version="10.0.3" />
     <PackageVersion Include="TickerQ" Version="10.4.0" />
@@ -144,12 +145,13 @@
     <PackageVersion Include="TickerQ.SDK" Version="10.4.0" />
     <PackageVersion Include="TickerQ.Utilities" Version="10.4.0" />
     <PackageVersion Include="Weasel.Postgresql" Version="8.15.2" />
-    <PackageVersion Include="WolverineFx" Version="5.39.3" />
-    <PackageVersion Include="WolverineFx.EntityFrameworkCore" Version="5.39.3" />
-    <PackageVersion Include="WolverineFx.FluentValidation" Version="5.39.3" />
-    <PackageVersion Include="WolverineFx.Marten" Version="5.39.3" />
-    <PackageVersion Include="WolverineFx.Postgresql" Version="5.39.3" />
-    <PackageVersion Include="WolverineFx.RabbitMQ" Version="5.39.3" />
+    <PackageVersion Include="WolverineFx" Version="6.17.1" />
+    <PackageVersion Include="WolverineFx.EntityFrameworkCore" Version="6.16.0" />
+    <PackageVersion Include="WolverineFx.FluentValidation" Version="6.16.0" />
+    <PackageVersion Include="WolverineFx.Marten" Version="6.16.0" />
+    <PackageVersion Include="WolverineFx.Postgresql" Version="6.16.0" />
+    <PackageVersion Include="WolverineFx.RabbitMQ" Version="6.16.0" />
+    <PackageVersion Include="WolverineFx.RuntimeCompilation" Version="6.16.0" />
     <PackageVersion Include="WorkOS.net" Version="4.0.1" />
     <PackageVersion Include="ZiggyCreatures.FusionCache" Version="2.6.0" />
     <PackageVersion Include="ZiggyCreatures.FusionCache.Backplane.Memory" Version="2.6.0" />

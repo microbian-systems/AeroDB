@@ -1,4 +1,5 @@
-using AeroDB;
+using AeroDB.AspNetIdentity;
+using AeroDB.Sable;
 using AeroDB.AspNetIdentity;
 
 using Microsoft.AspNetCore.Identity;
@@ -7,13 +8,13 @@ using Microsoft.Extensions.Options;
 namespace Microsoft.Extensions.DependencyInjection;
 
 /// <summary>
-/// Extension methods for registering AeroDB-backed ASP.NET Core Identity stores
+/// Extension methods for registering AeroDB.Sable-backed ASP.NET Core Identity stores
 /// onto an <see cref="IdentityBuilder"/>.
 /// </summary>
 public static class AeroDBIdentityExtensions
 {
     /// <summary>
-    /// Registers <see cref="AeroDBUserStore{TUser, TRole}"/> and <see cref="AeroDBRoleStore{TRole}"/>
+    /// Registers <see cref="AeroDBUserStore{TUser,TRole}"/> and <see cref="AeroDBRoleStore{TRole}"/>
     /// with the identity system. Expects an <see cref="IDocumentStore"/> to already be
     /// registered in the service collection (as a singleton).
     /// </summary>
@@ -64,10 +65,10 @@ internal sealed class AeroDBIdentityConfigurator<TUser, TRole, TKey> : IConfigur
     where TRole : IdentityRole<TKey>
     where TKey : IEquatable<TKey>
 {
-    public void Configure(AeroDB.StoreOptions options)
+    public void Configure(AeroDB.Sable.StoreOptions options)
         => Configure(options.ServiceProvider, options);
 
-    public void Configure(IServiceProvider? services, AeroDB.StoreOptions options)
+    public void Configure(IServiceProvider? services, AeroDB.Sable.StoreOptions options)
     {
         var identityOptions = services?.GetService<IOptions<IdentityOptions>>();
         var requireUniqueEmail = identityOptions?.Value.User.RequireUniqueEmail ?? true;
@@ -79,11 +80,42 @@ internal sealed class AeroDBIdentityConfigurator<TUser, TRole, TKey> : IConfigur
             .Field("recovery_codes", f => f.FieldType = "option<array<string>>")
             .Field("role_ids", f => f.FieldType = "option<array<string>>");
 
+        RemoveLegacyPascalCaseIdentityUserFields(userMapping);
+
         if (requireUniqueEmail)
             userMapping.UniqueIndex(x => x.NormalizedEmail);
 
-        options.Schema.For<TRole>()
+        var roleMapping = options.Schema.For<TRole>()
             .Identity(x => x.Id)
             .UniqueIndex(x => x.NormalizedName);
+
+        RemoveLegacyPascalCaseIdentityRoleFields(roleMapping);
+    }
+
+    private static void RemoveLegacyPascalCaseIdentityUserFields(DocumentMapping<TUser> mapping)
+    {
+        mapping
+            .Field(nameof(IdentityUser<TKey>.UserName), f => f.Remove = true)
+            .Field(nameof(IdentityUser<TKey>.NormalizedUserName), f => f.Remove = true)
+            .Field(nameof(IdentityUser<TKey>.Email), f => f.Remove = true)
+            .Field(nameof(IdentityUser<TKey>.NormalizedEmail), f => f.Remove = true)
+            .Field(nameof(IdentityUser<TKey>.EmailConfirmed), f => f.Remove = true)
+            .Field(nameof(IdentityUser<TKey>.PasswordHash), f => f.Remove = true)
+            .Field(nameof(IdentityUser<TKey>.SecurityStamp), f => f.Remove = true)
+            .Field(nameof(IdentityUser<TKey>.ConcurrencyStamp), f => f.Remove = true)
+            .Field(nameof(IdentityUser<TKey>.PhoneNumber), f => f.Remove = true)
+            .Field(nameof(IdentityUser<TKey>.PhoneNumberConfirmed), f => f.Remove = true)
+            .Field(nameof(IdentityUser<TKey>.TwoFactorEnabled), f => f.Remove = true)
+            .Field(nameof(IdentityUser<TKey>.LockoutEnd), f => f.Remove = true)
+            .Field(nameof(IdentityUser<TKey>.LockoutEnabled), f => f.Remove = true)
+            .Field(nameof(IdentityUser<TKey>.AccessFailedCount), f => f.Remove = true);
+    }
+
+    private static void RemoveLegacyPascalCaseIdentityRoleFields(DocumentMapping<TRole> mapping)
+    {
+        mapping
+            .Field(nameof(IdentityRole<TKey>.Name), f => f.Remove = true)
+            .Field(nameof(IdentityRole<TKey>.NormalizedName), f => f.Remove = true)
+            .Field(nameof(IdentityRole<TKey>.ConcurrencyStamp), f => f.Remove = true);
     }
 }

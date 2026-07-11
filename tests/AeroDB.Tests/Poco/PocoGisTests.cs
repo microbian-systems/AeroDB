@@ -1,4 +1,4 @@
-using AeroDB;
+using AeroDB.Sable;
 using NSubstitute;
 using SurrealDb.Net;
 using SurrealDb.Net.Models.Response;
@@ -65,7 +65,7 @@ public class PocoGisTests
             Arg.Is<string>(sql =>
                 sql.Contains("geo::DISTANCE")
                 && sql.Contains("$p0")
-                && sql.Contains("Category")),
+                && sql.Contains("category")),
             Arg.Any<IReadOnlyDictionary<string, object?>>(),
             Arg.Any<CancellationToken>());
     }

@@ -1,5 +1,5 @@
 using System.Linq.Expressions;
-using AeroDB;
+using AeroDB.Sable;
 using TUnit.Core;
 
 namespace AeroDB.Tests;
@@ -20,7 +20,7 @@ public partial class FunctionMappingTests
         var condition = Expression.GreaterThan(lengthProp, Expression.Constant(5));
 
         var result = SurrealExpressionVisitor.TranslateCondition(condition);
-        result.ShouldBe("string::length(Name) > 5");
+        result.ShouldBe("string::length(name) > 5");
     }
 
     [Test]
@@ -33,7 +33,7 @@ public partial class FunctionMappingTests
         var condition = Expression.Equal(trimCall, Expression.Constant("hello"));
 
         var result = SurrealExpressionVisitor.TranslateCondition(condition);
-        result.ShouldBe("string::trim(Name) = 'hello'");
+        result.ShouldBe("string::trim(name) = 'hello'");
     }
 
     [Test]
@@ -46,7 +46,7 @@ public partial class FunctionMappingTests
         var condition = Expression.Equal(toUpperCall, Expression.Constant("HELLO"));
 
         var result = SurrealExpressionVisitor.TranslateCondition(condition);
-        result.ShouldBe("string::uppercase(Name) = 'HELLO'");
+        result.ShouldBe("string::uppercase(name) = 'HELLO'");
     }
 
     [Test]
@@ -59,7 +59,7 @@ public partial class FunctionMappingTests
         var condition = Expression.Equal(toUpperCall, Expression.Constant("HELLO"));
 
         var result = SurrealExpressionVisitor.TranslateCondition(condition);
-        result.ShouldBe("string::uppercase(Name) = 'HELLO'");
+        result.ShouldBe("string::uppercase(name) = 'HELLO'");
     }
 
     [Test]
@@ -72,7 +72,7 @@ public partial class FunctionMappingTests
         var condition = Expression.Equal(toLowerCall, Expression.Constant("hello"));
 
         var result = SurrealExpressionVisitor.TranslateCondition(condition);
-        result.ShouldBe("string::lowercase(Name) = 'hello'");
+        result.ShouldBe("string::lowercase(name) = 'hello'");
     }
 
     [Test]
@@ -85,7 +85,7 @@ public partial class FunctionMappingTests
         var condition = Expression.Equal(toLowerCall, Expression.Constant("hello"));
 
         var result = SurrealExpressionVisitor.TranslateCondition(condition);
-        result.ShouldBe("string::lowercase(Name) = 'hello'");
+        result.ShouldBe("string::lowercase(name) = 'hello'");
     }
 
     [Test]
@@ -98,7 +98,7 @@ public partial class FunctionMappingTests
         var condition = Expression.Equal(trimStartCall, Expression.Constant("hello"));
 
         var result = SurrealExpressionVisitor.TranslateCondition(condition);
-        result.ShouldBe("string::trim(Name) = 'hello'");
+        result.ShouldBe("string::trim(name) = 'hello'");
     }
 
     // ════════════════════════════════════════════════════════════
@@ -198,7 +198,7 @@ public partial class FunctionMappingTests
         var condition = Expression.Equal(replaceCall, Expression.Constant("hello"));
 
         var result = SurrealExpressionVisitor.TranslateCondition(condition);
-        result.ShouldBe("string::replace(Name, 'a', 'b') = 'hello'");
+        result.ShouldBe("string::replace(name, 'a', 'b') = 'hello'");
     }
 
     [Test]
@@ -213,7 +213,7 @@ public partial class FunctionMappingTests
         var condition = Expression.Equal(substrCall, Expression.Constant("ello"));
 
         var result = SurrealExpressionVisitor.TranslateCondition(condition);
-        result.ShouldBe("string::slice(Name, 1) = 'ello'");
+        result.ShouldBe("string::slice(name, 1) = 'ello'");
     }
 
     [Test]
@@ -228,7 +228,7 @@ public partial class FunctionMappingTests
         var condition = Expression.Equal(substrCall, Expression.Constant("el"));
 
         var result = SurrealExpressionVisitor.TranslateCondition(condition);
-        result.ShouldBe("string::slice(Name, 1, 2) = 'el'");
+        result.ShouldBe("string::slice(name, 1, 2) = 'el'");
     }
 
     [Test]
@@ -243,7 +243,7 @@ public partial class FunctionMappingTests
         var condition = Expression.Equal(concatCall, Expression.Constant("hello"));
 
         var result = SurrealExpressionVisitor.TranslateCondition(condition);
-        result.ShouldBe("string::concat(Name, 'suffix') = 'hello'");
+        result.ShouldBe("string::concat(name, 'suffix') = 'hello'");
     }
 
     [Test]
@@ -279,7 +279,7 @@ public partial class FunctionMappingTests
         var condition = Expression.Equal(repeatCall, Expression.Constant("aaa"));
 
         var result = SurrealExpressionVisitor.TranslateCondition(condition);
-        result.ShouldBe("string::repeat(Name, 3) = 'aaa'");
+        result.ShouldBe("string::repeat(name, 3) = 'aaa'");
     }
 
     [Test]
@@ -294,7 +294,7 @@ public partial class FunctionMappingTests
         var condition = Expression.Equal(reverseCall, Expression.Constant("olleh"));
 
         var result = SurrealExpressionVisitor.TranslateCondition(condition);
-        result.ShouldBe("string::reverse(Name) = 'olleh'");
+        result.ShouldBe("string::reverse(name) = 'olleh'");
     }
 
     [Test]
@@ -312,7 +312,7 @@ public partial class FunctionMappingTests
         var condition = Expression.GreaterThan(simCall, Expression.Constant(0));
 
         var result = SurrealExpressionVisitor.TranslateCondition(condition);
-        result.ShouldBe("string::similarity::fuzzy(Name, Name) > 0");
+        result.ShouldBe("string::similarity::fuzzy(name, name) > 0");
     }
 
     [Test]
@@ -329,7 +329,7 @@ public partial class FunctionMappingTests
         var condition = Expression.GreaterThan(simCall, Expression.Constant(0.0));
 
         var result = SurrealExpressionVisitor.TranslateCondition(condition);
-        result.ShouldBe("string::similarity::jaro(Name, Name) > 0");
+        result.ShouldBe("string::similarity::jaro(name, name) > 0");
     }
 
     [Test]
@@ -346,7 +346,7 @@ public partial class FunctionMappingTests
         var condition = Expression.GreaterThan(simCall, Expression.Constant(0.0));
 
         var result = SurrealExpressionVisitor.TranslateCondition(condition);
-        result.ShouldBe("string::similarity::jaro_winkler(Name, Name) > 0");
+        result.ShouldBe("string::similarity::jaro_winkler(name, name) > 0");
     }
 
     [Test]
@@ -364,7 +364,7 @@ public partial class FunctionMappingTests
         var condition = Expression.GreaterThan(distCall, Expression.Constant(0));
 
         var result = SurrealExpressionVisitor.TranslateCondition(condition);
-        result.ShouldBe("string::distance::levenshtein(Name, Name) > 0");
+        result.ShouldBe("string::distance::levenshtein(name, name) > 0");
     }
 
     [Test]
@@ -381,7 +381,7 @@ public partial class FunctionMappingTests
         var condition = Expression.GreaterThan(distCall, Expression.Constant(0));
 
         var result = SurrealExpressionVisitor.TranslateCondition(condition);
-        result.ShouldBe("string::distance::hamming(Name, Name) > 0");
+        result.ShouldBe("string::distance::hamming(name, name) > 0");
     }
 
     [Test]
@@ -398,7 +398,7 @@ public partial class FunctionMappingTests
         var condition = Expression.GreaterThan(distCall, Expression.Constant(0));
 
         var result = SurrealExpressionVisitor.TranslateCondition(condition);
-        result.ShouldBe("string::distance::damerau_levenshtein(Name, Name) > 0");
+        result.ShouldBe("string::distance::damerau_levenshtein(name, name) > 0");
     }
 
     [Test]
@@ -415,7 +415,7 @@ public partial class FunctionMappingTests
         var condition = Expression.GreaterThan(distCall, Expression.Constant(0.0));
 
         var result = SurrealExpressionVisitor.TranslateCondition(condition);
-        result.ShouldBe("string::distance::normalized_levenshtein(Name, Name) > 0");
+        result.ShouldBe("string::distance::normalized_levenshtein(name, name) > 0");
     }
 
     [Test]
@@ -432,7 +432,7 @@ public partial class FunctionMappingTests
         var condition = Expression.GreaterThan(distCall, Expression.Constant(0.0));
 
         var result = SurrealExpressionVisitor.TranslateCondition(condition);
-        result.ShouldBe("string::distance::normalized_damerau_levenshtein(Name, Name) > 0");
+        result.ShouldBe("string::distance::normalized_damerau_levenshtein(name, name) > 0");
     }
 
     [Test]
@@ -449,7 +449,7 @@ public partial class FunctionMappingTests
         var condition = Expression.GreaterThan(distCall, Expression.Constant(0));
 
         var result = SurrealExpressionVisitor.TranslateCondition(condition);
-        result.ShouldBe("string::distance::osa(Name, Name) > 0");
+        result.ShouldBe("string::distance::osa(name, name) > 0");
     }
 
     [Test]
@@ -464,7 +464,7 @@ public partial class FunctionMappingTests
         var condition = Expression.Equal(call, Expression.Constant(true));
 
         var result = SurrealExpressionVisitor.TranslateCondition(condition);
-        result.ShouldBe("string::is::alphanum(Name) = true");
+        result.ShouldBe("string::is::alphanum(name) = true");
     }
 
     [Test]
@@ -478,7 +478,7 @@ public partial class FunctionMappingTests
         var condition = Expression.Equal(call, Expression.Constant(true));
 
         var result = SurrealExpressionVisitor.TranslateCondition(condition);
-        result.ShouldBe("string::is::alpha(Name) = true");
+        result.ShouldBe("string::is::alpha(name) = true");
     }
 
     [Test]
@@ -492,7 +492,7 @@ public partial class FunctionMappingTests
         var condition = Expression.Equal(call, Expression.Constant(true));
 
         var result = SurrealExpressionVisitor.TranslateCondition(condition);
-        result.ShouldBe("string::is::ascii(Name) = true");
+        result.ShouldBe("string::is::ascii(name) = true");
     }
 
     [Test]
@@ -506,7 +506,7 @@ public partial class FunctionMappingTests
         var condition = Expression.Equal(call, Expression.Constant(true));
 
         var result = SurrealExpressionVisitor.TranslateCondition(condition);
-        result.ShouldBe("string::is::email(Name) = true");
+        result.ShouldBe("string::is::email(name) = true");
     }
 
     [Test]
@@ -520,7 +520,7 @@ public partial class FunctionMappingTests
         var condition = Expression.Equal(call, Expression.Constant(true));
 
         var result = SurrealExpressionVisitor.TranslateCondition(condition);
-        result.ShouldBe("string::is::url(Name) = true");
+        result.ShouldBe("string::is::url(name) = true");
     }
 
     [Test]
@@ -534,7 +534,7 @@ public partial class FunctionMappingTests
         var condition = Expression.Equal(call, Expression.Constant(true));
 
         var result = SurrealExpressionVisitor.TranslateCondition(condition);
-        result.ShouldBe("string::is::uuid(Name) = true");
+        result.ShouldBe("string::is::uuid(name) = true");
     }
 
     [Test]
@@ -548,7 +548,7 @@ public partial class FunctionMappingTests
         var condition = Expression.Equal(call, Expression.Constant(true));
 
         var result = SurrealExpressionVisitor.TranslateCondition(condition);
-        result.ShouldBe("string::is::numeric(Name) = true");
+        result.ShouldBe("string::is::numeric(name) = true");
     }
 
     [Test]
@@ -564,7 +564,7 @@ public partial class FunctionMappingTests
         var condition = Expression.Equal(joinCall, Expression.Constant("value,suffix"));
 
         var result = SurrealExpressionVisitor.TranslateCondition(condition);
-        result.ShouldBe("string::join(',', Name, 'suffix') = 'value,suffix'");
+        result.ShouldBe("string::join(',', name, 'suffix') = 'value,suffix'");
     }
 
     [Test]
@@ -578,7 +578,7 @@ public partial class FunctionMappingTests
         var condition = Expression.Equal(call, Expression.Constant(true));
 
         var result = SurrealExpressionVisitor.TranslateCondition(condition);
-        result.ShouldBe("string::is::datetime(Name) = true");
+        result.ShouldBe("string::is::datetime(name) = true");
     }
 
 }

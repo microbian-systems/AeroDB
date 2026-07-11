@@ -1,11 +1,11 @@
-using AeroDB;
+using AeroDB.Sable;
 using Wolverine;
 using Wolverine.Persistence.Sagas;
 
 namespace AeroDB.WolverineFx;
 
 /// <summary>
-/// AeroDB-backed saga storage for Wolverine using SurrealDB as the document store.
+/// AeroDB.Sable-backed saga storage for Wolverine using SurrealDB as the document store.
 /// </summary>
 public sealed class AeroDBSagaStorage<TId, TSaga> : ISagaStorage<TId, TSaga>
     where TSaga : Saga

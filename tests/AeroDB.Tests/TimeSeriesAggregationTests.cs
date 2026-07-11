@@ -1,5 +1,5 @@
 using System.Linq.Expressions;
-using AeroDB;
+using AeroDB.Sable;
 using TUnit.Core;
 
 namespace AeroDB.Tests;
@@ -28,7 +28,7 @@ public class TimeSeriesAggregationTests
 
         builder.Sum(s => s.Value).As("total");
 
-        builder.BuildSelect().ShouldBe("math::sum(Value) AS total");
+        builder.BuildSelect().ShouldBe("math::sum(value) AS total");
     }
 
     [Test]
@@ -38,7 +38,7 @@ public class TimeSeriesAggregationTests
 
         builder.Average(s => s.Value).As("avg_val");
 
-        builder.BuildSelect().ShouldBe("math::mean(Value) AS avg_val");
+        builder.BuildSelect().ShouldBe("math::mean(value) AS avg_val");
     }
 
     [Test]
@@ -48,7 +48,7 @@ public class TimeSeriesAggregationTests
 
         builder.Min(s => s.Value).As("min_val");
 
-        builder.BuildSelect().ShouldBe("math::min(Value) AS min_val");
+        builder.BuildSelect().ShouldBe("math::min(value) AS min_val");
     }
 
     [Test]
@@ -58,7 +58,7 @@ public class TimeSeriesAggregationTests
 
         builder.Max(s => s.Value).As("max_val");
 
-        builder.BuildSelect().ShouldBe("math::max(Value) AS max_val");
+        builder.BuildSelect().ShouldBe("math::max(value) AS max_val");
     }
 
     [Test]
@@ -75,10 +75,10 @@ public class TimeSeriesAggregationTests
 
         var select = builder.BuildSelect();
         select.ShouldContain("count() AS cnt");
-        select.ShouldContain("math::sum(Value) AS total");
-        select.ShouldContain("math::mean(Value) AS avg");
-        select.ShouldContain("math::min(Value) AS minimum");
-        select.ShouldContain("math::max(Value) AS maximum");
+        select.ShouldContain("math::sum(value) AS total");
+        select.ShouldContain("math::mean(value) AS avg");
+        select.ShouldContain("math::min(value) AS minimum");
+        select.ShouldContain("math::max(value) AS maximum");
     }
 
     [Test]
@@ -96,9 +96,9 @@ public class TimeSeriesAggregationTests
     {
         var builder = new AggregateQueryBuilder<SensorReading>();
 
-        builder.Raw("math::round(math::mean(Value), 2)").As("rounded_avg");
+        builder.Raw("math::round(math::mean(value), 2)").As("rounded_avg");
 
-        builder.BuildSelect().ShouldBe("math::round(math::mean(Value), 2) AS rounded_avg");
+        builder.BuildSelect().ShouldBe("math::round(math::mean(value), 2) AS rounded_avg");
     }
 
     [Test]
@@ -110,6 +110,6 @@ public class TimeSeriesAggregationTests
             .Field(s => s.SensorId)
             .Count().As("cnt");
 
-        builder.BuildSelect().ShouldBe("SensorId, count() AS cnt");
+        builder.BuildSelect().ShouldBe("sensor_id, count() AS cnt");
     }
 }

@@ -15,14 +15,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AeroDB\AeroDB.csproj" />
+    <ProjectReference Include="..\AeroDB.Sable\AeroDB.Sable.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Dahomey.Cbor" />
     <PackageReference Include="Microsoft.Extensions.Identity.Core" />
     <PackageReference Include="Microsoft.Extensions.Identity.Stores" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+    <PackageReference Include="SurrealDb.Net" />
   </ItemGroup>
 
 </Project>

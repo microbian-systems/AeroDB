@@ -25,16 +25,16 @@ var results = await session.Query<Order>()
 ## Raw SurrealQL
 
 ```csharp
-// Direct SurrealQL with type-safe result mapping
-var users = await session.Query<User>()
-    .WithSQL("SELECT * FROM user WHERE age > $minAge")
-    .With("minAge", 21)
-    .ToListAsync();
+// Execute raw SurrealQL with parameters and type-safe result mapping
+var users = await session.RawQueryAsync<User>(
+    "SELECT * FROM user WHERE age > $minAge",
+    new Dictionary<string, object?> { ["minAge"] = 21 }
+);
 
-// Execute arbitrary SurrealQL
-var result = await session.ExecuteAsync(
+// Execute a non-query SurrealQL statement (CREATE, UPDATE, DELETE, DEFINE)
+await session.ExecuteSqlAsync(
     "CREATE person:john SET name = 'John', age = 30"
 );
 ```
 
-**Full sample:** [`samples/DocSamples/`](https://github.com/microbians/AeroDB/tree/main/samples/DocSamples)
+**Full sample:** [`samples/DocSamples/`](https://github.com/microbian-systems/AeroDB/tree/main/samples/DocSamples)

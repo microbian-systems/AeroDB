@@ -1,5 +1,5 @@
 using Bogus;
-using AeroDB;
+using AeroDB.Sable;
 using SurrealDb.Net.Models;
 using TUnit.Core;
 

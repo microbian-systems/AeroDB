@@ -1,4 +1,5 @@
-using AeroDB;
+using AeroDB.Sable;
+using AeroDB.WolverineFx.Codegen;
 using AeroDB.WolverineFx.Codegen;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -11,14 +12,14 @@ using Wolverine.Runtime;
 namespace AeroDB.WolverineFx;
 
 /// <summary>
-/// Wolverine extension that integrates AeroDB (SurrealDB) as the message persistence
+/// Wolverine extension that integrates AeroDB.Sable (SurrealDB) as the message persistence
 /// and saga storage provider. Registers codegen sources, persistence frame provider,
-/// and the AeroDB transport.
+/// and the AeroDB.Sable transport.
 /// </summary>
 public sealed class AeroDBIntegration : IWolverineExtension
 {
     /// <summary>
-    /// Register AeroDB-specific code generation sources, persistence strategy,
+    /// Register AeroDB.Sable-specific code generation sources, persistence strategy,
     /// and transport with the Wolverine options.
     /// </summary>
     public void Configure(WolverineOptions options)

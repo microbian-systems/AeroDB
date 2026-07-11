@@ -9,10 +9,12 @@
         <InternalsVisibleTo Include="AeroDB.Tests" />
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\AeroDB\AeroDB.csproj" />
-        <ProjectReference Include="..\..\wolverine\src\Wolverine\Wolverine.csproj" />
+        <ProjectReference Include="..\AeroDB.Sable\AeroDB.Sable.csproj" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+    <PackageReference Include="Dahomey.Cbor" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+    <PackageReference Include="SurrealDb.Net" />
+        <PackageReference Include="WolverineFx" />
     </ItemGroup>
 </Project>

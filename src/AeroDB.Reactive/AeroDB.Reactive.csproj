@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AeroDB\AeroDB.csproj" />
+    <ProjectReference Include="..\AeroDB.Sable\AeroDB.Sable.csproj" />
   </ItemGroup>
 
   <ItemGroup>

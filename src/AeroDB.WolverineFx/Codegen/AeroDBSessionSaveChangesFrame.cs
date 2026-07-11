@@ -1,7 +1,7 @@
 using JasperFx.CodeGeneration.Frames;
 using JasperFx.CodeGeneration.Model;
 using JasperFx.Core.Reflection;
-using AeroDB;
+using AeroDB.Sable;
 
 namespace AeroDB.WolverineFx.Codegen;
 
@@ -14,6 +14,6 @@ internal sealed class AeroDBSessionSaveChangesFrame : MethodCall
     public AeroDBSessionSaveChangesFrame()
         : base(typeof(IDocumentSession), ReflectionHelper.GetMethod<IDocumentSession>(x => x.SaveChangesAsync(default))!)
     {
-        CommentText = "Save all pending changes to this AeroDB session";
+        CommentText = "Save all pending changes to this AeroDB.Sable session";
     }
 }

@@ -1,8 +1,11 @@
+using AeroDB.WolverineFx;
+using AeroDB.WolverineFx.Codegen;
+
 namespace AeroDB.Tests;
 
 using AeroDB.WolverineFx;
 using AeroDB.WolverineFx.Codegen;
-using global::AeroDB;
+using global::AeroDB.Sable;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using NSubstitute;
@@ -106,13 +109,13 @@ public class AeroDBIntegrationRegistrationTests
         // Act
         _integration.Configure(_options);
 
-        // Assert: the AeroDB transport should be in the transports collection
+        // Assert: the AeroDB.Sable transport should be in the transports collection
         var transport = _options.Transports
             .OfType<AeroDBTransport>()
             .FirstOrDefault();
 
         transport.ShouldNotBeNull();
-        transport.Protocol.ShouldBe("AeroDB");
+        transport.Protocol.ShouldBe("AeroDB.Sable");
     }
 
     // ====================================================================
@@ -231,7 +234,7 @@ public class AeroDBIntegrationRegistrationTests
         _integration.Configure(_options);
 
         // Assert: TryAdd pattern keeps singleton registrations from duplicating.
-        // We verify the code doesn't throw and that AeroDB transport is still unique.
+        // We verify the code doesn't throw and that AeroDB.Sable transport is still unique.
         Should.NotThrow(() => _integration.Configure(_options));
 
         var transports = _options.Transports.OfType<AeroDBTransport>().ToArray();

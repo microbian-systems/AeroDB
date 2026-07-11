@@ -1,9 +1,10 @@
+using AeroDB.Sable;
 using Microsoft.EntityFrameworkCore;
 
 namespace AeroDB;
 
 /// <summary>
-/// Projection that writes to EF Core alongside AeroDB in the same transaction.
+/// Projection that writes to EF Core alongside AeroDB.Sable in the same transaction.
 /// The <typeparamref name="TDbContext"/> provides the relational data access.
 /// </summary>
 public abstract class EfCoreEventProjection<TDbContext> : IProjection

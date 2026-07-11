@@ -1,6 +1,8 @@
+using AeroDB.WolverineFx;
+
 namespace AeroDB.Tests;
 
-using global::AeroDB;
+using global::AeroDB.Sable;
 using global::AeroDB.WolverineFx;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -24,7 +26,7 @@ public record Pong(string Message);
 
 /// <summary>
 /// Simple handler that does not require IDocumentSession injection.
-/// Used to verify basic Wolverine message dispatch works with AeroDB host.
+/// Used to verify basic Wolverine message dispatch works with AeroDB.Sable host.
 /// </summary>
 public class PingHandler
 {
@@ -55,7 +57,7 @@ public class PongHandler
 public class AeroDBWolverineIntegrationTests
 {
     /// <summary>
-    /// Bootstrap a Wolverine host with AeroDB persistence backed by in-memory SurrealDB.
+    /// Bootstrap a Wolverine host with AeroDB.Sable persistence backed by in-memory SurrealDB.
     /// </summary>
     private static async Task<IHost> BuildWolverineHostAsync(
         Action<WolverineOptions>? extraWolverineConfig = null,
@@ -77,12 +79,12 @@ public class AeroDBWolverineIntegrationTests
             })
             .UseWolverine(opts =>
             {
+                opts.RestoreV5Defaults();
                 opts.Durability.Mode = DurabilityMode.Solo;
-                opts.UseRuntimeCompilation();
 
                 extraWolverineConfig?.Invoke(opts);
 
-                // Manually register AeroDB persistence services (same as
+                // Manually register AeroDB.Sable persistence services (same as
                 // IntegrateWithAeroDB but using factory lambdas since IServiceProvider
                 // isn't available during configuration).
                 opts.Services.AddSingleton<AeroDBMessageStore>(sp =>
@@ -111,7 +113,7 @@ public class AeroDBWolverineIntegrationTests
         return host;
     }
 
-    // ─── Test 1: Host boots with AeroDB ───
+    // ─── Test 1: Host boots with AeroDB.Sable ───
 
     [Test]
     public async Task Host_BootsWithAeroDBPersistence()
@@ -205,7 +207,7 @@ public class AeroDBWolverineIntegrationTests
         // Schema applied without exception
     }
 
-    // ─── Test 6: AeroDB IDocumentSession persists documents ───
+    // ─── Test 6: AeroDB.Sable IDocumentSession persists documents ───
 
     [Test]
     public async Task DocumentSession_StoreAndLoad()
@@ -238,7 +240,7 @@ public class AeroDBWolverineIntegrationTests
         }
     }
 
-    // ─── Test 7: AeroDB IDocumentSession delete ───
+    // ─── Test 7: AeroDB.Sable IDocumentSession delete ───
 
     [Test]
     public async Task DocumentSession_DeleteDocument()
@@ -290,7 +292,7 @@ public class AeroDBWolverineIntegrationTests
     [Test]
     public async Task Concurrency_ExceptionTypeExists()
     {
-        // AeroDB tracks versions on entities that implement IVersioned or have a
+        // AeroDB.Sable tracks versions on entities that implement IVersioned or have a
         // [Version] property when UseOptimisticConcurrency is true.
         // The Store() API always marks entities as "Added" (CREATE) — true
         // UPDATE-based concurrency detection requires Upsert/Merge which is
@@ -777,11 +779,11 @@ public class VersionedDoc : Record
     public string Name { get; set; } = string.Empty;
 
     /// <summary>
-    /// AeroDB checks for <see cref="IVersioned"/> or <see cref="AeroDB.VersionAttribute"/>
+    /// AeroDB.Sable checks for <see cref="IVersioned"/> or <see cref="Sable.VersionAttribute"/>
     /// to enable optimistic concurrency versioning. We mark this long property with
-    /// [Version] so AeroDB tracks it during Store/Load and checks on SaveChanges.
+    /// [Version] so AeroDB.Sable tracks it during Store/Load and checks on SaveChanges.
     /// </summary>
-    [AeroDB.Version]
+    [Sable.Version]
     public long Revision { get; set; }
 }
 

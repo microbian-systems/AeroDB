@@ -25,7 +25,7 @@ internal sealed class AeroDBScheduledJobAgent : IAgent
 
     public AgentStatus Status { get; private set; } = AgentStatus.Stopped;
 
-    public string Description => "AeroDB scheduled job agent: polls for ready scheduled messages";
+    public string Description => "AeroDB.Sable scheduled job agent: polls for ready scheduled messages";
 
     public AeroDBScheduledJobAgent(ISurrealDbClient client, ILogger logger)
     {

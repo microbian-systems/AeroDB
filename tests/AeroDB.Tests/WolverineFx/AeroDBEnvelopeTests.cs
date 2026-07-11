@@ -1,4 +1,4 @@
-using AeroDB.WolverineFx;
+using AeroDB.SourceGenerators;
 
 namespace AeroDB.Tests;
 

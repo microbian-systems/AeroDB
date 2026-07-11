@@ -1,6 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using System.Threading;
-using AeroDB;
+using AeroDB.Sable;
 using TUnit.Core;
 
 namespace AeroDB.Tests;

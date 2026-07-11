@@ -1,7 +1,6 @@
 ---
 title: AeroDB
 description: Fast, multi-model document database for .NET — built on SurrealDB
-template: splash
 hero:
   tagline: Modern .NET document database with event sourcing, built on SurrealDB
   actions:
@@ -10,7 +9,7 @@ hero:
       icon: right-arrow
       variant: primary
     - text: View on GitHub
-      link: https://github.com/microbians/AeroDB
+      link: https://github.com/microbian-systems/AeroDB
       icon: github
       variant: secondary
 ---
@@ -20,6 +19,8 @@ import { Card, CardGrid } from '@astrojs/starlight/components';
 ## Why AeroDB?
 
 AeroDB is a high-performance document database for .NET that combines the simplicity of Marten's API with SurrealDB's multi-model engine. It supports documents, graph relationships, event sourcing, live queries, and full-text search — all through a clean, idiomatic .NET interface.
+
+> **Requires SurrealDB 3.1 or later.** AeroDB targets SurrealDB 3.1+ features and is not compatible with SurrealDB 2.x. Install a local instance, connect to a remote server, or use [SurrealDB Cloud](https://surrealdb.com/cloud).
 
 <CardGrid>
   <Card title="Document Store" icon="document" href="/guides/crud/">

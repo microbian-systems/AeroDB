@@ -9,7 +9,7 @@ public static class WikipediaFetcher
 {
     private static readonly HttpClient _http = new()
     {
-        DefaultRequestHeaders = { { "User-Agent", "AeroDB-Demo/1.0 (https://github.com/microbian-systems/AeroDB)" } }
+        DefaultRequestHeaders = { { "User-Agent", "AeroDB.Sable-Demo/1.0 (https://github.com/microbian-systems/AeroDB.Sable)" } }
     };
 
     private static readonly IBrowsingContext _context = BrowsingContext.New(

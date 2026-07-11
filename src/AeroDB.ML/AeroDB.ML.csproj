@@ -13,9 +13,7 @@
     <InternalsVisibleTo Include="AeroDB.Tests" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AeroDB\AeroDB.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="SurrealDb.Net" VersionOverride="0.10.2" />
+    <ProjectReference Include="..\AeroDB.Sable\AeroDB.Sable.csproj" />
+    <PackageReference Include="SurrealDb.Net" />
   </ItemGroup>
 </Project>

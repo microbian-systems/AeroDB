@@ -1,4 +1,4 @@
-using AeroDB;
+using AeroDB.Sable;
 using NSubstitute;
 using SurrealDb.Net;
 using SurrealDb.Net.Models.Response;
@@ -44,7 +44,7 @@ public class PocoTimeSeriesTests
 
         await mockSession.Received(1).RawQuery(
             Arg.Is<string>(sql =>
-                sql.Contains("time::floor(Timestamp, 1h) AS _bucket")
+                sql.Contains("time::floor(timestamp, 1h) AS _bucket")
                 && sql.Contains("count() AS cnt")
                 && sql.Contains("FROM `poco_sensor_reading`")
                 && sql.Contains("GROUP BY _bucket")),
@@ -65,7 +65,7 @@ public class PocoTimeSeriesTests
 
         await mockSession.Received(1).RawQuery(
             Arg.Is<string>(sql =>
-                sql.Contains("time::group(Timestamp, 'hour') AS _bucket")
+                sql.Contains("time::group(timestamp, 'hour') AS _bucket")
                 && sql.Contains("GROUP BY _bucket")),
             Arg.Any<IReadOnlyDictionary<string, object?>>(),
             Arg.Any<CancellationToken>());
@@ -84,7 +84,7 @@ public class PocoTimeSeriesTests
 
         await mockSession.Received(1).RawQuery(
             Arg.Is<string>(sql =>
-                sql.Contains("time::floor(Timestamp, 1d)")
+                sql.Contains("time::floor(timestamp, 1d)")
                 && sql.Contains("GROUP BY _bucket")
                 && sql.Contains("WHERE")),
             Arg.Any<IReadOnlyDictionary<string, object?>>(),
@@ -106,7 +106,7 @@ public class PocoTimeSeriesTests
             Arg.Is<string>(sql =>
                 sql.Contains("WHERE")
                 && sql.Contains("$p0")
-                && sql.Contains("SensorId")),
+                && sql.Contains("sensor_id")),
             Arg.Any<IReadOnlyDictionary<string, object?>>(),
             Arg.Any<CancellationToken>());
     }

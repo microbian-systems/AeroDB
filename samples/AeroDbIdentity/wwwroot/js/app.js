@@ -69,20 +69,20 @@ document.addEventListener('alpine:init', () => {
             email: '',
             signingIn: false,
             error: '',
+            conditionalAbortController: null,
             init() {
-                // Try conditional UI if the browser supports it
-                if (typeof window !== 'undefined' && window.PublicKeyCredential) {
-                    const pk = window.PublicKeyCredential;
-                    if (typeof pk.isConditionalMediationAvailable === 'function') {
-                        this.tryConditionalUi();
-                    }
-                }
+                // Explicit button flow only. Starting conditional UI here creates a second
+                // pending WebAuthn request when the user clicks "Sign in with a passkey".
             },
             async signIn() {
+                if (this.signingIn)
+                    return;
                 if (!this.email) {
                     this.error = 'Enter your email address first';
                     return;
                 }
+                this.conditionalAbortController?.abort();
+                this.conditionalAbortController = null;
                 this.signingIn = true;
                 this.error = '';
                 try {
@@ -122,6 +122,8 @@ document.addEventListener('alpine:init', () => {
             },
             async tryConditionalUi() {
                 try {
+                    if (this.signingIn || this.conditionalAbortController)
+                        return;
                     const pk = window.PublicKeyCredential;
                     const available = await pk.isConditionalMediationAvailable();
                     if (!available)
@@ -131,9 +133,11 @@ document.addEventListener('alpine:init', () => {
                         return;
                     const optionsJson = await optionsRes.json();
                     const options = parseRequestOptions(optionsJson);
+                    this.conditionalAbortController = new AbortController();
                     const cred = await navigator.credentials.get({
                         publicKey: options,
                         mediation: 'conditional',
+                        signal: this.conditionalAbortController.signal,
                     });
                     if (!cred)
                         return;
@@ -148,6 +152,9 @@ document.addEventListener('alpine:init', () => {
                 }
                 catch {
                     // Conditional UI fails silently
+                }
+                finally {
+                    this.conditionalAbortController = null;
                 }
             },
         };

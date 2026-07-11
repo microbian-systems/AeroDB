@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using AeroDB;
+using AeroDB.Sable;
 using SurrealDb.Net.Models;
 using TUnit.Core;
 

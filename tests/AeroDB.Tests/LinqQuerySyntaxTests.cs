@@ -1,10 +1,10 @@
-using AeroDB;
+using AeroDB.Sable;
 using TUnit.Core;
 
 namespace AeroDB.Tests;
 
 /// <summary>
-/// Exercises AeroDB's support for C# LINQ query comprehension syntax —
+/// Exercises AeroDB.Sable's support for C# LINQ query comprehension syntax —
 /// the <c>from x in source where cond select x</c> form.
 ///
 /// Every test is self-contained: creates its own store, seeds its own data,
@@ -464,7 +464,7 @@ public class LinqQuerySyntaxTests
         // Build a query using comprehension, then inspect the generated SQL
         // without executing it.  ToCommand() is a zero-round-trip operation.
         //
-        // Note: we avoid `orderby` here because AeroDB defines custom Where/Select
+        // Note: we avoid `orderby` here because AeroDB.Sable defines custom Where/Select
         // extension methods on ISurrealDbQueryable<T>, but no custom OrderBy.
         // After `orderby` the static type becomes IOrderedQueryable<T> which
         // doesn't expose ToCommand(). Use a cast or avoid orderby for ToCommand.
@@ -667,7 +667,7 @@ public class LinqQuerySyntaxTests
         await SeedPeople(session);
 
         var results = await session.RawQueryAsync<Person>(
-            "SELECT * FROM person WHERE Age > 18");
+            "SELECT * FROM person WHERE age > 18");
 
         results.ShouldNotBeNull();
         results.Count.ShouldBe(4);

@@ -1,6 +1,6 @@
 using System.Text;
 using System.Text.Json;
-using AeroDB;
+using AeroDB.Sable;
 using JasperFx.Core;
 using JasperFx.Descriptors;
 using Microsoft.Extensions.Logging;
@@ -17,11 +17,11 @@ using Wolverine.Runtime.Agents;
 namespace AeroDB.WolverineFx;
 
 /// <summary>
-/// SurrealDB (AeroDB) backed implementation of Wolverine's IMessageStore and all sub-interfaces.
+/// SurrealDB (AeroDB.Sable) backed implementation of Wolverine's IMessageStore and all sub-interfaces.
 /// All operations use SurrealQL RawQuery with parameterized queries.
 /// Envelope bodies are stored as Base64 strings for reliable CBOR round-tripping.
 /// 
-/// Schema initialization now delegates to the AeroDB <see cref="SchemaManager"/> pipeline
+/// Schema initialization now delegates to the AeroDB.Sable <see cref="SchemaManager"/> pipeline
 /// via typed POCOs (<see cref="WolverineIncomingEnvelope"/>, etc.) instead of
 /// a hardcoded SurrealQL string.
 /// </summary>
@@ -81,12 +81,12 @@ public sealed class AeroDBMessageStore : IMessageStore,
 
     public IScheduledMessages ScheduledMessages => this;
 
-    public string Name { get; set; } = "AeroDB";
+    public string Name { get; set; } = "AeroDB.Sable";
 
     public void Initialize(IWolverineRuntime runtime)
     {
         _ownerId = runtime.Options.Durability.AssignedNodeNumber;
-        Name = runtime.Options.ServiceName ?? "AeroDB";
+        Name = runtime.Options.ServiceName ?? "AeroDB.Sable";
         _logger.LogInformation("AeroDBMessageStore initialized as node {NodeId}, ownerId={OwnerId}", _nodeId, _ownerId);
     }
 
@@ -95,7 +95,7 @@ public sealed class AeroDBMessageStore : IMessageStore,
         return new DatabaseDescriptor
         {
             Engine = "SurrealDB",
-            ServerName = "AeroDB",
+            ServerName = "AeroDB.Sable",
             DatabaseName = "wolverine",
             Subject = GetType().FullName!
         };
@@ -135,14 +135,14 @@ public sealed class AeroDBMessageStore : IMessageStore,
     {
         if (incoming.Count == 0) return;
 
-        var sb = new StringBuilder("BEGIN TRANSACTION;");
+        // Use individual UPDATE statements for maximum SurrealDB portability.
+        // Multi-node atomicity can be enhanced later with SurrealDB 3.1+ MERGE/RETURN AFTER.
         foreach (var env in incoming)
         {
             var id = env.Id.ToString();
-            sb.AppendLine($"UPDATE {IncomingTable}:`{EscapeId(id)}` SET owner_id = {ownerId};");
+            await Client.RawQuery(
+                $"UPDATE {IncomingTable}:`{EscapeId(id)}` SET owner_id = {ownerId};");
         }
-        sb.AppendLine("COMMIT TRANSACTION;");
-        await Client.RawQuery(sb.ToString());
     }
 
     public void PromoteToMain(IWolverineRuntime runtime)
@@ -985,7 +985,7 @@ public sealed class AeroDBMessageStore : IMessageStore,
     // ─── Schema Initialization ───
 
     /// <summary>
-    /// Initialize the SurrealDB schema for all wolverine tables using the AeroDB schema pipeline.
+    /// Initialize the SurrealDB schema for all wolverine tables using the AeroDB.Sable schema pipeline.
     /// Creates tables, fields, and indexes via <see cref="SchemaManager"/>.
     /// Called during store initialization. Idempotent — uses IF NOT EXISTS variants.
     /// </summary>

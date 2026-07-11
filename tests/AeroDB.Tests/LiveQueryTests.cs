@@ -1,8 +1,8 @@
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading.Channels;
-using AeroDB;
-using AeroDB.LiveQuery;
+using AeroDB.Sable;
+using AeroDB.Sable.LiveQuery;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using NSubstitute;
@@ -279,7 +279,7 @@ public class LiveQueryTests
         session.LiveRawQuery<Person>(Arg.Any<string>(), Arg.Any<IReadOnlyDictionary<string, object?>?>(), Arg.Any<CancellationToken>())
             .Returns(Task.FromResult<SurrealDbLiveQuery<Person>>(default!));
         await using var sub = await qs.Live<Person>().Where(x => x.Age > 18).SubscribeAsync();
-        await session.Received(1).LiveRawQuery<Person>(Arg.Is<string>(s => s.Contains("LIVE SELECT * FROM `person`") && s.Contains("Age > 18")), null, Arg.Any<CancellationToken>());
+        await session.Received(1).LiveRawQuery<Person>(Arg.Is<string>(s => s.Contains("LIVE SELECT * FROM `person`") && s.Contains("age > 18")), null, Arg.Any<CancellationToken>());
     }
 
     [Test]
@@ -300,7 +300,7 @@ public class LiveQueryTests
         session.LiveRawQuery<Person>(Arg.Any<string>(), Arg.Any<IReadOnlyDictionary<string, object?>?>(), Arg.Any<CancellationToken>())
             .Returns(Task.FromResult<SurrealDbLiveQuery<Person>>(default!));
         await using var sub = await qs.Live<Person>().Where(x => x.Age > 18).Where(x => x.Name != null).SubscribeAsync();
-        await session.Received(1).LiveRawQuery<Person>(Arg.Is<string>(s => s.Contains("Age > 18") && s.Contains("AND") && s.Contains("Name")), null, Arg.Any<CancellationToken>());
+        await session.Received(1).LiveRawQuery<Person>(Arg.Is<string>(s => s.Contains("age > 18") && s.Contains("AND") && s.Contains("name")), null, Arg.Any<CancellationToken>());
     }
 
     [Test]
@@ -310,7 +310,7 @@ public class LiveQueryTests
         session.LiveRawQuery<Person>(Arg.Any<string>(), Arg.Any<IReadOnlyDictionary<string, object?>?>(), Arg.Any<CancellationToken>())
             .Returns(Task.FromResult<SurrealDbLiveQuery<Person>>(default!));
         await using var sub = await qs.Live<Person>().Where(x => x.Name == "Alice").SubscribeAsync();
-        await session.Received(1).LiveRawQuery<Person>(Arg.Is<string>(s => s.Contains("WHERE") && s.Contains("Name")), null, Arg.Any<CancellationToken>());
+        await session.Received(1).LiveRawQuery<Person>(Arg.Is<string>(s => s.Contains("WHERE") && s.Contains("name")), null, Arg.Any<CancellationToken>());
     }
 
     [Test]
@@ -335,7 +335,7 @@ public class LiveQueryTests
         session.LiveRawQuery<Person>(Arg.Any<string>(), Arg.Any<IReadOnlyDictionary<string, object?>?>(), Arg.Any<CancellationToken>())
             .Returns(Task.FromResult<SurrealDbLiveQuery<Person>>(default!));
         await using var sub = await qs.Live<Person>().Where(x => x.Name == null).SubscribeAsync();
-        await session.Received(1).LiveRawQuery<Person>(Arg.Is<string>(s => s.Contains("Name") && s.Contains("NONE")), null, Arg.Any<CancellationToken>());
+        await session.Received(1).LiveRawQuery<Person>(Arg.Is<string>(s => s.Contains("name") && s.Contains("NONE")), null, Arg.Any<CancellationToken>());
     }
 
     [Test]
@@ -345,17 +345,19 @@ public class LiveQueryTests
         session.LiveRawQuery<Person>(Arg.Any<string>(), Arg.Any<IReadOnlyDictionary<string, object?>?>(), Arg.Any<CancellationToken>())
             .Returns(Task.FromResult<SurrealDbLiveQuery<Person>>(default!));
         await using var sub = await qs.Live<Person>().Where(x => x.Name != null).SubscribeAsync();
-        await session.Received(1).LiveRawQuery<Person>(Arg.Is<string>(s => s.Contains("Name") && s.Contains("NONE") && s.Contains("!=")), null, Arg.Any<CancellationToken>());
+        await session.Received(1).LiveRawQuery<Person>(Arg.Is<string>(s => s.Contains("name") && s.Contains("NONE") && s.Contains("!=")), null, Arg.Any<CancellationToken>());
     }
 
     [Test]
-    public async Task TranslateCondition_enum_equality_emits_quoted_integer()
+    public async Task TranslateCondition_enum_equality_emits_string_name()
     {
         var qs = CreateSession(out var session);
         session.LiveRawQuery<EnumTestDoc>(Arg.Any<string>(), Arg.Any<IReadOnlyDictionary<string, object?>?>(), Arg.Any<CancellationToken>())
             .Returns(Task.FromResult<SurrealDbLiveQuery<EnumTestDoc>>(default!));
-        await using var sub = await qs.Live<EnumTestDoc>().Where(x => x.Status == TestStatus.Published).SubscribeAsync();
-        await session.Received(1).LiveRawQuery<EnumTestDoc>(Arg.Is<string>(s => !s.Contains("= Published") && s.Contains("Status")), null, Arg.Any<CancellationToken>());
+        // Use a captured variable to prevent C# compiler from inlining the enum as an integer constant
+        var status = TestStatus.Published;
+        await using var sub = await qs.Live<EnumTestDoc>().Where(x => x.Status == status).SubscribeAsync();
+        await session.Received(1).LiveRawQuery<EnumTestDoc>(Arg.Is<string>(s => s.Contains("'Published'") && s.Contains("status")), null, Arg.Any<CancellationToken>());
     }
 
     [Test]

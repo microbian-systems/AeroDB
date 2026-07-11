@@ -1,4 +1,4 @@
-using AeroDB;
+using AeroDB.Sable;
 using Wolverine;
 using Wolverine.Persistence.Durability;
 
@@ -7,7 +7,7 @@ namespace AeroDB.WolverineFx;
 /// <summary>
 /// Wraps AeroDBMessageStore and an IDocumentSession to provide Wolverine's
 /// IEnvelopeTransaction contract. Envelope operations are queued and
-/// committed within AeroDB's SurrealDB transaction lifecycle.
+/// committed within AeroDB.Sable's SurrealDB transaction lifecycle.
 /// </summary>
 internal sealed class AeroDBEnvelopeTransaction : IEnvelopeTransaction
 {
@@ -42,7 +42,7 @@ internal sealed class AeroDBEnvelopeTransaction : IEnvelopeTransaction
 
     public ValueTask RollbackAsync()
     {
-        // Transaction rollback is handled by AeroDB's SaveChangesAsync Cancel path.
+        // Transaction rollback is handled by AeroDB.Sable's SaveChangesAsync Cancel path.
         // No additional action needed here.
         return ValueTask.CompletedTask;
     }

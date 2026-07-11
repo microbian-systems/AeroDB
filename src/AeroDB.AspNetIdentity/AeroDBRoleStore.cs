@@ -1,3 +1,4 @@
+using AeroDB.Sable;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 
@@ -21,7 +22,7 @@ public class AeroDBRoleStore<TRole, TKey> : IRoleStore<TRole>, IQueryableRoleSto
     /// <summary>
     /// Initializes a new instance of <see cref="AeroDBRoleStore{TRole}"/>.
     /// </summary>
-    /// <param name="store">The AeroDB document store.</param>
+    /// <param name="store">The AeroDB.Sable document store.</param>
     /// <param name="logger">Logger instance.</param>
     /// <param name="describer">Identity error describer.</param>
     public AeroDBRoleStore(
@@ -49,7 +50,7 @@ public class AeroDBRoleStore<TRole, TKey> : IRoleStore<TRole>, IQueryableRoleSto
     {
         get
         {
-            // IQueryableRoleStore.Roles is synchronous — AeroDB sessions are async-only.
+            // IQueryableRoleStore.Roles is synchronous — AeroDB.Sable sessions are async-only.
             // Block on the async call to match the synchronous property contract.
             // This matches the Marten.AspNetIdentity pattern.
             var session = _store.QuerySessionAsync(CancellationToken.None)

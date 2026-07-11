@@ -1,5 +1,5 @@
 using System.Reflection;
-using AeroDB;
+using AeroDB.Sable;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using NSubstitute;
 

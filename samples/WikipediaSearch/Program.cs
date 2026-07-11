@@ -3,9 +3,9 @@ using SurrealDb.Embedded.SurrealKv;
 using SurrealDb.Net;
 
 // ──────────────────────────────────────────────────────────────
-//  AeroDB Wikipedia Search Demo
+//  AeroDB.Sable Wikipedia Search Demo
 //  Fetches 20 random Wikipedia articles, generates real ONNX
-//  embeddings, and exercises all of AeroDB's search capabilities:
+//  embeddings, and exercises all of AeroDB.Sable's search capabilities:
 //  FTS, HNSW, DiskANN, Hybrid, and raw SurrealQL.
 //
 //  Usage:

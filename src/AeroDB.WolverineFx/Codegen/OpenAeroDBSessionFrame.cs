@@ -1,7 +1,7 @@
 using JasperFx.CodeGeneration;
 using JasperFx.CodeGeneration.Frames;
 using JasperFx.CodeGeneration.Model;
-using AeroDB;
+using AeroDB.Sable;
 using Wolverine;
 using Wolverine.Configuration;
 using Wolverine.Persistence;
@@ -12,7 +12,7 @@ namespace AeroDB.WolverineFx.Codegen;
 /// <summary>
 /// Codegen frame that opens an outbox-enrolled <see cref="IDocumentSession"/>
 /// via <see cref="AeroDBOutboxedSessionFactory"/>. Inserted as middleware in handler
-/// chains that need AeroDB persistence.
+/// chains that need AeroDB.Sable persistence.
 /// </summary>
 internal sealed class OpenAeroDBSessionFrame : Frame
 {
@@ -61,7 +61,7 @@ internal sealed class OpenAeroDBSessionFrame : Frame
         if (_createsSession)
         {
             writer.BlankLine();
-            writer.WriteComment("Open a new AeroDB document session registered with the Wolverine");
+            writer.WriteComment("Open a new AeroDB.Sable document session registered with the Wolverine");
             writer.WriteComment("message context to support the outbox functionality");
             writer.Write(
                 $"using var {Session!.Usage} = await {_factory!.Usage}.{nameof(AeroDBOutboxedSessionFactory.OpenSession)}({_context!.Usage}).ConfigureAwait(false);");
@@ -75,7 +75,7 @@ internal sealed class OpenAeroDBSessionFrame : Frame
         if (_createsSession)
         {
             writer.BlankLine();
-            writer.WriteComment("Open a new AeroDB document session registered with the Wolverine");
+            writer.WriteComment("Open a new AeroDB.Sable document session registered with the Wolverine");
             writer.WriteComment("message context to support the outbox functionality");
             writer.Write(
                 $"use {Session!.Usage} = {_factory!.Usage}.{nameof(AeroDBOutboxedSessionFactory.OpenSession)}({_context!.Usage})");

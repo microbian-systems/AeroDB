@@ -1,5 +1,5 @@
 using System.Text.Json;
-using AeroDB;
+using AeroDB.Sable;
 using TUnit.Core;
 
 namespace AeroDB.Tests;
@@ -37,7 +37,7 @@ public class QueryDiagnosticsTests
         sql.ShouldContain("SELECT");
         sql.ShouldContain("FROM");
         sql.ShouldContain("person");   // table name resolved from T
-        sql.ShouldContain("Age");      // referenced in WHERE
+        sql.ShouldContain("age");      // referenced in WHERE
     }
 
 
@@ -59,7 +59,7 @@ public class QueryDiagnosticsTests
         session.Store(new Person { Name = "Charlie", Age = 35, Email = "charlie@test.com" });
         await session.SaveChangesAsync();
 
-        var sql = "SELECT * FROM person WHERE Age > 0 ORDER BY Name;";
+        var sql = "SELECT * FROM person WHERE age > 0 ORDER BY name;";
         var names = new List<string>();
 
         await foreach (var person in session.AdvancedSql().StreamAsync<Person>(sql))

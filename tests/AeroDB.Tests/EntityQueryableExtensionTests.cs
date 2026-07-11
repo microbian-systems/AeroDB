@@ -1,3 +1,4 @@
+using AeroDB.Sable;
 using TUnit.Core;
 
 namespace AeroDB.Tests;
@@ -14,9 +15,7 @@ public class EntityQueryableExtensionTests
 
         // Build a query with IncludeReverse — just verifying it compiles and returns a queryable
         var query = session.Query<EntityIncludeParent>()
-            .IncludeReverse<EntityIncludeParent, EntityIncludeChild>(
-                p => p.Children,
-                "ParentId");
+            .IncludeReverse(p => p.Children, c => c.ParentId);
 
         query.ShouldNotBeNull();
     }

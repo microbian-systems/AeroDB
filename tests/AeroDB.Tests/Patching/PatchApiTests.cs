@@ -1,11 +1,11 @@
-using AeroDB;
+using AeroDB.Sable;
 using SurrealDb.Net.Models;
 using TUnit.Core;
 
 namespace AeroDB.Tests.Patching;
 
 /// <summary>
-/// Tests for the enhanced AeroDB Patch API covering ID-based overloads, filter-based patches,
+/// Tests for the enhanced AeroDB.Sable Patch API covering ID-based overloads, filter-based patches,
 /// all operation types, and edge cases.
 /// </summary>
 public class PatchApiTests

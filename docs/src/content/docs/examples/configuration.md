@@ -38,4 +38,4 @@ await using var session = store.QuerySession();
 var users = await session.Query<User>().Where(u => u.Active).ToListAsync();
 ```
 
-**Full sample:** [`samples/MinimalAPI/`](https://github.com/microbians/AeroDB/tree/main/samples/MinimalAPI)
+**Full sample:** [`samples/MinimalAPI/`](https://github.com/microbian-systems/AeroDB/tree/main/samples/MinimalAPI)

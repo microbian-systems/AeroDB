@@ -1,7 +1,9 @@
+using AeroDB.WolverineFx;
+
 namespace AeroDB.Tests;
 
 using AeroDB.WolverineFx;
-using global::AeroDB;
+using global::AeroDB.Sable;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;

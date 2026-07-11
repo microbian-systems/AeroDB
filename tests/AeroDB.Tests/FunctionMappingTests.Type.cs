@@ -1,5 +1,5 @@
 using System.Linq.Expressions;
-using AeroDB;
+using AeroDB.Sable;
 using TUnit.Core;
 
 namespace AeroDB.Tests;
@@ -22,7 +22,7 @@ public partial class FunctionMappingTests
             typeof(SurrealTypeFunctions).GetMethod("TypeBool", [typeof(object)])!,
             ObjectArg(valueProp));
         var result = SurrealExpressionVisitor.TranslateCondition(Expression.Equal(call, Expression.Constant(null)));
-        result.ShouldBe("type::bool(Value) = NONE");
+        result.ShouldBe("type::bool(value) = NONE");
     }
 
     [Test]
@@ -34,7 +34,7 @@ public partial class FunctionMappingTests
             typeof(SurrealTypeFunctions).GetMethod("TypeBytes", [typeof(object)])!,
             ObjectArg(valueProp));
         var result = SurrealExpressionVisitor.TranslateCondition(Expression.Equal(call, Expression.Constant(null)));
-        result.ShouldBe("type::bytes(Value) = NONE");
+        result.ShouldBe("type::bytes(value) = NONE");
     }
 
     [Test]
@@ -46,7 +46,7 @@ public partial class FunctionMappingTests
             typeof(SurrealTypeFunctions).GetMethod("TypeDatetime", [typeof(object)])!,
             ObjectArg(nameProp));
         var result = SurrealExpressionVisitor.TranslateCondition(Expression.Equal(call, Expression.Constant(null)));
-        result.ShouldBe("type::datetime(Name) = NONE");
+        result.ShouldBe("type::datetime(name) = NONE");
     }
 
     [Test]
@@ -58,7 +58,7 @@ public partial class FunctionMappingTests
             typeof(SurrealTypeFunctions).GetMethod("TypeDecimal", [typeof(object)])!,
             ObjectArg(valueProp));
         var result = SurrealExpressionVisitor.TranslateCondition(Expression.Equal(call, Expression.Constant(null)));
-        result.ShouldBe("type::decimal(Value) = NONE");
+        result.ShouldBe("type::decimal(value) = NONE");
     }
 
     [Test]
@@ -70,7 +70,7 @@ public partial class FunctionMappingTests
             typeof(SurrealTypeFunctions).GetMethod("TypeDuration", [typeof(object)])!,
             ObjectArg(valueProp));
         var result = SurrealExpressionVisitor.TranslateCondition(Expression.Equal(call, Expression.Constant(null)));
-        result.ShouldBe("type::duration(Value) = NONE");
+        result.ShouldBe("type::duration(value) = NONE");
     }
 
     [Test]
@@ -82,7 +82,7 @@ public partial class FunctionMappingTests
             typeof(SurrealTypeFunctions).GetMethod("TypeFloat", [typeof(object)])!,
             ObjectArg(valueProp));
         var result = SurrealExpressionVisitor.TranslateCondition(Expression.Equal(call, Expression.Constant(null)));
-        result.ShouldBe("type::float(Value) = NONE");
+        result.ShouldBe("type::float(value) = NONE");
     }
 
     [Test]
@@ -94,7 +94,7 @@ public partial class FunctionMappingTests
             typeof(SurrealTypeFunctions).GetMethod("TypeInt", [typeof(object)])!,
             ObjectArg(valueProp));
         var result = SurrealExpressionVisitor.TranslateCondition(Expression.Equal(call, Expression.Constant(null)));
-        result.ShouldBe("type::int(Value) = NONE");
+        result.ShouldBe("type::int(value) = NONE");
     }
 
     [Test]
@@ -106,7 +106,7 @@ public partial class FunctionMappingTests
             typeof(SurrealTypeFunctions).GetMethod("TypeNumber", [typeof(object)])!,
             ObjectArg(valueProp));
         var result = SurrealExpressionVisitor.TranslateCondition(Expression.Equal(call, Expression.Constant(null)));
-        result.ShouldBe("type::number(Value) = NONE");
+        result.ShouldBe("type::number(value) = NONE");
     }
 
     [Test]
@@ -118,7 +118,7 @@ public partial class FunctionMappingTests
             typeof(SurrealTypeFunctions).GetMethod("TypePoint", [typeof(object)])!,
             ObjectArg(valueProp));
         var result = SurrealExpressionVisitor.TranslateCondition(Expression.Equal(call, Expression.Constant(null)));
-        result.ShouldBe("type::point(Value) = NONE");
+        result.ShouldBe("type::point(value) = NONE");
     }
 
     [Test]
@@ -130,7 +130,7 @@ public partial class FunctionMappingTests
             typeof(SurrealTypeFunctions).GetMethod("TypeString", [typeof(object)])!,
             ObjectArg(nameProp));
         var result = SurrealExpressionVisitor.TranslateCondition(Expression.Equal(call, Expression.Constant(null)));
-        result.ShouldBe("type::string(Name) = NONE");
+        result.ShouldBe("type::string(name) = NONE");
     }
 
     [Test]
@@ -142,7 +142,7 @@ public partial class FunctionMappingTests
             typeof(SurrealTypeFunctions).GetMethod("TypeTable", [typeof(object)])!,
             ObjectArg(nameProp));
         var result = SurrealExpressionVisitor.TranslateCondition(Expression.Equal(call, Expression.Constant(null)));
-        result.ShouldBe("type::table(Name) = NONE");
+        result.ShouldBe("type::table(name) = NONE");
     }
 
     [Test]
@@ -154,7 +154,7 @@ public partial class FunctionMappingTests
             typeof(SurrealTypeFunctions).GetMethod("TypeThing", [typeof(object)])!,
             ObjectArg(nameProp));
         var result = SurrealExpressionVisitor.TranslateCondition(Expression.Equal(call, Expression.Constant(null)));
-        result.ShouldBe("type::thing(Name) = NONE");
+        result.ShouldBe("type::thing(name) = NONE");
     }
 
     [Test]
@@ -166,7 +166,7 @@ public partial class FunctionMappingTests
             typeof(SurrealTypeFunctions).GetMethod("TypeRecord", [typeof(object)])!,
             ObjectArg(nameProp));
         var result = SurrealExpressionVisitor.TranslateCondition(Expression.Equal(call, Expression.Constant(null)));
-        result.ShouldBe("type::record(Name) = NONE");
+        result.ShouldBe("type::record(name) = NONE");
     }
 
     [Test]
@@ -178,7 +178,7 @@ public partial class FunctionMappingTests
             typeof(SurrealTypeFunctions).GetMethod("TypeOf", [typeof(object)])!,
             ObjectArg(nameProp));
         var result = SurrealExpressionVisitor.TranslateCondition(Expression.Equal(call, Expression.Constant("string")));
-        result.ShouldBe("type::of(Name) = 'string'");
+        result.ShouldBe("type::of(name) = 'string'");
     }
 
     // ════════════════════════════════════════════════════════════
@@ -194,7 +194,7 @@ public partial class FunctionMappingTests
             typeof(SurrealTypeFunctions).GetMethod("IsBool", [typeof(object)])!,
             ObjectArg(valueProp));
         var result = SurrealExpressionVisitor.TranslateCondition(Expression.Equal(call, Expression.Constant(true)));
-        result.ShouldBe("type::is_bool(Value) = true");
+        result.ShouldBe("type::is_bool(value) = true");
     }
 
     [Test]
@@ -206,7 +206,7 @@ public partial class FunctionMappingTests
             typeof(SurrealTypeFunctions).GetMethod("IsInt", [typeof(object)])!,
             ObjectArg(valueProp));
         var result = SurrealExpressionVisitor.TranslateCondition(Expression.Equal(call, Expression.Constant(true)));
-        result.ShouldBe("type::is_int(Value) = true");
+        result.ShouldBe("type::is_int(value) = true");
     }
 
     [Test]
@@ -218,7 +218,7 @@ public partial class FunctionMappingTests
             typeof(SurrealTypeFunctions).GetMethod("IsFloat", [typeof(object)])!,
             ObjectArg(valueProp));
         var result = SurrealExpressionVisitor.TranslateCondition(Expression.Equal(call, Expression.Constant(true)));
-        result.ShouldBe("type::is_float(Value) = true");
+        result.ShouldBe("type::is_float(value) = true");
     }
 
     [Test]
@@ -230,7 +230,7 @@ public partial class FunctionMappingTests
             typeof(SurrealTypeFunctions).GetMethod("IsString", [typeof(object)])!,
             ObjectArg(nameProp));
         var result = SurrealExpressionVisitor.TranslateCondition(Expression.Equal(call, Expression.Constant(true)));
-        result.ShouldBe("type::is_string(Name) = true");
+        result.ShouldBe("type::is_string(name) = true");
     }
 
     [Test]
@@ -242,7 +242,7 @@ public partial class FunctionMappingTests
             typeof(SurrealTypeFunctions).GetMethod("IsDatetime", [typeof(object)])!,
             ObjectArg(valueProp));
         var result = SurrealExpressionVisitor.TranslateCondition(Expression.Equal(call, Expression.Constant(true)));
-        result.ShouldBe("type::is_datetime(Value) = true");
+        result.ShouldBe("type::is_datetime(value) = true");
     }
 
     [Test]
@@ -254,7 +254,7 @@ public partial class FunctionMappingTests
             typeof(SurrealTypeFunctions).GetMethod("IsArray", [typeof(object)])!,
             ObjectArg(nameProp));
         var result = SurrealExpressionVisitor.TranslateCondition(Expression.Equal(call, Expression.Constant(true)));
-        result.ShouldBe("type::is_array(Name) = true");
+        result.ShouldBe("type::is_array(name) = true");
     }
 
     [Test]
@@ -266,7 +266,7 @@ public partial class FunctionMappingTests
             typeof(SurrealTypeFunctions).GetMethod("IsObject", [typeof(object)])!,
             ObjectArg(nameProp));
         var result = SurrealExpressionVisitor.TranslateCondition(Expression.Equal(call, Expression.Constant(true)));
-        result.ShouldBe("type::is_object(Name) = true");
+        result.ShouldBe("type::is_object(name) = true");
     }
 
     [Test]
@@ -278,7 +278,7 @@ public partial class FunctionMappingTests
             typeof(SurrealTypeFunctions).GetMethod("IsNull", [typeof(object)])!,
             ObjectArg(nameProp));
         var result = SurrealExpressionVisitor.TranslateCondition(Expression.Equal(call, Expression.Constant(true)));
-        result.ShouldBe("type::is_null(Name) = true");
+        result.ShouldBe("type::is_null(name) = true");
     }
 
     [Test]
@@ -290,7 +290,7 @@ public partial class FunctionMappingTests
             typeof(SurrealTypeFunctions).GetMethod("IsNumber", [typeof(object)])!,
             ObjectArg(valueProp));
         var result = SurrealExpressionVisitor.TranslateCondition(Expression.Equal(call, Expression.Constant(true)));
-        result.ShouldBe("type::is_number(Value) = true");
+        result.ShouldBe("type::is_number(value) = true");
     }
 
     [Test]
@@ -302,7 +302,7 @@ public partial class FunctionMappingTests
             typeof(SurrealTypeFunctions).GetMethod("IsRecord", [typeof(object)])!,
             ObjectArg(nameProp));
         var result = SurrealExpressionVisitor.TranslateCondition(Expression.Equal(call, Expression.Constant(true)));
-        result.ShouldBe("type::is_record(Name) = true");
+        result.ShouldBe("type::is_record(name) = true");
     }
 
     [Test]
@@ -314,7 +314,7 @@ public partial class FunctionMappingTests
             typeof(SurrealTypeFunctions).GetMethod("IsUuid", [typeof(object)])!,
             ObjectArg(nameProp));
         var result = SurrealExpressionVisitor.TranslateCondition(Expression.Equal(call, Expression.Constant(true)));
-        result.ShouldBe("type::is_uuid(Name) = true");
+        result.ShouldBe("type::is_uuid(name) = true");
     }
 
     [Test]
@@ -326,7 +326,7 @@ public partial class FunctionMappingTests
             typeof(SurrealTypeFunctions).GetMethod("IsGeometry", [typeof(object)])!,
             ObjectArg(valueProp));
         var result = SurrealExpressionVisitor.TranslateCondition(Expression.Equal(call, Expression.Constant(true)));
-        result.ShouldBe("type::is_geometry(Value) = true");
+        result.ShouldBe("type::is_geometry(value) = true");
     }
 
     // ════════════════════════════════════════════════════════════
@@ -348,7 +348,7 @@ public partial class FunctionMappingTests
 
         // Should not throw
         var result = SurrealExpressionVisitor.TranslateCondition(condition);
-        result.ShouldBe("type::is_string(Name) = true");
+        result.ShouldBe("type::is_string(name) = true");
 
         // Test NotSupported for unrecognized type function name:
         // string.IsNullOrWhiteSpace is a static string method not handled by our switch.

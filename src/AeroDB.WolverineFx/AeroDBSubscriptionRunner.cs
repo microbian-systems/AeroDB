@@ -1,17 +1,19 @@
-using AeroDB;
+using AeroDB.Sable;
 using JasperFx.Events.Daemon;
 using JasperFx.Events.Projections;
 using Microsoft.Extensions.DependencyInjection;
+using System.Diagnostics.CodeAnalysis;
 using Wolverine;
 using Wolverine.Runtime;
 
 namespace AeroDB.WolverineFx;
 
 /// <summary>
-/// Bridges a AeroDB event subscription to Wolverine's message bus.
+/// Bridges a AeroDB.Sable event subscription to Wolverine's message bus.
 /// Creates a MessageContext, enlists in the outbox, delegates to the subscription,
 /// then commits the session and flushes outgoing messages.
 /// </summary>
+[Experimental("AERODB001")]
 internal class AeroDBSubscriptionRunner
 {
     private readonly IAeroDBSubscription _subscription;
@@ -38,7 +40,7 @@ internal class AeroDBSubscriptionRunner
         // Create a Wolverine message context scoped to this batch
         var context = new MessageContext(_runtime);
 
-        // Get the AeroDB message store and enlist in outbox
+        // Get the AeroDB.Sable message store and enlist in outbox
         var store = _runtime.Services.GetRequiredService<AeroDBMessageStore>();
         context.OverrideStorage(store);
         var ownerId = store.GetOwnerId();

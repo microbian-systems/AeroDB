@@ -1,10 +1,10 @@
-using AeroDB;
+using AeroDB.Sable;
 using Microsoft.AspNetCore.Identity;
 using SurrealDb.Net;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// ── AeroDB Document Store ────────────────────────────────────────
+// ── AeroDB.Sable Document Store ────────────────────────────────────────
 builder.Services.AddAeroDB(o =>
 {
     //o.ClientFactory = () => new SurrealDbMemoryClient();

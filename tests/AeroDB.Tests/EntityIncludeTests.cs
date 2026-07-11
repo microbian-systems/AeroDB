@@ -1,4 +1,4 @@
-using AeroDB;
+using AeroDB.Sable;
 using TUnit.Core;
 
 namespace AeroDB.Tests;
@@ -22,7 +22,7 @@ public class EntityIncludeTests
         await session.SaveChangesAsync();
 
         var results = await session.Query<EntityIncludeParent>()
-            .IncludeReverse(p => p.Children, "ParentId")
+            .IncludeReverse(p => p.Children, c => c.ParentId)
             .ToListAsync();
 
         results.Count.ShouldBe(1);
@@ -44,7 +44,7 @@ public class EntityIncludeTests
         await session.SaveChangesAsync();
 
         var results = await session.Query<EntityIncludeParent>()
-            .IncludeReverse(p => p.Children, "ParentId")
+            .IncludeReverse(p => p.Children, c => c.ParentId)
             .ToListAsync();
 
         results.Count.ShouldBe(1);
@@ -70,7 +70,7 @@ public class EntityIncludeTests
 
         // FilterInclude with .Any() should only keep parents with children
         var results = await session.Query<EntityIncludeParent>()
-            .IncludeReverse(p => p.Children, "ParentId")
+            .IncludeReverse(p => p.Children, c => c.ParentId)
             .FilterInclude(p => p.Children, c => c.Any())
             .ToListAsync();
 
@@ -94,7 +94,7 @@ public class EntityIncludeTests
         await session.SaveChangesAsync();
 
         var results = await session.Query<EntityIncludeParentStr>()
-            .IncludeReverse(p => p.Items, "ParentId")
+            .IncludeReverse(p => p.Items, c => c.ParentId)
             .ToListAsync();
 
         results[0].Items.Count.ShouldBe(2);
@@ -115,7 +115,7 @@ public class EntityIncludeTests
         await session.SaveChangesAsync();
 
         var results = await session.Query<EntityIncludeParentInt>()
-            .IncludeReverse(p => p.Items, "ParentId")
+            .IncludeReverse(p => p.Items, c => c.ParentId)
             .ToListAsync();
 
         results[0].Items.Count.ShouldBe(2);
@@ -137,7 +137,7 @@ public class EntityIncludeTests
         await session.SaveChangesAsync();
 
         var results = await session.Query<EntityIncludeParentGuid>()
-            .IncludeReverse(p => p.Items, "ParentId")
+            .IncludeReverse(p => p.Items, c => c.ParentId)
             .ToListAsync();
 
         results[0].Items.Count.ShouldBe(2);
@@ -159,7 +159,7 @@ public class EntityIncludeTests
 
         var result = await session.Query<EntityIncludeParent>()
             .Where(p => p.Title == "FirstOrDef Parent")
-            .IncludeReverse(p => p.Children, "ParentId")
+            .IncludeReverse(p => p.Children, c => c.ParentId)
             .FirstOrDefaultAsync();
 
         result.ShouldNotBeNull();
@@ -182,7 +182,7 @@ public class EntityIncludeTests
 
         var result = await session.Query<EntityIncludeParent>()
             .Where(p => p.Title == "Single Parent")
-            .IncludeReverse(p => p.Children, "ParentId")
+            .IncludeReverse(p => p.Children, c => c.ParentId)
             .SingleOrDefaultAsync();
 
         result.ShouldNotBeNull();

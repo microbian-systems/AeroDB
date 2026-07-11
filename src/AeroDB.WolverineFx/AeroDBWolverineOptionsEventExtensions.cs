@@ -1,4 +1,4 @@
-using AeroDB;
+using AeroDB.Sable;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 namespace AeroDB.WolverineFx;
 
 /// <summary>
-/// Extension methods for configuring AeroDB event forwarding through Wolverine.
+/// Extension methods for configuring AeroDB.Sable event forwarding through Wolverine.
 /// Event forwarding is automatically wired when sessions are opened via
 /// <see cref="AeroDBOutboxedSessionFactory"/>. This method provides additional
 /// store-level configuration for event-related options.
@@ -14,17 +14,17 @@ namespace AeroDB.WolverineFx;
 public static class AeroDBWolverineOptionsEventExtensions
 {
     /// <summary>
-    /// Configure Wolverine to forward events appended to AeroDB event streams
+    /// Configure Wolverine to forward events appended to AeroDB.Sable event streams
     /// as Wolverine messages. Events are published atomically within the
     /// same transaction as the document session's save operation.
     ///
     /// Event forwarding is automatically enabled when sessions are created
     /// through <see cref="AeroDBOutboxedSessionFactory"/>. This method provides
-    /// additional configuration hook for the AeroDB <see cref="StoreOptions"/>.
+    /// additional configuration hook for the AeroDB.Sable <see cref="StoreOptions"/>.
     /// </summary>
     /// <param name="options">The Wolverine options.</param>
     /// <param name="configureStore">
-    /// Optional callback to configure the underlying AeroDB <see cref="StoreOptions"/>.
+    /// Optional callback to configure the underlying AeroDB.Sable <see cref="StoreOptions"/>.
     /// Use this to set up event-related options on the document store.
     /// </param>
     public static void ForwardAeroDBEventsToWolverine(

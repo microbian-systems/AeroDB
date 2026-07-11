@@ -1,5 +1,5 @@
 using System.Linq.Expressions;
-using AeroDB;
+using AeroDB.Sable;
 using SurrealDb.Net.Models;
 using SurrealDb.Embedded.InMemory;
 using TUnit.Core;
@@ -36,10 +36,10 @@ public class ViewRawAndAggregateTests
     public async Task RawView_ProducesVerbatimSurql()
     {
         var view = new ViewDefinition<RawViewOrder>("custom_view")
-            .RawView("SELECT count() AS n, math::sum(Amount) AS total FROM raw_view_order WHERE Category = 'food'");
+            .RawView("SELECT count() AS n, math::sum(amount) AS total FROM raw_view_order WHERE category = 'food'");
 
         view.BuildSelectSurql().ShouldBe(
-            "SELECT count() AS n, math::sum(Amount) AS total FROM raw_view_order WHERE Category = 'food'");
+            "SELECT count() AS n, math::sum(amount) AS total FROM raw_view_order WHERE category = 'food'");
     }
 
     [Test]
@@ -157,15 +157,15 @@ public class ViewRawAndAggregateTests
         // Create source table and insert data
         await surrealSession.RawQuery("DEFINE TABLE raw_view_order SCHEMALESS;", null);
         await surrealSession.RawQuery(
-            "CREATE raw_view_order CONTENT { Product: 'Apple', Amount: 10, Category: 'food' };", null);
+            "CREATE raw_view_order CONTENT { product: 'Apple', amount: 10, category: 'food' };", null);
         await surrealSession.RawQuery(
-            "CREATE raw_view_order CONTENT { Product: 'Banana', Amount: 5, Category: 'food' };", null);
+            "CREATE raw_view_order CONTENT { product: 'Banana', amount: 5, category: 'food' };", null);
 
         // Create a view
         var schemaManager = new SchemaManager();
         var view = new ViewDefinition<RawViewOrder>("food_orders_view")
             .From<RawViewOrder>()
-            .RawView("SELECT Product, Amount FROM raw_view_order WHERE Category = 'food'");
+            .RawView("SELECT product, amount FROM raw_view_order WHERE category = 'food'");
 
         await schemaManager.EnsureViewAsync(surrealSession, view);
 
@@ -196,7 +196,7 @@ public class ViewRawAndAggregateTests
         builder.Count().As("n").GroupBy(x => x.Category);
 
         builder.BuildSelect().ShouldBe("count() AS n");
-        builder.GroupByClause.ShouldBe("Category");
+        builder.GroupByClause.ShouldBe("category");
     }
 
     [Test]
@@ -210,8 +210,8 @@ public class ViewRawAndAggregateTests
             .Average(x => x.Amount).As("avg");
 
         builder.BuildSelect().ShouldBe(
-            "math::sum(Amount) AS total, math::min(Amount) AS min, " +
-            "math::max(Amount) AS max, math::mean(Amount) AS avg");
+            "math::sum(amount) AS total, math::min(amount) AS min, " +
+            "math::max(amount) AS max, math::mean(amount) AS avg");
     }
 
     [Test]
@@ -220,7 +220,7 @@ public class ViewRawAndAggregateTests
         var builder = new AggregateQueryBuilder<RawViewOrder>();
         builder.Field(x => x.Category).As("cat");
 
-        builder.BuildSelect().ShouldBe("Category AS cat");
+        builder.BuildSelect().ShouldBe("category AS cat");
     }
 
     [Test]
@@ -232,7 +232,7 @@ public class ViewRawAndAggregateTests
             .Count().As("cnt")
             .Sum(x => x.Amount).As("total");
 
-        builder.BuildSelect().ShouldBe("Category, count() AS cnt, math::sum(Amount) AS total");
+        builder.BuildSelect().ShouldBe("category, count() AS cnt, math::sum(amount) AS total");
     }
 
     [Test]
@@ -261,17 +261,17 @@ public class ViewRawAndAggregateTests
             .Field(x => x.Category)
             .GroupBy(x => new { x.Category, x.Product });
 
-        builder.BuildSelect().ShouldBe("count() AS n, Category");
-        builder.GroupByClause.ShouldBe("Category, Product");
+        builder.BuildSelect().ShouldBe("count() AS n, category");
+        builder.GroupByClause.ShouldBe("category, product");
     }
 
     [Test]
     public async Task AggregateQuery_RawExpression()
     {
         var builder = new AggregateQueryBuilder<RawViewOrder>();
-        builder.Raw("math::round(math::sum(Amount), 2)").As("rounded_total");
+        builder.Raw("math::round(math::sum(amount), 2)").As("rounded_total");
 
-        builder.BuildSelect().ShouldBe("math::round(math::sum(Amount), 2) AS rounded_total");
+        builder.BuildSelect().ShouldBe("math::round(math::sum(amount), 2) AS rounded_total");
     }
 
     // ════════════════════════════════════════════════════════════
@@ -294,9 +294,9 @@ public class ViewRawAndAggregateTests
         var surrealSession = ((InternalSessionBase)await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None })).Session;
         await surrealSession.RawQuery("DEFINE TABLE raw_view_order SCHEMALESS;", null);
         await surrealSession.RawQuery(
-            "CREATE raw_view_order CONTENT { Product: 'A', Amount: 10, Category: 'food' };", null);
+            "CREATE raw_view_order CONTENT { product: 'A', amount: 10, category: 'food' };", null);
         await surrealSession.RawQuery(
-            "CREATE raw_view_order CONTENT { Product: 'B', Amount: 20, Category: 'drink' };", null);
+            "CREATE raw_view_order CONTENT { product: 'B', amount: 20, category: 'drink' };", null);
 
         // Execute aggregate query using the session overload
         var results = await session.AggregateQuery<RawViewOrder>(b => b
@@ -324,9 +324,9 @@ public class ViewRawAndAggregateTests
         var surrealSession = ((InternalSessionBase)await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None })).Session;
         await surrealSession.RawQuery("DEFINE TABLE raw_view_order SCHEMALESS;", null);
         await surrealSession.RawQuery(
-            "CREATE raw_view_order CONTENT { Product: 'A', Amount: 10, Category: 'food' };", null);
+            "CREATE raw_view_order CONTENT { product: 'A', amount: 10, category: 'food' };", null);
         await surrealSession.RawQuery(
-            "CREATE raw_view_order CONTENT { Product: 'B', Amount: 20, Category: 'drink' };", null);
+            "CREATE raw_view_order CONTENT { product: 'B', amount: 20, category: 'drink' };", null);
 
         // Aggregate with WHERE filter
         var results = await Queryable.Where(session.Query<RawViewOrder>(), x => x.Amount > 5)
@@ -356,11 +356,11 @@ public class ViewRawAndAggregateTests
         // Create source table with data
         await surrealSession.RawQuery("DEFINE TABLE raw_view_order SCHEMALESS;", null);
         await surrealSession.RawQuery(
-            "CREATE raw_view_order CONTENT { Product: 'X', Amount: 100, Category: 'test' };", null);
+            "CREATE raw_view_order CONTENT { product: 'X', amount: 100, category: 'test' };", null);
 
         // Define a view with RawView
         var view = new ViewDefinition<RawViewOrder>("raw_test_view")
-            .RawView("SELECT Product, Amount FROM raw_view_order WHERE Amount > 50");
+            .RawView("SELECT product, amount FROM raw_view_order WHERE amount > 50");
 
         await schemaManager.EnsureViewAsync(surrealSession, view);
 

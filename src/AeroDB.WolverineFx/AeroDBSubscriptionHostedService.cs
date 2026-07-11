@@ -1,4 +1,4 @@
-using AeroDB;
+using AeroDB.Sable;
 using JasperFx.Events;
 using JasperFx.Events.Daemon;
 using JasperFx.Events.Projections;
@@ -6,15 +6,17 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
+using System.Diagnostics.CodeAnalysis;
 // Resolve ambiguity: JasperFx.Events.IEvent is the primary IEvent used in this file
 using IEvent = JasperFx.Events.IEvent;
 
 namespace AeroDB.WolverineFx;
 
 /// <summary>
-/// Background service that polls the AeroDB event store and dispatches new events
+/// Background service that polls the AeroDB.Sable event store and dispatches new events
 /// to registered subscriptions via <see cref="AeroDBSubscriptionRunner"/>.
 /// </summary>
+[Experimental("AERODB001")]
 internal class AeroDBSubscriptionHostedService : IHostedService, IAsyncDisposable
 {
     private readonly IServiceProvider _services;
@@ -43,13 +45,13 @@ internal class AeroDBSubscriptionHostedService : IHostedService, IAsyncDisposabl
     {
         if (_states.Count == 0)
         {
-            _logger.LogInformation("No AeroDB subscriptions registered; daemon not started");
+            _logger.LogInformation("No AeroDB.Sable subscriptions registered; daemon not started");
             return Task.CompletedTask;
         }
 
         _cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
         _runTask = Task.Run(() => RunLoopAsync(_cts.Token), _cts.Token);
-        _logger.LogInformation("AeroDB Subscription Daemon started with {Count} subscriptions", _states.Count);
+        _logger.LogInformation("AeroDB.Sable Subscription Daemon started with {Count} subscriptions", _states.Count);
         return Task.CompletedTask;
     }
 
@@ -67,7 +69,7 @@ internal class AeroDBSubscriptionHostedService : IHostedService, IAsyncDisposabl
             catch (Exception ex) { _logger.LogWarning(ex, "Error stopping subscription daemon"); }
         }
 
-        _logger.LogInformation("AeroDB Subscription Daemon stopped");
+        _logger.LogInformation("AeroDB.Sable Subscription Daemon stopped");
     }
 
     private async Task RunLoopAsync(CancellationToken ct)
@@ -134,7 +136,7 @@ internal class AeroDBSubscriptionHostedService : IHostedService, IAsyncDisposabl
     }
 
     private static EventRange BuildEventRange(
-        IReadOnlyList<global::AeroDB.IEvent> rawEvents,
+        IReadOnlyList<global::AeroDB.Sable.IEvent> rawEvents,
         long baseVersion)
     {
         var events = rawEvents
@@ -144,7 +146,7 @@ internal class AeroDBSubscriptionHostedService : IHostedService, IAsyncDisposabl
         var minVersion = rawEvents.Count > 0 ? rawEvents.Min(e => e.Version) : baseVersion + 1;
         var maxVersion = rawEvents.Count > 0 ? rawEvents.Max(e => e.Version) : baseVersion;
 
-        var shardName = new ShardName("AeroDB-subscriptions");
+        var shardName = new ShardName("AeroDB.Sable-subscriptions");
 
         var range = new EventRange(shardName, minVersion, maxVersion, agent: null!);
         range.Events = events;
@@ -187,7 +189,7 @@ internal class AeroDBSubscriptionHostedService : IHostedService, IAsyncDisposabl
         public AeroDBSubscriptionController(ILogger logger) => _logger = logger;
 
         public ErrorHandlingOptions ErrorOptions { get; set; } = new();
-        public ShardName Name { get; } = new("AeroDB-daemon");
+        public ShardName Name { get; } = new("AeroDB.Sable-daemon");
         public ShardExecutionMode Mode => ShardExecutionMode.Continuous;
         public AsyncOptions Options { get; } = new();
 
@@ -219,7 +221,7 @@ internal class AeroDBSubscriptionHostedService : IHostedService, IAsyncDisposabl
 }
 
 /// <summary>
-/// Minimal IEvent implementation for wrapping raw AeroDB events into JasperFx EventRange.
+/// Minimal IEvent implementation for wrapping raw AeroDB.Sable events into JasperFx EventRange.
 /// </summary>
 internal sealed class AeroDBEnvelopeEvent : JasperFx.Events.IEvent
 {
@@ -272,7 +274,7 @@ internal sealed class AeroDBEnvelopeEvent : JasperFx.Events.IEvent
 
     public Func<JasperFx.Events.IEvent, T> CreateAggregateIdentitySource<T>()
     {
-        throw new NotSupportedException("AeroDB envelope events do not support aggregate identity resolution");
+        throw new NotSupportedException("AeroDB.Sable envelope events do not support aggregate identity resolution");
     }
 
     void JasperFx.Events.IEvent.AddTag<T>(T tag)

@@ -15,7 +15,7 @@
 	</PropertyGroup>
 
 	<PropertyGroup Label="Package information">
-		<VersionPrefix>0.0.8</VersionPrefix>
+		<VersionPrefix>0.0.9.1</VersionPrefix>
 		<VersionSuffix>alpha</VersionSuffix>
 		<Authors>Microbians</Authors>
 		<Company>Microbian Systems</Company>
@@ -24,8 +24,8 @@
 		<PackageTags>surrealdb document-database event-sourcing nosql orm efcore</PackageTags>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageIcon>aero-logo-new.png</PackageIcon>
-		<PackageProjectUrl>https://github.com/microbian-systems/AeroDB</PackageProjectUrl>
-		<RepositoryUrl>https://github.com/microbian-systems/AeroDB</RepositoryUrl>
+		<PackageProjectUrl>https://microbians.io/products</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/microbian-systems/AeroDB.Sable</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
 		<PublishRepositoryUrl>true</PublishRepositoryUrl>
 		<IncludeSymbols>true</IncludeSymbols>
