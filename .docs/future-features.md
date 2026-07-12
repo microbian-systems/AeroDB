@@ -55,3 +55,55 @@ var achievements = await achievementsTask;
 
 - **Current design** (Marten-compatible): call `batch.Execute()` explicitly, then await tasks
 - **Lazy alternative**: have awaiting any task auto-trigger `Execute()` so `Task.WhenAll()` works naturally
+
+---
+
+## Schema Migration / Drift Detection
+
+### Problem
+
+`EnsureDocumentSchemaAsync<T>()` currently creates the table via `DEFINE TABLE` only if it doesn't already exist. When the C# model (or source-gen output) adds/removes fields after the table was created, SaveChanges fails with `"Found field '...' but no such field exists"` — the SurrealDB table is never altered.
+
+### What's needed
+
+After `DEFINE TABLE`, iterate the existing table's fields via SurrealDB `INFO FOR TABLE`, diff them against the compiled schema from source-gen/SchemaManager, and emit:
+
+- `DEFINE FIELD IF NOT EXISTS ...` for missing fields
+- `REMOVE FIELD ...` for fields no longer present (with caution — may require an opt-in flag)
+
+### Where
+
+New `SchemaMigrator` class in `AeroDB.Sable/Schema/` — called from `DocumentStore.InitializeAsync` alongside `EnsureDocumentSchemaAsync`, or as an opt-in phase via `AeroDBOptions.AutoMigrateSchema`.
+
+### Priority
+
+**Medium** — Production readiness for iterative schema changes without database wipes.
+
+---
+
+## GenerateSchemaMigration (SurrealQL Export)
+
+### Goal
+
+Export all document schemas registered in `IDocumentStore` to `.surql` files for:
+
+- CI/CD pipeline application
+- External database provisioning (DB-as-code)
+- Offline migration review
+
+### What's needed
+
+- `IDocumentStore.GenerateSchemaMigrationAsync(string outputDir)` — iterates all registered document types from `Schema.For<T>()` calls and source-gen metadata, emits `DEFINE TABLE` + `DEFINE FIELD` per type into `.surql` files
+- Should skip fields that only exist as table defaults
+- Output must be valid SurrealQL runnable via `surreal sql` CLI or REST API
+- One `.surql` file per table (e.g. `docs_page.surql`, `tenant_model.surql`)
+
+### Design options
+
+- Extension method on `DocumentStore` / `IDocumentStore`
+- Standalone `SchemaMigrationExporter` class consuming the store's compiled schema configuration
+- Open question: single compound file vs per-table files — per-table is more CI-friendly for targeted migration
+
+### Priority
+
+**Medium** — Production readiness for database provisioning and migration pipelines.
