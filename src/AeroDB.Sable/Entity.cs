@@ -6,7 +6,7 @@ namespace AeroDB.Sable;
 /// For Snowflake-style long IDs, use <see cref="Entity{TId}"/> with <c>long</c>.
 /// </summary>
 /// <typeparam name="TId">The primary key type (long, string, int, Guid, etc.).</typeparam>
-public interface IEntity<TId>
+public interface ISableDocument<TId>
     where TId : notnull, IEquatable<TId>, IComparable<TId>
 {
     /// <summary>
@@ -17,10 +17,10 @@ public interface IEntity<TId>
 
 /// <summary>
 /// Abstract base class for entities with a typed primary key.
-/// Implements <see cref="IEntity{TId}"/> with a simple auto-property.
+/// Implements <see cref="ISableDocument{TId}"/> with a simple auto-property.
 /// </summary>
 /// <typeparam name="TId">The primary key type.</typeparam>
-public abstract class Entity<TId> : IEntity<TId>
+public abstract class Entity<TId> : ISableDocument<TId>
     where TId : notnull, IEquatable<TId>, IComparable<TId>
 {
     /// <summary>

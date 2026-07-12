@@ -262,7 +262,7 @@ public class SurrealDbQueryable<T> : ISurrealDbQueryable<T>, IAsyncEnumerable<T>
         var targetUsesPocoIdentity = schema.Mappings.TryGetValue(typeof(TTarget), out var targetMapping)
             && targetMapping.IdentityProperty is not null
             && !typeof(IRecord).IsAssignableFrom(typeof(TTarget))
-            && !ImplementsGenericInterface(typeof(TTarget), typeof(IEntity<>));
+            && !ImplementsGenericInterface(typeof(TTarget), typeof(ISableDocument<>));
         var castFkToString = targetUsesPocoIdentity && fkType != typeof(string);
 
         LinkRegistrations.Add(new LinkRegistration(
