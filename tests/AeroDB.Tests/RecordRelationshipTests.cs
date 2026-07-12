@@ -703,7 +703,7 @@ public sealed class RelationshipSalesRep : Record
     public string Name { get; set; } = "";
 }
 
-public sealed class RelationshipEntityOrder : Entity<long>
+public sealed class RelationshipEntityOrder : SableDocument<long>
 {
     public long CustomerId { get; set; }
 }
@@ -751,12 +751,12 @@ public static class ConventionFixtures
     }
 }
 
-public sealed class GeneratedOrder : Entity<long>
+public sealed class GeneratedOrder : SableDocument<long>
 {
     public long GeneratedCustomerId { get; set; }
 }
 
-public sealed class GeneratedCustomer : Entity<long>
+public sealed class GeneratedCustomer : SableDocument<long>
 {
     public string Name { get; set; } = "";
 }

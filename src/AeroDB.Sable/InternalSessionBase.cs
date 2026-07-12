@@ -297,7 +297,7 @@ public abstract class InternalSessionBase : IAsyncDisposable
         var current = type;
         while (current is not null)
         {
-            if (current.IsGenericType && current.GetGenericTypeDefinition() == typeof(Entity<>))
+            if (current.IsGenericType && current.GetGenericTypeDefinition() == typeof(SableDocument<>))
                 return true;
             current = current.BaseType;
         }

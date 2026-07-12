@@ -27,9 +27,9 @@ public class AeroDBDocumentGenerator : IIncrementalGenerator
         {
             var (compilation, types) = source;
 
-            // Find the Record type in SurrealDb.Net and the Entity<TId> type in AeroDB.Sable
+            // Find the Record type in SurrealDb.Net and the SableDocument<TId> type in AeroDB.Sable
             var recordType = compilation.GetTypeByMetadataName("SurrealDb.Net.Models.Record");
-            var entityGenericType = compilation.GetTypeByMetadataName("AeroDB.Sable.Entity`1");
+            var entityGenericType = compilation.GetTypeByMetadataName("AeroDB.Sable.SableDocument`1");
             if (recordType is null && entityGenericType is null)
                 return;
 
@@ -113,7 +113,7 @@ public class AeroDBDocumentGenerator : IIncrementalGenerator
     }
 
     /// <summary>
-    /// Checks if <paramref name="type"/> is a subclass of <c>Entity&lt;TId&gt;</c>.
+    /// Checks if <paramref name="type"/> is a subclass of <c>SableDocument&lt;TId&gt;</c>.
     /// </summary>
     private static bool IsEntitySubclass(INamedTypeSymbol type, INamedTypeSymbol entityGenericType)
     {

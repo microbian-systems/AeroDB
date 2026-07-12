@@ -12,7 +12,7 @@ namespace AeroDB.Tests.Generators;
 /// <summary>
 /// Tests for <see cref="AeroDBDocumentGenerator"/> — generates per-type metadata
 /// classes implementing <c>ITypeMetadata&lt;T&gt;</c> for <c>Record</c> and
-/// <c>Entity&lt;TId&gt;</c> subclasses.
+/// <c>SableDocument&lt;TId&gt;</c> subclasses.
 /// </summary>
 public class AeroDBDocumentGeneratorTests
 {
@@ -28,13 +28,13 @@ using System.Collections.Generic;
 
 namespace AeroDB.Sable
 {
-    public interface IEntity<TId>
+    public interface ISableDocument<TId>
         where TId : notnull, IEquatable<TId>, IComparable<TId>
     {
         TId Id { get; set; }
     }
 
-    public abstract class Entity<TId> : IEntity<TId>
+    public abstract class SableDocument<TId> : ISableDocument<TId>
         where TId : notnull, IEquatable<TId>, IComparable<TId>
     {
         public TId Id { get; set; } = default!;
@@ -168,13 +168,13 @@ public class MyDocument : SurrealDb.Net.Models.Record
         code.ShouldContain("HasDocumentMetadata => false");
     }
 
-    // ── Test 2: Entity<long> subclass generates metadata ────────────────────
+    // ── Test 2: SableDocument<long> subclass generates metadata ─────────────
 
     [Test]
-    public void Entity_long_subclass_generates_metadata()
+    public void SableDocument_long_subclass_generates_metadata()
     {
         var source = @"
-public class MyEntity : AeroDB.Sable.Entity<long>
+public class MyEntity : AeroDB.Sable.SableDocument<long>
 {
     public string Label { get; set; }
 }
@@ -187,7 +187,7 @@ public class MyEntity : AeroDB.Sable.Entity<long>
         code.ShouldContain("MyEntityMetadata");
         code.ShouldContain("ITypeMetadata<global::MyEntity>");
         code.ShouldContain("TableName => \"my_entity\"");
-        // Entity<long> GetRecordId should use .ToString()
+        // SableDocument<long> GetRecordId should use .ToString()
         code.ShouldContain("GetRecordId");
         code.ShouldContain("entity.Id.ToString()");
     }
@@ -412,7 +412,7 @@ public class AlsoNot { public string X { get; set; } }
 ";
         var result = RunGenerator(source);
 
-        // Generator returns zero generated trees when no Record/Entity subclass found
+        // Generator returns zero generated trees when no Record/SableDocument subclass found
         result.GeneratedTrees.Length.ShouldBe(0);
     }
 
@@ -479,13 +479,13 @@ public class CompilableDoc : SurrealDb.Net.Models.Record
         compileErrors.Count.ShouldBe(0);
     }
 
-    // ── Test 13: Entity<long> with TenantId and Version ─────────────────────
+    // ── Test 13: SableDocument<long> with TenantId and Version ──────────────
 
     [Test]
-    public void Entity_with_tenant_and_version_detects_both()
+    public void SableDocument_with_tenant_and_version_detects_both()
     {
         var source = @"
-public class FullEntity : AeroDB.Sable.Entity<long>, AeroDB.Sable.IVersioned
+public class FullEntity : AeroDB.Sable.SableDocument<long>, AeroDB.Sable.IVersioned
 {
     public string? TenantId { get; set; }
     public long Version { get; set; }

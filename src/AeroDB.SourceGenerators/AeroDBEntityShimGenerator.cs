@@ -7,7 +7,7 @@ using System.Linq;
 namespace AeroDB.SourceGenerators;
 
 /// <summary>
-/// Generates CBOR-compatible shim <c>Record</c> types for <c>Entity&lt;TId&gt;</c> subclasses.
+/// Generates CBOR-compatible shim <c>Record</c> types for <c>SableDocument&lt;TId&gt;</c> subclasses.
 /// Enables <c>LoadAsync&lt;T&gt;()</c> via the <c>DeserializeViaShimAsync&lt;T&gt;()</c> path:
 /// the shim is deserialized by the SurrealDB SDK (CBOR), then materialized to the entity via <c>ToEntity()</c>.
 /// </summary>
@@ -31,8 +31,8 @@ public class AeroDBEntityShimGenerator : IIncrementalGenerator
         {
             var (compilation, types) = source;
 
-            // Find the Entity<TId> type in AeroDB.Sable
-            var entityGenericType = compilation.GetTypeByMetadataName("AeroDB.Sable.Entity`1");
+            // Find the SableDocument<TId> type in AeroDB.Sable
+            var entityGenericType = compilation.GetTypeByMetadataName("AeroDB.Sable.SableDocument`1");
             if (entityGenericType is null) return;
 
             // Find the Record type in SurrealDb.Net (needed for shim base class)
@@ -81,7 +81,7 @@ public class AeroDBEntityShimGenerator : IIncrementalGenerator
     }
 
     /// <summary>
-    /// Checks if <paramref name="type"/> is a subclass of <c>Entity&lt;TId&gt;</c>.
+    /// Checks if <paramref name="type"/> is a subclass of <c>SableDocument&lt;TId&gt;</c>.
     /// </summary>
     private static bool IsEntitySubclass(INamedTypeSymbol type, INamedTypeSymbol entityGenericType)
     {
@@ -97,7 +97,7 @@ public class AeroDBEntityShimGenerator : IIncrementalGenerator
     }
 
     /// <summary>
-    /// Extracts the <c>TId</c> type argument from <c>Entity&lt;TId&gt;</c> in the inheritance chain.
+    /// Extracts the <c>TId</c> type argument from <c>SableDocument&lt;TId&gt;</c> in the inheritance chain.
     /// </summary>
     private static ITypeSymbol? GetEntityIdType(INamedTypeSymbol type, INamedTypeSymbol entityGenericType)
     {

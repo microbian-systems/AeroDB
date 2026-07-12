@@ -2,8 +2,8 @@ namespace AeroDB.Sable;
 
 /// <summary>
 /// Interface for entities with a typed primary key.
-/// Use <see cref="Entity{TId}"/> as a base class for default implementation.
-/// For Snowflake-style long IDs, use <see cref="Entity{TId}"/> with <c>long</c>.
+/// Use <see cref="SableDocument{TId}"/> as a base class for default implementation.
+/// For Snowflake-style long IDs, use <see cref="SableDocument{TId}"/> with <c>long</c>.
 /// </summary>
 /// <typeparam name="TId">The primary key type (long, string, int, Guid, etc.).</typeparam>
 public interface ISableDocument<TId>
@@ -20,7 +20,7 @@ public interface ISableDocument<TId>
 /// Implements <see cref="ISableDocument{TId}"/> with a simple auto-property.
 /// </summary>
 /// <typeparam name="TId">The primary key type.</typeparam>
-public abstract class Entity<TId> : ISableDocument<TId>
+public abstract class SableDocument<TId> : ISableDocument<TId>
     where TId : notnull, IEquatable<TId>, IComparable<TId>
 {
     /// <summary>
@@ -41,37 +41,37 @@ public abstract class Entity<TId> : ISableDocument<TId>
 /// Convenience alias for the most common case: a <c>long</c> primary key entity
 /// using Snowflake ID generation.
 /// </summary>
-public abstract class EntitySnowlake : Entity<long>
+public abstract class SableDocument : SableDocument<long>
 {
-    protected EntitySnowlake() => Id = SnowflakeGenerator.NewId();
+    protected SableDocument() => Id = SnowflakeGenerator.NewId();
 }
 
 /// <summary>
 /// Convenience alias for a <c>string</c> primary key entity
 /// using Snowflake ID generation converted to string.
 /// </summary>
-public abstract class EntityString : Entity<string>
+public abstract class SableDocumentString : SableDocument<string>
 {
-    protected EntityString() => Id = SnowflakeGenerator.NewId().ToString();
+    protected SableDocumentString() => Id = SnowflakeGenerator.NewId().ToString();
 }
 
 /// <summary>
 /// Convenience alias for an <c>int</c> primary key entity
 /// using a random integer.
 /// </summary>
-public abstract class EntityInt : Entity<int>
+public abstract class SableDocumentInt : SableDocument<int>
 {
     private static readonly Random _random = new();
-    protected EntityInt() => Id = _random.Next(1, int.MaxValue);
+    protected SableDocumentInt() => Id = _random.Next(1, int.MaxValue);
 }
 
 /// <summary>
 /// Convenience alias for a <c>Guid</c> primary key entity
 /// using a new random GUID.
 /// </summary>
-public abstract class EntityGuid : Entity<Guid>
+public abstract class SableDocumentGuid : SableDocument<Guid>
 {
-    protected EntityGuid() => Id = Guid.NewGuid();
+    protected SableDocumentGuid() => Id = Guid.NewGuid();
 }
 
 /// <summary>

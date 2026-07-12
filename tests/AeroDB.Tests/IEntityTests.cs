@@ -35,7 +35,7 @@ public class IEntityTests
         await using var store = await TestHarness.CreateStoreAsync();
         await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         var product = new EntityProduct { Name = "ExplicitSnowflake", Price = 10m };
-        var explicitId = product.Id; // EntitySnowlake constructor generates it
+        var explicitId = product.Id; // SableDocument constructor generates it
         explicitId.ShouldBeGreaterThan(0);
         session.Store(product);
         await session.SaveChangesAsync();
@@ -324,7 +324,7 @@ public class IEntityTests
         await using var store = await TestHarness.CreateStoreAsync();
         await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
-        // Entity<TId> type
+        // SableDocument<TId> type
         session.Store(new EntityProduct { Name = "EntityProduct", Price = 10m });
         // Record type (existing pattern)
         session.Store(new Person { Name = "RecordPerson", Age = 30 });

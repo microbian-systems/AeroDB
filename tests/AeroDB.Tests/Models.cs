@@ -286,30 +286,30 @@ public class ClientOrderDto
 }
 
 // ──────────────────────────────────────────────
-// Entity<TId> test models (non-Record, typed Ids)
+// SableDocument<TId> test models (non-Record, typed Ids)
 // ──────────────────────────────────────────────
 
-public class EntityProduct : EntitySnowlake
+public class EntityProduct : SableDocument
 {
     public string Name { get; set; } = "";
     public decimal Price { get; set; }
     public int Stock { get; set; }
 }
 
-public class EntityCustomer : EntityString
+public class EntityCustomer : SableDocumentString
 {
     public string Name { get; set; } = "";
     public string Email { get; set; } = "";
 }
 
-public class EntityOrder : EntityInt
+public class EntityOrder : SableDocumentInt
 {
     public string Description { get; set; } = "";
     public int Quantity { get; set; }
     public decimal Amount { get; set; }
 }
 
-public class EntitySession : EntityGuid
+public class EntitySession : SableDocumentGuid
 {
     public string Token { get; set; } = "";
     public string UserName { get; set; } = "";
