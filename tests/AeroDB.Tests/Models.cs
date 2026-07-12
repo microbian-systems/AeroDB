@@ -315,3 +315,14 @@ public class EntitySession : SableDocumentGuid
     public string UserName { get; set; } = "";
     public DateTimeOffset CreatedAt { get; set; }
 }
+
+/// <summary>
+/// Model with a [Required] string property, used to verify that
+/// Option B respects [Required] and does not wrap in option&lt;T&gt;.
+/// </summary>
+public class RequiredPerson : Record
+{
+    [System.ComponentModel.DataAnnotations.Required]
+    public string Name { get; set; } = "";
+    public int Age { get; set; }
+}

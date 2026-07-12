@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 using System.Text;
 using AeroDB.Sable.Metadata;
@@ -94,7 +95,7 @@ public class SchemaManager
             {
                 if (properties.TryGetValue(f.Name, out var prop))
                 {
-                    var st = MakeOptionalIfNullable(f.SurrealType, prop, nullability);
+                    var st = MakeOptionalIfNullable(f.SurrealType, prop);
                     // Rewrite enum literals to integers when runtime config overrides source gen default
                     var propType = Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType;
                     if (enumStorage == EnumStorage.AsInteger && propType.IsEnum)
@@ -639,7 +640,7 @@ public class SchemaManager
     {
         var underlyingNullableType = Nullable.GetUnderlyingType(type);
         var isNullable = underlyingNullableType is not null
-            || (property is not null && IsNullableReferenceProperty(property, nullability));
+            || (property is not null && IsSchemaNullable(property));
         var effectiveType = underlyingNullableType ?? type;
 
         // Check for enums first — generate literal type constraints (e.g. "Active" | "Inactive")
@@ -681,23 +682,31 @@ public class SchemaManager
         return string.Join(" | ", literals);
     }
 
-    private static string MakeOptionalIfNullable(string surrealType, PropertyInfo property, NullabilityInfoContext nullability)
+    private static string MakeOptionalIfNullable(string surrealType, PropertyInfo property)
     {
         if (surrealType.StartsWith("option<", StringComparison.Ordinal))
             return surrealType;
 
         var isNullable = Nullable.GetUnderlyingType(property.PropertyType) is not null
-            || IsNullableReferenceProperty(property, nullability);
+            || IsSchemaNullable(property);
         return isNullable ? $"option<{surrealType}>" : surrealType;
     }
 
-    private static bool IsNullableReferenceProperty(PropertyInfo property, NullabilityInfoContext? nullability)
+    /// <summary>
+    /// Determines if a property's SurrealDB schema type should be optional.
+    /// Mirrors the source generator's Option B: reference types are nullable at runtime
+    /// unless [Required] explicitly opts out. NRT annotations (string? vs string) are
+    /// compile-time hints only and do not affect schema generation.
+    /// </summary>
+    private static bool IsSchemaNullable(PropertyInfo property)
     {
         if (property.PropertyType.IsValueType)
             return false;
 
-        var context = nullability ?? new NullabilityInfoContext();
-        return context.Create(property).WriteState == NullabilityState.Nullable;
+        if (property.GetCustomAttributes<RequiredAttribute>().Any())
+            return false;
+
+        return true;
     }
 
     internal static string Snake(string name)
