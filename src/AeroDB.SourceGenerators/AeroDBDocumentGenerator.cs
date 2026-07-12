@@ -440,6 +440,10 @@ public class AeroDBDocumentGenerator : IIncrementalGenerator
     private static string GetRequiredSurrealType(ITypeSymbol type)
     {
         var name = type.ToDisplayString();
+        // Nullable reference types (e.g., string?) display with a trailing '?' even
+        // though they are not Nullable<T>. Strip the annotation for type-mapping.
+        if (name.EndsWith("?") && !type.IsValueType)
+            name = name.Substring(0, name.Length - 1);
         return name switch
         {
             "AeroDB.Sable.GeometryPoint" or "global::AeroDB.Sable.GeometryPoint" or "GeometryPoint" => "geometry",
@@ -471,7 +475,18 @@ public class AeroDBDocumentGenerator : IIncrementalGenerator
         if (GetNullableUnderlyingType(property.Type) is not null)
             return true;
 
-        return !property.Type.IsValueType && property.NullableAnnotation == NullableAnnotation.Annotated;
+        // Option B: reference types are nullable by default in C# — they can always be null at runtime.
+        // Only emit a non-nullable SurrealDB TYPE (without option<>) when [Required] is explicitly present.
+        if (!property.Type.IsValueType)
+            return !HasRequiredAttribute(property);
+
+        return false; // value types are never nullable by default
+    }
+
+    private static bool HasRequiredAttribute(IPropertySymbol property)
+    {
+        return property.GetAttributes().Any(a =>
+            a.AttributeClass?.ToDisplayString() == "System.ComponentModel.DataAnnotations.RequiredAttribute");
     }
 
     private static ITypeSymbol? GetNullableUnderlyingType(ITypeSymbol type)

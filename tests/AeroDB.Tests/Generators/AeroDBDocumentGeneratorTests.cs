@@ -223,12 +223,13 @@ public class DocumentWithProps : SurrealDb.Net.Models.Record
         code.ShouldContain("Tags");
 
         // Verify Surreal type mappings
-        code.ShouldContain("\"string\"");
+        // Option B: reference types without [Required] emit option<T>
+        code.ShouldContain("\"option<string>\"");
         code.ShouldContain("\"int\"");
         code.ShouldContain("\"datetime\"");
         code.ShouldContain("\"float\"");
         code.ShouldContain("\"bool\"");
-        code.ShouldContain("\"array\"");
+        code.ShouldContain("\"option<array>\"");
     }
 
     // ── Test 4: TenantId property detection ─────────────────────────────────
@@ -501,5 +502,144 @@ public class FullEntity : AeroDB.Sable.Entity<long>, AeroDB.Sable.IVersioned
         code.ShouldContain("VersionFieldName => \"Version\"");
         code.ShouldContain("GetTenantId(");
         code.ShouldContain("GetVersion(");
+    }
+
+    // ── Test 14: Reference type string emits option<string> ──────────────────
+
+    [Test]
+    public void Reference_type_string_emits_option_string()
+    {
+        var source = @"
+public class StringDoc : SurrealDb.Net.Models.Record
+{
+    public string Name { get; set; }
+}
+";
+        var result = RunGenerator(source);
+
+        result.GeneratedTrees.Length.ShouldBeGreaterThan(0);
+        var code = result.GeneratedTrees[0].ToString();
+
+        // Option B: non-required reference types get option<T>
+        code.ShouldContain("\"option<string>\"");
+        code.ShouldNotContain("\"string\"");
+    }
+
+    // ── Test 15: [Required] string emits bare string ────────────────────────
+
+    [Test]
+    public void Required_string_attribute_emits_bare_string()
+    {
+        var source = @"
+using System.ComponentModel.DataAnnotations;
+
+public class RequiredDoc : SurrealDb.Net.Models.Record
+{
+    [Required]
+    public string Title { get; set; }
+    public string Description { get; set; }
+}
+";
+        var result = RunGenerator(source);
+
+        result.GeneratedTrees.Length.ShouldBeGreaterThan(0);
+        var code = result.GeneratedTrees[0].ToString();
+
+        // [Required] overrides Option B — emits bare type
+        code.ShouldContain("\"string\"");             // Title has [Required]
+        code.ShouldContain("\"option<string>\"");     // Description does not
+    }
+
+    // ── Test 16: Nullable reference type emits option<string> ───────────────
+
+    [Test]
+    public void Nullable_reference_type_emits_option_string()
+    {
+        var source = @"
+using System;
+
+public class NullableRefDoc : SurrealDb.Net.Models.Record
+{
+    public string? Bio { get; set; }
+}
+";
+        var result = RunGenerator(source);
+
+        result.GeneratedTrees.Length.ShouldBeGreaterThan(0);
+        var code = result.GeneratedTrees[0].ToString();
+
+        code.ShouldContain("\"option<string>\"");
+    }
+
+    // ── Test 17: Value types unchanged by Option B ──────────────────────────
+
+    [Test]
+    public void Value_types_unchanged_by_option_b()
+    {
+        var source = @"
+using System;
+
+public class ValueTypeDoc : SurrealDb.Net.Models.Record
+{
+    public int Count { get; set; }
+    public long Id { get; set; }
+    public bool IsActive { get; set; }
+    public double Price { get; set; }
+    public DateTime CreatedAt { get; set; }
+}
+";
+        var result = RunGenerator(source);
+
+        result.GeneratedTrees.Length.ShouldBeGreaterThan(0);
+        var code = result.GeneratedTrees[0].ToString();
+
+        // Value types are never nullable by default — bare surreal types
+        code.ShouldContain("\"int\"");
+        code.ShouldContain("\"bool\"");
+        code.ShouldContain("\"float\"");
+        code.ShouldContain("\"datetime\"");
+    }
+
+    // ── Test 18: Nullable value type emits option<int> ──────────────────────
+
+    [Test]
+    public void Nullable_value_type_emits_option_int()
+    {
+        var source = @"
+public class NullableValueDoc : SurrealDb.Net.Models.Record
+{
+    public int? Age { get; set; }
+}
+";
+        var result = RunGenerator(source);
+
+        result.GeneratedTrees.Length.ShouldBeGreaterThan(0);
+        var code = result.GeneratedTrees[0].ToString();
+
+        code.ShouldContain("\"option<int>\"");
+    }
+
+    // ── Test 19: [Required] on nullable reference type overrides option ─────
+
+    [Test]
+    public void Required_on_nullable_reference_type_overrides_option()
+    {
+        var source = @"
+using System.ComponentModel.DataAnnotations;
+
+public class RequiredNullableDoc : SurrealDb.Net.Models.Record
+{
+    [Required]
+    public string? Name { get; set; }
+}
+";
+        var result = RunGenerator(source);
+
+        result.GeneratedTrees.Length.ShouldBeGreaterThan(0);
+        var code = result.GeneratedTrees[0].ToString();
+
+        // [Required] overrides both Option B and nullable annotation
+        code.ShouldContain("\"string\"");
+        code.ShouldNotContain("\"option<string>\"");
     }
 }
