@@ -29,8 +29,8 @@ public class AeroDBDocumentGenerator : IIncrementalGenerator
 
             // Find the Record type in SurrealDb.Net and the SableDocument<TId> type in AeroDB.Sable
             var recordType = compilation.GetTypeByMetadataName("SurrealDb.Net.Models.Record");
-            var entityGenericType = compilation.GetTypeByMetadataName("AeroDB.Sable.SableDocument`1");
-            if (recordType is null && entityGenericType is null)
+            var entityInterfaceType = compilation.GetTypeByMetadataName("AeroDB.Sable.ISableDocument`1");
+            if (recordType is null && entityInterfaceType is null)
                 return;
 
             // Optionally find the AeroDBDocumentAttribute — if it's not available
@@ -46,7 +46,7 @@ public class AeroDBDocumentGenerator : IIncrementalGenerator
                 if (type.IsAbstract) continue;
 
                 bool isRecord = recordType is not null && IsRecordSubclass(type, recordType);
-                bool isEntity = entityGenericType is not null && IsEntitySubclass(type, entityGenericType);
+                bool isEntity = entityInterfaceType is not null && IsEntitySubclass(type, entityInterfaceType);
                 if (!isRecord && !isEntity) continue;
 
                 // Check for [AeroDBDocument(SkipGeneration = true)] — opt-out
@@ -70,7 +70,7 @@ public class AeroDBDocumentGenerator : IIncrementalGenerator
             // Generate per-type metadata files
             foreach (var type in validTypes)
             {
-                bool isEntity = entityGenericType is not null && IsEntitySubclass(type, entityGenericType);
+                bool isEntity = entityInterfaceType is not null && IsEntitySubclass(type, entityInterfaceType);
                 var sourceText = GenerateMetadataClass(type, compilation, isEntity);
                 var hintName = $"{type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat.WithGlobalNamespaceStyle(SymbolDisplayGlobalNamespaceStyle.Omitted)).Replace("global::", "").Replace(".", "_")}.Metadata.g.cs";
                 ctx.AddSource(hintName, sourceText);
@@ -113,19 +113,13 @@ public class AeroDBDocumentGenerator : IIncrementalGenerator
     }
 
     /// <summary>
-    /// Checks if <paramref name="type"/> is a subclass of <c>SableDocument&lt;TId&gt;</c>.
+    /// Checks if <paramref name="type"/> implements <c>ISableDocument&lt;TId&gt;</c>.
     /// </summary>
-    private static bool IsEntitySubclass(INamedTypeSymbol type, INamedTypeSymbol entityGenericType)
+    private static bool IsEntitySubclass(INamedTypeSymbol type, INamedTypeSymbol entityInterfaceType)
     {
-        var current = type.BaseType;
-        while (current is not null)
-        {
-            if (current.IsGenericType &&
-                SymbolEqualityComparer.Default.Equals(current.ConstructedFrom, entityGenericType))
-                return true;
-            current = current.BaseType;
-        }
-        return false;
+        return type.AllInterfaces.Any(i =>
+            i.IsGenericType &&
+            SymbolEqualityComparer.Default.Equals(i.ConstructedFrom, entityInterfaceType));
     }
 
     /// <summary>
