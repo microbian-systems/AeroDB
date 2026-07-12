@@ -642,4 +642,97 @@ public class RequiredNullableDoc : SurrealDb.Net.Models.Record
         code.ShouldContain("\"string\"");
         code.ShouldNotContain("\"option<string>\"");
     }
+
+    // ── Test 20: Record subclass collection types map to array ────────────────
+
+    [Test]
+    public void Record_subclass_collection_types_map_to_array()
+    {
+        var source = @"
+using System.Collections.Generic;
+public class RecordWithCollections : SurrealDb.Net.Models.Record
+{
+    public IList<string> StringList { get; set; } = new List<string>();
+    public ICollection<int> IntCollection { get; set; } = new List<int>();
+    public IReadOnlyList<long> LongReadOnlyList { get; set; } = new List<long>();
+    public IReadOnlyCollection<string> StringReadOnlyCollection { get; set; } = new List<string>();
+    public ISet<int> IntSet { get; set; } = new HashSet<int>();
+    public List<string> PlainStringList { get; set; } = new List<string>();
+}
+";
+        var result = RunGenerator(source);
+        result.GeneratedTrees.Length.ShouldBeGreaterThan(0);
+        var code = result.GeneratedTrees[0].ToString();
+        
+        code.ShouldContain("\"option<array>\"");
+    }
+
+    // ── Test 21: SableDocument subclass collection types map to array ─────────
+
+    [Test]
+    public void SableDocument_subclass_collection_types_map_to_array()
+    {
+        var source = @"
+using AeroDB.Sable;
+using System.Collections.Generic;
+public class SableWithCollections : SableDocument<long>
+{
+    public IList<string> StringList { get; set; } = new List<string>();
+    public ICollection<int> IntCollection { get; set; } = new List<int>();
+    public IReadOnlyList<long> LongReadOnlyList { get; set; } = new List<long>();
+    public IReadOnlyCollection<string> StringReadOnlyCollection { get; set; } = new List<string>();
+    public ISet<int> IntSet { get; set; } = new HashSet<int>();
+    public List<string> PlainStringList { get; set; } = new List<string>();
+}
+";
+        var result = RunGenerator(source);
+        result.GeneratedTrees.Length.ShouldBeGreaterThan(0);
+        var code = result.GeneratedTrees[0].ToString();
+        
+        code.ShouldContain("\"option<array>\"");
+    }
+
+    // ── Test 22: ISableDocument implementor collection types map to array ─────
+
+    [Test]
+    public void ISableDocument_implementor_collection_types_map_to_array()
+    {
+        var source = @"
+using AeroDB.Sable;
+using System.Collections.Generic;
+public class InterfaceWithCollections : ISableDocument<long>
+{
+    public long Id { get; set; }
+    public IList<string> StringList { get; set; } = new List<string>();
+    public ICollection<int> IntCollection { get; set; } = new List<int>();
+    public IReadOnlyList<long> LongReadOnlyList { get; set; } = new List<long>();
+    public IReadOnlyCollection<string> StringReadOnlyCollection { get; set; } = new List<string>();
+    public ISet<int> IntSet { get; set; } = new HashSet<int>();
+    public List<string> PlainStringList { get; set; } = new List<string>();
+}
+";
+        var result = RunGenerator(source);
+        result.GeneratedTrees.Length.ShouldBeGreaterThan(0);
+        var code = result.GeneratedTrees[0].ToString();
+        
+        code.ShouldContain("\"option<array>\"");
+    }
+
+    // ── Test 23: Plain POCO with collection types skipped ────────────────────
+
+    [Test]
+    public void Plain_POCO_with_collection_types_skipped()
+    {
+        var source = @"
+using System.Collections.Generic;
+public class PlainPoco
+{
+    public string Name { get; set; }
+    public IList<string> StringList { get; set; } = new List<string>();
+    public ISet<int> IntSet { get; set; } = new HashSet<int>();
+}
+";
+        var result = RunGenerator(source);
+        result.GeneratedTrees.Length.ShouldBe(0);
+    }
 }

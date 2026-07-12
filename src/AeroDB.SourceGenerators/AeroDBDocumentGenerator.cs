@@ -449,7 +449,14 @@ public class AeroDBDocumentGenerator : IIncrementalGenerator
             "System.DateTime" or "System.DateTimeOffset" => "datetime",
             "byte[]" or "System.Byte[]" => "bytes",
             _ when type is IArrayTypeSymbol => "array",
-            _ when type.OriginalDefinition?.ToDisplayString() == "System.Collections.Generic.List<T>" => "array",
+            _ when type.OriginalDefinition?.ToDisplayString() is string gtd && (
+                gtd == "System.Collections.Generic.List<T>" ||
+                gtd == "System.Collections.Generic.IList<T>" ||
+                gtd == "System.Collections.Generic.ICollection<T>" ||
+                gtd == "System.Collections.Generic.IReadOnlyList<T>" ||
+                gtd == "System.Collections.Generic.IReadOnlyCollection<T>" ||
+                gtd == "System.Collections.Generic.ISet<T>"
+            ) => "array",
             _ when type.TypeKind == TypeKind.Enum => BuildEnumLiteralType(type),
             _ => "object"
         };

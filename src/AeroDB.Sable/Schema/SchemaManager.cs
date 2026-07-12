@@ -658,7 +658,14 @@ public class SchemaManager
             effectiveType == typeof(bool) ? "bool" :
             effectiveType == typeof(DateTime) || effectiveType == typeof(DateTimeOffset) ? "datetime" :
             effectiveType == typeof(byte[]) ? "bytes" :
-            effectiveType.IsGenericType && effectiveType.GetGenericTypeDefinition() == typeof(List<>) ? "array" :
+            effectiveType.IsGenericType && effectiveType.GetGenericTypeDefinition() is var gtd && (
+                gtd == typeof(List<>) ||
+                gtd == typeof(IList<>) ||
+                gtd == typeof(ICollection<>) ||
+                gtd == typeof(IReadOnlyList<>) ||
+                gtd == typeof(IReadOnlyCollection<>) ||
+                gtd == typeof(ISet<>)
+            ) ? "array" :
             effectiveType.IsArray ? "array" :
             "object";
 
