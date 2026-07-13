@@ -1,6 +1,7 @@
 using System.Collections.Concurrent;
 using System.Globalization;
 using System.Reflection;
+using System.Text.Json;
 using AeroDB.Sable.Internals.Cbor;
 using AeroDB.Sable.LiveQuery;
 using AeroDB.Sable.Metadata;
@@ -1562,38 +1563,42 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
             System.Collections.IEnumerable enumerable when value is not string => ToSurrealQlArrayLiteral(enumerable),
             byte or sbyte or short or ushort or int or uint or long or ulong or float or double or decimal
                 => ((IFormattable)value).ToString(null, CultureInfo.InvariantCulture),
-            _ => $"'{EscapeSurrealQlString(value.ToString() ?? string.Empty)}'"
+            _ => $"'{EscapeSurrealQlString(JsonSerializer.Serialize(value))}'"
         };
     }
 
     /// <summary>
-    /// Returns <c>true</c> when <paramref name="type"/> is a complex CLR type
-    /// (POCO/DTO/class) that <see cref="ToSurrealQlLiteral"/> cannot inline into
-    /// a SurrealQL content literal. Complex types must take the <c>$data</c>
-    /// parameterized path instead.
+    /// Recursively converts a <see cref="JsonElement"/> to a SurrealQL-compatible
+    /// object literal. Used by the catch-all arm of <see cref="ToSurrealQlLiteral"/>
+    /// to handle arbitrary complex POCOs and DTOs.
     /// </summary>
-    private static bool IsComplexLiteralType(Type type)
+    private static string JsonElementToSurrealQL(JsonElement element) => element.ValueKind switch
     {
-        var effective = Nullable.GetUnderlyingType(type) ?? type;
+        JsonValueKind.Object => "{ "
+            + string.Join(", ",
+                element.EnumerateObject()
+                    .Select(p => $"{EscapeSurrealQlKey(p.Name)}: {JsonElementToSurrealQL(p.Value)}"))
+            + " }",
+        JsonValueKind.Array => "[ "
+            + string.Join(", ", element.EnumerateArray().Select(JsonElementToSurrealQL))
+            + " ]",
+        JsonValueKind.String => $"'{EscapeSurrealQlString(element.GetString()!)}'",
+        JsonValueKind.Number => element.GetRawText(),
+        JsonValueKind.True => "true",
+        JsonValueKind.False => "false",
+        JsonValueKind.Null => "NONE",
+        _ => "NONE"
+    };
 
-        // Value types and well-known types that ToSurrealQlLiteral handles directly
-        if (effective == typeof(string) || effective == typeof(char)) return false;
-        if (effective == typeof(bool)) return false;
-        if (effective == typeof(Guid)) return false;
-        if (effective == typeof(DateTime) || effective == typeof(DateTimeOffset)) return false;
-        if (effective == typeof(decimal)) return false;
-        if (effective.IsPrimitive) return false;
-        if (effective.IsEnum) return false;
-
-        // SurrealDB geometry types
-        if (effective == typeof(GeometryPoint) || effective == typeof(GeometryPolygon)) return false;
-
-        // Collections are handled by the IDictionary / IEnumerable switch arms
-        if (typeof(System.Collections.IDictionary).IsAssignableFrom(effective)) return false;
-        if (typeof(System.Collections.IEnumerable).IsAssignableFrom(effective)) return false;
-
-        // Anything else is a complex POCO/DTO that cannot be represented inline
-        return true;
+    private static string EscapeSurrealQlKey(string key)
+    {
+        // SurrealQL object keys don't need quoting if they're simple identifiers;
+        // wrap in backticks or quotes when the key contains special characters.
+        foreach (var ch in key)
+        {
+            if (!char.IsLetterOrDigit(ch) && ch != '_') return $"`{key}`";
+        }
+        return key;
     }
 
     private static bool TryFormatRecordLinkLiteral(object value, out string literal)
