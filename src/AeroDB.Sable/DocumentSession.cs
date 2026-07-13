@@ -1518,12 +1518,15 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
 
         var properties = entity.GetType()
             .GetProperties(BindingFlags.Public | BindingFlags.Instance)
-            .Where(p => p.CanRead && p.GetIndexParameters().Length == 0)
+            .Where(p => p is { CanRead: true, CanWrite: true }
+                        && p.GetIndexParameters().Length == 0
+                        && p.GetCustomAttribute<System.Text.Json.Serialization.JsonIgnoreAttribute>() is null)
             .ToArray();
 
-        var fields = new List<string>(properties.Length);
         var mapping = Options.Schema.Mappings.GetValueOrDefault(entity.GetType());
         var identityProperty = mapping?.IdentityProperty ?? "Id";
+
+        var fields = new List<string>(properties.Length);
 
         foreach (var property in properties)
         {
@@ -1561,6 +1564,36 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                 => ((IFormattable)value).ToString(null, CultureInfo.InvariantCulture),
             _ => $"'{EscapeSurrealQlString(value.ToString() ?? string.Empty)}'"
         };
+    }
+
+    /// <summary>
+    /// Returns <c>true</c> when <paramref name="type"/> is a complex CLR type
+    /// (POCO/DTO/class) that <see cref="ToSurrealQlLiteral"/> cannot inline into
+    /// a SurrealQL content literal. Complex types must take the <c>$data</c>
+    /// parameterized path instead.
+    /// </summary>
+    private static bool IsComplexLiteralType(Type type)
+    {
+        var effective = Nullable.GetUnderlyingType(type) ?? type;
+
+        // Value types and well-known types that ToSurrealQlLiteral handles directly
+        if (effective == typeof(string) || effective == typeof(char)) return false;
+        if (effective == typeof(bool)) return false;
+        if (effective == typeof(Guid)) return false;
+        if (effective == typeof(DateTime) || effective == typeof(DateTimeOffset)) return false;
+        if (effective == typeof(decimal)) return false;
+        if (effective.IsPrimitive) return false;
+        if (effective.IsEnum) return false;
+
+        // SurrealDB geometry types
+        if (effective == typeof(GeometryPoint) || effective == typeof(GeometryPolygon)) return false;
+
+        // Collections are handled by the IDictionary / IEnumerable switch arms
+        if (typeof(System.Collections.IDictionary).IsAssignableFrom(effective)) return false;
+        if (typeof(System.Collections.IEnumerable).IsAssignableFrom(effective)) return false;
+
+        // Anything else is a complex POCO/DTO that cannot be represented inline
+        return true;
     }
 
     private static bool TryFormatRecordLinkLiteral(object value, out string literal)

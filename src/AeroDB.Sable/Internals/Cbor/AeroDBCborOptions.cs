@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Dahomey.Cbor;
 using SurrealDb.Net.Internals.Cbor;
 using SurrealDb.Net;
@@ -26,6 +27,10 @@ internal static class AeroDBCborOptions
         options.Registry.ConverterRegistry.RegisterConverter(
             typeof(GeometryPolygon),
             new GeometryPolygonSurrogateConverter());
+
+        options.Registry.ConverterRegistry.RegisterConverter(
+            typeof(JsonElement),
+            new JsonElementCborConverter());
     }
 
     public static void ConfigureClient(ISurrealDbClient client)
