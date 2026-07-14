@@ -5,6 +5,8 @@ using AeroDB.Sable.Metadata;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using SurrealDb.Net;
+using SurrealDb.Net.Models;
+using SurrealDb.Net.Models.Response;
 
 namespace AeroDB.Sable;
 
@@ -41,10 +43,10 @@ public class SchemaManager
         var schemaMode = typeof(T).IsSealed ? SchemaMode.Strict : SchemaMode.Flexible;
         await session.RawQuery($"DEFINE TABLE {tableName} {GetSchemaSurql(schemaMode)};", null, ct).ConfigureAwait(false);
 
-        foreach (var (name, surrealType) in GetFieldSchemas(typeof(T), enumStorage: enumStorage))
+        foreach (var (name, surrealType, isFlexible) in GetFieldSchemas(typeof(T), enumStorage: enumStorage))
         {
-            var fieldSurql = $"DEFINE FIELD {name} ON TABLE {tableName} TYPE {surrealType};";
-            await session.RawQuery(fieldSurql, null, ct).ConfigureAwait(false);
+            foreach (var fieldSurql in BuildFieldDefinitions(name, tableName, surrealType, isFlexible))
+                await session.RawQuery(fieldSurql, null, ct).ConfigureAwait(false);
         }
     }
 
@@ -59,10 +61,10 @@ public class SchemaManager
         _logger.LogDebug("Ensuring document schema for table {Table} with mode {Mode}", tableName, mode);
         await session.RawQuery($"DEFINE TABLE {tableName} {GetSchemaSurql(mode)};", null, ct).ConfigureAwait(false);
 
-        foreach (var (name, surrealType) in GetFieldSchemas(typeof(T), enumStorage: enumStorage))
+        foreach (var (name, surrealType, isFlexible) in GetFieldSchemas(typeof(T), enumStorage: enumStorage))
         {
-            var fieldSurql = $"DEFINE FIELD {name} ON TABLE {tableName} TYPE {surrealType};";
-            await session.RawQuery(fieldSurql, null, ct).ConfigureAwait(false);
+            foreach (var fieldSurql in BuildFieldDefinitions(name, tableName, surrealType, isFlexible))
+                await session.RawQuery(fieldSurql, null, ct).ConfigureAwait(false);
         }
     }
 
@@ -73,7 +75,7 @@ public class SchemaManager
     /// Returns the list of field schemas for the given type, using generated metadata
     /// when available, falling back to runtime reflection if not.
     /// </summary>
-    private static IEnumerable<(string Name, string SurrealType)> GetFieldSchemas(
+    private static IEnumerable<(string Name, string SurrealType, bool IsFlexible)> GetFieldSchemas(
         Type type,
         SchemaOptions? schema = null,
         IReadOnlySet<string>? excludedClrNames = null,
@@ -104,11 +106,11 @@ public class SchemaManager
                         var isOpt = st.StartsWith("option<", StringComparison.Ordinal);
                         st = isOpt ? $"option<{literalType}>" : literalType;
                     }
-                    yield return (MetadataDispatch.GetFieldName(type, f.Name, schema), st);
+                    yield return (MetadataDispatch.GetFieldName(type, f.Name, schema), st, f.IsFlexible);
                 }
                 else
                 {
-                    yield return (MetadataDispatch.GetFieldName(type, f.Name, schema), f.SurrealType);
+                    yield return (MetadataDispatch.GetFieldName(type, f.Name, schema), f.SurrealType, f.IsFlexible);
                 }
             }
 
@@ -118,7 +120,27 @@ public class SchemaManager
         // Fallback: runtime reflection (legacy path for non-generated types)
         foreach (var prop in properties.Values)
         {
-            yield return (MetadataDispatch.GetFieldName(type, prop.Name, schema), GetSurrealType(prop.PropertyType, prop, nullability, enumStorage));
+            yield return (
+                MetadataDispatch.GetFieldName(type, prop.Name, schema),
+                GetSurrealType(prop.PropertyType, prop, nullability, enumStorage),
+                IsFlexibleEmbeddedType(prop.PropertyType));
+        }
+    }
+
+    private static IEnumerable<string> BuildFieldDefinitions(
+        string fieldName,
+        string tableName,
+        string surrealType,
+        bool isFlexible)
+    {
+        yield return $"DEFINE FIELD {fieldName} ON TABLE {tableName} TYPE {surrealType}{(isFlexible ? " FLEXIBLE" : string.Empty)};";
+
+        // SurrealDB creates an implicit array item field for array<object>. In v3,
+        // flexibility on the array field does not propagate to that item field, so
+        // overwrite it explicitly to admit arbitrary properties in each embedded object.
+        if (isFlexible && surrealType.Contains("array<object>", StringComparison.Ordinal))
+        {
+            yield return $"DEFINE FIELD OVERWRITE {fieldName}.* ON TABLE {tableName} TYPE object FLEXIBLE;";
         }
     }
 
@@ -138,11 +160,11 @@ public class SchemaManager
         await session.RawQuery("DEFINE FIELD data_binary ON TABLE mt_events TYPE option<bytes>;", null, ct).ConfigureAwait(false);
         await session.RawQuery("DEFINE FIELD headers_json ON TABLE mt_events TYPE option<string>;", null, ct).ConfigureAwait(false);
         await session.RawQuery("DEFINE FIELD created_at ON TABLE mt_events TYPE datetime;", null, ct).ConfigureAwait(false);
-        await session.RawQuery("DEFINE INDEX mt_events_stream_version ON TABLE mt_events COLUMNS stream_id, version UNIQUE;", null, ct).ConfigureAwait(false);
+        await session.RawQuery("DEFINE INDEX OVERWRITE mt_events_stream_version ON TABLE mt_events COLUMNS stream_id, version UNIQUE;", null, ct).ConfigureAwait(false);
         await session.RawQuery("DEFINE TABLE mt_archived_streams SCHEMAFULL;", null, ct).ConfigureAwait(false);
         await session.RawQuery("DEFINE FIELD stream_id ON TABLE mt_archived_streams TYPE string;", null, ct).ConfigureAwait(false);
         await session.RawQuery("DEFINE FIELD archived_at ON TABLE mt_archived_streams TYPE datetime;", null, ct).ConfigureAwait(false);
-        await session.RawQuery("DEFINE INDEX mt_archived_streams_id ON TABLE mt_archived_streams COLUMNS stream_id UNIQUE;", null, ct).ConfigureAwait(false);
+        await session.RawQuery("DEFINE INDEX OVERWRITE mt_archived_streams_id ON TABLE mt_archived_streams COLUMNS stream_id UNIQUE;", null, ct).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -165,7 +187,7 @@ public class SchemaManager
         await session.RawQuery("DEFINE FIELD projection_name ON TABLE mt_projection_progress TYPE string;", null, ct).ConfigureAwait(false);
         await session.RawQuery("DEFINE FIELD last_version ON TABLE mt_projection_progress TYPE int;", null, ct).ConfigureAwait(false);
         await session.RawQuery("DEFINE FIELD last_updated ON TABLE mt_projection_progress TYPE datetime;", null, ct).ConfigureAwait(false);
-        await session.RawQuery("DEFINE INDEX idx_projection_progress_name ON TABLE mt_projection_progress COLUMNS projection_name UNIQUE;", null, ct).ConfigureAwait(false);
+        await session.RawQuery("DEFINE INDEX OVERWRITE idx_projection_progress_name ON TABLE mt_projection_progress COLUMNS projection_name UNIQUE;", null, ct).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -180,6 +202,9 @@ public class SchemaManager
         CancellationToken ct = default)
     {
         var resolvedIndex = ResolveIndexColumns(index, entityType, schemaOptions);
+        if (index.Type == IndexType.FullText)
+            await EnsureAnalyzerExistsAsync(session, index.Analyzer ?? Search.Analyzer.Simple, ct).ConfigureAwait(false);
+
         string surql = index.Type switch
         {
             IndexType.FullText => BuildFullTextIndex(tableName, resolvedIndex),
@@ -191,7 +216,24 @@ public class SchemaManager
 
         _logger.LogDebug("Ensuring index {IndexName} on table {Table} (type: {Type})",
             index.Name, tableName, index.Type);
-        await session.RawQuery(surql, null, ct).ConfigureAwait(false);
+        var response = await session.RawQuery(surql, null, ct).ConfigureAwait(false);
+        ThrowIfSchemaQueryFailed(response, $"create index '{index.Name}' on table '{tableName}'");
+    }
+
+    private static async Task EnsureAnalyzerExistsAsync(
+        ISurrealDbSession session,
+        string analyzer,
+        CancellationToken ct)
+    {
+        var response = await session.RawQuery(
+            "RETURN search::analyze($analyzer, $probe);",
+            new Dictionary<string, object?>
+            {
+                ["probe"] = "aero analyzer validation",
+                ["analyzer"] = analyzer
+            },
+            ct).ConfigureAwait(false);
+        ThrowIfSchemaQueryFailed(response, $"validate analyzer '{analyzer}'");
     }
 
     private static IndexDefinition ResolveIndexColumns(
@@ -228,7 +270,7 @@ public class SchemaManager
     {
         var unique = index.IsUnique ? " UNIQUE" : "";
         var columns = string.Join(", ", index.Columns);
-        return $"DEFINE INDEX {index.Name} ON TABLE {tableName} COLUMNS {columns}{unique};";
+        return $"DEFINE INDEX OVERWRITE {index.Name} ON TABLE {tableName} COLUMNS {columns}{unique};";
     }
 
     private static string BuildFullTextIndex(string tableName, IndexDefinition index)
@@ -236,7 +278,7 @@ public class SchemaManager
         var columns = string.Join(", ", index.Columns);
         var analyzer = index.Analyzer ?? "simple";
         var sb = new StringBuilder();
-        sb.Append($"DEFINE INDEX {index.Name} ON TABLE {tableName} FIELDS {columns} FULLTEXT ANALYZER {analyzer}");
+        sb.Append($"DEFINE INDEX OVERWRITE {index.Name} ON TABLE {tableName} FIELDS {columns} FULLTEXT ANALYZER {analyzer}");
         if (index.Bm25.HasValue)
             sb.Append($" BM25({index.Bm25.Value.K1}, {index.Bm25.Value.B})");
         sb.Append(';');
@@ -248,7 +290,7 @@ public class SchemaManager
         var columns = string.Join(", ", index.Columns);
         var dim = index.VectorDimension ?? 1536;
         var dist = index.VectorDistance ?? Search.Distance.Cosine;
-        return $"DEFINE INDEX {index.Name} ON TABLE {tableName} FIELDS {columns} HNSW DIMENSION {dim} DIST {dist};";
+        return $"DEFINE INDEX OVERWRITE {index.Name} ON TABLE {tableName} FIELDS {columns} HNSW DIMENSION {dim} DIST {dist};";
     }
 
     private static string BuildDiskannIndex(string tableName, IndexDefinition index)
@@ -259,7 +301,7 @@ public class SchemaManager
         var type = index.VectorElementType ?? "F32";
 
         var sb = new StringBuilder();
-        sb.Append($"DEFINE INDEX {index.Name} ON TABLE {tableName} FIELDS {columns} DISKANN DIMENSION {dim} DIST {dist} TYPE {type}");
+        sb.Append($"DEFINE INDEX OVERWRITE {index.Name} ON TABLE {tableName} FIELDS {columns} DISKANN DIMENSION {dim} DIST {dist} TYPE {type}");
 
         if (index.DiskannDegree.HasValue)
             sb.Append($" DEGREE {index.DiskannDegree.Value}");
@@ -294,9 +336,20 @@ public class SchemaManager
         var filters = analyzer.Filters.Length > 0
             ? " FILTERS " + string.Join(", ", analyzer.Filters.Select(f => $"{f}"))
             : "";
-        var surql = $"DEFINE ANALYZER {analyzer.Name} TOKENIZERS {tokenizers}{filters};";
+        var surql = $"DEFINE ANALYZER OVERWRITE {analyzer.Name} TOKENIZERS {tokenizers}{filters};";
         _logger.LogDebug("Ensuring analyzer {Name}", analyzer.Name);
-        await session.RawQuery(surql, null, ct).ConfigureAwait(false);
+        var response = await session.RawQuery(surql, null, ct).ConfigureAwait(false);
+        ThrowIfSchemaQueryFailed(response, $"create analyzer '{analyzer.Name}'");
+    }
+
+    private static void ThrowIfSchemaQueryFailed(SurrealDbResponse response, string operation)
+    {
+        if (!response.HasErrors)
+            return;
+
+        var details = string.Join("; ", response.Errors.Select(error =>
+            error is SurrealDbErrorResult result ? result.Details : error.ToString()));
+        throw new InvalidOperationException($"Failed to {operation}: {details}");
     }
 
     /// <summary>
@@ -325,7 +378,7 @@ public class SchemaManager
     {
         foreach (var field in mapping.Indexes)
         {
-            yield return $"DEFINE INDEX idx_{mapping.TableName}_{field} ON TABLE `{mapping.TableName}` COLUMNS {field};";
+            yield return $"DEFINE INDEX OVERWRITE idx_{mapping.TableName}_{field} ON TABLE `{mapping.TableName}` COLUMNS {field};";
         }
     }
 
@@ -373,7 +426,7 @@ public class SchemaManager
 
         foreach (var field in indexes)
         {
-            var indexSql = $"DEFINE INDEX idx_{tableName}_{field} ON TABLE `{tableName}` COLUMNS {field};";
+            var indexSql = $"DEFINE INDEX OVERWRITE idx_{tableName}_{field} ON TABLE `{tableName}` COLUMNS {field};";
             await session.RawQuery(indexSql, null, ct).ConfigureAwait(false);
         }
     }
@@ -397,14 +450,15 @@ public class SchemaManager
         await session.RawQuery($"DEFINE TABLE {tableName} {GetSchemaSurql(mode)};", null, ct).ConfigureAwait(false);
 
         var relationshipFieldNames = relationshipMappings?
-            .Where(r => r.ClrMemberName is not null)
+            .Where(r => r.StorageKind != RelationshipStorageKind.ScalarForeignKey
+                && r.ClrMemberName is not null)
             .Select(r => r.ClrMemberName!)
             .ToHashSet(StringComparer.Ordinal);
 
-        foreach (var (name, surrealType) in GetFieldSchemas(entityType, schemaOptions, relationshipFieldNames, enumStorage))
+        foreach (var (name, surrealType, isFlexible) in GetFieldSchemas(entityType, schemaOptions, relationshipFieldNames, enumStorage))
         {
-            var fieldSurql = $"DEFINE FIELD {name} ON TABLE {tableName} TYPE {surrealType};";
-            await session.RawQuery(fieldSurql, null, ct).ConfigureAwait(false);
+            foreach (var fieldSurql in BuildFieldDefinitions(name, tableName, surrealType, isFlexible))
+                await session.RawQuery(fieldSurql, null, ct).ConfigureAwait(false);
         }
 
         // Ensure document metadata fields for types implementing IDocumentMetadata
@@ -482,7 +536,7 @@ public class SchemaManager
     {
         var sourceTable = tableName ?? relationship.SourceTableName;
         var indexName = $"uidx_{sourceTable}_{relationship.StorageFieldName}";
-        return $"DEFINE INDEX {indexName} ON TABLE {sourceTable} COLUMNS {relationship.StorageFieldName} UNIQUE;";
+        return $"DEFINE INDEX OVERWRITE {indexName} ON TABLE {sourceTable} COLUMNS {relationship.StorageFieldName} UNIQUE;";
     }
 
     /// <summary>
@@ -524,10 +578,10 @@ public class SchemaManager
         _logger.LogDebug("Ensuring schema for type {Type} with table {Table} and mode {Mode}", typeof(T).Name, tableName, mode);
         await session.RawQuery($"DEFINE TABLE {tableName} {GetSchemaSurql(mode)};", null, ct).ConfigureAwait(false);
 
-        foreach (var (name, surrealType) in GetFieldSchemas(typeof(T)))
+        foreach (var (name, surrealType, isFlexible) in GetFieldSchemas(typeof(T)))
         {
-            var fieldSurql = $"DEFINE FIELD {name} ON TABLE {tableName} TYPE {surrealType};";
-            await session.RawQuery(fieldSurql, null, ct).ConfigureAwait(false);
+            foreach (var fieldSurql in BuildFieldDefinitions(name, tableName, surrealType, isFlexible))
+                await session.RawQuery(fieldSurql, null, ct).ConfigureAwait(false);
         }
     }
 
@@ -666,8 +720,8 @@ public class SchemaManager
                 gtd == typeof(IReadOnlyList<>) ||
                 gtd == typeof(IReadOnlyCollection<>) ||
                 gtd == typeof(ISet<>)
-            ) ? "array" :
-            effectiveType.IsArray ? "array" :
+            ) ? GetArraySurrealType(effectiveType.GetGenericArguments()[0]) :
+            effectiveType.IsArray ? GetArraySurrealType(effectiveType.GetElementType()!) :
             "object";
 
         return isNullable ? $"option<{surrealType}>" : surrealType;
@@ -690,6 +744,47 @@ public class SchemaManager
         var isNullable = Nullable.GetUnderlyingType(property.PropertyType) is not null
             || IsSchemaNullable(property);
         return isNullable ? $"option<{surrealType}>" : surrealType;
+    }
+
+    private static string GetArraySurrealType(Type elementType)
+        => IsFlexibleEmbeddedType(elementType) ? "array<object>" : "array";
+
+    private static bool IsFlexibleEmbeddedType(Type type)
+    {
+        var effectiveType = Nullable.GetUnderlyingType(type) ?? type;
+
+        if (effectiveType == typeof(byte[]))
+            return false;
+
+        if (effectiveType.IsArray)
+            return IsFlexibleEmbeddedType(effectiveType.GetElementType()!);
+
+        if (effectiveType.IsGenericType && effectiveType.GetGenericTypeDefinition() is var genericType && (
+            genericType == typeof(List<>) ||
+            genericType == typeof(IList<>) ||
+            genericType == typeof(ICollection<>) ||
+            genericType == typeof(IReadOnlyList<>) ||
+            genericType == typeof(IReadOnlyCollection<>) ||
+            genericType == typeof(ISet<>)))
+        {
+            return IsFlexibleEmbeddedType(effectiveType.GetGenericArguments()[0]);
+        }
+
+        return effectiveType != typeof(string)
+            && effectiveType != typeof(Guid)
+            && effectiveType != typeof(long)
+            && effectiveType != typeof(int)
+            && effectiveType != typeof(short)
+            && effectiveType != typeof(byte)
+            && effectiveType != typeof(float)
+            && effectiveType != typeof(double)
+            && effectiveType != typeof(decimal)
+            && effectiveType != typeof(bool)
+            && effectiveType != typeof(DateTime)
+            && effectiveType != typeof(DateTimeOffset)
+            && effectiveType != typeof(GeometryPoint)
+            && effectiveType != typeof(GeometryPolygon)
+            && !effectiveType.IsEnum;
     }
 
     /// <summary>

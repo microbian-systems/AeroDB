@@ -16,6 +16,7 @@ public class DocumentStore : IDocumentStore, ISessionFactory
     private ISurrealDbClient? _client;
     private DatabasePerTenantSelector? _tenantSelector;
     private string? _currentTenantId;
+    private readonly SemaphoreSlim _initializationGate = new(1, 1);
     private int _initialized; // 0 = uninitialized, 1 = initializing, 2 = initialized (Interlocked-atomic)
     private bool _disposed;
 
@@ -56,16 +57,15 @@ public class DocumentStore : IDocumentStore, ISessionFactory
         // Fast path: already fully initialized
         if (Volatile.Read(ref _initialized) == 2) return;
 
-        // Attempt to claim initialization
-        if (Interlocked.CompareExchange(ref _initialized, 1, 0) != 0)
-        {
-            // Another thread is already initializing or done
-            // Spin-wait for it (or just return — calls will trigger EnsureInitialized)
-            return;
-        }
-
+        await _initializationGate.WaitAsync(ct).ConfigureAwait(false);
         try
         {
+            // A concurrent caller may have completed initialization while this caller waited.
+            if (Volatile.Read(ref _initialized) == 2) return;
+
+            Interlocked.Exchange(ref _initialized, 1);
+            try
+            {
 
         // DatabasePerTenant: skip connecting to a default database;
         // each tenant gets its own database on first session creation.
@@ -517,12 +517,40 @@ public class DocumentStore : IDocumentStore, ISessionFactory
 
             // Mark fully initialized only after everything succeeds
             Interlocked.Exchange(ref _initialized, 2);
+            }
+            catch
+            {
+                // A failed singleton factory is not retained by Microsoft DI. Release any
+                // partially connected embedded client before a subsequent resolution retries.
+                var failedClient = Interlocked.Exchange(ref _client, null);
+                var failedTenantSelector = _tenantSelector;
+                _tenantSelector = null;
+                _advanced = null;
+                Options.Advanced.SurrealDbClient = null;
+                Options.Advanced.CreateSessionAsync = null;
+
+                try
+                {
+                    if (failedClient is not null)
+                        await failedClient.DisposeAsync().ConfigureAwait(false);
+                    if (failedTenantSelector is not null)
+                        await failedTenantSelector.DisposeAsync().ConfigureAwait(false);
+                }
+                catch (Exception cleanupException)
+                {
+                    _logger.LogWarning(
+                        cleanupException,
+                        "Failed to fully dispose AeroDB resources after initialization failure");
+                }
+
+                // Reset on failure so this store instance can be retried.
+                Interlocked.Exchange(ref _initialized, 0);
+                throw;
+            }
         }
-        catch
+        finally
         {
-            // Reset on failure so retry is possible
-            Interlocked.Exchange(ref _initialized, 0);
-            throw;
+            _initializationGate.Release();
         }
     }
 

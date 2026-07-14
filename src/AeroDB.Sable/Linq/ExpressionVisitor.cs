@@ -433,6 +433,13 @@ namespace AeroDB.Sable;
                 {
                     "Concat" when m.Arguments.Count >= 2
                         => $"string::concat({string.Join(", ", m.Arguments.Select(a => op(a)))})",
+                    "Equals" when m.Arguments.Count == 2
+                        => $"{op(m.Arguments[0])} = {op(m.Arguments[1])}",
+                    "Equals" when m.Arguments.Count == 3
+                        => TranslateStringEquality(
+                            op(m.Arguments[0]),
+                            op(m.Arguments[1]),
+                            m.Arguments[2]),
                     _ => throw new NotSupportedException($"String.{m.Method.Name}")
                 };
             }
@@ -451,6 +458,11 @@ namespace AeroDB.Sable;
                 "Replace" when m.Arguments.Count == 2 => $"string::replace({obj}, {op(m.Arguments[0])}, {op(m.Arguments[1])})",
                 "Substring" when m.Arguments.Count == 1 => $"string::slice({obj}, {op(m.Arguments[0])})",
                 "Substring" when m.Arguments.Count == 2 => $"string::slice({obj}, {op(m.Arguments[0])}, {op(m.Arguments[1])})",
+                "Equals" when m.Arguments.Count == 1 => $"{obj} = {op(m.Arguments[0])}",
+                "Equals" when m.Arguments.Count == 2 => TranslateStringEquality(
+                    obj,
+                    op(m.Arguments[0]),
+                    m.Arguments[1]),
                 _ => throw new NotSupportedException($"String.{m.Method.Name}")
             };
         }
@@ -498,6 +510,25 @@ namespace AeroDB.Sable;
         }
 
         throw new NotSupportedException($"Method {m.Method.Name}");
+    }
+
+    private static string TranslateStringEquality(
+        string left,
+        string right,
+        Expression comparisonExpression)
+    {
+        var comparison = EvaluateCapturedExpression(comparisonExpression);
+        return comparison switch
+        {
+            StringComparison.Ordinal => $"{left} = {right}",
+            StringComparison.OrdinalIgnoreCase =>
+                $"string::lowercase({left}) = string::lowercase({right})",
+            StringComparison stringComparison => throw new NotSupportedException(
+                $"String.Equals with {stringComparison} cannot be translated without changing .NET culture semantics. " +
+                "Use StringComparison.Ordinal or StringComparison.OrdinalIgnoreCase."),
+            _ => throw new NotSupportedException(
+                "String.Equals requires a constant or captured StringComparison value.")
+        };
     }
 
     private string Operand(Expression expr, SurrealCommandBuilder builder) => expr switch

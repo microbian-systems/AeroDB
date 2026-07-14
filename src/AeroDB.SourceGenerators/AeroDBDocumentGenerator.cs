@@ -246,7 +246,10 @@ public class AeroDBDocumentGenerator : IIncrementalGenerator
 
             var surrealType = GetSurrealType(member);
             var escapedType = surrealType.Replace("\"", "\\\"");
-            fields.Add($"            new global::AeroDB.Sable.Metadata.FieldSchema(\"{member.Name}\", \"{escapedType}\", true, true)");
+            var flexibleInitializer = IsFlexibleEmbeddedType(member.Type)
+                ? " { IsFlexible = true }"
+                : string.Empty;
+            fields.Add($"            new global::AeroDB.Sable.Metadata.FieldSchema(\"{member.Name}\", \"{escapedType}\", true, true){flexibleInitializer}");
         }
 
         if (fields.Count > 0)
@@ -448,7 +451,7 @@ public class AeroDBDocumentGenerator : IIncrementalGenerator
             "bool" or "System.Boolean" => "bool",
             "System.DateTime" or "System.DateTimeOffset" => "datetime",
             "byte[]" or "System.Byte[]" => "bytes",
-            _ when type is IArrayTypeSymbol => "array",
+            _ when type is IArrayTypeSymbol array => GetArraySurrealType(array.ElementType),
             _ when type.OriginalDefinition?.ToDisplayString() is string gtd && (
                 gtd == "System.Collections.Generic.List<T>" ||
                 gtd == "System.Collections.Generic.IList<T>" ||
@@ -456,10 +459,40 @@ public class AeroDBDocumentGenerator : IIncrementalGenerator
                 gtd == "System.Collections.Generic.IReadOnlyList<T>" ||
                 gtd == "System.Collections.Generic.IReadOnlyCollection<T>" ||
                 gtd == "System.Collections.Generic.ISet<T>"
-            ) => "array",
+            ) => GetArraySurrealType(((INamedTypeSymbol)type).TypeArguments[0]),
             _ when type.TypeKind == TypeKind.Enum => BuildEnumLiteralType(type),
             _ => "object"
         };
+    }
+
+    private static string GetArraySurrealType(ITypeSymbol elementType)
+        => IsFlexibleEmbeddedType(elementType) ? "array<object>" : "array";
+
+    private static bool IsFlexibleEmbeddedType(ITypeSymbol type)
+    {
+        var effectiveType = GetNullableUnderlyingType(type) ?? type;
+
+        if (effectiveType is IArrayTypeSymbol array)
+        {
+            if (array.ElementType.SpecialType == SpecialType.System_Byte)
+                return false;
+
+            return IsFlexibleEmbeddedType(array.ElementType);
+        }
+
+        if (effectiveType is INamedTypeSymbol named && named.IsGenericType &&
+            named.OriginalDefinition.ToDisplayString() is string genericType && (
+                genericType == "System.Collections.Generic.List<T>" ||
+                genericType == "System.Collections.Generic.IList<T>" ||
+                genericType == "System.Collections.Generic.ICollection<T>" ||
+                genericType == "System.Collections.Generic.IReadOnlyList<T>" ||
+                genericType == "System.Collections.Generic.IReadOnlyCollection<T>" ||
+                genericType == "System.Collections.Generic.ISet<T>"))
+        {
+            return IsFlexibleEmbeddedType(named.TypeArguments[0]);
+        }
+
+        return GetRequiredSurrealType(effectiveType) == "object";
     }
 
     private static string BuildEnumLiteralType(ITypeSymbol enumType)

@@ -6,7 +6,18 @@ namespace AeroDB.Sable.Metadata;
 /// Compile-time schema for a document property, emitted by the AeroDB.Sable source generator.
 /// Used by <c>SchemaManager</c> to emit DEFINE FIELD statements without reflection.
 /// </summary>
-public readonly record struct FieldSchema(string Name, string SurrealType, bool CanRead, bool CanWrite);
+public readonly record struct FieldSchema(
+    string Name,
+    string SurrealType,
+    bool CanRead,
+    bool CanWrite)
+{
+    /// <summary>
+    /// Whether this object-shaped field admits undeclared nested properties while
+    /// its containing table remains SCHEMAFULL.
+    /// </summary>
+    public bool IsFlexible { get; init; }
+}
 
 /// <summary>
 /// Generic metadata interface for a document type.

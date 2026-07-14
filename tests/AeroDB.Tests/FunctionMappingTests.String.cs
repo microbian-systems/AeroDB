@@ -247,6 +247,28 @@ public partial class FunctionMappingTests
     }
 
     [Test]
+    public async Task String_StaticEqualsOrdinalIgnoreCase_TranslatesToLowercaseEquality()
+    {
+        Expression<Func<FunctionTestDoc, bool>> expression = x =>
+            string.Equals("home", x.Name, StringComparison.OrdinalIgnoreCase);
+
+        var result = SurrealExpressionVisitor.TranslateCondition(expression.Body);
+
+        result.ShouldBe("string::lowercase('home') = string::lowercase(name)");
+    }
+
+    [Test]
+    public async Task String_InstanceEqualsOrdinalIgnoreCase_TranslatesToLowercaseEquality()
+    {
+        Expression<Func<FunctionTestDoc, bool>> expression = x =>
+            x.Name.Equals("home", StringComparison.OrdinalIgnoreCase);
+
+        var result = SurrealExpressionVisitor.TranslateCondition(expression.Body);
+
+        result.ShouldBe("string::lowercase(name) = string::lowercase('home')");
+    }
+
+    [Test]
     public async Task String_IndexOf_ThrowsNotSupportedException()
     {
         // x => x.Name.IndexOf('x') > 0

@@ -66,7 +66,7 @@ public class AeroDBRoleStoreTests
         var result = await roleStore.UpdateAsync(role, CancellationToken.None);
 
         result.Succeeded.ShouldBeTrue();
-        session.Received(1).Store(role);
+        session.Received(1).Update(role);
         await session.Received(1).SaveChangesAsync(Arg.Any<CancellationToken>());
     }
 
@@ -74,7 +74,7 @@ public class AeroDBRoleStoreTests
     public async Task UpdateAsync_ShouldReturnFailed_WhenExceptionThrown()
     {
         var store = CreateStore(out _, out var session, out var logger);
-        session.When(s => s.Store(Arg.Any<IdentityRole>()))
+        session.When(s => s.Update(Arg.Any<IdentityRole>()))
             .Throw(new InvalidOperationException("DB error"));
         var roleStore = new AeroDBRoleStore<IdentityRole>(store, logger);
         var role = new IdentityRole("admin");

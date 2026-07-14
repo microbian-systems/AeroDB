@@ -54,7 +54,10 @@ namespace AeroDB.Sable
 
 namespace AeroDB.Sable.Metadata
 {
-    public readonly record struct FieldSchema(string Name, string SurrealType, bool CanRead, bool CanWrite);
+    public readonly record struct FieldSchema(string Name, string SurrealType, bool CanRead, bool CanWrite)
+    {
+        public bool IsFlexible { get; init; }
+    }
 
     public interface ITypeMetadata
     {
@@ -230,6 +233,30 @@ public class DocumentWithProps : SurrealDb.Net.Models.Record
         code.ShouldContain("\"float\"");
         code.ShouldContain("\"bool\"");
         code.ShouldContain("\"option<array>\"");
+    }
+
+    [Test]
+    public void Embedded_poco_generates_flexible_object_field_schema()
+    {
+        var source = @"
+public class MediaDocument : AeroDB.Sable.SableDocument<long>
+{
+    public MediaAttribution? Attribution { get; set; }
+}
+
+public sealed class MediaAttribution
+{
+    public string? CreatorName { get; set; }
+}
+";
+
+        var result = RunGenerator(source);
+        var code = result.GeneratedTrees
+            .Single(tree => tree.FilePath.Contains("MediaDocument.Metadata", StringComparison.Ordinal))
+            .ToString();
+
+        code.ShouldContain(
+            "new global::AeroDB.Sable.Metadata.FieldSchema(\"Attribution\", \"option<object>\", true, true) { IsFlexible = true }");
     }
 
     // ── Test 4: TenantId property detection ─────────────────────────────────

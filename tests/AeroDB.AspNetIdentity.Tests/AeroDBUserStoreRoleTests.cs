@@ -3,13 +3,39 @@ using AeroDB.Sable;
 using AeroDB.AspNetIdentity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using NSubstitute;
 using Shouldly;
+using SurrealDb.Embedded.InMemory;
 
 namespace AeroDB.AspNetIdentity.Tests;
 
 public class AeroDBUserStoreRoleTests
 {
+    private sealed class LongKeyUser : IdentityUser<long>;
+
+    private sealed class LongKeyRole : IdentityRole<long>;
+
+    private static async Task<IDocumentStore> CreateEmbeddedLongKeyStoreAsync()
+    {
+        var uniqueId = $"identity_roles_{Guid.NewGuid():N}";
+        var store = Documents.For(options =>
+        {
+            options.ClientFactory = () => new SurrealDbMemoryClient();
+            options.Namespace = uniqueId;
+            options.Database = uniqueId;
+            options.Schema.For<LongKeyUser>()
+                .Identity(user => user.Id)
+                .Field("role_ids", field => field.FieldType = "option<array<string>>");
+            options.Schema.For<LongKeyRole>()
+                .Identity(role => role.Id)
+                .UniqueIndex(role => role.NormalizedName);
+        });
+
+        await store.InitializeAsync();
+        return store;
+    }
+
     private static IDocumentStore CreateStore(
         out IQuerySession querySession,
         out IDocumentSession documentSession,
@@ -44,6 +70,93 @@ public class AeroDBUserStoreRoleTests
     }
 
     // ── AddToRoleAsync ────────────────────────────────────────────────
+
+    [Test]
+    public async Task AddToRoleAsync_ShouldPersistRoleId_WithLongKeysInEmbeddedStore()
+    {
+        await using var store = await CreateEmbeddedLongKeyStoreAsync();
+        var logger = Microsoft.Extensions.Logging.Abstractions.NullLogger<
+            AeroDBUserStore<LongKeyUser, LongKeyRole, long>>.Instance;
+        var userStore = new AeroDBUserStore<LongKeyUser, LongKeyRole, long>(store, logger);
+        var user = new LongKeyUser
+        {
+            Id = 101,
+            UserName = "testuser",
+            NormalizedUserName = "TESTUSER"
+        };
+        var role = new LongKeyRole
+        {
+            Id = 201,
+            Name = "Admin",
+            NormalizedName = "ADMIN"
+        };
+
+        await using (var session = await store.OpenSessionAsync(new SessionOptions(), CancellationToken.None))
+        {
+            session.Store(user);
+            session.Store(role);
+            await session.SaveChangesAsync();
+        }
+
+        await userStore.AddToRoleAsync(user, "ADMIN", CancellationToken.None);
+
+        await using var querySession = await store.QuerySessionAsync();
+        var stored = await querySession.RawQueryAsync<RoleIdsResult>(
+            "SELECT role_ids FROM long_key_user:`101`",
+            parameters: null,
+            CancellationToken.None);
+        stored.Single().RoleIds.ShouldBe(["201"]);
+    }
+
+    [Test]
+    public async Task UserManagerAddToRoleAsync_ShouldPreserveEmbeddedRoleId()
+    {
+        await using var store = await CreateEmbeddedLongKeyStoreAsync();
+        var storeLogger = Microsoft.Extensions.Logging.Abstractions.NullLogger<
+            AeroDBUserStore<LongKeyUser, LongKeyRole, long>>.Instance;
+        var userStore = new AeroDBUserStore<LongKeyUser, LongKeyRole, long>(store, storeLogger);
+        var user = new LongKeyUser
+        {
+            Id = 301,
+            UserName = "manager-user",
+            NormalizedUserName = "MANAGER-USER",
+            SecurityStamp = "security-stamp"
+        };
+        var role = new LongKeyRole
+        {
+            Id = 401,
+            Name = "Admin",
+            NormalizedName = "ADMIN"
+        };
+
+        await using (var session = await store.OpenSessionAsync(new SessionOptions(), CancellationToken.None))
+        {
+            session.Store(user);
+            session.Store(role);
+            await session.SaveChangesAsync();
+        }
+
+        using var userManager = new UserManager<LongKeyUser>(
+            userStore,
+            Options.Create(new IdentityOptions()),
+            new PasswordHasher<LongKeyUser>(),
+            [],
+            [],
+            new UpperInvariantLookupNormalizer(),
+            new IdentityErrorDescriber(),
+            Substitute.For<IServiceProvider>(),
+            Microsoft.Extensions.Logging.Abstractions.NullLogger<UserManager<LongKeyUser>>.Instance);
+
+        var result = await userManager.AddToRoleAsync(user, "Admin");
+
+        result.Succeeded.ShouldBeTrue();
+        await using var querySession = await store.QuerySessionAsync();
+        var stored = await querySession.RawQueryAsync<RoleIdsResult>(
+            "SELECT role_ids FROM long_key_user:`301`",
+            parameters: null,
+            CancellationToken.None);
+        stored.Single().RoleIds.ShouldBe(["401"]);
+    }
 
     [Test]
     public async Task AddToRoleAsync_ShouldAddRole_WhenRoleExistsAndNotAlreadyInRole()

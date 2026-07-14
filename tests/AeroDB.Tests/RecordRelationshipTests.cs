@@ -98,6 +98,27 @@ public sealed class RecordRelationshipTests
     }
 
     [Test]
+    public async Task ScalarFk_Convention_Field_Is_Defined_In_Strict_Schema()
+    {
+        await using var store = Documents.For(options =>
+        {
+            options.ClientFactory = () => new SurrealDb.Embedded.InMemory.SurrealDbMemoryClient();
+            options.Schema.For<ConventionFixtures.Customer>().Identity(x => x.Id);
+            options.Schema.For<ConventionFixtures.Order>().Identity(x => x.Id);
+        });
+        await store.InitializeAsync();
+
+        await using var session = await store.LightweightSessionAsync();
+        session.Store(new ConventionFixtures.Order
+        {
+            Id = 1,
+            CustomerId = 42
+        });
+
+        await session.SaveChangesAsync();
+    }
+
+    [Test]
     public async Task ResolveRelationships_Downgrades_TypeMismatch_To_Scalar_Field()
     {
         var options = SnakeCaseOptions();
@@ -262,7 +283,7 @@ public sealed class RecordRelationshipTests
             .ShouldBe("DEFINE FIELD customer ON TABLE relationship_order TYPE record<relationship_customer> REFERENCE ON DELETE CASCADE;");
 
         SchemaManager.BuildRelationshipIndexStatement(relationship)
-            .ShouldBe("DEFINE INDEX uidx_relationship_order_customer ON TABLE relationship_order COLUMNS customer UNIQUE;");
+            .ShouldBe("DEFINE INDEX OVERWRITE uidx_relationship_order_customer ON TABLE relationship_order COLUMNS customer UNIQUE;");
     }
 
     [Test]

@@ -96,7 +96,7 @@ public class AeroDBUserStoreCoreTests
         var result = await userStore.UpdateAsync(user, CancellationToken.None);
 
         result.Succeeded.ShouldBeTrue();
-        session.Received(1).Store(user);
+        session.Received(1).Update(user);
         await session.Received(1).SaveChangesAsync(Arg.Any<CancellationToken>());
     }
 
@@ -104,7 +104,7 @@ public class AeroDBUserStoreCoreTests
     public async Task UpdateAsync_ShouldReturnFailed_WhenExceptionThrown()
     {
         var store = CreateStore(out _, out var session, out var logger);
-        session.When(s => s.Store(Arg.Any<IdentityUser>()))
+        session.When(s => s.Update(Arg.Any<IdentityUser>()))
             .Throw(new InvalidOperationException("DB error"));
         var userStore = new AeroDBUserStore<IdentityUser, IdentityRole>(store, logger);
         var user = new IdentityUser("testuser");

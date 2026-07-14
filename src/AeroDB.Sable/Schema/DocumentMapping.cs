@@ -72,6 +72,17 @@ public class DocumentMapping<T> : DocumentMapping
     internal override Type EntityType => typeof(T);
     internal override SchemaOptions SchemaOptions { get; }
     internal override List<IndexDefinition> Indices { get; } = [];
+
+    private void AddOrReplaceIndex(IndexDefinition index)
+    {
+        var existingIndex = Indices.FindIndex(candidate =>
+            string.Equals(candidate.Name, index.Name, StringComparison.Ordinal));
+
+        if (existingIndex >= 0)
+            Indices[existingIndex] = index;
+        else
+            Indices.Add(index);
+    }
     private bool _isMultiTenanted;
     internal override bool IsMultiTenanted => _isMultiTenanted;
     private ChangeTrackingOptions? _changeTracking;
@@ -377,7 +388,7 @@ public class DocumentMapping<T> : DocumentMapping
             Type = IndexType.Standard,
             ComputedOptions = opts
         };
-        Indices.Add(idx);
+        AddOrReplaceIndex(idx);
         return this;
     }
 
@@ -482,7 +493,7 @@ public class DocumentMapping<T> : DocumentMapping
             idx.Name = $"{prefix}_{Snake(typeof(T).Name)}_{string.Join("_", columns.Select(Snake))}";
         }
 
-        Indices.Add(idx);
+        AddOrReplaceIndex(idx);
         return this;
     }
 
@@ -527,7 +538,7 @@ public class DocumentMapping<T> : DocumentMapping
             var prefix = idx.IsUnique ? "uidx" : "idx";
             idx.Name = $"{prefix}_{Snake(typeof(T).Name)}_{string.Join("_", columns.Select(Snake))}";
         }
-        Indices.Add(idx);
+        AddOrReplaceIndex(idx);
         return this;
     }
 
@@ -557,7 +568,7 @@ public class DocumentMapping<T> : DocumentMapping
         {
             idx.Name = $"uidx_{Snake(typeof(T).Name)}_{string.Join("_", columns.Select(Snake))}";
         }
-        Indices.Add(idx);
+        AddOrReplaceIndex(idx);
         return this;
     }
 
@@ -574,7 +585,7 @@ public class DocumentMapping<T> : DocumentMapping
         (double K1, double B)? bm25 = null)
     {
         var member = ExtractMember(property);
-        Indices.Add(new IndexDefinition
+        AddOrReplaceIndex(new IndexDefinition
         {
             Columns = [member.Name],
             Name = $"ft_{Snake(typeof(T).Name)}_{Snake(member.Name)}",
@@ -602,7 +613,7 @@ public class DocumentMapping<T> : DocumentMapping
     {
         var columns = new List<string> { ExtractMember(property1).Name, ExtractMember(property2).Name };
         columns.AddRange(additionalProperties.Select(p => ExtractMember(p).Name));
-        Indices.Add(new IndexDefinition
+        AddOrReplaceIndex(new IndexDefinition
         {
             Columns = columns.ToArray(),
             Name = $"ft_{Snake(typeof(T).Name)}_{string.Join("_", columns.Select(Snake))}",
@@ -624,7 +635,7 @@ public class DocumentMapping<T> : DocumentMapping
         string distance = Search.Distance.Cosine)
     {
         var member = ExtractMember(property);
-        Indices.Add(new IndexDefinition
+        AddOrReplaceIndex(new IndexDefinition
         {
             Columns = [member.Name],
             Name = $"hnsw_{Snake(typeof(T).Name)}_{Snake(member.Name)}",
@@ -660,7 +671,7 @@ public class DocumentMapping<T> : DocumentMapping
         bool hashedVector = false)
     {
         var member = ExtractMember(property);
-        Indices.Add(new IndexDefinition
+        AddOrReplaceIndex(new IndexDefinition
         {
             Columns = [member.Name],
             Name = $"diskann_{Snake(typeof(T).Name)}_{Snake(member.Name)}",
@@ -686,7 +697,7 @@ public class DocumentMapping<T> : DocumentMapping
         Expression<Func<T, TProp>> property)
     {
         var member = ExtractMember(property);
-        Indices.Add(new IndexDefinition
+        AddOrReplaceIndex(new IndexDefinition
         {
             Columns = [member.Name],
             Name = $"geo_{Snake(typeof(T).Name)}_{Snake(member.Name)}",
@@ -713,7 +724,7 @@ public class DocumentMapping<T> : DocumentMapping
     {
         foreach (var (fieldName, _) in textFields)
         {
-            Indices.Add(new IndexDefinition
+            AddOrReplaceIndex(new IndexDefinition
             {
                 Columns = [fieldName],
                 Name = $"ft_{Snake(typeof(T).Name)}_{Snake(fieldName)}",
@@ -723,7 +734,7 @@ public class DocumentMapping<T> : DocumentMapping
         }
 
         var vecMember = ExtractMember(vectorField);
-        Indices.Add(new IndexDefinition
+        AddOrReplaceIndex(new IndexDefinition
         {
             Columns = [vecMember.Name],
             Name = $"hnsw_{Snake(typeof(T).Name)}_{Snake(vecMember.Name)}",

@@ -1563,7 +1563,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
             Enum e => Options.EnumStorage == EnumStorage.AsString
                 ? $"'{e}'"
                 : Convert.ToInt64(e, CultureInfo.InvariantCulture).ToString(CultureInfo.InvariantCulture),
-            _ when TryFormatRecordLinkLiteral(value, out var recordLink) => recordLink,
+            _ when TryFormatExplicitRecordLinkLiteral(value, out var recordLink) => recordLink,
             System.Collections.IDictionary dictionary => ToSurrealQlDictionaryLiteral(dictionary),
             System.Collections.IEnumerable enumerable when value is not string => ToSurrealQlArrayLiteral(enumerable),
             byte or sbyte or short or ushort or int or uint or long or ulong or float or double or decimal
@@ -1608,37 +1608,8 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         return key;
     }
 
-    private static bool TryFormatRecordLinkLiteral(object value, out string literal)
-    {
-        literal = "";
-        if (TryFormatRecordIdObject(value, out literal))
-            return true;
-
-        var idProperty = value.GetType().GetProperty("Id", BindingFlags.Public | BindingFlags.Instance);
-        if (idProperty is null)
-            return false;
-
-        var id = idProperty.GetValue(value);
-        if (id is null)
-            return false;
-
-        var idText = id.ToString();
-        if (string.IsNullOrWhiteSpace(idText))
-            return false;
-
-        if (TryFormatRecordIdObject(id, out literal))
-            return true;
-
-        if (idText.Contains(':', StringComparison.Ordinal))
-        {
-            literal = idText;
-            return true;
-        }
-
-        var table = MetadataDispatch.GetTableName(value.GetType());
-        literal = $"{table}:{idText}";
-        return true;
-    }
+    private static bool TryFormatExplicitRecordLinkLiteral(object value, out string literal)
+        => TryFormatRecordIdObject(value, out literal);
 
     private static bool TryFormatRecordIdObject(object value, out string literal)
     {
@@ -1762,7 +1733,8 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
 
     private async Task UpsertRecordAsync(IRecord record, RecordId rid, ISurrealDbSession session, CancellationToken ct)
     {
-        if (TryBuildSurrealQlObjectLiteral(record, out var literal))
+        if (TryBuildRelationshipRecordLiteral(record, out var literal)
+            || TryBuildSurrealQlObjectLiteral(record, out literal))
         {
             var response = await ExecuteRawWriteAsync(
                 session,

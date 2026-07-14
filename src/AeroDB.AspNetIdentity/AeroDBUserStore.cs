@@ -239,7 +239,11 @@ public class AeroDBUserStore<TUser, TRole, TKey> :
         try
         {
             await using var session = await _store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }, cancellationToken);
-            session.Store(user);
+            // Identity managers call UpdateAsync after store-specific mutations such as
+            // AddToRoleAsync. Use Sable's update/merge operation so storage-owned fields
+            // (role_ids, authenticator_key, recovery_codes) are not erased by a full
+            // document replacement from the CLR user model.
+            session.Update(user);
             await session.SaveChangesAsync(cancellationToken);
             _logger.LogDebug("Updated user {UserId}", user.Id);
             return IdentityResult.Success;

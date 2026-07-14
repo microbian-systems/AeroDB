@@ -58,6 +58,31 @@ public class SchemaManagerEdgeTests
     }
 
     [Test]
+    public async Task EnsureIndexAsync_CanBeCalledRepeatedlyForSameIndex()
+    {
+        await using var store = await TestHarness.CreateStoreAsync();
+        var schemaManager = new SchemaManager();
+        var surrealSession = ((InternalSessionBase)await store.OpenSessionAsync(
+            new SessionOptions { Tracking = DocumentTracking.None })).Session;
+
+        await schemaManager.EnsureDocumentSchemaAsync<SchemaTestDoc>(surrealSession);
+
+        var index = new IndexDefinition
+        {
+            Name = "idx_schema_test_doc_name_repeated",
+            Columns = ["Name"],
+            Type = IndexType.Standard
+        };
+
+        await schemaManager.EnsureIndexAsync(surrealSession, "schema_test_doc", index);
+
+        Func<Task> secondEnsure = () =>
+            schemaManager.EnsureIndexAsync(surrealSession, "schema_test_doc", index);
+
+        await secondEnsure.ShouldNotThrowAsync();
+    }
+
+    [Test]
     public async Task EnsureFieldDefinitionsAsync_CreatesField()
     {
         await using var store = await TestHarness.CreateStoreAsync();

@@ -520,7 +520,7 @@ public abstract class InternalSessionBase : IAsyncDisposable
 
             if (j < normalizedRecords.Length)
             {
-                ApplyNormalizedPropertyValues(results[j]!, normalizedRecords[j]);
+                ApplyNormalizedPropertyValues(results[j]!, normalizedRecords[j], jsonOpts);
             }
 
         }
@@ -569,7 +569,10 @@ public abstract class InternalSessionBase : IAsyncDisposable
         return values;
     }
 
-    private static void ApplyNormalizedPropertyValues(object entity, Dictionary<string, object?> normalizedRecord)
+    private static void ApplyNormalizedPropertyValues(
+        object entity,
+        Dictionary<string, object?> normalizedRecord,
+        System.Text.Json.JsonSerializerOptions jsonOptions)
     {
         var properties = entity.GetType()
             .GetProperties(BindingFlags.Public | BindingFlags.Instance)
@@ -588,11 +591,14 @@ public abstract class InternalSessionBase : IAsyncDisposable
             if (!normalizedRecord.TryGetValue(property.Name, out var value))
                 continue;
 
-            property.SetValue(entity, ConvertValueForProperty(property, value));
+            property.SetValue(entity, ConvertValueForProperty(property, value, jsonOptions));
         }
     }
 
-    private static object? ConvertValueForProperty(PropertyInfo property, object? value)
+    private static object? ConvertValueForProperty(
+        PropertyInfo property,
+        object? value,
+        System.Text.Json.JsonSerializerOptions jsonOptions)
     {
         if (value is null)
             return null;
@@ -623,7 +629,7 @@ public abstract class InternalSessionBase : IAsyncDisposable
         }
 
         var json = System.Text.Json.JsonSerializer.Serialize(value);
-        return System.Text.Json.JsonSerializer.Deserialize(json, property.PropertyType);
+        return System.Text.Json.JsonSerializer.Deserialize(json, property.PropertyType, jsonOptions);
     }
 
     private static object? ConvertDeferredPropertyValue(PropertyInfo property, object? value)

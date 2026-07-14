@@ -332,7 +332,7 @@ public class IndexConfigurationTests
         };
 
         var surql = BuildBuilderMethod("BuildStandardIndex", idx, "person");
-        surql.ShouldBe("DEFINE INDEX idx_person_name_email ON TABLE person COLUMNS Name, Email;");
+        surql.ShouldBe("DEFINE INDEX OVERWRITE idx_person_name_email ON TABLE person COLUMNS Name, Email;");
     }
 
     [Test]
@@ -347,7 +347,7 @@ public class IndexConfigurationTests
         };
 
         var surql = BuildBuilderMethod("BuildStandardIndex", idx, "person");
-        surql.ShouldBe("DEFINE INDEX uidx_person_email ON TABLE person COLUMNS Email UNIQUE;");
+        surql.ShouldBe("DEFINE INDEX OVERWRITE uidx_person_email ON TABLE person COLUMNS Email UNIQUE;");
     }
 
     // ──────────────────────────────────────────────
