@@ -16,6 +16,11 @@ namespace AeroDB.Sable;
 /// <summary>The concrete document session implementing <see cref="IDocumentSession"/>. Manages a unit-of-work with automatic change tracking, identity map, event appending, and transactional save via SurrealDB.</summary>
 public class DocumentSession : InternalSessionBase, IDocumentSession
 {
+    private static readonly JsonSerializerOptions DefaultLiteralSerializerOptions = new()
+    {
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+    };
+
     private ILogger<DocumentSession> _baseLogger;
     private Microsoft.Extensions.Logging.ILogger? _loggerOverride;
     private readonly UnitOfWork _unitOfWork = new();
@@ -1563,7 +1568,9 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
             System.Collections.IEnumerable enumerable when value is not string => ToSurrealQlArrayLiteral(enumerable),
             byte or sbyte or short or ushort or int or uint or long or ulong or float or double or decimal
                 => ((IFormattable)value).ToString(null, CultureInfo.InvariantCulture),
-            _ => $"'{EscapeSurrealQlString(JsonSerializer.Serialize(value))}'"
+            _ => JsonElementToSurrealQL(JsonSerializer.SerializeToElement(
+                value,
+                Options.SerializerOptions ?? DefaultLiteralSerializerOptions))
         };
     }
 
@@ -2081,10 +2088,13 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
     /// <inheritdoc />
     public async Task<T?> LoadAsync<T>(int id, CancellationToken ct = default) where T : class
     {
+        if (typeof(ISableDocument<int>).IsAssignableFrom(typeof(T)))
+            return await base.LoadAsync<T>(id.ToString(CultureInfo.InvariantCulture), ct).ConfigureAwait(false);
+
         RequestCount++;
         var table = MetadataDispatch.GetTableName(typeof(T));
         var rid = new RecordIdOf<int>(table, id);
-        var strId = id.ToString();
+        var strId = id.ToString(CultureInfo.InvariantCulture);
 
         if (ShouldTrackInIdentityMap(typeof(T))
             && IdentityMap.TryGetValue(typeof(T), out var typeMap)
@@ -2099,10 +2109,13 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
     /// <inheritdoc />
     public async Task<T?> LoadAsync<T>(long id, CancellationToken ct = default) where T : class
     {
+        if (typeof(ISableDocument<long>).IsAssignableFrom(typeof(T)))
+            return await base.LoadAsync<T>(id.ToString(CultureInfo.InvariantCulture), ct).ConfigureAwait(false);
+
         RequestCount++;
         var table = MetadataDispatch.GetTableName(typeof(T));
         var rid = new RecordIdOf<long>(table, id);
-        var strId = id.ToString();
+        var strId = id.ToString(CultureInfo.InvariantCulture);
 
         if (ShouldTrackInIdentityMap(typeof(T))
             && IdentityMap.TryGetValue(typeof(T), out var typeMap)

@@ -1,4 +1,5 @@
 using System.Collections.Concurrent;
+using System.Globalization;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using AeroDB.Sable.Internals.Cbor;
@@ -602,6 +603,24 @@ public abstract class InternalSessionBase : IAsyncDisposable
 
         if (TryConvertDateTimeOffsetValue(propertyType, value, out var dateTimeOffsetValue))
             return dateTimeOffsetValue;
+
+        if (propertyType.IsEnum)
+        {
+            if (value is string enumName
+                && Enum.TryParse(propertyType, enumName, ignoreCase: true, out var namedValue))
+            {
+                return namedValue;
+            }
+
+            if (value is IConvertible)
+            {
+                var underlyingValue = Convert.ChangeType(
+                    value,
+                    Enum.GetUnderlyingType(propertyType),
+                    CultureInfo.InvariantCulture);
+                return Enum.ToObject(propertyType, underlyingValue!);
+            }
+        }
 
         var json = System.Text.Json.JsonSerializer.Serialize(value);
         return System.Text.Json.JsonSerializer.Deserialize(json, property.PropertyType);

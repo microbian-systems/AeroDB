@@ -46,11 +46,59 @@ public class DocumentSessionWriteLiteralTests
             Arg.Any<CancellationToken>());
     }
 
+    [Test]
+    public async Task SaveChangesAsync_WritesNestedPocosAsObjectLiterals()
+    {
+        var client = Substitute.For<ISurrealDbClient>();
+        var surrealSession = Substitute.For<ISurrealDbSession>();
+        surrealSession.RawQuery(
+                Arg.Any<string>(),
+                Arg.Any<IReadOnlyDictionary<string, object?>?>(),
+                Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult(new SurrealDbResponse([])));
+        var session = new DocumentSession(client, surrealSession, new StoreOptions(), DocumentTracking.None);
+        session.Store(new ComplexWriteDocument
+        {
+            Id = "complex-write",
+            Content = new ComplexWriteContent
+            {
+                Title = "Nested",
+                Layout = new ComplexWriteLayout { Columns = 2 }
+            }
+        });
+
+        await session.SaveChangesAsync();
+
+        await surrealSession.Received(1).RawQuery(
+            Arg.Is<string>(surql =>
+                surql.Contains("content: { title: 'Nested', layout: { columns: 2 } }", StringComparison.Ordinal)
+                && !surql.Contains("content: '{", StringComparison.Ordinal)),
+            Arg.Is<IReadOnlyDictionary<string, object?>?>(parameters => parameters == null),
+            Arg.Any<CancellationToken>());
+    }
+
     private sealed class NullableWriteDocument
     {
         public string Id { get; set; } = "";
         public string Name { get; set; } = "";
         public DateTimeOffset? LockoutEnd { get; set; }
         public string[] Tags { get; set; } = [];
+    }
+
+    private sealed class ComplexWriteDocument
+    {
+        public string Id { get; set; } = "";
+        public ComplexWriteContent Content { get; set; } = new();
+    }
+
+    private sealed class ComplexWriteContent
+    {
+        public string Title { get; set; } = "";
+        public ComplexWriteLayout Layout { get; set; } = new();
+    }
+
+    private sealed class ComplexWriteLayout
+    {
+        public int Columns { get; set; }
     }
 }
