@@ -329,8 +329,8 @@ namespace AeroDB.Sable;
         if (TryTranslateLinkedTypedBinary(b, builder, out var linkedTyped))
             return linkedTyped;
 
-        var left = Operand(b.Left, builder);
-        var right = Operand(b.Right, builder);
+        var left = BinaryOperand(b.Left, b.Right, builder);
+        var right = BinaryOperand(b.Right, b.Left, builder);
         var op = b.NodeType switch
         {
             ExpressionType.Equal => "=",
@@ -357,8 +357,8 @@ namespace AeroDB.Sable;
 
     private string TranslateBinary(BinaryExpression b)
     {
-        var left = Operand(b.Left);
-        var right = Operand(b.Right);
+        var left = BinaryOperand(b.Left, b.Right);
+        var right = BinaryOperand(b.Right, b.Left);
         var op = b.NodeType switch
         {
             ExpressionType.Equal => "=",
@@ -541,6 +541,17 @@ namespace AeroDB.Sable;
         _ => TranslateConditionCore(expr, builder)
     };
 
+    private string BinaryOperand(
+        Expression expression,
+        Expression counterpart,
+        SurrealCommandBuilder builder)
+    {
+        if (TryNormalizeInlineEnumConstant(expression, counterpart, out var enumValue))
+            return FormatValue(enumValue, builder);
+
+        return Operand(expression, builder);
+    }
+
     private string Operand(Expression expr) => expr switch
     {
         ConstantExpression c => FormatValue(c.Value),
@@ -550,6 +561,52 @@ namespace AeroDB.Sable;
         UnaryExpression u when u.NodeType == ExpressionType.Convert => Operand(u.Operand),
         _ => TranslateConditionCore(expr)
     };
+
+    private string BinaryOperand(Expression expression, Expression counterpart)
+    {
+        if (TryNormalizeInlineEnumConstant(expression, counterpart, out var enumValue))
+            return FormatValue(enumValue);
+
+        return Operand(expression);
+    }
+
+    /// <summary>
+    /// C# can lower an inline enum comparison such as
+    /// <c>x.Status == Status.Published</c> to a numeric constant in the expression
+    /// tree. Rehydrate that constant from the enum member on the other side so the
+    /// configured <see cref="EnumStorage"/> mode is applied consistently.
+    /// </summary>
+    private static bool TryNormalizeInlineEnumConstant(
+        Expression expression,
+        Expression counterpart,
+        [NotNullWhen(true)] out Enum? enumValue)
+    {
+        enumValue = null;
+        var candidate = StripConvert(expression) ?? expression;
+        if (candidate is not ConstantExpression { Value: not null } constant)
+            return false;
+
+        var enumType = GetExpressionEnumType(counterpart);
+        if (enumType is null)
+            return false;
+
+        enumValue = constant.Value is Enum existing
+            ? existing
+            : (Enum)Enum.ToObject(enumType, constant.Value);
+        return true;
+    }
+
+    private static Type? GetExpressionEnumType(Expression expression)
+    {
+        var candidate = StripConvert(expression) ?? expression;
+        var type = candidate switch
+        {
+            MemberExpression member => GetMemberType(member.Member),
+            _ => Nullable.GetUnderlyingType(candidate.Type) ?? candidate.Type
+        };
+
+        return type?.IsEnum == true ? type : null;
+    }
 
     private string MemberPath(MemberExpression m)
     {

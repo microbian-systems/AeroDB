@@ -60,11 +60,13 @@ public static class PagedListQueryableExtensions
         int pageNumber,
         int pageSize,
         CancellationToken ct = default)
+        where T : class
     {
         if (queryable is not ISurrealDbQueryable<T> sq)
             throw new InvalidOperationException(
                 "ToPagedListAsync is only supported on ISurrealDbQueryable<T>. " +
                 "Use session.Query<T>() to get a queryable.");
-        return await sq.ToPagedListAsync(pageNumber, pageSize, ct).ConfigureAwait(false);
+        return await PagedList<T>.CreateAsync(sq, pageNumber, pageSize, ct)
+            .ConfigureAwait(false);
     }
 }

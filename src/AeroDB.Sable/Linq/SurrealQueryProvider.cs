@@ -150,7 +150,8 @@ public class SurrealQueryProvider : IQueryProvider
             .Trim('`');
     }
 
-    private SurrealExpressionVisitor CreateVisitor() => new(_options.Schema);
+    private SurrealExpressionVisitor CreateVisitor()
+        => new(_options.Schema, _options.EnumStorage);
 
     /// <summary>
     /// Cached check for whether a type implements <see cref="ISoftDeleted"/>.

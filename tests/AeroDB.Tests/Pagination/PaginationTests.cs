@@ -226,6 +226,22 @@ public class PaginationTests
         paged.IsLastPage.ShouldBeFalse();
     }
 
+    [Test]
+    public async Task ToPagedList_from_IQueryable_does_not_redispatch_recursively()
+    {
+        await using var store = await TestHarness.CreateStoreAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
+
+        await SeedPeople(session, 3);
+        IQueryable<Person> query = session.Query<Person>();
+
+        var paged = await AeroDB.Sable.Pagination.PagedListQueryableExtensions
+            .ToPagedListAsync(query, 1, 2);
+
+        paged.Count.ShouldBe(2);
+        paged.TotalItemCount.ShouldBe(3);
+    }
+
     /// <summary>
     /// Page number of 0 should throw <see cref="ArgumentOutOfRangeException"/>.
     /// </summary>

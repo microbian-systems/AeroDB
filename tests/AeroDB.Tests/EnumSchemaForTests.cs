@@ -1,4 +1,5 @@
 using System.Reflection;
+using System.Linq.Expressions;
 using AeroDB.Sable;
 using Shouldly;
 using TUnit.Core;
@@ -84,6 +85,37 @@ public class EnumSchemaForTests
         result.ShouldBe("1");
     }
 
+    [Test]
+    public void SchemaFor_expression_visitor_formats_inline_enum_comparison_as_string()
+    {
+        var options = new StoreOptions { Namespace = "test", Database = "test" };
+        options.Schema.For<SchemaEnumDoc>();
+        Expression<Func<SchemaEnumDoc, bool>> predicate =
+            document => document.Status == SchemaTestStatus.Published;
+        var query = Array.Empty<SchemaEnumDoc>().AsQueryable().Where(predicate);
+
+        var translated = new SurrealExpressionVisitor(options.Schema, options.EnumStorage)
+            .Translate(query.Expression);
+
+        translated.Parameters.Values.ShouldHaveSingleItem().ShouldBe("Published");
+    }
+
+    [Test]
+    public void SchemaFor_expression_visitor_formats_inline_enum_comparison_as_integer()
+    {
+        var options = new StoreOptions { Namespace = "test", Database = "test" };
+        options.Schema.For<SchemaEnumDoc>();
+        options.UseSystemTextJsonForSerialization(EnumStorage.AsInteger);
+        Expression<Func<SchemaEnumDoc, bool>> predicate =
+            document => document.Status == SchemaTestStatus.Published;
+        var query = Array.Empty<SchemaEnumDoc>().AsQueryable().Where(predicate);
+
+        var translated = new SurrealExpressionVisitor(options.Schema, options.EnumStorage)
+            .Translate(query.Expression);
+
+        translated.Parameters.Values.ShouldHaveSingleItem().ShouldBe(1L);
+    }
+
     // ── Integration tests with embedded in-memory SurrealDB ──
     //
     // After the fix, enum properties produce literal type constraints
@@ -116,6 +148,11 @@ public class EnumSchemaForTests
         loaded.ShouldNotBeNull();
         loaded!.Status.ShouldBe(SchemaTestStatus.Published);
         loaded.CreatedBy.ShouldBeNull();
+
+        var queried = await session.Query<SchemaEnumDoc>()
+            .Where(item => item.Status == SchemaTestStatus.Published)
+            .ToListAsync();
+        queried.Select(item => item.Id).ShouldContain(1);
     }
 
     [Test]
@@ -173,5 +210,10 @@ public class EnumSchemaForTests
         loaded.ShouldNotBeNull();
         loaded!.Status.ShouldBe(SchemaTestStatus.Published);
         loaded.CreatedBy.ShouldBeNull();
+
+        var queried = await session.Query<SchemaEnumDoc>()
+            .Where(item => item.Status == SchemaTestStatus.Published)
+            .ToListAsync();
+        queried.Select(item => item.Id).ShouldContain(3);
     }
 }
