@@ -373,6 +373,31 @@ public class IEntityTests
     }
 
     [Test]
+    public async Task EntityLong_LoadAsync_long_selects_the_requested_record()
+    {
+        await using var store = await TestHarness.CreateStoreAsync();
+        long requestedId;
+
+        await using (var writeSession = await store.OpenSessionAsync(
+            new SessionOptions { Tracking = DocumentTracking.None }))
+        {
+            var first = new EntityProduct { Name = "First", Price = 10m };
+            var requested = new EntityProduct { Name = "Requested", Price = 20m };
+            requestedId = requested.Id;
+            writeSession.Store(first);
+            writeSession.Store(requested);
+            await writeSession.SaveChangesAsync();
+        }
+
+        await using var readSession = await store.QuerySessionAsync();
+        var loaded = await readSession.LoadAsync<EntityProduct>(requestedId);
+
+        loaded.ShouldNotBeNull();
+        loaded.Id.ShouldBe(requestedId);
+        loaded.Name.ShouldBe("Requested");
+    }
+
+    [Test]
     public async Task EntityString_LoadAsync_by_id()
     {
         await using var store = await TestHarness.CreateStoreAsync();

@@ -631,10 +631,14 @@ namespace AeroDB.Sable;
             }
 
             var propName = m.Member.Name;
-            // If this parameter's type has a configured identity, emit native "id" key
-            if (_schema?.Mappings.TryGetValue(paramExpr.Type, out var mapping) == true
-                && mapping.IdentityProperty == propName)
-                return "id";
+            // A POCO identity is stored in SurrealDB's native record key. Honor an
+            // explicit identity mapping and the conventional Id property used when
+            // Schema.For<T>() does not call Identity(...).
+            var identityProperty = _schema?.Mappings.TryGetValue(paramExpr.Type, out var mapping) == true
+                ? mapping.IdentityProperty ?? "Id"
+                : "Id";
+            if (identityProperty == propName)
+                return IdentityMemberPath(m.Member);
             return FieldName(paramExpr.Type, propName);
         }
         if (m.Expression is MemberExpression inner)
@@ -885,6 +889,34 @@ namespace AeroDB.Sable;
             FieldInfo field => Nullable.GetUnderlyingType(field.FieldType) ?? field.FieldType,
             _ => null
         };
+
+    private static string IdentityMemberPath(MemberInfo member)
+    {
+        var identityType = GetMemberType(member);
+        if (identityType == typeof(RecordId)
+            || identityType?.IsGenericType == true
+            && identityType.GetGenericTypeDefinition() == typeof(RecordIdOf<>))
+        {
+            return "id";
+        }
+
+        if (identityType == typeof(Guid))
+            return "<uuid> meta::id(id)";
+
+        if (identityType == typeof(byte)
+            || identityType == typeof(sbyte)
+            || identityType == typeof(short)
+            || identityType == typeof(ushort)
+            || identityType == typeof(int)
+            || identityType == typeof(uint)
+            || identityType == typeof(long)
+            || identityType == typeof(ulong))
+        {
+            return "<int> meta::id(id)";
+        }
+
+        return "meta::id(id)";
+    }
 
     private static bool IsDateTimeMember(MemberExpression m)
         => m.Member.DeclaringType == typeof(DateTime) || m.Member.DeclaringType == typeof(DateTimeOffset);
