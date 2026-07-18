@@ -1,0 +1,6 @@
+[agents]
+# Match the currently available local concurrency capacity. Increase only after
+# the host and workspace capacity are confirmed to support it.
+max_threads = 4
+max_depth = 2
+interrupt_message = true
