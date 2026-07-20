@@ -303,6 +303,13 @@ public static class CompiledQueryPlanner
         if (typeof(TOut) == typeof(TDoc) || !typeof(System.Collections.IEnumerable).IsAssignableFrom(typeof(TOut)))
             return null;
 
+        // Only invoke expressions that still produce an IQueryable. Materializing
+        // operators such as ToList execute the dummy provider, whose null session
+        // is intentional because planning must never access the database. Those
+        // expressions are translated directly by SurrealExpressionVisitor below.
+        if (!typeof(IQueryable).IsAssignableFrom(body.Type))
+            return null;
+
         try
         {
             var lambda = Expression.Lambda<Func<ISurrealDbQueryable<TDoc>, TOut>>(body, sourceParameter);
