@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <IsPackable>true</IsPackable>
+    <PackageId>AeroDB.Sable.Configuration</PackageId>
+    <Description>Encrypted .NET configuration provider backed by embedded SurrealDB SurrealKV</Description>
+    <PackageTags>surrealdb configuration encryption surrealkv</PackageTags>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AeroDB.Sable\AeroDB.Sable.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dahomey.Cbor" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" VersionOverride="10.0.9" />
+    <PackageReference Include="SurrealDb.Embedded.SurrealKv" />
+    <PackageReference Include="SurrealDb.Net" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="../../README.md" />
+    <None Include="README.md" Pack="true" PackagePath="/" />
+  </ItemGroup>
+
+</Project>

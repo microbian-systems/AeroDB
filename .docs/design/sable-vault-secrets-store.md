@@ -4,6 +4,8 @@
 > **Do not implement directly from this document.** It preserves early ideas, alternatives,
 > and unresolved assumptions for context. The current proposed direction is
 > [AeroDB.Sable Data Encryption and Vault Architecture](sable-data-encryption-and-vault-architecture.md).
+> The implemented local provider is specified separately by
+> [AeroDB.Sable.Configuration — Embedded Encrypted Configuration Store](sable-embedded-configuration-store.md).
 > **Last updated:** 2026-07-18
 > **Decision log:** See [§ Decision Registry](#decision-registry) for confirmed vs tentative choices.
 

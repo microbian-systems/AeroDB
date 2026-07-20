@@ -1,9 +1,10 @@
 # AeroDB.Sable Data Encryption and Vault Architecture
 
-> **Status:** Architecture accepted; Phase B field encryption and Phase C algorithm, hashing, and rotation slices implemented
+> **Status:** Architecture accepted; Phase B/C and embedded configuration V1 implemented; whole-document Phase D deferred as a TODO; Vault is next
 > **Date:** 2026-07-19
 > **Scope:** Sable document/field encryption first; dedicated Vault service second
 > **Historical context:** [sable-vault-secrets-store.md](sable-vault-secrets-store.md) is brainstorming only
+> **Related implementation:** [sable-embedded-configuration-store.md](sable-embedded-configuration-store.md) defines the separate in-process configuration package
 
 ---
 
@@ -27,6 +28,11 @@ These capabilities are related but are not the same security product:
 The staged design intentionally lets AeroDB deliver useful field encryption
 without pretending that an in-process encryption library has the same trust
 boundary as a dedicated secrets service.
+
+`AeroDB.Sable.Configuration` is a separately packaged, implemented in-process
+SurrealKV configuration provider delivered before the dedicated Vault. It reuses the
+envelope-encryption kernel, but it is not a Vault security boundary and does
+not change the typed-client-first design of the later remote Vault service.
 
 ### 1.1 Current implementation boundary
 
@@ -52,7 +58,8 @@ parameters, and can probe the connected server's capabilities.
 Bulk, patch, batch, compiled-query, live-query, include/fetch, graph,
 projection, search, spatial, time-series, multi-result raw query, snapshot, and
 dirty-tracking paths currently reject encrypted document types before
-persistence or materialization. Whole-document `.Encrypt()` remains Phase D;
+persistence or materialization. Whole-document `.Encrypt()` is a deferred
+Phase D TODO and is not a prerequisite for beginning the Vault service;
 blind-index rewrite is an explicit maintenance operation rather than an
 implicit side effect of a read.
 
@@ -329,7 +336,7 @@ transit-style protect/unprotect API. It does not receive the KEK or DEK.
 | D8 | Sable field encryption is the first implementation slice | Accepted direction | Delivers immediate database-at-rest protection and establishes reusable crypto contracts |
 | D9 | `RandomizedEnvelope` is the only reversible v1 field-encryption strategy; AES-256-GCM is the default and ChaCha20-Poly1305 is an explicit alternative | Accepted/implemented | Both algorithms are sound AEAD choices and share the authenticated-envelope pipeline |
 | D10 | SurrealDB `crypto::*` hashing remains separate from encryption | Accepted/implemented | Hashes are one-way and require different storage/query semantics |
-| D11 | Whole-document `.Encrypt()` follows field encryption, using the same envelope kernel | Proposed | Whole-document mode has a much larger query and persistence compatibility surface |
+| D11 | Whole-document `.Encrypt()` uses the same envelope kernel but is deferred until after the initial Vault delivery unless explicitly reprioritized | Deferred/TODO | Whole-document mode has a much larger query and persistence compatibility surface and is not a prerequisite for a dedicated Vault trust boundary |
 | D12 | Encrypted-query restrictions use analyzer, startup, and runtime enforcement | Accepted/implemented for field encryption | Compile-time diagnostics improve developer experience, while runtime checks cover dynamic configuration |
 | D13 | `[Encrypt]` is an optional Sable-owned mapping attribute and does not inherit ASP.NET Identity personal-data attributes | Proposed | Encryption capability and personal-data classification are different concerns, and Sable core must not depend on ASP.NET Identity |
 | D14 | `[Encrypt]` accepts a Sable reversible-encryption algorithm and defaults to AES-256-GCM; password hashing initially uses an explicit generate/verify service and transparent `[Hash]` persistence remains deferred | Accepted | Hashing is irreversible, and an automatic property transform cannot safely distinguish plaintext from an already encoded hash on a later save |
@@ -1671,7 +1678,10 @@ cache fallback, or bypassed auditing.
 - Add optional blind-index storage, rotation, and explicit equality lookup.
 - Add X.509 and optional Windows DPAPI providers.
 
-### Phase D — Whole-document encryption
+### Phase D — Whole-document encryption (deferred TODO)
+
+This phase is intentionally deferred and does not block Phase E. Resume it
+after the initial Vault delivery unless it is explicitly reprioritized.
 
 - Add `.Encrypt()` mapping.
 - Generate whole-document payload codecs.
@@ -1679,7 +1689,18 @@ cache fallback, or bypassed auditing.
 - Block incompatible domain-field queries and indexes.
 - Add size and memory-pressure tests.
 
-### Phase E — Vault service
+### Embedded configuration package — implemented before Phase E
+
+- Added the separate `AeroDB.Sable.Configuration` package.
+- Added persistent embedded SurrealKV storage with Sable-encrypted values.
+- Added async provisioning/CRUD and a read-only `IConfiguration` provider.
+- Added explicit reload tokens compatible with `IOptionsMonitor`.
+- Added database-path client sharing, Windows file-lock retry, bootstrap
+  validation, and fail-closed key/record binding.
+- Added focused TUnit/Shouldly persistence, encryption, JSON/provider-order,
+  options-monitor, tamper, and failure-path coverage.
+
+### Phase E — Vault service (next planned phase)
 
 - Add Vault domain/storage projects.
 - Add ASP.NET Core minimal API hosting.
@@ -1805,9 +1826,10 @@ The following still require explicit acceptance before their implementation:
 Resolved for the current delivery:
 
 - Field encryption v1 supports `string` and `byte[]`.
-- Whole-document `.Encrypt()` remains the immediately following Phase D. It
-  requires source-generated payload codecs and its own persistence, query,
-  operational-metadata, and memory-pressure conformance surface.
+- Whole-document `.Encrypt()` remains a Phase D TODO but is deferred until
+  after the initial Vault delivery. It requires source-generated payload
+  codecs and its own persistence, query, operational-metadata, and
+  memory-pressure conformance surface.
 5. Which external identity provider/workload identity environment is the first
    Vault deployment target?
 6. Is mTLS an optional alternative to access tokens or an additional
