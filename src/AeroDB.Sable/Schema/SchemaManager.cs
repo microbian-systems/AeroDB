@@ -95,6 +95,9 @@ public class SchemaManager
         {
             foreach (var f in fields)
             {
+                if (excludedClrNames?.Contains(f.Name) == true)
+                    continue;
+
                 if (properties.TryGetValue(f.Name, out var prop))
                 {
                     var encrypted = f.EncryptionAlgorithm is not null

@@ -1,5 +1,6 @@
 <Solution>
   <Project Path="AeroDB.AspNetIdentity/AeroDB.AspNetIdentity.csproj" />
+  <Project Path="AeroDB.Analyzers/AeroDB.Analyzers.csproj" />
   <Project Path="AeroDB.EntityFrameworkCore/AeroDB.EntityFrameworkCore.csproj" />
   <Project Path="AeroDB.ML/AeroDB.ML.csproj" />
   <Project Path="AeroDB.Reactive/AeroDB.Reactive.csproj" />
@@ -14,6 +15,7 @@
     <Project Path="..\samples\WikipediaSearch\WikipediaSearch.csproj" />
   </Folder>
   <Folder Name="/Tests/">
+    <Project Path="../tests/AeroDB.Analyzers.Tests/AeroDB.Analyzers.Tests.csproj" />
     <Project Path="../tests/AeroDB.IntegrationTests/AeroDB.IntegrationTests.csproj" />
     <Project Path="../tests/AeroDB.AspNetIdentity.Tests/AeroDB.AspNetIdentity.Tests.csproj" />
     <Project Path="../tests/AeroDB.Tests/AeroDB.Tests.csproj" />

@@ -492,7 +492,9 @@ public class DocumentStore : IDocumentStore, ISessionFactory
                 if (names.Length == 0 || names.Contains(name))
                 {
                     _logger.LogInformation("Rebuilding projection {ProjectionName}...", name);
-                    await using var rebuildSession = await OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }, ct).ConfigureAwait(false);
+                    await using var rebuildSession = await OpenDefaultSessionAsync(
+                        new SessionOptions { Tracking = DocumentTracking.None },
+                        ct).ConfigureAwait(false);
                     await projection.RebuildAsync(rebuildSession, ct).ConfigureAwait(false);
                     await rebuildSession.SaveChangesAsync(ct).ConfigureAwait(false);
                     _logger.LogInformation("Projection {ProjectionName} rebuilt successfully.", name);
@@ -504,7 +506,9 @@ public class DocumentStore : IDocumentStore, ISessionFactory
         if (Options.InitialData.Count > 0)
         {
             _logger.LogInformation("Running {Count} initial data seeders", Options.InitialData.Count);
-            await using var seedSession = await OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }, ct).ConfigureAwait(false);
+            await using var seedSession = await OpenDefaultSessionAsync(
+                new SessionOptions { Tracking = DocumentTracking.None },
+                ct).ConfigureAwait(false);
 
             foreach (var seeder in Options.InitialData)
             {
@@ -654,17 +658,31 @@ public class DocumentStore : IDocumentStore, ISessionFactory
             return ds;
         }
 
+        return await OpenDefaultSessionAsync(options, ct).ConfigureAwait(false);
+    }
+
+    private async Task<IDocumentSession> OpenDefaultSessionAsync(
+        SessionOptions options,
+        CancellationToken ct)
+    {
         var defaultSession = await Client.CreateSession(ct).ConfigureAwait(false);
-        await defaultSession.Use(Options.Namespace ?? "test", Options.Database ?? "test", ct).ConfigureAwait(false);
-        var ds2 = new DocumentSession(Client, defaultSession, Options, options) { DocumentStore = this };
+        await defaultSession.Use(
+            Options.Namespace ?? "test",
+            Options.Database ?? "test",
+            ct).ConfigureAwait(false);
+        var documentSession = new DocumentSession(Client, defaultSession, Options, options)
+        {
+            DocumentStore = this
+        };
 
         if (options.TenantId is not null)
-            ds2.TenantId = options.TenantId;
-        else if (Options.TenancyStyle == TenancyStyle.Conjoined && Options.DefaultTenantId is not null)
-            ds2.TenantId = Options.DefaultTenantId;
+            documentSession.TenantId = options.TenantId;
+        else if (Options.TenancyStyle == TenancyStyle.Conjoined
+                 && Options.DefaultTenantId is not null)
+            documentSession.TenantId = Options.DefaultTenantId;
 
         _logger.LogInformation("Opened session (tracking={Tracking})", options.Tracking);
-        return ds2;
+        return documentSession;
     }
 
     public async Task<IDocumentSession> LightweightSessionAsync(CancellationToken ct = default)
