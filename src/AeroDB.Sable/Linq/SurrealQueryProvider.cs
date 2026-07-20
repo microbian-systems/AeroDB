@@ -457,6 +457,7 @@ public class SurrealQueryProvider : IQueryProvider
         QueryStatistics? queryStats,
         CancellationToken ct)
     {
+        EncryptedQueryGuard.Validate(expression, _options.Schema);
         var visitor = CreateVisitor();
         var query = visitor.Translate(expression);
         if (string.IsNullOrEmpty(query.TableName))
@@ -506,6 +507,8 @@ public class SurrealQueryProvider : IQueryProvider
 
         var hasIncludes = includeDescriptors is { Count: > 0 };
         var hasIncludeSpecs = includeSpecs is { Count: > 0 };
+        ThrowIfEncryptedIncludeOrFetch<T>(
+            includeDescriptors, includeSpecs, query.FetchFields);
 
         // ── Stats: single-round-trip optimization ──────────────────────────────────
         // When no includes are present, prepend SELECT count() ... to the main query
@@ -532,7 +535,7 @@ public class SurrealQueryProvider : IQueryProvider
                     var countVal = TryExtractCount(statsResponse);
                     if (countVal.HasValue)
                         queryStats.TotalResults = countVal.Value;
-                    var dataResults = DeserializeQueryResults<T>(statsResponse, 1);
+                    var dataResults = await DeserializeQueryResultsAsync<T>(statsResponse, 1, ct).ConfigureAwait(false);
                     await HydrateFetchedRecordLinksAsync(dataResults, query.FetchFields, statsSession, ct).ConfigureAwait(false);
                     if (filterIncludeSpecs is { Count: > 0 } && dataResults is { Count: > 0 })
                         dataResults = ApplyFilterIncludePredicates(dataResults, filterIncludeSpecs);
@@ -687,7 +690,7 @@ public class SurrealQueryProvider : IQueryProvider
 
         if (!response.HasErrors && response.Count > 0)
         {
-            var results = DeserializeQueryResults<T>(response, 0);
+            var results = await DeserializeQueryResultsAsync<T>(response, 0, ct).ConfigureAwait(false);
             await HydrateFetchedRecordLinksAsync(results, query.FetchFields, querySession, ct).ConfigureAwait(false);
             return results;
         }
@@ -703,6 +706,7 @@ public class SurrealQueryProvider : IQueryProvider
         List<FilterIncludeSpec>? filterIncludeSpecs,
         CancellationToken ct)
     {
+        EncryptedQueryGuard.Validate(expression, _options.Schema);
         var visitor = CreateVisitor();
         var query = visitor.Translate(expression);
         if (string.IsNullOrEmpty(query.TableName))
@@ -751,6 +755,8 @@ public class SurrealQueryProvider : IQueryProvider
 
         var hasIncludes = includeDescriptors is { Count: > 0 };
         var hasIncludeSpecs = includeSpecs is { Count: > 0 };
+        ThrowIfEncryptedIncludeOrFetch<T>(
+            includeDescriptors, includeSpecs, query.FetchFields);
 
         string surql;
         if (hasIncludes || hasIncludeSpecs)
@@ -832,7 +838,7 @@ public class SurrealQueryProvider : IQueryProvider
 
         if (!response.HasErrors && response.Count > 0)
         {
-            var raw = DeserializeQueryResults<T>(response, 0);
+            var raw = await DeserializeQueryResultsAsync<T>(response, 0, ct).ConfigureAwait(false);
             if (raw is { Count: > 0 })
             {
                 await HydrateFetchedRecordLinksAsync(raw, query.FetchFields, querySession, ct).ConfigureAwait(false);
@@ -851,6 +857,7 @@ public class SurrealQueryProvider : IQueryProvider
         List<FilterIncludeSpec>? filterIncludeSpecs,
         CancellationToken ct)
     {
+        EncryptedQueryGuard.Validate(expression, _options.Schema);
         var visitor = CreateVisitor();
         var query = visitor.Translate(expression);
         ExtractTable(expression, query);
@@ -895,6 +902,8 @@ public class SurrealQueryProvider : IQueryProvider
 
         var hasIncludes = includeDescriptors is { Count: > 0 };
         var hasIncludeSpecs = includeSpecs is { Count: > 0 };
+        ThrowIfEncryptedIncludeOrFetch<T>(
+            includeDescriptors, includeSpecs, query.FetchFields);
 
         string surql;
         if (hasIncludes || hasIncludeSpecs)
@@ -980,7 +989,7 @@ public class SurrealQueryProvider : IQueryProvider
 
         if (!response.HasErrors && response.Count > 0)
         {
-            var raw = DeserializeQueryResults<T>(response, 0);
+            var raw = await DeserializeQueryResultsAsync<T>(response, 0, ct).ConfigureAwait(false);
             if (raw is { Count: > 0 })
             {
                 await HydrateFetchedRecordLinksAsync(raw, query.FetchFields, querySession, ct).ConfigureAwait(false);
@@ -1165,6 +1174,56 @@ public class SurrealQueryProvider : IQueryProvider
 
         var raw = response.GetValue<List<T>>(index);
         return raw ?? [];
+    }
+
+    private async ValueTask<List<T>> DeserializeQueryResultsAsync<T>(
+        SurrealDbResponse response,
+        int index,
+        CancellationToken cancellationToken)
+    {
+        if (!EncryptedFieldResolver.HasEncryptedFields(typeof(T), _options.Schema))
+            return DeserializeQueryResults<T>(response, index);
+        if (_sessionBase is null)
+        {
+            throw new SableEncryptedOperationNotSupportedException(
+                typeof(T),
+                "encrypted query without a Sable session materializer");
+        }
+
+        var mapping = _options.Schema.Mappings.GetValueOrDefault(typeof(T));
+        var records = CborResultReader.ReadPocoResult(response, index);
+        return await _sessionBase
+            .DeserializePocoFromListAsync<T>(
+                records,
+                mapping?.IdentityProperty ?? "Id",
+                cancellationToken)
+            .ConfigureAwait(false);
+    }
+
+    private void ThrowIfEncryptedIncludeOrFetch<T>(
+        IReadOnlyCollection<SurrealDbQueryable<T>.IncludeDescriptor>? includes,
+        IReadOnlyCollection<IncludeSpec>? includeSpecs,
+        IReadOnlyCollection<string> fetchFields)
+    {
+        if (EncryptedFieldResolver.HasEncryptedFields(typeof(T), _options.Schema)
+            && (includes is { Count: > 0 }
+                || includeSpecs is { Count: > 0 }
+                || fetchFields.Count > 0))
+        {
+            throw new SableEncryptedOperationNotSupportedException(typeof(T), "include/fetch query");
+        }
+
+        var encryptedTarget = (includes?
+                .Select(include => include.IncludeType) ?? [])
+            .Concat(includeSpecs?.Select(include => include.IncludeType) ?? [])
+            .FirstOrDefault(type =>
+                EncryptedFieldResolver.HasEncryptedFields(type, _options.Schema));
+        if (encryptedTarget is not null)
+        {
+            throw new SableEncryptedOperationNotSupportedException(
+                encryptedTarget,
+                "include/fetch target materialization");
+        }
     }
 
     private void PromoteFetchFieldsToIncludeSpecs<T>(
@@ -1619,6 +1678,7 @@ public class SurrealQueryProvider : IQueryProvider
 
     public async Task<decimal> AggregateAsync<T>(Expression expression, string fieldName, string function, CancellationToken ct = default)
     {
+        EncryptedQueryGuard.Validate(expression, _options.Schema);
         var visitor = CreateVisitor();
         var viewName = ExtractViewName(expression);
         visitor.ViewName = viewName;
@@ -1655,6 +1715,7 @@ public class SurrealQueryProvider : IQueryProvider
 
     public async Task<int> CountAsync(Expression expression, CancellationToken ct = default)
     {
+        EncryptedQueryGuard.Validate(expression, _options.Schema);
         var visitor = CreateVisitor();
         var viewName = ExtractViewName(expression);
         visitor.ViewName = viewName;
@@ -1703,6 +1764,7 @@ public class SurrealQueryProvider : IQueryProvider
         Expression sourceExpression,
         CancellationToken ct) where T : class
     {
+        EncryptedQueryGuard.Validate(sourceExpression, _options.Schema);
         var visitor = new SurrealExpressionVisitor(null, _options.EnumStorage);
         var viewName = ExtractViewName(sourceExpression);
         visitor.ViewName = viewName;
@@ -1739,6 +1801,7 @@ public class SurrealQueryProvider : IQueryProvider
 
     public async Task<bool> AnyAsync(Expression expression, CancellationToken ct = default)
     {
+        EncryptedQueryGuard.Validate(expression, _options.Schema);
         var visitor = CreateVisitor();
         var viewName = ExtractViewName(expression);
         visitor.ViewName = viewName;
@@ -1778,6 +1841,7 @@ public class SurrealQueryProvider : IQueryProvider
     /// </summary>
     public string ToCommand(Expression expression)
     {
+        EncryptedQueryGuard.Validate(expression, _options.Schema);
         var visitor = CreateVisitor();
         var query = visitor.Translate(expression);
         if (string.IsNullOrEmpty(query.TableName))

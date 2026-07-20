@@ -50,6 +50,37 @@ namespace AeroDB.Sable
 
     [AttributeUsage(AttributeTargets.Property)]
     public class VersionAttribute : Attribute { }
+
+    public enum EncryptionAlgorithm
+    {
+        Aes256Gcm = 1,
+        ChaCha20Poly1305 = 2
+    }
+
+    public enum BlindIndexAlgorithm
+    {
+        HmacSha256 = 1
+    }
+
+    public enum BlindIndexNormalizer
+    {
+        UsSocialSecurityNumberV1 = 1
+    }
+
+    [AttributeUsage(AttributeTargets.Property)]
+    public sealed class EncryptAttribute : Attribute
+    {
+        public EncryptAttribute() { }
+        public EncryptAttribute(EncryptionAlgorithm algorithm) { }
+    }
+
+    [AttributeUsage(AttributeTargets.Property)]
+    public sealed class BlindIndexAttribute : Attribute
+    {
+        public BlindIndexAlgorithm Algorithm { get; set; } = BlindIndexAlgorithm.HmacSha256;
+        public BlindIndexNormalizer Normalizer { get; set; } = BlindIndexNormalizer.UsSocialSecurityNumberV1;
+        public string? StorageFieldName { get; set; }
+    }
 }
 
 namespace AeroDB.Sable.Metadata
@@ -57,7 +88,23 @@ namespace AeroDB.Sable.Metadata
     public readonly record struct FieldSchema(string Name, string SurrealType, bool CanRead, bool CanWrite)
     {
         public bool IsFlexible { get; init; }
+        public AeroDB.Sable.EncryptionAlgorithm? EncryptionAlgorithm { get; init; }
     }
+
+    public sealed record EncryptedFieldDescriptor(
+        string PropertyName,
+        Type ClrType,
+        string CodecId,
+        AeroDB.Sable.EncryptionAlgorithm Algorithm,
+        Func<object, object?> GetValue,
+        Action<object, object?> SetValue);
+
+    public sealed record BlindIndexDescriptor(
+        string PropertyName,
+        AeroDB.Sable.BlindIndexAlgorithm Algorithm,
+        AeroDB.Sable.BlindIndexNormalizer Normalizer,
+        string? StorageFieldName,
+        Func<object, string?> GetValue);
 
     public interface ITypeMetadata
     {
@@ -71,6 +118,8 @@ namespace AeroDB.Sable.Metadata
         Action<object, long>? SetVersionAccessor { get; }
         Func<object, string?>? GetRecordIdAccessor { get; }
         IReadOnlyList<FieldSchema>? Fields { get; }
+        IReadOnlyList<EncryptedFieldDescriptor>? EncryptedFields { get; }
+        IReadOnlyList<BlindIndexDescriptor>? BlindIndexes { get; }
     }
 
     public interface ITypeMetadata<T> : ITypeMetadata
@@ -106,21 +155,25 @@ namespace AeroDB.Sable.Metadata
         // Ensure SurrealDB assemblies are loaded into the AppDomain
         _ = typeof(SurrealDb.Net.Models.Record);
         _ = typeof(SurrealDb.Net.Models.RecordIdOf<string>);
+        _ = typeof(System.ComponentModel.DataAnnotations.RequiredAttribute);
 
         var allSources = sources.Prepend(AeroDBTypes).ToArray();
         var syntaxTrees = allSources
             .Select(s => CSharpSyntaxTree.ParseText(s, new CSharpParseOptions(LanguageVersion.Latest)))
             .ToArray();
 
-        var references = AppDomain.CurrentDomain.GetAssemblies()
+        var referencePaths = AppDomain.CurrentDomain.GetAssemblies()
             .Where(a => !a.IsDynamic && !string.IsNullOrEmpty(a.Location))
             .Where(a =>
             {
                 var name = a.GetName().Name;
                 return name != "AeroDB.Sable" && name != "AeroDB.Sable.SourceGenerators";
             })
-            .GroupBy(a => a.Location)
-            .Select(g => MetadataReference.CreateFromFile(g.Key))
+            .Select(a => a.Location)
+            .Append(typeof(System.ComponentModel.DataAnnotations.RequiredAttribute).Assembly.Location)
+            .Distinct(StringComparer.OrdinalIgnoreCase);
+        var references = referencePaths
+            .Select(path => MetadataReference.CreateFromFile(path))
             .Cast<MetadataReference>()
             .ToArray();
 
@@ -233,6 +286,101 @@ public class DocumentWithProps : SurrealDb.Net.Models.Record
         code.ShouldContain("\"float\"");
         code.ShouldContain("\"bool\"");
         code.ShouldContain("\"option<array>\"");
+    }
+
+    [Test]
+    public void Encrypt_attribute_generates_envelope_schema_and_typed_accessors()
+    {
+        var source = @"
+public class ProtectedDocument : AeroDB.Sable.SableDocument<long>
+{
+    [AeroDB.Sable.Encrypt]
+    public string Secret { get; set; } = """";
+
+    [AeroDB.Sable.Encrypt(AeroDB.Sable.EncryptionAlgorithm.Aes256Gcm)]
+    public byte[] Payload { get; set; } = System.Array.Empty<byte>();
+}
+";
+
+        var result = RunGenerator(source);
+        var code = result.GeneratedTrees
+            .Single(tree => tree.FilePath.Contains("ProtectedDocument.Metadata", StringComparison.Ordinal))
+            .ToString();
+
+        code.ShouldContain(
+            "FieldSchema(\"Secret\", \"option<object>\", true, true) { IsFlexible = true, EncryptionAlgorithm = global::AeroDB.Sable.EncryptionAlgorithm.Aes256Gcm }");
+        code.ShouldContain("\"utf8-string-v1\"");
+        code.ShouldContain("\"bytes-v1\"");
+        code.ShouldContain("EncryptedFieldDescriptor");
+        code.ShouldContain("obj => ((global::ProtectedDocument)obj).Secret");
+    }
+
+    [Test]
+    public void Unsupported_encrypt_type_still_generates_fail_closed_metadata()
+    {
+        var source = @"
+public class InvalidProtectedDocument : AeroDB.Sable.SableDocument<long>
+{
+    [AeroDB.Sable.Encrypt]
+    public int SecretNumber { get; set; }
+}
+";
+
+        var result = RunGenerator(source);
+        var code = result.GeneratedTrees
+            .Single(tree => tree.FilePath.Contains("InvalidProtectedDocument.Metadata", StringComparison.Ordinal))
+            .ToString();
+
+        code.ShouldContain("\"unsupported-v1\"");
+        code.ShouldContain("EncryptedFieldDescriptor");
+        code.ShouldContain("EncryptionAlgorithm.Aes256Gcm");
+    }
+
+    [Test]
+    public void Encrypt_attribute_on_identity_still_generates_fail_closed_metadata()
+    {
+        var source = @"
+public sealed class InvalidEncryptedIdentity : AeroDB.Sable.ISableDocument<string>
+{
+    [AeroDB.Sable.Encrypt]
+    public string Id { get; set; } = """";
+}
+";
+
+        var result = RunGenerator(source);
+        var code = result.GeneratedTrees
+            .Single(tree => tree.FilePath.Contains(
+                "InvalidEncryptedIdentity.Metadata",
+                StringComparison.Ordinal))
+            .ToString();
+
+        code.ShouldContain(
+            "EncryptedFieldDescriptor(\"Id\", typeof(string), \"utf8-string-v1\"");
+        code.ShouldContain("GetRecordIdAccessor");
+    }
+
+    [Test]
+    public void Blind_index_attribute_generates_keyed_lookup_metadata()
+    {
+        var source = @"
+public class BlindIndexedDocument : AeroDB.Sable.SableDocument<long>
+{
+    [AeroDB.Sable.Encrypt]
+    [AeroDB.Sable.BlindIndex(StorageFieldName = ""ssn_lookup"")]
+    public string SocialSecurityNumber { get; set; } = """";
+}
+";
+
+        var result = RunGenerator(source);
+        var code = result.GeneratedTrees
+            .Single(tree => tree.FilePath.Contains("BlindIndexedDocument.Metadata", StringComparison.Ordinal))
+            .ToString();
+
+        code.ShouldContain("BlindIndexDescriptor");
+        code.ShouldContain("BlindIndexAlgorithm.HmacSha256");
+        code.ShouldContain("BlindIndexNormalizer.UsSocialSecurityNumberV1");
+        code.ShouldContain("\"ssn_lookup\"");
+        code.ShouldContain("obj => (string?)(object?)((global::BlindIndexedDocument)obj).SocialSecurityNumber");
     }
 
     [Test]

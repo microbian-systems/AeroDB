@@ -23,6 +23,11 @@ public class PatchExpression<T> : IPatchExpression<T>, IDeferredPatch where T : 
 
     internal PatchExpression(IDocumentSession session, string recordId)
     {
+        if (session is DocumentSession documentSession
+            && EncryptedFieldResolver.HasEncryptedFields(typeof(T), documentSession.StoreOptions.Schema))
+        {
+            throw new SableEncryptedOperationNotSupportedException(typeof(T), "patch");
+        }
         _session = session;
         _recordId = recordId;
         var storeOptions = ((InternalSessionBase)session).StoreOptions;

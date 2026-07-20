@@ -29,6 +29,8 @@ public abstract class DocumentMapping
     /// <summary>Custom field definitions for this document type. Overridden in generic subclass.</summary>
     internal virtual IReadOnlyList<FieldDefinition> GetFieldDefinitions() => [];
     internal virtual IReadOnlyList<RelationshipMapping> GetRelationshipMappings() => [];
+    internal virtual IReadOnlyList<Metadata.EncryptedFieldDescriptor> GetEncryptedFields() => [];
+    internal virtual IReadOnlyList<Metadata.BlindIndexDescriptor> GetBlindIndexes() => [];
 
     /// <summary>Multi-tenancy style for this document type.</summary>
     public TenancyStyle TenancyStyle { get; set; }
@@ -100,6 +102,11 @@ public class DocumentMapping<T> : DocumentMapping
     private readonly List<FieldDefinition> _fieldDefinitions = [];
     private readonly Dictionary<string, string> _fieldNameOverrides = new(StringComparer.Ordinal);
     private readonly List<RelationshipMapping> _relationshipMappings = [];
+    private readonly List<Metadata.EncryptedFieldDescriptor> _encryptedFields = [];
+    private readonly List<Metadata.BlindIndexDescriptor> _blindIndexes = [];
+
+    internal override IReadOnlyList<Metadata.EncryptedFieldDescriptor> GetEncryptedFields() => _encryptedFields;
+    internal override IReadOnlyList<Metadata.BlindIndexDescriptor> GetBlindIndexes() => _blindIndexes;
 
     internal DocumentMapping(SchemaOptions schemaOptions)
     {
@@ -429,8 +436,137 @@ public class DocumentMapping<T> : DocumentMapping
             throw new ArgumentException(
                 $"Identity property type '{propType.Name}' is not supported. " +
                 $"Supported types: long, int, ulong, uint, string, Guid, byte, short, DateTime.");
+        if (_encryptedFields.Any(field =>
+                string.Equals(field.PropertyName, member.Name, StringComparison.Ordinal))
+            || member.GetCustomAttribute<EncryptAttribute>(inherit: true) is not null)
+        {
+            throw new SableEncryptionConfigurationException(
+                typeof(T),
+                $"field '{member.Name}' cannot be encrypted because document identities " +
+                "must remain clear and stable.");
+        }
         IdentityProperty = member.Name;
         return this;
+    }
+
+    /// <summary>
+    /// Encrypts a <see cref="string"/> or <see cref="byte"/> array property with
+    /// randomized application-layer authenticated encryption.
+    /// </summary>
+    public DocumentMapping<T> EncryptField<TProp>(
+        Expression<Func<T, TProp>> property,
+        EncryptionAlgorithm algorithm = EncryptionAlgorithm.Aes256Gcm)
+    {
+        var member = ExtractMember(property);
+        if (member is not PropertyInfo propertyInfo)
+            throw new ArgumentException("Encrypted field expressions must select a property.", nameof(property));
+        var identityProperty = IdentityProperty ?? "Id";
+        if (string.Equals(propertyInfo.Name, identityProperty, StringComparison.Ordinal))
+        {
+            throw new SableEncryptionConfigurationException(
+                typeof(T),
+                $"field '{propertyInfo.Name}' cannot be encrypted because document identities " +
+                "must remain clear and stable.");
+        }
+        if (typeof(TProp) != typeof(string) && typeof(TProp) != typeof(byte[]))
+            throw new ArgumentException(
+                $"Encrypted field '{propertyInfo.Name}' has unsupported type '{typeof(TProp).FullName}'. " +
+                "Phase B supports only string and byte[].",
+                nameof(property));
+        if (algorithm is not (
+            EncryptionAlgorithm.Aes256Gcm
+            or EncryptionAlgorithm.ChaCha20Poly1305))
+            throw new ArgumentOutOfRangeException(
+                nameof(algorithm),
+                algorithm,
+                "The selected reversible encryption algorithm is not supported.");
+        if (!propertyInfo.CanWrite)
+            throw new ArgumentException($"Encrypted field '{propertyInfo.Name}' must be writable.", nameof(property));
+
+        var getter = property.Compile();
+        var instance = Expression.Parameter(typeof(object), "instance");
+        var value = Expression.Parameter(typeof(object), "value");
+        var assign = Expression.Assign(
+            Expression.Property(Expression.Convert(instance, typeof(T)), propertyInfo),
+            Expression.Convert(value, typeof(TProp)));
+        var setter = Expression.Lambda<Action<object, object?>>(assign, instance, value).Compile();
+        var codecId = typeof(TProp) == typeof(string) ? "utf8-string-v1" : "bytes-v1";
+
+        _encryptedFields.RemoveAll(field =>
+            string.Equals(field.PropertyName, propertyInfo.Name, StringComparison.Ordinal));
+        _encryptedFields.Add(new Metadata.EncryptedFieldDescriptor(
+            propertyInfo.Name,
+            typeof(TProp),
+            codecId,
+            algorithm,
+            entity => getter((T)entity),
+            setter));
+
+        return this;
+    }
+
+    /// <summary>
+    /// Adds an equality-search blind index to an encrypted string field. The
+    /// generated sidecar contains only a versioned keyed token.
+    /// </summary>
+    public DocumentMapping<T> BlindIndex(
+        Expression<Func<T, string>> property,
+        Action<BlindIndexOptions>? configure = null)
+    {
+        var body = property.Body;
+        while (body is UnaryExpression
+               {
+                   NodeType: ExpressionType.Convert or ExpressionType.ConvertChecked
+               } unary)
+        {
+            body = unary.Operand;
+        }
+        if (body is not MemberExpression { Expression: ParameterExpression })
+        {
+            throw new ArgumentException(
+                "Blind-index expressions must directly select a property on the document.",
+                nameof(property));
+        }
+
+        var member = ExtractMember(property);
+        if (member is not PropertyInfo propertyInfo)
+            throw new ArgumentException("Blind-index expressions must select a property.", nameof(property));
+
+        var options = new BlindIndexOptions();
+        configure?.Invoke(options);
+        if (options.StorageFieldName is not null
+            && !IsSafeBlindIndexStorageField(options.StorageFieldName))
+        {
+            throw new ArgumentException(
+                $"Blind-index storage field '{options.StorageFieldName}' is not a safe SurrealDB identifier.",
+                nameof(configure));
+        }
+        var getter = property.Compile();
+
+        _blindIndexes.RemoveAll(field =>
+            string.Equals(field.PropertyName, propertyInfo.Name, StringComparison.Ordinal));
+        _blindIndexes.Add(new Metadata.BlindIndexDescriptor(
+            propertyInfo.Name,
+            options.Algorithm,
+            options.Normalizer,
+            options.StorageFieldName,
+            entity => getter((T)entity)));
+
+        return this;
+    }
+
+    private static bool IsSafeBlindIndexStorageField(string value)
+    {
+        if (value.Length == 0 || !(char.IsAsciiLetter(value[0]) || value[0] == '_'))
+            return false;
+
+        for (var index = 1; index < value.Length; index++)
+        {
+            if (!char.IsAsciiLetterOrDigit(value[index]) && value[index] != '_')
+                return false;
+        }
+
+        return true;
     }
 
     /// <summary>

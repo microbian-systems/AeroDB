@@ -25,12 +25,51 @@ public static class SoftDeleteExtensions
 
         var internalSession = (InternalSessionBase)session;
         var schema = internalSession.StoreOptions.Schema;
-        var table = MetadataDispatch.GetTableName(typeof(T), schema);
+        var options = internalSession.StoreOptions;
+        var mapping = schema.Mappings.GetValueOrDefault(typeof(T));
+        if (options.TenancyStyle != TenancyStyle.DatabasePerTenant
+            && mapping?.IsMultiTenanted == true
+            && string.IsNullOrWhiteSpace(internalSession.TenantId))
+        {
+            throw new InvalidOperationException(
+                $"A tenant-scoped session is required to soft-delete multi-tenanted " +
+                $"document type '{typeof(T).FullName}'.");
+        }
+        if (options.TenancyStyle != TenancyStyle.DatabasePerTenant
+            && mapping?.IsMultiTenanted == true
+            && !MetadataDispatch.HasTenantId(typeof(T)))
+        {
+            throw new InvalidOperationException(
+                $"Multi-tenanted document type '{typeof(T).FullName}' must expose a writable " +
+                "string TenantId property before it can be soft-deleted.");
+        }
+
+        var (mappedDatabase, table) = MetadataDispatch.GetSchemaTarget(typeof(T), schema);
         var deletedField = MetadataDispatch.GetFieldName(typeof(T), nameof(ISoftDeleted.Deleted), schema);
         var deletedAtField = MetadataDispatch.GetFieldName(typeof(T), nameof(ISoftDeleted.DeletedAt), schema);
+        var parameters = new Dictionary<string, object?>(StringComparer.Ordinal)
+        {
+            ["__sable_soft_delete_record"] = RecordId.From(table, recordId),
+            ["__sable_soft_delete_at"] = DateTimeOffset.UtcNow
+        };
+        var whereClause = "";
+        if (options.TenancyStyle != TenancyStyle.DatabasePerTenant
+            && !string.IsNullOrWhiteSpace(internalSession.TenantId)
+            && MetadataDispatch.HasTenantId(typeof(T)))
+        {
+            var tenantField = MetadataDispatch.GetFieldName(typeof(T), "TenantId", schema);
+            parameters["__sable_soft_delete_tenant"] = internalSession.TenantId;
+            whereClause = $" WHERE {tenantField} = $__sable_soft_delete_tenant";
+        }
 
-        var surql = $"UPDATE {table}:{recordId} SET {deletedField} = true, {deletedAtField} = d'{DateTimeOffset.UtcNow:yyyy-MM-ddTHH:mm:ssZ}';";
+        var surql = $"UPDATE $__sable_soft_delete_record " +
+            $"SET {deletedField} = true, {deletedAtField} = $__sable_soft_delete_at" +
+            $"{whereClause};";
 
-        await internalSession.Session.RawQuery(surql, null, ct).ConfigureAwait(false);
+        var targetSession = await internalSession
+            .GetSessionForSchemaAsync(mappedDatabase, ct)
+            .ConfigureAwait(false);
+        var response = await targetSession.RawQuery(surql, parameters, ct).ConfigureAwait(false);
+        response.EnsureAllOks();
     }
 }

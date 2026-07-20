@@ -37,6 +37,12 @@ public static class TestHarness
             o.Namespace ??= uniqueId;
             o.Database ??= uniqueId;
             configure?.Invoke(o);
+            if (o.Encryption.Provider is not null
+                || o.Encryption.BlindIndexProvider is not null)
+            {
+                // NoDisposeSurrealDbMemoryClient is created without a logger factory.
+                o.Encryption.ExternalClientDisablesProtectedDataLogging = true;
+            }
         });
 
         await store.InitializeAsync();

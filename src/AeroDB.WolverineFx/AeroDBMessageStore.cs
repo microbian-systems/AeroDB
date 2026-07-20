@@ -32,6 +32,8 @@ public sealed class AeroDBMessageStore : IMessageStore,
     internal readonly ISurrealDbClient Client;
     private readonly ILogger<AeroDBMessageStore> _logger;
     private readonly SchemaManager _schemaManager;
+    private readonly string _namespace;
+    private readonly string _database;
     private int _ownerId;
     private bool _hasDisposed;
     private Guid _nodeId = Guid.NewGuid();
@@ -50,6 +52,8 @@ public sealed class AeroDBMessageStore : IMessageStore,
         Client = client ?? throw new ArgumentNullException(nameof(client));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _schemaManager = new SchemaManager(loggerFactory);
+        _namespace = storeOptions?.Namespace ?? "test";
+        _database = storeOptions?.Database ?? "test";
 
         // Derive Uri from the actual connection endpoint if available
         Uri = storeOptions?.Endpoint is { Length: > 0 } ep
@@ -992,6 +996,7 @@ public sealed class AeroDBMessageStore : IMessageStore,
     public async Task InitializeSchemaAsync()
     {
         await using var session = await Client.CreateSession().ConfigureAwait(false);
+        await session.Use(_namespace, _database).ConfigureAwait(false);
 
         await _schemaManager.EnsureDocumentSchemaAsync<WolverineIncomingEnvelope>(session, SchemaMode.Strict).ConfigureAwait(false);
         await _schemaManager.EnsureDocumentSchemaAsync<WolverineOutgoingEnvelope>(session, SchemaMode.Strict).ConfigureAwait(false);

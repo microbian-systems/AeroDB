@@ -376,6 +376,16 @@ internal sealed class GraphQueryBuilder<TNode> : IGraphQuery<TNode> where TNode 
         string[]? edgeTypes = null,
         GraphTargetKind targetKind = GraphTargetKind.Typed) where TTarget : class
     {
+        if (_session is InternalSessionBase sessionBase
+            && EncryptedFieldResolver.HasEncryptedFields(
+                typeof(TTarget),
+                sessionBase.StoreOptions.Schema))
+        {
+            throw new SableEncryptedOperationNotSupportedException(
+                typeof(TTarget),
+                "graph target materialization");
+        }
+
         // Copy current state to new builder
         var builder = new GraphQueryBuilder<TTarget>(_session, _rawSession, _rootType, _filterSurql);
         builder._steps.AddRange(_steps);

@@ -282,6 +282,10 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
     }
 
     public void Store<T>(T entity) where T : class
+        => QueueStoreOperation(entity, OperationType.Added);
+
+    private void QueueStoreOperation<T>(T entity, OperationType operationType)
+        where T : class
     {
         ArgumentNullException.ThrowIfNull(entity);
         RequestCount++;
@@ -293,13 +297,29 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
             var meta = MetadataRegistry.TryGet<T>();
             if (meta is not null)
             {
+                var entityTenant = meta.GetTenantId(entity);
+                if (!string.IsNullOrWhiteSpace(entityTenant)
+                    && !string.Equals(entityTenant, TenantId, StringComparison.Ordinal))
+                {
+                    throw new SableEncryptionException(
+                        $"Document tenant '{entityTenant}' does not match session tenant '{TenantId}'.");
+                }
                 meta.SetTenantId(entity, TenantId);
             }
             else
             {
                 var tenantProp = typeof(T).GetProperty("TenantId", typeof(string));
                 if (tenantProp is not null && tenantProp.CanWrite)
+                {
+                    var entityTenant = tenantProp.GetValue(entity) as string;
+                    if (!string.IsNullOrWhiteSpace(entityTenant)
+                        && !string.Equals(entityTenant, TenantId, StringComparison.Ordinal))
+                    {
+                        throw new SableEncryptionException(
+                            $"Document tenant '{entityTenant}' does not match session tenant '{TenantId}'.");
+                    }
                     tenantProp.SetValue(entity, TenantId);
+                }
             }
         }
 
@@ -320,8 +340,8 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
             }
         }
 
-        _unitOfWork.Add(entity, OperationType.Added);
-        ResolvedLogger.LogDebug("Stored {Type} for {Operation}", typeof(T).Name, OperationType.Added);
+        _unitOfWork.Add(entity, operationType);
+        ResolvedLogger.LogDebug("Stored {Type} for {Operation}", typeof(T).Name, operationType);
     }
 
     /// <summary>
@@ -420,47 +440,143 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
     /// </summary>
     public async Task<long> DeleteWhere<T>(System.Linq.Expressions.Expression<Func<T, bool>> predicate, CancellationToken ct = default) where T : class
     {
-        var table = MetadataDispatch.GetTableName(typeof(T), Options.Schema);
-        // Use a basic field-value extraction for common equality predicates.
-        // For complex predicates, callers should use RawQueryAsync or Query<T> + manual delete.
-        var whereClause = BuildWhereClause(predicate);
+        EncryptedQueryGuard.Validate(predicate, Options.Schema);
+        var (mappedDatabase, table) = MetadataDispatch.GetSchemaTarget(typeof(T), Options.Schema);
+        var (whereClause, parameters) = BuildMutationWhereClause(predicate);
         var sql = $"DELETE FROM {table} WHERE {whereClause};";
-        var response = await Session.RawQuery(sql, null, ct).ConfigureAwait(false);
+        var targetSession = await GetSessionForSchemaAsync(mappedDatabase, ct).ConfigureAwait(false);
+        var response = await targetSession.RawQuery(sql, parameters, ct).ConfigureAwait(false);
+        response.EnsureAllOks();
         return response.Count;
     }
 
-    private string FormatWhereValue(object? value) => value switch
+    private (string WhereClause, IReadOnlyDictionary<string, object?> Parameters)
+        BuildMutationWhereClause<T>(
+            System.Linq.Expressions.Expression<Func<T, bool>> predicate)
+        where T : class
     {
-        null => "NONE",
-        string s => $"'{s.Replace("'", "\\'")}'",
-        bool b => b ? "true" : "false",
-        int or long or short or byte or sbyte or ushort or uint or ulong
-            or float or double or decimal => value.ToString()!,
-        Enum e => Options.EnumStorage == EnumStorage.AsString
-            ? $"'{e}'"
-            : Convert.ToInt64(e).ToString(),
-        DateTime dt => $"d'{dt:yyyy-MM-ddTHH:mm:ssZ}'",
-        DateTimeOffset dto => $"d'{dto:yyyy-MM-ddTHH:mm:ssZ}'",
-        _ => $"'{value}'"
-    };
-
-    private string BuildWhereClause<T>(System.Linq.Expressions.Expression<Func<T, bool>> predicate)
-    {
-        // Simple binary expression handler: field == value
-        if (predicate.Body is System.Linq.Expressions.BinaryExpression binary
-            && binary.NodeType == System.Linq.Expressions.ExpressionType.Equal
-            && binary.Left is System.Linq.Expressions.MemberExpression member
-            && binary.Right is System.Linq.Expressions.ConstantExpression constant)
+        ArgumentNullException.ThrowIfNull(predicate);
+        SurrealQueryResult translated;
+        try
         {
-            var fieldName = MetadataDispatch.GetFieldName(typeof(T), member.Member.Name, Options.Schema);
-            return $"{fieldName} = {FormatWhereValue(constant.Value)}";
+            var query = Query<T>().Where(predicate);
+            translated = new SurrealExpressionVisitor(Options.Schema, Options.EnumStorage)
+                .Translate(query.Expression);
         }
-        // Fallback: return a tautology (matches everything)
-        return "true";
+        catch (Exception exception) when (exception is not SableEncryptionException)
+        {
+            throw new NotSupportedException(
+                $"The mutation predicate for '{typeof(T).FullName}' could not be translated safely. " +
+                "No records were changed.",
+                exception);
+        }
+
+        if (translated.Where.Count == 0)
+        {
+            throw new NotSupportedException(
+                $"The mutation predicate for '{typeof(T).FullName}' produced no WHERE clause. " +
+                "No records were changed.");
+        }
+
+        var clauses = translated.Where.ToList();
+        var parameters = translated.Parameters.ToDictionary(
+            pair => pair.Key,
+            pair => pair.Value,
+            StringComparer.Ordinal);
+        AddTenantMutationFilter(typeof(T), clauses, parameters);
+        return (string.Join(" AND ", clauses), parameters);
+    }
+
+    private void AddTenantMutationFilter(
+        Type entityType,
+        ICollection<string> clauses,
+        IDictionary<string, object?> parameters)
+    {
+        if (!TryGetTenantMutationField(entityType, out var tenantField))
+            return;
+
+        const string parameterName = "__sable_mutation_tenant";
+        parameters[parameterName] = TenantId;
+        clauses.Add($"{tenantField} = ${parameterName}");
+    }
+
+    private bool TryGetTenantMutationField(Type entityType, out string tenantField)
+    {
+        tenantField = "";
+        if (Options.TenancyStyle == TenancyStyle.DatabasePerTenant)
+            return false;
+
+        var mapping = Options.Schema.Mappings.GetValueOrDefault(entityType);
+        if (mapping?.IsMultiTenanted == true && string.IsNullOrWhiteSpace(TenantId))
+        {
+            throw new InvalidOperationException(
+                $"A tenant-scoped session is required to mutate multi-tenanted document " +
+                $"type '{entityType.FullName}'.");
+        }
+
+        var hasTenantId = MetadataDispatch.HasTenantId(entityType);
+        if (mapping?.IsMultiTenanted == true && !hasTenantId)
+        {
+            throw new InvalidOperationException(
+                $"Multi-tenanted document type '{entityType.FullName}' must expose a writable " +
+                "string TenantId property before it can be mutated.");
+        }
+
+        if (string.IsNullOrWhiteSpace(TenantId) || !hasTenantId)
+            return false;
+
+        tenantField = MetadataDispatch.GetFieldName(entityType, "TenantId", Options.Schema);
+        return true;
+    }
+
+    private void ValidateHardDeleteTenant(object entity)
+    {
+        var entityType = entity.GetType();
+        if (!TryGetTenantMutationField(entityType, out _))
+            return;
+
+        var entityTenant = entityType
+            .GetProperty("TenantId", typeof(string))
+            ?.GetValue(entity) as string;
+        if (!string.IsNullOrWhiteSpace(entityTenant)
+            && !string.Equals(entityTenant, TenantId, StringComparison.Ordinal))
+        {
+            throw new InvalidOperationException(
+                $"Cannot hard-delete entity belonging to tenant '{entityTenant}' " +
+                $"from a session scoped to tenant '{TenantId}'.");
+        }
+    }
+
+    private async Task DeleteRecordAsync(
+        Type entityType,
+        RecordId recordId,
+        ISurrealDbSession targetSession,
+        CancellationToken cancellationToken)
+    {
+        if (!TryGetTenantMutationField(entityType, out var tenantField))
+        {
+            await targetSession.Delete(recordId, cancellationToken).ConfigureAwait(false);
+            return;
+        }
+
+        var parameters = new Dictionary<string, object?>(StringComparer.Ordinal)
+        {
+            ["__sable_delete_record"] = recordId,
+            ["__sable_delete_tenant"] = TenantId
+        };
+        var response = await targetSession.RawQuery(
+                $"DELETE $__sable_delete_record " +
+                $"WHERE {tenantField} = $__sable_delete_tenant;",
+                parameters,
+                cancellationToken)
+            .ConfigureAwait(false);
+        response.EnsureAllOks();
     }
 
     public Task<int> BulkInsertAsync<T>(IEnumerable<T> documents, int batchSize = 100, CancellationToken ct = default) where T : class
     {
+        if (EncryptedFieldResolver.HasEncryptedFields(typeof(T), Options.Schema))
+            throw new SableEncryptedOperationNotSupportedException(typeof(T), "bulk insert");
         var list = documents as IReadOnlyList<T> ?? documents.ToList();
         return BulkOperations.BulkInsertAsync(this, list, batchSize, ct);
     }
@@ -681,7 +797,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                         if (revisionSkipOps?.Contains(op.Entity) == true)
                             continue;
 
-                        var table = MetadataDispatch.GetTableName(op.EntityType);
+                        var table = MetadataDispatch.GetTableName(op.EntityType, Options.Schema);
 
                         // Call before-store/before-delete listeners (after dirty-tracking skip)
                         if (Options.Listeners.Count > 0)
@@ -883,12 +999,22 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                                 // Fast path: entity has a typed RecordId — preserve it
                                 if (op.Entity is IRecord recDel && recDel.Id is not null)
                                 {
-                                    await targetSession.Delete(recDel.Id, ct).ConfigureAwait(false);
+                                    await DeleteRecordAsync(
+                                            op.EntityType,
+                                            recDel.Id,
+                                            targetSession,
+                                            ct).ConfigureAwait(false);
                                     break;
                                 }
                                 var delId = GetRecordId(op.Entity, table);
                                 if (delId is not null)
-                                    await targetSession.Delete(delId, ct).ConfigureAwait(false);
+                                {
+                                    await DeleteRecordAsync(
+                                        op.EntityType,
+                                        delId,
+                                        targetSession,
+                                        ct).ConfigureAwait(false);
+                                }
                                 break;
 
                             case OperationType.SoftDeleted:
@@ -916,12 +1042,11 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                                         var softDelEntityId = GetEntityId(op.Entity);
                                         if (softDelEntityId is not null)
                                         {
-                                            var response = await ExecuteRawWriteAsync(
+                                            await ExecutePocoWriteAsync(
                                                 targetSession,
-                                                $"UPSERT {table}:`{softDelEntityId}` MERGE $data",
-                                                new Dictionary<string, object?> { ["data"] = op.Entity },
+                                                $"UPSERT {table}:`{softDelEntityId}` MERGE",
+                                                op.Entity,
                                                 ct).ConfigureAwait(false);
-                                            ThrowIfRawQueryFailed(response);
                                         }
                                     }
                                 }
@@ -1044,7 +1169,13 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                                     {
                                         var delId = GetRecordId(op.Entity, table);
                                         if (delId is not null)
-                                            await targetSession.Delete(delId, ct).ConfigureAwait(false);
+                                        {
+                                            await DeleteRecordAsync(
+                                                op.EntityType,
+                                                delId,
+                                                targetSession,
+                                                ct).ConfigureAwait(false);
+                                        }
                                     }
                                     else
                                     {
@@ -1219,7 +1350,8 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
             ResolvedLogger.LogInformation("SaveChangesAsync: committed {Count} changes", resultCount);
             return resultCount;
         }
-        catch (Exception ex) when (ex is not ConcurrencyException)
+        catch (Exception ex) when (ex is not ConcurrencyException
+                                   && ex is not SableEncryptionException)
         {
             ResolvedLogger.LogError(ex, "SaveChangesAsync failed");
             throw new InvalidOperationException("Failed to save changes.", ex);
@@ -1261,6 +1393,30 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
 
         var str = idValue.ToString();
         return string.IsNullOrEmpty(str) ? null : str;
+    }
+
+    internal string? GetEntityIdForProtectedOperation(object entity) => GetEntityId(entity);
+
+    internal RecordId? GetRecordIdForProtectedOperation(object entity, string table)
+    {
+        if (entity is IRecord { Id: not null } record)
+            return record.Id;
+
+        var entityType = entity.GetType();
+        var mapping = Options.Schema.Mappings.GetValueOrDefault(entityType);
+        var identityProperty = mapping?.IdentityProperty ?? "Id";
+        var value = entityType.GetProperty(identityProperty)?.GetValue(entity);
+        return value switch
+        {
+            RecordId recordId => recordId,
+            string id when !string.IsNullOrWhiteSpace(id) => RecordId.From(table, id),
+            long id => RecordId.From(table, id),
+            int id => RecordId.From(table, id),
+            short id => RecordId.From(table, id),
+            byte id => RecordId.From(table, id),
+            Guid id => RecordId.From(table, id),
+            _ => null
+        };
     }
 
     private RecordIdOf<string>? GetRecordId(object entity, string table)
@@ -1333,17 +1489,17 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         var id = GetEntityId(entity);
         if (id is null) return -1;
 
-        var surql = $"SELECT * FROM {table}:`{id.Replace("`", "\\`")}`;";
+        var versionField = MetadataDispatch.GetFieldName(
+            entityType,
+            MetadataDispatch.GetVersionFieldName(entityType)!,
+            Options.Schema);
+        var surql = $"SELECT {versionField} FROM {table}:`{id.Replace("`", "\\`")}`;";
         var response = await session.RawQuery(surql, null, ct).ConfigureAwait(false);
 
         if (response.HasErrors || response.Count == 0)
             return -1;
 
-        var list = DeserializeResponseForEntityType(response, entityType);
-        if (list.Count > 0 && list[0] is not null)
-            return GetVersion(list[0]!);
-
-        return -1;
+        return ReadVersionFromResponse(response, versionField, fallback: -1);
     }
 
     /// <summary>
@@ -1377,7 +1533,11 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
 
         // Query the current version from the DB using a raw SurrealQL call
         // with typed GetValue<T> deserialization (same path as Query provider).
-        var surql = $"SELECT * FROM {table}:`{id.Replace("`", "\\`")}`;";
+        var versionField = MetadataDispatch.GetFieldName(
+            op.EntityType,
+            MetadataDispatch.GetVersionFieldName(op.EntityType)!,
+            Options.Schema);
+        var surql = $"SELECT {versionField} FROM {table}:`{id.Replace("`", "\\`")}`;";
         var response = await session.RawQuery(surql, null, ct).ConfigureAwait(false);
 
         if (response.HasErrors)
@@ -1387,19 +1547,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
             return;
         }
 
-        long dbVersion = 0;
-        if (response.Count > 0)
-        {
-            var list = DeserializeResponseForEntityType(response, op.EntityType);
-            if (list.Count > 0)
-            {
-                var dbEntity = list[0];
-                if (dbEntity is not null)
-                {
-                    dbVersion = GetVersion(dbEntity);
-                }
-            }
-        }
+        var dbVersion = ReadVersionFromResponse(response, versionField, fallback: 0);
 
         if (expectedVersion != dbVersion)
         {
@@ -1414,12 +1562,51 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
             op.EntityType.Name, id, dbVersion);
     }
 
-    private System.Collections.IList DeserializeResponseForEntityType(SurrealDbResponse response, Type entityType)
+    private static long ReadVersionFromResponse(
+        SurrealDbResponse response,
+        string versionField,
+        long fallback)
     {
-        var method = typeof(InternalSessionBase)
-            .GetMethod(nameof(DeserializeMappedPocoResponse), BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)!
-            .MakeGenericMethod(entityType);
-        return (System.Collections.IList)(method.Invoke(this, [response, 0]) ?? Array.Empty<object>());
+        var records = CborResultReader.ReadPocoResult(response, 0);
+        if (records.Count == 0)
+            return fallback;
+
+        var record = records[0];
+        if (!record.TryGetValue(versionField, out var value))
+        {
+            var actualKey = record.Keys.FirstOrDefault(key =>
+                string.Equals(key, versionField, StringComparison.OrdinalIgnoreCase));
+            if (actualKey is null)
+                return fallback;
+            value = record[actualKey];
+        }
+
+        if (value is null)
+            return fallback;
+        if (value is JsonElement element)
+        {
+            if (element.TryGetInt64(out var number))
+                return number;
+            if (element.ValueKind == JsonValueKind.String
+                && long.TryParse(
+                    element.GetString(),
+                    NumberStyles.Integer,
+                    CultureInfo.InvariantCulture,
+                    out number))
+            {
+                return number;
+            }
+            return fallback;
+        }
+
+        try
+        {
+            return Convert.ToInt64(value, CultureInfo.InvariantCulture);
+        }
+        catch (Exception ex) when (ex is FormatException or InvalidCastException or OverflowException)
+        {
+            return fallback;
+        }
     }
 
     /// <summary>
@@ -1429,6 +1616,9 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
     /// </summary>
     private async Task<object?> CreateEntityAsync(Operation op, string table, ISurrealDbSession session, CancellationToken ct)
     {
+        if (EncryptedFieldResolver.HasEncryptedFields(op.EntityType, Options.Schema))
+            throw new SableEncryptedDocumentRequiresIdException(op.EntityType);
+
         if (TryBuildSurrealQlObjectLiteral(op.Entity, out var literal))
         {
             var response = await ExecuteRawWriteAsync(
@@ -1477,24 +1667,16 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
     {
         SurrealDbResponse response;
 
-        if (TryBuildSurrealQlObjectLiteral(entity, out var literal))
-        {
-            response = await ExecuteRawWriteAsync(
-                session,
-                $"{statementPrefix} {literal}",
-                null,
-                ct).ConfigureAwait(false);
-        }
-        else
-        {
-            response = await ExecuteRawWriteAsync(
-                session,
-                $"{statementPrefix} $data",
-                new Dictionary<string, object?> { ["data"] = entity },
-                ct).ConfigureAwait(false);
-        }
+        var protectedLiteral = await BuildSurrealQlObjectLiteralAsync(entity, ct).ConfigureAwait(false);
+        response = await ExecuteRawWriteAsync(
+            session,
+            $"{statementPrefix} {protectedLiteral.Literal}",
+            protectedLiteral.Parameters,
+            ct).ConfigureAwait(false);
 
-        ThrowIfRawQueryFailed(response);
+        ThrowIfRawQueryFailed(
+            response,
+            EncryptedFieldResolver.HasEncryptedFields(entity.GetType(), Options.Schema));
     }
 
     private bool TryBuildSurrealQlObjectLiteral(object entity, out string literal)
@@ -1524,6 +1706,62 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
 
         literal = "{ " + string.Join(", ", fields) + " }";
         return true;
+    }
+
+    private async ValueTask<ProtectedSurrealQlLiteral> BuildSurrealQlObjectLiteralAsync(
+        object entity,
+        CancellationToken cancellationToken)
+    {
+        var entityType = entity.GetType();
+        var recordId = GetEntityId(entity);
+        if (string.IsNullOrWhiteSpace(recordId)
+            && EncryptedFieldResolver.HasEncryptedFields(entityType, Options.Schema))
+        {
+            throw new SableEncryptedDocumentRequiresIdException(entityType);
+        }
+
+        var protectedValues = await EncryptedDocumentTransformer
+            .ProtectFieldsAsync(entity, recordId ?? string.Empty, Options, TenantId, cancellationToken)
+            .ConfigureAwait(false);
+        var properties = entityType
+            .GetProperties(BindingFlags.Public | BindingFlags.Instance)
+            .Where(p => p is { CanRead: true, CanWrite: true }
+                        && p.GetIndexParameters().Length == 0
+                        && p.GetCustomAttribute<System.Text.Json.Serialization.JsonIgnoreAttribute>() is null)
+            .ToArray();
+        var mapping = Options.Schema.Mappings.GetValueOrDefault(entityType);
+        var identityProperty = mapping?.IdentityProperty ?? "Id";
+        var fields = new List<string>(properties.Length);
+        var parameters = new Dictionary<string, object?>(StringComparer.Ordinal);
+
+        foreach (var property in properties)
+        {
+            if (string.Equals(property.Name, identityProperty, StringComparison.OrdinalIgnoreCase))
+                continue;
+
+            var fieldName = MetadataDispatch.GetFieldName(entityType, property.Name, Options.Schema);
+            if (protectedValues.PropertyOverrides.TryGetValue(property.Name, out var encrypted))
+            {
+                var parameterName = $"__sable_protected_{parameters.Count}";
+                parameters[parameterName] = encrypted;
+                fields.Add($"{fieldName}: ${parameterName}");
+            }
+            else
+            {
+                fields.Add($"{fieldName}: {ToSurrealQlLiteral(property.GetValue(entity))}");
+            }
+        }
+
+        foreach (var additional in protectedValues.AdditionalStorageFields)
+        {
+            var parameterName = $"__sable_protected_{parameters.Count}";
+            parameters[parameterName] = additional.Value;
+            fields.Add($"{additional.Key}: ${parameterName}");
+        }
+
+        return new ProtectedSurrealQlLiteral(
+            "{ " + string.Join(", ", fields) + " }",
+            parameters.Count == 0 ? null : parameters);
     }
 
     private string ToSurrealQlLiteral(object? value)
@@ -1645,11 +1883,16 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         IReadOnlyDictionary<string, object?>? parameters,
         CancellationToken ct)
     {
+        var containsEncryptedEnvelope = surql.Contains(
+            "wrapped_key_ciphertext:",
+            StringComparison.Ordinal)
+            || parameters?.Keys.Any(key =>
+                key.StartsWith("__sable_protected_", StringComparison.Ordinal)) == true;
         if (ResolvedLogger.IsEnabled(LogLevel.Debug))
         {
             ResolvedLogger.LogDebug(
                 "SaveChangesAsync write SurrealQL: {SurrealQL}{Parameters}",
-                surql,
+                containsEncryptedEnvelope ? "<encrypted write redacted>" : surql,
                 FormatWriteParameters(parameters));
         }
 
@@ -1662,7 +1905,9 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                 response.HasErrors,
                 response.Count,
                 response.FirstOk is not null,
-                FormatRawQueryErrors(response));
+                containsEncryptedEnvelope && response.HasErrors
+                    ? "<encrypted write error redacted>"
+                    : FormatRawQueryErrors(response));
         }
 
         return response;
@@ -1693,12 +1938,16 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
             error is SurrealDbErrorResult err ? err.Details : error.ToString()));
     }
 
-    private static void ThrowIfRawQueryFailed(SurrealDbResponse response)
+    private static void ThrowIfRawQueryFailed(
+        SurrealDbResponse response,
+        bool redactDetails = false)
     {
         if (!response.HasErrors)
             return;
 
-        var details = FormatRawQueryErrors(response);
+        var details = redactDetails
+            ? "SurrealDB rejected an encrypted write; details were redacted."
+            : FormatRawQueryErrors(response);
         throw new InvalidOperationException(details);
     }
 
@@ -1712,6 +1961,21 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
 
     private async Task UpsertRecordAsync(IRecord record, RecordId rid, ISurrealDbSession session, CancellationToken ct)
     {
+        if (EncryptedFieldResolver.HasEncryptedFields(record.GetType(), Options.Schema))
+        {
+            if (Options.Schema.Mappings.GetValueOrDefault(record.GetType())?.GetRelationshipMappings().Count > 0)
+                throw new SableEncryptedOperationNotSupportedException(record.GetType(), "graph relationship write");
+
+            var encryptedLiteral = await BuildSurrealQlObjectLiteralAsync(record, ct).ConfigureAwait(false);
+            var encryptedResponse = await ExecuteRawWriteAsync(
+                session,
+                $"UPSERT {FormatRecordIdLiteral(rid)} CONTENT {encryptedLiteral.Literal}",
+                encryptedLiteral.Parameters,
+                ct).ConfigureAwait(false);
+            ThrowIfRawQueryFailed(encryptedResponse, redactDetails: true);
+            return;
+        }
+
         if (TryBuildRelationshipRecordLiteral(record, out var literal)
             || TryBuildSurrealQlObjectLiteral(record, out literal))
         {
@@ -1731,6 +1995,10 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         var task = (Task)generic.Invoke(session, [rid, record, ct])!;
         await task.ConfigureAwait(false);
     }
+
+    private sealed record ProtectedSurrealQlLiteral(
+        string Literal,
+        IReadOnlyDictionary<string, object?>? Parameters);
 
     private bool TryBuildRelationshipRecordLiteral(IRecord record, out string literal)
     {
@@ -1868,6 +2136,8 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
     /// </summary>
     public async Task<ILiveQuery<T>> WatchTableAsync<T>(CancellationToken ct = default) where T : class
     {
+        if (EncryptedFieldResolver.HasEncryptedFields(typeof(T), Options.Schema))
+            throw new SableEncryptedOperationNotSupportedException(typeof(T), "live query");
         var liveSession = new LiveQuerySession(
             Session, Options, Options.LoggerFactory, TenantId);
         var sub = await liveSession.Live<T>().SubscribeAsync(ct).ConfigureAwait(false);
@@ -1880,6 +2150,8 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
     /// </summary>
     public async Task<ILiveQuery<T>> WatchQueryAsync<T>(string whereClause, CancellationToken ct = default) where T : class
     {
+        if (EncryptedFieldResolver.HasEncryptedFields(typeof(T), Options.Schema))
+            throw new SableEncryptedOperationNotSupportedException(typeof(T), "live query");
         var table = MetadataDispatch.GetTableName(typeof(T));
         var surql = $"LIVE SELECT * FROM `{table}` WHERE {whereClause}";
         var liveSession = new LiveQuerySession(
@@ -2039,7 +2311,8 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
     /// <inheritdoc />
     public async Task<T?> LoadAsync<T>(int id, CancellationToken ct = default) where T : class
     {
-        if (typeof(ISableDocument<int>).IsAssignableFrom(typeof(T)))
+        if (typeof(ISableDocument<int>).IsAssignableFrom(typeof(T))
+            || EncryptedFieldResolver.HasEncryptedFields(typeof(T), Options.Schema))
             return await base.LoadAsync<T>(id.ToString(CultureInfo.InvariantCulture), ct).ConfigureAwait(false);
 
         RequestCount++;
@@ -2060,7 +2333,8 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
     /// <inheritdoc />
     public async Task<T?> LoadAsync<T>(long id, CancellationToken ct = default) where T : class
     {
-        if (typeof(ISableDocument<long>).IsAssignableFrom(typeof(T)))
+        if (typeof(ISableDocument<long>).IsAssignableFrom(typeof(T))
+            || EncryptedFieldResolver.HasEncryptedFields(typeof(T), Options.Schema))
             return await base.LoadAsync<T>(id.ToString(CultureInfo.InvariantCulture), ct).ConfigureAwait(false);
 
         RequestCount++;
@@ -2242,14 +2516,14 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
     public void Insert<T>(IEnumerable<T> documents) where T : class
     {
         foreach (var doc in documents)
-            _unitOfWork.Add(doc, OperationType.Insert);
+            QueueStoreOperation(doc, OperationType.Insert);
     }
 
     /// <inheritdoc />
     public void Insert<T>(params T[] documents) where T : class
     {
         foreach (var doc in documents)
-            _unitOfWork.Add(doc, OperationType.Insert);
+            QueueStoreOperation(doc, OperationType.Insert);
     }
 
     private static readonly ConcurrentDictionary<Type, Action<DocumentSession, object>> _insertCache = new();
@@ -2338,20 +2612,21 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
     public void Update<T>(IEnumerable<T> documents) where T : class
     {
         foreach (var doc in documents)
-            _unitOfWork.Add(doc, OperationType.Update);
+            QueueStoreOperation(doc, OperationType.Update);
     }
 
     /// <inheritdoc />
     public void Update<T>(params T[] documents) where T : class
     {
         foreach (var doc in documents)
-            _unitOfWork.Add(doc, OperationType.Update);
+            QueueStoreOperation(doc, OperationType.Update);
     }
 
     /// <inheritdoc />
     public void HardDelete<T>(T entity) where T : class
     {
         ArgumentNullException.ThrowIfNull(entity);
+        ValidateHardDeleteTenant(entity);
         RequestCount++;
         // Always use OperationType.Deleted (hard delete), even for ISoftDeleted types
         _unitOfWork.Add(entity, OperationType.Deleted);
@@ -2380,22 +2655,31 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
     /// <inheritdoc />
     public async Task<long> HardDeleteWhere<T>(System.Linq.Expressions.Expression<Func<T, bool>> predicate, CancellationToken ct = default) where T : class
     {
-        var table = MetadataDispatch.GetTableName(typeof(T));
-        var whereClause = BuildWhereClause(predicate);
+        EncryptedQueryGuard.Validate(predicate, Options.Schema);
+        var (mappedDatabase, table) = MetadataDispatch.GetSchemaTarget(typeof(T), Options.Schema);
+        var (whereClause, parameters) = BuildMutationWhereClause(predicate);
         var sql = $"DELETE FROM {table} WHERE {whereClause};";
         RequestCount++;
-        var response = await Session.RawQuery(sql, null, ct).ConfigureAwait(false);
+        var targetSession = await GetSessionForSchemaAsync(mappedDatabase, ct).ConfigureAwait(false);
+        var response = await targetSession.RawQuery(sql, parameters, ct).ConfigureAwait(false);
+        response.EnsureAllOks();
         return response.Count;
     }
 
     /// <inheritdoc />
     public async Task<long> UndoDeleteWhere<T>(System.Linq.Expressions.Expression<Func<T, bool>> predicate, CancellationToken ct = default) where T : class
     {
-        var table = MetadataDispatch.GetTableName(typeof(T));
-        var whereClause = BuildWhereClause(predicate);
-        var sql = $"UPDATE {table} SET deleted = false WHERE deleted = true AND {whereClause};";
+        EncryptedQueryGuard.Validate(predicate, Options.Schema);
+        var (mappedDatabase, table) = MetadataDispatch.GetSchemaTarget(typeof(T), Options.Schema);
+        var (whereClause, parameters) = BuildMutationWhereClause(predicate);
+        var deletedField = MetadataDispatch.GetFieldName(
+            typeof(T), nameof(ISoftDeleted.Deleted), Options.Schema);
+        var sql = $"UPDATE {table} SET {deletedField} = false " +
+            $"WHERE {deletedField} = true AND {whereClause};";
         RequestCount++;
-        var response = await Session.RawQuery(sql, null, ct).ConfigureAwait(false);
+        var targetSession = await GetSessionForSchemaAsync(mappedDatabase, ct).ConfigureAwait(false);
+        var response = await targetSession.RawQuery(sql, parameters, ct).ConfigureAwait(false);
+        response.EnsureAllOks();
         return response.Count;
     }
 
@@ -2471,7 +2755,9 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                     System.Globalization.CultureInfo.InvariantCulture,
                     System.Globalization.DateTimeStyles.RoundtripKind);
             else if (actualType == typeof(RecordId))
-                convertedId = RecordId.From(MetadataDispatch.GetTableName(typeof(T)), id);
+                convertedId = RecordId.From(
+                    MetadataDispatch.GetTableName(typeof(T), Options.Schema),
+                    id);
             else if (actualType.IsGenericType && actualType.GetGenericTypeDefinition() == typeof(RecordIdOf<>))
                 convertedId = Activator.CreateInstance(propType, id)!;
             idProp.SetValue(entity, convertedId);

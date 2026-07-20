@@ -161,7 +161,8 @@ public class AeroDBDocumentGenerator : IIncrementalGenerator
         sb.AppendLine("{");
         sb.AppendLine($"    public static readonly {typeName}Metadata Instance = new();");
         sb.AppendLine();
-        sb.AppendLine($"    static {typeName}Metadata() => MetadataRegistry.Register<{globalFullName}>(Instance);");
+        sb.AppendLine("    [global::System.Runtime.CompilerServices.ModuleInitializer]");
+        sb.AppendLine($"    internal static void Register() => MetadataRegistry.Register<{globalFullName}>(Instance);");
         sb.AppendLine();
         sb.AppendLine($"    public string TableName => \"{tableName}\";");
         sb.AppendLine($"    public bool HasTenantId => {hasTenantId.ToString().ToLowerInvariant()};");
@@ -244,11 +245,19 @@ public class AeroDBDocumentGenerator : IIncrementalGenerator
             if (member.IsStatic) continue;
             if (member.GetMethod is null || member.SetMethod is null) continue;
 
-            var surrealType = GetSurrealType(member);
+            var encryptedAlgorithm = GetEncryptionAlgorithm(member);
+            var surrealType = encryptedAlgorithm is null
+                ? GetSurrealType(member)
+                : IsNullableProperty(member) ? "option<object>" : "object";
             var escapedType = surrealType.Replace("\"", "\\\"");
             var flexibleInitializer = IsFlexibleEmbeddedType(member.Type)
                 ? " { IsFlexible = true }"
                 : string.Empty;
+            if (encryptedAlgorithm is not null)
+            {
+                flexibleInitializer =
+                    $" {{ IsFlexible = true, EncryptionAlgorithm = global::AeroDB.Sable.EncryptionAlgorithm.{encryptedAlgorithm} }}";
+            }
             fields.Add($"            new global::AeroDB.Sable.Metadata.FieldSchema(\"{member.Name}\", \"{escapedType}\", true, true){flexibleInitializer}");
         }
 
@@ -264,6 +273,81 @@ public class AeroDBDocumentGenerator : IIncrementalGenerator
         else
         {
             sb.AppendLine("    public System.Collections.Generic.IReadOnlyList<global::AeroDB.Sable.Metadata.FieldSchema>? Fields => null;");
+        }
+
+        var encryptedFields = new List<string>();
+        foreach (var member in type.GetMembers().OfType<IPropertySymbol>())
+        {
+            var algorithm = GetEncryptionAlgorithm(member);
+            if (algorithm is null)
+                continue;
+            if (member.DeclaredAccessibility != Accessibility.Public
+                || member.IsStatic
+                || member.GetMethod is null
+                || member.SetMethod is null)
+                continue;
+
+            var memberType = member.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
+            var codec = IsByteArray(member.Type)
+                ? "bytes-v1"
+                : IsString(member.Type) ? "utf8-string-v1" : "unsupported-v1";
+            encryptedFields.Add(
+                $"            new global::AeroDB.Sable.Metadata.EncryptedFieldDescriptor(" +
+                $"\"{member.Name}\", typeof({memberType}), \"{codec}\", " +
+                $"global::AeroDB.Sable.EncryptionAlgorithm.{algorithm}, " +
+                $"obj => (({globalFullName})obj).{member.Name}, " +
+                $"(obj, value) => (({globalFullName})obj).{member.Name} = ({memberType})value!)");
+        }
+
+        if (encryptedFields.Count > 0)
+        {
+            sb.AppendLine("    public System.Collections.Generic.IReadOnlyList<global::AeroDB.Sable.Metadata.EncryptedFieldDescriptor>? EncryptedFields =>");
+            sb.AppendLine("        new global::AeroDB.Sable.Metadata.EncryptedFieldDescriptor[]");
+            sb.AppendLine("        {");
+            sb.Append(string.Join(",\n", encryptedFields));
+            sb.AppendLine();
+            sb.AppendLine("        };");
+        }
+        else
+        {
+            sb.AppendLine("    public System.Collections.Generic.IReadOnlyList<global::AeroDB.Sable.Metadata.EncryptedFieldDescriptor>? EncryptedFields => null;");
+        }
+
+        var blindIndexes = new List<string>();
+        foreach (var member in type.GetMembers().OfType<IPropertySymbol>())
+        {
+            var blindIndex = GetBlindIndex(member);
+            if (blindIndex is null)
+                continue;
+            if (member.DeclaredAccessibility != Accessibility.Public
+                || member.IsStatic
+                || member.GetMethod is null)
+                continue;
+
+            var storageField = blindIndex.Value.StorageFieldName is null
+                ? "null"
+                : $"\"{EscapeString(blindIndex.Value.StorageFieldName)}\"";
+            blindIndexes.Add(
+                $"            new global::AeroDB.Sable.Metadata.BlindIndexDescriptor(" +
+                $"\"{member.Name}\", " +
+                $"global::AeroDB.Sable.BlindIndexAlgorithm.{blindIndex.Value.Algorithm}, " +
+                $"global::AeroDB.Sable.BlindIndexNormalizer.{blindIndex.Value.Normalizer}, " +
+                $"{storageField}, " +
+                $"obj => (string?)(object?)(({globalFullName})obj).{member.Name})");
+        }
+
+        if (blindIndexes.Count > 0)
+        {
+            sb.AppendLine("    public System.Collections.Generic.IReadOnlyList<global::AeroDB.Sable.Metadata.BlindIndexDescriptor>? BlindIndexes =>");
+            sb.AppendLine("        new global::AeroDB.Sable.Metadata.BlindIndexDescriptor[]");
+            sb.AppendLine("        {");
+            sb.Append(string.Join(",\n", blindIndexes));
+            sb.AppendLine();
+            sb.AppendLine("        };");
+        }
+        else
+        {
+            sb.AppendLine("    public System.Collections.Generic.IReadOnlyList<global::AeroDB.Sable.Metadata.BlindIndexDescriptor>? BlindIndexes => null;");
         }
 
         sb.AppendLine("}");
@@ -534,6 +618,83 @@ public class AeroDBDocumentGenerator : IIncrementalGenerator
 
         return null;
     }
+
+    private static string? GetEncryptionAlgorithm(IPropertySymbol property)
+    {
+        var attribute = property.GetAttributes().FirstOrDefault(candidate =>
+            candidate.AttributeClass?.ToDisplayString() == "AeroDB.Sable.EncryptAttribute");
+        if (attribute is null)
+            return null;
+
+        if (attribute.ConstructorArguments.Length == 0)
+            return "Aes256Gcm";
+
+        var value = attribute.ConstructorArguments[0].Value;
+        return value switch
+        {
+            1 => "Aes256Gcm",
+            2 => "ChaCha20Poly1305",
+            _ => "__InvalidEncryptionAlgorithm"
+        };
+    }
+
+    private static (
+        string Algorithm,
+        string Normalizer,
+        string? StorageFieldName)? GetBlindIndex(IPropertySymbol property)
+    {
+        var attribute = property.GetAttributes().FirstOrDefault(candidate =>
+            candidate.AttributeClass?.ToDisplayString() == "AeroDB.Sable.BlindIndexAttribute");
+        if (attribute is null)
+            return null;
+
+        var algorithm = "HmacSha256";
+        var normalizer = "UsSocialSecurityNumberV1";
+        string? storageFieldName = null;
+
+        foreach (var named in attribute.NamedArguments)
+        {
+            switch (named.Key)
+            {
+                case "Algorithm":
+                    algorithm = GetEnumValueName(named.Value) ?? "__InvalidBlindIndexAlgorithm";
+                    break;
+                case "Normalizer":
+                    normalizer = GetEnumValueName(named.Value) ?? "__InvalidBlindIndexNormalizer";
+                    break;
+                case "StorageFieldName":
+                    storageFieldName = named.Value.Value as string;
+                    break;
+            }
+        }
+
+        return (algorithm, normalizer, storageFieldName);
+    }
+
+    private static string? GetEnumValueName(TypedConstant constant)
+    {
+        if (constant.Type is not INamedTypeSymbol enumType || constant.Value is null)
+            return null;
+
+        var numericValue = Convert.ToInt64(constant.Value, System.Globalization.CultureInfo.InvariantCulture);
+        return enumType.GetMembers()
+            .OfType<IFieldSymbol>()
+            .FirstOrDefault(field =>
+                field.HasConstantValue
+                && Convert.ToInt64(
+                    field.ConstantValue,
+                    System.Globalization.CultureInfo.InvariantCulture) == numericValue)
+            ?.Name;
+    }
+
+    private static string EscapeString(string value)
+        => value.Replace("\\", "\\\\").Replace("\"", "\\\"");
+
+    private static bool IsString(ITypeSymbol type)
+        => type.SpecialType == SpecialType.System_String;
+
+    private static bool IsByteArray(ITypeSymbol type)
+        => type is IArrayTypeSymbol { ElementType.SpecialType: SpecialType.System_Byte };
 
     internal static string ToSnakeCase(string name)
     {

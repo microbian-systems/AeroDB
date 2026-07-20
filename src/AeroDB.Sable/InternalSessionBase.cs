@@ -211,14 +211,45 @@ public abstract class InternalSessionBase : IAsyncDisposable
         RequestCount++;
         LogSurrealQuery(sql, parameters);
         var response = await Session.RawQuery(sql, parameters, ct).ConfigureAwait(false);
-        if (TryDeserializeDocumentResponse<T>(response, out var mapped))
-            return mapped;
+        var mapped = await TryDeserializeDocumentResponseAsync<T>(response, ct).ConfigureAwait(false);
+        if (mapped.Handled)
+            return mapped.Results;
+
+        return response.GetValue<List<T>>(0) ?? [];
+    }
+
+    internal async Task<List<T>> RawDocumentQueryAsync<T>(
+        string sql,
+        IReadOnlyDictionary<string, object?>? parameters,
+        CancellationToken cancellationToken)
+        where T : class
+    {
+        var (schemaName, _) = MetadataDispatch.GetSchemaTarget(typeof(T), Options.Schema);
+        var session = await GetSessionForSchemaAsync(schemaName, cancellationToken)
+            .ConfigureAwait(false);
+        RequestCount++;
+        LogSurrealQuery(sql, parameters);
+        var response = await session.RawQuery(sql, parameters, cancellationToken)
+            .ConfigureAwait(false);
+        var mapped = await TryDeserializeDocumentResponseAsync<T>(
+                response,
+                cancellationToken)
+            .ConfigureAwait(false);
+        if (mapped.Handled)
+            return mapped.Results;
 
         return response.GetValue<List<T>>(0) ?? [];
     }
 
     internal List<T> DeserializeMappedPocoResponse<T>(SurrealDbResponse response, int index = 0)
     {
+        if (EncryptedFieldResolver.HasEncryptedFields(typeof(T), Options.Schema))
+        {
+            throw new SableEncryptedOperationNotSupportedException(
+                typeof(T),
+                "synchronous materialization");
+        }
+
         var mapping = Options.Schema.Mappings.GetValueOrDefault(typeof(T));
         if (mapping is null && !typeof(T).IsClass)
             return [];
@@ -227,17 +258,24 @@ public abstract class InternalSessionBase : IAsyncDisposable
         return DeserializePocoFromList<T>(records, mapping?.IdentityProperty ?? "Id", Options.Schema, Options.EnumStorage);
     }
 
-    private bool TryDeserializeDocumentResponse<T>(SurrealDbResponse response, out List<T> results)
+    private async ValueTask<(bool Handled, List<T> Results)> TryDeserializeDocumentResponseAsync<T>(
+        SurrealDbResponse response,
+        CancellationToken cancellationToken)
     {
-        results = [];
-
         var mapping = Options.Schema.Mappings.GetValueOrDefault(typeof(T));
         if (mapping is null && !typeof(T).IsClass)
-            return false;
+            return (false, []);
 
         var records = CborResultReader.ReadPocoResult(response, 0);
-        results = DeserializePocoFromList<T>(records, mapping?.IdentityProperty ?? "Id", Options.Schema, Options.EnumStorage);
-        return true;
+        await EncryptedDocumentTransformer
+            .DecryptRecordsAsync<T>(records, Options, TenantId, cancellationToken)
+            .ConfigureAwait(false);
+        var results = DeserializePocoFromList<T>(
+            records,
+            mapping?.IdentityProperty ?? "Id",
+            Options.Schema,
+            Options.EnumStorage);
+        return (true, results);
     }
 
     public async Task<int> ExecuteSqlAsync(string sql, IReadOnlyDictionary<string, object?>? parameters = null, CancellationToken ct = default)
@@ -392,6 +430,10 @@ public abstract class InternalSessionBase : IAsyncDisposable
             _logger.LogDebug("Loaded {Type} with id={Id}", typeof(T).Name, id);
             return result;
         }
+        catch (SableEncryptionException)
+        {
+            throw;
+        }
         catch (Exception ex)
         {
             _logger.LogWarning(ex, "LoadAsync failed for id={Id}", id);
@@ -448,8 +490,26 @@ public abstract class InternalSessionBase : IAsyncDisposable
         if (records is not { Count: 1 })
             return null;
 
+        await EncryptedDocumentTransformer
+            .DecryptRecordsAsync<T>(records, Options, TenantId, ct)
+            .ConfigureAwait(false);
         var mapping = Options.Schema.Mappings.GetValueOrDefault(typeof(T));
         return DeserializePocoFromList<T>(records, mapping?.IdentityProperty, Options.Schema, Options.EnumStorage)[0];
+    }
+
+    internal async ValueTask<List<T>> DeserializePocoFromListAsync<T>(
+        List<Dictionary<string, object?>> records,
+        string? identityProperty,
+        CancellationToken cancellationToken)
+    {
+        await EncryptedDocumentTransformer
+            .DecryptRecordsAsync<T>(records, Options, TenantId, cancellationToken)
+            .ConfigureAwait(false);
+        return DeserializePocoFromList<T>(
+            records,
+            identityProperty,
+            Options.Schema,
+            Options.EnumStorage);
     }
 
     protected void LogSurrealQuery(string sql, IReadOnlyDictionary<string, object?>? parameters)
@@ -459,10 +519,16 @@ public abstract class InternalSessionBase : IAsyncDisposable
 
         if (parameters is { Count: > 0 })
         {
+            var redacted = parameters.ToDictionary(
+                parameter => parameter.Key,
+                parameter => parameter.Value is null
+                    ? "<null>"
+                    : $"<{parameter.Value.GetType().Name}>",
+                StringComparer.Ordinal);
             _logger.LogDebug(
                 "Executing SurrealQL: {SurrealQL} Parameters: {@Parameters}",
                 sql,
-                parameters);
+                redacted);
         }
         else
         {
@@ -1313,6 +1379,8 @@ public abstract class InternalSessionBase : IAsyncDisposable
     /// <summary>Captures a JSON snapshot of an entity for dirty-tracking comparison.</summary>
     internal void CaptureSnapshot(Type type, string id, object entity)
     {
+        if (EncryptedFieldResolver.HasEncryptedFields(type, Options.Schema))
+            throw new SableEncryptedOperationNotSupportedException(type, "dirty tracking");
         var jsonOptions = Options.SerializerOptions ?? new System.Text.Json.JsonSerializerOptions
         {
             PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase
@@ -1324,6 +1392,8 @@ public abstract class InternalSessionBase : IAsyncDisposable
     /// <summary>Checks if an entity has changed since its last snapshot.</summary>
     internal bool HasChanged(Type type, string id, object entity)
     {
+        if (EncryptedFieldResolver.HasEncryptedFields(type, Options.Schema))
+            throw new SableEncryptedOperationNotSupportedException(type, "dirty tracking");
         if (!_identityMapSnapshots.TryGetValue(type, out var snapshots) || !snapshots.TryGetValue(id, out var snapshot))
             return true; // No snapshot = assume changed
 
@@ -1380,7 +1450,11 @@ public abstract class InternalSessionBase : IAsyncDisposable
     /// </summary>
     public Task<TOut> QueryAsync<TDoc, TOut>(ICompiledQuery<TDoc, TOut> compiledQuery, CancellationToken ct = default)
         where TDoc : class
-        => CompiledQueryPlanner.QueryAsync<TDoc, TOut>(this, compiledQuery, ct);
+    {
+        if (EncryptedFieldResolver.HasEncryptedFields(typeof(TDoc), Options.Schema))
+            throw new SableEncryptedOperationNotSupportedException(typeof(TDoc), "compiled query");
+        return CompiledQueryPlanner.QueryAsync<TDoc, TOut>(this, compiledQuery, ct);
+    }
 
     /// <summary>
     /// Execute a compiled query and return the result as a JSON string.
@@ -1501,6 +1575,7 @@ public abstract class InternalSessionBase : IAsyncDisposable
     public async Task<List<(T1, T2)>> QueryAsync<T1, T2>(string sql, IReadOnlyDictionary<string, object?>? parameters = null, CancellationToken ct = default)
         where T1 : class where T2 : class
     {
+        ThrowIfAnyEncrypted("multi-result raw query", typeof(T1), typeof(T2));
         var response = await Session.RawQuery(sql, parameters, ct).ConfigureAwait(false);
         if (response.HasErrors)
             throw new InvalidOperationException("SurrealDB multi-statement query error.");
@@ -1514,6 +1589,7 @@ public abstract class InternalSessionBase : IAsyncDisposable
     public async Task<List<(T1, T2, T3)>> QueryAsync<T1, T2, T3>(string sql, IReadOnlyDictionary<string, object?>? parameters = null, CancellationToken ct = default)
         where T1 : class where T2 : class where T3 : class
     {
+        ThrowIfAnyEncrypted("multi-result raw query", typeof(T1), typeof(T2), typeof(T3));
         var response = await Session.RawQuery(sql, parameters, ct).ConfigureAwait(false);
         if (response.HasErrors)
             throw new InvalidOperationException("SurrealDB multi-statement query error.");
@@ -1614,6 +1690,7 @@ public abstract class InternalSessionBase : IAsyncDisposable
     /// <inheritdoc />
     public async Task<IReadOnlyList<T>> SearchAsync<T>(string searchTerm, string? analyzer = null, CancellationToken ct = default) where T : class
     {
+        ThrowIfAnyEncrypted("search query", typeof(T));
         var stringProps = GetStringPropertyNames<T>();
         if (stringProps.Length == 0) return [];
 
@@ -1635,6 +1712,7 @@ public abstract class InternalSessionBase : IAsyncDisposable
     /// <inheritdoc />
     public async Task<IReadOnlyList<T>> PhraseSearchAsync<T>(string searchTerm, string? analyzer = null, CancellationToken ct = default) where T : class
     {
+        ThrowIfAnyEncrypted("search query", typeof(T));
         var stringProps = GetStringPropertyNames<T>();
         if (stringProps.Length == 0) return [];
 
@@ -1653,6 +1731,7 @@ public abstract class InternalSessionBase : IAsyncDisposable
     /// <inheritdoc />
     public async Task<IReadOnlyList<T>> WebStyleSearchAsync<T>(string searchTerm, string? analyzer = null, CancellationToken ct = default) where T : class
     {
+        ThrowIfAnyEncrypted("search query", typeof(T));
         var stringProps = GetStringPropertyNames<T>();
         if (stringProps.Length == 0) return [];
 
@@ -1670,6 +1749,7 @@ public abstract class InternalSessionBase : IAsyncDisposable
     /// <inheritdoc />
     public async Task<IReadOnlyList<T>> PrefixSearchAsync<T>(string searchTerm, string? analyzer = null, CancellationToken ct = default) where T : class
     {
+        ThrowIfAnyEncrypted("search query", typeof(T));
         var stringProps = GetStringPropertyNames<T>();
         if (stringProps.Length == 0) return [];
 
@@ -1681,6 +1761,19 @@ public abstract class InternalSessionBase : IAsyncDisposable
         var whereClause = string.Join(" OR ", conditions);
         var sql = $"SELECT * FROM `{table}` WHERE {whereClause}";
         return await RawQueryAsync<T>(sql, null, ct).ConfigureAwait(false);
+    }
+
+    internal void ThrowIfAnyEncrypted(string operation, params Type[] documentTypes)
+    {
+        foreach (var documentType in documentTypes)
+        {
+            if (EncryptedFieldResolver.HasEncryptedFields(documentType, Options.Schema))
+            {
+                throw new SableEncryptedOperationNotSupportedException(
+                    documentType,
+                    operation);
+            }
+        }
     }
 
     // ── ITEM 5: QueryForNonStaleData (Marten parity) ─────────────────

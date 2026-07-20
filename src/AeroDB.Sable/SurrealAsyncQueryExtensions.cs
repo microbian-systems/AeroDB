@@ -134,6 +134,14 @@ public static class SurrealAsyncQueryExtensions
                 return await _inner.ToListAsync(ct).ConfigureAwait(false);
 
             var session = queryable.InternalSession;
+            if (EncryptedFieldResolver.HasEncryptedFields(
+                    typeof(T),
+                    queryable.StoreOptions.Schema))
+            {
+                throw new SableEncryptedOperationNotSupportedException(
+                    typeof(T),
+                    "deleted-before query");
+            }
             var table = MetadataDispatch.GetTableName(typeof(T), queryable.StoreOptions.Schema);
             var response = await session.Session.RawQuery($"SELECT * FROM `{table}`", null, ct).ConfigureAwait(false);
             return session.DeserializeMappedPocoResponse<T>(response, 0);

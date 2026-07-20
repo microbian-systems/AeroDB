@@ -36,6 +36,8 @@ public sealed class AeroDBSpatialQuery<T> : ISpatialQuery<T> where T : class
     internal AeroDBSpatialQuery(SurrealQueryProvider provider)
     {
         _provider = provider;
+        if (EncryptedFieldResolver.HasEncryptedFields(typeof(T), provider.StoreOptions.Schema))
+            throw new SableEncryptedOperationNotSupportedException(typeof(T), "spatial query");
         _table = MetadataDispatch.GetTableName(typeof(T));
     }
 

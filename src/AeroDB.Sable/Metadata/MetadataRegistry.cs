@@ -17,7 +17,29 @@ public readonly record struct FieldSchema(
     /// its containing table remains SCHEMAFULL.
     /// </summary>
     public bool IsFlexible { get; init; }
+
+    /// <summary>The reversible encryption algorithm, or null for a clear field.</summary>
+    public EncryptionAlgorithm? EncryptionAlgorithm { get; init; }
 }
+
+/// <summary>
+/// Generated or fluent runtime access to one encrypted domain property.
+/// </summary>
+public sealed record EncryptedFieldDescriptor(
+    string PropertyName,
+    Type ClrType,
+    string CodecId,
+    EncryptionAlgorithm Algorithm,
+    Func<object, object?> GetValue,
+    Action<object, object?> SetValue);
+
+/// <summary>Generated or fluent runtime metadata for one blind-indexed field.</summary>
+public sealed record BlindIndexDescriptor(
+    string PropertyName,
+    BlindIndexAlgorithm Algorithm,
+    BlindIndexNormalizer Normalizer,
+    string? StorageFieldName,
+    Func<object, string?> GetValue);
 
 /// <summary>
 /// Generic metadata interface for a document type.
@@ -73,6 +95,12 @@ public interface ITypeMetadata
     /// source generator that predates field schema support.
     /// </summary>
     IReadOnlyList<FieldSchema>? Fields { get; }
+
+    /// <summary>Source-generated encrypted-property accessors for this type.</summary>
+    IReadOnlyList<EncryptedFieldDescriptor>? EncryptedFields { get; }
+
+    /// <summary>Source-generated blind-index accessors for this type.</summary>
+    IReadOnlyList<BlindIndexDescriptor>? BlindIndexes => null;
 }
 
 /// <summary>

@@ -101,6 +101,8 @@ public class DocumentStore : IDocumentStore, ISessionFactory
 
             // Apply global document policies to all registered mappings
             ApplyPolicies();
+            Options.Schema.ResolveRelationships();
+            EncryptionMappingValidator.Validate(Options);
 
             // TODO: Phase 1 — ChangeTracking for DatabasePerTenant
             // In this mode, each tenant gets its own database on first session.
@@ -185,6 +187,7 @@ public class DocumentStore : IDocumentStore, ISessionFactory
         // Apply global document policies to all registered mappings
         ApplyPolicies();
         Options.Schema.ResolveRelationships();
+        EncryptionMappingValidator.Validate(Options);
 
         var schemaManager = new SchemaManager(Options.LoggerFactory);
         var triggerManager = new EventTriggerManager(Options.LoggerFactory);

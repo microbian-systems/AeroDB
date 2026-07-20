@@ -266,7 +266,7 @@ public class SchemaConfigurationTests
     }
 
     [Test]
-    public async Task Marten_style_modular_config_with_multiple_contributions()
+    public async Task Modular_config_with_multiple_contributions()
     {
         var configuratorsRun = new List<string>();
         

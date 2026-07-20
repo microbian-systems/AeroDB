@@ -1,6 +1,9 @@
 # AeroDB.Sable.Vault — Encrypted Configuration Provider & Secrets Store
 
-> **Status:** Brainstorm / Emerging Design — not yet committed to implementation.
+> **Status:** Historical brainstorming only — not an implementation specification.
+> **Do not implement directly from this document.** It preserves early ideas, alternatives,
+> and unresolved assumptions for context. The current proposed direction is
+> [AeroDB.Sable Data Encryption and Vault Architecture](sable-data-encryption-and-vault-architecture.md).
 > **Last updated:** 2026-07-18
 > **Decision log:** See [§ Decision Registry](#decision-registry) for confirmed vs tentative choices.
 
@@ -9,7 +12,8 @@
 ## Table of Contents
 
 1. [Vision](#vision)
-2. [Decision Registry](#decision-registry)
+2. [What We Need to Solve](#what-we-need-to-solve)
+3. [Decision Registry](#decision-registry)
 3. [Configuration Provider Architecture](#configuration-provider-architecture)
 4. [Connecting to the Vault — Credential Chain](#connecting-to-the-vault--credential-chain)
 5. [Encryption Architecture](#encryption-architecture)
@@ -37,6 +41,82 @@ A distributed secrets store (analogous to Azure Key Vault, HashiCorp Vault, or I
 - **M2M + human auth.** Service accounts (`BEARER`) for machine-to-machine secret consumption; record users (`RECORD` access) for human operators; JWT federation for existing IdP integration.
 - **Envelope encryption.** Three-tier key hierarchy (Master → Tenant → Per-Secret). Only wrapped keys and ciphertext are stored in SurrealDB. The master key is managed by a pluggable `IKeyManagementService` (DPAPI default, Azure Key Vault / AWS KMS as future providers).
 - **Live reload.** Secrets can be rotated and the configuration provider publishes change notifications via `IChangeToken`, so apps pick up new values without restarting.
+
+---
+
+## What We Need to Solve
+
+Storing encrypted connection strings and secrets directly in a database is a classic architectural conundrum. It seems perfectly secure on paper: the database is encrypted at rest (e.g., using LUKS, BitLocker, or cloud provider storage encryption), so if someone steals the physical hard drives or backups, the data is unreadable.
+
+However, relying solely on **encryption at rest** to protect secrets inside the database introduces a critical architectural flaw known as the **Confused Deputy Problem**.
+
+This is why relying on database encryption at rest alone falls short for secrets management, and why specialized secret stores are required. AeroDB.Sable.Vault must address each of these head-on.
+
+---
+
+### 1. The Decryption Lifecycle (The "Always-On" Vulnerability)
+
+Encryption at rest only protects data when the database engine is stopped and the storage volume is unmounted.
+
+- As soon as the database server boots up and mounts the encrypted disk, the operating system or datastore backend supplies the decryption keys.
+- From that moment on, the database engine reads and writes decrypted data transparently.
+
+If an attacker gains unauthorized access to your running database session (via SQL Injection, compromised service account credentials, or a remote code execution vulnerability), the database will happily decrypt and serve those secrets right to them. The database acts as a **confused deputy** — using its legitimate permissions to fetch data on behalf of an illegitimate actor.
+
+**How Sable Vault addresses this:**
+
+- **Application-layer envelope encryption.** Secrets are encrypted *before* they touch SurrealDB. The ciphertext stored in `vault_secrets` is useless without the DEK, which is itself wrapped by a tenant intermediate key that SurrealDB never sees unwrapped.
+- **SurrealDB never holds plaintext keys.** The master key (KEK) lives outside SurrealDB entirely — in DPAPI, Azure Key Vault, or AWS KMS. Intermediate keys are stored *wrapped* in `vault_tenant_keys`. Even with full database access, an attacker gets only wrapped blobs.
+- **Per-secret encryption keys (DEKs).** Even if one secret's DEK is somehow compromised, other secrets remain protected because each has its own independent key.
+
+---
+
+### 2. Circular Dependencies (The Chicken-and-Egg Problem)
+
+To boot your application, it needs to connect to the database to fetch its configuration and third-party API secrets. But to connect to the database, it *already needs* the database connection string.
+
+If you store that initial bootstrap connection string in plaintext on the application server config file to bypass this problem, you have simply moved the target rather than solving it.
+
+**How Sable Vault addresses this:**
+
+- **Layered bootstrap with local encrypted store.** The bootstrap connection configuration is never stored in plaintext. On first provision, the admin supplies credentials once (via environment variables or an interactive prompt). Sable Vault provisions the SurrealDB schemas, then writes an *encrypted* bootstrap file to a local SurrealKv store protected by DPAPI.
+- **Subsequent starts use the encrypted bootstrap store.** The application server's `appsettings.json` never needs to contain SurrealDB credentials. Only the encrypted `./vault-bootstrap/bootstrap.dat` file holds the cached bearer token — and only the DPAPI-scoped machine identity can decrypt it.
+- **The `DefaultSableCredential` chain breaks the circle.** The credential chain tries: bearer token from env → local encrypted store → appsettings fallback → interactive prompt. Each step is a progressively less secure fallback, but none stores plaintext credentials in source-controlled configuration files.
+
+---
+
+### 3. Lack of True Secret Separation of Concerns
+
+Databases are designed for high-throughput data retrieval, indexing, complex relationships, and querying. They are not built with the strict constraints required for operational security:
+
+- **The Master Key Exposure:** If your application handles its own encryption/decryption before sending data to the database (field-level encryption), the application must hold the master encryption key in memory. If the app server is compromised, the key is gone.
+- **Audit Trails:** Standard database transaction logs track *data modifications* (`INSERT`/`UPDATE`), but rarely log explicit, immutable audit records for every single read (`SELECT`) of a specific field. If a secret is leaked via a read operation, you may never know.
+
+**How Sable Vault addresses this:**
+
+- **Master key never lives in application memory.** The KEK is resolved by the pluggable `IKeyManagementService` only when needed for key wrapping/unwrapping operations, and zeroed immediately after use. DEKs are generated per-operation, used, and zeroed. The application's normal request-processing memory space never holds key material.
+- **Immutable audit trail in `vault_audit`.** Every secret access (read, write, delete, rotate) writes an append-only audit record to the `vault_audit` table. Permissions on this table prevent modification or deletion. This gives non-repudiation: you know exactly who accessed what secret and when.
+- **Strict identity-based access via SurrealDB PERMISSIONS.** Table-level and field-level `PERMISSIONS` enforce that even a compromised database session can only access secrets scoped to its authenticated tenant — row-level security enforced by the database engine itself, not application code.
+- **Per-tenant key isolation.** Compromising one tenant's intermediate key exposes only that tenant's secrets. Other tenants remain protected. This limits blast radius in a multi-tenant deployment.
+
+---
+
+### The Blueprint: What Makes a Dedicated Secret Store
+
+To secure connection strings and application secrets, the industry standard is to use a dedicated tool like **HashiCorp Vault**, **AWS Secrets Manager**, **Azure Key Vault**, or **Google Cloud Secret Manager**. AeroDB.Sable.Vault aims to provide equivalent guarantees on SurrealDB infrastructure.
+
+| Capability | Why It Matters | Sable Vault Approach |
+|------------|---------------|---------------------|
+| **Memory-only / sealed state** | No plaintext on disk; keys only in memory when actively used | DEKs generated per-operation, zeroed after use; KEK in external KMS |
+| **Granular identity-based access (IAM)** | App authenticates with machine identity; only requests secrets it owns | SurrealDB BEARER tokens with tenant-scoped `PERMISSIONS` |
+| **Strict read auditing** | Non-repudiation audit log for every secret access | `vault_audit` table: append-only, immutable, tenant-scoped |
+| **Dynamic secret generation** | Auto-rotate credentials, making stolen credentials short-lived | `SecretRotator` background daemon; rotation policies per secret |
+| **No circular dependencies** | Bootstrap without plaintext config files | Layered `DefaultSableCredential` chain + local encrypted bootstrap store |
+| **Application-layer encryption** | Ciphertext at rest in database; keys external to database | AES-256-GCM envelope encryption; KEK never in SurrealDB |
+
+---
+
+> **Key takeaway:** Encryption at rest is a checkbox for physical compliance — it is not an active firewall against dynamic application-layer breaches. AeroDB.Sable.Vault must provide defense-in-depth: envelope encryption with external key management, per-tenant key isolation, immutable audit logging, and a credential chain that eliminates plaintext bootstrap configuration.
 
 ---
 

@@ -97,7 +97,11 @@ public class SchemaManager
             {
                 if (properties.TryGetValue(f.Name, out var prop))
                 {
-                    var st = MakeOptionalIfNullable(f.SurrealType, prop);
+                    var encrypted = f.EncryptionAlgorithm is not null
+                        || (schema is not null && EncryptedFieldResolver.Find(type, f.Name, schema) is not null);
+                    var st = encrypted
+                        ? MakeOptionalIfNullable("object", prop)
+                        : MakeOptionalIfNullable(f.SurrealType, prop);
                     // Rewrite enum literals to integers when runtime config overrides source gen default
                     var propType = Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType;
                     if (enumStorage == EnumStorage.AsInteger && propType.IsEnum)
@@ -106,7 +110,7 @@ public class SchemaManager
                         var isOpt = st.StartsWith("option<", StringComparison.Ordinal);
                         st = isOpt ? $"option<{literalType}>" : literalType;
                     }
-                    yield return (MetadataDispatch.GetFieldName(type, f.Name, schema), st, f.IsFlexible);
+                    yield return (MetadataDispatch.GetFieldName(type, f.Name, schema), st, f.IsFlexible || encrypted);
                 }
                 else
                 {
@@ -120,10 +124,14 @@ public class SchemaManager
         // Fallback: runtime reflection (legacy path for non-generated types)
         foreach (var prop in properties.Values)
         {
+            var encrypted = schema is not null
+                && EncryptedFieldResolver.Find(type, prop.Name, schema) is not null;
             yield return (
                 MetadataDispatch.GetFieldName(type, prop.Name, schema),
-                GetSurrealType(prop.PropertyType, prop, nullability, enumStorage),
-                IsFlexibleEmbeddedType(prop.PropertyType));
+                encrypted
+                    ? MakeOptionalIfNullable("object", prop)
+                    : GetSurrealType(prop.PropertyType, prop, nullability, enumStorage),
+                encrypted || IsFlexibleEmbeddedType(prop.PropertyType));
         }
     }
 
@@ -459,6 +467,27 @@ public class SchemaManager
         {
             foreach (var fieldSurql in BuildFieldDefinitions(name, tableName, surrealType, isFlexible))
                 await session.RawQuery(fieldSurql, null, ct).ConfigureAwait(false);
+        }
+
+        if (schemaOptions is not null)
+        {
+            foreach (var blindIndex in BlindIndexResolver.GetFields(entityType, schemaOptions))
+            {
+                var storageField = BlindIndexResolver.ResolveStorageField(
+                    entityType,
+                    blindIndex,
+                    schemaOptions);
+                await session.RawQuery(
+                    $"DEFINE FIELD {storageField} ON TABLE {tableName} TYPE option<string>;",
+                    null,
+                    ct).ConfigureAwait(false);
+
+                var indexName = $"idx_{tableName}_{storageField}";
+                await session.RawQuery(
+                    $"DEFINE INDEX OVERWRITE {indexName} ON TABLE {tableName} COLUMNS {storageField};",
+                    null,
+                    ct).ConfigureAwait(false);
+            }
         }
 
         // Ensure document metadata fields for types implementing IDocumentMetadata

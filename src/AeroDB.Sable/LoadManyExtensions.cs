@@ -34,6 +34,10 @@ public static class LoadManyExtensions
             var results = await session.RawQueryAsync<T>(sql, null, ct).ConfigureAwait(false);
             return results?.Count > 0 ? results.AsReadOnly() : Array.Empty<T>();
         }
+        catch (SableEncryptionException)
+        {
+            throw;
+        }
         catch
         {
             return Array.Empty<T>();
@@ -81,6 +85,10 @@ public static class LoadManyExtensions
         {
             var results = await session.RawQueryAsync<T>(sql, null, ct).ConfigureAwait(false);
             return results?.Count > 0 ? results.AsReadOnly() : Array.Empty<T>();
+        }
+        catch (SableEncryptionException)
+        {
+            throw;
         }
         catch
         {

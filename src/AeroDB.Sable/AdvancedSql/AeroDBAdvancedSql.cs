@@ -25,6 +25,7 @@ public class AeroDBAdvancedSql
         CancellationToken ct = default)
         where T1 : class where T2 : class
     {
+        _session.ThrowIfAnyEncrypted("multi-result advanced SQL query", typeof(T1), typeof(T2));
         var response = await _session.Session.RawQuery(sql, parameters, ct).ConfigureAwait(false);
         if (response.HasErrors) throw CreateError(response.Errors);
         var r1 = DeserializeList<T1>(response, 0);
@@ -38,6 +39,11 @@ public class AeroDBAdvancedSql
         CancellationToken ct = default)
         where T1 : class where T2 : class where T3 : class
     {
+        _session.ThrowIfAnyEncrypted(
+            "multi-result advanced SQL query",
+            typeof(T1),
+            typeof(T2),
+            typeof(T3));
         var response = await _session.Session.RawQuery(sql, parameters, ct).ConfigureAwait(false);
         if (response.HasErrors) throw CreateError(response.Errors);
         var r1 = DeserializeList<T1>(response, 0);
@@ -52,6 +58,12 @@ public class AeroDBAdvancedSql
         CancellationToken ct = default)
         where T1 : class where T2 : class where T3 : class where T4 : class
     {
+        _session.ThrowIfAnyEncrypted(
+            "multi-result advanced SQL query",
+            typeof(T1),
+            typeof(T2),
+            typeof(T3),
+            typeof(T4));
         var response = await _session.Session.RawQuery(sql, parameters, ct).ConfigureAwait(false);
         if (response.HasErrors) throw CreateError(response.Errors);
         var r1 = DeserializeList<T1>(response, 0);
@@ -69,9 +81,7 @@ public class AeroDBAdvancedSql
         [EnumeratorCancellation] CancellationToken ct = default)
         where T : class
     {
-        var response = await _session.Session.RawQuery(sql, parameters, ct).ConfigureAwait(false);
-        if (response.HasErrors) yield break;
-        var results = DeserializeList<T>(response, 0);
+        var results = await _session.RawQueryAsync<T>(sql, parameters, ct).ConfigureAwait(false);
         foreach (var item in results)
         {
             ct.ThrowIfCancellationRequested();

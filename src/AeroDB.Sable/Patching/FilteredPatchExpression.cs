@@ -24,6 +24,8 @@ internal class FilteredPatchExpression<T> : IPatchExpression<T>, IDeferredPatch 
         _session = session;
         _filter = filter;
         var storeOptions = ((InternalSessionBase)session).StoreOptions;
+        if (EncryptedFieldResolver.HasEncryptedFields(typeof(T), storeOptions.Schema))
+            throw new SableEncryptedOperationNotSupportedException(typeof(T), "filtered patch");
         _logger = storeOptions.LoggerFactory
             ?.CreateLogger<FilteredPatchExpression<T>>()
             ?? NullLogger<FilteredPatchExpression<T>>.Instance;

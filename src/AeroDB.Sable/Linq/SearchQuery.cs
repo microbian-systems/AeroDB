@@ -113,6 +113,8 @@ public sealed class AeroDBSearchQuery<T> : ISearchQuery<T> where T : class
     internal AeroDBSearchQuery(SurrealQueryProvider provider)
     {
         _provider = provider;
+        if (EncryptedFieldResolver.HasEncryptedFields(typeof(T), provider.StoreOptions.Schema))
+            throw new SableEncryptedOperationNotSupportedException(typeof(T), "search query");
         _table = MetadataDispatch.GetTableName(typeof(T), _provider.StoreOptions.Schema);
     }
 
