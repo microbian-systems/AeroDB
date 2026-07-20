@@ -5,7 +5,8 @@ SurrealKV.
 
 This package is an in-process encrypted configuration store. It protects
 copied database files, backups, and database-only access. It is not the future
-remote `AeroDB.Sable.Vault` security boundary: the application process can
+remote [`AeroDB.Sable.Vault`](https://github.com/microbian-systems/AeroVault)
+security boundary: the application process can
 access the plaintext configuration and its wrapping-key provider.
 
 ## Provision values
@@ -153,4 +154,3 @@ References:
 - [Options pattern in .NET](https://learn.microsoft.com/dotnet/core/extensions/options)
 - [Safe storage of app secrets in development](https://learn.microsoft.com/aspnet/core/security/app-secrets?view=aspnetcore-10.0)
 - [Custom configuration providers](https://learn.microsoft.com/dotnet/core/extensions/custom-configuration-provider)
-

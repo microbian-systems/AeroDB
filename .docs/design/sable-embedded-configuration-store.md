@@ -19,9 +19,10 @@ SurrealKV files, disk snapshots, and database-only access. It does not protect
 values or keys from a compromised application process because the application
 loads both the plaintext configuration and the wrapping-key provider.
 
-The later `AeroDB.Sable.Vault` service remains a separate process and security
-boundary with workload authentication, authorization policies, audit, secret
-versioning, and remote transit encryption.
+The `AeroDB.Sable.Vault` service now lives in the separate
+[AeroVault repository](https://github.com/microbian-systems/AeroVault). It
+remains a separate process and security boundary with workload authentication,
+authorization policies, audit, secret versioning, and remote transit encryption.
 
 ## 2. V1 goals
 

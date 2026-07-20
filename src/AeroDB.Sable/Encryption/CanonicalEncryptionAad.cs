@@ -5,14 +5,16 @@ namespace AeroDB.Sable;
 
 internal static class CanonicalEncryptionAad
 {
-    private static readonly byte[] PayloadDomain = "SABLE-FIELD-AAD"u8.ToArray();
-    private static readonly byte[] WrappingDomain = "SABLE-DEK-WRAP"u8.ToArray();
+    private static readonly byte[] FieldPayloadDomain = "SABLE-FIELD-AAD"u8.ToArray();
+    private static readonly byte[] FieldWrappingDomain = "SABLE-DEK-WRAP"u8.ToArray();
+    private static readonly byte[] VaultPayloadDomain = "SABLE-VAULT-SECRET-AAD"u8.ToArray();
+    private static readonly byte[] VaultWrappingDomain = "SABLE-VAULT-DEK-WRAP"u8.ToArray();
 
     internal static byte[] EncodePayload(
         EncryptionContext context,
         EncryptionAlgorithm payloadAlgorithm)
         => Encode(
-            PayloadDomain,
+            GetDomain(context.Purpose, wrapping: false),
             EncryptedEnvelope.CurrentFormatVersion,
             (int)payloadAlgorithm,
             0,
@@ -26,13 +28,24 @@ internal static class CanonicalEncryptionAad
         string providerId,
         string keyId)
         => Encode(
-            WrappingDomain,
+            GetDomain(context.EncryptionContext.Purpose, wrapping: true),
             EncryptedEnvelope.CurrentFormatVersion,
             (int)context.PayloadAlgorithm,
             (int)wrappingAlgorithm,
             providerId,
             keyId,
             context.EncryptionContext);
+
+    private static byte[] GetDomain(EncryptionPurpose purpose, bool wrapping) =>
+        purpose switch
+        {
+            EncryptionPurpose.Field when wrapping => FieldWrappingDomain,
+            EncryptionPurpose.Field => FieldPayloadDomain,
+            EncryptionPurpose.VaultSecret when wrapping => VaultWrappingDomain,
+            EncryptionPurpose.VaultSecret => VaultPayloadDomain,
+            _ => throw new SableEnvelopeException(
+                $"Encryption purpose '{purpose}' is not supported.")
+        };
 
     private static byte[] Encode(
         byte[] domain,
@@ -43,7 +56,7 @@ internal static class CanonicalEncryptionAad
         string keyId,
         EncryptionContext context)
     {
-        var values = new[]
+        var values = new List<string>
         {
             context.Namespace ?? string.Empty,
             context.Database ?? string.Empty,
@@ -55,6 +68,8 @@ internal static class CanonicalEncryptionAad
             providerId,
             keyId
         };
+        if (context.AuthenticatedContext is not null)
+            values.Add(context.AuthenticatedContext);
 
         var encoded = values.Select(Encoding.UTF8.GetBytes).ToArray();
         var length = domain.Length + (3 * sizeof(int))

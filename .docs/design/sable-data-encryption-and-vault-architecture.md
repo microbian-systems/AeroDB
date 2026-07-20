@@ -1,10 +1,11 @@
 # AeroDB.Sable Data Encryption and Vault Architecture
 
-> **Status:** Architecture accepted; Phase B/C and embedded configuration V1 implemented; whole-document Phase D deferred as a TODO; Vault is next
-> **Date:** 2026-07-19
+> **Status:** Architecture accepted; Phase B/C and embedded configuration V1 remain in AeroDB; Vault E1/E2a moved to AeroVault; whole-document Phase D deferred
+> **Date:** 2026-07-20
 > **Scope:** Sable document/field encryption first; dedicated Vault service second
 > **Historical context:** [sable-vault-secrets-store.md](sable-vault-secrets-store.md) is brainstorming only
 > **Related implementation:** [sable-embedded-configuration-store.md](sable-embedded-configuration-store.md) defines the separate in-process configuration package
+> **Vault repository:** [microbian-systems/AeroVault](https://github.com/microbian-systems/AeroVault) now owns the Vault projects, tests, production-hardening roadmap, and a copy of this combined design context.
 
 ---
 
@@ -62,6 +63,25 @@ persistence or materialization. Whole-document `.Encrypt()` is a deferred
 Phase D TODO and is not a prerequisite for beginning the Vault service;
 blind-index rewrite is an explicit maintenance operation rather than an
 implicit side effect of a read.
+
+The implemented Vault E1 foundation adds the separate
+`AeroDB.Sable.Vault` and `AeroDB.Sable.Vault.SurrealDb` packages. It includes
+canonical immutable secret paths, scoped default-deny policy evaluation,
+byte-oriented owned plaintext, a distinct Vault AAD domain, sealed/readiness
+key-provider behavior, immutable encrypted secret versions, optimistic
+concurrency, and transactional local audit plus outbox persistence.
+
+Vault E2a adds `AeroDB.Sable.Vault.Server`, an ASP.NET Core minimal-API hosting
+package with real JWT bearer validation, a coarse Vault API permission,
+Vault-owned issuer/client principal mapping, persisted workload identities,
+immutable policy versions and tenant/environment bindings, raw byte secret
+endpoints, bounded request bodies, canonical route rejection, RFC 7807 errors,
+and uncacheable binary secret responses. HTTP integration tests use real
+ephemeral RSA-signed access tokens through Alba; the end-to-end profile covers
+JWT authentication, persisted policy resolution, encryption, audit, and
+SurrealKV storage. Optional mTLS, authenticated remote-database runtime
+permissions, RSA X.509 root wrapping, external audit export, OpenTelemetry, a
+deployable composition host, and the typed remote client remain later work.
 
 ---
 
@@ -328,9 +348,9 @@ transit-style protect/unprotect API. It does not receive the KEK or DEK.
 |---|---|---|---|
 | D1 | Production Vault is a separate service | Accepted direction | The trust boundary cannot be enforced by an in-process configuration provider |
 | D2 | External OIDC/OAuth access tokens are the default workload identity; mTLS is optional | Accepted direction; details proposed | Reuses established identity infrastructure and supports stronger possession proof where needed |
-| D3 | Vault secret paths are immutable in v1 | Proposed | Stabilizes AAD, policies, audit identity, caching, and version history |
-| D4 | A root provider wraps a fresh DEK per field value/document version/secret version | Proposed | Small compromise radius and simple cryptographic reasoning |
-| D5 | Successful secret reads and all mutations require a committed local audit event | Proposed | Prevents unrecorded successful disclosure and state change |
+| D3 | Vault secret paths are immutable in v1 | Accepted/implemented in E1 | Stabilizes AAD, policies, audit identity, caching, and version history |
+| D4 | A root provider wraps a fresh DEK per field value/document version/secret version | Accepted/implemented for Vault versions | Small compromise radius and simple cryptographic reasoning |
+| D5 | Successful secret reads and all mutations require a committed local audit event | Accepted/implemented for create/version/read in E1 | Prevents unrecorded successful disclosure and state change |
 | D6 | Typed Vault client is primary; configuration provider is optional and later | Proposed | Avoids loading broad sets of long-lived plaintext strings |
 | D7 | Vault secret values default to a 64 KiB maximum | Accepted direction | Limits memory amplification and misuse as blob storage |
 | D8 | Sable field encryption is the first implementation slice | Accepted direction | Delivers immediate database-at-rest protection and establishes reusable crypto contracts |
@@ -1279,15 +1299,18 @@ Vault validates:
 - Trusted issuer
 - Vault-specific audience
 - Expiration and not-before time
-- Token type where available
-- Subject/client identity
+- `at+jwt` access-token type by default
+- Exactly one client identity (`client_id`, `azp`, or `appid`)
+- A subject equal to that client identity for the default workload-only profile
 - Required scopes
 - Replay identifier where the issuer supplies one
 
-Vault then maps the verified issuer plus subject/client ID to a
-`WorkloadPrincipal`. A caller-supplied `tenant_id` claim is not sufficient on
-its own. The principal must have a Vault policy binding allowing access to the
-requested tenant and path.
+Vault then maps the verified issuer plus client ID to a `WorkloadPrincipal`.
+The default profile rejects delegated user tokens and generic `typ=JWT` tokens;
+provider-specific profiles belong in the deployable host and must retain an
+unambiguous, Vault-owned workload identity. A caller-supplied `tenant_id` claim
+is not sufficient on its own. The principal must have a Vault policy binding
+allowing access to the requested tenant and path.
 
 Advantages:
 
@@ -1700,16 +1723,50 @@ after the initial Vault delivery unless it is explicitly reprioritized.
 - Added focused TUnit/Shouldly persistence, encryption, JSON/provider-order,
   options-monitor, tamper, and failure-path coverage.
 
-### Phase E — Vault service (next planned phase)
+### Phase E1 — Vault foundation (implemented in AeroVault)
 
-- Add Vault domain/storage projects.
-- Add ASP.NET Core minimal API hosting.
-- Add external JWT bearer authentication.
-- Add optional mTLS scheme.
-- Add Vault-owned authorization policies and tenant enforcement.
-- Add immutable secret versions and audit/outbox transactions.
-- Add file and RSA X.509 root providers.
-- Add sealed/readiness behavior and OpenTelemetry.
+- Added `AeroDB.Sable.Vault` domain/use-case package.
+- Added `AeroDB.Sable.Vault.SurrealDb` runtime persistence and privileged
+  schema-provisioning package.
+- Added immutable canonical paths, scoped default-deny policy evaluation, and
+  explicit-deny precedence.
+- Added a distinct Vault-secret AAD domain bound to Vault, tenant, environment,
+  path, and version.
+- Added sealed/ready mounted-file or custom root-provider lifecycle.
+- Added immutable encrypted versions and optimistic concurrency.
+- Added atomic mutation/audit/outbox transactions and fail-closed read audit.
+- Added focused domain, crypto, service, real SurrealKV transaction, rollback,
+  tamper, and failure-path tests.
+
+### Phase E2a — Authenticated Vault HTTP boundary (implemented in AeroVault)
+
+- Added the `AeroDB.Sable.Vault.Server` ASP.NET Core minimal-API hosting package.
+- Added real JWT bearer validation for signature, trusted issuer, Vault
+  audience, lifetime, strict `at+jwt` type, exact client-credentials identity,
+  issued-at, replay identifier, and a coarse scope/role permission.
+- Added exact Vault-owned external identity mapping; token tenant/path/action
+  claims never create authorization.
+- Persisted workload principals, external identities, immutable policy
+  versions, and tenant/environment policy bindings in SurrealDB.
+- Added raw-byte create, version, and read endpoints with a 64 KiB hard ceiling,
+  optimistic `If-Match`, no JSON/Base64 secret envelopes, and uncacheable
+  `application/octet-stream` disclosure.
+- Added ambiguous path rejection, generic RFC 7807 failures, HTTPS-required
+  default hosting, passive stored content-type metadata, and sensitive-payload
+  endpoint metadata.
+- Added real-JWT Alba coverage plus a full
+  JWT-to-policy-to-encryption-to-audit-to-SurrealKV exercise.
+
+### Phase E2b — Production service hardening (next planned phase in AeroVault)
+
+- Add a deployable composition host and authenticated, least-privileged
+  SurrealDB runtime/provisioning identities and permissions.
+- Add optional mTLS scheme on a dedicated listener or trusted termination
+  boundary.
+- Add RSA X.509 root provider.
+- Add external audit outbox exporter and OpenTelemetry without payload capture.
+- Add rate limits, replay-cache integration, issuer/JWKS outage exercises, and
+  production logging/redaction verification.
 
 ### Phase F — Vault clients and transit
 

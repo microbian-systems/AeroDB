@@ -150,6 +150,22 @@ public sealed class AesGcmDataProtectionProviderTests
     }
 
     [Test]
+    public async Task Vault_secret_envelopes_are_cryptographically_separate_from_field_envelopes()
+    {
+        using var keyWrappingProvider = CreateKeyWrappingProvider();
+        var provider = new AesGcmDataProtectionProvider(keyWrappingProvider);
+        var fieldContext = CreateContext();
+        var vaultContext = fieldContext with { Purpose = EncryptionPurpose.VaultSecret };
+        var envelope = await provider.ProtectAsync("secret"u8.ToArray(), vaultContext);
+
+        using var plaintext = await provider.UnprotectAsync(envelope, vaultContext);
+        plaintext.Memory.ToArray().ShouldBe("secret"u8.ToArray());
+
+        await Should.ThrowAsync<SableEncryptionAuthenticationException>(
+            async () => await provider.UnprotectAsync(envelope, fieldContext));
+    }
+
+    [Test]
     public async Task Unprotect_rejects_a_different_field_in_authenticated_context()
     {
         using var keyWrappingProvider = CreateKeyWrappingProvider();
