@@ -10,14 +10,14 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AeroDB.Sable\AeroDB.Sable.csproj" />
+    <ProjectReference Include="..\..\surrealdb.net\SurrealDb.Net\SurrealDb.Net.csproj" />
+    <ProjectReference Include="..\..\surrealdb.net\SurrealDb.Embedded.SurrealKv\SurrealDb.Embedded.SurrealKv.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Dahomey.Cbor" />
     <PackageReference Include="Microsoft.Extensions.Configuration" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" VersionOverride="10.0.9" />
-    <PackageReference Include="SurrealDb.Embedded.SurrealKv" />
-    <PackageReference Include="SurrealDb.Net" />
   </ItemGroup>
 
   <ItemGroup>

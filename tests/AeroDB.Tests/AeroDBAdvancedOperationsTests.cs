@@ -192,6 +192,7 @@ public class AeroDBAdvancedOperationsTests
         [
             new OrderEvent { StreamId = streamId, OrderId = "EVT-DEL-1", Amount = 100m }
         ]);
+        await session.SaveChangesAsync();
 
         var events = await session.Events.FetchStream(streamId);
         events.Count.ShouldBe(1);

@@ -61,6 +61,21 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
     /// runs inside this transaction without auto-committing.
     /// </summary>
     private SurrealDbTransaction? _explicitTransaction;
+    private readonly HashSet<object> _newAddedEntities = new(ReferenceEqualityComparer.Instance);
+    private readonly HashSet<object> _pendingVersionTrackingCleanup = new(ReferenceEqualityComparer.Instance);
+    private readonly Dictionary<object, long> _explicitVersionSnapshots = new(ReferenceEqualityComparer.Instance);
+    private readonly Dictionary<object, long> _explicitStagedExpectedVersions = new(ReferenceEqualityComparer.Instance);
+    private readonly List<IChangeSet> _pendingExplicitChangeSets = [];
+    private ISurrealDbSession? _activeSaveSession;
+    private SurrealDbTransaction? _pendingAutoEventTransaction;
+
+    /// <summary>
+    /// Routes mutations initiated by deferred save operations through the transaction
+    /// selected for the current save. Outside a save, an explicit transaction remains
+    /// the mutation target for event operations invoked directly by the caller.
+    /// </summary>
+    internal protected override ISurrealDbSession OperationSession =>
+        _activeSaveSession ?? _explicitTransaction ?? _pendingAutoEventTransaction ?? Session;
 
     /// <summary>
     /// Whether this session owns the explicit transaction and is responsible for
@@ -79,7 +94,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
 
     /// <summary>
     /// Cached <c>MethodInfo</c> for <see cref="SurrealDbResponse.GetValue{T}"/>,
-    /// used by <see cref="CheckConcurrencyAsync"/> to avoid reflection lookup on every call.
+    /// used by atomic conditional writes to avoid reflection lookup on every call.
     /// </summary>
     private static readonly MethodInfo? GetValueMethod = typeof(SurrealDbResponse).GetMethods()
         .FirstOrDefault(m => m.Name == "GetValue" && m.IsGenericMethodDefinition);
@@ -155,6 +170,9 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
     {
         if (_explicitTransaction != null)
             throw new InvalidOperationException("A transaction is already in progress.");
+        if (_pendingAutoEventTransaction != null)
+            throw new InvalidOperationException(
+                "Pending event changes must be saved or cleared before beginning an explicit transaction.");
 
         _explicitTransaction = Session.BeginTransaction(DefaultCt).GetAwaiter().GetResult();
         _ownsTransaction = true;
@@ -175,6 +193,9 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
     {
         if (_explicitTransaction != null)
             throw new InvalidOperationException("A transaction is already in progress.");
+        if (_pendingAutoEventTransaction != null)
+            throw new InvalidOperationException(
+                "Pending event changes must be saved or cleared before beginning an explicit transaction.");
 
         _explicitTransaction = await Session.BeginTransaction(ct).ConfigureAwait(false);
         _ownsTransaction = true;
@@ -187,14 +208,45 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
     /// </summary>
     public async Task CommitTransactionAsync(CancellationToken ct = default)
     {
-        if (_explicitTransaction == null)
+        var transaction = _explicitTransaction;
+        if (transaction == null)
             throw new InvalidOperationException("No active transaction to commit.");
 
         await FlushPendingGraphOperationsAsync(ct).ConfigureAwait(false);
-        await _explicitTransaction.Commit(ct).ConfigureAwait(false);
-        await _explicitTransaction.DisposeAsync().ConfigureAwait(false);
+        try
+        {
+            await transaction.Commit(ct).ConfigureAwait(false);
+        }
+        catch (Exception ex) when (IsTransactionWriteConflict(ex)
+                                   && TryCreateCommitConcurrencyException(
+                                       _pendingExplicitChangeSets.SelectMany(changes => changes.Operations),
+                                       _explicitVersionSnapshots,
+                                       out var concurrencyException))
+        {
+            await transaction.DisposeAsync().ConfigureAwait(false);
+            ClearExplicitTransactionState(restoreVersions: true);
+            throw concurrencyException;
+        }
+
+        await transaction.DisposeAsync().ConfigureAwait(false);
         _explicitTransaction = null;
         _ownsTransaction = false;
+        foreach (var entity in _pendingVersionTrackingCleanup)
+            RemoveOriginalVersion(entity);
+        foreach (var entity in _explicitVersionSnapshots.Keys)
+            RemoveOriginalVersion(entity);
+        _pendingVersionTrackingCleanup.Clear();
+        _explicitVersionSnapshots.Clear();
+        _explicitStagedExpectedVersions.Clear();
+        _newAddedEntities.Clear();
+        _expectedVersions.Clear();
+        _expectedRevisions.Clear();
+        _tryUpdateRevisions.Clear();
+
+        var committedChangeSets = _pendingExplicitChangeSets.ToArray();
+        _pendingExplicitChangeSets.Clear();
+        foreach (var changes in committedChangeSets)
+            await InvokeAfterCommitListenersAsync(changes, ct).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -229,6 +281,30 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         _transactionUnrelations.Clear();
         await transaction.Cancel(ct).ConfigureAwait(false);
         await transaction.DisposeAsync().ConfigureAwait(false);
+        ClearExplicitTransactionState(restoreVersions: true);
+    }
+
+    private void ClearExplicitTransactionState(bool restoreVersions)
+    {
+        if (restoreVersions)
+        {
+            foreach (var snapshot in _explicitVersionSnapshots)
+                SetVersion(snapshot.Key, snapshot.Value);
+        }
+
+        foreach (var entity in _pendingVersionTrackingCleanup)
+            RemoveOriginalVersion(entity);
+        foreach (var entity in _explicitVersionSnapshots.Keys)
+            RemoveOriginalVersion(entity);
+
+        _pendingVersionTrackingCleanup.Clear();
+        _explicitVersionSnapshots.Clear();
+        _explicitStagedExpectedVersions.Clear();
+        _pendingExplicitChangeSets.Clear();
+        _newAddedEntities.Clear();
+        _expectedVersions.Clear();
+        _expectedRevisions.Clear();
+        _tryUpdateRevisions.Clear();
         _explicitTransaction = null;
         _ownsTransaction = false;
     }
@@ -249,12 +325,67 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         {
             if (_events is null)
             {
-                var inner = new EventStore(Session, Options);
-                _events = new TrackingEventStore(inner, this);
+                _events = new TrackingEventStore(this);
             }
             return _events;
         }
     }
+
+    private async Task<ISurrealDbSession> GetEventMutationSessionAsync(CancellationToken ct)
+    {
+        if (_activeSaveSession is not null)
+            return _activeSaveSession;
+        if (_explicitTransaction is not null)
+            return _explicitTransaction;
+        if (_pendingAutoEventTransaction is not null)
+            return _pendingAutoEventTransaction;
+
+        // Document sessions are unit-of-work scoped and are not safe for concurrent use.
+        // Keep the transaction open so the common Append + SaveChanges pattern is atomic.
+        _pendingAutoEventTransaction = await Session.BeginTransaction(ct).ConfigureAwait(false);
+        return _pendingAutoEventTransaction;
+    }
+
+    private async Task CancelPendingAutoEventTransactionAsync(CancellationToken ct)
+    {
+        var transaction = _pendingAutoEventTransaction;
+        _pendingAutoEventTransaction = null;
+        if (transaction is null)
+            return;
+
+        try
+        {
+            await transaction.Cancel(ct).ConfigureAwait(false);
+        }
+        finally
+        {
+            await transaction.DisposeAsync().ConfigureAwait(false);
+        }
+    }
+
+    private void ClearTrackedAutoEventChanges()
+    {
+        _appendedEvents.Clear();
+        _fetchForWritingResults.Clear();
+        _unitOfWork.StreamIds.Clear();
+    }
+
+    private async Task DiscardPendingAutoEventChangesAsync()
+    {
+        try
+        {
+            await CancelPendingAutoEventTransactionAsync(CancellationToken.None).ConfigureAwait(false);
+        }
+        finally
+        {
+            ClearTrackedAutoEventChanges();
+        }
+    }
+
+    private Task DiscardFailedDirectEventMutationAsync()
+        => _activeSaveSession is null && _explicitTransaction is null
+            ? DiscardPendingAutoEventChangesAsync()
+            : Task.CompletedTask;
 
     /// <summary>
     /// Routes <see cref="ProjectionLifecycle.Live"/> projections through event replay
@@ -321,6 +452,14 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                     tenantProp.SetValue(entity, TenantId);
                 }
             }
+        }
+
+        var wasVersionTracked = TryGetTrackedVersion(entity, out _);
+        if (operationType == OperationType.Added
+            && !wasVersionTracked
+            && GetVersion(entity) == 0)
+        {
+            _newAddedEntities.Add(entity);
         }
 
         // Track original version for optimistic concurrency
@@ -583,6 +722,9 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
 
     public void ClearChanges()
     {
+        if (_pendingAutoEventTransaction is not null)
+            CancelPendingAutoEventTransactionAsync(DefaultCt).GetAwaiter().GetResult();
+
         _unitOfWork.Clear();
         _appendedEvents.Clear();
         _queuedPatches.Clear();
@@ -595,6 +737,9 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         _expectedVersions.Clear();
         _expectedRevisions.Clear();
         _tryUpdateRevisions.Clear();
+        _newAddedEntities.Clear();
+        _pendingVersionTrackingCleanup.Clear();
+        ClearOriginalVersions();
         ClearSnapshots();
         EjectAll();
     }
@@ -607,7 +752,8 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         if (count == 0 && _appendedEvents.Count == 0 && _queuedPatches.Count == 0
             && _queuedRelations.Count == 0 && _queuedUnrelations.Count == 0
             && _fetchForWritingResults.Count == 0
-            && _queuedStorageOperations.Count == 0 && QueuedSqlCommands.Count == 0) return 0;
+            && _queuedStorageOperations.Count == 0 && QueuedSqlCommands.Count == 0
+            && _pendingAutoEventTransaction is null) return 0;
 
         ResolvedLogger.LogInformation("SaveChangesAsync: committing {EntityCount} entities and {EventCount} events",
             count, _appendedEvents.Count);
@@ -616,102 +762,141 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         var committedOperations = _unitOfWork.Operations.ToArray();
         (string StreamId, object Event)[] appendedEventSnapshot = [];
         int graphOpCount = 0;
+        var saveVersionSnapshots = new Dictionary<object, long>(ReferenceEqualityComparer.Instance);
 
         // Cross-DB check: group operations by their database target.
         // SurrealDB cannot span multiple databases in a single transaction,
         // so we reject cross-database batches up front.
         // This check must happen BEFORE the try/catch so the exception is not wrapped.
-        var dbGroups = _unitOfWork.Operations
-            .GroupBy(op => MetadataDispatch.GetSchemaTarget(op.EntityType, Options.Schema).Database)
-            .ToList();
-
-        if (dbGroups.Count > 1)
+        string? targetSchemaName;
+        try
         {
-            var dbNames = string.Join(", ",
-                dbGroups.Select(g => $"'{g.Key ?? Options.Database ?? "test"}'"));
-            throw new InvalidOperationException(
-                $"Cross-database transactions are not supported. " +
-                $"Unit of work spans multiple databases: {dbNames}");
-        }
-
-        // Resolve the target session for this database (null = default database)
-        var targetSchemaName = dbGroups.Count > 0 ? dbGroups[0].Key : null;
-
-        // Unrelation validation: RecordId table names embed their own database routing,
-        // so cross-DB unrelation is verified at the SurrealDB level. We do not
-        // resolve RecordId tables to schemas here to avoid meta-recursion.
-
-        // Validate queued relation databases against the unit-of-work target
-        if (_queuedRelations.Count > 0)
-        {
-            var relTargets = _queuedRelations
-                .Select(r => MetadataDispatch.GetSchemaTarget(r.EdgeType, Options.Schema).Database)
-                .Distinct()
+            var dbGroups = _unitOfWork.Operations
+                .GroupBy(op => MetadataDispatch.GetSchemaTarget(op.EntityType, Options.Schema).Database)
                 .ToList();
-            if (relTargets.Count > 1)
+
+            if (dbGroups.Count > 1)
             {
-                var relDbNames = string.Join(", ", relTargets.Select(d => $"'{d ?? Options.Database ?? "test"}'"));
+                var dbNames = string.Join(", ",
+                    dbGroups.Select(g => $"'{g.Key ?? Options.Database ?? "test"}'"));
                 throw new InvalidOperationException(
-                    $"Cross-database graph operations are not supported. Queued relations span multiple databases: {relDbNames}");
+                    $"Cross-database transactions are not supported. " +
+                    $"Unit of work spans multiple databases: {dbNames}");
             }
-            var relTarget = relTargets[0];
-            if (relTarget != targetSchemaName)
+
+            // Resolve the target session for this database (null = default database)
+            targetSchemaName = dbGroups.Count > 0 ? dbGroups[0].Key : null;
+
+            // Unrelation validation: RecordId table names embed their own database routing,
+            // so cross-DB unrelation is verified at the SurrealDB level. We do not
+            // resolve RecordId tables to schemas here to avoid meta-recursion.
+
+            // Validate queued relation databases against the unit-of-work target
+            if (_queuedRelations.Count > 0)
             {
-                throw new InvalidOperationException(
-                    $"Cross-database operations are not supported. Documents target '{targetSchemaName}', but queued relations target '{relTarget}'.");
+                var relTargets = _queuedRelations
+                    .Select(r => MetadataDispatch.GetSchemaTarget(r.EdgeType, Options.Schema).Database)
+                    .Distinct()
+                    .ToList();
+                if (relTargets.Count > 1)
+                {
+                    var relDbNames = string.Join(", ", relTargets.Select(d => $"'{d ?? Options.Database ?? "test"}'"));
+                    throw new InvalidOperationException(
+                        $"Cross-database graph operations are not supported. Queued relations span multiple databases: {relDbNames}");
+                }
+                var relTarget = relTargets[0];
+                if (relTarget != targetSchemaName)
+                {
+                    throw new InvalidOperationException(
+                        $"Cross-database operations are not supported. Documents target '{targetSchemaName}', but queued relations target '{relTarget}'.");
+                }
             }
+        }
+        catch
+        {
+            if (_pendingAutoEventTransaction is not null)
+                await DiscardPendingAutoEventChangesAsync().ConfigureAwait(false);
+            throw;
         }
 
         try
         {
-            // BeforeSaveChangesAsync hooks (store + session level)
-            if (Options.Listeners.Count > 0)
-            {
-                foreach (var listener in Options.Listeners)
-                    await listener.BeforeSaveChangesAsync(this, ct).ConfigureAwait(false);
-            }
-            if (SessionListeners.Count > 0)
-            {
-                foreach (var listener in SessionListeners)
-                    await listener.BeforeSaveChangesAsync(this, ct).ConfigureAwait(false);
-            }
+            var resolvedTargetSession = await GetSessionForSchemaAsync(targetSchemaName, ct).ConfigureAwait(false);
 
-            var targetSession = await GetSessionForSchemaAsync(targetSchemaName, ct).ConfigureAwait(false);
-
-            // Begin SurrealDB transaction — all per-entity operations on this session
-            // participate because they share the underlying connection.
             SurrealDbTransaction? tx = null;
             bool ownsTx = false;
+            bool commitAttempted = false;
+            ISurrealDbSession targetSession;
 
             if (_explicitTransaction != null)
             {
+                if (!ReferenceEquals(resolvedTargetSession, Session))
+                {
+                    throw new InvalidOperationException(
+                        "Explicit transactions cannot target a different database session.");
+                }
+
                 // Use the explicit transaction — caller manages commit/rollback.
-                // Operations run inside the explicit transaction scope.
+                targetSession = _explicitTransaction;
                 // Do NOT commit/cancel at the end — caller will do it.
+            }
+            else if (_pendingAutoEventTransaction != null)
+            {
+                if (!ReferenceEquals(resolvedTargetSession, Session))
+                {
+                    await DiscardPendingAutoEventChangesAsync().ConfigureAwait(false);
+                    throw new InvalidOperationException(
+                        "Pending event changes cannot be combined with documents targeting a different database session.");
+                }
+
+                tx = _pendingAutoEventTransaction;
+                ownsTx = true;
+                targetSession = tx;
             }
             else
             {
-                tx = await targetSession.BeginTransaction(ct).ConfigureAwait(false);
+                tx = await resolvedTargetSession.BeginTransaction(ct).ConfigureAwait(false);
                 ownsTx = true;
+                targetSession = tx;
             }
 
+            _activeSaveSession = targetSession;
             try
             {
-                // Phase 1: Optimistic concurrency checks (Modified entities only)
-                // Runs before any mutations so we fail-fast if a conflict exists.
+                // Save listeners run after the transaction is selected so mutations they
+                // initiate share the same atomic boundary as the remaining save pipeline.
+                if (Options.Listeners.Count > 0)
+                {
+                    foreach (var listener in Options.Listeners)
+                        await listener.BeforeSaveChangesAsync(this, ct).ConfigureAwait(false);
+                }
+                if (SessionListeners.Count > 0)
+                {
+                    foreach (var listener in SessionListeners)
+                        await listener.BeforeSaveChangesAsync(this, ct).ConfigureAwait(false);
+                }
+
+                // Phase 1: validate explicit expectations that cannot use the
+                // atomic conditional write path. Versioned Added/Modified/Update
+                // operations are checked by the mutation itself in Phase 3.
                 HashSet<object>? revisionSkipOps = null;
                 if ((UseOptimisticConcurrency || _expectedVersions.Count > 0 || _expectedRevisions.Count > 0) && count > 0)
                 {
                     revisionSkipOps = new HashSet<object>();
                     foreach (var op in _unitOfWork.Operations)
                     {
-                        if (op.Type == OperationType.Modified)
+                        if (op.Type is OperationType.Added or OperationType.Modified or OperationType.Update)
                         {
-                            // Standard optimistic concurrency check
-                            if (UseOptimisticConcurrency)
-                                await CheckConcurrencyAsync(op, targetSession, ct).ConfigureAwait(false);
+                            if (_expectedVersions.ContainsKey(op.Entity)
+                                && _expectedRevisions.ContainsKey(op.Entity))
+                            {
+                                throw new InvalidOperationException(
+                                    "A document cannot have both an expected version and an expected revision.");
+                            }
 
-                            // Expected version check (UpdateExpectedVersion)
+                            if (TryResolveAtomicCas(op, out _, out _, out _, out _, out _))
+                                continue;
+
                             if (_expectedVersions.TryGetValue(op.Entity, out var expectedVer))
                             {
                                 var dbVersion = await FetchVersionAsync(op.Entity, op.EntityType, targetSession, ct).ConfigureAwait(false);
@@ -724,7 +909,6 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                                 }
                             }
 
-                            // Expected revision check (UpdateRevision / TryUpdateRevision)
                             if (_expectedRevisions.TryGetValue(op.Entity, out var expectedRev))
                             {
                                 var dbVersion = await FetchVersionAsync(op.Entity, op.EntityType, targetSession, ct).ConfigureAwait(false);
@@ -732,11 +916,10 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                                 {
                                     if (_tryUpdateRevisions.Contains(op.Entity))
                                     {
-                                        // Skip this entity — don't throw, just leave it out
-                                        revisionSkipOps.Add(op.Entity);
                                         ResolvedLogger.LogDebug(
                                             "TryUpdateRevision: revision mismatch on {Type} (id={Id}), skipping",
                                             op.EntityType.Name, GetEntityId(op.Entity));
+                                        revisionSkipOps.Add(op.Entity);
                                     }
                                     else
                                     {
@@ -760,7 +943,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                     cleanOps = new HashSet<Operation>();
                     foreach (var op in _unitOfWork.Operations)
                     {
-                        if (op.Type == OperationType.Modified)
+                        if (op.Type is OperationType.Modified or OperationType.Update)
                         {
                             var opId = GetEntityId(op.Entity);
                             if (opId is not null && !HasChanged(op.EntityType, opId, op.Entity))
@@ -778,9 +961,18 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                 {
                     foreach (var op in _unitOfWork.Operations)
                     {
-                        if (op.Type is OperationType.Added or OperationType.Modified
+                        if (op.Type is OperationType.Added or OperationType.Modified or OperationType.Update
                             && (cleanOps is null || !cleanOps.Contains(op)))
+                        {
+                            var version = GetVersion(op.Entity);
+                            if (version >= 0)
+                            {
+                                saveVersionSnapshots.TryAdd(op.Entity, version);
+                                if (_explicitTransaction is not null)
+                                    _explicitVersionSnapshots.TryAdd(op.Entity, version);
+                            }
                             IncrementVersion(op.Entity);
+                        }
                     }
                 }
 
@@ -793,7 +985,6 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                         if (cleanOps?.Contains(op) == true)
                             continue;
 
-                        // TryUpdateRevision: skip entities whose revision didn't match
                         if (revisionSkipOps?.Contains(op.Entity) == true)
                             continue;
 
@@ -821,8 +1012,31 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                             }
                         }
 
-                        switch (op.Type)
+                        var casApplied = true;
+                        if (TryResolveAtomicCas(
+                                op,
+                                out var expectedVersion,
+                                out var mappedVersionField,
+                                out var recordId,
+                                out var skipOnConflict,
+                                out var allowUpsert))
                         {
+                            casApplied = await ExecuteAtomicCasWriteAsync(
+                                    op,
+                                    table,
+                                    recordId,
+                                    mappedVersionField,
+                                    expectedVersion,
+                                    skipOnConflict,
+                                    allowUpsert,
+                                    targetSession,
+                                    ct)
+                                .ConfigureAwait(false);
+                        }
+                        else
+                        {
+                            switch (op.Type)
+                            {
                             case OperationType.Added:
                                 ResolvedLogger.LogDebug("UPSERT {Type} ({Table})", op.EntityType.Name, table);
                                 // Fast path: entity has a typed RecordId — preserve it
@@ -1051,14 +1265,18 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                                     }
                                 }
                                 break;
+                            }
                         }
+
+                        if (!casApplied)
+                            continue;
 
                         // Call after-store/after-delete listeners
                         if (Options.Listeners.Count > 0)
                         {
                             foreach (var listener in Options.Listeners)
                             {
-                                if (op.Type is OperationType.Added or OperationType.Modified)
+                                if (op.Type is OperationType.Added or OperationType.Modified or OperationType.Update)
                                     await listener.AfterStoreAsync(this, op.Entity, ct).ConfigureAwait(false);
                                 else if (op.Type is OperationType.Deleted or OperationType.SoftDeleted)
                                     await listener.AfterDeleteAsync(this, op.Entity, ct).ConfigureAwait(false);
@@ -1068,7 +1286,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                         {
                             foreach (var listener in SessionListeners)
                             {
-                                if (op.Type is OperationType.Added or OperationType.Modified)
+                                if (op.Type is OperationType.Added or OperationType.Modified or OperationType.Update)
                                     await listener.AfterStoreAsync(this, op.Entity, ct).ConfigureAwait(false);
                                 else if (op.Type is OperationType.Deleted or OperationType.SoftDeleted)
                                     await listener.AfterDeleteAsync(this, op.Entity, ct).ConfigureAwait(false);
@@ -1077,6 +1295,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                     }
 
                     _unitOfWork.Clear();
+                    _newAddedEntities.Clear();
                 }
 
                 // Phase 3.5: Flush FetchForWriting pending events before inline projections
@@ -1234,6 +1453,17 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                     }
                 }
 
+                // Events are already persisted in the active transaction even when no
+                // inline projection is registered. Snapshot and clear them so a second
+                // SaveChangesAsync is a true no-op and listeners receive the event set.
+                if (_appendedEvents.Count > 0)
+                {
+                    appendedEventSnapshot = _appendedEvents
+                        .Select(e => ((string StreamId, object Event))(e.StreamId, e.Data))
+                        .ToArray();
+                    _appendedEvents.Clear();
+                }
+
                 // Phase 5: Execute queued patches (inside transaction, after entity operations and inline projections)
                 if (_queuedPatches.Count > 0)
                 {
@@ -1305,36 +1535,71 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
 
                 if (ownsTx && tx is not null)
                 {
+                    commitAttempted = true;
                     await tx.Commit(ct).ConfigureAwait(false);
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                RestoreVersions(saveVersionSnapshots);
                 if (ownsTx && tx is not null)
                 {
-                    await tx.Cancel(ct).ConfigureAwait(false);
+                    if (ReferenceEquals(_pendingAutoEventTransaction, tx))
+                        ClearTrackedAutoEventChanges();
+
+                    if (!commitAttempted)
+                        await tx.Cancel(ct).ConfigureAwait(false);
+
+                    if (commitAttempted
+                        && IsTransactionWriteConflict(ex)
+                        && TryCreateCommitConcurrencyException(
+                            committedOperations,
+                            saveVersionSnapshots,
+                            out var concurrencyException))
+                    {
+                        throw concurrencyException;
+                    }
                 }
                 throw;
             }
+            finally
+            {
+                _activeSaveSession = null;
+                if (ownsTx && tx is not null)
+                {
+                    await tx.DisposeAsync().ConfigureAwait(false);
+                    if (ReferenceEquals(_pendingAutoEventTransaction, tx))
+                        _pendingAutoEventTransaction = null;
+                }
+            }
 
-            // AfterCommitAsync hooks (called only after successful commit)
             var committedChanges = new ChangeSet
             {
                 Operations = committedOperations,
                 AppendedEvents = appendedEventSnapshot,
-                Updated = committedOperations.Where(op => op.Type == OperationType.Modified).Select(op => op.Entity).ToArray(),
+                Updated = committedOperations.Where(op => op.Type is OperationType.Modified or OperationType.Update).Select(op => op.Entity).ToArray(),
                 Inserted = committedOperations.Where(op => op.Type == OperationType.Added).Select(op => op.Entity).ToArray(),
                 Deleted = committedOperations.Where(op => op.Type is OperationType.Deleted or OperationType.SoftDeleted).Select(op => op.Entity).ToArray()
             };
-            if (Options.Listeners.Count > 0)
+            if (_explicitTransaction is not null)
             {
-                foreach (var listener in Options.Listeners)
-                    await listener.AfterCommitAsync(this, committedChanges, ct).ConfigureAwait(false);
+                foreach (var operation in committedOperations)
+                {
+                    _pendingVersionTrackingCleanup.Add(operation.Entity);
+                    var version = GetVersion(operation.Entity);
+                    if (version >= 0)
+                        _explicitStagedExpectedVersions[operation.Entity] = version;
+                    _expectedVersions.Remove(operation.Entity);
+                    _expectedRevisions.Remove(operation.Entity);
+                    _tryUpdateRevisions.Remove(operation.Entity);
+                }
+                _pendingExplicitChangeSets.Add(committedChanges);
             }
-            if (SessionListeners.Count > 0)
+            else
             {
-                foreach (var listener in SessionListeners)
-                    await listener.AfterCommitAsync(this, committedChanges, ct).ConfigureAwait(false);
+                foreach (var operation in committedOperations)
+                    RemoveOriginalVersion(operation.Entity);
+                await InvokeAfterCommitListenersAsync(committedChanges, ct).ConfigureAwait(false);
             }
 
             var resultCount = count > 0 ? count : appendedEventSnapshot.Length + graphOpCount;
@@ -1353,6 +1618,9 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         catch (Exception ex) when (ex is not ConcurrencyException
                                    && ex is not SableEncryptionException)
         {
+            if (_pendingAutoEventTransaction is not null)
+                await DiscardPendingAutoEventChangesAsync().ConfigureAwait(false);
+
             ResolvedLogger.LogError(ex, "SaveChangesAsync failed");
             throw new InvalidOperationException("Failed to save changes.", ex);
         }
@@ -1502,64 +1770,199 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         return ReadVersionFromResponse(response, versionField, fallback: -1);
     }
 
-    /// <summary>
-    /// Checks that the current database version of a Modified entity matches the
-    /// version that was originally loaded/stored. Throws <see cref="ConcurrencyException"/>
-    /// on mismatch.
-    ///
-    /// <para>
-    /// <b>Note on atomicity:</b> The version check (SELECT) and the subsequent write (UPSERT)
-    /// are performed within a SurrealDB transaction, so they are now atomic. Prior to the
-    /// transactional wrapping, these were two separate operations with a small race window.
-    /// </para>
-    /// </summary>
-    private async Task CheckConcurrencyAsync(Operation op, ISurrealDbSession session, CancellationToken ct)
+    private bool TryResolveAtomicCas(
+        Operation op,
+        out long expectedVersion,
+        out string mappedVersionField,
+        out string recordId,
+        out bool skipOnConflict,
+        out bool allowUpsert)
     {
-        var entity = op.Entity;
-        var expectedVersion = GetTrackedVersion(entity);
-        if (expectedVersion < 0) return;
+        expectedVersion = default;
+        mappedVersionField = string.Empty;
+        recordId = string.Empty;
+        skipOnConflict = false;
+        allowUpsert = false;
 
-        // Determine the version property name for this entity type
-        if (MetadataDispatch.GetVersionFieldName(op.EntityType) is null) return;
+        if (op.Type is not (OperationType.Added or OperationType.Modified or OperationType.Update))
+            return false;
 
-        var table = MetadataDispatch.GetTableName(op.EntityType, Options.Schema);
-        var id = GetEntityId(entity);
-        if (id is null)
+        var hasExpectedVersion = _expectedVersions.TryGetValue(op.Entity, out var explicitVersion);
+        var hasExpectedRevision = _expectedRevisions.TryGetValue(op.Entity, out var explicitRevision);
+        long stagedExpectedVersion = default;
+        var hasStagedExpectedVersion = _explicitTransaction is not null
+            && _explicitStagedExpectedVersions.TryGetValue(op.Entity, out stagedExpectedVersion);
+        if (hasExpectedVersion && hasExpectedRevision)
         {
-            ResolvedLogger.LogWarning("Skipping concurrency check for {Type}: unable to resolve entity ID",
-                op.EntityType.Name);
-            return;
+            throw new InvalidOperationException(
+                "A document cannot have both an expected version and an expected revision.");
         }
 
-        // Query the current version from the DB using a raw SurrealQL call
-        // with typed GetValue<T> deserialization (same path as Query provider).
-        var versionField = MetadataDispatch.GetFieldName(
+        var versionProperty = MetadataDispatch.GetVersionFieldName(op.EntityType);
+        var id = GetEntityId(op.Entity);
+        if (versionProperty is null || string.IsNullOrWhiteSpace(id))
+            return false;
+
+        if (hasExpectedVersion)
+            expectedVersion = explicitVersion;
+        else if (hasExpectedRevision)
+        {
+            expectedVersion = explicitRevision;
+            skipOnConflict = _tryUpdateRevisions.Contains(op.Entity);
+        }
+        else if (hasStagedExpectedVersion)
+            expectedVersion = stagedExpectedVersion;
+        else if (!UseOptimisticConcurrency || !TryGetTrackedVersion(op.Entity, out expectedVersion))
+        {
+            return false;
+        }
+
+        mappedVersionField = MetadataDispatch.GetFieldName(
             op.EntityType,
-            MetadataDispatch.GetVersionFieldName(op.EntityType)!,
+            versionProperty,
             Options.Schema);
-        var surql = $"SELECT {versionField} FROM {table}:`{id.Replace("`", "\\`")}`;";
-        var response = await session.RawQuery(surql, null, ct).ConfigureAwait(false);
+        recordId = id;
+        allowUpsert = op.Type == OperationType.Added
+            && !hasStagedExpectedVersion
+            && !hasExpectedVersion
+            && !hasExpectedRevision
+            && expectedVersion == 0
+            && _newAddedEntities.Contains(op.Entity);
+        return true;
+    }
 
-        if (response.HasErrors)
+    private async Task<bool> ExecuteAtomicCasWriteAsync(
+        Operation op,
+        string table,
+        string recordId,
+        string mappedVersionField,
+        long expectedVersion,
+        bool skipOnConflict,
+        bool allowUpsert,
+        ISurrealDbSession session,
+        CancellationToken ct)
+    {
+        var inMemoryVersionBeforeSave = UseOptimisticConcurrency
+            ? GetVersion(op.Entity) - 1
+            : GetVersion(op.Entity);
+        var protectedLiteral = await BuildSurrealQlObjectLiteralAsync(op.Entity, ct).ConfigureAwait(false);
+        var parameters = protectedLiteral.Parameters is null
+            ? new Dictionary<string, object?>(StringComparer.Ordinal)
+            : protectedLiteral.Parameters.ToDictionary(pair => pair.Key, pair => pair.Value, StringComparer.Ordinal);
+        const string expectedParameter = "__sable_expected_version";
+        parameters.Add(expectedParameter, expectedVersion);
+
+        var escapedId = recordId.Replace("`", "\\`", StringComparison.Ordinal);
+        var command = allowUpsert ? "UPSERT" : "UPDATE";
+        var mutation = op.Type == OperationType.Added ? "CONTENT" : "MERGE";
+        var response = await ExecuteRawWriteAsync(
+                session,
+                $"{command} {table}:`{escapedId}` {mutation} {protectedLiteral.Literal} " +
+                $"WHERE {mappedVersionField} = ${expectedParameter} RETURN AFTER",
+                parameters,
+                ct)
+            .ConfigureAwait(false);
+        try
         {
-            ResolvedLogger.LogWarning("Skipping concurrency check for {Type}/{Id}: RawQuery returned errors",
-                op.EntityType.Name, id);
-            return;
+            ThrowIfRawQueryFailed(
+                response,
+                EncryptedFieldResolver.HasEncryptedFields(op.EntityType, Options.Schema));
+        }
+        catch (InvalidOperationException) when (IsTransactionWriteConflict(response))
+        {
+            SetVersion(op.Entity, inMemoryVersionBeforeSave);
+            throw new ConcurrencyException(op.EntityType, recordId, expectedVersion, -1);
         }
 
-        var dbVersion = ReadVersionFromResponse(response, versionField, fallback: 0);
+        var records = CborResultReader.ReadPocoResult(response, 0);
+        if (records.Count == 1)
+            return true;
 
-        if (expectedVersion != dbVersion)
+        SetVersion(op.Entity, inMemoryVersionBeforeSave);
+        if (records.Count > 1)
         {
-            ResolvedLogger.LogWarning(
-                "Concurrency conflict on {Type} (id={Id}): expected version {Expected}, found {Actual}",
-                op.EntityType.Name, id, expectedVersion, dbVersion);
-
-            throw new ConcurrencyException(op.EntityType, id, expectedVersion, dbVersion);
+            throw new InvalidOperationException(
+                $"Atomic version write for {op.EntityType.Name}/{recordId} returned {records.Count} records.");
         }
 
-        ResolvedLogger.LogDebug("Concurrency check passed for {Type} (id={Id}): version {Version}",
-            op.EntityType.Name, id, dbVersion);
+        var actualVersion = await FetchVersionAsync(op.Entity, op.EntityType, session, ct).ConfigureAwait(false);
+        if (skipOnConflict)
+        {
+            ResolvedLogger.LogDebug(
+                "TryUpdateRevision: conditional write rejected for {Type} (id={Id}), skipping",
+                op.EntityType.Name,
+                recordId);
+            return false;
+        }
+
+        ResolvedLogger.LogWarning(
+            "Concurrency conflict on {Type} (id={Id}): expected version {Expected}, found {Actual}",
+            op.EntityType.Name,
+            recordId,
+            expectedVersion,
+            actualVersion);
+        throw new ConcurrencyException(op.EntityType, recordId, expectedVersion, actualVersion);
+    }
+
+    private static bool IsTransactionWriteConflict(SurrealDbResponse response)
+        => response.HasErrors
+           && FormatRawQueryErrors(response).Contains(
+               "Transaction conflict: Write conflict",
+               StringComparison.OrdinalIgnoreCase);
+
+    private static bool IsTransactionWriteConflict(Exception exception)
+    {
+        for (var current = exception; current is not null; current = current.InnerException)
+        {
+            if (current.Message.Contains(
+                    "Transaction conflict: Write conflict",
+                    StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private bool TryCreateCommitConcurrencyException(
+        IEnumerable<Operation> operations,
+        IReadOnlyDictionary<object, long> versionSnapshots,
+        out ConcurrencyException concurrencyException)
+    {
+        foreach (var operation in operations)
+        {
+            if (operation.Type is not (OperationType.Added or OperationType.Modified or OperationType.Update)
+                || !versionSnapshots.TryGetValue(operation.Entity, out var expectedVersion))
+            {
+                continue;
+            }
+
+            concurrencyException = new ConcurrencyException(
+                operation.EntityType,
+                GetEntityId(operation.Entity) ?? "?",
+                expectedVersion,
+                -1);
+            return true;
+        }
+
+        concurrencyException = null!;
+        return false;
+    }
+
+    private void RestoreVersions(IReadOnlyDictionary<object, long> versionSnapshots)
+    {
+        foreach (var snapshot in versionSnapshots)
+            SetVersion(snapshot.Key, snapshot.Value);
+    }
+
+    private async Task InvokeAfterCommitListenersAsync(IChangeSet changes, CancellationToken ct)
+    {
+        foreach (var listener in Options.Listeners)
+            await listener.AfterCommitAsync(this, changes, ct).ConfigureAwait(false);
+
+        foreach (var listener in SessionListeners)
+            await listener.AfterCommitAsync(this, changes, ct).ConfigureAwait(false);
     }
 
     private static long ReadVersionFromResponse(
@@ -2212,6 +2615,16 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
 
         var schemaName = ResolveGraphSchemaName(_transactionRelations);
         var targetSession = await GetSessionForSchemaAsync(schemaName, ct).ConfigureAwait(false);
+        if (_explicitTransaction is not null)
+        {
+            if (!ReferenceEquals(targetSession, Session))
+            {
+                throw new InvalidOperationException(
+                    "Explicit transactions cannot target a different database session.");
+            }
+
+            targetSession = _explicitTransaction;
+        }
 
         await ExecuteGraphOperationsAsync(
             targetSession,
@@ -2771,6 +3184,9 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
     /// </summary>
     public override async ValueTask DisposeAsync()
     {
+        if (_pendingAutoEventTransaction is not null)
+            await CancelPendingAutoEventTransactionAsync(DefaultCt).ConfigureAwait(false);
+
         if (_explicitTransaction is not null && _ownsTransaction)
         {
             await _explicitTransaction.Cancel(DefaultCt).ConfigureAwait(false);
@@ -2787,18 +3203,52 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
     /// </summary>
     private sealed class TrackingEventStore : IEvents
     {
-        private readonly IEvents _inner;
         private readonly DocumentSession _owner;
 
-        public TrackingEventStore(IEvents inner, DocumentSession owner)
+        public TrackingEventStore(DocumentSession owner)
         {
-            _inner = inner;
             _owner = owner;
+        }
+
+        private IEvents ReadStore => new EventStore(_owner.OperationSession, _owner.StoreOptions);
+
+        private async Task<IEvents> MutationStoreAsync(CancellationToken ct)
+        {
+            var session = await _owner.GetEventMutationSessionAsync(ct).ConfigureAwait(false);
+            return new EventStore(session, _owner.StoreOptions);
+        }
+
+        private async Task<T> MutateAsync<T>(Func<IEvents, Task<T>> mutation, CancellationToken ct)
+        {
+            try
+            {
+                var store = await MutationStoreAsync(ct).ConfigureAwait(false);
+                return await mutation(store).ConfigureAwait(false);
+            }
+            catch
+            {
+                await _owner.DiscardFailedDirectEventMutationAsync().ConfigureAwait(false);
+                throw;
+            }
+        }
+
+        private async Task MutateAsync(Func<IEvents, Task> mutation, CancellationToken ct)
+        {
+            try
+            {
+                var store = await MutationStoreAsync(ct).ConfigureAwait(false);
+                await mutation(store).ConfigureAwait(false);
+            }
+            catch
+            {
+                await _owner.DiscardFailedDirectEventMutationAsync().ConfigureAwait(false);
+                throw;
+            }
         }
 
         public async Task<IReadOnlyList<IEvent>> Append(string streamId, IEnumerable<object> events, Dictionary<string, string>? headers = null, CancellationToken ct = default)
         {
-            var result = await _inner.Append(streamId, events, headers, ct).ConfigureAwait(false);
+            var result = await MutateAsync(store => store.Append(streamId, events, headers, ct), ct).ConfigureAwait(false);
             foreach (var evt in result)
             {
                 _owner._appendedEvents.Add(evt);
@@ -2809,7 +3259,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
 
         public async Task<IReadOnlyList<IEvent>> Append(string streamId, long expectedVersion, IEnumerable<object> events, CancellationToken ct = default)
         {
-            var result = await _inner.Append(streamId, expectedVersion, events, ct).ConfigureAwait(false);
+            var result = await MutateAsync(store => store.Append(streamId, expectedVersion, events, ct), ct).ConfigureAwait(false);
             foreach (var evt in result)
             {
                 _owner._appendedEvents.Add(evt);
@@ -2820,7 +3270,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
 
         public async Task<IReadOnlyList<IEvent>> AppendOptimistic(string streamId, long lastKnownVersion, IEnumerable<object> events, CancellationToken ct = default)
         {
-            var result = await _inner.AppendOptimistic(streamId, lastKnownVersion, events, ct).ConfigureAwait(false);
+            var result = await MutateAsync(store => store.AppendOptimistic(streamId, lastKnownVersion, events, ct), ct).ConfigureAwait(false);
             foreach (var evt in result)
             {
                 _owner._appendedEvents.Add(evt);
@@ -2831,7 +3281,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
 
         public async Task<IReadOnlyList<IEvent>> AppendExclusive(string streamId, IEnumerable<object> events, CancellationToken ct = default)
         {
-            var result = await _inner.AppendExclusive(streamId, events, ct).ConfigureAwait(false);
+            var result = await MutateAsync(store => store.AppendExclusive(streamId, events, ct), ct).ConfigureAwait(false);
             foreach (var evt in result)
             {
                 _owner._appendedEvents.Add(evt);
@@ -2842,7 +3292,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
 
         public async Task<IReadOnlyList<IEvent>> AppendOptimistic(Guid streamId, long lastKnownVersion, IEnumerable<object> events, CancellationToken ct = default)
         {
-            var result = await _inner.AppendOptimistic(streamId, lastKnownVersion, events, ct).ConfigureAwait(false);
+            var result = await MutateAsync(store => store.AppendOptimistic(streamId, lastKnownVersion, events, ct), ct).ConfigureAwait(false);
             foreach (var evt in result)
             {
                 _owner._appendedEvents.Add(evt);
@@ -2853,7 +3303,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
 
         public async Task<IReadOnlyList<IEvent>> AppendExclusive(Guid streamId, IEnumerable<object> events, CancellationToken ct = default)
         {
-            var result = await _inner.AppendExclusive(streamId, events, ct).ConfigureAwait(false);
+            var result = await MutateAsync(store => store.AppendExclusive(streamId, events, ct), ct).ConfigureAwait(false);
             foreach (var evt in result)
             {
                 _owner._appendedEvents.Add(evt);
@@ -2866,7 +3316,8 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         {
             // Marten's StartStream is commonly called without awaiting before SaveChangesAsync.
             // Complete the append here so that compatibility pattern still feeds inline projections.
-            var result = _inner.Append(streamId, events, headers: null, ct).GetAwaiter().GetResult();
+            var result = MutateAsync(store => store.Append(streamId, events, headers: null, ct), ct)
+                .GetAwaiter().GetResult();
             foreach (var evt in result)
             {
                 _owner._appendedEvents.Add(evt);
@@ -2877,7 +3328,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
 
         public async Task<FetchForWritingResult<T>> FetchForWritingAsync<T>(string streamId, CancellationToken ct = default) where T : class
         {
-            var result = await _inner.FetchForWritingAsync<T>(streamId, ct).ConfigureAwait(false);
+            var result = await ReadStore.FetchForWritingAsync<T>(streamId, ct).ConfigureAwait(false);
             _owner._fetchForWritingResults.Add(result);
             return result;
         }
@@ -2901,13 +3352,13 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
             T? state = default,
             long? fromVersion = null,
             CancellationToken ct = default) where T : class
-            => _inner.AggregateStreamAsync(streamId, version, timestamp, state, fromVersion, ct);
+            => ReadStore.AggregateStreamAsync(streamId, version, timestamp, state, fromVersion, ct);
 
         public Task<StreamState?> FetchStreamStateAsync(string streamId, CancellationToken ct = default)
-            => _inner.FetchStreamStateAsync(streamId, ct);
+            => ReadStore.FetchStreamStateAsync(streamId, ct);
 
         public Task<StreamState?> FetchStreamStateAsync(Guid streamId, CancellationToken ct = default)
-            => _inner.FetchStreamStateAsync(streamId, ct);
+            => ReadStore.FetchStreamStateAsync(streamId, ct);
 
         public Task<IReadOnlyList<IEvent>> FetchStreamAsync(
             string streamId,
@@ -2915,7 +3366,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
             DateTimeOffset? timestamp = null,
             long? fromVersion = null,
             CancellationToken ct = default)
-            => _inner.FetchStreamAsync(streamId, version, timestamp, fromVersion, ct);
+            => ReadStore.FetchStreamAsync(streamId, version, timestamp, fromVersion, ct);
 
         public Task<string> StartStream<T>(string streamId, IEnumerable<object> events, CancellationToken ct = default)
             => StartStream(streamId, events, ct);
@@ -2924,21 +3375,25 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
             => StartStream(streamId.ToString("D"), events, ct);
 
         public Task<IReadOnlyList<IEvent>> FetchStream(string streamId, CancellationToken ct = default)
-            => _inner.FetchStream(streamId, ct);
+            => ReadStore.FetchStream(streamId, ct);
 
         public Task<IReadOnlyList<IEvent>> FetchAllAfterSequence(
             long sequence, CancellationToken ct = default)
-            => _inner.FetchAllAfterSequence(sequence, ct);
+            => ReadStore.FetchAllAfterSequence(sequence, ct);
 
-        public Task ArchiveStream(string streamId, CancellationToken ct = default)
-            => _inner.ArchiveStream(streamId, ct);
+        public async Task ArchiveStream(string streamId, CancellationToken ct = default)
+        {
+            await MutateAsync(store => store.ArchiveStream(streamId, ct), ct).ConfigureAwait(false);
+        }
 
-        public Task ArchiveStream(Guid streamId, CancellationToken ct = default)
-            => _inner.ArchiveStream(streamId, ct);
+        public async Task ArchiveStream(Guid streamId, CancellationToken ct = default)
+        {
+            await MutateAsync(store => store.ArchiveStream(streamId, ct), ct).ConfigureAwait(false);
+        }
 
         public async Task<IReadOnlyList<IEvent>> WriteTombstone(string streamId, long version, CancellationToken ct = default)
         {
-            var result = await _inner.WriteTombstone(streamId, version, ct).ConfigureAwait(false);
+            var result = await MutateAsync(store => store.WriteTombstone(streamId, version, ct), ct).ConfigureAwait(false);
             foreach (var evt in result)
             {
                 _owner._appendedEvents.Add(evt);
@@ -2953,35 +3408,41 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
             CancellationToken ct = default)
         {
             // Bulk insert doesn't add to _appendedEvents since it bypasses per-stream tracking
-            return await _inner.BulkInsertEventsAsync(streams, batchSize, ct).ConfigureAwait(false);
+            return await MutateAsync(store => store.BulkInsertEventsAsync(streams, batchSize, ct), ct).ConfigureAwait(false);
         }
 
         public Task<T?> AggregateStreamToLastKnownAsync<T>(string streamId, CancellationToken ct = default) where T : class
-            => _inner.AggregateStreamToLastKnownAsync<T>(streamId, ct);
+            => ReadStore.AggregateStreamToLastKnownAsync<T>(streamId, ct);
 
-        public Task CompactStreamAsync<T>(string streamId, Action<CompactStreamOptions>? configure = null, CancellationToken ct = default) where T : class
-            => _inner.CompactStreamAsync<T>(streamId, configure, ct);
+        public async Task CompactStreamAsync<T>(string streamId, Action<CompactStreamOptions>? configure = null, CancellationToken ct = default) where T : class
+        {
+            await MutateAsync(store => store.CompactStreamAsync<T>(streamId, configure, ct), ct).ConfigureAwait(false);
+        }
 
         public Task<FetchForWritingResult<T>?> FetchForExclusiveWriting<T>(string streamId, CancellationToken ct = default) where T : class
-            => _inner.FetchForExclusiveWriting<T>(streamId, ct);
+            => ReadStore.FetchForExclusiveWriting<T>(streamId, ct);
 
         public ISurrealDbQueryable<T> QueryRawEventDataOnly<T>() where T : class
-            => _inner.QueryRawEventDataOnly<T>();
+            => ReadStore.QueryRawEventDataOnly<T>();
 
         public ISurrealDbQueryable<IEvent> QueryAllRawEvents()
-            => _inner.QueryAllRawEvents();
+            => ReadStore.QueryAllRawEvents();
 
         public IEvent BuildEvent(object data)
-            => _inner.BuildEvent(data);
+            => ReadStore.BuildEvent(data);
 
-        public Task OverwriteEventAsync(IEvent e, CancellationToken ct = default)
-            => _inner.OverwriteEventAsync(e, ct);
+        public async Task OverwriteEventAsync(IEvent e, CancellationToken ct = default)
+        {
+            await MutateAsync(store => store.OverwriteEventAsync(e, ct), ct).ConfigureAwait(false);
+        }
 
-        public Task DeleteSingleEventAsync(string streamId, long eventSequence, CancellationToken ct = default)
-            => _inner.DeleteSingleEventAsync(streamId, eventSequence, ct);
+        public async Task DeleteSingleEventAsync(string streamId, long eventSequence, CancellationToken ct = default)
+        {
+            await MutateAsync(store => store.DeleteSingleEventAsync(streamId, eventSequence, ct), ct).ConfigureAwait(false);
+        }
 
         public Task<bool> EventsExistAsync(EventTagQuery query, CancellationToken ct = default)
-            => _inner.EventsExistAsync(query, ct);
+            => ReadStore.EventsExistAsync(query, ct);
     }
 }
 

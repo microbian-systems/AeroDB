@@ -137,14 +137,16 @@ public class EventStore : IEvents
 
     public async Task<IReadOnlyList<IEvent>> Append(string streamId, long expectedVersion, IEnumerable<object> events, CancellationToken ct = default)
     {
+        if (_session is SurrealDbTransaction)
+            return await AppendWithExpectedVersion(streamId, expectedVersion, events, ct).ConfigureAwait(false);
+
         await using var tx = await _session.BeginTransaction(ct).ConfigureAwait(false);
         try
         {
-            var currentVersion = await GetNextVersion(streamId, ct).ConfigureAwait(false);
-            if (currentVersion != expectedVersion)
-                throw new ConcurrencyException(typeof(EventStore), streamId, expectedVersion, currentVersion);
-
-            var result = await Append(streamId, events, headers: null, ct).ConfigureAwait(false);
+            var transactionalStore = new EventStore(tx, _options);
+            var result = await transactionalStore
+                .AppendWithExpectedVersion(streamId, expectedVersion, events, ct)
+                .ConfigureAwait(false);
             await tx.Commit(ct).ConfigureAwait(false);
             return result;
         }
@@ -153,6 +155,19 @@ public class EventStore : IEvents
             await tx.Cancel(ct).ConfigureAwait(false);
             throw;
         }
+    }
+
+    private async Task<IReadOnlyList<IEvent>> AppendWithExpectedVersion(
+        string streamId,
+        long expectedVersion,
+        IEnumerable<object> events,
+        CancellationToken ct)
+    {
+        var currentVersion = await GetNextVersion(streamId, ct).ConfigureAwait(false);
+        if (currentVersion != expectedVersion)
+            throw new ConcurrencyException(typeof(EventStore), streamId, expectedVersion, currentVersion);
+
+        return await Append(streamId, events, headers: null, ct).ConfigureAwait(false);
     }
 
     public Task<IReadOnlyList<IEvent>> AppendOptimistic(string streamId, long lastKnownVersion, IEnumerable<object> events, CancellationToken ct = default)

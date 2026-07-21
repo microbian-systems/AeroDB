@@ -1,8 +1,5 @@
 using AeroDB.Sable;
-using NSubstitute;
 using Shouldly;
-using SurrealDb.Net;
-using SurrealDb.Net.Models.Response;
 
 namespace AeroDB.Tests;
 
@@ -11,70 +8,53 @@ public class DocumentSessionWriteLiteralTests
     [Test]
     public async Task SaveChangesAsync_WritesNullablePocoNullsAsNone()
     {
-        var client = Substitute.For<ISurrealDbClient>();
-        var surrealSession = Substitute.For<ISurrealDbSession>();
-
-        surrealSession.RawQuery(
-                Arg.Any<string>(),
-                Arg.Any<IReadOnlyDictionary<string, object?>?>(),
-                Arg.Any<CancellationToken>())
-            .Returns(Task.FromResult(new SurrealDbResponse([])));
-
-        var session = new DocumentSession(
-            client,
-            surrealSession,
-            new StoreOptions(),
-            DocumentTracking.None);
-
-        session.Store(new NullableWriteDocument
+        await using var store = await TestHarness.CreateStoreAsync(options =>
+            options.Schema.For<NullableWriteDocument>().Identity(document => document.Id));
+        await using (var session = await store.OpenSessionAsync(
+            new SessionOptions { Tracking = DocumentTracking.None }))
         {
-            Id = "nullable-write",
-            Name = "Nullable Write",
-            LockoutEnd = null,
-            Tags = ["alpha", "beta"]
-        });
+            session.Store(new NullableWriteDocument
+            {
+                Id = "nullable-write",
+                Name = "Nullable Write",
+                LockoutEnd = null,
+                Tags = ["alpha", "beta"]
+            });
+            await session.SaveChangesAsync();
+        }
 
-        await session.SaveChangesAsync();
-
-        await surrealSession.Received(1).RawQuery(
-            Arg.Is<string>(surql =>
-                surql.Contains("UPSERT nullable_write_document:`nullable-write` CONTENT", StringComparison.Ordinal)
-                && surql.Contains("lockout_end: NONE", StringComparison.Ordinal)
-                && surql.Contains("tags: ['alpha', 'beta']", StringComparison.Ordinal)
-                && !surql.Contains("$data", StringComparison.Ordinal)),
-            Arg.Is<IReadOnlyDictionary<string, object?>?>(parameters => parameters == null),
-            Arg.Any<CancellationToken>());
+        await using var read = await store.QuerySessionAsync();
+        var loaded = await read.LoadAsync<NullableWriteDocument>("nullable-write");
+        loaded.ShouldNotBeNull();
+        loaded.LockoutEnd.ShouldBeNull();
+        loaded.Tags.ShouldBe(["alpha", "beta"]);
     }
 
     [Test]
     public async Task SaveChangesAsync_WritesNestedPocosAsObjectLiterals()
     {
-        var client = Substitute.For<ISurrealDbClient>();
-        var surrealSession = Substitute.For<ISurrealDbSession>();
-        surrealSession.RawQuery(
-                Arg.Any<string>(),
-                Arg.Any<IReadOnlyDictionary<string, object?>?>(),
-                Arg.Any<CancellationToken>())
-            .Returns(Task.FromResult(new SurrealDbResponse([])));
-        var session = new DocumentSession(client, surrealSession, new StoreOptions(), DocumentTracking.None);
-        session.Store(new ComplexWriteDocument
+        await using var store = await TestHarness.CreateStoreAsync(options =>
+            options.Schema.For<ComplexWriteDocument>().Identity(document => document.Id));
+        await using (var session = await store.OpenSessionAsync(
+            new SessionOptions { Tracking = DocumentTracking.None }))
         {
-            Id = "complex-write",
-            Content = new ComplexWriteContent
+            session.Store(new ComplexWriteDocument
             {
-                Title = "Nested",
-                Layout = new ComplexWriteLayout { Columns = 2 }
-            }
-        });
+                Id = "complex-write",
+                Content = new ComplexWriteContent
+                {
+                    Title = "Nested",
+                    Layout = new ComplexWriteLayout { Columns = 2 }
+                }
+            });
+            await session.SaveChangesAsync();
+        }
 
-        await session.SaveChangesAsync();
-
-        await surrealSession.Received(1).RawQuery(
-            Arg.Is<string>(surql =>
-                surql.Contains("content: { title: 'Nested', layout: { columns: 2 } }", StringComparison.Ordinal)
-                && !surql.Contains("content: '{", StringComparison.Ordinal)),
-            Arg.Is<IReadOnlyDictionary<string, object?>?>(parameters => parameters == null),
-            Arg.Any<CancellationToken>());
+        await using var read = await store.QuerySessionAsync();
+        var loaded = await read.LoadAsync<ComplexWriteDocument>("complex-write");
+        loaded.ShouldNotBeNull();
+        loaded.Content.Title.ShouldBe("Nested");
+        loaded.Content.Layout.Columns.ShouldBe(2);
     }
 
     private sealed class NullableWriteDocument

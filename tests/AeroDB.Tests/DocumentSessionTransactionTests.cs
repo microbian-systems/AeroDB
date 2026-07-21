@@ -122,6 +122,93 @@ public class DocumentSessionTransactionTests
         commitTracker.BeforeCommitCalled.ShouldBeTrue();
     }
 
+    [Test]
+    public async Task EmbeddedTransaction_RawQueryThenCancel_DiscardsRecord()
+    {
+        await using var store = await TestHarness.CreateStoreAsync();
+        await using var session = (DocumentSession)await store.OpenSessionAsync(
+            new SessionOptions { Tracking = DocumentTracking.None });
+        const string id = "provider_transaction_cancel";
+
+        await using var transaction = await session.Session.BeginTransaction();
+        var response = await transaction.RawQuery(
+            $"CREATE person:{id} CONTENT {{ name: 'MustBeDiscarded', age: 42 }};",
+            null);
+        response.HasErrors.ShouldBeFalse();
+        await transaction.Cancel();
+
+        await using var verify = await store.OpenSessionAsync(
+            new SessionOptions { Tracking = DocumentTracking.None });
+        (await verify.LoadAsync<Person>(id)).ShouldBeNull();
+    }
+
+    [Test]
+    public async Task ExplicitTransaction_CallsAfterCommitOnlyAfterCommitAndNeverAfterRollback()
+    {
+        var commitTracker = new CountingCommitListener();
+        await using var store = await TestHarness.CreateStoreAsync(o => o.Listeners.Add(commitTracker));
+
+        await using (var rollbackSession = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }))
+        await using (var rollbackTransaction = await rollbackSession.BeginTransactionAsync())
+        {
+            rollbackSession.Store(new Person { Name = "ExplicitRollback" });
+            await rollbackSession.SaveChangesAsync();
+            commitTracker.AfterCommitCalls.ShouldBe(0);
+
+            await rollbackTransaction.RollbackAsync();
+            commitTracker.AfterCommitCalls.ShouldBe(0);
+        }
+
+        await using (var commitSession = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }))
+        await using (var commitTransaction = await commitSession.BeginTransactionAsync())
+        {
+            commitSession.Store(new Person { Name = "ExplicitCommit" });
+            await commitSession.SaveChangesAsync();
+            commitTracker.AfterCommitCalls.ShouldBe(0);
+
+            await commitTransaction.CommitAsync();
+            commitTracker.AfterCommitCalls.ShouldBe(1);
+        }
+    }
+
+    [Test]
+    public async Task SaveChanges_RollsBackFirstDocumentWhenSecondDocumentFails()
+    {
+        await using var store = await TestHarness.CreateStoreAsync();
+        const string existingId = "auto_atomic_existing";
+        const string firstId = "auto_atomic_first";
+
+        await using (var seed = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }))
+        {
+            seed.Store(new Person
+            {
+                Id = new SurrealDb.Net.Models.RecordIdOf<string>("person", existingId),
+                Name = "Existing",
+            });
+            await seed.SaveChangesAsync();
+        }
+
+        await using (var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }))
+        {
+            session.Store(new Person
+            {
+                Id = new SurrealDb.Net.Models.RecordIdOf<string>("person", firstId),
+                Name = "MustRollBack",
+            });
+            session.Insert(new Person
+            {
+                Id = new SurrealDb.Net.Models.RecordIdOf<string>("person", existingId),
+                Name = "Duplicate",
+            });
+
+            await Should.ThrowAsync<InvalidOperationException>(() => session.SaveChangesAsync());
+        }
+
+        await using var verify = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
+        (await verify.LoadAsync<Person>(firstId)).ShouldBeNull();
+        (await verify.LoadAsync<Person>(existingId)).ShouldNotBeNull();
+    }
+
 }
 
 internal sealed class TestListener : IDocumentSessionListener
@@ -177,6 +264,17 @@ internal sealed class CommitTrackingListener : IDocumentSessionListener
     public Task AfterCommitAsync(IDocumentSession session, IChangeSet changes, CancellationToken ct)
     {
         AfterCommitCalled = true;
+        return Task.CompletedTask;
+    }
+}
+
+internal sealed class CountingCommitListener : DocumentSessionListenerBase
+{
+    public int AfterCommitCalls { get; private set; }
+
+    public override Task AfterCommitAsync(IDocumentSession session, IChangeSet changes, CancellationToken ct)
+    {
+        AfterCommitCalls++;
         return Task.CompletedTask;
     }
 }

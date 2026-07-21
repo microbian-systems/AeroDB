@@ -156,22 +156,17 @@ public class FieldEncryptionPersistenceTests
     [Test]
     public async Task Save_writes_envelope_and_never_embeds_encrypted_plaintext()
     {
-        var client = Substitute.For<ISurrealDbClient>();
-        var surrealSession = Substitute.For<ISurrealDbSession>();
-        surrealSession.RawQuery(
-                Arg.Any<string>(),
-                Arg.Any<IReadOnlyDictionary<string, object?>?>(),
-                Arg.Any<CancellationToken>())
-            .Returns(Task.FromResult(new SurrealDbResponse([])));
-
         using var wrapping = CreateWrappingProvider();
-        var options = new StoreOptions();
-        options.Encryption.Provider = new AesGcmDataProtectionProvider(wrapping);
-        options.Schema.For<EncryptedCustomer>()
-            .Identity(customer => customer.Id)
-            .EncryptField(customer => customer.SocialSecurityNumber);
-        var session = new DocumentSession(client, surrealSession, options, DocumentTracking.None);
-        session.Store(new EncryptedCustomer
+        await using var store = await TestHarness.CreateStoreAsync(options =>
+        {
+            options.Encryption.Provider = new AesGcmDataProtectionProvider(wrapping);
+            options.Schema.For<EncryptedWriteProbe>()
+                .Identity(customer => customer.Id)
+                .EncryptField(customer => customer.SocialSecurityNumber);
+        });
+        await using var session = (DocumentSession)await store.OpenSessionAsync(
+            new SessionOptions { Tracking = DocumentTracking.None });
+        session.Store(new EncryptedWriteProbe
         {
             Id = "no-plaintext",
             Name = "Grace",
@@ -180,43 +175,36 @@ public class FieldEncryptionPersistenceTests
 
         await session.SaveChangesAsync();
 
-        await surrealSession.Received(1).RawQuery(
-            Arg.Is<string>(surql =>
-                !surql.Contains("987-65-4321", StringComparison.Ordinal)
-                && !surql.Contains("ciphertext:", StringComparison.Ordinal)
-                && !surql.Contains("wrapped_key_ciphertext:", StringComparison.Ordinal)
-                && surql.Contains("$__sable_protected_0", StringComparison.Ordinal)),
-            Arg.Is<IReadOnlyDictionary<string, object?>?>(
-                parameters => HasBoundEnvelope(parameters)),
-            Arg.Any<CancellationToken>());
+        var stored = await session.RawQueryAsync<EnvelopeStorageProbe>(
+            "SELECT social_security_number.ciphertext AS ciphertext, " +
+            "social_security_number.wrapped_key_ciphertext AS wrapped_key_ciphertext " +
+            "FROM encrypted_write_probe:`no-plaintext`;");
+
+        stored.Count.ShouldBe(1);
+        stored[0].Ciphertext.ShouldNotBeNullOrWhiteSpace();
+        stored[0].WrappedKeyCiphertext.ShouldNotBeNullOrWhiteSpace();
+        stored[0].Ciphertext.ShouldNotContain("987-65-4321");
     }
 
     [Test]
     public async Task Encrypted_write_logs_redact_plaintext_and_envelope_material()
     {
-        var client = Substitute.For<ISurrealDbClient>();
-        var surrealSession = Substitute.For<ISurrealDbSession>();
-        surrealSession.RawQuery(
-                Arg.Any<string>(),
-                Arg.Any<IReadOnlyDictionary<string, object?>?>(),
-                Arg.Any<CancellationToken>())
-            .Returns(Task.FromResult(new SurrealDbResponse([])));
         var logger = new CapturingLogger();
         var loggerFactory = Substitute.For<ILoggerFactory>();
         loggerFactory.CreateLogger(Arg.Any<string>()).Returns(logger);
 
         using var wrapping = CreateWrappingProvider();
-        var options = new StoreOptions { LoggerFactory = loggerFactory };
-        options.Encryption.Provider = new AesGcmDataProtectionProvider(wrapping);
-        options.Schema.For<EncryptedCustomer>()
-            .Identity(customer => customer.Id)
-            .EncryptField(customer => customer.SocialSecurityNumber);
-        var session = new DocumentSession(
-            client,
-            surrealSession,
-            options,
-            DocumentTracking.None);
-        session.Store(new EncryptedCustomer
+        await using var store = await TestHarness.CreateStoreAsync(options =>
+        {
+            options.LoggerFactory = loggerFactory;
+            options.Encryption.Provider = new AesGcmDataProtectionProvider(wrapping);
+            options.Schema.For<EncryptedWriteProbe>()
+                .Identity(customer => customer.Id)
+                .EncryptField(customer => customer.SocialSecurityNumber);
+        });
+        await using var session = await store.OpenSessionAsync(
+            new SessionOptions { Tracking = DocumentTracking.None });
+        session.Store(new EncryptedWriteProbe
         {
             Id = "logged",
             Name = "Katherine",
@@ -588,14 +576,6 @@ public class FieldEncryptionPersistenceTests
     private static AesGcmKeyWrappingProvider CreateWrappingProvider()
         => new(RandomNumberGenerator.GetBytes(32), "test-kek-v1", "tests");
 
-    private static bool HasBoundEnvelope(
-        IReadOnlyDictionary<string, object?>? parameters)
-        => parameters is not null
-            && parameters.TryGetValue("__sable_protected_0", out var value)
-            && value is Dictionary<string, object?> envelope
-            && envelope.ContainsKey("ciphertext")
-            && envelope.ContainsKey("wrapped_key_ciphertext");
-
     private sealed class EncryptedCustomer
     {
         public string Id { get; set; } = "";
@@ -603,6 +583,19 @@ public class FieldEncryptionPersistenceTests
         public string SocialSecurityNumber { get; set; } = "";
         public byte[] PrivateBytes { get; set; } = [];
         public int Age { get; set; }
+    }
+
+    private sealed class EnvelopeStorageProbe
+    {
+        public string Ciphertext { get; set; } = "";
+        public string WrappedKeyCiphertext { get; set; } = "";
+    }
+
+    private sealed class EncryptedWriteProbe
+    {
+        public string Id { get; set; } = "";
+        public string Name { get; set; } = "";
+        public string SocialSecurityNumber { get; set; } = "";
     }
 
     private sealed class EncryptedLongCustomer

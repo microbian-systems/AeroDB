@@ -214,7 +214,7 @@ public class PatchExpression<T> : IPatchExpression<T>, IDeferredPatch where T : 
         var internalSession = (InternalSessionBase)session;
         var schema = internalSession.StoreOptions.Schema;
         var table = MetadataDispatch.GetTableName(typeof(T), schema);
-        var surrealdbSession = internalSession.Session;
+        var surrealdbSession = internalSession.OperationSession;
 
         // Execute UPDATE SET for all non-rename operations
         if (updateOps.Count > 0)
@@ -222,7 +222,8 @@ public class PatchExpression<T> : IPatchExpression<T>, IDeferredPatch where T : 
             var sets = updateOps.Select(o => MapOperation(o, schema).ToSurrealQL()).ToList();
             var surql = $"UPDATE {table}:{FormatRecordId(_recordId)} SET {string.Join(", ", sets)};";
             _logger.LogDebug("Applying patch: {SurrealQL}", surql);
-            await surrealdbSession.RawQuery(surql, null, ct).ConfigureAwait(false);
+            var response = await surrealdbSession.RawQuery(surql, null, ct).ConfigureAwait(false);
+            response.EnsureAllOks();
         }
 
         // Execute ALTER TABLE RENAME COLUMN for rename operations
@@ -231,7 +232,8 @@ public class PatchExpression<T> : IPatchExpression<T>, IDeferredPatch where T : 
             var mapped = MapOperation(op, schema);
             var surql = $"ALTER TABLE {table} RENAME COLUMN `{mapped.OldName}` TO `{mapped.FieldName}`;";
             _logger.LogDebug("Applying rename: {SurrealQL}", surql);
-            await surrealdbSession.RawQuery(surql, null, ct).ConfigureAwait(false);
+            var response = await surrealdbSession.RawQuery(surql, null, ct).ConfigureAwait(false);
+            response.EnsureAllOks();
         }
 
         // Expose patch context to listeners, if available

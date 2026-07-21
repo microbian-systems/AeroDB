@@ -67,7 +67,7 @@ public class ConcurrencyTests
         // Use RawQuery to create an entity with an explicit Version field.
         const string id = "no_conflict_test";
         await session.Session.RawQuery(
-            $"CREATE versioned_person:{id} CONTENT {{ Name: 'NoConflict', Age: 25, Version: 1 }};",
+            $"CREATE versioned_person:{id} CONTENT {{ name: 'NoConflict', age: 25, version: 1 }};",
             null);
 
         // Load via LoadAsync — this auto-tracks the version
@@ -102,7 +102,7 @@ public class ConcurrencyTests
         await using (var seedSession = AsDoc(await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None })))
         {
             await seedSession.Session.RawQuery(
-                $"CREATE versioned_person:{id} CONTENT {{ Name: 'ConflictTest', Age: 10, Version: 1 }};",
+                $"CREATE versioned_person:{id} CONTENT {{ name: 'ConflictTest', age: 10, version: 1 }};",
                 null);
         }
 
@@ -139,6 +139,232 @@ public class ConcurrencyTests
         ex.Message.ShouldContain("conflict_test");
     }
 
+    /// <summary>Public Store is intentionally safe for a loaded versioned document.</summary>
+    [Test]
+    public async Task Concurrency_conflicting_public_store_calls_throw()
+    {
+        await using var store = await TestHarness.CreateStoreAsync(o => o.UseOptimisticConcurrency = true);
+        const string id = "public_store_conflict";
+        await using (var seed = AsDoc(await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None })))
+            await seed.Session.RawQuery($"CREATE versioned_person:{id} CONTENT {{ name: 'Seed', age: 1, version: 1 }};", null);
+
+        await using var first = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
+        await using var second = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
+        var firstPerson = await first.LoadAsync<VersionedPerson>(id);
+        var secondPerson = await second.LoadAsync<VersionedPerson>(id);
+        firstPerson.ShouldNotBeNull();
+        secondPerson.ShouldNotBeNull();
+
+        firstPerson.Name = "StoreWriterOne";
+        secondPerson.Name = "StoreWriterTwo";
+        first.Store(firstPerson);
+        second.Store(secondPerson);
+
+        var release = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        var bothReady = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        var readyCount = 0;
+        async Task<Exception?> SaveTogetherAsync(IDocumentSession candidate)
+        {
+            if (Interlocked.Increment(ref readyCount) == 2)
+                bothReady.SetResult();
+            await release.Task;
+            try
+            {
+                await candidate.SaveChangesAsync();
+                return null;
+            }
+            catch (Exception exception)
+            {
+                return exception;
+            }
+        }
+
+        var saves = new[] { SaveTogetherAsync(first), SaveTogetherAsync(second) };
+        await bothReady.Task;
+        release.SetResult();
+        var results = await Task.WhenAll(saves);
+
+        results.Count(result => result is null).ShouldBe(1);
+        var conflict = results.Single(result => result is not null).ShouldBeOfType<ConcurrencyException>();
+        conflict.ExpectedVersion.ShouldBe(1);
+        var loser = results[0] is ConcurrencyException ? firstPerson : secondPerson;
+        loser.Version.ShouldBe(1);
+
+        await using var verify = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
+        var persisted = await verify.LoadAsync<VersionedPerson>(id);
+        persisted.ShouldNotBeNull();
+        persisted.Version.ShouldBe(2);
+        new[] { "StoreWriterOne", "StoreWriterTwo" }.ShouldContain(persisted.Name);
+    }
+
+    /// <summary>Update follows the same version gate as Store for loaded documents.</summary>
+    [Test]
+    public async Task Concurrency_conflicting_public_update_calls_throw()
+    {
+        await using var store = await TestHarness.CreateStoreAsync(o => o.UseOptimisticConcurrency = true);
+        const string id = "public_update_conflict";
+        await using (var seed = AsDoc(await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None })))
+            await seed.Session.RawQuery($"CREATE versioned_person:{id} CONTENT {{ name: 'Seed', age: 1, version: 1 }};", null);
+
+        await using var first = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
+        await using var second = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
+        var firstPerson = await first.LoadAsync<VersionedPerson>(id);
+        var secondPerson = await second.LoadAsync<VersionedPerson>(id);
+        firstPerson.ShouldNotBeNull();
+        secondPerson.ShouldNotBeNull();
+
+        firstPerson.Name = "UpdateWriterOne";
+        secondPerson.Name = "UpdateWriterTwo";
+        first.Update(firstPerson);
+        second.Update(secondPerson);
+
+        var release = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        var bothReady = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        var readyCount = 0;
+        async Task<Exception?> SaveTogetherAsync(IDocumentSession candidate)
+        {
+            if (Interlocked.Increment(ref readyCount) == 2)
+                bothReady.SetResult();
+            await release.Task;
+            try
+            {
+                await candidate.SaveChangesAsync();
+                return null;
+            }
+            catch (Exception exception)
+            {
+                return exception;
+            }
+        }
+
+        var saves = new[] { SaveTogetherAsync(first), SaveTogetherAsync(second) };
+        await bothReady.Task;
+        release.SetResult();
+        var results = await Task.WhenAll(saves);
+
+        results.Count(result => result is null).ShouldBe(1);
+        var updateFailure = results.Single(result => result is not null);
+        updateFailure.ShouldBeOfType<ConcurrencyException>(
+            $"Unexpected update failure: {updateFailure}");
+        var loser = results[0] is ConcurrencyException ? firstPerson : secondPerson;
+        loser.Version.ShouldBe(1);
+
+        await using var verify = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
+        var persisted = await verify.LoadAsync<VersionedPerson>(id);
+        persisted.ShouldNotBeNull();
+        persisted.Version.ShouldBe(2);
+        new[] { "UpdateWriterOne", "UpdateWriterTwo" }.ShouldContain(persisted.Name);
+    }
+
+    [Test]
+    public async Task Concurrency_stale_public_store_does_not_recreate_deleted_document()
+    {
+        await using var store = await TestHarness.CreateStoreAsync(o => o.UseOptimisticConcurrency = true);
+        const string id = "deleted_store_conflict";
+        await using (var seed = AsDoc(await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None })))
+            await seed.Session.RawQuery($"CREATE versioned_person:{id} CONTENT {{ name: 'Seed', age: 1, version: 1 }};", null);
+
+        await using var staleSession = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
+        var stale = await staleSession.LoadAsync<VersionedPerson>(id);
+        stale.ShouldNotBeNull();
+
+        await using (var deletingSession = AsDoc(await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None })))
+            await deletingSession.Session.RawQuery($"DELETE versioned_person:{id};", null);
+
+        stale.Name = "MustNotReappear";
+        staleSession.Store(stale);
+        await Should.ThrowAsync<ConcurrencyException>(() => staleSession.SaveChangesAsync());
+        stale.Version.ShouldBe(1);
+
+        await using var verify = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
+        (await verify.LoadAsync<VersionedPerson>(id)).ShouldBeNull();
+    }
+
+    [Test]
+    public async Task Concurrency_same_instance_can_be_stored_again_after_successful_commit()
+    {
+        await using var store = await TestHarness.CreateStoreAsync(o => o.UseOptimisticConcurrency = true);
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
+        var listener = new CountingAfterStoreListener();
+        session.Listeners.Add(listener);
+        var person = new VersionedPerson { Name = "FirstPayload", Age = 1 };
+
+        session.Store(person);
+        await session.SaveChangesAsync();
+        person.Version.ShouldBe(1);
+
+        person.Name = "SecondPayload";
+        session.Store(person);
+        await session.SaveChangesAsync();
+        person.Version.ShouldBe(2);
+        listener.AfterStoreCalls.ShouldBe(2);
+
+        await using var verify = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
+        var persisted = await verify.Query<VersionedPerson>().FirstOrDefaultAsync(x => x.Name == "SecondPayload");
+        persisted.ShouldNotBeNull();
+        persisted.Version.ShouldBe(2);
+    }
+
+    [Test]
+    public async Task Concurrency_same_instance_can_be_stored_twice_in_explicit_transaction()
+    {
+        await using var store = await TestHarness.CreateStoreAsync(o => o.UseOptimisticConcurrency = true);
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
+        await using var transaction = await session.BeginTransactionAsync();
+        var person = new VersionedPerson { Name = "ExplicitFirstPayload", Age = 1 };
+
+        session.Store(person);
+        await session.SaveChangesAsync();
+        person.Version.ShouldBe(1);
+
+        person.Name = "ExplicitSecondPayload";
+        session.Store(person);
+        await session.SaveChangesAsync();
+        person.Version.ShouldBe(2);
+
+        await transaction.CommitAsync();
+
+        await using var verify = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
+        var persisted = await verify.Query<VersionedPerson>()
+            .FirstOrDefaultAsync(x => x.Name == "ExplicitSecondPayload");
+        persisted.ShouldNotBeNull();
+        persisted.Version.ShouldBe(2);
+    }
+
+    [Test]
+    public async Task Concurrency_explicit_rollback_restores_first_version_and_allows_reuse()
+    {
+        await using var store = await TestHarness.CreateStoreAsync(o => o.UseOptimisticConcurrency = true);
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
+        var person = new VersionedPerson { Name = "RolledBackFirstPayload", Age = 1 };
+
+        await using (var transaction = await session.BeginTransactionAsync())
+        {
+            session.Store(person);
+            await session.SaveChangesAsync();
+            person.Version.ShouldBe(1);
+
+            person.Name = "RolledBackSecondPayload";
+            session.Store(person);
+            await session.SaveChangesAsync();
+            person.Version.ShouldBe(2);
+
+            await transaction.RollbackAsync();
+        }
+
+        person.Version.ShouldBe(0);
+        person.Name = "ReusedAfterRollback";
+        session.Store(person);
+        await session.SaveChangesAsync();
+        person.Version.ShouldBe(1);
+
+        await using var verify = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
+        var persisted = await verify.Query<VersionedPerson>()
+            .FirstOrDefaultAsync(x => x.Name == "ReusedAfterRollback");
+        persisted.ShouldNotBeNull();
+        persisted.Version.ShouldBe(1);
+    }
+
     /// <summary>
     /// When optimistic concurrency is disabled, conflicting modifications
     /// should silently succeed (last-write-wins).
@@ -153,7 +379,7 @@ public class ConcurrencyTests
         await using (var seedSession = AsDoc(await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None })))
         {
             await seedSession.Session.RawQuery(
-                $"CREATE versioned_person:{id} CONTENT {{ Name: 'NoConcurrency', Age: 5, Version: 1 }};",
+                $"CREATE versioned_person:{id} CONTENT {{ name: 'NoConcurrency', age: 5, version: 1 }};",
                 null);
         }
 
@@ -194,7 +420,7 @@ public class ConcurrencyTests
         // Use RawQuery to create with an explicit version field
         const string id = "attr_test";
         await session.Session.RawQuery(
-            $"CREATE attributed_person:{id} CONTENT {{ Name: 'AttrTest', Age: 30, DocumentVersion: 1 }};",
+            $"CREATE attributed_person:{id} CONTENT {{ name: 'AttrTest', age: 30, document_version: 1 }};",
             null);
 
         // Load via LoadAsync — auto-tracks version
@@ -247,6 +473,7 @@ public class ConcurrencyTests
         await session.Events.Append(streamId, [
             new OrderEvent { StreamId = streamId, OrderId = "CONF-1", Amount = 100m }
         ]);
+        await session.SaveChangesAsync();
 
         // Fetch for writing — expected version is 1
         var result = await session.Events.FetchForWritingAsync<WriteModel>(streamId);
@@ -258,6 +485,7 @@ public class ConcurrencyTests
         await session2.Events.Append(streamId, [
             new OrderEvent { StreamId = streamId, OrderId = "CONF-2", Amount = 50m }
         ]);
+        await session2.SaveChangesAsync();
 
         // Now try to append using the stale fetch (expected version 1, but actual is 2)
         result.AppendOne(new OrderEvent { StreamId = streamId, OrderId = "CONF-3", Amount = 25m });
@@ -332,5 +560,16 @@ public class ConcurrencyTests
         docSession._fetchForWritingResults[0].StreamId.ShouldBe(streamId);
         docSession._fetchForWritingResults[0].ExpectedVersion.ShouldBe(1);
         docSession._fetchForWritingResults[0].PendingEvents.Count.ShouldBe(1);
+    }
+
+    private sealed class CountingAfterStoreListener : DocumentSessionListenerBase
+    {
+        public int AfterStoreCalls { get; private set; }
+
+        public override Task AfterStoreAsync(IDocumentSession session, object entity, CancellationToken ct)
+        {
+            AfterStoreCalls++;
+            return Task.CompletedTask;
+        }
     }
 }

@@ -16,6 +16,12 @@ public abstract class InternalSessionBase : IAsyncDisposable
 {
     protected readonly ISurrealDbClient Client;
     public ISurrealDbSession Session { get; }
+    /// <summary>
+    /// Gets the session that should receive mutations initiated by the current operation.
+    /// Document sessions override this while saving so deferred operations participate in
+    /// the same auto or explicit transaction as document writes.
+    /// </summary>
+    internal protected virtual ISurrealDbSession OperationSession => Session;
     protected readonly StoreOptions Options;
     internal StoreOptions StoreOptions => Options;
     protected readonly ConcurrentDictionary<Type, ConcurrentDictionary<string, object>> IdentityMap = new();
@@ -40,7 +46,7 @@ public abstract class InternalSessionBase : IAsyncDisposable
     /// Tracks the original version of each entity for optimistic concurrency checks.
     /// Key is entity instance (reference equality), value is the version at load/store time.
     /// </summary>
-    private readonly Dictionary<object, long> _originalVersions = new();
+    private readonly Dictionary<object, long> _originalVersions = new(ReferenceEqualityComparer.Instance);
 
     /// <summary>
     /// The tenant ID for this session (null if no tenancy is configured).
@@ -282,7 +288,7 @@ public abstract class InternalSessionBase : IAsyncDisposable
     {
         RequestCount++;
         LogSurrealQuery(sql, parameters);
-        var response = await Session.RawQuery(sql, parameters, ct).ConfigureAwait(false);
+        var response = await OperationSession.RawQuery(sql, parameters, ct).ConfigureAwait(false);
         return response.FirstOk is not null ? 1 : 0;
     }
 
@@ -1254,7 +1260,7 @@ public abstract class InternalSessionBase : IAsyncDisposable
     {
         var version = GetVersion(entity);
         if (version >= 0)
-            _originalVersions[entity] = version;
+            _originalVersions.TryAdd(entity, version);
     }
 
     /// <summary>
@@ -1349,12 +1355,47 @@ public abstract class InternalSessionBase : IAsyncDisposable
         _originalVersions.Remove(entity);
     }
 
+    /// <summary>Clears all captured optimistic-concurrency tokens for this session.</summary>
+    protected void ClearOriginalVersions()
+    {
+        _originalVersions.Clear();
+    }
+
     /// <summary>
     /// Gets the tracked original version for an entity, or 0 if not tracked.
     /// </summary>
     protected long GetTrackedVersion(object entity)
     {
         return _originalVersions.GetValueOrDefault(entity, 0);
+    }
+
+    /// <summary>Attempts to get the first version captured for an entity.</summary>
+    protected bool TryGetTrackedVersion(object entity, out long version)
+        => _originalVersions.TryGetValue(entity, out version);
+
+    /// <summary>Restores an entity's in-memory version after a rejected conditional write.</summary>
+    protected void SetVersion(object entity, long version)
+    {
+        var entityType = entity.GetType();
+        if (MetadataRegistry.TryGet(entityType) is ITypeMetadata meta && meta.SetVersionAccessor is not null)
+        {
+            meta.SetVersionAccessor(entity, version);
+            return;
+        }
+
+        var versionFieldName = MetadataDispatch.GetVersionFieldName(entityType);
+        if (versionFieldName is not null)
+        {
+            var property = entityType.GetProperty(versionFieldName, BindingFlags.Instance | BindingFlags.Public);
+            if (property is not null)
+            {
+                property.SetValue(entity, version);
+                return;
+            }
+        }
+
+        if (entity is IVersioned versioned)
+            versioned.Version = version;
     }
 
     /// <summary>Remove a document from the identity map by ID. Does NOT delete from the database.</summary>
@@ -1652,7 +1693,10 @@ public abstract class InternalSessionBase : IAsyncDisposable
     {
         foreach (var (sql, parameters) in QueuedSqlCommands)
         {
-            await ExecuteSqlAsync(sql, parameters, ct).ConfigureAwait(false);
+            RequestCount++;
+            LogSurrealQuery(sql, parameters);
+            var response = await OperationSession.RawQuery(sql, parameters, ct).ConfigureAwait(false);
+            response.EnsureAllOks();
         }
         QueuedSqlCommands.Clear();
     }

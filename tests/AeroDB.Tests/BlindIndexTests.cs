@@ -126,14 +126,6 @@ public sealed class BlindIndexTests
     [Test]
     public async Task Save_writes_only_ciphertext_and_a_versioned_blind_token()
     {
-        var client = Substitute.For<ISurrealDbClient>();
-        var surrealSession = Substitute.For<ISurrealDbSession>();
-        surrealSession.RawQuery(
-                Arg.Any<string>(),
-                Arg.Any<IReadOnlyDictionary<string, object?>?>(),
-                Arg.Any<CancellationToken>())
-            .Returns(Task.FromResult(new SurrealDbResponse([])));
-
         using var wrapping = new AesGcmKeyWrappingProvider(
             RandomNumberGenerator.GetBytes(32),
             "test-kek-v1",
@@ -141,12 +133,17 @@ public sealed class BlindIndexTests
         using var blindIndexes = new HmacSha256BlindIndexProvider(
             "test-bidx-v1",
             RandomNumberGenerator.GetBytes(32));
-        var options = CreateOptions(wrapping, blindIndexes);
-        var session = new DocumentSession(
-            client,
-            surrealSession,
-            options,
-            DocumentTracking.None);
+        await using var store = await TestHarness.CreateStoreAsync(options =>
+        {
+            options.Encryption.Provider = new AesGcmDataProtectionProvider(wrapping);
+            options.Encryption.BlindIndexProvider = blindIndexes;
+            options.Schema.For<BlindIndexedCustomer>()
+                .Identity(customer => customer.Id)
+                .EncryptField(customer => customer.SocialSecurityNumber)
+                .BlindIndex(customer => customer.SocialSecurityNumber);
+        });
+        await using var session = (DocumentSession)await store.OpenSessionAsync(
+            new SessionOptions { Tracking = DocumentTracking.None });
         session.Store(new BlindIndexedCustomer
         {
             Id = "customer-1",
@@ -156,18 +153,17 @@ public sealed class BlindIndexTests
 
         await session.SaveChangesAsync();
 
-        await surrealSession.Received(1).RawQuery(
-            Arg.Is<string>(surql =>
-                !surql.Contains("123-45-6789", StringComparison.Ordinal)
-                && !surql.Contains("123456789", StringComparison.Ordinal)
-                && surql.Contains("social_security_number_bidx:", StringComparison.Ordinal)
-                && !surql.Contains("bidx:v1:", StringComparison.Ordinal)
-                && !surql.Contains("ciphertext:", StringComparison.Ordinal)
-                && surql.Contains("$__sable_protected_0", StringComparison.Ordinal)
-                && surql.Contains("$__sable_protected_1", StringComparison.Ordinal)),
-            Arg.Is<IReadOnlyDictionary<string, object?>?>(
-                parameters => HasBoundEnvelopeAndBlindToken(parameters)),
-            Arg.Any<CancellationToken>());
+        var stored = await session.RawQueryAsync<BlindIndexStorageProbe>(
+            "SELECT social_security_number.ciphertext AS ciphertext, " +
+            "social_security_number_bidx AS blind_index " +
+            "FROM blind_indexed_customer:`customer-1`;");
+
+        stored.Count.ShouldBe(1);
+        stored[0].Ciphertext.ShouldNotBeNullOrWhiteSpace();
+        stored[0].Ciphertext.ShouldNotContain("123-45-6789");
+        stored[0].Ciphertext.ShouldNotContain("123456789");
+        stored[0].BlindIndex.ShouldStartWith("bidx:v1:");
+        stored[0].BlindIndex.ShouldNotContain("123456789");
     }
 
     [Test]
@@ -851,23 +847,17 @@ public sealed class BlindIndexTests
             && !token.Contains("123456789", StringComparison.Ordinal);
     }
 
-    private static bool HasBoundEnvelopeAndBlindToken(
-        IReadOnlyDictionary<string, object?>? parameters)
-        => parameters is not null
-            && parameters.Count == 2
-            && parameters.Values.Any(value =>
-                value is Dictionary<string, object?> envelope
-                && envelope.ContainsKey("ciphertext"))
-            && parameters.Values.Any(value =>
-                value is string token
-                && token.StartsWith("bidx:v1:", StringComparison.Ordinal)
-                && !token.Contains("123456789", StringComparison.Ordinal));
-
     private sealed class BlindIndexedCustomer
     {
         public string Id { get; set; } = "";
         public string Name { get; set; } = "";
         public string SocialSecurityNumber { get; set; } = "";
+    }
+
+    private sealed class BlindIndexStorageProbe
+    {
+        public string Ciphertext { get; set; } = "";
+        public string BlindIndex { get; set; } = "";
     }
 
     private sealed class NestedBlindIndexedCustomer

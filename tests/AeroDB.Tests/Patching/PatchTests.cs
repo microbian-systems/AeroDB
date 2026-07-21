@@ -125,17 +125,13 @@ public class PatchTests
     }
 
     [Test]
-    public async Task Patch_on_nonexistent_record_is_noop()
+    public async Task Patch_on_nonexistent_record_fails_closed()
     {
         await using var store = await TestHarness.CreateStoreAsync();
         await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
-        // Patching a record that doesn't exist should not throw
         session.Patch<Person>("nonexistent-id")
             .Set(p => p.Age, 99);
-        await session.SaveChangesAsync();
-
-        // No exception thrown - success
-        true.ShouldBeTrue();
+        await Should.ThrowAsync<InvalidOperationException>(() => session.SaveChangesAsync());
     }
 }
