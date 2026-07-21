@@ -10,6 +10,7 @@
     <ProjectReference Include="..\..\src\AeroDB.Analyzers\AeroDB.Analyzers.csproj" />
     <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.12.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.12.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.12.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Analyzer.Testing" Version="1.1.4" />
     <PackageReference Include="TUnit" Version="1.58.0" />
     <PackageReference Include="Shouldly" Version="4.3.0" />
