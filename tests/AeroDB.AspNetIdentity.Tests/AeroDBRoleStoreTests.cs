@@ -66,7 +66,7 @@ public class AeroDBRoleStoreTests
         var result = await roleStore.UpdateAsync(role, CancellationToken.None);
 
         result.Succeeded.ShouldBeTrue();
-        session.Received(1).Store(role);
+        session.Received(1).Update(role);
         await session.Received(1).SaveChangesAsync(Arg.Any<CancellationToken>());
     }
 
@@ -74,7 +74,7 @@ public class AeroDBRoleStoreTests
     public async Task UpdateAsync_ShouldReturnFailed_WhenExceptionThrown()
     {
         var store = CreateStore(out _, out var session, out var logger);
-        session.When(s => s.Store(Arg.Any<IdentityRole>()))
+        session.When(s => s.Update(Arg.Any<IdentityRole>()))
             .Throw(new InvalidOperationException("DB error"));
         var roleStore = new AeroDBRoleStore<IdentityRole>(store, logger);
         var role = new IdentityRole("admin");
@@ -153,7 +153,7 @@ public class AeroDBRoleStoreTests
     {
         var store = CreateStore(out var querySession, out _, out var logger);
         var role = new IdentityRole("admin") { Id = "role-1", NormalizedName = "ADMIN" };
-        var queryable = Substitute.For<ISurrealDbQueryable<IdentityRole>>();
+        var queryable = Substitute.For<ISableQueryable<IdentityRole>>();
         queryable.FirstOrDefaultAsync(
             Arg.Any<System.Linq.Expressions.Expression<Func<IdentityRole, bool>>>(),
             Arg.Any<CancellationToken>())
@@ -172,7 +172,7 @@ public class AeroDBRoleStoreTests
     public async Task FindByNameAsync_ShouldReturnNull_WhenNotFound()
     {
         var store = CreateStore(out var querySession, out _, out var logger);
-        var queryable = Substitute.For<ISurrealDbQueryable<IdentityRole>>();
+        var queryable = Substitute.For<ISableQueryable<IdentityRole>>();
         queryable.FirstOrDefaultAsync(
             Arg.Any<System.Linq.Expressions.Expression<Func<IdentityRole, bool>>>(),
             Arg.Any<CancellationToken>())
@@ -262,7 +262,7 @@ public class AeroDBRoleStoreTests
     {
         var store = CreateStore(out var querySession, out _, out var logger);
         var expectedRoles = new List<IdentityRole> { new("admin"), new("editor") };
-        var queryable = Substitute.For<ISurrealDbQueryable<IdentityRole>>();
+        var queryable = Substitute.For<ISableQueryable<IdentityRole>>();
         querySession.Query<IdentityRole>().Returns(queryable);
         var roleStore = new AeroDBRoleStore<IdentityRole>(store, logger);
 

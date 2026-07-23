@@ -10,7 +10,7 @@ public static class SearchExtensions
     /// Supports weighted multi-field queries (e.g., title: 25, body: 10).
     /// </summary>
     public static async Task<List<T>> MatchTextAsync<T>(
-        this ISurrealDbQueryable<T> source,
+        this ISableQueryable<T> source,
         IReadOnlyList<(Expression<Func<T, string>> FieldSelector, double Weight)> fields,
         string query,
         int limit = 30,
@@ -38,7 +38,7 @@ public static class SearchExtensions
     /// Single-field full-text search. Convenience overload for the most common case.
     /// </summary>
     public static Task<List<T>> MatchTextAsync<T>(
-        this ISurrealDbQueryable<T> source,
+        this ISableQueryable<T> source,
         Expression<Func<T, string>> fieldSelector,
         string query,
         int limit = 30,
@@ -49,7 +49,7 @@ public static class SearchExtensions
     /// KNN vector search using the &lt;||&gt; operator. Requires an HNSW index on the field.
     /// </summary>
     public static async Task<List<T>> MatchKnnAsync<T>(
-        this ISurrealDbQueryable<T> source,
+        this ISableQueryable<T> source,
         Expression<Func<T, float[]>> fieldSelector,
         float[] queryVector,
         int limit = 30,
@@ -71,7 +71,7 @@ public static class SearchExtensions
     /// Requires FULLTEXT + HNSW indexes. Fuses results using search::rrf().
     /// </summary>
     public static async Task<List<T>> HybridSearchAsync<T>(
-        this ISurrealDbQueryable<T> source,
+        this ISableQueryable<T> source,
         HybridSearchConfig config,
         CancellationToken ct = default) where T : class
     {

@@ -35,7 +35,7 @@ public class IEntityTests
         await using var store = await TestHarness.CreateStoreAsync();
         await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         var product = new EntityProduct { Name = "ExplicitSnowflake", Price = 10m };
-        var explicitId = product.Id; // EntitySnowlake constructor generates it
+        var explicitId = product.Id; // SableDocument constructor generates it
         explicitId.ShouldBeGreaterThan(0);
         session.Store(product);
         await session.SaveChangesAsync();
@@ -324,7 +324,7 @@ public class IEntityTests
         await using var store = await TestHarness.CreateStoreAsync();
         await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
-        // Entity<TId> type
+        // SableDocument<TId> type
         session.Store(new EntityProduct { Name = "EntityProduct", Price = 10m });
         // Record type (existing pattern)
         session.Store(new Person { Name = "RecordPerson", Age = 30 });
@@ -370,6 +370,31 @@ public class IEntityTests
         loaded.Price.ShouldBe(49.99m);
         loaded.Stock.ShouldBe(100);
         loaded.Id.ShouldBe(product.Id);
+    }
+
+    [Test]
+    public async Task EntityLong_LoadAsync_long_selects_the_requested_record()
+    {
+        await using var store = await TestHarness.CreateStoreAsync();
+        long requestedId;
+
+        await using (var writeSession = await store.OpenSessionAsync(
+            new SessionOptions { Tracking = DocumentTracking.None }))
+        {
+            var first = new EntityProduct { Name = "First", Price = 10m };
+            var requested = new EntityProduct { Name = "Requested", Price = 20m };
+            requestedId = requested.Id;
+            writeSession.Store(first);
+            writeSession.Store(requested);
+            await writeSession.SaveChangesAsync();
+        }
+
+        await using var readSession = await store.QuerySessionAsync();
+        var loaded = await readSession.LoadAsync<EntityProduct>(requestedId);
+
+        loaded.ShouldNotBeNull();
+        loaded.Id.ShouldBe(requestedId);
+        loaded.Name.ShouldBe("Requested");
     }
 
     [Test]

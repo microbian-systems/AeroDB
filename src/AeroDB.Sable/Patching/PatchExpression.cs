@@ -3,6 +3,7 @@ using System.Reflection;
 using AeroDB.Sable.Metadata;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
+using SurrealDb.Net;
 
 namespace AeroDB.Sable;
 
@@ -15,14 +16,19 @@ namespace AeroDB.Sable;
 public class PatchExpression<T> : IPatchExpression<T>, IDeferredPatch where T : class
 {
     private readonly IDocumentSession _session;
-    private readonly string _recordId;
+    private readonly object _recordId;
     private readonly List<SetOperation> _operations = new();
     private readonly ILogger<PatchExpression<T>> _logger;
     private readonly EnumStorage _enumStorage;
     private PatchContext? _patchContext;
 
-    internal PatchExpression(IDocumentSession session, string recordId)
+    internal PatchExpression(IDocumentSession session, object recordId)
     {
+        if (session is DocumentSession documentSession
+            && EncryptedFieldResolver.HasEncryptedFields(typeof(T), documentSession.StoreOptions.Schema))
+        {
+            throw new SableEncryptedOperationNotSupportedException(typeof(T), "patch");
+        }
         _session = session;
         _recordId = recordId;
         var storeOptions = ((InternalSessionBase)session).StoreOptions;
@@ -198,7 +204,10 @@ public class PatchExpression<T> : IPatchExpression<T>, IDeferredPatch where T : 
     /// Executes all queued patch operations by running a SurrealQL UPDATE statement.
     /// Called by the session during <see cref="IDocumentSession.SaveChangesAsync"/>.
     /// </summary>
-    async Task IDeferredPatch.ExecuteAsync(IDocumentSession session, CancellationToken ct)
+    async Task IDeferredPatch.ExecuteAsync(
+        IDocumentSession session,
+        ISurrealDbSession executionSession,
+        CancellationToken ct)
     {
         if (_operations.Count == 0) return;
 
@@ -209,13 +218,16 @@ public class PatchExpression<T> : IPatchExpression<T>, IDeferredPatch where T : 
         var internalSession = (InternalSessionBase)session;
         var schema = internalSession.StoreOptions.Schema;
         var table = MetadataDispatch.GetTableName(typeof(T), schema);
-        var surrealdbSession = internalSession.Session;
+        var surrealdbSession = executionSession;
+        var normalizedId = DocumentIdentityResolver.NormalizeForDocumentType(typeof(T), _recordId, schema);
+        if (!DocumentIdentityResolver.TryCreate(normalizedId, table, out var identity))
+            throw new InvalidOperationException($"Unable to resolve the identity for '{typeof(T).Name}'.");
 
         // Execute UPDATE SET for all non-rename operations
         if (updateOps.Count > 0)
         {
             var sets = updateOps.Select(o => MapOperation(o, schema).ToSurrealQL()).ToList();
-            var surql = $"UPDATE {table}:{FormatRecordId(_recordId)} SET {string.Join(", ", sets)};";
+            var surql = $"UPDATE {identity.Literal} SET {string.Join(", ", sets)};";
             _logger.LogDebug("Applying patch: {SurrealQL}", surql);
             await surrealdbSession.RawQuery(surql, null, ct).ConfigureAwait(false);
         }
@@ -248,7 +260,12 @@ public class PatchExpression<T> : IPatchExpression<T>, IDeferredPatch where T : 
     /// </summary>
     public async Task ApplyAsync(CancellationToken ct = default)
     {
-        await ((IDeferredPatch)this).ExecuteAsync(_session, ct).ConfigureAwait(false);
+        var executionSession = _session is DocumentSession documentSession
+            ? await documentSession.GetWriteSessionAsync(typeof(T), ct).ConfigureAwait(false)
+            : ((InternalSessionBase)_session).Session;
+        await ((IDeferredPatch)this)
+            .ExecuteAsync(_session, executionSession, ct)
+            .ConfigureAwait(false);
     }
 
     private static MemberInfo GetMember<TValue>(Expression<Func<T, TValue>> property)
@@ -269,13 +286,5 @@ public class PatchExpression<T> : IPatchExpression<T>, IDeferredPatch where T : 
             op.OldName is null ? null : MetadataDispatch.GetFieldName(typeof(T), op.OldName, schema),
             op.TargetField is null ? null : MetadataDispatch.GetFieldName(typeof(T), op.TargetField, schema),
             op.InsertIndex);
-
-    private static string FormatRecordId(string id)
-    {
-        if (long.TryParse(id, out _) || ulong.TryParse(id, out _))
-            return id;
-
-        return $"`{id.Replace("`", "\\`")}`";
-    }
 
 }

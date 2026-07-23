@@ -19,6 +19,18 @@ public class ShipmentEvent
     public string TrackingCode { get; set; } = "";
 }
 
+public sealed class AuditedProjectionEvent
+{
+    public long DocumentId { get; set; }
+    public DateTimeOffset CreatedOn { get; set; }
+    public AuditedProjectionContent Content { get; set; } = new();
+}
+
+public sealed class AuditedProjectionContent
+{
+    public string Title { get; set; } = "";
+}
+
 // ─── Test projected document ───────────────────────────────────────
 
 public class OrderSummary : Record
@@ -26,6 +38,12 @@ public class OrderSummary : Record
     public string OrderId { get; set; } = "";
     public decimal TotalAmount { get; set; }
     public int EventCount { get; set; }
+}
+
+public sealed class AuditedProjectionDocument : SableDocument
+{
+    public DateTimeOffset CreatedOn { get; set; }
+    public AuditedProjectionContent Content { get; set; } = new();
 }
 
 // ─── Test inline projection ────────────────────────────────────────
@@ -49,6 +67,31 @@ public class OrderSummaryProjection : SingleStreamProjection<OrderSummary>
         }
 
         return aggregate;
+    }
+}
+
+public sealed class AuditedDocumentProjection : IProjection
+{
+    public Type[] EventTypes => [typeof(AuditedProjectionEvent)];
+
+    public Task ApplyAsync(IProjectionContext context, CancellationToken ct)
+    {
+        foreach (var @event in context.TypedEvents)
+        {
+            if (@event.Data is not AuditedProjectionEvent data)
+            {
+                continue;
+            }
+
+            context.Session.Store(new AuditedProjectionDocument
+            {
+                Id = data.DocumentId,
+                CreatedOn = data.CreatedOn,
+                Content = data.Content
+            });
+        }
+
+        return Task.CompletedTask;
     }
 }
 
@@ -81,6 +124,38 @@ public class AsyncOrderSummaryProjection : SingleStreamProjection<OrderSummary>
 
 public class ProjectionTests
 {
+    [Test]
+    public async Task Inline_projection_persists_required_datetime_and_nested_poco_on_sable_document()
+    {
+        await using var store = await TestHarness.CreateStoreAsync(options =>
+        {
+            options.Schema.For<AuditedProjectionDocument>()
+                .Identity(x => x.Id)
+                .SetSchemaMode(SchemaMode.Strict);
+        });
+        store.Options.Projections.Add(new AuditedDocumentProjection());
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
+        var documentId = SnowflakeGenerator.NewId();
+        var createdOn = DateTimeOffset.UtcNow;
+
+        await session.Events.Append($"audit-{documentId}", [
+            new AuditedProjectionEvent
+            {
+                DocumentId = documentId,
+                CreatedOn = createdOn,
+                Content = new AuditedProjectionContent { Title = "Projected content" }
+            }
+        ]);
+
+        await session.SaveChangesAsync();
+
+        await using var query = await store.QuerySessionAsync();
+        var projected = await query.LoadAsync<AuditedProjectionDocument>(documentId);
+        projected.ShouldNotBeNull();
+        projected.CreatedOn.ShouldBe(createdOn, TimeSpan.FromSeconds(1));
+        projected.Content.Title.ShouldBe("Projected content");
+    }
+
     [Test]
     public async Task Inline_projection_runs_with_saveChanges()
     {

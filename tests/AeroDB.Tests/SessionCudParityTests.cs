@@ -6,7 +6,7 @@ using TUnit.Core;
 namespace AeroDB.Tests;
 
 /// <summary>
-/// Parity tests for Marten API CUD methods (Insert, Update, HardDelete, StoreObjects,
+/// Parity tests for Sable CUD methods (Insert, Update, HardDelete, StoreObjects,
 /// DeleteObjects, etc.) against <see cref="IDocumentSession"/>.
 /// Each test creates its own isolated store (unique namespace) so they do not share
 /// database state.  The <see cref="NotInParallelAttribute"/> prevents parallel execution

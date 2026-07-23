@@ -239,7 +239,11 @@ public class AeroDBUserStore<TUser, TRole, TKey> :
         try
         {
             await using var session = await _store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }, cancellationToken);
-            session.Store(user);
+            // Identity managers call UpdateAsync after store-specific mutations such as
+            // AddToRoleAsync. Use Sable's update/merge operation so storage-owned fields
+            // (role_ids, authenticator_key, recovery_codes) are not erased by a full
+            // document replacement from the CLR user model.
+            session.Update(user);
             await session.SaveChangesAsync(cancellationToken);
             _logger.LogDebug("Updated user {UserId}", user.Id);
             return IdentityResult.Success;
@@ -1185,11 +1189,14 @@ public class AeroDBUserStore<TUser, TRole, TKey> :
     }
 
     private string UserRecordId(string userId)
-        => $"{_userTable}:`{EscapeRecordIdPart(userId)}`";
+    {
+        var normalizedId = DocumentIdentityResolver.NormalizeForIdentityType(typeof(TKey), userId);
 
-    private static string EscapeRecordIdPart(string value)
-        => value.Replace("\\", "\\\\", StringComparison.Ordinal)
-            .Replace("`", "\\`", StringComparison.Ordinal);
+        if (!DocumentIdentityResolver.TryCreate(normalizedId, _userTable, out var identity))
+            throw new InvalidOperationException("The user identity cannot be empty.");
+
+        return identity.Literal;
+    }
 
     // ══════════════════════════════════════════════════════════════════
     //  Private Helpers — Passkey (separate table, byte[] comparisons)

@@ -464,15 +464,11 @@ public class LinqQuerySyntaxTests
         // Build a query using comprehension, then inspect the generated SQL
         // without executing it.  ToCommand() is a zero-round-trip operation.
         //
-        // Note: we avoid `orderby` here because AeroDB.Sable defines custom Where/Select
-        // extension methods on ISurrealDbQueryable<T>, but no custom OrderBy.
-        // After `orderby` the static type becomes IOrderedQueryable<T> which
-        // doesn't expose ToCommand(). Use a cast or avoid orderby for ToCommand.
         var query = from p in session.Query<Person>()
                     where p.Age > 25
                     select p;
 
-        var sql = ((ISurrealDbQueryable<Person>)query).ToCommand();
+        var sql = query.ToCommand().CommandText;
         sql.ShouldNotBeNullOrEmpty();
         sql.ShouldContain("SELECT");
         sql.ShouldContain("FROM");
@@ -491,13 +487,11 @@ public class LinqQuerySyntaxTests
         await using var store = await TestHarness.CreateStoreAsync();
         await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
-        // Use `where` + `select` (no `orderby`) so the custom Select extension
-        // on ISurrealDbQueryable<T> preserves the ToCommand() method.
         var query = from p in session.Query<Person>()
                     where p.Age > 20
                     select new { p.Name, p.Age };
 
-        var sql = query.ToCommand();
+        var sql = query.ToCommand().CommandText;
         sql.ShouldNotBeNullOrEmpty();
         sql.ShouldContain("SELECT");
         sql.ShouldContain("Name");
@@ -604,7 +598,7 @@ public class LinqQuerySyntaxTests
                     where upper.StartsWith("A")
                     select p;
 
-        var sql = query.ToCommand();
+        var sql = query.ToCommand().CommandText;
         // The SQL is generated without throwing, but the projection is
         // invalid due to the ProjMember fallback.
         sql.ShouldNotBeNullOrEmpty();
@@ -642,7 +636,7 @@ public class LinqQuerySyntaxTests
         var query = from p in session.Query<Person>()
                     select new { p.Name, EstimatedYear = 2026 - p.Age };
 
-        var sql = query.ToCommand();
+        var sql = query.ToCommand().CommandText;
         sql.ShouldNotBeNullOrEmpty();
         sql.ShouldContain("SELECT");
         sql.ShouldContain("FROM");
@@ -682,7 +676,7 @@ public class LinqQuerySyntaxTests
     public async Task QuerySyntax_Count_ViaMethodSyntax_Works()
     {
         // Query comprehension yields IQueryable<Person>, which implements
-        // ISurrealDbQueryable<Person>. The CountAsync() method defined on
+        // ISableQueryable<Person>. The CountAsync() method defined on
         // the interface can be called directly.
         await using var store = await TestHarness.CreateStoreAsync();
         await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });

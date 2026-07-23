@@ -29,9 +29,9 @@ public class AeroDBUserStorePasskeyTests
         return store;
     }
 
-    private static ISurrealDbQueryable<T> CreateMockQueryable<T>(List<T> data) where T : class
+    private static ISableQueryable<T> CreateMockQueryable<T>(List<T> data) where T : class
     {
-        var queryable = Substitute.For<ISurrealDbQueryable<T>>();
+        var queryable = Substitute.For<ISableQueryable<T>>();
                 queryable.ToListAsync(Arg.Any<CancellationToken>()).Returns(data);
 
         var provider = Substitute.For<IQueryProvider>();

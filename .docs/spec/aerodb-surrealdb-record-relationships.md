@@ -630,7 +630,7 @@ SELECT * FROM `order` WHERE customer.name = $p0 FETCH `customer`;
 
 The visitor needs:
 
-1. A `List<LinkRegistration>` on `SurrealDbQueryable<T>`, populated by `.Link<TTarget>()` / `.Join<TTarget>()`
+1. A `List<LinkRegistration>` on `SableQueryable<T>`, populated by `.Link<TTarget>()` / `.Join<TTarget>()`
 2. A context dictionary mapping `ParameterExpression` → link registration for multi-param lambdas
 3. FK type detection (RecordId vs typed) at translation time
 4. Conditional coalescing: multiple conditions on the same linked scalar-FK entity share the same `type::record(...)` base expression
@@ -1255,8 +1255,8 @@ Cannot translate collection relationship access 'Order.Products'. The member 'Or
 
 ### Link + Multi-Parameter Filter Tasks
 
-14. Add `LinkRegistration` record type and `List<LinkRegistration>` to `SurrealDbQueryable<T>`.
-15. Add `.Link<TTarget>(Expression<Func<T, object>> fkSelector)` and `.Join<TTarget>(...)` methods on `ISurrealDbQueryable<T>`. `Join` delegates to `Link` and has no separate semantics.
+14. Add `LinkRegistration` record type and `List<LinkRegistration>` to `SableQueryable<T>`.
+15. Add `.Link<TTarget>(Expression<Func<T, object>> fkSelector)` and `.Join<TTarget>(...)` methods on `ISableQueryable<T>`. `Join` delegates to `Link` and has no separate semantics.
 16. Extend `SurrealExpressionVisitor` to accept link registrations and handle multi-parameter lambdas:
     - Detect which `ParameterExpression` a `MemberExpression` roots in.
     - For main-entity params (index 0): standard translation (existing path).

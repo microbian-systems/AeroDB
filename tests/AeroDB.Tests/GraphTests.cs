@@ -432,8 +432,8 @@ public class GraphIntegrationTests
 
         var statements = SchemaManager.BuildEdgeIndexStatements(mapping).ToList();
         statements.Count.ShouldBe(2);
-        statements[0].ShouldBe("DEFINE INDEX idx_knows_Since ON TABLE `knows` COLUMNS Since;");
-        statements[1].ShouldBe("DEFINE INDEX idx_knows_Kind ON TABLE `knows` COLUMNS Kind;");
+        statements[0].ShouldBe("DEFINE INDEX OVERWRITE idx_knows_Since ON TABLE `knows` COLUMNS Since;");
+        statements[1].ShouldBe("DEFINE INDEX OVERWRITE idx_knows_Kind ON TABLE `knows` COLUMNS Kind;");
     }
 
     [Test]

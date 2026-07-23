@@ -152,7 +152,7 @@ public interface IQuerySession : IAsyncDisposable
     /// <summary>Get the known version for a tracked entity. Returns the version at load/store time.</summary>
     long? VersionFor<T>(T entity) where T : class;
 
-    ISurrealDbQueryable<T> Query<T>() where T : class;
+    ISableQueryable<T> Query<T>() where T : class;
 
     /// <summary>Event store query surface for raw event queries.</summary>
     IEvents Events { get; }
@@ -412,13 +412,13 @@ public interface IQuerySession : IAsyncDisposable
     /// <summary>Wait for the async daemon to process all events up to the current sequence, then return a queryable.</summary>
     /// <param name="timeout">Maximum time to wait for the daemon to catch up.</param>
     /// <typeparam name="T">The document type to query.</typeparam>
-    Task<ISurrealDbQueryable<T>> QueryForNonStaleData<T>(TimeSpan timeout) where T : class;
+    Task<ISableQueryable<T>> QueryForNonStaleData<T>(TimeSpan timeout) where T : class;
 
     /// <summary>Wait for the async daemon with timeout mode control.</summary>
     /// <param name="timeout">Maximum time to wait for the daemon to catch up.</param>
     /// <param name="mode">Controls staleness tolerance: <see cref="StaleDataMode.Strict"/> waits, <see cref="StaleDataMode.AllowStale"/> returns immediately.</param>
     /// <typeparam name="T">The document type to query.</typeparam>
-    Task<ISurrealDbQueryable<T>> QueryForNonStaleData<T>(TimeSpan timeout, StaleDataMode mode) where T : class;
+    Task<ISableQueryable<T>> QueryForNonStaleData<T>(TimeSpan timeout, StaleDataMode mode) where T : class;
 
     // ── ITEM: QueueSqlCommand (Marten parity) ──────────────────────────
 

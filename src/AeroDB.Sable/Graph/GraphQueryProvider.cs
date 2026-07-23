@@ -5,6 +5,7 @@ internal static class GraphQueryProvider
     /// <summary>Start a graph traversal query from the given session.</summary>
     public static IGraphQuery<T> Graph<T>(IQuerySession session) where T : class
     {
+        ThrowIfEncrypted<T>(session);
         // Extract the underlying ISurrealDbSession if available.
         // InternalSessionBase exposes Session; use it for raw query access.
         var rawSession = GetRawSession(session);
@@ -14,6 +15,7 @@ internal static class GraphQueryProvider
     /// <summary>Start a graph traversal query with a SurrealQL WHERE filter.</summary>
     public static IGraphQuery<T> Graph<T>(IQuerySession session, string filterSurql) where T : class
     {
+        ThrowIfEncrypted<T>(session);
         var rawSession = GetRawSession(session);
         return new GraphQueryBuilder<T>(session, rawSession, filterSurql);
     }
@@ -31,5 +33,18 @@ internal static class GraphQueryProvider
         throw new InvalidOperationException(
             $"Cannot resolve ISurrealDbSession from {session.GetType().Name}. " +
             "Graph queries require an InternalSessionBase-derived session.");
+    }
+
+    private static void ThrowIfEncrypted<T>(IQuerySession session) where T : class
+    {
+        if (session is InternalSessionBase internalSession
+            && EncryptedFieldResolver.HasEncryptedFields(
+                typeof(T),
+                internalSession.StoreOptions.Schema))
+        {
+            throw new SableEncryptedOperationNotSupportedException(
+                typeof(T),
+                "graph query");
+        }
     }
 }

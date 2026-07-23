@@ -10,10 +10,10 @@ public static class ViewQueryExtensions
     /// <typeparam name="T">The result entity type.</typeparam>
     /// <param name="session">The query session.</param>
     /// <param name="viewName">The SurrealDB view/table name to query.</param>
-    public static ISurrealDbQueryable<T> View<T>(this IQuerySession session, string viewName) where T : class
+    public static ISableQueryable<T> View<T>(this IQuerySession session, string viewName) where T : class
     {
         var queryable = session.Query<T>();
-        if (queryable is SurrealDbQueryable<T> sq)
+        if (queryable is SableQueryable<T> sq)
             sq.ViewName = viewName;
         return queryable;
     }

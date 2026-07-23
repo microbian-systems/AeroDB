@@ -16,6 +16,7 @@ public class DocumentStore : IDocumentStore, ISessionFactory
     private ISurrealDbClient? _client;
     private DatabasePerTenantSelector? _tenantSelector;
     private string? _currentTenantId;
+    private readonly SemaphoreSlim _initializationGate = new(1, 1);
     private int _initialized; // 0 = uninitialized, 1 = initializing, 2 = initialized (Interlocked-atomic)
     private bool _disposed;
 
@@ -56,16 +57,15 @@ public class DocumentStore : IDocumentStore, ISessionFactory
         // Fast path: already fully initialized
         if (Volatile.Read(ref _initialized) == 2) return;
 
-        // Attempt to claim initialization
-        if (Interlocked.CompareExchange(ref _initialized, 1, 0) != 0)
-        {
-            // Another thread is already initializing or done
-            // Spin-wait for it (or just return — calls will trigger EnsureInitialized)
-            return;
-        }
-
+        await _initializationGate.WaitAsync(ct).ConfigureAwait(false);
         try
         {
+            // A concurrent caller may have completed initialization while this caller waited.
+            if (Volatile.Read(ref _initialized) == 2) return;
+
+            Interlocked.Exchange(ref _initialized, 1);
+            try
+            {
 
         // DatabasePerTenant: skip connecting to a default database;
         // each tenant gets its own database on first session creation.
@@ -101,6 +101,8 @@ public class DocumentStore : IDocumentStore, ISessionFactory
 
             // Apply global document policies to all registered mappings
             ApplyPolicies();
+            Options.Schema.ResolveRelationships();
+            EncryptionMappingValidator.Validate(Options);
 
             // TODO: Phase 1 — ChangeTracking for DatabasePerTenant
             // In this mode, each tenant gets its own database on first session.
@@ -185,6 +187,7 @@ public class DocumentStore : IDocumentStore, ISessionFactory
         // Apply global document policies to all registered mappings
         ApplyPolicies();
         Options.Schema.ResolveRelationships();
+        EncryptionMappingValidator.Validate(Options);
 
         var schemaManager = new SchemaManager(Options.LoggerFactory);
         var triggerManager = new EventTriggerManager(Options.LoggerFactory);
@@ -218,7 +221,8 @@ public class DocumentStore : IDocumentStore, ISessionFactory
                         fieldDefinitions: fds,
                         relationshipMappings: mapping.GetRelationshipMappings(),
                         schemaOptions: Options.Schema,
-                        ct: ct).ConfigureAwait(false);
+                        ct: ct,
+                        enumStorage: Options.EnumStorage).ConfigureAwait(false);
 
                     // Ensure each configured index
                     var tableName = MetadataDispatch.GetTableName(mapping.EntityType, Options.Schema);
@@ -270,7 +274,8 @@ public class DocumentStore : IDocumentStore, ISessionFactory
                             fieldDefinitions: fieldDefs,
                             relationshipMappings: mapping.GetRelationshipMappings(),
                             schemaOptions: Options.Schema,
-                            ct: ct).ConfigureAwait(false);
+                            ct: ct,
+                            enumStorage: Options.EnumStorage).ConfigureAwait(false);
 
                         var tableName = MetadataDispatch.GetTableName(mapping.EntityType, Options.Schema);
                         foreach (var index in mapping.Indices)
@@ -487,7 +492,9 @@ public class DocumentStore : IDocumentStore, ISessionFactory
                 if (names.Length == 0 || names.Contains(name))
                 {
                     _logger.LogInformation("Rebuilding projection {ProjectionName}...", name);
-                    await using var rebuildSession = await OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }, ct).ConfigureAwait(false);
+                    await using var rebuildSession = await OpenDefaultSessionAsync(
+                        new SessionOptions { Tracking = DocumentTracking.None },
+                        ct).ConfigureAwait(false);
                     await projection.RebuildAsync(rebuildSession, ct).ConfigureAwait(false);
                     await rebuildSession.SaveChangesAsync(ct).ConfigureAwait(false);
                     _logger.LogInformation("Projection {ProjectionName} rebuilt successfully.", name);
@@ -499,7 +506,9 @@ public class DocumentStore : IDocumentStore, ISessionFactory
         if (Options.InitialData.Count > 0)
         {
             _logger.LogInformation("Running {Count} initial data seeders", Options.InitialData.Count);
-            await using var seedSession = await OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }, ct).ConfigureAwait(false);
+            await using var seedSession = await OpenDefaultSessionAsync(
+                new SessionOptions { Tracking = DocumentTracking.None },
+                ct).ConfigureAwait(false);
 
             foreach (var seeder in Options.InitialData)
             {
@@ -515,12 +524,40 @@ public class DocumentStore : IDocumentStore, ISessionFactory
 
             // Mark fully initialized only after everything succeeds
             Interlocked.Exchange(ref _initialized, 2);
+            }
+            catch
+            {
+                // A failed singleton factory is not retained by Microsoft DI. Release any
+                // partially connected embedded client before a subsequent resolution retries.
+                var failedClient = Interlocked.Exchange(ref _client, null);
+                var failedTenantSelector = _tenantSelector;
+                _tenantSelector = null;
+                _advanced = null;
+                Options.Advanced.SurrealDbClient = null;
+                Options.Advanced.CreateSessionAsync = null;
+
+                try
+                {
+                    if (failedClient is not null)
+                        await failedClient.DisposeAsync().ConfigureAwait(false);
+                    if (failedTenantSelector is not null)
+                        await failedTenantSelector.DisposeAsync().ConfigureAwait(false);
+                }
+                catch (Exception cleanupException)
+                {
+                    _logger.LogWarning(
+                        cleanupException,
+                        "Failed to fully dispose AeroDB resources after initialization failure");
+                }
+
+                // Reset on failure so this store instance can be retried.
+                Interlocked.Exchange(ref _initialized, 0);
+                throw;
+            }
         }
-        catch
+        finally
         {
-            // Reset on failure so retry is possible
-            Interlocked.Exchange(ref _initialized, 0);
-            throw;
+            _initializationGate.Release();
         }
     }
 
@@ -621,17 +658,31 @@ public class DocumentStore : IDocumentStore, ISessionFactory
             return ds;
         }
 
+        return await OpenDefaultSessionAsync(options, ct).ConfigureAwait(false);
+    }
+
+    private async Task<IDocumentSession> OpenDefaultSessionAsync(
+        SessionOptions options,
+        CancellationToken ct)
+    {
         var defaultSession = await Client.CreateSession(ct).ConfigureAwait(false);
-        await defaultSession.Use(Options.Namespace ?? "test", Options.Database ?? "test", ct).ConfigureAwait(false);
-        var ds2 = new DocumentSession(Client, defaultSession, Options, options) { DocumentStore = this };
+        await defaultSession.Use(
+            Options.Namespace ?? "test",
+            Options.Database ?? "test",
+            ct).ConfigureAwait(false);
+        var documentSession = new DocumentSession(Client, defaultSession, Options, options)
+        {
+            DocumentStore = this
+        };
 
         if (options.TenantId is not null)
-            ds2.TenantId = options.TenantId;
-        else if (Options.TenancyStyle == TenancyStyle.Conjoined && Options.DefaultTenantId is not null)
-            ds2.TenantId = Options.DefaultTenantId;
+            documentSession.TenantId = options.TenantId;
+        else if (Options.TenancyStyle == TenancyStyle.Conjoined
+                 && Options.DefaultTenantId is not null)
+            documentSession.TenantId = Options.DefaultTenantId;
 
         _logger.LogInformation("Opened session (tracking={Tracking})", options.Tracking);
-        return ds2;
+        return documentSession;
     }
 
     public async Task<IDocumentSession> LightweightSessionAsync(CancellationToken ct = default)

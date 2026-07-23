@@ -33,9 +33,9 @@ public class AeroDBUserStoreCoreTests
     /// Creates a mock queryable that survives LINQ Where() chaining.
     /// Returns the specified data from ToListAsync.
     /// </summary>
-    private static ISurrealDbQueryable<T> CreateMockQueryable<T>(List<T> data) where T : class
+    private static ISableQueryable<T> CreateMockQueryable<T>(List<T> data) where T : class
     {
-        var queryable = Substitute.For<ISurrealDbQueryable<T>>();
+        var queryable = Substitute.For<ISableQueryable<T>>();
                 queryable.ToListAsync(Arg.Any<CancellationToken>()).Returns(data);
 
         var provider = Substitute.For<IQueryProvider>();
@@ -96,7 +96,7 @@ public class AeroDBUserStoreCoreTests
         var result = await userStore.UpdateAsync(user, CancellationToken.None);
 
         result.Succeeded.ShouldBeTrue();
-        session.Received(1).Store(user);
+        session.Received(1).Update(user);
         await session.Received(1).SaveChangesAsync(Arg.Any<CancellationToken>());
     }
 
@@ -104,7 +104,7 @@ public class AeroDBUserStoreCoreTests
     public async Task UpdateAsync_ShouldReturnFailed_WhenExceptionThrown()
     {
         var store = CreateStore(out _, out var session, out var logger);
-        session.When(s => s.Store(Arg.Any<IdentityUser>()))
+        session.When(s => s.Update(Arg.Any<IdentityUser>()))
             .Throw(new InvalidOperationException("DB error"));
         var userStore = new AeroDBUserStore<IdentityUser, IdentityRole>(store, logger);
         var user = new IdentityUser("testuser");
@@ -220,7 +220,7 @@ public class AeroDBUserStoreCoreTests
     {
         var store = CreateStore(out var querySession, out _, out var logger);
         var user = new IdentityUser("testuser") { Id = "user-1", NormalizedUserName = "TESTUSER" };
-        var queryable = Substitute.For<ISurrealDbQueryable<IdentityUser>>();
+        var queryable = Substitute.For<ISableQueryable<IdentityUser>>();
         queryable.FirstOrDefaultAsync(
             Arg.Any<Expression<Func<IdentityUser, bool>>>(),
             Arg.Any<CancellationToken>())
@@ -239,7 +239,7 @@ public class AeroDBUserStoreCoreTests
     public async Task FindByNameAsync_ShouldReturnNull_WhenNotFound()
     {
         var store = CreateStore(out var querySession, out _, out var logger);
-        var queryable = Substitute.For<ISurrealDbQueryable<IdentityUser>>();
+        var queryable = Substitute.For<ISableQueryable<IdentityUser>>();
         queryable.FirstOrDefaultAsync(
             Arg.Any<Expression<Func<IdentityUser, bool>>>(),
             Arg.Any<CancellationToken>())
@@ -475,7 +475,7 @@ public class AeroDBUserStoreCoreTests
     {
         var store = CreateStore(out var querySession, out _, out var logger);
         var user = new IdentityUser("testuser") { Id = "user-1", NormalizedEmail = "TEST@EXAMPLE.COM" };
-        var queryable = Substitute.For<ISurrealDbQueryable<IdentityUser>>();
+        var queryable = Substitute.For<ISableQueryable<IdentityUser>>();
         queryable.FirstOrDefaultAsync(
             Arg.Any<Expression<Func<IdentityUser, bool>>>(),
             Arg.Any<CancellationToken>())
@@ -494,7 +494,7 @@ public class AeroDBUserStoreCoreTests
     public async Task FindByEmailAsync_ShouldReturnNull_WhenNotFound()
     {
         var store = CreateStore(out var querySession, out _, out var logger);
-        var queryable = Substitute.For<ISurrealDbQueryable<IdentityUser>>();
+        var queryable = Substitute.For<ISableQueryable<IdentityUser>>();
         queryable.FirstOrDefaultAsync(
             Arg.Any<Expression<Func<IdentityUser, bool>>>(),
             Arg.Any<CancellationToken>())
@@ -788,7 +788,7 @@ public class AeroDBUserStoreCoreTests
     {
         var store = CreateStore(out var querySession, out _, out var logger);
         var expectedUsers = new List<IdentityUser> { new("alice"), new("bob") };
-        var queryable = Substitute.For<ISurrealDbQueryable<IdentityUser>>();
+        var queryable = Substitute.For<ISableQueryable<IdentityUser>>();
         querySession.Query<IdentityUser>().Returns(queryable);
         var userStore = new AeroDBUserStore<IdentityUser, IdentityRole>(store, logger);
 

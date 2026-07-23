@@ -25,9 +25,8 @@ public class SessionDeleteWhereTests
         // DeleteWhere executes immediately via raw SurrealQL.
         // The return value is the result-set count (always 1 for a single query),
         // not the number of deleted records.
-        // Note: BuildWhereClause uses snake_case field names which may not match
-        // the PascalCase names stored by the CBOR serializer. The test verifies
-        // the method executes without error and the API contract.
+        // DeleteWhere uses the same schema-aware, parameterized expression
+        // translation as normal queries.
         await session.DeleteWhere<SimpleDoc>(x => x.Name == "test-1");
 
         // All docs should remain if the field-name case didn't match,

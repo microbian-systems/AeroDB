@@ -7,7 +7,7 @@ using SurrealDb.Net.Models;
 
 namespace AeroDB.Sable;
 
-    public class SurrealExpressionVisitor : ExpressionVisitor
+    internal sealed class SurrealExpressionVisitor : ExpressionVisitor
     {
         private readonly StringBuilder _sb = new();
         private readonly List<string> _where = new();
@@ -329,8 +329,8 @@ namespace AeroDB.Sable;
         if (TryTranslateLinkedTypedBinary(b, builder, out var linkedTyped))
             return linkedTyped;
 
-        var left = Operand(b.Left, builder);
-        var right = Operand(b.Right, builder);
+        var left = BinaryOperand(b.Left, b.Right, builder);
+        var right = BinaryOperand(b.Right, b.Left, builder);
         var op = b.NodeType switch
         {
             ExpressionType.Equal => "=",
@@ -357,8 +357,8 @@ namespace AeroDB.Sable;
 
     private string TranslateBinary(BinaryExpression b)
     {
-        var left = Operand(b.Left);
-        var right = Operand(b.Right);
+        var left = BinaryOperand(b.Left, b.Right);
+        var right = BinaryOperand(b.Right, b.Left);
         var op = b.NodeType switch
         {
             ExpressionType.Equal => "=",
@@ -433,6 +433,13 @@ namespace AeroDB.Sable;
                 {
                     "Concat" when m.Arguments.Count >= 2
                         => $"string::concat({string.Join(", ", m.Arguments.Select(a => op(a)))})",
+                    "Equals" when m.Arguments.Count == 2
+                        => $"{op(m.Arguments[0])} = {op(m.Arguments[1])}",
+                    "Equals" when m.Arguments.Count == 3
+                        => TranslateStringEquality(
+                            op(m.Arguments[0]),
+                            op(m.Arguments[1]),
+                            m.Arguments[2]),
                     _ => throw new NotSupportedException($"String.{m.Method.Name}")
                 };
             }
@@ -451,6 +458,11 @@ namespace AeroDB.Sable;
                 "Replace" when m.Arguments.Count == 2 => $"string::replace({obj}, {op(m.Arguments[0])}, {op(m.Arguments[1])})",
                 "Substring" when m.Arguments.Count == 1 => $"string::slice({obj}, {op(m.Arguments[0])})",
                 "Substring" when m.Arguments.Count == 2 => $"string::slice({obj}, {op(m.Arguments[0])}, {op(m.Arguments[1])})",
+                "Equals" when m.Arguments.Count == 1 => $"{obj} = {op(m.Arguments[0])}",
+                "Equals" when m.Arguments.Count == 2 => TranslateStringEquality(
+                    obj,
+                    op(m.Arguments[0]),
+                    m.Arguments[1]),
                 _ => throw new NotSupportedException($"String.{m.Method.Name}")
             };
         }
@@ -500,6 +512,25 @@ namespace AeroDB.Sable;
         throw new NotSupportedException($"Method {m.Method.Name}");
     }
 
+    private static string TranslateStringEquality(
+        string left,
+        string right,
+        Expression comparisonExpression)
+    {
+        var comparison = EvaluateCapturedExpression(comparisonExpression);
+        return comparison switch
+        {
+            StringComparison.Ordinal => $"{left} = {right}",
+            StringComparison.OrdinalIgnoreCase =>
+                $"string::lowercase({left}) = string::lowercase({right})",
+            StringComparison stringComparison => throw new NotSupportedException(
+                $"String.Equals with {stringComparison} cannot be translated without changing .NET culture semantics. " +
+                "Use StringComparison.Ordinal or StringComparison.OrdinalIgnoreCase."),
+            _ => throw new NotSupportedException(
+                "String.Equals requires a constant or captured StringComparison value.")
+        };
+    }
+
     private string Operand(Expression expr, SurrealCommandBuilder builder) => expr switch
     {
         ConstantExpression c => FormatValue(c.Value, builder),
@@ -510,6 +541,17 @@ namespace AeroDB.Sable;
         _ => TranslateConditionCore(expr, builder)
     };
 
+    private string BinaryOperand(
+        Expression expression,
+        Expression counterpart,
+        SurrealCommandBuilder builder)
+    {
+        if (TryNormalizeInlineEnumConstant(expression, counterpart, out var enumValue))
+            return FormatValue(enumValue, builder);
+
+        return Operand(expression, builder);
+    }
+
     private string Operand(Expression expr) => expr switch
     {
         ConstantExpression c => FormatValue(c.Value),
@@ -519,6 +561,52 @@ namespace AeroDB.Sable;
         UnaryExpression u when u.NodeType == ExpressionType.Convert => Operand(u.Operand),
         _ => TranslateConditionCore(expr)
     };
+
+    private string BinaryOperand(Expression expression, Expression counterpart)
+    {
+        if (TryNormalizeInlineEnumConstant(expression, counterpart, out var enumValue))
+            return FormatValue(enumValue);
+
+        return Operand(expression);
+    }
+
+    /// <summary>
+    /// C# can lower an inline enum comparison such as
+    /// <c>x.Status == Status.Published</c> to a numeric constant in the expression
+    /// tree. Rehydrate that constant from the enum member on the other side so the
+    /// configured <see cref="EnumStorage"/> mode is applied consistently.
+    /// </summary>
+    private static bool TryNormalizeInlineEnumConstant(
+        Expression expression,
+        Expression counterpart,
+        [NotNullWhen(true)] out Enum? enumValue)
+    {
+        enumValue = null;
+        var candidate = StripConvert(expression) ?? expression;
+        if (candidate is not ConstantExpression { Value: not null } constant)
+            return false;
+
+        var enumType = GetExpressionEnumType(counterpart);
+        if (enumType is null)
+            return false;
+
+        enumValue = constant.Value is Enum existing
+            ? existing
+            : (Enum)Enum.ToObject(enumType, constant.Value);
+        return true;
+    }
+
+    private static Type? GetExpressionEnumType(Expression expression)
+    {
+        var candidate = StripConvert(expression) ?? expression;
+        var type = candidate switch
+        {
+            MemberExpression member => GetMemberType(member.Member),
+            _ => Nullable.GetUnderlyingType(candidate.Type) ?? candidate.Type
+        };
+
+        return type?.IsEnum == true ? type : null;
+    }
 
     private string MemberPath(MemberExpression m)
     {
@@ -543,10 +631,14 @@ namespace AeroDB.Sable;
             }
 
             var propName = m.Member.Name;
-            // If this parameter's type has a configured identity, emit native "id" key
-            if (_schema?.Mappings.TryGetValue(paramExpr.Type, out var mapping) == true
-                && mapping.IdentityProperty == propName)
-                return "id";
+            // A POCO identity is stored in SurrealDB's native record key. Honor an
+            // explicit identity mapping and the conventional Id property used when
+            // Schema.For<T>() does not call Identity(...).
+            var identityProperty = _schema?.Mappings.TryGetValue(paramExpr.Type, out var mapping) == true
+                ? mapping.IdentityProperty ?? "Id"
+                : "Id";
+            if (identityProperty == propName)
+                return IdentityMemberPath(m.Member);
             return FieldName(paramExpr.Type, propName);
         }
         if (m.Expression is MemberExpression inner)
@@ -798,6 +890,34 @@ namespace AeroDB.Sable;
             _ => null
         };
 
+    private static string IdentityMemberPath(MemberInfo member)
+    {
+        var identityType = GetMemberType(member);
+        if (identityType == typeof(RecordId)
+            || identityType?.IsGenericType == true
+            && identityType.GetGenericTypeDefinition() == typeof(RecordIdOf<>))
+        {
+            return "id";
+        }
+
+        if (identityType == typeof(Guid))
+            return "<uuid> meta::id(id)";
+
+        if (identityType == typeof(byte)
+            || identityType == typeof(sbyte)
+            || identityType == typeof(short)
+            || identityType == typeof(ushort)
+            || identityType == typeof(int)
+            || identityType == typeof(uint)
+            || identityType == typeof(long)
+            || identityType == typeof(ulong))
+        {
+            return "<int> meta::id(id)";
+        }
+
+        return "meta::id(id)";
+    }
+
     private static bool IsDateTimeMember(MemberExpression m)
         => m.Member.DeclaringType == typeof(DateTime) || m.Member.DeclaringType == typeof(DateTimeOffset);
 
@@ -881,6 +1001,7 @@ namespace AeroDB.Sable;
         Enum e => _enumStorage == EnumStorage.AsString
             ? $"'{e}'"
             : Convert.ToInt64(e).ToString(),
+        Guid guid => $"u'{guid:D}'",
         DateTime dt => $"d'{dt:yyyy-MM-ddTHH:mm:ssZ}'",
         DateTimeOffset dto => $"d'{dto:yyyy-MM-ddTHH:mm:ssZ}'",
         _ => val.ToString()!
@@ -1005,7 +1126,7 @@ namespace AeroDB.Sable;
     }
 }
 
-public class SurrealQueryResult
+internal sealed class SurrealQueryResult
 {
     public string? TableName { get; set; }
     public List<string> Where { get; set; } = [];

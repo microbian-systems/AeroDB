@@ -3,7 +3,7 @@ namespace AeroDB.Sable.Pagination;
 using System.Threading;
 
 /// <summary>
-/// Extension methods on <see cref="ISurrealDbQueryable{T}"/> for paged queries.
+/// Extension methods on <see cref="ISableQueryable{T}"/> for paged queries.
 /// Equivalent to Marten's <c>Marten.Pagination.PagedListQueryableExtensions</c>.
 /// </summary>
 public static class PagedListQueryableExtensions
@@ -18,7 +18,7 @@ public static class PagedListQueryableExtensions
     /// <param name="ct">Cancellation token.</param>
     /// <returns>A paged list with total count, page info, and results.</returns>
     public static async Task<IPagedList<T>> ToPagedListAsync<T>(
-        this ISurrealDbQueryable<T> queryable,
+        this ISableQueryable<T> queryable,
         int pageNumber,
         int pageSize,
         CancellationToken ct = default)
@@ -40,7 +40,7 @@ public static class PagedListQueryableExtensions
     /// <param name="ct">Cancellation token.</param>
     /// <returns>A paged list with total count, page info, and results.</returns>
     public static async Task<IPagedList<T>> ToPagedListAsync<T>(
-        this ISurrealDbQueryable<T> queryable,
+        this ISableQueryable<T> queryable,
         int pageNumber,
         int pageSize,
         bool useCountQuery,
@@ -53,18 +53,20 @@ public static class PagedListQueryableExtensions
 
     /// <summary>
     /// Extension method for <see cref="IQueryable{T}"/> that wraps to paged list.
-    /// Requires the queryable to be a <see cref="ISurrealDbQueryable{T}"/> at runtime.
+    /// Requires the queryable to be a <see cref="ISableQueryable{T}"/> at runtime.
     /// </summary>
     public static async Task<IPagedList<T>> ToPagedListAsync<T>(
         this IQueryable<T> queryable,
         int pageNumber,
         int pageSize,
         CancellationToken ct = default)
+        where T : class
     {
-        if (queryable is not ISurrealDbQueryable<T> sq)
+        if (queryable is not ISableQueryable<T> sq)
             throw new InvalidOperationException(
-                "ToPagedListAsync is only supported on ISurrealDbQueryable<T>. " +
+                "ToPagedListAsync is only supported on ISableQueryable<T>. " +
                 "Use session.Query<T>() to get a queryable.");
-        return await sq.ToPagedListAsync(pageNumber, pageSize, ct).ConfigureAwait(false);
+        return await PagedList<T>.CreateAsync(sq, pageNumber, pageSize, ct)
+            .ConfigureAwait(false);
     }
 }

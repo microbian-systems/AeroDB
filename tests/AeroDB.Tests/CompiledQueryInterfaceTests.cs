@@ -1,4 +1,6 @@
+using System.Collections.Concurrent;
 using System.Linq.Expressions;
+using System.Runtime.ExceptionServices;
 using AeroDB.Sable;
 
 namespace AeroDB.Tests;
@@ -11,7 +13,7 @@ namespace AeroDB.Tests;
 public class FindPersonByFirstName : ICompiledQuery<Person, Person>
 {
     public string FirstName { get; set; } = "";
-    public Expression<Func<ISurrealDbQueryable<Person>, Person>> QueryIs()
+    public Expression<Func<ISableQueryable<Person>, Person>> QueryIs()
         => q => q.Where(x => x.Name == FirstName).FirstOrDefault()!;
 }
 
@@ -21,7 +23,7 @@ public class FindPersonByFirstName : ICompiledQuery<Person, Person>
 public class ListPeopleOlderThan : ICompiledListQuery<Person>
 {
     public int MinAge { get; set; }
-    public Expression<Func<ISurrealDbQueryable<Person>, IEnumerable<Person>>> QueryIs()
+    public Expression<Func<ISableQueryable<Person>, IEnumerable<Person>>> QueryIs()
         => q => q.Where(x => x.Age > MinAge);
 }
 
@@ -31,7 +33,7 @@ public class ListPeopleOlderThan : ICompiledListQuery<Person>
 public class ListPeopleOlderThanOrdered : ICompiledListQuery<Person>
 {
     public int MinAge { get; set; }
-    public Expression<Func<ISurrealDbQueryable<Person>, IEnumerable<Person>>> QueryIs()
+    public Expression<Func<ISableQueryable<Person>, IEnumerable<Person>>> QueryIs()
         => q => q.Where(x => x.Age > MinAge).OrderBy(x => x.Name);
 }
 
@@ -41,7 +43,7 @@ public class ListPeopleOlderThanOrdered : ICompiledListQuery<Person>
 public class FindPersonByFirstNameShorthand : ICompiledQuery<Person>
 {
     public string FirstName { get; set; } = "";
-    public Expression<Func<ISurrealDbQueryable<Person>, Person>> QueryIs()
+    public Expression<Func<ISableQueryable<Person>, Person>> QueryIs()
         => q => q.Where(x => x.Name == FirstName).FirstOrDefault()!;
 }
 
@@ -54,7 +56,7 @@ public class PagedPeopleQuery : ICompiledListQuery<Person>
 {
     public int Skip { get; set; }
     public int Limit { get; set; } = 10;
-    public Expression<Func<ISurrealDbQueryable<Person>, IEnumerable<Person>>> QueryIs()
+    public Expression<Func<ISableQueryable<Person>, IEnumerable<Person>>> QueryIs()
         => q => q.OrderBy(x => x.Name).Skip(Skip).Take(Limit);
 }
 
@@ -64,8 +66,19 @@ public class PagedPeopleQuery : ICompiledListQuery<Person>
 public class ListPeopleByNameContains : ICompiledListQuery<Person>
 {
     public string Search { get; set; } = "";
-    public Expression<Func<ISurrealDbQueryable<Person>, IEnumerable<Person>>> QueryIs()
+    public Expression<Func<ISableQueryable<Person>, IEnumerable<Person>>> QueryIs()
         => q => q.Where(x => x.Name.Contains(Search));
+}
+
+/// <summary>
+/// Materializes a compiled list query inside <see cref="ICompiledQuery{TDoc,TOut}.QueryIs"/>.
+/// Planning must translate this expression without executing the dummy provider.
+/// </summary>
+public class MaterializedPeopleOlderThan : ICompiledQuery<Person, IList<Person>>
+{
+    public int MinAge { get; set; }
+    public Expression<Func<ISableQueryable<Person>, IList<Person>>> QueryIs()
+        => q => q.Where(x => x.Age > MinAge).ToList();
 }
 
 // ── Tests ──────────────────────────────────────────────────────────────
@@ -265,5 +278,49 @@ public class CompiledQueryInterfaceTests
         list.Count.ShouldBe(2);
         list[0].Name.ShouldBe("Grace");
         list[1].Name.ShouldBe("Hank");
+    }
+
+    [Test]
+    [NotInParallel]
+    public async Task Compiled_interface_materialized_list_planning_does_not_execute_dummy_provider()
+    {
+        var providerNullReferences = new ConcurrentQueue<string>();
+
+        void CaptureProviderNullReference(object? sender, FirstChanceExceptionEventArgs args)
+        {
+            if (args.Exception is not NullReferenceException exception)
+                return;
+
+            var declaringType = exception.TargetSite?.DeclaringType?.FullName;
+            var stackTrace = exception.StackTrace ?? string.Empty;
+            if (string.Equals(declaringType, "AeroDB.Sable.SurrealQueryProvider", StringComparison.Ordinal)
+                || stackTrace.Contains("AeroDB.Sable.SurrealQueryProvider", StringComparison.Ordinal))
+            {
+                providerNullReferences.Enqueue(stackTrace);
+            }
+        }
+
+        AppDomain.CurrentDomain.FirstChanceException += CaptureProviderNullReference;
+        try
+        {
+            var query = new MaterializedPeopleOlderThan { MinAge = 25 };
+
+            _ = CompiledQueryPlanner.GetOrBuildPlan<Person, IList<Person>>(query);
+
+            await using var store = await CreateStoreAsync();
+            await using var session = await store.OpenSessionAsync(
+                new SessionOptions { Tracking = DocumentTracking.None });
+            await SeedPeople(session);
+
+            var results = await session.QueryAsync(query);
+
+            results.Select(person => person.Name)
+                .ShouldBe(["Alice", "Charlie"], ignoreOrder: true);
+            providerNullReferences.ShouldBeEmpty();
+        }
+        finally
+        {
+            AppDomain.CurrentDomain.FirstChanceException -= CaptureProviderNullReference;
+        }
     }
 }

@@ -33,6 +33,21 @@ public class SchemaConfigurationTests
     }
 
     [Test]
+    public async Task Schema_For_duplicate_index_registration_initializes_once()
+    {
+        await using var store = Documents.For(o =>
+        {
+            o.ClientFactory = () => new SurrealDb.Embedded.InMemory.SurrealDbMemoryClient();
+            o.Schema.For<Person>().Index(p => p.Name);
+            o.Schema.For<Person>().Index(p => p.Name);
+        });
+
+        Func<Task> initialize = () => store.InitializeAsync();
+
+        await initialize.ShouldNotThrowAsync();
+    }
+
+    [Test]
     public async Task Schema_For_unique_index_creates_unique_index()
     {
         await using var store = Documents.For(o =>
@@ -113,6 +128,24 @@ public class SchemaConfigurationTests
         var surrealSession = ((InternalSessionBase)await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None })).Session;
         var infoResponse = await surrealSession.RawQuery("INFO FOR TABLE person;");
         infoResponse.HasErrors.ShouldBeFalse();
+    }
+
+    [Test]
+    public async Task InitializeAsync_Throws_When_FullText_Index_References_Missing_Analyzer()
+    {
+        var databaseName = $"missing_analyzer_{Guid.NewGuid():N}";
+        await using var store = Documents.For(o =>
+        {
+            o.ClientFactory = () => new SurrealDb.Embedded.InMemory.SurrealDbMemoryClient();
+            o.Namespace = databaseName;
+            o.Database = databaseName;
+            o.Schema.For<Person>().FullTextIndex(x => x.Name, "missing_analyzer");
+        });
+
+        var exception = await Should.ThrowAsync<InvalidOperationException>(
+            () => store.InitializeAsync());
+
+        exception.Message.ShouldContain("missing_analyzer");
     }
 
     [Test]
@@ -233,7 +266,7 @@ public class SchemaConfigurationTests
     }
 
     [Test]
-    public async Task Marten_style_modular_config_with_multiple_contributions()
+    public async Task Modular_config_with_multiple_contributions()
     {
         var configuratorsRun = new List<string>();
         

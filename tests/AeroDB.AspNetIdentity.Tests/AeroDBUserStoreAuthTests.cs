@@ -27,9 +27,9 @@ public class AeroDBUserStoreAuthTests
         return store;
     }
 
-    private static ISurrealDbQueryable<T> CreateMockQueryable<T>(List<T> data) where T : class
+    private static ISableQueryable<T> CreateMockQueryable<T>(List<T> data) where T : class
     {
-        var queryable = Substitute.For<ISurrealDbQueryable<T>>();
+        var queryable = Substitute.For<ISableQueryable<T>>();
                 queryable.ToListAsync(Arg.Any<CancellationToken>()).Returns(data);
 
         var provider = Substitute.For<IQueryProvider>();
@@ -234,7 +234,7 @@ public class AeroDBUserStoreAuthTests
         var user = new IdentityUser("testuser") { Id = "user-1" };
 
         // FirstOrDefaultAsync returns null (token doesn't exist)
-        var tokenQueryable = Substitute.For<ISurrealDbQueryable<AeroDBUserToken>>();
+        var tokenQueryable = Substitute.For<ISableQueryable<AeroDBUserToken>>();
         tokenQueryable.FirstOrDefaultAsync(
             Arg.Any<Expression<Func<AeroDBUserToken, bool>>>(),
             Arg.Any<CancellationToken>())
@@ -269,7 +269,7 @@ public class AeroDBUserStoreAuthTests
             Value = "old-value"
         };
 
-        var tokenQueryable = Substitute.For<ISurrealDbQueryable<AeroDBUserToken>>();
+        var tokenQueryable = Substitute.For<ISableQueryable<AeroDBUserToken>>();
         tokenQueryable.FirstOrDefaultAsync(
             Arg.Any<Expression<Func<AeroDBUserToken, bool>>>(),
             Arg.Any<CancellationToken>())
@@ -303,7 +303,7 @@ public class AeroDBUserStoreAuthTests
             Value = "abc"
         };
 
-        var tokenQueryable = Substitute.For<ISurrealDbQueryable<AeroDBUserToken>>();
+        var tokenQueryable = Substitute.For<ISableQueryable<AeroDBUserToken>>();
         tokenQueryable.FirstOrDefaultAsync(
             Arg.Any<Expression<Func<AeroDBUserToken, bool>>>(),
             Arg.Any<CancellationToken>())
@@ -324,7 +324,7 @@ public class AeroDBUserStoreAuthTests
         var store = CreateStore(out _, out var session, out var logger);
         var user = new IdentityUser("testuser") { Id = "user-1" };
 
-        var tokenQueryable = Substitute.For<ISurrealDbQueryable<AeroDBUserToken>>();
+        var tokenQueryable = Substitute.For<ISableQueryable<AeroDBUserToken>>();
         tokenQueryable.FirstOrDefaultAsync(
             Arg.Any<Expression<Func<AeroDBUserToken, bool>>>(),
             Arg.Any<CancellationToken>())
@@ -356,7 +356,7 @@ public class AeroDBUserStoreAuthTests
             Value = "stored-value"
         };
 
-        var tokenQueryable = Substitute.For<ISurrealDbQueryable<AeroDBUserToken>>();
+        var tokenQueryable = Substitute.For<ISableQueryable<AeroDBUserToken>>();
         tokenQueryable.FirstOrDefaultAsync(
             Arg.Any<Expression<Func<AeroDBUserToken, bool>>>(),
             Arg.Any<CancellationToken>())
@@ -376,7 +376,7 @@ public class AeroDBUserStoreAuthTests
         var store = CreateStore(out var querySession, out _, out var logger);
         var user = new IdentityUser("testuser") { Id = "user-1" };
 
-        var tokenQueryable = Substitute.For<ISurrealDbQueryable<AeroDBUserToken>>();
+        var tokenQueryable = Substitute.For<ISableQueryable<AeroDBUserToken>>();
         tokenQueryable.FirstOrDefaultAsync(
             Arg.Any<Expression<Func<AeroDBUserToken, bool>>>(),
             Arg.Any<CancellationToken>())

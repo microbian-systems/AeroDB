@@ -19,7 +19,7 @@ public class SearchIndexTests
 
         // Test the SurrealQL generation via reflection on private method
         var surql = BuildBuilderMethod("BuildFullTextIndex", idx, "page");
-        surql.ShouldBe("DEFINE INDEX ft_page_title ON TABLE page FIELDS Title FULLTEXT ANALYZER simple BM25(1.2, 0.75);");
+        surql.ShouldBe("DEFINE INDEX OVERWRITE ft_page_title ON TABLE page FIELDS Title FULLTEXT ANALYZER simple BM25(1.2, 0.75);");
     }
 
     [Test]
@@ -35,7 +35,7 @@ public class SearchIndexTests
         };
 
         var surql = BuildBuilderMethod("BuildHnswIndex", idx, "page");
-        surql.ShouldBe("DEFINE INDEX hnsw_page_embedding ON TABLE page FIELDS Embedding HNSW DIMENSION 1536 DIST COSINE;");
+        surql.ShouldBe("DEFINE INDEX OVERWRITE hnsw_page_embedding ON TABLE page FIELDS Embedding HNSW DIMENSION 1536 DIST COSINE;");
     }
 
     [Test]
@@ -50,7 +50,7 @@ public class SearchIndexTests
         };
 
         var surql = BuildBuilderMethod("BuildStandardIndex", idx, "person");
-        surql.ShouldBe("DEFINE INDEX idx_person_email ON TABLE person COLUMNS Email UNIQUE;");
+        surql.ShouldBe("DEFINE INDEX OVERWRITE idx_person_email ON TABLE person COLUMNS Email UNIQUE;");
     }
 
     [Test]
@@ -81,7 +81,7 @@ public class SearchIndexTests
         };
 
         var surql = BuildBuilderMethod("BuildFullTextIndex", idx, "page");
-        surql.ShouldBe("DEFINE INDEX ft_page_content ON TABLE page FIELDS Content FULLTEXT ANALYZER simple;");
+        surql.ShouldBe("DEFINE INDEX OVERWRITE ft_page_content ON TABLE page FIELDS Content FULLTEXT ANALYZER simple;");
     }
 
     [Test]
@@ -223,7 +223,7 @@ public class SearchIndexTests
         };
 
         var surql = BuildBuilderMethod("BuildDiskannIndex", idx, "page");
-        surql.ShouldBe("DEFINE INDEX diskann_page_embedding ON TABLE page FIELDS Embedding DISKANN DIMENSION 768 DIST COSINE TYPE F32;");
+        surql.ShouldBe("DEFINE INDEX OVERWRITE diskann_page_embedding ON TABLE page FIELDS Embedding DISKANN DIMENSION 768 DIST COSINE TYPE F32;");
     }
 
     [Test]
@@ -242,7 +242,7 @@ public class SearchIndexTests
         };
 
         var surql = BuildBuilderMethod("BuildDiskannIndex", idx, "doc");
-        surql.ShouldBe("DEFINE INDEX diskann_doc_features ON TABLE doc FIELDS Features DISKANN DIMENSION 512 DIST EUCLIDEAN TYPE F32 DEGREE 128 L_BUILD 200;");
+        surql.ShouldBe("DEFINE INDEX OVERWRITE diskann_doc_features ON TABLE doc FIELDS Features DISKANN DIMENSION 512 DIST EUCLIDEAN TYPE F32 DEGREE 128 L_BUILD 200;");
     }
 
     [Test]
@@ -260,7 +260,7 @@ public class SearchIndexTests
         };
 
         var surql = BuildBuilderMethod("BuildDiskannIndex", idx, "article");
-        surql.ShouldBe("DEFINE INDEX diskann_article_vector ON TABLE article FIELDS Vector DISKANN DIMENSION 256 DIST COSINE TYPE F32 ALPHA 1.5;");
+        surql.ShouldBe("DEFINE INDEX OVERWRITE diskann_article_vector ON TABLE article FIELDS Vector DISKANN DIMENSION 256 DIST COSINE TYPE F32 ALPHA 1.5;");
     }
 
     [Test]
@@ -278,7 +278,7 @@ public class SearchIndexTests
         };
 
         var surql = BuildBuilderMethod("BuildDiskannIndex", idx, "item");
-        surql.ShouldBe("DEFINE INDEX diskann_item_vec ON TABLE item FIELDS Vec DISKANN DIMENSION 128 DIST COSINE TYPE F32;");
+        surql.ShouldBe("DEFINE INDEX OVERWRITE diskann_item_vec ON TABLE item FIELDS Vec DISKANN DIMENSION 128 DIST COSINE TYPE F32;");
     }
 
     [Test]
@@ -296,7 +296,7 @@ public class SearchIndexTests
         };
 
         var surql = BuildBuilderMethod("BuildDiskannIndex", idx, "user");
-        surql.ShouldBe("DEFINE INDEX diskann_user_embedding ON TABLE user FIELDS Embedding DISKANN DIMENSION 768 DIST COSINE TYPE F32 HASHED_VECTOR;");
+        surql.ShouldBe("DEFINE INDEX OVERWRITE diskann_user_embedding ON TABLE user FIELDS Embedding DISKANN DIMENSION 768 DIST COSINE TYPE F32 HASHED_VECTOR;");
     }
 
     [Test]
@@ -313,7 +313,7 @@ public class SearchIndexTests
         };
 
         var surql = BuildBuilderMethod("BuildDiskannIndex", idx, "image");
-        surql.ShouldBe("DEFINE INDEX diskann_img_emb ON TABLE image FIELDS Emb DISKANN DIMENSION 512 DIST COSINE TYPE F16;");
+        surql.ShouldBe("DEFINE INDEX OVERWRITE diskann_img_emb ON TABLE image FIELDS Emb DISKANN DIMENSION 512 DIST COSINE TYPE F16;");
     }
 
     [Test]
@@ -330,7 +330,7 @@ public class SearchIndexTests
         };
 
         var surql = BuildBuilderMethod("BuildDiskannIndex", idx, "quant");
-        surql.ShouldBe("DEFINE INDEX diskann_quant_8 ON TABLE quant FIELDS Quant DISKANN DIMENSION 64 DIST INNER_PRODUCT TYPE I8;");
+        surql.ShouldBe("DEFINE INDEX OVERWRITE diskann_quant_8 ON TABLE quant FIELDS Quant DISKANN DIMENSION 64 DIST INNER_PRODUCT TYPE I8;");
     }
 
     [Test]
@@ -347,7 +347,7 @@ public class SearchIndexTests
         };
 
         var surql = BuildBuilderMethod("BuildDiskannIndex", idx, "byte_table");
-        surql.ShouldBe("DEFINE INDEX diskann_byte_vec ON TABLE byte_table FIELDS Bytes DISKANN DIMENSION 32 DIST COSINE_NORMALIZED TYPE U8;");
+        surql.ShouldBe("DEFINE INDEX OVERWRITE diskann_byte_vec ON TABLE byte_table FIELDS Bytes DISKANN DIMENSION 32 DIST COSINE_NORMALIZED TYPE U8;");
     }
 
     [Test]
@@ -462,7 +462,7 @@ public class SearchIndexTests
             options.Schema.Mappings[typeof(SearchablePage)].Indices[0],
             "searchable_page");
 
-        surql.ShouldBe("DEFINE INDEX diskann_searchable_page_embedding ON TABLE searchable_page FIELDS Embedding DISKANN DIMENSION 768 DIST COSINE TYPE F32;");
+        surql.ShouldBe("DEFINE INDEX OVERWRITE diskann_searchable_page_embedding ON TABLE searchable_page FIELDS Embedding DISKANN DIMENSION 768 DIST COSINE TYPE F32;");
     }
 
     [Test]

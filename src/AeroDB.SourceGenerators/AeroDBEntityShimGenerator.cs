@@ -7,7 +7,7 @@ using System.Linq;
 namespace AeroDB.SourceGenerators;
 
 /// <summary>
-/// Generates CBOR-compatible shim <c>Record</c> types for <c>Entity&lt;TId&gt;</c> subclasses.
+/// Generates CBOR-compatible shim <c>Record</c> types for <c>SableDocument&lt;TId&gt;</c> subclasses.
 /// Enables <c>LoadAsync&lt;T&gt;()</c> via the <c>DeserializeViaShimAsync&lt;T&gt;()</c> path:
 /// the shim is deserialized by the SurrealDB SDK (CBOR), then materialized to the entity via <c>ToEntity()</c>.
 /// </summary>
@@ -31,9 +31,9 @@ public class AeroDBEntityShimGenerator : IIncrementalGenerator
         {
             var (compilation, types) = source;
 
-            // Find the Entity<TId> type in AeroDB.Sable
-            var entityGenericType = compilation.GetTypeByMetadataName("AeroDB.Sable.Entity`1");
-            if (entityGenericType is null) return;
+            // Find the ISableDocument<TId> type in AeroDB.Sable
+            var entityInterfaceType = compilation.GetTypeByMetadataName("AeroDB.Sable.ISableDocument`1");
+            if (entityInterfaceType is null) return;
 
             // Find the Record type in SurrealDb.Net (needed for shim base class)
             var recordType = compilation.GetTypeByMetadataName("SurrealDb.Net.Models.Record");
@@ -46,7 +46,7 @@ public class AeroDBEntityShimGenerator : IIncrementalGenerator
             {
                 if (type is null) continue;
                 if (type.IsAbstract) continue;
-                if (!IsEntitySubclass(type, entityGenericType)) continue;
+                if (!IsEntitySubclass(type, entityInterfaceType)) continue;
 
                 // Check for [AeroDBDocument(SkipGeneration = true)] opt-out
                 if (AeroDBDocAttrType is not null)
@@ -62,7 +62,7 @@ public class AeroDBEntityShimGenerator : IIncrementalGenerator
                     }
                 }
 
-                var idType = GetEntityIdType(type, entityGenericType);
+                var idType = GetEntityIdType(type, entityInterfaceType);
                 var sourceText = GenerateShimClass(type, idType);
                 var hintName = $"{type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat.WithGlobalNamespaceStyle(SymbolDisplayGlobalNamespaceStyle.Omitted)).Replace("global::", "").Replace(".", "_")}.Shim.g.cs";
                 ctx.AddSource(hintName, sourceText);
@@ -81,33 +81,25 @@ public class AeroDBEntityShimGenerator : IIncrementalGenerator
     }
 
     /// <summary>
-    /// Checks if <paramref name="type"/> is a subclass of <c>Entity&lt;TId&gt;</c>.
+    /// Checks if <paramref name="type"/> implements <c>ISableDocument&lt;TId&gt;</c>.
     /// </summary>
-    private static bool IsEntitySubclass(INamedTypeSymbol type, INamedTypeSymbol entityGenericType)
+    private static bool IsEntitySubclass(INamedTypeSymbol type, INamedTypeSymbol entityInterfaceType)
     {
-        var current = type.BaseType;
-        while (current is not null)
-        {
-            if (current.IsGenericType &&
-                SymbolEqualityComparer.Default.Equals(current.ConstructedFrom, entityGenericType))
-                return true;
-            current = current.BaseType;
-        }
-        return false;
+        return type.AllInterfaces.Any(i =>
+            i.IsGenericType &&
+            SymbolEqualityComparer.Default.Equals(i.ConstructedFrom, entityInterfaceType));
     }
 
     /// <summary>
-    /// Extracts the <c>TId</c> type argument from <c>Entity&lt;TId&gt;</c> in the inheritance chain.
+    /// Extracts the <c>TId</c> type argument from <c>ISableDocument&lt;TId&gt;</c> in the interface chain.
     /// </summary>
-    private static ITypeSymbol? GetEntityIdType(INamedTypeSymbol type, INamedTypeSymbol entityGenericType)
+    private static ITypeSymbol? GetEntityIdType(INamedTypeSymbol type, INamedTypeSymbol entityInterfaceType)
     {
-        var current = type.BaseType;
-        while (current is not null)
+        foreach (var iface in type.AllInterfaces)
         {
-            if (current.IsGenericType &&
-                SymbolEqualityComparer.Default.Equals(current.ConstructedFrom, entityGenericType))
-                return current.TypeArguments[0];
-            current = current.BaseType;
+            if (iface.IsGenericType &&
+                SymbolEqualityComparer.Default.Equals(iface.ConstructedFrom, entityInterfaceType))
+                return iface.TypeArguments[0];
         }
         return null;
     }

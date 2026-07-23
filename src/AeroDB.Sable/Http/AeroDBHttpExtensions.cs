@@ -83,7 +83,7 @@ public static class AeroDBHttpExtensions
     /// <param name="httpContext">The HTTP context to write the response to.</param>
     /// <param name="ct">Cancellation token.</param>
     public static async Task WriteArray<T>(
-        this ISurrealDbQueryable<T> queryable,
+        this ISableQueryable<T> queryable,
         HttpContext httpContext,
         CancellationToken ct = default)
         where T : class
@@ -108,9 +108,9 @@ public static class AeroDBHttpExtensions
         CancellationToken ct = default)
         where T : class
     {
-        if (queryable is not ISurrealDbQueryable<T> surrealQueryable)
+        if (queryable is not ISableQueryable<T> surrealQueryable)
         {
-            throw new NotSupportedException("WriteArray is only supported on ISurrealDbQueryable<T> queries.");
+            throw new NotSupportedException("WriteArray is only supported on ISableQueryable<T> queries.");
         }
 
         await surrealQueryable.WriteArray(httpContext, ct).ConfigureAwait(false);

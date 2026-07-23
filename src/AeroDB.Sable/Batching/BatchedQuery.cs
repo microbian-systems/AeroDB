@@ -23,6 +23,7 @@ internal class BatchedQuery : IBatchedQuery
     public Task<TOut> Query<TDoc, TOut>(ICompiledQuery<TDoc, TOut> compiledQuery)
         where TDoc : class
     {
+        ThrowIfEncrypted<TDoc>();
         ArgumentNullException.ThrowIfNull(compiledQuery);
 
         var plan = CompiledQueryPlanner.GetOrBuildPlan<TDoc, TOut>(compiledQuery);
@@ -98,8 +99,9 @@ internal class BatchedQuery : IBatchedQuery
     /// <inheritdoc />
     public IBatchedQuery CheckExists<T>(string id, out Task<bool> result) where T : class
     {
-        var table = MetadataDispatch.GetTableName(typeof(T));
-        var surql = $"SELECT id FROM {table}:`{id.Replace("`", "\\`")}` LIMIT 1;";
+        ThrowIfEncrypted<T>();
+        var recordLiteral = ResolveRecordLiteral<T>(id);
+        var surql = $"SELECT id FROM {recordLiteral} LIMIT 1;";
         var tcs = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
         _simpleItems.Add(new SimpleBatchItem(surql, (response, index) =>
         {
@@ -119,8 +121,9 @@ internal class BatchedQuery : IBatchedQuery
     /// <inheritdoc />
     public IBatchedQuery Load<T>(string id, out Task<T?> result) where T : class
     {
-        var table = MetadataDispatch.GetTableName(typeof(T));
-        var surql = $"SELECT * FROM {table}:`{id.Replace("`", "\\`")}`;";
+        ThrowIfEncrypted<T>();
+        var recordLiteral = ResolveRecordLiteral<T>(id);
+        var surql = $"SELECT * FROM {recordLiteral};";
         var tcs = new TaskCompletionSource<T?>(TaskCreationOptions.RunContinuationsAsynchronously);
         _simpleItems.Add(new SimpleBatchItem(surql, (response, index) =>
         {
@@ -143,9 +146,10 @@ internal class BatchedQuery : IBatchedQuery
     /// <inheritdoc />
     public IBatchedQuery LoadMany<T>(IEnumerable<string> ids, out Task<IReadOnlyList<T>> result) where T : class
     {
+        ThrowIfEncrypted<T>();
         var idList = ids?.ToList() ?? throw new ArgumentNullException(nameof(ids));
-        var table = MetadataDispatch.GetTableName(typeof(T));
-        var inClause = string.Join(", ", idList.Select(id => $"'{table}:{id}'"));
+        var table = MetadataDispatch.GetTableName(typeof(T), _session.StoreOptions.Schema);
+        var inClause = string.Join(", ", idList.Select(ResolveRecordLiteral<T>));
         var surql = $"SELECT * FROM {table} WHERE id IN [{inClause}];";
         var tcs = new TaskCompletionSource<IReadOnlyList<T>>(TaskCreationOptions.RunContinuationsAsynchronously);
         _simpleItems.Add(new SimpleBatchItem(surql, (response, index) =>
@@ -169,6 +173,7 @@ internal class BatchedQuery : IBatchedQuery
     /// <inheritdoc />
     public IBatchedQuery Query<T>(out Task<IReadOnlyList<T>> result) where T : class
     {
+        ThrowIfEncrypted<T>();
         var table = MetadataDispatch.GetTableName(typeof(T));
         var surql = $"SELECT * FROM {table};";
         var tcs = new TaskCompletionSource<IReadOnlyList<T>>(TaskCreationOptions.RunContinuationsAsynchronously);
@@ -209,6 +214,7 @@ internal class BatchedQuery : IBatchedQuery
     /// <inheritdoc />
     public IBatchedQuery QueryByPlan<T>(string plan, out Task<IReadOnlyList<T>> result) where T : class
     {
+        ThrowIfEncrypted<T>();
         var surql = plan.EndsWith(';') ? plan : plan + ";";
         var tcs = new TaskCompletionSource<IReadOnlyList<T>>(TaskCreationOptions.RunContinuationsAsynchronously);
         _simpleItems.Add(new SimpleBatchItem(surql, (response, index) =>
@@ -391,6 +397,22 @@ internal class BatchedQuery : IBatchedQuery
             DateTimeOffset dto => $"d'{dto:yyyy-MM-ddTHH:mm:ssZ}'",
             _ => $"'{value}'"
         };
+    }
+
+    private void ThrowIfEncrypted<T>() where T : class
+    {
+        if (EncryptedFieldResolver.HasEncryptedFields(typeof(T), _session.StoreOptions.Schema))
+            throw new SableEncryptedOperationNotSupportedException(typeof(T), "batched query");
+    }
+
+    private string ResolveRecordLiteral<T>(string id) where T : class
+    {
+        var schema = _session.StoreOptions.Schema;
+        var table = MetadataDispatch.GetTableName(typeof(T), schema);
+        var normalizedId = DocumentIdentityResolver.NormalizeForDocumentType(typeof(T), id, schema);
+        if (!DocumentIdentityResolver.TryCreate(normalizedId, table, out var identity))
+            throw new ArgumentException($"Unable to resolve the identity for '{typeof(T).Name}'.", nameof(id));
+        return identity.Literal;
     }
 
     /// <summary>

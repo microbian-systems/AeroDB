@@ -109,7 +109,7 @@ public class AeroDBRoleStore<TRole, TKey> : IRoleStore<TRole>, IQueryableRoleSto
         try
         {
             await using var session = await _store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }, cancellationToken);
-            session.Store(role);
+            session.Update(role);
             await session.SaveChangesAsync(cancellationToken);
             _logger.LogDebug("Updated role {RoleName} ({RoleId})", role.Name, role.Id);
             return IdentityResult.Success;

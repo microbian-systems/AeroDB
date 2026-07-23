@@ -11,7 +11,7 @@ namespace AeroDB.Tests.Generators;
 
 /// <summary>
 /// Tests for <see cref="AeroDBEntityShimGenerator"/> — generates CBOR-compatible
-/// shim <c>Record</c> types for <c>Entity&lt;TId&gt;</c> subclasses with
+/// shim <c>Record</c> types for <c>SableDocument&lt;TId&gt;</c> subclasses with
 /// <c>ToEntity()</c> materialization.
 /// </summary>
 public class AeroDBEntityShimGeneratorTests
@@ -26,13 +26,13 @@ using System.Collections.Generic;
 
 namespace AeroDB.Sable
 {
-    public interface IEntity<TId>
+    public interface ISableDocument<TId>
         where TId : notnull, IEquatable<TId>, IComparable<TId>
     {
         TId Id { get; set; }
     }
 
-    public abstract class Entity<TId> : IEntity<TId>
+    public abstract class SableDocument<TId> : ISableDocument<TId>
         where TId : notnull, IEquatable<TId>, IComparable<TId>
     {
         public TId Id { get; set; } = default!;
@@ -66,7 +66,8 @@ namespace AeroDB.Sable.Metadata
         string? VersionFieldName { get; }
         Func<object, long>? GetVersionAccessor { get; }
         Action<object, long>? SetVersionAccessor { get; }
-        Func<object, string?>? GetRecordIdAccessor { get; }
+        Type? IdentityType { get; }
+        Func<object, object?>? GetIdentityAccessor { get; }
         IReadOnlyList<FieldSchema>? Fields { get; }
     }
 
@@ -75,7 +76,7 @@ namespace AeroDB.Sable.Metadata
         string? GetTenantId(T entity);
         long GetVersion(T entity);
         void SetVersion(T entity, long version);
-        string? GetRecordId(T entity);
+        object? GetIdentity(T entity);
         void SetTenantId(T entity, string? tenantId);
     }
 }
@@ -130,13 +131,13 @@ namespace AeroDB.Sable.Metadata
         return driver.RunGenerators(compilation).GetRunResult();
     }
 
-    // ── Test 1: Entity<long> generates shim ──────────────────────────────────
+    // ── Test 1: SableDocument<long> generates shim ────────────────────────────
 
     [Test]
     public void Entity_long_generates_shim()
     {
         var source = @"
-public class MyLongEntity : AeroDB.Sable.Entity<long>
+public class MyLongEntity : AeroDB.Sable.SableDocument<long>
 {
     public string Name { get; set; }
     public int Value { get; set; }
@@ -156,13 +157,13 @@ public class MyLongEntity : AeroDB.Sable.Entity<long>
         code.ShouldContain("entity.Id = lr.Id");
     }
 
-    // ── Test 2: Entity<string> generates shim ────────────────────────────────
+    // ── Test 2: SableDocument<string> generates shim ──────────────────────────
 
     [Test]
     public void Entity_string_generates_shim()
     {
         var source = @"
-public class MyStringEntity : AeroDB.Sable.Entity<string>
+public class MyStringEntity : AeroDB.Sable.SableDocument<string>
 {
     public string Label { get; set; }
 }
@@ -177,13 +178,13 @@ public class MyStringEntity : AeroDB.Sable.Entity<string>
         code.ShouldContain("entity.Id = sr.Id");
     }
 
-    // ── Test 3: Entity<int> generates shim ───────────────────────────────────
+    // ── Test 3: SableDocument<int> generates shim ─────────────────────────────
 
     [Test]
     public void Entity_int_generates_shim()
     {
         var source = @"
-public class MyIntEntity : AeroDB.Sable.Entity<int>
+public class MyIntEntity : AeroDB.Sable.SableDocument<int>
 {
     public int Value { get; set; }
 }
@@ -198,14 +199,14 @@ public class MyIntEntity : AeroDB.Sable.Entity<int>
         code.ShouldContain("entity.Id = ir.Id");
     }
 
-    // ── Test 4: Entity<Guid> generates shim ──────────────────────────────────
+    // ── Test 4: SableDocument<Guid> generates shim ────────────────────────────
 
     [Test]
     public void Entity_Guid_generates_shim()
     {
         var source = @"
 using System;
-public class MyGuidEntity : AeroDB.Sable.Entity<Guid>
+public class MyGuidEntity : AeroDB.Sable.SableDocument<Guid>
 {
     public string Name { get; set; }
 }
@@ -226,7 +227,7 @@ public class MyGuidEntity : AeroDB.Sable.Entity<Guid>
     public void Shim_properties_have_CborProperty_attributes()
     {
         var source = @"
-public class EntityWithProps : AeroDB.Sable.Entity<long>
+public class EntityWithProps : AeroDB.Sable.SableDocument<long>
 {
     public string FirstName { get; set; }
     public int Age { get; set; }
@@ -256,7 +257,7 @@ public class EntityWithProps : AeroDB.Sable.Entity<long>
     public void ToEntity_maps_all_properties()
     {
         var source = @"
-public class EntityMapping : AeroDB.Sable.Entity<long>
+public class EntityMapping : AeroDB.Sable.SableDocument<long>
 {
     public string Title { get; set; }
     public int Rank { get; set; }
@@ -282,12 +283,12 @@ public class EntityMapping : AeroDB.Sable.Entity<long>
     {
         var source = @"
 [AeroDB.Sable.AeroDBDocument(SkipGeneration = true)]
-public class SkippedEntity : AeroDB.Sable.Entity<long>
+public class SkippedEntity : AeroDB.Sable.SableDocument<long>
 {
     public string Name { get; set; }
 }
 
-public class IncludedEntity : AeroDB.Sable.Entity<long>
+public class IncludedEntity : AeroDB.Sable.SableDocument<long>
 {
     public string Name { get; set; }
 }
@@ -306,12 +307,12 @@ public class IncludedEntity : AeroDB.Sable.Entity<long>
     public void Abstract_class_is_skipped()
     {
         var source = @"
-public abstract class AbstractEntity : AeroDB.Sable.Entity<long>
+public abstract class AbstractEntity : AeroDB.Sable.SableDocument<long>
 {
     public string Name { get; set; }
 }
 
-public class ConcreteEntity : AeroDB.Sable.Entity<long>
+public class ConcreteEntity : AeroDB.Sable.SableDocument<long>
 {
     public string Name { get; set; }
 }
@@ -350,7 +351,7 @@ using System;
 using AeroDB.Sable;
 using AeroDB.Sable.Metadata;
 
-public class CompilableShimEntity : AeroDB.Sable.Entity<long>
+public class CompilableShimEntity : AeroDB.Sable.SableDocument<long>
 {
     public string Name { get; set; }
     public int Count { get; set; }

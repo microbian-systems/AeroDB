@@ -6,7 +6,40 @@ namespace AeroDB.Sable.Metadata;
 /// Compile-time schema for a document property, emitted by the AeroDB.Sable source generator.
 /// Used by <c>SchemaManager</c> to emit DEFINE FIELD statements without reflection.
 /// </summary>
-public readonly record struct FieldSchema(string Name, string SurrealType, bool CanRead, bool CanWrite);
+public readonly record struct FieldSchema(
+    string Name,
+    string SurrealType,
+    bool CanRead,
+    bool CanWrite)
+{
+    /// <summary>
+    /// Whether this object-shaped field admits undeclared nested properties while
+    /// its containing table remains SCHEMAFULL.
+    /// </summary>
+    public bool IsFlexible { get; init; }
+
+    /// <summary>The reversible encryption algorithm, or null for a clear field.</summary>
+    public EncryptionAlgorithm? EncryptionAlgorithm { get; init; }
+}
+
+/// <summary>
+/// Generated or fluent runtime access to one encrypted domain property.
+/// </summary>
+public sealed record EncryptedFieldDescriptor(
+    string PropertyName,
+    Type ClrType,
+    string CodecId,
+    EncryptionAlgorithm Algorithm,
+    Func<object, object?> GetValue,
+    Action<object, object?> SetValue);
+
+/// <summary>Generated or fluent runtime metadata for one blind-indexed field.</summary>
+public sealed record BlindIndexDescriptor(
+    string PropertyName,
+    BlindIndexAlgorithm Algorithm,
+    BlindIndexNormalizer Normalizer,
+    string? StorageFieldName,
+    Func<object, string?> GetValue);
 
 /// <summary>
 /// Generic metadata interface for a document type.
@@ -53,8 +86,18 @@ public interface ITypeMetadata
     /// <summary>Untyped version setter delegate for generated types. Null if no version field.</summary>
     Action<object, long>? SetVersionAccessor { get; }
 
-    /// <summary>Untyped record ID accessor delegate for generated types. Null if no Id property.</summary>
-    Func<object, string?>? GetRecordIdAccessor { get; }
+    /// <summary>
+    /// The CLR identity type declared by the document, or null when the document has
+    /// no conventional identity property.
+    /// </summary>
+    Type? IdentityType { get; }
+
+    /// <summary>
+    /// Untyped CLR identity accessor for generated types. The original CLR type is
+    /// preserved so numeric identities remain numeric SurrealDB record keys.
+    /// Null if no identity property exists.
+    /// </summary>
+    Func<object, object?>? GetIdentityAccessor { get; }
 
     /// <summary>
     /// Compile-time list of public readable/writable properties (excluding Id).
@@ -62,6 +105,12 @@ public interface ITypeMetadata
     /// source generator that predates field schema support.
     /// </summary>
     IReadOnlyList<FieldSchema>? Fields { get; }
+
+    /// <summary>Source-generated encrypted-property accessors for this type.</summary>
+    IReadOnlyList<EncryptedFieldDescriptor>? EncryptedFields { get; }
+
+    /// <summary>Source-generated blind-index accessors for this type.</summary>
+    IReadOnlyList<BlindIndexDescriptor>? BlindIndexes => null;
 }
 
 /// <summary>
@@ -86,10 +135,11 @@ public interface ITypeMetadata<T> : ITypeMetadata
     void SetVersion(T entity, long version);
 
     /// <summary>
-    /// Extracts the string record ID from the entity's Id property.
-    /// Handles <see cref="SurrealDb.Net.Models.RecordIdOf{T}"/> types.
+    /// Extracts the CLR identity from the entity's Id property without converting it
+    /// to a string. Existing <see cref="SurrealDb.Net.Models.RecordId"/> values are
+    /// returned unchanged.
     /// </summary>
-    string? GetRecordId(T entity);
+    object? GetIdentity(T entity);
 
     /// <summary>Sets the tenant ID on the entity, or no-op if not tenant-aware.</summary>
     void SetTenantId(T entity, string? tenantId);

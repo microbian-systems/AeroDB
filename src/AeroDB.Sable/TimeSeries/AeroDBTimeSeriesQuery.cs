@@ -34,6 +34,8 @@ public sealed class AeroDBTimeSeriesQuery<T> : ITimeSeriesQuery<T> where T : cla
     internal AeroDBTimeSeriesQuery(SurrealQueryProvider provider)
     {
         _provider = provider;
+        if (EncryptedFieldResolver.HasEncryptedFields(typeof(T), provider.StoreOptions.Schema))
+            throw new SableEncryptedOperationNotSupportedException(typeof(T), "time-series query");
         _table = MetadataDispatch.GetTableName(typeof(T));
     }
 

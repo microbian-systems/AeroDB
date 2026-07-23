@@ -3,7 +3,7 @@ namespace AeroDB.Sable;
 public static class PagedListCompatibilityExtensions
 {
     public static Task<Pagination.IPagedList<T>> ToPagedListAsync<T>(
-        this ISurrealDbQueryable<T> queryable,
+        this ISableQueryable<T> queryable,
         int pageNumber,
         int pageSize,
         CancellationToken ct = default)

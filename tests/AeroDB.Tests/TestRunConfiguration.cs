@@ -11,4 +11,8 @@ public static class TestRunConfiguration
         // Keep the default local run stable; CLI/env settings can still override this.
         context.Settings.Parallelism.MaximumParallelTests = 1;
     }
+
+    [After(HookType.TestSession)]
+    public static Task DisposeSharedEmbeddedEngine()
+        => TestHarness.DisposeSharedRootClientAsync();
 }

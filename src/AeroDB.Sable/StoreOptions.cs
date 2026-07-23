@@ -25,6 +25,11 @@ public class StoreOptions : IReadOnlyStoreOptions
 
     public SchemaOptions Schema { get; } = new();
 
+    /// <summary>
+    /// Application-layer field-encryption configuration.
+    /// </summary>
+    public SableDataEncryptionOptions Encryption { get; } = new();
+
     private DocumentPolicies? _policies;
 
     /// <summary>

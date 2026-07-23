@@ -27,7 +27,7 @@ public interface ICompiledQuery<TDoc, TOut> : ICompiledQueryMarker
     /// The query object's property values are captured in the expression tree
     /// and replaced with parameterized SurrealQL at plan-build time.
     /// </summary>
-    Expression<Func<ISurrealDbQueryable<TDoc>, TOut>> QueryIs();
+    Expression<Func<ISableQueryable<TDoc>, TOut>> QueryIs();
 }
 
 /// <summary>

@@ -20,24 +20,8 @@ public static class LoadManyExtensions
         this IQuerySession session, IEnumerable<string> ids, CancellationToken ct = default)
         where T : class
     {
-        var idList = ids?.ToList() ?? throw new ArgumentNullException(nameof(ids));
-        if (idList.Count == 0) return Array.Empty<T>();
-
-        var tableName = MetadataDispatch.GetTableName(typeof(T));
-
-        // Build IN clause with full record IDs (table:id format)
-        var inClause = string.Join(", ", idList.Select(id => $"'{tableName}:{id}'"));
-        var sql = $"SELECT * FROM {tableName} WHERE id IN [{inClause}];";
-
-        try
-        {
-            var results = await session.RawQueryAsync<T>(sql, null, ct).ConfigureAwait(false);
-            return results?.Count > 0 ? results.AsReadOnly() : Array.Empty<T>();
-        }
-        catch
-        {
-            return Array.Empty<T>();
-        }
+        var idList = ids?.Cast<object>().ToList() ?? throw new ArgumentNullException(nameof(ids));
+        return await LoadManyByIdentityAsync<T>(session, idList, ct).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -52,8 +36,8 @@ public static class LoadManyExtensions
         this IQuerySession session, IEnumerable<RecordId> ids, CancellationToken ct = default)
         where T : class
     {
-        var idList = ids?.ToList() ?? throw new ArgumentNullException(nameof(ids));
-        return await LoadManyAsync<T>(session, idList.Select(ToRecordIdString), ct).ConfigureAwait(false);
+        var idList = ids?.Cast<object>().ToList() ?? throw new ArgumentNullException(nameof(ids));
+        return await LoadManyByIdentityAsync<T>(session, idList, ct).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -72,9 +56,9 @@ public static class LoadManyExtensions
         var ids = numericIds?.ToList() ?? throw new ArgumentNullException(nameof(numericIds));
         if (ids.Count == 0) return Array.Empty<T>();
 
-        // For numeric IDs, format as table:id
-        var recordIds = ids.Select(id => $"{tableName}:{id}");
-        var inClause = string.Join(", ", recordIds.Select(id => $"'{id}'"));
+        var inClause = string.Join(
+            ", ",
+            ids.Select(id => DocumentIdentityResolver.FormatRecordIdLiteral(tableName, id)));
         var sql = $"SELECT * FROM {tableName} WHERE id IN [{inClause}];";
 
         try
@@ -82,22 +66,55 @@ public static class LoadManyExtensions
             var results = await session.RawQueryAsync<T>(sql, null, ct).ConfigureAwait(false);
             return results?.Count > 0 ? results.AsReadOnly() : Array.Empty<T>();
         }
+        catch (SableEncryptionException)
+        {
+            throw;
+        }
         catch
         {
             return Array.Empty<T>();
         }
     }
 
-    /// <summary>
-    /// Converts a <see cref="RecordId"/> to its string representation (<c>table:id</c>).
-    /// </summary>
-    private static string ToRecordIdString(RecordId rid) => rid switch
+    internal static async Task<IReadOnlyList<T>> LoadManyByIdentityAsync<T>(
+        IQuerySession session,
+        IEnumerable<object> ids,
+        CancellationToken ct = default)
+        where T : class
     {
-        RecordIdOf<string> s => $"{s.Table}:{s.Id}",
-        RecordIdOf<long> l => $"{l.Table}:{l.Id}",
-        RecordIdOf<int> i => $"{i.Table}:{i.Id}",
-        _ => throw new ArgumentException(
-            $"Unsupported RecordId type '{rid.GetType().Name}'. Expected RecordIdOf<string>, RecordIdOf<long>, or RecordIdOf<int>.",
-            nameof(rid))
-    };
+        var idList = ids?.ToList() ?? throw new ArgumentNullException(nameof(ids));
+        if (idList.Count == 0) return Array.Empty<T>();
+
+        var schema = session is InternalSessionBase internalSession
+            ? internalSession.StoreOptions.Schema
+            : new StoreOptions().Schema;
+        var tableName = MetadataDispatch.GetTableName(typeof(T), schema);
+        var literals = new List<string>(idList.Count);
+        foreach (var id in idList)
+        {
+            var normalizedId = id is RecordId
+                ? id
+                : DocumentIdentityResolver.NormalizeForDocumentType(typeof(T), id, schema);
+            if (!DocumentIdentityResolver.TryCreate(normalizedId, tableName, out var identity))
+                continue;
+            literals.Add(identity.Literal);
+        }
+
+        if (literals.Count == 0) return Array.Empty<T>();
+
+        var sql = $"SELECT * FROM {tableName} WHERE id IN [{string.Join(", ", literals)}];";
+        try
+        {
+            var results = await session.RawQueryAsync<T>(sql, null, ct).ConfigureAwait(false);
+            return results.Count > 0 ? results.AsReadOnly() : Array.Empty<T>();
+        }
+        catch (SableEncryptionException)
+        {
+            throw;
+        }
+        catch
+        {
+            return Array.Empty<T>();
+        }
+    }
 }

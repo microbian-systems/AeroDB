@@ -24,6 +24,7 @@ internal sealed class LiveQuerySession : ILiveQuerySession
 
     public IAeroDBLiveQueryBuilder<T> Live<T>() where T : class
     {
+        ThrowIfEncrypted<T>();
         return new SurrealLiveQueryBuilder<T>(_session, _options, _loggerFactory, _tenantId);
     }
 
@@ -33,6 +34,7 @@ internal sealed class LiveQuerySession : ILiveQuerySession
         CancellationToken ct = default)
         where T : class
     {
+        ThrowIfEncrypted<T>();
         var logger = _loggerFactory.CreateLogger<SurrealAeroDBLiveQuery<T>>();
         var sdkLive = await _session.LiveRawQuery<T>(surql, parameters, ct)
             .ConfigureAwait(false);
@@ -50,5 +52,15 @@ internal sealed class LiveQuerySession : ILiveQuerySession
     {
         // Session-level cleanup — no subscriptions tracked in v1 (M1 backlog)
         return ValueTask.CompletedTask;
+    }
+
+    private void ThrowIfEncrypted<T>() where T : class
+    {
+        if (EncryptedFieldResolver.HasEncryptedFields(typeof(T), _options.Schema))
+        {
+            throw new SableEncryptedOperationNotSupportedException(
+                typeof(T),
+                "live query");
+        }
     }
 }

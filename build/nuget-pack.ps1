@@ -71,6 +71,7 @@ New-Item -ItemType Directory -Force -Path $OutputDir | Out-Null
 
 $libProjects = @(
     "$RepoRoot/src/AeroDB.Sable"
+    "$RepoRoot/src/AeroDB.Sable.Configuration"
     "$RepoRoot/src/AeroDB.AspNetIdentity"
     "$RepoRoot/src/AeroDB.EntityFrameworkCore"
     "$RepoRoot/src/AeroDB.ML"

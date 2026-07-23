@@ -240,7 +240,7 @@ public class StoreOptionsAndBulkOperationsTests
     // ──────────────────────────────────────────────
 
     [Test]
-    public async Task BulkInsertAsync_DelegatesToSession()
+    public async Task BulkInsertAsync_RejectsNonSableSessionImplementations()
     {
         var session = Substitute.For<IDocumentSession>();
         var entities = new List<Person>
@@ -250,13 +250,10 @@ public class StoreOptionsAndBulkOperationsTests
             new() { Name = "Charlie" }
         };
 
-        var count = await BulkOperations.BulkInsertAsync(session, entities, batchSize: 100);
-
-        count.ShouldBe(3);
-        await session.Received(1).ExecuteSqlAsync(
-            Arg.Is<string>(s => s.StartsWith("INSERT INTO person")),
-            Arg.Any<IReadOnlyDictionary<string, object?>?>(),
-            Arg.Any<CancellationToken>());
+        var exception = await Should.ThrowAsync<InvalidOperationException>(
+            async () => await BulkOperations.BulkInsertAsync(
+                session, entities, batchSize: 100));
+        exception.Message.ShouldContain("Sable-owned");
     }
 
     [Test]

@@ -61,6 +61,27 @@ public class PocoNullableSchemafull
 public class PocoCrudTests
 {
     [Test]
+    public async Task PocoConventionalLongIdentity_CanBeQueriedById()
+    {
+        await using var store = await TestHarness.CreateStoreAsync(opts =>
+        {
+            opts.Schema.For<PocoLong>().SetSchemaMode(SchemaMode.Flexible);
+        });
+        await using var session = await store.OpenSessionAsync(
+            new SessionOptions { Tracking = DocumentTracking.None });
+
+        const long entityId = 1501688860171780096;
+        session.Store(new PocoLong { Id = entityId, Name = "Conventional", Score = 1 });
+        await session.SaveChangesAsync();
+
+        var loaded = await session.Query<PocoLong>()
+            .FirstOrDefaultAsync(x => x.Id == entityId);
+
+        loaded.ShouldNotBeNull();
+        loaded.Id.ShouldBe(entityId);
+    }
+
+    [Test]
     public async Task PocoSchemafull_NullableFields_AllowNone()
     {
         await using var store = await TestHarness.CreateStoreAsync(opts =>
@@ -139,6 +160,14 @@ public class PocoCrudTests
         results[0].Id.ShouldBe(entityId);
         results[0].Name.ShouldBe("Widget");
         results[0].Score.ShouldBe(100);
+
+        // A configured POCO identity is stored in SurrealDB's native record key.
+        // LINQ identity predicates must compare the extracted key value rather
+        // than comparing the complete record ID (poco_long:`42`) to a CLR long.
+        var byId = await session.Query<PocoLong>()
+            .FirstOrDefaultAsync(x => x.Id == entityId);
+        byId.ShouldNotBeNull();
+        byId.Id.ShouldBe(entityId);
 
         // ─── Load by ID ────────────────────────────────────
         var loaded = await session.LoadAsync<PocoLong>(entityId.ToString());

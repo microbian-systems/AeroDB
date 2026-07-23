@@ -8,6 +8,30 @@ namespace AeroDB.Sable;
 public static class CompiledQueryExtensions
 {
     /// <summary>
+    /// Returns the exact schema-aware command for an interface-based compiled
+    /// query without executing it.
+    /// </summary>
+    public static SableCommand ToCommand<TDoc, TOut>(
+        this IQuerySession session,
+        ICompiledQuery<TDoc, TOut> compiledQuery)
+        where TDoc : class
+    {
+        ArgumentNullException.ThrowIfNull(session);
+        ArgumentNullException.ThrowIfNull(compiledQuery);
+
+        if (session is not InternalSessionBase internalSession)
+        {
+            throw new InvalidOperationException(
+                "Compiled query inspection requires an AeroDB.Sable query session.");
+        }
+
+        if (EncryptedFieldResolver.HasEncryptedFields(typeof(TDoc), internalSession.StoreOptions.Schema))
+            throw new SableEncryptedOperationNotSupportedException(typeof(TDoc), "compiled query");
+
+        return CompiledQueryPlanner.ToCommand(internalSession, compiledQuery);
+    }
+
+    /// <summary>
     /// Pre-compiles a LINQ expression into a reusable <see cref="CompiledQuery{T}"/>.
     /// The expression tree is walked once; subsequent executions reuse the cached SurrealQL.
     /// No store initialization or database connection is required — translation is purely local.

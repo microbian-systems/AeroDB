@@ -27,9 +27,9 @@ public class AeroDBUserStoreLoginTests
         return store;
     }
 
-    private static ISurrealDbQueryable<T> CreateMockQueryable<T>(List<T> data) where T : class
+    private static ISableQueryable<T> CreateMockQueryable<T>(List<T> data) where T : class
     {
-        var queryable = Substitute.For<ISurrealDbQueryable<T>>();
+        var queryable = Substitute.For<ISableQueryable<T>>();
                 queryable.ToListAsync(Arg.Any<CancellationToken>()).Returns(data);
 
         var provider = Substitute.For<IQueryProvider>();
@@ -80,7 +80,7 @@ public class AeroDBUserStoreLoginTests
             ProviderKey = "google-id-123",
             ProviderDisplayName = "Google"
         };
-        var loginQueryable = Substitute.For<ISurrealDbQueryable<AeroDBUserLogin>>();
+        var loginQueryable = Substitute.For<ISableQueryable<AeroDBUserLogin>>();
         loginQueryable.FirstOrDefaultAsync(
             Arg.Any<Expression<Func<AeroDBUserLogin, bool>>>(),
             Arg.Any<CancellationToken>())
@@ -101,7 +101,7 @@ public class AeroDBUserStoreLoginTests
         var store = CreateStore(out _, out var session, out var logger);
         var user = new IdentityUser("testuser") { Id = "user-1" };
 
-        var loginQueryable = Substitute.For<ISurrealDbQueryable<AeroDBUserLogin>>();
+        var loginQueryable = Substitute.For<ISableQueryable<AeroDBUserLogin>>();
         loginQueryable.FirstOrDefaultAsync(
             Arg.Any<Expression<Func<AeroDBUserLogin, bool>>>(),
             Arg.Any<CancellationToken>())
@@ -172,7 +172,7 @@ public class AeroDBUserStoreLoginTests
             LoginProvider = "Google",
             ProviderKey = "google-id-123"
         };
-        var loginQueryable = Substitute.For<ISurrealDbQueryable<AeroDBUserLogin>>();
+        var loginQueryable = Substitute.For<ISableQueryable<AeroDBUserLogin>>();
         loginQueryable.FirstOrDefaultAsync(
             Arg.Any<Expression<Func<AeroDBUserLogin, bool>>>(),
             Arg.Any<CancellationToken>())
@@ -194,7 +194,7 @@ public class AeroDBUserStoreLoginTests
     {
         var store = CreateStore(out var querySession, out _, out var logger);
 
-        var loginQueryable = Substitute.For<ISurrealDbQueryable<AeroDBUserLogin>>();
+        var loginQueryable = Substitute.For<ISableQueryable<AeroDBUserLogin>>();
         loginQueryable.FirstOrDefaultAsync(
             Arg.Any<Expression<Func<AeroDBUserLogin, bool>>>(),
             Arg.Any<CancellationToken>())

@@ -15,7 +15,7 @@
 	</PropertyGroup>
 
 	<PropertyGroup Label="Package information">
-		<VersionPrefix>0.0.9.1</VersionPrefix>
+		<VersionPrefix>0.0.9.6</VersionPrefix>
 		<VersionSuffix>alpha</VersionSuffix>
 		<Authors>Microbians</Authors>
 		<Company>Microbian Systems</Company>
@@ -23,7 +23,7 @@
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageTags>surrealdb document-database event-sourcing nosql orm efcore</PackageTags>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<PackageIcon>aero-logo-new.png</PackageIcon>
+		<PackageIcon>sable-logo-rnd.png</PackageIcon>
 		<PackageProjectUrl>https://microbians.io/products</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/microbian-systems/AeroDB.Sable</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
@@ -51,7 +51,7 @@
 
 	<ItemGroup>
 		<!-- Package icon and README: included explicitly so dotnet pack finds them -->
-		<None Include="../../assets/aero-logo-new.png" Pack="true" PackagePath="/" Visible="false" />
+		<None Include="../../assets/sable-logo-rnd.png" Pack="true" PackagePath="/" Visible="false" />
 		<None Include="../../README.md" Pack="true" PackagePath="/" Visible="false" />
 	</ItemGroup>
 </Project>

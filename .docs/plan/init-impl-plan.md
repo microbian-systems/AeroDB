@@ -337,7 +337,7 @@ await using var sessionB = await store.WithTenant("tenant-b").QuerySessionAsync(
 | `GROUP ALL` | Added to `SurrealQueryResult` — proper SurrealQL aggregate clause |
 | `CountAsync` server-side | Uses `SELECT count() ... GROUP ALL` instead of `SELECT *` + client-side count |
 | `[CborProperty]` DTOs | SumResultDto, MinResultDto, MaxResultDto, MeanResultDto, CountResultDto for CBOR deserialization |
-| Expression tree building | `ISurrealDbQueryable` aggregate methods now build `Expression.Call` trees for visitor dispatch |
+| Expression tree building | `ISableQueryable` aggregate methods now build `Expression.Call` trees for visitor dispatch |
 
 ---
 

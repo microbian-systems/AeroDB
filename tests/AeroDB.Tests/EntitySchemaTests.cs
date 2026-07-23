@@ -86,7 +86,7 @@ public class EntitySchemaTests
     {
         // POCOs are now supported — validation is deferred to schema generation time.
         var options = new StoreOptions { Namespace = "test", Database = "test" };
-        var mapping = options.Schema.For<Entity<long>>();
+        var mapping = options.Schema.For<SableDocument<long>>();
         mapping.ShouldNotBeNull();
     }
 

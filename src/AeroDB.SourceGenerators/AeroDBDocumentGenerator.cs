@@ -27,10 +27,10 @@ public class AeroDBDocumentGenerator : IIncrementalGenerator
         {
             var (compilation, types) = source;
 
-            // Find the Record type in SurrealDb.Net and the Entity<TId> type in AeroDB.Sable
+            // Find the Record type in SurrealDb.Net and the SableDocument<TId> type in AeroDB.Sable
             var recordType = compilation.GetTypeByMetadataName("SurrealDb.Net.Models.Record");
-            var entityGenericType = compilation.GetTypeByMetadataName("AeroDB.Sable.Entity`1");
-            if (recordType is null && entityGenericType is null)
+            var entityInterfaceType = compilation.GetTypeByMetadataName("AeroDB.Sable.ISableDocument`1");
+            if (recordType is null && entityInterfaceType is null)
                 return;
 
             // Optionally find the AeroDBDocumentAttribute — if it's not available
@@ -46,7 +46,7 @@ public class AeroDBDocumentGenerator : IIncrementalGenerator
                 if (type.IsAbstract) continue;
 
                 bool isRecord = recordType is not null && IsRecordSubclass(type, recordType);
-                bool isEntity = entityGenericType is not null && IsEntitySubclass(type, entityGenericType);
+                bool isEntity = entityInterfaceType is not null && IsEntitySubclass(type, entityInterfaceType);
                 if (!isRecord && !isEntity) continue;
 
                 // Check for [AeroDBDocument(SkipGeneration = true)] — opt-out
@@ -70,7 +70,7 @@ public class AeroDBDocumentGenerator : IIncrementalGenerator
             // Generate per-type metadata files
             foreach (var type in validTypes)
             {
-                bool isEntity = entityGenericType is not null && IsEntitySubclass(type, entityGenericType);
+                bool isEntity = entityInterfaceType is not null && IsEntitySubclass(type, entityInterfaceType);
                 var sourceText = GenerateMetadataClass(type, compilation, isEntity);
                 var hintName = $"{type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat.WithGlobalNamespaceStyle(SymbolDisplayGlobalNamespaceStyle.Omitted)).Replace("global::", "").Replace(".", "_")}.Metadata.g.cs";
                 ctx.AddSource(hintName, sourceText);
@@ -113,19 +113,13 @@ public class AeroDBDocumentGenerator : IIncrementalGenerator
     }
 
     /// <summary>
-    /// Checks if <paramref name="type"/> is a subclass of <c>Entity&lt;TId&gt;</c>.
+    /// Checks if <paramref name="type"/> implements <c>ISableDocument&lt;TId&gt;</c>.
     /// </summary>
-    private static bool IsEntitySubclass(INamedTypeSymbol type, INamedTypeSymbol entityGenericType)
+    private static bool IsEntitySubclass(INamedTypeSymbol type, INamedTypeSymbol entityInterfaceType)
     {
-        var current = type.BaseType;
-        while (current is not null)
-        {
-            if (current.IsGenericType &&
-                SymbolEqualityComparer.Default.Equals(current.ConstructedFrom, entityGenericType))
-                return true;
-            current = current.BaseType;
-        }
-        return false;
+        return type.AllInterfaces.Any(i =>
+            i.IsGenericType &&
+            SymbolEqualityComparer.Default.Equals(i.ConstructedFrom, entityInterfaceType));
     }
 
     /// <summary>
@@ -167,7 +161,8 @@ public class AeroDBDocumentGenerator : IIncrementalGenerator
         sb.AppendLine("{");
         sb.AppendLine($"    public static readonly {typeName}Metadata Instance = new();");
         sb.AppendLine();
-        sb.AppendLine($"    static {typeName}Metadata() => MetadataRegistry.Register<{globalFullName}>(Instance);");
+        sb.AppendLine("    [global::System.Runtime.CompilerServices.ModuleInitializer]");
+        sb.AppendLine($"    internal static void Register() => MetadataRegistry.Register<{globalFullName}>(Instance);");
         sb.AppendLine();
         sb.AppendLine($"    public string TableName => \"{tableName}\";");
         sb.AppendLine($"    public bool HasTenantId => {hasTenantId.ToString().ToLowerInvariant()};");
@@ -177,6 +172,7 @@ public class AeroDBDocumentGenerator : IIncrementalGenerator
         sb.AppendLine($"    public string? VersionFieldName => {EmitVersionFieldName(versionProp)};");
         sb.AppendLine($"    public Func<object, long>? GetVersionAccessor => {EmitGetVersionAccessor(versionProp, globalFullName)};");
         sb.AppendLine($"    public Action<object, long>? SetVersionAccessor => {EmitSetVersionAccessor(versionProp, globalFullName)};");
+        sb.AppendLine($"    public Type? IdentityType => {(idProp is null ? "null" : $"typeof({idProp.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)})")};");
         sb.AppendLine();
 
         // GetTenantId
@@ -204,42 +200,24 @@ public class AeroDBDocumentGenerator : IIncrementalGenerator
             sb.AppendLine($"    public void SetVersion({globalFullName} entity, long version) {{ }}");
         }
 
-        // GetRecordId — extract the string Id from the RecordId or entity typed Id
+        // GetIdentity — preserve the CLR identity type so record-key semantics survive.
         if (isEntity)
         {
-            if (idProp is not null && idProp.Type.IsValueType)
-                sb.AppendLine($"    public string? GetRecordId({globalFullName} entity) => entity.Id.ToString();");
-            else
-                sb.AppendLine($"    public string? GetRecordId({globalFullName} entity) => entity.Id?.ToString();");
+            sb.AppendLine($"    public object? GetIdentity({globalFullName} entity) => entity.Id;");
         }
         else if (idProp is not null)
         {
-            sb.AppendLine($"    public string? GetRecordId({globalFullName} entity)");
-            sb.AppendLine("    {");
-            sb.AppendLine("        var id = entity.Id;");
-            sb.AppendLine("        if (id is null) return null;");
-            sb.AppendLine("        if (id is RecordIdOf<string> strRid) return strRid.Id;");
-            sb.AppendLine("        if (id is RecordIdOf<long> longRid) return longRid.Id.ToString();");
-            sb.AppendLine("        if (id is RecordIdOf<int> intRid) return intRid.Id.ToString();");
-            sb.AppendLine("        return id.ToString();");
-            sb.AppendLine("    }");
+            sb.AppendLine($"    public object? GetIdentity({globalFullName} entity) => entity.Id;");
         }
         else
         {
-            sb.AppendLine($"    public string? GetRecordId({globalFullName} entity) => null;");
+            sb.AppendLine($"    public object? GetIdentity({globalFullName} entity) => null;");
         }
 
-        if (isEntity)
-        {
-            if (idProp is not null && idProp.Type.IsValueType)
-                sb.AppendLine($"    public Func<object, string?>? GetRecordIdAccessor => obj => (({globalFullName})obj).Id.ToString();");
-            else
-                sb.AppendLine($"    public Func<object, string?>? GetRecordIdAccessor => obj => (({globalFullName})obj).Id?.ToString();");
-        }
-        else if (idProp is not null)
-            sb.AppendLine($"    public Func<object, string?>? GetRecordIdAccessor => {EmitGetRecordIdAccessor(idProp, globalFullName)};");
+        if (idProp is not null)
+            sb.AppendLine($"    public Func<object, object?>? GetIdentityAccessor => obj => (({globalFullName})obj).Id;");
         else
-            sb.AppendLine("    public Func<object, string?>? GetRecordIdAccessor => null;");
+            sb.AppendLine("    public Func<object, object?>? GetIdentityAccessor => null;");
 
         // Emit FieldSchema list for compile-time schema generation
         var fields = new List<string>();
@@ -250,8 +228,20 @@ public class AeroDBDocumentGenerator : IIncrementalGenerator
             if (member.IsStatic) continue;
             if (member.GetMethod is null || member.SetMethod is null) continue;
 
-            var surrealType = GetSurrealType(member);
-            fields.Add($"            new global::AeroDB.Sable.Metadata.FieldSchema(\"{member.Name}\", \"{surrealType}\", true, true)");
+            var encryptedAlgorithm = GetEncryptionAlgorithm(member);
+            var surrealType = encryptedAlgorithm is null
+                ? GetSurrealType(member)
+                : IsNullableProperty(member) ? "option<object>" : "object";
+            var escapedType = surrealType.Replace("\"", "\\\"");
+            var flexibleInitializer = IsFlexibleEmbeddedType(member.Type)
+                ? " { IsFlexible = true }"
+                : string.Empty;
+            if (encryptedAlgorithm is not null)
+            {
+                flexibleInitializer =
+                    $" {{ IsFlexible = true, EncryptionAlgorithm = global::AeroDB.Sable.EncryptionAlgorithm.{encryptedAlgorithm} }}";
+            }
+            fields.Add($"            new global::AeroDB.Sable.Metadata.FieldSchema(\"{member.Name}\", \"{escapedType}\", true, true){flexibleInitializer}");
         }
 
         if (fields.Count > 0)
@@ -266,6 +256,81 @@ public class AeroDBDocumentGenerator : IIncrementalGenerator
         else
         {
             sb.AppendLine("    public System.Collections.Generic.IReadOnlyList<global::AeroDB.Sable.Metadata.FieldSchema>? Fields => null;");
+        }
+
+        var encryptedFields = new List<string>();
+        foreach (var member in type.GetMembers().OfType<IPropertySymbol>())
+        {
+            var algorithm = GetEncryptionAlgorithm(member);
+            if (algorithm is null)
+                continue;
+            if (member.DeclaredAccessibility != Accessibility.Public
+                || member.IsStatic
+                || member.GetMethod is null
+                || member.SetMethod is null)
+                continue;
+
+            var memberType = member.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
+            var codec = IsByteArray(member.Type)
+                ? "bytes-v1"
+                : IsString(member.Type) ? "utf8-string-v1" : "unsupported-v1";
+            encryptedFields.Add(
+                $"            new global::AeroDB.Sable.Metadata.EncryptedFieldDescriptor(" +
+                $"\"{member.Name}\", typeof({memberType}), \"{codec}\", " +
+                $"global::AeroDB.Sable.EncryptionAlgorithm.{algorithm}, " +
+                $"obj => (({globalFullName})obj).{member.Name}, " +
+                $"(obj, value) => (({globalFullName})obj).{member.Name} = ({memberType})value!)");
+        }
+
+        if (encryptedFields.Count > 0)
+        {
+            sb.AppendLine("    public System.Collections.Generic.IReadOnlyList<global::AeroDB.Sable.Metadata.EncryptedFieldDescriptor>? EncryptedFields =>");
+            sb.AppendLine("        new global::AeroDB.Sable.Metadata.EncryptedFieldDescriptor[]");
+            sb.AppendLine("        {");
+            sb.Append(string.Join(",\n", encryptedFields));
+            sb.AppendLine();
+            sb.AppendLine("        };");
+        }
+        else
+        {
+            sb.AppendLine("    public System.Collections.Generic.IReadOnlyList<global::AeroDB.Sable.Metadata.EncryptedFieldDescriptor>? EncryptedFields => null;");
+        }
+
+        var blindIndexes = new List<string>();
+        foreach (var member in type.GetMembers().OfType<IPropertySymbol>())
+        {
+            var blindIndex = GetBlindIndex(member);
+            if (blindIndex is null)
+                continue;
+            if (member.DeclaredAccessibility != Accessibility.Public
+                || member.IsStatic
+                || member.GetMethod is null)
+                continue;
+
+            var storageField = blindIndex.Value.StorageFieldName is null
+                ? "null"
+                : $"\"{EscapeString(blindIndex.Value.StorageFieldName)}\"";
+            blindIndexes.Add(
+                $"            new global::AeroDB.Sable.Metadata.BlindIndexDescriptor(" +
+                $"\"{member.Name}\", " +
+                $"global::AeroDB.Sable.BlindIndexAlgorithm.{blindIndex.Value.Algorithm}, " +
+                $"global::AeroDB.Sable.BlindIndexNormalizer.{blindIndex.Value.Normalizer}, " +
+                $"{storageField}, " +
+                $"obj => (string?)(object?)(({globalFullName})obj).{member.Name})");
+        }
+
+        if (blindIndexes.Count > 0)
+        {
+            sb.AppendLine("    public System.Collections.Generic.IReadOnlyList<global::AeroDB.Sable.Metadata.BlindIndexDescriptor>? BlindIndexes =>");
+            sb.AppendLine("        new global::AeroDB.Sable.Metadata.BlindIndexDescriptor[]");
+            sb.AppendLine("        {");
+            sb.Append(string.Join(",\n", blindIndexes));
+            sb.AppendLine();
+            sb.AppendLine("        };");
+        }
+        else
+        {
+            sb.AppendLine("    public System.Collections.Generic.IReadOnlyList<global::AeroDB.Sable.Metadata.BlindIndexDescriptor>? BlindIndexes => null;");
         }
 
         sb.AppendLine("}");
@@ -411,20 +476,6 @@ public class AeroDBDocumentGenerator : IIncrementalGenerator
         return "null";
     }
 
-    private static string EmitGetRecordIdAccessor(IPropertySymbol? idProp, string globalFullName)
-    {
-        if (idProp is null) return "null";
-        return "obj =>\n    {\n" +
-               $"        var entity = ({globalFullName})obj;\n" +
-               "        var id = entity.Id;\n" +
-               "        if (id is null) return null;\n" +
-               "        if (id is RecordIdOf<string> strRid) return strRid.Id;\n" +
-               "        if (id is RecordIdOf<long> longRid) return longRid.Id.ToString();\n" +
-               "        if (id is RecordIdOf<int> intRid) return intRid.Id.ToString();\n" +
-               "        return id.ToString();\n" +
-               "    }";
-    }
-
     private static string GetSurrealType(IPropertySymbol property)
     {
         var type = property.Type;
@@ -439,20 +490,72 @@ public class AeroDBDocumentGenerator : IIncrementalGenerator
     private static string GetRequiredSurrealType(ITypeSymbol type)
     {
         var name = type.ToDisplayString();
+        // Nullable reference types (e.g., string?) display with a trailing '?' even
+        // though they are not Nullable<T>. Strip the annotation for type-mapping.
+        if (name.EndsWith("?") && !type.IsValueType)
+            name = name.Substring(0, name.Length - 1);
         return name switch
         {
             "AeroDB.Sable.GeometryPoint" or "global::AeroDB.Sable.GeometryPoint" or "GeometryPoint" => "geometry",
             "AeroDB.Sable.GeometryPolygon" or "global::AeroDB.Sable.GeometryPolygon" or "GeometryPolygon" => "geometry",
-            "string" or "System.Guid" => "string",
+            "string" => "string",
+            "System.Guid" => "uuid",
             "long" or "int" or "short" or "byte" or "System.Int64" or "System.Int32" or "System.Int16" or "System.Byte" => "int",
             "float" or "double" or "decimal" or "System.Single" or "System.Double" or "System.Decimal" => "float",
             "bool" or "System.Boolean" => "bool",
             "System.DateTime" or "System.DateTimeOffset" => "datetime",
             "byte[]" or "System.Byte[]" => "bytes",
-            _ when type is IArrayTypeSymbol => "array",
-            _ when type.OriginalDefinition?.ToDisplayString() == "System.Collections.Generic.List<T>" => "array",
+            _ when type is IArrayTypeSymbol array => GetArraySurrealType(array.ElementType),
+            _ when type.OriginalDefinition?.ToDisplayString() is string gtd && (
+                gtd == "System.Collections.Generic.List<T>" ||
+                gtd == "System.Collections.Generic.IList<T>" ||
+                gtd == "System.Collections.Generic.ICollection<T>" ||
+                gtd == "System.Collections.Generic.IReadOnlyList<T>" ||
+                gtd == "System.Collections.Generic.IReadOnlyCollection<T>" ||
+                gtd == "System.Collections.Generic.ISet<T>"
+            ) => GetArraySurrealType(((INamedTypeSymbol)type).TypeArguments[0]),
+            _ when type.TypeKind == TypeKind.Enum => BuildEnumLiteralType(type),
             _ => "object"
         };
+    }
+
+    private static string GetArraySurrealType(ITypeSymbol elementType)
+        => IsFlexibleEmbeddedType(elementType) ? "array<object>" : "array";
+
+    private static bool IsFlexibleEmbeddedType(ITypeSymbol type)
+    {
+        var effectiveType = GetNullableUnderlyingType(type) ?? type;
+
+        if (effectiveType is IArrayTypeSymbol array)
+        {
+            if (array.ElementType.SpecialType == SpecialType.System_Byte)
+                return false;
+
+            return IsFlexibleEmbeddedType(array.ElementType);
+        }
+
+        if (effectiveType is INamedTypeSymbol named && named.IsGenericType &&
+            named.OriginalDefinition.ToDisplayString() is string genericType && (
+                genericType == "System.Collections.Generic.List<T>" ||
+                genericType == "System.Collections.Generic.IList<T>" ||
+                genericType == "System.Collections.Generic.ICollection<T>" ||
+                genericType == "System.Collections.Generic.IReadOnlyList<T>" ||
+                genericType == "System.Collections.Generic.IReadOnlyCollection<T>" ||
+                genericType == "System.Collections.Generic.ISet<T>"))
+        {
+            return IsFlexibleEmbeddedType(named.TypeArguments[0]);
+        }
+
+        return GetRequiredSurrealType(effectiveType) == "object";
+    }
+
+    private static string BuildEnumLiteralType(ITypeSymbol enumType)
+    {
+        var names = enumType.GetMembers()
+            .OfType<IFieldSymbol>()
+            .Where(f => f.HasConstantValue && f.Name != "value__")
+            .Select(f => $"\"{f.Name}\"");
+        return string.Join(" | ", names);
     }
 
     private static bool IsNullableProperty(IPropertySymbol property)
@@ -460,7 +563,18 @@ public class AeroDBDocumentGenerator : IIncrementalGenerator
         if (GetNullableUnderlyingType(property.Type) is not null)
             return true;
 
-        return !property.Type.IsValueType && property.NullableAnnotation == NullableAnnotation.Annotated;
+        // Option B: reference types are nullable by default in C# — they can always be null at runtime.
+        // Only emit a non-nullable SurrealDB TYPE (without option<>) when [Required] is explicitly present.
+        if (!property.Type.IsValueType)
+            return !HasRequiredAttribute(property);
+
+        return false; // value types are never nullable by default
+    }
+
+    private static bool HasRequiredAttribute(IPropertySymbol property)
+    {
+        return property.GetAttributes().Any(a =>
+            a.AttributeClass?.ToDisplayString() == "System.ComponentModel.DataAnnotations.RequiredAttribute");
     }
 
     private static ITypeSymbol? GetNullableUnderlyingType(ITypeSymbol type)
@@ -474,6 +588,83 @@ public class AeroDBDocumentGenerator : IIncrementalGenerator
 
         return null;
     }
+
+    private static string? GetEncryptionAlgorithm(IPropertySymbol property)
+    {
+        var attribute = property.GetAttributes().FirstOrDefault(candidate =>
+            candidate.AttributeClass?.ToDisplayString() == "AeroDB.Sable.EncryptAttribute");
+        if (attribute is null)
+            return null;
+
+        if (attribute.ConstructorArguments.Length == 0)
+            return "Aes256Gcm";
+
+        var value = attribute.ConstructorArguments[0].Value;
+        return value switch
+        {
+            1 => "Aes256Gcm",
+            2 => "ChaCha20Poly1305",
+            _ => "__InvalidEncryptionAlgorithm"
+        };
+    }
+
+    private static (
+        string Algorithm,
+        string Normalizer,
+        string? StorageFieldName)? GetBlindIndex(IPropertySymbol property)
+    {
+        var attribute = property.GetAttributes().FirstOrDefault(candidate =>
+            candidate.AttributeClass?.ToDisplayString() == "AeroDB.Sable.BlindIndexAttribute");
+        if (attribute is null)
+            return null;
+
+        var algorithm = "HmacSha256";
+        var normalizer = "UsSocialSecurityNumberV1";
+        string? storageFieldName = null;
+
+        foreach (var named in attribute.NamedArguments)
+        {
+            switch (named.Key)
+            {
+                case "Algorithm":
+                    algorithm = GetEnumValueName(named.Value) ?? "__InvalidBlindIndexAlgorithm";
+                    break;
+                case "Normalizer":
+                    normalizer = GetEnumValueName(named.Value) ?? "__InvalidBlindIndexNormalizer";
+                    break;
+                case "StorageFieldName":
+                    storageFieldName = named.Value.Value as string;
+                    break;
+            }
+        }
+
+        return (algorithm, normalizer, storageFieldName);
+    }
+
+    private static string? GetEnumValueName(TypedConstant constant)
+    {
+        if (constant.Type is not INamedTypeSymbol enumType || constant.Value is null)
+            return null;
+
+        var numericValue = Convert.ToInt64(constant.Value, System.Globalization.CultureInfo.InvariantCulture);
+        return enumType.GetMembers()
+            .OfType<IFieldSymbol>()
+            .FirstOrDefault(field =>
+                field.HasConstantValue
+                && Convert.ToInt64(
+                    field.ConstantValue,
+                    System.Globalization.CultureInfo.InvariantCulture) == numericValue)
+            ?.Name;
+    }
+
+    private static string EscapeString(string value)
+        => value.Replace("\\", "\\\\").Replace("\"", "\\\"");
+
+    private static bool IsString(ITypeSymbol type)
+        => type.SpecialType == SpecialType.System_String;
+
+    private static bool IsByteArray(ITypeSymbol type)
+        => type is IArrayTypeSymbol { ElementType.SpecialType: SpecialType.System_Byte };
 
     internal static string ToSnakeCase(string name)
     {
