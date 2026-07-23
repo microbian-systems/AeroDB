@@ -100,14 +100,14 @@ public class PocoGraphTests
 
         // Relate A→X via PocoWrote, B→X via PocoWrote, C→X via PocoReviewed
         session.Relate<PocoWrote>(
-            new RecordIdOf<string>(personTable, personA.Id.ToString()),
-            new RecordIdOf<string>(bookTable, bookX.Id.ToString()));
+            new RecordIdOf<long>(personTable, personA.Id),
+            new RecordIdOf<long>(bookTable, bookX.Id));
         session.Relate<PocoWrote>(
-            new RecordIdOf<string>(personTable, personB.Id.ToString()),
-            new RecordIdOf<string>(bookTable, bookX.Id.ToString()));
+            new RecordIdOf<long>(personTable, personB.Id),
+            new RecordIdOf<long>(bookTable, bookX.Id));
         session.Relate<PocoReviewed>(
-            new RecordIdOf<string>(personTable, personC.Id.ToString()),
-            new RecordIdOf<string>(bookTable, bookX.Id.ToString()));
+            new RecordIdOf<long>(personTable, personC.Id),
+            new RecordIdOf<long>(bookTable, bookX.Id));
         await session.SaveChangesAsync();
 
         // ── Verify graph traversal ────────────────────────────────
@@ -191,11 +191,11 @@ public class PocoGraphTests
 
         // Relate A→X via PocoWrote, B→X via PocoWrote
         session.Relate<PocoWrote>(
-            new RecordIdOf<string>(personTable, personA.Id.ToString()),
-            new RecordIdOf<string>(bookTable, bookX.Id.ToString()));
+            new RecordIdOf<long>(personTable, personA.Id),
+            new RecordIdOf<long>(bookTable, bookX.Id));
         session.Relate<PocoWrote>(
-            new RecordIdOf<string>(personTable, personB.Id.ToString()),
-            new RecordIdOf<string>(bookTable, bookX.Id.ToString()));
+            new RecordIdOf<long>(personTable, personB.Id),
+            new RecordIdOf<long>(bookTable, bookX.Id));
         await session.SaveChangesAsync();
 
         // Verify: Out traversal from A → 1 result (X)
@@ -233,11 +233,11 @@ public class PocoGraphTests
 
         // Relate A→X via PocoWrote, B→X via PocoWrote
         session.Relate<PocoWrote>(
-            new RecordIdOf<string>(personTable, personA.Id.ToString()),
-            new RecordIdOf<string>(bookTable, bookX.Id.ToString()));
+            new RecordIdOf<long>(personTable, personA.Id),
+            new RecordIdOf<long>(bookTable, bookX.Id));
         session.Relate<PocoWrote>(
-            new RecordIdOf<string>(personTable, personB.Id.ToString()),
-            new RecordIdOf<string>(bookTable, bookX.Id.ToString()));
+            new RecordIdOf<long>(personTable, personB.Id),
+            new RecordIdOf<long>(bookTable, bookX.Id));
         await session.SaveChangesAsync();
 
         // Verify: In traversal from X → 2 results (A, B)
@@ -273,8 +273,8 @@ public class PocoGraphTests
 
         // Relate A→X via PocoWrote
         session.Relate<PocoWrote>(
-            new RecordIdOf<string>(personTable, personA.Id.ToString()),
-            new RecordIdOf<string>(bookTable, bookX.Id.ToString()));
+            new RecordIdOf<long>(personTable, personA.Id),
+            new RecordIdOf<long>(bookTable, bookX.Id));
         await session.SaveChangesAsync();
 
         // Verify: Query<PocoWrote>() → 1 result
@@ -306,8 +306,8 @@ public class PocoGraphTests
         await session.SaveChangesAsync();
 
         session.Relate<PocoWrote>(
-            new RecordIdOf<string>(personTable, personA.Id.ToString()),
-            new RecordIdOf<string>(bookTable, bookX.Id.ToString()));
+            new RecordIdOf<long>(personTable, personA.Id),
+            new RecordIdOf<long>(bookTable, bookX.Id));
         await session.SaveChangesAsync();
 
         // Delete PocoPerson A (the source node)
@@ -341,8 +341,8 @@ public class PocoGraphTests
         await session.SaveChangesAsync();
 
         session.Relate<PocoWrote>(
-            new RecordIdOf<string>(personTable, personA.Id.ToString()),
-            new RecordIdOf<string>(bookTable, bookX.Id.ToString()));
+            new RecordIdOf<long>(personTable, personA.Id),
+            new RecordIdOf<long>(bookTable, bookX.Id));
         await session.SaveChangesAsync();
 
         // Delete PocoBook X (the target node)

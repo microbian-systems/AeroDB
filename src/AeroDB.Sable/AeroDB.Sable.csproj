@@ -6,6 +6,7 @@
   </PropertyGroup>
   <ItemGroup>
     <InternalsVisibleTo Include="AeroDB.Tests" />
+    <InternalsVisibleTo Include="AeroDB.AspNetIdentity" />
     <InternalsVisibleTo Include="AeroDB.ML" />
     <InternalsVisibleTo Include="AeroDB.Analyzers.Tests" />
     <InternalsVisibleTo Include="Dali.Benchmarks" />

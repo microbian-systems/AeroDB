@@ -3,6 +3,7 @@ using System.Reflection;
 using AeroDB.Sable.Metadata;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
+using SurrealDb.Net;
 
 namespace AeroDB.Sable;
 
@@ -92,14 +93,17 @@ internal class FilteredPatchExpression<T> : IPatchExpression<T>, IDeferredPatch 
 
     internal PatchContext? PatchContext => _patchContext;
 
-    async Task IDeferredPatch.ExecuteAsync(IDocumentSession session, CancellationToken ct)
+    async Task IDeferredPatch.ExecuteAsync(
+        IDocumentSession session,
+        ISurrealDbSession executionSession,
+        CancellationToken ct)
     {
         if (_operations.Count == 0) return;
 
         var internalSession = (InternalSessionBase)session;
         var schema = internalSession.StoreOptions.Schema;
         var table = MetadataDispatch.GetTableName(typeof(T), schema);
-        var surrealdbSession = internalSession.Session;
+        var surrealdbSession = executionSession;
 
         // Convert the filter expression to a WHERE clause
         var whereClause = SurrealExpressionVisitor.TranslateCondition(_filter.Body, schema);
@@ -143,7 +147,12 @@ internal class FilteredPatchExpression<T> : IPatchExpression<T>, IDeferredPatch 
     /// </summary>
     public async Task ApplyAsync(CancellationToken ct = default)
     {
-        await ((IDeferredPatch)this).ExecuteAsync(_session, ct).ConfigureAwait(false);
+        var executionSession = _session is DocumentSession documentSession
+            ? await documentSession.GetWriteSessionAsync(typeof(T), ct).ConfigureAwait(false)
+            : ((InternalSessionBase)_session).Session;
+        await ((IDeferredPatch)this)
+            .ExecuteAsync(_session, executionSession, ct)
+            .ConfigureAwait(false);
     }
 
     private static MemberInfo GetMember<TValue>(Expression<Func<T, TValue>> property)

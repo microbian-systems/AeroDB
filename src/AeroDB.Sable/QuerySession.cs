@@ -72,22 +72,21 @@ public class QuerySession : InternalSessionBase, IQuerySession
 
     /// <inheritdoc />
     public Task<T?> LoadAsync<T>(int id, CancellationToken ct = default) where T : class
-        => LoadAsync<T>(id.ToString(), ct);
+        => LoadByIdentityAsync<T>(id, ct);
 
     /// <inheritdoc />
     public Task<T?> LoadAsync<T>(long id, CancellationToken ct = default) where T : class
-        => LoadAsync<T>(id.ToString(), ct);
+        => LoadByIdentityAsync<T>(id, ct);
 
     /// <inheritdoc />
     public Task<T?> LoadAsync<T>(Guid id, CancellationToken ct = default) where T : class
-        => LoadAsync<T>(id.ToString(), ct);
+        => LoadByIdentityAsync<T>(id, ct);
 
     /// <inheritdoc />
     public Task<T?> LoadAsync<T>(object id, CancellationToken ct = default) where T : class
     {
         ArgumentNullException.ThrowIfNull(id);
-        var strId = id.ToString();
-        return base.LoadAsync<T>(strId!, ct);
+        return LoadByIdentityAsync<T>(id, ct);
     }
 
     /// <inheritdoc />
@@ -96,22 +95,21 @@ public class QuerySession : InternalSessionBase, IQuerySession
 
     /// <inheritdoc />
     public Task<bool> CheckExistsAsync<T>(int id, CancellationToken ct = default) where T : class
-        => CheckExistsAsync<T>(id.ToString(), ct);
+        => CheckExistsAsyncCore<T>(id, ct);
 
     /// <inheritdoc />
     public Task<bool> CheckExistsAsync<T>(long id, CancellationToken ct = default) where T : class
-        => CheckExistsAsync<T>(id.ToString(), ct);
+        => CheckExistsAsyncCore<T>(id, ct);
 
     /// <inheritdoc />
     public Task<bool> CheckExistsAsync<T>(Guid id, CancellationToken ct = default) where T : class
-        => CheckExistsAsync<T>(id.ToString(), ct);
+        => CheckExistsAsyncCore<T>(id, ct);
 
     /// <inheritdoc />
     public Task<bool> CheckExistsAsync<T>(object id, CancellationToken ct = default) where T : class
     {
         ArgumentNullException.ThrowIfNull(id);
-        var strId = id.ToString();
-        return CheckExistsAsyncCore<T>(strId!, ct);
+        return CheckExistsAsyncCore<T>(id, ct);
     }
 
     /// <inheritdoc />
@@ -120,15 +118,15 @@ public class QuerySession : InternalSessionBase, IQuerySession
 
     /// <inheritdoc />
     public Task<IReadOnlyList<T>> LoadManyAsync<T>(IEnumerable<Guid> ids, CancellationToken ct = default) where T : class
-        => LoadManyAsync<T>(ids.Select(id => id.ToString()), ct);
+        => LoadManyExtensions.LoadManyByIdentityAsync<T>(this, ids.Cast<object>(), ct);
 
     /// <inheritdoc />
     public Task<IReadOnlyList<T>> LoadManyAsync<T>(IEnumerable<long> ids, CancellationToken ct = default) where T : class
-        => LoadManyAsync<T>(ids.Select(id => id.ToString()), ct);
+        => LoadManyExtensions.LoadManyByIdentityAsync<T>(this, ids.Cast<object>(), ct);
 
     /// <inheritdoc />
     public Task<IReadOnlyList<T>> LoadManyAsync<T>(IEnumerable<int> ids, CancellationToken ct = default) where T : class
-        => LoadManyAsync<T>(ids.Select(id => id.ToString()), ct);
+        => LoadManyExtensions.LoadManyByIdentityAsync<T>(this, ids.Cast<object>(), ct);
 
     /// <inheritdoc />
     public async Task<IDocumentMetadata?> MetadataForAsync<T>(T entity, CancellationToken ct = default) where T : class
@@ -138,26 +136,11 @@ public class QuerySession : InternalSessionBase, IQuerySession
         if (entity is IDocumentMetadata existing)
             return existing;
 
-        // Extract entity ID via generated metadata or reflection fallback
-        var entityType = typeof(T);
-        string? id = null;
-        var meta = MetadataRegistry.TryGet(entityType);
-        if (meta?.GetRecordIdAccessor is not null)
-            id = meta.GetRecordIdAccessor(entity);
-        else
-        {
-            var prop = entityType.GetProperty("Id");
-            if (prop is not null)
-            {
-                var idValue = prop.GetValue(entity);
-                id = idValue?.ToString();
-            }
-        }
-
-        if (string.IsNullOrEmpty(id))
+        var table = MetadataDispatch.GetTableName(typeof(T), Options.Schema);
+        if (!DocumentIdentityResolver.TryResolve(entity, table, Options.Schema, out var identity))
             return null;
 
-        var fresh = await LoadAsync<T>(id, ct).ConfigureAwait(false);
+        var fresh = await LoadAsync<T>(identity.Value, ct).ConfigureAwait(false);
         return fresh as IDocumentMetadata;
     }
 }

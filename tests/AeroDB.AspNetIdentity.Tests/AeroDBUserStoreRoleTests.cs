@@ -102,7 +102,7 @@ public class AeroDBUserStoreRoleTests
 
         await using var querySession = await store.QuerySessionAsync();
         var stored = await querySession.RawQueryAsync<RoleIdsResult>(
-            "SELECT role_ids FROM long_key_user:`101`",
+            "SELECT role_ids FROM long_key_user:101",
             parameters: null,
             CancellationToken.None);
         stored.Single().RoleIds.ShouldBe(["201"]);
@@ -152,7 +152,7 @@ public class AeroDBUserStoreRoleTests
         result.Succeeded.ShouldBeTrue();
         await using var querySession = await store.QuerySessionAsync();
         var stored = await querySession.RawQueryAsync<RoleIdsResult>(
-            "SELECT role_ids FROM long_key_user:`301`",
+            "SELECT role_ids FROM long_key_user:301",
             parameters: null,
             CancellationToken.None);
         stored.Single().RoleIds.ShouldBe(["401"]);

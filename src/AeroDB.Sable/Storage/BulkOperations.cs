@@ -1,17 +1,9 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using AeroDB.Sable.Metadata;
 
 namespace AeroDB.Sable;
 
 public static class BulkOperations
 {
-    private static readonly JsonSerializerOptions JsonOptions = new()
-    {
-        PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower,
-        DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
-    };
-
     /// <summary>
     /// Bulk inserts entities using a single SurrealDB batch INSERT statement per chunk,
     /// instead of per-row Store + SaveChangesAsync. This reduces N round-trips to
@@ -26,11 +18,12 @@ public static class BulkOperations
         if (batchSize <= 0)
             throw new ArgumentOutOfRangeException(nameof(batchSize));
         if (entities.Count == 0) return 0;
-        if (session is not InternalSessionBase internalSession)
+        if (session is not DocumentSession documentSession)
         {
             throw new InvalidOperationException(
                 "Bulk insert requires a Sable-owned document session.");
         }
+        InternalSessionBase internalSession = documentSession;
 
         var options = internalSession.StoreOptions;
         if (EncryptedFieldResolver.HasEncryptedFields(typeof(T), options.Schema))
@@ -70,11 +63,9 @@ public static class BulkOperations
         {
             var batch = entities.Skip(i).Take(batchSize).ToList();
 
-            // Serialize each entity to a JSON content object for SurrealDB's array INSERT syntax.
-            // SurrealQL: INSERT INTO table [{...}, {...}, ...]
-            var jsonItems = batch.Select(e => JsonSerializer.Serialize(e, JsonOptions)).ToArray();
-            var jsonArray = "[" + string.Join(",", jsonItems) + "]";
-            var sql = $"INSERT INTO {table} {jsonArray}";
+            var sql = string.Join(
+                Environment.NewLine,
+                batch.Select(entity => documentSession.BuildBulkCreateStatement(entity, table)));
 
             var response = await targetSession.RawQuery(sql, null, ct).ConfigureAwait(false);
             response.EnsureAllOks();

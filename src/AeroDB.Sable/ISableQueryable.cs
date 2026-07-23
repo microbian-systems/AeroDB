@@ -265,11 +265,15 @@ public class SableQueryable<T> : ISableQueryable<T>, IAsyncEnumerable<T>, IOrder
             || typeof(RecordId).IsAssignableFrom(fkType)
             || typeof(IRecord).IsAssignableFrom(fkType)
             || (fkType.IsGenericType && fkType.GetGenericTypeDefinition() == typeof(RecordIdOf<>));
-        var targetUsesPocoIdentity = schema.Mappings.TryGetValue(typeof(TTarget), out var targetMapping)
+        var targetIdentityType = schema.Mappings.TryGetValue(typeof(TTarget), out var targetMapping)
             && targetMapping.IdentityProperty is not null
-            && !typeof(IRecord).IsAssignableFrom(typeof(TTarget))
-            && !ImplementsGenericInterface(typeof(TTarget), typeof(ISableDocument<>));
-        var castFkToString = targetUsesPocoIdentity && fkType != typeof(string);
+            ? typeof(TTarget).GetProperty(targetMapping.IdentityProperty)?.PropertyType
+            : MetadataRegistry.TryGet(typeof(TTarget))?.IdentityType
+                ?? typeof(TTarget).GetProperty("Id")?.PropertyType;
+        targetIdentityType = targetIdentityType is null
+            ? null
+            : Nullable.GetUnderlyingType(targetIdentityType) ?? targetIdentityType;
+        var castFkToString = targetIdentityType == typeof(string) && fkType != typeof(string);
 
         LinkRegistrations.Add(new LinkRegistration(
             typeof(TTarget),

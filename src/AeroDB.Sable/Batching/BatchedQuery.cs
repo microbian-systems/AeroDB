@@ -100,8 +100,8 @@ internal class BatchedQuery : IBatchedQuery
     public IBatchedQuery CheckExists<T>(string id, out Task<bool> result) where T : class
     {
         ThrowIfEncrypted<T>();
-        var table = MetadataDispatch.GetTableName(typeof(T));
-        var surql = $"SELECT id FROM {table}:`{id.Replace("`", "\\`")}` LIMIT 1;";
+        var recordLiteral = ResolveRecordLiteral<T>(id);
+        var surql = $"SELECT id FROM {recordLiteral} LIMIT 1;";
         var tcs = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
         _simpleItems.Add(new SimpleBatchItem(surql, (response, index) =>
         {
@@ -122,8 +122,8 @@ internal class BatchedQuery : IBatchedQuery
     public IBatchedQuery Load<T>(string id, out Task<T?> result) where T : class
     {
         ThrowIfEncrypted<T>();
-        var table = MetadataDispatch.GetTableName(typeof(T));
-        var surql = $"SELECT * FROM {table}:`{id.Replace("`", "\\`")}`;";
+        var recordLiteral = ResolveRecordLiteral<T>(id);
+        var surql = $"SELECT * FROM {recordLiteral};";
         var tcs = new TaskCompletionSource<T?>(TaskCreationOptions.RunContinuationsAsynchronously);
         _simpleItems.Add(new SimpleBatchItem(surql, (response, index) =>
         {
@@ -148,8 +148,8 @@ internal class BatchedQuery : IBatchedQuery
     {
         ThrowIfEncrypted<T>();
         var idList = ids?.ToList() ?? throw new ArgumentNullException(nameof(ids));
-        var table = MetadataDispatch.GetTableName(typeof(T));
-        var inClause = string.Join(", ", idList.Select(id => $"'{table}:{id}'"));
+        var table = MetadataDispatch.GetTableName(typeof(T), _session.StoreOptions.Schema);
+        var inClause = string.Join(", ", idList.Select(ResolveRecordLiteral<T>));
         var surql = $"SELECT * FROM {table} WHERE id IN [{inClause}];";
         var tcs = new TaskCompletionSource<IReadOnlyList<T>>(TaskCreationOptions.RunContinuationsAsynchronously);
         _simpleItems.Add(new SimpleBatchItem(surql, (response, index) =>
@@ -403,6 +403,16 @@ internal class BatchedQuery : IBatchedQuery
     {
         if (EncryptedFieldResolver.HasEncryptedFields(typeof(T), _session.StoreOptions.Schema))
             throw new SableEncryptedOperationNotSupportedException(typeof(T), "batched query");
+    }
+
+    private string ResolveRecordLiteral<T>(string id) where T : class
+    {
+        var schema = _session.StoreOptions.Schema;
+        var table = MetadataDispatch.GetTableName(typeof(T), schema);
+        var normalizedId = DocumentIdentityResolver.NormalizeForDocumentType(typeof(T), id, schema);
+        if (!DocumentIdentityResolver.TryCreate(normalizedId, table, out var identity))
+            throw new ArgumentException($"Unable to resolve the identity for '{typeof(T).Name}'.", nameof(id));
+        return identity.Literal;
     }
 
     /// <summary>

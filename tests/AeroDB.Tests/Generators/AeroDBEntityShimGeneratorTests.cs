@@ -66,7 +66,8 @@ namespace AeroDB.Sable.Metadata
         string? VersionFieldName { get; }
         Func<object, long>? GetVersionAccessor { get; }
         Action<object, long>? SetVersionAccessor { get; }
-        Func<object, string?>? GetRecordIdAccessor { get; }
+        Type? IdentityType { get; }
+        Func<object, object?>? GetIdentityAccessor { get; }
         IReadOnlyList<FieldSchema>? Fields { get; }
     }
 
@@ -75,7 +76,7 @@ namespace AeroDB.Sable.Metadata
         string? GetTenantId(T entity);
         long GetVersion(T entity);
         void SetVersion(T entity, long version);
-        string? GetRecordId(T entity);
+        object? GetIdentity(T entity);
         void SetTenantId(T entity, string? tenantId);
     }
 }

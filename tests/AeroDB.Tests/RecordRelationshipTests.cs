@@ -443,7 +443,7 @@ public sealed class RecordRelationshipTests
             .Link<PocoCustomer>(o => o.CustomerId)
             .Where((o, c) => o.CreatedOn >= orderedOnOrAfter && c.Name == "Alice" && c.Age >= 30);
 
-        query.ToCommand().CommandText.ShouldBe("SELECT * FROM `poco_order` WHERE ((created_on >= d'2026-01-01T00:00:00Z') AND (type::record(\"poco_customer\", <string>customer_id).name = $p0)) AND (type::record(\"poco_customer\", <string>customer_id).age >= $p1);");
+        query.ToCommand().CommandText.ShouldBe("SELECT * FROM `poco_order` WHERE ((created_on >= d'2026-01-01T00:00:00Z') AND (type::record(\"poco_customer\", customer_id).name = $p0)) AND (type::record(\"poco_customer\", customer_id).age >= $p1);");
     }
 
     [Test]
@@ -463,7 +463,7 @@ public sealed class RecordRelationshipTests
                 && p.Name == "Widget"
                 && s.Name == "Troy");
 
-        query.ToCommand().CommandText.ShouldBe("SELECT * FROM `poco_order` WHERE (((created_on >= d'2026-01-01T00:00:00Z') AND (type::record(\"poco_customer\", <string>customer_id).name = $p0)) AND (type::record(\"poco_product\", <string>product_id).name = $p1)) AND (type::record(\"poco_sales_rep\", <string>sales_rep_id).name = $p2);");
+        query.ToCommand().CommandText.ShouldBe("SELECT * FROM `poco_order` WHERE (((created_on >= d'2026-01-01T00:00:00Z') AND (type::record(\"poco_customer\", customer_id).name = $p0)) AND (type::record(\"poco_product\", product_id).name = $p1)) AND (type::record(\"poco_sales_rep\", sales_rep_id).name = $p2);");
     }
 
     [Test]

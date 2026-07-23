@@ -1,6 +1,6 @@
 # Sable Query Compiler, Composability, and Observability Refactor
 
-> **Status:** Implementation in progress; Phase 1 is complete in AeroDB (RF-010, RF-011, RF-013, RF-014); AeroCMS migration RF-012 remains; RF-002 baseline harness is in progress
+> **Status:** Implementation in progress; Phase 1 is complete in AeroDB (RF-010, RF-011, RF-013, RF-014, RF-015); AeroCMS migration RF-012 remains; RF-002 baseline harness is in progress
 > **Last updated:** 2026-07-22
 > **Applies to:** `AeroDB.Sable` 0.0.9.x alpha and its current AeroCMS consumer
 > **Primary objective:** Replace Sable's disconnected query renderers with one internal, composable SurrealQL compiler while preserving the Marten-like document/session API that already serves AeroCMS well.
@@ -628,6 +628,33 @@ parameterized command text. Focused query/compiler/relationship tests passed
 
 **Dependencies:** RF-013.
 
+#### [x] RF-015: Preserve CLR identity types as native record keys
+
+**Description:** Stop converting document identities to strings before record
+construction. A `long`/`int` identity is a native numeric SurrealDB record key;
+a `string` identity remains a string key even when its contents are numeric.
+
+**Acceptance criteria:**
+
+- Store, insert, update, load, existence checks, load-many, delete, hard-delete,
+  patch, bulk insert, projections, batches, concurrency checks, and graph
+  endpoints use one type-aware identity resolver.
+- Existing session method signatures remain unchanged. String overloads infer
+  the declared document identity type; a string-identity document never parses
+  numeric-looking text as a number.
+- Source-generated metadata exposes the raw CLR identity and its declared type
+  instead of a stringified persistence identity.
+- No persisted-data compatibility shim or dual-read path is added. Alpha
+  consumers recreate their databases.
+
+**Verification:** Unit tests distinguish `product:42` from
+`product:\`42\``; real SurrealDB 3.2 tests inspect `record::id(id)` with
+`type::is_int`/`type::is_string`, including a Snowflake-sized value above the
+JavaScript safe-integer range, bulk insert, transaction patching, and graph
+endpoints.
+
+**Dependencies:** RF-011.
+
 **Completed 2026-07-22:** Internalized `SurrealExpressionVisitor`,
 `SurrealQueryResult`, `SurrealQueryProvider`, `CompiledPlan`,
 `CompiledQueryPlanner`, and `CompiledQueryProvider<T>`. `SableCommand` remains the
@@ -1184,6 +1211,8 @@ Add dated entries when work begins or a checkpoint is completed. Include the tas
 | 2026-07-22 | RF-011 | Complete | Migrated all repository-owned C# consumers; `src/AeroDB.slnx --no-restore` built with 0 errors and 3 pre-existing analyzer-test `NU1701` warnings; rename-focused tests passed |
 | 2026-07-22 | RF-013 | Complete | Added parameter-safe `SableCommand`, queryable/compiled `ToCommand()`, and non-executing `ToString()`; focused tests passed 118/118; final serialized runs passed `AeroDB.Tests` 2,062/2,062 and `AeroDB.AspNetIdentity.Tests` 136/136 |
 | 2026-07-22 | RF-014 | Complete | Internalized six query compiler/planner/provider implementation types; full solution built with 0 errors; public-surface and compiler inspection tests passed 23/23 |
+| 2026-07-22 | RF-015 | Complete | Replaced string-erasing record-key construction with a typed identity resolver across CRUD, query sessions, patches, batching, bulk insert, projections, concurrency, graph endpoints, and the ASP.NET Identity adapter. Core session API signatures are unchanged; generated metadata now preserves CLR identity type. No compatibility migration was added because alpha databases will be recreated. Verification passes the embedded/unit project 2,067/2,067, ASP.NET Identity 136/136, and live SurrealDB server suite 5/5. |
+| 2026-07-22 | SQC server suite, SQC-02 | In progress | Added separate `AeroDB.Sable.Server.Tests` project with no embedded dependency, deterministic Bogus fixtures, SurrealDB 3.2 prerequisite checks, and serialized scenario databases. SQC-02 plus typed-identity characterization pass 5/5 against `surrealdb/surrealdb:releases-3-2`; the complete embedded/unit project passes 2,067/2,067. Native integer and string record-key types are asserted directly. Remaining scenarios activate with their production slices rather than as skipped/placeholders. |
 
 ## 16. References
 

@@ -116,7 +116,8 @@ namespace AeroDB.Sable.Metadata
         string? VersionFieldName { get; }
         Func<object, long>? GetVersionAccessor { get; }
         Action<object, long>? SetVersionAccessor { get; }
-        Func<object, string?>? GetRecordIdAccessor { get; }
+        Type? IdentityType { get; }
+        Func<object, object?>? GetIdentityAccessor { get; }
         IReadOnlyList<FieldSchema>? Fields { get; }
         IReadOnlyList<EncryptedFieldDescriptor>? EncryptedFields { get; }
         IReadOnlyList<BlindIndexDescriptor>? BlindIndexes { get; }
@@ -127,7 +128,7 @@ namespace AeroDB.Sable.Metadata
         string? GetTenantId(T entity);
         long GetVersion(T entity);
         void SetVersion(T entity, long version);
-        string? GetRecordId(T entity);
+        object? GetIdentity(T entity);
         void SetTenantId(T entity, string? tenantId);
     }
 
@@ -243,9 +244,10 @@ public class MyEntity : AeroDB.Sable.SableDocument<long>
         code.ShouldContain("MyEntityMetadata");
         code.ShouldContain("ITypeMetadata<global::MyEntity>");
         code.ShouldContain("TableName => \"my_entity\"");
-        // SableDocument<long> GetRecordId should use .ToString()
-        code.ShouldContain("GetRecordId");
-        code.ShouldContain("entity.Id.ToString()");
+        // SableDocument<long> metadata must preserve the native CLR identity type.
+        code.ShouldContain("GetIdentity");
+        code.ShouldContain("IdentityType => typeof(long)");
+        code.ShouldContain("GetIdentity(global::MyEntity entity) => entity.Id;");
     }
 
     // ── Test 3: Properties generate correct FieldSchema entries ────────────
@@ -356,7 +358,7 @@ public sealed class InvalidEncryptedIdentity : AeroDB.Sable.ISableDocument<strin
 
         code.ShouldContain(
             "EncryptedFieldDescriptor(\"Id\", typeof(string), \"utf8-string-v1\"");
-        code.ShouldContain("GetRecordIdAccessor");
+        code.ShouldContain("GetIdentityAccessor");
     }
 
     [Test]

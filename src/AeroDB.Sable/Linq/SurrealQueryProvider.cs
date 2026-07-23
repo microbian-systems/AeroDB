@@ -1329,12 +1329,8 @@ internal sealed class SurrealQueryProvider : IQueryProvider
         if (source is not IRecord sourceRecord || sourceRecord.Id is null)
             return null;
 
-        var sourceTable = MetadataDispatch.GetTableName(typeof(T), _options.Schema);
-        var sourceKey = StripRecordTable(ExtractKeyString(sourceRecord.Id));
-        if (string.IsNullOrWhiteSpace(sourceKey))
-            return null;
-
-        var sql = $"SELECT `{fetchField}` AS link_id FROM `{sourceTable}`:{FormatRecordIdKey(sourceKey)}";
+        var sourceLiteral = DocumentIdentityResolver.FormatRecordIdLiteral(sourceRecord.Id);
+        var sql = $"SELECT `{fetchField}` AS link_id FROM {sourceLiteral}";
         var response = await session.RawQuery(sql, null, ct).ConfigureAwait(false);
         if (response.HasErrors || response.Count == 0)
             return null;
@@ -1368,12 +1364,7 @@ internal sealed class SurrealQueryProvider : IQueryProvider
         CancellationToken ct)
         where TFetched : class
     {
-        var table = MetadataDispatch.GetTableName(typeof(TFetched), _options.Schema);
-        var key = StripRecordTable(ExtractKeyString(recordId));
-        if (string.IsNullOrWhiteSpace(key))
-            return null;
-
-        var sql = $"SELECT * FROM `{table}`:{FormatRecordIdKey(key)}";
+        var sql = $"SELECT * FROM {DocumentIdentityResolver.FormatRecordIdLiteral(recordId)}";
         var response = await session.RawQuery(sql, null, ct).ConfigureAwait(false);
         if (response.HasErrors || response.Count == 0)
             return null;
@@ -1387,15 +1378,6 @@ internal sealed class SurrealQueryProvider : IQueryProvider
             records,
             mapping?.IdentityProperty ?? "Id",
             _options.Schema).FirstOrDefault();
-    }
-
-    private static string FormatRecordIdKey(string key)
-    {
-        key = StripRecordTable(key) ?? key;
-        if (long.TryParse(key, out _) || ulong.TryParse(key, out _))
-            return key;
-
-        return $"`{key.Replace("`", "\\`")}`";
     }
 
     private static string? StripRecordTable(string? key)
