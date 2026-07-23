@@ -108,7 +108,7 @@ public class IncludeSurrealQLTests
         var provider = new SurrealQueryProvider(
             Substitute.For<SurrealDb.Net.ISurrealDbSession>(),
             new StoreOptions());
-        var queryable = new SurrealDbQueryable<OrderWithCustomer>(provider);
+        var queryable = new SableQueryable<OrderWithCustomer>(provider);
 
         queryable.Include(o => o.Customer);
 
@@ -200,7 +200,7 @@ public class FetchSurrealQLTests
         var session = Substitute.For<ISurrealDbSession>();
         var options = new StoreOptions();
         var provider = new SurrealQueryProvider(session, options);
-        var queryable = new SurrealDbQueryable<Person>(provider);
+        var queryable = new SableQueryable<Person>(provider);
 
         queryable.Fetch(p => p.Name);
         queryable.Fetch(p => p.Email);
@@ -366,7 +366,7 @@ public class ProjectionSurrealQLTests
         // and generates the correct projection + FetchFields
         var session = Substitute.For<ISurrealDbSession>();
         var store = new StoreOptions();
-        var queryable = new SurrealDbQueryable<OrderWithCustomer>(
+        var queryable = new SableQueryable<OrderWithCustomer>(
             new SurrealQueryProvider(session, store));
 
         // Build: .Select(o => new FullOrderDto { Customer = o.Customer, Product = o.Product })
@@ -388,7 +388,7 @@ public class ProjectionSurrealQLTests
         // Non-Record properties should NOT generate auto-FETCH fields
         var session = Substitute.For<ISurrealDbSession>();
         var store = new StoreOptions();
-        var queryable = new SurrealDbQueryable<OrderWithCustomer>(
+        var queryable = new SableQueryable<OrderWithCustomer>(
             new SurrealQueryProvider(session, store));
 
         // Build: .Select(o => new OrderCustomerDto { CustomerName = o.Customer!.Name, Product = o.Product })
@@ -1223,9 +1223,9 @@ public class FetchIncludeIntegrationTests
 public class FilterIncludeIntegrationTests
 {
     [Test]
-    public async Task ISurrealDbQueryable_HasFilterIncludeMethod()
+    public async Task ISableQueryable_HasFilterIncludeMethod()
     {
-        var filterIncludeMethod = typeof(SurrealDbQueryableExtensions).GetMethods()
+        var filterIncludeMethod = typeof(SableQueryableExtensions).GetMethods()
             .FirstOrDefault(m => m.Name == "FilterInclude"
                 && m.GetParameters().Length == 3);
 
@@ -1348,9 +1348,9 @@ public class FilterIncludeIntegrationTests
     }
 
     [Test]
-    public async Task FilterInclude_SurrealDbQueryable_FilterIncludeSpecsField()
+    public async Task FilterInclude_SableQueryable_FilterIncludeSpecsField()
     {
-        var field = typeof(SurrealDbQueryable<>).GetField("FilterIncludeSpecs",
+        var field = typeof(SableQueryable<>).GetField("FilterIncludeSpecs",
             BindingFlags.NonPublic | BindingFlags.Instance);
 
         field.ShouldNotBeNull();
@@ -1555,7 +1555,7 @@ public class AutoFetchIntegrationTests
     {
         var session = Substitute.For<ISurrealDbSession>();
         var store = new StoreOptions();
-        var queryable = new SurrealDbQueryable<MultiRefOrder>(
+        var queryable = new SableQueryable<MultiRefOrder>(
             new SurrealQueryProvider(session, store));
 
         Expression selector = Expression.Call(
@@ -1583,7 +1583,7 @@ public class AutoFetchIntegrationTests
     {
         var session = Substitute.For<ISurrealDbSession>();
         var store = new StoreOptions();
-        var queryable = new SurrealDbQueryable<OrderWithCustomer>(
+        var queryable = new SableQueryable<OrderWithCustomer>(
             new SurrealQueryProvider(session, store));
 
         Expression selector = Expression.Call(
@@ -1607,7 +1607,7 @@ public class AutoFetchIntegrationTests
     {
         var session = Substitute.For<ISurrealDbSession>();
         var store = new StoreOptions();
-        var queryable = new SurrealDbQueryable<OrderWithCustomer>(
+        var queryable = new SableQueryable<OrderWithCustomer>(
             new SurrealQueryProvider(session, store));
 
         Expression selector = Expression.Call(

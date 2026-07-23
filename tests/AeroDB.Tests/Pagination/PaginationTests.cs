@@ -5,7 +5,7 @@ namespace AeroDB.Tests.Pagination;
 
 /// <summary>
 /// Tests for <see cref="PagedListQueryableExtensions.ToPagedListAsync{T}"/>
-/// on <see cref="ISurrealDbQueryable{T}"/>.
+/// on <see cref="ISableQueryable{T}"/>.
 /// </summary>
 public class PaginationTests
 {

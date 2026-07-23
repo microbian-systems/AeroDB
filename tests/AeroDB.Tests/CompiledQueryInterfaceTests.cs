@@ -13,7 +13,7 @@ namespace AeroDB.Tests;
 public class FindPersonByFirstName : ICompiledQuery<Person, Person>
 {
     public string FirstName { get; set; } = "";
-    public Expression<Func<ISurrealDbQueryable<Person>, Person>> QueryIs()
+    public Expression<Func<ISableQueryable<Person>, Person>> QueryIs()
         => q => q.Where(x => x.Name == FirstName).FirstOrDefault()!;
 }
 
@@ -23,7 +23,7 @@ public class FindPersonByFirstName : ICompiledQuery<Person, Person>
 public class ListPeopleOlderThan : ICompiledListQuery<Person>
 {
     public int MinAge { get; set; }
-    public Expression<Func<ISurrealDbQueryable<Person>, IEnumerable<Person>>> QueryIs()
+    public Expression<Func<ISableQueryable<Person>, IEnumerable<Person>>> QueryIs()
         => q => q.Where(x => x.Age > MinAge);
 }
 
@@ -33,7 +33,7 @@ public class ListPeopleOlderThan : ICompiledListQuery<Person>
 public class ListPeopleOlderThanOrdered : ICompiledListQuery<Person>
 {
     public int MinAge { get; set; }
-    public Expression<Func<ISurrealDbQueryable<Person>, IEnumerable<Person>>> QueryIs()
+    public Expression<Func<ISableQueryable<Person>, IEnumerable<Person>>> QueryIs()
         => q => q.Where(x => x.Age > MinAge).OrderBy(x => x.Name);
 }
 
@@ -43,7 +43,7 @@ public class ListPeopleOlderThanOrdered : ICompiledListQuery<Person>
 public class FindPersonByFirstNameShorthand : ICompiledQuery<Person>
 {
     public string FirstName { get; set; } = "";
-    public Expression<Func<ISurrealDbQueryable<Person>, Person>> QueryIs()
+    public Expression<Func<ISableQueryable<Person>, Person>> QueryIs()
         => q => q.Where(x => x.Name == FirstName).FirstOrDefault()!;
 }
 
@@ -56,7 +56,7 @@ public class PagedPeopleQuery : ICompiledListQuery<Person>
 {
     public int Skip { get; set; }
     public int Limit { get; set; } = 10;
-    public Expression<Func<ISurrealDbQueryable<Person>, IEnumerable<Person>>> QueryIs()
+    public Expression<Func<ISableQueryable<Person>, IEnumerable<Person>>> QueryIs()
         => q => q.OrderBy(x => x.Name).Skip(Skip).Take(Limit);
 }
 
@@ -66,7 +66,7 @@ public class PagedPeopleQuery : ICompiledListQuery<Person>
 public class ListPeopleByNameContains : ICompiledListQuery<Person>
 {
     public string Search { get; set; } = "";
-    public Expression<Func<ISurrealDbQueryable<Person>, IEnumerable<Person>>> QueryIs()
+    public Expression<Func<ISableQueryable<Person>, IEnumerable<Person>>> QueryIs()
         => q => q.Where(x => x.Name.Contains(Search));
 }
 
@@ -77,7 +77,7 @@ public class ListPeopleByNameContains : ICompiledListQuery<Person>
 public class MaterializedPeopleOlderThan : ICompiledQuery<Person, IList<Person>>
 {
     public int MinAge { get; set; }
-    public Expression<Func<ISurrealDbQueryable<Person>, IList<Person>>> QueryIs()
+    public Expression<Func<ISableQueryable<Person>, IList<Person>>> QueryIs()
         => q => q.Where(x => x.Age > MinAge).ToList();
 }
 

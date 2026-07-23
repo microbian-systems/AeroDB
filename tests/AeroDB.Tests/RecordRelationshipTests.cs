@@ -167,10 +167,10 @@ public sealed class RecordRelationshipTests
         options.Schema.For<RelationshipOrder>().HasOne(x => x.Customer);
 
         var provider = new SurrealQueryProvider(Substitute.For<ISurrealDbSession>(), options);
-        var query = ((ISurrealDbQueryable<RelationshipOrder>)new SurrealDbQueryable<RelationshipOrder>(provider))
+        var query = ((ISableQueryable<RelationshipOrder>)new SableQueryable<RelationshipOrder>(provider))
             .Select(x => new { x.Customer!.Name });
 
-        query.ToCommand().ShouldBe("SELECT customer.name FROM `relationship_order`;");
+        query.ToCommand().CommandText.ShouldBe("SELECT customer.name FROM `relationship_order`;");
     }
 
     [Test]
@@ -180,10 +180,10 @@ public sealed class RecordRelationshipTests
         options.Schema.For<RelationshipOrder>().HasOne(x => x.Customer);
 
         var provider = new SurrealQueryProvider(Substitute.For<ISurrealDbSession>(), options);
-        var query = ((ISurrealDbQueryable<RelationshipOrder>)new SurrealDbQueryable<RelationshipOrder>(provider))
+        var query = ((ISableQueryable<RelationshipOrder>)new SableQueryable<RelationshipOrder>(provider))
             .Where(x => x.Customer!.Name == "Alice");
 
-        query.ToCommand().ShouldBe("SELECT * FROM `relationship_order` WHERE customer.name = $p0;");
+        query.ToCommand().CommandText.ShouldBe("SELECT * FROM `relationship_order` WHERE customer.name = $p0;");
     }
 
     [Test]
@@ -194,10 +194,10 @@ public sealed class RecordRelationshipTests
         var orderedOnOrAfter = new DateTimeOffset(2026, 1, 1, 0, 0, 0, TimeSpan.Zero);
 
         var provider = new SurrealQueryProvider(Substitute.For<ISurrealDbSession>(), options);
-        var query = ((ISurrealDbQueryable<RelationshipOrder>)new SurrealDbQueryable<RelationshipOrder>(provider))
+        var query = ((ISableQueryable<RelationshipOrder>)new SableQueryable<RelationshipOrder>(provider))
             .Where(o => o.CreatedOn >= orderedOnOrAfter && o.Customer!.Name == "Alice");
 
-        query.ToCommand().ShouldBe("SELECT * FROM `relationship_order` WHERE (created_on >= d'2026-01-01T00:00:00Z') AND (customer.name = $p0);");
+        query.ToCommand().CommandText.ShouldBe("SELECT * FROM `relationship_order` WHERE (created_on >= d'2026-01-01T00:00:00Z') AND (customer.name = $p0);");
     }
 
     [Test]
@@ -207,10 +207,10 @@ public sealed class RecordRelationshipTests
         options.Schema.For<RelationshipOrder>().HasOne(x => x.Customer);
 
         var provider = new SurrealQueryProvider(Substitute.For<ISurrealDbSession>(), options);
-        var query = new SurrealDbQueryable<RelationshipOrder>(provider)
+        var query = new SableQueryable<RelationshipOrder>(provider)
             .Where((RelationshipOrder o, RelationshipCustomer c) => c.Name == "Alice");
 
-        query.ToCommand().ShouldBe("SELECT * FROM `relationship_order` WHERE customer.name = $p0;");
+        query.ToCommand().CommandText.ShouldBe("SELECT * FROM `relationship_order` WHERE customer.name = $p0;");
     }
 
     [Test]
@@ -221,11 +221,11 @@ public sealed class RecordRelationshipTests
         var orderedOnOrAfter = new DateTimeOffset(2026, 1, 1, 0, 0, 0, TimeSpan.Zero);
 
         var provider = new SurrealQueryProvider(Substitute.For<ISurrealDbSession>(), options);
-        var query = new SurrealDbQueryable<RelationshipOrder>(provider)
+        var query = new SableQueryable<RelationshipOrder>(provider)
             .Link<RelationshipCustomer>(o => o.Customer)
             .Where((o, c) => o.CreatedOn >= orderedOnOrAfter && c.Name == "Alice");
 
-        query.ToCommand().ShouldBe("SELECT * FROM `relationship_order` WHERE (created_on >= d'2026-01-01T00:00:00Z') AND (customer.name = $p0);");
+        query.ToCommand().CommandText.ShouldBe("SELECT * FROM `relationship_order` WHERE (created_on >= d'2026-01-01T00:00:00Z') AND (customer.name = $p0);");
     }
 
     [Test]
@@ -235,11 +235,11 @@ public sealed class RecordRelationshipTests
         options.Schema.For<RelationshipOrder>().HasOne(x => x.Customer);
 
         var provider = new SurrealQueryProvider(Substitute.For<ISurrealDbSession>(), options);
-        var query = new SurrealDbQueryable<RelationshipOrder>(provider)
+        var query = new SableQueryable<RelationshipOrder>(provider)
             .Join<RelationshipCustomer>(o => o.Customer)
             .Where((o, c) => c.Name == "Alice");
 
-        query.ToCommand().ShouldBe("SELECT * FROM `relationship_order` WHERE customer.name = $p0;");
+        query.ToCommand().CommandText.ShouldBe("SELECT * FROM `relationship_order` WHERE customer.name = $p0;");
     }
 
     [Test]
@@ -249,11 +249,11 @@ public sealed class RecordRelationshipTests
         options.Schema.For<RelationshipEntityOrder>();
 
         var provider = new SurrealQueryProvider(Substitute.For<ISurrealDbSession>(), options);
-        var query = new SurrealDbQueryable<RelationshipEntityOrder>(provider)
+        var query = new SableQueryable<RelationshipEntityOrder>(provider)
             .Link<RelationshipCustomer>(o => o.CustomerId)
             .Where((o, c) => c.Name == "Alice");
 
-        query.ToCommand().ShouldBe("SELECT * FROM `relationship_entity_order` WHERE type::record(\"relationship_customer\", customer_id).name = $p0;");
+        query.ToCommand().CommandText.ShouldBe("SELECT * FROM `relationship_entity_order` WHERE type::record(\"relationship_customer\", customer_id).name = $p0;");
     }
 
     [Test]
@@ -263,11 +263,11 @@ public sealed class RecordRelationshipTests
         options.Schema.For<RelationshipEntityOrder>();
 
         var provider = new SurrealQueryProvider(Substitute.For<ISurrealDbSession>(), options);
-        var query = new SurrealDbQueryable<RelationshipEntityOrder>(provider)
+        var query = new SableQueryable<RelationshipEntityOrder>(provider)
             .Link<RelationshipCustomer>(o => o.CustomerId)
             .Where((o, c) => c.Name == "Alice" && c.Age >= 30);
 
-        query.ToCommand().ShouldBe("SELECT * FROM `relationship_entity_order` WHERE type::record(\"relationship_customer\", customer_id).name = $p0 AND type::record(\"relationship_customer\", customer_id).age >= $p1;");
+        query.ToCommand().CommandText.ShouldBe("SELECT * FROM `relationship_entity_order` WHERE type::record(\"relationship_customer\", customer_id).name = $p0 AND type::record(\"relationship_customer\", customer_id).age >= $p1;");
     }
 
     [Test]
@@ -293,12 +293,12 @@ public sealed class RecordRelationshipTests
         options.Schema.For<RelationshipOrder>().HasOne(x => x.Customer);
 
         var provider = new SurrealQueryProvider(Substitute.For<ISurrealDbSession>(), options);
-        var query = new SurrealDbQueryable<RelationshipOrder>(provider)
+        var query = new SableQueryable<RelationshipOrder>(provider)
             .Link<RelationshipCustomer>(o => o.Customer)
             .Link<RelationshipProduct>(o => o.ProductId)
             .Where((o, c, p) => c.Name == "Alice" && p.Name == "Widget");
 
-        query.ToCommand().ShouldBe("SELECT * FROM `relationship_order` WHERE (customer.name = $p0) AND (type::record(\"relationship_product\", product_id).name = $p1);");
+        query.ToCommand().CommandText.ShouldBe("SELECT * FROM `relationship_order` WHERE (customer.name = $p0) AND (type::record(\"relationship_product\", product_id).name = $p1);");
     }
 
     [Test]
@@ -312,7 +312,7 @@ public sealed class RecordRelationshipTests
         var orderedOnOrAfter = new DateTime(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
         var provider = new SurrealQueryProvider(Substitute.For<ISurrealDbSession>(), options);
-        var query = new SurrealDbQueryable<RelationshipOrder>(provider)
+        var query = new SableQueryable<RelationshipOrder>(provider)
             .Link<RelationshipCustomer>(o => o.Customer)
             .Link<RelationshipProduct>(o => o.Product)
             .Link<RelationshipSalesRep>(o => o.SalesRep)
@@ -321,7 +321,7 @@ public sealed class RecordRelationshipTests
                 && p.Name == "Widget"
                 && s.Name == "Troy");
 
-        query.ToCommand().ShouldBe("SELECT * FROM `relationship_order` WHERE (((created_on >= d'2026-01-01T00:00:00Z') AND (customer.name = $p0)) AND (product.name = $p1)) AND (sales_rep.name = $p2);");
+        query.ToCommand().CommandText.ShouldBe("SELECT * FROM `relationship_order` WHERE (((created_on >= d'2026-01-01T00:00:00Z') AND (customer.name = $p0)) AND (product.name = $p1)) AND (sales_rep.name = $p2);");
     }
 
     [Test]
@@ -370,10 +370,10 @@ public sealed class RecordRelationshipTests
             .FieldName("parent_order");
 
         var provider = new SurrealQueryProvider(Substitute.For<ISurrealDbSession>(), options);
-        var concrete = new SurrealDbQueryable<ReverseParent>(provider);
-        ISurrealDbQueryable<ReverseParent> queryable = concrete;
+        var concrete = new SableQueryable<ReverseParent>(provider);
+        ISableQueryable<ReverseParent> queryable = concrete;
 
-        SurrealDbQueryableExtensions.IncludeReverse<ReverseParent, ReverseChild>(queryable, x => x.Items);
+        SableQueryableExtensions.IncludeReverse<ReverseParent, ReverseChild>(queryable, x => x.Items);
 
         var spec = concrete.IncludeSpecs.Single();
         spec.ForeignKeyClrName.ShouldBe(nameof(ReverseChild.Parent));
@@ -389,11 +389,11 @@ public sealed class RecordRelationshipTests
         options.Schema.For<ThenAddress>();
 
         var provider = new SurrealQueryProvider(Substitute.For<ISurrealDbSession>(), options);
-        var query = new SurrealDbQueryable<ThenOrder>(provider)
+        var query = new SableQueryable<ThenOrder>(provider)
             .Include(x => x.Customer)
             .ThenInclude(x => x.Address);
 
-        query.ToCommand().ShouldBe("SELECT * FROM `then_order` FETCH `customer`.`address`;");
+        query.ToCommand().CommandText.ShouldBe("SELECT * FROM `then_order` FETCH `customer`.`address`;");
     }
 
     [Test]
@@ -439,11 +439,11 @@ public sealed class RecordRelationshipTests
         var orderedOnOrAfter = new DateTimeOffset(2026, 1, 1, 0, 0, 0, TimeSpan.Zero);
 
         var provider = new SurrealQueryProvider(Substitute.For<ISurrealDbSession>(), options);
-        var query = new SurrealDbQueryable<PocoOrder>(provider)
+        var query = new SableQueryable<PocoOrder>(provider)
             .Link<PocoCustomer>(o => o.CustomerId)
             .Where((o, c) => o.CreatedOn >= orderedOnOrAfter && c.Name == "Alice" && c.Age >= 30);
 
-        query.ToCommand().ShouldBe("SELECT * FROM `poco_order` WHERE ((created_on >= d'2026-01-01T00:00:00Z') AND (type::record(\"poco_customer\", <string>customer_id).name = $p0)) AND (type::record(\"poco_customer\", <string>customer_id).age >= $p1);");
+        query.ToCommand().CommandText.ShouldBe("SELECT * FROM `poco_order` WHERE ((created_on >= d'2026-01-01T00:00:00Z') AND (type::record(\"poco_customer\", <string>customer_id).name = $p0)) AND (type::record(\"poco_customer\", <string>customer_id).age >= $p1);");
     }
 
     [Test]
@@ -454,7 +454,7 @@ public sealed class RecordRelationshipTests
         var orderedOnOrAfter = new DateTimeOffset(2026, 1, 1, 0, 0, 0, TimeSpan.Zero);
 
         var provider = new SurrealQueryProvider(Substitute.For<ISurrealDbSession>(), options);
-        var query = new SurrealDbQueryable<PocoOrder>(provider)
+        var query = new SableQueryable<PocoOrder>(provider)
             .Link<PocoCustomer>(o => o.CustomerId)
             .Link<PocoProduct>(o => o.ProductId)
             .Join<PocoSalesRep>(o => o.SalesRepId)
@@ -463,7 +463,7 @@ public sealed class RecordRelationshipTests
                 && p.Name == "Widget"
                 && s.Name == "Troy");
 
-        query.ToCommand().ShouldBe("SELECT * FROM `poco_order` WHERE (((created_on >= d'2026-01-01T00:00:00Z') AND (type::record(\"poco_customer\", <string>customer_id).name = $p0)) AND (type::record(\"poco_product\", <string>product_id).name = $p1)) AND (type::record(\"poco_sales_rep\", <string>sales_rep_id).name = $p2);");
+        query.ToCommand().CommandText.ShouldBe("SELECT * FROM `poco_order` WHERE (((created_on >= d'2026-01-01T00:00:00Z') AND (type::record(\"poco_customer\", <string>customer_id).name = $p0)) AND (type::record(\"poco_product\", <string>product_id).name = $p1)) AND (type::record(\"poco_sales_rep\", <string>sales_rep_id).name = $p2);");
     }
 
     [Test]
@@ -839,7 +839,7 @@ public sealed class CompiledRelationshipOrdersByCustomerName : ICompiledListQuer
 {
     public string Name { get; set; } = "";
 
-    public Expression<Func<ISurrealDbQueryable<RelationshipOrder>, IEnumerable<RelationshipOrder>>> QueryIs()
+    public Expression<Func<ISableQueryable<RelationshipOrder>, IEnumerable<RelationshipOrder>>> QueryIs()
         => q => q
             .Link<RelationshipCustomer>(x => x.Customer)
             .Where((o, c) => c.Name == Name);
@@ -847,7 +847,7 @@ public sealed class CompiledRelationshipOrdersByCustomerName : ICompiledListQuer
 
 public sealed class CompiledThenIncludeOrders : ICompiledListQuery<ThenOrder>
 {
-    public Expression<Func<ISurrealDbQueryable<ThenOrder>, IEnumerable<ThenOrder>>> QueryIs()
+    public Expression<Func<ISableQueryable<ThenOrder>, IEnumerable<ThenOrder>>> QueryIs()
         => q => q
             .Include(x => x.Customer)
             .ThenInclude(x => x.Address);

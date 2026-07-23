@@ -181,7 +181,7 @@ SELECT customer.name AS CustomerName, customer.email AS CustomerEmail FROM order
 
 Simple find-and-replace across the codebase and tests. No behavior change.
 
-**Files:** `ISurrealDbQueryable.cs`, `SurrealQueryProvider.cs`, all test files referencing `.Include(`
+**Files:** `ISableQueryable.cs`, `SurrealQueryProvider.cs`, all test files referencing `.Include(`
 **Tests:** 0 (compilation check only)
 
 ---
@@ -204,8 +204,8 @@ The existing `.Fetch()` generates correct `SELECT ... FETCH customer` SurrealQL.
 
 `IncludeExtensions.cs`:
 ```csharp
-public static ISurrealDbQueryable<T> Include<T, TInclude>(
-    this ISurrealDbQueryable<T> source,
+public static ISableQueryable<T> Include<T, TInclude>(
+    this ISableQueryable<T> source,
     Expression<Func<T, TInclude?>> property)
     where TInclude : class
 ```
@@ -233,8 +233,8 @@ public static ISurrealDbQueryable<T> Include<T, TInclude>(
 **Files:** `IncludeExtensions.cs`, `IncludeQueryGenerator.cs`
 
 ```csharp
-public static ISurrealDbQueryable<T> IncludeReverse<T, TChild>(
-    this ISurrealDbQueryable<T> source,
+public static ISableQueryable<T> IncludeReverse<T, TChild>(
+    this ISableQueryable<T> source,
     Expression<Func<T, IEnumerable<TChild>>> property,
     string childTable,
     string foreignKey)
@@ -256,8 +256,8 @@ Optional ordering: delegate that configures `AggregateQueryBuilder` for `ORDER B
 **Files:** `IncludeExtensions.cs`, `IncludeQueryGenerator.cs`
 
 ```csharp
-public static ISurrealDbQueryable<T> FilterInclude<T, TChild>(
-    this ISurrealDbQueryable<T> source,
+public static ISableQueryable<T> FilterInclude<T, TChild>(
+    this ISableQueryable<T> source,
     Expression<Func<T, IEnumerable<TChild>>> property,
     Expression<Func<IEnumerable<TChild>, bool>> filter)
     where TChild : class
@@ -380,7 +380,7 @@ For single-valued forward includes with `LIMIT 1`:
 
 | Action | File |
 |--------|------|
-| Rename | `ISurrealDbQueryable.cs` — `.Include()` → `.IncludeBatch()` |
+| Rename | `ISableQueryable.cs` — `.Include()` → `.IncludeBatch()` |
 | Rename | `SurrealQueryProvider.cs` — all `IncludeDescriptor` refs → `IncludeBatchDescriptor` |
 | Rename | All test files — `.Include(` → `.IncludeBatch(` |
 | Modify | `ExpressionVisitor.cs` — `ProjMember()` / `VisitMember` dot-walk |

@@ -48,7 +48,7 @@ var achievements = await achievementsTask;
 
 - Reuse existing `SurrealExpressionVisitor` to compile LINQ expressions to SurrealQL WHERE clauses
 - Reuse existing `BatchedQuery.InlineParameters` for parameter inlining
-- `BatchedQueryable<T>` is a lightweight builder (not a full `IQueryProvider` like `ISurrealDbQueryable<T>`)
+- `BatchedQueryable<T>` is a lightweight builder (not a full `IQueryProvider` like `ISableQueryable<T>`)
 - Keep existing `out Task` overloads for backwards compat, or deprecate them
 
 ### Design decision: eager vs lazy Execute

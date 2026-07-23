@@ -2965,10 +2965,10 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         public Task<FetchForWritingResult<T>?> FetchForExclusiveWriting<T>(string streamId, CancellationToken ct = default) where T : class
             => _inner.FetchForExclusiveWriting<T>(streamId, ct);
 
-        public ISurrealDbQueryable<T> QueryRawEventDataOnly<T>() where T : class
+        public ISableQueryable<T> QueryRawEventDataOnly<T>() where T : class
             => _inner.QueryRawEventDataOnly<T>();
 
-        public ISurrealDbQueryable<IEvent> QueryAllRawEvents()
+        public ISableQueryable<IEvent> QueryAllRawEvents()
             => _inner.QueryAllRawEvents();
 
         public IEvent BuildEvent(object data)

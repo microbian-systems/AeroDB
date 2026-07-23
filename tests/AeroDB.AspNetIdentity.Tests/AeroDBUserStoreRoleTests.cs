@@ -53,9 +53,9 @@ public class AeroDBUserStoreRoleTests
         return store;
     }
 
-    private static ISurrealDbQueryable<T> CreateMockQueryable<T>(List<T> data) where T : class
+    private static ISableQueryable<T> CreateMockQueryable<T>(List<T> data) where T : class
     {
-        var queryable = Substitute.For<ISurrealDbQueryable<T>>();
+        var queryable = Substitute.For<ISableQueryable<T>>();
                 queryable.ToListAsync(Arg.Any<CancellationToken>()).Returns(data);
 
         var provider = Substitute.For<IQueryProvider>();
@@ -166,7 +166,7 @@ public class AeroDBUserStoreRoleTests
         var role = new IdentityRole("admin") { Id = "role-1", NormalizedName = "ADMIN" };
 
         // Mock role lookup
-        var roleQueryable = Substitute.For<ISurrealDbQueryable<IdentityRole>>();
+        var roleQueryable = Substitute.For<ISableQueryable<IdentityRole>>();
         roleQueryable.FirstOrDefaultAsync(
             Arg.Any<Expression<Func<IdentityRole, bool>>>(),
             Arg.Any<CancellationToken>())
@@ -200,7 +200,7 @@ public class AeroDBUserStoreRoleTests
         var store = CreateStore(out _, out var session, out var logger);
         var user = new IdentityUser("testuser") { Id = "user-1" };
 
-        var roleQueryable = Substitute.For<ISurrealDbQueryable<IdentityRole>>();
+        var roleQueryable = Substitute.For<ISableQueryable<IdentityRole>>();
         roleQueryable.FirstOrDefaultAsync(
             Arg.Any<Expression<Func<IdentityRole, bool>>>(),
             Arg.Any<CancellationToken>())
@@ -223,7 +223,7 @@ public class AeroDBUserStoreRoleTests
         var user = new IdentityUser("testuser") { Id = "user-1" };
         var role = new IdentityRole("admin") { Id = "role-1", NormalizedName = "ADMIN" };
 
-        var roleQueryable = Substitute.For<ISurrealDbQueryable<IdentityRole>>();
+        var roleQueryable = Substitute.For<ISableQueryable<IdentityRole>>();
         roleQueryable.FirstOrDefaultAsync(
             Arg.Any<Expression<Func<IdentityRole, bool>>>(),
             Arg.Any<CancellationToken>())
@@ -256,7 +256,7 @@ public class AeroDBUserStoreRoleTests
         var user = new IdentityUser("testuser") { Id = "user-1" };
         var role = new IdentityRole("admin") { Id = "role-1", NormalizedName = "ADMIN" };
 
-        var roleQueryable = Substitute.For<ISurrealDbQueryable<IdentityRole>>();
+        var roleQueryable = Substitute.For<ISableQueryable<IdentityRole>>();
         roleQueryable.FirstOrDefaultAsync(
             Arg.Any<Expression<Func<IdentityRole, bool>>>(),
             Arg.Any<CancellationToken>())
@@ -289,7 +289,7 @@ public class AeroDBUserStoreRoleTests
         var user = new IdentityUser("testuser") { Id = "user-1" };
         var role = new IdentityRole("admin") { Id = "role-1", NormalizedName = "ADMIN" };
 
-        var roleQueryable = Substitute.For<ISurrealDbQueryable<IdentityRole>>();
+        var roleQueryable = Substitute.For<ISableQueryable<IdentityRole>>();
         roleQueryable.FirstOrDefaultAsync(
             Arg.Any<Expression<Func<IdentityRole, bool>>>(),
             Arg.Any<CancellationToken>())
@@ -318,7 +318,7 @@ public class AeroDBUserStoreRoleTests
         var store = CreateStore(out _, out var session, out var logger);
         var user = new IdentityUser("testuser") { Id = "user-1" };
 
-        var roleQueryable = Substitute.For<ISurrealDbQueryable<IdentityRole>>();
+        var roleQueryable = Substitute.For<ISableQueryable<IdentityRole>>();
         roleQueryable.FirstOrDefaultAsync(
             Arg.Any<Expression<Func<IdentityRole, bool>>>(),
             Arg.Any<CancellationToken>())
@@ -419,7 +419,7 @@ public class AeroDBUserStoreRoleTests
         var user = new IdentityUser("testuser") { Id = "user-1" };
         var role = new IdentityRole("admin") { Id = "role-1", NormalizedName = "ADMIN" };
 
-        var roleQueryable = Substitute.For<ISurrealDbQueryable<IdentityRole>>();
+        var roleQueryable = Substitute.For<ISableQueryable<IdentityRole>>();
         roleQueryable.FirstOrDefaultAsync(
             Arg.Any<Expression<Func<IdentityRole, bool>>>(),
             Arg.Any<CancellationToken>())
@@ -447,7 +447,7 @@ public class AeroDBUserStoreRoleTests
         var user = new IdentityUser("testuser") { Id = "user-1" };
         var role = new IdentityRole("admin") { Id = "role-1", NormalizedName = "ADMIN" };
 
-        var roleQueryable = Substitute.For<ISurrealDbQueryable<IdentityRole>>();
+        var roleQueryable = Substitute.For<ISableQueryable<IdentityRole>>();
         roleQueryable.FirstOrDefaultAsync(
             Arg.Any<Expression<Func<IdentityRole, bool>>>(),
             Arg.Any<CancellationToken>())
@@ -474,7 +474,7 @@ public class AeroDBUserStoreRoleTests
         var store = CreateStore(out var querySession, out _, out var logger);
         var user = new IdentityUser("testuser") { Id = "user-1" };
 
-        var roleQueryable = Substitute.For<ISurrealDbQueryable<IdentityRole>>();
+        var roleQueryable = Substitute.For<ISableQueryable<IdentityRole>>();
         roleQueryable.FirstOrDefaultAsync(
             Arg.Any<Expression<Func<IdentityRole, bool>>>(),
             Arg.Any<CancellationToken>())
@@ -496,7 +496,7 @@ public class AeroDBUserStoreRoleTests
         var store = CreateStore(out var querySession, out _, out var logger);
         var role = new IdentityRole("admin") { Id = "role-1", NormalizedName = "ADMIN" };
 
-        var roleQueryable = Substitute.For<ISurrealDbQueryable<IdentityRole>>();
+        var roleQueryable = Substitute.For<ISableQueryable<IdentityRole>>();
         roleQueryable.FirstOrDefaultAsync(
             Arg.Any<Expression<Func<IdentityRole, bool>>>(),
             Arg.Any<CancellationToken>())
@@ -529,7 +529,7 @@ public class AeroDBUserStoreRoleTests
         var store = CreateStore(out var querySession, out _, out var logger);
         var role = new IdentityRole("admin") { Id = "role-1", NormalizedName = "ADMIN" };
 
-        var roleQueryable = Substitute.For<ISurrealDbQueryable<IdentityRole>>();
+        var roleQueryable = Substitute.For<ISableQueryable<IdentityRole>>();
         roleQueryable.FirstOrDefaultAsync(
             Arg.Any<Expression<Func<IdentityRole, bool>>>(),
             Arg.Any<CancellationToken>())
@@ -553,7 +553,7 @@ public class AeroDBUserStoreRoleTests
     public async Task GetUsersInRoleAsync_ShouldReturnEmpty_WhenRoleNotFound()
     {
         var store = CreateStore(out var querySession, out _, out var logger);
-        var roleQueryable = Substitute.For<ISurrealDbQueryable<IdentityRole>>();
+        var roleQueryable = Substitute.For<ISableQueryable<IdentityRole>>();
         roleQueryable.FirstOrDefaultAsync(
             Arg.Any<Expression<Func<IdentityRole, bool>>>(),
             Arg.Any<CancellationToken>())

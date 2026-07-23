@@ -304,7 +304,7 @@
 | `LoadAsync<T>(int id, ct)` | `LoadAsync<T>(int id, ct)` | ✅ | Load by int ID |
 | `LoadAsync<T>(long id, ct)` | `LoadAsync<T>(long id, ct)` | ✅ | Load by long ID |
 | `LoadAsync<T>(Guid id, ct)` | `LoadAsync<T>(Guid id, ct)` | ✅ | Load by Guid ID |
-| `Query<T>()` (IMartenQueryable<T>) | `Query<T>()` (ISurrealDbQueryable<T>) | ✅ | Both return custom IQueryable |
+| `Query<T>()` (IMartenQueryable<T>) | `Query<T>()` (ISableQueryable<T>) | ✅ | Both return custom IQueryable |
 | `QueryForNonStaleData<T>(timeout)` | `QueryForNonStaleData<T>(timeout)` | ✅ | Wait for async projection |
 | `QueryForNonStaleData<T>(timeout, mode)` | `QueryForNonStaleData<T>(timeout, mode)` | ✅ | With timeout mode |
 | `StreamJson<T>(destination, ct, sql, params)` | `StreamJson<T>(destination, sql, ct, params)` | ✅ | JSON streaming |
@@ -403,8 +403,8 @@
 | `events.FetchForExclusiveWriting<T>(id)` | `FetchForExclusiveWriting<T>(streamId, ct)` | ✅ | Exclusive write lock |
 | `events.FetchLatest<T>(Guid id)` | `session.FetchLatest<T>(streamId, ct)` | ⚠️ | Dali has it on IQuerySession, not IEvents |
 | `events.FetchLatest<T>(string id)` | `session.FetchLatest<T>(streamId, ct)` | ⚠️ | Dali has it on IQuerySession |
-| `events.QueryRawEventDataOnly<T>()` (IMartenQueryable) | `QueryRawEventDataOnly<T>()` (ISurrealDbQueryable) | ✅ | LINQ on raw event data |
-| `events.QueryAllRawEvents()` (IMartenQueryable<IEvent>) | `QueryAllRawEvents()` (ISurrealDbQueryable<IEvent>) | ✅ | Query all events |
+| `events.QueryRawEventDataOnly<T>()` (IMartenQueryable) | `QueryRawEventDataOnly<T>()` (ISableQueryable) | ✅ | LINQ on raw event data |
+| `events.QueryAllRawEvents()` (IMartenQueryable<IEvent>) | `QueryAllRawEvents()` (ISableQueryable<IEvent>) | ✅ | Query all events |
 | `events.FetchAllAfterSequence(long)` | `FetchAllAfterSequence(long, ct)` | ✅ | Same — for async daemon polling |
 | `events.BuildEvent(data)` | `events.BuildEvent(data)` | ✅ | Build IEvent from raw data |
 | `events.OverwriteEvent(e)` | `events.OverwriteEvent(e)` | ✅ | Overwrite existing event |
@@ -520,12 +520,12 @@
 
 ### E1. IQueryable
 
-| Marten IMartenQueryable<T> | Dali ISurrealDbQueryable<T> | Status | Notes |
+| Marten IMartenQueryable<T> | Dali ISableQueryable<T> | Status | Notes |
 |---------------------------|----------------------------|--------|-------|
 | Inherits `IQueryable<T>` | Inherits `IOrderedQueryable<T>` | ✅ | Same |
 | LINQ `Where`, `OrderBy`, `Select`, `Count`, etc. | Same via `IQueryable` | ✅ | Standard LINQ operators |
-| `IMartenQueryable<T>.Include()` | `ISurrealDbQueryable<T>.IncludeBatch<TProp,TInclude>()`, `Include<T,TInclude>()`, `IncludeReverse<T,TChild>()` | ⚠️ | Dali has expression/LET-based includes; Marten has builder + callback variants |
-| `IMartenQueryable<T>.Stats(out QueryStatistics)` | `ISurrealDbQueryable<T>.Stats(out QueryStatistics)` | ✅ | Interface+extension method; single-round-trip multi-statement SurrealQL |
+| `IMartenQueryable<T>.Include()` | `ISableQueryable<T>.IncludeBatch<TProp,TInclude>()`, `Include<T,TInclude>()`, `IncludeReverse<T,TChild>()` | ⚠️ | Dali has expression/LET-based includes; Marten has builder + callback variants |
+| `IMartenQueryable<T>.Stats(out QueryStatistics)` | `ISableQueryable<T>.Stats(out QueryStatistics)` | ✅ | Interface+extension method; single-round-trip multi-statement SurrealQL |
 | `ToPagedListAsync()` | `ToPagedListAsync()` | ✅ | Same extension |
 | `Take(n)` | `Take(n)` | ✅ | Same |
 

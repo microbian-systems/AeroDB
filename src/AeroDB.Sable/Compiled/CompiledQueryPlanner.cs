@@ -19,7 +19,7 @@ namespace AeroDB.Sable;
 /// At execution time the skeleton is cloned, property values are read from the
 /// query instance, parameters are substituted, and the query is executed.
 /// </summary>
-public static class CompiledQueryPlanner
+internal static class CompiledQueryPlanner
 {
     private static readonly ConcurrentDictionary<Type, CompiledPlan> _plans = new();
     private static readonly ConcurrentDictionary<(Type QueryType, int SchemaHash), CompiledPlan> _schemaPlans = new();
@@ -57,11 +57,46 @@ public static class CompiledQueryPlanner
         ArgumentNullException.ThrowIfNull(query);
 
         var plan = GetOrBuildPlan<TDoc, TOut>(query, session.StoreOptions);
+        var result = BindRuntimeValues(query, plan);
 
-        // 1. Clone the skeleton — fresh copy for mutation
+        var surql = result.ToSurrealQL();
+        var list = await session.RawQueryAsync<TDoc>(surql, result.Parameters, ct).ConfigureAwait(false);
+
+        if (plan.IsSingleResult)
+        {
+            var first = list is { Count: > 0 } ? list[0] : default;
+            return (TOut)(object?)first!;
+        }
+
+        return (TOut)(object)list;
+    }
+
+    /// <summary>
+    /// Builds the exact parameterized command for an interface-based compiled
+    /// query without executing it.
+    /// </summary>
+    internal static SableCommand ToCommand<TDoc, TOut>(
+        InternalSessionBase session,
+        ICompiledQuery<TDoc, TOut> query)
+        where TDoc : class
+    {
+        ArgumentNullException.ThrowIfNull(session);
+        ArgumentNullException.ThrowIfNull(query);
+
+        var plan = GetOrBuildPlan<TDoc, TOut>(query, session.StoreOptions);
+        var result = BindRuntimeValues(query, plan);
+        return new SableCommand(result.ToSurrealQL(), result.Parameters);
+    }
+
+    private static SurrealQueryResult BindRuntimeValues<TDoc, TOut>(
+        ICompiledQuery<TDoc, TOut> query,
+        CompiledPlan plan)
+        where TDoc : class
+    {
+        // Clone the skeleton — fresh copy for mutation.
         var result = plan.SkeletonResult.Clone();
 
-        // 2. Substitute LIMIT / START from actual property values
+        // Substitute LIMIT / START from actual property values.
         if (plan.LimitProperty is not null)
         {
             var limitProp = plan.Properties.First(p => p.Name == plan.LimitProperty);
@@ -74,7 +109,7 @@ public static class CompiledQueryPlanner
             result.Skip = (int)skipProp.GetValue(query)!;
         }
 
-        // 3. Build a new parameter dictionary with live property values
+        // Build a new parameter dictionary with live property values.
         var newParams = new Dictionary<string, object?>(plan.ParameterMapping.Count);
         foreach (var kvp in plan.ParameterMapping)
         {
@@ -84,22 +119,11 @@ public static class CompiledQueryPlanner
 
         result.Parameters = newParams;
 
-        // 4. Apply LIMIT 1 for single-result queries
+        // Apply LIMIT 1 for single-result queries.
         if (plan.IsSingleResult)
             result.Limit = 1;
 
-        // 5. Execute
-        var surql = result.ToSurrealQL();
-        var list = await session.RawQueryAsync<TDoc>(surql, result.Parameters, ct).ConfigureAwait(false);
-
-        // 6. Shape the result
-        if (plan.IsSingleResult)
-        {
-            var first = list is { Count: > 0 } ? list[0] : default;
-            return (TOut)(object?)first!;
-        }
-
-        return (TOut)(object)list;
+        return result;
     }
 
     // ── Plan building ─────────────────────────────────────────────────
@@ -133,7 +157,7 @@ public static class CompiledQueryPlanner
         // 5. Normalize terminal operators: FirstOrDefault(q, pred) → FirstOrDefault(Where(q, pred))
         var normalizedBody = NormalizeTerminalOperators(reducedBody);
 
-        // 6. Replace the ISurrealDbQueryable<TDoc> parameter with a dummy queryable
+        // 6. Replace the ISableQueryable<TDoc> parameter with a dummy queryable
         var dummy = CreateDummyQueryable<TDoc>(options);
         var paramReplacer = new ParameterReplaceVisitor(expr.Parameters[0], Expression.Constant(dummy));
         var visitableExpr = paramReplacer.Visit(normalizedBody);
@@ -279,24 +303,24 @@ public static class CompiledQueryPlanner
     // ── Expression tree helpers ────────────────────────────────────────
 
     /// <summary>
-    /// Creates a dummy <see cref="SurrealDbQueryable{TDoc}"/> that supplies
+    /// Creates a dummy <see cref="SableQueryable{TDoc}"/> that supplies
     /// table-name metadata during expression tree visiting. No database
     /// connection is required — no execution occurs during plan building.
     /// </summary>
-    private static SurrealDbQueryable<TDoc> CreateDummyQueryable<TDoc>(StoreOptions options)
+    private static SableQueryable<TDoc> CreateDummyQueryable<TDoc>(StoreOptions options)
         where TDoc : class
     {
         var provider = new SurrealQueryProvider(
             session: null!,
             options: options,
             tenantId: null);
-        return new SurrealDbQueryable<TDoc>(provider);
+        return new SableQueryable<TDoc>(provider);
     }
 
     private static SurrealQueryResult? TryTranslateExecutableQueryable<TDoc, TOut>(
         ParameterExpression sourceParameter,
         Expression body,
-        SurrealDbQueryable<TDoc> dummy,
+        SableQueryable<TDoc> dummy,
         StoreOptions options)
         where TDoc : class
     {
@@ -312,7 +336,7 @@ public static class CompiledQueryPlanner
 
         try
         {
-            var lambda = Expression.Lambda<Func<ISurrealDbQueryable<TDoc>, TOut>>(body, sourceParameter);
+            var lambda = Expression.Lambda<Func<ISableQueryable<TDoc>, TOut>>(body, sourceParameter);
             var result = lambda.Compile().Invoke(dummy);
             if (result is not IQueryable queryable)
                 return null;
@@ -407,7 +431,7 @@ public static class CompiledQueryPlanner
             return returnType.IsGenericType &&
                    (returnType.GetGenericTypeDefinition() == typeof(IQueryable<>) ||
                     returnType.GetGenericTypeDefinition() == typeof(IOrderedQueryable<>) ||
-                    returnType.GetGenericTypeDefinition() == typeof(ISurrealDbQueryable<>));
+                    returnType.GetGenericTypeDefinition() == typeof(ISableQueryable<>));
         }
         return false;
     }
@@ -459,7 +483,7 @@ public static class CompiledQueryPlanner
 
     /// <summary>
     /// Replaces all occurrences of a specific <see cref="ParameterExpression"/>
-    /// with another expression. Used to substitute the <c>ISurrealDbQueryable&lt;T&gt;</c>
+    /// with another expression. Used to substitute the <c>ISableQueryable&lt;T&gt;</c>
     /// parameter with the dummy queryable constant.
     /// </summary>
     private sealed class ParameterReplaceVisitor : ExpressionVisitor

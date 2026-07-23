@@ -7,7 +7,7 @@ using SurrealDb.Net.Models;
 
 namespace AeroDB.Sable;
 
-    public class SurrealExpressionVisitor : ExpressionVisitor
+    internal sealed class SurrealExpressionVisitor : ExpressionVisitor
     {
         private readonly StringBuilder _sb = new();
         private readonly List<string> _where = new();
@@ -1125,7 +1125,7 @@ namespace AeroDB.Sable;
     }
 }
 
-public class SurrealQueryResult
+internal sealed class SurrealQueryResult
 {
     public string? TableName { get; set; }
     public List<string> Where { get; set; } = [];

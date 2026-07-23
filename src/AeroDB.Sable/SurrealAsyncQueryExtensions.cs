@@ -7,70 +7,70 @@ public static class SurrealAsyncQueryExtensions
 {
     public static Task<List<T>> ToListAsync<T>(this IQueryable<T> source, CancellationToken ct = default)
     {
-        if (source is SurrealDbQueryable<T> sq)
+        if (source is SableQueryable<T> sq)
             return sq.ToListAsync(ct);
         return Task.FromResult(source.ToList());
     }
 
     public static Task<T?> FirstOrDefaultAsync<T>(this IQueryable<T> source, CancellationToken ct = default)
     {
-        if (source is SurrealDbQueryable<T> sq)
+        if (source is SableQueryable<T> sq)
             return sq.FirstOrDefaultAsync(ct);
         return Task.FromResult(source.FirstOrDefault());
     }
 
     public static Task<T?> FirstOrDefaultAsync<T>(this IQueryable<T> source, Expression<Func<T, bool>> predicate, CancellationToken ct = default)
     {
-        if (source is SurrealDbQueryable<T> sq)
+        if (source is SableQueryable<T> sq)
             return sq.FirstOrDefaultAsync(predicate, ct);
         return Task.FromResult(source.FirstOrDefault(predicate.Compile()));
     }
 
     public static Task<T?> SingleOrDefaultAsync<T>(this IQueryable<T> source, CancellationToken ct = default)
     {
-        if (source is SurrealDbQueryable<T> sq)
+        if (source is SableQueryable<T> sq)
             return sq.SingleOrDefaultAsync(ct);
         return Task.FromResult(source.SingleOrDefault());
     }
 
     public static Task<int> CountAsync<T>(this IQueryable<T> source, CancellationToken ct = default)
     {
-        if (source is SurrealDbQueryable<T> sq)
+        if (source is SableQueryable<T> sq)
             return sq.CountAsync(ct);
         return Task.FromResult(source.Count());
     }
 
     public static Task<bool> AnyAsync<T>(this IQueryable<T> source, CancellationToken ct = default)
     {
-        if (source is SurrealDbQueryable<T> sq)
+        if (source is SableQueryable<T> sq)
             return sq.AnyAsync(ct);
         return Task.FromResult(source.Any());
     }
 
     public static Task<decimal> SumAsync<T>(this IQueryable<T> source, Expression<Func<T, decimal>> selector, CancellationToken ct = default)
     {
-        if (source is SurrealDbQueryable<T> sq)
+        if (source is SableQueryable<T> sq)
             return sq.SumAsync(selector, ct);
         return Task.FromResult(source.Sum(selector));
     }
 
     public static Task<decimal> MinAsync<T>(this IQueryable<T> source, Expression<Func<T, decimal>> selector, CancellationToken ct = default)
     {
-        if (source is SurrealDbQueryable<T> sq)
+        if (source is SableQueryable<T> sq)
             return sq.MinAsync(selector, ct);
         return Task.FromResult(source.Min(selector));
     }
 
     public static Task<decimal> MaxAsync<T>(this IQueryable<T> source, Expression<Func<T, decimal>> selector, CancellationToken ct = default)
     {
-        if (source is SurrealDbQueryable<T> sq)
+        if (source is SableQueryable<T> sq)
             return sq.MaxAsync(selector, ct);
         return Task.FromResult(source.Max(selector));
     }
 
     public static Task<decimal> AverageAsync<T>(this IQueryable<T> source, Expression<Func<T, decimal>> selector, CancellationToken ct = default)
     {
-        if (source is SurrealDbQueryable<T> sq)
+        if (source is SableQueryable<T> sq)
             return sq.AverageAsync(selector, ct);
         return Task.FromResult(source.Average(selector));
     }
@@ -81,7 +81,7 @@ public static class SurrealAsyncQueryExtensions
     /// Filter to only soft-deleted documents whose DeletedAt is before the cutoff.
     /// Requires the document type to implement <see cref="ISoftDeleted"/>.
     /// </summary>
-    public static ISurrealDbQueryable<T> DeletedBefore<T>(this ISurrealDbQueryable<T> source, DateTimeOffset cutoff)
+    public static ISableQueryable<T> DeletedBefore<T>(this ISableQueryable<T> source, DateTimeOffset cutoff)
         where T : class
     {
         // The embedded in-memory engine stores DateTimeOffset values as CBOR
@@ -97,14 +97,14 @@ public static class SurrealAsyncQueryExtensions
     /// Wraps a queryable and applies the DeletedBefore cutoff filter in-memory
     /// after the server-side query completes.
     /// </summary>
-    internal class DeletedBeforeQueryable<T> : ISurrealDbQueryable<T>
+    internal class DeletedBeforeQueryable<T> : ISableQueryable<T>
         where T : class
     {
-        private readonly ISurrealDbQueryable<T> _inner;
+        private readonly ISableQueryable<T> _inner;
         private readonly DateTimeOffset _cutoff;
         private readonly Func<T, bool> _predicate;
 
-        public DeletedBeforeQueryable(ISurrealDbQueryable<T> inner, DateTimeOffset cutoff)
+        public DeletedBeforeQueryable(ISableQueryable<T> inner, DateTimeOffset cutoff)
         {
             _inner = inner;
             _cutoff = cutoff;
@@ -130,7 +130,7 @@ public static class SurrealAsyncQueryExtensions
 
         private async Task<List<T>> LoadIncludingDeletedAsync(CancellationToken ct)
         {
-            if (_inner is not SurrealDbQueryable<T> queryable || queryable.InternalSession is null)
+            if (_inner is not SableQueryable<T> queryable || queryable.InternalSession is null)
                 return await _inner.ToListAsync(ct).ConfigureAwait(false);
 
             var session = queryable.InternalSession;
@@ -177,47 +177,48 @@ public static class SurrealAsyncQueryExtensions
         public async Task<decimal> AverageAsync(Expression<Func<T, decimal>> selector, CancellationToken ct = default)
             => (await FilteredResultsAsync(ct).ConfigureAwait(false)).Average(selector.Compile());
 
-        public string ToCommand() => _inner.ToCommand();
+        public SableCommand ToCommand() => _inner.ToCommand();
+        public override string ToString() => _inner.ToString()!;
 
-        public ISurrealDbQueryable<T> Stats(out QueryStatistics stats)
+        public ISableQueryable<T> Stats(out QueryStatistics stats)
         {
             stats = new QueryStatistics();
             return this;
         }
 
-        public ISurrealDbQueryable<T> Fetch(Expression<Func<T, object?>> property)
+        public ISableQueryable<T> Fetch(Expression<Func<T, object?>> property)
             => new DeletedBeforeQueryable<T>(_inner.Fetch(property), _cutoff);
 
-        public ILinkedSurrealDbQueryable<T, TTarget> Link<TTarget>(Expression<Func<T, object?>> fkSelector)
+        public ILinkedSableQueryable<T, TTarget> Link<TTarget>(Expression<Func<T, object?>> fkSelector)
             where TTarget : class
-            => new LinkedSurrealDbQueryable<T, TTarget>(
+            => new LinkedSableQueryable<T, TTarget>(
                 new DeletedBeforeQueryable<T>(_inner.Link<TTarget>(fkSelector), _cutoff));
 
-        public ILinkedSurrealDbQueryable<T, TTarget> Join<TTarget>(Expression<Func<T, object?>> fkSelector)
+        public ILinkedSableQueryable<T, TTarget> Join<TTarget>(Expression<Func<T, object?>> fkSelector)
             where TTarget : class
             => Link<TTarget>(fkSelector);
 
-        public ISurrealDbQueryable<T> Where<TTarget>(Expression<Func<T, TTarget, bool>> predicate)
+        public ISableQueryable<T> Where<TTarget>(Expression<Func<T, TTarget, bool>> predicate)
             where TTarget : class
             => new DeletedBeforeQueryable<T>(_inner.Where(predicate), _cutoff);
 
-        public ISurrealDbQueryable<T> Where<TTarget1, TTarget2>(Expression<Func<T, TTarget1, TTarget2, bool>> predicate)
+        public ISableQueryable<T> Where<TTarget1, TTarget2>(Expression<Func<T, TTarget1, TTarget2, bool>> predicate)
             where TTarget1 : class
             where TTarget2 : class
             => new DeletedBeforeQueryable<T>(_inner.Where(predicate), _cutoff);
 
-        public ISurrealDbQueryable<T> Where<TTarget1, TTarget2, TTarget3>(Expression<Func<T, TTarget1, TTarget2, TTarget3, bool>> predicate)
+        public ISableQueryable<T> Where<TTarget1, TTarget2, TTarget3>(Expression<Func<T, TTarget1, TTarget2, TTarget3, bool>> predicate)
             where TTarget1 : class
             where TTarget2 : class
             where TTarget3 : class
             => new DeletedBeforeQueryable<T>(_inner.Where(predicate), _cutoff);
 
-        public ISurrealDbQueryable<T> IncludeBatch<TProperty, TInclude>(
+        public ISableQueryable<T> IncludeBatch<TProperty, TInclude>(
             Expression<Func<T, TProperty>> property, Action<TInclude> callback)
             where TInclude : class
             => this; // IncludeBatch is a server-side operation; DeletedBefore already fetches all
 
-        public ISurrealDbQueryable<T> IncludeBatch<TKey, TInclude>(
+        public ISableQueryable<T> IncludeBatch<TKey, TInclude>(
             Expression<Func<T, TKey>> key, IDictionary<TKey, TInclude> dictionary)
             where TInclude : class
             => this;
@@ -234,11 +235,11 @@ public static class SurrealAsyncQueryExtensions
     /// Execute a hard DELETE matching the current query's WHERE clause. Bypasses soft-delete.
     /// Returns the number of deleted rows (best-effort — SurrealDB may return 1 per statement).
     /// </summary>
-    public static async Task<long> DeleteAsync<T>(this ISurrealDbQueryable<T> source, CancellationToken ct = default)
+    public static async Task<long> DeleteAsync<T>(this ISableQueryable<T> source, CancellationToken ct = default)
         where T : class
     {
-        if (source is not SurrealDbQueryable<T> surrealQueryable)
-            throw new NotSupportedException("DeleteAsync requires AeroDB.Sable's SurrealDbQueryable provider.");
+        if (source is not SableQueryable<T> surrealQueryable)
+            throw new NotSupportedException("DeleteAsync requires AeroDB.Sable's SableQueryable provider.");
 
         var tableName = MetadataDispatch.GetTableName(typeof(T), surrealQueryable.StoreOptions.Schema);
         if (string.IsNullOrEmpty(tableName))
@@ -282,8 +283,8 @@ public static class SurrealAsyncQueryExtensions
     /// Filters documents where the array field contains ALL of the specified values.
     /// Translates to SurrealDB: <c>WHERE field CONTAINSALL [...]</c>
     /// </summary>
-    public static ISurrealDbQueryable<T> ContainsAll<T, TValue>(
-        this ISurrealDbQueryable<T> source,
+    public static ISableQueryable<T> ContainsAll<T, TValue>(
+        this ISableQueryable<T> source,
         Expression<Func<T, IEnumerable<TValue>?>> field,
         IEnumerable<TValue> values)
         where T : class
@@ -299,8 +300,8 @@ public static class SurrealAsyncQueryExtensions
     /// Filters documents where the array field contains ANY of the specified values.
     /// Translates to SurrealDB: <c>WHERE field CONTAINSANY [...]</c>
     /// </summary>
-    public static ISurrealDbQueryable<T> ContainsAny<T, TValue>(
-        this ISurrealDbQueryable<T> source,
+    public static ISableQueryable<T> ContainsAny<T, TValue>(
+        this ISableQueryable<T> source,
         Expression<Func<T, IEnumerable<TValue>?>> field,
         IEnumerable<TValue> values)
         where T : class
@@ -316,8 +317,8 @@ public static class SurrealAsyncQueryExtensions
     /// Filters documents where the array field contains NONE of the specified values.
     /// Translates to SurrealDB: <c>WHERE field CONTAINSNONE [...]</c>
     /// </summary>
-    public static ISurrealDbQueryable<T> ContainsNone<T, TValue>(
-        this ISurrealDbQueryable<T> source,
+    public static ISableQueryable<T> ContainsNone<T, TValue>(
+        this ISableQueryable<T> source,
         Expression<Func<T, IEnumerable<TValue>?>> field,
         IEnumerable<TValue> values)
         where T : class
@@ -333,8 +334,8 @@ public static class SurrealAsyncQueryExtensions
     /// Filters documents where the array field intersects with the specified values.
     /// Translates to SurrealDB: <c>WHERE field INTERSECTS [...]</c>
     /// </summary>
-    public static ISurrealDbQueryable<T> Intersects<T, TValue>(
-        this ISurrealDbQueryable<T> source,
+    public static ISableQueryable<T> Intersects<T, TValue>(
+        this ISableQueryable<T> source,
         Expression<Func<T, IEnumerable<TValue>?>> field,
         IEnumerable<TValue> values)
         where T : class

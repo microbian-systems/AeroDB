@@ -40,7 +40,7 @@ await session.SaveChangesAsync();
 
 ## LINQ to SurrealQL
 
-AeroDB translates .NET LINQ expressions into SurrealQL queries through a custom `ISurrealDbQueryable<T>` provider. The translation walks expression trees and maps to SurrealQL syntax:
+AeroDB translates .NET LINQ expressions into SurrealQL queries through a custom `ISableQueryable<T>` provider. The translation walks expression trees and maps to SurrealQL syntax:
 
 ```csharp
 // LINQ expression → SurrealQL

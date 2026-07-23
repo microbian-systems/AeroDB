@@ -381,7 +381,7 @@ public class MlQueryTests
 
         // Mock an IQuerySession that returns a queryable backed by our provider
         var mockQuerySession = Substitute.For<IQuerySession>();
-        var queryable = new SurrealDbQueryable<HouseListing>(provider);
+        var queryable = new SableQueryable<HouseListing>(provider);
         mockQuerySession.Query<HouseListing>().Returns(queryable);
 
         var result = mockQuerySession.Ml<HouseListing, PricePrediction>();
@@ -393,7 +393,7 @@ public class MlQueryTests
     public async Task MlQuery_Extensions_With_NonAeroDB_Session_Throws()
     {
         var mockQuerySession = Substitute.For<IQuerySession>();
-        var badQueryable = Substitute.For<ISurrealDbQueryable<HouseListing>>();
+        var badQueryable = Substitute.For<ISableQueryable<HouseListing>>();
         badQueryable.Provider.Returns(Substitute.For<IQueryProvider>());
         mockQuerySession.Query<HouseListing>().Returns(badQueryable);
 

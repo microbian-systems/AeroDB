@@ -16,4 +16,15 @@ public class CompiledQuery<T> where T : class
     {
         QueryResult = result;
     }
+
+    /// <summary>
+    /// Returns the compiled parameterized command without executing it.
+    /// </summary>
+    public SableCommand ToCommand()
+        => new(QueryResult.ToSurrealQL(), QueryResult.Parameters);
+
+    /// <summary>
+    /// Returns the compiled SurrealQL template without inlining parameter values.
+    /// </summary>
+    public override string ToString() => QueryResult.ToSurrealQL();
 }

@@ -309,7 +309,7 @@ Also extract for MinimalAPI:
 | `opts.Connection(connStr)` | `opts.Endpoint = "ws://..."; opts.Namespace = "..."; opts.Database = "..."` | SurrealDB URL + namespace/database |
 | `AddMarten(...)` | `AddAeroDB(...)` | Same DI registration pattern |
 | `IDocumentSession` / `IQuerySession` | Same | Identical interface |
-| `session.Query<T>()` | Same | Returns `ISurrealDbQueryable<T>` |
+| `session.Query<T>()` | Same | Returns `ISableQueryable<T>` |
 | `session.LoadAsync<T>(id)` | Same | Full parity |
 | `session.Events.StartStream/AggregateStream/Append` | Same | Full parity |
 | `session.Events.WriteToAggregate` | `FetchForWriting` + `AppendOne` | Different API, same semantics |

@@ -123,8 +123,8 @@ public class ViewRawAndAggregateTests
         var queryable = session.View<RawViewOrder>("my_custom_view");
         queryable.ShouldNotBeNull();
 
-        // Verify the ViewName was set on the underlying SurrealDbQueryable
-        if (queryable is SurrealDbQueryable<RawViewOrder> sq)
+        // Verify the ViewName was set on the underlying SableQueryable
+        if (queryable is SableQueryable<RawViewOrder> sq)
         {
             sq.ViewName.ShouldBe("my_custom_view");
         }
@@ -137,7 +137,7 @@ public class ViewRawAndAggregateTests
         await using var session = await store.QuerySessionAsync();
 
         var queryable = session.Query<RawViewOrder>();
-        if (queryable is SurrealDbQueryable<RawViewOrder> sq)
+        if (queryable is SableQueryable<RawViewOrder> sq)
         {
             sq.ViewName.ShouldBeNull();
         }

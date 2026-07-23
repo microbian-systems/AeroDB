@@ -16,7 +16,7 @@ using SurrealDb.Net.Models.Response;
 
 namespace AeroDB.Sable;
 
-public class SurrealQueryProvider : IQueryProvider
+internal sealed class SurrealQueryProvider : IQueryProvider
 {
     private readonly ISurrealDbSession _session;
     private readonly InternalSessionBase? _sessionBase;
@@ -192,7 +192,7 @@ public class SurrealQueryProvider : IQueryProvider
     }
 
     /// <summary>
-    /// Extracts the <see cref="SurrealDbQueryable{T}.ViewName"/> from the source
+    /// Extracts the <see cref="SableQueryable{T}.ViewName"/> from the source
     /// queryable in the expression tree, if set.
     /// </summary>
     internal static string? ExtractViewName(Expression expression)
@@ -200,7 +200,7 @@ public class SurrealQueryProvider : IQueryProvider
         if (expression is ConstantExpression c && c.Value is IQueryable q)
         {
             var qType = q.GetType();
-            if (qType.IsGenericType && qType.GetGenericTypeDefinition() == typeof(SurrealDbQueryable<>))
+            if (qType.IsGenericType && qType.GetGenericTypeDefinition() == typeof(SableQueryable<>))
             {
                 var viewNameProp = qType.GetProperty("ViewName",
                     System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
@@ -215,9 +215,9 @@ public class SurrealQueryProvider : IQueryProvider
     }
 
     /// <summary>
-    /// Extracts <see cref="SurrealDbQueryable{T}.FetchFields"/> from the source queryable
+    /// Extracts <see cref="SableQueryable{T}.FetchFields"/> from the source queryable
     /// embedded in the expression tree. Used to recover Fetch fields that were set on the
-    /// original <see cref="SurrealDbQueryable{T}"/> before a LINQ operator (e.g.
+    /// original <see cref="SableQueryable{T}"/> before a LINQ operator (e.g.
     /// <c>.Where()</c>) created a new queryable via <c>CreateQuery</c>.
     /// </summary>
     internal static List<string>? ExtractFetchFields(Expression expression)
@@ -225,7 +225,7 @@ public class SurrealQueryProvider : IQueryProvider
         if (expression is ConstantExpression c && c.Value is IQueryable q)
         {
             var qType = q.GetType();
-            if (qType.IsGenericType && qType.GetGenericTypeDefinition() == typeof(SurrealDbQueryable<>))
+            if (qType.IsGenericType && qType.GetGenericTypeDefinition() == typeof(SableQueryable<>))
             {
                 var fetchFieldsField = qType.GetField("FetchFields",
                     System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
@@ -244,7 +244,7 @@ public class SurrealQueryProvider : IQueryProvider
     /// <summary>
     /// Extracts <see cref="IncludeSpec"/> entries from the source queryable embedded
     /// in the expression tree. Used to recover IncludeSpecs that were set on the
-    /// original <see cref="SurrealDbQueryable{T}"/> before a LINQ operator (e.g.
+    /// original <see cref="SableQueryable{T}"/> before a LINQ operator (e.g.
     /// <c>.Where()</c>) created a new queryable via <c>CreateQuery</c>.
     /// </summary>
     internal static List<IncludeSpec>? ExtractIncludeSpecs(Expression expression)
@@ -252,7 +252,7 @@ public class SurrealQueryProvider : IQueryProvider
         if (expression is ConstantExpression c && c.Value is IQueryable q)
         {
             var qType = q.GetType();
-            if (qType.IsGenericType && qType.GetGenericTypeDefinition() == typeof(SurrealDbQueryable<>))
+            if (qType.IsGenericType && qType.GetGenericTypeDefinition() == typeof(SableQueryable<>))
             {
                 var includeSpecsField = qType.GetField("IncludeSpecs",
                     System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
@@ -271,7 +271,7 @@ public class SurrealQueryProvider : IQueryProvider
     /// <summary>
     /// Extracts <see cref="FilterIncludeSpec"/> entries from the source queryable embedded
     /// in the expression tree. Used to recover FilterIncludeSpecs that were set on the
-    /// original <see cref="SurrealDbQueryable{T}"/> before a LINQ operator (e.g.
+    /// original <see cref="SableQueryable{T}"/> before a LINQ operator (e.g.
     /// <c>.Where()</c>, <c>.OrderBy()</c>) created a new queryable via <c>CreateQuery</c>.
     /// </summary>
     internal static List<FilterIncludeSpec>? ExtractFilterIncludeSpecs(Expression expression)
@@ -279,7 +279,7 @@ public class SurrealQueryProvider : IQueryProvider
         if (expression is ConstantExpression c && c.Value is IQueryable q)
         {
             var qType = q.GetType();
-            if (qType.IsGenericType && qType.GetGenericTypeDefinition() == typeof(SurrealDbQueryable<>))
+            if (qType.IsGenericType && qType.GetGenericTypeDefinition() == typeof(SableQueryable<>))
             {
                 var filterSpecsField = qType.GetField("FilterIncludeSpecs",
                     System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
@@ -300,7 +300,7 @@ public class SurrealQueryProvider : IQueryProvider
         if (expression is ConstantExpression c && c.Value is IQueryable q)
         {
             var qType = q.GetType();
-            if (qType.IsGenericType && qType.GetGenericTypeDefinition() == typeof(SurrealDbQueryable<>))
+            if (qType.IsGenericType && qType.GetGenericTypeDefinition() == typeof(SableQueryable<>))
             {
                 var linkedWhereField = qType.GetField("LinkedWhereSpecs",
                     BindingFlags.Instance | BindingFlags.NonPublic);
@@ -317,7 +317,7 @@ public class SurrealQueryProvider : IQueryProvider
     }
 
     /// <summary>
-    /// Extracts <see cref="SurrealDbQueryable{T}.QueryStats"/> from the source queryable embedded
+    /// Extracts <see cref="SableQueryable{T}.QueryStats"/> from the source queryable embedded
     /// in the expression tree. Used to recover the QueryStatistics reference set via
     /// <see cref="StatsExtensions.Stats{T}"/> when a LINQ operator (e.g. <c>.Where()</c>)
     /// created a new queryable via <c>CreateQuery</c>.
@@ -327,7 +327,7 @@ public class SurrealQueryProvider : IQueryProvider
         if (expression is ConstantExpression c && c.Value is IQueryable q)
         {
             var qType = q.GetType();
-            if (qType.IsGenericType && qType.GetGenericTypeDefinition() == typeof(SurrealDbQueryable<>))
+            if (qType.IsGenericType && qType.GetGenericTypeDefinition() == typeof(SableQueryable<>))
             {
                 var statsProp = qType.GetProperty("QueryStats",
                     System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
@@ -386,12 +386,12 @@ public class SurrealQueryProvider : IQueryProvider
         var elemType = expression.Type.GetGenericArguments().FirstOrDefault()
             ?? typeof(object);
         return (IQueryable)Activator.CreateInstance(
-            typeof(SurrealDbQueryable<>).MakeGenericType(elemType),
+            typeof(SableQueryable<>).MakeGenericType(elemType),
             this, expression)!;
     }
 
     public IQueryable<TElement> CreateQuery<TElement>(Expression expression)
-        => new SurrealDbQueryable<TElement>(this, expression);
+        => new SableQueryable<TElement>(this, expression);
 
     public object? Execute(Expression expression)
         => ExecuteSync<object>(expression);
@@ -416,12 +416,12 @@ public class SurrealQueryProvider : IQueryProvider
     public async Task<T?> SingleOrDefaultAsync<T>(Expression expression, CancellationToken ct = default)
         => await SingleOrDefaultAsyncInternal<T>(expression, null, null, null, null, ct);
 
-    // --- Internal entry points (accept fetch/include from SurrealDbQueryable) ---
+    // --- Internal entry points (accept fetch/include from SableQueryable) ---
 
     internal async Task<List<T>> ToListAsync<T>(
         Expression expression,
         List<string> fetchFields,
-        List<SurrealDbQueryable<T>.IncludeDescriptor> includeDescriptors,
+        List<SableQueryable<T>.IncludeDescriptor> includeDescriptors,
         List<IncludeSpec>? includeSpecs,
         List<FilterIncludeSpec>? filterIncludeSpecs,
         QueryStatistics? queryStats,
@@ -431,7 +431,7 @@ public class SurrealQueryProvider : IQueryProvider
     internal async Task<T?> FirstOrDefaultAsync<T>(
         Expression expression,
         List<string> fetchFields,
-        List<SurrealDbQueryable<T>.IncludeDescriptor> includeDescriptors,
+        List<SableQueryable<T>.IncludeDescriptor> includeDescriptors,
         List<IncludeSpec>? includeSpecs,
         List<FilterIncludeSpec>? filterIncludeSpecs,
         CancellationToken ct = default)
@@ -440,7 +440,7 @@ public class SurrealQueryProvider : IQueryProvider
     internal async Task<T?> SingleOrDefaultAsync<T>(
         Expression expression,
         List<string> fetchFields,
-        List<SurrealDbQueryable<T>.IncludeDescriptor> includeDescriptors,
+        List<SableQueryable<T>.IncludeDescriptor> includeDescriptors,
         List<IncludeSpec>? includeSpecs,
         List<FilterIncludeSpec>? filterIncludeSpecs,
         CancellationToken ct = default)
@@ -451,7 +451,7 @@ public class SurrealQueryProvider : IQueryProvider
     private async Task<List<T>> ToListAsyncInternal<T>(
         Expression expression,
         List<string>? fetchFields,
-        List<SurrealDbQueryable<T>.IncludeDescriptor>? includeDescriptors,
+        List<SableQueryable<T>.IncludeDescriptor>? includeDescriptors,
         List<IncludeSpec>? includeSpecs,
         List<FilterIncludeSpec>? filterIncludeSpecs,
         QueryStatistics? queryStats,
@@ -495,7 +495,7 @@ public class SurrealQueryProvider : IQueryProvider
         }
 
         // Recover FilterIncludeSpecs from the expression tree — they are lost when
-        // a standard LINQ operator (e.g. Where, OrderBy) creates a new SurrealDbQueryable.
+        // a standard LINQ operator (e.g. Where, OrderBy) creates a new SableQueryable.
         if (filterIncludeSpecs is not { Count: > 0 })
         {
             var extracted = ExtractFilterIncludeSpecs(expression);
@@ -701,7 +701,7 @@ public class SurrealQueryProvider : IQueryProvider
     private async Task<T?> FirstOrDefaultAsyncInternal<T>(
         Expression expression,
         List<string>? fetchFields,
-        List<SurrealDbQueryable<T>.IncludeDescriptor>? includeDescriptors,
+        List<SableQueryable<T>.IncludeDescriptor>? includeDescriptors,
         List<IncludeSpec>? includeSpecs,
         List<FilterIncludeSpec>? filterIncludeSpecs,
         CancellationToken ct)
@@ -852,7 +852,7 @@ public class SurrealQueryProvider : IQueryProvider
     private async Task<T?> SingleOrDefaultAsyncInternal<T>(
         Expression expression,
         List<string>? fetchFields,
-        List<SurrealDbQueryable<T>.IncludeDescriptor>? includeDescriptors,
+        List<SableQueryable<T>.IncludeDescriptor>? includeDescriptors,
         List<IncludeSpec>? includeSpecs,
         List<FilterIncludeSpec>? filterIncludeSpecs,
         CancellationToken ct)
@@ -1015,7 +1015,7 @@ public class SurrealQueryProvider : IQueryProvider
     /// </summary>
     private List<T> DeserializeMainAndIncludes<T>(
         SurrealDbResponse response,
-        List<SurrealDbQueryable<T>.IncludeDescriptor> includes,
+        List<SableQueryable<T>.IncludeDescriptor> includes,
         CancellationToken ct)
     {
         var includeCount = includes.Count;
@@ -1201,7 +1201,7 @@ public class SurrealQueryProvider : IQueryProvider
     }
 
     private void ThrowIfEncryptedIncludeOrFetch<T>(
-        IReadOnlyCollection<SurrealDbQueryable<T>.IncludeDescriptor>? includes,
+        IReadOnlyCollection<SableQueryable<T>.IncludeDescriptor>? includes,
         IReadOnlyCollection<IncludeSpec>? includeSpecs,
         IReadOnlyCollection<string> fetchFields)
     {
@@ -1839,7 +1839,7 @@ public class SurrealQueryProvider : IQueryProvider
     /// overrides, and Fetch field propagation that would happen during execution.
     /// Useful for debugging and logging.
     /// </summary>
-    public string ToCommand(Expression expression)
+    public SableCommand ToCommand(Expression expression)
     {
         EncryptedQueryGuard.Validate(expression, _options.Schema);
         var visitor = CreateVisitor();
@@ -1864,7 +1864,7 @@ public class SurrealQueryProvider : IQueryProvider
         if (fetchFields is { Count: > 0 })
             query.FetchFields.AddRange(fetchFields);
 
-        return query.ToSurrealQL();
+        return new SableCommand(query.ToSurrealQL(), query.Parameters);
     }
 
     private void ApplyLinkedWhereSpecs(SurrealQueryResult query, Expression expression, Type? sourceType)

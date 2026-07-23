@@ -296,10 +296,10 @@ public abstract class InternalSessionBase : IAsyncDisposable
         return response.Count > 0 && !response.HasErrors && response.FirstOk is not null;
     }
 
-    public ISurrealDbQueryable<T> Query<T>() where T : class
+    public ISableQueryable<T> Query<T>() where T : class
     {
         var provider = new SurrealQueryProvider(Session, this, Options, TenantId);
-        return new SurrealDbQueryable<T>(provider);
+        return new SableQueryable<T>(provider);
     }
 
     /// <summary>
@@ -1841,7 +1841,7 @@ public abstract class InternalSessionBase : IAsyncDisposable
     }
 
     /// <inheritdoc />
-    public async Task<ISurrealDbQueryable<T>> QueryForNonStaleData<T>(TimeSpan timeout) where T : class
+    public async Task<ISableQueryable<T>> QueryForNonStaleData<T>(TimeSpan timeout) where T : class
     {
         var deadline = DateTime.UtcNow + timeout;
         var maxSeq = await QueryMaxEventSequenceAsync().ConfigureAwait(false);
@@ -1860,7 +1860,7 @@ public abstract class InternalSessionBase : IAsyncDisposable
     }
 
     /// <inheritdoc />
-    public Task<ISurrealDbQueryable<T>> QueryForNonStaleData<T>(TimeSpan timeout, StaleDataMode mode) where T : class
+    public Task<ISableQueryable<T>> QueryForNonStaleData<T>(TimeSpan timeout, StaleDataMode mode) where T : class
     {
         if (mode == StaleDataMode.AllowStale)
             return Task.FromResult(Query<T>());

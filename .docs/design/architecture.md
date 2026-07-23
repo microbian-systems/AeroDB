@@ -926,7 +926,7 @@ src/
     QuerySession.cs                        # IQuerySession (read-only)
     InternalSessionBase.cs                 # Shared session base
     StoreOptions.cs                        # Configuration
-    ISurrealDbQueryable.cs                 # Queryable types
+    ISableQueryable.cs                 # Queryable types
     SurrealAsyncQueryExtensions.cs         # Async query helpers
     Storage/
       DocumentStorage.cs                   # Table name mapping
