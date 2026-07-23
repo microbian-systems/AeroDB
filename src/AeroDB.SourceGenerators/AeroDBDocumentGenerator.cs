@@ -498,7 +498,8 @@ public class AeroDBDocumentGenerator : IIncrementalGenerator
         {
             "AeroDB.Sable.GeometryPoint" or "global::AeroDB.Sable.GeometryPoint" or "GeometryPoint" => "geometry",
             "AeroDB.Sable.GeometryPolygon" or "global::AeroDB.Sable.GeometryPolygon" or "GeometryPolygon" => "geometry",
-            "string" or "System.Guid" => "string",
+            "string" => "string",
+            "System.Guid" => "uuid",
             "long" or "int" or "short" or "byte" or "System.Int64" or "System.Int32" or "System.Int16" or "System.Byte" => "int",
             "float" or "double" or "decimal" or "System.Single" or "System.Double" or "System.Decimal" => "float",
             "bool" or "System.Boolean" => "bool",

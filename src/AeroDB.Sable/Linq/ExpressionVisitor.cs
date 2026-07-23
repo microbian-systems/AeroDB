@@ -1001,6 +1001,7 @@ namespace AeroDB.Sable;
         Enum e => _enumStorage == EnumStorage.AsString
             ? $"'{e}'"
             : Convert.ToInt64(e).ToString(),
+        Guid guid => $"u'{guid:D}'",
         DateTime dt => $"d'{dt:yyyy-MM-ddTHH:mm:ssZ}'",
         DateTimeOffset dto => $"d'{dto:yyyy-MM-ddTHH:mm:ssZ}'",
         _ => val.ToString()!

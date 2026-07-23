@@ -981,6 +981,9 @@ public static class SableQueryableExtensions
             ?? fkProperty?.PropertyType
             ?? typeof(object);
 
+        if (fkType == typeof(Guid))
+            return "<uuid> meta::id(id)";
+
         if (fkType == typeof(int) || fkType == typeof(long))
             return "<int> meta::id(id)";
 

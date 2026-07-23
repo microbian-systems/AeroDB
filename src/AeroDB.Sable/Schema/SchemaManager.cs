@@ -739,7 +739,8 @@ public class SchemaManager
         // Check for geometry types
         var surrealType =
             effectiveType == typeof(GeometryPoint) || effectiveType == typeof(GeometryPolygon) ? "geometry" :
-            effectiveType == typeof(string) || effectiveType == typeof(Guid) ? "string" :
+            effectiveType == typeof(string) ? "string" :
+            effectiveType == typeof(Guid) ? "uuid" :
             effectiveType == typeof(long) || effectiveType == typeof(int) || effectiveType == typeof(short) || effectiveType == typeof(byte) ? "int" :
             effectiveType == typeof(float) || effectiveType == typeof(double) || effectiveType == typeof(decimal) ? "float" :
             effectiveType == typeof(bool) ? "bool" :

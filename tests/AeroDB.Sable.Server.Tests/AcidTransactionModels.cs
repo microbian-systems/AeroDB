@@ -31,6 +31,12 @@ public sealed class ExternalProduct
     public string Name { get; set; } = string.Empty;
 }
 
+public sealed class SessionDocument
+{
+    public Guid Id { get; set; }
+    public string Subject { get; set; } = string.Empty;
+}
+
 public sealed class Purchased : EdgeRecord
 {
     public DateTimeOffset PurchasedAt { get; set; }

@@ -1763,7 +1763,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
             GeometryPolygon polygon => polygon.ToSurrealQL(),
             DateTime dt => $"d'{dt.ToUniversalTime():yyyy-MM-ddTHH:mm:ssZ}'",
             DateTimeOffset dto => $"d'{dto.UtcDateTime:yyyy-MM-ddTHH:mm:ssZ}'",
-            Guid guid => $"'{guid}'",
+            Guid guid => $"u'{guid:D}'",
             Enum e => Options.EnumStorage == EnumStorage.AsString
                 ? $"'{e}'"
                 : Convert.ToInt64(e, CultureInfo.InvariantCulture).ToString(CultureInfo.InvariantCulture),
@@ -2048,36 +2048,10 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
     }
 
     private static string ToRecordIdLiteral(string tableName, object id)
-    {
-        var value = id switch
-        {
-            string s => QuoteRecordIdValue(s),
-            Guid g => QuoteRecordIdValue(g.ToString()),
-            DateTime dt => QuoteRecordIdValue(dt.ToString("O", CultureInfo.InvariantCulture)),
-            DateTimeOffset dto => QuoteRecordIdValue(dto.ToString("O", CultureInfo.InvariantCulture)),
-            IFormattable formattable => formattable.ToString(null, CultureInfo.InvariantCulture) ?? string.Empty,
-            _ => QuoteRecordIdValue(id.ToString() ?? string.Empty)
-        };
-
-        return $"{tableName}:{value}";
-    }
-
-    private static string QuoteRecordIdValue(string value)
-        => "`" + value.Replace("`", "\\`", StringComparison.Ordinal) + "`";
+        => DocumentIdentityResolver.FormatRecordIdLiteral(tableName, id);
 
     private static string FormatRecordIdLiteral(RecordId recordId)
-    {
-        if (TryFormatRecordIdOf(recordId, out var literal))
-            return literal;
-
-        return recordId switch
-        {
-            RecordIdOf<string> s => $"{s.Table}:{QuoteRecordIdValue(s.Id)}",
-            RecordIdOf<long> l => $"{l.Table}:{l.Id.ToString(CultureInfo.InvariantCulture)}",
-            RecordIdOf<int> i => $"{i.Table}:{i.Id.ToString(CultureInfo.InvariantCulture)}",
-            _ => $"{recordId.Table}:{QuoteRecordIdValue(recordId.DeserializeId<object>()?.ToString() ?? string.Empty)}"
-        };
-    }
+        => DocumentIdentityResolver.FormatRecordIdLiteral(recordId);
 
     private static bool TryFormatRecordIdOf(object value, out string literal)
     {

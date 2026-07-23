@@ -134,7 +134,7 @@ internal static class DocumentIdentityResolver
             uint id => new RecordIdOf<uint>(table, id),
             ushort id => new RecordIdOf<ushort>(table, id),
             sbyte id => new RecordIdOf<sbyte>(table, id),
-            Guid id => RecordId.From(table, id.ToString()),
+            Guid id => RecordId.From(table, id),
             _ => RecordId.From(table, Convert.ToString(value, CultureInfo.InvariantCulture) ?? string.Empty)
         };
 
@@ -197,7 +197,7 @@ internal static class DocumentIdentityResolver
             long value => value.ToString(CultureInfo.InvariantCulture),
             ulong value => value.ToString(CultureInfo.InvariantCulture),
             string value => Quote(value),
-            Guid value => Quote(value.ToString()),
+            Guid value => $"u'{value:D}'",
             DateTime value => Quote(value.ToString("O", CultureInfo.InvariantCulture)),
             DateTimeOffset value => Quote(value.ToString("O", CultureInfo.InvariantCulture)),
             _ => Quote(Convert.ToString(identity, CultureInfo.InvariantCulture) ?? string.Empty)

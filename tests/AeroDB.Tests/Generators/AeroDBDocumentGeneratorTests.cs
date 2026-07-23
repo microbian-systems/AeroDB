@@ -263,6 +263,7 @@ public class DocumentWithProps : SurrealDb.Net.Models.Record
     public string Title { get; set; }
     public int Count { get; set; }
     public DateTime CreatedAt { get; set; }
+    public Guid CorrelationId { get; set; }
     public double Score { get; set; }
     public bool IsActive { get; set; }
     public System.Collections.Generic.List<string> Tags { get; set; }
@@ -276,6 +277,7 @@ public class DocumentWithProps : SurrealDb.Net.Models.Record
         code.ShouldContain("Title");
         code.ShouldContain("Count");
         code.ShouldContain("CreatedAt");
+        code.ShouldContain("CorrelationId");
         code.ShouldContain("Score");
         code.ShouldContain("IsActive");
         code.ShouldContain("Tags");
@@ -285,6 +287,7 @@ public class DocumentWithProps : SurrealDb.Net.Models.Record
         code.ShouldContain("\"option<string>\"");
         code.ShouldContain("\"int\"");
         code.ShouldContain("\"datetime\"");
+        code.ShouldContain("\"uuid\"");
         code.ShouldContain("\"float\"");
         code.ShouldContain("\"bool\"");
         code.ShouldContain("\"option<array>\"");

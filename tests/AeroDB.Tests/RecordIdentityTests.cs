@@ -29,14 +29,14 @@ public sealed class RecordIdentityTests
     }
 
     [Test]
-    public void GuidIdentityUsesQuotedStringRecordKey()
+    public void GuidIdentityRendersAsNativeUuidRecordKey()
     {
         var guid = Guid.Parse("57cd29ad-951a-4187-a4d1-bb7d49f43a7f");
 
         DocumentIdentityResolver.TryCreate(guid, "session", out var resolved).ShouldBeTrue();
 
-        resolved.RecordId.ShouldBeAssignableTo<RecordIdOf<string>>();
-        resolved.Literal.ShouldBe("session:`57cd29ad-951a-4187-a4d1-bb7d49f43a7f`");
+        resolved.RecordId.ShouldBeOfType<RecordIdOf<Guid>>();
+        resolved.Literal.ShouldBe("session:u'57cd29ad-951a-4187-a4d1-bb7d49f43a7f'");
     }
 
     [Test]

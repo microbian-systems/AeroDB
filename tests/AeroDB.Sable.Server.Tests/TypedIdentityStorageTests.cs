@@ -97,6 +97,49 @@ public sealed class TypedIdentityStorageTests
     }
 
     [Test]
+    public async Task GuidIdentityIsStoredAsNativeUuidRecordKey(CancellationToken ct)
+    {
+        await using var store = await ServerTestHarness.CreateStoreAsync(
+            "typed_identity_storage",
+            options => options.Schema
+                .For<SessionDocument>()
+                .Identity(x => x.Id)
+                .SetSchemaMode(SchemaMode.Flexible),
+            ct);
+        await using var session = await store.OpenSessionAsync(
+            new SessionOptions { Tracking = DocumentTracking.None },
+            ct);
+
+        await session.ExecuteSqlAsync("DELETE session_document;", null, ct);
+
+        var document = new Faker<SessionDocument>("en")
+            .UseSeed(2210)
+            .RuleFor(x => x.Id, _ => Guid.Parse("57cd29ad-951a-4187-a4d1-bb7d49f43a7f"))
+            .RuleFor(x => x.Subject, faker => faker.Internet.UserName())
+            .Generate();
+
+        session.Store(document);
+        await session.SaveChangesAsync(ct);
+
+        var probes = await session.RawQueryAsync<UuidRecordIdTypeProbe>(
+            """
+            SELECT
+                record::id(id) AS value,
+                type::is_uuid(record::id(id)) AS is_uuid
+            FROM session_document;
+            """,
+            null,
+            ct);
+
+        probes.Count.ShouldBe(1);
+        probes[0].IsUuid.ShouldBeTrue();
+        probes[0].Value.ShouldBe(document.Id);
+
+        await using var query = await store.QuerySessionAsync(ct);
+        (await query.LoadAsync<SessionDocument>(document.Id, ct))?.Id.ShouldBe(document.Id);
+    }
+
+    [Test]
     public async Task BulkInsertPreservesNativeNumericRecordKeys(CancellationToken ct)
     {
         await using var store = await ServerTestHarness.CreateStoreAsync(
@@ -149,5 +192,11 @@ public sealed class TypedIdentityStorageTests
     {
         public string Value { get; set; } = string.Empty;
         public bool IsString { get; set; }
+    }
+
+    private sealed class UuidRecordIdTypeProbe
+    {
+        public Guid Value { get; set; }
+        public bool IsUuid { get; set; }
     }
 }
