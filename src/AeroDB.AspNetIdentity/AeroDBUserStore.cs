@@ -1189,11 +1189,14 @@ public class AeroDBUserStore<TUser, TRole, TKey> :
     }
 
     private string UserRecordId(string userId)
-        => $"{_userTable}:`{EscapeRecordIdPart(userId)}`";
+    {
+        var normalizedId = DocumentIdentityResolver.NormalizeForIdentityType(typeof(TKey), userId);
 
-    private static string EscapeRecordIdPart(string value)
-        => value.Replace("\\", "\\\\", StringComparison.Ordinal)
-            .Replace("`", "\\`", StringComparison.Ordinal);
+        if (!DocumentIdentityResolver.TryCreate(normalizedId, _userTable, out var identity))
+            throw new InvalidOperationException("The user identity cannot be empty.");
+
+        return identity.Literal;
+    }
 
     // ══════════════════════════════════════════════════════════════════
     //  Private Helpers — Passkey (separate table, byte[] comparisons)

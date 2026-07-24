@@ -20,6 +20,7 @@
     <Project Path="../tests/AeroDB.IntegrationTests/AeroDB.IntegrationTests.csproj" />
     <Project Path="../tests/AeroDB.AspNetIdentity.Tests/AeroDB.AspNetIdentity.Tests.csproj" />
     <Project Path="../tests/AeroDB.Sable.Configuration.Tests/AeroDB.Sable.Configuration.Tests.csproj" />
+    <Project Path="../tests/AeroDB.Sable.Server.Tests/AeroDB.Sable.Server.Tests.csproj" />
     <Project Path="../tests/AeroDB.Tests/AeroDB.Tests.csproj" />
   </Folder>
   <Folder Name="/__Misc__/">

@@ -109,8 +109,12 @@ public abstract class InternalSessionBase : IAsyncDisposable
 
         public async Task<string?> LoadByIdAsync<T>(string id, CancellationToken ct = default) where T : class
         {
-        var results = await _session.RawQueryAsync<T>(
-                $"SELECT * FROM {MetadataDispatch.GetTableName(typeof(T), _session.StoreOptions.Schema)}:`{id.Replace("`", "\\`")}`",
+            var schema = _session.StoreOptions.Schema;
+            var table = MetadataDispatch.GetTableName(typeof(T), schema);
+            var normalizedId = DocumentIdentityResolver.NormalizeForDocumentType(typeof(T), id, schema);
+            DocumentIdentityResolver.TryCreate(normalizedId, table, out var identity);
+            var results = await _session.RawQueryAsync<T>(
+                $"SELECT * FROM {identity.Literal}",
                 null, ct).ConfigureAwait(false);
             if (results.Count == 0) return null;
             return System.Text.Json.JsonSerializer.Serialize(results[0], _session.StoreOptions.SerializerOptions);
@@ -286,20 +290,24 @@ public abstract class InternalSessionBase : IAsyncDisposable
         return response.FirstOk is not null ? 1 : 0;
     }
 
-    protected async Task<bool> CheckExistsAsyncCore<T>(string id, CancellationToken ct) where T : class
+    protected async Task<bool> CheckExistsAsyncCore<T>(object id, CancellationToken ct) where T : class
     {
         var table = MetadataDispatch.GetTableName(typeof(T), Options.Schema);
-        var sql = $"SELECT id FROM {table}:`{id.Replace("`", "\\`")}`";
+        var normalizedId = DocumentIdentityResolver.NormalizeForDocumentType(typeof(T), id, Options.Schema);
+        if (!DocumentIdentityResolver.TryCreate(normalizedId, table, out var identity))
+            return false;
+
+        var sql = $"SELECT id FROM {identity.Literal}";
         RequestCount++;
         LogSurrealQuery(sql, null);
         var response = await Session.RawQuery(sql, null, ct).ConfigureAwait(false);
         return response.Count > 0 && !response.HasErrors && response.FirstOk is not null;
     }
 
-    public ISurrealDbQueryable<T> Query<T>() where T : class
+    public ISableQueryable<T> Query<T>() where T : class
     {
         var provider = new SurrealQueryProvider(Session, this, Options, TenantId);
-        return new SurrealDbQueryable<T>(provider);
+        return new SableQueryable<T>(provider);
     }
 
     /// <summary>
@@ -367,29 +375,35 @@ public abstract class InternalSessionBase : IAsyncDisposable
     public virtual Task<T?> FetchLatest<T>(string streamId, CancellationToken ct = default) where T : class
         => LoadAsync<T>(streamId, ct);
 
-    public async Task<T?> LoadAsync<T>(string id, CancellationToken ct = default) where T : class
+    public Task<T?> LoadAsync<T>(string id, CancellationToken ct = default) where T : class
+        => LoadByIdentityAsync<T>(id, ct);
+
+    protected async Task<T?> LoadByIdentityAsync<T>(object id, CancellationToken ct = default) where T : class
     {
         RequestCount++;
         var table = MetadataDispatch.GetTableName(typeof(T), Options.Schema);
         var (schemaName, _) = MetadataDispatch.GetSchemaTarget(typeof(T), Options.Schema);
         var loadSession = await GetSessionForSchemaAsync(schemaName, ct).ConfigureAwait(false);
+        var normalizedId = DocumentIdentityResolver.NormalizeForDocumentType(typeof(T), id, Options.Schema);
+        if (!DocumentIdentityResolver.TryCreate(normalizedId, table, out var identity))
+            return null;
+
         try
         {
-            var rid = new RecordIdOf<string>(table, id);
-
             // Check identity map first
             if (ShouldTrackInIdentityMap(typeof(T)))
             {
-                if (IdentityMap.TryGetValue(typeof(T), out var typeMap) && typeMap.TryGetValue(id, out var cached))
+                if (IdentityMap.TryGetValue(typeof(T), out var typeMap)
+                    && typeMap.TryGetValue(identity.Key, out var cached))
                 {
-                    _logger.LogDebug("LoadAsync<{Type}> identity hit for id={Id}", typeof(T).Name, id);
+                    _logger.LogDebug("LoadAsync<{Type}> identity hit for id={Id}", typeof(T).Name, identity.Key);
                     return (T?)cached;
                 }
             }
 
             // Naming-aware path for Record, Entity<TId>, and POCO documents. Runtime schema
             // casing and field overrides must be authoritative for direct loads.
-            var result = await LoadPocoAsync<T>(loadSession, table, id, ct).ConfigureAwait(false);
+            var result = await LoadPocoAsync<T>(loadSession, identity, ct).ConfigureAwait(false);
 
             // Tenant isolation: if this session is tenant-scoped and the loaded entity
             // has a TenantId property, verify it matches. If not, treat as "not found".
@@ -420,14 +434,14 @@ public abstract class InternalSessionBase : IAsyncDisposable
             if (ShouldTrackInIdentityMap(typeof(T)) && result is not null)
             {
                 var typeMap = IdentityMap.GetOrAdd(typeof(T), _ => new ConcurrentDictionary<string, object>(StringComparer.Ordinal));
-                typeMap[id] = result;
+                typeMap[identity.Key] = result;
             }
 
             // Track original version for optimistic concurrency
             if (result is not null && UseOptimisticConcurrency)
                 TrackOriginalVersion(result);
 
-            _logger.LogDebug("Loaded {Type} with id={Id}", typeof(T).Name, id);
+            _logger.LogDebug("Loaded {Type} with id={Id}", typeof(T).Name, identity.Key);
             return result;
         }
         catch (SableEncryptionException)
@@ -436,7 +450,7 @@ public abstract class InternalSessionBase : IAsyncDisposable
         }
         catch (Exception ex)
         {
-            _logger.LogWarning(ex, "LoadAsync failed for id={Id}", id);
+            _logger.LogWarning(ex, "LoadAsync failed for id={Id}", identity.Key);
             return null;
         }
     }
@@ -477,11 +491,13 @@ public abstract class InternalSessionBase : IAsyncDisposable
     /// to typed identity properties like <c>long</c>, so we read the response as objects,
     /// extract the id, round-trip through JSON, and set identity manually.
     /// </summary>
-    private async Task<T?> LoadPocoAsync<T>(ISurrealDbSession session, string table, string id, CancellationToken ct)
+    private async Task<T?> LoadPocoAsync<T>(
+        ISurrealDbSession session,
+        DocumentIdentity identity,
+        CancellationToken ct)
         where T : class
     {
-        var escapedId = id.Replace("`", "\\`");
-        var sql = $"SELECT * FROM {table}:`{escapedId}`";
+        var sql = $"SELECT * FROM {identity.Literal}";
         LogSurrealQuery(sql, null);
         var response = await session.RawQuery(sql, null, ct).ConfigureAwait(false);
 
@@ -1841,7 +1857,7 @@ public abstract class InternalSessionBase : IAsyncDisposable
     }
 
     /// <inheritdoc />
-    public async Task<ISurrealDbQueryable<T>> QueryForNonStaleData<T>(TimeSpan timeout) where T : class
+    public async Task<ISableQueryable<T>> QueryForNonStaleData<T>(TimeSpan timeout) where T : class
     {
         var deadline = DateTime.UtcNow + timeout;
         var maxSeq = await QueryMaxEventSequenceAsync().ConfigureAwait(false);
@@ -1860,7 +1876,7 @@ public abstract class InternalSessionBase : IAsyncDisposable
     }
 
     /// <inheritdoc />
-    public Task<ISurrealDbQueryable<T>> QueryForNonStaleData<T>(TimeSpan timeout, StaleDataMode mode) where T : class
+    public Task<ISableQueryable<T>> QueryForNonStaleData<T>(TimeSpan timeout, StaleDataMode mode) where T : class
     {
         if (mode == StaleDataMode.AllowStale)
             return Task.FromResult(Query<T>());

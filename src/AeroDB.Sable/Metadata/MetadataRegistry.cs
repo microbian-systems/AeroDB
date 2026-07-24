@@ -86,8 +86,18 @@ public interface ITypeMetadata
     /// <summary>Untyped version setter delegate for generated types. Null if no version field.</summary>
     Action<object, long>? SetVersionAccessor { get; }
 
-    /// <summary>Untyped record ID accessor delegate for generated types. Null if no Id property.</summary>
-    Func<object, string?>? GetRecordIdAccessor { get; }
+    /// <summary>
+    /// The CLR identity type declared by the document, or null when the document has
+    /// no conventional identity property.
+    /// </summary>
+    Type? IdentityType { get; }
+
+    /// <summary>
+    /// Untyped CLR identity accessor for generated types. The original CLR type is
+    /// preserved so numeric identities remain numeric SurrealDB record keys.
+    /// Null if no identity property exists.
+    /// </summary>
+    Func<object, object?>? GetIdentityAccessor { get; }
 
     /// <summary>
     /// Compile-time list of public readable/writable properties (excluding Id).
@@ -125,10 +135,11 @@ public interface ITypeMetadata<T> : ITypeMetadata
     void SetVersion(T entity, long version);
 
     /// <summary>
-    /// Extracts the string record ID from the entity's Id property.
-    /// Handles <see cref="SurrealDb.Net.Models.RecordIdOf{T}"/> types.
+    /// Extracts the CLR identity from the entity's Id property without converting it
+    /// to a string. Existing <see cref="SurrealDb.Net.Models.RecordId"/> values are
+    /// returned unchanged.
     /// </summary>
-    string? GetRecordId(T entity);
+    object? GetIdentity(T entity);
 
     /// <summary>Sets the tenant ID on the entity, or no-op if not tenant-aware.</summary>
     void SetTenantId(T entity, string? tenantId);

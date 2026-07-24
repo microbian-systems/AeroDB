@@ -15,11 +15,11 @@ A fluent API would avoid raw strings and automatically handle tenant scoping, ta
 
 ### API Surface
 
-Extension method on `ISurrealDbQueryable<T>`:
+Extension method on `ISableQueryable<T>`:
 
 ```csharp
 public static async Task<int> BulkUpdateAsync<T>(
-    this ISurrealDbQueryable<T> queryable,
+    this ISableQueryable<T> queryable,
     object updateValues,
     CancellationToken ct = default)
 ```
@@ -65,7 +65,7 @@ WHERE status = 'Scheduled'
 
 ```
 1. Resolve table name via DocTable<T>() (existing pattern)
-2. Get the compiled SurrealQL from queryable.ToCommand()
+2. Get the compiled SurrealQL from queryable.ToCommand().CommandText
    → This produces: SELECT * FROM {table} WHERE {tenantFilter} AND {whereClauses}
 3. Transform SELECT → UPDATE, remove * after UPDATE
 4. Build SET clause from updateValues anonymous object:
@@ -84,7 +84,7 @@ WHERE status = 'Scheduled'
 
 | Component | Role |
 |-----------|------|
-| `ISurrealDbQueryable<T>.ToCommand()` | Produces the SELECT query with WHERE + tenant filters already applied |
+| `ISableQueryable<T>.ToCommand()` | Produces a `SableCommand` whose `CommandText` contains the SELECT query and whose `Parameters` remain separate |
 | `DocTable<T>()` | Table name resolution (snake_case convention) |
 | `ApplyTenantFilter()` (in `SurrealQueryProvider`) | Already built into the queryable pipeline — no extra tenant logic needed |
 | `FormatValue()` (in `ExpressionVisitor`) | Reuse for literal value formatting in SET clause |
@@ -123,4 +123,4 @@ Types without a `TenantId` property get no tenant filter regardless of `TenancyS
 
 - Typed update expression: `.BulkUpdateAsync(x => new { x.Status = "Incoming" })` — would require expression tree parsing for member assignments
 - Per-row value expressions: `.Set(x => x.Count, x => x.Count + 1)` — would require dual expression compilation (filter + value)
-- `BulkUpdateAsync` on `IQueryable<T>` instead of `ISurrealDbQueryable<T>` — would lose tenant filter injection
+- `BulkUpdateAsync` on `IQueryable<T>` instead of `ISableQueryable<T>` — would lose tenant filter injection

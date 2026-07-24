@@ -7,7 +7,7 @@ namespace AeroDB.Sable;
 /// (with sentinel parameter values) and the mappings needed to substitute
 /// live property values at execution time.
 /// </summary>
-public class CompiledPlan
+internal sealed class CompiledPlan
 {
     /// <summary>
     /// The SurrealQL skeleton produced by the <see cref="SurrealExpressionVisitor"/>.
@@ -48,4 +48,7 @@ public class CompiledPlan
     /// A <c>LIMIT 1</c> is applied at execution time.
     /// </summary>
     public bool IsSingleResult { get; internal set; }
+
+    /// <summary>Returns the parameterized compiled template for debugger display.</summary>
+    public override string ToString() => SkeletonResult?.ToSurrealQL() ?? string.Empty;
 }

@@ -30,7 +30,7 @@ public static class PatchExtensions
         where T : class
     {
         ArgumentNullException.ThrowIfNull(session);
-        return new PatchExpression<T>(session, id.ToString());
+        return new PatchExpression<T>(session, id);
     }
 
     /// <summary>
@@ -41,7 +41,7 @@ public static class PatchExtensions
         where T : class
     {
         ArgumentNullException.ThrowIfNull(session);
-        return new PatchExpression<T>(session, id.ToString());
+        return new PatchExpression<T>(session, id);
     }
 
     /// <summary>
@@ -52,7 +52,7 @@ public static class PatchExtensions
         where T : class
     {
         ArgumentNullException.ThrowIfNull(session);
-        return new PatchExpression<T>(session, id.ToString());
+        return new PatchExpression<T>(session, id);
     }
 
     /// <summary>

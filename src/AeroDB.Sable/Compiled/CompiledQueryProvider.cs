@@ -9,7 +9,7 @@ namespace AeroDB.Sable;
 /// Query provider for compiled queries — uses pre-parsed SurrealQL from a <see cref="CompiledQuery{T}"/>
 /// without re-walking the LINQ expression tree.
 /// </summary>
-public class CompiledQueryProvider<T> where T : class
+internal sealed class CompiledQueryProvider<T> where T : class
 {
     private readonly IQuerySession _session;
     private readonly InternalSessionBase _internalSession;

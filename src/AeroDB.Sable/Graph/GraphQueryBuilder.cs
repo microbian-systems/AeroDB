@@ -512,6 +512,8 @@ internal sealed class GraphQueryBuilder<TNode> : IGraphQuery<TNode> where TNode 
                 return b ? "true" : "false";
             if (constant.Value is int or long or float or double or decimal)
                 return constant.Value.ToString()!;
+            if (constant.Value is Guid guid)
+                return $"u'{guid:D}'";
             return $"'{constant.Value}'";
         }
 
@@ -529,6 +531,8 @@ internal sealed class GraphQueryBuilder<TNode> : IGraphQuery<TNode> where TNode 
                     return b ? "true" : "false";
                 if (value is int or long or float or double or decimal)
                     return value.ToString()!;
+                if (value is Guid guid)
+                    return $"u'{guid:D}'";
                 return $"'{value}'";
             }
             catch

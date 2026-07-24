@@ -460,13 +460,15 @@ public class QueryTests
         await using var store = await TestHarness.CreateStoreAsync();
         await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
-        var sql = session.Query<Person>()
+        var command = session.Query<Person>()
             .Where(p => p.Age > 25)
             .ToCommand();
 
-        sql.ShouldNotBeNullOrEmpty();
-        sql.ShouldContain("person");
-        sql.ShouldContain("Age");
+        command.CommandText.ShouldNotBeNullOrEmpty();
+        command.CommandText.ShouldContain("person");
+        command.CommandText.ShouldContain("Age");
+        command.Parameters.ShouldContainKey("p0");
+        command.Parameters["p0"].ShouldBe(25);
     }
 
     [Test]
@@ -475,12 +477,12 @@ public class QueryTests
         await using var store = await TestHarness.CreateStoreAsync();
         await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
-        var sql = session.Query<Person>()
+        var command = session.Query<Person>()
             .Select(p => new { p.Name })
             .ToCommand();
 
-        sql.ShouldNotBeNullOrEmpty();
-        sql.ShouldContain("SELECT");
+        command.CommandText.ShouldNotBeNullOrEmpty();
+        command.CommandText.ShouldContain("SELECT");
     }
 
     // ─── PersonDto for MemberInit test ──────────────────────────────

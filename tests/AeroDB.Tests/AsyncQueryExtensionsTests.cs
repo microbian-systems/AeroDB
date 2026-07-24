@@ -7,7 +7,7 @@ namespace AeroDB.Tests;
 /// Tests for <see cref="SurrealAsyncQueryExtensions"/> covering:
 /// <list type="bullet">
 ///   <item><description>Fallback path — plain <c>IQueryable&lt;T&gt;</c> → LINQ-to-Objects (pure unit)</description></item>
-///   <item><description>SurrealDB path — <c>SurrealDbQueryable</c> → InMemory SurrealDB (integration)</description></item>
+///   <item><description>SurrealDB path — <c>SableQueryable</c> → InMemory SurrealDB (integration)</description></item>
 ///   <item><description>Array operators — CONTAINSALL / CONTAINSANY / CONTAINSNONE / INTERSECTS</description></item>
 ///   <item><description>Soft-delete filtering — DeletedBefore</description></item>
 ///   <item><description>Hard delete — DeleteAsync</description></item>
@@ -17,7 +17,7 @@ public class AsyncQueryExtensionsTests
 {
     // ═════════════════════════════════════════════════════════════════
     // A. Fallback path — pure unit tests on plain IQueryable<T>
-    //    (not SurrealDbQueryable<T>, so the fallback executes)
+    //    (not SableQueryable<T>, so the fallback executes)
     // ═════════════════════════════════════════════════════════════════
 
     [Test]
@@ -156,7 +156,7 @@ public class AsyncQueryExtensionsTests
 
     // ═════════════════════════════════════════════════════════════════
     // B. SurrealDB path — integration with InMemory SurrealDB
-    //    session.Query<T>() returns SurrealDbQueryable<T>
+    //    session.Query<T>() returns SableQueryable<T>
     // ═════════════════════════════════════════════════════════════════
 
     [Test]

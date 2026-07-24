@@ -1,8 +1,8 @@
-using AeroDB;
+using AeroDB.Sable;
 
 namespace AeroDB.Benchmarks;
 
-public class EntityDoc : Entity<long>
+public class EntityDoc : SableDocument<long>
 {
     public string Name { get; set; } = "";
     public int Number { get; set; }

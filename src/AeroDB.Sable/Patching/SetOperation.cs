@@ -96,6 +96,7 @@ internal class SetOperation
             ((IFormattable)val).ToString(null, System.Globalization.CultureInfo.InvariantCulture),
         DateTime dt => $"d'{dt:yyyy-MM-ddTHH:mm:ss}'",
         DateTimeOffset dto => $"d'{dto:yyyy-MM-ddTHH:mm:ss}'",
+        Guid guid => $"u'{guid:D}'",
         Enum e => _enumStorage == EnumStorage.AsString
             ? $"'{e}'"
             : Convert.ToInt64(e).ToString(System.Globalization.CultureInfo.InvariantCulture),

@@ -84,7 +84,7 @@ These methods were relaxed from `where T : IRecord` to `where T : class`:
 - `DocumentMapping<T>` constructor
 - `Schema.For<T>()`
 - `SchemaManager.EnsureDocumentSchemaAsync<T>()`
-- `ISurrealDbQueryable.IncludeReverse<T, TChild>()`
-- `ISurrealDbQueryable.FilterInclude<T, TChild>()`
+- `ISableQueryable.IncludeReverse<T, TChild>()`
+- `ISableQueryable.FilterInclude<T, TChild>()`
 
 This enables Entity types as first-class citizens in the schema, query, and include pipelines.

@@ -6,8 +6,10 @@
   </PropertyGroup>
   <ItemGroup>
     <InternalsVisibleTo Include="AeroDB.Tests" />
+    <InternalsVisibleTo Include="AeroDB.AspNetIdentity" />
     <InternalsVisibleTo Include="AeroDB.ML" />
     <InternalsVisibleTo Include="AeroDB.Analyzers.Tests" />
+    <InternalsVisibleTo Include="Dali.Benchmarks" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AeroDB.SourceGenerators\AeroDB.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />

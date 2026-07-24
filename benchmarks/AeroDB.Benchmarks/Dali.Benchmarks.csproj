@@ -8,9 +8,10 @@
   <ItemGroup>
     <PackageReference Include="BenchmarkDotNet" Version="0.14.0" />
     <PackageReference Include="SurrealDb.Embedded.InMemory" VersionOverride="0.10.2" />
+    <PackageReference Include="Dahomey.Cbor" Version="1.26.3" />
     <PackageReference Include="Bogus" Version="35.6.3" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\AeroDB\AeroDB.csproj" />
+    <ProjectReference Include="..\..\src\AeroDB.Sable\AeroDB.Sable.csproj" />
   </ItemGroup>
 </Project>

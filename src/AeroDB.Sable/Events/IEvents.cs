@@ -159,10 +159,10 @@ public interface IEvents
     Task<FetchForWritingResult<T>?> FetchForExclusiveWriting<T>(string streamId, CancellationToken ct = default) where T : class;
 
     /// <summary>Query raw event data of a specific type across all streams.</summary>
-    ISurrealDbQueryable<T> QueryRawEventDataOnly<T>() where T : class;
+    ISableQueryable<T> QueryRawEventDataOnly<T>() where T : class;
 
     /// <summary>Query all raw events across all streams.</summary>
-    ISurrealDbQueryable<IEvent> QueryAllRawEvents();
+    ISableQueryable<IEvent> QueryAllRawEvents();
 
     /// <summary>
     /// Appends a single typed event to a stream with automatic versioning.

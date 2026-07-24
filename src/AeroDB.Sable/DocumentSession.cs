@@ -62,6 +62,12 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
     /// </summary>
     private SurrealDbTransaction? _explicitTransaction;
 
+    // SurrealDb.Net 0.10.2 exposes transaction objects for embedded transports,
+    // but those engines reject queries carrying the transaction id. Keep their
+    // established eager-write behavior while real server transports execute
+    // document, patch, and graph mutations through the transaction session.
+    private bool UsesEmbeddedTransport => Session.Uri?.Scheme is "mem" or "rocksdb" or "surrealkv";
+
     /// <summary>
     /// Whether this session owns the explicit transaction and is responsible for
     /// cleaning it up on dispose.
@@ -422,13 +428,29 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         var idProp = typeof(T).GetProperty("Id", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
         if (idProp is not null && idProp.CanWrite)
         {
-            // Convert string id to the property type (string, RecordIdOf<string>, long, etc.)
-            var propType = idProp.PropertyType;
-            object convertedId = id;
-            if (propType == typeof(long))
-                convertedId = long.TryParse(id, out var l) ? l : 0;
-            else if (propType.IsGenericType && propType.GetGenericTypeDefinition() == typeof(RecordIdOf<>))
-                convertedId = Activator.CreateInstance(propType, id)!;
+            var propType = Nullable.GetUnderlyingType(idProp.PropertyType) ?? idProp.PropertyType;
+            var normalizedId = DocumentIdentityResolver.NormalizeForDocumentType(
+                typeof(T),
+                id,
+                Options.Schema);
+            object convertedId = normalizedId;
+            if (propType.IsGenericType && propType.GetGenericTypeDefinition() == typeof(RecordIdOf<>))
+            {
+                var valueType = propType.GetGenericArguments()[0];
+                var value = valueType.IsInstanceOfType(normalizedId)
+                    ? normalizedId
+                    : Convert.ChangeType(normalizedId, valueType, CultureInfo.InvariantCulture);
+                convertedId = Activator.CreateInstance(
+                    propType,
+                    MetadataDispatch.GetTableName(typeof(T), Options.Schema),
+                    value)!;
+            }
+            else if (!propType.IsInstanceOfType(convertedId))
+            {
+                convertedId = propType == typeof(Guid)
+                    ? Guid.Parse(id)
+                    : Convert.ChangeType(normalizedId, propType, CultureInfo.InvariantCulture);
+            }
             idProp.SetValue(document, convertedId);
         }
         Store(document);
@@ -676,7 +698,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                     await listener.BeforeSaveChangesAsync(this, ct).ConfigureAwait(false);
             }
 
-            var targetSession = await GetSessionForSchemaAsync(targetSchemaName, ct).ConfigureAwait(false);
+            var targetSession = await GetWriteSessionForSchemaAsync(targetSchemaName, ct).ConfigureAwait(false);
 
             // Begin SurrealDB transaction — all per-entity operations on this session
             // participate because they share the underlying connection.
@@ -693,6 +715,9 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
             {
                 tx = await targetSession.BeginTransaction(ct).ConfigureAwait(false);
                 ownsTx = true;
+
+                if (!UsesEmbeddedTransport && tx is not null)
+                    targetSession = tx;
             }
 
             try
@@ -831,35 +856,26 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                                     await UpsertRecordAsync(recAdded, recAdded.Id, targetSession, ct).ConfigureAwait(false);
                                     break;
                                 }
-                                var entityId = GetEntityId(op.Entity);
-                                if (!string.IsNullOrEmpty(entityId))
+                                GenerateGuidIdentityIfEmpty(op.Entity);
+                                if (DocumentIdentityResolver.TryResolve(
+                                        op.Entity,
+                                        table,
+                                        Options.Schema,
+                                        out var addedIdentity))
                                 {
-                                    // Auto-generate Guid for Guid.Empty identity
-                                    var type = op.Entity.GetType();
-                                    var mp = Options.Schema.Mappings.GetValueOrDefault(type);
-                                    var idpName = mp?.IdentityProperty ?? "Id";
-                                    var idp = type.GetProperty(idpName);
-                                    if (idp is not null && idp.PropertyType == typeof(Guid) && idp.GetValue(op.Entity) is Guid guidVal && guidVal == Guid.Empty)
-                                    {
-                                        var newGuid = Guid.NewGuid();
-                                        idp.SetValue(op.Entity, newGuid);
-                                        entityId = newGuid.ToString();
-                                    }
-
                                     // Use Upsert (create-or-update) for entities with explicit IDs.
                                     // This avoids failure when the record already exists (e.g. from
                                     // inline projections run in a prior session, or RebuildAsync).
-                                    var rid = new RecordIdOf<string>(table, entityId);
                                     if (op.Entity is IRecord rec)
                                     {
-                                        await UpsertRecordAsync(rec, rid, targetSession, ct).ConfigureAwait(false);
+                                        await UpsertRecordAsync(rec, addedIdentity.RecordId, targetSession, ct).ConfigureAwait(false);
                                     }
                                     else
                                     {
                                         // Non-IRecord (Entity<TId>) types with explicit IDs.
                                         await ExecutePocoWriteAsync(
                                             targetSession,
-                                            $"UPSERT {table}:`{entityId}` CONTENT",
+                                            $"UPSERT {addedIdentity.Literal} CONTENT",
                                             op.Entity,
                                             ct).ConfigureAwait(false);
                                     }
@@ -893,64 +909,44 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                                     await UpsertRecordAsync(recMod, recMod.Id, targetSession, ct).ConfigureAwait(false);
                                     break;
                                 }
-                                var modId = GetRecordId(op.Entity, table);
-                                if (modId is not null)
+                                GenerateGuidIdentityIfEmpty(op.Entity);
+                                if (DocumentIdentityResolver.TryResolve(
+                                        op.Entity,
+                                        table,
+                                        Options.Schema,
+                                        out var modifiedIdentity))
                                 {
                                     if (op.Entity is IRecord record)
                                     {
                                         // Use Upsert (create-or-update) via the SDK's typed path,
                                         // which avoids CBOR serialization issues with JsonElement values.
-                                        await UpsertRecordAsync(record, modId, targetSession, ct).ConfigureAwait(false);
+                                        await UpsertRecordAsync(record, modifiedIdentity.RecordId, targetSession, ct).ConfigureAwait(false);
                                     }
                                     else
                                     {
                                         // Fall back to SurrealQL for non-Record types
-                                        var modEntityId = GetEntityId(op.Entity);
-                                        if (modEntityId is not null)
-                                        {
-                                            // Auto-generate Guid for Guid.Empty identity
-                                            var modType = op.Entity.GetType();
-                                            var modMp = Options.Schema.Mappings.GetValueOrDefault(modType);
-                                            var modIdpName = modMp?.IdentityProperty ?? "Id";
-                                            var modIdp = modType.GetProperty(modIdpName);
-                                            if (modIdp is not null && modIdp.PropertyType == typeof(Guid) && modIdp.GetValue(op.Entity) is Guid modGuidVal && modGuidVal == Guid.Empty)
-                                            {
-                                                var newGuid = Guid.NewGuid();
-                                                modIdp.SetValue(op.Entity, newGuid);
-                                                modEntityId = newGuid.ToString();
-                                            }
-
-                                            await ExecutePocoWriteAsync(
-                                                targetSession,
-                                                $"UPSERT {table}:`{modEntityId}` MERGE",
-                                                op.Entity,
-                                                ct).ConfigureAwait(false);
-                                        }
+                                        await ExecutePocoWriteAsync(
+                                            targetSession,
+                                            $"UPSERT {modifiedIdentity.Literal} MERGE",
+                                            op.Entity,
+                                            ct).ConfigureAwait(false);
                                     }
                                 }
                                 break;
 
                             case OperationType.Insert:
                                 ResolvedLogger.LogDebug("INSERT {Type} ({Table})", op.EntityType.Name, table);
-                                var insertId = GetEntityId(op.Entity);
-                                if (!string.IsNullOrEmpty(insertId))
+                                GenerateGuidIdentityIfEmpty(op.Entity);
+                                if (DocumentIdentityResolver.TryResolve(
+                                        op.Entity,
+                                        table,
+                                        Options.Schema,
+                                        out var insertIdentity))
                                 {
-                                    // Auto-generate Guid for Guid.Empty identity
-                                    var insType = op.Entity.GetType();
-                                    var insMp = Options.Schema.Mappings.GetValueOrDefault(insType);
-                                    var insIdpName = insMp?.IdentityProperty ?? "Id";
-                                    var insIdp = insType.GetProperty(insIdpName);
-                                    if (insIdp is not null && insIdp.PropertyType == typeof(Guid) && insIdp.GetValue(op.Entity) is Guid insGuidVal && insGuidVal == Guid.Empty)
-                                    {
-                                        var newGuid = Guid.NewGuid();
-                                        insIdp.SetValue(op.Entity, newGuid);
-                                        insertId = newGuid.ToString();
-                                    }
-
                                     // Use CREATE (insert-only, fails if record already exists)
                                     await ExecutePocoWriteAsync(
                                         targetSession,
-                                        $"CREATE {table}:`{insertId}` CONTENT",
+                                        $"CREATE {insertIdentity.Literal} CONTENT",
                                         op.Entity,
                                         ct).ConfigureAwait(false);
                                 }
@@ -970,25 +966,17 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
 
                             case OperationType.Update:
                                 ResolvedLogger.LogDebug("UPDATE-ONLY {Type} ({Table})", op.EntityType.Name, table);
-                                var updateId = GetEntityId(op.Entity);
-                                if (!string.IsNullOrEmpty(updateId))
+                                GenerateGuidIdentityIfEmpty(op.Entity);
+                                if (DocumentIdentityResolver.TryResolve(
+                                        op.Entity,
+                                        table,
+                                        Options.Schema,
+                                        out var updateIdentity))
                                 {
-                                    // Auto-generate Guid for Guid.Empty identity
-                                    var updType = op.Entity.GetType();
-                                    var updMp = Options.Schema.Mappings.GetValueOrDefault(updType);
-                                    var updIdpName = updMp?.IdentityProperty ?? "Id";
-                                    var updIdp = updType.GetProperty(updIdpName);
-                                    if (updIdp is not null && updIdp.PropertyType == typeof(Guid) && updIdp.GetValue(op.Entity) is Guid updGuidVal && updGuidVal == Guid.Empty)
-                                    {
-                                        var newGuid = Guid.NewGuid();
-                                        updIdp.SetValue(op.Entity, newGuid);
-                                        updateId = newGuid.ToString();
-                                    }
-
                                     // Use UPDATE (update-only, fails if record doesn't exist)
                                     await ExecutePocoWriteAsync(
                                         targetSession,
-                                        $"UPDATE {table}:`{updateId}` MERGE",
+                                        $"UPDATE {updateIdentity.Literal} MERGE",
                                         op.Entity,
                                         ct).ConfigureAwait(false);
                                 }
@@ -1030,24 +1018,23 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                                     await UpsertRecordAsync(recSoft, recSoft.Id, targetSession, ct).ConfigureAwait(false);
                                     break;
                                 }
-                                var softDelId = GetRecordId(op.Entity, table);
-                                if (softDelId is not null)
+                                if (DocumentIdentityResolver.TryResolve(
+                                        op.Entity,
+                                        table,
+                                        Options.Schema,
+                                        out var softDeleteIdentity))
                                 {
                                     if (op.Entity is IRecord record)
                                     {
-                                        await UpsertRecordAsync(record, softDelId, targetSession, ct).ConfigureAwait(false);
+                                        await UpsertRecordAsync(record, softDeleteIdentity.RecordId, targetSession, ct).ConfigureAwait(false);
                                     }
                                     else
                                     {
-                                        var softDelEntityId = GetEntityId(op.Entity);
-                                        if (softDelEntityId is not null)
-                                        {
-                                            await ExecutePocoWriteAsync(
-                                                targetSession,
-                                                $"UPSERT {table}:`{softDelEntityId}` MERGE",
-                                                op.Entity,
-                                                ct).ConfigureAwait(false);
-                                        }
+                                        await ExecutePocoWriteAsync(
+                                            targetSession,
+                                            $"UPSERT {softDeleteIdentity.Literal} MERGE",
+                                            op.Entity,
+                                            ct).ConfigureAwait(false);
                                     }
                                 }
                                 break;
@@ -1179,18 +1166,29 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                                     }
                                     else
                                     {
-                                        var entityId = GetEntityId(op.Entity);
-
-                                            if (!string.IsNullOrEmpty(entityId) && op.Entity is IRecord record)
+                                        GenerateGuidIdentityIfEmpty(op.Entity);
+                                        if (DocumentIdentityResolver.TryResolve(
+                                                op.Entity,
+                                                table,
+                                                Options.Schema,
+                                                out var projectedIdentity)
+                                            && op.Entity is IRecord record)
                                         {
-                                            var rid = new RecordIdOf<string>(table, entityId);
-                                            await UpsertRecordAsync(record, rid, targetSession, ct).ConfigureAwait(false);
+                                            await UpsertRecordAsync(
+                                                record,
+                                                projectedIdentity.RecordId,
+                                                targetSession,
+                                                ct).ConfigureAwait(false);
                                         }
-                                        else if (!string.IsNullOrEmpty(entityId))
+                                        else if (DocumentIdentityResolver.TryResolve(
+                                                     op.Entity,
+                                                     table,
+                                                     Options.Schema,
+                                                     out projectedIdentity))
                                         {
                                             await ExecutePocoWriteAsync(
                                                 targetSession,
-                                                $"UPSERT {table}:`{entityId}` MERGE",
+                                                $"UPSERT {projectedIdentity.Literal} MERGE",
                                                 op.Entity,
                                                 ct).ConfigureAwait(false);
                                         }
@@ -1239,7 +1237,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                 {
                     foreach (var patch in _queuedPatches)
                     {
-                        await patch.ExecuteAsync(this, ct).ConfigureAwait(false);
+                        await patch.ExecuteAsync(this, targetSession, ct).ConfigureAwait(false);
                     }
                     _queuedPatches.Clear();
                 }
@@ -1364,65 +1362,44 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         }
     }
 
-    private string? GetEntityId(object entity)
+    private void GenerateGuidIdentityIfEmpty(object entity)
     {
         var entityType = entity.GetType();
-        var meta = MetadataRegistry.TryGet(entityType);
-        if (meta is not null && meta.GetRecordIdAccessor is not null)
-            return meta.GetRecordIdAccessor(entity);
-
-        // Look up identity property from document mapping configuration
-        // This supports POCOs configured via Schema.For<T>().Identity(x => x.Id)
         var mapping = Options.Schema.Mappings.GetValueOrDefault(entityType);
-        var idPropName = mapping?.IdentityProperty ?? "Id";
+        var identityProperty = mapping?.IdentityProperty ?? "Id";
+        var property = entityType.GetProperty(identityProperty);
 
-        // Fallback for non-generated types
-        var prop = entityType.GetProperty(idPropName);
-        if (prop is null) return null;
+        if (property is { CanWrite: true, PropertyType: not null }
+            && property.PropertyType == typeof(Guid)
+            && property.GetValue(entity) is Guid value
+            && value == Guid.Empty)
+        {
+            property.SetValue(entity, Guid.NewGuid());
+        }
+    }
 
-        var idValue = prop.GetValue(entity);
-        if (idValue is null) return null;
-
-        // RecordId does not override ToString(), so handle it explicitly
-        if (idValue is RecordIdOf<string> strRid)
-            return strRid.Id;
-        if (idValue is RecordIdOf<long> longRid)
-            return longRid.Id.ToString();
-        if (idValue is RecordIdOf<int> intRid)
-            return intRid.Id.ToString();
-
-        var str = idValue.ToString();
-        return string.IsNullOrEmpty(str) ? null : str;
+    private string? GetEntityId(object entity)
+    {
+        var table = MetadataDispatch.GetTableName(entity.GetType(), Options.Schema);
+        return DocumentIdentityResolver.TryResolve(entity, table, Options.Schema, out var identity)
+            ? identity.Key
+            : null;
     }
 
     internal string? GetEntityIdForProtectedOperation(object entity) => GetEntityId(entity);
 
     internal RecordId? GetRecordIdForProtectedOperation(object entity, string table)
     {
-        if (entity is IRecord { Id: not null } record)
-            return record.Id;
-
-        var entityType = entity.GetType();
-        var mapping = Options.Schema.Mappings.GetValueOrDefault(entityType);
-        var identityProperty = mapping?.IdentityProperty ?? "Id";
-        var value = entityType.GetProperty(identityProperty)?.GetValue(entity);
-        return value switch
-        {
-            RecordId recordId => recordId,
-            string id when !string.IsNullOrWhiteSpace(id) => RecordId.From(table, id),
-            long id => RecordId.From(table, id),
-            int id => RecordId.From(table, id),
-            short id => RecordId.From(table, id),
-            byte id => RecordId.From(table, id),
-            Guid id => RecordId.From(table, id),
-            _ => null
-        };
+        return DocumentIdentityResolver.TryResolve(entity, table, Options.Schema, out var identity)
+            ? identity.RecordId
+            : null;
     }
 
-    private RecordIdOf<string>? GetRecordId(object entity, string table)
+    private RecordId? GetRecordId(object entity, string table)
     {
-        var id = GetEntityId(entity);
-        return string.IsNullOrEmpty(id) ? null : new RecordIdOf<string>(table, id);
+        return DocumentIdentityResolver.TryResolve(entity, table, Options.Schema, out var identity)
+            ? identity.RecordId
+            : null;
     }
 
     /// <summary>
@@ -1439,7 +1416,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         var entityType = entity.GetType();
         var meta = MetadataRegistry.TryGet(entityType);
         // For generated types (Entity<TId>), the shim handles identity — skip
-        if (meta is not null && meta.GetRecordIdAccessor is not null) return;
+        if (meta is not null && meta.GetIdentityAccessor is not null) return;
 
         // Look up the identity property from the document mapping
         var mapping = Options.Schema.Mappings.GetValueOrDefault(entityType);
@@ -1486,14 +1463,14 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
             return -1;
 
         var table = MetadataDispatch.GetTableName(entityType, Options.Schema);
-        var id = GetEntityId(entity);
-        if (id is null) return -1;
+        var recordId = GetRecordId(entity, table);
+        if (recordId is null) return -1;
 
         var versionField = MetadataDispatch.GetFieldName(
             entityType,
             MetadataDispatch.GetVersionFieldName(entityType)!,
             Options.Schema);
-        var surql = $"SELECT {versionField} FROM {table}:`{id.Replace("`", "\\`")}`;";
+        var surql = $"SELECT {versionField} FROM {DocumentIdentityResolver.FormatRecordIdLiteral(recordId)};";
         var response = await session.RawQuery(surql, null, ct).ConfigureAwait(false);
 
         if (response.HasErrors || response.Count == 0)
@@ -1523,13 +1500,14 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         if (MetadataDispatch.GetVersionFieldName(op.EntityType) is null) return;
 
         var table = MetadataDispatch.GetTableName(op.EntityType, Options.Schema);
-        var id = GetEntityId(entity);
-        if (id is null)
+        var recordId = GetRecordId(entity, table);
+        if (recordId is null)
         {
             ResolvedLogger.LogWarning("Skipping concurrency check for {Type}: unable to resolve entity ID",
                 op.EntityType.Name);
             return;
         }
+        var id = GetEntityId(entity) ?? DocumentIdentityResolver.FormatRecordIdLiteral(recordId);
 
         // Query the current version from the DB using a raw SurrealQL call
         // with typed GetValue<T> deserialization (same path as Query provider).
@@ -1537,7 +1515,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
             op.EntityType,
             MetadataDispatch.GetVersionFieldName(op.EntityType)!,
             Options.Schema);
-        var surql = $"SELECT {versionField} FROM {table}:`{id.Replace("`", "\\`")}`;";
+        var surql = $"SELECT {versionField} FROM {DocumentIdentityResolver.FormatRecordIdLiteral(recordId)};";
         var response = await session.RawQuery(surql, null, ct).ConfigureAwait(false);
 
         if (response.HasErrors)
@@ -1708,6 +1686,15 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         return true;
     }
 
+    internal string BuildBulkCreateStatement(object entity, string table)
+    {
+        GenerateGuidIdentityIfEmpty(entity);
+        TryBuildSurrealQlObjectLiteral(entity, out var literal);
+        return DocumentIdentityResolver.TryResolve(entity, table, Options.Schema, out var identity)
+            ? $"CREATE {identity.Literal} CONTENT {literal};"
+            : $"CREATE {table} CONTENT {literal};";
+    }
+
     private async ValueTask<ProtectedSurrealQlLiteral> BuildSurrealQlObjectLiteralAsync(
         object entity,
         CancellationToken cancellationToken)
@@ -1776,7 +1763,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
             GeometryPolygon polygon => polygon.ToSurrealQL(),
             DateTime dt => $"d'{dt.ToUniversalTime():yyyy-MM-ddTHH:mm:ssZ}'",
             DateTimeOffset dto => $"d'{dto.UtcDateTime:yyyy-MM-ddTHH:mm:ssZ}'",
-            Guid guid => $"'{guid}'",
+            Guid guid => $"u'{guid:D}'",
             Enum e => Options.EnumStorage == EnumStorage.AsString
                 ? $"'{e}'"
                 : Convert.ToInt64(e, CultureInfo.InvariantCulture).ToString(CultureInfo.InvariantCulture),
@@ -1975,7 +1962,6 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
             ThrowIfRawQueryFailed(encryptedResponse, redactDetails: true);
             return;
         }
-
         if (TryBuildRelationshipRecordLiteral(record, out var literal)
             || TryBuildSurrealQlObjectLiteral(record, out literal))
         {
@@ -2062,36 +2048,10 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
     }
 
     private static string ToRecordIdLiteral(string tableName, object id)
-    {
-        var value = id switch
-        {
-            string s => QuoteRecordIdValue(s),
-            Guid g => QuoteRecordIdValue(g.ToString()),
-            DateTime dt => QuoteRecordIdValue(dt.ToString("O", CultureInfo.InvariantCulture)),
-            DateTimeOffset dto => QuoteRecordIdValue(dto.ToString("O", CultureInfo.InvariantCulture)),
-            IFormattable formattable => formattable.ToString(null, CultureInfo.InvariantCulture) ?? string.Empty,
-            _ => QuoteRecordIdValue(id.ToString() ?? string.Empty)
-        };
-
-        return $"{tableName}:{value}";
-    }
-
-    private static string QuoteRecordIdValue(string value)
-        => "`" + value.Replace("`", "\\`", StringComparison.Ordinal) + "`";
+        => DocumentIdentityResolver.FormatRecordIdLiteral(tableName, id);
 
     private static string FormatRecordIdLiteral(RecordId recordId)
-    {
-        if (TryFormatRecordIdOf(recordId, out var literal))
-            return literal;
-
-        return recordId switch
-        {
-            RecordIdOf<string> s => $"{s.Table}:{QuoteRecordIdValue(s.Id)}",
-            RecordIdOf<long> l => $"{l.Table}:{l.Id.ToString(CultureInfo.InvariantCulture)}",
-            RecordIdOf<int> i => $"{i.Table}:{i.Id.ToString(CultureInfo.InvariantCulture)}",
-            _ => $"{recordId.Table}:{QuoteRecordIdValue(recordId.DeserializeId<object>()?.ToString() ?? string.Empty)}"
-        };
-    }
+        => DocumentIdentityResolver.FormatRecordIdLiteral(recordId);
 
     private static bool TryFormatRecordIdOf(object value, out string literal)
     {
@@ -2211,13 +2171,37 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
             return;
 
         var schemaName = ResolveGraphSchemaName(_transactionRelations);
-        var targetSession = await GetSessionForSchemaAsync(schemaName, ct).ConfigureAwait(false);
+        var targetSession = await GetWriteSessionForSchemaAsync(schemaName, ct).ConfigureAwait(false);
 
         await ExecuteGraphOperationsAsync(
             targetSession,
             _transactionRelations,
             _transactionUnrelations,
             ct).ConfigureAwait(false);
+    }
+
+    internal Task<ISurrealDbSession> GetWriteSessionAsync(Type entityType, CancellationToken ct)
+    {
+        var (schemaName, _) = MetadataDispatch.GetSchemaTarget(entityType, Options.Schema);
+        return GetWriteSessionForSchemaAsync(schemaName, ct);
+    }
+
+    private async Task<ISurrealDbSession> GetWriteSessionForSchemaAsync(
+        string? schemaName,
+        CancellationToken ct)
+    {
+        if (_explicitTransaction is null || UsesEmbeddedTransport)
+            return await GetSessionForSchemaAsync(schemaName, ct).ConfigureAwait(false);
+
+        if (schemaName is not null
+            && !string.Equals(schemaName, Options.Database, StringComparison.Ordinal))
+        {
+            throw new InvalidOperationException(
+                $"An explicit transaction is scoped to database '{Options.Database ?? "test"}', " +
+                $"but this operation targets mapped database '{schemaName}'.");
+        }
+
+        return _explicitTransaction;
     }
 
     private string? ResolveGraphSchemaName(IReadOnlyCollection<QueuedRelation> relations)
@@ -2257,15 +2241,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
 
         foreach (var edgeId in unrelations)
         {
-            var ridStr = edgeId switch
-            {
-                RecordIdOf<string> s => $"{s.Table}:{s.Id}",
-                RecordIdOf<long> l => $"{l.Table}:{l.Id}",
-                RecordIdOf<int> i => $"{i.Table}:{i.Id}",
-                _ => throw new ArgumentException(
-                    $"Unsupported RecordId type '{edgeId.GetType().Name}'. Expected RecordIdOf<string>, RecordIdOf<long>, or RecordIdOf<int>.",
-                    nameof(edgeId))
-            };
+            var ridStr = DocumentIdentityResolver.FormatRecordIdLiteral(edgeId);
             await session.RawQuery($"DELETE {ridStr};", null, ct).ConfigureAwait(false);
         }
         unrelations.Clear();
@@ -2311,57 +2287,24 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
     /// <inheritdoc />
     public async Task<T?> LoadAsync<T>(int id, CancellationToken ct = default) where T : class
     {
-        if (typeof(ISableDocument<int>).IsAssignableFrom(typeof(T))
-            || EncryptedFieldResolver.HasEncryptedFields(typeof(T), Options.Schema))
-            return await base.LoadAsync<T>(id.ToString(CultureInfo.InvariantCulture), ct).ConfigureAwait(false);
-
-        RequestCount++;
-        var table = MetadataDispatch.GetTableName(typeof(T));
-        var rid = new RecordIdOf<int>(table, id);
-        var strId = id.ToString(CultureInfo.InvariantCulture);
-
-        if (ShouldTrackInIdentityMap(typeof(T))
-            && IdentityMap.TryGetValue(typeof(T), out var typeMap)
-            && typeMap.TryGetValue(strId, out var cached))
-            return (T?)cached;
-
-        var (schemaName, _) = MetadataDispatch.GetSchemaTarget(typeof(T), Options.Schema);
-        var loadSession = await GetSessionForSchemaAsync(schemaName, ct).ConfigureAwait(false);
-        return await loadSession.Select<T>(rid, ct).ConfigureAwait(false);
+        return await LoadByIdentityAsync<T>(id, ct).ConfigureAwait(false);
     }
 
     /// <inheritdoc />
     public async Task<T?> LoadAsync<T>(long id, CancellationToken ct = default) where T : class
     {
-        if (typeof(ISableDocument<long>).IsAssignableFrom(typeof(T))
-            || EncryptedFieldResolver.HasEncryptedFields(typeof(T), Options.Schema))
-            return await base.LoadAsync<T>(id.ToString(CultureInfo.InvariantCulture), ct).ConfigureAwait(false);
-
-        RequestCount++;
-        var table = MetadataDispatch.GetTableName(typeof(T));
-        var rid = new RecordIdOf<long>(table, id);
-        var strId = id.ToString(CultureInfo.InvariantCulture);
-
-        if (ShouldTrackInIdentityMap(typeof(T))
-            && IdentityMap.TryGetValue(typeof(T), out var typeMap)
-            && typeMap.TryGetValue(strId, out var cached))
-            return (T?)cached;
-
-        var (schemaName, _) = MetadataDispatch.GetSchemaTarget(typeof(T), Options.Schema);
-        var loadSession = await GetSessionForSchemaAsync(schemaName, ct).ConfigureAwait(false);
-        return await loadSession.Select<T>(rid, ct).ConfigureAwait(false);
+        return await LoadByIdentityAsync<T>(id, ct).ConfigureAwait(false);
     }
 
     /// <inheritdoc />
     public Task<T?> LoadAsync<T>(Guid id, CancellationToken ct = default) where T : class
-        => LoadAsync<T>(id.ToString(), ct);
+        => LoadByIdentityAsync<T>(id, ct);
 
     /// <inheritdoc />
     public Task<T?> LoadAsync<T>(object id, CancellationToken ct = default) where T : class
     {
         ArgumentNullException.ThrowIfNull(id);
-        var strId = id.ToString();
-        return base.LoadAsync<T>(strId!, ct);
+        return LoadByIdentityAsync<T>(id, ct);
     }
 
     /// <inheritdoc />
@@ -2370,22 +2313,21 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
 
     /// <inheritdoc />
     public Task<bool> CheckExistsAsync<T>(int id, CancellationToken ct = default) where T : class
-        => CheckExistsAsync<T>(id.ToString(), ct);
+        => CheckExistsAsyncCore<T>(id, ct);
 
     /// <inheritdoc />
     public Task<bool> CheckExistsAsync<T>(long id, CancellationToken ct = default) where T : class
-        => CheckExistsAsync<T>(id.ToString(), ct);
+        => CheckExistsAsyncCore<T>(id, ct);
 
     /// <inheritdoc />
     public Task<bool> CheckExistsAsync<T>(Guid id, CancellationToken ct = default) where T : class
-        => CheckExistsAsync<T>(id.ToString(), ct);
+        => CheckExistsAsyncCore<T>(id, ct);
 
     /// <inheritdoc />
     public Task<bool> CheckExistsAsync<T>(object id, CancellationToken ct = default) where T : class
     {
         ArgumentNullException.ThrowIfNull(id);
-        var strId = id.ToString();
-        return CheckExistsAsyncCore<T>(strId!, ct);
+        return CheckExistsAsyncCore<T>(id, ct);
     }
 
     /// <inheritdoc />
@@ -2394,15 +2336,15 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
 
     /// <inheritdoc />
     public Task<IReadOnlyList<T>> LoadManyAsync<T>(IEnumerable<Guid> ids, CancellationToken ct = default) where T : class
-        => LoadManyAsync<T>(ids.Select(id => id.ToString()), ct);
+        => LoadManyExtensions.LoadManyByIdentityAsync<T>(this, ids.Cast<object>(), ct);
 
     /// <inheritdoc />
     public Task<IReadOnlyList<T>> LoadManyAsync<T>(IEnumerable<long> ids, CancellationToken ct = default) where T : class
-        => LoadManyAsync<T>(ids.Select(id => id.ToString()), ct);
+        => LoadManyExtensions.LoadManyByIdentityAsync<T>(this, ids.Cast<object>(), ct);
 
     /// <inheritdoc />
     public Task<IReadOnlyList<T>> LoadManyAsync<T>(IEnumerable<int> ids, CancellationToken ct = default) where T : class
-        => LoadManyAsync<T>(ids.Select(id => id.ToString()), ct);
+        => LoadManyExtensions.LoadManyByIdentityAsync<T>(this, ids.Cast<object>(), ct);
 
     /// <inheritdoc />
     public async Task<IDocumentMetadata?> MetadataForAsync<T>(T entity, CancellationToken ct = default) where T : class
@@ -2432,21 +2374,21 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
 
     /// <inheritdoc />
     public void Delete<T>(long id) where T : class
-        => Delete<T>(id.ToString());
+        => Delete(CreateEntityWithId<T>(id));
 
     /// <inheritdoc />
     public void Delete<T>(int id) where T : class
-        => Delete<T>(id.ToString());
+        => Delete(CreateEntityWithId<T>(id));
 
     /// <inheritdoc />
     public void Delete<T>(Guid id) where T : class
-        => Delete<T>(id.ToString());
+        => Delete(CreateEntityWithId<T>(id));
 
     /// <inheritdoc />
     public void Delete<T>(object id) where T : class
     {
         ArgumentNullException.ThrowIfNull(id);
-        Delete<T>(id.ToString()!);
+        Delete(CreateEntityWithId<T>(id));
     }
 
     /// <inheritdoc />
@@ -2642,15 +2584,15 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
 
     /// <inheritdoc />
     public void HardDelete<T>(long id) where T : class
-        => HardDelete<T>(id.ToString());
+        => HardDelete(CreateEntityWithId<T>(id));
 
     /// <inheritdoc />
     public void HardDelete<T>(int id) where T : class
-        => HardDelete<T>(id.ToString());
+        => HardDelete(CreateEntityWithId<T>(id));
 
     /// <inheritdoc />
     public void HardDelete<T>(Guid id) where T : class
-        => HardDelete<T>(id.ToString());
+        => HardDelete(CreateEntityWithId<T>(id));
 
     /// <inheritdoc />
     public async Task<long> HardDeleteWhere<T>(System.Linq.Expressions.Expression<Func<T, bool>> predicate, CancellationToken ct = default) where T : class
@@ -2724,8 +2666,9 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
     /// Creates a minimal entity of type T with the given string ID set on its Id property.
     /// Uses <see cref="Activator.CreateInstance{T}"/> which requires a parameterless constructor.
     /// </summary>
-    private T CreateEntityWithId<T>(string id) where T : class
+    private T CreateEntityWithId<T>(object id) where T : class
     {
+        ArgumentNullException.ThrowIfNull(id);
         var entity = Activator.CreateInstance<T>();
         var mapping = Options.Schema.Mappings.GetValueOrDefault(typeof(T));
         var idPropName = mapping?.IdentityProperty ?? "Id";
@@ -2734,32 +2677,43 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         {
             var propType = idProp.PropertyType;
             var actualType = Nullable.GetUnderlyingType(propType) ?? propType;
-            object convertedId = id;
-            if (actualType == typeof(long))
-                convertedId = long.Parse(id, System.Globalization.CultureInfo.InvariantCulture);
-            else if (actualType == typeof(int))
-                convertedId = int.Parse(id, System.Globalization.CultureInfo.InvariantCulture);
-            else if (actualType == typeof(ulong))
-                convertedId = ulong.Parse(id, System.Globalization.CultureInfo.InvariantCulture);
-            else if (actualType == typeof(uint))
-                convertedId = uint.Parse(id, System.Globalization.CultureInfo.InvariantCulture);
-            else if (actualType == typeof(byte))
-                convertedId = byte.Parse(id, System.Globalization.CultureInfo.InvariantCulture);
-            else if (actualType == typeof(short))
-                convertedId = short.Parse(id, System.Globalization.CultureInfo.InvariantCulture);
-            else if (actualType == typeof(Guid))
-                convertedId = Guid.Parse(id);
-            else if (actualType == typeof(DateTime))
-                convertedId = DateTime.Parse(
-                    id,
-                    System.Globalization.CultureInfo.InvariantCulture,
-                    System.Globalization.DateTimeStyles.RoundtripKind);
-            else if (actualType == typeof(RecordId))
-                convertedId = RecordId.From(
+            var normalizedId = DocumentIdentityResolver.NormalizeForDocumentType(
+                typeof(T),
+                id,
+                Options.Schema);
+            object convertedId = normalizedId;
+            if (actualType == typeof(RecordId))
+            {
+                DocumentIdentityResolver.TryCreate(
+                    normalizedId,
                     MetadataDispatch.GetTableName(typeof(T), Options.Schema),
-                    id);
-            else if (actualType.IsGenericType && actualType.GetGenericTypeDefinition() == typeof(RecordIdOf<>))
-                convertedId = Activator.CreateInstance(propType, id)!;
+                    out var identity);
+                convertedId = identity.RecordId;
+            }
+            else if (actualType.IsGenericType
+                     && actualType.GetGenericTypeDefinition() == typeof(RecordIdOf<>))
+            {
+                var recordIdValueType = actualType.GetGenericArguments()[0];
+                var recordIdValue = recordIdValueType.IsInstanceOfType(normalizedId)
+                    ? normalizedId
+                    : Convert.ChangeType(
+                        normalizedId,
+                        recordIdValueType,
+                        System.Globalization.CultureInfo.InvariantCulture);
+                convertedId = Activator.CreateInstance(
+                    actualType,
+                    MetadataDispatch.GetTableName(typeof(T), Options.Schema),
+                    recordIdValue)!;
+            }
+            else if (!actualType.IsInstanceOfType(convertedId))
+            {
+                convertedId = actualType == typeof(Guid)
+                    ? Guid.Parse(Convert.ToString(normalizedId, CultureInfo.InvariantCulture)!)
+                    : Convert.ChangeType(
+                        normalizedId,
+                        actualType,
+                        System.Globalization.CultureInfo.InvariantCulture);
+            }
             idProp.SetValue(entity, convertedId);
         }
         return entity;
@@ -2965,10 +2919,10 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         public Task<FetchForWritingResult<T>?> FetchForExclusiveWriting<T>(string streamId, CancellationToken ct = default) where T : class
             => _inner.FetchForExclusiveWriting<T>(streamId, ct);
 
-        public ISurrealDbQueryable<T> QueryRawEventDataOnly<T>() where T : class
+        public ISableQueryable<T> QueryRawEventDataOnly<T>() where T : class
             => _inner.QueryRawEventDataOnly<T>();
 
-        public ISurrealDbQueryable<IEvent> QueryAllRawEvents()
+        public ISableQueryable<IEvent> QueryAllRawEvents()
             => _inner.QueryAllRawEvents();
 
         public IEvent BuildEvent(object data)

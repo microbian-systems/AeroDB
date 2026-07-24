@@ -236,4 +236,4 @@ See `src/Dali/Events/EventTriggerDefinition.cs` and `src/Dali/Events/TriggerActi
 | `DaliUserStoreAuthTests.cs` | 12 | Authenticator key, recovery codes, tokens |
 | `DaliUserStorePasskeyTests.cs` | 9 | Passkey CRUD |
 
-All stores mocked via NSubstitute with `IDocumentStore`, `IQuerySession`, `IDocumentSession`, `ISurrealDbQueryable<T>`, and `IGraphQuery<T>`.
+All stores mocked via NSubstitute with `IDocumentStore`, `IQuerySession`, `IDocumentSession`, `ISableQueryable<T>`, and `IGraphQuery<T>`.

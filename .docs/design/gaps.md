@@ -72,7 +72,7 @@ Audit of Marten's API surface (from .docs/design/research/marten-llms-full.txt) 
 
 **Marten**: `store.Diagnostics.PreviewCommand(compiledQuery)`, `store.Diagnostics.ExplainPlan(compiledQuery)`, `store.Diagnostics.GetPostgresVersion()`. Also `queryable.ToCommand(FetchType)` and `queryable.ExplainAsync()` on queryables.
 
-**Dali**: No way to preview generated SurrealQL or get explain plans. `ToCommand()` exists on `ISurrealDbQueryable<T>` but there's no store-level diagnostics API.
+**Dali**: Queryables and both compiled-query forms expose parameter-safe command previews through `ToCommand()`, but there is no store-level diagnostics API or explain-plan support.
 
 **Files affected**: `src/Dali/IDocumentStore.cs`, `src/Dali/Linq/SurrealQueryProvider.cs`
 

@@ -781,20 +781,20 @@ public class EventStore : IEvents
     }
 
     /// <inheritdoc />
-    public ISurrealDbQueryable<T> QueryRawEventDataOnly<T>() where T : class
+    public ISableQueryable<T> QueryRawEventDataOnly<T>() where T : class
     {
         var provider = new SurrealQueryProvider(_session, _options!);
-        var queryable = new SurrealDbQueryable<T>(provider);
+        var queryable = new SableQueryable<T>(provider);
         // Scope queries to the mt_events table
         queryable.ViewName = "mt_events";
         return queryable;
     }
 
     /// <inheritdoc />
-    public ISurrealDbQueryable<IEvent> QueryAllRawEvents()
+    public ISableQueryable<IEvent> QueryAllRawEvents()
     {
         var provider = new SurrealQueryProvider(_session, _options!);
-        var queryable = new SurrealDbQueryable<IEvent>(provider);
+        var queryable = new SableQueryable<IEvent>(provider);
         // Scope queries to the mt_events table
         queryable.ViewName = "mt_events";
         return queryable;

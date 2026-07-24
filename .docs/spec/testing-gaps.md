@@ -46,7 +46,7 @@ session.Relate<WorksForEdge>(aliceId, acmeId, new WorksForEdge { Role = "Enginee
 
 ---
 
-## 2. ISurrealDbQueryable Eager Loading (15 structural tests → replace all)
+## 2. ISableQueryable Eager Loading (15 structural tests → replace all)
 
 ### Files
 - `QueryFetchIncludeTests.cs` — `QueryFetchIncludeReflectionTests` class (12 tests) + `FilterIncludeIntegrationTests` (3 tests)
@@ -169,7 +169,7 @@ These areas have existing tests but are thin:
 | Action | Count | Details |
 |--------|-------|---------|
 | **Delete** | 19 | Tests that only verify compiler-enforced contracts (method names, return types, interface inheritance) |
-| **Replace with behavioral** | 43 | Graph (28), ISurrealDbQueryable (14), IDaliOp (1) — structural → real behavioral via LINQ/fluent API |
+| **Replace with behavioral** | 43 | Graph (28), ISableQueryable (14), IDaliOp (1) — structural → real behavioral via LINQ/fluent API |
 | **Add thin-area coverage** | ~20 | CompactStream, ArchiveStream, WriteTombstone, OverwriteEvent, DeleteSingleEvent, StreamJson, WatchTable, QueueSqlCommand, Store-level Bulk, Daemon lifecycle |
 | **Total** | ~82 | Tests to write or move |
 

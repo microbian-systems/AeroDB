@@ -39,7 +39,7 @@ internal static class EncryptionMappingValidator
 
         var metadata = MetadataRegistry.TryGet(documentType);
         var identityProperty = mapping.IdentityProperty
-            ?? (metadata?.GetRecordIdAccessor is not null ? "Id" : null);
+            ?? (metadata?.GetIdentityAccessor is not null ? "Id" : null);
         if (identityProperty is null)
         {
             throw new SableEncryptionConfigurationException(

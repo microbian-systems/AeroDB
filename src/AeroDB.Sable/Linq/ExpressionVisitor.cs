@@ -7,7 +7,7 @@ using SurrealDb.Net.Models;
 
 namespace AeroDB.Sable;
 
-    public class SurrealExpressionVisitor : ExpressionVisitor
+    internal sealed class SurrealExpressionVisitor : ExpressionVisitor
     {
         private readonly StringBuilder _sb = new();
         private readonly List<string> _where = new();
@@ -1001,6 +1001,7 @@ namespace AeroDB.Sable;
         Enum e => _enumStorage == EnumStorage.AsString
             ? $"'{e}'"
             : Convert.ToInt64(e).ToString(),
+        Guid guid => $"u'{guid:D}'",
         DateTime dt => $"d'{dt:yyyy-MM-ddTHH:mm:ssZ}'",
         DateTimeOffset dto => $"d'{dto:yyyy-MM-ddTHH:mm:ssZ}'",
         _ => val.ToString()!
@@ -1125,7 +1126,7 @@ namespace AeroDB.Sable;
     }
 }
 
-public class SurrealQueryResult
+internal sealed class SurrealQueryResult
 {
     public string? TableName { get; set; }
     public List<string> Where { get; set; } = [];

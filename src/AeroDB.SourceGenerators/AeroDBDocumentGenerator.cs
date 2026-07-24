@@ -172,6 +172,7 @@ public class AeroDBDocumentGenerator : IIncrementalGenerator
         sb.AppendLine($"    public string? VersionFieldName => {EmitVersionFieldName(versionProp)};");
         sb.AppendLine($"    public Func<object, long>? GetVersionAccessor => {EmitGetVersionAccessor(versionProp, globalFullName)};");
         sb.AppendLine($"    public Action<object, long>? SetVersionAccessor => {EmitSetVersionAccessor(versionProp, globalFullName)};");
+        sb.AppendLine($"    public Type? IdentityType => {(idProp is null ? "null" : $"typeof({idProp.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)})")};");
         sb.AppendLine();
 
         // GetTenantId
@@ -199,42 +200,24 @@ public class AeroDBDocumentGenerator : IIncrementalGenerator
             sb.AppendLine($"    public void SetVersion({globalFullName} entity, long version) {{ }}");
         }
 
-        // GetRecordId — extract the string Id from the RecordId or entity typed Id
+        // GetIdentity — preserve the CLR identity type so record-key semantics survive.
         if (isEntity)
         {
-            if (idProp is not null && idProp.Type.IsValueType)
-                sb.AppendLine($"    public string? GetRecordId({globalFullName} entity) => entity.Id.ToString();");
-            else
-                sb.AppendLine($"    public string? GetRecordId({globalFullName} entity) => entity.Id?.ToString();");
+            sb.AppendLine($"    public object? GetIdentity({globalFullName} entity) => entity.Id;");
         }
         else if (idProp is not null)
         {
-            sb.AppendLine($"    public string? GetRecordId({globalFullName} entity)");
-            sb.AppendLine("    {");
-            sb.AppendLine("        var id = entity.Id;");
-            sb.AppendLine("        if (id is null) return null;");
-            sb.AppendLine("        if (id is RecordIdOf<string> strRid) return strRid.Id;");
-            sb.AppendLine("        if (id is RecordIdOf<long> longRid) return longRid.Id.ToString();");
-            sb.AppendLine("        if (id is RecordIdOf<int> intRid) return intRid.Id.ToString();");
-            sb.AppendLine("        return id.ToString();");
-            sb.AppendLine("    }");
+            sb.AppendLine($"    public object? GetIdentity({globalFullName} entity) => entity.Id;");
         }
         else
         {
-            sb.AppendLine($"    public string? GetRecordId({globalFullName} entity) => null;");
+            sb.AppendLine($"    public object? GetIdentity({globalFullName} entity) => null;");
         }
 
-        if (isEntity)
-        {
-            if (idProp is not null && idProp.Type.IsValueType)
-                sb.AppendLine($"    public Func<object, string?>? GetRecordIdAccessor => obj => (({globalFullName})obj).Id.ToString();");
-            else
-                sb.AppendLine($"    public Func<object, string?>? GetRecordIdAccessor => obj => (({globalFullName})obj).Id?.ToString();");
-        }
-        else if (idProp is not null)
-            sb.AppendLine($"    public Func<object, string?>? GetRecordIdAccessor => {EmitGetRecordIdAccessor(idProp, globalFullName)};");
+        if (idProp is not null)
+            sb.AppendLine($"    public Func<object, object?>? GetIdentityAccessor => obj => (({globalFullName})obj).Id;");
         else
-            sb.AppendLine("    public Func<object, string?>? GetRecordIdAccessor => null;");
+            sb.AppendLine("    public Func<object, object?>? GetIdentityAccessor => null;");
 
         // Emit FieldSchema list for compile-time schema generation
         var fields = new List<string>();
@@ -493,20 +476,6 @@ public class AeroDBDocumentGenerator : IIncrementalGenerator
         return "null";
     }
 
-    private static string EmitGetRecordIdAccessor(IPropertySymbol? idProp, string globalFullName)
-    {
-        if (idProp is null) return "null";
-        return "obj =>\n    {\n" +
-               $"        var entity = ({globalFullName})obj;\n" +
-               "        var id = entity.Id;\n" +
-               "        if (id is null) return null;\n" +
-               "        if (id is RecordIdOf<string> strRid) return strRid.Id;\n" +
-               "        if (id is RecordIdOf<long> longRid) return longRid.Id.ToString();\n" +
-               "        if (id is RecordIdOf<int> intRid) return intRid.Id.ToString();\n" +
-               "        return id.ToString();\n" +
-               "    }";
-    }
-
     private static string GetSurrealType(IPropertySymbol property)
     {
         var type = property.Type;
@@ -529,7 +498,8 @@ public class AeroDBDocumentGenerator : IIncrementalGenerator
         {
             "AeroDB.Sable.GeometryPoint" or "global::AeroDB.Sable.GeometryPoint" or "GeometryPoint" => "geometry",
             "AeroDB.Sable.GeometryPolygon" or "global::AeroDB.Sable.GeometryPolygon" or "GeometryPolygon" => "geometry",
-            "string" or "System.Guid" => "string",
+            "string" => "string",
+            "System.Guid" => "uuid",
             "long" or "int" or "short" or "byte" or "System.Int64" or "System.Int32" or "System.Int16" or "System.Byte" => "int",
             "float" or "double" or "decimal" or "System.Single" or "System.Double" or "System.Decimal" => "float",
             "bool" or "System.Boolean" => "bool",

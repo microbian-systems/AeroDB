@@ -100,7 +100,7 @@ public class QuerySessionParityTests
         await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         var guidId = Guid.NewGuid();
         await session.ExecuteSqlAsync(
-            $"CREATE person:`{guidId}` CONTENT {{ Name: 'GuidLoad', Age: 40 }};");
+            $"CREATE person:u'{guidId:D}' CONTENT {{ Name: 'GuidLoad', Age: 40 }};");
 
         var loaded = await session.LoadAsync<Person>(guidId);
         loaded.ShouldNotBeNull();
@@ -168,7 +168,7 @@ public class QuerySessionParityTests
         await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
         var guidId = Guid.NewGuid();
         await session.ExecuteSqlAsync(
-            $"CREATE person:`{guidId}` CONTENT {{ Name: 'GuidExists', Age: 45 }};");
+            $"CREATE person:u'{guidId:D}' CONTENT {{ Name: 'GuidExists', Age: 45 }};");
 
         var exists = await session.CheckExistsAsync<Person>(guidId);
         exists.ShouldBeTrue();

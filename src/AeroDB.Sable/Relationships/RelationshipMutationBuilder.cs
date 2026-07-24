@@ -179,21 +179,8 @@ public sealed class RelationshipMutationBuilder<T>
         ArgumentNullException.ThrowIfNull(id);
 
         if (id is RecordId recordId)
-            return recordId.ToString() ?? string.Empty;
+            return DocumentIdentityResolver.FormatRecordIdLiteral(recordId);
 
-        var value = id switch
-        {
-            string s => QuoteRecordIdValue(s),
-            Guid g => QuoteRecordIdValue(g.ToString()),
-            DateTime dt => QuoteRecordIdValue(dt.ToString("O", System.Globalization.CultureInfo.InvariantCulture)),
-            DateTimeOffset dto => QuoteRecordIdValue(dto.ToString("O", System.Globalization.CultureInfo.InvariantCulture)),
-            IFormattable formattable => formattable.ToString(null, System.Globalization.CultureInfo.InvariantCulture) ?? string.Empty,
-            _ => QuoteRecordIdValue(id.ToString() ?? string.Empty)
-        };
-
-        return $"{tableName}:{value}";
+        return DocumentIdentityResolver.FormatRecordIdLiteral(tableName, id);
     }
-
-    private static string QuoteRecordIdValue(string value)
-        => "`" + value.Replace("`", "\\`", StringComparison.Ordinal) + "`";
 }

@@ -111,16 +111,15 @@ public abstract class InlineProjection<T> : IProjection, ILoggableProjection whe
             }
             else if (docId is int intId)
             {
-                // Use string-based loading for POCOs (projections store with string record IDs)
-                aggregate = await context.Session.LoadAsync<T>(intId.ToString(), ct).ConfigureAwait(false);
+                aggregate = await context.Session.LoadAsync<T>(intId, ct).ConfigureAwait(false);
             }
             else if (docId is long longId)
             {
-                aggregate = await context.Session.LoadAsync<T>(longId.ToString(), ct).ConfigureAwait(false);
+                aggregate = await context.Session.LoadAsync<T>(longId, ct).ConfigureAwait(false);
             }
             else if (docId is Guid guidId)
             {
-                aggregate = await context.Session.LoadAsync<T>(guidId.ToString("D"), ct).ConfigureAwait(false);
+                aggregate = await context.Session.LoadAsync<T>(guidId, ct).ConfigureAwait(false);
             }
         }
         catch
@@ -190,9 +189,10 @@ public abstract class InlineProjection<T> : IProjection, ILoggableProjection whe
                 {
                     recResult.Id = recAggregate.Id;
                 }
-                else if (docId is string s && !string.IsNullOrEmpty(s))
+                else if (docId is not null
+                         && DocumentIdentityResolver.TryCreate(docId, tableName, out var identity))
                 {
-                    recResult.Id = new RecordIdOf<string>(tableName, s);
+                    recResult.Id = identity.RecordId;
                 }
 
                 _logger.LogDebug("Inline projection stored result for {Type} with id={Id}",
@@ -433,12 +433,12 @@ public abstract class InlineProjection<T> : IProjection, ILoggableProjection whe
             if (result is not null)
             {
                 var docId = GetDocumentId(events.AsReadOnly());
-                if (docId is string id && !string.IsNullOrEmpty(id))
+                if (docId is not null)
                 {
                     if (IsPoco)
-                        SetPocoIdentity(result, id);
-                    else
-                        ((Record)(object)result).Id = new RecordIdOf<string>(tableName, id);
+                        SetPocoIdentity(result, docId);
+                    else if (DocumentIdentityResolver.TryCreate(docId, tableName, out var identity))
+                        ((Record)(object)result).Id = identity.RecordId;
                 }
                 session.Store(result);
                 totalStreams++;

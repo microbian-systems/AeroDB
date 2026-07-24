@@ -20,9 +20,9 @@
 | `LoadMany<T>(ids...)` | ✅ Done | `LoadManyExtensions.LoadManyAsync<T>(string[]/RecordId[]/long[])` |
 | `AdvancedSql.QueryAsync<T1,T2,...>()` | ✅ Done | `session.AdvancedSql().QueryAsync<T1,T2>()` — 2/3/4-tuple multi-doc queries |
 | `AdvancedSql.StreamAsync<T>()` (IAsyncEnumerable) | ✅ Done | `DaliAdvancedSql.StreamAsync<T>()` — streaming raw SQL results |
-| `ToCommand()` / SQL inspection | ✅ Done | `ISurrealDbQueryable<T>.ToCommand()` — exposes SurrealQL before execution |
+| `ToCommand()` / SQL inspection | ✅ Done | Queryable and compiled-query inspection returns `SableCommand` with separate SurrealQL text and parameters before execution |
 | `Stats()` / query statistics | ✅ Done | `IQueryable<T>.Stats(out QueryStatistics)` — single-row-trip count via batched SurrealQL |
-| `ToPagedListAsync()` / pagination | ✅ Done | `ISurrealDbQueryable<T>.ToPagedListAsync(page, size)` — `IPagedList<T>` with total count |
+| `ToPagedListAsync()` / pagination | ✅ Done | `ISableQueryable<T>.ToPagedListAsync(page, size)` — `IPagedList<T>` with total count |
 | `IBatchedQuery` / `CreateBatchQuery()` | ✅ Done | `session.CreateBatchQuery()` — multi-statement SurrealDB single-roundtrip + compiled query integration |
 | `ICompiledQuery<T>` | ✅ Done | Marten-compatible `ICompiledQuery<TDoc, TOut>` interface pattern + `CompiledQueryPlanner` runtime planner |
 | `BulkInsert` (COPY-based) | ✅ Done | `BulkOperations.BulkInsertAsync<T>()` — SurrealDB `INSERT INTO table [{...}, {...}]` batch syntax |
