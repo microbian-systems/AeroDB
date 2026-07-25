@@ -1842,7 +1842,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         var fields = dictionary.Keys
             .Cast<object?>()
             .Where(key => key is not null)
-            .Select(key => $"{key}: {ToSurrealQlLiteral(dictionary[key!])}");
+            .Select(key => $"{(key is string stringKey ? EscapeSurrealQlKey(stringKey) : key)}: {ToSurrealQlLiteral(dictionary[key!])}");
 
         return "{ " + string.Join(", ", fields) + " }";
     }
