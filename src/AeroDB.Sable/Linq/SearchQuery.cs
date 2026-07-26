@@ -320,17 +320,21 @@ LET $vs = (
 
         if (hasExtras)
         {
-            // KNN <|K,N|> imposes a hard limit.  Increase K so outer query
-            // can apply extra WHERE filter, ORDER BY override, and SKIP.
+            // KNN <|K,N|> imposes a hard limit. Increase K so the outer query
+            // can apply an ORDER BY override and SKIP. The scope predicate must
+            // remain in this inner query so out-of-scope vectors cannot consume
+            // the bounded ANN candidate set before filtering.
             var knnInnerLimit = _skip + _limit;
 
-            var subSurql = $"SELECT *, vector::distance::knn() AS _distance FROM `{_table}` WHERE {_vectorField} <|{knnInnerLimit},{_candidates}|> {vecStr}";
+            var scopedKnnWhere = _whereClause is not null
+                ? $"({_whereClause}) AND {_vectorField} <|{knnInnerLimit},{_candidates}|> {vecStr}"
+                : $"{_vectorField} <|{knnInnerLimit},{_candidates}|> {vecStr}";
+            var subSurql = $"SELECT *, vector::distance::knn() AS _distance FROM `{_table}` WHERE {scopedKnnWhere}";
 
-            var wherePart = _whereClause is not null ? $" WHERE {_whereClause}" : "";
             var orderBy = _orderByClause ?? "_distance ASC";
             var startAt = _skip > 0 ? $" START AT {_skip}" : "";
 
-            var surql = $"SELECT * FROM ({subSurql}){wherePart} ORDER BY {orderBy} LIMIT {_limit}{startAt};";
+            var surql = $"SELECT * FROM ({subSurql}) ORDER BY {orderBy} LIMIT {_limit}{startAt};";
             return await ExecuteRawSearchAsync(surql, ct).ConfigureAwait(false);
         }
 
