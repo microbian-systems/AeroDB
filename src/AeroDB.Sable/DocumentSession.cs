@@ -296,6 +296,20 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         ArgumentNullException.ThrowIfNull(entity);
         RequestCount++;
 
+        // Store is an upsert operation. When the entity was materialized by this
+        // session, preserve that provenance and queue an update so optimistic
+        // concurrency compares the captured database version. A newly-created
+        // entity remains an add, including repeated Store calls before the first
+        // save.
+        var alreadyQueued = _unitOfWork.Operations.Any(
+            operation => ReferenceEquals(operation.Entity, entity));
+        if (operationType == OperationType.Added
+            && !alreadyQueued
+            && HasTrackedOriginalVersion(entity))
+        {
+            operationType = OperationType.Modified;
+        }
+
         // If conjoined tenancy is active and the entity has a TenantId property, set it
         // DatabasePerTenant isolates at the database level — no entity-level tenant ID needed.
         if (!string.IsNullOrEmpty(TenantId) && Options.TenancyStyle == TenancyStyle.Conjoined)
@@ -730,7 +744,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                     revisionSkipOps = new HashSet<object>();
                     foreach (var op in _unitOfWork.Operations)
                     {
-                        if (op.Type == OperationType.Modified)
+                        if (op.Type is OperationType.Modified or OperationType.Update)
                         {
                             // Standard optimistic concurrency check
                             if (UseOptimisticConcurrency)
@@ -785,7 +799,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                     cleanOps = new HashSet<Operation>();
                     foreach (var op in _unitOfWork.Operations)
                     {
-                        if (op.Type == OperationType.Modified)
+                        if (op.Type is OperationType.Modified or OperationType.Update)
                         {
                             var opId = GetEntityId(op.Entity);
                             if (opId is not null && !HasChanged(op.EntityType, opId, op.Entity))
@@ -2529,7 +2543,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
     public void UpdateExpectedVersion<T>(T entity, long expectedVersion) where T : class
     {
         ArgumentNullException.ThrowIfNull(entity);
-        Store(entity);
+        QueueStoreOperation(entity, OperationType.Modified);
         _expectedVersions[entity] = expectedVersion;
     }
 
@@ -2537,7 +2551,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
     public void UpdateRevision<T>(T entity, int revision) where T : class
     {
         ArgumentNullException.ThrowIfNull(entity);
-        Store(entity);
+        QueueStoreOperation(entity, OperationType.Modified);
         _expectedRevisions[entity] = revision;
     }
 
@@ -2545,7 +2559,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
     public void TryUpdateRevision<T>(T entity, int revision) where T : class
     {
         ArgumentNullException.ThrowIfNull(entity);
-        Store(entity);
+        QueueStoreOperation(entity, OperationType.Modified);
         _expectedRevisions[entity] = revision;
         _tryUpdateRevisions.Add(entity);
     }

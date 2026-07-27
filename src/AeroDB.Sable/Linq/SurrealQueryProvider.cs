@@ -1142,7 +1142,10 @@ internal sealed class SurrealQueryProvider : IQueryProvider
         {
             var items = CborResultReader.ReadPocoResult(response, index);
             if (items is { Count: > 0 })
-                return InternalSessionBase.DeserializePocoFromList<T>(items, mapping?.IdentityProperty ?? "Id", _options.Schema);
+                return TrackQueryResults(InternalSessionBase.DeserializePocoFromList<T>(
+                    items,
+                    mapping?.IdentityProperty ?? "Id",
+                    _options.Schema));
         }
 
         var shimType = MetadataRegistry.GetShimType(typeof(T));
@@ -1169,11 +1172,11 @@ internal sealed class SurrealQueryProvider : IQueryProvider
                 if (entity is T t)
                     results.Add(t);
             }
-            return results;
+            return TrackQueryResults(results);
         }
 
         var raw = response.GetValue<List<T>>(index);
-        return raw ?? [];
+        return TrackQueryResults(raw ?? []);
     }
 
     private async ValueTask<List<T>> DeserializeQueryResultsAsync<T>(
@@ -1192,12 +1195,19 @@ internal sealed class SurrealQueryProvider : IQueryProvider
 
         var mapping = _options.Schema.Mappings.GetValueOrDefault(typeof(T));
         var records = CborResultReader.ReadPocoResult(response, index);
-        return await _sessionBase
+        var results = await _sessionBase
             .DeserializePocoFromListAsync<T>(
                 records,
                 mapping?.IdentityProperty ?? "Id",
                 cancellationToken)
             .ConfigureAwait(false);
+        return TrackQueryResults(results);
+    }
+
+    private List<T> TrackQueryResults<T>(List<T> results)
+    {
+        _sessionBase?.TrackQueryResults(results);
+        return results;
     }
 
     private void ThrowIfEncryptedIncludeOrFetch<T>(

@@ -140,6 +140,54 @@ public class ConcurrencyTests
     }
 
     /// <summary>
+    /// LINQ materialization must capture the original version just like
+    /// LoadAsync so Store cannot recreate a document deleted by another session.
+    /// </summary>
+    [Test]
+    public async Task Concurrency_query_loaded_document_deleted_by_another_session_throws()
+    {
+        await using var store = await TestHarness.CreateStoreAsync(options =>
+        {
+            options.UseOptimisticConcurrency = true;
+        });
+
+        const string id = "query_delete_conflict";
+        await using (var seedSession = await store.OpenSessionAsync(new SessionOptions()))
+        {
+            seedSession.Store(new VersionedPerson
+            {
+                Id = new SurrealDb.Net.Models.RecordIdOf<string>("versioned_person", id),
+                Name = "Query loaded",
+                Age = 30
+            });
+            await seedSession.SaveChangesAsync();
+        }
+
+        await using var staleSession = await store.OpenSessionAsync(
+            new SessionOptions { Tracking = DocumentTracking.IdentityOnly });
+        await using var deleteSession = await store.OpenSessionAsync(
+            new SessionOptions { Tracking = DocumentTracking.IdentityOnly });
+
+        var stale = await staleSession.Query<VersionedPerson>()
+            .FirstOrDefaultAsync(person => person.Name == "Query loaded");
+        stale.ShouldNotBeNull();
+
+        var current = await deleteSession.LoadAsync<VersionedPerson>(id);
+        current.ShouldNotBeNull();
+        deleteSession.Delete(current);
+        await deleteSession.SaveChangesAsync();
+
+        stale.Name = "Must not be recreated";
+        staleSession.Store(stale);
+
+        var exception = await Should.ThrowAsync<ConcurrencyException>(
+            () => staleSession.SaveChangesAsync());
+
+        exception.ExpectedVersion.ShouldBe(stale.Version);
+        exception.ActualVersion.ShouldBe(0);
+    }
+
+    /// <summary>
     /// When optimistic concurrency is disabled, conflicting modifications
     /// should silently succeed (last-write-wins).
     /// </summary>

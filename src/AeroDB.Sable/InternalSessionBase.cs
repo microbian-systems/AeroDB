@@ -1274,6 +1274,29 @@ public abstract class InternalSessionBase : IAsyncDisposable
     }
 
     /// <summary>
+    /// Captures original versions for documents materialized through the LINQ
+    /// query provider, matching the concurrency behavior of direct loads.
+    /// </summary>
+    internal void TrackQueryResults<T>(IEnumerable<T> results)
+    {
+        foreach (var entity in results)
+        {
+            if (entity is null)
+                continue;
+
+            if (UseOptimisticConcurrency)
+                TrackOriginalVersion(entity);
+        }
+    }
+
+    /// <summary>
+    /// Returns whether the session captured an original database version for
+    /// this exact entity instance before it was queued for persistence.
+    /// </summary>
+    protected bool HasTrackedOriginalVersion(object entity)
+        => _originalVersions.ContainsKey(entity);
+
+    /// <summary>
     /// Returns the current version value from the entity, or -1 if no version
     /// field is found. <see cref="VersionAttribute"/> takes precedence over
     /// <see cref="IVersioned"/> when both are present on the same type.
