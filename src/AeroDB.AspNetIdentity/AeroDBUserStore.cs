@@ -101,13 +101,8 @@ public class AeroDBUserStore<TUser, TRole, TKey> :
     private readonly IdentityErrorDescriber _describer;
     private bool _disposed;
 
-    // Cached snake_case table names computed from the CLR type names.
+    // Cached mapped table name used by raw SurrealQL role and recovery-code operations.
     private readonly string _userTable;
-    private readonly string _roleTable;
-    private readonly string _claimTable;
-    private readonly string _loginTable;
-    private readonly string _tokenTable;
-    private readonly string _passkeyTable;
 
     /// <summary>
     /// Initializes a new instance of <see cref="AeroDBUserStore{TUser, TRole}"/>.
@@ -136,12 +131,8 @@ public class AeroDBUserStore<TUser, TRole, TKey> :
         _identityOptions = identityOptions?.Value ?? new IdentityOptions { User = { RequireUniqueEmail = true } };
         _describer = describer ?? new IdentityErrorDescriber();
 
-        _userTable = ToSnakeCase(typeof(TUser).Name);
-        _roleTable = ToSnakeCase(typeof(TRole).Name);
-        _claimTable = ToSnakeCase(typeof(AeroDBUserClaim).Name);
-        _loginTable = ToSnakeCase(typeof(AeroDBUserLogin).Name);
-        _tokenTable = ToSnakeCase(typeof(AeroDBUserToken).Name);
-        _passkeyTable = ToSnakeCase(typeof(AeroDBUserPasskey).Name);
+        _userTable = _store.Options?.Schema.TableNameFor<TUser>()
+            ?? ToSnakeCase(typeof(TUser).Name);
     }
 
     // ══════════════════════════════════════════════════════════════════
