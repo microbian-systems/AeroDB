@@ -433,6 +433,30 @@ public class SchemaOptions
         return (DocumentMapping<T>)existing;
     }
 
+    /// <summary>
+    /// Resolves the SurrealDB table name for <typeparamref name="T"/>, including
+    /// any explicit <see cref="DocumentMapping{T}.TableName(string)"/> override.
+    /// Use this for raw SurrealQL so it addresses the same table as typed sessions.
+    /// </summary>
+    public string TableNameFor<T>() => TableNameFor(typeof(T));
+
+    /// <summary>
+    /// Resolves the SurrealDB table name for <paramref name="documentType"/>,
+    /// including any explicit document mapping override.
+    /// </summary>
+    public string TableNameFor(Type documentType)
+    {
+        ArgumentNullException.ThrowIfNull(documentType);
+
+        if (Mappings.TryGetValue(documentType, out var mapping)
+            && mapping.TableNameOverride is { } tableName)
+        {
+            return tableName;
+        }
+
+        return Metadata.MetadataDispatch.GetTableName(documentType, this);
+    }
+
     internal void ResolveRelationships()
     {
         if (_relationshipsResolved)

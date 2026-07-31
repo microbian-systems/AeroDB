@@ -109,6 +109,60 @@ public class AeroDBUserStoreRoleTests
     }
 
     [Test]
+    public async Task AddToRoleAsync_ShouldUseConfiguredUserTableName()
+    {
+        var uniqueId = $"identity_mapped_roles_{Guid.NewGuid():N}";
+        await using var store = Documents.For(options =>
+        {
+            options.ClientFactory = () => new SurrealDbMemoryClient();
+            options.Namespace = uniqueId;
+            options.Database = uniqueId;
+            options.Schema.For<LongKeyUser>()
+                .TableName("users")
+                .Identity(user => user.Id)
+                .Field("role_ids", field => field.FieldType = "option<array<string>>");
+            options.Schema.For<LongKeyRole>()
+                .TableName("roles")
+                .Identity(role => role.Id)
+                .UniqueIndex(role => role.NormalizedName);
+        });
+        await store.InitializeAsync();
+
+        var logger = Microsoft.Extensions.Logging.Abstractions.NullLogger<
+            AeroDBUserStore<LongKeyUser, LongKeyRole, long>>.Instance;
+        var userStore = new AeroDBUserStore<LongKeyUser, LongKeyRole, long>(store, logger);
+        var user = new LongKeyUser
+        {
+            Id = 501,
+            UserName = "mapped-user",
+            NormalizedUserName = "MAPPED-USER"
+        };
+        var role = new LongKeyRole
+        {
+            Id = 601,
+            Name = "Admin",
+            NormalizedName = "ADMIN"
+        };
+
+        await using (var session = await store.OpenSessionAsync(new SessionOptions(), CancellationToken.None))
+        {
+            session.Store(user);
+            session.Store(role);
+            await session.SaveChangesAsync();
+        }
+
+        await userStore.AddToRoleAsync(user, "ADMIN", CancellationToken.None);
+
+        await using var querySession = await store.QuerySessionAsync();
+        var stored = await querySession.RawQueryAsync<RoleIdsResult>(
+            "SELECT role_ids FROM users:501", null, CancellationToken.None);
+        stored.Single().RoleIds.ShouldBe(["601"]);
+
+        var roles = await userStore.GetRolesAsync(user, CancellationToken.None);
+        roles.ShouldBe(["Admin"]);
+    }
+
+    [Test]
     public async Task UserManagerAddToRoleAsync_ShouldPreserveEmbeddedRoleId()
     {
         await using var store = await CreateEmbeddedLongKeyStoreAsync();
