@@ -14,6 +14,9 @@ namespace AeroDB.Sable;
 
 public abstract class InternalSessionBase : IAsyncDisposable
 {
+    /// <summary>Gets the session that should receive mutations for the current operation.</summary>
+    internal protected virtual ISurrealDbSession OperationSession => Session;
+
     protected readonly ISurrealDbClient Client;
     public ISurrealDbSession Session { get; }
     protected readonly StoreOptions Options;
@@ -214,7 +217,9 @@ public abstract class InternalSessionBase : IAsyncDisposable
     {
         RequestCount++;
         LogSurrealQuery(sql, parameters);
-        var response = await Session.RawQuery(sql, parameters, ct).ConfigureAwait(false);
+        var response = await EmbeddedTransactionRawQuery
+            .ExecuteAsync(OperationSession, sql, parameters, ct)
+            .ConfigureAwait(false);
         var mapped = await TryDeserializeDocumentResponseAsync<T>(response, ct).ConfigureAwait(false);
         if (mapped.Handled)
             return mapped.Results;
@@ -286,7 +291,9 @@ public abstract class InternalSessionBase : IAsyncDisposable
     {
         RequestCount++;
         LogSurrealQuery(sql, parameters);
-        var response = await Session.RawQuery(sql, parameters, ct).ConfigureAwait(false);
+        var response = await EmbeddedTransactionRawQuery
+            .ExecuteAsync(OperationSession, sql, parameters, ct)
+            .ConfigureAwait(false);
         return response.FirstOk is not null ? 1 : 0;
     }
 
@@ -1691,7 +1698,12 @@ public abstract class InternalSessionBase : IAsyncDisposable
     {
         foreach (var (sql, parameters) in QueuedSqlCommands)
         {
-            await ExecuteSqlAsync(sql, parameters, ct).ConfigureAwait(false);
+            RequestCount++;
+            LogSurrealQuery(sql, parameters);
+            var response = await EmbeddedTransactionRawQuery
+                .ExecuteAsync(OperationSession, sql, parameters, ct)
+                .ConfigureAwait(false);
+            response.EnsureAllOks();
         }
         QueuedSqlCommands.Clear();
     }

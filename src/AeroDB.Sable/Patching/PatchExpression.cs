@@ -4,6 +4,7 @@ using AeroDB.Sable.Metadata;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using SurrealDb.Net;
+using SurrealDb.Net.Models.Response;
 
 namespace AeroDB.Sable;
 
@@ -229,7 +230,10 @@ public class PatchExpression<T> : IPatchExpression<T>, IDeferredPatch where T : 
             var sets = updateOps.Select(o => MapOperation(o, schema).ToSurrealQL()).ToList();
             var surql = $"UPDATE {identity.Literal} SET {string.Join(", ", sets)};";
             _logger.LogDebug("Applying patch: {SurrealQL}", surql);
-            await surrealdbSession.RawQuery(surql, null, ct).ConfigureAwait(false);
+            var response = await EmbeddedTransactionRawQuery
+                .ExecuteAsync(surrealdbSession, surql, null, ct)
+                .ConfigureAwait(false);
+            EnsureUpdateSucceededOrTargetTableIsMissing(response, table);
         }
 
         // Execute ALTER TABLE RENAME COLUMN for rename operations
@@ -238,7 +242,10 @@ public class PatchExpression<T> : IPatchExpression<T>, IDeferredPatch where T : 
             var mapped = MapOperation(op, schema);
             var surql = $"ALTER TABLE {table} RENAME COLUMN `{mapped.OldName}` TO `{mapped.FieldName}`;";
             _logger.LogDebug("Applying rename: {SurrealQL}", surql);
-            await surrealdbSession.RawQuery(surql, null, ct).ConfigureAwait(false);
+            var response = await EmbeddedTransactionRawQuery
+                .ExecuteAsync(surrealdbSession, surql, null, ct)
+                .ConfigureAwait(false);
+            response.EnsureAllOks();
         }
 
         // Expose patch context to listeners, if available
@@ -266,6 +273,29 @@ public class PatchExpression<T> : IPatchExpression<T>, IDeferredPatch where T : 
         await ((IDeferredPatch)this)
             .ExecuteAsync(_session, executionSession, ct)
             .ConfigureAwait(false);
+    }
+
+    private static void EnsureUpdateSucceededOrTargetTableIsMissing(
+        SurrealDbResponse response,
+        string targetTable)
+    {
+        if (!response.HasErrors)
+            return;
+
+        var errors = response.Errors.ToArray();
+        if (errors.Length > 0
+            && errors.All(error => error is SurrealDbErrorResult
+                {
+                    Details: var details
+                }
+                && details.Equals(
+                    $"The table '{targetTable}' does not exist",
+                    StringComparison.Ordinal)))
+        {
+            return;
+        }
+
+        response.EnsureAllOks();
     }
 
     private static MemberInfo GetMember<TValue>(Expression<Func<T, TValue>> property)

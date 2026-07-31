@@ -137,22 +137,48 @@ public class EventStore : IEvents
 
     public async Task<IReadOnlyList<IEvent>> Append(string streamId, long expectedVersion, IEnumerable<object> events, CancellationToken ct = default)
     {
-        await using var tx = await _session.BeginTransaction(ct).ConfigureAwait(false);
+        if (_session is SurrealDbTransaction)
+            return await AppendWithExpectedVersion(streamId, expectedVersion, events, ct).ConfigureAwait(false);
+
+        var coordinated = await EmbeddedTransactionCoordinator.BeginAsync(_session, ct).ConfigureAwait(false);
+        var tx = coordinated.Transaction;
+        var lease = coordinated.Lease;
+        var commitAttempted = false;
         try
         {
-            var currentVersion = await GetNextVersion(streamId, ct).ConfigureAwait(false);
-            if (currentVersion != expectedVersion)
-                throw new ConcurrencyException(typeof(EventStore), streamId, expectedVersion, currentVersion);
-
-            var result = await Append(streamId, events, headers: null, ct).ConfigureAwait(false);
-            await tx.Commit(ct).ConfigureAwait(false);
-            return result;
+            try
+            {
+                var transactionalStore = new EventStore(tx, _options);
+                var result = await transactionalStore.AppendWithExpectedVersion(streamId, expectedVersion, events, ct).ConfigureAwait(false);
+                commitAttempted = true;
+                await tx.Commit(ct).ConfigureAwait(false);
+                return result;
+            }
+            catch
+            {
+                if (!commitAttempted)
+                    await tx.Cancel(CancellationToken.None).ConfigureAwait(false);
+                throw;
+            }
+            finally
+            {
+                await tx.DisposeAsync().ConfigureAwait(false);
+            }
         }
-        catch
+        finally
         {
-            await tx.Cancel(ct).ConfigureAwait(false);
-            throw;
+            if (lease is not null)
+                await lease.DisposeAsync().ConfigureAwait(false);
         }
+    }
+
+    private async Task<IReadOnlyList<IEvent>> AppendWithExpectedVersion(string streamId, long expectedVersion, IEnumerable<object> events, CancellationToken ct)
+    {
+        var currentVersion = await GetNextVersion(streamId, ct).ConfigureAwait(false);
+        if (currentVersion != expectedVersion)
+            throw new ConcurrencyException(typeof(EventStore), streamId, expectedVersion, currentVersion);
+
+        return await Append(streamId, events, headers: null, ct).ConfigureAwait(false);
     }
 
     public Task<IReadOnlyList<IEvent>> AppendOptimistic(string streamId, long lastKnownVersion, IEnumerable<object> events, CancellationToken ct = default)
@@ -733,50 +759,67 @@ public class EventStore : IEvents
 
         // Lock the stream by reading the latest version inside a transaction.
         // In SurrealDB, transactions serialize writes.
-        var tx = await _session.BeginTransaction(ct).ConfigureAwait(false);
+        var coordinated = await EmbeddedTransactionCoordinator.BeginAsync(_session, ct).ConfigureAwait(false);
+        var tx = coordinated.Transaction;
+        var lease = coordinated.Lease;
+        var commitAttempted = false;
         try
         {
-            var checkResponse = await _session.RawQuery(
-                $"SELECT version FROM mt_events WHERE stream_id = '{streamId.Replace("'", "\\'")}' " +
-                $"ORDER BY version DESC LIMIT 1;",
-                null, ct).ConfigureAwait(false);
-
-            long currentVersion = 0;
-            if (!checkResponse.HasErrors && checkResponse.Count > 0)
+            try
             {
-                try
+                var checkResponse = await tx.RawQuery(
+                    $"SELECT version FROM mt_events WHERE stream_id = '{streamId.Replace("'", "\\'")}' " +
+                    $"ORDER BY version DESC LIMIT 1;",
+                    null, ct).ConfigureAwait(false);
+
+                long currentVersion = 0;
+                if (!checkResponse.HasErrors && checkResponse.Count > 0)
                 {
-                    var records = checkResponse.GetValue<List<EventRecord>>(0);
-                    if (records is { Count: > 0 })
-                        currentVersion = records[0].Version;
+                    try
+                    {
+                        var records = checkResponse.GetValue<List<EventRecord>>(0);
+                        if (records is { Count: > 0 })
+                            currentVersion = records[0].Version;
+                    }
+                    catch { }
                 }
-                catch { }
-            }
 
-            // Fetch events and aggregate
-            var events = await FetchStream(streamId, ct).ConfigureAwait(false);
-            T? aggregate = null;
-            if (events.Count > 0)
+                // Fetch events and aggregate from the same transaction snapshot.
+                var events = await new EventStore(tx, _options).FetchStream(streamId, ct).ConfigureAwait(false);
+                T? aggregate = null;
+                if (events.Count > 0)
+                {
+                    aggregate = LiveStreamAggregation.AggregateEvents<T>(events);
+                }
+
+                // Keep the transaction open — the caller uses this result and
+                // SaveChangesAsync will commit the transaction.
+                // Note: the caller's SaveChangesAsync must append events via the
+                // returned FetchForWritingResult<T>.
+                var result = new FetchForWritingResult<T>(aggregate, currentVersion, streamId);
+
+                // Commit the lock-read transaction immediately (it was just a read-lock).
+                // The actual write will happen in SaveChangesAsync with its own concurrency check.
+                commitAttempted = true;
+                await tx.Commit(ct).ConfigureAwait(false);
+
+                return result;
+            }
+            catch
             {
-                aggregate = LiveStreamAggregation.AggregateEvents<T>(events);
+                if (!commitAttempted)
+                    await tx.Cancel(CancellationToken.None).ConfigureAwait(false);
+                throw;
             }
-
-            // Keep the transaction open — the caller uses this result and
-            // SaveChangesAsync will commit the transaction.
-            // Note: the caller's SaveChangesAsync must append events via the
-            // returned FetchForWritingResult<T>.
-            var result = new FetchForWritingResult<T>(aggregate, currentVersion, streamId);
-
-            // Commit the lock-read transaction immediately (it was just a read-lock).
-            // The actual write will happen in SaveChangesAsync with its own concurrency check.
-            await tx.Commit(ct).ConfigureAwait(false);
-
-            return result;
+            finally
+            {
+                await tx.DisposeAsync().ConfigureAwait(false);
+            }
         }
-        catch
+        finally
         {
-            await tx.Cancel(ct).ConfigureAwait(false);
-            throw;
+            if (lease is not null)
+                await lease.DisposeAsync().ConfigureAwait(false);
         }
     }
 

@@ -116,7 +116,10 @@ internal class FilteredPatchExpression<T> : IPatchExpression<T>, IDeferredPatch 
             var sets = updateOps.Select(o => MapOperation(o, schema).ToSurrealQL()).ToList();
             var surql = $"UPDATE {table} SET {string.Join(", ", sets)} WHERE {whereClause};";
             _logger.LogDebug("Applying filtered patch: {SurrealQL}", surql);
-            await surrealdbSession.RawQuery(surql, null, ct).ConfigureAwait(false);
+            var response = await EmbeddedTransactionRawQuery
+                .ExecuteAsync(surrealdbSession, surql, null, ct)
+                .ConfigureAwait(false);
+            response.EnsureAllOks();
         }
 
         // Rename operations require ALTER TABLE (not filterable by WHERE)
@@ -125,7 +128,10 @@ internal class FilteredPatchExpression<T> : IPatchExpression<T>, IDeferredPatch 
             var mapped = MapOperation(op, schema);
             var surql = $"ALTER TABLE {table} RENAME COLUMN `{mapped.OldName}` TO `{mapped.FieldName}`;";
             _logger.LogDebug("Applying rename: {SurrealQL}", surql);
-            await surrealdbSession.RawQuery(surql, null, ct).ConfigureAwait(false);
+            var response = await EmbeddedTransactionRawQuery
+                .ExecuteAsync(surrealdbSession, surql, null, ct)
+                .ConfigureAwait(false);
+            response.EnsureAllOks();
         }
 
         // Expose patch context to listeners, if available
