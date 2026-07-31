@@ -58,6 +58,46 @@ internal sealed class SurrealQueryProvider : IQueryProvider
     internal StoreOptions StoreOptions => _options;
 
     /// <summary>
+    /// Executes a spatial command through the session selected for the document type.
+    /// Spatial builders use this instead of the default session so schema-routed
+    /// databases retain the same isolation behavior as LINQ queries.
+    /// </summary>
+    internal async Task<SurrealDbResponse> ExecuteSpatialAsync<T>(
+        string surql,
+        IReadOnlyDictionary<string, object?> parameters,
+        CancellationToken ct)
+        where T : class
+    {
+        var querySession = await GetSessionForElementType(typeof(T), ct).ConfigureAwait(false);
+        return await querySession.RawQuery(surql, parameters, ct).ConfigureAwait(false);
+    }
+
+    /// <summary>
+    /// Adds the tenant and soft-delete predicates used by spatial commands. Values are
+    /// bound through the supplied command builder; spatial query construction never
+    /// embeds policy values into SurrealQL.
+    /// </summary>
+    internal void ApplySpatialPolicyFilters<T>(ICollection<string> whereParts, SurrealCommandBuilder parameters)
+        where T : class
+    {
+        var elementType = typeof(T);
+
+        if (!string.IsNullOrEmpty(_tenantId)
+            && _options.TenancyStyle != TenancyStyle.DatabasePerTenant
+            && HasTenantProperty(elementType))
+        {
+            var tenantField = MetadataDispatch.GetFieldName(elementType, "TenantId", _options.Schema);
+            whereParts.Add($"{tenantField} = {parameters.Parameter(_tenantId)}");
+        }
+
+        if (_options.SoftDeleteEnabled && IsSoftDeletedType(elementType))
+        {
+            var deletedField = MetadataDispatch.GetFieldName(elementType, nameof(ISoftDeleted.Deleted), _options.Schema);
+            whereParts.Add($"{deletedField} = {parameters.Parameter(false)}");
+        }
+    }
+
+    /// <summary>
     /// Resolves the correct <see cref="ISurrealDbSession"/> for the given element type
     /// based on its schema mapping (database). When no schema is configured or when
     /// no <see cref="InternalSessionBase"/> is available, falls back to <see cref="_session"/>.

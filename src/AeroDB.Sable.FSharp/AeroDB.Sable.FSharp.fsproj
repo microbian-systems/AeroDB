@@ -7,6 +7,7 @@
 
   <ItemGroup>
     <Compile Include="SableQuery.fs" />
+    <Compile Include="SableSpatialQuery.fs" />
   </ItemGroup>
 
   <ItemGroup>

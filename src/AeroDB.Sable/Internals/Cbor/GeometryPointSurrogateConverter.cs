@@ -33,20 +33,17 @@ internal sealed class GeometryPointSurrogateConverter : CborConverterBase<Geomet
 
     public override void Write(ref CborWriter writer, GeometryPoint value)
     {
+        writer.WriteSemanticTag(GeometryPointTag);
+
         if (value is null)
         {
             writer.WriteNull();
             return;
         }
 
-        writer.WriteBeginMap(2);
-        writer.WriteString("type");
-        writer.WriteString("Point");
-        writer.WriteString("coordinates");
         writer.WriteBeginArray(2);
         writer.WriteDouble(value.Lng);
         writer.WriteDouble(value.Lat);
         writer.WriteEndArray(2);
-        writer.WriteEndMap(2);
     }
 }

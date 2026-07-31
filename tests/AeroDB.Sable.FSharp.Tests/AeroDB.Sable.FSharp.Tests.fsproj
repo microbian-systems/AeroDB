@@ -10,15 +10,17 @@
     <Compile Include="TestModels.fs" />
     <Compile Include="TestHarness.fs" />
     <Compile Include="SableQueryTests.fs" />
+    <Compile Include="SableSpatialQueryTests.fs" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="SurrealDb.Embedded.InMemory" Version="0.10.2" />
     <PackageReference Include="Shouldly" Version="4.3.0" />
     <PackageReference Include="TUnit" Version="1.58.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\AeroDB.Sable.FSharp\AeroDB.Sable.FSharp.fsproj" />
+    <ProjectReference Include="..\..\surrealdb.net\SurrealDb.Net\SurrealDb.Net.csproj" />
+    <ProjectReference Include="..\..\surrealdb.net\SurrealDb.Embedded.InMemory\SurrealDb.Embedded.InMemory.csproj" />
   </ItemGroup>
 </Project>

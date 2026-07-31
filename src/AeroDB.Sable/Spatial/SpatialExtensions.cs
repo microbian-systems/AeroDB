@@ -20,4 +20,20 @@ public static class SpatialExtensions
         throw new NotSupportedException(
             $"Spatial queries are only supported on AeroDB.Sable query sessions. The current provider is {queryable.Provider.GetType().Name}.");
     }
+
+    /// <summary>
+    /// Executes a distance-bearing spatial query. This additive extension preserves
+    /// the existing <see cref="ISpatialQuery{T}"/> contract and is available for
+    /// <see cref="AeroDBSpatialQuery{T}"/> instances created by <see cref="Spatial{T}(IQuerySession)"/>.
+    /// </summary>
+    public static Task<List<SpatialDistanceResult<T>>> ToListWithDistanceAsync<T>(
+        this ISpatialQuery<T> query,
+        CancellationToken ct = default)
+        where T : class
+    {
+        ArgumentNullException.ThrowIfNull(query);
+        return query is AeroDBSpatialQuery<T> spatialQuery
+            ? spatialQuery.ExecuteWithDistanceAsync(ct)
+            : throw new NotSupportedException("Distance materialization requires an AeroDB.Sable spatial query.");
+    }
 }
