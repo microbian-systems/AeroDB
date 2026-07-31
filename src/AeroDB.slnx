@@ -5,6 +5,7 @@
   <Project Path="AeroDB.ML/AeroDB.ML.csproj" />
   <Project Path="AeroDB.Reactive/AeroDB.Reactive.csproj" />
   <Project Path="AeroDB.Sable/AeroDB.Sable.csproj" />
+  <Project Path="AeroDB.Sable.FSharp/AeroDB.Sable.FSharp.fsproj" />
   <Project Path="AeroDB.Sable.Configuration/AeroDB.Sable.Configuration.csproj" />
   <Project Path="AeroDB.Snowflake/AeroDB.Snowflake.csproj" />
   <Project Path="AeroDB.SourceGenerators/AeroDB.SourceGenerators.csproj" />
@@ -20,6 +21,7 @@
     <Project Path="../tests/AeroDB.IntegrationTests/AeroDB.IntegrationTests.csproj" />
     <Project Path="../tests/AeroDB.AspNetIdentity.Tests/AeroDB.AspNetIdentity.Tests.csproj" />
     <Project Path="../tests/AeroDB.Sable.Configuration.Tests/AeroDB.Sable.Configuration.Tests.csproj" />
+    <Project Path="../tests/AeroDB.Sable.FSharp.Tests/AeroDB.Sable.FSharp.Tests.fsproj" />
     <Project Path="../tests/AeroDB.Sable.Server.Tests/AeroDB.Sable.Server.Tests.csproj" />
     <Project Path="../tests/AeroDB.Tests/AeroDB.Tests.csproj" />
   </Folder>

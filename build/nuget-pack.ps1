@@ -71,6 +71,7 @@ New-Item -ItemType Directory -Force -Path $OutputDir | Out-Null
 
 $libProjects = @(
     "$RepoRoot/src/AeroDB.Sable"
+    "$RepoRoot/src/AeroDB.Sable.FSharp"
     "$RepoRoot/src/AeroDB.Sable.Configuration"
     "$RepoRoot/src/AeroDB.AspNetIdentity"
     "$RepoRoot/src/AeroDB.EntityFrameworkCore"
@@ -83,15 +84,15 @@ $libProjects = @(
 $failed = @()
 
 foreach ($proj in $libProjects) {
-    $csproj = Get-ChildItem "$proj/*.csproj" | Select-Object -First 1 -ExpandProperty FullName
-    if (-not $csproj) {
+    $projectFile = Get-ChildItem "$proj/*.*proj" | Select-Object -First 1 -ExpandProperty FullName
+    if (-not $projectFile) {
         Write-Host "WARN: Project not found, skipping: $proj" -ForegroundColor Yellow
         continue
     }
 
-    $projName = (Get-Item $csproj).BaseName
+    $projName = (Get-Item $projectFile).BaseName
     Write-Host "  Packing: $projName..." -ForegroundColor Cyan
-    $output = dotnet pack $csproj -c $Configuration -o $OutputDir --include-symbols -p:IncludeSymbols=true -p:SymbolPackageFormat=snupkg @versionArgs 2>&1
+    $output = dotnet pack $projectFile -c $Configuration -o $OutputDir --include-symbols -p:IncludeSymbols=true -p:SymbolPackageFormat=snupkg @versionArgs 2>&1
 
     if ($LASTEXITCODE -ne 0) {
         Write-Host "  FAILED: $(Split-Path $proj -Leaf)" -ForegroundColor Red
