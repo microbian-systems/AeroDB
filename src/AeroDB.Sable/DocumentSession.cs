@@ -61,12 +61,14 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
     /// runs inside this transaction without auto-committing.
     /// </summary>
     private SurrealDbTransaction? _explicitTransaction;
+    private IAsyncDisposable? _explicitTransactionLease;
+    private SurrealDbTransaction? _pendingAutoEventTransaction;
+    private IAsyncDisposable? _pendingAutoEventTransactionLease;
+    private ISurrealDbSession? _activeSaveSession;
+    private readonly List<IChangeSet> _pendingExplicitChangeSets = [];
 
-    // SurrealDb.Net 0.10.2 exposes transaction objects for embedded transports,
-    // but those engines reject queries carrying the transaction id. Keep their
-    // established eager-write behavior while real server transports execute
-    // document, patch, and graph mutations through the transaction session.
-    private bool UsesEmbeddedTransport => Session.Uri?.Scheme is "mem" or "rocksdb" or "surrealkv";
+    internal protected override ISurrealDbSession OperationSession =>
+        _activeSaveSession ?? _explicitTransaction ?? _pendingAutoEventTransaction ?? Session;
 
     /// <summary>
     /// Whether this session owns the explicit transaction and is responsible for
@@ -161,8 +163,15 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
     {
         if (_explicitTransaction != null)
             throw new InvalidOperationException("A transaction is already in progress.");
+        if (_pendingAutoEventTransaction != null)
+            throw new InvalidOperationException("Pending event changes must be saved or cleared before beginning an explicit transaction.");
 
-        _explicitTransaction = Session.BeginTransaction(DefaultCt).GetAwaiter().GetResult();
+        var coordinated = EmbeddedTransactionCoordinator
+            .BeginAsync(Session, DefaultCt)
+            .GetAwaiter()
+            .GetResult();
+        _explicitTransaction = coordinated.Transaction;
+        _explicitTransactionLease = coordinated.Lease;
         _ownsTransaction = true;
         return new AeroDBTransaction(_explicitTransaction, this);
     }
@@ -181,8 +190,12 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
     {
         if (_explicitTransaction != null)
             throw new InvalidOperationException("A transaction is already in progress.");
+        if (_pendingAutoEventTransaction != null)
+            throw new InvalidOperationException("Pending event changes must be saved or cleared before beginning an explicit transaction.");
 
-        _explicitTransaction = await Session.BeginTransaction(ct).ConfigureAwait(false);
+        var coordinated = await EmbeddedTransactionCoordinator.BeginAsync(Session, ct).ConfigureAwait(false);
+        _explicitTransaction = coordinated.Transaction;
+        _explicitTransactionLease = coordinated.Lease;
         _ownsTransaction = true;
         return new AeroDBTransaction(_explicitTransaction, this);
     }
@@ -196,11 +209,50 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         if (_explicitTransaction == null)
             throw new InvalidOperationException("No active transaction to commit.");
 
-        await FlushPendingGraphOperationsAsync(ct).ConfigureAwait(false);
-        await _explicitTransaction.Commit(ct).ConfigureAwait(false);
-        await _explicitTransaction.DisposeAsync().ConfigureAwait(false);
-        _explicitTransaction = null;
-        _ownsTransaction = false;
+        var transaction = _explicitTransaction;
+        var committed = false;
+        IChangeSet[] committedChangeSets = [];
+        try
+        {
+            await FlushPendingGraphOperationsAsync(ct).ConfigureAwait(false);
+            await transaction.Commit(ct).ConfigureAwait(false);
+            committedChangeSets = _pendingExplicitChangeSets.ToArray();
+            _pendingExplicitChangeSets.Clear();
+            committed = true;
+        }
+        catch
+        {
+            _pendingExplicitChangeSets.Clear();
+            _queuedRelations.Clear();
+            _queuedUnrelations.Clear();
+            _transactionRelations.Clear();
+            _transactionUnrelations.Clear();
+            throw;
+        }
+        finally
+        {
+            try
+            {
+                await transaction.DisposeAsync().ConfigureAwait(false);
+            }
+            finally
+            {
+                try
+                {
+                    await ReleaseExplicitTransactionLeaseAsync().ConfigureAwait(false);
+                }
+                finally
+                {
+                    _explicitTransaction = null;
+                    _ownsTransaction = false;
+                }
+            }
+        }
+        if (committed)
+        {
+            foreach (var changes in committedChangeSets)
+                await InvokeAfterCommitListenersAsync(changes, ct).ConfigureAwait(false);
+        }
     }
 
     /// <summary>
@@ -233,20 +285,49 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         _queuedUnrelations.Clear();
         _transactionRelations.Clear();
         _transactionUnrelations.Clear();
-        await transaction.Cancel(ct).ConfigureAwait(false);
-        await transaction.DisposeAsync().ConfigureAwait(false);
-        _explicitTransaction = null;
-        _ownsTransaction = false;
+        _pendingExplicitChangeSets.Clear();
+        _appendedEvents.Clear();
+        _fetchForWritingResults.Clear();
+        _unitOfWork.StreamIds.Clear();
+        try
+        {
+            await transaction.Cancel(CancellationToken.None).ConfigureAwait(false);
+        }
+        finally
+        {
+            try
+            {
+                await transaction.DisposeAsync().ConfigureAwait(false);
+            }
+            finally
+            {
+                try
+                {
+                    await ReleaseExplicitTransactionLeaseAsync().ConfigureAwait(false);
+                }
+                finally
+                {
+                    _explicitTransaction = null;
+                    _ownsTransaction = false;
+                }
+            }
+        }
+        _pendingExplicitChangeSets.Clear();
     }
 
-    /// <summary>
-    /// Called by <see cref="AeroDBTransaction"/> after commit/rollback to clear the session's
-    /// transaction state and return to auto-transact mode.
-    /// </summary>
-    internal void ClearTransaction()
+    private async Task ReleaseExplicitTransactionLeaseAsync()
     {
-        _explicitTransaction = null;
-        _ownsTransaction = false;
+        var lease = _explicitTransactionLease;
+        try
+        {
+            if (lease is not null)
+                await lease.DisposeAsync().ConfigureAwait(false);
+        }
+        finally
+        {
+            if (ReferenceEquals(_explicitTransactionLease, lease))
+                _explicitTransactionLease = null;
+        }
     }
 
     public override IEvents Events
@@ -255,12 +336,70 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         {
             if (_events is null)
             {
-                var inner = new EventStore(Session, Options);
-                _events = new TrackingEventStore(inner, this);
+                _events = new TrackingEventStore(this);
             }
             return _events;
         }
     }
+
+    private async Task<ISurrealDbSession> GetEventMutationSessionAsync(CancellationToken ct)
+    {
+        if (_activeSaveSession is not null)
+            return _activeSaveSession;
+        if (_explicitTransaction is not null)
+            return _explicitTransaction;
+        if (_pendingAutoEventTransaction is not null)
+            return _pendingAutoEventTransaction;
+
+        var coordinated = await EmbeddedTransactionCoordinator.BeginAsync(Session, ct).ConfigureAwait(false);
+        _pendingAutoEventTransaction = coordinated.Transaction;
+        _pendingAutoEventTransactionLease = coordinated.Lease;
+        return _pendingAutoEventTransaction;
+    }
+
+    private async Task DiscardPendingAutoEventChangesAsync()
+    {
+        var transaction = _pendingAutoEventTransaction;
+        var lease = _pendingAutoEventTransactionLease;
+        try
+        {
+            if (transaction is not null)
+                await transaction.Cancel(CancellationToken.None).ConfigureAwait(false);
+        }
+        finally
+        {
+            try
+            {
+                if (transaction is not null)
+                    await transaction.DisposeAsync().ConfigureAwait(false);
+            }
+            finally
+            {
+                try
+                {
+                    if (lease is not null)
+                        await lease.DisposeAsync().ConfigureAwait(false);
+                }
+                finally
+                {
+                    if (ReferenceEquals(_pendingAutoEventTransaction, transaction))
+                    {
+                        _pendingAutoEventTransaction = null;
+                        _pendingAutoEventTransactionLease = null;
+                    }
+
+                    _appendedEvents.Clear();
+                    _fetchForWritingResults.Clear();
+                    _unitOfWork.StreamIds.Clear();
+                }
+            }
+        }
+    }
+
+    private Task DiscardFailedDirectEventMutationAsync()
+        => _activeSaveSession is null && _explicitTransaction is null
+            ? DiscardPendingAutoEventChangesAsync()
+            : Task.CompletedTask;
 
     /// <summary>
     /// Routes <see cref="ProjectionLifecycle.Live"/> projections through event replay
@@ -480,8 +619,10 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         var (mappedDatabase, table) = MetadataDispatch.GetSchemaTarget(typeof(T), Options.Schema);
         var (whereClause, parameters) = BuildMutationWhereClause(predicate);
         var sql = $"DELETE FROM {table} WHERE {whereClause};";
-        var targetSession = await GetSessionForSchemaAsync(mappedDatabase, ct).ConfigureAwait(false);
-        var response = await targetSession.RawQuery(sql, parameters, ct).ConfigureAwait(false);
+        var targetSession = await GetWriteSessionForSchemaAsync(mappedDatabase, ct).ConfigureAwait(false);
+        var response = await EmbeddedTransactionRawQuery
+            .ExecuteAsync(targetSession, sql, parameters, ct)
+            .ConfigureAwait(false);
         response.EnsureAllOks();
         return response.Count;
     }
@@ -600,7 +741,8 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
             ["__sable_delete_record"] = recordId,
             ["__sable_delete_tenant"] = TenantId
         };
-        var response = await targetSession.RawQuery(
+        var response = await EmbeddedTransactionRawQuery.ExecuteAsync(
+                targetSession,
                 $"DELETE $__sable_delete_record " +
                 $"WHERE {tenantField} = $__sable_delete_tenant;",
                 parameters,
@@ -619,6 +761,9 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
 
     public void ClearChanges()
     {
+        if (_pendingAutoEventTransaction is not null)
+            DiscardPendingAutoEventChangesAsync().GetAwaiter().GetResult();
+
         _unitOfWork.Clear();
         _appendedEvents.Clear();
         _queuedPatches.Clear();
@@ -643,7 +788,8 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         if (count == 0 && _appendedEvents.Count == 0 && _queuedPatches.Count == 0
             && _queuedRelations.Count == 0 && _queuedUnrelations.Count == 0
             && _fetchForWritingResults.Count == 0
-            && _queuedStorageOperations.Count == 0 && QueuedSqlCommands.Count == 0) return 0;
+            && _queuedStorageOperations.Count == 0 && QueuedSqlCommands.Count == 0
+            && _pendingAutoEventTransaction is null) return 0;
 
         ResolvedLogger.LogInformation("SaveChangesAsync: committing {EntityCount} entities and {EventCount} events",
             count, _appendedEvents.Count);
@@ -700,42 +846,64 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
 
         try
         {
-            // BeforeSaveChangesAsync hooks (store + session level)
-            if (Options.Listeners.Count > 0)
-            {
-                foreach (var listener in Options.Listeners)
-                    await listener.BeforeSaveChangesAsync(this, ct).ConfigureAwait(false);
-            }
-            if (SessionListeners.Count > 0)
-            {
-                foreach (var listener in SessionListeners)
-                    await listener.BeforeSaveChangesAsync(this, ct).ConfigureAwait(false);
-            }
-
             var targetSession = await GetWriteSessionForSchemaAsync(targetSchemaName, ct).ConfigureAwait(false);
 
             // Begin SurrealDB transaction — all per-entity operations on this session
             // participate because they share the underlying connection.
             SurrealDbTransaction? tx = null;
+            IAsyncDisposable? transactionLease = null;
             bool ownsTx = false;
+            bool commitAttempted = false;
 
             if (_explicitTransaction != null)
             {
                 // Use the explicit transaction — caller manages commit/rollback.
                 // Operations run inside the explicit transaction scope.
                 // Do NOT commit/cancel at the end — caller will do it.
+                targetSession = _explicitTransaction;
+            }
+            else if (_pendingAutoEventTransaction != null)
+            {
+                if (targetSchemaName is not null)
+                {
+                    await DiscardPendingAutoEventChangesAsync().ConfigureAwait(false);
+                    throw new InvalidOperationException(
+                        "Pending event changes cannot be combined with documents targeting a different database session.");
+                }
+
+                tx = _pendingAutoEventTransaction;
+                transactionLease = _pendingAutoEventTransactionLease;
+                ownsTx = true;
+                if (tx is not null)
+                    targetSession = tx;
             }
             else
             {
-                tx = await targetSession.BeginTransaction(ct).ConfigureAwait(false);
+                var coordinated = await EmbeddedTransactionCoordinator.BeginAsync(targetSession, ct).ConfigureAwait(false);
+                tx = coordinated.Transaction;
+                transactionLease = coordinated.Lease;
                 ownsTx = true;
 
-                if (!UsesEmbeddedTransport && tx is not null)
+                if (tx is not null)
                     targetSession = tx;
             }
 
+            _activeSaveSession = targetSession;
+
             try
             {
+                // BeforeSaveChangesAsync hooks (store + session level)
+                if (Options.Listeners.Count > 0)
+                {
+                    foreach (var listener in Options.Listeners)
+                        await listener.BeforeSaveChangesAsync(this, ct).ConfigureAwait(false);
+                }
+                if (SessionListeners.Count > 0)
+                {
+                    foreach (var listener in SessionListeners)
+                        await listener.BeforeSaveChangesAsync(this, ct).ConfigureAwait(false);
+                }
+
                 // Phase 1: Optimistic concurrency checks (Modified entities only)
                 // Runs before any mutations so we fail-fast if a conflict exists.
                 HashSet<object>? revisionSkipOps = null;
@@ -1317,16 +1485,56 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
 
                 if (ownsTx && tx is not null)
                 {
+                    commitAttempted = true;
                     await tx.Commit(ct).ConfigureAwait(false);
                 }
             }
             catch
             {
-                if (ownsTx && tx is not null)
+                if (ownsTx && tx is not null && !commitAttempted)
                 {
-                    await tx.Cancel(ct).ConfigureAwait(false);
+                    await tx.Cancel(CancellationToken.None).ConfigureAwait(false);
+                    if (ReferenceEquals(_pendingAutoEventTransaction, tx))
+                    {
+                        _appendedEvents.Clear();
+                        _fetchForWritingResults.Clear();
+                        _unitOfWork.StreamIds.Clear();
+                    }
                 }
                 throw;
+            }
+            finally
+            {
+                try
+                {
+                    if (ownsTx && tx is not null)
+                    {
+                        try
+                        {
+                            await tx.DisposeAsync().ConfigureAwait(false);
+                        }
+                        finally
+                        {
+                            try
+                            {
+                                if (transactionLease is not null)
+                                    await transactionLease.DisposeAsync().ConfigureAwait(false);
+                            }
+                            finally
+                            {
+                                if (ReferenceEquals(_pendingAutoEventTransaction, tx))
+                                {
+                                    _pendingAutoEventTransaction = null;
+                                    _pendingAutoEventTransactionLease = null;
+                                }
+                            }
+                        }
+                    }
+                }
+                finally
+                {
+                    _activeSaveSession = null;
+                }
             }
 
             // AfterCommitAsync hooks (called only after successful commit)
@@ -1338,16 +1546,10 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                 Inserted = committedOperations.Where(op => op.Type == OperationType.Added).Select(op => op.Entity).ToArray(),
                 Deleted = committedOperations.Where(op => op.Type is OperationType.Deleted or OperationType.SoftDeleted).Select(op => op.Entity).ToArray()
             };
-            if (Options.Listeners.Count > 0)
-            {
-                foreach (var listener in Options.Listeners)
-                    await listener.AfterCommitAsync(this, committedChanges, ct).ConfigureAwait(false);
-            }
-            if (SessionListeners.Count > 0)
-            {
-                foreach (var listener in SessionListeners)
-                    await listener.AfterCommitAsync(this, committedChanges, ct).ConfigureAwait(false);
-            }
+            if (_explicitTransaction is not null)
+                _pendingExplicitChangeSets.Add(committedChanges);
+            else
+                await InvokeAfterCommitListenersAsync(committedChanges, ct).ConfigureAwait(false);
 
             var resultCount = count > 0 ? count : appendedEventSnapshot.Length + graphOpCount;
 
@@ -1374,6 +1576,15 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
             // can catch them directly.
             throw;
         }
+    }
+
+    private async Task InvokeAfterCommitListenersAsync(IChangeSet changes, CancellationToken ct)
+    {
+        foreach (var listener in Options.Listeners)
+            await listener.AfterCommitAsync(this, changes, ct).ConfigureAwait(false);
+
+        foreach (var listener in SessionListeners)
+            await listener.AfterCommitAsync(this, changes, ct).ConfigureAwait(false);
     }
 
     private void GenerateGuidIdentityIfEmpty(object entity)
@@ -1897,7 +2108,9 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                 FormatWriteParameters(parameters));
         }
 
-        var response = await session.RawQuery(surql, parameters, ct).ConfigureAwait(false);
+        var response = await EmbeddedTransactionRawQuery
+            .ExecuteAsync(session, surql, parameters, ct)
+            .ConfigureAwait(false);
 
         if (ResolvedLogger.IsEnabled(LogLevel.Debug))
         {
@@ -2185,7 +2398,17 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
             return;
 
         var schemaName = ResolveGraphSchemaName(_transactionRelations);
-        var targetSession = await GetWriteSessionForSchemaAsync(schemaName, ct).ConfigureAwait(false);
+        if (_explicitTransaction is not null
+            && schemaName is not null
+            && !string.Equals(schemaName, Options.Database, StringComparison.Ordinal))
+        {
+            throw new InvalidOperationException(
+                $"An explicit transaction is scoped to database '{Options.Database ?? "test"}', " +
+                $"but pending graph operations target mapped database '{schemaName}'.");
+        }
+
+        var targetSession = _explicitTransaction
+            ?? await GetWriteSessionForSchemaAsync(schemaName, ct).ConfigureAwait(false);
 
         await ExecuteGraphOperationsAsync(
             targetSession,
@@ -2204,7 +2427,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         string? schemaName,
         CancellationToken ct)
     {
-        if (_explicitTransaction is null || UsesEmbeddedTransport)
+        if (_explicitTransaction is null)
             return await GetSessionForSchemaAsync(schemaName, ct).ConfigureAwait(false);
 
         if (schemaName is not null
@@ -2616,8 +2839,10 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         var (whereClause, parameters) = BuildMutationWhereClause(predicate);
         var sql = $"DELETE FROM {table} WHERE {whereClause};";
         RequestCount++;
-        var targetSession = await GetSessionForSchemaAsync(mappedDatabase, ct).ConfigureAwait(false);
-        var response = await targetSession.RawQuery(sql, parameters, ct).ConfigureAwait(false);
+        var targetSession = await GetWriteSessionForSchemaAsync(mappedDatabase, ct).ConfigureAwait(false);
+        var response = await EmbeddedTransactionRawQuery
+            .ExecuteAsync(targetSession, sql, parameters, ct)
+            .ConfigureAwait(false);
         response.EnsureAllOks();
         return response.Count;
     }
@@ -2633,8 +2858,10 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         var sql = $"UPDATE {table} SET {deletedField} = false " +
             $"WHERE {deletedField} = true AND {whereClause};";
         RequestCount++;
-        var targetSession = await GetSessionForSchemaAsync(mappedDatabase, ct).ConfigureAwait(false);
-        var response = await targetSession.RawQuery(sql, parameters, ct).ConfigureAwait(false);
+        var targetSession = await GetWriteSessionForSchemaAsync(mappedDatabase, ct).ConfigureAwait(false);
+        var response = await EmbeddedTransactionRawQuery
+            .ExecuteAsync(targetSession, sql, parameters, ct)
+            .ConfigureAwait(false);
         response.EnsureAllOks();
         return response.Count;
     }
@@ -2739,12 +2966,35 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
     /// </summary>
     public override async ValueTask DisposeAsync()
     {
+        if (_pendingAutoEventTransaction is not null)
+            await DiscardPendingAutoEventChangesAsync().ConfigureAwait(false);
+
         if (_explicitTransaction is not null && _ownsTransaction)
         {
-            await _explicitTransaction.Cancel(DefaultCt).ConfigureAwait(false);
-            await _explicitTransaction.DisposeAsync().ConfigureAwait(false);
-            _explicitTransaction = null;
-            _ownsTransaction = false;
+            var transaction = _explicitTransaction;
+            try
+            {
+                await transaction.Cancel(CancellationToken.None).ConfigureAwait(false);
+            }
+            finally
+            {
+                try
+                {
+                    await transaction.DisposeAsync().ConfigureAwait(false);
+                }
+                finally
+                {
+                    try
+                    {
+                        await ReleaseExplicitTransactionLeaseAsync().ConfigureAwait(false);
+                    }
+                    finally
+                    {
+                        _explicitTransaction = null;
+                        _ownsTransaction = false;
+                    }
+                }
+            }
         }
 
         await base.DisposeAsync().ConfigureAwait(false);
@@ -2755,18 +3005,84 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
     /// </summary>
     private sealed class TrackingEventStore : IEvents
     {
-        private readonly IEvents _inner;
         private readonly DocumentSession _owner;
 
-        public TrackingEventStore(IEvents inner, DocumentSession owner)
+        public TrackingEventStore(DocumentSession owner)
         {
-            _inner = inner;
             _owner = owner;
+        }
+
+        private IEvents ReadStore => new EventStore(_owner.OperationSession, _owner.Options);
+
+        private bool ShouldStageDirectMutation => _owner.Options.Projections.Count > 0;
+
+        private async Task<T> MutateAsync<T>(Func<IEvents, Task<T>> mutation, CancellationToken ct)
+        {
+            if (_owner._activeSaveSession is null
+                && _owner._explicitTransaction is null
+                && _owner._pendingAutoEventTransaction is null
+                && !ShouldStageDirectMutation)
+            {
+                var coordinated = await EmbeddedTransactionCoordinator
+                    .BeginAsync(_owner.Session, ct)
+                    .ConfigureAwait(false);
+                var transaction = coordinated.Transaction;
+                var lease = coordinated.Lease;
+                var commitAttempted = false;
+                try
+                {
+                    var store = new EventStore(transaction, _owner.Options);
+                    var result = await mutation(store).ConfigureAwait(false);
+                    commitAttempted = true;
+                    await transaction.Commit(ct).ConfigureAwait(false);
+                    return result;
+                }
+                catch
+                {
+                    if (!commitAttempted)
+                        await transaction.Cancel(CancellationToken.None).ConfigureAwait(false);
+                    throw;
+                }
+                finally
+                {
+                    try
+                    {
+                        await transaction.DisposeAsync().ConfigureAwait(false);
+                    }
+                    finally
+                    {
+                        if (lease is not null)
+                            await lease.DisposeAsync().ConfigureAwait(false);
+                    }
+                }
+            }
+
+            try
+            {
+                var store = new EventStore(await _owner.GetEventMutationSessionAsync(ct).ConfigureAwait(false), _owner.Options);
+                return await mutation(store).ConfigureAwait(false);
+            }
+            catch
+            {
+                await _owner.DiscardFailedDirectEventMutationAsync().ConfigureAwait(false);
+                throw;
+            }
+        }
+
+        private async Task MutateAsync(Func<IEvents, Task> mutation, CancellationToken ct)
+        {
+            await MutateAsync(
+                async store =>
+                {
+                    await mutation(store).ConfigureAwait(false);
+                    return true;
+                },
+                ct).ConfigureAwait(false);
         }
 
         public async Task<IReadOnlyList<IEvent>> Append(string streamId, IEnumerable<object> events, Dictionary<string, string>? headers = null, CancellationToken ct = default)
         {
-            var result = await _inner.Append(streamId, events, headers, ct).ConfigureAwait(false);
+            var result = await MutateAsync(store => store.Append(streamId, events, headers, ct), ct).ConfigureAwait(false);
             foreach (var evt in result)
             {
                 _owner._appendedEvents.Add(evt);
@@ -2777,7 +3093,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
 
         public async Task<IReadOnlyList<IEvent>> Append(string streamId, long expectedVersion, IEnumerable<object> events, CancellationToken ct = default)
         {
-            var result = await _inner.Append(streamId, expectedVersion, events, ct).ConfigureAwait(false);
+            var result = await MutateAsync(store => store.Append(streamId, expectedVersion, events, ct), ct).ConfigureAwait(false);
             foreach (var evt in result)
             {
                 _owner._appendedEvents.Add(evt);
@@ -2788,7 +3104,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
 
         public async Task<IReadOnlyList<IEvent>> AppendOptimistic(string streamId, long lastKnownVersion, IEnumerable<object> events, CancellationToken ct = default)
         {
-            var result = await _inner.AppendOptimistic(streamId, lastKnownVersion, events, ct).ConfigureAwait(false);
+            var result = await MutateAsync(store => store.AppendOptimistic(streamId, lastKnownVersion, events, ct), ct).ConfigureAwait(false);
             foreach (var evt in result)
             {
                 _owner._appendedEvents.Add(evt);
@@ -2799,7 +3115,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
 
         public async Task<IReadOnlyList<IEvent>> AppendExclusive(string streamId, IEnumerable<object> events, CancellationToken ct = default)
         {
-            var result = await _inner.AppendExclusive(streamId, events, ct).ConfigureAwait(false);
+            var result = await MutateAsync(store => store.AppendExclusive(streamId, events, ct), ct).ConfigureAwait(false);
             foreach (var evt in result)
             {
                 _owner._appendedEvents.Add(evt);
@@ -2810,7 +3126,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
 
         public async Task<IReadOnlyList<IEvent>> AppendOptimistic(Guid streamId, long lastKnownVersion, IEnumerable<object> events, CancellationToken ct = default)
         {
-            var result = await _inner.AppendOptimistic(streamId, lastKnownVersion, events, ct).ConfigureAwait(false);
+            var result = await MutateAsync(store => store.AppendOptimistic(streamId, lastKnownVersion, events, ct), ct).ConfigureAwait(false);
             foreach (var evt in result)
             {
                 _owner._appendedEvents.Add(evt);
@@ -2821,7 +3137,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
 
         public async Task<IReadOnlyList<IEvent>> AppendExclusive(Guid streamId, IEnumerable<object> events, CancellationToken ct = default)
         {
-            var result = await _inner.AppendExclusive(streamId, events, ct).ConfigureAwait(false);
+            var result = await MutateAsync(store => store.AppendExclusive(streamId, events, ct), ct).ConfigureAwait(false);
             foreach (var evt in result)
             {
                 _owner._appendedEvents.Add(evt);
@@ -2834,7 +3150,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         {
             // Marten's StartStream is commonly called without awaiting before SaveChangesAsync.
             // Complete the append here so that compatibility pattern still feeds inline projections.
-            var result = _inner.Append(streamId, events, headers: null, ct).GetAwaiter().GetResult();
+            var result = MutateAsync(store => store.Append(streamId, events, headers: null, ct), ct).GetAwaiter().GetResult();
             foreach (var evt in result)
             {
                 _owner._appendedEvents.Add(evt);
@@ -2845,7 +3161,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
 
         public async Task<FetchForWritingResult<T>> FetchForWritingAsync<T>(string streamId, CancellationToken ct = default) where T : class
         {
-            var result = await _inner.FetchForWritingAsync<T>(streamId, ct).ConfigureAwait(false);
+            var result = await ReadStore.FetchForWritingAsync<T>(streamId, ct).ConfigureAwait(false);
             _owner._fetchForWritingResults.Add(result);
             return result;
         }
@@ -2869,13 +3185,13 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
             T? state = default,
             long? fromVersion = null,
             CancellationToken ct = default) where T : class
-            => _inner.AggregateStreamAsync(streamId, version, timestamp, state, fromVersion, ct);
+            => ReadStore.AggregateStreamAsync(streamId, version, timestamp, state, fromVersion, ct);
 
         public Task<StreamState?> FetchStreamStateAsync(string streamId, CancellationToken ct = default)
-            => _inner.FetchStreamStateAsync(streamId, ct);
+            => ReadStore.FetchStreamStateAsync(streamId, ct);
 
         public Task<StreamState?> FetchStreamStateAsync(Guid streamId, CancellationToken ct = default)
-            => _inner.FetchStreamStateAsync(streamId, ct);
+            => ReadStore.FetchStreamStateAsync(streamId, ct);
 
         public Task<IReadOnlyList<IEvent>> FetchStreamAsync(
             string streamId,
@@ -2883,7 +3199,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
             DateTimeOffset? timestamp = null,
             long? fromVersion = null,
             CancellationToken ct = default)
-            => _inner.FetchStreamAsync(streamId, version, timestamp, fromVersion, ct);
+            => ReadStore.FetchStreamAsync(streamId, version, timestamp, fromVersion, ct);
 
         public Task<string> StartStream<T>(string streamId, IEnumerable<object> events, CancellationToken ct = default)
             => StartStream(streamId, events, ct);
@@ -2892,21 +3208,21 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
             => StartStream(streamId.ToString("D"), events, ct);
 
         public Task<IReadOnlyList<IEvent>> FetchStream(string streamId, CancellationToken ct = default)
-            => _inner.FetchStream(streamId, ct);
+            => ReadStore.FetchStream(streamId, ct);
 
         public Task<IReadOnlyList<IEvent>> FetchAllAfterSequence(
             long sequence, CancellationToken ct = default)
-            => _inner.FetchAllAfterSequence(sequence, ct);
+            => ReadStore.FetchAllAfterSequence(sequence, ct);
 
         public Task ArchiveStream(string streamId, CancellationToken ct = default)
-            => _inner.ArchiveStream(streamId, ct);
+            => MutateAsync(store => store.ArchiveStream(streamId, ct), ct);
 
         public Task ArchiveStream(Guid streamId, CancellationToken ct = default)
-            => _inner.ArchiveStream(streamId, ct);
+            => MutateAsync(store => store.ArchiveStream(streamId, ct), ct);
 
         public async Task<IReadOnlyList<IEvent>> WriteTombstone(string streamId, long version, CancellationToken ct = default)
         {
-            var result = await _inner.WriteTombstone(streamId, version, ct).ConfigureAwait(false);
+            var result = await MutateAsync(store => store.WriteTombstone(streamId, version, ct), ct).ConfigureAwait(false);
             foreach (var evt in result)
             {
                 _owner._appendedEvents.Add(evt);
@@ -2921,35 +3237,35 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
             CancellationToken ct = default)
         {
             // Bulk insert doesn't add to _appendedEvents since it bypasses per-stream tracking
-            return await _inner.BulkInsertEventsAsync(streams, batchSize, ct).ConfigureAwait(false);
+            return await ReadStore.BulkInsertEventsAsync(streams, batchSize, ct).ConfigureAwait(false);
         }
 
         public Task<T?> AggregateStreamToLastKnownAsync<T>(string streamId, CancellationToken ct = default) where T : class
-            => _inner.AggregateStreamToLastKnownAsync<T>(streamId, ct);
+            => ReadStore.AggregateStreamToLastKnownAsync<T>(streamId, ct);
 
         public Task CompactStreamAsync<T>(string streamId, Action<CompactStreamOptions>? configure = null, CancellationToken ct = default) where T : class
-            => _inner.CompactStreamAsync<T>(streamId, configure, ct);
+            => ReadStore.CompactStreamAsync<T>(streamId, configure, ct);
 
         public Task<FetchForWritingResult<T>?> FetchForExclusiveWriting<T>(string streamId, CancellationToken ct = default) where T : class
-            => _inner.FetchForExclusiveWriting<T>(streamId, ct);
+            => ReadStore.FetchForExclusiveWriting<T>(streamId, ct);
 
         public ISableQueryable<T> QueryRawEventDataOnly<T>() where T : class
-            => _inner.QueryRawEventDataOnly<T>();
+            => ReadStore.QueryRawEventDataOnly<T>();
 
         public ISableQueryable<IEvent> QueryAllRawEvents()
-            => _inner.QueryAllRawEvents();
+            => ReadStore.QueryAllRawEvents();
 
         public IEvent BuildEvent(object data)
-            => _inner.BuildEvent(data);
+            => ReadStore.BuildEvent(data);
 
         public Task OverwriteEventAsync(IEvent e, CancellationToken ct = default)
-            => _inner.OverwriteEventAsync(e, ct);
+            => ReadStore.OverwriteEventAsync(e, ct);
 
         public Task DeleteSingleEventAsync(string streamId, long eventSequence, CancellationToken ct = default)
-            => _inner.DeleteSingleEventAsync(streamId, eventSequence, ct);
+            => ReadStore.DeleteSingleEventAsync(streamId, eventSequence, ct);
 
         public Task<bool> EventsExistAsync(EventTagQuery query, CancellationToken ct = default)
-            => _inner.EventsExistAsync(query, ct);
+            => ReadStore.EventsExistAsync(query, ct);
     }
 }
 

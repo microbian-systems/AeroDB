@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Description>Idiomatic F# query helpers for AeroDB.Sable</Description>
+    <PackageTags>surrealdb documentdb fsharp query railway-oriented-programming</PackageTags>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="SableQuery.fs" />
+    <Compile Include="SableSpatialQuery.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AeroDB.Sable\AeroDB.Sable.csproj" />
+  </ItemGroup>
+</Project>

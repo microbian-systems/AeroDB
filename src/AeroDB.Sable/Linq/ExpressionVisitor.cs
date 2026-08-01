@@ -301,6 +301,9 @@ namespace AeroDB.Sable;
     internal static string TranslateCondition(Expression expr, SchemaOptions schema)
         => new SurrealExpressionVisitor(schema).TranslateConditionCore(expr);
 
+    internal static string TranslateCondition(Expression expr, SurrealCommandBuilder builder, SchemaOptions schema, EnumStorage enumStorage)
+        => new SurrealExpressionVisitor(schema, enumStorage).TranslateConditionCore(expr, builder);
+
     private string TranslateConditionCore(Expression expr, SurrealCommandBuilder builder) => expr switch
     {
         BinaryExpression b => TranslateBinary(b, builder),

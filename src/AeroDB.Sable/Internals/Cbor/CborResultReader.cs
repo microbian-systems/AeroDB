@@ -20,6 +20,75 @@ internal static class CborResultReader
     private const ulong GeometryLineTag = 89;
     private const ulong GeometryPolygonTag = 90;
 
+    internal enum StrictPocoResultStatus
+    {
+        EmptyProviderResponse,
+        EmptyRows,
+        Rows,
+        Unreadable
+    }
+
+    /// <summary>
+    /// Strictly reads one SELECT result without conflating an empty successful array
+    /// with a missing or malformed provider response.
+    /// </summary>
+    internal static StrictPocoResultStatus ReadPocoResultStrict(
+        SurrealDbResponse response,
+        int index,
+        out List<Dictionary<string, object?>> records)
+    {
+        records = [];
+        if (response.Count == 0)
+            return StrictPocoResultStatus.EmptyProviderResponse;
+        if (!TryGetBinaryResult(response, index, out var mem))
+            return StrictPocoResultStatus.Unreadable;
+
+        return ReadPocoResultStrict(mem, out records);
+    }
+
+    /// <summary>
+    /// Strictly decodes one raw SELECT-result CBOR buffer. This seam keeps
+    /// malformed-row handling testable without constructing provider internals.
+    /// </summary>
+    internal static StrictPocoResultStatus ReadPocoResultStrict(
+        ReadOnlyMemory<byte> cbor,
+        out List<Dictionary<string, object?>> records)
+    {
+        records = [];
+        if (cbor.IsEmpty)
+            return StrictPocoResultStatus.Unreadable;
+
+        try
+        {
+            var reader = new CborReader(cbor.Span);
+            if (reader.GetCurrentDataItemType() != CborDataItemType.Array)
+                return StrictPocoResultStatus.Unreadable;
+
+            reader.ReadBeginArray();
+            var size = reader.ReadSize();
+            if (size == 0)
+                return StrictPocoResultStatus.EmptyRows;
+
+            records = new List<Dictionary<string, object?>>(size);
+            for (var i = 0; i < size; i++)
+            {
+                var row = ReadCborMapIntoDictionary(ref reader);
+                if (row is null)
+                {
+                    records = [];
+                    return StrictPocoResultStatus.Unreadable;
+                }
+                records.Add(row);
+            }
+            return StrictPocoResultStatus.Rows;
+        }
+        catch (CborException)
+        {
+            records = [];
+            return StrictPocoResultStatus.Unreadable;
+        }
+    }
+
     /// <summary>
     /// Reads the raw CBOR result at the given index and returns it as a list of dictionaries.
     /// </summary>

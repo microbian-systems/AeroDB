@@ -29,23 +29,23 @@ internal sealed class GeometryPolygonSurrogateConverter : CborConverterBase<Geom
 
     public override void Write(ref CborWriter writer, GeometryPolygon value)
     {
+        writer.WriteSemanticTag(GeometryPolygonTag);
+
         if (value is null)
         {
             writer.WriteNull();
             return;
         }
 
-        writer.WriteBeginMap(2);
-        writer.WriteString("type");
-        writer.WriteString("Polygon");
-        writer.WriteString("coordinates");
         writer.WriteBeginArray(value.Rings.Count);
         foreach (var ring in value.Rings)
         {
+            writer.WriteSemanticTag(GeometryLineTag);
             writer.WriteBeginArray(ring.Count);
 
             foreach (var point in ring)
             {
+                writer.WriteSemanticTag(GeometryPointSurrogateConverter.GeometryPointTag);
                 writer.WriteBeginArray(2);
                 writer.WriteDouble(point.Lng);
                 writer.WriteDouble(point.Lat);
@@ -56,7 +56,6 @@ internal sealed class GeometryPolygonSurrogateConverter : CborConverterBase<Geom
         }
 
         writer.WriteEndArray(value.Rings.Count);
-        writer.WriteEndMap(2);
     }
 
     private static List<(double Lng, double Lat)> ReadRing(ref CborReader reader)

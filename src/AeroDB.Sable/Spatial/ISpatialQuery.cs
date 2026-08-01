@@ -45,7 +45,9 @@ public interface ISpatialQuery<T> where T : class
 
     /// <summary>
     /// Executes the spatial query and returns results.
-    /// Each result includes a synthetic _distance field (double, meters from reference point).
+    /// Distance projections are used for ordering but are not materialized on the returned documents.
+    /// Use <see cref="SpatialExtensions.ToListWithDistanceAsync{T}(ISpatialQuery{T}, CancellationToken)"/>
+    /// to receive distances explicitly.
     /// </summary>
     Task<List<T>> ToListAsync(CancellationToken ct = default);
 }
