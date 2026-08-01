@@ -9,7 +9,7 @@ namespace AeroDB.AspNetIdentity;
 // ── Internal Model Types for Separate SurrealDB Tables ──────────────
 
 /// <summary>
-/// Represents a user claim stored in the <c>AeroDB_user_claim</c> SurrealDB table.
+/// Represents a user claim stored in the <c>user_claims</c> SurrealDB table.
 /// </summary>
 internal sealed class AeroDBUserClaim
 {
@@ -20,7 +20,7 @@ internal sealed class AeroDBUserClaim
 }
 
 /// <summary>
-/// Represents an external login stored in the <c>AeroDB_user_login</c> SurrealDB table.
+/// Represents an external login stored in the <c>user_logins</c> SurrealDB table.
 /// </summary>
 internal sealed class AeroDBUserLogin
 {
@@ -32,7 +32,7 @@ internal sealed class AeroDBUserLogin
 }
 
 /// <summary>
-/// Represents an authentication token stored in the <c>AeroDB_user_token</c> SurrealDB table.
+/// Represents an authentication token stored in the <c>user_tokens</c> SurrealDB table.
 /// </summary>
 internal sealed class AeroDBUserToken
 {
@@ -44,7 +44,7 @@ internal sealed class AeroDBUserToken
 }
 
 /// <summary>
-/// Represents a WebAuthn passkey stored in the <c>AeroDB_user_passkey</c> SurrealDB table.
+/// Represents a WebAuthn passkey stored in the <c>user_passkeys</c> SurrealDB table.
 /// </summary>
 internal sealed class AeroDBUserPasskey
 {
@@ -101,8 +101,13 @@ public class AeroDBUserStore<TUser, TRole, TKey> :
     private readonly IdentityErrorDescriber _describer;
     private bool _disposed;
 
-    // Cached mapped table name used by raw SurrealQL role and recovery-code operations.
+    // Cached physical table names used by raw SurrealQL paths.
     private readonly string _userTable;
+    private readonly string _roleTable;
+    private readonly string _claimTable;
+    private readonly string _loginTable;
+    private readonly string _tokenTable;
+    private readonly string _passkeyTable;
 
     /// <summary>
     /// Initializes a new instance of <see cref="AeroDBUserStore{TUser, TRole}"/>.
@@ -131,8 +136,12 @@ public class AeroDBUserStore<TUser, TRole, TKey> :
         _identityOptions = identityOptions?.Value ?? new IdentityOptions { User = { RequireUniqueEmail = true } };
         _describer = describer ?? new IdentityErrorDescriber();
 
-        _userTable = _store.Options?.Schema.TableNameFor<TUser>()
-            ?? ToSnakeCase(typeof(TUser).Name);
+        _userTable = Microsoft.Extensions.DependencyInjection.AeroDBIdentityTableNames.Users;
+        _roleTable = Microsoft.Extensions.DependencyInjection.AeroDBIdentityTableNames.Roles;
+        _claimTable = Microsoft.Extensions.DependencyInjection.AeroDBIdentityTableNames.UserClaims;
+        _loginTable = Microsoft.Extensions.DependencyInjection.AeroDBIdentityTableNames.UserLogins;
+        _tokenTable = Microsoft.Extensions.DependencyInjection.AeroDBIdentityTableNames.UserTokens;
+        _passkeyTable = Microsoft.Extensions.DependencyInjection.AeroDBIdentityTableNames.UserPasskeys;
     }
 
     // ══════════════════════════════════════════════════════════════════
@@ -1286,21 +1295,6 @@ public class AeroDBUserStore<TUser, TRole, TKey> :
         {
             Name = record.Name
         };
-
-    /// <summary>
-    /// Converts a PascalCase or camelCase name to snake_case.
-    /// Matches AeroDB.Sable's default naming convention for SurrealDB tables.
-    /// </summary>
-    private static string ToSnakeCase(string name)
-    {
-        if (string.IsNullOrEmpty(name))
-            return name;
-
-        return string.Concat(name.Select((c, i) =>
-            i > 0 && char.IsUpper(c)
-                ? "_" + char.ToLowerInvariant(c)
-                : char.ToLowerInvariant(c).ToString()));
-    }
 
     private static string UserIdToString(TUser user)
         => IdToString(user.Id);

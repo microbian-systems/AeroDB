@@ -6,6 +6,16 @@ using Microsoft.Extensions.Options;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
+internal static class AeroDBIdentityTableNames
+{
+    public const string Users = "users";
+    public const string Roles = "roles";
+    public const string UserClaims = "user_claims";
+    public const string UserLogins = "user_logins";
+    public const string UserTokens = "user_tokens";
+    public const string UserPasskeys = "user_passkeys";
+}
+
 /// <summary>
 /// Extension methods for registering AeroDB.Sable-backed ASP.NET Core Identity stores
 /// onto an <see cref="IdentityBuilder"/>.
@@ -73,6 +83,7 @@ internal sealed class AeroDBIdentityConfigurator<TUser, TRole, TKey> : IConfigur
         var requireUniqueEmail = identityOptions?.Value.User.RequireUniqueEmail ?? true;
 
         var userMapping = options.Schema.For<TUser>()
+            .TableName(AeroDBIdentityTableNames.Users)
             .Identity(x => x.Id)
             .UniqueIndex(x => x.NormalizedUserName)
             .Field("authenticator_key", f => f.FieldType = "option<string>")
@@ -85,10 +96,32 @@ internal sealed class AeroDBIdentityConfigurator<TUser, TRole, TKey> : IConfigur
             userMapping.UniqueIndex(x => x.NormalizedEmail);
 
         var roleMapping = options.Schema.For<TRole>()
+            .TableName(AeroDBIdentityTableNames.Roles)
             .Identity(x => x.Id)
             .UniqueIndex(x => x.NormalizedName);
 
         RemoveLegacyPascalCaseIdentityRoleFields(roleMapping);
+
+        options.Schema.For<AeroDB.AspNetIdentity.AeroDBUserClaim>()
+            .TableName(AeroDBIdentityTableNames.UserClaims)
+            .Identity(claim => claim.Id)
+            .Index(claim => claim.UserId);
+
+        options.Schema.For<AeroDB.AspNetIdentity.AeroDBUserLogin>()
+            .TableName(AeroDBIdentityTableNames.UserLogins)
+            .Identity(login => login.Id)
+            .Index(login => login.UserId)
+            .UniqueIndex(login => new { login.LoginProvider, login.ProviderKey });
+
+        options.Schema.For<AeroDB.AspNetIdentity.AeroDBUserToken>()
+            .TableName(AeroDBIdentityTableNames.UserTokens)
+            .Identity(token => token.Id)
+            .Index(token => token.UserId);
+
+        options.Schema.For<AeroDB.AspNetIdentity.AeroDBUserPasskey>()
+            .TableName(AeroDBIdentityTableNames.UserPasskeys)
+            .Identity(passkey => passkey.Id)
+            .Index(passkey => passkey.UserId);
     }
 
     private static void RemoveLegacyPascalCaseIdentityUserFields(DocumentMapping<TUser> mapping)
