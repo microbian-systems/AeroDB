@@ -16,6 +16,8 @@ namespace AeroDB.Sable;
 /// <summary>The concrete document session implementing <see cref="IDocumentSession"/>. Manages a unit-of-work with automatic change tracking, identity map, event appending, and transactional save via SurrealDB.</summary>
 public class DocumentSession : InternalSessionBase, IDocumentSession
 {
+    private const int MaximumInlineLiteralDepth = 8;
+
     private static readonly JsonSerializerOptions DefaultLiteralSerializerOptions = new()
     {
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase
@@ -1958,6 +1960,13 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                 parameters[parameterName] = encrypted;
                 fields.Add($"{fieldName}: ${parameterName}");
             }
+            else if (TryCreateDeepValueParameter(
+                         property.GetValue(entity),
+                         parameters,
+                         out var parameterName))
+            {
+                fields.Add($"{fieldName}: ${parameterName}");
+            }
             else
             {
                 fields.Add($"{fieldName}: {ToSurrealQlLiteral(property.GetValue(entity))}");
@@ -1974,6 +1983,68 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         return new ProtectedSurrealQlLiteral(
             "{ " + string.Join(", ", fields) + " }",
             parameters.Count == 0 ? null : parameters);
+    }
+
+    /// <summary>
+    /// Binds deeply nested document values instead of expanding them into the SurrealQL syntax
+    /// tree. SurrealDB applies a parser recursion limit to inline object literals even though the
+    /// corresponding stored value is valid document data.
+    /// </summary>
+    private bool TryCreateDeepValueParameter(
+        object? value,
+        IDictionary<string, object?> parameters,
+        out string parameterName)
+    {
+        parameterName = string.Empty;
+        if (value is null || IsSimpleLiteralValue(value))
+            return false;
+
+        JsonElement serialized;
+        try
+        {
+            serialized = JsonSerializer.SerializeToElement(
+                value,
+                Options.SerializerOptions ?? DefaultLiteralSerializerOptions);
+        }
+        catch (NotSupportedException)
+        {
+            return false;
+        }
+
+        if (GetMaximumJsonDepth(serialized) <= MaximumInlineLiteralDepth)
+            return false;
+
+        parameterName = $"__sable_value_{parameters.Count}";
+        parameters[parameterName] = serialized;
+        return true;
+    }
+
+    private static bool IsSimpleLiteralValue(object value) => value is
+        string or char or bool or GeometryPoint or GeometryPolygon or DateTime or DateTimeOffset
+        or Guid or Enum or byte or sbyte or short or ushort or int or uint or long or ulong
+        or float or double or decimal;
+
+    private static int GetMaximumJsonDepth(JsonElement element)
+    {
+        if (element.ValueKind == JsonValueKind.Object)
+        {
+            var maximumChildDepth = 0;
+            foreach (var property in element.EnumerateObject())
+                maximumChildDepth = Math.Max(maximumChildDepth, GetMaximumJsonDepth(property.Value));
+
+            return maximumChildDepth + 1;
+        }
+
+        if (element.ValueKind == JsonValueKind.Array)
+        {
+            var maximumChildDepth = 0;
+            foreach (var item in element.EnumerateArray())
+                maximumChildDepth = Math.Max(maximumChildDepth, GetMaximumJsonDepth(item));
+
+            return maximumChildDepth + 1;
+        }
+
+        return 1;
     }
 
     private string ToSurrealQlLiteral(object? value)

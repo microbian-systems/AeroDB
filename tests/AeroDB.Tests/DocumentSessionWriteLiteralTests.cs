@@ -79,6 +79,62 @@ public class DocumentSessionWriteLiteralTests
     }
 
     [Test]
+    public async Task SaveChangesAsync_BindsDeepPocosInsteadOfExpandingTheQuerySyntaxTree()
+    {
+        var client = Substitute.For<ISurrealDbClient>();
+        var surrealSession = Substitute.For<ISurrealDbSession>();
+        surrealSession.RawQuery(
+                Arg.Any<string>(),
+                Arg.Any<IReadOnlyDictionary<string, object?>?>(),
+                Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult(new SurrealDbResponse([])));
+        var session = new DocumentSession(client, surrealSession, new StoreOptions(), DocumentTracking.None);
+        session.Store(new DeepWriteDocument
+        {
+            Id = "deep-write",
+            Content = CreateNestedContent(12)
+        });
+
+        await session.SaveChangesAsync();
+
+        await surrealSession.Received(1).RawQuery(
+            Arg.Is<string>(surql =>
+                surql.Contains("content: $__sable_value_0", StringComparison.Ordinal)
+                && !surql.Contains("level-12", StringComparison.Ordinal)),
+            Arg.Is<IReadOnlyDictionary<string, object?>?>(parameters =>
+                HasExpectedDeepValueParameter(parameters)),
+            Arg.Any<CancellationToken>());
+    }
+
+    [Test]
+    public async Task SaveChangesAsync_RoundTripsDeepPocosThroughBoundParameters()
+    {
+        await using var store = await TestHarness.CreateStoreAsync(options =>
+            options.Schema.For<DeepWriteDocument>().Identity(document => document.Id));
+        await using (var session = await store.OpenSessionAsync(
+            new SessionOptions { Tracking = DocumentTracking.None }))
+        {
+            session.Store(new DeepWriteDocument
+            {
+                Id = "deep-round-trip",
+                Content = CreateNestedContent(12)
+            });
+            await session.SaveChangesAsync();
+        }
+
+        await using var read = await store.QuerySessionAsync();
+        var loaded = await read.LoadAsync<DeepWriteDocument>("deep-round-trip");
+
+        loaded.ShouldNotBeNull();
+        loaded.Content.Name.ShouldBe("level-12");
+        var leaf = loaded.Content;
+        while (leaf.Children.Count > 0)
+            leaf = leaf.Children[0];
+
+        leaf.Name.ShouldBe("level-0");
+    }
+
+    [Test]
     public async Task SaveChangesAsync_QuotesDictionaryKeysThatAreNotSurrealQlIdentifiers()
     {
         var client = Substitute.For<ISurrealDbClient>();
@@ -175,6 +231,41 @@ public class DocumentSessionWriteLiteralTests
     {
         public string Id { get; set; } = "";
         public Dictionary<string, JsonElement> Fields { get; set; } = [];
+    }
+
+    private sealed class DeepWriteDocument
+    {
+        public string Id { get; set; } = "";
+        public DeepWriteContent Content { get; set; } = new();
+    }
+
+    private sealed class DeepWriteContent
+    {
+        public string Name { get; set; } = "";
+        public List<DeepWriteContent> Children { get; set; } = [];
+    }
+
+    private static DeepWriteContent CreateNestedContent(int level)
+    {
+        var content = new DeepWriteContent { Name = $"level-{level}" };
+        if (level > 0)
+            content.Children.Add(CreateNestedContent(level - 1));
+
+        return content;
+    }
+
+    private static bool HasExpectedDeepValueParameter(
+        IReadOnlyDictionary<string, object?>? parameters)
+    {
+        if (parameters is null
+            || !parameters.TryGetValue("__sable_value_0", out var value)
+            || value is not JsonElement element
+            || element.ValueKind != JsonValueKind.Object)
+        {
+            return false;
+        }
+
+        return element.GetProperty("name").GetString() == "level-12";
     }
 
     private static JsonElement Json(string json)
