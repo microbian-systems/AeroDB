@@ -136,7 +136,8 @@ public class AeroDBUserStore<TUser, TRole, TKey> :
         _identityOptions = identityOptions?.Value ?? new IdentityOptions { User = { RequireUniqueEmail = true } };
         _describer = describer ?? new IdentityErrorDescriber();
 
-        _userTable = Microsoft.Extensions.DependencyInjection.AeroDBIdentityTableNames.Users;
+        _userTable = _store.Options?.Schema.TableNameFor<TUser>()
+            ?? ToSnakeCase(typeof(TUser).Name);
         _roleTable = Microsoft.Extensions.DependencyInjection.AeroDBIdentityTableNames.Roles;
         _claimTable = Microsoft.Extensions.DependencyInjection.AeroDBIdentityTableNames.UserClaims;
         _loginTable = Microsoft.Extensions.DependencyInjection.AeroDBIdentityTableNames.UserLogins;
@@ -1298,6 +1299,17 @@ public class AeroDBUserStore<TUser, TRole, TKey> :
 
     private static string UserIdToString(TUser user)
         => IdToString(user.Id);
+
+    private static string ToSnakeCase(string name)
+    {
+        if (string.IsNullOrEmpty(name))
+            return name;
+
+        return string.Concat(name.Select((c, i) =>
+            i > 0 && char.IsUpper(c)
+                ? "_" + char.ToLowerInvariant(c)
+                : char.ToLowerInvariant(c).ToString()));
+    }
 
     private static string IdToString(TKey id)
         => Convert.ToString(id, System.Globalization.CultureInfo.InvariantCulture) ?? string.Empty;
