@@ -252,7 +252,7 @@ internal static class CborResultReader
 
         return itemType switch
         {
-            CborDataItemType.Null => reader.ReadNull(),
+            CborDataItemType.Null => ReadNullIntoObject(ref reader),
             CborDataItemType.Boolean => reader.ReadBoolean(),
             CborDataItemType.String => reader.ReadString(),
             CborDataItemType.Signed => reader.ReadInt64(),
@@ -263,6 +263,12 @@ internal static class CborResultReader
             CborDataItemType.Array => ReadCborArrayValuesIntoList(ref reader),
             _ => SkipAndReturnNull(ref reader),
         };
+    }
+
+    private static object? ReadNullIntoObject(ref CborReader reader)
+    {
+        reader.ReadNull();
+        return null;
     }
 
     private static object? ReadTaggedValueIntoObject(ref CborReader reader, ulong semanticTag)

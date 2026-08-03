@@ -87,6 +87,15 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
             ? _concurrencyOverride.Value == ConcurrencyChecks.Enabled
             : Options.UseOptimisticConcurrency;
 
+    internal protected override bool UseOptimisticConcurrencyFor(Type documentType)
+    {
+        if (_concurrencyOverride.HasValue)
+            return _concurrencyOverride.Value == ConcurrencyChecks.Enabled;
+
+        return Options.UseOptimisticConcurrency
+            || Options.Schema.Mappings.GetValueOrDefault(documentType)?.UseOptimisticConcurrency == true;
+    }
+
     /// <summary>
     /// Cached <c>MethodInfo</c> for <see cref="SurrealDbResponse.GetValue{T}"/>,
     /// used by <see cref="CheckConcurrencyAsync"/> to avoid reflection lookup on every call.
@@ -485,7 +494,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         }
 
         // Track original version for optimistic concurrency
-        if (UseOptimisticConcurrency)
+        if (UseOptimisticConcurrencyFor(typeof(T)))
             TrackOriginalVersion(entity);
 
         // Populate identity map when identity tracking is enabled
@@ -523,7 +532,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
     /// </summary>
     internal void TrackVersion<T>(T entity) where T : class
     {
-        if (UseOptimisticConcurrency)
+        if (UseOptimisticConcurrencyFor(typeof(T)))
             TrackOriginalVersion(entity);
     }
 
@@ -909,7 +918,10 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                 // Phase 1: Optimistic concurrency checks (Modified entities only)
                 // Runs before any mutations so we fail-fast if a conflict exists.
                 HashSet<object>? revisionSkipOps = null;
-                if ((UseOptimisticConcurrency || _expectedVersions.Count > 0 || _expectedRevisions.Count > 0) && count > 0)
+                if ((_unitOfWork.Operations.Any(op => UseOptimisticConcurrencyFor(op.EntityType))
+                        || _expectedVersions.Count > 0
+                        || _expectedRevisions.Count > 0)
+                    && count > 0)
                 {
                     revisionSkipOps = new HashSet<object>();
                     foreach (var op in _unitOfWork.Operations)
@@ -917,7 +929,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                         if (op.Type is OperationType.Modified or OperationType.Update)
                         {
                             // Standard optimistic concurrency check
-                            if (UseOptimisticConcurrency)
+                            if (UseOptimisticConcurrencyFor(op.EntityType))
                                 await CheckConcurrencyAsync(op, targetSession, ct).ConfigureAwait(false);
 
                             // Expected version check (UpdateExpectedVersion)
@@ -983,11 +995,12 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
 
                 // Phase 2: Increment version fields on all entities before persisting.
                 // Skip clean dirty-tracked ops (handled in Phase 1.5).
-                if (UseOptimisticConcurrency && count > 0)
+                if (count > 0)
                 {
                     foreach (var op in _unitOfWork.Operations)
                     {
                         if (op.Type is OperationType.Added or OperationType.Modified
+                            && UseOptimisticConcurrencyFor(op.EntityType)
                             && (cleanOps is null || !cleanOps.Contains(op)))
                             IncrementVersion(op.Entity);
                     }
@@ -2004,7 +2017,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         {
             serialized = JsonSerializer.SerializeToElement(
                 value,
-                Options.SerializerOptions ?? DefaultLiteralSerializerOptions);
+                CreateLiteralSerializerOptions());
         }
         catch (NotSupportedException)
         {
@@ -2017,6 +2030,23 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         parameterName = $"__sable_value_{parameters.Count}";
         parameters[parameterName] = serialized;
         return true;
+    }
+
+    private JsonSerializerOptions CreateLiteralSerializerOptions()
+    {
+        var serializerOptions = Options.SerializerOptions is null
+            ? new JsonSerializerOptions(DefaultLiteralSerializerOptions)
+            : new JsonSerializerOptions(Options.SerializerOptions);
+
+        if (Options.EnumStorage == EnumStorage.AsString
+            && !serializerOptions.Converters.Any(converter =>
+                converter is System.Text.Json.Serialization.JsonStringEnumConverter))
+        {
+            serializerOptions.Converters.Add(
+                new System.Text.Json.Serialization.JsonStringEnumConverter());
+        }
+
+        return serializerOptions;
     }
 
     private static bool IsSimpleLiteralValue(object value) => value is

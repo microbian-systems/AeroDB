@@ -199,6 +199,13 @@ public abstract class InternalSessionBase : IAsyncDisposable
     internal protected virtual bool UseOptimisticConcurrency => Options.UseOptimisticConcurrency;
 
     /// <summary>
+    /// Returns whether optimistic concurrency is enabled for a document type.
+    /// Derived sessions can honor per-document mappings in addition to the store default.
+    /// </summary>
+    internal protected virtual bool UseOptimisticConcurrencyFor(Type documentType)
+        => UseOptimisticConcurrency;
+
+    /// <summary>
     /// Optional session logger for Marten-compatible diagnostic recording.
     /// When set, all session operations are recorded through this logger.
     /// </summary>
@@ -445,7 +452,7 @@ public abstract class InternalSessionBase : IAsyncDisposable
             }
 
             // Track original version for optimistic concurrency
-            if (result is not null && UseOptimisticConcurrency)
+            if (result is not null && UseOptimisticConcurrencyFor(typeof(T)))
                 TrackOriginalVersion(result);
 
             _logger.LogDebug("Loaded {Type} with id={Id}", typeof(T).Name, identity.Key);
@@ -1291,7 +1298,7 @@ public abstract class InternalSessionBase : IAsyncDisposable
             if (entity is null)
                 continue;
 
-            if (UseOptimisticConcurrency)
+            if (UseOptimisticConcurrencyFor(entity.GetType()))
                 TrackOriginalVersion(entity);
         }
     }

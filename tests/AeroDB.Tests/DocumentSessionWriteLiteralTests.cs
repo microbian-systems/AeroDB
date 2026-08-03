@@ -127,6 +127,7 @@ public class DocumentSessionWriteLiteralTests
 
         loaded.ShouldNotBeNull();
         loaded.Content.Name.ShouldBe("level-12");
+        loaded.Content.State.ShouldBe(DeepWriteState.Active);
         var leaf = loaded.Content;
         while (leaf.Children.Count > 0)
             leaf = leaf.Children[0];
@@ -242,7 +243,14 @@ public class DocumentSessionWriteLiteralTests
     private sealed class DeepWriteContent
     {
         public string Name { get; set; } = "";
+        public DeepWriteState State { get; set; } = DeepWriteState.Active;
         public List<DeepWriteContent> Children { get; set; } = [];
+    }
+
+    private enum DeepWriteState
+    {
+        Unknown,
+        Active
     }
 
     private static DeepWriteContent CreateNestedContent(int level)
@@ -265,7 +273,8 @@ public class DocumentSessionWriteLiteralTests
             return false;
         }
 
-        return element.GetProperty("name").GetString() == "level-12";
+        return element.GetProperty("name").GetString() == "level-12"
+            && element.GetProperty("state").GetString() == nameof(DeepWriteState.Active);
     }
 
     private static JsonElement Json(string json)

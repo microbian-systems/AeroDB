@@ -24,6 +24,45 @@ public class ConcurrencyTests
     /// </summary>
     private static DocumentSession AsDoc(IDocumentSession s) => (DocumentSession)s;
 
+    [Test]
+    public async Task Per_document_concurrency_mapping_tracks_versions_and_rejects_stale_updates()
+    {
+        await using var store = await TestHarness.CreateStoreAsync(options =>
+        {
+            var mapping = options.Schema.For<VersionedPerson>();
+            mapping.UseOptimisticConcurrency = true;
+            mapping.SetSchemaMode(SchemaMode.Flexible);
+        });
+
+        var person = new VersionedPerson { Name = "Mapped concurrency", Age = 20 };
+        await using (var seed = await store.OpenSessionAsync(new SessionOptions()))
+        {
+            seed.Store(person);
+            await seed.SaveChangesAsync();
+        }
+        person.Version.ShouldBe(1);
+
+        await using var first = await store.OpenSessionAsync(new SessionOptions());
+        await using var second = await store.OpenSessionAsync(new SessionOptions());
+        var firstCopy = await first.LoadAsync<VersionedPerson>(person.Id!);
+        var secondCopy = await second.LoadAsync<VersionedPerson>(person.Id!);
+        firstCopy.ShouldNotBeNull();
+        secondCopy.ShouldNotBeNull();
+
+        firstCopy.Name = "First writer";
+        first.Store(firstCopy);
+        await first.SaveChangesAsync();
+        firstCopy.Version.ShouldBe(2);
+
+        secondCopy.Name = "Stale writer";
+        second.Store(secondCopy);
+        var exception = await Should.ThrowAsync<ConcurrencyException>(
+            () => second.SaveChangesAsync());
+
+        exception.ExpectedVersion.ShouldBe(1);
+        exception.ActualVersion.ShouldBe(2);
+    }
+
     /// <summary>
     /// A new <see cref="VersionedPerson"/> starts at Version=0.
     /// On first save it should be incremented to 1 without error,
@@ -64,10 +103,10 @@ public class ConcurrencyTests
         });
         await using var session = AsDoc(await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }));
 
-        // Use RawQuery to create an entity with an explicit Version field.
+        // Use RawQuery to create an entity with an explicit physical version field.
         const string id = "no_conflict_test";
         await session.Session.RawQuery(
-            $"CREATE versioned_person:{id} CONTENT {{ Name: 'NoConflict', Age: 25, Version: 1 }};",
+            $"CREATE versioned_person:{id} CONTENT {{ name: 'NoConflict', age: 25, version: 1 }};",
             null);
 
         // Load via LoadAsync — this auto-tracks the version
@@ -102,7 +141,7 @@ public class ConcurrencyTests
         await using (var seedSession = AsDoc(await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None })))
         {
             await seedSession.Session.RawQuery(
-                $"CREATE versioned_person:{id} CONTENT {{ Name: 'ConflictTest', Age: 10, Version: 1 }};",
+                $"CREATE versioned_person:{id} CONTENT {{ name: 'ConflictTest', age: 10, version: 1 }};",
                 null);
         }
 
@@ -201,7 +240,7 @@ public class ConcurrencyTests
         await using (var seedSession = AsDoc(await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None })))
         {
             await seedSession.Session.RawQuery(
-                $"CREATE versioned_person:{id} CONTENT {{ Name: 'NoConcurrency', Age: 5, Version: 1 }};",
+                $"CREATE versioned_person:{id} CONTENT {{ name: 'NoConcurrency', age: 5, version: 1 }};",
                 null);
         }
 
@@ -239,10 +278,10 @@ public class ConcurrencyTests
         });
         await using var session = AsDoc(await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }));
 
-        // Use RawQuery to create with an explicit version field
+        // Use RawQuery to create with the mapped physical version field.
         const string id = "attr_test";
         await session.Session.RawQuery(
-            $"CREATE attributed_person:{id} CONTENT {{ Name: 'AttrTest', Age: 30, DocumentVersion: 1 }};",
+            $"CREATE attributed_person:{id} CONTENT {{ name: 'AttrTest', age: 30, document_version: 1 }};",
             null);
 
         // Load via LoadAsync — auto-tracks version
