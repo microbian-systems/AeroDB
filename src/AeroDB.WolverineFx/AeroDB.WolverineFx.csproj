@@ -10,11 +10,11 @@
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\AeroDB.Sable\AeroDB.Sable.csproj" />
+        <ProjectReference Include="..\..\surrealdb.net\SurrealDb.Net\SurrealDb.Net.csproj" />
     </ItemGroup>
     <ItemGroup>
     <PackageReference Include="Dahomey.Cbor" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
-    <PackageReference Include="SurrealDb.Net" />
         <PackageReference Include="WolverineFx" />
     </ItemGroup>
 </Project>

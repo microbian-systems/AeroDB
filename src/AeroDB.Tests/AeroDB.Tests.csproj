@@ -7,10 +7,8 @@
     <IsPackable>false</IsPackable>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AeroDB\AeroDB.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="SurrealDb.Embedded.InMemory" VersionOverride="0.10.2" />
+    <ProjectReference Include="..\AeroDB.Sable\AeroDB.Sable.csproj" />
+    <ProjectReference Include="..\..\surrealdb.net\SurrealDb.Embedded.InMemory\SurrealDb.Embedded.InMemory.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="TUnit" VersionOverride="1.39.0" />

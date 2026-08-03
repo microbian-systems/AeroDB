@@ -6,6 +6,6 @@
     <IsPackable>false</IsPackable>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\AeroDB\AeroDB.csproj" />
+    <ProjectReference Include="..\..\src\AeroDB.Sable\AeroDB.Sable.csproj" />
   </ItemGroup>
 </Project>

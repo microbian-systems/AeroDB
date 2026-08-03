@@ -8,12 +8,12 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\AeroDB.Analyzers\AeroDB.Analyzers.csproj" />
+    <ProjectReference Include="..\..\surrealdb.net\SurrealDb.Embedded.InMemory\SurrealDb.Embedded.InMemory.csproj" />
     <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.12.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.12.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Analyzer.Testing" Version="1.1.4" />
     <PackageReference Include="TUnit" Version="1.58.0" />
     <PackageReference Include="Shouldly" Version="4.3.0" />
-    <PackageReference Include="SurrealDb.Embedded.InMemory" Version="0.10.2" />
     <ProjectReference Include="..\..\src\AeroDB.Sable\AeroDB.Sable.csproj" />
   </ItemGroup>
 </Project>

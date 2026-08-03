@@ -8,11 +8,11 @@
 
   <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
-    <PackageReference Include="SurrealDb.Embedded.InMemory" Version="0.10.2" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\AeroDB\AeroDB.csproj" />
+    <ProjectReference Include="..\..\src\AeroDB.Sable\AeroDB.Sable.csproj" />
+    <ProjectReference Include="..\..\surrealdb.net\SurrealDb.Embedded.InMemory\SurrealDb.Embedded.InMemory.csproj" />
     <ProjectReference Include="..\AeroDB.Samples.Shared\AeroDB.Samples.Shared.csproj" />
   </ItemGroup>
 

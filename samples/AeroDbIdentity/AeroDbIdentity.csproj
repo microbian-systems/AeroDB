@@ -21,12 +21,12 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="10.0.2" />
     <PackageReference Include="NuGet.Packaging" Version="7.6.0" />
     <PackageReference Include="NuGet.Protocol" Version="7.6.0" />
-    <PackageReference Include="SurrealDb.Embedded.InMemory" Version="0.10.2" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\AeroDB.Sable\AeroDB.Sable.csproj" />
     <ProjectReference Include="..\..\src\AeroDB.AspNetIdentity\AeroDB.AspNetIdentity.csproj" />
+    <ProjectReference Include="..\..\surrealdb.net\SurrealDb.Embedded.InMemory\SurrealDb.Embedded.InMemory.csproj" />
   </ItemGroup>
 
 </Project>

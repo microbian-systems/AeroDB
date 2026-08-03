@@ -16,7 +16,7 @@ var store = Documents.For(o =>
     o.Database = "cli";
     o.Schema.For<User>().Identity(x => x.Id);
     o.Schema.For<Target>().Identity(x => x.Id);
-    o.Schema.For<Target>().SoftDeleted = true;
+    o.Schema.For<Target>().SoftDeleted();
 
     // Register all event store projections ahead of time
     o.Projections.Add(new TripProjectionWithCustomName(), ProjectionLifecycle.Async);
