@@ -1,18 +1,18 @@
-![AeroDB](assets/aero-logo-sml.png)
+![Sable](assets/sable-icons/sable-logo-512x512.png)
 
-# AeroDB — SurrealDB Document Store for .NET
+# Sable — SurrealDB Document Store for .NET
 
 > **⚠️⚠️⚠️ ALPHA** — This library is in active development. APIs may change without notice. Not recommended for production use. ⚠️⚠️⚠️
 >
-> **Compatible with SurrealDB 3.x and higher only.** Not compatible with SurrealDB 2.x.
+> **Compatible with SurrealDB 3.2+ and higher only.** Not compatible with SurrealDB 2.x.
 
 A .NET document store for SurrealDB with a Marten-compatible fluent API — idiomatic .NET sessions, schema management, indexing, and LINQ querying over SurrealDB's multi-model engine.
 
 ## Goal
 
-AeroDB brings a proven .NET document-store pattern — fluent sessions, LINQ querying, schema-first indexing — to **SurrealDB's true multi-model engine**. While MartenDB and Polecat layer document-store access on top of PostgreSQL and MSSQL (relational databases at their core), AeroDB unlocks SurrealDB's native document, graph, and time-series models in a single database. Graph traversals over relations, temporal aggregations, full-text and vector search, live queries, and geospatial operations all happen natively — no translation layers, no polyglot persistence. For AI workloads, SurrealDB's vector indexing (HNSW, DiskANN) and `ml::` inference functions make AeroDB a natural fit for semantic search, RAG pipelines, and embedding-powered .NET applications.
+Sable brings a proven .NET document-store pattern — fluent sessions, LINQ querying, schema-first indexing — to **SurrealDB's true multi-model engine**. While MartenDB and Polecat layer document-store access on top of PostgreSQL and MSSQL (relational databases at their core), Sable unlocks SurrealDB's native document, graph, and time-series models in a single database. Graph traversals over relations, temporal aggregations, full-text and vector search, live queries, and geospatial operations all happen natively — no translation layers, no polyglot persistence. For AI workloads, SurrealDB's vector indexing (HNSW, DiskANN) and `ml::` inference functions make Sable a natural fit for semantic search, RAG pipelines, and embedding-powered .NET applications.
 
-If you've used Marten with PostgreSQL, AeroDB should feel like home — but the database underneath is built for a multi-model world.
+If you've used Marten with PostgreSQL, Sable should feel like home — but the database underneath is built for a multi-model world.
 
 ---
 
@@ -79,7 +79,7 @@ opts.Schema.For<T>()
     .Schema("analytics_db");                                   // route to a SurrealDB database
 ```
 
-> **Schema vs Database**: AeroDB's `.Schema("name")` is named for Marten API parity, where it maps to a PostgreSQL schema. In SurrealDB, the hierarchy is **Namespace → Database → Table** (no RDBMS schemas). Under the hood, `.Schema("name")` switches to a different SurrealDB **database** within the same namespace via `USE NS x DB name`. This lets you logically partition tables (e.g., separate `sales` and `analytics` databases in a single store).
+> **Schema vs Database**: Sable's `.Schema("name")` is named for Marten API parity, where it maps to a PostgreSQL schema. In SurrealDB, the hierarchy is **Namespace → Database → Table** (no RDBMS schemas). Under the hood, `.Schema("name")` switches to a different SurrealDB **database** within the same namespace via `USE NS x DB name`. This lets you logically partition tables (e.g., separate `sales` and `analytics` databases in a single store).
 
 ### LINQ Querying
 
@@ -108,7 +108,7 @@ var aggregate = await events.AggregateStreamAsync<Order>(orderId);
 
 ### Live Queries
 
-Subscribe to real-time changes on any SurrealDB table. AeroDB wraps SurrealDB's `LIVE SELECT` capabilities into a push-based `IObservable<T>` interface — ideal for reactive UIs, dashboards, and cache invalidation.
+Subscribe to real-time changes on any SurrealDB table. Sable wraps SurrealDB's `LIVE SELECT` capabilities into a push-based `IObservable<T>` interface — ideal for reactive UIs, dashboards, and cache invalidation.
 
 ```csharp
 var live = await session.LiveQuery<User>()
@@ -226,17 +226,17 @@ Roslyn incremental generators for compile-time metadata (table names, record IDs
 
 ### EF Core Bridge
 
-Optional `AeroDB.EntityFrameworkCore` package coordinates transactions between AeroDB sessions and EF Core `DbContext` under a shared SurrealDB transaction. Use for hybrid workloads where part of your data flows through the document API and part through EF Core.
+Optional `Sable.EntityFrameworkCore` package coordinates transactions between Sable sessions and EF Core `DbContext` under a shared SurrealDB transaction. Use for hybrid workloads where part of your data flows through the document API and part through EF Core.
 
 ### SurrealML Integration
 
-Experimental `AeroDB.ML` package exposes SurrealDB's `ml::` inference functions through a typed LINQ-like API — run model predictions directly inside your SurrealQL queries.
+Experimental `Sable.ML` package exposes SurrealDB's `ml::` inference functions through a typed LINQ-like API — run model predictions directly inside your SurrealQL queries.
 
 ---
 
 ## Credits
 
-AeroDB was solely and greatly inspired by **Jeremy D. Miller** and the genius developers over at **JasperFx** and their brilliant library **MartenDB** for PostgreSQL, which we have used for years. AeroDB depends on **SurrealDB.net**, another awesome OSS library from the SurrealDB team.
+Sable was solely and greatly inspired by **Jeremy D. Miller** and the genius developers over at **JasperFx** and their brilliant library **MartenDB** for PostgreSQL, which we have used for years. Sable depends on **SurrealDB.net**, another awesome OSS library from the SurrealDB team.
 
 - [MartenDB](https://martendb.io/)
 - [Polecat](https://polecat.jasperfx.net/)
