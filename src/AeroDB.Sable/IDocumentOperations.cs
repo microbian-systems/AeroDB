@@ -1,5 +1,6 @@
 using System;
 using System.Linq.Expressions;
+using SurrealDb.Net.Models;
 
 namespace AeroDB.Sable;
 
@@ -101,6 +102,28 @@ public interface IDocumentOperations
 
     /// <summary>Register an entity with an expected version for optimistic concurrency gating.</summary>
     void UpdateExpectedVersion<T>(T entity, long expectedVersion) where T : class;
+
+    /// <summary>
+    /// Queue a mutating optimistic-concurrency fence for an exact typed record.
+    /// The record's version is incremented only when it equals
+    /// <paramref name="expectedVersion"/>.
+    /// </summary>
+    /// <remarks>
+    /// ABA safety requires identities that are never reused and versions that
+    /// increase monotonically and are never reset. A delete/recreate cycle or a
+    /// version reset can allow an old expected version to match a new generation.
+    /// </remarks>
+    IDocumentVersionFence FenceExpectedVersion<T>(RecordId id, long expectedVersion) where T : class;
+
+    /// <summary>
+    /// Queue a mutating optimistic-concurrency fence for a document with a string identity.
+    /// </summary>
+    IDocumentVersionFence FenceExpectedVersion<T>(string id, long expectedVersion) where T : class;
+
+    /// <summary>
+    /// Queue a mutating optimistic-concurrency fence for a document with a long identity.
+    /// </summary>
+    IDocumentVersionFence FenceExpectedVersion<T>(long id, long expectedVersion) where T : class;
 
     /// <summary>Register an entity with an expected revision for gated updates.</summary>
     void UpdateRevision<T>(T entity, int revision) where T : class;

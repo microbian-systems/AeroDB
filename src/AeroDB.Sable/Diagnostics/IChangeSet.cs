@@ -24,6 +24,10 @@ public interface IChangeSet
     /// <summary>Documents that were deleted in this commit.</summary>
     IReadOnlyList<object> Deleted { get; }
 
+    /// <summary>Document version fences included in this commit.</summary>
+    IReadOnlyList<IDocumentVersionFence> VersionFences
+        => Array.Empty<IDocumentVersionFence>();
+
     /// <summary>Get appended events grouped by stream ID.</summary>
     IReadOnlyList<(string StreamId, IReadOnlyList<object> Events)> GetStreams();
 
@@ -41,7 +45,8 @@ internal sealed class ChangeSet : IChangeSet
     public IReadOnlyList<object> Updated { get; init; } = Array.Empty<object>();
     public IReadOnlyList<object> Inserted { get; init; } = Array.Empty<object>();
     public IReadOnlyList<object> Deleted { get; init; } = Array.Empty<object>();
-    public bool HasChanges => Operations.Count > 0 || AppendedEvents.Count > 0;
+    public IReadOnlyList<IDocumentVersionFence> VersionFences { get; init; } = Array.Empty<IDocumentVersionFence>();
+    public bool HasChanges => Operations.Count > 0 || AppendedEvents.Count > 0 || VersionFences.Count > 0;
 
     public IReadOnlyList<(string StreamId, IReadOnlyList<object> Events)> GetStreams()
     {
@@ -57,6 +62,7 @@ internal sealed class ChangeSet : IChangeSet
         Updated = this.Updated,
         Inserted = this.Inserted,
         Deleted = this.Deleted,
-        AppendedEvents = this.AppendedEvents
+        AppendedEvents = this.AppendedEvents,
+        VersionFences = this.VersionFences
     };
 }

@@ -230,6 +230,33 @@ session.TryUpdateRevision(entity, revision: 2);
 await session.SaveChangesAsync();
 ```
 
+### Mutating Version Fences
+
+`FenceExpectedVersion` protects an exact record without queuing a second write
+to that record. The database increments the version only when it still equals
+the expected value, and `CommittedVersion` remains unavailable until the
+containing transaction commits:
+
+```csharp
+var fence = session.FenceExpectedVersion<Product>(productId, expectedVersion: 3);
+await session.SaveChangesAsync();
+
+// The conditional increment committed successfully.
+long committedVersion = fence.CommittedVersion!.Value; // 4
+```
+
+This is an optimistic version token, not a record-generation identifier. Its
+ABA guarantee requires two domain invariants:
+
+- A physical record identity must never be deleted and reused for a different
+  logical record.
+- The version must increase monotonically for that identity and must never be
+  reset, including during restores, imports, or administrative repairs.
+
+If either invariant is violated, an old expected version can match a newly
+created record generation. Use a non-reused identity or a separate immutable
+generation token when delete-and-recreate semantics are required.
+
 ## Batch Operations
 
 Grouping multiple operations in a single `SaveChangesAsync()` reduces round-trips and ensures atomicity.
@@ -295,6 +322,12 @@ SurrealDB does not support transactions that span multiple databases. AeroDB val
 // 💥 InvalidOperationException: "Cross-database transactions are not supported."
 // This fails if products and orders reside in different SurrealDB databases.
 ```
+
+An explicit transaction created by `BeginTransactionAsync` is scoped to the
+session's default database. AeroDB rejects a fence or document write mapped by
+`.Schema(...)` to a different database before executing it. Use an automatic
+single-database `SaveChangesAsync` transaction for that mapped type, or open a
+store/session whose default database is the intended transaction database.
 
 ### Two-Phase Commit (2PC)
 
