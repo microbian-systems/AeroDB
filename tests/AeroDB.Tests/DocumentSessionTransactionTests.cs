@@ -1,27 +1,10 @@
 using AeroDB.Sable;
-using SurrealDb.Net.Exceptions.Rpc;
 using TUnit.Core;
 
 namespace AeroDB.Tests;
 
 public class DocumentSessionTransactionTests
 {
-    [Test]
-    public async Task SaveChanges_surfaces_typed_transaction_conflict_unwrapped()
-    {
-        var conflict = new SurrealDbTransactionConflictException("retryable conflict");
-        await using var store = await TestHarness.CreateStoreAsync(options =>
-            options.Listeners.Add(new TypedConflictListener(conflict)));
-        await using var session = await store.LightweightSessionAsync();
-        session.Store(new Person { Name = "conflict" });
-
-        var thrown = await Should.ThrowAsync<SurrealDbTransactionConflictException>(
-            () => session.SaveChangesAsync());
-
-        thrown.ShouldBeSameAs(conflict);
-        thrown.IsRetryable.ShouldBeTrue();
-    }
-
     [Test]
     public async Task SaveChanges_CommitsMultipleEntitiesAtomically()
     {
@@ -294,15 +277,4 @@ internal sealed class CountingCommitListener : DocumentSessionListenerBase
         AfterCommitCalls++;
         return Task.CompletedTask;
     }
-}
-
-internal sealed class TypedConflictListener : DocumentSessionListenerBase
-{
-    private readonly SurrealDbTransactionConflictException _exception;
-
-    public TypedConflictListener(SurrealDbTransactionConflictException exception)
-        => _exception = exception;
-
-    public override Task BeforeCommitAsync(IDocumentSession session, CancellationToken ct)
-        => throw _exception;
 }

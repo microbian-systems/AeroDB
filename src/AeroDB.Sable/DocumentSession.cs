@@ -8,7 +8,6 @@ using AeroDB.Sable.Metadata;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using SurrealDb.Net;
-using SurrealDb.Net.Exceptions.Rpc;
 using SurrealDb.Net.Models;
 using SurrealDb.Net.Models.Response;
 
@@ -1687,8 +1686,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
             return resultCount;
         }
         catch (Exception ex) when (ex is not ConcurrencyException
-                                   && ex is not SableEncryptionException
-                                   && ex is not SurrealDbTransactionConflictException)
+                                   && ex is not SableEncryptionException)
         {
             ResolvedLogger.LogError(ex, "SaveChangesAsync failed");
             throw new InvalidOperationException("Failed to save changes.", ex);
@@ -1697,12 +1695,6 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         {
             // Let concurrency exceptions bubble up unwrapped so callers
             // can catch them directly.
-            throw;
-        }
-        catch (SurrealDbTransactionConflictException)
-        {
-            // Preserve the driver's typed retry signal. Callers must begin a new
-            // transaction/session for the retry; do not bury it in Sable's wrapper.
             throw;
         }
         finally

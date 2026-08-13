@@ -1,5 +1,4 @@
 using AeroDB.Sable;
-using SurrealDb.Net.Exceptions.Rpc;
 using SurrealDb.Net.Models;
 using TUnit.Core;
 
@@ -454,8 +453,12 @@ public sealed class DocumentVersionFenceTests
         outcomes.Count(exception => exception is null).ShouldBe(1);
         var failures = outcomes.Where(exception => exception is not null).ToArray();
         failures.Length.ShouldBe(1);
-        var failure = failures[0];
-        (failure is ConcurrencyException or SurrealDbTransactionConflictException).ShouldBeTrue();
+        var failure = failures[0]!;
+        (failure is ConcurrencyException or InvalidOperationException).ShouldBeTrue();
+        if (failure is InvalidOperationException wrapped)
+        {
+            wrapped.InnerException.ShouldNotBeNull();
+        }
         new[] { firstFence, secondFence }
             .Count(fence => fence.Status == VersionFenceStatus.Committed)
             .ShouldBe(1);

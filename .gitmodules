@@ -1,6 +1,7 @@
 [submodule "surrealdb.net"]
 	path = surrealdb.net
 	url = https://github.com/microbian-systems/surrealdb.net.git
+	branch = bugfix-264-embedded-transaction-uuid-order
 [submodule "marten"]
 	path = marten
 	url = git@github.com:JasperFx/marten.git
