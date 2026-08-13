@@ -1,4 +1,5 @@
 using AeroDB.Sable;
+using SurrealDb.Net.Exceptions.Rpc;
 using SurrealDb.Net.Models;
 using TUnit.Core;
 
@@ -353,6 +354,115 @@ public sealed class DocumentVersionFenceTests
     }
 
     [Test]
+    public async Task Explicit_transaction_rejects_fence_mapped_to_another_database_without_touching_same_id()
+    {
+        const string mappedDatabase = "fence_explicit_mapped";
+        const string id = "same-id-fence";
+        await using var store = await TestHarness.CreateStoreAsync(options =>
+        {
+            options.Schema.For<VersionedPerson>()
+                .Schema(mappedDatabase)
+                .SetSchemaMode(SchemaMode.Flexible);
+            options.Schema.AutoCreateDatabases = true;
+        });
+        var recordId = RecordId.From("versioned_person", id);
+        await SeedVersionInDatabaseAsync<VersionedPerson>(store, null, recordId, 40, "default");
+        await SeedVersionInDatabaseAsync<VersionedPerson>(store, mappedDatabase, recordId, 7, "mapped");
+
+        await using var session = await store.LightweightSessionAsync();
+        await using var transaction = await session.BeginTransactionAsync();
+        var fence = session.FenceExpectedVersion<VersionedPerson>(recordId, 7);
+
+        var exception = await Should.ThrowAsync<InvalidOperationException>(
+            () => session.SaveChangesAsync());
+
+        exception.Message.ShouldContain("explicit transaction is scoped to database");
+        exception.Message.ShouldContain(mappedDatabase);
+        fence.Status.ShouldBe(VersionFenceStatus.Queued);
+
+        await transaction.RollbackAsync();
+        fence.Status.ShouldBe(VersionFenceStatus.RolledBack);
+        (await ReadVersionInDatabaseAsync(store, null, recordId)).ShouldBe(40);
+        (await ReadVersionInDatabaseAsync(store, mappedDatabase, recordId)).ShouldBe(7);
+    }
+
+    [Test]
+    public async Task Explicit_transaction_rejects_write_mapped_to_another_database_without_touching_same_id()
+    {
+        const string mappedDatabase = "write_explicit_mapped";
+        const string id = "same-id-write";
+        await using var store = await TestHarness.CreateStoreAsync(options =>
+        {
+            options.Schema.For<VersionedPerson>()
+                .Schema(mappedDatabase)
+                .SetSchemaMode(SchemaMode.Flexible);
+            options.Schema.AutoCreateDatabases = true;
+        });
+        var recordId = RecordId.From("versioned_person", id);
+        await SeedVersionInDatabaseAsync<VersionedPerson>(store, null, recordId, 20, "default");
+        await SeedVersionInDatabaseAsync<VersionedPerson>(store, mappedDatabase, recordId, 5, "mapped");
+
+        await using var session = await store.LightweightSessionAsync();
+        await using var transaction = await session.BeginTransactionAsync();
+        session.Update(new VersionedPerson
+        {
+            Id = new RecordIdOf<string>("versioned_person", id),
+            Name = "must-not-be-written",
+            Version = 5
+        });
+
+        var exception = await Should.ThrowAsync<InvalidOperationException>(
+            () => session.SaveChangesAsync());
+
+        exception.Message.ShouldContain("explicit transaction is scoped to database");
+        exception.Message.ShouldContain(mappedDatabase);
+
+        await transaction.RollbackAsync();
+        (await ReadNameInDatabaseAsync(store, null, recordId)).ShouldBe("default");
+        (await ReadNameInDatabaseAsync(store, mappedDatabase, recordId)).ShouldBe("mapped");
+    }
+
+    [Test]
+    public async Task Two_sessions_racing_the_same_fence_allow_exactly_one_commit()
+    {
+        await using var store = await TestHarness.CreateStoreAsync(options =>
+            options.Schema.For<VersionedPerson>().SetSchemaMode(SchemaMode.Flexible));
+        var recordId = RecordId.From("versioned_person", "two-session-race");
+        await SeedVersionAsync<VersionedPerson>(store, recordId, 1);
+
+        await using var firstSession = await store.LightweightSessionAsync();
+        await using var secondSession = await store.LightweightSessionAsync();
+        var firstFence = firstSession.FenceExpectedVersion<VersionedPerson>(recordId, 1);
+        var secondFence = secondSession.FenceExpectedVersion<VersionedPerson>(recordId, 1);
+
+        var startGate = new TaskCompletionSource<bool>(
+            TaskCreationOptions.RunContinuationsAsynchronously);
+        var firstAttempt = CaptureFailureAsync(async () =>
+        {
+            await startGate.Task;
+            await firstSession.SaveChangesAsync();
+        });
+        var secondAttempt = CaptureFailureAsync(async () =>
+        {
+            await startGate.Task;
+            await secondSession.SaveChangesAsync();
+        });
+        startGate.SetResult(true);
+
+        var outcomes = await Task.WhenAll(firstAttempt, secondAttempt);
+
+        outcomes.Count(exception => exception is null).ShouldBe(1);
+        var failures = outcomes.Where(exception => exception is not null).ToArray();
+        failures.Length.ShouldBe(1);
+        var failure = failures[0];
+        (failure is ConcurrencyException or SurrealDbTransactionConflictException).ShouldBeTrue();
+        new[] { firstFence, secondFence }
+            .Count(fence => fence.Status == VersionFenceStatus.Committed)
+            .ShouldBe(1);
+        (await ReadVersionAsync(store, recordId)).ShouldBe(2);
+    }
+
+    [Test]
     public async Task Fences_participate_in_cross_database_validation()
     {
         await using var store = await TestHarness.CreateStoreAsync(options =>
@@ -396,16 +506,36 @@ public sealed class DocumentVersionFenceTests
         long version,
         string? tenantId = null)
         where T : class
+        => await SeedVersionInDatabaseAsync<T>(
+            store,
+            null,
+            recordId,
+            version,
+            "seed",
+            tenantId);
+
+    private static async Task SeedVersionInDatabaseAsync<T>(
+        IDocumentStore store,
+        string? database,
+        RecordId recordId,
+        long version,
+        string name,
+        string? tenantId = null)
+        where T : class
     {
         await using var session = (DocumentSession)await store.LightweightSessionAsync();
+        var targetSession = database is null
+            ? session.Session
+            : await session.GetSessionForSchemaAsync(database);
         var parameters = new Dictionary<string, object?>
         {
             ["record"] = recordId,
             ["version"] = version,
-            ["tenant"] = tenantId
+            ["tenant"] = tenantId,
+            ["name"] = name
         };
-        var response = await session.Session.RawQuery(
-            "CREATE $record CONTENT { name: 'seed', version: $version, tenant_id: $tenant };",
+        var response = await targetSession.RawQuery(
+            "CREATE $record CONTENT { name: $name, version: $version, tenant_id: $tenant };",
             parameters);
         response.EnsureAllOks();
     }
@@ -413,13 +543,38 @@ public sealed class DocumentVersionFenceTests
     private static async Task<long> ReadVersionAsync(
         IDocumentStore store,
         RecordId recordId)
+        => await ReadVersionInDatabaseAsync(store, null, recordId);
+
+    private static async Task<long> ReadVersionInDatabaseAsync(
+        IDocumentStore store,
+        string? database,
+        RecordId recordId)
     {
         await using var session = (DocumentSession)await store.LightweightSessionAsync();
-        var response = await session.Session.RawQuery(
+        var targetSession = database is null
+            ? session.Session
+            : await session.GetSessionForSchemaAsync(database);
+        var response = await targetSession.RawQuery(
             "SELECT VALUE version FROM $record;",
             new Dictionary<string, object?> { ["record"] = recordId });
         response.EnsureAllOks();
         return (response.GetValue<List<long>>(0) ?? []).ShouldHaveSingleItem();
+    }
+
+    private static async Task<string> ReadNameInDatabaseAsync(
+        IDocumentStore store,
+        string? database,
+        RecordId recordId)
+    {
+        await using var session = (DocumentSession)await store.LightweightSessionAsync();
+        var targetSession = database is null
+            ? session.Session
+            : await session.GetSessionForSchemaAsync(database);
+        var response = await targetSession.RawQuery(
+            "SELECT VALUE name FROM $record;",
+            new Dictionary<string, object?> { ["record"] = recordId });
+        response.EnsureAllOks();
+        return (response.GetValue<List<string>>(0) ?? []).ShouldHaveSingleItem();
     }
 
     private static async Task<string> ReadStringVersionAsync(
@@ -439,6 +594,19 @@ public sealed class DocumentVersionFenceTests
             index > 0 && char.IsUpper(character)
                 ? "_" + char.ToLowerInvariant(character)
                 : char.ToLowerInvariant(character).ToString()));
+
+    private static async Task<Exception?> CaptureFailureAsync(Func<Task> action)
+    {
+        try
+        {
+            await action();
+            return null;
+        }
+        catch (Exception exception)
+        {
+            return exception;
+        }
+    }
 
     private sealed class CapturingListener : IDocumentSessionListener
     {

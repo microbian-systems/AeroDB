@@ -885,6 +885,11 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         // Resolve the target session for this database (null = default database)
         var targetSchemaName = databaseTargets.Count > 0 ? databaseTargets[0] : null;
 
+        // BeginTransaction[Async] is created from the session's default database.
+        // Never replace a schema-routed session with that transaction: doing so
+        // would execute the unit of work against the wrong physical database.
+        ValidateExplicitTransactionDatabaseTarget(targetSchemaName);
+
         // Unrelation validation: RecordId table names embed their own database routing,
         // so cross-DB unrelation is verified at the SurrealDB level. We do not
         // resolve RecordId tables to schemas here to avoid meta-recursion.
@@ -2610,14 +2615,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
             return;
 
         var schemaName = ResolveGraphSchemaName(_transactionRelations);
-        if (_explicitTransaction is not null
-            && schemaName is not null
-            && !string.Equals(schemaName, Options.Database, StringComparison.Ordinal))
-        {
-            throw new InvalidOperationException(
-                $"An explicit transaction is scoped to database '{Options.Database ?? "test"}', " +
-                $"but pending graph operations target mapped database '{schemaName}'.");
-        }
+        ValidateExplicitTransactionDatabaseTarget(schemaName);
 
         var targetSession = _explicitTransaction
             ?? await GetWriteSessionForSchemaAsync(schemaName, ct).ConfigureAwait(false);
@@ -2642,15 +2640,24 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         if (_explicitTransaction is null)
             return await GetSessionForSchemaAsync(schemaName, ct).ConfigureAwait(false);
 
-        if (schemaName is not null
-            && !string.Equals(schemaName, Options.Database, StringComparison.Ordinal))
-        {
-            throw new InvalidOperationException(
-                $"An explicit transaction is scoped to database '{Options.Database ?? "test"}', " +
-                $"but this operation targets mapped database '{schemaName}'.");
-        }
+        ValidateExplicitTransactionDatabaseTarget(schemaName);
 
         return _explicitTransaction;
+    }
+
+    private void ValidateExplicitTransactionDatabaseTarget(string? schemaName)
+    {
+        if (_explicitTransaction is null)
+            return;
+
+        var transactionDatabase = Options.Database ?? "test";
+        var targetDatabase = schemaName ?? transactionDatabase;
+        if (string.Equals(targetDatabase, transactionDatabase, StringComparison.Ordinal))
+            return;
+
+        throw new InvalidOperationException(
+            $"An explicit transaction is scoped to database '{transactionDatabase}', " +
+            $"but this operation targets mapped database '{targetDatabase}'.");
     }
 
     private string? ResolveGraphSchemaName(IReadOnlyCollection<QueuedRelation> relations)

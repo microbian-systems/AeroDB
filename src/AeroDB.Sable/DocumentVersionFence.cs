@@ -27,6 +27,10 @@ public enum VersionFenceStatus
 /// A conditional, mutating optimistic-concurrency fence for a single document.
 /// The committed version is deliberately unavailable until the containing
 /// transaction has committed successfully.
+/// Correct ABA protection requires the record identity to remain stable and
+/// unique for its lifetime, and its version to increase monotonically without
+/// reset. Deleting and recreating an identity or resetting its version can make
+/// an old expected version valid for a different record generation.
 /// </summary>
 public interface IDocumentVersionFence
 {

@@ -108,6 +108,11 @@ public interface IDocumentOperations
     /// The record's version is incremented only when it equals
     /// <paramref name="expectedVersion"/>.
     /// </summary>
+    /// <remarks>
+    /// ABA safety requires identities that are never reused and versions that
+    /// increase monotonically and are never reset. A delete/recreate cycle or a
+    /// version reset can allow an old expected version to match a new generation.
+    /// </remarks>
     IDocumentVersionFence FenceExpectedVersion<T>(RecordId id, long expectedVersion) where T : class;
 
     /// <summary>
