@@ -140,7 +140,7 @@ namespace AeroDB.Sable;
                 if (StripQuote(node.Arguments[1]) is LambdaExpression ascLambda)
                 {
                     if (ascLambda.Body is MemberExpression ascMember)
-                        _orderBy.Add($"{MemberPath(ascMember)} ASC");
+                        _orderBy.Add($"{OrderByMemberPath(ascMember)} ASC");
                     else if (ascLambda.Body is MethodCallExpression ascMethod)
                         _orderBy.Add($"{TranslateMethodInternal(ascMethod, _cmdBuilder)} ASC");
                 }
@@ -152,7 +152,7 @@ namespace AeroDB.Sable;
                 if (StripQuote(node.Arguments[1]) is LambdaExpression descLambda)
                 {
                     if (descLambda.Body is MemberExpression descMember)
-                        _orderBy.Add($"{MemberPath(descMember)} DESC");
+                        _orderBy.Add($"{OrderByMemberPath(descMember)} DESC");
                     else if (descLambda.Body is MethodCallExpression descMethod)
                         _orderBy.Add($"{TranslateMethodInternal(descMethod, _cmdBuilder)} DESC");
                 }
@@ -655,6 +655,29 @@ namespace AeroDB.Sable;
             return $"{innerPath}.{FieldName(m.Member.DeclaringType, m.Member.Name)}";
         }
         return FieldName(m.Member.DeclaringType, m.Member.Name);
+    }
+
+    private string OrderByMemberPath(MemberExpression member)
+    {
+        if (member.Expression is ParameterExpression parameter
+            && IsIdentityMember(parameter, member.Member.Name))
+        {
+            // ORDER BY accepts a record idiom, but not a prefix cast or
+            // function expression. Ordering on the complete native record ID
+            // retains the type-aware key ordering for scalar POCO identities.
+            return "id";
+        }
+
+        return MemberPath(member);
+    }
+
+    private bool IsIdentityMember(ParameterExpression parameter, string propertyName)
+    {
+        var identityProperty = _schema?.Mappings.TryGetValue(parameter.Type, out var mapping) == true
+            ? mapping.IdentityProperty ?? "Id"
+            : "Id";
+
+        return identityProperty == propertyName;
     }
 
     private bool TryRelationshipPath(MemberExpression member, out string path)

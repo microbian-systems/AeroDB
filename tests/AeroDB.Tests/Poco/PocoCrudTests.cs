@@ -61,6 +61,72 @@ public class PocoNullableSchemafull
 public class PocoCrudTests
 {
     [Test]
+    public async Task PocoInt_identity_ordering_and_keyset_comparison_execute_against_embedded_surrealdb()
+    {
+        await using var store = await TestHarness.CreateStoreAsync(opts =>
+        {
+            opts.Schema.For<PocoInt>().Identity(candidate => candidate.Id).SetSchemaMode(SchemaMode.Flexible);
+        });
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
+
+        session.Store(new PocoInt { Id = 20, Name = "Twenty", Score = 20 });
+        session.Store(new PocoInt { Id = 10, Name = "Ten", Score = 10 });
+        await session.SaveChangesAsync();
+
+        var first = await session.Query<PocoInt>()
+            .OrderBy(candidate => candidate.Id)
+            .FirstOrDefaultAsync();
+        first.ShouldNotBeNull();
+        first.Id.ShouldBe(10);
+
+        var afterFirst = await session.Query<PocoInt>()
+            .Where(candidate => candidate.Id > first.Id)
+            .OrderBy(candidate => candidate.Id)
+            .FirstOrDefaultAsync();
+        afterFirst.ShouldNotBeNull();
+        afterFirst.Id.ShouldBe(20);
+    }
+
+    [Test]
+    public async Task Scalar_poco_identity_ordering_preserves_long_string_and_guid_record_key_semantics()
+    {
+        await using var store = await TestHarness.CreateStoreAsync(opts =>
+        {
+            opts.Schema.For<PocoLong>().Identity(candidate => candidate.Id).SetSchemaMode(SchemaMode.Flexible);
+            opts.Schema.For<PocoString>().Identity(candidate => candidate.Id).SetSchemaMode(SchemaMode.Flexible);
+            opts.Schema.For<PocoGuid>().Identity(candidate => candidate.Id).SetSchemaMode(SchemaMode.Flexible);
+        });
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
+
+        session.Store(new PocoLong { Id = 20, Name = "Twenty", Score = 20 });
+        session.Store(new PocoLong { Id = 10, Name = "Ten", Score = 10 });
+        session.Store(new PocoString { Id = "zebra", Name = "Zebra", Score = 2 });
+        session.Store(new PocoString { Id = "ant", Name = "Ant", Score = 1 });
+        var firstGuid = Guid.Parse("00000000-0000-0000-0000-000000000001");
+        var secondGuid = Guid.Parse("00000000-0000-0000-0000-000000000002");
+        session.Store(new PocoGuid { Id = secondGuid, Name = "Second", Score = 2 });
+        session.Store(new PocoGuid { Id = firstGuid, Name = "First", Score = 1 });
+        await session.SaveChangesAsync();
+
+        var firstLong = await session.Query<PocoLong>().OrderBy(candidate => candidate.Id).FirstOrDefaultAsync();
+        firstLong.ShouldNotBeNull();
+        firstLong.Id.ShouldBe(10);
+
+        var firstString = await session.Query<PocoString>().OrderBy(candidate => candidate.Id).FirstOrDefaultAsync();
+        firstString.ShouldNotBeNull();
+        firstString.Id.ShouldBe("ant");
+
+        var orderedGuid = await session.Query<PocoGuid>().OrderBy(candidate => candidate.Id).FirstOrDefaultAsync();
+        orderedGuid.ShouldNotBeNull();
+        orderedGuid.Id.ShouldBe(firstGuid);
+
+        var matchedGuid = await session.Query<PocoGuid>()
+            .FirstOrDefaultAsync(candidate => candidate.Id == secondGuid);
+        matchedGuid.ShouldNotBeNull();
+        matchedGuid.Id.ShouldBe(secondGuid);
+    }
+
+    [Test]
     public async Task PocoConventionalLongIdentity_CanBeQueriedById()
     {
         await using var store = await TestHarness.CreateStoreAsync(opts =>
