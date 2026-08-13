@@ -68,6 +68,10 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
     private IAsyncDisposable? _pendingAutoEventTransactionLease;
     private ISurrealDbSession? _activeSaveSession;
     private readonly List<IChangeSet> _pendingExplicitChangeSets = [];
+    private readonly List<DocumentVersionFence> _queuedVersionFences = [];
+    private readonly List<DocumentVersionFence> _pendingExplicitVersionFences = [];
+    private bool _explicitTransactionFailed;
+    private bool _isSavingChanges;
 
     internal protected override ISurrealDbSession OperationSession =>
         _activeSaveSession ?? _explicitTransaction ?? _pendingAutoEventTransaction ?? Session;
@@ -184,6 +188,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         _explicitTransaction = coordinated.Transaction;
         _explicitTransactionLease = coordinated.Lease;
         _ownsTransaction = true;
+        _explicitTransactionFailed = false;
         return new AeroDBTransaction(_explicitTransaction, this);
     }
 
@@ -208,6 +213,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         _explicitTransaction = coordinated.Transaction;
         _explicitTransactionLease = coordinated.Lease;
         _ownsTransaction = true;
+        _explicitTransactionFailed = false;
         return new AeroDBTransaction(_explicitTransaction, this);
     }
 
@@ -219,6 +225,12 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
     {
         if (_explicitTransaction == null)
             throw new InvalidOperationException("No active transaction to commit.");
+        if (_explicitTransactionFailed)
+        {
+            throw new InvalidOperationException(
+                "The active transaction failed a version fence or save operation and cannot be committed. " +
+                "Roll it back before continuing.");
+        }
 
         var transaction = _explicitTransaction;
         var committed = false;
@@ -227,13 +239,17 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         {
             await FlushPendingGraphOperationsAsync(ct).ConfigureAwait(false);
             await transaction.Commit(ct).ConfigureAwait(false);
+            MarkVersionFencesCommitted(_pendingExplicitVersionFences);
             committedChangeSets = _pendingExplicitChangeSets.ToArray();
             _pendingExplicitChangeSets.Clear();
+            _pendingExplicitVersionFences.Clear();
             committed = true;
         }
         catch
         {
+            MarkVersionFencesFailed(_pendingExplicitVersionFences);
             _pendingExplicitChangeSets.Clear();
+            _pendingExplicitVersionFences.Clear();
             _queuedRelations.Clear();
             _queuedUnrelations.Clear();
             _transactionRelations.Clear();
@@ -256,6 +272,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                 {
                     _explicitTransaction = null;
                     _ownsTransaction = false;
+                    _explicitTransactionFailed = false;
                 }
             }
         }
@@ -300,12 +317,26 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         _appendedEvents.Clear();
         _fetchForWritingResults.Clear();
         _unitOfWork.StreamIds.Clear();
+        var rolledBack = false;
         try
         {
             await transaction.Cancel(CancellationToken.None).ConfigureAwait(false);
+            rolledBack = true;
         }
         finally
         {
+            if (rolledBack)
+            {
+                MarkVersionFencesRolledBack(_queuedVersionFences);
+                MarkVersionFencesRolledBack(_pendingExplicitVersionFences);
+            }
+            else
+            {
+                MarkVersionFencesFailed(_queuedVersionFences);
+                MarkVersionFencesFailed(_pendingExplicitVersionFences);
+            }
+            _queuedVersionFences.Clear();
+            _pendingExplicitVersionFences.Clear();
             try
             {
                 await transaction.DisposeAsync().ConfigureAwait(false);
@@ -320,6 +351,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                 {
                     _explicitTransaction = null;
                     _ownsTransaction = false;
+                    _explicitTransactionFailed = false;
                 }
             }
         }
@@ -772,6 +804,12 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
 
     public void ClearChanges()
     {
+        if (_explicitTransactionFailed)
+        {
+            throw new InvalidOperationException(
+                "The active transaction failed and must be rolled back before pending changes can be cleared.");
+        }
+
         if (_pendingAutoEventTransaction is not null)
             DiscardPendingAutoEventChangesAsync().GetAwaiter().GetResult();
 
@@ -784,6 +822,8 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         _transactionUnrelations.Clear();
         _queuedStorageOperations.Clear();
         QueuedSqlCommands.Clear();
+        MarkVersionFencesRolledBack(_queuedVersionFences);
+        _queuedVersionFences.Clear();
         _expectedVersions.Clear();
         _expectedRevisions.Clear();
         _tryUpdateRevisions.Clear();
@@ -793,6 +833,13 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
 
     public async Task<int> SaveChangesAsync(CancellationToken token = default)
     {
+        if (_explicitTransactionFailed)
+        {
+            throw new InvalidOperationException(
+                "The active transaction failed a version fence or save operation and cannot accept more changes. " +
+                "Roll it back before continuing.");
+        }
+
         var ct = token;
         RequestCount++;
         var count = _unitOfWork.Operations.Count;
@@ -800,6 +847,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
             && _queuedRelations.Count == 0 && _queuedUnrelations.Count == 0
             && _fetchForWritingResults.Count == 0
             && _queuedStorageOperations.Count == 0 && QueuedSqlCommands.Count == 0
+            && _queuedVersionFences.Count == 0
             && _pendingAutoEventTransaction is null) return 0;
 
         ResolvedLogger.LogInformation("SaveChangesAsync: committing {EntityCount} entities and {EventCount} events",
@@ -807,6 +855,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
 
         // Snapshots for IChangeSet in AfterCommitAsync
         var committedOperations = _unitOfWork.Operations.ToArray();
+        var versionFenceSnapshot = _queuedVersionFences.ToArray();
         (string StreamId, object Event)[] appendedEventSnapshot = [];
         int graphOpCount = 0;
 
@@ -814,21 +863,26 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         // SurrealDB cannot span multiple databases in a single transaction,
         // so we reject cross-database batches up front.
         // This check must happen BEFORE the try/catch so the exception is not wrapped.
-        var dbGroups = _unitOfWork.Operations
-            .GroupBy(op => MetadataDispatch.GetSchemaTarget(op.EntityType, Options.Schema).Database)
+        ValidateVersionFenceOperationOverlap(versionFenceSnapshot);
+        ValidateVersionFenceSessionScope(versionFenceSnapshot);
+
+        var databaseTargets = _unitOfWork.Operations
+            .Select(op => MetadataDispatch.GetSchemaTarget(op.EntityType, Options.Schema).Database)
+            .Concat(versionFenceSnapshot.Select(fence => fence.Database))
+            .Distinct(StringComparer.Ordinal)
             .ToList();
 
-        if (dbGroups.Count > 1)
+        if (databaseTargets.Count > 1)
         {
             var dbNames = string.Join(", ",
-                dbGroups.Select(g => $"'{g.Key ?? Options.Database ?? "test"}'"));
+                databaseTargets.Select(database => $"'{database ?? Options.Database ?? "test"}'"));
             throw new InvalidOperationException(
                 $"Cross-database transactions are not supported. " +
                 $"Unit of work spans multiple databases: {dbNames}");
         }
 
         // Resolve the target session for this database (null = default database)
-        var targetSchemaName = dbGroups.Count > 0 ? dbGroups[0].Key : null;
+        var targetSchemaName = databaseTargets.Count > 0 ? databaseTargets[0] : null;
 
         // Unrelation validation: RecordId table names embed their own database routing,
         // so cross-DB unrelation is verified at the SurrealDB level. We do not
@@ -855,6 +909,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
             }
         }
 
+        _isSavingChanges = true;
         try
         {
             var targetSession = await GetWriteSessionForSchemaAsync(targetSchemaName, ct).ConfigureAwait(false);
@@ -903,6 +958,14 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
 
             try
             {
+                if (versionFenceSnapshot.Length > 0
+                    && tx is null
+                    && _explicitTransaction is null)
+                {
+                    throw new InvalidOperationException(
+                        "Document version fences require an active SurrealDB transaction.");
+                }
+
                 // BeforeSaveChangesAsync hooks (store + session level)
                 if (Options.Listeners.Count > 0)
                 {
@@ -913,6 +976,15 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                 {
                     foreach (var listener in SessionListeners)
                         await listener.BeforeSaveChangesAsync(this, ct).ConfigureAwait(false);
+                }
+
+                // Phase 0.5: Apply mutating version fences before any ordinary document
+                // writes. A later failure rolls the increments back with the transaction.
+                if (versionFenceSnapshot.Length > 0)
+                {
+                    ValidateVersionFenceOperationOverlap(versionFenceSnapshot);
+                    ValidateVersionFenceSessionScope(versionFenceSnapshot);
+                    await ApplyVersionFencesAsync(versionFenceSnapshot, targetSession, ct).ConfigureAwait(false);
                 }
 
                 // Phase 1: Optimistic concurrency checks (Modified entities only)
@@ -1502,20 +1574,42 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                 {
                     commitAttempted = true;
                     await tx.Commit(ct).ConfigureAwait(false);
+                    MarkVersionFencesCommitted(versionFenceSnapshot);
                 }
             }
             catch
             {
+                MarkVersionFencesFailed(versionFenceSnapshot);
+                if (_explicitTransaction is not null)
+                {
+                    MarkVersionFencesFailed(_pendingExplicitVersionFences);
+                    _explicitTransactionFailed = true;
+                }
+
                 if (ownsTx && tx is not null && !commitAttempted)
                 {
-                    await tx.Cancel(CancellationToken.None).ConfigureAwait(false);
-                    if (ReferenceEquals(_pendingAutoEventTransaction, tx))
+                    var rolledBack = false;
+                    try
                     {
-                        _appendedEvents.Clear();
-                        _fetchForWritingResults.Clear();
-                        _unitOfWork.StreamIds.Clear();
+                        await tx.Cancel(CancellationToken.None).ConfigureAwait(false);
+                        rolledBack = true;
+                    }
+                    finally
+                    {
+                        if (rolledBack)
+                            MarkVersionFencesRolledBack(versionFenceSnapshot);
+                        if (ReferenceEquals(_pendingAutoEventTransaction, tx))
+                        {
+                            _appendedEvents.Clear();
+                            _fetchForWritingResults.Clear();
+                            _unitOfWork.StreamIds.Clear();
+                        }
+                        if (_explicitTransaction is null)
+                            _queuedVersionFences.Clear();
                     }
                 }
+                if (_explicitTransaction is null)
+                    _queuedVersionFences.Clear();
                 throw;
             }
             finally
@@ -1553,20 +1647,27 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
             }
 
             // AfterCommitAsync hooks (called only after successful commit)
+            if (_explicitTransaction is not null)
+                _pendingExplicitVersionFences.AddRange(versionFenceSnapshot);
+            _queuedVersionFences.Clear();
+
             var committedChanges = new ChangeSet
             {
                 Operations = committedOperations,
                 AppendedEvents = appendedEventSnapshot,
                 Updated = committedOperations.Where(op => op.Type == OperationType.Modified).Select(op => op.Entity).ToArray(),
                 Inserted = committedOperations.Where(op => op.Type == OperationType.Added).Select(op => op.Entity).ToArray(),
-                Deleted = committedOperations.Where(op => op.Type is OperationType.Deleted or OperationType.SoftDeleted).Select(op => op.Entity).ToArray()
+                Deleted = committedOperations.Where(op => op.Type is OperationType.Deleted or OperationType.SoftDeleted).Select(op => op.Entity).ToArray(),
+                VersionFences = versionFenceSnapshot
             };
             if (_explicitTransaction is not null)
                 _pendingExplicitChangeSets.Add(committedChanges);
             else
                 await InvokeAfterCommitListenersAsync(committedChanges, ct).ConfigureAwait(false);
 
-            var resultCount = count > 0 ? count : appendedEventSnapshot.Length + graphOpCount;
+            var resultCount = count + versionFenceSnapshot.Length;
+            if (resultCount == 0)
+                resultCount = appendedEventSnapshot.Length + graphOpCount;
 
             // Clear identity map and snapshots after successful save
             if (IsDirtyTracking)
@@ -1590,6 +1691,10 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
             // Let concurrency exceptions bubble up unwrapped so callers
             // can catch them directly.
             throw;
+        }
+        finally
+        {
+            _isSavingChanges = false;
         }
     }
 
@@ -1713,7 +1818,8 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         var surql = $"SELECT {versionField} FROM {DocumentIdentityResolver.FormatRecordIdLiteral(recordId)};";
         var response = await session.RawQuery(surql, null, ct).ConfigureAwait(false);
 
-        if (response.HasErrors || response.Count == 0)
+        response.EnsureAllOks();
+        if (response.Count == 0)
             return -1;
 
         return ReadVersionFromResponse(response, versionField, fallback: -1);
@@ -1758,12 +1864,9 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         var surql = $"SELECT {versionField} FROM {DocumentIdentityResolver.FormatRecordIdLiteral(recordId)};";
         var response = await session.RawQuery(surql, null, ct).ConfigureAwait(false);
 
-        if (response.HasErrors)
-        {
-            ResolvedLogger.LogWarning("Skipping concurrency check for {Type}/{Id}: RawQuery returned errors",
-                op.EntityType.Name, id);
-            return;
-        }
+        // A database error must never disable optimistic concurrency. Let the
+        // driver surface its typed/generic response exception and fail closed.
+        response.EnsureAllOks();
 
         var dbVersion = ReadVersionFromResponse(response, versionField, fallback: 0);
 
@@ -2864,6 +2967,390 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
     private readonly HashSet<object> _tryUpdateRevisions = new();
 
     /// <inheritdoc />
+    public IDocumentVersionFence FenceExpectedVersion<T>(RecordId id, long expectedVersion)
+        where T : class
+    {
+        ArgumentNullException.ThrowIfNull(id);
+        return FenceExpectedVersionCore<T>(id, expectedVersion);
+    }
+
+    /// <inheritdoc />
+    public IDocumentVersionFence FenceExpectedVersion<T>(string id, long expectedVersion)
+        where T : class
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(id);
+        return FenceExpectedVersionCore<T>(id, expectedVersion);
+    }
+
+    /// <inheritdoc />
+    public IDocumentVersionFence FenceExpectedVersion<T>(long id, long expectedVersion)
+        where T : class
+        => FenceExpectedVersionCore<T>(id, expectedVersion);
+
+    private IDocumentVersionFence FenceExpectedVersionCore<T>(object id, long expectedVersion)
+        where T : class
+    {
+        if (_isSavingChanges)
+        {
+            throw new InvalidOperationException(
+                "Document version fences cannot be queued while SaveChangesAsync is running.");
+        }
+        if (_explicitTransactionFailed)
+        {
+            throw new InvalidOperationException(
+                "The active transaction failed a version fence or save operation and cannot accept more changes. " +
+                "Roll it back before continuing.");
+        }
+        if (expectedVersion < 0 || expectedVersion == long.MaxValue)
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(expectedVersion),
+                expectedVersion,
+                "The expected version must be non-negative and leave room for one increment.");
+        }
+
+        var documentType = typeof(T);
+        var versionPropertyName = MetadataDispatch.GetVersionFieldName(documentType)
+            ?? throw new InvalidOperationException(
+                $"Document type '{documentType.FullName}' does not define a version field.");
+        ValidateVersionFenceProperty(documentType, versionPropertyName);
+
+        var (database, table) = MetadataDispatch.GetSchemaTarget(documentType, Options.Schema);
+        var normalizedId = id is RecordId
+            ? id
+            : DocumentIdentityResolver.NormalizeForDocumentType(documentType, id, Options.Schema);
+        if (!DocumentIdentityResolver.TryCreate(normalizedId, table, out var identity))
+        {
+            throw new ArgumentException(
+                $"The identity for document type '{documentType.FullName}' could not be resolved.",
+                nameof(id));
+        }
+        if (!string.Equals(identity.RecordId.Table, table, StringComparison.Ordinal))
+        {
+            throw new ArgumentException(
+                $"Record table '{identity.RecordId.Table}' does not match mapped table '{table}' " +
+                $"for document type '{documentType.FullName}'.",
+                nameof(id));
+        }
+
+        var tenantField = TryGetTenantMutationField(documentType, out var resolvedTenantField)
+            ? resolvedTenantField
+            : null;
+        var tenantId = tenantField is null ? null : TenantId;
+        var existing = _queuedVersionFences
+            .Concat(_pendingExplicitVersionFences)
+            .FirstOrDefault(fence => fence.Targets(identity.RecordId, database));
+        if (existing is not null)
+        {
+            if (existing.DocumentType != documentType)
+            {
+                throw new InvalidOperationException(
+                    $"Physical record '{DocumentIdentityResolver.FormatRecordIdLiteral(identity.RecordId)}' " +
+                    $"is already fenced through document type '{existing.DocumentType.FullName}' and cannot " +
+                    $"also be fenced through '{documentType.FullName}'.");
+            }
+            if (!string.Equals(existing.TenantId, tenantId, StringComparison.Ordinal))
+            {
+                throw new InvalidOperationException(
+                    $"A version fence for '{DocumentIdentityResolver.FormatRecordIdLiteral(identity.RecordId)}' " +
+                    "is already queued under a different tenant scope.");
+            }
+            if (existing.ExpectedVersion != expectedVersion)
+            {
+                throw new InvalidOperationException(
+                    $"Conflicting expected versions were supplied for " +
+                    $"'{DocumentIdentityResolver.FormatRecordIdLiteral(identity.RecordId)}': " +
+                    $"{existing.ExpectedVersion} and {expectedVersion}.");
+            }
+
+            return existing;
+        }
+
+        var fence = new DocumentVersionFence(
+            documentType,
+            identity.RecordId,
+            expectedVersion,
+            database,
+            identity.Key,
+            MetadataDispatch.GetFieldName(documentType, versionPropertyName, Options.Schema),
+            tenantField,
+            tenantId);
+        AttachTrackedDocument(fence);
+        ValidateVersionFenceOperationOverlap([fence]);
+        _queuedVersionFences.Add(fence);
+        return fence;
+    }
+
+    private static void ValidateVersionFenceProperty(Type documentType, string versionPropertyName)
+    {
+        var property = documentType.GetProperty(
+            versionPropertyName,
+            BindingFlags.Public | BindingFlags.Instance);
+        if (property is null)
+        {
+            throw new InvalidOperationException(
+                $"Version field '{versionPropertyName}' was not found on document type '{documentType.FullName}'.");
+        }
+
+        var propertyType = Nullable.GetUnderlyingType(property.PropertyType) ?? property.PropertyType;
+        if (propertyType != typeof(byte)
+            && propertyType != typeof(sbyte)
+            && propertyType != typeof(short)
+            && propertyType != typeof(ushort)
+            && propertyType != typeof(int)
+            && propertyType != typeof(uint)
+            && propertyType != typeof(long)
+            && propertyType != typeof(ulong))
+        {
+            throw new InvalidOperationException(
+                $"Version field '{documentType.FullName}.{versionPropertyName}' must use an integer CLR type.");
+        }
+    }
+
+    private void ValidateVersionFenceOperationOverlap(
+        IReadOnlyCollection<DocumentVersionFence> fences)
+    {
+        if (fences.Count == 0)
+            return;
+
+        if (_queuedPatches.Count > 0
+            || _queuedStorageOperations.Count > 0
+            || QueuedSqlCommands.Count > 0)
+        {
+            throw new InvalidOperationException(
+                "Document version fences cannot be combined with queued patches, raw SQL commands, " +
+                "or opaque storage operations because record overlap cannot be proven safe.");
+        }
+        if ((_appendedEvents.Count > 0 || _fetchForWritingResults.Count > 0)
+            && Options.Projections.Any(projection => projection.Lifecycle == ProjectionLifecycle.Inline))
+        {
+            throw new InvalidOperationException(
+                "Document version fences cannot be combined with events that run inline projections " +
+                "because projected document overlap cannot be proven safe.");
+        }
+        if (_unitOfWork.Operations.Count == 0)
+            return;
+
+        foreach (var fence in fences)
+        {
+            foreach (var operation in _unitOfWork.Operations)
+            {
+                var (database, table) = MetadataDispatch.GetSchemaTarget(
+                    operation.EntityType,
+                    Options.Schema);
+                if (!string.Equals(database, fence.Database, StringComparison.Ordinal))
+                    continue;
+
+                var recordId = GetRecordId(operation.Entity, table);
+                if (recordId is not null && recordId.Equals(fence.RecordId))
+                {
+                    throw new InvalidOperationException(
+                        $"Document '{DocumentIdentityResolver.FormatRecordIdLiteral(fence.RecordId)}' " +
+                        "cannot be both version-fenced and queued for a document write in the same unit of work.");
+                }
+            }
+        }
+    }
+
+    private void ValidateVersionFenceSessionScope(
+        IReadOnlyCollection<DocumentVersionFence> fences)
+    {
+        foreach (var fence in fences)
+        {
+            if (fence.TenantField is not null
+                && !string.Equals(fence.TenantId, TenantId, StringComparison.Ordinal))
+            {
+                throw new InvalidOperationException(
+                    $"The session tenant changed after the version fence for " +
+                    $"'{DocumentIdentityResolver.FormatRecordIdLiteral(fence.RecordId)}' was queued.");
+            }
+        }
+    }
+
+    private async Task ApplyVersionFencesAsync(
+        IReadOnlyList<DocumentVersionFence> fences,
+        ISurrealDbSession targetSession,
+        CancellationToken ct)
+    {
+        foreach (var fence in fences)
+        {
+            AttachTrackedDocument(fence);
+            var parameters = new Dictionary<string, object?>(StringComparer.Ordinal)
+            {
+                ["__sable_fence_record"] = fence.RecordId,
+                ["__sable_fence_expected"] = fence.ExpectedVersion
+            };
+            var tenantClause = string.Empty;
+            if (fence.TenantField is not null)
+            {
+                parameters["__sable_fence_tenant"] = fence.TenantId;
+                tenantClause = $" AND {fence.TenantField} = $__sable_fence_tenant";
+            }
+
+            var surql =
+                $"UPDATE $__sable_fence_record SET {fence.VersionField} += 1 " +
+                $"WHERE {fence.VersionField} = $__sable_fence_expected{tenantClause} " +
+                $"RETURN VALUE {fence.VersionField};";
+            var response = await ExecuteRawWriteAsync(
+                    targetSession,
+                    surql,
+                    parameters,
+                    ct)
+                .ConfigureAwait(false);
+            response.EnsureAllOks();
+
+            var versions = response.GetValue<List<long>>(0) ?? [];
+            if (versions.Count == 0)
+            {
+                var actualVersion = await ReadVersionFenceCurrentVersionAsync(
+                        fence,
+                        targetSession,
+                        ct)
+                    .ConfigureAwait(false);
+                throw new ConcurrencyException(
+                    fence.DocumentType,
+                    DocumentIdentityResolver.FormatRecordIdLiteral(fence.RecordId),
+                    fence.ExpectedVersion,
+                    actualVersion);
+            }
+            if (versions.Count != 1)
+            {
+                throw new InvalidOperationException(
+                    $"Version fence for '{DocumentIdentityResolver.FormatRecordIdLiteral(fence.RecordId)}' " +
+                    $"returned {versions.Count} rows; exactly one was required.");
+            }
+
+            var expectedIncrementedVersion = checked(fence.ExpectedVersion + 1);
+            if (versions[0] != expectedIncrementedVersion)
+            {
+                throw new InvalidOperationException(
+                    $"Version fence for '{DocumentIdentityResolver.FormatRecordIdLiteral(fence.RecordId)}' " +
+                    $"returned version {versions[0]}, expected {expectedIncrementedVersion}.");
+            }
+
+            fence.MarkApplied(versions[0]);
+        }
+    }
+
+    private async Task<long> ReadVersionFenceCurrentVersionAsync(
+        DocumentVersionFence fence,
+        ISurrealDbSession targetSession,
+        CancellationToken ct)
+    {
+        var parameters = new Dictionary<string, object?>(StringComparer.Ordinal)
+        {
+            ["__sable_fence_record"] = fence.RecordId
+        };
+        var tenantClause = string.Empty;
+        if (fence.TenantField is not null)
+        {
+            parameters["__sable_fence_tenant"] = fence.TenantId;
+            tenantClause = $" WHERE {fence.TenantField} = $__sable_fence_tenant";
+        }
+
+        var response = await ExecuteRawWriteAsync(
+                targetSession,
+                $"SELECT VALUE {fence.VersionField} FROM $__sable_fence_record{tenantClause};",
+                parameters,
+                ct)
+            .ConfigureAwait(false);
+        response.EnsureAllOks();
+        var versions = response.GetValue<List<long>>(0) ?? [];
+        if (versions.Count > 1)
+        {
+            throw new InvalidOperationException(
+                $"Version lookup for '{DocumentIdentityResolver.FormatRecordIdLiteral(fence.RecordId)}' " +
+                $"returned {versions.Count} rows; at most one was expected.");
+        }
+        return versions.Count == 1 ? versions[0] : -1;
+    }
+
+    private void MarkVersionFencesCommitted(
+        IEnumerable<DocumentVersionFence> fences)
+    {
+        foreach (var fence in fences)
+        {
+            fence.MarkCommitted();
+            SynchronizeTrackedDocumentVersion(fence);
+        }
+    }
+
+    private void AttachTrackedDocument(DocumentVersionFence fence)
+    {
+        if (fence.TrackedDocument is not null)
+            return;
+        if (!IdentityMap.TryGetValue(fence.DocumentType, out var typeMap))
+            return;
+        if (typeMap.TryGetValue(fence.IdentityKey, out var document))
+            fence.AttachTrackedDocument(document);
+    }
+
+    private void SynchronizeTrackedDocumentVersion(DocumentVersionFence fence)
+    {
+        var document = fence.TrackedDocument;
+        var committedVersion = fence.CommittedVersion;
+        if (document is null || committedVersion is null)
+            return;
+
+        try
+        {
+            if (MetadataRegistry.TryGet(fence.DocumentType) is ITypeMetadata metadata
+                && metadata.SetVersionAccessor is not null)
+            {
+                metadata.SetVersionAccessor(document, committedVersion.Value);
+            }
+            else
+            {
+                var versionPropertyName = MetadataDispatch.GetVersionFieldName(fence.DocumentType)
+                    ?? throw new InvalidOperationException(
+                        $"Document type '{fence.DocumentType.FullName}' no longer defines a version field.");
+                var property = fence.DocumentType.GetProperty(
+                    versionPropertyName,
+                    BindingFlags.Public | BindingFlags.Instance)
+                    ?? throw new InvalidOperationException(
+                        $"Version field '{fence.DocumentType.FullName}.{versionPropertyName}' was not found.");
+                var targetType = Nullable.GetUnderlyingType(property.PropertyType) ?? property.PropertyType;
+                var convertedVersion = Convert.ChangeType(
+                    committedVersion.Value,
+                    targetType,
+                    CultureInfo.InvariantCulture);
+                property.SetValue(document, convertedVersion);
+            }
+
+            TrackOriginalVersion(document);
+        }
+        catch (Exception exception)
+        {
+            // The storage commit has already succeeded. Never report the transaction as
+            // failed solely because a user-defined setter rejected local synchronization;
+            // evict the stale instance so subsequent loads cannot return it.
+            RemoveOriginalVersion(document);
+            if (IdentityMap.TryGetValue(fence.DocumentType, out var typeMap))
+                typeMap.TryRemove(fence.IdentityKey, out _);
+            ResolvedLogger.LogWarning(
+                exception,
+                "Committed version fence for {DocumentType} ({RecordId}), but the tracked instance " +
+                "could not be synchronized and was evicted",
+                fence.DocumentType.FullName,
+                DocumentIdentityResolver.FormatRecordIdLiteral(fence.RecordId));
+        }
+    }
+
+    private static void MarkVersionFencesFailed(
+        IEnumerable<DocumentVersionFence> fences)
+    {
+        foreach (var fence in fences)
+            fence.MarkFailed();
+    }
+
+    private static void MarkVersionFencesRolledBack(
+        IEnumerable<DocumentVersionFence> fences)
+    {
+        foreach (var fence in fences)
+            fence.MarkRolledBack();
+    }
+
+    /// <inheritdoc />
     public void UpdateExpectedVersion<T>(T entity, long expectedVersion) where T : class
     {
         ArgumentNullException.ThrowIfNull(entity);
@@ -3073,12 +3560,24 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         if (_explicitTransaction is not null && _ownsTransaction)
         {
             var transaction = _explicitTransaction;
+            var rolledBack = false;
             try
             {
                 await transaction.Cancel(CancellationToken.None).ConfigureAwait(false);
+                rolledBack = true;
             }
             finally
             {
+                if (rolledBack)
+                {
+                    MarkVersionFencesRolledBack(_queuedVersionFences);
+                    MarkVersionFencesRolledBack(_pendingExplicitVersionFences);
+                }
+                else
+                {
+                    MarkVersionFencesFailed(_queuedVersionFences);
+                    MarkVersionFencesFailed(_pendingExplicitVersionFences);
+                }
                 try
                 {
                     await transaction.DisposeAsync().ConfigureAwait(false);
@@ -3093,6 +3592,9 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                     {
                         _explicitTransaction = null;
                         _ownsTransaction = false;
+                        _explicitTransactionFailed = false;
+                        _queuedVersionFences.Clear();
+                        _pendingExplicitVersionFences.Clear();
                     }
                 }
             }
