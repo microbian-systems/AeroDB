@@ -455,7 +455,7 @@ public sealed class DocumentVersionFenceTests
         failures.Length.ShouldBe(1);
         var failure = failures[0]!;
         (failure is ConcurrencyException or InvalidOperationException).ShouldBeTrue();
-        if (failure is InvalidOperationException wrapped)
+        if (failure is InvalidOperationException wrapped && failure is not ConcurrencyException)
         {
             wrapped.InnerException.ShouldNotBeNull();
         }
