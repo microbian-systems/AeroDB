@@ -1185,34 +1185,8 @@ internal sealed class SurrealQueryProvider : IQueryProvider
                 return TrackQueryResults(InternalSessionBase.DeserializePocoFromList<T>(
                     items,
                     mapping?.IdentityProperty ?? "Id",
-                    _options.Schema));
-        }
-
-        var shimType = MetadataRegistry.GetShimType(typeof(T));
-        if (shimType is not null)
-        {
-            var listType = typeof(List<>).MakeGenericType(shimType);
-            var getValueMethod = typeof(SurrealDbResponse)
-                .GetMethod(nameof(SurrealDbResponse.GetValue), 1, [typeof(int)])!
-                .MakeGenericMethod(listType);
-
-            var shimList = getValueMethod.Invoke(response, [index]);
-            if (shimList is not IEnumerable enumerable)
-                return [];
-
-            // Materialize each shim to entity via ToEntity()
-            var toEntityMethod = shimType.GetMethod("ToEntity", Type.EmptyTypes);
-            if (toEntityMethod is null) return [];
-
-            var results = new List<T>();
-            foreach (var shim in enumerable)
-            {
-                if (shim is null) continue;
-                var entity = toEntityMethod.Invoke(shim, null);
-                if (entity is T t)
-                    results.Add(t);
-            }
-            return TrackQueryResults(results);
+                    _options.Schema,
+                    _options.EnumStorage));
         }
 
         var raw = response.GetValue<List<T>>(index);
@@ -1427,7 +1401,8 @@ internal sealed class SurrealQueryProvider : IQueryProvider
         return InternalSessionBase.DeserializePocoFromList<TFetched>(
             records,
             mapping?.IdentityProperty ?? "Id",
-            _options.Schema).FirstOrDefault();
+            _options.Schema,
+            _options.EnumStorage).FirstOrDefault();
     }
 
     private static string? StripRecordTable(string? key)
@@ -1615,7 +1590,11 @@ internal sealed class SurrealQueryProvider : IQueryProvider
     {
         var mapping = _options.Schema.Mappings.GetValueOrDefault(typeof(TInclude));
         var records = CborResultReader.ReadPocoResult(response, index);
-        return InternalSessionBase.DeserializePocoFromList<TInclude>(records, mapping?.IdentityProperty ?? "Id", _options.Schema);
+        return InternalSessionBase.DeserializePocoFromList<TInclude>(
+            records,
+            mapping?.IdentityProperty ?? "Id",
+            _options.Schema,
+            _options.EnumStorage);
     }
 
     /// <summary>

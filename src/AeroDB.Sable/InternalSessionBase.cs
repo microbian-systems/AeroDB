@@ -579,6 +579,28 @@ public abstract class InternalSessionBase : IAsyncDisposable
     {
         if (records is null or { Count: 0 }) return [];
 
+        // Generated readers are all-or-nothing per concrete type. A reader is
+        // registered only for a generator-validated shape; if none is present,
+        // retain the established JSON/reflection-compatible path unchanged.
+        var generated = new List<T>(records.Count);
+        if (identityProperty is null or "Id")
+        {
+            foreach (var record in records)
+            {
+                if (!MetadataRegistry.TryMaterialize<T>(record, schema, enumStorage, out var entity))
+                {
+                    generated.Clear();
+                    break;
+                }
+
+                generated.Add(entity);
+            }
+        }
+
+        if (generated.Count == records.Count)
+            return generated;
+
+        MetadataRegistry.RecordLegacyMaterialization<T>();
         var nativeIds = NormalizePocoIdentityFields<T>(records, identityProperty);
         NormalizeStorageFieldsForPoco(typeof(T), records, schema);
         var normalizedRecords = records

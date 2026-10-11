@@ -992,7 +992,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                     await ApplyVersionFencesAsync(versionFenceSnapshot, targetSession, ct).ConfigureAwait(false);
                 }
 
-                // Phase 1: Optimistic concurrency checks (Modified entities only)
+                // Phase 1: Optimistic concurrency checks (Modified / Update entities)
                 // Runs before any mutations so we fail-fast if a conflict exists.
                 HashSet<object>? revisionSkipOps = null;
                 if ((_unitOfWork.Operations.Any(op => UseOptimisticConcurrencyFor(op.EntityType))
@@ -1076,7 +1076,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                 {
                     foreach (var op in _unitOfWork.Operations)
                     {
-                        if (op.Type is OperationType.Added or OperationType.Modified
+                        if (op.Type is OperationType.Added or OperationType.Modified or OperationType.Update
                             && UseOptimisticConcurrencyFor(op.EntityType)
                             && (cleanOps is null || !cleanOps.Contains(op)))
                             IncrementVersion(op.Entity);

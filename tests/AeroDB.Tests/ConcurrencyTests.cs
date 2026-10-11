@@ -63,6 +63,165 @@ public class ConcurrencyTests
         exception.ActualVersion.ShouldBe(2);
     }
 
+    [Test]
+    public async Task Public_update_params_increments_and_persists_a_tracked_document_version()
+    {
+        await using var store = await TestHarness.CreateStoreAsync(options =>
+        {
+            var mapping = options.Schema.For<VersionedPerson>();
+            mapping.UseOptimisticConcurrency = true;
+            mapping.SetSchemaMode(SchemaMode.Flexible);
+        });
+
+        var person = new VersionedPerson { Name = "Before explicit update", Age = 20 };
+        await using (var seed = await store.OpenSessionAsync(new SessionOptions()))
+        {
+            seed.Store(person);
+            await seed.SaveChangesAsync();
+        }
+
+        person.Version.ShouldBe(1);
+
+        await using (var updater = await store.OpenSessionAsync(new SessionOptions()))
+        {
+            var tracked = await updater.LoadAsync<VersionedPerson>(person.Id!);
+            tracked.ShouldNotBeNull();
+            tracked.Name = "After explicit update";
+            updater.Update(tracked);
+            await updater.SaveChangesAsync();
+            tracked.Version.ShouldBe(2);
+        }
+
+        await using var verification = await store.OpenSessionAsync(new SessionOptions());
+        var persisted = await verification.LoadAsync<VersionedPerson>(person.Id!);
+        persisted.ShouldNotBeNull();
+        persisted.Name.ShouldBe("After explicit update");
+        persisted.Version.ShouldBe(2);
+    }
+
+    [Test]
+    public async Task Public_update_enumerable_rejects_a_stale_update_and_preserves_the_winner()
+    {
+        await using var store = await TestHarness.CreateStoreAsync(options =>
+        {
+            var mapping = options.Schema.For<VersionedPerson>();
+            mapping.UseOptimisticConcurrency = true;
+            mapping.SetSchemaMode(SchemaMode.Flexible);
+        });
+
+        var person = new VersionedPerson { Name = "Original", Age = 20 };
+        await using (var seed = await store.OpenSessionAsync(new SessionOptions()))
+        {
+            seed.Store(person);
+            await seed.SaveChangesAsync();
+        }
+
+        person.Version.ShouldBe(1);
+
+        await using var first = await store.OpenSessionAsync(new SessionOptions());
+        await using var second = await store.OpenSessionAsync(new SessionOptions());
+        var winner = await first.LoadAsync<VersionedPerson>(person.Id!);
+        var stale = await second.LoadAsync<VersionedPerson>(person.Id!);
+        winner.ShouldNotBeNull();
+        stale.ShouldNotBeNull();
+        winner.Version.ShouldBe(1);
+        stale.Version.ShouldBe(1);
+
+        winner.Name = "Winner";
+        IEnumerable<VersionedPerson> winnerBatch = [winner];
+        first.Update(winnerBatch);
+        await first.SaveChangesAsync();
+
+        stale.Name = "Stale";
+        second.Update(stale);
+        var exception = await Should.ThrowAsync<ConcurrencyException>(() => second.SaveChangesAsync());
+        exception.ExpectedVersion.ShouldBe(1);
+        exception.ActualVersion.ShouldBe(2);
+
+        await using var verification = await store.OpenSessionAsync(new SessionOptions());
+        var persisted = await verification.LoadAsync<VersionedPerson>(person.Id!);
+        persisted.ShouldNotBeNull();
+        persisted.Name.ShouldBe("Winner");
+        persisted.Version.ShouldBe(2);
+    }
+
+    [Test]
+    public async Task Public_update_enumerable_increments_and_persists_every_tracked_document_version()
+    {
+        await using var store = await TestHarness.CreateStoreAsync(options =>
+        {
+            var mapping = options.Schema.For<VersionedPerson>();
+            mapping.UseOptimisticConcurrency = true;
+            mapping.SetSchemaMode(SchemaMode.Flexible);
+        });
+
+        var firstPerson = new VersionedPerson { Name = "First before enumerable update", Age = 20 };
+        var secondPerson = new VersionedPerson { Name = "Second before enumerable update", Age = 30 };
+        await using (var seed = await store.OpenSessionAsync(new SessionOptions()))
+        {
+            seed.Store(firstPerson, secondPerson);
+            await seed.SaveChangesAsync();
+        }
+
+        firstPerson.Version.ShouldBe(1);
+        secondPerson.Version.ShouldBe(1);
+
+        await using (var updater = await store.OpenSessionAsync(new SessionOptions()))
+        {
+            var firstTracked = await updater.LoadAsync<VersionedPerson>(firstPerson.Id!);
+            var secondTracked = await updater.LoadAsync<VersionedPerson>(secondPerson.Id!);
+            firstTracked.ShouldNotBeNull();
+            secondTracked.ShouldNotBeNull();
+            firstTracked.Name = "First after enumerable update";
+            secondTracked.Name = "Second after enumerable update";
+            IEnumerable<VersionedPerson> trackedBatch = [firstTracked, secondTracked];
+            updater.Update(trackedBatch);
+            await updater.SaveChangesAsync();
+            firstTracked.Version.ShouldBe(2);
+            secondTracked.Version.ShouldBe(2);
+        }
+
+        await using var verification = await store.OpenSessionAsync(new SessionOptions());
+        var persistedFirst = await verification.LoadAsync<VersionedPerson>(firstPerson.Id!);
+        var persistedSecond = await verification.LoadAsync<VersionedPerson>(secondPerson.Id!);
+        persistedFirst.ShouldNotBeNull();
+        persistedSecond.ShouldNotBeNull();
+        persistedFirst.Name.ShouldBe("First after enumerable update");
+        persistedSecond.Name.ShouldBe("Second after enumerable update");
+        persistedFirst.Version.ShouldBe(2);
+        persistedSecond.Version.ShouldBe(2);
+    }
+
+    [Test]
+    public async Task Public_update_with_concurrency_disabled_preserves_version_and_persists_changes()
+    {
+        await using var store = await TestHarness.CreateStoreAsync();
+        const string id = "public_update_concurrency_disabled";
+        await using (var seed = AsDoc(await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None })))
+        {
+            await seed.Session.RawQuery(
+                $"CREATE versioned_person:{id} CONTENT {{ name: 'Before public update', age: 20, version: 1 }};",
+                null);
+        }
+
+        await using (var updater = await store.OpenSessionAsync(new SessionOptions()))
+        {
+            var tracked = await updater.LoadAsync<VersionedPerson>(id);
+            tracked.ShouldNotBeNull();
+            tracked.Version.ShouldBe(1);
+            tracked.Name = "After public update";
+            updater.Update(tracked);
+            await updater.SaveChangesAsync();
+            tracked.Version.ShouldBe(1);
+        }
+
+        await using var verification = await store.OpenSessionAsync(new SessionOptions());
+        var persisted = await verification.LoadAsync<VersionedPerson>(id);
+        persisted.ShouldNotBeNull();
+        persisted.Name.ShouldBe("After public update");
+        persisted.Version.ShouldBe(1);
+    }
+
     /// <summary>
     /// A new <see cref="VersionedPerson"/> starts at Version=0.
     /// On first save it should be incremented to 1 without error,
