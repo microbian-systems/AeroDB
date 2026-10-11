@@ -1667,22 +1667,28 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                 Deleted = committedOperations.Where(op => op.Type is OperationType.Deleted or OperationType.SoftDeleted).Select(op => op.Entity).ToArray(),
                 VersionFences = versionFenceSnapshot
             };
-            if (_explicitTransaction is not null)
-                _pendingExplicitChangeSets.Add(committedChanges);
-            else
-                await InvokeAfterCommitListenersAsync(committedChanges, ct).ConfigureAwait(false);
+            try
+            {
+                if (_explicitTransaction is not null)
+                    _pendingExplicitChangeSets.Add(committedChanges);
+                else
+                    await InvokeAfterCommitListenersAsync(committedChanges, ct).ConfigureAwait(false);
+            }
+            finally
+            {
+                // Complete normal save housekeeping even if an acknowledged
+                // commit's callback faults. Keep callback visibility unchanged.
+                if (IsDirtyTracking)
+                {
+                    foreach (var typeMap in IdentityMap.Values)
+                        typeMap.Clear();
+                    ClearSnapshots();
+                }
+            }
 
             var resultCount = count + versionFenceSnapshot.Length;
             if (resultCount == 0)
                 resultCount = appendedEventSnapshot.Length + graphOpCount;
-
-            // Clear identity map and snapshots after successful save
-            if (IsDirtyTracking)
-            {
-                foreach (var typeMap in IdentityMap.Values)
-                    typeMap.Clear();
-                ClearSnapshots();
-            }
 
             ResolvedLogger.LogInformation("SaveChangesAsync: committed {Count} changes", resultCount);
             return resultCount;
@@ -1690,7 +1696,8 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         catch (Exception ex) when (ex is not ConcurrencyException
                                    && ex is not SableEncryptionException
                                    && ex is not OperationCanceledException
-                                   && ex is not CommitOutcomeUnknownException)
+                                   && ex is not CommitOutcomeUnknownException
+                                   && ex is not PostCommitCallbackException)
         {
             // Provider errors can contain SQL, values, identifiers and credentials.
             // Preserve the cause for callers, but never attach it to a log event.
@@ -1727,11 +1734,20 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
 
     private async Task InvokeAfterCommitListenersAsync(IChangeSet changes, CancellationToken ct)
     {
-        foreach (var listener in Options.Listeners)
-            await listener.AfterCommitAsync(this, changes, ct).ConfigureAwait(false);
+        // Both callers invoke this only after an acknowledged database commit.
+        // A callback cancellation must not turn that success into a canceled save.
+        try
+        {
+            foreach (var listener in Options.Listeners)
+                await listener.AfterCommitAsync(this, changes, ct).ConfigureAwait(false);
 
-        foreach (var listener in SessionListeners)
-            await listener.AfterCommitAsync(this, changes, ct).ConfigureAwait(false);
+            foreach (var listener in SessionListeners)
+                await listener.AfterCommitAsync(this, changes, ct).ConfigureAwait(false);
+        }
+        catch (Exception exception)
+        {
+            throw new PostCommitCallbackException(exception);
+        }
     }
 
     private void GenerateGuidIdentityIfEmpty(object entity)

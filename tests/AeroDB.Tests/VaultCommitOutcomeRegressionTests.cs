@@ -83,6 +83,84 @@ public sealed class VaultCommitOutcomeRegressionTests
     }
 
     [Test]
+    [Arguments(false, false, false)]
+    [Arguments(false, true, false)]
+    [Arguments(true, false, false)]
+    [Arguments(true, true, false)]
+    [Arguments(false, false, true)]
+    [Arguments(false, true, true)]
+    [Arguments(true, false, true)]
+    [Arguments(true, true, true)]
+    public async Task Confirmed_commit_with_callback_failure_is_a_known_commit_fault_not_cancellation(
+        bool explicitTransaction, bool cancellationInCallback, bool sessionListener)
+    {
+        using var cancellation = new CancellationTokenSource();
+        Exception cause = cancellationInCallback
+            ? new OperationCanceledException("synthetic private callback detail", cancellation.Token)
+            : new InvalidOperationException("synthetic private callback detail");
+        var engine = CreateEngine();
+        engine.Commit(Arg.Any<Guid?>(), Arg.Any<Guid>(), Arg.Any<CancellationToken>())
+            .Returns(Task.CompletedTask);
+        var listener = new ObservedCallbackFailure(cause, cancellationInCallback ? cancellation : null);
+        await using var client = new TransportClient(engine);
+        var options = new StoreOptions();
+        if (!sessionListener) options.Listeners.Add(listener);
+        await using var session = new DocumentSession(client, await client.CreateSession(), options, DocumentTracking.None);
+        if (sessionListener) session.Listeners.Add(listener);
+        await using var transaction = explicitTransaction ? await session.BeginTransactionAsync() : null;
+        session.Store(new Person { Id = RecordId.From("person", "confirmed-callback-operation"), Name = "synthetic" });
+        if (explicitTransaction) await session.SaveChangesAsync(cancellation.Token);
+
+        var operation = explicitTransaction
+            ? sessionListener ? transaction!.CommitAsync(cancellation.Token) : session.CommitTransactionAsync(cancellation.Token)
+            : session.SaveChangesAsync(cancellation.Token);
+        var exception = await Should.ThrowAsync<Exception>(() => operation);
+
+        exception.ShouldBeOfType<PostCommitCallbackException>().DatabaseCommitSucceeded.ShouldBeTrue();
+        exception.ShouldBeAssignableTo<InvalidOperationException>();
+        exception.InnerException.ShouldBeSameAs(cause);
+        exception.Message.ShouldNotContain("synthetic private callback detail");
+        operation.IsFaulted.ShouldBeTrue();
+        operation.IsCanceled.ShouldBeFalse();
+        if (cancellationInCallback)
+            ((OperationCanceledException)exception.InnerException!).CancellationToken.ShouldBe(cancellation.Token);
+        listener.AfterCommitCalls.ShouldBe(1);
+        if (transaction is not null) await transaction.DisposeAsync();
+        await engine.Received(1).Commit(Arg.Any<Guid?>(), Arg.Any<Guid>(), cancellation.Token);
+        await engine.DidNotReceive().Cancel(Arg.Any<Guid?>(), Arg.Any<Guid>(), Arg.Any<CancellationToken>());
+        await engine.Received(1).RawQuery(Arg.Any<string>(),
+            Arg.Any<IReadOnlyDictionary<string, object?>>(), Arg.Any<Guid?>(),
+            Arg.Any<Guid?>(), Arg.Any<CancellationToken>());
+    }
+
+    [Test]
+    [Arguments(false)]
+    [Arguments(true)]
+    public async Task Confirmed_commit_callback_fault_preserves_dirty_tracking_success_cleanup(bool callbackCancellation)
+    {
+        using var cancellation = new CancellationTokenSource();
+        Exception cause = callbackCancellation
+            ? new OperationCanceledException(cancellation.Token)
+            : new InvalidOperationException("synthetic callback fault");
+        var engine = CreateEngine();
+        engine.Commit(Arg.Any<Guid?>(), Arg.Any<Guid>(), Arg.Any<CancellationToken>())
+            .Returns(Task.CompletedTask);
+        await using var client = new TransportClient(engine);
+        var options = new StoreOptions { Tracking = DocumentTracking.DirtyTracking };
+        options.Listeners.Add(new ObservedCallbackFailure(cause, callbackCancellation ? cancellation : null));
+        await using var session = new DocumentSession(client, await client.CreateSession(), options, DocumentTracking.DirtyTracking);
+        session.Store(new Person { Id = RecordId.From("person", "callback-cleanup"), Name = "synthetic" });
+        session.IdentityMapCount.ShouldBe(1);
+
+        await Should.ThrowAsync<PostCommitCallbackException>(() => session.SaveChangesAsync(cancellation.Token));
+
+        session.IdentityMapCount.ShouldBe(0);
+        // An unchanged save after the fault must not repeat the acknowledged write.
+        (await session.SaveChangesAsync()).ShouldBe(0);
+        await engine.Received(1).Commit(Arg.Any<Guid?>(), Arg.Any<Guid>(), Arg.Any<CancellationToken>());
+    }
+
+    [Test]
     [Arguments(false)]
     [Arguments(true)]
     public async Task Cancellation_before_commit_submission_preserves_cancellation_and_rolls_back(bool explicitTransaction)
@@ -218,6 +296,16 @@ public sealed class VaultCommitOutcomeRegressionTests
         {
             AfterCommitCalls++;
             throw new InvalidOperationException("synthetic postcommit observer failure");
+        }
+    }
+
+    private sealed class ObservedCallbackFailure(Exception cause, CancellationTokenSource? cancellation) : CommitObserver
+    {
+        public override Task AfterCommitAsync(IDocumentSession session, IChangeSet changes, CancellationToken token)
+        {
+            AfterCommitCalls++;
+            cancellation?.Cancel();
+            return Task.FromException(cause);
         }
     }
 

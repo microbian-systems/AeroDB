@@ -184,3 +184,47 @@ preserved; no injected mutation is left in source.
 No commits, push, release, pins, live database cutover, Vault secret endpoints,
 paid AI activation or MVP-readiness claim. Await the known-commit API choice,
 then reverify before any separate package adoption/release authorization.
+
+## Approved known-commit callback correction — 2026-10-11
+
+The user approved a distinct known-success error and required observed tests
+before implementation. `PostCommitCallbackException` is a sealed
+`InvalidOperationException` subtype with `DatabaseCommitSucceeded == true`.
+Automatic saves and explicit commits wrap callback failures/cancellation only
+after an acknowledged database commit. The inner cause/token remain available
+to trusted callers; the outer message is value-free. Never retry the database
+write on this fault. Earlier callbacks may already have produced effects, so
+reconcile post-commit work separately and redact inner causes at boundaries.
+
+Observed receipts in `tests/AeroDB.Tests/bin/Debug/net10.0/TestResults/`:
+
+- `postcommit-callback-red.trx`: all four original automatic/explicit ×
+  ordinary/cancellation cases failed before introducing the exception.
+- `postcommit-callback-green.trx`: those four unchanged cases passed.
+- The final matrix adds session-level listeners, typed property/base assertions,
+  and the public `IAeroDBTransaction.CommitAsync` route. Explicit handle disposal
+  is exercised before checking no rollback. These extra assertions are not
+  claimed as part of the original RED receipt.
+- `postcommit-cleanup-configured-red.trx`: two correctly configured
+  DirtyTracking cases failed with identity-map count 1 instead of 0 against
+  the pre-cleanup source arrangement. The subsequent bounded `try/finally`
+  preserves callback-time visibility while completing normal save cleanup.
+  Earlier cleanup attempts omitted `StoreOptions.Tracking`; those receipts do
+  not establish the DirtyTracking defect. One premature run used the previous
+  binary before build completion and is likewise not final evidence.
+- `vault-security-postcommit-verified.trx`: **43/43 pass, zero skipped**,
+  including all ten added callback/cleanup cases and the existing security
+  regression tests. Build completed first: 0 errors, 6 existing warnings.
+- `security-postcommit-verified-full.trx`: **2,223 executed; 2,217 pass / 6 fail /
+  0 skipped**, 4m29s. XML failed-name comparison against `security-full-final.trx`
+  has zero differences. This is not a fully green release suite.
+
+Only document-commit callbacks are covered. Direct automatic event mutation
+commits, provider-boundary redaction, routing metadata, unfinished Wolverine
+changes and the six baseline failures remain separate follow-ups. No package
+publication, pin change, live database cutover or paid AI activation occurred.
+
+Independent final review: **ACCEPTED WITH ADVISORIES**. The callback contract and
+cleanup corrections are accepted; do not imply a green overall suite or live
+provider/dispatch readiness. The final matrix explicitly disposes the transaction
+handle before asserting no transport cancellation.
