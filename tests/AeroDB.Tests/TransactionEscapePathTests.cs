@@ -41,7 +41,14 @@ public class TransactionEscapePathTests
     public async Task QueuedSql_IsRolledBackWhenBeforeCommitFails()
     {
         var listener = new EscapePathThrowingListener();
-        await using var store = await TestHarness.CreateStoreAsync(options => options.Listeners.Add(listener));
+        await using var store = await TestHarness.CreateStoreAsync();
+
+        await using (var bootstrap = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }))
+        {
+            bootstrap.Store(new QueueTestDoc { Value = "queue-table-bootstrap" });
+            await bootstrap.SaveChangesAsync();
+        }
+        store.Options.Listeners.Add(listener);
 
         await using (var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }))
         {
@@ -63,8 +70,15 @@ public class TransactionEscapePathTests
     public async Task InlineProjectionEvent_IsRolledBackWhenBeforeCommitFails()
     {
         var listener = new EscapePathThrowingListener();
-        await using var store = await TestHarness.CreateStoreAsync(options => options.Listeners.Add(listener));
+        await using var store = await TestHarness.CreateStoreAsync();
         store.Options.Projections.Add(new SideEffectTestProjection());
+
+        await using (var bootstrap = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }))
+        {
+            bootstrap.Store(new SideEffectDoc { Status = "inline-projection-table-bootstrap" });
+            await bootstrap.SaveChangesAsync();
+        }
+        store.Options.Listeners.Add(listener);
 
         await using (var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }))
         {
@@ -135,6 +149,12 @@ public class TransactionEscapePathTests
         });
         const string streamId = "rejected-cross-database-event";
 
+        await using (var seed = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }))
+        {
+            seed.Store(new SideEffectDoc { Status = "cross-database-table-bootstrap" });
+            await seed.SaveChangesAsync();
+        }
+
         await using (var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }))
         {
             await session.Events.Append(streamId, [
@@ -169,6 +189,11 @@ public class TransactionEscapePathTests
                 Id = new RecordIdOf<string>("required_person", targetId),
                 Name = "Required",
                 Age = 30,
+            });
+            seed.Store(new Person
+            {
+                Id = new RecordIdOf<string>("person", "patch-error-table-bootstrap"),
+                Name = "Bootstrap",
             });
             await seed.SaveChangesAsync();
         }

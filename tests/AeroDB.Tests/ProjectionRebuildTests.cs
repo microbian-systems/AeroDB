@@ -254,6 +254,9 @@ public class ProjectionRebuildTests
         // No events appended — rebuild should do nothing
         var projection = new RebuildableOrderSummaryProjection();
         await using var rebuildSession = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
+        // Provision the projection table before testing an empty rebuild. A missing
+        // table is now correctly surfaced as a database error by ExecuteSqlAsync.
+        await rebuildSession.ExecuteSqlAsync("DEFINE TABLE order_summary SCHEMALESS;");
         await projection.RebuildAsync(rebuildSession, CancellationToken.None);
         await rebuildSession.SaveChangesAsync();
 
@@ -416,6 +419,7 @@ public class ProjectionRebuildTests
         // Even though this is an Async lifecycle projection, we can still rebuild it
         var projection = new AsyncRebuildableProjection();
         await using var rebuildSession = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
+        await rebuildSession.ExecuteSqlAsync("DEFINE TABLE order_summary SCHEMALESS;");
         await projection.RebuildAsync(rebuildSession, CancellationToken.None);
         await rebuildSession.SaveChangesAsync();
 
@@ -499,6 +503,7 @@ public class ProjectionRebuildTests
         // Create a separate projection instance (not registered)
         var projection = new RebuildableOrderSummaryProjection();
         await using var rebuildSession = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
+        await rebuildSession.ExecuteSqlAsync("DEFINE TABLE order_summary SCHEMALESS;");
         await projection.RebuildAsync(rebuildSession, CancellationToken.None);
         await rebuildSession.SaveChangesAsync();
 

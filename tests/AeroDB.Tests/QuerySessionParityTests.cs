@@ -39,6 +39,11 @@ public class QuerySessionParityTests
     public async Task LoadAsync_returns_null_for_missing_id()
     {
         await using var store = await TestHarness.CreateStoreAsync();
+        await using (var seed = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None }))
+        {
+            seed.Store(new Person { Name = "load-missing-table-bootstrap", Age = 1 });
+            await seed.SaveChangesAsync();
+        }
         await using var query = await store.QuerySessionAsync();
 
         var loaded = await query.LoadAsync<Person>("nonexistent-id");
@@ -130,6 +135,9 @@ public class QuerySessionParityTests
     {
         await using var store = await TestHarness.CreateStoreAsync();
         await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
+        session.Store(new Person { Name = "exists-missing-table-bootstrap", Age = 1 });
+        await session.SaveChangesAsync();
+
         var exists = await session.CheckExistsAsync<Person>("nonexistent-id");
         exists.ShouldBeFalse();
     }

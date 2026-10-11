@@ -227,6 +227,7 @@ public abstract class InternalSessionBase : IAsyncDisposable
         var response = await EmbeddedTransactionRawQuery
             .ExecuteAsync(OperationSession, sql, parameters, ct)
             .ConfigureAwait(false);
+        response.EnsureAllOks();
         var mapped = await TryDeserializeDocumentResponseAsync<T>(response, ct).ConfigureAwait(false);
         if (mapped.Handled)
             return mapped.Results;
@@ -247,6 +248,7 @@ public abstract class InternalSessionBase : IAsyncDisposable
         LogSurrealQuery(sql, parameters);
         var response = await session.RawQuery(sql, parameters, cancellationToken)
             .ConfigureAwait(false);
+        response.EnsureAllOks();
         var mapped = await TryDeserializeDocumentResponseAsync<T>(
                 response,
                 cancellationToken)
@@ -301,6 +303,7 @@ public abstract class InternalSessionBase : IAsyncDisposable
         var response = await EmbeddedTransactionRawQuery
             .ExecuteAsync(OperationSession, sql, parameters, ct)
             .ConfigureAwait(false);
+        response.EnsureAllOks();
         return response.FirstOk is not null ? 1 : 0;
     }
 
@@ -315,7 +318,8 @@ public abstract class InternalSessionBase : IAsyncDisposable
         RequestCount++;
         LogSurrealQuery(sql, null);
         var response = await Session.RawQuery(sql, null, ct).ConfigureAwait(false);
-        return response.Count > 0 && !response.HasErrors && response.FirstOk is not null;
+        response.EnsureAllOks();
+        return CborResultReader.ReadPocoResult(response, 0).Count > 0;
     }
 
     public ISableQueryable<T> Query<T>() where T : class
@@ -402,71 +406,58 @@ public abstract class InternalSessionBase : IAsyncDisposable
         if (!DocumentIdentityResolver.TryCreate(normalizedId, table, out var identity))
             return null;
 
-        try
+        // Check identity map first
+        if (ShouldTrackInIdentityMap(typeof(T)))
         {
-            // Check identity map first
-            if (ShouldTrackInIdentityMap(typeof(T)))
+            if (IdentityMap.TryGetValue(typeof(T), out var typeMap)
+                && typeMap.TryGetValue(identity.Key, out var cached))
             {
-                if (IdentityMap.TryGetValue(typeof(T), out var typeMap)
-                    && typeMap.TryGetValue(identity.Key, out var cached))
-                {
-                    _logger.LogDebug("LoadAsync<{Type}> identity hit for id={Id}", typeof(T).Name, identity.Key);
-                    return (T?)cached;
-                }
+                _logger.LogDebug("LoadAsync<{Type}> identity hit", typeof(T).Name);
+                return (T?)cached;
+            }
+        }
+
+        // Naming-aware path for Record, Entity<TId>, and POCO documents. Runtime schema
+        // casing and field overrides must be authoritative for direct loads.
+        var result = await LoadPocoAsync<T>(loadSession, identity, ct).ConfigureAwait(false);
+
+        // Tenant isolation: if this session is tenant-scoped and the loaded entity
+        // has a TenantId property, verify it matches. If not, treat as "not found".
+        // DatabasePerTenant isolates at the database level — no entity-level check needed.
+        if (result is not null && !string.IsNullOrEmpty(TenantId) && Options.TenancyStyle == TenancyStyle.Conjoined)
+        {
+            string? entityTenant;
+            var meta = MetadataRegistry.TryGet<T>();
+            if (meta is not null)
+            {
+                entityTenant = meta.GetTenantId(result);
+            }
+            else
+            {
+                var tenantProp = typeof(T).GetProperty("TenantId", typeof(string));
+                entityTenant = tenantProp?.GetValue(result) as string;
             }
 
-            // Naming-aware path for Record, Entity<TId>, and POCO documents. Runtime schema
-            // casing and field overrides must be authoritative for direct loads.
-            var result = await LoadPocoAsync<T>(loadSession, identity, ct).ConfigureAwait(false);
-
-            // Tenant isolation: if this session is tenant-scoped and the loaded entity
-            // has a TenantId property, verify it matches. If not, treat as "not found".
-            // DatabasePerTenant isolates at the database level — no entity-level check needed.
-            if (result is not null && !string.IsNullOrEmpty(TenantId) && Options.TenancyStyle == TenancyStyle.Conjoined)
+            if (!string.Equals(entityTenant, TenantId, StringComparison.Ordinal))
             {
-                string? entityTenant;
-                var meta = MetadataRegistry.TryGet<T>();
-                if (meta is not null)
-                {
-                    entityTenant = meta.GetTenantId(result);
-                }
-                else
-                {
-                    var tenantProp = typeof(T).GetProperty("TenantId", typeof(string));
-                    entityTenant = tenantProp?.GetValue(result) as string;
-                }
-                
-                if (!string.Equals(entityTenant, TenantId, StringComparison.Ordinal))
-                {
-                    _logger.LogDebug("Tenant filter applied for LoadAsync<{Type}>: entity tenant '{EntityTenant}' != session tenant '{SessionTenant}'",
-                        typeof(T).Name, entityTenant, TenantId);
-                    return default;
-                }
+                _logger.LogDebug("Tenant filter applied for LoadAsync<{Type}>", typeof(T).Name);
+                return default;
             }
-
-            // Store in identity map when tracking is enabled (or type opted-in via UseIdentityMapFor)
-            if (ShouldTrackInIdentityMap(typeof(T)) && result is not null)
-            {
-                var typeMap = IdentityMap.GetOrAdd(typeof(T), _ => new ConcurrentDictionary<string, object>(StringComparer.Ordinal));
-                typeMap[identity.Key] = result;
-            }
-
-            // Track original version for optimistic concurrency
-            if (result is not null && UseOptimisticConcurrencyFor(typeof(T)))
-                TrackOriginalVersion(result);
-
-            _logger.LogDebug("Loaded {Type} with id={Id}", typeof(T).Name, identity.Key);
-            return result;
         }
-        catch (SableEncryptionException)
+
+        // Store in identity map when tracking is enabled (or type opted-in via UseIdentityMapFor)
+        if (ShouldTrackInIdentityMap(typeof(T)) && result is not null)
         {
-            throw;
+            var typeMap = IdentityMap.GetOrAdd(typeof(T), _ => new ConcurrentDictionary<string, object>(StringComparer.Ordinal));
+            typeMap[identity.Key] = result;
         }
-        catch (Exception ex)
-        {
-            _logger.LogWarning(ex, "LoadAsync failed for id={Id}", identity.Key);
-            return null;
-        }
+
+        // Track original version for optimistic concurrency
+        if (result is not null && UseOptimisticConcurrencyFor(typeof(T)))
+            TrackOriginalVersion(result);
+
+        _logger.LogDebug("Loaded {Type}", typeof(T).Name);
+        return result;
     }
 
     /// <summary>
@@ -514,6 +505,7 @@ public abstract class InternalSessionBase : IAsyncDisposable
         var sql = $"SELECT * FROM {identity.Literal}";
         LogSurrealQuery(sql, null);
         var response = await session.RawQuery(sql, null, ct).ConfigureAwait(false);
+        response.EnsureAllOks();
 
         // Read raw CBOR data directly to avoid Dahomey.Cbor's ObjectConverter issue with maps.
         var records = CborResultReader.ReadPocoResult(response, 0);
@@ -547,23 +539,9 @@ public abstract class InternalSessionBase : IAsyncDisposable
         if (!_logger.IsEnabled(LogLevel.Debug))
             return;
 
-        if (parameters is { Count: > 0 })
-        {
-            var redacted = parameters.ToDictionary(
-                parameter => parameter.Key,
-                parameter => parameter.Value is null
-                    ? "<null>"
-                    : $"<{parameter.Value.GetType().Name}>",
-                StringComparer.Ordinal);
-            _logger.LogDebug(
-                "Executing SurrealQL: {SurrealQL} Parameters: {@Parameters}",
-                sql,
-                redacted);
-        }
-        else
-        {
-            _logger.LogDebug("Executing SurrealQL: {SurrealQL}", sql);
-        }
+        _logger.LogDebug(
+            "Executing SurrealQL query. ParameterCount={ParameterCount}",
+            parameters?.Count ?? 0);
     }
 
     /// <summary>

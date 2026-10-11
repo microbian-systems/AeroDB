@@ -238,7 +238,8 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         try
         {
             await FlushPendingGraphOperationsAsync(ct).ConfigureAwait(false);
-            await transaction.Commit(ct).ConfigureAwait(false);
+            ct.ThrowIfCancellationRequested();
+            await CommitWithOutcomeAsync(transaction, ct).ConfigureAwait(false);
             MarkVersionFencesCommitted(_pendingExplicitVersionFences);
             committedChangeSets = _pendingExplicitChangeSets.ToArray();
             _pendingExplicitChangeSets.Clear();
@@ -1016,8 +1017,8 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                                 if (expectedVer != dbVersion)
                                 {
                                     ResolvedLogger.LogWarning(
-                                        "Expected version mismatch on {Type} (id={Id}): expected {Expected}, found {Actual}",
-                                        op.EntityType.Name, GetEntityId(op.Entity), expectedVer, dbVersion);
+                                        "Expected version mismatch on {Type}: expected {Expected}, found {Actual}",
+                                        op.EntityType.Name, expectedVer, dbVersion);
                                     throw new ConcurrencyException(op.EntityType, GetEntityId(op.Entity) ?? "?", expectedVer, dbVersion);
                                 }
                             }
@@ -1033,14 +1034,14 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                                         // Skip this entity — don't throw, just leave it out
                                         revisionSkipOps.Add(op.Entity);
                                         ResolvedLogger.LogDebug(
-                                            "TryUpdateRevision: revision mismatch on {Type} (id={Id}), skipping",
-                                            op.EntityType.Name, GetEntityId(op.Entity));
+                                            "TryUpdateRevision: revision mismatch on {Type}, skipping",
+                                            op.EntityType.Name);
                                     }
                                     else
                                     {
                                         ResolvedLogger.LogWarning(
-                                            "Revision mismatch on {Type} (id={Id}): expected {Expected}, found {Actual}",
-                                            op.EntityType.Name, GetEntityId(op.Entity), expectedRev, dbVersion);
+                                            "Revision mismatch on {Type}: expected {Expected}, found {Actual}",
+                                            op.EntityType.Name, expectedRev, dbVersion);
                                         throw new ConcurrencyException(op.EntityType, GetEntityId(op.Entity) ?? "?", expectedRev, dbVersion);
                                     }
                                 }
@@ -1064,7 +1065,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                             if (opId is not null && !HasChanged(op.EntityType, opId, op.Entity))
                             {
                                 cleanOps.Add(op);
-                                ResolvedLogger.LogDebug("Skipping {Type} {Id}: no changes detected (dirty tracking)", op.EntityType.Name, opId);
+                                ResolvedLogger.LogDebug("Skipping {Type}: no changes detected (dirty tracking)", op.EntityType.Name);
                             }
                         }
                     }
@@ -1577,8 +1578,9 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
 
                 if (ownsTx && tx is not null)
                 {
+                    ct.ThrowIfCancellationRequested();
                     commitAttempted = true;
-                    await tx.Commit(ct).ConfigureAwait(false);
+                    await CommitWithOutcomeAsync(tx, ct).ConfigureAwait(false);
                     MarkVersionFencesCommitted(versionFenceSnapshot);
                 }
             }
@@ -1686,9 +1688,13 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
             return resultCount;
         }
         catch (Exception ex) when (ex is not ConcurrencyException
-                                   && ex is not SableEncryptionException)
+                                   && ex is not SableEncryptionException
+                                   && ex is not OperationCanceledException
+                                   && ex is not CommitOutcomeUnknownException)
         {
-            ResolvedLogger.LogError(ex, "SaveChangesAsync failed");
+            // Provider errors can contain SQL, values, identifiers and credentials.
+            // Preserve the cause for callers, but never attach it to a log event.
+            ResolvedLogger.LogError("SaveChangesAsync failed ({ExceptionType})", ex.GetType().Name);
             throw new InvalidOperationException("Failed to save changes.", ex);
         }
         catch (ConcurrencyException)
@@ -1700,6 +1706,22 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         finally
         {
             _isSavingChanges = false;
+        }
+    }
+
+    private static async Task CommitWithOutcomeAsync(SurrealDbTransaction transaction, CancellationToken ct)
+    {
+        try
+        {
+            await transaction.Commit(ct).ConfigureAwait(false);
+        }
+        catch (Exception exception) when (exception is OperationCanceledException or TimeoutException
+            or System.IO.IOException or System.Net.Http.HttpRequestException
+            or System.Net.WebSockets.WebSocketException)
+        {
+            // Once the driver is called, transport failure cannot prove rollback.
+            // Confirmed server rejections and post-commit callbacks are outside this filter.
+            throw new CommitOutcomeUnknownException(exception);
         }
     }
 
@@ -1878,14 +1900,14 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         if (expectedVersion != dbVersion)
         {
             ResolvedLogger.LogWarning(
-                "Concurrency conflict on {Type} (id={Id}): expected version {Expected}, found {Actual}",
-                op.EntityType.Name, id, expectedVersion, dbVersion);
+                "Concurrency conflict on {Type}: expected version {Expected}, found {Actual}",
+                op.EntityType.Name, expectedVersion, dbVersion);
 
             throw new ConcurrencyException(op.EntityType, id, expectedVersion, dbVersion);
         }
 
-        ResolvedLogger.LogDebug("Concurrency check passed for {Type} (id={Id}): version {Version}",
-            op.EntityType.Name, id, dbVersion);
+        ResolvedLogger.LogDebug("Concurrency check passed for {Type}: version {Version}",
+            op.EntityType.Name, dbVersion);
     }
 
     private static long ReadVersionFromResponse(
@@ -2304,17 +2326,14 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         IReadOnlyDictionary<string, object?>? parameters,
         CancellationToken ct)
     {
-        var containsEncryptedEnvelope = surql.Contains(
-            "wrapped_key_ciphertext:",
-            StringComparison.Ordinal)
-            || parameters?.Keys.Any(key =>
-                key.StartsWith("__sable_protected_", StringComparison.Ordinal)) == true;
         if (ResolvedLogger.IsEnabled(LogLevel.Debug))
         {
+            var encrypted = surql.Contains("wrapped_key_ciphertext:", StringComparison.Ordinal)
+                || parameters?.Keys.Any(key => key.StartsWith("__sable_protected_", StringComparison.Ordinal)) == true;
             ResolvedLogger.LogDebug(
-                "SaveChangesAsync write SurrealQL: {SurrealQL}{Parameters}",
-                containsEncryptedEnvelope ? "<encrypted write redacted>" : surql,
-                FormatWriteParameters(parameters));
+                "SaveChangesAsync write: ParameterCount={ParameterCount}; Protection={Protection}",
+                parameters?.Count ?? 0,
+                encrypted ? "<encrypted write redacted>" : "<write values redacted>");
         }
 
         var response = await EmbeddedTransactionRawQuery
@@ -2324,41 +2343,13 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         if (ResolvedLogger.IsEnabled(LogLevel.Debug))
         {
             ResolvedLogger.LogDebug(
-                "SaveChangesAsync write response: HasErrors={HasErrors}; Count={Count}; FirstOk={FirstOk}; Errors={Errors}",
+                "SaveChangesAsync write response: HasErrors={HasErrors}; Count={Count}; FirstOk={FirstOk}",
                 response.HasErrors,
                 response.Count,
-                response.FirstOk is not null,
-                containsEncryptedEnvelope && response.HasErrors
-                    ? "<encrypted write error redacted>"
-                    : FormatRawQueryErrors(response));
+                response.FirstOk is not null);
         }
 
         return response;
-    }
-
-    private static string FormatWriteParameters(IReadOnlyDictionary<string, object?>? parameters)
-    {
-        if (parameters is null || parameters.Count == 0)
-            return string.Empty;
-
-        var entries = parameters.Select(parameter =>
-        {
-            var value = parameter.Value;
-            return value is null
-                ? $"{parameter.Key}=null"
-                : $"{parameter.Key}=<{value.GetType().Name}>";
-        });
-
-        return "; Parameters: [" + string.Join(", ", entries) + "]";
-    }
-
-    private static string FormatRawQueryErrors(SurrealDbResponse response)
-    {
-        if (!response.HasErrors)
-            return "";
-
-        return string.Join("; ", response.Errors.Select(error =>
-            error is SurrealDbErrorResult err ? err.Details : error.ToString()));
     }
 
     private static void ThrowIfRawQueryFailed(
@@ -2368,10 +2359,11 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         if (!response.HasErrors)
             return;
 
-        var details = redactDetails
+        // Server error details can echo ordinary document values as well as encrypted
+        // envelopes. Do not copy those details into exceptions that callers may log.
+        throw new InvalidOperationException(redactDetails
             ? "SurrealDB rejected an encrypted write; details were redacted."
-            : FormatRawQueryErrors(response);
-        throw new InvalidOperationException(details);
+            : "SurrealDB rejected a write; details were redacted.");
     }
 
     /// <summary>
@@ -3335,11 +3327,10 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
             if (IdentityMap.TryGetValue(fence.DocumentType, out var typeMap))
                 typeMap.TryRemove(fence.IdentityKey, out _);
             ResolvedLogger.LogWarning(
-                exception,
-                "Committed version fence for {DocumentType} ({RecordId}), but the tracked instance " +
-                "could not be synchronized and was evicted",
+                "Committed version fence for {DocumentType}, but the tracked instance " +
+                "could not be synchronized and was evicted ({ExceptionType})",
                 fence.DocumentType.FullName,
-                DocumentIdentityResolver.FormatRecordIdLiteral(fence.RecordId));
+                exception.GetType().Name);
         }
     }
 

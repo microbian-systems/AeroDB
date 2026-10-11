@@ -79,6 +79,9 @@ public class SessionDeleteWhereTests
         await using var store = await TestHarness.CreateStoreAsync();
         await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
+        session.Store(new SimpleDoc { Name = "fetch-latest-table-bootstrap" });
+        await session.SaveChangesAsync();
+
         var result = await session.FetchLatest<SimpleDoc>("nonexistent-id-12345");
         result.ShouldBeNull();
     }
