@@ -65,15 +65,15 @@ Windows validation used .NET SDK 10.0.401, SurrealDB 3.3.0, and develop's
 exact driver commit `ee62b57972e7d4624e3d3362679a03ee794d80c0` in an isolated
 checkout. The user's original driver checkout and files were preserved.
 
-| Suite | Windows 3.3.0 passed/failed | Linux 3.3.0 passed/failed |
-|---|---:|---:|
-| AeroDB.Analyzers.Tests | 27/0 | 27/0 |
-| AeroDB.AspNetIdentity.Tests | 137/0 | 137/0 |
-| AeroDB.IntegrationTests | 4/12 | 4/12 |
-| AeroDB.Sable.Configuration.Tests | 10/0 | 10/0 |
-| AeroDB.Sable.FSharp.Tests | 9/0 | 9/0 |
-| AeroDB.Sable.Server.Tests | 19/0 | 19/0 |
-| AeroDB.Tests | 2121/0 | 2121/0 |
+| Suite | Windows 3.3.0 passed/failed | Linux 3.3.0 passed/failed | Linux 3.2.5 passed/failed |
+|---|---:|---:|---:|
+| AeroDB.Analyzers.Tests | 27/0 | 27/0 | 27/0 |
+| AeroDB.AspNetIdentity.Tests | 137/0 | 137/0 | 137/0 |
+| AeroDB.IntegrationTests | 4/12 | 4/12 | 4/12 |
+| AeroDB.Sable.Configuration.Tests | 10/0 | 10/0 | 10/0 |
+| AeroDB.Sable.FSharp.Tests | 9/0 | 9/0 | 9/0 |
+| AeroDB.Sable.Server.Tests | 19/0 | 19/0 | 19/0 |
+| AeroDB.Tests | 2121/0 | 2121/0 | 2121/0 |
 
 All seven suites executed, with **zero skipped**. Totals: **2327 passed,
 12 failed**. The workflow correctly exits nonzero; these are not all-green
@@ -81,11 +81,10 @@ results. The sequential Windows run and Linux 3.3.0 run agree. One intermediate
 Windows run was invalidated by rebuilding its binaries during execution and
 is explicitly excluded from verification evidence.
 
-The [Linux comparison run](https://github.com/microbian-systems/AeroDB/actions/runs/38513908981)
-also found the same 12 reactive failures on 3.2.5. Its only additional failure
-was the version-dependent search-error fixture described above; the corrected
-fixture passed in a subsequent local 19/19 server run and requires CI recheck
-on 3.2.5.
+The [Linux comparison recheck](https://github.com/microbian-systems/AeroDB/actions/runs/38515120764)
+confirmed all seven suites on both server versions after correcting the
+version-dependent search-error fixture. Both server suites passed 19/19;
+the only remaining failures are the same 12 reactive integration cases.
 
 ## Remaining upstream blocker
 
