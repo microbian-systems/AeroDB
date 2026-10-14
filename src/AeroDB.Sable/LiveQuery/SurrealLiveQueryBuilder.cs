@@ -13,6 +13,7 @@ internal sealed class SurrealLiveQueryBuilder<T> : IAeroDBLiveQueryBuilder<T> wh
     private readonly string? _tenantId;
     private readonly ILoggerFactory _loggerFactory;
     private readonly ILogger<SurrealLiveQueryBuilder<T>> _logger;
+    private readonly Action<IAsyncDisposable>? _registerSubscription;
     private readonly List<Expression<Func<T, bool>>> _predicates = new();
     private readonly List<Expression<Func<T, object>>> _fields = new();
     private readonly List<Action<T>> _onCreated = new();
@@ -25,12 +26,14 @@ internal sealed class SurrealLiveQueryBuilder<T> : IAeroDBLiveQueryBuilder<T> wh
         ISurrealDbSession session,
         StoreOptions options,
         ILoggerFactory loggerFactory,
-        string? tenantId = null)
+        string? tenantId = null,
+        Action<IAsyncDisposable>? registerSubscription = null)
     {
         _session = session ?? throw new ArgumentNullException(nameof(session));
         _options = options ?? throw new ArgumentNullException(nameof(options));
         _loggerFactory = loggerFactory ?? throw new ArgumentNullException(nameof(loggerFactory));
         _tenantId = tenantId;
+        _registerSubscription = registerSubscription;
         _channelCapacity = options.LiveQueryChannelCapacity;
         _logger = loggerFactory.CreateLogger<SurrealLiveQueryBuilder<T>>();
     }
@@ -121,7 +124,16 @@ internal sealed class SurrealLiveQueryBuilder<T> : IAeroDBLiveQueryBuilder<T> wh
             queryLogger);
 
         await query.StartAsync(ct).ConfigureAwait(false);
-        return query;
+        try
+        {
+            _registerSubscription?.Invoke(query);
+            return query;
+        }
+        catch
+        {
+            await query.DisposeAsync().ConfigureAwait(false);
+            throw;
+        }
     }
 
     private string BuildSurrealQL(string table, bool injectTenantFilter = false)
