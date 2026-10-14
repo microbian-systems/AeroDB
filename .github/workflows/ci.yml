@@ -12,9 +12,13 @@ env:
 
 jobs:
   build-and-test:
-    name: Build & Test
+    name: Build & Test (SurrealDB ${{ matrix.surrealdb-version }})
     runs-on: ubuntu-latest
     timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        surrealdb-version: ['3.2.5', '3.3.0']
     env:
       CARGO_BUILD_JOBS: '2'
       CARGO_PROFILE_DEV_DEBUG: '0'
@@ -75,7 +79,7 @@ jobs:
       - name: Start isolated SurrealDB for server and integration suites
         run: |
           docker run --detach --rm --name aerodb-ci-surrealdb \
-            -p 127.0.0.1:8000:8000 surrealdb/surrealdb:v3.3.0 \
+            -p 127.0.0.1:8000:8000 surrealdb/surrealdb:v${{ matrix.surrealdb-version }} \
             start --bind 0.0.0.0:8000 --allow-all --unauthenticated memory
           for attempt in $(seq 1 30); do
             if curl --fail --silent http://127.0.0.1:8000/version; then exit 0; fi
@@ -92,7 +96,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: aerodb-test-results
+          name: aerodb-test-results-${{ matrix.surrealdb-version }}
           path: TestResults/
           if-no-files-found: warn
 
