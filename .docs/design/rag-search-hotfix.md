@@ -68,6 +68,19 @@ release. Its 15 focused/integration checks passed with real MiniLM ONNX vectors,
 and a fluent hybrid query returned two cited chunks from the existing `ash.pdf`
 dataset for a limit of two. No corpus reingestion was needed.
 
+## Publication verification
+
+After aligning the hotfix with develop at `5be886f`, all **17/17** server tests
+passed again with zero skips against SurrealDB 3.3.0. This run used a clean,
+isolated checkout with develop's exact pinned driver commit
+`ee62b57972e7d4624e3d3362679a03ee794d80c0`, rather than the unrelated existing
+driver checkout. The original driver HEAD and files were left unchanged.
+
+The final diff against develop contains only SearchQuery.cs, the RAG regression
+test file, its test-project README and this report. The existing identity-ordering
+implementation and vector-scope predicate fix from develop are preserved.
+This is focused server verification; the complete AeroDB suite still requires CI.
+
 ## Separate known limitation
 
 SchemaManager.GetFieldSchemas excludes only the conventional property `Id`,
