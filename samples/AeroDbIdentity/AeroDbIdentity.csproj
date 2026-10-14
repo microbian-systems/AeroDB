@@ -29,4 +29,14 @@
     <ProjectReference Include="..\..\surrealdb.net\SurrealDb.Embedded.InMemory\SurrealDb.Embedded.InMemory.csproj" />
   </ItemGroup>
 
+  <!-- Clean removes generated JavaScript; recreate it before static-asset discovery. -->
+  <Target Name="CompileTypeScriptForStaticWebAssets"
+          BeforeTargets="ResolveProjectStaticWebAssets"
+          DependsOnTargets="CheckFileSystemCaseSensitive;FindConfigFiles;CompileTypeScript;CompileTypeScriptWithTSConfig">
+    <ItemGroup>
+      <Content Include="@(GeneratedJavascript)" Exclude="@(Content)"
+               CopyToOutputDirectory="PreserveNewest" />
+    </ItemGroup>
+  </Target>
+
 </Project>
