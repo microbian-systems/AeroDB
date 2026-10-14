@@ -316,9 +316,13 @@ public sealed class SableConfigurationStoreTests
             }
             catch (SurrealDbEmbeddedException exception)
                 when (attempt < 7
-                    && exception.Message.Contains(
+                    && (exception.Message.Contains(
                         "locked a portion of the file",
-                        StringComparison.OrdinalIgnoreCase))
+                        StringComparison.OrdinalIgnoreCase)
+                        || exception.Message.Contains(
+                            "being used by another process", StringComparison.OrdinalIgnoreCase)
+                        || exception.Message.Contains(
+                            "already locked by another process", StringComparison.OrdinalIgnoreCase)))
             {
                 await Task.Delay(delay);
                 delay += delay;

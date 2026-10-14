@@ -432,7 +432,8 @@ internal sealed class SharedEmbeddedClient : IDisposable
 
     private static bool IsTransientFileLock(SurrealDbEmbeddedException exception) =>
         exception.Message.Contains("locked a portion of the file", StringComparison.OrdinalIgnoreCase)
-        || exception.Message.Contains("being used by another process", StringComparison.OrdinalIgnoreCase);
+        || exception.Message.Contains("being used by another process", StringComparison.OrdinalIgnoreCase)
+        || exception.Message.Contains("already locked by another process", StringComparison.OrdinalIgnoreCase);
 
     public void Dispose()
     {
