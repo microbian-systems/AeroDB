@@ -20,7 +20,7 @@ public sealed class SableConfigurationStoreTests
     [Test]
     public async Task Set_get_delete_and_reopen_round_trip()
     {
-        using var environment = TestEnvironment.Create();
+        await using var environment = TestEnvironment.Create();
 
         using (var writer = new SableConfigurationStore(environment.CreateOptions()))
         {
@@ -48,7 +48,7 @@ public sealed class SableConfigurationStoreTests
     [Test]
     public async Task Case_insensitive_upsert_has_one_logical_record()
     {
-        using var environment = TestEnvironment.Create();
+        await using var environment = TestEnvironment.Create();
         using var store = new SableConfigurationStore(environment.CreateOptions());
 
         await store.SetAsync("Features:Payments:ApiKey", "first");
@@ -62,7 +62,7 @@ public sealed class SableConfigurationStoreTests
     [Test]
     public async Task Stored_record_contains_an_envelope_not_plaintext()
     {
-        using var environment = TestEnvironment.Create();
+        await using var environment = TestEnvironment.Create();
         const string plaintext = "plaintext-must-not-cross-the-database-boundary";
 
         using (var store = new SableConfigurationStore(environment.CreateOptions()))
@@ -89,7 +89,7 @@ public sealed class SableConfigurationStoreTests
     [Test]
     public async Task Wrong_key_fails_closed()
     {
-        using var environment = TestEnvironment.Create();
+        await using var environment = TestEnvironment.Create();
         using (var writer = new SableConfigurationStore(environment.CreateOptions()))
             await writer.SetAsync("Secrets:ApiKey", "classified");
 
@@ -111,7 +111,7 @@ public sealed class SableConfigurationStoreTests
     [Test]
     public async Task Tampered_clear_key_record_binding_fails_closed()
     {
-        using var environment = TestEnvironment.Create();
+        await using var environment = TestEnvironment.Create();
         using (var writer = new SableConfigurationStore(environment.CreateOptions()))
             await writer.SetAsync("Secrets:ApiKey", "classified");
 
@@ -141,7 +141,7 @@ public sealed class SableConfigurationStoreTests
     [Test]
     public async Task Configuration_provider_preserves_json_hierarchy_and_last_provider_wins()
     {
-        using var environment = TestEnvironment.Create();
+        await using var environment = TestEnvironment.Create();
         var jsonPath = Path.Combine(environment.RootPath, "appsettings.json");
         await File.WriteAllTextAsync(
             jsonPath,
@@ -175,7 +175,7 @@ public sealed class SableConfigurationStoreTests
     [Test]
     public async Task Explicit_refresh_updates_snapshot_and_signals_change()
     {
-        using var environment = TestEnvironment.Create();
+        await using var environment = TestEnvironment.Create();
         using (var writer = new SableConfigurationStore(environment.CreateOptions()))
             await writer.SetAsync("Feature:Enabled", "false");
 
@@ -203,7 +203,7 @@ public sealed class SableConfigurationStoreTests
     [Test]
     public async Task Explicit_refresh_updates_options_monitor()
     {
-        using var environment = TestEnvironment.Create();
+        await using var environment = TestEnvironment.Create();
         using (var writer = new SableConfigurationStore(environment.CreateOptions()))
             await writer.SetAsync("Feature:Enabled", "false");
 
@@ -235,7 +235,7 @@ public sealed class SableConfigurationStoreTests
     [Test]
     public async Task Configuration_indexer_write_is_rejected()
     {
-        using var environment = TestEnvironment.Create();
+        await using var environment = TestEnvironment.Create();
         var configuration = new ConfigurationBuilder()
             .AddSableConfiguration(environment.CreateOptions())
             .Build();
@@ -258,7 +258,7 @@ public sealed class SableConfigurationStoreTests
         Should.Throw<SableConfigurationException>(
             () => new SableConfigurationStore(missingPath));
 
-        using var environment = TestEnvironment.Create();
+        await using var environment = TestEnvironment.Create();
         using var store = new SableConfigurationStore(environment.CreateOptions());
         await Should.ThrowAsync<SableConfigurationException>(
             () => store.SetAsync(" whitespace ", "value"));
@@ -330,7 +330,7 @@ public sealed class SableConfigurationStoreTests
         }
     }
 
-    private sealed class TestEnvironment : IDisposable
+    private sealed class TestEnvironment : IAsyncDisposable
     {
         private readonly byte[] _key;
 
@@ -365,11 +365,28 @@ public sealed class SableConfigurationStoreTests
                 () => new AesGcmKeyWrappingProvider(keyMaterial, keyId, "tests"));
         }
 
-        public void Dispose()
+        public async ValueTask DisposeAsync()
         {
             CryptographicOperations.ZeroMemory(_key);
-            if (Directory.Exists(RootPath))
-                Directory.Delete(RootPath, recursive: true);
+            // Native disposal is scheduled asynchronously by the pinned SDK;
+            // SurrealKV may still create/remove files while its engine shuts down.
+            // Only this fixture's unique temporary directory is removed, and a
+            // persistent cleanup error still fails the test after bounded backoff.
+            var delay = TimeSpan.FromMilliseconds(25);
+            for (var attempt = 1; ; attempt++)
+            {
+                try
+                {
+                    if (Directory.Exists(RootPath))
+                        Directory.Delete(RootPath, recursive: true);
+                    return;
+                }
+                catch (IOException) when (attempt < 7)
+                {
+                    await Task.Delay(delay);
+                    delay += delay;
+                }
+            }
         }
     }
 }
