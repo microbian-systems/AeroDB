@@ -113,3 +113,55 @@ was disabled, and no SDK/submodule code was edited to obtain a green build.
 Finishing the remaining failures requires a separate server-side hotfix or an
 explicitly approved redesign of Sable's transaction execution; replacing
 atomic saves with non-transactional writes is not an acceptable workaround.
+
+## Local server hotfix review and follow-up verification
+
+A separate SurrealDB 3.3.0 hotfix now exists locally, on
+`codex/hotfix-rpc-live-notifications` at `14cdebe`, based on upstream tag commit
+`238bfeb11f5725bebed370167656748df8067595`. The user requested local review first:
+no server fork/PR was published and CI still uses stock server images.
+
+The cause is more specific than the commit handler alone: the executor for an
+existing transaction did not install a notification broker, so the document
+layer skipped generating LIVE events. The patch installs the ordinary buffered
+broker for writable batches and registers its receiver with the transaction's
+existing post-commit action mechanism. Only durable success schedules delivery;
+cancel and failed commit discard the buffer. The SDK remains unchanged.
+
+These server regressions passed; the first failed against unpatched source:
+
+- `rpc_transaction_commit_delivers_create_update_delete_notifications`
+- `rpc_transaction_cancel_discards_live_notifications`
+- `rpc_transaction_failed_commit_discards_live_notifications`
+
+All 52 WebSocket unit tests also passed with zero ignored tests. The patched
+Windows debug binary built, but the execution policy blocked launching it on
+the isolated loopback test port. No alternate launch route was attempted.
+**The real .NET driver and seven AeroDB suites have not yet run against this
+patched server.** A broader upstream server-suite attempt is not claimed green:
+the memory-only build had 203/204 passing tests, and the remaining capability
+test requires optional HTTP/scripting; that feature build needs absent libclang.
+
+The [latest completed stock-server CI run](https://github.com/microbian-systems/AeroDB/actions/runs/38630243562)
+confirmed `AeroDB.Tests` 2121/2121 on both versions and the same 12 missing-event
+integration failures. It additionally exposed a Linux temporary-directory
+cleanup race in the configuration fixture (3.2.5 job: 9/10; 3.3.0 job: 10/10).
+
+Two further fixture/build corrections are now included:
+
+- The embedded SDK's native `dispose` schedules engine removal on a Rust task.
+  Failed-initialization reconnection now uses bounded, lock-specific backoff
+  instead of asserting instantaneous file-lock release; the store's stale
+  client reference must still be cleared. The whole Windows core suite passed
+  2121/2121 after this correction.
+- Configuration fixtures use async disposal with bounded I/O cleanup retries
+  for their own unique temporary directories. Persistent cleanup errors still
+  fail the tests. Windows configuration verification passed 10/10; its updated
+  Linux CI result remains pending.
+- TypeScript's cross-configuration output cleanup now runs before early
+  compilation, so it cannot delete the JavaScript just generated for static
+  asset discovery. Repeated full non-incremental solution builds passed with
+  zero errors and 16 existing warnings.
+
+No production SDK disposal implementation, vendor gitlink, installed server,
+or user data was changed. PR #8 remains **unmerged and not fully verified**.
