@@ -3,6 +3,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using AeroDB.Sable.Internals.Cbor;
 using AeroDB.Sable.Metadata;
+using SurrealDb.Net.Models.Response;
 
 namespace AeroDB.Sable;
 
@@ -247,8 +248,9 @@ public sealed class AeroDBSearchQuery<T> : ISearchQuery<T> where T : class
             ? $" AND ({_whereClause})"
             : "";
 
-        // ORDER BY on each sub-query (user override for FTS, always _distance for KNN)
-        var ftOrderBy = _orderByClause ?? "_ft_score DESC";
+        // RRF inputs must remain relevance-ranked. Apply a user ordering only
+        // after fusion, rather than changing the full-text relevance ranks.
+        var ftOrderBy = "_ft_score DESC";
 
         // Build SurrealQL LET blocks
         var surql = $"""
@@ -268,20 +270,17 @@ LET $vs = (
 );
 """;
 
-        // Apply ORDER BY / SKIP on RRF result when user specified extras
-        bool hasFinalExtras = _orderByClause is not null || _skip > 0;
-        if (hasFinalExtras)
-        {
-            var finalOrderBy = _orderByClause ?? "_ft_score DESC";
-            var startAt = _skip > 0 ? $" START AT {_skip}" : "";
-            surql += $"RETURN (SELECT * FROM search::rrf([$ft, $vs], {rrfKValue}, {rrfLimitValue}) ORDER BY {finalOrderBy} LIMIT {_limit}{startAt});";
-        }
-        else
-        {
-            surql += $"RETURN search::rrf([$ft, $vs], {rrfKValue}, {rrfLimitValue});";
-        }
+        // search::rrf(lists, limit, k): retain enough fused rows for pagination.
+        // A custom ordering must see the complete (bounded) candidate union.
+        var fusionLimit = _orderByClause is null
+            ? checked(_skip + _limit)
+            : checked(2 * rrfLimitValue);
+        var finalOrderBy = _orderByClause ?? "rrf_score DESC";
+        var startAt = _skip > 0 ? $" START AT {_skip}" : "";
+        surql += $"RETURN (SELECT * FROM search::rrf([$ft, $vs], {fusionLimit}, {rrfKValue}) ORDER BY {finalOrderBy} LIMIT {_limit}{startAt});";
 
-        return await ExecuteRawSearchAsync(surql, ct).ConfigureAwait(false);
+        // LET statements occupy result slots 0 and 1; RETURN is slot 2.
+        return await ExecuteRawSearchAsync(surql, ct, resultIndex: 2).ConfigureAwait(false);
     }
 
     private async Task<List<T>> ExecuteFullTextSearchAsync(CancellationToken ct)
@@ -342,13 +341,24 @@ LET $vs = (
         return await ExecuteRawSearchAsync(surqlSimple, ct).ConfigureAwait(false);
     }
 
-    private async Task<List<T>> ExecuteRawSearchAsync(string surql, CancellationToken ct)
+    private async Task<List<T>> ExecuteRawSearchAsync(string surql, CancellationToken ct, int resultIndex = 0)
     {
         var response = await _provider.Session.RawQuery(surql, _paramBuilder.Parameters, ct).ConfigureAwait(false);
 
-        if (!response.HasErrors && response.Count > 0)
+        if (response.HasErrors)
         {
-            var records = CborResultReader.ReadPocoResult(response, 0);
+            var messages = string.Join("; ", response.Errors.Select(error => error switch
+            {
+                SurrealDbErrorResult err => err.Details,
+                SurrealDbProtocolErrorResult err => $"{err.Details} ({err.Description})",
+                _ => $"Unknown error: {error.GetType().Name}"
+            }));
+            throw new InvalidOperationException($"SurrealDB search query error: {messages}");
+        }
+
+        if (response.Count > resultIndex)
+        {
+            var records = CborResultReader.ReadPocoResult(response, resultIndex);
             if (records is { Count: > 0 })
             {
                 var mapping = _provider.StoreOptions.Schema.Mappings.GetValueOrDefault(typeof(T));

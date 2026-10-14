@@ -24,6 +24,14 @@ Tests fail with a prerequisite error when the server is unavailable or older
 than 3.2. They never silently skip. Bogus data uses a fixed seed per scenario,
 and tests run serially so a failed scenario remains inspectable.
 
+`RagSearchRegressionTests` also covers the existing fluent `Search<T>()` API
+and LINQ identity ordering. It verifies actual results, RRF scores, limits,
+pagination, filters and error propagation; empty results never stand in for
+successful hybrid execution. Alternate-identity coverage is translation-only
+because of a separate known schema-generation issue. See
+[`rag-search-hotfix.md`](../../.docs/design/rag-search-hotfix.md) for diagnosis,
+test evidence and reproduction commands.
+
 ## Capability rollout
 
 | Contract | Scenario | Server test | Production prerequisite |
