@@ -86,10 +86,11 @@ public sealed class RagSearchRegressionTests
         await using var store = await CreateSearchStoreAsync(ct);
         await using var query = await store.QuerySessionAsync(ct);
 
-        // No full-text index exists on the identity field.
+        // The index has three dimensions; a two-dimensional query is invalid.
+        // Unlike matching an unindexed identity, this is an error on both 3.2 and 3.3.
         var exception = await Should.ThrowAsync<InvalidOperationException>(() =>
             query.Search<RagSearchDocument>()
-                .MatchText(x => (object)x.Id, "laptop")
+                .WithVector(x => x.Embedding, [1f, 0f])
                 .ToListAsync(ct));
 
         exception.Message.ShouldContain("SurrealDB search query error");
