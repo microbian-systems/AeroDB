@@ -76,10 +76,12 @@ isolated checkout with develop's exact pinned driver commit
 `ee62b57972e7d4624e3d3362679a03ee794d80c0`, rather than the unrelated existing
 driver checkout. The original driver HEAD and files were left unchanged.
 
-The final diff against develop contains only SearchQuery.cs, the RAG regression
+At initial publication, the diff against develop contained only SearchQuery.cs, the RAG regression
 test file, its test-project README and this report. The existing identity-ordering
 implementation and vector-scope predicate fix from develop are preserved.
-This is focused server verification; the complete AeroDB suite still requires CI.
+That was focused server verification. The later CI/native-library and
+full-suite work is recorded in [ci-and-full-suite-verification.md](ci-and-full-suite-verification.md),
+including the remaining upstream live-notification blocker. PR #8 is not yet merge-ready.
 
 ## Separate known limitation
 
