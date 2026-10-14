@@ -20,6 +20,7 @@ namespace AeroDB.IntegrationTests;
 /// Use <c>docker-compose -f docker-compose.surrealdb.yml up</c> to start one.
 /// </summary>
 [Category("Integration")]
+[NotInParallel]
 public class IntegrationTests
 {
     /// <summary>
@@ -30,8 +31,7 @@ public class IntegrationTests
     [Test]
     public async Task Fetch_with_include_expands_related()
     {
-        var available = await TestHarness.IsAvailableAsync();
-        if (!available) return;
+        await TestHarness.EnsureAvailableAsync();
 
         await using var store = await TestHarness.CreateStoreAsync();
         await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
@@ -77,15 +77,14 @@ public class IntegrationTests
     [Test]
     public async Task LoadMany_resolves_execute_sql_created_records()
     {
-        var available = await TestHarness.IsAvailableAsync();
-        if (!available) return;
+        await TestHarness.EnsureAvailableAsync();
 
         await using var store = await TestHarness.CreateStoreAsync();
         await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
         // Create records using raw SurrealQL
-        await session.ExecuteSqlAsync("CREATE person:alice CONTENT { Name: 'Alice', Age: 30 };");
-        await session.ExecuteSqlAsync("CREATE person:bob CONTENT { Name: 'Bob', Age: 25 };");
+        await session.ExecuteSqlAsync("CREATE test_person:alice CONTENT { name: 'Alice', age: 30, email: 'alice@example.com' };");
+        await session.ExecuteSqlAsync("CREATE test_person:bob CONTENT { name: 'Bob', age: 25, email: 'bob@example.com' };");
 
         // LoadManyAsync uses WHERE id IN [...] internally
         var results = await session.LoadManyAsync<TestPerson>(new[] { "alice", "bob" });
@@ -105,8 +104,7 @@ public class IntegrationTests
     [Test]
     public async Task Events_enabled_with_datetimeoffset_and_schemafull()
     {
-        var available = await TestHarness.IsAvailableAsync();
-        if (!available) return;
+        await TestHarness.EnsureAvailableAsync();
 
         await using var store = await TestHarness.CreateStoreAsync(o =>
         {
@@ -153,8 +151,7 @@ public class IntegrationTests
     [Test]
     public async Task Binary_serialization_roundtrips_datetimeoffset()
     {
-        var available = await TestHarness.IsAvailableAsync();
-        if (!available) return;
+        await TestHarness.EnsureAvailableAsync();
 
         await using var store = await TestHarness.CreateStoreAsync();
         await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
@@ -171,9 +168,10 @@ public class IntegrationTests
         session.Store(original);
         await session.SaveChangesAsync();
 
-        // Query and verify — use RawQueryAsync since LoadAsync with the returned
-        // RecordId is unreliable (CBOR deserialization may map it differently)
-        var loaded = await session.RawQueryAsync<Product>("SELECT * FROM product WHERE Name = 'Test Product';");
+        // Use the mapped query API so the predicate follows Sable's field naming.
+        var loaded = await session.Query<Product>()
+            .Where(product => product.Name == "Test Product")
+            .ToListAsync();
         loaded.ShouldNotBeNull();
         loaded.Count.ShouldBeGreaterThanOrEqualTo(1);
         loaded[0].Name.ShouldBe("Test Product");

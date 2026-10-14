@@ -1,4 +1,5 @@
 using AeroDB.Sable;
+using SurrealDb.Net;
 
 namespace AeroDB.IntegrationTests;
 
@@ -21,27 +22,24 @@ public static class TestHarness
         Environment.GetEnvironmentVariable("AeroDB_TEST_DB") ?? "test";
 
     /// <summary>
-    /// Check whether a remote SurrealDB endpoint is reachable.
-    /// Returns false if the connection fails (e.g., no server running).
+    /// Require a reachable remote SurrealDB endpoint. An unavailable server must
+    /// fail integration tests instead of letting them pass without assertions.
     /// </summary>
-    public static async Task<bool> IsAvailableAsync()
+    public static async Task EnsureAvailableAsync()
     {
         try
         {
-            var store = Documents.For(o =>
-            {
-                o.Endpoint = Endpoint;
-                o.Namespace = Namespace;
-                o.Database = Database;
-            });
-
-            await store.InitializeAsync();
-            await store.DisposeAsync();
-            return true;
+            // A connectivity probe must not initialize a shared namespace/schema:
+            // concurrent tests would contend on its catalog writes.
+            await using var client = new SurrealDbClient(Endpoint);
+            await client.Connect();
+            await client.Version();
         }
-        catch
+        catch (Exception exception)
         {
-            return false;
+            throw new InvalidOperationException(
+                $"Integration tests require an available SurrealDB server at {Endpoint}.",
+                exception);
         }
     }
 
@@ -54,8 +52,12 @@ public static class TestHarness
         var store = Documents.For(o =>
         {
             o.Endpoint = Endpoint;
-            o.Namespace = Namespace;
+            // Live subscriptions and fixed record IDs must remain isolated
+            // from other tests and previous runs on a persistent test server.
+            o.Namespace = $"{Namespace}_{Guid.NewGuid():N}";
             o.Database = Database;
+            // LIVE SELECT requires an existing table before any records are written.
+            o.Schema.For<TestPerson>().SetSchemaMode(SchemaMode.Flexible);
             configure?.Invoke(o);
         });
 
