@@ -33,6 +33,8 @@ Neither version is allowed to fail silently.
   guards silently returned and were counted as successful tests.
 - Isolate integration namespaces, serialize catalog setup, define the live
   table before subscribing, and use the correct table/field/record-ID names.
+- Distinguish Open metadata from document changes in the filtered Results
+  assertion, following the existing `SelectResults_ExcludesClose` unit contract.
 - Remove a race in the callback-isolation assertion: verify both ordered
   callbacks after they finish, instead of inspecting a shared value that the
   next callback can already have overwritten.

@@ -691,11 +691,15 @@ public class ReactiveIntegrationTests
             liveSession = null;
             await Task.Delay(TimeSpan.FromMilliseconds(300));
 
-            // Assert — only the Created event for "Target" should arrive (Other filtered by WHERE)
-            allChanges.Count.ShouldBe(1);
-            allChanges[0].Action.ShouldBe(AeroDBLiveAction.Created);
-            allChanges[0].Document.ShouldNotBeNull();
-            allChanges[0].Document!.Name.ShouldBe("Target");
+            // Results retains Open metadata. Only one document change should
+            // arrive: Target is created, while Other is filtered by WHERE.
+            allChanges.ShouldContain(change => change.Action == AeroDBLiveAction.Open);
+            var documentChanges = allChanges
+                .Where(change => change.Action != AeroDBLiveAction.Open).ToList();
+            documentChanges.Count.ShouldBe(1);
+            documentChanges[0].Action.ShouldBe(AeroDBLiveAction.Created);
+            documentChanges[0].Document.ShouldNotBeNull();
+            documentChanges[0].Document!.Name.ShouldBe("Target");
         }
         finally
         {
