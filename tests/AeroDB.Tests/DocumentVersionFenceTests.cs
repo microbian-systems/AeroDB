@@ -280,12 +280,10 @@ public sealed class DocumentVersionFenceTests
         await using var store = await TestHarness.CreateStoreAsync();
         await using var session = await store.LightweightSessionAsync();
         var fence = session.FenceExpectedVersion<VersionedPerson>("opaque-overlap", 1);
-        session.QueueSqlCommand(
-            "{database}",
-            "UPDATE versioned_person SET name = 'unsafe';");
-
-        var exception = await Should.ThrowAsync<InvalidOperationException>(
-            () => session.SaveChangesAsync());
+        var exception = Should.Throw<InvalidOperationException>(() =>
+            session.QueueSqlCommand(
+                "{database}",
+                "UPDATE versioned_person SET name = 'unsafe';"));
 
         exception.Message.ShouldContain("record overlap cannot be proven safe");
         fence.Status.ShouldBe(VersionFenceStatus.Queued);

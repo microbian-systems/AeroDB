@@ -220,8 +220,12 @@ public abstract class InternalSessionBase : IAsyncDisposable
     protected ILogger<T> CreateLogger<T>() =>
         Options.LoggerFactory?.CreateLogger<T>() ?? NullLogger<T>.Instance;
 
+    /// <summary>Allows derived sessions to protect active transactional fences from raw work.</summary>
+    protected virtual void OnRawOperation() { }
+
     public async Task<List<T>> RawQueryAsync<T>(string sql, IReadOnlyDictionary<string, object?>? parameters = null, CancellationToken ct = default)
     {
+        OnRawOperation();
         RequestCount++;
         LogSurrealQuery(sql, parameters);
         var response = await EmbeddedTransactionRawQuery
@@ -242,7 +246,7 @@ public abstract class InternalSessionBase : IAsyncDisposable
         where T : class
     {
         var (schemaName, _) = MetadataDispatch.GetSchemaTarget(typeof(T), Options.Schema);
-        var session = await GetSessionForSchemaAsync(schemaName, cancellationToken)
+        var session = await GetReadSessionForSchemaAsync(schemaName, cancellationToken)
             .ConfigureAwait(false);
         RequestCount++;
         LogSurrealQuery(sql, parameters);
@@ -298,6 +302,7 @@ public abstract class InternalSessionBase : IAsyncDisposable
 
     public async Task<int> ExecuteSqlAsync(string sql, IReadOnlyDictionary<string, object?>? parameters = null, CancellationToken ct = default)
     {
+        OnRawOperation();
         RequestCount++;
         LogSurrealQuery(sql, parameters);
         var response = await EmbeddedTransactionRawQuery
@@ -315,9 +320,11 @@ public abstract class InternalSessionBase : IAsyncDisposable
             return false;
 
         var sql = $"SELECT id FROM {identity.Literal}";
+        var (schemaName, _) = MetadataDispatch.GetSchemaTarget(typeof(T), Options.Schema);
+        var readSession = await GetReadSessionForSchemaAsync(schemaName, ct).ConfigureAwait(false);
         RequestCount++;
         LogSurrealQuery(sql, null);
-        var response = await Session.RawQuery(sql, null, ct).ConfigureAwait(false);
+        var response = await readSession.RawQuery(sql, null, ct).ConfigureAwait(false);
         response.EnsureAllOks();
         return CborResultReader.ReadPocoResult(response, 0).Count > 0;
     }
@@ -327,6 +334,15 @@ public abstract class InternalSessionBase : IAsyncDisposable
         var provider = new SurrealQueryProvider(Session, this, Options, TenantId);
         return new SableQueryable<T>(provider);
     }
+
+    /// <summary>
+    /// Selects a typed read target. Document sessions may enlist reads in an
+    /// explicit transaction without changing the general resolver used by writes.
+    /// Existing identity-map entries remain cached, not transaction-fresh reads.
+    /// </summary>
+    internal protected virtual Task<ISurrealDbSession> GetReadSessionForSchemaAsync(
+        string? schemaName, CancellationToken ct = default)
+        => GetSessionForSchemaAsync(schemaName, ct);
 
     /// <summary>
     /// Returns a session scoped to the specified schema (database).
@@ -401,7 +417,7 @@ public abstract class InternalSessionBase : IAsyncDisposable
         RequestCount++;
         var table = MetadataDispatch.GetTableName(typeof(T), Options.Schema);
         var (schemaName, _) = MetadataDispatch.GetSchemaTarget(typeof(T), Options.Schema);
-        var loadSession = await GetSessionForSchemaAsync(schemaName, ct).ConfigureAwait(false);
+        var loadSession = await GetReadSessionForSchemaAsync(schemaName, ct).ConfigureAwait(false);
         var normalizedId = DocumentIdentityResolver.NormalizeForDocumentType(typeof(T), id, Options.Schema);
         if (!DocumentIdentityResolver.TryCreate(normalizedId, table, out var identity))
             return null;
@@ -1676,6 +1692,7 @@ public abstract class InternalSessionBase : IAsyncDisposable
     /// <inheritdoc />
     public void QueueSqlCommand(string placeholder, string sql, params object[] parameters)
     {
+        OnRawOperation();
         if (string.IsNullOrEmpty(placeholder))
             throw new ArgumentException("Placeholder cannot be null or empty.", nameof(placeholder));
         if (string.IsNullOrEmpty(sql))
