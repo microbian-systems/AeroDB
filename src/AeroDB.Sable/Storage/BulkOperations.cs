@@ -52,11 +52,8 @@ public static class BulkOperations
         }
         PrepareTenantValues(internalSession, entities, options);
 
-        var (mappedDatabase, table) = MetadataDispatch.GetSchemaTarget(
+        var (_, table) = MetadataDispatch.GetSchemaTarget(
             typeof(T), options.Schema);
-        var targetSession = await internalSession
-            .GetSessionForSchemaAsync(mappedDatabase, ct)
-            .ConfigureAwait(false);
         var inserted = 0;
 
         for (var i = 0; i < entities.Count; i += batchSize)
@@ -67,8 +64,12 @@ public static class BulkOperations
                 Environment.NewLine,
                 batch.Select(entity => documentSession.BuildBulkCreateStatement(entity, table)));
 
-            var response = await targetSession.RawQuery(sql, null, ct).ConfigureAwait(false);
-            response.EnsureAllOks();
+            await documentSession.ExecuteImmediateMutationAsync(
+                    typeof(T),
+                    (targetSession, cancellationToken) => EmbeddedTransactionRawQuery
+                        .ExecuteAsync(targetSession, sql, null, cancellationToken),
+                    ct)
+                .ConfigureAwait(false);
             inserted += batch.Count;
         }
 

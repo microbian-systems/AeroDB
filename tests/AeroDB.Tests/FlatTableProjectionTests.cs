@@ -181,6 +181,11 @@ public class FlatTableProjectionTests
         store.Options.Events.Enabled = true;
         await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
+        // Create the projected-document table without creating the target document.
+        // The assertion below concerns non-matching projection events only.
+        session.Store(new FlatTableDoc { Name = "projection-table-bootstrap" });
+        await session.SaveChangesAsync();
+
         // Append a non-matching event type (DeleteEvent has no mappings under Project)
         await session.Events.StartStream("stream-5", [
             new DeleteEvent { StreamId = "stream-5", ShouldDelete = false }

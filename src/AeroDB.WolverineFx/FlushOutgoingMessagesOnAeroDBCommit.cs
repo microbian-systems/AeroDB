@@ -14,18 +14,24 @@ namespace AeroDB.WolverineFx;
 /// </list>
 ///
 /// Reflection access to <c>DocumentSession._appendedEvents</c> is
-/// delegated to <see cref="Internal.AeroDBSessionEventAccessor"/> to avoid
-/// duplicating that logic with <see cref="AeroDBEventForwarding"/>.
+/// delegated to <see cref="Internal.AeroDBSessionEventAccessor"/> so the
+/// outbox listener owns a single event-publication path for its session.
 /// </summary>
 internal sealed class FlushOutgoingMessagesOnAeroDBCommit : IDocumentSessionListener
 {
     private readonly MessageContext _context;
     private readonly AeroDBMessageStore _messageStore;
+    private AeroDBEnvelopeTransaction? _transaction;
 
     public FlushOutgoingMessagesOnAeroDBCommit(MessageContext context, AeroDBMessageStore messageStore)
     {
         _context = context ?? throw new ArgumentNullException(nameof(context));
         _messageStore = messageStore ?? throw new ArgumentNullException(nameof(messageStore));
+    }
+
+    internal void AttachTransaction(AeroDBEnvelopeTransaction transaction)
+    {
+        _transaction = transaction ?? throw new ArgumentNullException(nameof(transaction));
     }
 
     /// <summary>
@@ -50,15 +56,23 @@ internal sealed class FlushOutgoingMessagesOnAeroDBCommit : IDocumentSessionList
     /// <summary>
     /// Called just before the SurrealDB transaction commits.
     /// </summary>
-    public async Task BeforeCommitAsync(IDocumentSession session, CancellationToken ct)
+    public Task BeforeCommitAsync(IDocumentSession session, CancellationToken ct)
     {
-        if (_context.Envelope == null) return;
+        ct.ThrowIfCancellationRequested();
+        if (_context.Envelope is not { } envelope || _transaction is null) return Task.CompletedTask;
 
-        if (_context.Envelope.WasPersistedInInbox)
+        if (_transaction.IsIncomingPersistencePending(envelope)
+            && !_transaction.IsIncomingHandlingPending(envelope))
         {
-            await _messageStore.Inbox.MarkIncomingEnvelopeAsHandledAsync(_context.Envelope);
-            _context.Envelope.Status = EnvelopeStatus.Handled;
+            ct.ThrowIfCancellationRequested();
+            var command = _messageStore.BuildMarkIncomingHandledCommand(
+                envelope,
+                DateTimeOffset.UtcNow.AddDays(1));
+            session.QueueRecordMutation(WolverineRecordMutationFactory.MarkIncomingHandled(command));
+            _transaction.QueueHandlingCompletedInCommit(envelope);
         }
+
+        return Task.CompletedTask;
     }
 
     /// <summary>
@@ -66,6 +80,10 @@ internal sealed class FlushOutgoingMessagesOnAeroDBCommit : IDocumentSessionList
     /// </summary>
     public async Task AfterCommitAsync(IDocumentSession session, IChangeSet changes, CancellationToken ct)
     {
+        // The database commit is authoritative. Mark in-memory persistence before
+        // flushing so a cancellation during transport delivery leaves the durable
+        // outbox recoverable instead of misrepresenting the committed state.
+        _transaction?.MarkCommitted();
         await _context.FlushOutgoingMessagesAsync();
     }
 

@@ -175,21 +175,18 @@ public class AeroDBIntegrationRegistrationTests
     }
 
     // ====================================================================
-    // AeroDBEventForwarding — registered as singleton
+    // Session-bound forwarding — no global listener registration
     // ====================================================================
 
     [Test]
-    public void Registers_AeroDBEventForwarding_AsSingleton()
+    public void DoesNotRegisterAGlobalEventForwarder()
     {
         // Act
         _integration.Configure(_options);
 
         // Assert
-        var registration = _options.Services
-            .FirstOrDefault(s => s.ServiceType == typeof(AeroDBEventForwarding));
-
-        registration.ShouldNotBeNull();
-        registration.Lifetime.ShouldBe(ServiceLifetime.Singleton);
+        _options.Services.ShouldNotContain(service =>
+            service.ServiceType.FullName == "AeroDB.WolverineFx.AeroDBEventForwarding");
     }
 
     // ====================================================================

@@ -122,6 +122,17 @@ public class AeroDBWolverineIntegrationTests
         // Host started without exception = success
     }
 
+    [Test]
+    public async Task HostInitializationFailsClearlyForIdAndDestinationMessageIdentity()
+    {
+        var exception = await Should.ThrowAsync<InvalidOperationException>(
+            () => BuildWolverineHostAsync(options =>
+                options.Durability.MessageIdentity = MessageIdentity.IdAndDestination));
+
+        exception.Message.ShouldContain("IdAndDestination");
+        exception.Message.ShouldContain("IdOnly");
+    }
+
     // ─── Test 2: Handler dispatch works through Wolverine ───
 
     [Test]
@@ -392,17 +403,20 @@ public class AeroDBWolverineIntegrationTests
             Destination = new Uri("AeroDB://localhost/incoming")
         };
 
-        // Store twice (simulates duplicate delivery — store accepts duplicates)
+        // A redelivery is acknowledged as a typed duplicate; it must not pause
+        // normal inbox processing as an infrastructure failure.
         await store.StoreIncomingAsync(env);
-        await store.StoreIncomingAsync(env);
+        var duplicate = await Should.ThrowAsync<DuplicateIncomingEnvelopeException>(
+            () => store.StoreIncomingAsync(env));
+        duplicate.Duplicates.Count.ShouldBe(1);
+        duplicate.Duplicates.Single().Id.ShouldBe(env.Id);
 
         // Mark as handled (as the runtime would after processing)
         await store.MarkIncomingEnvelopeAsHandledAsync(env);
 
-        // NOTE: ExistsAsync relies on exact record ID lookup which may not
-        // round-trip correctly through SurrealDB's CREATE ... CONTENT serialization
-        // (pre-existing AeroDBEnvelope serialization concern). The core store/mark
-        // operations are verified as working.
+        (await store.ExistsAsync(env, CancellationToken.None)).ShouldBeTrue();
+        var handled = (await store.AllIncomingAsync()).Single(envelope => envelope.Id == env.Id);
+        handled.Status.ShouldBe(EnvelopeStatus.Handled);
     }
 
     // ─── Test 11: Dead Letter Store and Replay ───
@@ -548,36 +562,6 @@ public class AeroDBWolverineIntegrationTests
         IAeroDBOp insertOp = AeroDBOps.Insert(doc);
         insertOp.ShouldNotBeNull();
         insertOp.ShouldBeAssignableTo<IAeroDBOp>();
-    }
-
-    // ─── Test 16: AeroDBEventForwarding — listener can detect appended events ───
-
-    [Test]
-    public async Task EventForwarding_ListenerDetectsAppendedEvents()
-    {
-        // Verify that AeroDBEventForwarding can access _appendedEvents via reflection
-        using var host = await BuildWolverineHostAsync();
-        var store = host.Services.GetRequiredService<IDocumentStore>();
-        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
-
-        // Append events to trigger tracking
-        await session.Events.Append("test-stream-1", new object[] { new TestEvent("evt1") });
-        await session.Events.Append("test-stream-2", new object[] { new TestEvent("evt2") });
-
-        // Create forwarder and verify it can read events via reflection
-        var forwarder = new AeroDBEventForwarding();
-
-        // Set a dummy context so the forwarder doesn't throw
-        // (without a Wolverine context, the forwarder is a no-op)
-        // The main test is that the reflection-based field access works
-
-        // Save changes (this exercises the listener pipeline in a real scenario)
-        await session.SaveChangesAsync();
-
-        // NOTE: Full event forwarding verification requires a Wolverine
-        // message context which is only available during handler execution.
-        // This test validates the reflection-based event detection works
-        // without errors.
     }
 
     private static IHost? _eventHost;

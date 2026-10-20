@@ -70,11 +70,36 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
     private readonly List<IChangeSet> _pendingExplicitChangeSets = [];
     private readonly List<DocumentVersionFence> _queuedVersionFences = [];
     private readonly List<DocumentVersionFence> _pendingExplicitVersionFences = [];
+    private readonly List<ValidatedRecordMutation> _queuedRecordMutations = [];
+    private readonly HashSet<(string? Database, string Table)> _explicitWrittenTables = [];
+    private bool _explicitTransactionHasOpaqueOperation;
+    private bool _recordMutationQueueClosed;
     private bool _explicitTransactionFailed;
     private bool _isSavingChanges;
 
     internal protected override ISurrealDbSession OperationSession =>
         _activeSaveSession ?? _explicitTransaction ?? _pendingAutoEventTransaction ?? Session;
+
+    internal protected override Task<ISurrealDbSession> GetReadSessionForSchemaAsync(
+        string? schemaName, CancellationToken ct = default)
+    {
+        if (_explicitTransaction is null)
+            return base.GetReadSessionForSchemaAsync(schemaName, ct);
+
+        ct.ThrowIfCancellationRequested();
+        ValidateExplicitTransactionDatabaseTarget(schemaName);
+        return Task.FromResult<ISurrealDbSession>(_explicitTransaction);
+    }
+
+    protected override void OnRawOperation()
+    {
+        if (_explicitTransaction is not null)
+            _explicitTransactionHasOpaqueOperation = true;
+
+        if (ActiveVersionFences.Count > 0)
+            throw new InvalidOperationException(
+                "Raw SQL commands and queries cannot be combined with an active document version fence because record overlap cannot be proven safe.");
+    }
 
     /// <summary>
     /// Whether this session owns the explicit transaction and is responsible for
@@ -238,11 +263,13 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         try
         {
             await FlushPendingGraphOperationsAsync(ct).ConfigureAwait(false);
-            await transaction.Commit(ct).ConfigureAwait(false);
+            ct.ThrowIfCancellationRequested();
+            await CommitWithOutcomeAsync(transaction, ct).ConfigureAwait(false);
             MarkVersionFencesCommitted(_pendingExplicitVersionFences);
             committedChangeSets = _pendingExplicitChangeSets.ToArray();
             _pendingExplicitChangeSets.Clear();
             _pendingExplicitVersionFences.Clear();
+            ClearExplicitTransactionFootprints();
             committed = true;
         }
         catch
@@ -250,6 +277,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
             MarkVersionFencesFailed(_pendingExplicitVersionFences);
             _pendingExplicitChangeSets.Clear();
             _pendingExplicitVersionFences.Clear();
+            ClearExplicitTransactionFootprints();
             _queuedRelations.Clear();
             _queuedUnrelations.Clear();
             _transactionRelations.Clear();
@@ -278,8 +306,16 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         }
         if (committed)
         {
-            foreach (var changes in committedChangeSets)
-                await InvokeAfterCommitListenersAsync(changes, ct).ConfigureAwait(false);
+            _recordMutationQueueClosed = true;
+            try
+            {
+                foreach (var changes in committedChangeSets)
+                    await InvokeAfterCommitListenersAsync(changes, ct).ConfigureAwait(false);
+            }
+            finally
+            {
+                _recordMutationQueueClosed = false;
+            }
         }
     }
 
@@ -314,6 +350,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         _transactionRelations.Clear();
         _transactionUnrelations.Clear();
         _pendingExplicitChangeSets.Clear();
+        _queuedRecordMutations.Clear();
         _appendedEvents.Clear();
         _fetchForWritingResults.Clear();
         _unitOfWork.StreamIds.Clear();
@@ -337,6 +374,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
             }
             _queuedVersionFences.Clear();
             _pendingExplicitVersionFences.Clear();
+            ClearExplicitTransactionFootprints();
             try
             {
                 await transaction.DisposeAsync().ConfigureAwait(false);
@@ -659,14 +697,15 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
     public async Task<long> DeleteWhere<T>(System.Linq.Expressions.Expression<Func<T, bool>> predicate, CancellationToken ct = default) where T : class
     {
         EncryptedQueryGuard.Validate(predicate, Options.Schema);
-        var (mappedDatabase, table) = MetadataDispatch.GetSchemaTarget(typeof(T), Options.Schema);
+        var (_, table) = MetadataDispatch.GetSchemaTarget(typeof(T), Options.Schema);
         var (whereClause, parameters) = BuildMutationWhereClause(predicate);
         var sql = $"DELETE FROM {table} WHERE {whereClause};";
-        var targetSession = await GetWriteSessionForSchemaAsync(mappedDatabase, ct).ConfigureAwait(false);
-        var response = await EmbeddedTransactionRawQuery
-            .ExecuteAsync(targetSession, sql, parameters, ct)
+        var response = await ExecuteImmediateMutationAsync(
+                typeof(T),
+                (targetSession, cancellationToken) => EmbeddedTransactionRawQuery
+                    .ExecuteAsync(targetSession, sql, parameters, cancellationToken),
+                ct)
             .ConfigureAwait(false);
-        response.EnsureAllOks();
         return response.Count;
     }
 
@@ -711,23 +750,46 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         Type entityType,
         ICollection<string> clauses,
         IDictionary<string, object?> parameters)
+        => ApplyTenantMutationFilter(entityType, Options, TenantId, clauses, parameters);
+
+    /// <summary>
+    /// Applies the fail-closed, parameter-bound tenant policy required for a
+    /// destructive mutation. Read-query tenant filtering is intentionally not
+    /// reused because an unscoped read may be valid while an unscoped mutation
+    /// of a multi-tenanted type is not.
+    /// </summary>
+    internal static void ApplyTenantMutationFilter(
+        Type entityType,
+        StoreOptions options,
+        string? tenantId,
+        ICollection<string> clauses,
+        IDictionary<string, object?> parameters)
     {
-        if (!TryGetTenantMutationField(entityType, out var tenantField))
+        ArgumentNullException.ThrowIfNull(entityType);
+        ArgumentNullException.ThrowIfNull(options);
+        ArgumentNullException.ThrowIfNull(clauses);
+        ArgumentNullException.ThrowIfNull(parameters);
+
+        if (!TryGetTenantMutationField(entityType, options, tenantId, out var tenantField))
             return;
 
         const string parameterName = "__sable_mutation_tenant";
-        parameters[parameterName] = TenantId;
+        parameters[parameterName] = tenantId;
         clauses.Add($"{tenantField} = ${parameterName}");
     }
 
-    private bool TryGetTenantMutationField(Type entityType, out string tenantField)
+    private static bool TryGetTenantMutationField(
+        Type entityType,
+        StoreOptions options,
+        string? tenantId,
+        out string tenantField)
     {
         tenantField = "";
-        if (Options.TenancyStyle == TenancyStyle.DatabasePerTenant)
+        if (options.TenancyStyle == TenancyStyle.DatabasePerTenant)
             return false;
 
-        var mapping = Options.Schema.Mappings.GetValueOrDefault(entityType);
-        if (mapping?.IsMultiTenanted == true && string.IsNullOrWhiteSpace(TenantId))
+        var mapping = options.Schema.Mappings.GetValueOrDefault(entityType);
+        if (mapping?.IsMultiTenanted == true && string.IsNullOrWhiteSpace(tenantId))
         {
             throw new InvalidOperationException(
                 $"A tenant-scoped session is required to mutate multi-tenanted document " +
@@ -742,17 +804,17 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                 "string TenantId property before it can be mutated.");
         }
 
-        if (string.IsNullOrWhiteSpace(TenantId) || !hasTenantId)
+        if (string.IsNullOrWhiteSpace(tenantId) || !hasTenantId)
             return false;
 
-        tenantField = MetadataDispatch.GetFieldName(entityType, "TenantId", Options.Schema);
+        tenantField = MetadataDispatch.GetFieldName(entityType, "TenantId", options.Schema);
         return true;
     }
 
     private void ValidateHardDeleteTenant(object entity)
     {
         var entityType = entity.GetType();
-        if (!TryGetTenantMutationField(entityType, out _))
+        if (!TryGetTenantMutationField(entityType, Options, TenantId, out _))
             return;
 
         var entityTenant = entityType
@@ -773,7 +835,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         ISurrealDbSession targetSession,
         CancellationToken cancellationToken)
     {
-        if (!TryGetTenantMutationField(entityType, out var tenantField))
+        if (!TryGetTenantMutationField(entityType, Options, TenantId, out var tenantField))
         {
             await targetSession.Delete(recordId, cancellationToken).ConfigureAwait(false);
             return;
@@ -822,6 +884,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         _transactionUnrelations.Clear();
         _queuedStorageOperations.Clear();
         QueuedSqlCommands.Clear();
+        _queuedRecordMutations.Clear();
         MarkVersionFencesRolledBack(_queuedVersionFences);
         _queuedVersionFences.Clear();
         _expectedVersions.Clear();
@@ -841,6 +904,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         }
 
         var ct = token;
+        _recordMutationQueueClosed = false;
         RequestCount++;
         var count = _unitOfWork.Operations.Count;
         if (count == 0 && _appendedEvents.Count == 0 && _queuedPatches.Count == 0
@@ -848,14 +912,20 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
             && _fetchForWritingResults.Count == 0
             && _queuedStorageOperations.Count == 0 && QueuedSqlCommands.Count == 0
             && _queuedVersionFences.Count == 0
+            && _queuedRecordMutations.Count == 0
             && _pendingAutoEventTransaction is null) return 0;
 
         ResolvedLogger.LogInformation("SaveChangesAsync: committing {EntityCount} entities and {EventCount} events",
             count, _appendedEvents.Count);
 
         // Snapshots for IChangeSet in AfterCommitAsync
-        var committedOperations = _unitOfWork.Operations.ToArray();
+        Operation[] committedOperations = _unitOfWork.Operations.ToArray();
         var versionFenceSnapshot = _queuedVersionFences.ToArray();
+        var hasOpaqueQueuedWork = _queuedPatches.Count > 0
+            || _queuedStorageOperations.Count > 0
+            || QueuedSqlCommands.Count > 0
+            || _queuedRelations.Count > 0
+            || _queuedUnrelations.Count > 0;
         (string StreamId, object Event)[] appendedEventSnapshot = [];
         int graphOpCount = 0;
 
@@ -863,13 +933,15 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         // SurrealDB cannot span multiple databases in a single transaction,
         // so we reject cross-database batches up front.
         // This check must happen BEFORE the try/catch so the exception is not wrapped.
-        ValidateVersionFenceOperationOverlap(versionFenceSnapshot);
-        ValidateVersionFenceSessionScope(versionFenceSnapshot);
+        ValidateVersionFenceOperationOverlap(ActiveVersionFences);
+        ValidateVersionFenceSessionScope(ActiveVersionFences);
 
         var databaseTargets = _unitOfWork.Operations
             .Select(op => MetadataDispatch.GetSchemaTarget(op.EntityType, Options.Schema).Database)
             .Concat(versionFenceSnapshot.Select(fence => fence.Database))
-            .Distinct(StringComparer.Ordinal)
+            .Concat(_queuedRecordMutations.Select(_ => (string?)null))
+            .GroupBy(NormalizeDatabase, StringComparer.Ordinal)
+            .Select(group => group.Any(database => database is null) ? null : group.First())
             .ToList();
 
         if (databaseTargets.Count > 1)
@@ -898,7 +970,8 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         {
             var relTargets = _queuedRelations
                 .Select(r => MetadataDispatch.GetSchemaTarget(r.EdgeType, Options.Schema).Database)
-                .Distinct()
+                .GroupBy(NormalizeDatabase, StringComparer.Ordinal)
+                .Select(group => group.Any(database => database is null) ? null : group.First())
                 .ToList();
             if (relTargets.Count > 1)
             {
@@ -907,7 +980,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                     $"Cross-database graph operations are not supported. Queued relations span multiple databases: {relDbNames}");
             }
             var relTarget = relTargets[0];
-            if (relTarget != targetSchemaName)
+            if (!string.Equals(NormalizeDatabase(relTarget), NormalizeDatabase(targetSchemaName), StringComparison.Ordinal))
             {
                 throw new InvalidOperationException(
                     $"Cross-database operations are not supported. Documents target '{targetSchemaName}', but queued relations target '{relTarget}'.");
@@ -983,16 +1056,35 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                         await listener.BeforeSaveChangesAsync(this, ct).ConfigureAwait(false);
                 }
 
+                hasOpaqueQueuedWork |= _queuedPatches.Count > 0
+                    || _queuedStorageOperations.Count > 0
+                    || QueuedSqlCommands.Count > 0
+                    || _queuedRelations.Count > 0
+                    || _queuedUnrelations.Count > 0;
+                // Listeners are allowed to add ordinary document work. Capture the
+                // live set so explicit-transaction history and change sets describe
+                // what will actually execute, not the pre-listener snapshot.
+                committedOperations = _unitOfWork.Operations.ToArray();
+                count = committedOperations.Length;
+                if (committedOperations.Any(operation => !string.Equals(
+                        NormalizeDatabase(MetadataDispatch.GetSchemaTarget(operation.EntityType, Options.Schema).Database),
+                        NormalizeDatabase(targetSchemaName),
+                        StringComparison.Ordinal)))
+                {
+                    throw new InvalidOperationException(
+                        "Cross-database transactions are not supported. A save listener queued work for another database.");
+                }
+
                 // Phase 0.5: Apply mutating version fences before any ordinary document
                 // writes. A later failure rolls the increments back with the transaction.
                 if (versionFenceSnapshot.Length > 0)
                 {
-                    ValidateVersionFenceOperationOverlap(versionFenceSnapshot);
-                    ValidateVersionFenceSessionScope(versionFenceSnapshot);
+                    ValidateVersionFenceOperationOverlap(ActiveVersionFences);
+                    ValidateVersionFenceSessionScope(ActiveVersionFences);
                     await ApplyVersionFencesAsync(versionFenceSnapshot, targetSession, ct).ConfigureAwait(false);
                 }
 
-                // Phase 1: Optimistic concurrency checks (Modified entities only)
+                // Phase 1: Optimistic concurrency checks (Modified / Update entities)
                 // Runs before any mutations so we fail-fast if a conflict exists.
                 HashSet<object>? revisionSkipOps = null;
                 if ((_unitOfWork.Operations.Any(op => UseOptimisticConcurrencyFor(op.EntityType))
@@ -1016,8 +1108,8 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                                 if (expectedVer != dbVersion)
                                 {
                                     ResolvedLogger.LogWarning(
-                                        "Expected version mismatch on {Type} (id={Id}): expected {Expected}, found {Actual}",
-                                        op.EntityType.Name, GetEntityId(op.Entity), expectedVer, dbVersion);
+                                        "Expected version mismatch on {Type}: expected {Expected}, found {Actual}",
+                                        op.EntityType.Name, expectedVer, dbVersion);
                                     throw new ConcurrencyException(op.EntityType, GetEntityId(op.Entity) ?? "?", expectedVer, dbVersion);
                                 }
                             }
@@ -1033,14 +1125,14 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                                         // Skip this entity — don't throw, just leave it out
                                         revisionSkipOps.Add(op.Entity);
                                         ResolvedLogger.LogDebug(
-                                            "TryUpdateRevision: revision mismatch on {Type} (id={Id}), skipping",
-                                            op.EntityType.Name, GetEntityId(op.Entity));
+                                            "TryUpdateRevision: revision mismatch on {Type}, skipping",
+                                            op.EntityType.Name);
                                     }
                                     else
                                     {
                                         ResolvedLogger.LogWarning(
-                                            "Revision mismatch on {Type} (id={Id}): expected {Expected}, found {Actual}",
-                                            op.EntityType.Name, GetEntityId(op.Entity), expectedRev, dbVersion);
+                                            "Revision mismatch on {Type}: expected {Expected}, found {Actual}",
+                                            op.EntityType.Name, expectedRev, dbVersion);
                                         throw new ConcurrencyException(op.EntityType, GetEntityId(op.Entity) ?? "?", expectedRev, dbVersion);
                                     }
                                 }
@@ -1064,7 +1156,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                             if (opId is not null && !HasChanged(op.EntityType, opId, op.Entity))
                             {
                                 cleanOps.Add(op);
-                                ResolvedLogger.LogDebug("Skipping {Type} {Id}: no changes detected (dirty tracking)", op.EntityType.Name, opId);
+                                ResolvedLogger.LogDebug("Skipping {Type}: no changes detected (dirty tracking)", op.EntityType.Name);
                             }
                         }
                     }
@@ -1076,7 +1168,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                 {
                     foreach (var op in _unitOfWork.Operations)
                     {
-                        if (op.Type is OperationType.Added or OperationType.Modified
+                        if (op.Type is OperationType.Added or OperationType.Modified or OperationType.Update
                             && UseOptimisticConcurrencyFor(op.EntityType)
                             && (cleanOps is null || !cleanOps.Contains(op)))
                             IncrementVersion(op.Entity);
@@ -1575,10 +1667,31 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                         await listener.BeforeCommitAsync(this, ct).ConfigureAwait(false);
                 }
 
+                _recordMutationQueueClosed = true;
+                var recordMutationSnapshot = _queuedRecordMutations.ToArray();
+                ValidateVersionFenceOperationOverlap(ActiveVersionFences);
+                ValidateVersionFenceSessionScope(ActiveVersionFences);
+                ValidateRecordMutationsAgainstFences(recordMutationSnapshot, ActiveVersionFences);
+                if (recordMutationSnapshot.Length > 0
+                    && !string.Equals(
+                        NormalizeDatabase(targetSchemaName),
+                        NormalizeDatabase(null),
+                        StringComparison.Ordinal))
+                {
+                    throw new InvalidOperationException(
+                        "Cross-database transactions are not supported. Validated record mutations target the session default database.");
+                }
+                _queuedRecordMutations.Clear();
+                await ExecuteRecordMutationsAsync(recordMutationSnapshot, targetSession, ct).ConfigureAwait(false);
+                if (_explicitTransaction is not null)
+                    RecordExplicitMutationFootprints(recordMutationSnapshot);
+                count += recordMutationSnapshot.Length;
+
                 if (ownsTx && tx is not null)
                 {
+                    ct.ThrowIfCancellationRequested();
                     commitAttempted = true;
-                    await tx.Commit(ct).ConfigureAwait(false);
+                    await CommitWithOutcomeAsync(tx, ct).ConfigureAwait(false);
                     MarkVersionFencesCommitted(versionFenceSnapshot);
                 }
             }
@@ -1653,7 +1766,11 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
 
             // AfterCommitAsync hooks (called only after successful commit)
             if (_explicitTransaction is not null)
+            {
                 _pendingExplicitVersionFences.AddRange(versionFenceSnapshot);
+                RecordExplicitWriteFootprints(committedOperations);
+                _explicitTransactionHasOpaqueOperation |= hasOpaqueQueuedWork;
+            }
             _queuedVersionFences.Clear();
 
             var committedChanges = new ChangeSet
@@ -1665,30 +1782,41 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                 Deleted = committedOperations.Where(op => op.Type is OperationType.Deleted or OperationType.SoftDeleted).Select(op => op.Entity).ToArray(),
                 VersionFences = versionFenceSnapshot
             };
-            if (_explicitTransaction is not null)
-                _pendingExplicitChangeSets.Add(committedChanges);
-            else
-                await InvokeAfterCommitListenersAsync(committedChanges, ct).ConfigureAwait(false);
+            try
+            {
+                if (_explicitTransaction is not null)
+                    _pendingExplicitChangeSets.Add(committedChanges);
+                else
+                    await InvokeAfterCommitListenersAsync(committedChanges, ct).ConfigureAwait(false);
+            }
+            finally
+            {
+                // Complete normal save housekeeping even if an acknowledged
+                // commit's callback faults. Keep callback visibility unchanged.
+                if (IsDirtyTracking)
+                {
+                    foreach (var typeMap in IdentityMap.Values)
+                        typeMap.Clear();
+                    ClearSnapshots();
+                }
+            }
 
             var resultCount = count + versionFenceSnapshot.Length;
             if (resultCount == 0)
                 resultCount = appendedEventSnapshot.Length + graphOpCount;
 
-            // Clear identity map and snapshots after successful save
-            if (IsDirtyTracking)
-            {
-                foreach (var typeMap in IdentityMap.Values)
-                    typeMap.Clear();
-                ClearSnapshots();
-            }
-
             ResolvedLogger.LogInformation("SaveChangesAsync: committed {Count} changes", resultCount);
             return resultCount;
         }
         catch (Exception ex) when (ex is not ConcurrencyException
-                                   && ex is not SableEncryptionException)
+                                   && ex is not SableEncryptionException
+                                   && ex is not OperationCanceledException
+                                   && ex is not CommitOutcomeUnknownException
+                                   && ex is not PostCommitCallbackException)
         {
-            ResolvedLogger.LogError(ex, "SaveChangesAsync failed");
+            // Provider errors can contain SQL, values, identifiers and credentials.
+            // Preserve the cause for callers, but never attach it to a log event.
+            ResolvedLogger.LogError("SaveChangesAsync failed ({ExceptionType})", ex.GetType().Name);
             throw new InvalidOperationException("Failed to save changes.", ex);
         }
         catch (ConcurrencyException)
@@ -1700,16 +1828,42 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         finally
         {
             _isSavingChanges = false;
+            _recordMutationQueueClosed = false;
+        }
+    }
+
+    private static async Task CommitWithOutcomeAsync(SurrealDbTransaction transaction, CancellationToken ct)
+    {
+        try
+        {
+            await transaction.Commit(ct).ConfigureAwait(false);
+        }
+        catch (Exception exception) when (exception is OperationCanceledException or TimeoutException
+            or System.IO.IOException or System.Net.Http.HttpRequestException
+            or System.Net.WebSockets.WebSocketException)
+        {
+            // Once the driver is called, transport failure cannot prove rollback.
+            // Confirmed server rejections and post-commit callbacks are outside this filter.
+            throw new CommitOutcomeUnknownException(exception);
         }
     }
 
     private async Task InvokeAfterCommitListenersAsync(IChangeSet changes, CancellationToken ct)
     {
-        foreach (var listener in Options.Listeners)
-            await listener.AfterCommitAsync(this, changes, ct).ConfigureAwait(false);
+        // Both callers invoke this only after an acknowledged database commit.
+        // A callback cancellation must not turn that success into a canceled save.
+        try
+        {
+            foreach (var listener in Options.Listeners)
+                await listener.AfterCommitAsync(this, changes, ct).ConfigureAwait(false);
 
-        foreach (var listener in SessionListeners)
-            await listener.AfterCommitAsync(this, changes, ct).ConfigureAwait(false);
+            foreach (var listener in SessionListeners)
+                await listener.AfterCommitAsync(this, changes, ct).ConfigureAwait(false);
+        }
+        catch (Exception exception)
+        {
+            throw new PostCommitCallbackException(exception);
+        }
     }
 
     private void GenerateGuidIdentityIfEmpty(object entity)
@@ -1878,14 +2032,14 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         if (expectedVersion != dbVersion)
         {
             ResolvedLogger.LogWarning(
-                "Concurrency conflict on {Type} (id={Id}): expected version {Expected}, found {Actual}",
-                op.EntityType.Name, id, expectedVersion, dbVersion);
+                "Concurrency conflict on {Type}: expected version {Expected}, found {Actual}",
+                op.EntityType.Name, expectedVersion, dbVersion);
 
             throw new ConcurrencyException(op.EntityType, id, expectedVersion, dbVersion);
         }
 
-        ResolvedLogger.LogDebug("Concurrency check passed for {Type} (id={Id}): version {Version}",
-            op.EntityType.Name, id, dbVersion);
+        ResolvedLogger.LogDebug("Concurrency check passed for {Type}: version {Version}",
+            op.EntityType.Name, dbVersion);
     }
 
     private static long ReadVersionFromResponse(
@@ -2195,8 +2349,8 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
             bool b => b ? "true" : "false",
             GeometryPoint point => point.ToSurrealQL(),
             GeometryPolygon polygon => polygon.ToSurrealQL(),
-            DateTime dt => $"d'{dt.ToUniversalTime():yyyy-MM-ddTHH:mm:ssZ}'",
-            DateTimeOffset dto => $"d'{dto.UtcDateTime:yyyy-MM-ddTHH:mm:ssZ}'",
+            DateTime dt => $"d'{dt.ToUniversalTime().ToString("yyyy-MM-dd'T'HH:mm:ss.fffffff'Z'", CultureInfo.InvariantCulture)}'",
+            DateTimeOffset dto => $"d'{dto.UtcDateTime.ToString("yyyy-MM-dd'T'HH:mm:ss.fffffff'Z'", CultureInfo.InvariantCulture)}'",
             Guid guid => $"u'{guid:D}'",
             Enum e => Options.EnumStorage == EnumStorage.AsString
                 ? $"'{e}'"
@@ -2304,17 +2458,14 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         IReadOnlyDictionary<string, object?>? parameters,
         CancellationToken ct)
     {
-        var containsEncryptedEnvelope = surql.Contains(
-            "wrapped_key_ciphertext:",
-            StringComparison.Ordinal)
-            || parameters?.Keys.Any(key =>
-                key.StartsWith("__sable_protected_", StringComparison.Ordinal)) == true;
         if (ResolvedLogger.IsEnabled(LogLevel.Debug))
         {
+            var encrypted = surql.Contains("wrapped_key_ciphertext:", StringComparison.Ordinal)
+                || parameters?.Keys.Any(key => key.StartsWith("__sable_protected_", StringComparison.Ordinal)) == true;
             ResolvedLogger.LogDebug(
-                "SaveChangesAsync write SurrealQL: {SurrealQL}{Parameters}",
-                containsEncryptedEnvelope ? "<encrypted write redacted>" : surql,
-                FormatWriteParameters(parameters));
+                "SaveChangesAsync write: ParameterCount={ParameterCount}; Protection={Protection}",
+                parameters?.Count ?? 0,
+                encrypted ? "<encrypted write redacted>" : "<write values redacted>");
         }
 
         var response = await EmbeddedTransactionRawQuery
@@ -2324,41 +2475,13 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         if (ResolvedLogger.IsEnabled(LogLevel.Debug))
         {
             ResolvedLogger.LogDebug(
-                "SaveChangesAsync write response: HasErrors={HasErrors}; Count={Count}; FirstOk={FirstOk}; Errors={Errors}",
+                "SaveChangesAsync write response: HasErrors={HasErrors}; Count={Count}; FirstOk={FirstOk}",
                 response.HasErrors,
                 response.Count,
-                response.FirstOk is not null,
-                containsEncryptedEnvelope && response.HasErrors
-                    ? "<encrypted write error redacted>"
-                    : FormatRawQueryErrors(response));
+                response.FirstOk is not null);
         }
 
         return response;
-    }
-
-    private static string FormatWriteParameters(IReadOnlyDictionary<string, object?>? parameters)
-    {
-        if (parameters is null || parameters.Count == 0)
-            return string.Empty;
-
-        var entries = parameters.Select(parameter =>
-        {
-            var value = parameter.Value;
-            return value is null
-                ? $"{parameter.Key}=null"
-                : $"{parameter.Key}=<{value.GetType().Name}>";
-        });
-
-        return "; Parameters: [" + string.Join(", ", entries) + "]";
-    }
-
-    private static string FormatRawQueryErrors(SurrealDbResponse response)
-    {
-        if (!response.HasErrors)
-            return "";
-
-        return string.Join("; ", response.Errors.Select(error =>
-            error is SurrealDbErrorResult err ? err.Details : error.ToString()));
     }
 
     private static void ThrowIfRawQueryFailed(
@@ -2368,10 +2491,11 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         if (!response.HasErrors)
             return;
 
-        var details = redactDetails
+        // Server error details can echo ordinary document values as well as encrypted
+        // envelopes. Do not copy those details into exceptions that callers may log.
+        throw new InvalidOperationException(redactDetails
             ? "SurrealDB rejected an encrypted write; details were redacted."
-            : FormatRawQueryErrors(response);
-        throw new InvalidOperationException(details);
+            : "SurrealDB rejected a write; details were redacted.");
     }
 
     /// <summary>
@@ -2637,6 +2761,78 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         return _explicitTransaction;
     }
 
+    /// <summary>
+    /// Executes a managed immediate mutation while preserving the same explicit-transaction
+    /// fence invariant as queued document writes. The target table is known by Sable, so a
+    /// precise write footprint can be retained without treating the operation as opaque.
+    /// </summary>
+    internal async Task<SurrealDbResponse> ExecuteImmediateMutationAsync(
+        Type entityType,
+        Func<ISurrealDbSession, CancellationToken, Task<SurrealDbResponse>> execute,
+        CancellationToken ct)
+    {
+        ArgumentNullException.ThrowIfNull(entityType);
+        ArgumentNullException.ThrowIfNull(execute);
+
+        if (_explicitTransactionFailed)
+        {
+            throw new InvalidOperationException(
+                "The active transaction failed a version fence or mutation and cannot accept more changes. " +
+                "Roll it back before continuing.");
+        }
+
+        var (mappedDatabase, table) = MetadataDispatch.GetSchemaTarget(entityType, Options.Schema);
+
+        // Validate the explicit transaction scope before any fork/session initialization.
+        ValidateExplicitTransactionDatabaseTarget(mappedDatabase);
+        ValidateImmediateMutationAgainstFences(NormalizeDatabase(mappedDatabase), table);
+        ct.ThrowIfCancellationRequested();
+
+        // A transport failure or cancellation can occur after the database has applied a
+        // statement. Record the exact footprint before awaiting it, and fail closed if that
+        // outcome cannot be observed. ClearChanges deliberately does not clear this history.
+        if (_explicitTransaction is not null)
+            _explicitWrittenTables.Add((NormalizeDatabase(mappedDatabase), table));
+
+        var dispatchStarted = false;
+        var responseReceived = false;
+        try
+        {
+            var targetSession = await GetWriteSessionForSchemaAsync(mappedDatabase, ct).ConfigureAwait(false);
+            dispatchStarted = true;
+            var response = await execute(targetSession, ct).ConfigureAwait(false);
+            responseReceived = true;
+            response.EnsureAllOks();
+            return response;
+        }
+        catch (Exception exception)
+        {
+            if (_explicitTransaction is not null && dispatchStarted)
+                _explicitTransactionFailed = true;
+
+            // A response establishes a known database result: preserve its original
+            // checked failure. Before dispatch, the operation is also known not to have
+            // reached the database. Only post-dispatch transport/cancellation uncertainty
+            // is surfaced as an outcome-unknown fault for an auto-commit mutation.
+            if (_explicitTransaction is null
+                && dispatchStarted
+                && !responseReceived
+                && IsImmediateMutationOutcomeUncertain(exception))
+            {
+                throw new ImmediateMutationOutcomeUnknownException(exception, ct);
+            }
+
+            throw;
+        }
+    }
+
+    private static bool IsImmediateMutationOutcomeUncertain(Exception exception)
+        => exception is OperationCanceledException
+            or TimeoutException
+            or System.IO.IOException
+            or System.Net.Http.HttpRequestException
+            or System.Net.WebSockets.WebSocketException;
+
     private void ValidateExplicitTransactionDatabaseTarget(string? schemaName)
     {
         if (_explicitTransaction is null)
@@ -2650,6 +2846,22 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         throw new InvalidOperationException(
             $"An explicit transaction is scoped to database '{transactionDatabase}', " +
             $"but this operation targets mapped database '{targetDatabase}'.");
+    }
+
+    private void ValidateImmediateMutationAgainstFences(string database, string table)
+    {
+        var fences = ActiveVersionFences;
+        if (fences.Count == 0)
+            return;
+
+        ValidateVersionFenceSessionScope(fences);
+        if (fences.Any(fence =>
+                string.Equals(NormalizeDatabase(fence.Database), database, StringComparison.Ordinal)
+                && string.Equals(fence.RecordId.Table, table, StringComparison.Ordinal)))
+        {
+            throw new InvalidOperationException(
+                "A managed immediate mutation targets the same table as an active document version fence.");
+        }
     }
 
     private string? ResolveGraphSchemaName(IReadOnlyCollection<QueuedRelation> relations)
@@ -2958,6 +3170,19 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         _queuedStorageOperations.Add(operation);
     }
 
+    /// <inheritdoc />
+    public void QueueRecordMutation(ValidatedRecordMutation mutation)
+    {
+        ArgumentNullException.ThrowIfNull(mutation);
+        if (_recordMutationQueueClosed)
+            throw new InvalidOperationException("Validated record mutations cannot be queued after the commit phase has closed.");
+        if (_explicitTransactionFailed)
+            throw new InvalidOperationException("The active transaction failed and must be rolled back before accepting mutations.");
+
+        ValidateRecordMutationAgainstFences(mutation, ActiveVersionFences);
+        _queuedRecordMutations.Add(mutation);
+    }
+
     /// <summary>
     /// Tracks expected versions for entities registered via <see cref="UpdateExpectedVersion{T}"/>.
     /// Key is the entity instance (reference equality), value is the expected version.
@@ -3040,7 +3265,7 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                 nameof(id));
         }
 
-        var tenantField = TryGetTenantMutationField(documentType, out var resolvedTenantField)
+        var tenantField = TryGetTenantMutationField(documentType, Options, TenantId, out var resolvedTenantField)
             ? resolvedTenantField
             : null;
         var tenantId = tenantField is null ? null : TenantId;
@@ -3114,15 +3339,101 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
         }
     }
 
+    private IReadOnlyList<DocumentVersionFence> ActiveVersionFences =>
+        _queuedVersionFences.Concat(_pendingExplicitVersionFences).ToArray();
+
+    private void ClearExplicitTransactionFootprints()
+    {
+        _explicitWrittenTables.Clear();
+        _explicitTransactionHasOpaqueOperation = false;
+    }
+
+    private void RecordExplicitWriteFootprints(IEnumerable<Operation> operations)
+    {
+        foreach (var operation in operations)
+        {
+            var (database, table) = MetadataDispatch.GetSchemaTarget(operation.EntityType, Options.Schema);
+            _explicitWrittenTables.Add((NormalizeDatabase(database), table));
+        }
+    }
+
+    private void RecordExplicitMutationFootprints(IEnumerable<ValidatedRecordMutation> mutations)
+    {
+        foreach (var mutation in mutations)
+            _explicitWrittenTables.Add((NormalizeDatabase(null), mutation.Target.Table));
+    }
+
+    private string NormalizeDatabase(string? database) => database ?? Options.Database ?? "test";
+
+    private void ValidateRecordMutationAgainstFences(
+        ValidatedRecordMutation mutation,
+        IReadOnlyCollection<DocumentVersionFence> fences)
+        => ValidateRecordMutationsAgainstFences([mutation], fences);
+
+    private static void ValidateRecordMutationsAgainstFences(
+        IReadOnlyCollection<ValidatedRecordMutation> mutations,
+        IReadOnlyCollection<DocumentVersionFence> fences)
+    {
+        foreach (var mutation in mutations)
+        {
+            foreach (var fence in fences)
+            {
+                if (string.Equals(mutation.Target.Table, fence.RecordId.Table, StringComparison.Ordinal))
+                {
+                    throw new InvalidOperationException(
+                        "A validated record mutation targets the same table as an active document version fence.");
+                }
+            }
+        }
+    }
+
+    private async Task ExecuteRecordMutationsAsync(
+        IReadOnlyList<ValidatedRecordMutation> mutations,
+        ISurrealDbSession targetSession,
+        CancellationToken ct)
+    {
+        foreach (var mutation in mutations)
+        {
+            var parameters = new Dictionary<string, object?>
+            {
+                ["record"] = mutation.Target,
+                // Dahomey serializes concrete dictionaries. The public payload view
+                // remains immutable; this is a short-lived transport copy only.
+                ["content"] = new Dictionary<string, object?>(mutation.Content, StringComparer.Ordinal)
+            };
+            var sql = mutation.Kind == ValidatedRecordMutationKind.Create
+                ? "CREATE $record CONTENT $content;"
+                : "LET $updated = UPDATE $record MERGE $content RETURN AFTER; IF array::len($updated) = 0 { THROW 'Required record did not exist'; };";
+            RequestCount++;
+            LogSurrealQuery(sql, parameters);
+            var response = await EmbeddedTransactionRawQuery.ExecuteAsync(targetSession, sql, parameters, ct).ConfigureAwait(false);
+            response.EnsureAllOks();
+        }
+    }
+
     private void ValidateVersionFenceOperationOverlap(
         IReadOnlyCollection<DocumentVersionFence> fences)
     {
         if (fences.Count == 0)
             return;
 
+        if (_explicitTransactionHasOpaqueOperation)
+            throw new InvalidOperationException(
+                "A document version fence cannot be combined with an earlier opaque operation in the active transaction.");
+
+        ValidateRecordMutationsAgainstFences(_queuedRecordMutations, fences);
+        foreach (var fence in fences)
+        {
+            if (_explicitWrittenTables.Contains((NormalizeDatabase(fence.Database), fence.RecordId.Table)))
+                throw new InvalidOperationException(
+                    "A document version fence cannot be combined with an earlier write to the same table in the active transaction.");
+        }
+
         if (_queuedPatches.Count > 0
             || _queuedStorageOperations.Count > 0
-            || QueuedSqlCommands.Count > 0)
+            || QueuedSqlCommands.Count > 0
+            || _queuedRelations.Count > 0
+            || _queuedUnrelations.Count > 0)
         {
             throw new InvalidOperationException(
                 "Document version fences cannot be combined with queued patches, raw SQL commands, " +
@@ -3148,12 +3459,11 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
                 if (!string.Equals(database, fence.Database, StringComparison.Ordinal))
                     continue;
 
-                var recordId = GetRecordId(operation.Entity, table);
-                if (recordId is not null && recordId.Equals(fence.RecordId))
+                if (string.Equals(table, fence.RecordId.Table, StringComparison.Ordinal))
                 {
                     throw new InvalidOperationException(
-                        $"Document '{DocumentIdentityResolver.FormatRecordIdLiteral(fence.RecordId)}' " +
-                        "cannot be both version-fenced and queued for a document write in the same unit of work.");
+                        $"Document table '{fence.RecordId.Table}' cannot be both version-fenced and queued " +
+                        "for a document write in the same unit of work.");
                 }
             }
         }
@@ -3335,11 +3645,10 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
             if (IdentityMap.TryGetValue(fence.DocumentType, out var typeMap))
                 typeMap.TryRemove(fence.IdentityKey, out _);
             ResolvedLogger.LogWarning(
-                exception,
-                "Committed version fence for {DocumentType} ({RecordId}), but the tracked instance " +
-                "could not be synchronized and was evicted",
+                "Committed version fence for {DocumentType}, but the tracked instance " +
+                "could not be synchronized and was evicted ({ExceptionType})",
                 fence.DocumentType.FullName,
-                DocumentIdentityResolver.FormatRecordIdLiteral(fence.RecordId));
+                exception.GetType().Name);
         }
     }
 
@@ -3430,15 +3739,16 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
     public async Task<long> HardDeleteWhere<T>(System.Linq.Expressions.Expression<Func<T, bool>> predicate, CancellationToken ct = default) where T : class
     {
         EncryptedQueryGuard.Validate(predicate, Options.Schema);
-        var (mappedDatabase, table) = MetadataDispatch.GetSchemaTarget(typeof(T), Options.Schema);
+        var (_, table) = MetadataDispatch.GetSchemaTarget(typeof(T), Options.Schema);
         var (whereClause, parameters) = BuildMutationWhereClause(predicate);
         var sql = $"DELETE FROM {table} WHERE {whereClause};";
         RequestCount++;
-        var targetSession = await GetWriteSessionForSchemaAsync(mappedDatabase, ct).ConfigureAwait(false);
-        var response = await EmbeddedTransactionRawQuery
-            .ExecuteAsync(targetSession, sql, parameters, ct)
+        var response = await ExecuteImmediateMutationAsync(
+                typeof(T),
+                (targetSession, cancellationToken) => EmbeddedTransactionRawQuery
+                    .ExecuteAsync(targetSession, sql, parameters, cancellationToken),
+                ct)
             .ConfigureAwait(false);
-        response.EnsureAllOks();
         return response.Count;
     }
 
@@ -3446,18 +3756,19 @@ public class DocumentSession : InternalSessionBase, IDocumentSession
     public async Task<long> UndoDeleteWhere<T>(System.Linq.Expressions.Expression<Func<T, bool>> predicate, CancellationToken ct = default) where T : class
     {
         EncryptedQueryGuard.Validate(predicate, Options.Schema);
-        var (mappedDatabase, table) = MetadataDispatch.GetSchemaTarget(typeof(T), Options.Schema);
+        var (_, table) = MetadataDispatch.GetSchemaTarget(typeof(T), Options.Schema);
         var (whereClause, parameters) = BuildMutationWhereClause(predicate);
         var deletedField = MetadataDispatch.GetFieldName(
             typeof(T), nameof(ISoftDeleted.Deleted), Options.Schema);
         var sql = $"UPDATE {table} SET {deletedField} = false " +
             $"WHERE {deletedField} = true AND {whereClause};";
         RequestCount++;
-        var targetSession = await GetWriteSessionForSchemaAsync(mappedDatabase, ct).ConfigureAwait(false);
-        var response = await EmbeddedTransactionRawQuery
-            .ExecuteAsync(targetSession, sql, parameters, ct)
+        var response = await ExecuteImmediateMutationAsync(
+                typeof(T),
+                (targetSession, cancellationToken) => EmbeddedTransactionRawQuery
+                    .ExecuteAsync(targetSession, sql, parameters, cancellationToken),
+                ct)
             .ConfigureAwait(false);
-        response.EnsureAllOks();
         return response.Count;
     }
 

@@ -63,7 +63,9 @@ public class AeroDBEntityShimGenerator : IIncrementalGenerator
                 }
 
                 var idType = GetEntityIdType(type, entityInterfaceType);
-                var sourceText = GenerateShimClass(type, idType);
+                var supportsGeneratedMaterializers = compilation.GetTypeByMetadataName(
+                    "AeroDB.Sable.Metadata.GeneratedMaterializer`1") is not null;
+                var sourceText = GenerateShimClass(type, idType, supportsGeneratedMaterializers);
                 var hintName = $"{type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat.WithGlobalNamespaceStyle(SymbolDisplayGlobalNamespaceStyle.Omitted)).Replace("global::", "").Replace(".", "_")}.Shim.g.cs";
                 ctx.AddSource(hintName, sourceText);
             }
@@ -108,8 +110,17 @@ public class AeroDBEntityShimGenerator : IIncrementalGenerator
     /// Generates the shim class source for the given entity type.
     /// The shim extends <c>Record</c> and mirrors writable properties with <c>CborPropertyAttribute</c>.
     /// </summary>
-    private static string GenerateShimClass(INamedTypeSymbol type, ITypeSymbol? idType)
+    private static string GenerateShimClass(
+        INamedTypeSymbol type,
+        ITypeSymbol? idType,
+        bool supportsGeneratedMaterializers)
     {
+        // A required/init-only member makes the legacy shim's `new T()` invalid
+        // as well. Emit no shim for that concrete root and leave it on the
+        // established POCO path rather than producing uncompilable source.
+        if (HasRequiredOrInitMember(type))
+            return string.Empty;
+
         var typeName = type.Name;
         var fullName = type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
         var ns = type.ContainingNamespace.ToDisplayString();
@@ -125,15 +136,20 @@ public class AeroDBEntityShimGenerator : IIncrementalGenerator
         sb.AppendLine();
         sb.AppendLine($"internal sealed class {typeName}Shim : Record");
         sb.AppendLine("{");
-        sb.AppendLine($"    static {typeName}Shim()");
+        sb.AppendLine("    [global::System.Runtime.CompilerServices.ModuleInitializer]");
+        sb.AppendLine("    internal static void Register()");
         sb.AppendLine("    {");
         sb.AppendLine($"        global::AeroDB.Sable.Metadata.MetadataRegistry.RegisterShimType<{fullName}>(typeof({typeName}Shim));");
+        var generatesMaterializer = supportsGeneratedMaterializers && CanGenerateMaterializer(type);
+        if (generatesMaterializer)
+            sb.AppendLine($"        global::AeroDB.Sable.Metadata.MetadataRegistry.RegisterGeneratedMaterializer<{fullName}>(Materialize);");
         sb.AppendLine("    }");
         sb.AppendLine();
 
         // Gather public read/write properties (excluding Id — handled by Record base)
         var properties = new List<string>();
-        foreach (var member in type.GetMembers().OfType<IPropertySymbol>())
+        var persistentProperties = GetPersistentProperties(type);
+        foreach (var member in persistentProperties)
         {
             if (member.Name == "Id") continue;
             if (member.DeclaredAccessibility != Accessibility.Public) continue;
@@ -217,8 +233,338 @@ public class AeroDBEntityShimGenerator : IIncrementalGenerator
 
         sb.AppendLine("        return entity;");
         sb.AppendLine("    }");
+
+        if (generatesMaterializer)
+        {
+            sb.AppendLine();
+            EmitMaterializerMethod(sb, type, "Materialize", root: true);
+            var embeddedTypes = new List<INamedTypeSymbol>();
+            CollectEmbeddedTypes(type, embeddedTypes, new HashSet<ITypeSymbol>(SymbolEqualityComparer.Default));
+            foreach (var embedded in embeddedTypes)
+            {
+                sb.AppendLine();
+                EmitMaterializerMethod(sb, embedded, EmbeddedMethodName(embedded), root: false);
+            }
+        }
         sb.AppendLine("}");
 
         return sb.ToString();
     }
+
+    private static IReadOnlyList<IPropertySymbol> GetPersistentProperties(INamedTypeSymbol type)
+    {
+        var hierarchy = new Stack<INamedTypeSymbol>();
+        for (var current = type; current is not null && current.SpecialType != SpecialType.System_Object; current = current.BaseType)
+            hierarchy.Push(current);
+
+        var properties = new Dictionary<string, IPropertySymbol>(StringComparer.Ordinal);
+        foreach (var current in hierarchy)
+        {
+            foreach (var property in current.GetMembers().OfType<IPropertySymbol>())
+            {
+                if (IsJsonIgnored(property))
+                    continue;
+
+                if (property.DeclaredAccessibility != Accessibility.Public
+                    || property.IsStatic
+                    || property.GetMethod?.DeclaredAccessibility != Accessibility.Public
+                    || property.SetMethod?.DeclaredAccessibility != Accessibility.Public
+                    || property.SetMethod.IsInitOnly
+                    || property.Parameters.Length != 0)
+                    continue;
+
+                properties[property.Name] = property;
+            }
+        }
+
+        return properties.Values.ToArray();
+    }
+
+    private static bool CanGenerateMaterializer(INamedTypeSymbol type)
+    {
+        if (type.IsAbstract || type.DeclaredAccessibility is not (Accessibility.Public or Accessibility.Internal)
+            || type.InstanceConstructors.All(ctor => ctor.Parameters.Length != 0 || ctor.DeclaredAccessibility is not (Accessibility.Public or Accessibility.Internal)))
+            return false;
+
+        if (HasCustomSerialization(type) || HasUnsupportedPersistentMember(type))
+            return false;
+
+        var visiting = new HashSet<ITypeSymbol>(SymbolEqualityComparer.Default);
+        return GetPersistentProperties(type).All(property => IsSupportedMaterializerType(property.Type, visiting));
+    }
+
+    private static bool IsSupportedMaterializerType(ITypeSymbol type, HashSet<ITypeSymbol> visiting)
+    {
+        if (type is INamedTypeSymbol { OriginalDefinition.SpecialType: SpecialType.System_Nullable_T } nullable)
+            return IsSupportedMaterializerType(nullable.TypeArguments[0], visiting);
+
+        if (type.SpecialType is SpecialType.System_String
+            or SpecialType.System_Boolean
+            or SpecialType.System_Byte
+            or SpecialType.System_SByte
+            or SpecialType.System_Int16
+            or SpecialType.System_UInt16
+            or SpecialType.System_Int32
+            or SpecialType.System_UInt32
+            or SpecialType.System_Int64
+            or SpecialType.System_UInt64
+            or SpecialType.System_Single
+            or SpecialType.System_Double
+            or SpecialType.System_Decimal)
+            return true;
+
+        if (type.TypeKind == TypeKind.Enum)
+            return type is not INamedTypeSymbol enumType || !HasCustomSerialization(enumType);
+
+        if (type.ToDisplayString() is "System.Guid" or "System.DateTime" or "System.DateTimeOffset")
+            return true;
+
+        if (type is IArrayTypeSymbol { Rank: 1 } array)
+            return !IsCollectionType(array.ElementType)
+                && IsSupportedMaterializerType(array.ElementType, visiting);
+
+        if (type is INamedTypeSymbol named
+            && named.IsGenericType
+            && named.TypeArguments.Length == 1
+            && named.OriginalDefinition.ToDisplayString() is "System.Collections.Generic.List<T>" or "System.Collections.Generic.IReadOnlyList<T>")
+            return !IsCollectionType(named.TypeArguments[0])
+                && IsSupportedMaterializerType(named.TypeArguments[0], visiting);
+
+        if (type is not INamedTypeSymbol embedded
+            || embedded.TypeKind != TypeKind.Class
+            || embedded.IsAbstract
+            || embedded.DeclaredAccessibility is not (Accessibility.Public or Accessibility.Internal)
+            || embedded.InstanceConstructors.All(ctor => ctor.Parameters.Length != 0 || ctor.DeclaredAccessibility is not (Accessibility.Public or Accessibility.Internal))
+            || HasCustomSerialization(embedded)
+            || HasUnsupportedPersistentMember(embedded)
+            || !visiting.Add(type))
+            return false;
+
+        var supported = GetPersistentProperties(embedded).Count > 0
+            && GetPersistentProperties(embedded).All(property => IsSupportedMaterializerType(property.Type, visiting));
+        visiting.Remove(type);
+        return supported;
+    }
+
+    private static bool HasUnsupportedPersistentMember(INamedTypeSymbol type)
+    {
+        for (var current = type; current is not null && current.SpecialType != SpecialType.System_Object; current = current.BaseType)
+        {
+            foreach (var property in current.GetMembers().OfType<IPropertySymbol>())
+            {
+                if (property.IsStatic || IsJsonIgnored(property))
+                    continue;
+
+                if (HasConditionalJsonIgnore(property)
+                    || HasCustomSerialization(property)
+                    || property.Parameters.Length != 0
+                    || property.IsRequired
+                    || property.DeclaredAccessibility != Accessibility.Public
+                    || property.GetMethod?.DeclaredAccessibility != Accessibility.Public
+                    || property.SetMethod?.DeclaredAccessibility != Accessibility.Public
+                    || property.SetMethod.IsInitOnly)
+                    return true;
+
+                if (property.DeclaredAccessibility is not Accessibility.Public
+                    && IsHiddenByBaseMember(property, current.BaseType))
+                    return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static bool HasRequiredOrInitMember(INamedTypeSymbol type)
+    {
+        for (var current = type; current is not null && current.SpecialType != SpecialType.System_Object; current = current.BaseType)
+        {
+            if (current.GetMembers().OfType<IPropertySymbol>().Any(property =>
+                    !property.IsStatic
+                    && !IsJsonIgnored(property)
+                    && (property.IsRequired || property.SetMethod?.IsInitOnly == true)))
+                return true;
+        }
+
+        return false;
+    }
+
+    private static bool IsHiddenByBaseMember(IPropertySymbol property, INamedTypeSymbol? baseType)
+    {
+        for (var current = baseType; current is not null && current.SpecialType != SpecialType.System_Object; current = current.BaseType)
+        {
+            if (current.GetMembers(property.Name).OfType<IPropertySymbol>().Any(candidate => !candidate.IsStatic && !IsJsonIgnored(candidate)))
+                return true;
+        }
+
+        return false;
+    }
+
+    private static bool IsCollectionType(ITypeSymbol type)
+        => type is IArrayTypeSymbol
+            || type is INamedTypeSymbol named
+                && named.IsGenericType
+                && named.TypeArguments.Length == 1
+                && named.OriginalDefinition.ToDisplayString() is "System.Collections.Generic.List<T>" or "System.Collections.Generic.IReadOnlyList<T>";
+
+    private static bool IsJsonIgnored(IPropertySymbol property)
+    {
+        var attribute = GetJsonIgnoreAttribute(property);
+        if (attribute is null)
+            return false;
+
+        var condition = attribute.NamedArguments.FirstOrDefault(argument => argument.Key == "Condition");
+        // JsonIgnoreCondition.Never is zero; only the default/Always mode is
+        // safe to omit from a generated reader.
+        return condition.Key is null || condition.Value.Value is null or 1;
+    }
+
+    private static bool HasConditionalJsonIgnore(IPropertySymbol property)
+    {
+        var attribute = GetJsonIgnoreAttribute(property);
+        if (attribute is null)
+            return false;
+
+        var condition = attribute.NamedArguments.FirstOrDefault(argument => argument.Key == "Condition");
+        return condition.Key is not null && condition.Value.Value is not null and not 1;
+    }
+
+    private static AttributeData? GetJsonIgnoreAttribute(IPropertySymbol property)
+        => property.GetAttributes().FirstOrDefault(candidate =>
+            candidate.AttributeClass?.ToDisplayString() == "System.Text.Json.Serialization.JsonIgnoreAttribute");
+
+    private static bool HasCustomSerialization(ISymbol symbol)
+        => symbol.GetAttributes().Any(attribute => attribute.AttributeClass?.Name is "JsonConverterAttribute" or "JsonPropertyNameAttribute");
+
+    private static void EmitMaterializerMethod(StringBuilder sb, INamedTypeSymbol type, string methodName, bool root)
+    {
+        var fullName = type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
+        sb.AppendLine($"    private static {fullName} {methodName}(");
+        sb.AppendLine("        global::System.Collections.Generic.IReadOnlyDictionary<string, object?> values,");
+        sb.AppendLine("        global::AeroDB.Sable.SchemaOptions? schema,");
+        sb.AppendLine("        global::AeroDB.Sable.EnumStorage enumStorage)");
+        sb.AppendLine("    {");
+        sb.AppendLine($"        var entity = new {fullName}();");
+        foreach (var property in GetPersistentProperties(type))
+            EmitPropertyAssignment(sb, fullName, property, root);
+        sb.AppendLine("        return entity;");
+        sb.AppendLine("    }");
+    }
+
+    private static void EmitPropertyAssignment(
+        StringBuilder sb,
+        string ownerName,
+        IPropertySymbol property,
+        bool root)
+    {
+        var propertyType = property.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
+        var valueName = "value_" + property.Name;
+        if (root && property.Name == "Id")
+        {
+            sb.AppendLine($"        if (global::AeroDB.Sable.Metadata.MetadataRegistry.TryReadIdentity<{propertyType}>(values, typeof({ownerName}), schema, out var {valueName}))");
+            sb.AppendLine($"            entity.{property.Name} = {valueName};");
+            return;
+        }
+
+        if (TryGetCollectionElement(property.Type, out var element, out var list))
+        {
+            var elementExpression = EmitCollectionElementExpression(element, "item");
+            var materialized = list
+                ? $"global::System.Linq.Enumerable.ToList(global::System.Linq.Enumerable.Select(global::System.Linq.Enumerable.Cast<object?>((global::System.Collections.IEnumerable)raw_{property.Name}), item => {elementExpression}))"
+                : $"global::System.Linq.Enumerable.ToArray(global::System.Linq.Enumerable.Select(global::System.Linq.Enumerable.Cast<object?>((global::System.Collections.IEnumerable)raw_{property.Name}), item => {elementExpression}))";
+            sb.AppendLine($"        if (global::AeroDB.Sable.Metadata.MetadataRegistry.TryReadRawValue(values, typeof({ownerName}), \"{Escape(property.Name)}\", schema, out var raw_{property.Name}))");
+            sb.AppendLine("        {");
+            sb.AppendLine($"            if (raw_{property.Name} is null)");
+            sb.AppendLine($"                entity.{property.Name} = null!;");
+            sb.AppendLine($"            else if (raw_{property.Name} is global::System.Collections.IEnumerable && raw_{property.Name} is not string)");
+            sb.AppendLine($"                entity.{property.Name} = {materialized};");
+            sb.AppendLine("            else");
+            sb.AppendLine($"                throw new global::System.InvalidOperationException(\"Expected a one-dimensional sequence for '{Escape(property.Name)}'.\");");
+            sb.AppendLine("        }");
+            return;
+        }
+
+        if (property.Type is INamedTypeSymbol { TypeKind: TypeKind.Class } embedded
+            && embedded.SpecialType != SpecialType.System_String)
+        {
+            sb.AppendLine($"        if (global::AeroDB.Sable.Metadata.MetadataRegistry.TryReadRawValue(values, typeof({ownerName}), \"{Escape(property.Name)}\", schema, out var {valueName}))");
+            sb.AppendLine("        {");
+            sb.AppendLine($"            if ({valueName} is null)");
+            sb.AppendLine($"                entity.{property.Name} = null!;");
+            sb.AppendLine($"            else if ({valueName} is global::System.Collections.Generic.IReadOnlyDictionary<string, object?> map_{property.Name})");
+            sb.AppendLine($"                entity.{property.Name} = {EmbeddedMethodName(embedded)}(map_{property.Name}, schema, enumStorage);");
+            sb.AppendLine("            else");
+            sb.AppendLine($"                throw new global::System.InvalidOperationException(\"Expected an embedded record map for '{Escape(property.Name)}'.\");");
+            sb.AppendLine("        }");
+            return;
+        }
+
+        sb.AppendLine($"        if (global::AeroDB.Sable.Metadata.MetadataRegistry.TryReadValue<{propertyType}>(values, typeof({ownerName}), \"{Escape(property.Name)}\", schema, enumStorage, out var {valueName}))");
+        sb.AppendLine($"            entity.{property.Name} = {valueName};");
+    }
+
+    private static string EmitCollectionElementExpression(ITypeSymbol element, string variable)
+    {
+        if (element is INamedTypeSymbol { TypeKind: TypeKind.Class } embedded
+            && embedded.SpecialType != SpecialType.System_String)
+        {
+            return $"{EmbeddedMethodName(embedded)}({variable} as global::System.Collections.Generic.IReadOnlyDictionary<string, object?> ?? throw new global::System.InvalidOperationException(\"Expected embedded record map.\"), schema, enumStorage)";
+        }
+
+        var type = element.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
+        return $"global::AeroDB.Sable.Metadata.MetadataRegistry.ReadScalar<{type}>({variable}, enumStorage)";
+    }
+
+    private static bool TryGetCollectionElement(ITypeSymbol type, out ITypeSymbol element, out bool list)
+    {
+        if (type is IArrayTypeSymbol { Rank: 1 } array)
+        {
+            element = array.ElementType;
+            list = false;
+            return true;
+        }
+
+        if (type is INamedTypeSymbol named && named.IsGenericType && named.TypeArguments.Length == 1
+            && named.OriginalDefinition.ToDisplayString() is "System.Collections.Generic.List<T>" or "System.Collections.Generic.IReadOnlyList<T>")
+        {
+            element = named.TypeArguments[0];
+            list = named.OriginalDefinition.ToDisplayString() == "System.Collections.Generic.List<T>";
+            return true;
+        }
+
+        element = default!;
+        list = false;
+        return false;
+    }
+
+    private static void CollectEmbeddedTypes(
+        INamedTypeSymbol type,
+        List<INamedTypeSymbol> result,
+        HashSet<ITypeSymbol> visited)
+    {
+        foreach (var property in GetPersistentProperties(type))
+        {
+            var candidate = TryGetCollectionElement(property.Type, out var element, out _)
+                ? element
+                : property.Type;
+            if (candidate is not INamedTypeSymbol { TypeKind: TypeKind.Class } embedded
+                || embedded.SpecialType == SpecialType.System_String
+                || !visited.Add(embedded))
+                continue;
+
+            result.Add(embedded);
+            CollectEmbeddedTypes(embedded, result, visited);
+        }
+    }
+
+    private static string EmbeddedMethodName(INamedTypeSymbol type)
+    {
+        var identity = type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
+        var builder = new StringBuilder("MaterializeEmbedded_");
+        foreach (var character in identity)
+            builder.Append(char.IsLetterOrDigit(character) ? character : '_');
+
+        return builder.ToString();
+    }
+
+    private static string Escape(string value) => value.Replace("\\", "\\\\").Replace("\"", "\\\"");
 }

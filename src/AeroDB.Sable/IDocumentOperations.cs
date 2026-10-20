@@ -100,6 +100,11 @@ public interface IDocumentOperations
     /// <summary>Queue a low-level storage operation for execution during SaveChangesAsync.</summary>
     void QueueOperation(IStorageOperation operation);
 
+    /// <summary>
+    /// Queue a finite, parameter-bound record mutation for the current save.
+    /// </summary>
+    void QueueRecordMutation(ValidatedRecordMutation mutation);
+
     /// <summary>Register an entity with an expected version for optimistic concurrency gating.</summary>
     void UpdateExpectedVersion<T>(T entity, long expectedVersion) where T : class;
 

@@ -11,7 +11,8 @@ namespace AeroDB.WolverineFx;
 /// <summary>
 /// Bridges a AeroDB.Sable event subscription to Wolverine's message bus.
 /// Creates a MessageContext, enlists in the outbox, delegates to the subscription,
-/// then commits the session and flushes outgoing messages.
+/// then commits the session. The attached session listener marks durable state
+/// and flushes messages only after that commit has succeeded.
 /// </summary>
 [Experimental("AERODB001")]
 internal class AeroDBSubscriptionRunner
@@ -37,6 +38,12 @@ internal class AeroDBSubscriptionRunner
         IDocumentSession session,
         CancellationToken ct)
     {
+        if (session.Listeners.OfType<FlushOutgoingMessagesOnAeroDBCommit>().Any())
+        {
+            throw new InvalidOperationException(
+                "The document session is already enrolled in an AeroDB Wolverine outbox listener.");
+        }
+
         // Create a Wolverine message context scoped to this batch
         var context = new MessageContext(_runtime);
 
@@ -45,15 +52,17 @@ internal class AeroDBSubscriptionRunner
         context.OverrideStorage(store);
         var ownerId = store.GetOwnerId();
 
-        await context.EnlistInOutboxAsync(new AeroDBEnvelopeTransaction(store, session, ownerId));
+        var transaction = new AeroDBEnvelopeTransaction(store, session, ownerId);
+        var listener = new FlushOutgoingMessagesOnAeroDBCommit(context, store);
+        listener.AttachTransaction(transaction);
+        session.Listeners.Add(listener);
+        await context.EnlistInOutboxAsync(transaction);
 
         // Delegate to the user's subscription logic
         await _subscription.ProcessEventsAsync(page, controller, session, ct);
 
-        // Commit session changes (event writes, projected docs, etc.)
+        // Commit session changes (event writes, projected docs, etc.). The
+        // session-scoped listener is the single post-commit authority.
         await session.SaveChangesAsync(ct);
-
-        // Flush any Wolverine messages published by the subscription
-        await context.FlushOutgoingMessagesAsync();
     }
 }

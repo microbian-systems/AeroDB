@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+    <SableTestPackageVersion Condition="'$(SableTestPackageVersion)' == ''">0.0.9.7-alpha</SableTestPackageVersion>
+  </PropertyGroup>
+
+  <!--
+    This project intentionally consumes AeroDB.Sable only as a NuGet package.
+    Do not replace this PackageReference with a ProjectReference: that would
+    hide missing analyzer assets in the published package.
+  -->
+  <ItemGroup>
+    <PackageReference Include="AeroDB.Sable" Version="$(SableTestPackageVersion)" />
+    <PackageReference Include="Shouldly" Version="4.3.0" />
+    <PackageReference Include="TUnit" Version="1.39.0" />
+  </ItemGroup>
+</Project>

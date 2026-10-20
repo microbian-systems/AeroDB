@@ -152,13 +152,23 @@ public class GraphIntegrationTests
     }
 
     [Test]
-    public async Task Graph_FirstOrDefaultAsync_TableNotExist_ReturnsNull()
+    public async Task Graph_FirstOrDefaultAsync_TableNotExist_PropagatesDatabaseFailure()
     {
         await using var store = await TestHarness.CreateStoreAsync();
         await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
 
-        // No data stored - no table exists yet, so an empty result should
-        // materialize the same way as any other empty graph query.
+        // A missing table is a database error, not a successful empty result.
+        await Should.ThrowAsync<SurrealDb.Net.Exceptions.Response.ResponseUnsuccessfulException>(
+            () => session.Graph<Person>().FirstOrDefaultAsync());
+    }
+
+    [Test]
+    public async Task Graph_FirstOrDefaultAsync_ExistingEmptyTable_ReturnsNull()
+    {
+        await using var store = await TestHarness.CreateStoreAsync();
+        await using var session = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
+        await session.ExecuteSqlAsync("DEFINE TABLE person SCHEMALESS;");
+
         var result = await session.Graph<Person>().FirstOrDefaultAsync();
 
         result.ShouldBeNull();

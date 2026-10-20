@@ -7,6 +7,8 @@ using Microsoft.Extensions.Logging.Abstractions;
 using NSubstitute;
 using Shouldly;
 using SurrealDb.Net;
+using SurrealDb.Net.Models.Response;
+using SurrealDb.Net.Exceptions.Response;
 using TUnit.Core;
 using Wolverine;
 using Wolverine.Transports.Sending;
@@ -125,15 +127,23 @@ public class AeroDBQueueSenderTests
     public async Task SendAsync_stores_envelope_via_StoreOutgoingAsync()
     {
         var client = Substitute.For<ISurrealDbClient>();
+        SuccessfulWrite(client);
         var store = CreateStore(client);
         var sender = new AeroDBQueueSender(store, TestUri);
         var envelope = MakeEnvelope();
 
         await sender.SendAsync(envelope);
 
-        // Verify a CREATE query was sent to the outgoing table
-        await client.Received(1).RawQuery(Arg.Is<string>(s =>
-            s.Contains("CREATE wolverine_outgoing_envelopes")));
+        // Verify the parameterized create and exact envelope payload, not an
+        // obsolete interpolated SQL overload.
+        await client.Received(1).RawQuery(
+            Arg.Is<string>(s => s.Contains("CREATE type::record(\"wolverine_outgoing_envelopes\", $p0) CONTENT $p1;")),
+            Arg.Is<IReadOnlyDictionary<string, object?>>(values =>
+                Equals(values["p0"], envelope.Id.ToString()) &&
+                Equals(((IReadOnlyDictionary<string, object?>)values["p1"]!)["body"], Convert.ToBase64String(envelope.Data)) &&
+                Equals(((IReadOnlyDictionary<string, object?>)values["p1"]!)["message_type"], envelope.MessageType)),
+            Arg.Any<CancellationToken>());
+        envelope.WasPersistedInOutbox.ShouldBeTrue();
     }
 
     [Test]
@@ -148,17 +158,44 @@ public class AeroDBQueueSenderTests
     }
 
     [Test]
-    public async Task SendAsync_sets_envelope_data_before_storing()
+    public async Task SendAsync_preserves_existing_envelope_data_when_storing()
     {
         var client = Substitute.For<ISurrealDbClient>();
+        SuccessfulWrite(client);
         var store = CreateStore(client);
         var sender = new AeroDBQueueSender(store, TestUri);
         var envelope = MakeEnvelope();
 
         await sender.SendAsync(envelope);
 
-        // Accessing envelope.Data after SendAsync should work (serialization was triggered)
+        // This fixture supplies already-serialized data and verifies preservation.
         var data = envelope.Data;
         data.ShouldNotBeNull();
+        data.ShouldBe(new byte[] { 1, 2, 3 });
+        envelope.WasPersistedInOutbox.ShouldBeTrue();
+    }
+
+    [Test]
+    public async Task SendAsync_failed_database_response_does_not_mark_the_envelope_persisted()
+    {
+        var client = Substitute.For<ISurrealDbClient>();
+        client.RawQuery(Arg.Any<string>(), Arg.Any<IReadOnlyDictionary<string, object?>>(), Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult(new SurrealDbResponse([new ErrorResult()])));
+        var envelope = MakeEnvelope();
+        var sender = new AeroDBQueueSender(CreateStore(client), TestUri);
+
+        await Should.ThrowAsync<ResponseUnsuccessfulException>(() => sender.SendAsync(envelope).AsTask());
+
+        envelope.WasPersistedInOutbox.ShouldBeFalse();
+        await client.Received(1).RawQuery(Arg.Any<string>(), Arg.Any<IReadOnlyDictionary<string, object?>>(), Arg.Any<CancellationToken>());
+    }
+
+    private static void SuccessfulWrite(ISurrealDbClient client) =>
+        client.RawQuery(Arg.Any<string>(), Arg.Any<IReadOnlyDictionary<string, object?>>(), Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult(new SurrealDbResponse([])));
+
+    private sealed class ErrorResult : ISurrealDbErrorResult
+    {
+        public bool IsOk => false;
     }
 }
