@@ -8,9 +8,10 @@ namespace AeroDB.IntegrationTests;
 /// <summary>
 /// End-to-end integration tests for AeroDB.Sable.Reactive against a real SurrealDB WebSocket server.
 /// These tests require a running SurrealDB instance (ws://localhost:8000 by default).
-/// They are skipped when no server is available.
+/// An unavailable server fails the tests rather than bypassing their assertions.
 /// </summary>
 [Category("Integration")]
+[NotInParallel]
 public class ReactiveIntegrationTests
 {
     // ── Helpers ──────────────────────────────────────────────────
@@ -62,8 +63,7 @@ public class ReactiveIntegrationTests
     [Test]
     public async Task Observe_EndToEnd_ReceivesCreateUpdateDelete()
     {
-        if (!await TestHarness.IsAvailableAsync())
-            return;
+        await TestHarness.EnsureAvailableAsync();
 
         var store = default(IDocumentStore);
         var writeSession = default(IDocumentSession);
@@ -135,8 +135,7 @@ public class ReactiveIntegrationTests
     [Test]
     public async Task Observe_EndToEnd_EmitsCloseOnDispose()
     {
-        if (!await TestHarness.IsAvailableAsync())
-            return;
+        await TestHarness.EnsureAvailableAsync();
 
         var store = default(IDocumentStore);
         var writeSession = default(IDocumentSession);
@@ -183,8 +182,7 @@ public class ReactiveIntegrationTests
     [Test]
     public async Task Observe_LateSubscriber_OnlyReceivesSubsequentEvents()
     {
-        if (!await TestHarness.IsAvailableAsync())
-            return;
+        await TestHarness.EnsureAvailableAsync();
 
         var store = default(IDocumentStore);
         var writeSession = default(IDocumentSession);
@@ -245,8 +243,7 @@ public class ReactiveIntegrationTests
     [Test]
     public async Task AggregateRecords_EndToEnd()
     {
-        if (!await TestHarness.IsAvailableAsync())
-            return;
+        await TestHarness.EnsureAvailableAsync();
 
         var store = default(IDocumentStore);
         var writeSession = default(IDocumentSession);
@@ -305,7 +302,7 @@ public class ReactiveIntegrationTests
 
             final.ShouldNotBeNull();
             final.Keys.ShouldContain(key => final[key].Name == "Alice");
-            final["Alice"].Age.ShouldBe(30);
+            final[alice.Id!.ToString()!].Age.ShouldBe(30);
             final.Keys.ShouldNotContain(key => final[key].Name == "Bob");
         }
         finally
@@ -317,8 +314,7 @@ public class ReactiveIntegrationTests
     [Test]
     public async Task ScanRecords_EndToEnd()
     {
-        if (!await TestHarness.IsAvailableAsync())
-            return;
+        await TestHarness.EnsureAvailableAsync();
 
         var store = default(IDocumentStore);
         var writeSession = default(IDocumentSession);
@@ -386,8 +382,7 @@ public class ReactiveIntegrationTests
     [Test]
     public async Task FluentChain_Where_ToObservable_SelectOnCreate()
     {
-        if (!await TestHarness.IsAvailableAsync())
-            return;
+        await TestHarness.EnsureAvailableAsync();
 
         var store = default(IDocumentStore);
         var writeSession = default(IDocumentSession);
@@ -449,8 +444,7 @@ public class ReactiveIntegrationTests
     [Test]
     public async Task FluentChain_OnCreate_Shortcut()
     {
-        if (!await TestHarness.IsAvailableAsync())
-            return;
+        await TestHarness.EnsureAvailableAsync();
 
         var store = default(IDocumentStore);
         var writeSession = default(IDocumentSession);
@@ -507,8 +501,7 @@ public class ReactiveIntegrationTests
     [Test]
     public async Task FluentChain_OnUpdate_Shortcut()
     {
-        if (!await TestHarness.IsAvailableAsync())
-            return;
+        await TestHarness.EnsureAvailableAsync();
 
         var store = default(IDocumentStore);
         var writeSession = default(IDocumentSession);
@@ -572,8 +565,7 @@ public class ReactiveIntegrationTests
     [Test]
     public async Task FluentChain_Results_AggregateRecords()
     {
-        if (!await TestHarness.IsAvailableAsync())
-            return;
+        await TestHarness.EnsureAvailableAsync();
 
         var store = default(IDocumentStore);
         var writeSession = default(IDocumentSession);
@@ -657,8 +649,7 @@ public class ReactiveIntegrationTests
     [Test]
     public async Task FluentChain_Where_Results_WithPredicate()
     {
-        if (!await TestHarness.IsAvailableAsync())
-            return;
+        await TestHarness.EnsureAvailableAsync();
 
         var store = default(IDocumentStore);
         var writeSession = default(IDocumentSession);
@@ -700,11 +691,15 @@ public class ReactiveIntegrationTests
             liveSession = null;
             await Task.Delay(TimeSpan.FromMilliseconds(300));
 
-            // Assert — only the Created event for "Target" should arrive (Other filtered by WHERE)
-            allChanges.Count.ShouldBe(1);
-            allChanges[0].Action.ShouldBe(AeroDBLiveAction.Created);
-            allChanges[0].Document.ShouldNotBeNull();
-            allChanges[0].Document!.Name.ShouldBe("Target");
+            // Results retains Open metadata. Only one document change should
+            // arrive: Target is created, while Other is filtered by WHERE.
+            allChanges.ShouldContain(change => change.Action == AeroDBLiveAction.Open);
+            var documentChanges = allChanges
+                .Where(change => change.Action != AeroDBLiveAction.Open).ToList();
+            documentChanges.Count.ShouldBe(1);
+            documentChanges[0].Action.ShouldBe(AeroDBLiveAction.Created);
+            documentChanges[0].Document.ShouldNotBeNull();
+            documentChanges[0].Document!.Name.ShouldBe("Target");
         }
         finally
         {
@@ -720,8 +715,7 @@ public class ReactiveIntegrationTests
     [Test]
     public async Task FluentChain_Where_ToObservable_SelectOnUpdate()
     {
-        if (!await TestHarness.IsAvailableAsync())
-            return;
+        await TestHarness.EnsureAvailableAsync();
 
         var store = default(IDocumentStore);
         var writeSession = default(IDocumentSession);
@@ -790,8 +784,7 @@ public class ReactiveIntegrationTests
     [Test]
     public async Task FluentChain_Where_ToObservable_SelectOnDelete()
     {
-        if (!await TestHarness.IsAvailableAsync())
-            return;
+        await TestHarness.EnsureAvailableAsync();
 
         var store = default(IDocumentStore);
         var writeSession = default(IDocumentSession);

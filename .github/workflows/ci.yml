@@ -12,8 +12,22 @@ env:
 
 jobs:
   build-and-test:
-    name: Build & Test
+    name: Build & Test (SurrealDB ${{ matrix.surrealdb-version }})
     runs-on: ubuntu-latest
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        surrealdb-version: ['3.2.5', '3.3.0']
+    env:
+      CARGO_BUILD_JOBS: '2'
+      CARGO_PROFILE_DEV_DEBUG: '0'
+      CARGO_PROFILE_DEV_INCREMENTAL: 'false'
+      AeroDB_TEST_ENDPOINT: ws://127.0.0.1:8000/rpc
+      AeroDB_TEST_NS: aerodb_ci_integration
+      AeroDB_TEST_DB: integration
+      AERODB_SERVER_TEST_ENDPOINT: ws://127.0.0.1:8000/rpc
+      AERODB_SERVER_TEST_NAMESPACE: aerodb_ci_server
     steps:
       - uses: actions/checkout@v4
         with:
@@ -24,11 +38,68 @@ jobs:
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
+      - name: Setup Rust for the pinned embedded driver
+        uses: dtolnay/rust-toolchain@3c5f7ea28cd621ae0bf5283f0e981fb97b8a7af9
+        with:
+          toolchain: 1.94.0
+
+      - name: Cache native build dependencies
+        id: native-cache
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            surrealdb.net/rust-embedded/target
+          key: ${{ runner.os }}-surreal-native-rust-1.94-debug0-v1-${{ hashFiles('surrealdb.net/rust-embedded/Cargo.lock', 'surrealdb.net/rust-embedded/**/Cargo.toml', 'surrealdb.net/rust-embedded/**/*.rs') }}
+
+      - name: Build embedded native libraries
+        working-directory: surrealdb.net/rust-embedded
+        run: |
+          cargo build --locked --package surreal_memory --package surreal_surrealkv
+          test -s target/debug/libsurreal_memory.so
+          test -s target/debug/libsurreal_surrealkv.so
+
+      - name: Save successful native build before running .NET tests
+        if: steps.native-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            surrealdb.net/rust-embedded/target
+          key: ${{ steps.native-cache.outputs.cache-primary-key }}
+
       - name: Restore
         run: dotnet restore src/AeroDB.slnx
 
       - name: Build
         run: dotnet build src/AeroDB.slnx --configuration Release --no-restore
 
-      - name: Test
-        run: dotnet run --project tests/AeroDB.Tests/AeroDB.Tests.csproj --configuration Release -- --reflection --no-progress --fail-fast
+      - name: Start isolated SurrealDB for server and integration suites
+        run: |
+          docker run --detach --rm --name aerodb-ci-surrealdb \
+            -p 127.0.0.1:8000:8000 surrealdb/surrealdb:v${{ matrix.surrealdb-version }} \
+            start --bind 0.0.0.0:8000 --allow-all --unauthenticated memory
+          for attempt in $(seq 1 30); do
+            if curl --fail --silent http://127.0.0.1:8000/version; then exit 0; fi
+            sleep 1
+          done
+          docker logs aerodb-ci-surrealdb
+          exit 1
+
+      - name: Run every AeroDB test suite
+        shell: pwsh
+        run: ./build/test-all.ps1 -Configuration Release -NoBuild
+
+      - name: Upload all test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: aerodb-test-results-${{ matrix.surrealdb-version }}
+          path: TestResults/
+          if-no-files-found: warn
+
+      - name: Stop isolated test database
+        if: always()
+        run: docker rm --force aerodb-ci-surrealdb || true

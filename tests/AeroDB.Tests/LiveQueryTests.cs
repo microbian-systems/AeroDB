@@ -238,13 +238,18 @@ public class LiveQueryTests
         var p1 = new Person { Name = "Good1", Age = 1 };
         var p2 = new Person { Name = "Good2", Age = 2 };
         var source = MultipleResponses(new SurrealDbLiveQueryResponse[] { CreateCreate(p1), CreateCreate(p2) });
-        Person? received = null; var tcs = new TaskCompletionSource();
+        var received = new System.Collections.Concurrent.ConcurrentQueue<string>();
+        var tcs = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
         var adapter = new SurrealAeroDBLiveQuery<Person>(source,
-            new Action<Person>[] { p => throw new InvalidOperationException("Intentional failure"), p => { received = p; tcs.TrySetResult(); } },
+            new Action<Person>[] { p => throw new InvalidOperationException("Intentional failure"), p =>
+            {
+                received.Enqueue(p.Name);
+                if (received.Count == 2) tcs.TrySetResult();
+            } },
             null, null, null, 4096, Wait, NullPersonLogger);
         await adapter.StartAsync();
-        await Task.WhenAny(tcs.Task, Task.Delay(5000));
-        received.ShouldNotBeNull(); received!.Name.ShouldBe("Good1");
+        await tcs.Task.WaitAsync(TimeSpan.FromSeconds(5));
+        received.ToArray().ShouldBe(new[] { "Good1", "Good2" });
         await adapter.DisposeAsync();
     }
 
@@ -266,6 +271,43 @@ public class LiveQueryTests
         await adapter.StartAsync();
         await adapter.StopAsync();
         await adapter.StopAsync(); // idempotent
+    }
+
+    [Test]
+    public async Task StopAsync_cancels_an_idle_source_without_caller_cancellation()
+    {
+        using var lifetime = new CancellationTokenSource();
+        var opened = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        var adapter = new SurrealAeroDBLiveQuery<Person>(
+            IdleResponses(), null, null, null, null, 4096, Wait, NullPersonLogger);
+        await adapter.StartAsync(lifetime.Token);
+        var consumer = Task.Run(async () =>
+        {
+            await foreach (var change in adapter.Changes())
+                if (change.Action == AeroDBLiveAction.Open) opened.TrySetResult();
+        });
+
+        try
+        {
+            await opened.Task.WaitAsync(TimeSpan.FromSeconds(5));
+            await adapter.StopAsync().WaitAsync(TimeSpan.FromSeconds(2));
+            await consumer.WaitAsync(TimeSpan.FromSeconds(2));
+            lifetime.IsCancellationRequested.ShouldBeFalse();
+            await adapter.StopAsync();
+        }
+        finally
+        {
+            lifetime.Cancel();
+            await adapter.DisposeAsync();
+            await consumer;
+        }
+
+        static async IAsyncEnumerable<SurrealDbLiveQueryResponse> IdleResponses(
+            [EnumeratorCancellation] CancellationToken ct = default)
+        {
+            yield return CreateOpen();
+            await Task.Delay(Timeout.InfiniteTimeSpan, ct);
+        }
     }
 
     // ─────────────────────────────────────────────────────────────

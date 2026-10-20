@@ -9,6 +9,9 @@ internal sealed class LiveQuerySession : ILiveQuerySession
     private readonly StoreOptions _options;
     private readonly string? _tenantId;
     private readonly ILoggerFactory _loggerFactory;
+    private readonly object _subscriptionLock = new();
+    private readonly List<IAsyncDisposable> _subscriptions = new();
+    private bool _disposed;
 
     public LiveQuerySession(
         ISurrealDbSession session,
@@ -24,8 +27,10 @@ internal sealed class LiveQuerySession : ILiveQuerySession
 
     public IAeroDBLiveQueryBuilder<T> Live<T>() where T : class
     {
+        ObjectDisposedException.ThrowIf(_disposed, this);
         ThrowIfEncrypted<T>();
-        return new SurrealLiveQueryBuilder<T>(_session, _options, _loggerFactory, _tenantId);
+        return new SurrealLiveQueryBuilder<T>(
+            _session, _options, _loggerFactory, _tenantId, RegisterSubscription);
     }
 
     public async Task<IAeroDBLiveQuery<T>> LiveRawQuery<T>(
@@ -34,6 +39,7 @@ internal sealed class LiveQuerySession : ILiveQuerySession
         CancellationToken ct = default)
         where T : class
     {
+        ObjectDisposedException.ThrowIf(_disposed, this);
         ThrowIfEncrypted<T>();
         var logger = _loggerFactory.CreateLogger<SurrealAeroDBLiveQuery<T>>();
         var sdkLive = await _session.LiveRawQuery<T>(surql, parameters, ct)
@@ -45,13 +51,46 @@ internal sealed class LiveQuerySession : ILiveQuerySession
             _options.LiveQueryChannelFullMode,
             logger);
         await query.StartAsync(ct).ConfigureAwait(false);
-        return query;
+        try
+        {
+            RegisterSubscription(query);
+            return query;
+        }
+        catch
+        {
+            await query.DisposeAsync().ConfigureAwait(false);
+            throw;
+        }
     }
 
-    public ValueTask DisposeAsync()
+    private void RegisterSubscription(IAsyncDisposable subscription)
     {
-        // Session-level cleanup — no subscriptions tracked in v1 (M1 backlog)
-        return ValueTask.CompletedTask;
+        lock (_subscriptionLock)
+        {
+            ObjectDisposedException.ThrowIf(_disposed, this);
+            _subscriptions.Add(subscription);
+        }
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        IAsyncDisposable[] subscriptions;
+        lock (_subscriptionLock)
+        {
+            if (_disposed) return;
+            _disposed = true;
+            subscriptions = _subscriptions.ToArray();
+            _subscriptions.Clear();
+        }
+        try
+        {
+            foreach (var subscription in subscriptions)
+                await subscription.DisposeAsync().ConfigureAwait(false);
+        }
+        finally
+        {
+            await _session.DisposeAsync().ConfigureAwait(false);
+        }
     }
 
     private void ThrowIfEncrypted<T>() where T : class

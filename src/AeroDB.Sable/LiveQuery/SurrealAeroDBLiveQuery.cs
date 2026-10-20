@@ -21,6 +21,9 @@ internal sealed class SurrealAeroDBLiveQuery<T> : IAeroDBLiveQuery<T> where T : 
     private Task? _readLoop;
     private Task? _callbackLoop;
     private int _changesConsumed; // 0 = available, 1 = consumed, guards against double-enumeration
+    private int _stopping;
+    private int _disposed;
+    private bool _closeWritten;
 
     /// <summary>
     /// Production constructor: wraps a real <see cref="SurrealDbLiveQuery{T}"/> from the SDK.
@@ -109,15 +112,18 @@ internal sealed class SurrealAeroDBLiveQuery<T> : IAeroDBLiveQuery<T> where T : 
     /// </summary>
     private async Task ReadFromSdkAsync(CancellationToken ct)
     {
+        using var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(ct, _cts.Token);
+        var readToken = linkedCts.Token;
         // Use test source if provided, otherwise read from the SDK live query
         var source = _testSource ?? _sdkLive!;
 
         try
         {
-            await foreach (var response in source.WithCancellation(ct).ConfigureAwait(false))
+            await foreach (var response in source.WithCancellation(readToken).ConfigureAwait(false))
             {
                 var change = MapToAeroDBChange(response);
-                await _channel.Writer.WriteAsync(change, ct).ConfigureAwait(false);
+                await _channel.Writer.WriteAsync(change, readToken).ConfigureAwait(false);
+                if (change.Action == AeroDBLiveAction.Closed) _closeWritten = true;
             }
         }
         catch (OperationCanceledException)
@@ -130,6 +136,12 @@ internal sealed class SurrealAeroDBLiveQuery<T> : IAeroDBLiveQuery<T> where T : 
         }
         finally
         {
+            // Cancellation may beat the SDK's local KILL response. Publish closure
+            // before completion when there is room, without blocking disposal on a
+            // full bounded channel that no consumer is draining.
+            if (_sdkLive is not null && Volatile.Read(ref _stopping) != 0 && !_closeWritten)
+                _channel.Writer.TryWrite(new AeroDBLiveChange<T>(
+                    AeroDBLiveAction.Closed, null, default, SurrealDbLiveQueryClosureReason.QueryKilled));
             _channel.Writer.TryComplete();
             _logger.LogDebug("Live query read loop completed for {Type}", typeof(T).Name);
         }
@@ -142,7 +154,7 @@ internal sealed class SurrealAeroDBLiveQuery<T> : IAeroDBLiveQuery<T> where T : 
     /// </summary>
     private async Task DispatchCallbacksAsync()
     {
-        await foreach (var change in _channel.Reader.ReadAllAsync(_cts.Token).ConfigureAwait(false))
+        await foreach (var change in _channel.Reader.ReadAllAsync().ConfigureAwait(false))
         {
             switch (change.Action)
             {
@@ -302,66 +314,46 @@ internal sealed class SurrealAeroDBLiveQuery<T> : IAeroDBLiveQuery<T> where T : 
         => _callbackLoop is null ? _channel.Reader : null;
 
     /// <summary>
-    /// C6 FIXED: Uses <see cref="ChannelWriter{T}.TryComplete"/> for idempotent completion.
-    /// Cancels the internal CTS and awaits the read loop.
+    /// Kills the SDK subscription, cancels idle or backpressured reads, and waits
+    /// for the producer and callbacks to finish. Repeated calls are harmless.
     /// </summary>
     public async Task StopAsync(CancellationToken ct = default)
     {
-        _channel.Writer.TryComplete();
-        _cts.Cancel();
+        if (Interlocked.Exchange(ref _stopping, 1) == 0)
+        {
+            try
+            {
+                if (_sdkLive is not null)
+                    await _sdkLive.DisposeAsync().ConfigureAwait(false);
+            }
+            finally
+            {
+                _cts.Cancel();
+            }
+        }
 
         if (_readLoop is not null)
         {
             await _readLoop.WaitAsync(ct).ConfigureAwait(false);
         }
+        else
+        {
+            _channel.Writer.TryComplete();
+        }
+        if (_callbackLoop is not null)
+            await _callbackLoop.WaitAsync(ct).ConfigureAwait(false);
     }
 
     /// <summary>
-    /// Disposes all resources: completes the channel, cancels the CTS,
-    /// disposes the SDK live query (kills server-side query),
-    /// and awaits both loops with exception swallowing.
+    /// Stops the subscription before disposing resources. Closure is published
+    /// before completing the channel; pending callbacks can drain normally.
     /// </summary>
     public async ValueTask DisposeAsync()
     {
-        _channel.Writer.TryComplete();
-        _cts.Cancel();
-
-        try
-        {
-            // _sdkLive may be null in unit tests with mocked sessions
-            if (_sdkLive is not null)
-                await _sdkLive.DisposeAsync().ConfigureAwait(false);
-        }
-        catch
-        {
-            // Swallow dispose exceptions
-        }
-
-        try
-        {
-            if (_readLoop is not null)
-            {
-                await _readLoop.ConfigureAwait(false);
-            }
-        }
-        catch
-        {
-            // Swallow exceptions during disposal
-        }
-
-        try
-        {
-            if (_callbackLoop is not null)
-            {
-                await _callbackLoop.ConfigureAwait(false);
-            }
-        }
-        catch
-        {
-            // Swallow exceptions during disposal
-        }
-
-        _cts.Dispose();
+        if (Interlocked.Exchange(ref _disposed, 1) != 0) return;
+        try { await StopAsync().ConfigureAwait(false); }
+        catch { /* Preserve best-effort disposal after connection failure. */ }
+        finally { _cts.Dispose(); }
     }
 
     /// <summary>
