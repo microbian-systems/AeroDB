@@ -108,7 +108,7 @@ internal sealed class SurrealQueryProvider : IQueryProvider
             return _session;
 
         var (schemaName, _) = MetadataDispatch.GetSchemaTarget(elementType, _options.Schema);
-        return await _sessionBase.GetSessionForSchemaAsync(schemaName, ct).ConfigureAwait(false);
+        return await _sessionBase.GetReadSessionForSchemaAsync(schemaName, ct).ConfigureAwait(false);
     }
 
     private void LogSurrealQuery(string operation, string surql, SurrealQueryResult query, Type? elementType)
@@ -569,7 +569,8 @@ internal sealed class SurrealQueryProvider : IQueryProvider
                 LogSurrealQuery("ToListAsync (with stats)", combinedSurql, query, sourceType);
                 var statsSession = await GetSessionForElementType(sourceType, ct).ConfigureAwait(false);
                 var statsResponse = await statsSession.RawQuery(combinedSurql, query.Parameters, ct).ConfigureAwait(false);
-                if (!statsResponse.HasErrors && statsResponse.Count > 1)
+                statsResponse.EnsureAllOks();
+                if (statsResponse.Count > 1)
                 {
                     // Result set 0: count(), Result set 1: main data
                     var countVal = TryExtractCount(statsResponse);
@@ -586,11 +587,7 @@ internal sealed class SurrealQueryProvider : IQueryProvider
             else
             {
                 // TODO: Combine count into the multi-statement LET query for single round-trip
-                try
-                {
-                    queryStats.TotalResults = await CountAsync(expression, ct).ConfigureAwait(false);
-                }
-                catch { /* ignore count failures */ }
+                queryStats.TotalResults = await CountAsync(expression, ct).ConfigureAwait(false);
             }
         }
 
@@ -652,6 +649,7 @@ internal sealed class SurrealQueryProvider : IQueryProvider
         LogSurrealQuery("ToListAsync", surql, query, sourceType);
         var querySession = await GetSessionForElementType(sourceType, ct).ConfigureAwait(false);
         var response = await querySession.RawQuery(surql, query.Parameters, ct).ConfigureAwait(false);
+        response.EnsureAllOks();
 
         if (hasIncludes || hasIncludeSpecs)
         {
@@ -728,7 +726,7 @@ internal sealed class SurrealQueryProvider : IQueryProvider
             return results;
         }
 
-        if (!response.HasErrors && response.Count > 0)
+        if (response.Count > 0)
         {
             var results = await DeserializeQueryResultsAsync<T>(response, 0, ct).ConfigureAwait(false);
             await HydrateFetchedRecordLinksAsync(results, query.FetchFields, querySession, ct).ConfigureAwait(false);
@@ -849,6 +847,7 @@ internal sealed class SurrealQueryProvider : IQueryProvider
         LogSurrealQuery("FirstOrDefaultAsync", surql, query, sourceType);
         var querySession = await GetSessionForElementType(sourceType, ct).ConfigureAwait(false);
         var response = await querySession.RawQuery(surql, query.Parameters, ct).ConfigureAwait(false);
+        response.EnsureAllOks();
 
         if (hasIncludes)
         {
@@ -876,7 +875,7 @@ internal sealed class SurrealQueryProvider : IQueryProvider
             return default;
         }
 
-        if (!response.HasErrors && response.Count > 0)
+        if (response.Count > 0)
         {
             var raw = await DeserializeQueryResultsAsync<T>(response, 0, ct).ConfigureAwait(false);
             if (raw is { Count: > 0 })
@@ -996,6 +995,7 @@ internal sealed class SurrealQueryProvider : IQueryProvider
         LogSurrealQuery("SingleOrDefaultAsync", surql, query, sourceType);
         var querySession = await GetSessionForElementType(sourceType, ct).ConfigureAwait(false);
         var response = await querySession.RawQuery(surql, query.Parameters, ct).ConfigureAwait(false);
+        response.EnsureAllOks();
 
         if (hasIncludes)
         {
@@ -1027,7 +1027,7 @@ internal sealed class SurrealQueryProvider : IQueryProvider
             return default;
         }
 
-        if (!response.HasErrors && response.Count > 0)
+        if (response.Count > 0)
         {
             var raw = await DeserializeQueryResultsAsync<T>(response, 0, ct).ConfigureAwait(false);
             if (raw is { Count: > 0 })
@@ -1185,34 +1185,8 @@ internal sealed class SurrealQueryProvider : IQueryProvider
                 return TrackQueryResults(InternalSessionBase.DeserializePocoFromList<T>(
                     items,
                     mapping?.IdentityProperty ?? "Id",
-                    _options.Schema));
-        }
-
-        var shimType = MetadataRegistry.GetShimType(typeof(T));
-        if (shimType is not null)
-        {
-            var listType = typeof(List<>).MakeGenericType(shimType);
-            var getValueMethod = typeof(SurrealDbResponse)
-                .GetMethod(nameof(SurrealDbResponse.GetValue), 1, [typeof(int)])!
-                .MakeGenericMethod(listType);
-
-            var shimList = getValueMethod.Invoke(response, [index]);
-            if (shimList is not IEnumerable enumerable)
-                return [];
-
-            // Materialize each shim to entity via ToEntity()
-            var toEntityMethod = shimType.GetMethod("ToEntity", Type.EmptyTypes);
-            if (toEntityMethod is null) return [];
-
-            var results = new List<T>();
-            foreach (var shim in enumerable)
-            {
-                if (shim is null) continue;
-                var entity = toEntityMethod.Invoke(shim, null);
-                if (entity is T t)
-                    results.Add(t);
-            }
-            return TrackQueryResults(results);
+                    _options.Schema,
+                    _options.EnumStorage));
         }
 
         var raw = response.GetValue<List<T>>(index);
@@ -1382,7 +1356,8 @@ internal sealed class SurrealQueryProvider : IQueryProvider
         var sourceLiteral = DocumentIdentityResolver.FormatRecordIdLiteral(sourceRecord.Id);
         var sql = $"SELECT `{fetchField}` AS link_id FROM {sourceLiteral}";
         var response = await session.RawQuery(sql, null, ct).ConfigureAwait(false);
-        if (response.HasErrors || response.Count == 0)
+        response.EnsureAllOks();
+        if (response.Count == 0)
             return null;
 
         var records = CborResultReader.ReadPocoResult(response, 0);
@@ -1416,7 +1391,8 @@ internal sealed class SurrealQueryProvider : IQueryProvider
     {
         var sql = $"SELECT * FROM {DocumentIdentityResolver.FormatRecordIdLiteral(recordId)}";
         var response = await session.RawQuery(sql, null, ct).ConfigureAwait(false);
-        if (response.HasErrors || response.Count == 0)
+        response.EnsureAllOks();
+        if (response.Count == 0)
             return null;
 
         var records = CborResultReader.ReadPocoResult(response, 0);
@@ -1427,7 +1403,8 @@ internal sealed class SurrealQueryProvider : IQueryProvider
         return InternalSessionBase.DeserializePocoFromList<TFetched>(
             records,
             mapping?.IdentityProperty ?? "Id",
-            _options.Schema).FirstOrDefault();
+            _options.Schema,
+            _options.EnumStorage).FirstOrDefault();
     }
 
     private static string? StripRecordTable(string? key)
@@ -1615,7 +1592,11 @@ internal sealed class SurrealQueryProvider : IQueryProvider
     {
         var mapping = _options.Schema.Mappings.GetValueOrDefault(typeof(TInclude));
         var records = CborResultReader.ReadPocoResult(response, index);
-        return InternalSessionBase.DeserializePocoFromList<TInclude>(records, mapping?.IdentityProperty ?? "Id", _options.Schema);
+        return InternalSessionBase.DeserializePocoFromList<TInclude>(
+            records,
+            mapping?.IdentityProperty ?? "Id",
+            _options.Schema,
+            _options.EnumStorage);
     }
 
     /// <summary>
@@ -1734,8 +1715,9 @@ internal sealed class SurrealQueryProvider : IQueryProvider
         LogSurrealQuery($"AggregateAsync ({function})", surql, query, elementType);
         var aggSession = await GetSessionForElementType(elementType, ct).ConfigureAwait(false);
         var response = await aggSession.RawQuery(surql, query.Parameters, ct).ConfigureAwait(false);
+        response.EnsureAllOks();
 
-        if (!response.HasErrors && response.Count > 0)
+        if (response.Count > 0)
         {
             var result = TryExtractDecimal(response, function);
             if (result.HasValue)
@@ -1776,8 +1758,9 @@ internal sealed class SurrealQueryProvider : IQueryProvider
         LogSurrealQuery("CountAsync", surql, query, elementType);
         var countSession = await GetSessionForElementType(elementType ?? typeof(object), ct).ConfigureAwait(false);
         var response = await countSession.RawQuery(surql, query.Parameters, ct).ConfigureAwait(false);
+        response.EnsureAllOks();
 
-        if (!response.HasErrors && response.Count > 0)
+        if (response.Count > 0)
         {
             var result = TryExtractCount(response);
             if (result.HasValue)
@@ -1822,8 +1805,9 @@ internal sealed class SurrealQueryProvider : IQueryProvider
         var querySession = await GetSessionForElementType(elementType, ct).ConfigureAwait(false);
         LogSurrealQuery("SelectAsync", surql, result, elementType);
         var response = await querySession.RawQuery(surql, result.Parameters, ct).ConfigureAwait(false);
+        response.EnsureAllOks();
 
-        if (!response.HasErrors && response.Count > 0)
+        if (response.Count > 0)
         {
             var raw = response.GetValue<List<TResult>>(0);
             if (raw is not null) return raw;
@@ -1855,8 +1839,9 @@ internal sealed class SurrealQueryProvider : IQueryProvider
         LogSurrealQuery("AnyAsync", surql, query, elementType);
         var anySession = await GetSessionForElementType(elementType ?? typeof(object), ct).ConfigureAwait(false);
         var response = await anySession.RawQuery(surql, query.Parameters, ct).ConfigureAwait(false);
+        response.EnsureAllOks();
 
-        if (!response.HasErrors && response.Count > 0)
+        if (response.Count > 0)
         {
             var raw = response.GetValue<List<object>>(0);
             return raw is { Count: > 0 };

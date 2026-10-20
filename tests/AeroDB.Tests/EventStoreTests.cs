@@ -128,6 +128,9 @@ public class EventStoreTests
     public async Task FetchLatest_returns_null_for_nonexistent_stream()
     {
         await using var store = await TestHarness.CreateStoreAsync();
+        await using var seed = await store.OpenSessionAsync(new SessionOptions { Tracking = DocumentTracking.None });
+        seed.Store(new TestDoc { Name = "fetch-latest-table-bootstrap" });
+        await seed.SaveChangesAsync();
         await using var query = await store.QuerySessionAsync();
 
         var doc = await query.FetchLatest<TestDoc>("nonexistent-stream");

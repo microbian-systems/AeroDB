@@ -51,7 +51,5 @@ public sealed class AeroDBIntegration : IWolverineExtension
         // callback. AeroDBMessageStore handles its own schema creation internally via
         // SchemaManager in InitializeSchemaAsync().
 
-        // Register AeroDBEventForwarding so it's available in the DI container for store configurators
-        options.Services.TryAddSingleton<AeroDBEventForwarding>();
     }
 }

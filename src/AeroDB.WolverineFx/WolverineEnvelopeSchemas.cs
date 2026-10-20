@@ -40,7 +40,18 @@ public sealed class WolverineEnvelopeSchemas : IConfigureAeroDB
         options.Schema.For<WolverineNode>()
             .TableName("wolverine_nodes")
             .SetSchemaMode(SchemaMode.Strict)
-            .UniqueIndex(x => x.Id);
+            .UniqueIndex(x => x.Id)
+            .UniqueIndex(x => x.NodeNumber);
+
+        // The singleton sequence is initialized lazily by PersistAsync. Schema
+        // registration must never reset an existing counter or live node data.
+        options.Schema.For<WolverineNodeSequence>()
+            .TableName("wolverine_node_sequence")
+            .SetSchemaMode(SchemaMode.Strict);
+
+        options.Schema.For<WolverineLeadershipLease>()
+            .TableName("wolverine_leadership_lease")
+            .SetSchemaMode(SchemaMode.Strict);
 
         // Wolverine agent restrictions (no indexes needed — queried by full scan)
         options.Schema.For<WolverineAgentRestrictions>()

@@ -233,6 +233,8 @@ public static class SurrealAsyncQueryExtensions
 
     /// <summary>
     /// Execute a hard DELETE matching the current query's WHERE clause. Bypasses soft-delete.
+    /// Requires a writable <see cref="DocumentSession"/>; read-only query sessions cannot
+    /// safely provide the transaction fence and unknown-outcome guarantees for a mutation.
     /// Returns the number of deleted rows (best-effort — SurrealDB may return 1 per statement).
     /// </summary>
     public static async Task<long> DeleteAsync<T>(this ISableQueryable<T> source, CancellationToken ct = default)
@@ -240,6 +242,15 @@ public static class SurrealAsyncQueryExtensions
     {
         if (source is not SableQueryable<T> surrealQueryable)
             throw new NotSupportedException("DeleteAsync requires AeroDB.Sable's SableQueryable provider.");
+        if (surrealQueryable.InternalSession is not DocumentSession documentSession)
+        {
+            throw new NotSupportedException(
+                "DeleteAsync requires a writable DocumentSession. IQuerySession is read-only and cannot execute destructive mutations.");
+        }
+
+        EncryptedQueryGuard.Validate(source.Expression, surrealQueryable.StoreOptions.Schema);
+        if (surrealQueryable.Provider is not SurrealQueryProvider)
+            throw new NotSupportedException("DeleteAsync requires AeroDB.Sable's SurrealQueryProvider.");
 
         var tableName = MetadataDispatch.GetTableName(typeof(T), surrealQueryable.StoreOptions.Schema);
         if (string.IsNullOrEmpty(tableName))
@@ -248,19 +259,32 @@ public static class SurrealAsyncQueryExtensions
         // Build the SurrealQL from the expression tree
         var visitor = new SurrealExpressionVisitor(surrealQueryable.StoreOptions.Schema, surrealQueryable.StoreOptions.EnumStorage);
         var result = visitor.Translate(source.Expression);
+        var mutationParameters = result.Parameters.ToDictionary(
+            pair => pair.Key,
+            pair => pair.Value,
+            StringComparer.Ordinal);
+        DocumentSession.ApplyTenantMutationFilter(
+            typeof(T),
+            surrealQueryable.StoreOptions,
+            surrealQueryable.InternalSession?.TenantId,
+            result.Where,
+            mutationParameters);
 
         var surql = $"DELETE FROM `{tableName}`";
         if (result.Where.Count > 0)
             surql += " WHERE " + string.Join(" AND ", result.Where);
         surql += ";";
 
-        // Get the provider's session through the internal property
-        var session = surrealQueryable.GetSession();
-
         // Pass parameters only when non-empty; null tells the engine there
         // are no parameters (avoids CBOR edge-cases with empty dictionary).
-        var parameters = result.Parameters is { Count: > 0 } ? result.Parameters : null;
-        var response = await session.RawQuery(surql, parameters, ct).ConfigureAwait(false);
+        var parameters = mutationParameters.Count > 0 ? mutationParameters : null;
+
+        var response = await documentSession.ExecuteImmediateMutationAsync(
+                typeof(T),
+                (targetSession, cancellationToken) => EmbeddedTransactionRawQuery
+                    .ExecuteAsync(targetSession, surql, parameters, cancellationToken),
+                ct)
+            .ConfigureAwait(false);
 
         // response.Count returns the number of result statements.
         // For a single DELETE statement this is always 1 on success,

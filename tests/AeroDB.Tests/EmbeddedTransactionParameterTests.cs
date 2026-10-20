@@ -13,6 +13,11 @@ public class EmbeddedTransactionParameterTests
             new SessionOptions { Tracking = DocumentTracking.None });
         const string id = "provider_transaction_parameter_cancel";
 
+        // Create the table outside the transaction under test. The assertion below
+        // concerns rollback of this record, not missing-table query behavior.
+        session.Store(new Person { Name = "parameter-transaction-table-bootstrap", Age = 1 });
+        await session.SaveChangesAsync();
+
         await using var transaction = await session.Session.BeginTransaction();
         await transaction.Set("id", id);
         await transaction.Set("name", "MustBeDiscarded");

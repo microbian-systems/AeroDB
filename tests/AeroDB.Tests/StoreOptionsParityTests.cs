@@ -2,6 +2,10 @@ using AeroDB.Sable;
 using Microsoft.Extensions.DependencyInjection;
 using SurrealDb.Embedded.InMemory;
 using SurrealDb.Net.Models;
+using SurrealDb.Net;
+using SurrealDb.Net.Models.Auth;
+using SurrealDb.Net.Models.Response;
+using NSubstitute;
 using TUnit.Core;
 
 namespace AeroDB.Tests;
@@ -268,6 +272,13 @@ public class StoreOptionsParityTests
     public async Task AddAeroDB_connection_string_configuration()
     {
         // AddAeroDB only accepts Action<StoreOptions>; configure endpoint via lambda
+        // The embedded engine cannot authenticate. Use a credential-capable
+        // synthetic session so configuration assertions retain real auth calls.
+        var client = Substitute.For<ISurrealDbClient>();
+        var child = Substitute.For<ISurrealDbSession>();
+        client.CreateSession(Arg.Any<CancellationToken>()).Returns(Task.FromResult(child));
+        child.RawQuery(Arg.Any<string>(), Arg.Any<IReadOnlyDictionary<string, object?>>(), Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult(new SurrealDbResponse([])));
         var services = new ServiceCollection();
         services.AddAeroDB(options =>
         {
@@ -276,8 +287,7 @@ public class StoreOptionsParityTests
             options.Database = "app_db";
             options.Username = "admin";
             options.Password = "secret";
-            // Use in-memory client so registration succeeds
-            options.ClientFactory = () => new SurrealDbMemoryClient();
+            options.ClientFactory = () => client;
         });
 
         var provider = services.BuildServiceProvider();
@@ -287,6 +297,11 @@ public class StoreOptionsParityTests
         store.Options.Endpoint.ShouldBe("ws://example.com:8000");
         store.Options.Namespace.ShouldBe("app_ns");
         store.Options.Database.ShouldBe("app_db");
+        store.Options.Username.ShouldBe("admin");
+        store.Options.Password.ShouldBe("secret");
+        await child.Received().SignIn(Arg.Is<RootAuth>(auth => auth.Username == "admin" && auth.Password == "secret"),
+            Arg.Any<CancellationToken>());
+        await child.Received().Use("app_ns", "app_db", Arg.Any<CancellationToken>());
         await store.DisposeAsync();
     }
 

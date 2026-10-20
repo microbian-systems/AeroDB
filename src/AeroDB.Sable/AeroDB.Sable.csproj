@@ -3,10 +3,18 @@
     <Description>.NET Transactional Document DB and Event Store on SurrealDB</Description>
     <PackageTags>surrealdb documentdb eventstore nosql</PackageTags>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <!--
+      The source generator and diagnostics are part of the Sable consumer
+      contract. ProjectReference makes them available while developing in this
+      repository, but NuGet consumers only load compiler extensions from the
+      analyzer asset folder.
+    -->
+    <TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificContentInPackage);IncludeAeroDBCompilerAssets</TargetsForTfmSpecificContentInPackage>
   </PropertyGroup>
   <ItemGroup>
     <InternalsVisibleTo Include="AeroDB.Tests" />
     <InternalsVisibleTo Include="AeroDB.AspNetIdentity" />
+    <InternalsVisibleTo Include="AeroDB.WolverineFx" />
     <InternalsVisibleTo Include="AeroDB.ML" />
     <InternalsVisibleTo Include="AeroDB.Analyzers.Tests" />
     <InternalsVisibleTo Include="Dali.Benchmarks" />
@@ -27,4 +35,23 @@
     <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" VersionOverride="10.0.9" />
     <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions" VersionOverride="10.0.9" />
   </ItemGroup>
+
+  <!--
+    Do not package Microsoft.CodeAnalysis*.dll here. Roslyn supplies those
+    assemblies in the compiler host; shipping private copies can cause analyzer
+    load/version conflicts. Both local projects target netstandard2.0 and have
+    no other runtime dependency closure.
+  -->
+  <Target Name="IncludeAeroDBCompilerAssets">
+    <ItemGroup>
+      <TfmSpecificPackageFile
+        Include="$(MSBuildProjectDirectory)\..\AeroDB.SourceGenerators\bin\$(Configuration)\netstandard2.0\AeroDB.SourceGenerators.dll"
+        PackagePath="analyzers/dotnet/cs"
+        BuildAction="None" />
+      <TfmSpecificPackageFile
+        Include="$(MSBuildProjectDirectory)\..\AeroDB.Analyzers\bin\$(Configuration)\netstandard2.0\AeroDB.Analyzers.dll"
+        PackagePath="analyzers/dotnet/cs"
+        BuildAction="None" />
+    </ItemGroup>
+  </Target>
 </Project>

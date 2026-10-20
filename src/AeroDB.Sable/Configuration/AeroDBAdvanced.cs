@@ -28,6 +28,9 @@ internal sealed class AeroDBAdvanced : IAeroDBAdvanced
 
     public async Task<ISurrealDbSession> CreateSessionAsync(CancellationToken ct = default)
     {
+        if (_options.Advanced.CreateSessionAsync is { } createSession)
+            return await createSession(ct).ConfigureAwait(false);
+
         // For remote connections, ForkSession. For in-memory, use client directly.
         if (_client is ISurrealDbSession session)
         {

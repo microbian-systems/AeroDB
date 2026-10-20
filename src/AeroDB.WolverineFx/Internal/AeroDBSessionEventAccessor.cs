@@ -6,8 +6,8 @@ namespace AeroDB.WolverineFx.Internal;
 
 /// <summary>
 /// Shared helper for accessing <c>DocumentSession._appendedEvents</c>
-/// via reflection. Both <see cref="AeroDBEventForwarding"/> and
-/// <see cref="FlushOutgoingMessagesOnAeroDBCommit"/> need this same logic.
+/// via reflection. The session-scoped
+/// <see cref="FlushOutgoingMessagesOnAeroDBCommit"/> owns this logic.
 /// Consolidating here avoids duplicating the reflection code.
 ///
 /// A future AeroDB.Sable API (e.g., <c>DocumentSession.GetPendingAppendedEvents()</c>)

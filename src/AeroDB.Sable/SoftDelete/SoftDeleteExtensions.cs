@@ -66,10 +66,23 @@ public static class SoftDeleteExtensions
             $"SET {deletedField} = true, {deletedAtField} = $__sable_soft_delete_at" +
             $"{whereClause};";
 
+        if (session is DocumentSession documentSession)
+        {
+            await documentSession.ExecuteImmediateMutationAsync(
+                    typeof(T),
+                    (targetSession, cancellationToken) => EmbeddedTransactionRawQuery
+                        .ExecuteAsync(targetSession, surql, parameters, cancellationToken),
+                    ct)
+                .ConfigureAwait(false);
+            return;
+        }
+
         var targetSession = await internalSession
             .GetSessionForSchemaAsync(mappedDatabase, ct)
             .ConfigureAwait(false);
-        var response = await targetSession.RawQuery(surql, parameters, ct).ConfigureAwait(false);
+        var response = await EmbeddedTransactionRawQuery
+            .ExecuteAsync(targetSession, surql, parameters, ct)
+            .ConfigureAwait(false);
         response.EnsureAllOks();
     }
 }

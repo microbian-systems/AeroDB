@@ -2,6 +2,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using SurrealDb.Net;
+using SurrealDb.Net.Models.Auth;
 using System.Threading;
 using AeroDB.Sable.Internals.Cbor;
 using AeroDB.Sable.LiveQuery;
@@ -163,9 +164,7 @@ public class DocumentStore : IDocumentStore, ISessionFactory
         Options.Advanced.SurrealDbClient = _client;
         Options.Advanced.CreateSessionAsync = async (ct) =>
         {
-            if (_client is ISurrealDbSession session)
-                return await session.ForkSession(ct).ConfigureAwait(false);
-            return await _client.CreateSession(ct).ConfigureAwait(false);
+            return await CreateAuthenticatedSessionAsync(_client, ns, db, ct).ConfigureAwait(false);
         };
 
         // Apply IConfigureAeroDB modules (manual Configurators list)
@@ -200,8 +199,7 @@ public class DocumentStore : IDocumentStore, ISessionFactory
             var defaultMappings = Options.Schema.Mappings.Values.Where(m => m.SchemaName is null).ToList();
             if (defaultMappings.Count > 0)
             {
-                await using var schemaSession = await _client.CreateSession(ct).ConfigureAwait(false);
-                await schemaSession.Use(ns, db, ct).ConfigureAwait(false);
+                await using var schemaSession = await CreateAuthenticatedSessionAsync(_client, ns, db, ct).ConfigureAwait(false);
 
                 // Ensure analyzers before indexes (analyzers must exist before indexes referencing them)
                 if (Options.Schema.Analyzers.Analyzers.Count > 0)
@@ -250,8 +248,7 @@ public class DocumentStore : IDocumentStore, ISessionFactory
             {
                 foreach (var schemaName in schemaNames)
                 {
-                    await using var schemaSession = await _client.CreateSession(ct).ConfigureAwait(false);
-                    await schemaSession.Use(ns, db, ct).ConfigureAwait(false);
+                    await using var schemaSession = await CreateAuthenticatedSessionAsync(_client, ns, db, ct).ConfigureAwait(false);
 
                     // Optionally create the database if it doesn't exist
                     if (Options.Schema.AutoCreateDatabases)
@@ -296,8 +293,7 @@ public class DocumentStore : IDocumentStore, ISessionFactory
         // Auto-create edge (relation) table schemas if configured
         if (Options.Schema.AutoCreate && Options.Schema.EdgeMappings.Count > 0)
         {
-            await using var edgeSession = await _client.CreateSession(ct).ConfigureAwait(false);
-            await edgeSession.Use(ns, db, ct).ConfigureAwait(false);
+            await using var edgeSession = await CreateAuthenticatedSessionAsync(_client, ns, db, ct).ConfigureAwait(false);
 
             foreach (var edgeMapping in Options.Schema.EdgeMappings)
                 await schemaManager.EnsureEdgeSchemaAsync(edgeSession, edgeMapping, ct).ConfigureAwait(false);
@@ -306,14 +302,14 @@ public class DocumentStore : IDocumentStore, ISessionFactory
         // Auto-create event schema if events are enabled
         if (Options.Events.Enabled)
         {
-            await schemaManager.EnsureEventSchemaAsync(_client, ns, db, ct).ConfigureAwait(false);
+            await using var eventSchemaSession = await CreateAuthenticatedSessionAsync(_client, ns, db, ct).ConfigureAwait(false);
+            await schemaManager.EnsureEventSchemaAsync(eventSchemaSession, ct).ConfigureAwait(false);
         }
 
         // Auto-create SurrealDB native event triggers
         if (Options.Events.Triggers.AutoCreateTriggers && Options.Events.Triggers.Triggers.Count > 0)
         {
-            await using var triggerSession = await _client.CreateSession(ct).ConfigureAwait(false);
-            await triggerSession.Use(ns, db, ct).ConfigureAwait(false);
+            await using var triggerSession = await CreateAuthenticatedSessionAsync(_client, ns, db, ct).ConfigureAwait(false);
 
             foreach (var trigger in Options.Events.Triggers.Triggers)
             {
@@ -327,8 +323,7 @@ public class DocumentStore : IDocumentStore, ISessionFactory
 
         // Phase 1: ChangeTracking — SurrealDB-native audit trail (CHANGEFEED + DEFINE EVENT triggers)
         {
-            await using var changeTrackingSession = await _client.CreateSession(ct).ConfigureAwait(false);
-            await changeTrackingSession.Use(ns, db, ct).ConfigureAwait(false);
+            await using var changeTrackingSession = await CreateAuthenticatedSessionAsync(_client, ns, db, ct).ConfigureAwait(false);
             var changeTrackingManager = new ChangeTrackingSchemaManager(Options.LoggerFactory);
             await changeTrackingManager.ApplyAsync(Options, changeTrackingSession, ct).ConfigureAwait(false);
         }
@@ -336,8 +331,7 @@ public class DocumentStore : IDocumentStore, ISessionFactory
         // Phase 2: EventStream — create event stream tables and indexes
         if (Options.EventStreamConfigs.Count > 0)
         {
-            await using var eventStreamSession = await _client.CreateSession(ct).ConfigureAwait(false);
-            await eventStreamSession.Use(ns, db, ct).ConfigureAwait(false);
+            await using var eventStreamSession = await CreateAuthenticatedSessionAsync(_client, ns, db, ct).ConfigureAwait(false);
 
             foreach (var (aggregateType, config) in Options.EventStreamConfigs)
             {
@@ -374,8 +368,7 @@ public class DocumentStore : IDocumentStore, ISessionFactory
         var functionOpts = Options.Functions;
         if (functionOpts.AutoCreateFunctions && functionOpts.Functions.Count > 0)
         {
-            await using var funcSession = await _client.CreateSession(ct).ConfigureAwait(false);
-            await funcSession.Use(ns, db, ct).ConfigureAwait(false);
+            await using var funcSession = await CreateAuthenticatedSessionAsync(_client, ns, db, ct).ConfigureAwait(false);
 
             foreach (var function in functionOpts.Functions)
             {
@@ -393,8 +386,7 @@ public class DocumentStore : IDocumentStore, ISessionFactory
 
             if (defaultViewRegs.Count > 0)
             {
-                await using var viewSession = await _client.CreateSession(ct).ConfigureAwait(false);
-                await viewSession.Use(ns, db, ct).ConfigureAwait(false);
+                await using var viewSession = await CreateAuthenticatedSessionAsync(_client, ns, db, ct).ConfigureAwait(false);
 
                 _logger.LogInformation("Applying {Count} views to default database",
                     defaultViewRegs.Count);
@@ -415,8 +407,7 @@ public class DocumentStore : IDocumentStore, ISessionFactory
             {
                 foreach (var schemaName in viewSchemaNames)
                 {
-                    await using var schemaViewSession = await _client.CreateSession(ct).ConfigureAwait(false);
-                    await schemaViewSession.Use(ns, db, ct).ConfigureAwait(false);
+                    await using var schemaViewSession = await CreateAuthenticatedSessionAsync(_client, ns, db, ct).ConfigureAwait(false);
 
                     // Optionally create the database if it doesn't exist
                     if (Options.Schema.AutoCreateDatabases)
@@ -441,8 +432,7 @@ public class DocumentStore : IDocumentStore, ISessionFactory
         }
 
         // ── Auth schema: DEFINE ACCESS / TOKEN / SCOPE ──────────
-        await using var authSession = await _client.CreateSession(ct).ConfigureAwait(false);
-        await authSession.Use(ns, db, ct).ConfigureAwait(false);
+        await using var authSession = await CreateAuthenticatedSessionAsync(_client, ns, db, ct).ConfigureAwait(false);
 
         if (Options.Schema.Accesses.Count > 0)
         {
@@ -477,8 +467,7 @@ public class DocumentStore : IDocumentStore, ISessionFactory
         // Ensure projection progress state table if configured
         if (Options.ProjectionBuild.EnsureStateTable)
         {
-            await using var stateSession = await _client.CreateSession(ct).ConfigureAwait(false);
-            await stateSession.Use(ns, db, ct).ConfigureAwait(false);
+            await using var stateSession = await CreateAuthenticatedSessionAsync(_client, ns, db, ct).ConfigureAwait(false);
             await schemaManager.EnsureProjectionStateTableAsync(stateSession, ct).ConfigureAwait(false);
         }
 
@@ -584,16 +573,14 @@ public class DocumentStore : IDocumentStore, ISessionFactory
         {
             var tenantId = ResolveTenantId();
             var tenantClient = await _tenantSelector!.GetOrCreateClientAsync(tenantId, ct).ConfigureAwait(false);
-            var session = await tenantClient.CreateSession(ct).ConfigureAwait(false);
             var dbName = $"{Options.Namespace ?? "test"}_{tenantId}";
-            await session.Use(Options.Namespace ?? "test", dbName, ct).ConfigureAwait(false);
+            var session = await CreateAuthenticatedSessionAsync(tenantClient, Options.Namespace ?? "test", dbName, ct).ConfigureAwait(false);
             var qs = new QuerySession(tenantClient, session, Options, DocumentTracking.None) { TenantId = tenantId, DocumentStore = this };
             _logger.LogInformation("Created QuerySession for tenant {TenantId}", tenantId);
             return qs;
         }
 
-        var defaultSession = await Client.CreateSession(ct).ConfigureAwait(false);
-        await defaultSession.Use(Options.Namespace ?? "test", Options.Database ?? "test", ct).ConfigureAwait(false);
+        var defaultSession = await CreateAuthenticatedSessionAsync(Client, Options.Namespace ?? "test", Options.Database ?? "test", ct).ConfigureAwait(false);
         var qs2 = new QuerySession(Client, defaultSession, Options, DocumentTracking.None) { DocumentStore = this };
         if (Options.TenancyStyle == TenancyStyle.Conjoined && Options.DefaultTenantId is not null)
             qs2.TenantId = Options.DefaultTenantId;
@@ -618,9 +605,8 @@ public class DocumentStore : IDocumentStore, ISessionFactory
             client = Client;
         }
 
-        var dbSession = await client.CreateSession(ct).ConfigureAwait(false);
-        await dbSession.Use(Options.Namespace ?? "test", Options.Database ?? "test", ct)
-            .ConfigureAwait(false);
+        var liveDatabase = GetLiveQueryDatabaseName(Options, tenantId);
+        var dbSession = await CreateAuthenticatedSessionAsync(client, Options.Namespace ?? "test", liveDatabase, ct).ConfigureAwait(false);
 
         return new LiveQuerySession(dbSession, Options, Options.LoggerFactory, tenantId);
     }
@@ -650,9 +636,8 @@ public class DocumentStore : IDocumentStore, ISessionFactory
         {
             var tenantId = options.TenantId ?? ResolveTenantId();
             var tenantClient = await _tenantSelector!.GetOrCreateClientAsync(tenantId, ct).ConfigureAwait(false);
-            var session = await tenantClient.CreateSession(ct).ConfigureAwait(false);
             var dbName = $"{Options.Namespace ?? "test"}_{tenantId}";
-            await session.Use(Options.Namespace ?? "test", dbName, ct).ConfigureAwait(false);
+            var session = await CreateAuthenticatedSessionAsync(tenantClient, Options.Namespace ?? "test", dbName, ct).ConfigureAwait(false);
             var ds = new DocumentSession(tenantClient, session, Options, options) { TenantId = tenantId, DocumentStore = this };
             _logger.LogInformation("Opened session (tracking={Tracking}) for tenant {TenantId}", options.Tracking, tenantId);
             return ds;
@@ -665,8 +650,8 @@ public class DocumentStore : IDocumentStore, ISessionFactory
         SessionOptions options,
         CancellationToken ct)
     {
-        var defaultSession = await Client.CreateSession(ct).ConfigureAwait(false);
-        await defaultSession.Use(
+        var defaultSession = await CreateAuthenticatedSessionAsync(
+            Client,
             Options.Namespace ?? "test",
             Options.Database ?? "test",
             ct).ConfigureAwait(false);
@@ -693,16 +678,14 @@ public class DocumentStore : IDocumentStore, ISessionFactory
         {
             var tenantId = ResolveTenantId();
             var tenantClient = await _tenantSelector!.GetOrCreateClientAsync(tenantId, ct).ConfigureAwait(false);
-            var session = await tenantClient.CreateSession(ct).ConfigureAwait(false);
             var dbName = $"{Options.Namespace ?? "test"}_{tenantId}";
-            await session.Use(Options.Namespace ?? "test", dbName, ct).ConfigureAwait(false);
+            var session = await CreateAuthenticatedSessionAsync(tenantClient, Options.Namespace ?? "test", dbName, ct).ConfigureAwait(false);
             var ds = new DocumentSession(tenantClient, session, Options, DocumentTracking.None) { TenantId = tenantId, DocumentStore = this };
             _logger.LogInformation("Created LightweightSession (no tracking) for tenant {TenantId}", tenantId);
             return ds;
         }
 
-        var defaultSession = await Client.CreateSession(ct).ConfigureAwait(false);
-        await defaultSession.Use(Options.Namespace ?? "test", Options.Database ?? "test", ct).ConfigureAwait(false);
+        var defaultSession = await CreateAuthenticatedSessionAsync(Client, Options.Namespace ?? "test", Options.Database ?? "test", ct).ConfigureAwait(false);
         var ds2 = new DocumentSession(Client, defaultSession, Options, DocumentTracking.None) { DocumentStore = this };
         if (Options.TenancyStyle == TenancyStyle.Conjoined && Options.DefaultTenantId is not null)
             ds2.TenantId = Options.DefaultTenantId;
@@ -719,16 +702,14 @@ public class DocumentStore : IDocumentStore, ISessionFactory
         {
             var tenantId = ResolveTenantId();
             var tenantClient = await _tenantSelector!.GetOrCreateClientAsync(tenantId, ct).ConfigureAwait(false);
-            var session = await tenantClient.CreateSession(ct).ConfigureAwait(false);
             var dbName = $"{Options.Namespace ?? "test"}_{tenantId}";
-            await session.Use(Options.Namespace ?? "test", dbName, ct).ConfigureAwait(false);
+            var session = await CreateAuthenticatedSessionAsync(tenantClient, Options.Namespace ?? "test", dbName, ct).ConfigureAwait(false);
             var ds = new DocumentSession(tenantClient, session, Options, DocumentTracking.IdentityOnly) { TenantId = tenantId, DocumentStore = this };
             _logger.LogInformation("Created DocumentSession (identity tracking) for tenant {TenantId}", tenantId);
             return ds;
         }
 
-        var defaultSession = await Client.CreateSession(ct).ConfigureAwait(false);
-        await defaultSession.Use(Options.Namespace ?? "test", Options.Database ?? "test", ct).ConfigureAwait(false);
+        var defaultSession = await CreateAuthenticatedSessionAsync(Client, Options.Namespace ?? "test", Options.Database ?? "test", ct).ConfigureAwait(false);
         var ds2 = new DocumentSession(Client, defaultSession, Options, DocumentTracking.IdentityOnly) { DocumentStore = this };
         if (Options.TenancyStyle == TenancyStyle.Conjoined && Options.DefaultTenantId is not null)
             ds2.TenantId = Options.DefaultTenantId;
@@ -746,10 +727,89 @@ public class DocumentStore : IDocumentStore, ISessionFactory
         return tenantId!;
     }
 
+    internal static string GetLiveQueryDatabaseName(StoreOptions options, string? tenantId)
+    {
+        ArgumentNullException.ThrowIfNull(options);
+
+        return options.TenancyStyle == TenancyStyle.DatabasePerTenant
+            ? $"{options.Namespace ?? "test"}_{tenantId ?? throw new InvalidOperationException("DatabasePerTenant requires a tenant ID.")}"
+            : options.Database ?? "test";
+    }
+
     private async Task EnsureInitialized(CancellationToken ct)
     {
         if (Volatile.Read(ref _initialized) != 2)
             await InitializeAsync(ct).ConfigureAwait(false);
+    }
+
+    /// <summary>
+    /// Creates an isolated session that is authenticated and routed to the requested database.
+    /// A fork inherits its parent session's authentication state; a new child session must be
+    /// explicitly signed in because SurrealDB creates it without authentication state.
+    /// </summary>
+    internal async Task<ISurrealDbSession> CreateAuthenticatedSessionAsync(
+        ISurrealDbClient client,
+        string ns,
+        string db,
+        CancellationToken ct = default)
+    {
+        ArgumentNullException.ThrowIfNull(client);
+        ArgumentException.ThrowIfNullOrWhiteSpace(ns);
+        ArgumentException.ThrowIfNullOrWhiteSpace(db);
+
+        if (client is ISurrealDbSession authenticatedParent)
+        {
+            var fork = await authenticatedParent.ForkSession(ct).ConfigureAwait(false);
+            try
+            {
+                await fork.Use(ns, db, ct).ConfigureAwait(false);
+                return fork;
+            }
+            catch
+            {
+                await fork.DisposeAsync().ConfigureAwait(false);
+                throw;
+            }
+        }
+
+        if (!string.IsNullOrWhiteSpace(Options.Token))
+        {
+            throw new InvalidOperationException(
+                "Token-authenticated child sessions require an authenticated parent session. " +
+                "Configure a session-backed client so child sessions can be forked.");
+        }
+
+        ISurrealDbSession? session = null;
+        try
+        {
+            session = await client.CreateSession(ct).ConfigureAwait(false);
+
+            if (!string.IsNullOrWhiteSpace(Options.Username)
+                || !string.IsNullOrWhiteSpace(Options.Password))
+            {
+                if (string.IsNullOrWhiteSpace(Options.Username)
+                    || string.IsNullOrWhiteSpace(Options.Password))
+                {
+                    throw new InvalidOperationException(
+                        "Both username and password must be configured to authenticate child sessions.");
+                }
+
+                await session.SignIn(new RootAuth
+                {
+                    Username = Options.Username,
+                    Password = Options.Password
+                }, ct).ConfigureAwait(false);
+            }
+
+            await session.Use(ns, db, ct).ConfigureAwait(false);
+            return session;
+        }
+        catch
+        {
+            if (session is not null)
+                await session.DisposeAsync().ConfigureAwait(false);
+            throw;
+        }
     }
 
     /// <summary>
@@ -758,8 +818,7 @@ public class DocumentStore : IDocumentStore, ISessionFactory
     public async Task<IGraphQuery<T>> GraphAsync<T>(CancellationToken ct = default) where T : class
     {
         await EnsureInitialized(ct).ConfigureAwait(false);
-        var surrealSession = await Client.CreateSession(ct).ConfigureAwait(false);
-        await surrealSession.Use(Options.Namespace ?? "test", Options.Database ?? "test", ct).ConfigureAwait(false);
+        var surrealSession = await CreateAuthenticatedSessionAsync(Client, Options.Namespace ?? "test", Options.Database ?? "test", ct).ConfigureAwait(false);
         var querySession = new QuerySession(Client, surrealSession, Options, DocumentTracking.None) { DocumentStore = this };
         return GraphQueryProvider.Graph<T>(querySession);
     }
@@ -771,8 +830,11 @@ public class DocumentStore : IDocumentStore, ISessionFactory
         if (_initialized == 0)
             throw new InvalidOperationException("Store not initialized. Call InitializeAsync first.");
 
-        var surrealSession = Client.CreateSession(DefaultCt).GetAwaiter().GetResult();
-        surrealSession.Use(Options.Namespace ?? "test", Options.Database ?? "test", CancellationToken.None).GetAwaiter().GetResult();
+        var surrealSession = CreateAuthenticatedSessionAsync(
+            Client,
+            Options.Namespace ?? "test",
+            Options.Database ?? "test",
+            DefaultCt).GetAwaiter().GetResult();
         var querySession = new QuerySession(Client, surrealSession, Options, DocumentTracking.None) { DocumentStore = this };
         return GraphQueryProvider.Graph<T>(querySession);
     }
